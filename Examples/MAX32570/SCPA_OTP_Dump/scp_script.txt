@@ -1,7 +1,4 @@
-#
-# Provide full path for your *.srec file
-#
-write-only <PRIVDE_SREC_PATH>\SCPA_OTP_Dump.srec
+write-only .\build\SCPA_OTP_Dump.srec
 execute-code 2000fe10
 erase-data C0000000 00000010 dump
 erase-data C0000000 00000020 dump

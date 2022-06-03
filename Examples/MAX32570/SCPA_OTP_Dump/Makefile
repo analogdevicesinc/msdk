@@ -177,4 +177,8 @@ ram: all
 scpa: all
 	arm-none-eabi-objcopy -O srec -j .text -j .data -j.scpa_header -j.scpa_init -j.scpa_ops --srec-forceS3 --srec-len=128 $(BUILD_DIR)/$(PROJECT).elf  $(BUILD_DIR)/$(PROJECT).srec
 	@echo " "
+	@echo "Updating scp_script file (Rename output file name with project name)"
+	$(shell sed -e 's/SCPA_OTP_Dump/$(PROJECT)/g' -i scp_script.txt)
+	@echo "Generating SCP Package"
+	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) script_file=scp_script.txt ${SCP_PACKETS}
 
