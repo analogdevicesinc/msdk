@@ -47,7 +47,7 @@
 #include <MAX32xxx.h>
 
 
-int main(void)
+int scpa_erase(unsigned int dest, unsigned int length)
 {
     
     return 0;
