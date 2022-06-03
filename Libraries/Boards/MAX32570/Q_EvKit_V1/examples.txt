@@ -23,6 +23,7 @@ Pulse_Train
 RTC
 SDHC_FAT
 SDHC_Raw
+SCPA_OTP_Dump
 Security_Monitor
 Semaphore
 SKB

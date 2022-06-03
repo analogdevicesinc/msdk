@@ -36,7 +36,8 @@
 /**
  * @file    main.c
  * @brief   SCP Applet OTP Dump Example
- * @details This example demonstrate how to SCP Applet mechanism
+ * @details This example demonstrate how to SCP Applet mechanism,
+ * 			The example shall be build with SCPA configuration, "make scpa"
  *
  */
 
@@ -95,6 +96,10 @@ static int otp_dump(unsigned int address, unsigned int length)
 }
 
 /****************************  Public Functions  *****************************/
+#if !defined(__SCPA_FWK__)
+#error "This example shall be build with SCPA configuration"
+#endif
+
 int scpa_erase(unsigned int dest, unsigned int length)
 {
 	(void)dest;
