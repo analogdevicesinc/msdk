@@ -9,6 +9,7 @@ Hello_World
 ICC
 LockDebug
 LP
+SCPA_OTP_Dump
 SFE
 SFE_Host
 SMON
