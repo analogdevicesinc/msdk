@@ -6,6 +6,7 @@ Flash
 FreeRTOSDemo
 Hello_World
 ICC
+SCPA_OTP_Dump
 SMON
 SPI
 TMR
