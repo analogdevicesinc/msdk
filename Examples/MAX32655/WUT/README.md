@@ -2,10 +2,10 @@
 This Example shows how to wake up a device after it is asleep with a wake up timer.  After a defined number of seconds it will wake up after going to sleep.
 
 On the standard EV Kit:
--    PB1: P0.18/SW3
+-    PB0: P0.18/SW3
 
 On the Featherboard:
--    PB1: P0.2/SW2
+-    PB0: P0.2/SW2
 
 ## Setup
 
@@ -27,7 +27,7 @@ If using the Featherboard (FTHR\_Apps\_P1):
 ```
 /************** Wakeup timer example ********************/
 This example is to show how the Wakeup timer is used and configured
-Press PB1 to put the chip into sleep and then the wakeup timer will wake up in 5000 Miliseconds
+Press PB0 to put the chip into sleep and then the wakeup timer will wake up in 5000 Miliseconds
 Entering SLEEP mode.
 Waking up from SLEEP mode.
 ```
