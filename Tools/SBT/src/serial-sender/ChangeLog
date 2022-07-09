@@ -1,0 +1,6 @@
+2010-02-10  Grégory Romé  <gregory.rome@maxim-ic.com>
+
+	* README: New file.
+	* ChaneLog: New file.
+	* src/BootloaderScp.py: Improve and correct str, eq and neq functions. 
+	* src/serial_sender.py: Add verbose messages in case of wrong packet.

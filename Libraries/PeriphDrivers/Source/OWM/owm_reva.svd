@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>OWM</name>
+  <description>1-Wire Master Interface.</description>
+  <baseAddress>0x4003D000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+   <offset>0</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>OneWire</name>
+   <value>67</value>
+  </interrupt>
+  <registers>
+<!-- CFG: 1-Wire Master Configuration -->
+   <register>
+    <name>CFG</name>
+    <description>1-Wire Master Configuration.</description>
+    <addressOffset>0x0000</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>long_line_mode</name>
+      <description>Long Line Mode.</description>
+      <bitRange>[0:0]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>force_pres_det</name>
+      <description>Force Line During Presence Detect.</description>
+      <bitRange>[1:1]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>bit_bang_en</name>
+      <description>Bit Bang Enable.</description>
+      <bitRange>[2:2]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>ext_pullup_mode</name>
+      <description>Provide an extra output control to control an external pullup.</description>
+      <bitRange>[3:3]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>ext_pullup_enable</name>
+      <description>Enable External Pullup.</description>
+      <bitRange>[4:4]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>single_bit_mode</name>
+      <description>Enable Single Bit TX/RX Mode.</description>
+      <bitRange>[5:5]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>overdrive</name>
+      <description>Enables overdrive speed for 1-Wire operations.</description>
+      <bitRange>[6:6]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>int_pullup_enable</name>
+      <description>Enable intenral pullup.</description>
+      <bitRange>[7:7]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- CLK_DIV_1US: 1-Wire Master Clock Divisor -->
+   <register>
+    <name>CLK_DIV_1US</name>
+    <description>1-Wire Master Clock Divisor.</description>
+    <addressOffset>0x0004</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>divisor</name>
+      <description>Clock Divisor for 1Mhz.</description>
+      <bitRange>[7:0]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- CTRL_STAT: 1-Wire Master Control/Status -->
+   <register>
+    <name>CTRL_STAT</name>
+    <description>1-Wire Master Control/Status.</description>
+    <addressOffset>0x0008</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>start_ow_reset</name>
+      <description>Start OW Reset.</description>
+      <bitRange>[0:0]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>sra_mode</name>
+      <description>SRA Mode.</description>
+      <bitRange>[1:1]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>bit_bang_oe</name>
+      <description>Bit Bang Output Enable.</description>
+      <bitRange>[2:2]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>ow_input</name>
+      <description>OW Input State.</description>
+      <bitRange>[3:3]</bitRange>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>od_spec_mode</name>
+      <description>Overdrive Spec Mode.</description>
+      <bitRange>[4:4]</bitRange>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>ext_pullup_pol</name>
+      <description>External Pullup.</description>
+      <bitRange>[5:5]</bitRange>
+      <access>read-only</access>
+     </field>     
+     <field>
+      <name>presence_detect</name>
+      <description>Presence Pulse Detected.</description>
+      <bitRange>[7:7]</bitRange>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+<!-- DATA: 1-Wire Master Data Buffer -->
+   <register>
+    <name>DATA</name>
+    <description>1-Wire Master Data Buffer.</description>
+    <addressOffset>0x000C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>tx_rx</name>
+      <description>TX/RX Buffer.</description>
+      <bitRange>[7:0]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- INTFL: 1-Wire Master Interrupt Flags -->
+   <register>
+    <name>INTFL</name>
+    <description>1-Wire Master Interrupt Flags.</description>
+    <addressOffset>0x0010</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>ow_reset_done</name>
+      <description>OW Reset Sequence Completed.</description>
+      <bitRange>[0:0]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>tx_data_empty</name>
+      <description>TX Data Empty Interrupt Flag.</description>
+      <bitRange>[1:1]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>rx_data_ready</name>
+      <description>RX Data Ready Interrupt Flag</description>
+      <bitRange>[2:2]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>line_short</name>
+      <description>OW Line Short Detected Interrupt Flag.</description>
+      <bitRange>[3:3]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>line_low</name>
+      <description>OW Line Low Detected Interrupt Flag.</description>
+      <bitRange>[4:4]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- INTEN: 1-Wire Master Interrupt Enables -->
+   <register>
+    <name>INTEN</name>
+    <description>1-Wire Master Interrupt Enables.</description>
+    <addressOffset>0x0014</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>ow_reset_done</name>
+      <description>OW Reset Sequence Completed.</description>
+      <bitRange>[0:0]</bitRange>
+      <access>read-write</access>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+     </field>
+     <field>
+      <name>tx_data_empty</name>
+      <description>Tx Data Empty Interrupt Enable.</description>
+      <bitRange>[1:1]</bitRange>
+      <access>read-write</access>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+     </field>
+     <field>
+      <name>rx_data_ready</name>
+      <description>Rx Data Ready Interrupt Enable.</description>
+      <bitRange>[2:2]</bitRange>
+      <access>read-write</access>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+     </field>
+     <field>
+      <name>line_short</name>
+      <description>OW Line Short Detected Interrupt Enable.</description>
+      <bitRange>[3:3]</bitRange>
+      <access>read-write</access>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+     </field>
+     <field>
+      <name>line_low</name>
+      <description>OW Line Low Detected Interrupt Enable.</description>
+      <bitRange>[4:4]</bitRange>
+      <access>read-write</access>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- One Wire Master -->
+</device>

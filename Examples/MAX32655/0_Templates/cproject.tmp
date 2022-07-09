@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="ilg.gnumcueclipse.managedbuild.cross.config.elf.debug.1674944962">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnumcueclipse.managedbuild.cross.config.elf.debug.1674944962" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnumcueclipse.managedbuild.cross.config.elf.debug.1674944962" name="Debug" parent="ilg.gnumcueclipse.managedbuild.cross.config.elf.debug">
+					<folderInfo id="ilg.gnumcueclipse.managedbuild.cross.config.elf.debug.1674944962." name="/" resourcePath="">
+						<toolChain id="ilg.gnumcueclipse.managedbuild.cross.toolchain.elf.debug.548125692" name="Cross ARM GCC" superClass="ilg.gnumcueclipse.managedbuild.cross.toolchain.elf.debug">
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.optimization.level.1448195934" name="Optimization Level" superClass="ilg.gnumcueclipse.managedbuild.cross.option.optimization.level" value="ilg.gnumcueclipse.managedbuild.cross.option.optimization.level.none" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.optimization.messagelength.989348626" name="Message length (-fmessage-length=0)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.optimization.messagelength" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.optimization.signedchar.573934961" name="'char' is signed (-fsigned-char)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.optimization.signedchar" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.optimization.functionsections.1195068176" name="Function sections (-ffunction-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.optimization.functionsections" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.optimization.datasections.1035348629" name="Data sections (-fdata-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.optimization.datasections" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.debugging.level.31679983" name="Debug level" superClass="ilg.gnumcueclipse.managedbuild.cross.option.debugging.level" value="ilg.gnumcueclipse.managedbuild.cross.option.debugging.level.max" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.debugging.format.1676901946" name="Debug format" superClass="ilg.gnumcueclipse.managedbuild.cross.option.debugging.format"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.toolchain.name.1729767352" superClass="ilg.gnumcueclipse.managedbuild.cross.option.toolchain.name" value="GNU Tools for ARM Embedded Processors" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.architecture.1708484008" name="Architecture" superClass="ilg.gnumcueclipse.managedbuild.cross.option.architecture" value="ilg.gnumcueclipse.managedbuild.cross.option.architecture.arm" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.arm.target.family.178519983" name="ARM family" superClass="ilg.gnumcueclipse.managedbuild.cross.option.arm.target.family" value="ilg.gnumcueclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m3" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.arm.target.instructionset.956545422" name="Instruction set" superClass="ilg.gnumcueclipse.managedbuild.cross.option.arm.target.instructionset" value="ilg.gnumcueclipse.managedbuild.cross.option.arm.target.instructionset.thumb" valueType="enumerated"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.prefix.1580514969" name="Prefix" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.prefix" value="arm-none-eabi-" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.c.1246670973" name="C compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.c" value="gcc" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.cpp.1674926322" name="C++ compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.cpp" value="g++" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.ar.2051566192" name="Archiver" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.ar" value="ar" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.objcopy.408066731" name="Hex/Bin converter" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.objcopy" value="objcopy" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.objdump.1900584936" name="Listing generator" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.objdump" value="objdump" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.size.1096852527" name="Size command" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.size" value="size" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.make.937347953" name="Build command" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.make" value="make" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.command.rm.1468247042" name="Remove command" superClass="ilg.gnumcueclipse.managedbuild.cross.option.command.rm" value="rm" valueType="string"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.addtools.createflash.1529750846" name="Create flash image" superClass="ilg.gnumcueclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
+							<option id="ilg.gnumcueclipse.managedbuild.cross.option.addtools.printsize.667765305" name="Print size" superClass="ilg.gnumcueclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnumcueclipse.managedbuild.cross.targetPlatform.786533016" isAbstract="false" osList="all" superClass="ilg.gnumcueclipse.managedbuild.cross.targetPlatform"/>
+							<builder arguments="ECLIPSE=1 -j 8" buildPath="${workspace_loc:/##__PROJ_NAME__##}" command="make" id="ilg.gnumcueclipse.managedbuild.cross.builder.592880777" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="ilg.gnumcueclipse.managedbuild.cross.builder"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.1648672385" name="Cross ARM GNU Assembler" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.assembler">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.assembler.usepreprocessor.1969112665" name="Use preprocessor" superClass="ilg.gnumcueclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.input.507854261" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.input"/>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.c.compiler.1576427906" name="Cross ARM C Compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.c.compiler">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.c.compiler.include.paths.832761602" name="Include paths (-I)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/MAX32655/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/MAX32655/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/PeriphDrivers/Include/MAX32655&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/MAX32655/EvKit_V1/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Tools/GNUTools/arm-none-eabi/include&quot;"/>
+									##__ECLIPSE_EXTRA_IPATH__##
+								</option>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.tool.c.compiler.input.68945223" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.c.compiler.input"/>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.cpp.compiler.794996645" name="Cross ARM C++ Compiler" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.cpp.compiler"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.c.linker.675776866" name="Cross ARM C Linker" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.c.linker">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.c.linker.gcsections.185399645" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.c.linker.gcsections" value="true" valueType="boolean"/>
+								<inputType id="ilg.gnumcueclipse.managedbuild.cross.tool.c.linker.input.246156916" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.c.linker.input">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.cpp.linker.391142733" name="Cross ARM C++ Linker" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.cpp.linker">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.cpp.linker.gcsections.2099090970" name="Remove unused sections (-Xlinker --gc-sections)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.cpp.linker.gcsections" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.archiver.399743328" name="Cross ARM GNU Archiver" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.archiver"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.createflash.822983655" name="Cross ARM GNU Create Flash Image" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.createflash"/>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.createlisting.1050446219" name="Cross ARM GNU Create Listing" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.createlisting">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.source.335976671" name="Display source (--source|-S)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.source" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.allheaders.964898349" name="Display all headers (--all-headers|-x)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.allheaders" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.demangle.972868647" name="Demangle names (--demangle|-C)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.demangle" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.linenumbers.890608562" name="Display line numbers (--line-numbers|-l)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.linenumbers" value="true" valueType="boolean"/>
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.wide.1669392057" name="Wide lines (--wide|-w)" superClass="ilg.gnumcueclipse.managedbuild.cross.option.createlisting.wide" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.printsize.403251962" name="Cross ARM GNU Print Size" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.printsize">
+								<option id="ilg.gnumcueclipse.managedbuild.cross.option.printsize.format.1919947275" name="Size format" superClass="ilg.gnumcueclipse.managedbuild.cross.option.printsize.format"/>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="PeriphDrivers" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="PeriphDrivers"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="##__PROJ_NAME__##.ilg.gnumcueclipse.managedbuild.cross.target.elf.737306620" name="Executable" projectType="ilg.gnumcueclipse.managedbuild.cross.target.elf"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="ilg.gnumcueclipse.managedbuild.cross.config.elf.debug.1674944962;ilg.gnumcueclipse.managedbuild.cross.config.elf.debug.1674944962.;ilg.gnumcueclipse.managedbuild.cross.tool.c.compiler.1576427906;ilg.gnumcueclipse.managedbuild.cross.tool.c.compiler.input.68945223">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/##__PROJ_NAME__##"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+</cproject>

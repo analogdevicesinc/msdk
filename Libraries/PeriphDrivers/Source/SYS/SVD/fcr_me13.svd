@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>FCR</name>
+  <description>Function Control Register.</description>
+  <baseAddress>0x40000800</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>FCTRL0</name>
+    <description>Register 0.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>USB_EXTCLK_SEL</name>
+      <description>USB External Core Clock Select.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>sys</name>
+        <description>Generated clock from system clock.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>dig</name>
+        <description>Digital clock from a GPIO.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C0_SDA_FILTER_EN</name>
+      <description>I2C0 SDA Glitch Filter Enable.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C0_SCL_FILTER_EN</name>
+      <description>I2C0 SCL Glitch Filter Enable.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C1_SDA_FILTER_EN</name>
+      <description>I2C1 SDA Glitch Filter Enable.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C1_SCL_FILTER_EN</name>
+      <description>I2C1 SCL Glitch Filter Enable.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2AF2_SDA_FILTER_EN</name>
+      <description>I2C2 AF2 SDA Glitch Filter Enable.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2AF2_SCL_FILTER_EN</name>
+      <description>I2C2 AF2 SCL Glitch Filter Enable.</description>
+      <bitOffset>25</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2AF3_SDA_FILTER_EN</name>
+      <description>I2C2 AF3 SDA Glitch Filter Enable.</description>
+      <bitOffset>26</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2AF3_SCL_FILTER_EN</name>
+      <description>I2C2 AF3 SCL Glitch Filter Enable.</description>
+      <bitOffset>27</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2AF4_SDA_FILTER_EN</name>
+      <description>I2C2 AF4 SDA Glitch Filter Enable</description>
+      <bitOffset>28</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2AF4_SCL_FILTER_EN</name>
+      <description>I2C2 AF4 SCL Glitch Filter Enable</description>
+      <bitOffset>29</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL0</name>
+    <description>Register 1.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>SEL</name>
+      <description>Auto-calibration Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>EN</name>
+      <description>Autocalibration Run.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LOAD</name>
+      <description>Load Trim.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>INVERT</name>
+      <description>Invert Gain.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ATOMIC</name>
+      <description>Atomic mode.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>GAIN</name>
+      <description>MU value.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>12</bitWidth>
+     </field>
+     <field>
+      <name>TRIM</name>
+      <description>150MHz HFIO Auto Calibration Trim</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL1</name>
+    <description>Register 2.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>NFC_FWD_EN</name>
+      <description>Enabled FWD mode for NFC block</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>NFC_CLK_EN</name>
+      <description>Enabled the NFC blocks clock divider in Analog</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>NFC_FWD_TX_DATA_OVR</name>
+      <description>FWD input for NFC block</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>XO_EN_DGL</name>
+      <description>TBD</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RX_BIAS_PD</name>
+      <description>Power down enable for NFC receiver analog block</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RX_BIAS_EN</name>
+      <description>Enable the NFC receiver analog blocks</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RX_TM_VBG_VABUS</name>
+      <description>TBD</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RX_TM_BIAS</name>
+      <description>TBD</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>NFC_FWD_DOUT</name>
+      <description>FWD output from FNC block</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL2</name>
+    <description>Register 3.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>RUNTIME</name>
+      <description>Automatic Calibration Run Time.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- NBBFC: Non Battery-Backed Function Control -->
+</device>

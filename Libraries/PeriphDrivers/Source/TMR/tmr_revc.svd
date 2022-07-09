@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>TMR0</name>
+    <description>Low-Power Configurable Timer</description>
+    <baseAddress>0x40010000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>TMR</name>
+      <!-- IRQ Name -->
+      <value>1</value>
+      <!-- IRQ Number Device Specific -->
+    </interrupt>
+    <registers>
+      <register>
+        <name>CNT</name>
+        <description>Timer Counter Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>COUNT</name>
+            <description>The current count value for the timer. This field increments as the timer counts.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CMP</name>
+        <description>Timer Compare Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>COMPARE</name>
+            <description>The value in this register is used as the compare value for the timer's count value. The compare field meaning is determined by the specific mode of the timer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PWM</name>
+        <description>Timer PWM Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>PWM</name>
+            <description>Timer PWM Match:
+                In PWM Mode, this field sets the count value for the first transition period of the PWM cycle. At the end of the cycle where CNT equals PWM, the PWM output transitions to the second period of the PWM cycle. The second PWM period count is stored in the CMP register. The value set for PWM must me less than the value set in CMP for PWM mode operation. Timer Capture Value:
+                In Capture, Compare, and Capture/Compare modes, this field is used to store the CNT value when a Capture, Compare, or Capture/Compare event occurs.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTR</name>
+        <description>Timer Interrupt Status Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>IRQ</name>
+            <description>Interrupt Flag for Timer A.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CN</name>
+        <description>Timer Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TMODE</name>
+            <description>Mode Select</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ONE_SHOT</name>
+                <description>One-Shot Mode</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CONTINUOUS</name>
+                <description>Continuous Mode</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>COUNTER</name>
+                <description>Counter Mode</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PWM</name>
+                <description>PWM Mode</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CAPTURE</name>
+                <description>Capture Mode</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>COMPARE</name>
+                <description>Compare Mode</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>GATED</name>
+                <description>Gated Mode</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CAPCOMP</name>
+                <description>Capture/Compare Mode</description>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DUAL_EDGE</name>
+                <description>Dual Edge Capture Mode</description>
+                <value>8</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IGATED</name>
+                <description>Inactive Gated Mode</description>
+                <value>12</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PRES</name>
+            <description>Timer Prescaler Select</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DIV_BY_1</name>
+                <description>Prescaler Divide-By-1</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_2</name>
+                <description>Prescaler Divide-By-2</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_4</name>
+                <description>Prescaler Divide-By-4</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_8</name>
+                <description>Prescaler Divide-By-8</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_16</name>
+                <description>Prescaler Divide-By-16</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_32</name>
+                <description>Prescaler Divide-By-32</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_64</name>
+                <description>Prescaler Divide-By-64</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_128</name>
+                <description>Prescaler Divide-By-128</description>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_256</name>
+                <description>Prescaler Divide-By-256</description>
+                <value>8</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_512</name>
+                <description>Prescaler Divide-By-512</description>
+                <value>9</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_1024</name>
+                <description>Prescaler Divide-By-1024</description>
+                <value>10</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_2048</name>
+                <description>Prescaler Divide-By-2048</description>
+                <value>11</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_4096</name>
+                <description>Prescaler Divide-By-4096</description>
+                <value>12</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV_BY_8192</name>
+                <description>Prescaler Divide-By-8192</description>
+                <value>13</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TPOL</name>
+            <description>Timer Polarity</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TEN</name>
+            <description>Timer Enable</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PRES3</name>
+            <description>Timer Prescale Select MSB</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWMSYNC</name>
+            <description>PWM Synchronization Mode</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOLHPOL</name>
+            <description>PWM Phase A (Non-Overlapping High) Polarity</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOLLPOL</name>
+            <description>PWM Phase A-prime (Non-Overlapping Low) Polarity</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWMCKBD</name>
+            <description>PWM Phase A-Prime Output Disable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- LPTIMER Low-Power Configurable Timer -->
+</device>

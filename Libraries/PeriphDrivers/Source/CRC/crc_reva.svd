@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!-- AES -->
+    <name>CRC</name>
+    <description>CRC Registers.</description>
+    <baseAddress>0x4000F000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>CRC Control</description>
+        <addressOffset>0x0000</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>CRC Enable</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DMA_EN</name>
+            <description>DMA Request Enable</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>MSB</name>
+            <description>MSB Select</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>BYTE_SWAP_IN</name>
+            <description>Byte Swap CRC Data Input</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>BYTE_SWAP_OUT</name>
+            <description>Byte Swap CRC Value Output</description>
+            <bitRange>[4:4]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>BUSY</name>
+            <description>CRC Busy</description>
+            <bitRange>[16:16]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DATAIN32</name>
+        <description>CRC Data Input</description>
+        <addressOffset>0x0004</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>CRC Data</description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>DATAIN16[%s]</name>
+        <description>CRC Data Input</description>
+        <addressOffset>0x0004</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>CRC Data</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>DATAIN8[%s]</name>
+        <description>CRC Data Input</description>
+        <addressOffset>0x0004</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>CRC Data</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>POLY</name>
+        <description>CRC Polynomial</description>
+        <addressOffset>0x0008</addressOffset>
+        <fields>
+          <field>
+            <name>POLY</name>
+            <description>CRC Polynomial</description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VAL</name>
+        <description>Current CRC Value</description>
+        <addressOffset>0x000C</addressOffset>
+        <fields>
+          <field>
+            <name>VALUE</name>
+            <description>Current CRC Value</description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- AES -->
+</device>

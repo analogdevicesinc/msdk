@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>FCR</name>
+  <description>Function Control Register.</description>
+  <baseAddress>0x40000800</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>REG0</name>
+    <description>Register 0.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>USBRCKSEL</name>
+      <description>USB External Core Clock Select.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>sys</name>
+        <description>Generated clock from system clock.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>dig</name>
+        <description>Digital clock from a GPIO.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C0DGEN0</name>
+      <description>I2C0 SDA Pad Deglitcher enable.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Deglitcher disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Deglitcher enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C0DGEN1</name>
+      <description>I2C0 SCL Pad Deglitcher enable.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Deglitcher disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Deglitcher enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C1DGEN0</name>
+      <description>I2C1 SDA Pad Deglitcher enable.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Deglitcher disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Deglitcher enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C1DGEN1</name>
+      <description>I2C1 SCL Pad Deglitcher enable.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Deglitcher disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Deglitcher enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>REG1</name>
+    <description>Register 1.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>ACEN</name>
+      <description>Auto-calibration Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ACRUN</name>
+      <description>Autocalibration Run.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LDTRM</name>
+      <description>Load Trim.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>GAININV</name>
+      <description>Invert Gain.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ATOMIC</name>
+      <description>Atomic mode.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>MU</name>
+      <description>MU value.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>12</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>REG2</name>
+    <description>Register 2.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INITTRM</name>
+      <description>Initial Trim Setting.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+     <field>
+      <name>MINTRM</name>
+      <description>Minimum Trim Setting.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+     <field>
+      <name>MAXTRM</name>
+      <description>Maximum Trim Setting.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>REG3</name>
+    <description>Register 3.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>DONECNT</name>
+      <description>Auto-callibration Done Counter Setting.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- NBBFC: Non Battery-Backed Function Control -->
+</device>

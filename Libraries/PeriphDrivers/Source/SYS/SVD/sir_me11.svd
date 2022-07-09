@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>SIR</name>
+    <description>System Initialization Registers.</description>
+    <baseAddress>0x40000400</baseAddress>
+    <access>read-only</access>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>STATUS</name>
+        <description>System Initialization Status Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>CFG_VALID</name>
+            <description>Configuration Valid Flag. This field is set to 1 by hardware during reset if the device configuration is valid.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>invalid</name>
+                <description>config invalid</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>valid</name>
+                <description>config valid</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CFG_ERR</name>
+            <description>Configuration Error Flag. This field is set by hardware during reset if an error in the device configuration is detected</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>valid</name>
+                <description>config valid</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>invalid</name>
+                <description>config invalid</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADDR</name>
+        <description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
+        <addressOffset>0x04</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- SIR: System Initialization Registers     -->
+</device>

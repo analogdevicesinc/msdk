@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>FCR</name>
+    <description>Function Control Register.</description>
+    <baseAddress>0x40000800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>FCTRL0</name>
+        <description>Function Control 0.</description>
+        <addressOffset>0x00</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ERFO_RANGE_SEL</name>
+            <description>ERFO Frequency Range Select. Control ibias_gm_stage.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>KEYWIPE_SYS</name>
+            <description>Wipe System AES Key Register.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>I2C0DGEN0</name>
+            <description>I2C0 SDA Pad Deglitcher enable.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Deglitcher disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Deglitcher enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C0DGEN1</name>
+            <description>I2C0 SCL Pad Deglitcher enable.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Deglitcher disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Deglitcher enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C1DGEN0</name>
+            <description>I2C1 SDA Pad Deglitcher enable.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Deglitcher disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Deglitcher enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C1DGEN1</name>
+            <description>I2C1 SCL Pad Deglitcher enable.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Deglitcher disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Deglitcher enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AUTOCAL0</name>
+        <description>Automatic Calibration 0.</description>
+        <addressOffset>0x04</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ACEN</name>
+            <description>Auto-calibration Enable for HIRC96M.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ACRUN</name>
+            <description>Autocalibration Run.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Not Running.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>run</name>
+                <description>Running.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOAD</name>
+            <description>Load Trim.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>GAIN_INV</name>
+            <description>Invert Gain.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Not inverted.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>invert</name>
+                <description>Inverted.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ATOMIC</name>
+            <description>Start atomic autocal.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Not Running.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>run</name>
+                <description>Running.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MU</name>
+            <description>Adaptation Gain Value.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+          <field>
+            <name>TRIM</name>
+            <description>HIRC96M Trim Value determinged by Auto Calibration.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AUTOCAL1</name>
+        <description>Automatic Calibration 1.</description>
+        <addressOffset>0x08</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>INITTRIM</name>
+            <description>Initial Trim Setting fir HIRC96M Auto Calibration procedure.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AUTOCAL2</name>
+        <description>Automatic Calibration 2</description>
+        <addressOffset>0x0C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DONECNT</name>
+            <description>Auto-callibration Done Counter Setting.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>ACDIV</name>
+            <description>Auto-callibration Divide Factor.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>13</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADCREFTRIM0</name>
+        <description>ADC Reference Trim 0 Control Register.</description>
+        <addressOffset>0x18</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>VREFP</name>
+            <description>Trimming code for VREFP output of reference buffer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>VREFM</name>
+            <description>Trimming code for VREFM output of reference buffer.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>VCM</name>
+            <description>Trimming code for VCM output of reference buffer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>VX2_TUNE</name>
+            <description>COntrols tuning capacitor in fine DAC, offset binary.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADCREFTRIM1</name>
+        <description>ADC Reference Trim 1 Control Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>VREFP</name>
+            <description>Trimming code for VREFP output of reference buffer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>VREFM</name>
+            <description>Trimming code for VREFM output of reference buffer.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>VCM</name>
+            <description>Trimming code for VCM output of reference buffer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>VX2_TUNE</name>
+            <description>COntrols tuning capacitor in fine DAC, offset binary.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADCREFTRIM2</name>
+        <description>ADC Reference Trim 2 Control Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>IDRV_1P25</name>
+            <description>Trimming code for reference buffer drive strength, 1.25V Reference.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>IBOOST_1P25</name>
+            <description>Trimming value for extra drive current in reference buffer outputsm 1.25V Reference.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IDRV_2P048</name>
+            <description>Trimming code for reference buffer drive strength, 2.048V Reference.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>IBOOST_2P048</name>
+            <description>Trimming value for extra drive current in reference buffer outputs, 2.048V Reference.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VCM</name>
+            <description>Trimming code for VCM output of reference buffer.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>VX2_TUNE</name>
+            <description>Controls tuning capacitor in fine DAC, offset binary.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ERFOKS</name>
+        <description>ERFO Kick Start Control Register.</description>
+        <addressOffset>0x24</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>CTRL</name>
+            <description>Kickstart Control for ERFO (XO32M)</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

@@ -1,0 +1,1038 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SPIXFC</name>
+  <description>SPI XiP Flash Configuration Controller</description>
+  <baseAddress>0x40027000</baseAddress>
+  <addressBlock>
+   <offset>0</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>SPIXFC</name>
+   <description>SPIXFC IRQ</description>
+   <value>38</value>
+  </interrupt>
+  <registers>
+   <register>
+    <name>CFG</name>
+    <description>Configuration Register.</description>
+    <addressOffset>0x00</addressOffset>
+    <fields>
+     <field>
+      <name>SSEL</name>
+      <description>Slaves Select.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>3</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>slave0</name>
+        <description>Slave 0 is selected.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>MODE</name>
+      <description>Defines SPI Mode, Only valid values are 0 and 3.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>mode0</name>
+        <description>SPIX Mode 0. CLK Polarity = 0, CLK Phase = 0.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>mode3</name>
+        <description>SPIX Mode 3. CLK Polarity = 1, CLK Phase = 1.</description>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>PGSZ</name>
+      <description>Page Size.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>4bytes</name>
+        <description>4 bytes.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8bytes</name>
+        <description>8 bytes.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>16bytes</name>
+        <description>16 bytes.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>32bytes</name>
+        <description>32 bytes.</description>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>HICLK</name>
+      <description>SCLK High Clocks. Number of system clocks that SCLK will be high when SCLK pulses are generated. 0 Correspond to 16 system clocks and, all other values defines the number of system clock taht SCLK will be held high.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>16CLK</name>
+        <description>16 system clocks.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>1CLK</name>
+        <description>1 system clocks.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2CLK</name>
+        <description>2 system clocks.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>3CLK</name>
+        <description>3 system clocks.</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>4CLK</name>
+        <description>4 system clocks.</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>5CLK</name>
+        <description>5 system clocks.</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>6CLK</name>
+        <description>6 system clocks.</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>7CLK</name>
+        <description>7 system clocks.</description>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8CLK</name>
+        <description>8 system clocks.</description>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>9CLK</name>
+        <description>9 system clocks.</description>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>10CLK</name>
+        <description>10 system clocks.</description>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>11CLK</name>
+        <description>11 system clocks.</description>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>12CLK</name>
+        <description>12 system clocks.</description>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>13CLK</name>
+        <description>13 system clocks.</description>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>14CLK</name>
+        <description>14 system clocks.</description>
+        <value>14</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>15CLK</name>
+        <description>15 system clocks.</description>
+        <value>15</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LOCLK</name>
+      <description>SCLK low Clocks. Number of system clocks that SCLK will be low when SCLK pulses are generated. 0 correspond to 16 system clocks and, all other values defines the number of system clock taht SCLK will be held low.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>16CLK</name>
+        <description>16 system clocks.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>1CLK</name>
+        <description>1 system clocks.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2CLK</name>
+        <description>2 system clocks.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>3CLK</name>
+        <description>3 system clocks.</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>4CLK</name>
+        <description>4 system clocks.</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>5CLK</name>
+        <description>5 system clocks.</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>6CLK</name>
+        <description>6 system clocks.</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>7CLK</name>
+        <description>7 system clocks.</description>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8CLK</name>
+        <description>8 system clocks.</description>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>9CLK</name>
+        <description>9 system clocks.</description>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>10CLK</name>
+        <description>10 system clocks.</description>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>11CLK</name>
+        <description>11 system clocks.</description>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>12CLK</name>
+        <description>12 system clocks.</description>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>13CLK</name>
+        <description>13 system clocks.</description>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>14CLK</name>
+        <description>14 system clocks.</description>
+        <value>14</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>15CLK</name>
+        <description>15 system clocks.</description>
+        <value>15</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSACT</name>
+      <description>Slaves Select Activate Timing.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>0CLK</name>
+        <description>0 sytem clocks.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2CLK</name>
+        <description>2 sytem clocks.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>4CLK</name>
+        <description>4 sytem clocks.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8CLK</name>
+        <description>8 sytem clocks.</description>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>INACT</name>
+      <description>Slaves Select Inactive Timing.</description>
+      <bitOffset>18</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>4CLK</name>
+        <description>4 sytem clocks.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>6CLK</name>
+        <description>6 sytem clocks.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8CLK</name>
+        <description>8 sytem clocks.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>12CLK</name>
+        <description>12 sytem clocks.</description>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>IOSMPL</name>
+      <description>Sample Delay</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>NODLY</name>
+        <description>No sample clock delay.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>1CLK</name>
+        <description>1 system clocks.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2CLK</name>
+        <description>2 system clocks.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>3CLK</name>
+        <description>3 system clocks.</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>4CLK</name>
+        <description>4 system clocks.</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>5CLK</name>
+        <description>5 system clocks.</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>6CLK</name>
+        <description>6 system clocks.</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>7CLK</name>
+        <description>7 system clocks.</description>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8CLK</name>
+        <description>8 system clocks.</description>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>9CLK</name>
+        <description>9 system clocks.</description>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>10CLK</name>
+        <description>10 system clocks.</description>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>11CLK</name>
+        <description>11 system clocks.</description>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>12CLK</name>
+        <description>12 system clocks.</description>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>13CLK</name>
+        <description>13 system clocks.</description>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>14CLK</name>
+        <description>14 system clocks.</description>
+        <value>14</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>15CLK</name>
+        <description>15 system clocks.</description>
+        <value>15</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>SS_POL</name>
+    <description>SPIX Controller Slave Select Polarity Register.</description>
+    <addressOffset>0x04</addressOffset>
+    <fields>
+     <field>
+      <name>SSPOL_0</name>
+      <description>Slave Select Polarity.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>activeLo</name>
+        <description>Active Low.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>activeHi</name>
+        <description>Active High.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>GEN_CTRL</name>
+    <description>SPIX Controller General Controller Register.</description>
+    <addressOffset>0x08</addressOffset>
+    <fields>
+     <field>
+      <name>ENABLE</name>
+      <description>SPI Master enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable SPI Master, putting a reset state.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable SPI Master for processing transactions.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TFIFOEN</name>
+      <description>Transaction FIFO Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Transaction FIFO.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Transaction FIFO.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RFIFOEN</name>
+      <description>Result FIFO Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Result FIFO.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Result FIFO.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>BBMODE</name>
+      <description>Bit-Bang Mode.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Bit-Bang Mode.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Bit-Bang Mode.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSDR</name>
+      <description>This bits reflects the state of the currently selected slave select.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>output0</name>
+        <description>Selected Slave select output = 0.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>output1</name>
+        <description>Selected Slave select output = 1.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SCKDR</name>
+      <description>SSCLK Drive and State.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>sck0</name>
+        <description>SCLK is 0.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>sck1</name>
+        <description>SCLK is 1.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SDATAIN</name>
+      <description>SDIO Input Data Value.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>SDIO0</name>
+        <description>SDIO[0]</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO1</name>
+        <description>SDIO[1]</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO2</name>
+        <description>SDIO[2]</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO3</name>
+        <description>SDIO[3]</description>
+        <value>8</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>BBDAT</name>
+      <description>No description available.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>SDIO0</name>
+        <description>SDIO[0]</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO1</name>
+        <description>SDIO[1]</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO2</name>
+        <description>SDIO[2]</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO3</name>
+        <description>SDIO[3]</description>
+        <value>8</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>BBDATOEN</name>
+      <description>Bit Bang SDIO Output Enable.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>SDIO0</name>
+        <description>SDIO[0]</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO1</name>
+        <description>SDIO[1]</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO2</name>
+        <description>SDIO[2]</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO3</name>
+        <description>SDIO[3]</description>
+        <value>8</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SIMPLE</name>
+      <description>Simple Mode Enable.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Simple Mode.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Simple Mode.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SIMPLERX</name>
+      <description>Simple Receive Enable.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>initSPI</name>
+        <description>Initiate SPI transaction.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SMPLSS</name>
+      <description>Simple Mode Slave Select.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>deassertSS</name>
+        <description>Deassert Slave select when SIMPLE = 1.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SCKFB</name>
+      <description>Enable SCLK Feedback Mode.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SCKFBINV</name>
+      <description>SCK Invert.</description>
+      <bitOffset>25</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>normal</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>invert</name>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>FIFO_CTRL</name>
+    <description>SPIX Controller FIFO Control and Status Register.</description>
+    <addressOffset>0x0C</addressOffset>
+    <fields>
+     <field>
+      <name>TFIFOLVL</name>
+      <description>Transaction FIFO Almost Empty Level.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>4</bitWidth>
+     </field>
+     <field>
+      <name>TFIFOCNT</name>
+      <description>Transaction FIFO Used.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>5</bitWidth>
+     </field>
+     <field>
+      <name>RFIFOLVL</name>
+      <description>Results FIFO Almost Full Level.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>5</bitWidth>
+     </field>
+     <field>
+      <name>RFIFOCNT</name>
+      <description>Result FIFO Used.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>6</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>SP_CTRL</name>
+    <description>SPIX Controller Special Control Register.</description>
+    <addressOffset>0x10</addressOffset>
+    <fields>
+     <field>
+      <name>SAMPL</name>
+      <description>Setting this bit to a 1 enables the ability to drive SDIO outputs prior to the assertion of Slave Select. This bit must only be set when the SPIXF bus is idle and the transaction FIFO is empty. This bit is automatically cleared by hardware after the next slave select assertion.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable sample mode.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable sample mode.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SDIO_OUT</name>
+      <description>SDIO Output Value Sample Mode</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>SDIO0</name>
+        <description>SDIO[0]</description>
+        <value>0x1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO1</name>
+        <description>SDIO[1]</description>
+        <value>0x2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO2</name>
+        <description>SDIO[2]</description>
+        <value>0x4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO3</name>
+        <description>SDIO[3]</description>
+        <value>0x8</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SDIO_OUT_EN</name>
+      <description>SDIO Output Enable Sample Mode</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>SDIO0</name>
+        <description>SDIO[0]</description>
+        <value>0x1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO1</name>
+        <description>SDIO[1]</description>
+        <value>0x2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO2</name>
+        <description>SDIO[2]</description>
+        <value>0x4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SDIO3</name>
+        <description>SDIO[3]</description>
+        <value>0x8</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SCKINH3</name>
+      <description>SCLK Inhibit Mode3. In SPI Mode 3, some SPI flash read timing diagrams show the last SCLK going low prior to de-assertion. The default is to support this additional falling edge of clock. When this bit is set and the device is in SPI Mode 3, the SPI clock is held high while Slave Select is de-asserted. This is to support some SPI flash write timing diagrams.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Allow trailing SCLK low pulse prior to Slave Select de-assertion.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Inhibit trailing SCLK low pulse prior to Slave Select de-assertion.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_FL</name>
+    <description>SPIX Controller Interrupt Status Register.</description>
+    <addressOffset>0x14</addressOffset>
+    <fields>
+     <field>
+      <name>TSTALL</name>
+      <description>Transaction Stalled Interrupt Flag.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Clear interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RSTALL</name>
+      <description>Results Stalled Interrupt Flag.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Clear interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TRDY</name>
+      <description>Transaction Ready Interrupt Status.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Clear interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RDONE</name>
+      <description>Results Done Interrupt Status.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Clear interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TFIFOAE</name>
+      <description>Transaction FIFO Almost Empty Flag.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Clear interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RFIFOAF</name>
+      <description>Results FIFO Almost Full Flag.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Clear interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_EN</name>
+    <description>SPIX Controller Interrupt Enable Register.</description>
+    <addressOffset>0x18</addressOffset>
+    <fields>
+     <field>
+      <name>TSTALLIE</name>
+      <description>Transaction Stalled Interrupt Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Interrupt.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RSTALLIE</name>
+      <description>Results Stalled Interrupt Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Interrupt.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TRDYIE</name>
+      <description>Transaction Ready Interrupt Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Interrupt.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RDONEIE</name>
+      <description>Results Done Interrupt Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Interrupt.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TFIFOAEIE</name>
+      <description>Transaction FIFO Almost Empty Interrupt Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Interrupt.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RFIFOAFIE</name>
+      <description>Results FIFO Almost Full Interrupt Enable.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Interrupt.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable Interrupt.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SPIXFC:
+                                                                         SPI XiP Master controller          -->
+</device>

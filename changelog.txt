@@ -1,0 +1,329 @@
+########################
+# June 6, 2022 Release #
+########################
+
+-----------------------
+-- ARM CMSIS Library --
+-----------------------
+* Updated to version 5.9.0
+* Relocated CMSIS library files to Libraries/CMSIS/5.9.0 directory.
+
+--------------------------------
+-- Peripheral Library Changes --
+--------------------------------
+* Improved CAN DMA functionality.
+* Improved MIPI-CSI2 API.
+* Added support for flash read and flash write locking.
+* Added support for Alternate Function 5.
+* Added RTC trim function.
+* Improved RTC busy flag checking.
+* Added multi-transaction mode to SPI API.
+
+-------------------------
+-- MiscDrivers Changes --
+-------------------------
+* Added support to select the voltage levels (VDDIO or VDDIOH) for the 
+  camera interface.
+* Added Winbond SPI Flash driver.
+
+----------------------
+-- MAX32650 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Updated LP example to use GPIOWake interrupt.
+* Updated USB examples to use latest MAXUSB library.
+* Added missing USB register definitions.
+* Added makefile switch to allow selection of ARM ABI.
+* Added ARM-DSP examples.
+
+----------------------
+-- MAX32655 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Improved BLE_FreeRTOS example.
+* Added support for W25 external SPI flash found on the EV kit.
+* Added makefile switch to allow selection of ARM ABI.
+* Added code to initialize SIMO voltages at system startup.
+* Added ARM-DSP examples.
+
+----------------------
+-- MAX32660 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Added makefile switch to allow selection of ARM ABI.
+* Added ARM-DSP, Flash_CLI, FreeRTOSDemo, and RTC_Backup examples.
+
+----------------------
+-- MAX32662 Changes --
+----------------------
+* Added MAX32662 support.
+
+----------------------
+-- MAX32665 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Improved BLE_FreeRTOS example.
+* Improved LP example to achieve better DEEPSLEEP performance.
+* Added missing USB register definitions.
+* Added makefile switch to allow selection of ARM ABI.
+* Added ARM-DSP, Flash_CLI, and RTC_Backup examples.
+
+----------------------
+-- MAX32670 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Added makefile switch to allow selection of ARM ABI.
+* Fixed incorrect location of GCR_PM.erfo_pd field.
+* Fixed incorrect size of RTC_SSEC.ssec field.
+* Added ARM-DSP, Flash_CLI, and RTC_Backup examples.
+
+----------------------
+-- MAX32672 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Added makefile switch to allow selection of ARM ABI.
+* Fixed typo on MXK_FLC_GET_IDX macro.
+* Fixed incorrect size of RTC_SSEC.ssec field.
+* Added ARM-DSP, Flash_CLI, and RTC_Backup examples.
+
+----------------------
+-- MAX32675 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Added makefile switch to allow selection of ARM ABI.
+* Fixed incorrect location of GCR_PM.erfo_pd field.
+* Added ARM-DSP examples.
+
+----------------------
+-- MAX32680 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Added makefile switch to allow selection of ARM ABI.
+* Added ARM-DSP and Flash_CLI examples.
+
+----------------------
+-- MAX32690 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Improved BLE_FreeRTOS example.
+* Added makefile switch to allow selection of ARM ABI.
+* Added ARM-DSP, Flash_CLI, and RTC_Backup examples.
+
+----------------------
+-- MAX78000 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Improved BLE_FreeRTOS example.
+* Added makefile switch to allow selection of ARM ABI.
+* Added ARM-DSP and WearLeveling examples.
+
+----------------------
+-- MAX78002 Changes --
+----------------------
+* Added VS Code project files for all examples.
+* Improved BLE_FreeRTOS example.
+* Added missing definition for GCR_RST.usb field.
+* Added missing USB register definitions.
+* Fixed incorrect size of RTC_SSEC.ssec field.
+* Improved support for IPLL and EBO clocks.
+* Added ARM-DSP examples.
+
+
+
+##########################
+# April 11, 2022 Release #
+##########################
+
+-----------------------
+-- GNU Tools Changes --
+-----------------------
+* Added GCC version number into path
+
+-----------------------
+-- xPack Tools Changes --
+-----------------------
+* Added GCC version number into path
+
+------------------------
+-- MinGW/MSYS Changes --
+------------------------
+* Replaced MinGW32 with MSYS2
+
+--------------------------------
+-- Peripheral Library Changes --
+--------------------------------
+* Added MIPI-CSI2 peripheral driver.
+* Fixed I2C general call addressing enable/disable bug.
+* Resolved pointer alignment warnings.
+
+-------------------------
+-- MiscDrivers Changes --
+-------------------------
+* Added contrast and brightness settings to camera drivers.
+* Added additional 3rd party camera, display, and touch screen drivers.
+
+----------------------
+-- MAX78000 Changes --
+----------------------
+* Added power down mode to LP example.
+* Added I2C_SCAN example.
+* Added BSP for audio board.
+
+----------------------
+-- MAX78002 Changes --
+----------------------
+* Added power down mode to LP example.
+* Added support for various cameras into the CameraIF example.
+* Added TFT use into cats-dogs_demo example.
+* Added MIPI-CSI2 example.
+* Fixed incorrect memory size in GCC linker script.
+* Added support for enabling/disabling the IPLL clock.
+* Added I2C_SCAN example.
+* Added kws20_demo example.
+
+----------------------
+-- MAX32520 Changes --
+----------------------
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32650 Changes --
+----------------------
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32655 Changes --
+----------------------
+* Improved BLE examples.
+* Added FlashCLI example.
+* Added I2C_SCAN example.
+* Added WearLeveling example.
+
+----------------------
+-- MAX32660 Changes --
+----------------------
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32665 Changes --
+----------------------
+* Improved BLE examples.
+* Flash example improved to cover usage of both flash insstances. 
+* MXC_SYS_GetUSN funcion parameters changed.
+* Added I2C_SCAN example.
+* Added BSP for evaluation kit 129B.
+* Added BSP for evaluation kit 129C.
+* Added BSP for WLP variant kit.
+
+----------------------
+-- MAX32670 Changes --
+----------------------
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32672 Changes --
+----------------------
+* Flash example improved to cover usage of both flash insstances. 
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32675 Changes --
+----------------------
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32680 Changes --
+----------------------
+* Added FlashCLI example.
+* Added I2C_SCAN example.
+
+----------------------
+-- MAX32690 Changes --
+----------------------
+* Improved BLE examples.
+* Added ADC example.
+* Added I2S example.
+* Added LP example.
+* Added SPIXF example.
+* Added SPIXR example.
+* Added TMR example.
+* Added WearLeveling example.
+* Added WUT example.
+
+
+
+#############################
+# February 15, 2022 Release #
+#############################
+
+--------------------------------
+-- Peripheral Library Changes --
+--------------------------------
+* Removed debug symbols from pre-built library binaries.
+* Fixed bit position for OWM presence detect bit.
+* Exposed function to read RTC busy flag.
+* Exposed function to read intermediate RX and TX count for UART 
+  asynchronous transactions.
+* Added support for bi-directional I2S.
+* Added CAN support.
+
+----------------------
+-- MAX32672 Changes --
+----------------------
+* Added missing ADC trim register defintions.
+* Improved ADC support.
+* Fixed UART baud rate calculations.
+* Correct flash size and added second flash bank in
+  OpenOCD configuration file.
+
+----------------------
+-- MAX32690 Changes --
+----------------------
+* Removed unsupported ADC channel select registers.
+* Corrected defintions for CAN extended interrupt flag and enable bits.
+* Added missing field information for ADC reference trim register.
+* Removed unsupported MCR_CTRL register fields.
+* Improved RISC-V core support.
+* Improved ADC support.
+
+----------------------
+-- MAX78000 Changes --
+----------------------
+* Moved common board support files to /Libraries/MiscDrivers folder.
+
+----------------------
+-- MAX78002 Changes --
+----------------------
+* Moved common board support files to /Libraries/MiscDrivers folder.
+
+------------------------------
+-- LittleFS Library Changes --
+------------------------------
+* Added LittleFS library from https://github.com/littlefs-project/littlefs
+
+
+
+#############################
+# December 10, 2021 Release #
+#############################
+
+--------------------------
+-- MAX78000 BSP Changes --
+--------------------------
+* Improved RGB565 support for TFT driver.
+* Fixed baud rate calculations for UART0 through UART2.
+* Added low power mode example.
+* Added Flash wear leveling example.
+
+--------------------------------
+-- Peripheral Library Changes --
+--------------------------------
+* Fixed incorrect offsets and size of fields ADC limit register.
+* Added ability to query progress of asynchronous UART transactions.
+* Added 16- and 8-bit accesses to the CRC data register.
+* Improved support for devices with multiple flash controller instances.
+* Modified comparator libraries to support devices with compators in multiple 
+  power domains.
+* Fixed issue with SPI callbacks not being called when using DMA.
+* Fixed issue selecting the appropriate clock divider when initializing timers.
+* Fixed issue with releasing DMA channels after UART DMA transaction complete.

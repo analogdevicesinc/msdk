@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>HPB</name>
+    <description>HyperBus Memory Controller</description>
+    <baseAddress>0x40039000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>HPB</name>
+      <description>HPB interrupt.</description>
+      <value>61</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>STATUS</name>
+        <description>HPB Status Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RACT</name>
+            <description>Read transaction in progress.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noRead</name>
+                <description>No read transaction in progress.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>read</name>
+                <description>Read transaction in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDECERR</name>
+            <description>Read address error.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noErr</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>Error.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RRSTOERR</name>
+            <description>Reset during read error.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noErr</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>Error.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDSSTALL</name>
+            <description>Read data stall.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normalop</name>
+                <description>Read operation normal.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>stalled</name>
+                <description>Read stalled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WACT</name>
+            <description>Write transaction in progress.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noWrite</name>
+                <description>No write transaction in progress.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>write</name>
+                <description>Write transaction in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WDECERR</name>
+            <description>Write address error.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noErr</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>Error.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRSTOERR</name>
+            <description>Reset during write error.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noErr</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>Error.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>HPB Interrupt Enable.</description>
+        <addressOffset>0x04</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>ERRINTE</name>
+            <description>Error interrupt enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable error interrupt.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable error interrupt.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>HPB Interrupt Status Flags.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>ERRINT</name>
+            <description>Error interrupt status flags.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noInt</name>
+                <description>No interrupt pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>Error interrupt pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MBR</name>
+        <description>HPB Memory Base Address.</description>
+        <addressOffset>0x10</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Memory Base Address.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MCR</name>
+        <description>HPB Memory Configuration Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>DEV_TYPE</name>
+            <description>Memory device type select.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>hyperFlash</name>
+                <description>HyperFlash.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>xccelaPSRAM</name>
+                <description>Xccela PSRAM.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>hyperRAM</name>
+                <description>HyperRAM.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CRT</name>
+            <description>Configuration register target select.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>mem_space</name>
+                <description>Access memory space.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>config_reg_space</name>
+                <description>Access configuration register space.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>READ_LATENCY</name>
+            <description>Xccela fixed read latency enable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>variable</name>
+                <description>Variable read latency.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>fixed</name>
+                <description>Fixed read latency.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HSE</name>
+            <description>Xccela half sleep exit.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Half-Sleep exit disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Half-Sleep exit enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MAXLEN</name>
+            <description>Maximum read/write..</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+          <field>
+            <name>MAXLEN_EN</name>
+            <description>Maximum CS# length enable.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Configurable CS# low time disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Configurable CS# low time enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MTR</name>
+        <description>HPB Memory Timing Register.</description>
+        <addressOffset>0x30</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>LATENCY</name>
+            <description>RAM Latency Clock Cycles.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>5CLK</name>
+                <description>5 clock cycles.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>6CLK</name>
+                <description>6 clock cycles.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3CLK</name>
+                <description>3 clock cycles.</description>
+                <value>14</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4CLK</name>
+                <description>4 clock cycles.</description>
+                <value>15</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WCSH</name>
+            <description>Write chip select hold after CK falling edge.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RCSH</name>
+            <description>Read chip select hold after CK falling edge.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>WCSS</name>
+            <description>Write chip select setup time to next CK rising edge.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RCSS</name>
+            <description>Read chip select setup time to next CK rising edge.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>WCSHI</name>
+            <description>Write chip select high between operations.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RCSHI</name>
+            <description>Read chip select high between operations.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- HPB :HyperBus Memory Controller -->
+</device>

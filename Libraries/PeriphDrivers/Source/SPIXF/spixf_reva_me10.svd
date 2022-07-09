@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>SPIXF</name>
+    <description>SPIXF Master</description>
+    <baseAddress>0x40026000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CFG</name>
+        <description>SPIX Configuration Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>MODE</name>
+            <description>Defines SPI Mode, Only valid values are 0 and 3.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>mode0</name>
+                <description>Description not available.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>mode3</name>
+                <description>Description not available.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SSPOL</name>
+            <description>Slave Select Polarity.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>activeHi</name>
+                <description>Slave Select is Active High.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>activeLo</name>
+                <description>Slave Select is Active Low.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SSEL</name>
+            <description>Slave Select. Only valid value is zero.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>slave0</name>
+                <description>Select slave 0.</description>
+                <value>0</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOCLK</name>
+            <description>Number of system clocks that SCLK will be low when SCLK pulses are generated.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>HICLK</name>
+            <description>Number of system clocks that SCLK will be high when SCLK pulses are generated.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>SSACT</name>
+            <description>Slave Select Active Timing.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>off</name>
+                <description>0 system clocks.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>2clk</name>
+                <description>2 System clocks.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4clk</name>
+                <description>4 System clocks.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8clk</name>
+                <description>8 System clocks.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SSIACT</name>
+            <description>Slave Select Inactive Timing.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1clk</name>
+                <description>1 system clocks.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3clk</name>
+                <description>3 System clocks.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>5clk</name>
+                <description>5 System clocks.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>9clk</name>
+                <description>9 System clocks.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FETCH_CTRL</name>
+        <description>SPIX Fetch Control Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>CMDVAL</name>
+            <description>Command Value sent to target to initiate fetching from SPI flash.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>CMDWTH</name>
+            <description>Command Width. Number of data I/O used to send commands.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>mono</name>
+                <description>Single SDIO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dual</name>
+                <description>Dual SDIO.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>quad</name>
+                <description>Quad SDIO.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>invalid</name>
+                <description>Invalid.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADDR_WIDTH</name>
+            <description>Address Width. Number of data I/O used to send address, and mode/dummy clocks.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>single</name>
+                <description>Single SDIO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dual</name>
+                <description>Dual SDIO.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>quad</name>
+                <description>Quad SDIO.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>invalid</name>
+                <description>Invalid.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DATA_WIDTH</name>
+            <description>Data Width. Number of data I/O used to receive data.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>single</name>
+                <description>Single SDIO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dual</name>
+                <description>Dual SDIO.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>quad</name>
+                <description>Quad SDIO.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>invalid</name>
+                <description>Invalid.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADDR4</name>
+            <description>Four Byte Address Mode. Enables 4-byte Flash Address Mode.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>3byte</name>
+                <description>3 Byte Address Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4byte</name>
+                <description>4 Byte Address Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MODE_CTRL</name>
+        <description>SPIX Mode Control Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>MDCLK</name>
+            <description>Mode Clocks. Number of SPI clocks needed during mode/dummy phase of fetch.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>NOCMD</name>
+            <description>No Command Mode.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>always</name>
+                <description>Send read command every time SPI transaction is initiated.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>once</name>
+                <description>Send read command only once. NO read command in subsequent SPI transactions.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MODE_SEND</name>
+            <description>Mode Send.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>next</name>
+                <description>Send mode byte on next transaction.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MODE_DATA</name>
+        <description>SPIX Mode Data Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>MDDATA</name>
+            <description>Mode Data. Specifies the data to send with the Dummy/Mode clocks.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>MDOE</name>
+            <description>Mode Output Enable. Output enable state for each corresponding data bit in MD_DATA. 0: output enable off, I/O is tristate and 1: Output enable on, I/O is driving MD_DATA.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FB_CTRL</name>
+        <description>SPIX Feedback Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>FBMD</name>
+            <description>Enable SCLK feedback mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable SCLK feedback mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable SCLK feedback mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FBINV</name>
+            <description>Invert SCLK in feedback mode.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Invert SCLK feedback mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable Invert SCLK feedback mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IO_CTRL</name>
+        <description>SPIX IO Control Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>SCK_DS</name>
+            <description>SCLK drive Strength. This bit controls the drive strength on the SCLK pin.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Low</name>
+                <description>Low drive strength.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>High</name>
+                <description>High drive strength.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SS_DS</name>
+            <description>Slave Select Drive Strength. This bit controls the drive strength on the dedicated slave select pin.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Low</name>
+                <description>Low drive strength.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>High</name>
+                <description>High drive strength.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SDIO_DS</name>
+            <description>SDIO Drive Strength. This bit controls the drive strength of all SDIO pins.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Low</name>
+                <description>Low drive strength.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>High</name>
+                <description>High drive strength.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PUPDCTRL</name>
+            <description>IO Pullup/Pulldown Control. These bits control the pullups and pulldowns associated with all SPI XiP SDIO pins.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>tri_state</name>
+                <description>Tristate.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pull_Up</name>
+                <description>Pull-Up.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pull_down</name>
+                <description>Pull-Down.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SEC_CTRL</name>
+        <description>SPIX Memory Security Control Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>DEC_EN</name>
+            <description>Decryption Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable decryption of SPIX data.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable decryption of SPIX data.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AUTH_DISABLE</name>
+            <description>Integrity Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Integrity checking enabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Integrity checking disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BUS_IDLE</name>
+        <description>Bus Idle</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>BUSIDLE</name>
+            <description>A 16-bit timer will be triggered for each external access. The timer will be restarted if another access is performed before the timer expires. When the timer expires, slave select will be deactivated.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- SPIXFM:
+                                             SPI XiP Master                     -->
+</device>

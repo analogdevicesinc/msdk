@@ -1,0 +1,131 @@
+		<peripheral>						<!--     TEST Test Mode		-->
+			<name>BBTM</name>
+			<description>Battery-Backed Test Modes</description>
+			<prependToName>BBTM_</prependToName>
+			<baseAddress>0x40005C00</baseAddress>
+			<addressBlock>
+				<offset>0x00</offset>
+				<size>0x0400</size>
+				<usage>registers</usage>
+			</addressBlock>
+			<registers>
+				<register>
+					<name>REG0</name>
+					<description>Register 0</description>
+					<addressOffset>0x00</addressOffset>
+					<access>read-write</access>
+					<fields>
+						<field>
+							<name>ABUS_PAGE</name>
+							<description>ABUS Page</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>4</bitWidth>
+						</field>
+						<field>
+							<name>ABUS_PAGE_EN</name>
+							<description>ABUS Page Enable</description>
+							<bitOffset>4</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>REG1</name>
+					<description>Register 1</description>
+					<addressOffset>0x04</addressOffset>
+					<access>read-write</access>
+					<fields>
+						<field>
+							<name>ISOZ_VDDC_EVENT</name>
+							<description>ISOZ VDDC Event</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ISOZ_VDDA_EVENT</name>
+							<description>ISOZ VDDA Event</description>
+							<bitOffset>1</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ISOZ_VDDIO_EVENT</name>
+							<description>ISOZ VDDIO Event</description>
+							<bitOffset>2</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ISOZ_VDDIOH_EVENT</name>
+							<description>ISOZ VDDIOH Event</description>
+							<bitOffset>3</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ISOZ_VIO_EVENT</name>
+							<description>ISOZ VIO Event</description>
+							<bitOffset>4</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>PORZ_VDDC_EVENT</name>
+							<description>PORZ VDDC Event</description>
+							<bitOffset>5</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>PORZ_VDDA_EVENT</name>
+							<description>PORZ VDDA Event</description>
+							<bitOffset>6</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>PORZ_VDDB_EVENT</name>
+							<description>PORZ VDDB Event</description>
+							<bitOffset>7</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>PORZ_VRTC_EVENT</name>
+							<description>PORZ VRTC Event</description>
+							<bitOffset>8</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RSTZ_VDDC_EVENT</name>
+							<description>RSTZ VDDC Event</description>
+							<bitOffset>9</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RSTZ_VDDA_EVENT</name>
+							<description>RSTZ VDDA Event</description>
+							<bitOffset>10</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RSTZ_VDDB_EVENT</name>
+							<description>RSTZ VDDB Event</description>
+							<bitOffset>11</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RSTZ_VDDIO_EVENT</name>
+							<description>RSTZ VDDIO Event</description>
+							<bitOffset>12</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RSTZ_VDDIOH_EVENT</name>
+							<description>RSTZ VDDIOH Event</description>
+							<bitOffset>13</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RSTZ_VRTC_EVENT</name>
+							<description>RSTZ VRTC Event</description>
+							<bitOffset>14</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+					</fields>
+				</register>
+			</registers>
+		</peripheral>

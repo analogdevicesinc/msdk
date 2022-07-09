@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<exampleInfo>
+<!-- Board Support Package -->
+  <copyDir>..\..\..\Libraries\Boards\Include\</copyDir>
+  <copyDir>..\..\..\Libraries\Boards\Source\</copyDir>
+  <copyDir>..\..\..\Libraries\Boards\EvKit_V1\</copyDir>
+
+<!-- CMSIS Device Files include Startup -->
+  <copyDir>..\..\..\Libraries\CMSIS\Device\</copyDir>
+
+<!-- Hardware Access Layer Library -->
+  <copyDir>..\..\..\Libraries\MAX32650PeriphDriver\</copyDir>
+
+</exampleInfo>

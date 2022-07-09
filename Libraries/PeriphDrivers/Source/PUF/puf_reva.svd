@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>PUF</name>
+    <description>PUF Registers</description>
+    <baseAddress>0x40007000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>PUF Control Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>PUF_EN</name>
+            <description>PUF Controller Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY_CLR_EN</name>
+            <description>Key Clear Enable or PUFSEC Disable</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY0_GEN_EN</name>
+            <description>PUF Key0 Generation Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY1_GEN_EN</name>
+            <description>PUF Key1 Generation Enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEYGEN_ERR_IE</name>
+            <description>Key Generation Error Interrupt Enable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY0_DN_IE</name>
+            <description>Key0 Done Interrupt Enable.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY1_DN_IE</name>
+            <description>Key1 Done Interrupt Enable </description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STAT</name>
+        <description>PUF Status Register.</description>
+        <addressOffset>0x0004</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>BUSY</name>
+            <description>PUF Controller Busy.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MAGIC_ERR</name>
+            <description>PUF Magic Word Error.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEYGEN_EN_ERR</name>
+            <description>PUF Magic Word Error.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEYGEN_ERR</name>
+            <description>PUF Magic Word Error.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ADC_FREQ_FL</name>
+            <description>ADC Frequency Flag</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY0_INIT_ERR</name>
+            <description>PUF Key0 Initialization Error.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY0_CNST_ERR</name>
+            <description> PUF Key0 Constant Key Mismatch Error</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY1_INIT_ERR</name>
+            <description>PUF Key1 Initialization Error.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY1_CNST_ERR</name>
+            <description> PUF Key1 Constant Key Mismatch Error</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY0_DN</name>
+            <description>Key0 Done.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>KEY1_DN</name>
+            <description>Key1 Done.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--PUF: Physical Unclonable Function Registers-->
+</device>

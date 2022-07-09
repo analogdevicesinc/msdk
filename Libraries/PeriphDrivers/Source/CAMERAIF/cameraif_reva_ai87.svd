@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>CAMERAIF</name>
+  <description>Parallel Camera Interface.</description>
+  <baseAddress>0x4000E000</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+   <offset>0</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>CameraIF</name>
+   <value>91</value>
+  </interrupt>
+  <registers>
+<!-- VER: Version -->
+   <register>
+    <name>VER</name>
+    <description>Hardware Version.</description>
+    <addressOffset>0x0000</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>minor</name>
+      <description>Minor Version Number.</description>
+      <bitRange>[7:0]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>major</name>
+      <description>Major Version Number.</description>
+      <bitRange>[15:8]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- FIFO_SIZE: Size of FIFO -->
+   <register>
+    <name>FIFO_SIZE</name>
+    <description>FIFO Depth.</description>
+    <addressOffset>0x0004</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>fifo_size</name>
+      <description>FIFO size.</description>
+      <bitRange>[7:0]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- CTRL: CTRL Register -->
+   <register>
+    <name>CTRL</name>
+    <description>Control Register.</description>
+    <addressOffset>0x0008</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>READ_MODE</name>
+      <description>Read Mode.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Camera Interface Disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>single_img</name>
+        <description>Single Image Capture.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>continuous</name>
+        <description>Continuous Image Capture.</description>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>DATA_WIDTH</name>
+      <description>Data Width.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>8bit</name>
+        <description>8 bit.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>10bit</name>
+        <description>10 bit.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>12bit</name>
+        <description>12 bit.</description>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>DS_TIMING_EN</name>
+      <description>DS Timing Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Timing from VSYNC and HSYNC.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Timing embedded in data using SAV and EAV codes.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>FIFO_THRSH</name>
+      <description>Data FIFO Threshold.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>5</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>RX_DMA</name>
+      <description>DMA Enable.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>DMA disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>DMA enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_DMA_THRSH</name>
+      <description>DMA Threshold.</description>
+      <bitOffset>17</bitOffset>
+      <bitWidth>4</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>THREE_CH_EN</name>
+      <description>Three-channel mode enable.</description>
+      <bitOffset>30</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>PCIF_SYS</name>
+      <description>PCIF Control.</description>
+      <bitOffset>31</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>PCIF disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>PCIF enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+<!-- INT_EN: INT_EN Register -->
+   <register>
+    <name>INT_EN</name>
+    <description>Interupt Enable Register.</description>
+    <addressOffset>0x000C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>IMG_DONE</name>
+      <description>Image Done.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>FIFO_FULL</name>
+      <description>FIFO Full.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>FIFO_THRESH</name>
+      <description>FIFO Threshold Level Met.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>FIFO_NOT_EMPTY</name>
+      <description>FIFO Not Empty.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- INT_FL: INT_FL Register -->
+   <register>
+    <name>INT_FL</name>
+    <description>Interupt Flag Register.</description>
+    <addressOffset>0x0010</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>IMG_DONE</name>
+      <description>Image Done.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>FIFO_FULL</name>
+      <description>FIFO Full.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>FIFO_THRESH</name>
+      <description>FIFO Threshold Level Met.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>FIFO_NOT_EMPTY</name>
+      <description>FIFO Not Empty.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- DS_TIMING_CODES: DS_TIMING_CODES Register -->
+   <register>
+    <name>DS_TIMING_CODES</name>
+    <description>DS Timing Code Register.</description>
+    <addressOffset>0x0014</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>SAV</name>
+      <description>Start Active Video Code.</description>
+      <bitRange>[7:0]</bitRange>
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>EAV</name>
+      <description>End Active Video Code.</description>
+      <bitRange>[15:8]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- FIFO_DATA: FIFO_DATA Register -->
+   <register>
+    <name>FIFO_DATA</name>
+    <description>FIFO DATA Register.</description>
+    <addressOffset>0x0030</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>DATA</name>
+      <description>Data from FIFO to be read by DMA.</description>
+      <bitRange>[31:0]</bitRange>
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- Camera IF -->
+</device>

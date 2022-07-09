@@ -1,0 +1,35 @@
+## Description
+
+This example demonstrates formatting and modifying the filesystem on an SD card.
+
+Use the a terminal window to select the operation(s) to perform on the SD card.
+
+## Required Connections
+
+-   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-	Insert MicroSD card into SDHC slot on the EV Kit.
+
+## Expected Output
+
+```
+***** 32650 SDHC FAT Filesystem Example *****
+Card inserted.
+Card Initialized.
+Card type: SDHC
+SD clock ratio (at card) 4:1
+
+Choose one of the following options:
+0. Find the Size of the SD Card and Free Space
+1. Format the Card
+2. Manually Mount Card
+3. List Contents of Current Directory
+4. Create a Directory
+5. Move into a Directory (cd)
+6. Create a File of Random Data
+7. Add Random Data to an Existing File
+8. Delete a File
+9. Format Card and Run Exmaple of FatFS Operations
+10. Unmount Card and Quit
+```
+

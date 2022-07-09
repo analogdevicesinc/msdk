@@ -1,0 +1,4 @@
+write-only %MAXIM_SBT_DIR%\devices\MAX32590\script\scpa_spinor_applet.s19
+execute-code 00920000
+erase-data d0000000 00000000
+write-file %PARAM_1% d0000000

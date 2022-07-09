@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>WDT0</name>
+  <description>Watchdog Timer 0</description>
+  <baseAddress>0x40003000</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x0400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>WDT0</name>
+<!-- IRQ Name -->
+   <value>1</value>
+<!-- IRQ Number Device Specific -->
+  </interrupt>
+  <registers>
+   <register>
+    <name>CTRL</name>
+    <description>Watchdog Timer Control Register.</description>
+    <addressOffset>0x00</addressOffset>
+    <resetMask>0x7FFFF000</resetMask>
+    <fields>
+     <field>
+      <name>INT_PERIOD</name>
+      <description>Watchdog Interrupt Period. The watchdog timer will assert an interrupt, if enabled, if the CPU does not write the watchdog reset sequence to the WDT_RST register before the watchdog timer has counted this time period since the last timer reset.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>wdt2pow31</name>
+        <description>2**31 clock cycles.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow30</name>
+        <description>2**30 clock cycles.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow29</name>
+        <description>2**29 clock cycles.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow28</name>
+        <description>2**28 clock cycles.</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow27</name>
+        <description>2^27 clock cycles.</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow26</name>
+        <description>2**26 clock cycles.</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow25</name>
+        <description>2**25 clock cycles.</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow24</name>
+        <description>2**24 clock cycles.</description>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow23</name>
+        <description>2**23 clock cycles.</description>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow22</name>
+        <description>2**22 clock cycles.</description>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow21</name>
+        <description>2**21 clock cycles.</description>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow20</name>
+        <description>2**20 clock cycles.</description>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow19</name>
+        <description>2**19 clock cycles.</description>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow18</name>
+        <description>2**18 clock cycles.</description>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow17</name>
+        <description>2**17 clock cycles.</description>
+        <value>14</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow16</name>
+        <description>2**16 clock cycles.</description>
+        <value>15</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RST_PERIOD</name>
+      <description>Watchdog Reset Period. The watchdog timer will assert a reset, if enabled, if the CPU does not write the watchdog reset sequence to the WDT_RST register before the watchdog timer has counted this time period since the last timer reset.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>wdt2pow31</name>
+        <description>2**31 clock cycles.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow30</name>
+        <description>2**30 clock cycles.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow29</name>
+        <description>2**29 clock cycles.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow28</name>
+        <description>2**28 clock cycles.</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow27</name>
+        <description>2^27 clock cycles.</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow26</name>
+        <description>2**26 clock cycles.</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow25</name>
+        <description>2**25 clock cycles.</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow24</name>
+        <description>2**24 clock cycles.</description>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow23</name>
+        <description>2**23 clock cycles.</description>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow22</name>
+        <description>2**22 clock cycles.</description>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow21</name>
+        <description>2**21 clock cycles.</description>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow20</name>
+        <description>2**20 clock cycles.</description>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow19</name>
+        <description>2**19 clock cycles.</description>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow18</name>
+        <description>2**18 clock cycles.</description>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow17</name>
+        <description>2**17 clock cycles.</description>
+        <value>14</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>wdt2pow16</name>
+        <description>2**16 clock cycles.</description>
+        <value>15</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>WDT_EN</name>
+      <description>Watchdog Timer Enable.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>INT_FLAG</name>
+      <description>Watchdog Timer Interrupt Flag.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+      <modifiedWriteValues>oneToClear</modifiedWriteValues>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>inactive</name>
+        <description>No interrupt is pending.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>pending</name>
+        <description>An interrupt is pending.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>INT_EN</name>
+      <description>Watchdog Timer Interrupt Enable.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RST_EN</name>
+      <description>Watchdog Timer Reset Enable.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RST_FLAG</name>
+      <description>Watchdog Timer Reset Flag.</description>
+      <bitOffset>31</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <usage>read-write</usage>
+       <enumeratedValue>
+        <name>noEvent</name>
+        <description>The event has not occurred.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>rst_occurred</name>
+        <description>The event has occurred.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>RST</name>
+    <description>Watchdog Timer Reset Register.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>write-only</access>
+    <fields>
+     <field>
+      <name>WDT_RST</name>
+      <description>Writing the watchdog counter 'reset sequence' to this register resets the watchdog counter. If the watchdog count exceeds INT_PERIOD then a watchdog interrupt will occur, if enabled. If the watchdog count exceeds RST_PERIOD then a watchdog reset will occur, if enabled.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>seq0</name>
+        <description>The first value to be written to reset the WDT.</description>
+        <value>0x000000A5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>seq1</name>
+        <description>The second value to be written to reset the WDT.</description>
+        <value>0x0000005A</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- WDT: Watchdog Timer            -->
+</device>

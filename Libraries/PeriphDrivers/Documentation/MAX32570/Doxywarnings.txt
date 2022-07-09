@@ -1,0 +1,40 @@
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:106: warning: missing title after \defgroup CFG_Register
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:157: warning: missing title after \defgroup CMD_Register
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:224: warning: missing title after \defgroup FIFO_Register
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:254: warning: missing title after \defgroup INT_Register
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:316: warning: missing title after \defgroup STAT_Register
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/pcif_regs.h:78: warning: group cameraif_registers: ignoring title "PCIF_Registers" that does not match old title "CAMERAIF_Registers"
+
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:137: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:155: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:91: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:82: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:130: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:99: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:107: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:114: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/htmr.h:121: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/i2c.h:502: warning: The following parameters of MXC_I2C_ClearFlags(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1) are not documented:
+  parameter 'flags0'
+  parameter 'flags1'
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/i2c.h:495: warning: The following parameters of MXC_I2C_GetFlags(mxc_i2c_regs_t *i2c, unsigned int *flags0, unsigned int *flags1) are not documented:
+  parameter 'flags0'
+  parameter 'flags1'
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/PeriphDrivers/Include/MAX32570/sdhc.h:189: warning: unable to resolve reference to 'SDHC_INTFL' for \ref command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:53: warning: Found unknown command '\description'
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:84: warning: Illegal command \tt as part of a \b command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:85: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:85: warning: Illegal command \tt as part of a \b command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:86: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:86: warning: Illegal command \tt as part of a \b command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:87: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:87: warning: Illegal command \tt as part of a \b command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:88: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:88: warning: Illegal command \tt as part of a \b command
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:89: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:99: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:100: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:101: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:102: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:103: warning: end of comment block while expecting command </tt>
+/mnt/c/Users/Sihyung.Woo/Projects/msdk/Libraries/CMSIS/Device/Maxim/MAX32570/Include/adc9_regs.h:53: warning: Found unknown command '\description'

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>TRIMSIR</name>
+  <description>Trim System Initilazation Registers</description>
+  <baseAddress>0x40005400</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>rsv0</name>
+    <description>RFU</description>
+    <addressOffset>0x00</addressOffset>
+   </register>
+   <register>
+    <name>BB_SIR2</name>
+    <description>System Init. Configuration Register 2.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>BB_SIR3</name>
+    <description>System Init. Configuration Register 3.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-only</access>
+   </register>
+  </registers>
+ </peripheral>
+<!-- TRIMSIR:Trim System Initilazation Registers -->
+</device>

@@ -1,0 +1,86 @@
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/cameraif.h:55: warning: missing title after \defgroup cameraif
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/i2s.h:247: warning: end of file while inside a group
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:339: warning: argument 'Channel' of command @param is not found in the argument list of MXC_ADC_DynamicModeDis(mxc_adc_chsel_t ch)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:343: warning: The following parameter of MXC_ADC_DynamicModeDis(mxc_adc_chsel_t ch) is not documented:
+  parameter 'ch'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:330: warning: argument 'Channel' of command @param is not found in the argument list of MXC_ADC_DynamicModeEn(mxc_adc_chsel_t ch)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:334: warning: The following parameter of MXC_ADC_DynamicModeEn(mxc_adc_chsel_t ch) is not documented:
+  parameter 'ch'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:250: warning: unable to resolve reference to 'mxc_adc_conversion_req_t' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:262: warning: unable to resolve reference to 'mxc_adc_conversion_req_t' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:273: warning: unable to resolve reference to 'mxc_adc_conversion_req_t' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:273: warning: argument 'pointer' of command @param is not found in the argument list of MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, uint16_t *data, void(*callback)(int, int))
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/adc.h:279: warning: The following parameter of MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, uint16_t *data, void(*callback)(int, int)) is not documented:
+  parameter 'data'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:126: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_DisableLanes(int lanes)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:130: warning: The following parameter of MXC_CSI2_DisableLanes(int lanes) is not documented:
+  parameter 'lanes'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:189: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_DPHY_EnableInt(uint32_t flags)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:193: warning: The following parameter of MXC_CSI2_DPHY_EnableInt(uint32_t flags) is not documented:
+  parameter 'flags'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:119: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_EnableLanes(int lanes)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:123: warning: The following parameter of MXC_CSI2_EnableLanes(int lanes) is not documented:
+  parameter 'lanes'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:133: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_SetVirtualChannel(int VC)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:137: warning: The following parameter of MXC_CSI2_SetVirtualChannel(int VC) is not documented:
+  parameter 'VC'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/dma.h:175: warning: argument 'trans' of command @param is not found in the argument list of mxc_dma_trans_chain_t(mxc_dma_srcdst_t dest)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/dma.h:185: warning: The following parameter of mxc_dma_trans_chain_t(mxc_dma_srcdst_t dest) is not documented:
+  parameter 'dest'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:278: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:282: warning: The following parameter of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:270: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:275: warning: The following parameter of MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:215: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:220: warning: The following parameter of MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:230: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:234: warning: The following parameter of MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:237: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:243: warning: The following parameter of MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:246: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:252: warning: The following parameter of MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:223: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutSet(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:227: warning: The following parameter of MXC_GPIO_OutSet(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:255: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:259: warning: The following parameter of MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:303: warning: explicit link request to 'callback_fn' could not be resolved
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:304: warning: explicit link request to 'callback_fn' could not be resolved
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/i2c.h:506: warning: The following parameters of MXC_I2C_ClearFlags(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1) are not documented:
+  parameter 'flags0'
+  parameter 'flags1'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/i2c.h:499: warning: The following parameters of MXC_I2C_GetFlags(mxc_i2c_regs_t *i2c, unsigned int *flags0, unsigned int *flags1) are not documented:
+  parameter 'flags0'
+  parameter 'flags1'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/icc.h:74: warning: The following parameter of MXC_ICC_ID(mxc_icc_regs_t *icc, mxc_icc_info_t cid) is not documented:
+  parameter 'icc'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/pt.h:206: warning: argument 'mask' of command @param is not found in the argument list of MXC_PT_ClearFlags(uint32_t flags)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/pt.h:206: warning: unable to resolve reference to 'MXC_PT_INTFL_Register' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/pt.h:208: warning: The following parameter of MXC_PT_ClearFlags(uint32_t flags) is not documented:
+  parameter 'flags'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/pt.h:226: warning: The following parameter of MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex) is not documented:
+  parameter 'channel'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/pt.h:198: warning: unable to resolve reference to 'MXC_PT_INTFL_Register' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:172: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:156: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:148: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:120: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:101: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:93: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:127: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:133: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:107: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:112: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/rtc.h:140: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/sdhc.h:189: warning: unable to resolve reference to 'SDHC_INTFL' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/uart.h:374: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/uart.h:248: warning: unable to resolve reference to 'UART' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/uart.h:238: warning: unable to resolve reference to 'UART' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78002/uart.h:408: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command

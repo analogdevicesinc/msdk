@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>GCFR</name>
+    <description>Global Control Function Register.</description>
+    <baseAddress>0x40005800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>REG0</name>
+        <description>Register 0.</description>
+        <addressOffset>0x00</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>CKPDRV</name>
+            <description>Hyperbus CKP Drive Setting.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>CKNDRV</name>
+            <description>Hyperbus CKN Drive Setting.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RDSDLL_EN</name>
+            <description>Hyperbus RDS DLL Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

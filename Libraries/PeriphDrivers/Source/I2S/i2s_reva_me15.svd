@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>I2S</name>
+    <description>Inter-IC Sound Interface.</description>
+    <groupName>I2S</groupName>
+    <baseAddress>0x40060000</baseAddress>
+    <size>32</size>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>I2S</name>
+      <description>I2S IRQ</description>
+      <value>99</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CTRL0CH0</name>
+        <description>Global mode channel.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>LSB_FIRST</name>
+            <description>LSB Transmit Receive First.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CH_MODE</name>
+            <description>SCK Select.</description>
+            <bitRange>[7:6]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>WS_POL</name>
+            <description>WS polarity select. </description>
+            <bitRange>[8:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>MSB_LOC</name>
+            <description>MSB location. </description>
+            <bitRange>[9:9]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>ALIGN</name>
+            <description>Align to MSB or LSB.</description>
+            <bitRange>[10:10]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EXT_SEL</name>
+            <description>External SCK/WS selection.</description>
+            <bitRange>[11:11]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>STEREO</name>
+            <description>Stereo mode of I2S.</description>
+            <bitRange>[13:12]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>WSIZE</name>
+            <description>Data size when write to FIFO.</description>
+            <bitRange>[15:14]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TX_EN</name>
+            <description>TX channel enable. </description>
+            <bitRange>[16:16]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RX_EN</name>
+            <description>RX channel enable. </description>
+            <bitRange>[17:17]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FLUSH</name>
+            <description>Flushes the TX/RX FIFO buffer. </description>
+            <bitRange>[18:18]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RST</name>
+            <description>Write 1 to reset channel. </description>
+            <bitRange>[19:19]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FIFO_LSB</name>
+            <description>Bit Field Control. </description>
+            <bitRange>[20:20]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RX_THD_VAL</name>
+            <description>depth of receive FIFO for threshold interrupt generation. </description>
+            <bitRange>[31:24]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL1CH0</name>
+        <description>Local channel Setup.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>BITS_WORD</name>
+            <description>I2S word length.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EN</name>
+            <description>I2S clock enable.</description>
+            <bitRange>[8:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SMP_SIZE</name>
+            <description>I2S sample size length.</description>
+            <bitRange>[13:9]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>ADJST</name>
+            <description>LSB/MSB Justify.</description>
+            <bitRange>[15:15]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CLKDIV</name>
+            <description>I2S clock frequency divisor.</description>
+            <bitRange>[31:16]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMACH0</name>
+        <description>DMA Control.</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>
+          <field>
+            <name>DMA_TX_THD_VAL</name>
+            <description>TX FIFO Level DMA Trigger.</description>
+            <bitRange>[6:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DMA_TX_EN</name>
+            <description>TX DMA channel enable.</description>
+            <bitRange>[7:7]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DMA_RX_THD_VAL</name>
+            <description>RX FIFO Level DMA Trigger.</description>
+            <bitRange>[14:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DMA_RX_EN</name>
+            <description>RX DMA channel enable.</description>
+            <bitRange>[15:15]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TX_LVL</name>
+            <description>Number of data word in the TX FIFO.</description>
+            <bitRange>[23:16]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RX_LVL</name>
+            <description>Number of data word in the RX FIFO.</description>
+            <bitRange>[31:24]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFOCH0</name>
+        <description>I2S Fifo.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Load/unload location for TX and RX FIFO buffers.</description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>ISR Status.</description>
+        <addressOffset>0x50</addressOffset>
+        <fields>
+          <field>
+            <name>RX_OV_CH0</name>
+            <description>Status for RX FIFO Overrun interrupt.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RX_THD_CH0</name>
+            <description>Status for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TX_OB_CH0</name>
+            <description>Status for interrupt when TX FIFO has only one byte remaining.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TX_HE_CH0</name>
+            <description>Status for interrupt when TX FIFO is half empty.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>Interrupt Enable.</description>
+        <addressOffset>0x54</addressOffset>
+        <fields>
+          <field>
+            <name>RX_OV_CH0</name>
+            <description>Enable for RX FIFO Overrun interrupt.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RX_THD_CH0</name>
+            <description>Enable for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TX_OB_CH0</name>
+            <description>Enable for interrupt when TX FIFO has only one byte remaining.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TX_HE_CH0</name>
+            <description>Enable for interrupt when TX FIFO is half empty.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EXTSETUP</name>
+        <description>Ext Control.</description>
+        <addressOffset>0x58</addressOffset>
+        <fields>
+          <field>
+            <name>EXT_BITS_WORD</name>
+            <description>Word Length for ch_mode.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- I2S: Inter-IC Sound Interface -->
+</device>

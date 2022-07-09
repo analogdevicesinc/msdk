@@ -1,0 +1,1118 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>CAN0</name>
+    <description>Controller Area Network Registers</description>
+    <baseAddress>0x40064000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>MODE</name>
+        <description>Mode Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>AFM</name>
+            <description>Hardware acceptance filter scheme.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LOM</name>
+            <description>Listen Only Mode.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RST</name>
+            <description>Reset Mode.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXTRIG</name>
+            <description>Receive FIFO trigger in 32bit word.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1W</name>
+                <description>1 word</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4W</name>
+                <description>4 word</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8W</name>
+                <description>8 word</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>16W</name>
+                <description>16 word</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>32W</name>
+                <description>32 word</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>64W</name>
+                <description>64 word</description>
+                <value>5</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMA</name>
+            <description>Enable DMA mode.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SLP</name>
+            <description>Sleep mode.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>enter</name>
+                <description>Enter sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>leave</name>
+                <description>Leave sleep mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CMD</name>
+        <description>Command Register.</description>
+        <addressOffset>0x0001</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ABORT</name>
+            <description>Abort Transmission</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXREQ</name>
+            <description>Transmit Request.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STAT</name>
+        <description>Status Register.</description>
+        <addressOffset>0x0002</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>BUS_OFF</name>
+            <description>Bus off Status.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERR</name>
+            <description>Error Status.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX</name>
+            <description>Transmit Status.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX</name>
+            <description>Receive Status.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXBUF</name>
+            <description>Transmit Buffer Status.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DOR</name>
+            <description>Data Overrun Status.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXBUF</name>
+            <description>Receive Buffer Status.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>Interrupt Status Register.</description>
+        <addressOffset>0x0003</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DOR</name>
+            <description>Data Overrun Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BERR</name>
+            <description>Bus Error Interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX</name>
+            <description>Transmission Interrupt.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX</name>
+            <description>Receive Interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERPSV</name>
+            <description>Error Passive Interrupt.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERWARN</name>
+            <description>Error Warning Interrupt.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AL</name>
+            <description>Arbitration Lost Interrupt.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WU</name>
+            <description>Wake-up Interrupt.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x0004</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DOR</name>
+            <description>Data Overrun Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BERR</name>
+            <description>Bus Error Interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX</name>
+            <description>Transmit Interrupt.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX</name>
+            <description>Receive Interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERPSV</name>
+            <description>Error Passive Interrupt.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERWARN</name>
+            <description>Error Warning Interrupt.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AL</name>
+            <description>Arbitration Lost Interrupt.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WU</name>
+            <description>Wakeup interrupt.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RMC</name>
+        <description>Receive Message Counter Register.</description>
+        <addressOffset>0x0005</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>NUM_MSGS</name>
+            <description>Number of stored message frames.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BUSTIM0</name>
+        <description>Bus Timing Register 0.</description>
+        <addressOffset>0x0006</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>BR_CLKDIV</name>
+            <description>Baud Rate Prescaler.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>SJW</name>
+            <description>Synchronization Jump Width.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BUSTIM1</name>
+        <description>Bus Timing Register 1.</description>
+        <addressOffset>0x0007</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TSEG1</name>
+            <description>Number of clock cycles per Time Segment 1</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>TSEG2</name>
+            <description>Number of clock cycles per Time Segment 2</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>SAM</name>
+            <description>Number of bus level samples.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXFIFO32</name>
+        <description>Transmit FIFO Register.</description>
+        <addressOffset>0x0008</addressOffset>
+        <size>32</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Write to put into TX FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>TXFIFO16[%s]</name>
+        <description>Transmit FIFO Register.</description>
+        <addressOffset>0x0008</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Write to put into TX FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>TXFIFO8[%s]</name>
+        <description>Transmit FIFO Register.</description>
+        <addressOffset>0x0008</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Write to put into TX FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RXFIFO32</name>
+        <description>Receive FIFO Register.</description>
+        <addressOffset>0x000C</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read from RX FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>RXFIFO16[%s]</name>
+        <description>Receive FIFO Register.</description>
+        <addressOffset>0x000C</addressOffset>
+        <size>16</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read from RX FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>RXFIFO8[%s]</name>
+        <description>Receive FIFO Register.</description>
+        <addressOffset>0x000C</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read from RX FIFO.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ACR32</name>
+        <description>Acceptance Code Register.</description>
+        <addressOffset>0x0010</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ACR</name>
+            <description>Acceptance Code.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>ACR16[%s]</name>
+        <description>Acceptance Code Register.</description>
+        <addressOffset>0x0010</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ACR</name>
+            <description>Acceptance Code.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>ACR8[%s]</name>
+        <description>Acceptance Code Register.</description>
+        <addressOffset>0x0010</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>ACR</name>
+            <description>Acceptance Code.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AMR32</name>
+        <description>Acceptance Mask Register.</description>
+        <addressOffset>0x0014</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>AMR</name>
+            <description>Acceptance Mask.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>AMR16[%s]</name>
+        <description>Acceptance Mask Register.</description>
+        <addressOffset>0x0014</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>AMR</name>
+            <description>Acceptance Mask.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>AMR8[%s]</name>
+        <description>Acceptance Mask Register.</description>
+        <addressOffset>0x0014</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>AMR</name>
+            <description>Acceptance Mask.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ECC</name>
+        <description>Error Code Capture Register.</description>
+        <addressOffset>0x0018</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>BER</name>
+            <description>Bit Error Occurred.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STFER</name>
+            <description>Stuff Error Occurred.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRCER</name>
+            <description>CRC Error Occurred.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FRMER</name>
+            <description>Form Error Occurred.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACKER</name>
+            <description>ACK Error Occurred.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EDIR</name>
+            <description>Direction of transfer while error occurred.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>TX</name>
+                <description>Transmission</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RX</name>
+                <description>Reception</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXWRN</name>
+            <description>Set when TXERR counter is greater than or equal to 96.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXWRN</name>
+            <description>Set when RXERR counter is greater than or equal to 96.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RXERR</name>
+        <description>Receive Error Counter.</description>
+        <addressOffset>0x0019</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RXERR</name>
+            <description>Receive Error Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXERR</name>
+        <description>Invalidate All Registers.</description>
+        <addressOffset>0x001A</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TXERR</name>
+            <description>Transmit Error Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ALC</name>
+        <description>Arbitration Lost Code Capture Register.</description>
+        <addressOffset>0x001B</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>ALC</name>
+            <description>Arbitration Lost Capture.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>NBT</name>
+        <description>Nominal Bit Timing Register.</description>
+        <addressOffset>0x001C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>NBRP</name>
+            <description>Baudrate Prescaler Used in Arbitration Phase.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>10</bitWidth>
+          </field>
+          <field>
+            <name>NSEG1</name>
+            <description>The time segment before the sample point in Abritration Phase.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>NSEG2</name>
+            <description>The time segment after the sample point in Abritration Phase.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>NSJW</name>
+            <description>Synchronization Jump Width in Arbitration Phase.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DBT_SSPP</name>
+        <description>Data Bit Timing Register.</description>
+        <addressOffset>0x0020</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DBRP</name>
+            <description>Baudrate Prescaler in Data Phase.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>10</bitWidth>
+          </field>
+          <field>
+            <name>DSEG1</name>
+            <description>The time segment before the sample point in Data Phase.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>DSEG2</name>
+            <description>The time segment before the sample point in Data Phase.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>DSJW</name>
+            <description>Synchronization Jump Width in Data Phase</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>SSPP</name>
+            <description>Position of the secondary sample point.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FDCTRL</name>
+        <description>FD Control Register.</description>
+        <addressOffset>0x0024</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>FDEN</name>
+            <description>FD Frame format/ Extended data length. This bit indicates CAN FD frame format.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>fd</name>
+                <description>CAN FD Frame Format</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>classic</name>
+                <description>Classic CAN Frame Format.</description>
+                <value>0</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BRSEN</name>
+            <description>This bit indicates whether the bit rate is switched in Data phase.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NOSW</name>
+                <description>Bit rate is not switced inside of CAN FD frame.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>SW</name>
+                <description>Bit rate is switched from nominal bit rate of the arbitration phase to alternate bit rate of data phase.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTBT</name>
+            <description>This bit configure the Bit Time prescaler in Arbitration phase.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>BT</name>
+                <description>Use contents of BT register to configure bit time in arbitration phase.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>NBT</name>
+                <description>Use contents of NBT register to configure bit time in arbitration phase.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ISO</name>
+            <description>ISO CAN FD Format Selection.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>BOSCH</name>
+                <description>Frame format according to Bosch CAN FD specification.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ISO</name>
+                <description>Frame format according to ISO 11898 1, 2015.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DAR</name>
+            <description>Disable Auto Retransmission</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>EN</name>
+                <description>Automatic retransmission enabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIS</name>
+                <description>Automatic retransmission disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>REOM</name>
+            <description>Restricted Operation Mode.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PED</name>
+            <description>Protocol Exception Disable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FDSTAT</name>
+        <description>Invalidate All Registers.</description>
+        <addressOffset>0x0025</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>BITERR</name>
+            <description>Bit Error Indicator. When this bit is set the inconsistency occurs between the transmitted and the received bit in CAN FD frame.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRCERR</name>
+            <description>Cyclic Redundancy Check Error indicator. This indicates that calculated CRC is different from received in CAN FD frame</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FRMERR</name>
+            <description>Form Error indicator. This bit indicates, that a fixed form bit field contains at least one illegal bit in Data phase of CAN FD frame with the BRS 
+bit set</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STFERR</name>
+            <description>Stuff Error Indicator. This bit indicates stuff error occurred in Data phase in CAN FD frame with the BRS bit set
+</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PEE</name>
+            <description>Protocol Exception Event indicator. Indicates that core detects recessive state on res position and enter to Bus integration state.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>STATE</name>
+            <description>Operation state.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>INT</name>
+                <description>Waiting for 11 recessive bit after reset or bus off</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IDLE</name>
+                <description>Waiting for Start of Frame.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RX</name>
+                <description>Node operating as Receiver.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>TX</name>
+                <description>Node operating as Transmitter.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DPERR</name>
+        <description>Data Phase Error Counter Register.</description>
+        <addressOffset>0x0026</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DPERR</name>
+            <description>Data Phase Error Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>APERR</name>
+        <description>Arbitration Phase Error Counter Register.</description>
+        <addressOffset>0x0027</addressOffset>
+        <size>8</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>APERR</name>
+            <description>Arbitration Error Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TEST</name>
+        <description>Invalidate All Registers.</description>
+        <addressOffset>0x0028</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>LBEN</name>
+            <description>Loopback mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXC</name>
+            <description>Transmitted frame.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WUPCLKDIV</name>
+        <description>Wake-up timer prescaler.</description>
+        <addressOffset>0x0029</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>WUPDIV</name>
+            <description>Wake-up timer prescaler.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WUPFT</name>
+        <description>Wake up Filter Time Register.</description>
+        <addressOffset>0x002A</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>WUPFT</name>
+            <description>Wake-up pattern filter time.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WUPET</name>
+        <description>Wake-up Expire Time Register.</description>
+        <addressOffset>0x002C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>WUPET</name>
+            <description>Wake up patter expire time.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>20</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RXDCNT</name>
+        <description>RX FIFO Data Counter Register.</description>
+        <addressOffset>0x0030</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RXDCNT</name>
+            <description>RX FIFO data counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXSCNT</name>
+        <description>TX FIFO Space Counter.</description>
+        <addressOffset>0x0032</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TXSCNT</name>
+            <description>TX FIFO Space Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXDECMP</name>
+        <description>Invalidate All Registers.</description>
+        <addressOffset>0x0033</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TDCO</name>
+            <description>Transceiver Delay Compensation Offset. This bit field contains the offset value added to the measured transceiver loop delay</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>TDCEN</name>
+            <description>Transceiver Delay Compensation Enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EINTFL</name>
+        <description>Extended Interrupt Flag Register.</description>
+        <addressOffset>0x0034</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RX_THD</name>
+            <description>RX FIFO reach programmed trigger level, it is set when the RX FIFO reaches programmed trigger level (RT[2:0] in MR register). To clear the 
+RXFT interrupt, write this bit 1</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_TO</name>
+            <description>RX FIFO Timeout Indicator. It is set when there is no write or read from/in to RX FIFO for the user defined time (RXFTO register) and there is at 
+least 1 entry in RX FIFO during this time, this bit is clear by write 1</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EINTEN</name>
+        <description>Extended Interrupt Enable Register.</description>
+        <addressOffset>0x0035</addressOffset>
+        <size>8</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RX_THD</name>
+            <description>RX FIFO reach programmed trigger level, it is set when the RX FIFO reaches programmed trigger level (RT[2:0] in MR register). To clear the 
+RXFT interrupt, write this bit 1</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_TO</name>
+            <description>RX FIFO Timeout Indicator. It is set when there is no write or read from/in to RX FIFO for the user defined time (RXFTO register) and there is at 
+least 1 entry in RX FIFO during this time, this bit is clear by write 1</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RXTO</name>
+        <description>RX FIFO Timeout Register.</description>
+        <addressOffset>0x0036</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RX_TO</name>
+            <description>RX FIFO Timeout</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--CAN: Controller Area Network Registers-->
+</device>

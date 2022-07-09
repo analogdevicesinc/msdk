@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>UART</name>
+    <description>UART Low Power Registers</description>
+    <baseAddress>0x40042000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>Control register</description>
+        <addressOffset>0x0000</addressOffset>
+        <fields>
+          <field>
+            <name>RX_THD_VAL</name>
+            <description>This field specifies the depth of receive FIFO for interrupt generation (value 0 and &gt; 16 are ignored) </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>PAR_EN</name>
+            <description>Parity Enable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PAR_EO</name>
+            <description>when PAREN=1 selects odd or even parity odd is 1 even is 0</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PAR_MD</name>
+            <description>Selects parity based on 1s or 0s count (when PAREN=1) </description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CTS_DIS</name>
+            <description>CTS Sampling Disable </description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_FLUSH</name>
+            <description>Flushes the TX FIFO buffer. This bit is automatically cleared by hardware when flush is completed.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_FLUSH</name>
+            <description>Flushes the RX FIFO buffer. This bit is automatically cleared by hardware when flush is completed.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CHAR_SIZE</name>
+            <description>Selects UART character size</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>5bits</name>
+                <description>5 bits</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>6bits</name>
+                <description>6 bits</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>7bits</name>
+                <description>7 bits</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8bits</name>
+                <description>8 bits</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>STOPBITS</name>
+            <description>Selects the number of stop bits that will be generated</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HFC_EN</name>
+            <description>Enables/disables hardware flow control</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RTSDC</name>
+            <description>Hardware Flow Control RTS Mode</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BCLKEN</name>
+            <description>Baud clock enable</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BCLKSRC</name>
+            <description>To select the UART clock source for the UART engine (except APB registers). Secondary clock (used for baud rate generator) can be asynchronous from APB clock.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Peripheral_Clock</name>
+                <description>apb clock</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>External_Clock</name>
+                <description>Clock 1</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CLK2</name>
+                <description>Clock 2</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CLK3</name>
+                <description>Clock 3</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DPFE_EN</name>
+            <description>Data/Parity bit frame error detection enable</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BCLKRDY</name>
+            <description>Baud clock Ready read only bit</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UCAGM</name>
+            <description>UART Clock Auto Gating mode</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FDM</name>
+            <description>Fractional Division Mode</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DESM</name>
+            <description>RX Dual Edge Sampling Mode</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STATUS</name>
+        <description>Status register</description>
+        <addressOffset>0x0004</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>TX_BUSY</name>
+            <description>Read-only flag indicating the UART transmit status</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_BUSY</name>
+            <description>Read-only flag indicating the UART receiver status</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_EM</name>
+            <description>Read-only flag indicating the RX FIFO state</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_FULL</name>
+            <description>Read-only flag indicating the RX FIFO state</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_EM</name>
+            <description>Read-only flag indicating the TX FIFO state</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_FULL</name>
+            <description>Read-only flag indicating the TX FIFO state</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_LVL</name>
+            <description>Indicates the number of bytes currently in the RX FIFO (0-RX FIFO_ELTS) </description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>TX_LVL</name>
+            <description>Indicates the number of bytes currently in the TX FIFO (0-TX FIFO_ELTS) </description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>Interrupt Enable control register</description>
+        <addressOffset>0x0008</addressOffset>
+        <fields>
+          <field>
+            <name>RX_FERR</name>
+            <description>Enable Interrupt For RX Frame Error</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_PAR</name>
+            <description>Enable Interrupt For RX Parity Error</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CTS_EV</name>
+            <description>Enable Interrupt For CTS signal change Error</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_OV</name>
+            <description>Enable Interrupt For RX FIFO Overrun Error</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_THD</name>
+            <description>Enable Interrupt For RX FIFO reaches the number of bytes configured by RXTHD</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_HE</name>
+            <description>Enable Interrupt For TX FIFO has half empty</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>Interrupt status flags Control register</description>
+        <addressOffset>0x000C</addressOffset>
+        <fields>
+          <field>
+            <name>RX_FERR</name>
+            <description>Flag for RX Frame Error Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_PAR</name>
+            <description>Flag for RX Parity Error interrupt</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CTS_EV</name>
+            <description>Flag for CTS signal change interrupt (hardware flow control disabled) </description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_OV</name>
+            <description>Flag for RX FIFO Overrun interrupt</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_THD</name>
+            <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_HE</name>
+            <description>Flag for interrupt when TX FIFO is half empty</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CLKDIV</name>
+        <description>Clock Divider register</description>
+        <addressOffset>0x0010</addressOffset>
+        <fields>
+          <field>
+            <name>CLKDIV</name>
+            <description>Baud rate divisor value</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>20</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OSR</name>
+        <description>Over Sampling Rate register</description>
+        <addressOffset>0x0014</addressOffset>
+        <fields>
+          <field>
+            <name>OSR</name>
+            <description>OSR</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXPEEK</name>
+        <description>TX FIFO Output Peek register</description>
+        <addressOffset>0x0018</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Read TX FIFO next data. Reading from this field does not affect the contents of TX FIFO. Note that the parity bit is available from this field.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PNR</name>
+        <description> Pin register</description>
+        <addressOffset>0x001C</addressOffset>
+        <fields>
+          <field>
+            <name>CTS</name>
+            <description>Current sampled value of CTS IO</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RTS</name>
+            <description>This bit controls the value to apply on the RTS IO. If set to 1, the RTS IO is set to high level. If set to 0, the RTS IO is set to low level.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO</name>
+        <description>FIFO Read/Write register</description>
+        <addressOffset>0x0020</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Load/unload location for TX and RX FIFO buffers.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>RX_PAR</name>
+            <description>Parity error flag for next byte to be read from FIFO.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA</name>
+        <description>DMA Configuration register</description>
+        <addressOffset>0x0030</addressOffset>
+        <fields>
+          <field>
+            <name>TX_THD_VAL</name>
+            <description>TX FIFO Level DMA Trigger If the TX FIFO level is less than this value, then the TX FIFO DMA interface will send a signal to system DMA to notify that TX FIFO is ready to receive data from memory.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>TX_EN</name>
+            <description>TX DMA channel enable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_THD_VAL</name>
+            <description>Rx FIFO Level DMA Trigger If the RX FIFO level is greater than this value, then the RX FIFO DMA interface will send a signal to the system DMA to notify that RX FIFO has characters to transfer to memory.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RX_EN</name>
+            <description>RX DMA channel enable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WKEN</name>
+        <description>Wake up enable Control register</description>
+        <addressOffset>0x0034</addressOffset>
+        <fields>
+          <field>
+            <name>RX_NE</name>
+            <description>Wake-Up Enable for RX FIFO Not Empty</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_FULL</name>
+            <description>Wake-Up Enable for RX FIFO Full</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_THD</name>
+            <description>Wake-Up Enable for RX FIFO Threshold Met</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WKFL</name>
+        <description>Wake up Flags register</description>
+        <addressOffset>0x0038</addressOffset>
+        <fields>
+          <field>
+            <name>RX_NE</name>
+            <description>Wake-Up Flag for RX FIFO Not Empty</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_FULL</name>
+            <description>Wake-Up Flag for RX FIFO Full</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_THD</name>
+            <description>Wake-Up Flag for RX FIFO Threshold Met</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- uart: Uart low power Registers-->
+</device>

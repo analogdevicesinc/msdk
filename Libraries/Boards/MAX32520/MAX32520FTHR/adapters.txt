@@ -1,0 +1,2 @@
+MAX32625_PICO, interface/cmsis-dap.cfg
+CMSIS-DAP, interface/cmsis-dap.cfg

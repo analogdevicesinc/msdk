@@ -1,0 +1,25 @@
+var group___g_c_r___p_c_l_k___d_i_s0 =
+[
+    [ "MXC_F_GCR_PCLK_DIS0_DMAD", "group___g_c_r___p_c_l_k___d_i_s0.html#gaf45eaa4302ca66195d1ff1b4958b103e", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_DMAD_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga8ae4af046afa06604788ac230eb51567", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_GPIO0D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga3421a1e22fc0a73be22c9e05b68fa885", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_GPIO0D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga179e2405fbcbf928d45c9afb203b9a30", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_I2C0D", "group___g_c_r___p_c_l_k___d_i_s0.html#gad34e4e0eb18e0d75edba7e4dc139eccd", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_I2C0D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga8bfee3bf35b6ba7e5b2de6c9ebda37d8", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_I2C1D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga907096cac53964b5ec749df5a41ec7ed", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_I2C1D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#gae09eed99b81c131b4a538d3f2ead3445", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_SPI0D", "group___g_c_r___p_c_l_k___d_i_s0.html#gafc5b7f53063acd364a23006ac93665a8", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_SPI0D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga561454d8650dbc745f481898fdf7e103", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_SPI1D", "group___g_c_r___p_c_l_k___d_i_s0.html#gab48cad9d79f2c6a71a33f8821dc6e96a", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_SPI1D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga15498e7680c5f85ed603535daaab27ed", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_TIMER0D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga3a31f313e83aedcc8b4a4b45730a81d8", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_TIMER0D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#gadb37aa9a0d7be27fbbdd0807dc571b78", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_TIMER1D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga48ef6b96b5d998cf9835d001f5223f54", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_TIMER1D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga371e35ddce7153e1a3b0b8862af701cd", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_TIMER2D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga8f54169f777a3768ba402d5dc29ed1b6", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_TIMER2D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#gaee3ced0c90ffc6ee097dcba6f692d775", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_UART0D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga2a4cae6ad087123cf21f0c77b6a494bd", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_UART0D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga80c5df071dea3f8946cd8473314b3eb4", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_UART1D", "group___g_c_r___p_c_l_k___d_i_s0.html#ga3c45fc5baa2a2ddc7c842a4919a23e10", null ],
+    [ "MXC_F_GCR_PCLK_DIS0_UART1D_POS", "group___g_c_r___p_c_l_k___d_i_s0.html#ga2b0f29d4042bac771363ae92cc7b9afa", null ]
+];

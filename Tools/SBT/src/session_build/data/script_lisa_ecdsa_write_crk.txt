@@ -1,0 +1,1 @@
+write-crk crk_lisa_ecdsa_test.pub.sign

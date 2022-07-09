@@ -1,0 +1,643 @@
+/**
+ * @file    gpio_regs.h
+ * @brief   Registers, Bit Masks and Bit Positions for the GPIO Peripheral Module.
+ */
+
+/* ****************************************************************************
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ *
+ *************************************************************************** */
+
+#ifndef _GPIO_REGS_H_
+#define _GPIO_REGS_H_
+
+/* **** Includes **** */
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+ 
+#if defined (__ICCARM__)
+  #pragma system_include
+#endif
+ 
+#if defined (__CC_ARM)
+  #pragma anon_unions
+#endif
+/// @cond
+/*
+    If types are not defined elsewhere (CMSIS) define them here
+*/
+#ifndef __IO
+#define __IO volatile
+#endif
+#ifndef __I
+#define __I  volatile const
+#endif
+#ifndef __O
+#define __O  volatile
+#endif
+#ifndef __R
+#define __R  volatile const
+#endif
+/// @endcond
+
+/* **** Definitions **** */
+
+/**
+ * @ingroup     gpio
+ * @defgroup    gpio_registers GPIO_Registers
+ * @brief       Registers, Bit Masks and Bit Positions for the GPIO Peripheral Module.
+ * @details Individual I/O for each GPIO
+ */
+
+/**
+ * @ingroup gpio_registers
+ * Structure type to access the GPIO Registers.
+ */
+typedef struct {
+    __IO uint32_t en;                   /**< <tt>\b 0x00:</tt> GPIO EN Register */
+    __IO uint32_t en_set;               /**< <tt>\b 0x04:</tt> GPIO EN_SET Register */
+    __IO uint32_t en_clr;               /**< <tt>\b 0x08:</tt> GPIO EN_CLR Register */
+    __IO uint32_t out_en;               /**< <tt>\b 0x0C:</tt> GPIO OUT_EN Register */
+    __IO uint32_t out_en_set;           /**< <tt>\b 0x10:</tt> GPIO OUT_EN_SET Register */
+    __IO uint32_t out_en_clr;           /**< <tt>\b 0x14:</tt> GPIO OUT_EN_CLR Register */
+    __IO uint32_t out;                  /**< <tt>\b 0x18:</tt> GPIO OUT Register */
+    __O  uint32_t out_set;              /**< <tt>\b 0x1C:</tt> GPIO OUT_SET Register */
+    __O  uint32_t out_clr;              /**< <tt>\b 0x20:</tt> GPIO OUT_CLR Register */
+    __I  uint32_t in;                   /**< <tt>\b 0x24:</tt> GPIO IN Register */
+    __IO uint32_t int_mode;             /**< <tt>\b 0x28:</tt> GPIO INT_MODE Register */
+    __IO uint32_t int_pol;              /**< <tt>\b 0x2C:</tt> GPIO INT_POL Register */
+    __IO uint32_t in_en;                /**< <tt>\b 0x30:</tt> GPIO IN_EN Register */
+    __IO uint32_t int_en;               /**< <tt>\b 0x34:</tt> GPIO INT_EN Register */
+    __IO uint32_t int_en_set;           /**< <tt>\b 0x38:</tt> GPIO INT_EN_SET Register */
+    __IO uint32_t int_en_clr;           /**< <tt>\b 0x3C:</tt> GPIO INT_EN_CLR Register */
+    __I  uint32_t int_stat;             /**< <tt>\b 0x40:</tt> GPIO INT_STAT Register */
+    __R  uint32_t rsv_0x44;
+    __IO uint32_t int_clr;              /**< <tt>\b 0x48:</tt> GPIO INT_CLR Register */
+    __IO uint32_t wake_en;              /**< <tt>\b 0x4C:</tt> GPIO WAKE_EN Register */
+    __IO uint32_t wake_en_set;          /**< <tt>\b 0x50:</tt> GPIO WAKE_EN_SET Register */
+    __IO uint32_t wake_en_clr;          /**< <tt>\b 0x54:</tt> GPIO WAKE_EN_CLR Register */
+    __R  uint32_t rsv_0x58;
+    __IO uint32_t int_dual_edge;        /**< <tt>\b 0x5C:</tt> GPIO INT_DUAL_EDGE Register */
+    __IO uint32_t pdpu_sel0;            /**< <tt>\b 0x60:</tt> GPIO PDPU_SEL0 Register */
+    __IO uint32_t pdpu_sel1;            /**< <tt>\b 0x64:</tt> GPIO PDPU_SEL1 Register */
+    __IO uint32_t af_sel;               /**< <tt>\b 0x68:</tt> GPIO AF_SEL Register */
+    __IO uint32_t af_sel_set;           /**< <tt>\b 0x6C:</tt> GPIO AF_SEL_SET Register */
+    __IO uint32_t af_sel_clr;           /**< <tt>\b 0x70:</tt> GPIO AF_SEL_CLR Register */
+    __R  uint32_t rsv_0x74_0xaf[15];
+    __IO uint32_t ds_sel0;              /**< <tt>\b 0xB0:</tt> GPIO DS_SEL0 Register */
+    __IO uint32_t ds_sel1;              /**< <tt>\b 0xB4:</tt> GPIO DS_SEL1 Register */
+    __IO uint32_t pssel;                /**< <tt>\b 0xB8:</tt> GPIO PSSEL Register */
+    __R  uint32_t rsv_0xbc;
+    __IO uint32_t vssel;                /**< <tt>\b 0xC0:</tt> GPIO VSSEL Register */
+} mxc_gpio_regs_t;
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_EN GPIO_EN
+ * @brief    GPIO Function Enable Register. Each bit controls the GPIO_EN setting for one
+ *           GPIO pin on the associated port.
+ * @{
+ */
+ #define MXC_F_GPIO_EN_GPIO_EN_POS                      0 /**< EN_GPIO_EN Position */
+ #define MXC_F_GPIO_EN_GPIO_EN                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN_GPIO_EN_POS)) /**< EN_GPIO_EN Mask */
+ #define MXC_V_GPIO_EN_GPIO_EN_ALTERNATE                ((uint32_t)0x0UL) /**< EN_GPIO_EN_ALTERNATE Value */
+ #define MXC_S_GPIO_EN_GPIO_EN_ALTERNATE                (MXC_V_GPIO_EN_GPIO_EN_ALTERNATE << MXC_F_GPIO_EN_GPIO_EN_POS) /**< EN_GPIO_EN_ALTERNATE Setting */
+ #define MXC_V_GPIO_EN_GPIO_EN_GPIO                     ((uint32_t)0x1UL) /**< EN_GPIO_EN_GPIO Value */
+ #define MXC_S_GPIO_EN_GPIO_EN_GPIO                     (MXC_V_GPIO_EN_GPIO_EN_GPIO << MXC_F_GPIO_EN_GPIO_EN_POS) /**< EN_GPIO_EN_GPIO Setting */
+
+/**@} end of group GPIO_EN_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_EN_SET GPIO_EN_SET
+ * @brief    GPIO Set Function Enable Register. Writing a 1 to one or more bits in this
+ *           register sets the bits in the same positions in GPIO_EN to 1, without affecting
+ *           other bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_EN_SET_GPIO_EN_SET_POS              0 /**< EN_SET_GPIO_EN_SET Position */
+ #define MXC_F_GPIO_EN_SET_GPIO_EN_SET                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN_SET_GPIO_EN_SET_POS)) /**< EN_SET_GPIO_EN_SET Mask */
+ #define MXC_V_GPIO_EN_SET_GPIO_EN_SET_NO               ((uint32_t)0x0UL) /**< EN_SET_GPIO_EN_SET_NO Value */
+ #define MXC_S_GPIO_EN_SET_GPIO_EN_SET_NO               (MXC_V_GPIO_EN_SET_GPIO_EN_SET_NO << MXC_F_GPIO_EN_SET_GPIO_EN_SET_POS) /**< EN_SET_GPIO_EN_SET_NO Setting */
+ #define MXC_V_GPIO_EN_SET_GPIO_EN_SET_SET              ((uint32_t)0x1UL) /**< EN_SET_GPIO_EN_SET_SET Value */
+ #define MXC_S_GPIO_EN_SET_GPIO_EN_SET_SET              (MXC_V_GPIO_EN_SET_GPIO_EN_SET_SET << MXC_F_GPIO_EN_SET_GPIO_EN_SET_POS) /**< EN_SET_GPIO_EN_SET_SET Setting */
+
+/**@} end of group GPIO_EN_SET_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_EN_CLR GPIO_EN_CLR
+ * @brief    GPIO Clear Function Enable Register. Writing a 1 to one or more bits in this
+ *           register clears the bits in the same positions in GPIO_EN to 0, without
+ *           affecting other bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_EN_CLR_GPIO_EN_CLR_POS              0 /**< EN_CLR_GPIO_EN_CLR Position */
+ #define MXC_F_GPIO_EN_CLR_GPIO_EN_CLR                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN_CLR_GPIO_EN_CLR_POS)) /**< EN_CLR_GPIO_EN_CLR Mask */
+ #define MXC_V_GPIO_EN_CLR_GPIO_EN_CLR_NO               ((uint32_t)0x0UL) /**< EN_CLR_GPIO_EN_CLR_NO Value */
+ #define MXC_S_GPIO_EN_CLR_GPIO_EN_CLR_NO               (MXC_V_GPIO_EN_CLR_GPIO_EN_CLR_NO << MXC_F_GPIO_EN_CLR_GPIO_EN_CLR_POS) /**< EN_CLR_GPIO_EN_CLR_NO Setting */
+ #define MXC_V_GPIO_EN_CLR_GPIO_EN_CLR_CLEAR            ((uint32_t)0x1UL) /**< EN_CLR_GPIO_EN_CLR_CLEAR Value */
+ #define MXC_S_GPIO_EN_CLR_GPIO_EN_CLR_CLEAR            (MXC_V_GPIO_EN_CLR_GPIO_EN_CLR_CLEAR << MXC_F_GPIO_EN_CLR_GPIO_EN_CLR_POS) /**< EN_CLR_GPIO_EN_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_EN_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_OUT_EN GPIO_OUT_EN
+ * @brief    GPIO Output Enable Register. Each bit controls the GPIO_OUT_EN setting for one
+ *           GPIO pin in the associated port.
+ * @{
+ */
+ #define MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS              0 /**< OUT_EN_GPIO_OUT_EN Position */
+ #define MXC_F_GPIO_OUT_EN_GPIO_OUT_EN                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS)) /**< OUT_EN_GPIO_OUT_EN Mask */
+ #define MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_DIS              ((uint32_t)0x0UL) /**< OUT_EN_GPIO_OUT_EN_DIS Value */
+ #define MXC_S_GPIO_OUT_EN_GPIO_OUT_EN_DIS              (MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_DIS << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS) /**< OUT_EN_GPIO_OUT_EN_DIS Setting */
+ #define MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_EN               ((uint32_t)0x1UL) /**< OUT_EN_GPIO_OUT_EN_EN Value */
+ #define MXC_S_GPIO_OUT_EN_GPIO_OUT_EN_EN               (MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_EN << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS) /**< OUT_EN_GPIO_OUT_EN_EN Setting */
+
+/**@} end of group GPIO_OUT_EN_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_OUT_EN_SET GPIO_OUT_EN_SET
+ * @brief    GPIO Output Enable Set Function Enable Register. Writing a 1 to one or more bits
+ *           in this register sets the bits in the same positions in GPIO_OUT_EN to 1,
+ *           without affecting other bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS      0 /**< OUT_EN_SET_GPIO_OUT_EN_SET Position */
+ #define MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS)) /**< OUT_EN_SET_GPIO_OUT_EN_SET Mask */
+ #define MXC_V_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_NO       ((uint32_t)0x0UL) /**< OUT_EN_SET_GPIO_OUT_EN_SET_NO Value */
+ #define MXC_S_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_NO       (MXC_V_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_NO << MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS) /**< OUT_EN_SET_GPIO_OUT_EN_SET_NO Setting */
+ #define MXC_V_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_SET      ((uint32_t)0x1UL) /**< OUT_EN_SET_GPIO_OUT_EN_SET_SET Value */
+ #define MXC_S_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_SET      (MXC_V_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_SET << MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS) /**< OUT_EN_SET_GPIO_OUT_EN_SET_SET Setting */
+
+/**@} end of group GPIO_OUT_EN_SET_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_OUT_EN_CLR GPIO_OUT_EN_CLR
+ * @brief    GPIO Output Enable Clear Function Enable Register. Writing a 1 to one or more
+ *           bits in this register clears the bits in the same positions in GPIO_OUT_EN to 0,
+ *           without affecting other bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS      0 /**< OUT_EN_CLR_GPIO_OUT_EN_CLR Position */
+ #define MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS)) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR Mask */
+ #define MXC_V_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_NO       ((uint32_t)0x0UL) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR_NO Value */
+ #define MXC_S_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_NO       (MXC_V_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_NO << MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR_NO Setting */
+ #define MXC_V_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_CLEAR    ((uint32_t)0x1UL) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR_CLEAR Value */
+ #define MXC_S_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_CLEAR    (MXC_V_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_CLEAR << MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_OUT_EN_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_OUT GPIO_OUT
+ * @brief    GPIO Output Register. Each bit controls the GPIO_OUT setting for one pin in the
+ *           associated port.  This register can be written either directly, or by using the
+ *           GPIO_OUT_SET and GPIO_OUT_CLR registers.
+ * @{
+ */
+ #define MXC_F_GPIO_OUT_GPIO_OUT_POS                    0 /**< OUT_GPIO_OUT Position */
+ #define MXC_F_GPIO_OUT_GPIO_OUT                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_GPIO_OUT_POS)) /**< OUT_GPIO_OUT Mask */
+ #define MXC_V_GPIO_OUT_GPIO_OUT_LOW                    ((uint32_t)0x0UL) /**< OUT_GPIO_OUT_LOW Value */
+ #define MXC_S_GPIO_OUT_GPIO_OUT_LOW                    (MXC_V_GPIO_OUT_GPIO_OUT_LOW << MXC_F_GPIO_OUT_GPIO_OUT_POS) /**< OUT_GPIO_OUT_LOW Setting */
+ #define MXC_V_GPIO_OUT_GPIO_OUT_HIGH                   ((uint32_t)0x1UL) /**< OUT_GPIO_OUT_HIGH Value */
+ #define MXC_S_GPIO_OUT_GPIO_OUT_HIGH                   (MXC_V_GPIO_OUT_GPIO_OUT_HIGH << MXC_F_GPIO_OUT_GPIO_OUT_POS) /**< OUT_GPIO_OUT_HIGH Setting */
+
+/**@} end of group GPIO_OUT_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_OUT_SET GPIO_OUT_SET
+ * @brief    GPIO Output Set. Writing a 1 to one or more bits in this register sets the bits
+ *           in the same positions in GPIO_OUT to 1, without affecting other bits in that
+ *           register.
+ * @{
+ */
+ #define MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS            0 /**< OUT_SET_GPIO_OUT_SET Position */
+ #define MXC_F_GPIO_OUT_SET_GPIO_OUT_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS)) /**< OUT_SET_GPIO_OUT_SET Mask */
+ #define MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_NO             ((uint32_t)0x0UL) /**< OUT_SET_GPIO_OUT_SET_NO Value */
+ #define MXC_S_GPIO_OUT_SET_GPIO_OUT_SET_NO             (MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_NO << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS) /**< OUT_SET_GPIO_OUT_SET_NO Setting */
+ #define MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_SET            ((uint32_t)0x1UL) /**< OUT_SET_GPIO_OUT_SET_SET Value */
+ #define MXC_S_GPIO_OUT_SET_GPIO_OUT_SET_SET            (MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_SET << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS) /**< OUT_SET_GPIO_OUT_SET_SET Setting */
+
+/**@} end of group GPIO_OUT_SET_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_OUT_CLR GPIO_OUT_CLR
+ * @brief    GPIO Output Clear. Writing a 1 to one or more bits in this register clears the
+ *           bits in the same positions in GPIO_OUT to 0, without affecting other bits in
+ *           that register.
+ * @{
+ */
+ #define MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS            0 /**< OUT_CLR_GPIO_OUT_CLR Position */
+ #define MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS)) /**< OUT_CLR_GPIO_OUT_CLR Mask */
+ #define MXC_V_GPIO_OUT_CLR_GPIO_OUT_CLR_NO             ((uint32_t)0x0UL) /**< OUT_CLR_GPIO_OUT_CLR_NO Value */
+ #define MXC_S_GPIO_OUT_CLR_GPIO_OUT_CLR_NO             (MXC_V_GPIO_OUT_CLR_GPIO_OUT_CLR_NO << MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS) /**< OUT_CLR_GPIO_OUT_CLR_NO Setting */
+ #define MXC_V_GPIO_OUT_CLR_GPIO_OUT_CLR_CLEAR          ((uint32_t)0x1UL) /**< OUT_CLR_GPIO_OUT_CLR_CLEAR Value */
+ #define MXC_S_GPIO_OUT_CLR_GPIO_OUT_CLR_CLEAR          (MXC_V_GPIO_OUT_CLR_GPIO_OUT_CLR_CLEAR << MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS) /**< OUT_CLR_GPIO_OUT_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_OUT_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_IN GPIO_IN
+ * @brief    GPIO Input Register. Read-only register to read from the logic states of the
+ *           GPIO pins on this port.
+ * @{
+ */
+ #define MXC_F_GPIO_IN_GPIO_IN_POS                      0 /**< IN_GPIO_IN Position */
+ #define MXC_F_GPIO_IN_GPIO_IN                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_IN_GPIO_IN_POS)) /**< IN_GPIO_IN Mask */
+ #define MXC_V_GPIO_IN_GPIO_IN_LOW                      ((uint32_t)0x0UL) /**< IN_GPIO_IN_LOW Value */
+ #define MXC_S_GPIO_IN_GPIO_IN_LOW                      (MXC_V_GPIO_IN_GPIO_IN_LOW << MXC_F_GPIO_IN_GPIO_IN_POS) /**< IN_GPIO_IN_LOW Setting */
+ #define MXC_V_GPIO_IN_GPIO_IN_HIGH                     ((uint32_t)0x1UL) /**< IN_GPIO_IN_HIGH Value */
+ #define MXC_S_GPIO_IN_GPIO_IN_HIGH                     (MXC_V_GPIO_IN_GPIO_IN_HIGH << MXC_F_GPIO_IN_GPIO_IN_POS) /**< IN_GPIO_IN_HIGH Setting */
+
+/**@} end of group GPIO_IN_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_MODE GPIO_INT_MODE
+ * @brief    GPIO Interrupt Mode Register. Each bit in this register controls the interrupt
+ *           mode setting for the associated GPIO pin on this port.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_MODE_GPIO_INT_MODE_POS          0 /**< INT_MODE_GPIO_INT_MODE Position */
+ #define MXC_F_GPIO_INT_MODE_GPIO_INT_MODE              ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_MODE_GPIO_INT_MODE_POS)) /**< INT_MODE_GPIO_INT_MODE Mask */
+ #define MXC_V_GPIO_INT_MODE_GPIO_INT_MODE_LEVEL        ((uint32_t)0x0UL) /**< INT_MODE_GPIO_INT_MODE_LEVEL Value */
+ #define MXC_S_GPIO_INT_MODE_GPIO_INT_MODE_LEVEL        (MXC_V_GPIO_INT_MODE_GPIO_INT_MODE_LEVEL << MXC_F_GPIO_INT_MODE_GPIO_INT_MODE_POS) /**< INT_MODE_GPIO_INT_MODE_LEVEL Setting */
+ #define MXC_V_GPIO_INT_MODE_GPIO_INT_MODE_EDGE         ((uint32_t)0x1UL) /**< INT_MODE_GPIO_INT_MODE_EDGE Value */
+ #define MXC_S_GPIO_INT_MODE_GPIO_INT_MODE_EDGE         (MXC_V_GPIO_INT_MODE_GPIO_INT_MODE_EDGE << MXC_F_GPIO_INT_MODE_GPIO_INT_MODE_POS) /**< INT_MODE_GPIO_INT_MODE_EDGE Setting */
+
+/**@} end of group GPIO_INT_MODE_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_POL GPIO_INT_POL
+ * @brief    GPIO Interrupt Polarity Register. Each bit in this register controls the
+ *           interrupt polarity setting for one GPIO pin in the associated port.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS            0 /**< INT_POL_GPIO_INT_POL Position */
+ #define MXC_F_GPIO_INT_POL_GPIO_INT_POL                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS)) /**< INT_POL_GPIO_INT_POL Mask */
+ #define MXC_V_GPIO_INT_POL_GPIO_INT_POL_FALLING        ((uint32_t)0x0UL) /**< INT_POL_GPIO_INT_POL_FALLING Value */
+ #define MXC_S_GPIO_INT_POL_GPIO_INT_POL_FALLING        (MXC_V_GPIO_INT_POL_GPIO_INT_POL_FALLING << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS) /**< INT_POL_GPIO_INT_POL_FALLING Setting */
+ #define MXC_V_GPIO_INT_POL_GPIO_INT_POL_RISING         ((uint32_t)0x1UL) /**< INT_POL_GPIO_INT_POL_RISING Value */
+ #define MXC_S_GPIO_INT_POL_GPIO_INT_POL_RISING         (MXC_V_GPIO_INT_POL_GPIO_INT_POL_RISING << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS) /**< INT_POL_GPIO_INT_POL_RISING Setting */
+
+/**@} end of group GPIO_INT_POL_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_IN_EN GPIO_IN_EN
+ * @brief    GPIO Port Input Enable.
+ * @{
+ */
+ #define MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS                0 /**< IN_EN_GPIO_IN_EN Position */
+ #define MXC_F_GPIO_IN_EN_GPIO_IN_EN                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS)) /**< IN_EN_GPIO_IN_EN Mask */
+ #define MXC_V_GPIO_IN_EN_GPIO_IN_EN_DIS                ((uint32_t)0x0UL) /**< IN_EN_GPIO_IN_EN_DIS Value */
+ #define MXC_S_GPIO_IN_EN_GPIO_IN_EN_DIS                (MXC_V_GPIO_IN_EN_GPIO_IN_EN_DIS << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS) /**< IN_EN_GPIO_IN_EN_DIS Setting */
+ #define MXC_V_GPIO_IN_EN_GPIO_IN_EN_EN                 ((uint32_t)0x1UL) /**< IN_EN_GPIO_IN_EN_EN Value */
+ #define MXC_S_GPIO_IN_EN_GPIO_IN_EN_EN                 (MXC_V_GPIO_IN_EN_GPIO_IN_EN_EN << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS) /**< IN_EN_GPIO_IN_EN_EN Setting */
+
+/**@} end of group GPIO_IN_EN_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_EN GPIO_INT_EN
+ * @brief    GPIO Interrupt Enable Register. Each bit in this register controls the GPIO
+ *           interrupt enable for the associated pin on the GPIO port.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS              0 /**< INT_EN_GPIO_INT_EN Position */
+ #define MXC_F_GPIO_INT_EN_GPIO_INT_EN                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS)) /**< INT_EN_GPIO_INT_EN Mask */
+ #define MXC_V_GPIO_INT_EN_GPIO_INT_EN_DIS              ((uint32_t)0x0UL) /**< INT_EN_GPIO_INT_EN_DIS Value */
+ #define MXC_S_GPIO_INT_EN_GPIO_INT_EN_DIS              (MXC_V_GPIO_INT_EN_GPIO_INT_EN_DIS << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS) /**< INT_EN_GPIO_INT_EN_DIS Setting */
+ #define MXC_V_GPIO_INT_EN_GPIO_INT_EN_EN               ((uint32_t)0x1UL) /**< INT_EN_GPIO_INT_EN_EN Value */
+ #define MXC_S_GPIO_INT_EN_GPIO_INT_EN_EN               (MXC_V_GPIO_INT_EN_GPIO_INT_EN_EN << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS) /**< INT_EN_GPIO_INT_EN_EN Setting */
+
+/**@} end of group GPIO_INT_EN_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_EN_SET GPIO_INT_EN_SET
+ * @brief    GPIO Interrupt Enable Set. Writing a 1 to one or more bits in this register sets
+ *           the bits in the same positions in GPIO_INT_EN to 1, without affecting other bits
+ *           in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS      0 /**< INT_EN_SET_GPIO_INT_EN_SET Position */
+ #define MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS)) /**< INT_EN_SET_GPIO_INT_EN_SET Mask */
+ #define MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO       ((uint32_t)0x0UL) /**< INT_EN_SET_GPIO_INT_EN_SET_NO Value */
+ #define MXC_S_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO       (MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS) /**< INT_EN_SET_GPIO_INT_EN_SET_NO Setting */
+ #define MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET      ((uint32_t)0x1UL) /**< INT_EN_SET_GPIO_INT_EN_SET_SET Value */
+ #define MXC_S_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET      (MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS) /**< INT_EN_SET_GPIO_INT_EN_SET_SET Setting */
+
+/**@} end of group GPIO_INT_EN_SET_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_EN_CLR GPIO_INT_EN_CLR
+ * @brief    GPIO Interrupt Enable Clear. Writing a 1 to one or more bits in this register
+ *           clears the bits in the same positions in GPIO_INT_EN to 0, without affecting
+ *           other bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS      0 /**< INT_EN_CLR_GPIO_INT_EN_CLR Position */
+ #define MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS)) /**< INT_EN_CLR_GPIO_INT_EN_CLR Mask */
+ #define MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO       ((uint32_t)0x0UL) /**< INT_EN_CLR_GPIO_INT_EN_CLR_NO Value */
+ #define MXC_S_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO       (MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS) /**< INT_EN_CLR_GPIO_INT_EN_CLR_NO Setting */
+ #define MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR    ((uint32_t)0x1UL) /**< INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR Value */
+ #define MXC_S_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR    (MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS) /**< INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_INT_EN_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_STAT GPIO_INT_STAT
+ * @brief    GPIO Interrupt Status Register. Each bit in this register contains the pending
+ *           interrupt status for the associated GPIO pin in this port.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS          0 /**< INT_STAT_GPIO_INT_STAT Position */
+ #define MXC_F_GPIO_INT_STAT_GPIO_INT_STAT              ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS)) /**< INT_STAT_GPIO_INT_STAT Mask */
+ #define MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_NO           ((uint32_t)0x0UL) /**< INT_STAT_GPIO_INT_STAT_NO Value */
+ #define MXC_S_GPIO_INT_STAT_GPIO_INT_STAT_NO           (MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_NO << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS) /**< INT_STAT_GPIO_INT_STAT_NO Setting */
+ #define MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_PENDING      ((uint32_t)0x1UL) /**< INT_STAT_GPIO_INT_STAT_PENDING Value */
+ #define MXC_S_GPIO_INT_STAT_GPIO_INT_STAT_PENDING      (MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_PENDING << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS) /**< INT_STAT_GPIO_INT_STAT_PENDING Setting */
+
+/**@} end of group GPIO_INT_STAT_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_CLR GPIO_INT_CLR
+ * @brief    GPIO Status Clear. Writing a 1 to one or more bits in this register clears the
+ *           bits in the same positions in GPIO_INT_STAT to 0, without affecting other bits
+ *           in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS            0 /**< INT_CLR_GPIO_INT_CLR Position */
+ #define MXC_F_GPIO_INT_CLR_GPIO_INT_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS)) /**< INT_CLR_GPIO_INT_CLR Mask */
+ #define MXC_V_GPIO_INT_CLR_GPIO_INT_CLR_NO             ((uint32_t)0x0UL) /**< INT_CLR_GPIO_INT_CLR_NO Value */
+ #define MXC_S_GPIO_INT_CLR_GPIO_INT_CLR_NO             (MXC_V_GPIO_INT_CLR_GPIO_INT_CLR_NO << MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS) /**< INT_CLR_GPIO_INT_CLR_NO Setting */
+ #define MXC_V_GPIO_INT_CLR_GPIO_INT_CLR_CLEAR          ((uint32_t)0x1UL) /**< INT_CLR_GPIO_INT_CLR_CLEAR Value */
+ #define MXC_S_GPIO_INT_CLR_GPIO_INT_CLR_CLEAR          (MXC_V_GPIO_INT_CLR_GPIO_INT_CLR_CLEAR << MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS) /**< INT_CLR_GPIO_INT_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_INT_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_WAKE_EN GPIO_WAKE_EN
+ * @brief    GPIO Wake Enable Register. Each bit in this register controls the PMU wakeup
+ *           enable for the associated GPIO pin in this port.
+ * @{
+ */
+ #define MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS            0 /**< WAKE_EN_GPIO_WAKE_EN Position */
+ #define MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS)) /**< WAKE_EN_GPIO_WAKE_EN Mask */
+ #define MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS            ((uint32_t)0x0UL) /**< WAKE_EN_GPIO_WAKE_EN_DIS Value */
+ #define MXC_S_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS            (MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS) /**< WAKE_EN_GPIO_WAKE_EN_DIS Setting */
+ #define MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_EN             ((uint32_t)0x1UL) /**< WAKE_EN_GPIO_WAKE_EN_EN Value */
+ #define MXC_S_GPIO_WAKE_EN_GPIO_WAKE_EN_EN             (MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_EN << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS) /**< WAKE_EN_GPIO_WAKE_EN_EN Setting */
+
+/**@} end of group GPIO_WAKE_EN_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_WAKE_EN_SET GPIO_WAKE_EN_SET
+ * @brief    GPIO Wake Enable Set. Writing a 1 to one or more bits in this register sets the
+ *           bits in the same positions in GPIO_WAKE_EN to 1, without affecting other bits in
+ *           that register.
+ * @{
+ */
+ #define MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS    0 /**< WAKE_EN_SET_GPIO_WAKE_EN_SET Position */
+ #define MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS)) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET Mask */
+ #define MXC_V_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_NO     ((uint32_t)0x0UL) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET_NO Value */
+ #define MXC_S_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_NO     (MXC_V_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_NO << MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET_NO Setting */
+ #define MXC_V_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_SET    ((uint32_t)0x1UL) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET_SET Value */
+ #define MXC_S_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_SET    (MXC_V_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_SET << MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET_SET Setting */
+
+/**@} end of group GPIO_WAKE_EN_SET_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_WAKE_EN_CLR GPIO_WAKE_EN_CLR
+ * @brief    GPIO Wake Enable Clear. Writing a 1 to one or more bits in this register clears
+ *           the bits in the same positions in GPIO_WAKE_EN to 0, without affecting other
+ *           bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS    0 /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR Position */
+ #define MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS)) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR Mask */
+ #define MXC_V_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_NO     ((uint32_t)0x0UL) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR_NO Value */
+ #define MXC_S_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_NO     (MXC_V_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_NO << MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR_NO Setting */
+ #define MXC_V_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_CLEAR  ((uint32_t)0x1UL) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR_CLEAR Value */
+ #define MXC_S_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_CLEAR  (MXC_V_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_CLEAR << MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_WAKE_EN_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_INT_DUAL_EDGE GPIO_INT_DUAL_EDGE
+ * @brief    GPIO Interrupt Dual Edge Mode Register. Each bit in this register selects dual
+ *           edge mode for the associated GPIO pin in this port.
+ * @{
+ */
+ #define MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS 0 /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE Position */
+ #define MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS)) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE Mask */
+ #define MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO ((uint32_t)0x0UL) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO Value */
+ #define MXC_S_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO (MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO Setting */
+ #define MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_DUAL ((uint32_t)0x1UL) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_DUAL Value */
+ #define MXC_S_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_DUAL (MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_DUAL << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_DUAL Setting */
+
+/**@} end of group GPIO_INT_DUAL_EDGE_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_PDPU_SEL0 GPIO_PDPU_SEL0
+ * @brief    GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for
+ *           the associated GPIO pin in this port.
+ * @{
+ */
+ #define MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS        0 /**< PDPU_SEL0_GPIO_PDPU_SEL0 Position */
+ #define MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0            ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS)) /**< PDPU_SEL0_GPIO_PDPU_SEL0 Mask */
+ #define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE  ((uint32_t)0x0UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE Value */
+ #define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE  (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE Setting */
+ #define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU         ((uint32_t)0x1UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PU Value */
+ #define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU         (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PU Setting */
+
+/**@} end of group GPIO_PDPU_SEL0_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_PDPU_SEL1 GPIO_PDPU_SEL1
+ * @brief    GPIO Input Mode Config 2. Each bit in this register enables the pull-down for
+ *           the associated GPIO pin in this port.
+ * @{
+ */
+ #define MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS        0 /**< PDPU_SEL1_GPIO_PDPU_SEL1 Position */
+ #define MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1            ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS)) /**< PDPU_SEL1_GPIO_PDPU_SEL1 Mask */
+ #define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE  ((uint32_t)0x0UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE Value */
+ #define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE  (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE Setting */
+ #define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD         ((uint32_t)0x1UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PD Value */
+ #define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD         (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PD Setting */
+
+/**@} end of group GPIO_PDPU_SEL1_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_AF_SEL GPIO_AF_SEL
+ * @brief    GPIO Alternate Function Enable Register. Each bit in this register selects
+ *           between primary/secondary functions for the associated GPIO pin in this port.
+ * @{
+ */
+ #define MXC_F_GPIO_AF_SEL_GPIO_AF_SEL_POS              0 /**< AF_SEL_GPIO_AF_SEL Position */
+ #define MXC_F_GPIO_AF_SEL_GPIO_AF_SEL                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_AF_SEL_GPIO_AF_SEL_POS)) /**< AF_SEL_GPIO_AF_SEL Mask */
+ #define MXC_V_GPIO_AF_SEL_GPIO_AF_SEL_PRIMARY          ((uint32_t)0x0UL) /**< AF_SEL_GPIO_AF_SEL_PRIMARY Value */
+ #define MXC_S_GPIO_AF_SEL_GPIO_AF_SEL_PRIMARY          (MXC_V_GPIO_AF_SEL_GPIO_AF_SEL_PRIMARY << MXC_F_GPIO_AF_SEL_GPIO_AF_SEL_POS) /**< AF_SEL_GPIO_AF_SEL_PRIMARY Setting */
+ #define MXC_V_GPIO_AF_SEL_GPIO_AF_SEL_SECONDARY        ((uint32_t)0x1UL) /**< AF_SEL_GPIO_AF_SEL_SECONDARY Value */
+ #define MXC_S_GPIO_AF_SEL_GPIO_AF_SEL_SECONDARY        (MXC_V_GPIO_AF_SEL_GPIO_AF_SEL_SECONDARY << MXC_F_GPIO_AF_SEL_GPIO_AF_SEL_POS) /**< AF_SEL_GPIO_AF_SEL_SECONDARY Setting */
+
+/**@} end of group GPIO_AF_SEL_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_AF_SEL_SET GPIO_AF_SEL_SET
+ * @brief    GPIO Alternate Function Selectset. Writing a 1 to one or more bits in this
+ *           register sets the bits in the same positions in GPIO_EN1 to 1, without affecting
+ *           other bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_AF_SEL_SET_AF_SEL_SET_POS           0 /**< AF_SEL_SET_AF_SEL_SET Position */
+ #define MXC_F_GPIO_AF_SEL_SET_AF_SEL_SET               ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_AF_SEL_SET_AF_SEL_SET_POS)) /**< AF_SEL_SET_AF_SEL_SET Mask */
+ #define MXC_V_GPIO_AF_SEL_SET_AF_SEL_SET_NO            ((uint32_t)0x0UL) /**< AF_SEL_SET_AF_SEL_SET_NO Value */
+ #define MXC_S_GPIO_AF_SEL_SET_AF_SEL_SET_NO            (MXC_V_GPIO_AF_SEL_SET_AF_SEL_SET_NO << MXC_F_GPIO_AF_SEL_SET_AF_SEL_SET_POS) /**< AF_SEL_SET_AF_SEL_SET_NO Setting */
+ #define MXC_V_GPIO_AF_SEL_SET_AF_SEL_SET_SET           ((uint32_t)0x1UL) /**< AF_SEL_SET_AF_SEL_SET_SET Value */
+ #define MXC_S_GPIO_AF_SEL_SET_AF_SEL_SET_SET           (MXC_V_GPIO_AF_SEL_SET_AF_SEL_SET_SET << MXC_F_GPIO_AF_SEL_SET_AF_SEL_SET_POS) /**< AF_SEL_SET_AF_SEL_SET_SET Setting */
+
+/**@} end of group GPIO_AF_SEL_SET_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_AF_SEL_CLR GPIO_AF_SEL_CLR
+ * @brief    GPIO Alternate Function Clear. Writing a 1 to one or more bits in this register
+ *           clears the bits in the same positions in GPIO_EN1 to 0, without affecting other
+ *           bits in that register.
+ * @{
+ */
+ #define MXC_F_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_POS      0 /**< AF_SEL_CLR_GPIO_AF_SEL_CLR Position */
+ #define MXC_F_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_POS)) /**< AF_SEL_CLR_GPIO_AF_SEL_CLR Mask */
+ #define MXC_V_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_NO       ((uint32_t)0x0UL) /**< AF_SEL_CLR_GPIO_AF_SEL_CLR_NO Value */
+ #define MXC_S_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_NO       (MXC_V_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_NO << MXC_F_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_POS) /**< AF_SEL_CLR_GPIO_AF_SEL_CLR_NO Setting */
+ #define MXC_V_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_CLEAR    ((uint32_t)0x1UL) /**< AF_SEL_CLR_GPIO_AF_SEL_CLR_CLEAR Value */
+ #define MXC_S_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_CLEAR    (MXC_V_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_CLEAR << MXC_F_GPIO_AF_SEL_CLR_GPIO_AF_SEL_CLR_POS) /**< AF_SEL_CLR_GPIO_AF_SEL_CLR_CLEAR Setting */
+
+/**@} end of group GPIO_AF_SEL_CLR_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_DS_SEL0 GPIO_DS_SEL0
+ * @brief    GPIO Drive Strength  Register. Each bit in this register selects the drive
+ *           strength for the associated GPIO pin in this port. Refer to the Datasheet for
+ *           sink/source current of GPIO pins in each mode. The total drive strength
+ *           multiplier is the multiplication between the two drive strength select
+ *           registers.
+ * @{
+ */
+ #define MXC_F_GPIO_DS_SEL0_GPIO_DS_SEL0_POS            0 /**< DS_SEL0_GPIO_DS_SEL0 Position */
+ #define MXC_F_GPIO_DS_SEL0_GPIO_DS_SEL0                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_DS_SEL0_GPIO_DS_SEL0_POS)) /**< DS_SEL0_GPIO_DS_SEL0 Mask */
+ #define MXC_V_GPIO_DS_SEL0_GPIO_DS_SEL0_1X             ((uint32_t)0x0UL) /**< DS_SEL0_GPIO_DS_SEL0_1X Value */
+ #define MXC_S_GPIO_DS_SEL0_GPIO_DS_SEL0_1X             (MXC_V_GPIO_DS_SEL0_GPIO_DS_SEL0_1X << MXC_F_GPIO_DS_SEL0_GPIO_DS_SEL0_POS) /**< DS_SEL0_GPIO_DS_SEL0_1X Setting */
+ #define MXC_V_GPIO_DS_SEL0_GPIO_DS_SEL0_2X             ((uint32_t)0x1UL) /**< DS_SEL0_GPIO_DS_SEL0_2X Value */
+ #define MXC_S_GPIO_DS_SEL0_GPIO_DS_SEL0_2X             (MXC_V_GPIO_DS_SEL0_GPIO_DS_SEL0_2X << MXC_F_GPIO_DS_SEL0_GPIO_DS_SEL0_POS) /**< DS_SEL0_GPIO_DS_SEL0_2X Setting */
+
+/**@} end of group GPIO_DS_SEL0_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_DS_SEL1 GPIO_DS_SEL1
+ * @brief    GPIO Drive Strength 1 Register. Each bit in this register selects the drive
+ *           strength for the associated GPIO pin in this port. Refer to the Datasheet for
+ *           sink/source current of GPIO pins in each mode. The total drive strength
+ *           multiplier is the multiplication between the two drive strength select
+ *           registers.
+ * @{
+ */
+ #define MXC_F_GPIO_DS_SEL1_GPIO_DS_SEL1_POS            0 /**< DS_SEL1_GPIO_DS_SEL1 Position */
+ #define MXC_F_GPIO_DS_SEL1_GPIO_DS_SEL1                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_DS_SEL1_GPIO_DS_SEL1_POS)) /**< DS_SEL1_GPIO_DS_SEL1 Mask */
+ #define MXC_V_GPIO_DS_SEL1_GPIO_DS_SEL1_1X             ((uint32_t)0x0UL) /**< DS_SEL1_GPIO_DS_SEL1_1X Value */
+ #define MXC_S_GPIO_DS_SEL1_GPIO_DS_SEL1_1X             (MXC_V_GPIO_DS_SEL1_GPIO_DS_SEL1_1X << MXC_F_GPIO_DS_SEL1_GPIO_DS_SEL1_POS) /**< DS_SEL1_GPIO_DS_SEL1_1X Setting */
+ #define MXC_V_GPIO_DS_SEL1_GPIO_DS_SEL1_4X             ((uint32_t)0x1UL) /**< DS_SEL1_GPIO_DS_SEL1_4X Value */
+ #define MXC_S_GPIO_DS_SEL1_GPIO_DS_SEL1_4X             (MXC_V_GPIO_DS_SEL1_GPIO_DS_SEL1_4X << MXC_F_GPIO_DS_SEL1_GPIO_DS_SEL1_POS) /**< DS_SEL1_GPIO_DS_SEL1_4X Setting */
+
+/**@} end of group GPIO_DS_SEL1_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_PSSEL GPIO_PSSEL
+ * @brief    GPIO Pull Select Mode.
+ * @{
+ */
+ #define MXC_F_GPIO_PSSEL_GPIO_PSSEL_POS                0 /**< PSSEL_GPIO_PSSEL Position */
+ #define MXC_F_GPIO_PSSEL_GPIO_PSSEL                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PSSEL_GPIO_PSSEL_POS)) /**< PSSEL_GPIO_PSSEL Mask */
+ #define MXC_V_GPIO_PSSEL_GPIO_PSSEL_WEAK_PDPU          ((uint32_t)0x0UL) /**< PSSEL_GPIO_PSSEL_WEAK_PDPU Value */
+ #define MXC_S_GPIO_PSSEL_GPIO_PSSEL_WEAK_PDPU          (MXC_V_GPIO_PSSEL_GPIO_PSSEL_WEAK_PDPU << MXC_F_GPIO_PSSEL_GPIO_PSSEL_POS) /**< PSSEL_GPIO_PSSEL_WEAK_PDPU Setting */
+ #define MXC_V_GPIO_PSSEL_GPIO_PSSEL_STRONG_PDPU        ((uint32_t)0x1UL) /**< PSSEL_GPIO_PSSEL_STRONG_PDPU Value */
+ #define MXC_S_GPIO_PSSEL_GPIO_PSSEL_STRONG_PDPU        (MXC_V_GPIO_PSSEL_GPIO_PSSEL_STRONG_PDPU << MXC_F_GPIO_PSSEL_GPIO_PSSEL_POS) /**< PSSEL_GPIO_PSSEL_STRONG_PDPU Setting */
+
+/**@} end of group GPIO_PSSEL_Register */
+
+/**
+ * @ingroup  gpio_registers
+ * @defgroup GPIO_VSSEL GPIO_VSSEL
+ * @brief    GPIO Voltage Select.
+ * @{
+ */
+ #define MXC_F_GPIO_VSSEL_GPIO_VSSEL_POS                0 /**< VSSEL_GPIO_VSSEL Position */
+ #define MXC_F_GPIO_VSSEL_GPIO_VSSEL                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_VSSEL_GPIO_VSSEL_POS)) /**< VSSEL_GPIO_VSSEL Mask */
+ #define MXC_V_GPIO_VSSEL_GPIO_VSSEL_VDDIO              ((uint32_t)0x0UL) /**< VSSEL_GPIO_VSSEL_VDDIO Value */
+ #define MXC_S_GPIO_VSSEL_GPIO_VSSEL_VDDIO              (MXC_V_GPIO_VSSEL_GPIO_VSSEL_VDDIO << MXC_F_GPIO_VSSEL_GPIO_VSSEL_POS) /**< VSSEL_GPIO_VSSEL_VDDIO Setting */
+ #define MXC_V_GPIO_VSSEL_GPIO_VSSEL_VDDIOH             ((uint32_t)0x1UL) /**< VSSEL_GPIO_VSSEL_VDDIOH Value */
+ #define MXC_S_GPIO_VSSEL_GPIO_VSSEL_VDDIOH             (MXC_V_GPIO_VSSEL_GPIO_VSSEL_VDDIOH << MXC_F_GPIO_VSSEL_GPIO_VSSEL_POS) /**< VSSEL_GPIO_VSSEL_VDDIOH Setting */
+
+/**@} end of group GPIO_VSSEL_Register */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _GPIO_REGS_H_ */

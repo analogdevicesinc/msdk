@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>FCR</name>
+  <description>Function Control Register.</description>
+  <baseAddress>0x40000800</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>FCTRL0</name>
+    <description>Register 0.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>ERFO_RANGE_SEL</name>
+      <description>14MHz-32MHz ERFO Frequency Range Select.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>    
+     <field>
+      <name>I2C0_SDA_FILTER_EN</name>
+      <description>I2C0 SDA Glitch Filter Enable.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C0_SCL_FILTER_EN</name>
+      <description>I2C0 SCL Glitch Filter Enable.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C1_SDA_FILTER_EN</name>
+      <description>I2C1 SDA Glitch Filter Enable.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C1_SCL_FILTER_EN</name>
+      <description>I2C1 SCL Glitch Filter Enable.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2_SDA_FILTER_EN</name>
+      <description>I2C2 SDA Glitch Filter Enable.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>I2C2_SCL_FILTER_EN</name>
+      <description>I2C2 SCL Glitch Filter Enable.</description>
+      <bitOffset>25</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Filter disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Filter enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>          
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL0</name>
+    <description>Register 1.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>SEL</name>
+      <description>Auto-calibration Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>EN</name>
+      <description>Autocalibration Run.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LOAD</name>
+      <description>Load Trim.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>INVERT</name>
+      <description>Invert Gain.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ATOMIC</name>
+      <description>Atomic mode.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>Not Running.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>run</name>
+        <description>Running.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>GAIN</name>
+      <description>MU value.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>12</bitWidth>
+     </field>
+     <field>
+      <name>TRIM</name>
+      <description>150MHz HFIO Auto Calibration Trim</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL1</name>
+    <description>Register 2.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INITIAL</name>
+      <description>100MHz IPO Trim Automatic Calibration Initial Trim.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTOCAL2</name>
+    <description>Register 3.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>RUNTIME</name>
+      <description>100MHz IPO Trim Automatic Calibration Run Time.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>DIV</name>
+      <description>100MHz IPO Trim Automatic Calibration Divide Factor.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>13</bitWidth>
+     </field>     
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- NBBFC: Non Battery-Backed Function Control -->
+</device>

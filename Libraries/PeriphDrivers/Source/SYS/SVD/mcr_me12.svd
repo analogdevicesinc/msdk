@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>MCR</name>
+    <description>Misc Control.</description>
+    <baseAddress>0x40006C00</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>RST</name>
+        <description>Reset Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>TMR3</name>
+            <description>TMR3 (LPTMR0) Reset. Setting this bit to 1 resets TMR3 (LPTMR0) block.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RTC</name>
+            <description>Real Time Clock Reset.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CLKCTRL</name>
+        <description>System CLock Control Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>ERTCO_PD</name>
+            <description>32kHz Crystal Oscillator Power Down. Setting this bit powers down the ERTCO analog circuitry.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERTCO_EN</name>
+            <description>32kHz Crystal Oscillator Enable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AINCOMP</name>
+        <description>AIN Comparator Control Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>PD</name>
+            <description>AIN Compatator Power Down control. Before AIN Comparator is powered on, the positive and negative inputs selects for the comparator should be configured.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>HYST</name>
+            <description>AIN Comparator Hysteresis control.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>NSEL_COMP0</name>
+            <description>Negative input select for Comparator 0. No more than 1 input channel can be selected at any time. Corresponding GPIO must be configured for AF4.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>PSEL_COMP0</name>
+            <description>Positive input select for AIN Comparator 0. No more than 1 input channel can be selected at any time. Corresponding GPIO must be configured for AF4.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>NSEL_COMP1</name>
+            <description>Negative input select for Comparator 1. No more than 1 input channel can be selected at any time. Corresponding GPIO must be configured for AF4.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>PSEL_COMP1</name>
+            <description>Positive input select for AIN Comparator 1. No more than 1 input channel can be selected at any time. Corresponding GPIO must be configured for AF4.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPPIOCTRL</name>
+        <description>Low Power Peripheral IO Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>TMR3_IN</name>
+            <description>Enable control for TMR3 (LPTMR0) input. If enabled, the associated GPIO 
+input is connected to the peripheral; otherwise the input to the 
+peripheral is forced low.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TMR3_OUT</name>
+            <description>Enable control for LPTMR0 output. If enabled and peripheral clock 
+also enabled (PCLKDIS.LPTMR0), the peripheral output controls the 
+associated GPIO in output mode; otherwise GPIO control comes 
+from GPIO control module.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TMR3_OUT_N</name>
+            <description>Enable control for TMR3 (LPTMR0) complementary output. If enabled and 
+peripheral clock also enabled (PCLKDIS.TMR3), the peripheral 
+output controls the associated GPIO in output mode; otherwise GPIO 
+control comes from GPIO control module</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PCLKDIS</name>
+        <description>Peripheral Clock Disable Register.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>TMR3</name>
+            <description>TMR3 (LPTMR0) Clock Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AESKEY</name>
+        <description>AES Key Pointer and Status Register.</description>
+        <addressOffset>0x34</addressOffset>
+        <fields>
+          <field>
+            <name>PTR</name>
+            <description>AES Key Pointer/Status</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADCCFG0</name>
+        <description>ADC Config Register 0.</description>
+        <addressOffset>0x38</addressOffset>
+        <fields>
+          <field>
+            <name>LP_EXTCLK_EN</name>
+            <description>Enable input driver for LP External Clock.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EXT_REF</name>
+            <description>External Reference Select.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INT_REF</name>
+            <description>Internal Reference Select Option, when not using External Reference.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADCCFG1</name>
+        <description>ADC Config Register 1.</description>
+        <addressOffset>0x3C</addressOffset>
+        <fields>
+          <field>
+            <name>THRU_PAD_SW_EN</name>
+            <description>Enable the MUX switch, switch placed in padring, used in the buffer path. Each pad has a separate THRU_PAD_SW_EN signal.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>AIN_INP_EN</name>
+            <description>AIN Input Enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>THRU_EN</name>
+            <description>Enable the MUX switches, switch placed in analog_sys, used in the buffer path.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AMP_EN</name>
+            <description>Enable the buffer amplifier used in the buffer path.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AMP_RRI_EN</name>
+            <description>Enable the buffer amplifier to operatore for Rail to Rail Input, Active High. If it is low, only NMOS Input pair will be operating which would restrict the range,</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DIVSEL</name>
+            <description>Select one of the three different signal paths.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADCCFG2</name>
+        <description>ADC Config Register 2.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>VREFM</name>
+            <description>Trimming code for VREFM output of reference buffer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>VREFP</name>
+            <description>Trimming code for VREFP output of reference buffer.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>IDRV</name>
+            <description>Trimming code for reference buffer drive strength.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>VCM</name>
+            <description>Trimming code for VCM output of reference buffer.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>D_IBOOST</name>
+            <description>Trimming value for extra drive current in reference buffer outputs</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

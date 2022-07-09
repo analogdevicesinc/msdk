@@ -1,0 +1,913 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>RPU</name>
+    <description>Resource Protection Unit</description>
+    <baseAddress>0x40002000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>GCR</name>
+        <description>GCR RPU Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIR</name>
+        <description>SIR RPU Register.</description>
+        <addressOffset>0x0004</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FCR</name>
+        <description>FCR RPU Register.</description>
+        <addressOffset>0x0008</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TPU</name>
+        <description>TPU RPU Register.</description>
+        <addressOffset>0x0010</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RPU</name>
+        <description>RPU Register.</description>
+        <addressOffset>0x0020</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDT0</name>
+        <description>WDT0 RPU Register.</description>
+        <addressOffset>0x0030</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDT1</name>
+        <description>WDT1 RPU Register.</description>
+        <addressOffset>0x0034</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDT2</name>
+        <description>WDT2 RPU Register.</description>
+        <addressOffset>0x0038</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SMON</name>
+        <description>SMON RPU Register.</description>
+        <addressOffset>0x0040</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SIMO</name>
+        <description>SIMO RPU Register.</description>
+        <addressOffset>0x0044</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DVS</name>
+        <description>DVS RPU Register.</description>
+        <addressOffset>0x0048</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AES</name>
+        <description>AES RPU Register.</description>
+        <addressOffset>0x0050</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RTC</name>
+        <description>RTC RPU Register.</description>
+        <addressOffset>0x0060</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WUT</name>
+        <description>WUT RPU Register.</description>
+        <addressOffset>0x0064</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PWRSEQ</name>
+        <description>PWRSEQ RPU Register.</description>
+        <addressOffset>0x0068</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MCR</name>
+        <description>MCR RPU Register.</description>
+        <addressOffset>0x006C</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GPIO0</name>
+        <description>GPIO0 RPU Register.</description>
+        <addressOffset>0x0080</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GPIO1</name>
+        <description>GPIO1 RPU Register.</description>
+        <addressOffset>0x0090</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TMR0</name>
+        <description>TMR0 RPU Register.</description>
+        <addressOffset>0x0100</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TMR1</name>
+        <description>TMR1 RPU Register.</description>
+        <addressOffset>0x0110</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TMR2</name>
+        <description>TMR2 RPU Register.</description>
+        <addressOffset>0x0120</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TMR3</name>
+        <description>TMR3 RPU Register.</description>
+        <addressOffset>0x0130</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TMR4</name>
+        <description>TMR4 RPU Register.</description>
+        <addressOffset>0x0140</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TMR5</name>
+        <description>TMR5 RPU Register.</description>
+        <addressOffset>0x0150</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HTIMER0</name>
+        <description>HTIMER0 RPU Register.</description>
+        <addressOffset>0x01B0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HTIMER1</name>
+        <description>HTIMER1 RPU Register.</description>
+        <addressOffset>0x01C0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2C0_BUS0</name>
+        <description>I2C0_BUS0 RPU Register.</description>
+        <addressOffset>0x01D0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2C1_BUS0</name>
+        <description>I2C1_BUS0 RPU Register.</description>
+        <addressOffset>0x01E0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2C2_BUS0</name>
+        <description>I2C2_BUS0 RPU Register.</description>
+        <addressOffset>0x01F0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPIXM</name>
+        <description>SPIXM RPU Register.</description>
+        <addressOffset>0x0260</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPIXFC</name>
+        <description>SPIXFC RPU Register.</description>
+        <addressOffset>0x0270</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA0</name>
+        <description>DMA0 RPU Register.</description>
+        <addressOffset>0x0280</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FLC0</name>
+        <description>FLC0 RPU Register.</description>
+        <addressOffset>0x0290</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FLC1</name>
+        <description>FLC1 RPU Register.</description>
+        <addressOffset>0x0294</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ICC0</name>
+        <description>ICC0 RPU Register.</description>
+        <addressOffset>0x02A0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ICC1</name>
+        <description>ICC1 RPU Register.</description>
+        <addressOffset>0x02A4</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SFCC</name>
+        <description>SFCC RPU Register.</description>
+        <addressOffset>0x02F0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SRCC</name>
+        <description>SRCC RPU Register.</description>
+        <addressOffset>0x0330</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ADC</name>
+        <description>ADC RPU Register.</description>
+        <addressOffset>0x0340</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA1</name>
+        <description>DMA1 RPU Register.</description>
+        <addressOffset>0x0350</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SDMA</name>
+        <description>SDMA RPU Register.</description>
+        <addressOffset>0x0360</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SDHCCTRL</name>
+        <description>SD Host Controller (APB).</description>
+        <addressOffset>0x0370</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPIXR</name>
+        <description>SPIXR RPU Register.</description>
+        <addressOffset>0x03A0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PTG_BUS0</name>
+        <description>PTG_BUS0 RPU Register.</description>
+        <addressOffset>0x03C0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OWM</name>
+        <description>OWM RPU Register.</description>
+        <addressOffset>0x03D0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SEMA</name>
+        <description>SEMA RPU Register.</description>
+        <addressOffset>0x03E0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>UART0</name>
+        <description>UART0 RPU Register.</description>
+        <addressOffset>0x0420</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>UART1</name>
+        <description>UART1 RPU Register.</description>
+        <addressOffset>0x0430</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>UART2</name>
+        <description>UART2 RPU Register.</description>
+        <addressOffset>0x0440</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPI1</name>
+        <description>SPI1 RPU Register.</description>
+        <addressOffset>0x0460</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPI2</name>
+        <description>SPI2 RPU Register.</description>
+        <addressOffset>0x0470</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AUDIO</name>
+        <description>AUDIO RPU Register.</description>
+        <addressOffset>0x04C0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TRNG</name>
+        <description>TRNG RPU Register.</description>
+        <addressOffset>0x04D0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BTLE</name>
+        <description>BTLE RPU Register.</description>
+        <addressOffset>0x0500</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2C0_BUS1</name>
+        <description>I2C0_BUS1 RPU Register.</description>
+        <addressOffset>0x11D0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2C1_BUS1</name>
+        <description>I2C1_BUS1 RPU Register.</description>
+        <addressOffset>0x11E0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2C2_BUS1</name>
+        <description>I2C2_BU1 RPU Register.</description>
+        <addressOffset>0x11F0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PTG_BUS1</name>
+        <description>PTG_BUS1  RPU Register.</description>
+        <addressOffset>0x13C0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>USBHS</name>
+        <description>USBHS RPU Register.</description>
+        <addressOffset>0x0B10</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SDIO</name>
+        <description>SDIO/SDHC Target RPU Register.</description>
+        <addressOffset>0x0B60</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPIXFM_FIFO</name>
+        <description>SPIXFM_FIFO RPU Register.</description>
+        <addressOffset>0x0BC0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SPI0</name>
+        <description>SPI0 RPU Register.</description>
+        <addressOffset>0x0BE0</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM0</name>
+        <description>SYSRAM0 RPU Register.</description>
+        <addressOffset>0x0F00</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM1</name>
+        <description>SYSRAM1 RPU Register.</description>
+        <addressOffset>0x0F10</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM2</name>
+        <description>SYSRAM2 RPU Register.</description>
+        <addressOffset>0x0F20</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM3</name>
+        <description>SYSRAM3 RPU Register.</description>
+        <addressOffset>0x0F30</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM4</name>
+        <description>SYSRAM4 RPU Register.</description>
+        <addressOffset>0x0F40</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM5</name>
+        <description>SYSRAM5 RPU Register.</description>
+        <addressOffset>0x0F50</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSRAM6_11</name>
+        <description>SYSRAM6-11 RPU Register.</description>
+        <addressOffset>0x0F60</addressOffset>
+        <fields>
+          <field>
+            <name>ACCESS</name>
+            <description>APB Slave Peripheral Access Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- RTC : Real Time Clock & Alarm -->
+</device>

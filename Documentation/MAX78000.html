@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>MAX78000 Documentation</title>
+		<style>
+			a:hover, a:focus {
+				color: #6e2585;
+			}
+			a:active, a:hover {
+				outline: 0;
+			}
+			a {
+				color: #00b2a9;
+				text-decoration: none;
+			}
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				color: #6c6f70;
+			}
+			h1 {
+				font-size: 150%;
+				color: #000;
+			}
+			h2 {
+				font-size: 125%;
+				color: #6e2585;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>MAX78000 Documentation</h1>
+		<hr>
+
+		Please visit Maxim's MAX78000 GitHub repository for:
+		<ol>
+			<li><a href='https://github.com/MaximIntegratedAI'>The latest versions of all files</a></li>
+			<li><a href='https://github.com/MaximIntegratedAI/MaximAI_Documentation/blob/master/MAX78000_Evaluation_Kit/README.md'>Instructions for getting started with the evaluation kit.</a> You may need to log in to GitHub before accessing.</li>
+		</ol>
+			
+		Additional information can be found in the following links.
+
+		<h2>SDK</h2>
+		<ul>
+			<li id='periph'></li>
+			<li>Toolchain</li>
+			<ul>
+				<li id='eclipse'></li>
+				<li id='gnu-arm'></li>
+				<li id='gnu-riscv'></li>
+				<li id='mingw'></li>
+				<li id='openocd'></li>
+				<li id='sbt'></li>
+				<li id='bmp-converter'></li>
+				<li id='free-rtos'></li>
+			</ul>
+		</ul>
+		<hr>
+
+		<h2>Example Applications</h2>
+		The following examples can be found in the <a href='../Examples/MAX78000'>Examples/MAX78000</a> directory of the SDK installation:
+		<ul>
+			<li><a href='../Examples/MAX78000/ADC/README.md'>ADC</a> - Analog-to-Digital Converter</li>
+			<li><a href='../Examples/MAX78000/AES/README.md'>AES</a> - Advanced Encryption Standard</li>
+			<li><a href='../Examples/MAX78000/CameraIF/README.md'>CameraIF</a> - Parallel Camera Interface</li>
+			<li>CNN - Convolutional Neural Network</li>
+			<ul>
+				<li><a href='../Examples/MAX78000/CNN/cats-dogs_demo/README.md'>cats-dogs_demo</a> - Image Classification using 2 Choices</li>
+				<li><a href='../Examples/MAX78000/CNN/cats-vs-dogs/README.md'>cats-vs-dogs</a> - Image Classification using 2 Choices</li>
+				<li><a href='../Examples/MAX78000/CNN/cifar-10/README.md'>cifar-10</a> - Object Classification using 10 Choices</li>
+				<li><a href='../Examples/MAX78000/CNN/cifar-10-auto-test/README.md'>cifar-10-auto-test</a> - Based on CIFAR-10 but receives image data (QSPI) and sends interface result (UART0)</li>
+				<li><a href='../Examples/MAX78000/CNN/cifar-100/README.md'>cifar-100</a> - Object Classification using 100 Choices</li>
+				<li><a href='../Examples/MAX78000/CNN/faceid/README.md'>faceid</a> - Facial Recognition Demonstration</li>
+				<li><a href='../Examples/MAX78000/CNN/faceid_demo/README.md'>faceid_demo</a> - Facial Recognition Demonstration</li>
+				<li><a href='../Examples/MAX78000/CNN/faceid_evkit/README.md'>faceid_evkit</a> - Facial Recognition Demonstration</li>
+				<li><a href='../Examples/MAX78000/CNN/faceid_evkit-riscv/README.md'>faceid_evkit</a> - Facial Recognition Demonstration (runs on RISC-V core)</li>
+				<li><a href='../Examples/MAX78000/CNN/kws20_demo/README.md'>kws20_demo</a> - Audio Keyword Spotting</li>
+				<li><a href='../Examples/MAX78000/CNN/kws20_demo-riscv/README.md'>kws20_demo-riscv</a> - Audio Keyword Spotting (runs on RISC-V core)</li>
+				<li><a href='../Examples/MAX78000/CNN/kws20_v3/README.md'>kws20_v3</a> - Audio Keyword Spotting</li>
+				<li><a href='../Examples/MAX78000/CNN/mnist/README.md'>mnist</a> - Handwritten Digit Recognition</li>
+				<li><a href='../Examples/MAX78000/CNN/mnist-riscv/README.md'>mnist-riscv</a> - Handwritten Digit Recognition (runs on RISC-V core)</li>
+				<li><a href='../Examples/MAX78000/CNN/mnist-streaming/README.md'>mnist-streaming</a> - Handwritten Digit Recognition</li>
+				<li><a href='../Examples/MAX78000/CNN/rps/README.md'>rps</a> - Rock, Paper, Scissors Hand Gesture Recognition</li>
+				<li><a href='../Examples/MAX78000/CNN/rps_demo/README.md'>rps_demo</a> - Rock, Paper, Scissors Demo</li>
+				<li><a href='../Examples/MAX78000/CNN/snake_game_demo/README.md'>snake_game_demo</a> - Audio Keyword Spotting</li>
+				<li><a href='../Examples/MAX78000/CNN/UNet-demo/README.md'>UNet-demo</a> - U-Net Network Demo</li>
+			</ul>
+			<li><a href='../Examples/MAX78000/CRC/README.md'>CRC</a> - Cyclic Redundancy Check</li>
+			<li><a href='../Examples/MAX78000/DMA/README.md'>DMA</a> - Direct Memory Access</li>
+			<li><a href='../Examples/MAX78000/ECC/README.md'>ECC</a> - Error Correction Code</li>
+			<li><a href='../Examples/MAX78000/Flash/README.md'>Flash</a> - Flash Memory</li>
+			<li><a href='../Examples/MAX78000/FreeRTOSDemo/README.md'>FreeRTOSDemo</a></li>
+			<li><a href='../Examples/MAX78000/GPIO/README.md'>GPIO</a> - General Purpose Input/Output</li>
+			<li><a href='../Examples/MAX78000/Hello_World/README.md'>Hello_World</a></li>
+			<li><a href='../Examples/MAX78002/I2C/README.md'>I2C</a> - The Standard 2-Wire Serial Protocol</li>
+			<li><a href='../Examples/MAX78002/I2C_ADXL343/README.md'>I2C_ADXL343</a> - Accelerometer on Featherboard</li>
+			<li><a href='../Examples/MAX78002/I2S/README.md'>I2S</a> - Inter-IC Sound</li>
+			<li><a href='../Examples/MAX78002/I2S/README.md'>I2S_DMA</a> - Inter-IC Sound using Direct Memory Access</li>
+			<li><a href='../Examples/MAX78000/ICC/README.md'>ICC</a> - Internal Cache Controller</li>
+			<li><a href='../Examples/MAX78000/LP/README.md'>LP</a> - Low Power</li>
+			<li><a href='../Examples/MAX78000/Pulse_Train/README.md'>Pulse_Train</a></li>
+			<li><a href='../Examples/MAX78000/RTC/README.md'>RTC</a> - Real Time Clock</li>
+			<li><a href='../Examples/MAX78000/SDHC_FTHR/README.md'>SDHC_FTHR</a> - SDHC for Featherboard</li>
+			<li><a href='../Examples/MAX78000/SPI/README.md'>SPI</a> - Serial Peripheral Interface</li>
+			<li><a href='../Examples/MAX78000/TFT_Demo/README.md'>TFT_Demo</a> - Thin-Film Transistor Display</li>
+			<li><a href='../Examples/MAX78000/TMR/README.md'>TMR</a> - General Purpose Timer</li>
+			<li><a href='../Examples/MAX78000/TRNG/README.md'>TRNG</a> - True Random Number Generator</li>
+			<li><a href='../Examples/MAX78000/UART/README.md'>UART</a> - Universal Asynchronous Receiver/Transmitter</li>
+			<li><a href='../Examples/MAX78000/Watchdog/README.md'>Watchdog</a></li>
+			<li><a href='../Examples/MAX78000/WearLeveling/README.md'>WearLeveling</a></li>
+			<li><a href='../Examples/MAX78000/WUT/README.md'>WUT</a> - Wake Up Timer</li>
+		</ul>
+		<hr>
+
+		<h2>Device Information</h2>
+		Additional information about the MAX78000 can be found in these documents:
+		<ul>
+			<li><a href='https://github.com/MaximIntegratedAI/MaximAI_Documentation/raw/master/MAX78000/MAX78000 PDS Rev4.pdf'>IC Datasheet</a></li>
+			<li><a href='https://github.com/MaximIntegratedAI/MaximAI_Documentation/raw/master/MAX78000/MAX78000 User Guide.pdf'>IC User Guide</a></li>
+			<li><a href='https://github.com/MaximIntegratedAI/MaximAI_Documentation/raw/master/MAX78000_Evaluation_Kit/MAX78000 REV A including mods.pdf'>Evaluation Kit Schematic (Revision A)</a></li>
+		</ul>
+
+		<script type="text/javascript">
+
+			function addLink(testFile, url, passText, failText, dom)
+			{
+				var img = new Image();
+				img.onerror = function() {
+					dom.innerHTML += failText;
+				};
+				img.onload = function() {
+					dom.innerHTML += '<a href="' + url + '">' + passText + '</a>';
+				};
+				img.src = testFile;
+				console.log('Test');
+				console.log(img.currentSrc);
+			}
+
+			addLink('../Libraries/PeriphDrivers/Documentation/MAX78000/doc.png',
+				    '../Libraries/PeriphDrivers/Documentation/MAX78000/index.html',
+				    'Peripheral API', 
+				    'The periheral API documentation has not been installed.', 
+				    document.getElementById('periph')
+				);
+
+			addLink('../Tools/Eclipse/cdt/plugins/org.eclipse.platform_4.13.0.v20190916-1045/splash.bmp',
+				    '../Tools/Eclipse/cdt/readme/readme_eclipse.html',
+				    'Eclipse', 
+				    'Eclipse has not been installed.', 
+				    document.getElementById('eclipse')
+				);
+
+			addLink('../Tools/GNUTools/blank.bmp',
+				    'https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm',
+				    'GNU Tools for ARM', 
+				    'The GNU Tools for ARM have not been installed.', 
+				    document.getElementById('gnu-arm')
+				);
+
+			addLink('../Tools/xPack/blank.bmp',
+				    '../Tools/xPack/riscv-none-embed-gcc/README.md',
+				    'GNU Tools for RISC-V', 
+				    'The GNU Tools for RISC-V have not been installed.', 
+				    document.getElementById('gnu-riscv')
+				);
+
+			addLink('../Libraries/FreeRTOS/Documentation/blank.bmp',
+				    '../Libraries/FreeRTOS/readme.txt',
+				    'Free-RTOS', 
+				    'The Free-RTOS libraries have not been installed.', 
+				    document.getElementById('free-rtos')
+				);
+			addLink('../Tools/BitmapConverter/docs/blank.bmp',
+				    '../Tools/BitmapConverter/docs/README.md',
+				    'Bitmap Converter', 
+				    'The bitmap converter has not been installed.', 
+				    document.getElementById('bmp-converter')
+				);
+			addLink('../Tools/SBT/docs/blank.bmp',
+				    '../Tools/SBT/docs/UG7236Rev0_MaximSDK_Secure_Boot_Tool_User_Guide_Preliminary.pdf',
+				    'Secure Boot Tools', 
+				    'The secure boot tools have not been installed.', 
+				    document.getElementById('sbt')
+				);
+			addLink('../Tools/OpenOCD/blank.bmp',
+				    'http://openocd.org/doc/html/index.html',
+				    'OpenOCD', 
+				    'OpenOCD has not been installed.', 
+				    document.getElementById('openocd')
+				);
+			addLink('../Tools/MinGW/msys/1.0/opt/lib/tk8.6/images/logo64.gif',
+				    'http://www.mingw.org/',
+				    'MinGW', 
+				    'The MinGW package has not been installed.', 
+				    document.getElementById('mingw')
+				);
+	</script>
+	</body>
+</html>

@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>EMCC</name>
+    <description>External Memory Cache Controller Registers.</description>
+    <baseAddress>0x40033000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>INFO</name>
+        <description>Cache ID Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>RELNUM</name>
+            <description>Release Number. Identifies the RTL release version.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>PARTNUM</name>
+            <description>Part Number. This field reflects the value of C_ID_PART_NUMBER configuration parameter.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>ID</name>
+            <description>Cache ID. This field reflects the value of the C_ID_CACHEID configuration parameter.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SZ</name>
+        <description>Memory Configuration Register.</description>
+        <addressOffset>0x0004</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x00080008</resetValue>
+        <fields>
+          <field>
+            <name>CCH</name>
+            <description>Cache Size. Indicates total size in Kbytes of cache.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>MEM</name>
+            <description>Main Memory Size. Indicates the total size, in units of 128 Kbytes, of code memory accessible to the cache controller.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>Cache Control and Status Register.</description>
+        <addressOffset>0x0100</addressOffset>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Cache Enable. Controls whether the cache is bypassed or is in use. Changing the state of this bit will cause the instruction cache to be flushed and its contents invalidated.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Cache Bypassed. Instruction data is stored in the line fill buffer but is not written to main cache memory array.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Cache Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRITE_ALLOC</name>
+            <description>Write Allocate Enable. This bit only writable while the cache is disabled.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Write-no-allocate.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Write-allocate enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CWFST_DIS</name>
+            <description>Critical word first and streaming disable. This bit only writeable while the cache is disabled.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Critical word first and streaming disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Critical word first and streaming enabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDY</name>
+            <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>notReady</name>
+                <description>Not Ready.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INVALIDATE</name>
+        <description>Invalidate All Cache Contents. Any time this register location is written (regardless of the data value), the cache controller immediately begins invalidating the entire contents of the cache memory. The cache will be in bypass mode until the invalidate operation is complete. System software can examine the Cache Ready bit (CACHE_CTRL.CACHE_RDY) to determine when the invalidate operation is complete. Note that it is not necessary to disable the cache controller prior to beginning this operation. Reads from this register always return 0.</description>
+        <addressOffset>0x0700</addressOffset>
+        <fields>
+          <field>
+            <name>IA</name>
+            <description>Invalidate all cache contents.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- DCC:
+                                                     Data Cache Controller Registers       -->
+</device>

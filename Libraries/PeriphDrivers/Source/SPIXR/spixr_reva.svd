@@ -1,0 +1,1139 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SPIXR</name>
+  <description>SPIXR peripheral.</description>
+  <baseAddress>0x4003A000</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>DATA32</name>
+    <description>Register for reading and writing the FIFO.</description>
+    <addressOffset>0x00</addressOffset>
+    <size>32</size>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>DATA</name>
+      <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <dim>2</dim>
+    <dimIncrement>2</dimIncrement>
+    <name>DATA16[%s]</name>
+    <description>Register for reading and writing the FIFO.</description>
+    <alternateRegister>DATA32</alternateRegister>
+    <addressOffset>0x00</addressOffset>
+    <size>16</size>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>DATA</name>
+      <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>16</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <dim>4</dim>
+    <dimIncrement>1</dimIncrement>
+    <name>DATA8[%s]</name>
+    <description>Register for reading and writing the FIFO.</description>
+    <alternateRegister>DATA32</alternateRegister>
+    <addressOffset>0x00</addressOffset>
+    <size>8</size>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>DATA</name>
+      <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ctrl1</name>
+    <description>Register for controlling SPI peripheral.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>SPIEN</name>
+      <description>SPI Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>SPI is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>SPI is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>MMEN</name>
+      <description>Master Mode Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>SPI is Slave mode.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>SPI is  Master mode.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSIO</name>
+      <description>Slave Select 0, IO direction, to support Multi-Master mode,
+                                                 Slave Select 0 can be input in Master mode. This bit has no
+                                                 effect in slave mode.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>output</name>
+        <description>Slave select 0 is output.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>input</name>
+        <description>Slave Select 0 is input, only valid if MMEN=1.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_START</name>
+      <description>Start Transmit.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>start</name>
+        <description>Master Initiates a transaction, this bit is
+                                                             self clearing when transactions are done. If
+                                                             a transaction completes, and the TX FIFO
+                                                             is empty, the Master halts, if a transaction
+                                                                 completes, and the TX FIFO is not empty,
+                                                                            the Master initiates another transaction.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SS_CTRL</name>
+      <description>Slave Select Control.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>deassert</name>
+        <description>SPI de-asserts Slave Select at the end of a transaction.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>assert</name>
+        <description>SPI leaves Slave Select asserted at the end of a transaction.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SS</name>
+      <description>Slave Select, when in Master mode selects which Slave devices are
+                                                                            selected. More than one Slave device can be selected.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ctrl2</name>
+    <description>Register for controlling SPI peripheral.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>TX_NUM_CHAR</name>
+      <description>Nubmer of Characters to transmit.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>16</bitWidth>
+     </field>
+     <field>
+      <name>RX_NUM_CHAR</name>
+      <description>Nubmer of Characters to receive.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>16</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ctrl3</name>
+    <description>Register for controlling SPI peripheral.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>CPHA</name>
+      <description>Clock Phase.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CPOL</name>
+      <description>Clock Polarity.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>SCLK_FB_INV</name>
+      <description>Invert SCLK Feedback in Master Mode.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>NON_INV</name>
+        <description>SCLK is not inverted to Line Receiver.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>INV</name>
+        <description>SCLK is inverted to Line Receiver.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>NUMBITS</name>
+      <description>Number of Bits per character.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>0</name>
+        <description>16 bits per character.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>DATA_WIDTH</name>
+      <description>SPI Data width.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>Mono</name>
+        <description>1 data pin.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>Dual</name>
+        <description>2 data pins.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>Quad</name>
+        <description>4 data pins.</description>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>THREE_WIRE</name>
+      <description>Three Wire mode. MOSI/MISO pin (s) shared. Only Mono mode suports Four-Wire.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Use four wire mode (Mono only).</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Use three wire mode.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSPOL</name>
+      <description>Slave Select Polarity</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ss_time</name>
+    <description>Register for controlling SPI peripheral.</description>
+    <addressOffset>0x10</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>SSACT1</name>
+      <description>Slave Select Action delay 1.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>256</name>
+        <description>256 system clocks between SS active and first serial clock edge.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSACT2</name>
+      <description>Slave Select Action delay 2.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>256</name>
+        <description>256 system clocks between last serial clock edge and SS inactive.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSINACT</name>
+      <description>Slave Select Inactive delay.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>256</name>
+        <description>256 system clocks between transactions.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>BRG_CTRL</name>
+    <description>Register for controlling SPI clock rate.</description>
+    <addressOffset>0x14</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>LOW</name>
+      <description>Low duty cycle control. In timer mode, reload[7:0].</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>Dis</name>
+        <description>Duty cycle control of serial clock generation is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>HI</name>
+      <description>High duty cycle control. In timer mode, reload[15:8].</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>Dis</name>
+        <description>Duty cycle control of serial clock generation is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SCALE</name>
+      <description>System Clock scale factor. Scales the AMBA clock by 2^SCALE before generating serial clock.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>4</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>DMA</name>
+    <description>Register for controlling DMA.</description>
+    <addressOffset>0x1C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>TX_FIFO_LEVEL</name>
+      <description>Transmit FIFO level that will trigger a DMA request, also level for
+                                                                                                    threshold status. When TX FIFO has fewer than this many bytes, the
+                                                                                                    associated events and conditions are triggered.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>6</bitWidth>
+     </field>
+     <field>
+      <name>TX_FIFO_EN</name>
+      <description>Transmit FIFO enabled for SPI transactions.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Transmit FIFO is not enabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Transmit FIFO is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_FIFO_CLEAR</name>
+      <description>Clear TX FIFO, clear is accomplished by resetting the read and write
+                                                                                                        pointers. This should be done when FIFO is not being accessed on the SPI side.
+                                                                                                        </description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>CLEAR</name>
+        <description>Clear the Transmit FIFO, clears any pending TX FIFO status.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_FIFO_CNT</name>
+      <description>Count of entries in TX FIFO.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>5</bitWidth>
+     </field>
+     <field>
+      <name>TX_DMA_EN</name>
+      <description>TX DMA Enable.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>DIS</name>
+        <description>TX DMA requests are disabled, andy pending DMA requests are cleared.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>TX DMA requests are enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FIFO_LEVEL</name>
+      <description>Receive FIFO level that will trigger a DMA request, also level for
+                                                                                                            threshold status. When RX FIFO has more than this many bytes, the
+                                                                                                            associated events and conditions are triggered.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>6</bitWidth>
+     </field>
+     <field>
+      <name>RX_FIFO_EN</name>
+      <description>Receive FIFO enabled for SPI transactions.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>DIS</name>
+        <description>Receive FIFO is not enabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Receive FIFO is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FIFO_CLEAR</name>
+      <description>Clear RX FIFO, clear is accomplished by resetting the read and write
+                                                                                                                pointers. This should be done when FIFO is not being accessed on the SPI side.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>CLEAR</name>
+        <description>Clear the Receive FIFIO, clears any pending RX FIFO status.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FIFO_CNT</name>
+      <description>Count of entries in RX FIFO.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>6</bitWidth>
+     </field>
+     <field>
+      <name>RX_DMA_EN</name>
+      <description>RX DMA Enable.</description>
+      <bitOffset>31</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>RX DMA requests are disabled, any pending DMA requests are cleared.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>RX DMA requests are enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>int_fl</name>
+    <description>Register for reading and clearing interrupt flags. All bits are write 1 to clear.</description>
+    <addressOffset>0x20</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>TX_THRESH</name>
+      <description>TX FIFO Threshold Crossed.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_EMPTY</name>
+      <description>TX FIFO Empty.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_THRESH</name>
+      <description>RX FIFO Threshold Crossed.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FULL</name>
+      <description>RX FIFO FULL.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSA</name>
+      <description>Slave Select Asserted.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSD</name>
+      <description>Slave Select Deasserted.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>FAULT</name>
+      <description>Multi-Master Mode Fault.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ABORT</name>
+      <description>Slave Abort Detected.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>M_DONE</name>
+      <description>Master Done, set when SPI Master has completed any transactions.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_OVR</name>
+      <description>Transmit FIFO Overrun, set when the AMBA side attempts to write data
+                                                                                                                    to a full transmit FIFO.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_UND</name>
+      <description>Transmit FIFO Underrun, set when the SPI side attempts to read data
+                                                                                                                    from an empty transmit FIFO.</description>
+      <bitOffset>13</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_OVR</name>
+      <description>Receive FIFO Overrun, set when the SPI side attempts to write to a full receive FIFO.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_UND</name>
+      <description>Receive FIFO Underrun, set when the AMBA side attempts to read data from an empty receive FIFO.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>int_en</name>
+    <description>Register for enabling interrupts.</description>
+    <addressOffset>0x24</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>TX_THRESH</name>
+      <description>TX FIFO Threshold interrupt enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_EMPTY</name>
+      <description>TX FIFO Empty interrupt enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_THRESH</name>
+      <description>RX FIFO Threshold Crossed interrupt enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FULL</name>
+      <description>RX FIFO FULL interrupt enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSA</name>
+      <description>Slave Select Asserted interrupt enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>SSD</name>
+      <description>Slave Select Deasserted interrupt enable.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>FAULT</name>
+      <description>Multi-Master Mode Fault interrupt enable.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>ABORT</name>
+      <description>Slave Abort Detected interrupt enable.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>M_DONE</name>
+      <description>Master Done interrupt enable.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_OVR</name>
+      <description>Transmit FIFO Overrun interrupt enable.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_UND</name>
+      <description>Transmit FIFO Underrun interrupt enable.</description>
+      <bitOffset>13</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_OVR</name>
+      <description>Receive FIFO Overrun interrupt enable.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_UND</name>
+      <description>Receive FIFO Underrun interrupt enable.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Interrupt is disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Interrupt is enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>WAKE_FL</name>
+    <description>Register for wake up flags. All bits in this register are write 1 to clear.</description>
+    <addressOffset>0x28</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>TX_THRESH</name>
+      <description>Wake on TX FIFO Threshold Crossed.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_EMPTY</name>
+      <description>Wake on TX FIFO Empty.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_THRESH</name>
+      <description>Wake on RX FIFO Threshold Crossed.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FULL</name>
+      <description>Wake on RX FIFO Full.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>Flag is set when value read is 1. Write 1 to clear this flag.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>WAKE_EN</name>
+    <description>Register for wake up enable.</description>
+    <addressOffset>0x2C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>TX_THRESH</name>
+      <description>Wake on TX FIFO Threshold Crossed Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Wakeup source disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Wakeup source enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TX_EMPTY</name>
+      <description>Wake on TX FIFO Empty Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Wakeup source disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Wakeup source enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_THRESH</name>
+      <description>Wake on RX FIFO Threshold Crossed Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Wakeup source disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Wakeup source enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RX_FULL</name>
+      <description>Wake on RX FIFO Full Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Wakeup source disabled.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Wakeup source enabled.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>STAT</name>
+    <description>SPI Status register.</description>
+    <addressOffset>0x30</addressOffset>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>BUSY</name>
+      <description>SPI active status. In Master mode, set when transaction starts,
+                                                                                                                                cleared when last bit of last character is acted upon and Slave Select
+                                                                                                                                de-assertion would occur. In Slave mode, set when Slave Select is
+                                                                                                                                asserted, cleared when Slave Select is de-asserted. Not used in Timer mode.
+                                                                                                                                </description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>not</name>
+        <description>SPI not active.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>active</name>
+        <description>SPI active.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>XMEM_CTRL</name>
+    <description>Register to control external memory.</description>
+    <addressOffset>0x34</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>RD_CMD</name>
+      <description>Read command.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>WR_CMD</name>
+      <description>Write command.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>DUMMY_CLK</name>
+      <description>Dummy clocks.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>XMEM_EN</name>
+      <description>XMEM enable.</description>
+      <bitOffset>31</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SPIXR for Data XIP interface               -->
+</device>

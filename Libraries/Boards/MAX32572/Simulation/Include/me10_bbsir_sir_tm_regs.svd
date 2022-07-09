@@ -1,0 +1,218 @@
+
+		<peripheral>						<!--    SIR: System Initialization Registers 			-->
+			<name>SIR_TM</name>
+			<description>System Initialization Registers (For Test Mode)</description>
+			<baseAddress>0x40000400</baseAddress>
+			<addressBlock>
+				<offset>0x00</offset>
+				<size>0x400</size>
+				<usage>registers</usage>
+			</addressBlock>
+			<registers>
+				<register>
+					<name>SISTAT</name>
+					<description>System Initialization Status Register</description>
+					<addressOffset>0x00</addressOffset>
+				</register>
+				<register>
+					<name>ERRADDR</name>
+					<description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
+					<addressOffset>0x04</addressOffset>
+				</register>
+				<register>
+					<name>CONF</name>
+					<description>Configuration Register 0.</description>
+					<addressOffset>0x08</addressOffset>
+				</register>
+				<register>
+					<name>CONF1</name>
+					<description>Configuration Register 1.</description>
+					<addressOffset>0x0C</addressOffset>
+				</register>
+				<register>
+					<name>SHR4</name>
+					<description>Shadow Register 4.</description>
+					<addressOffset>0x10</addressOffset>
+				</register>
+				<register>
+					<name>SHR5</name>
+					<description>Shadow Register 5.</description>
+					<addressOffset>0x14</addressOffset>
+				</register>
+				<register>
+					<name>SHR6</name>
+					<description>Shadow Register 6.</description>
+					<addressOffset>0x18</addressOffset>
+				</register>
+				<register>
+					<name>SHR7</name>
+					<description>Shadow Register 7.</description>
+					<addressOffset>0x1C</addressOffset>
+				</register>
+				<register>
+					<name>SHR8</name>
+					<description>Shadow Register 8.</description>
+					<addressOffset>0x20</addressOffset>
+				</register>
+				<register>
+					<name>SHR9</name>
+					<description>Shadow Register 9.</description>
+					<addressOffset>0x24</addressOffset>
+				</register>
+				<register>
+					<name>SHR10</name>
+					<description>Shadow Register 10.</description>
+					<addressOffset>0x28</addressOffset>
+				</register>
+				<register>
+					<name>SHR11</name>
+					<description>Shadow Register 11.</description>
+					<addressOffset>0x2C</addressOffset>
+				</register>
+				<register>
+					<name>SHR12</name>
+					<description>Shadow Register 12.</description>
+					<addressOffset>0x30</addressOffset>
+				</register>
+				<register>
+					<name>SHR13</name>
+					<description>Shadow Register 13.</description>
+					<addressOffset>0x34</addressOffset>
+				</register>
+				<register>
+					<name>SHR14</name>
+					<description>Shadow Register 14.</description>
+					<addressOffset>0x38</addressOffset>
+				</register>
+				<register>
+					<name>SHR15</name>
+					<description>Shadow Register 15.</description>
+					<addressOffset>0x3C</addressOffset>
+				</register>
+				<register>
+					<name>SHR16</name>
+					<description>Shadow Register 16.</description>
+					<addressOffset>0x40</addressOffset>
+				</register>
+				<register>
+					<name>SHR17</name>
+					<description>Shadow Register 17.</description>
+					<addressOffset>0x44</addressOffset>
+				</register>
+				<register>
+					<name>SHR18</name>
+					<description>Shadow Register 18.</description>
+					<addressOffset>0x48</addressOffset>
+				</register>
+				<register>
+					<name>SHR19</name>
+					<description>Shadow Register 19.</description>
+					<addressOffset>0x4C</addressOffset>
+				</register>
+				<register>
+					<name>SHR20</name>
+					<description>Shadow Register 20.</description>
+					<addressOffset>0x50</addressOffset>
+				</register>
+				<register>
+					<name>SHR21</name>
+					<description>Shadow Register 21.</description>
+					<addressOffset>0x54</addressOffset>
+				</register>
+				<register>
+					<name>SHR22</name>
+					<description>Shadow Register 22.</description>
+					<addressOffset>0x58</addressOffset>
+				</register>
+				<register>
+					<name>SHR23</name>
+					<description>Shadow Register 23.</description>
+					<addressOffset>0x5C</addressOffset>
+				</register>
+				<register>
+					<name>SHR24</name>
+					<description>Shadow Register 24.</description>
+					<addressOffset>0x60</addressOffset>
+				</register>
+				<register>
+					<name>SHR25</name>
+					<description>Shadow Register 25.</description>
+					<addressOffset>0x64</addressOffset>
+				</register>
+			</registers>
+			<access>read-only</access>
+		</peripheral>
+
+		<peripheral>						<!--    BBSIR: Battery Backed System Initialization Registers 			-->
+			<name>BBSIR_TM</name>
+			<description>Battery Backed System Initialization Registers (For Test Mode)</description>
+			<baseAddress>0x40005400</baseAddress>
+			<addressBlock>
+				<offset>0x00</offset>
+				<size>0x400</size>
+				<usage>registers</usage>
+			</addressBlock>
+			<registers>
+				<register>
+					<name>BBCONF0</name>
+					<description>Configuration Register 0.</description>
+					<addressOffset>0x00</addressOffset>
+				</register>
+				<register>
+					<name>BBCONF1</name>
+					<description>Configuration Register 1.</description>
+					<addressOffset>0x04</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR2</name>
+					<description>Shadow Register 2.</description>
+					<addressOffset>0x08</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR3</name>
+					<description>Shadow Register 3.</description>
+					<addressOffset>0x0C</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR4</name>
+					<description>Shadow Register 4.</description>
+					<addressOffset>0x10</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR5</name>
+					<description>Shadow Register 5.</description>
+					<addressOffset>0x14</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR6</name>
+					<description>Shadow Register 6.</description>
+					<addressOffset>0x18</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR7</name>
+					<description>Shadow Register 7.</description>
+					<addressOffset>0x1C</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR8</name>
+					<description>Shadow Register 8.</description>
+					<addressOffset>0x20</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR9</name>
+					<description>Shadow Register 9.</description>
+					<addressOffset>0x24</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR10</name>
+					<description>Shadow Register 10.</description>
+					<addressOffset>0x28</addressOffset>
+				</register>
+				<register>
+					<name>BBSHR11</name>
+					<description>Shadow Register 11.</description>
+					<addressOffset>0x2C</addressOffset>
+				</register>
+			</registers>
+			<access>read-only</access>
+		</peripheral>

@@ -1,0 +1,2 @@
+write-file me10_freertos_demo.signed.s19
+verify-file me10_freertos_demo.signed.s19

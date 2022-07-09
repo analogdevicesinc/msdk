@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>GCFR</name>
+  <description>Global Control Function Register.</description>
+  <baseAddress>0x40005800</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>REG0</name>
+    <description>Register 0.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>cnnx16_0_pwr_en</name>
+      <description>CNNx16_0 Power Domain Enable</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_1_pwr_en</name>
+      <description>CNNx16_1 Power Domain Enable</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_2_pwr_en</name>
+      <description>CNNx16_2 Power Domain Enable</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_3_pwr_en</name>
+      <description>CNNx16_3 Power Domain Enable</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>REG1</name>
+    <description>Register 1.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>cnnx16_0_ram_en</name>
+      <description>CNNx16_0 RAM Power Enable</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_1_ram_en</name>
+      <description>CNNx16_1 RAM Power Enable</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_2_ram_en</name>
+      <description>CNNx16_2 RAM Power Enable</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_3_ram_en</name>
+      <description>CNNx16_3 RAM Power Enable</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>REG2</name>
+    <description>Register 2.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>cnnx16_0_iso</name>
+      <description>CNNx16_0 Power Domain Isolation</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_1_iso</name>
+      <description>CNNx16_1 Power Domain Isolation</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_2_iso</name>
+      <description>CNNx16_2 Power Domain Isolation</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_3_iso</name>
+      <description>CNNx16_3 Power Domain Isolation</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_0_data_ret_en</name>
+      <description>CNNx16_0 Pad Retention Control</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>cnnx16_1_data_ret_en</name>
+      <description>CNNx16_1 Pad Retention Control</description>
+      <bitOffset>17</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>cnnx16_2_data_ret_en</name>
+      <description>CNNx16_2 Pad Retention Control</description>
+      <bitOffset>18</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>cnnx16_3_data_ret_en</name>
+      <description>CNNx16_3 Pad Retention Control</description>
+      <bitOffset>19</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_0_ram_data_ret_en</name>
+      <description>CNNx16_0 RAM Pad Retention Control</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>cnnx16_1_ram_data_ret_en</name>
+      <description>CNNx16_1 RAM Pad Retention Control</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>cnnx16_2_ram_data_ret_en</name>
+      <description>CNNx16_2 RAM Pad Retention Control</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>cnnx16_3_ram_data_ret_en</name>
+      <description>CNNx16_3 RAM Pad Retention Control</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>                                 
+    </fields>
+   </register>
+   <register>
+    <name>REG3</name>
+    <description>Register 3.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>cnnx16_0_rst</name>
+      <description>CNNx16_0 Power Domain Reset</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_1_rst</name>
+      <description>CNNx16_1 Power Domain Reset</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_2_rst</name>
+      <description>CNNx16_2 Power Domain Reset</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cnnx16_3_rst</name>
+      <description>CNNx16_3 Power Domain Reset</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+</device>

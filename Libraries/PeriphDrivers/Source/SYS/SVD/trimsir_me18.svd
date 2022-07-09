@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>TRIMSIR</name>
+    <description>Trim System Initilazation Registers</description>
+    <baseAddress>0x40005400</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>RTC</name>
+        <description>RTC Trim System Initialization Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>RTCX1</name>
+            <description>RTC X1 Trim.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>RTCX2</name>
+            <description>RTC X2 Trim.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>LOCK</name>
+            <description>Lock.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- TRIMSIR:Trim System Initilazation Registers -->
+</device>

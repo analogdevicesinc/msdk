@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>HTMR</name>
+    <description>High Speed Timer Module.</description>
+    <baseAddress>0x4001B000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0xFFF</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>HTimer</name>
+      <description>HTimer interrupt.</description>
+      <value>93</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>SEC</name>
+        <description>HTimer Long-Interval Counter. This register contains the 32 most significant bits of the counter.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RTS</name>
+            <description>HTimer Long Interval Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>31</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SSEC</name>
+        <description>HTimer Short Interval Counter. This counter ticks ever t_htclk (16.48uS). HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.</description>
+        <addressOffset>0x04</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RTSS</name>
+            <description>HTimer Short Interval Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RAS</name>
+        <description>Long Interval Alarm.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RAS</name>
+            <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTIMER_SEC[19:0]</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>20</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RSSA</name>
+        <description>HTimer Short Interval Alarm. This register contains the reload value for the short interval alarm, HTIMER_CTRL.alarm_ss_fl is raised on rollover.</description>
+        <addressOffset>0x0C</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RSSA</name>
+            <description>This register contains the reload value for the short interval alarm.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>HTimer Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <resetValue>0x00000008</resetValue>
+        <resetMask>0xFFFFFF38</resetMask>
+        <fields>
+          <field>
+            <name>HTEN</name>
+            <description>HTimer Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADE</name>
+            <description>Long Interval Alarm Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ASE</name>
+            <description>Short Interval Alarm Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BUSY</name>
+            <description>HTimer Busy. This bit is set to 1 by hardware when changes to HTimer registers required a synchronized version of the register to be in place.  This bit is automatically cleared by hardware.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>idle</name>
+                <description>Idle.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Busy.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDY</name>
+            <description>HTimer Ready. This bit is set to 1 by hardware when the HTimer count registers update.  It can be cleared to 0 by software at any time. It will also be cleared to 0 by hardware just prior to an update of the HTimer count register.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Register has not updated.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDYE</name>
+            <description>HTimer Ready Interrupt Enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ALDF</name>
+            <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ALSF</name>
+            <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pending</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WE</name>
+            <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical HTimer bits.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- HTIMER : High Speed Timer and Alarm-->
+</device>

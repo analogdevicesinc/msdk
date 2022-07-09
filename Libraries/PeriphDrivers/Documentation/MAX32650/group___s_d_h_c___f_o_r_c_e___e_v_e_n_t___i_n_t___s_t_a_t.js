@@ -1,0 +1,25 @@
+var group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t =
+[
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_ADMA", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gaf9fbc3ec65844b56b5b571f2c2f9618b", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_ADMA_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga51c7973d7076047f7653ff40d949a16e", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_AUTO_CMD", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gafab88ee3eff8ca9945aac95e5f140938", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_AUTO_CMD_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga94dbd40d29c752f2552aec0055b299dc", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_CRC", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga10a2f981df7792c88437a9f2260889c5", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_CRC_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gac3b9747efd86cc1e9ed90f7e40bfd8f1", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_END_BIT", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga577208262e2110c49a57dc8744220240", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_END_BIT_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gaa7fd6e375f4f33b36389f9e9bbdd9bd3", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_INDEX", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gaff200194b84fe116bb2136937f71042c", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_INDEX_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga6eb716ed71830ca139d1cc5c30d73e41", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_TO", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gafe0514f201b69aaa266a4973e220cd0b", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CMD_TO_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga158054f7e59bd5973d99499a5e4f0baf", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CURR_LIMIT", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga835a2e582962b51f7b58e7bf2c0ea889", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_CURR_LIMIT_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gac29bcce5d5a8d80118eaeb226de16850", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_DATA_CRC", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga5ae696ce45926312d390da4e21fc3c65", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_DATA_CRC_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga96a007bf01344a89aca08d91e0a5908b", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_DATA_END_BIT", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gae4475c64956996eadd3f85c4b8a197e5", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_DATA_END_BIT_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gadb420fe40c35bb727c398b73fca1c89a", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_DATA_TO", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gac5d61c24626f96b4586a0c031569697f", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_DATA_TO_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga176f133deff0715e168d895b936ecfe2", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_STAT_VENDOR", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#gac3c9ccbd72b31a0f10a9bd1c4019a2bc", null ],
+    [ "MXC_F_SDHC_FORCE_EVENT_INT_STAT_STAT_VENDOR_POS", "group___s_d_h_c___f_o_r_c_e___e_v_e_n_t___i_n_t___s_t_a_t.html#ga16981bf0348cee84848e979926766ce9", null ]
+];

@@ -1,0 +1,32 @@
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/cameraif.h:55: warning: missing title after \defgroup cameraif
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/i2s.h:247: warning: end of file while inside a group
+C:/MaximSDKGerrit/Libraries/CMSIS/Device/Maxim/MAX78000/Include/pcif_regs.h:79: warning: group cameraif_registers: ignoring title "PCIF_Registers" that does not match old title "CAMERAIF_Registers"
+
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/dma.h:175: warning: argument 'trans' of command @param is not found in the argument list of mxc_dma_trans_chain_t(mxc_dma_srcdst_t dest)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/dma.h:185: warning: The following parameter of mxc_dma_trans_chain_t(mxc_dma_srcdst_t dest) is not documented:
+  parameter 'dest'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:303: warning: explicit link request to 'callback_fn' could not be resolved
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:304: warning: explicit link request to 'callback_fn' could not be resolved
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/pt.h:203: warning: unable to resolve reference to 'MXC_PT_INTFL_Register' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/pt.h:195: warning: unable to resolve reference to 'MXC_PT_INTFL_Register' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:172: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:156: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:148: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:120: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:101: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:93: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:127: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:133: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:107: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:112: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:140: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:668: warning: argument 'uart' of command @param is not found in the argument list of MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:672: warning: The following parameter of MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req) is not documented:
+  parameter 'req'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:659: warning: argument 'uart' of command @param is not found in the argument list of MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req)
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:663: warning: The following parameter of MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req) is not documented:
+  parameter 'req'
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:374: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:248: warning: unable to resolve reference to 'UART' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:238: warning: unable to resolve reference to 'UART' for \ref command
+C:/MaximSDKGerrit/Libraries/PeriphDrivers/Include/MAX78000/uart.h:408: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command

@@ -1,0 +1,686 @@
+    <peripheral>            <!--     PBM Pixel Bit Manipulator    -->
+      <name>PBM</name>
+      <description>Pixel Bit Manipulator</description>
+      <prependToName>PBM_</prependToName>
+      <baseAddress>0x4003F000</baseAddress>
+      <addressBlock>
+        <offset>0x00</offset>
+        <size>0x0400</size>
+        <usage>registers</usage>
+      </addressBlock>
+      <registers>
+        <register>
+          <name>VERSION</name>
+          <description>Version of PBM block</description>
+          <addressOffset>0x00</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MINOR_VERSION</name>
+              <description>Minor version number</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>MINOR_VERSION</name>
+              <description>Major version number</description>
+              <bitOffset>8</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MAX_SCREEN_SIZE</name>
+          <description>Maximum Screen Size</description>
+          <addressOffset>0x04</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>MAX_COLUMNS</name>
+              <description>Maximum Number of Columns</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+            <field>
+              <name>MAX_ROWS</name>
+              <description>Maximum Number of Rows</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MEM_FIFO_DEPTHS</name>
+          <description>Memory Fifo Depths</description>
+          <addressOffset>0x08</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00100040</resetValue>
+          <fields>
+            <field>
+              <name>READ</name>
+              <description>Read mem fifo depth</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+            <field>
+              <name>WRITE</name>
+              <description>Write mem fifo depth</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SCREEN_SIZE</name>
+          <description>Screen size</description>
+          <addressOffset>0x0C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>COLUMNS</name>
+              <description>Number of columns</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+            <field>
+              <name>ROWS</name>
+              <description>Number of rows</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>10</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CONFIG</name>
+          <description>Configuration</description>
+          <addressOffset>0x10</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000002</resetValue>
+          <fields>
+            <field>
+              <name>NEW_JDI_MODE</name>
+              <description>Set to 1 to switch to latching data on first rising edge of HCK after HST</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>OUTPUT_TO_DISPLAY</name>
+              <description>1 = write pixel data to GPIO pins, 0 = write data back to memory.</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+            <field>
+              <name>IGNORE_SKIP_ROWS</name>
+              <description>1 = ignore values in skip rows registers, 0 = use skip rows registers</description>
+              <bitOffset>2</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>PRSCLR</name>
+          <description>Prescaler</description>
+          <addressOffset>0x18</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>PRESCALER</name>
+              <description>Clock ticks of HCK clock for each timing controller clock</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>VST</name>
+          <description>VST timing values</description>
+          <addressOffset>0x1C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>VST_DELAY</name>
+              <description>Clock ticks to wait before VST</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>VST_WIDTH</name>
+              <description>Clock ticks VST stays high</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>VCK</name>
+          <description>VCK timing values</description>
+          <addressOffset>0x20</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>VCK_DELAY</name>
+              <description>>Clock ticks to wait before VCK</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>VCK_WIDTH</name>
+              <description>Clock ticks VCK stays high</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>VCK_SKIP</name>
+          <description>VCK_SKIP timing values</description>
+          <addressOffset>0x24</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>VCK_SKIP_DELAY</name>
+              <description>>Clock ticks to wait before VCK_SKIP</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>VCK_SKIP_WIDTH</name>
+              <description>Clock ticks VCK_SKIP stays high</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>ENB</name>
+          <description>ENB timing values</description>
+          <addressOffset>0x28</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>ENB_DELAY</name>
+              <description>>Clock ticks to wait before ENB</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>ENB_WIDTH</name>
+              <description>Clock ticks ENB stays high</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>HST</name>
+          <description>HST timing values</description>
+          <addressOffset>0x2C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HST_DELAY</name>
+              <description>>Clock ticks to wait before HST</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>HST_WIDTH</name>
+              <description>Clock ticks HST stays high</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>HCK</name>
+          <description>HCK timing values</description>
+          <addressOffset>0x30</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>HCK_DELAY</name>
+              <description>>Clock ticks to wait before HCK</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>HCK_WIDTH</name>
+              <description>Clock ticks HCK stays high</description>
+              <bitOffset>16</bitOffset>
+              <bitWidth>16</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>VCOM_DELAY</name>
+          <description>VCOM Delay</description>
+          <addressOffset>0x34</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>VCOM_DELAY</name>
+              <description>>Clock ticks to wait before VCOM</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+        </register>
+        <register>
+          <name>VCOM_PW</name>
+          <description>VCOM pulse width</description>
+          <addressOffset>0x38</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>VCOM_WIDTH</name>
+              <description>>Clock ticks VCOM stays high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+        </register>
+        <register>
+          <name>XRST_DELAY</name>
+          <description>XRST Delay</description>
+          <addressOffset>0x3C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>XRST_DELAY</name>
+              <description>>Clock ticks to wait before XRST</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+        </register>
+        <register>
+          <name>XRST_PW</name>
+          <description>XRST pulse width</description>
+          <addressOffset>0x40</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>XRST_WIDTH</name>
+              <description>>Clock ticks XRST stays high</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+        </register>
+        <register>
+          <name>READ_BUFFER_ADDR</name>
+          <description>Read buffer address</description>
+          <addressOffset>0x44</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>READ_BUFFER_ADDRESS</name>
+              <description>Address for reading pixel data</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>WRITE_BUFFER_ADDR</name>
+          <description>Write buffer address</description>
+          <addressOffset>0x54</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>READ_BUFFER_ADDRESS</name>
+              <description>Address for writing pixel data</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTERRUPT_ENABLES</name>
+          <description>Interupt enable bits</description>
+          <addressOffset>0x60</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>FRAME_DONE</name>
+              <description>Enables frame done interrupt</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>AHB_ERROR</name>
+              <description>Enables ahb error interrupt</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INTERRUPT_FLAGS</name>
+          <description>Interupt flags</description>
+          <addressOffset>0x64</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>FRAME_DONE</name>
+              <description>Frame done interrupt, write 1 to clear</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          <fields>
+            <field>
+              <name>AHB_ERROR</name>
+              <description>Ahb error interrupt, write 1 to clear</description>
+              <bitOffset>1</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>        
+        <register>
+          <name>START_FRAME</name>
+          <description>Starts frame</description>
+          <addressOffset>0x68</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>START_FRAME</name>
+              <description>Write 1 to start frame processing</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>BUSY</name>
+          <description></description>
+          <addressOffset>0x6C</addressOffset>
+          <access>read-only</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>BUSY</name>
+              <description>Shows when PBM is processing a frame</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_0</name>
+          <description>Skip rows 0 - 31</description>
+          <addressOffset>0x70</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_0</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_1</name>
+          <description>Skip rows 31 - 63</description>
+          <addressOffset>0x74</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_1</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_2</name>
+          <description>Skip rows 64 - 95</description>
+          <addressOffset>0x78</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_2</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_3</name>
+          <description>Skip rows 96 - 127</description>
+          <addressOffset>0x7C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_3</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_4</name>
+          <description>Skip rows 128 - 159</description>
+          <addressOffset>0x80</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_4</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_5</name>
+          <description>Skip rows 160 - 191</description>
+          <addressOffset>0x84</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_5</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_6</name>
+          <description>Skip rows 192 - 223</description>
+          <addressOffset>0x88</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_6</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_7</name>
+          <description>Skip rows 224 - 255</description>
+          <addressOffset>0x8C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_7</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_8</name>
+          <description>Skip rows 256 - 287</description>
+          <addressOffset>0x90</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_8</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_9</name>
+          <description>Skip rows 288 - 319</description>
+          <addressOffset>0x94</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_9</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_10</name>
+          <description>Skip rows 320 - 351</description>
+          <addressOffset>0x98</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_10</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_11</name>
+          <description>Skip rows 352 - 383</description>
+          <addressOffset>0x9C</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_11</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_12</name>
+          <description>Skip rows 384 - 415</description>
+          <addressOffset>0xA0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_12</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_13</name>
+          <description>Skip rows 416 - 447</description>
+          <addressOffset>0xA4</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_13</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_14</name>
+          <description>Skip rows 448 - 479</description>
+          <addressOffset>0xA8</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_14</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_15</name>
+          <description>Skip rows 480 - 511</description>
+          <addressOffset>0xAC</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_15</name>
+              <description>Set bits 1 to skip row</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>32</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SKIP_ROWS_RESET</name>
+          <description>Skip rows reset</description>
+          <addressOffset>0xB0</addressOffset>
+          <access>read-write</access>
+          <resetValue>0x00000000</resetValue>
+          <fields>
+            <field>
+              <name>SKIP_ROWS_RESET</name>
+              <description>Set 1 to reset all skip rows registers to all zeroes</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>1</bitWidth>
+            </field>
+          </fields>
+        </register>
+      </registers>
+    </peripheral>

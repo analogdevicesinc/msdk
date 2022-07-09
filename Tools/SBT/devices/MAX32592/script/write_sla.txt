@@ -1,0 +1,5 @@
+write-only %MAXIM_SBT_DIR%\devices\MAX32592\script\scpa_nand_applet.s19
+execute-code 00920000
+erase-data 10000000 00000000
+write-file %PARAM_1% 10000000
+write-only %MAXIM_SBT_DIR%\devices\MAX32592\script\appli_uboot_dummy.s19

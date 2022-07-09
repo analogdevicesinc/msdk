@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+<!--   SKBD: Secure Keyboard                            -->
+  <name>SKBD</name>
+  <description>Secure Keyboard</description>
+  <baseAddress>0x40032000</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>Secure_Keypad</name>
+   <description>Secure Keypad interrupt</description>
+   <value>19</value>
+  </interrupt>
+  <registers>
+   <register>
+    <name>CTRL0</name>
+    <description>Input Output Select Bits.  Each bit of IOSEL selects the pin direction for the corresponding KBDIO pin.  If IOSEL[0] = 1, KBDIO0 is an output.</description>
+    <addressOffset>0x00</addressOffset>
+    <fields>
+     <field>
+      <name>KBDIO_0</name>
+      <description>Input Output Select for KBDIO0 pin.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>input</name>
+        <description>Input</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>output</name>
+        <description>Output</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_1</name>
+      <description>Input Output Select for KBDIO1 pin.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_2</name>
+      <description>Input Output Select for KBDIO2 pin.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_3</name>
+      <description>Input Output Select for KBDIO3 pin.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_4</name>
+      <description>Input Output Select for KBDIO4 pin.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_5</name>
+      <description>Input Output Select for KBDIO5 pin.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_6</name>
+      <description>Input Output Select for KBDIO6 pin.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_7</name>
+      <description>Input Output Select for KBDIO7 pin.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_8</name>
+      <description>Input Output Select for KBDIO8 pin.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="KBDIO_0">
+      <name>KBDIO_9</name>
+      <description>Input Output Select for KBDIO9 pin.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>CTRL1</name>
+    <description>Control Register 1</description>
+    <addressOffset>0x04</addressOffset>
+    <fields>
+     <field>
+      <name>AUTOEN</name>
+      <description>Automatic Keyboard Scan Enable</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>disable</name>
+        <description>Disable</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>enable</name>
+        <description>Enable</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field derivedFrom="AUTOEN">
+      <name>CLEAR</name>
+      <description>Auto Clear Bit</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>OUTNB</name>
+      <description>Output Number. Number of KBDIO pins selected as outputs. NOTE:
+                                                                                                                                                                     Output pins must be allocated contiguously starting with KBDIO0 and continuing through to KBDIO7.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>
+     <field>
+      <name>DBTM</name>
+      <description>Debounce Time. Number of milliseconds a keypress event must be active before it is considered actual. NOTE:
+                                                                                                                                                                     Debounce time values based on system running from an external 12MHz clock source with PLL0 enabled.  Other external crystal values will cause the debounce time to scale linearly.</description>
+      <bitOffset>13</bitOffset>
+      <bitWidth>3</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>time4ms</name>
+        <description>4.1 ms</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time5ms</name>
+        <description>5.3 ms</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time6ms</name>
+        <description>6.5 ms</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time7ms</name>
+        <description>7.6 ms</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time8ms</name>
+        <description>8.8 ms</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time10ms</name>
+        <description>10.0 ms</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time11ms</name>
+        <description>11.2 ms</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>time12ms</name>
+        <description>12.3 ms</description>
+        <value>7</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>SR</name>
+    <description>Status Register</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>BUSY</name>
+      <description>Busy bit. This bit is set by hardware when the automatic keyboard scan is enabled and running.  This bit is clear at all other times.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>idle</name>
+        <description>Idle</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>busy</name>
+        <description>Busy</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>IER</name>
+    <description>Interrupt Enable Register</description>
+    <addressOffset>0x0C</addressOffset>
+    <fields>
+     <field>
+      <name>PUSHIE</name>
+      <description>Push Event Enable Bit. When set, this bit enables an interrupt to be generated on a key push event.  Automatic keyboard scan must be enabled.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>disable</name>
+        <description>Disable</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>enable</name>
+        <description>Enable</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field derivedFrom="PUSHIE">
+      <name>RELEASEIE</name>
+      <description>Release Event Enable Bit. When set, this bit enables an interrupt to be generated on a key release event.  Automatic keyboard scan must be enabled.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="PUSHIE">
+      <name>OVERIE</name>
+      <description>Overrun Event Enable Bit. When set, this bit enables an interrupt to be generated on an overrun event.  Automatic keyboard scan must be enabled.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ISR</name>
+    <description>Interrupt Status Register</description>
+    <addressOffset>0x10</addressOffset>
+    <fields>
+     <field>
+      <name>PUSHIS</name>
+      <description>Push Interrupt Flag. This bit is set by hardware when a key has been pushed.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>inactive</name>
+        <description>No interrupt is pending.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>pending</name>
+        <description>An interrupt is pending.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field derivedFrom="PUSHIS">
+      <name>RELEASEIS</name>
+      <description>Release Interrupt Flag. This bit is set by hardware when a key has been released.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field derivedFrom="PUSHIS">
+      <name>OVERIS</name>
+      <description>Overrun Event Enable Bit. This bit is set by hardware when an overrun event has occurred.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <dim>4</dim>
+    <dimIncrement>4</dimIncrement>
+    <name>EVT</name>
+    <description>Key Register</description>
+    <addressOffset>0x14</addressOffset>
+    <access>read-only</access>
+    <resetValue>0x00000C00</resetValue>
+    <fields>
+     <field>
+      <name>IOIN</name>
+      <description>IO Input. Input pin of key event.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>
+     <field>
+      <name>IOOUT</name>
+      <description>IO Output. Output pin of key event.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>
+     <field>
+      <name>PUSH</name>
+      <description>If set to 1 the key has been released.  If set to 0 the key has been pushed.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>pushed</name>
+        <description>Pushed</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>released</name>
+        <description>Released</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>READ</name>
+      <description>If set to 1 this register has been read.  If set to 0 the key register has not been read since its last change.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>notRead</name>
+        <description>This register has not been read since its last change.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>read</name>
+        <description>This register has been read.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>NEXT</name>
+      <description>If set to 1 one of the next key registers (x+1 to 3) contains a key event.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>none</name>
+        <description>No more key register contain a key event.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>more</name>
+        <description>Other key registers contain a key event.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+</device>

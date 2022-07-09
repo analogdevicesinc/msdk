@@ -1,0 +1,760 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>SPIMSS</name>
+    <description>Serial Peripheral Interface.</description>
+    <prependToName>SPIMSS</prependToName>
+    <baseAddress>0x40019000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>DATA</name>
+        <description>SPI 16-bit Data Access</description>
+        <addressOffset>0x00</addressOffset>
+        <size>16</size>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>SPI data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>SPI Control Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>ENABLE</name>
+            <description>SPI Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MMEN</name>
+            <description>SPI Master Mode Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>slv_mst_enum</name>
+              <enumeratedValue>
+                <name>slave</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>master</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WOR</name>
+            <description>Wired OR (open drain) Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CLKPOL</name>
+            <description>Clock Polarity.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>spi_pol_enum</name>
+              <enumeratedValue>
+                <name>idleLo</name>
+                <description>SCLK idles Low (0) after character transmission/reception.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>idleHi</name>
+                <description>SCLK idles High (1) after character transmission/reception.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PHASE</name>
+            <description>Phase Select.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>spi_phase_enum</name>
+              <enumeratedValue>
+                <name>activeEdge</name>
+                <description>Transmit on active edge of SCLK.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>inactiveEdge</name>
+                <description>Transmit on inactive edge of SCLK.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BIRQ</name>
+            <description>Baud Rate Generator Timer Interrupt Request.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>STR</name>
+            <description>Start SPI Interrupt.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>start_op_enum</name>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IRQE</name>
+            <description>Interrupt Request Enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_FL</name>
+        <description>SPI Interrupt Flag Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetValue>0x00000001</resetValue>
+        <fields>
+          <field>
+            <name>SLAS</name>
+            <description>Slave Select. If the SPI is in slave mode, this bit indicates if the SPI is selected. If the SPI is in master mode this bit has no meaning.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <name>sel_enum</name>
+              <enumeratedValue>
+                <name>selected</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>notSelected</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXST</name>
+            <description>Transmit Status.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <name>busy_enum</name>
+              <enumeratedValue>
+                <name>idle</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TUND</name>
+            <description>Transmit Underrun.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+            <enumeratedValues>
+              <name>event_flag_enum</name>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ROVR</name>
+            <description>Receive Overrun.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>event_flag_enum</name>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ABT</name>
+            <description>Slave Mode Transaction Abort.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>event_flag_enum</name>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>COL</name>
+            <description>Collision.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>event_flag_enum</name>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TOVR</name>
+            <description>Transmit Overrun.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>event_flag_enum</name>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IRQ</name>
+            <description>SPI Interrupt Request.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+            <enumeratedValues>
+              <name>flag_enum</name>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No interrupt is pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MODE</name>
+        <description>SPI Mode Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>SSV</name>
+            <description>Slave Select Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>lo_hi_enum</name>
+              <enumeratedValue>
+                <name>lo</name>
+                <description>The SSEL pin will be driven low.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>hi</name>
+                <description>The SSEL pin will be driven high.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SS_IO</name>
+            <description>Slave Select I/O.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>input_output_enum</name>
+              <enumeratedValue>
+                <name>input</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>output</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>NUMBITS</name>
+            <bitOffset>2</bitOffset>
+            <bitWidth>4</bitWidth>
+            <enumeratedValues>
+              <name>spi_bits_enum</name>
+              <enumeratedValue>
+                <name>bits16</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits1</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits2</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits3</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits4</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits5</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits6</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits7</name>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits8</name>
+                <value>8</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits9</name>
+                <value>9</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits10</name>
+                <value>10</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits11</name>
+                <value>11</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits12</name>
+                <value>12</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits13</name>
+                <value>13</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits14</name>
+                <value>14</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>bits15</name>
+                <value>15</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TX_LJ</name>
+            <description>Transmit Left Justify.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BRG</name>
+        <description>Baud Rate Reload Value. The SPI Baud Rate register is a 16-bit reload value for the SPI Baud Rate Generator. The reload value must be greater than or equal to 0002H for proper SPI operation (maximum baud rate is PCLK frequency divided by 4).</description>
+        <addressOffset>0x14</addressOffset>
+        <resetValue>0x0000FFFF</resetValue>
+        <fields>
+          <field>
+            <name>DIV</name>
+            <description>Baud Rate Reload Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA</name>
+        <description>SPI DMA Register.</description>
+        <addressOffset>0x18</addressOffset>
+        <resetValue>0x00070007</resetValue>
+        <fields>
+          <field>
+            <name>TX_FIFO_LVL</name>
+            <description>Transmit FIFO Level. Set the number of free entries in the TxFIFO when a TxDMA request occurs.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <name>fifo_level_enum</name>
+              <enumeratedValue>
+                <name>entry1</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries2</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries3</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries4</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries5</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries6</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries7</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries8</name>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TX_FIFO_CLR</name>
+            <description>Transmit FIFO Clear.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+            <enumeratedValues>
+              <name>start_op_enum</name>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TX_FIFO_CNT</name>
+            <description>Transmit FIFO Count.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TX_DMA_EN</name>
+            <description>Transmit DMA Enable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RX_FIFO_LVL</name>
+            <description>Receive FIFO Level. Sets the RX FIFO DMA request threshold. This configures the number of filled RxFIFO entries before activating an RxDMA request.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <name>fifo_level_enum</name>
+              <enumeratedValue>
+                <name>entry1</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries2</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries3</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries4</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries5</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries6</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries7</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>entries8</name>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RX_FIFO_CLR</name>
+            <description>Receive FIFO Clear.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>start_op_enum</name>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RX_FIFO_CNT</name>
+            <description>Receive FIFO Count.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RX_DMA_EN</name>
+            <description>Receive DMA Enable.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>I2S_CTRL</name>
+        <description>I2S Control Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>I2S_EN</name>
+            <description>I2S Mode Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dis_en_enum</name>
+              <enumeratedValue>
+                <name>disable</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2S_MUTE</name>
+            <description>I2S Mute transmit.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Transmit.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>replaced</name>
+                <description>Transmit data is replaced with 0.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2S_PAUSE</name>
+            <description>I2S Pause transmit/receive.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Transmit.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>halt</name>
+                <description>Halt transmit and receive FIFO and DMA access, transmit 0's.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2S_MONO</name>
+            <description>I2S Monophonic Audio Mode.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>stereophonic</name>
+                <description>Stereophonic audio.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>monophonic</name>
+                <description>Monophonic audio format.Each transmit data word is replicated on both left/right channels. Receive data is taken from left channel, right channel receive data is ignored.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2S_LJ</name>
+            <description>I2S Left Justify.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal I2S audio protocol.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>replaced</name>
+                <description>Audio data is synchronized with SSEL.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- SPIMSS: SPI MSS              -->
+</device>

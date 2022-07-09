@@ -1,0 +1,36 @@
+var group__emac =
+[
+    [ "EMAC_Registers", "group__emac__registers.html", "group__emac__registers" ],
+    [ "mxc_emac_cb_funcs_tbl_t", "group__emac.html#structmxc__emac__cb__funcs__tbl__t", null ],
+    [ "mxc_emac_dma_desc_t", "group__emac.html#structmxc__emac__dma__desc__t", null ],
+    [ "mxc_emac_device_t", "group__emac.html#structmxc__emac__device__t", null ],
+    [ "mxc_emac_config_t", "group__emac.html#structmxc__emac__config__t", null ],
+    [ "mxc_emac_cb_func_t", "group__emac.html#gaae97f95fc2d6dffb2b526c180d8cc878", null ],
+    [ "mxc_emac_delay_func_t", "group__emac.html#ga179c202d2707ea93915d618bf7b029fe", null ],
+    [ "mxc_emac_events_t", "group__emac.html#ga914a3ec0eeeed411cab62a41ccbc3785", [
+      [ "MXC_EMAC_EVENT_RXCMPL", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a7454f22e244a3bae36135e29901c3b7b", null ],
+      [ "MXC_EMAC_EVENT_RXUBR", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a0b93b8c427b0468e41018677af5aa328", null ],
+      [ "MXC_EMAC_EVENT_TXUBR", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a03166d866880b6097ea68f28bafcef2d", null ],
+      [ "MXC_EMAC_EVENT_TXUR", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785aa3515fe81c82390c82b9f00f74e3ac09", null ],
+      [ "MXC_EMAC_EVENT_RLE", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785ac9203357cfbf013f1735b32c2f838477", null ],
+      [ "MXC_EMAC_EVENT_TXERR", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785ad010708c0e235c4c4d5267c2f682ed59", null ],
+      [ "MXC_EMAC_EVENT_TXCMPL", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a13dc075d2c9cd91ad20e67b67d1e2591", null ],
+      [ "MXC_EMAC_EVENT_LC", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785ac383f05a6aa9af3279643df919b93150", null ],
+      [ "MXC_EMAC_EVENT_RXOR", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a03233831307f839eed86483ea7f3f53b", null ],
+      [ "MXC_EMAC_EVENT_HRESPNO", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785acb99e4bfd98e5581fd2a0749dfd20680", null ],
+      [ "MXC_EMAC_EVENT_PPR", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a754ff4fb6730bb758d174393258165e6", null ],
+      [ "MXC_EMAC_EVENT_PTZ", "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785aaa3fe81d4b1c48fbc5219badb3eaa22c", null ]
+    ] ],
+    [ "MXC_EMAC_DisableInterruptEvents", "group__emac.html#gab638413eea37cba7567f39cdce8aec08", null ],
+    [ "MXC_EMAC_EnableInterruptEvents", "group__emac.html#ga309cb36a463bb9e1bcd2461152f89209", null ],
+    [ "MXC_EMAC_Init", "group__emac.html#ga3975647033a9082543831e90f6159f2a", null ],
+    [ "MXC_EMAC_IrqHandler", "group__emac.html#ga66a10d9d270f5d009a350c3e67f9862a", null ],
+    [ "MXC_EMAC_ReadLinkStatus", "group__emac.html#ga5741e9a9ad26f4f784249c5ef9fe8e43", null ],
+    [ "MXC_EMAC_Recv", "group__emac.html#ga86c29217e9105228ff3af18ce34c146e", null ],
+    [ "MXC_EMAC_SendAsync", "group__emac.html#gad384b1dc8a9bda226e614e5dce72845d", null ],
+    [ "MXC_EMAC_SendSync", "group__emac.html#gad635632baaa23d8b4c634e0f83e48594", null ],
+    [ "MXC_EMAC_SetConfiguration", "group__emac.html#gae42e9ce3c37142aa546a68e637d7f4ac", null ],
+    [ "MXC_EMAC_SetHwAddr", "group__emac.html#ga93f72badcf2a4c37d6656690c8faaa48", null ],
+    [ "MXC_EMAC_Start", "group__emac.html#gac254fbed31cc6ed2798c4be2505517e5", null ],
+    [ "MXC_EMAC_Stop", "group__emac.html#gad7e763e3a1084d9afc80473a560a326c", null ]
+];

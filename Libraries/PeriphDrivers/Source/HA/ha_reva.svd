@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>HA</name>
+  <description>Hardware Accelerator</description>
+  <baseAddress>0x40036000</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>HA</name>
+   <description>Smart DMA interrupt.</description>
+   <value>60</value>
+  </interrupt>
+  <registers>
+   <register>
+    <name>IP</name>
+    <description>Q30E Instruction Pointer.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>SP</name>
+    <description>Q30E Stack Pointer.</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>DP0</name>
+    <description>Q30E Data Pointer 0.</description>
+    <addressOffset>0x08</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>DP1</name>
+    <description>Q30E Data Pointer 1.</description>
+    <addressOffset>0x0C</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>BP</name>
+    <description>Q30E Frame Pointer Base.</description>
+    <addressOffset>0x10</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>OFFS</name>
+    <description>Q30E Frame Pointer Offset.</description>
+    <addressOffset>0x14</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>LC0</name>
+    <description>Q30E Loop Counter 0.</description>
+    <addressOffset>0x18</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>LC1</name>
+    <description>Q30E Loop Counter 1.</description>
+    <addressOffset>0x1C</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>A0</name>
+    <description>Q30E Accumulator 0.</description>
+    <addressOffset>0x20</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>A1</name>
+    <description>Q30E Accumulator 1.</description>
+    <addressOffset>0x24</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>A2</name>
+    <description>Q30E Accumulator 2.</description>
+    <addressOffset>0x28</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>A3</name>
+    <description>Q30E Accumulator 3.</description>
+    <addressOffset>0x2C</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>WDCN</name>
+    <description>Q30E Watchdog Control.</description>
+    <addressOffset>0x30</addressOffset>
+    <access>read-only</access>
+   </register>
+   <register>
+    <name>INT_MUX_CTRL0</name>
+    <description>Interrupt Mux Control 0.</description>
+    <addressOffset>0x80</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INTSEL16</name>
+      <description>Interrupt Selection For 16th Interrupt.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL17</name>
+      <description>Interrupt Selection For 17th Interrupt.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL18</name>
+      <description>Interrupt Selection For 18th Interrupt.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL19</name>
+      <description>Interrupt Selection For 19th Interrupt.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_MUX_CTRL1</name>
+    <description>Interrupt Mux Control 1.</description>
+    <addressOffset>0x84</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INTSEL20</name>
+      <description>Interrupt Selection For 20th Interrupt.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL21</name>
+      <description>Interrupt Selection For 21st Interrupt.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL22</name>
+      <description>Interrupt Selection For 22nd Interrupt.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL23</name>
+      <description>Interrupt Selection For 23rd Interrupt.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_MUX_CTRL2</name>
+    <description>Interrupt Mux Control 2.</description>
+    <addressOffset>0x88</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INTSEL24</name>
+      <description>Interrupt Selection For 24th Interrupt.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL25</name>
+      <description>Interrupt Selection For 25th Interrupt.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL26</name>
+      <description>Interrupt Selection For 26th Interrupt.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL27</name>
+      <description>Interrupt Selection For 27th Interrupt.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_MUX_CTRL3</name>
+    <description>Interrupt Mux Control 3.</description>
+    <addressOffset>0x8C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INTSEL28</name>
+      <description>Interrupt Selection For 28th Interrupt.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL29</name>
+      <description>Interrupt Selection For 29th Interrupt.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL30</name>
+      <description>Interrupt Selection For 30th Interrupt.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>INTSEL31</name>
+      <description>Interrupt Selection For 31st Interrupt.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>IP_ADDR</name>
+    <description>Configurable starting IP address for Q30E.</description>
+    <addressOffset>0x90</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>START_IP_ADDR</name>
+      <description>Starting IP address for Q30E</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>CTRL</name>
+    <description>Control Register.</description>
+    <addressOffset>0x94</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>EN</name>
+      <description>Enable SDMA.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable SDMA.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable SDMA.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_IN_CTRL</name>
+    <description>Interrupt Input From CPU Control Register.</description>
+    <addressOffset>0xA0</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INTSET</name>
+      <description>Set Interrupt Flag.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Set interrupt Flag to 0.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>set</name>
+        <description>Set Interrupt Flag to 1.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_IN_FLAG</name>
+    <description>Interrupt Input From CPU Flag.</description>
+    <addressOffset>0xA4</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INTFLAG</name>
+      <description>Interrupt Flag.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>no_eff</name>
+        <description>No Effect.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>clear</name>
+        <description>INT_IN_FLAG =0</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_IN_IE</name>
+    <description>Interrupt Input From CPU Enable.</description>
+    <addressOffset>0xA8</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>INT_IN_EN</name>
+      <description>Interrupt Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>IRQ_FLAG</name>
+    <description>Interrupt Output To CPU Flag.</description>
+    <addressOffset>0xB0</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>IRQ_FLAG</name>
+      <description>Interrupt Flag.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>IRQ_IE</name>
+    <description>Interrupt Output To CPU Control Register.</description>
+    <addressOffset>0xB4</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>IRQ_EN</name>
+      <description>Interrupt Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- HA:
+                                                 Hardware Accelerator                           -->
+</device>

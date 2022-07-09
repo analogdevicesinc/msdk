@@ -1,0 +1,1357 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>EMAC</name>
+    <description>10/100 Ethernet MAC.</description>
+    <baseAddress>0x4004F000</baseAddress>
+    <addressBlock>
+      <offset>0</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>EMAC</name>
+      <description>EMAC IRQ</description>
+      <value>64</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CN</name>
+        <description>Network Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetValue>0x00</resetValue>
+        <fields>
+          <field>
+            <name>LB</name>
+            <description>Loopback.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>LBL</name>
+            <description>Loopback local.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RXEN</name>
+            <description>Receive Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXEN</name>
+            <description>Transmit Enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>MPEN</name>
+            <description>Management Port Enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CLST</name>
+            <description>Clear Statistics.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>INCST</name>
+            <description>Increment Statistics.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>WREN</name>
+            <description>Write enable for statistics registers.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>BP</name>
+            <description>Back pressure.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXSTART</name>
+            <description>Transmission start.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXHALT</name>
+            <description>Transmit halt.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXPF</name>
+            <description>Transmit pause frame.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXZQPF</name>
+            <description>Transmit zero quantum pause frame.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG</name>
+        <description>Network Configuration Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>SPEED</name>
+            <description>Speed Select.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FULLDPLX</name>
+            <description>Full Duplex. If set to 1 the transmit block ignores the state of collision and carrier sense and allows Rx while transmitting.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>BITRATE</name>
+            <description>Bit Rate. Writing 1 to this bit configures the interface for serial operation. </description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>JUMBOFR</name>
+            <description>Jumbo Frames. Writing 1 to this bit enables jumbo frames of up to 10,240 bytes to be accepted.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>COPYAF</name>
+            <description>Copy All Frames. If 1, all valid frames will be received.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>NOBC</name>
+            <description>No Broadcast. If 1, frames addressed to the broadcast address of all ones will not be received.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>MHEN</name>
+            <description>Multicast Hash Enable. If 1, multicast frames will be received when the 6 bit hash function of the destination address points to a bit that is set in the hash register.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>UHEN</name>
+            <description>Unicast Hash Enable. If 1, unicast frames will be received when the 6 bit hash function of the destination address points to a bit that is set in the hash register.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RXFR</name>
+            <description>Receive 1536 Byte Frames. Writing 1 to this bit means the MAC receives packets up to 1536 bytes in length. Normally the MAC rejects any packet above 1518 bytes</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>MDCCLK</name>
+            <description>MDC Frequency. Set according to PCLK speed. This field determines by what number PCLK is divided to generate MDC.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <access>write-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>PCLK up to 20MHz</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div16</name>
+                <description>PCLK up to 40MHz</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div32</name>
+                <description>PCLK up to 80MHz</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div64</name>
+                <description>PCLK up to 160MHz</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RTTST</name>
+            <description>Retry Test. Must be set to zero for normal operation. If set to 1, the back-off between collisions is always one slot time.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>PAUSEEN</name>
+            <description>Pause Enable. If 1, Ethernet packet transmission pauses when a valid pause packet is received.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXBUFFOFS</name>
+            <description>Receive buffer offset. These bits indicate the number of bytes by which the received data is offset from the start of the first receive buffer.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>2</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXLFCEN</name>
+            <description>Receive length field checking enable. If 1, packets with measured lengths shorter than their length fields are discarded. Packets containing a type ID in bytes 13 and 14 (length/type field &gt;=0600) are not counted as length errors.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>DCRXFCS</name>
+            <description>Discard receive FCS. If 1, the FCS field of received frames will not be copied to memory.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>HDPLXRXEN</name>
+            <description>Enable packets to be received in half-duplex mode while transmitting.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>IGNRXFCS</name>
+            <description>Ignore RX FCS. If 1, packets with FCS/CRC errors are not rejected and no FCS error statistics are counted. For normal operation, this bit must be set to 0.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STATUS</name>
+        <description>Network Status Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>LINK</name>
+            <description>LINK pin status. Returns status of EMAC_LINK pin.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>MDIO</name>
+            <description>MDIO pin status. Returns status of the EMAC_MDIO pin. Use the PHY maintenance register for reading managed frames rather than this bit.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>IDLE</name>
+            <description>PHY management logic status.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TX_ST</name>
+        <description>Transmit Status Register.</description>
+        <addressOffset>0x14</addressOffset>
+        <fields>
+          <field>
+            <name>UBR</name>
+            <description>Used Bit Read. Set when a transmit buffer descriptor is read with its used bit set. Write 1 to clear this bit.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>COLS</name>
+            <description>Collision Occurred. Set when a collision occurs. Write 1 to clear this bit.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RTYLIM</name>
+            <description>Retry Limit Exceeded. Set when the retry limit has been exceeded. Write 1 to clear this bit. </description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXGO</name>
+            <description>Transmit Go. If 1, transmit is active.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>BEMF</name>
+            <description>Buffers Exhausted Mid Frame. If the buffers run out during transmission of a frame then transmission stops, FCS shall be bad and EMAC_TXER asserted. Write 1 to clear this bit.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXCMPL</name>
+            <description>Transmit Complete. Set when a frame has been transmitted. Write 1 to clear this bit.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXUR</name>
+            <description>Transmit Underrun. Set when the MAC transmit FIFO was read while was empty. If this happens the transmitter forces bad. Write 1 to clear this bit.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RXBUF_PTR</name>
+        <description>Receive Buffer Queue Pointer Register.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>RXBUF</name>
+            <description>Receive buffer queue pointer. Written with the address of the start of the receive queue, reads as a pointer to the current buffer being used.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>30</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXBUF_PTR</name>
+        <description>Transmit Buffer Queue Pointer Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>TXBUF</name>
+            <description>Transmit buffer queue pointer. Written with the address of the start of the transmit queue, reads as a pointer to the first buffer of the frame being transmitted or about to be transmitted.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>30</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RX_ST</name>
+        <description>Receive Status Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>BNA</name>
+            <description>Buffer Not Available. An attempt was made to get a new buffer and the pointer indicated that it was owned by the processor. The DMA will reread the pointer each time a new frame starts until a valid pointer is found. This bit will be set at each attempt that fails even if it has not had a successful pointer read since it has been cleared. Write 1 to clear this bit.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FR</name>
+            <description>Frame Received. One or more frames have been received and placed in memory. Write 1 to clear this bit.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RXOR</name>
+            <description>Receive Overrun. The DMA block was unable to store the receive frame to memory. Either because the AHB bus was not granted in time or because a not OK hresp was returned. The buffer will be recovered if this happens. Write 1 to clear this bit.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_ST</name>
+        <description>Interrupt Status Register.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>MPS</name>
+            <description>Management Packet Sent Interrupt Status. The PHY maintenance register has completed its operation. Cleared when read.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RXCMPL</name>
+            <description>Receive Complete Interrupt Status. Set when a frame has been stored in memory. Cleared when read.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RXUBR</name>
+            <description>RX Used Bit Read Interrupt Status. Set when a receive buffer descriptor is read with its used bit set. Cleared when read.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXUBR</name>
+            <description>TX Used Bit Read Interrupt Status. Set when a transmit buffer descriptor is read with its used bit set. Cleared when read</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXUR</name>
+            <description>Ethernet Transmit Underrun Interrupt Status. Set when the MAC transmit FIFO was read while was empty. If this happens the transmitter forces bad CRC and forces EMAC_TXER high. Cleared when read.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RLE</name>
+            <description>Retry Limit Exceeded Interrupt Status. Transmit error. Cleared when read.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXERR</name>
+            <description>Transmit Buffers Exhausted In Mid-frame Interrupt Status. Transmit error. Cleared when read.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TXCMPL</name>
+            <description>Transmit Complete Interrupt Status. Set when a frame has been transmitted. Cleared when read.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>LC</name>
+            <description>Link Change Interrupt Status. Set when the external link signal changes. Cleared when read.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RXOR</name>
+            <description>Receive Overrun Interrupt Status. Set when the receive overrun status bit gets set. Cleared when read.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>HRESPNO</name>
+            <description>hresp not OK Interrupt Status. Set when the DMA block sees hresp not OK. Cleared when read.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>PPR</name>
+            <description>Pause Packet Received Interrupt Status. Indicates a valid pause packet has been received. Cleared when read.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>PTZ</name>
+            <description>Pause Time Zero Interrupt Status. Set when the MAC Pause Time register (MAC_PT) decrements to zero. Cleared when read.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_EN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x28</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>MPS</name>
+            <description>Management Packet Sent Interrupt Enable</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXCMPL</name>
+            <description>Receive Complete Interrupt Enable</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXUBR</name>
+            <description>RX Used Bit Read Interrupt Enable</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXUBR</name>
+            <description>TX Used Bit Read Interrupt Enable</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXUR</name>
+            <description>Ethernet Transmit Underrun Interrupt Enable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RLE</name>
+            <description>Retry Limit Exceeded Interrupt Enable</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXERR</name>
+            <description>Transmit Buffers Exhausted In Mid-frame Interrupt Enable</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXCMPL</name>
+            <description>Transmit Complete Interrupt Enable</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>LC</name>
+            <description>Link Change Interrupt Enable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXOR</name>
+            <description>Receive Overrun Interrupt Enable</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>HRESPNO</name>
+            <description>hresp not OK Interrupt Enable</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>PPR</name>
+            <description>Pause Packet Received Interrupt Enable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>PTZ</name>
+            <description>Pause Time Zero Interrupt Enable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_DIS</name>
+        <description>Interrupt Disable Register.</description>
+        <addressOffset>0x2C</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>MPS</name>
+            <description>Management Packet Sent Interrupt Disable</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXCMPL</name>
+            <description>Receive Complete Interrupt Disable</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXUBR</name>
+            <description>RX Used Bit Read Interrupt Disable</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXUBR</name>
+            <description>TX Used Bit Read Interrupt Disable</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXUR</name>
+            <description>Ethernet Transmit Underrun Interrupt Disable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RLE</name>
+            <description>Retry Limit Exceeded Interrupt Disable</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXERR</name>
+            <description>Transmit Buffers Exhausted In Mid-frame Interrupt Disable</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>TXCMPL</name>
+            <description>Transmit Complete Interrupt Disable</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>LC</name>
+            <description>Link Change Interrupt Disable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>RXOR</name>
+            <description>Receive Overrun Interrupt Disable</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>HRESPNO</name>
+            <description>hresp not OK Interrupt Disable</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>PPR</name>
+            <description>Pause Packet Received Interrupt Disable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+          <field>
+            <name>PTZ</name>
+            <description>Pause Time Zero Interrupt Disable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_MASK</name>
+        <description>Interrupt Mask Register.</description>
+        <addressOffset>0x30</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>MPS</name>
+            <description>Management Packet Sent Interrupt Mask</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXCMPL</name>
+            <description>Receive Complete Interrupt Mask</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXUBR</name>
+            <description>RX Used Bit Read Interrupt Mask</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXUBR</name>
+            <description>TX Used Bit Read Interrupt Mask</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXUR</name>
+            <description>Ethernet Transmit Underrun Interrupt Mask</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RLE</name>
+            <description>Retry Limit Exceeded Interrupt Mask</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXERR</name>
+            <description>Transmit Buffers Exhausted In Mid-frame Interrupt Mask</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXCMPL</name>
+            <description>Transmit Complete Interrupt Mask</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>LC</name>
+            <description>Link Change Interrupt Mask</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXOR</name>
+            <description>Receive Overrun Interrupt Mask</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>HRESPNO</name>
+            <description>hresp not OK Interrupt Mask</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>PPR</name>
+            <description>Pause Packet Received Interrupt Mask</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>PTZ</name>
+            <description>Pause Time Zero Interrupt Mask</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PHY_MT</name>
+        <description>PHY Maintenance Register.</description>
+        <addressOffset>0x34</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>PHY Data. For a write operation this field is the data to be written to the PHY. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>REGADDR</name>
+            <description>Register Address. Specifies the register in the PHY to access.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>5</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>PHYADDR</name>
+            <description>PHY Address. Specifies the PHY to access.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>5</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>OP</name>
+            <description>Operation</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>2</bitWidth>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>write</name>
+                <description>Write</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>read</name>
+                <description>Read</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SOP</name>
+            <description>TBD </description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>2</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PT</name>
+        <description>Pause Time Register.</description>
+        <addressOffset>0x38</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>TIME</name>
+            <description>Pause Time. Stores the current value of the pause time register, which is decremented every 512 bit times.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PFR</name>
+        <description>Pause Frame Received OK.</description>
+        <addressOffset>0x3C</addressOffset>
+        <fields>
+          <field>
+            <name>PFR</name>
+            <description>Pause Frames Received OK. A 16-bit register counting the number of good pause frames received. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FTOK</name>
+        <description>Frames Transmitted OK.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>FTOK</name>
+            <description>Frames Transmitted OK. A 32-bit register counting the number of frames successfully transmitted, i.e. no underrun and not too many retries.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCF</name>
+        <description>Single Collision Frames.</description>
+        <addressOffset>0x44</addressOffset>
+        <fields>
+          <field>
+            <name>SCF</name>
+            <description>Single Collision Frames. A 16-bit register counting the number of frames experiencing a single collision before being successfully transmitted, i.e. no underrun.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MCF</name>
+        <description>Multiple Collision Frames.</description>
+        <addressOffset>0x48</addressOffset>
+        <fields>
+          <field>
+            <name>MCF</name>
+            <description>Multiple Collision Frames. A 16-bit register counting the number of frames experiencing between two and fifteen collisions prior to being successfully transmitted, i.e. no underrun and not too many retries.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FROK</name>
+        <description>Fames Received OK.</description>
+        <addressOffset>0x4C</addressOffset>
+        <fields>
+          <field>
+            <name>FROK</name>
+            <description>Frames Received OK. A 24-bit register counting the number of good packets received</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>24</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FCS_ERR</name>
+        <description>Frame Check Sequence Errors.</description>
+        <addressOffset>0x50</addressOffset>
+        <fields>
+          <field>
+            <name>FCSERR</name>
+            <description>Frame Check Sequence Errors.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ALGN_ERR</name>
+        <description>Alignment Errors.</description>
+        <addressOffset>0x54</addressOffset>
+        <fields>
+          <field>
+            <name>ALGNERR</name>
+            <description>Alignment Errors. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DFTXF</name>
+        <description>Deferred Transmission Frames.</description>
+        <addressOffset>0x58</addressOffset>
+        <fields>
+          <field>
+            <name>DFTXF</name>
+            <description>Deferred Transmission Frames. A 16-bit register counting the number of packets experiencing deferral due to carrier sense being active on their first attempt at transmission</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LC</name>
+        <description>Late Collisions.</description>
+        <addressOffset>0x5C</addressOffset>
+        <fields>
+          <field>
+            <name>LC</name>
+            <description>Late Collisions. An 8-bit register counting the number of packets that experience a collision after the slot time (512 bits) has expired.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EC</name>
+        <description>Excessive Collisions.</description>
+        <addressOffset>0x60</addressOffset>
+        <fields>
+          <field>
+            <name>EC</name>
+            <description>Excessive Collisions. An 8-bit register counting the number of packets that failed to be transmitted because they experienced 16 collisions.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TUR_ERR</name>
+        <description>Transmit Underrun Errors.</description>
+        <addressOffset>0x64</addressOffset>
+        <fields>
+          <field>
+            <name>TURERR</name>
+            <description>Transmit Underrun Error. An 8-bit register counting the number of packets not transmitted due to a transmit FIFO underrun.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CS_ERR</name>
+        <description>Carrier Sense Errors.</description>
+        <addressOffset>0x68</addressOffset>
+        <fields>
+          <field>
+            <name>CSERR</name>
+            <description>An 8-bit register counting the number of packets transmitted where carrier sense was not seen during transmission or where carrier sense was deasserted after being asserted in a transmit packet without collision (no underrun).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RR_ERR</name>
+        <description>Receive Resource Errors.</description>
+        <addressOffset>0x6C</addressOffset>
+        <fields>
+          <field>
+            <name>RRERR</name>
+            <description>Receive Resource Errors. A 16 bit register counting the number of frames that were address matched but could not be copied to memory because no receive buffer was available.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ROR_ERR</name>
+        <description>Receive Overrun Errors.</description>
+        <addressOffset>0x70</addressOffset>
+        <fields>
+          <field>
+            <name>RORERR</name>
+            <description>Receive Overruns. An 8 bit register counting the number of frames that are address recognized but were not copied to memory due to a receive DMA overrun.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RS_ERR</name>
+        <description>Receive Symbol Errors.</description>
+        <addressOffset>0x74</addressOffset>
+        <fields>
+          <field>
+            <name>RSERR</name>
+            <description>Receive Symbol Errors. An 8-bit register counting the number of packets that had EMAC_RXER asserted during reception.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EL_ERR</name>
+        <description>Excessive Length Errors.</description>
+        <addressOffset>0x78</addressOffset>
+        <fields>
+          <field>
+            <name>ELERR</name>
+            <description>Excessive Length Errors. An 8-bit register counting the number of packets received exceeding 1518 bytes in length (1536 if RXFR is set in the MAC_CFG register;</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RJ</name>
+        <description>Receive Jabber.</description>
+        <addressOffset>0x7C</addressOffset>
+        <fields>
+          <field>
+            <name>RJERR</name>
+            <description>Receive Jabbers. An 8-bit register counting the number of packets received exceeding 1518 bytes in length (1536 if RXFR is set in the MAC_CFG register; </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>USF</name>
+        <description>Undersize Frames.</description>
+        <addressOffset>0x80</addressOffset>
+        <fields>
+          <field>
+            <name>USF</name>
+            <description>Undersize Frames. An 8-bit register counting the number of packets received less than 64 bytes in length but do not have either a CRC error, an alignment error or a receive symbol error.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SQE_ERR</name>
+        <description>SQE Test Errors.</description>
+        <addressOffset>0x84</addressOffset>
+        <fields>
+          <field>
+            <name>SQEERR</name>
+            <description>SQE Test Errors. An 8-bit register counting the number of packets where collision was not asserted within 96 bit times (an interframe gap) of EMAC_TXEN being deasserted in half duplex mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RLFM</name>
+        <description>Received Length Field Mismatch.</description>
+        <addressOffset>0x88</addressOffset>
+        <fields>
+          <field>
+            <name>RLFM</name>
+            <description>Receive length field mismatch </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TPF</name>
+        <description>Transmitted Pause Frames.</description>
+        <addressOffset>0x8C</addressOffset>
+        <fields>
+          <field>
+            <name>TPF</name>
+            <description>Transmitted Pause Frames. A 16-bit register counting the number of pause packets transmitted.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HASHL</name>
+        <description>Hash Register Bottom [31:0].</description>
+        <addressOffset>0x90</addressOffset>
+        <fields>
+          <field>
+            <name>HASH</name>
+            <description>Bits 31:0 of the hash address register. See Hash Addressing</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HASHH</name>
+        <description>Hash Register top [63:32].</description>
+        <addressOffset>0x94</addressOffset>
+        <fields>
+          <field>
+            <name>HASH</name>
+            <description>Bits 63:32 of the hash address register. See Hash Addressing</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA1L</name>
+        <description>Specific Address 1 Bottom.</description>
+        <addressOffset>0x98</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 1 [31:0]. Least significant bits of the MAC specific address 1, i.e. bits 31:0. This field is used for transmission of pause packets</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA1H</name>
+        <description>Specific Address 1 Top.</description>
+        <addressOffset>0x9C</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 1 [47:32]. Most significant bits of the MAC specific address 1, i.e. bits 47:32.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA2L</name>
+        <description>Specific Address 2 Bottom.</description>
+        <addressOffset>0xA0</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 2 [31:0]. Least significant bits of the MAC specific address 2, i.e. bits 31:0. This field is used for transmission of pause packets</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA2H</name>
+        <description>Specific Address 2 Top.</description>
+        <addressOffset>0xA4</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 2 [47:32]. Most significant bits of the MAC specific address 2, i.e. bits 47:32.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA3L</name>
+        <description>Specific Address 3 Bottom.</description>
+        <addressOffset>0xA8</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 3 [31:0]. Least significant bits of the MAC specific address 3, i.e. bits 31:0. This field is used for transmission of pause packets</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA3H</name>
+        <description>Specific Address 3 Top.</description>
+        <addressOffset>0xAC</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 3 [47:32]. Most significant bits of the MAC specific address 3, i.e. bits 47:32.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA4L</name>
+        <description>Specific Address 4 Bottom.</description>
+        <addressOffset>0xB0</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 4 [31:0]. Least significant bits of the MAC specific address 4, i.e. bits 31:0. This field is used for transmission of pause packets</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SA4H</name>
+        <description>Specific Address 4 Top.</description>
+        <addressOffset>0xB4</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>MAC Specific Address 4 [47:32]. Most significant bits of the MAC specific address 4, i.e. bits 47:32.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TID_CK</name>
+        <description>Type ID Checking.</description>
+        <addressOffset>0xB8</addressOffset>
+        <fields>
+          <field>
+            <name>TID</name>
+            <description>Type ID Checking. For use in comparisons with received frames TypeID/Length field.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TPQ</name>
+        <description>Transmit Pause Quantum.</description>
+        <addressOffset>0xBC</addressOffset>
+        <fields>
+          <field>
+            <name>TPQ</name>
+            <description>Transmit Pause Quantum. Used in hardware generation of transmitted pause packets as value for pause quantum</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>REV</name>
+        <description>Revision register.</description>
+        <addressOffset>0xFC</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>REV</name>
+            <description>Revision Reference. Fixed two byte value specific to revision of design.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>PART</name>
+            <description>Part Reference. For Ethernet MAC design, this is fixed at 0x01.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- EMAC: 10/100 Ethernet MAC          -->
+</device>

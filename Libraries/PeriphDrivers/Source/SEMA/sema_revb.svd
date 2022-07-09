@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SEMA</name>
+  <description>The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
+                                     The peripheral contains eight semaphores that can be atomically set and cleared. It is left to the discretion of the software
+                                     architect to decide how and when the semaphores are used and how they are allocated. Existing hardware does not have to be
+                                     
+                                     modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.</description>
+  <baseAddress>0x4003E000</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <dim>8</dim>
+    <dimIncrement>4</dimIncrement>
+    <name>SEMAPHORES[%s]</name>
+    <description>Read to test and set, returns prior value. Write 0 to clear semaphore.</description>
+    <addressOffset>0x00</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>sema</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>irq0</name>
+    <description>Semaphore IRQ0 register.</description>
+    <addressOffset>0x40</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>en</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>cm4_irq</name>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+    </fields>
+   </register>   
+   <register>
+    <name>mail0</name>
+    <description>Semaphore Mailbox 0 register.</description>
+    <addressOffset>0x44</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>data</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field> 
+    </fields>
+   </register> 
+   <register>
+    <name>irq1</name>
+    <description>Semaphore IRQ1 register.</description>
+    <addressOffset>0x48</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>en</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>rv32_irq</name>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+    </fields>
+   </register>  
+   <register>
+    <name>mail1</name>
+    <description>Semaphore Mailbox 1 register.</description>
+    <addressOffset>0x4C</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>data</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field> 
+    </fields>
+   </register>        
+   <register>
+    <name>status</name>
+    <description>Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.</description>
+    <addressOffset>0x100</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>status0</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>status1</name>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>status2</name>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>status3</name>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>status4</name>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>status5</name>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>status6</name>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+     <field>
+      <name>status7</name>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SEMA:
+                                         Semaphore                            -->
+</device>

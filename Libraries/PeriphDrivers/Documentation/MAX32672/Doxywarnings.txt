@@ -1,0 +1,60 @@
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/i2s.h:240: warning: end of file while inside a group
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:345: warning: argument 'Channel' of command @param is not found in the argument list of MXC_ADC_DynamicModeDis(mxc_adc_chsel_t ch)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:350: warning: The following parameter of MXC_ADC_DynamicModeDis(mxc_adc_chsel_t ch) is not documented:
+  parameter 'ch'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:336: warning: argument 'Channel' of command @param is not found in the argument list of MXC_ADC_DynamicModeEn(mxc_adc_chsel_t ch)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:341: warning: The following parameter of MXC_ADC_DynamicModeEn(mxc_adc_chsel_t ch) is not documented:
+  parameter 'ch'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:236: warning: unable to resolve reference to 'mxc_adc_conversion_req_t' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:248: warning: unable to resolve reference to 'mxc_adc_conversion_req_t' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:259: warning: unable to resolve reference to 'mxc_adc_conversion_req_t' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:259: warning: argument 'pointer' of command @param is not found in the argument list of MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, uint16_t *data, void(*callback)(int, int))
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/adc.h:266: warning: The following parameter of MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t *req, uint16_t *data, void(*callback)(int, int)) is not documented:
+  parameter 'data'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:274: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:279: warning: The following parameter of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:266: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:272: warning: The following parameter of MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:211: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:217: warning: The following parameter of MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:226: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:231: warning: The following parameter of MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:233: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:240: warning: The following parameter of MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:242: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:249: warning: The following parameter of MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:219: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutSet(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:224: warning: The following parameter of MXC_GPIO_OutSet(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:251: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:256: warning: The following parameter of MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask) is not documented:
+  parameter 'port'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:299: warning: explicit link request to 'callback_fn' could not be resolved
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/gpio.h:300: warning: explicit link request to 'callback_fn' could not be resolved
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/i2c.h:503: warning: The following parameters of MXC_I2C_ClearFlags(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1) are not documented:
+  parameter 'flags0'
+  parameter 'flags1'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/i2c.h:496: warning: The following parameters of MXC_I2C_GetFlags(mxc_i2c_regs_t *i2c, unsigned int *flags0, unsigned int *flags1) are not documented:
+  parameter 'flags0'
+  parameter 'flags1'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/mxc_delay.h:105: warning: The following parameter of MXC_DelayAsync(unsigned long us, mxc_delay_complete_t callback) is not documented:
+  parameter 'callback'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/qdec.h:207: warning: argument 'minimum' of command @param is not found in the argument list of MXC_QDEC_SetInitial(uint32_t initial)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/qdec.h:210: warning: The following parameter of MXC_QDEC_SetInitial(uint32_t initial) is not documented:
+  parameter 'initial'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/qdec.h:193: warning: argument 'maximum' of command @param is not found in the argument list of MXC_QDEC_SetMaxCount(uint32_t maxCount)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/qdec.h:196: warning: The following parameter of MXC_QDEC_SetMaxCount(uint32_t maxCount) is not documented:
+  parameter 'maxCount'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/tmr.h:145: warning: argument 'bool' of command @param is not found in the argument list of MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/tmr.h:154: warning: The following parameter of MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins) is not documented:
+  parameter 'init_pins'
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/uart.h:373: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/uart.h:247: warning: unable to resolve reference to 'UART' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/uart.h:237: warning: unable to resolve reference to 'UART' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32672/uart.h:407: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command

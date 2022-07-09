@@ -1,0 +1,7 @@
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/i2s.h:240: warning: end of file while inside a group
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/gpio.h:297: warning: explicit link request to 'callback_fn' could not be resolved
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/gpio.h:298: warning: explicit link request to 'callback_fn' could not be resolved
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/uart.h:374: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/uart.h:248: warning: unable to resolve reference to 'UART' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/uart.h:238: warning: unable to resolve reference to 'UART' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32670/uart.h:408: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command

@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>WUT</name>
+    <description>Wake Up Timer</description>
+    <baseAddress>0x40006400</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x0400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>WUT</name>
+      <!-- IRQ Name -->
+      <value>1</value>
+      <!-- IRQ Number Device Specific -->
+    </interrupt>
+    <registers>
+      <register>
+        <name>CNT</name>
+        <description>Wakeup Timer Count Register</description>
+        <addressOffset>0x0000</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>COUNT</name>
+            <description>Timer Count Value. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CMP</name>
+        <description>Wakeup Timer Compare Register</description>
+        <addressOffset>0x0004</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>COMPARE</name>
+            <description>Timer Compare Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PWM</name>
+        <description>Wakeup Timer PWM Register</description>
+        <addressOffset>0x0008</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>PWM</name>
+            <description>Timer PWM Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>Wakeup Timer Interrupt Register</description>
+        <addressOffset>0x000C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>IRQ_CLR</name>
+            <description>Timer Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>Wakeup Timer Control Register</description>
+        <addressOffset>0x0010</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>TMODE</name>
+            <description>Timer Mode Select.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>oneShot</name>
+                <description>One Shot Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>continuous</name>
+                <description>Continuous Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>counter</name>
+                <description>Counter Mode.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pwm</name>
+                <description>PWM Mode.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>capture</name>
+                <description>Capture Mode.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>compare</name>
+                <description>Compare Mode.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>gated</name>
+                <description>Gated Mode.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>captureCompare</name>
+                <description>Capture/Compare Mode.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PRES</name>
+            <description>Timer Prescaler Select.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DIV1</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV2</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV4</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV8</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV16</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV32</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV64</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV128</name>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV256</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV512</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV1024</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV2048</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV4096</name>
+                <value>5</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TPOL</name>
+            <description>Timer pOLARITY.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TEN</name>
+            <description>Timer Enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>timer_dis</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>timer_en</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PRES3</name>
+            <description>Timer Prescaler Select.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>pres3_1</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_2</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_4</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_8</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_16</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_32</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_64</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_128</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_256</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_512</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_1024</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_2048</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pres3_4096</name>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PWMSYNC</name>
+            <description>PWM SYNC mode.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOLHPOL</name>
+            <description>PWM output high polarity.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOLLPOL</name>
+            <description>PWM output high polarity.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWMCKBD</name>
+            <description>PWM output disable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>NOLCMP</name>
+        <description>Non Overlaping Compare Register</description>
+        <addressOffset>0x0014</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>NOLLCMP</name>
+            <description>Non Overlaping Low Compare.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>NOLHCMP</name>
+            <description>Non Overlaping High Compare.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PRESET</name>
+        <description>Preset register.</description>
+        <addressOffset>0x18</addressOffset>
+      </register>
+      <register>
+        <name>RELOAD</name>
+        <description>Reload register.</description>
+        <addressOffset>0x1C</addressOffset>
+      </register>
+      <register>
+        <name>SNAPSHOT</name>
+        <description>Snapshot register.</description>
+        <addressOffset>0x20</addressOffset>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- WUT: Wake Up Timer            -->
+</device>

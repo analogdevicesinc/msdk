@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>MAX32680 Documentation</title>
+		<style>
+			a:hover, a:focus {
+				color: #6e2585;
+			}
+			a:active, a:hover {
+				outline: 0;
+			}
+			a {
+				color: #00b2a9;
+				text-decoration: none;
+			}
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				color: #6c6f70;
+			}
+			h1 {
+				font-size: 150%;
+				color: #000;
+			}
+			h2 {
+				font-size: 125%;
+				color: #6e2585;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>MAX32680 Documentation</h1>
+		<hr>
+
+		<h2>SDK</h2>
+		<ul>
+			<li id='periph'></li>
+			<li>Toolchain</li>
+			<ul>
+				<li id='eclipse'></li>
+				<li id='gnu-arm'></li>
+				<li id='gnu-riscv'></li>
+				<li id='mingw'></li>
+				<li id='openocd'></li>
+				<li id='sbt'></li>
+				<li id='bmp-converter'></li>
+				<li id='free-rtos'></li>
+			</ul>
+		</ul>
+		<hr>
+
+		<h2>Example Applications</h2>
+		The following examples can be found in the <a href='../Examples/MAX32680'>Examples/MAX32680</a> directory of the SDK installation:
+		<ul>
+			<li><a href='../Examples/MAX32680/ADC/README.md'>ADC</a> - Analog-to-Digital Converter</li>			
+			<li><a href='../Examples/MAX32680/AES/README.md'>AES</a> - Advanced Encryption Standard</li>
+			<li><a href='../Examples/MAX32680/AFE_ADC/README.md'>ADC</a> - Analog Front-End Analog-to-Digital Converter</li>	
+			<li><a href='../Examples/MAX32680/BLE_dats/README.md'>BLE_dats</a> - Bluetooth Data Server</li>
+			<li><a href='../Examples/MAX32680/BLE_ctr/README.md'>BLE_ctr</a> - Bluetooth v4.2 Controller</li>
+			<li><a href='../Examples/MAX32680/CRC/README.md'>CRC</a> - Cyclic Redundancy Check</li>
+			<li><a href='../Examples/MAX32680/DMA/README.md'>DMA</a> - Direct Memory Access</li>
+			<li><a href='../Examples/MAX32680/Flash/README.md'>Flash</a> - Flash Memory</li>
+			<li><a href='../Examples/MAX32680/FreeRTOSDemo/README.md'>FreeRTOSDemo</a></li>
+			<li><a href='../Examples/MAX32680/GPIO/README.md'>GPIO</a> - General Purpose Input/Output</li>
+			<li><a href='../Examples/MAX32680/HART_UART/README.md'>HART_UART</a> - HART Modem UART</li>
+			<li><a href='../Examples/MAX32680/Hello_World/README.md'>Hello_World</a></li>
+			<li><a href='../Examples/MAX32680/Hello_World-riscv/README.md'>Hello_World-riscv</a></li>
+			<li><a href='../Examples/MAX32680/I2C/README.md'>I2C</a> - The Standard 2-Wire Serial Protocol</li>
+			<li><a href='../Examples/MAX32680/I2S/README.md'>I2S</a> - Inter-IC Sound</li>
+			<li><a href='../Examples/MAX32680/ICC/README.md'>ICC</a> - Instruction Cache Controller</li>
+			<li><a href='../Examples/MAX32680/LP/README.md'>LP</a> - Low Power</li>
+			<li><a href='../Examples/MAX32680/Pulse_Train/README.md'>Pulse_Train</a></li>
+			<li><a href='../Examples/MAX32680/RV_ARM_Loader/README.md'>RV_ARM_Loader</a></li>
+			<li><a href='../Examples/MAX32680/SPI/README.md'>SPI</a> - Serial Peripheral Interface</li>
+			<li><a href='../Examples/MAX32680/TMR/README.md'>TMR</a> - General Purpose Timer</li>
+			<li><a href='../Examples/MAX32680/TRNG/README.md'>TRNG</a> - True Random Number Generator</li>
+			<li><a href='../Examples/MAX32680/UART/README.md'>UART</a> - Universal Asynchronous Receiver/Transmitter</li>
+			<li><a href='../Examples/MAX32680/Watchdog/README.md'>Watchdog</a></li>
+			<li><a href='../Examples/MAX32680/WearLeveling/README.md'>WearLeveling</a></li>
+			<li><a href='../Examples/MAX32680/WUT/README.md'>WUT</a> - Wakeup Timer</li>
+		</ul>
+		<hr>
+
+		<h2>Device Information</h2>
+		Additional information about the MAX32680 can be found in these documents:
+		<ul>
+			<li><a href='https://datasheets.maximintegrated.com/en/ds/MAX32680.pdf'>IC Datasheet</a></li>
+			<li>IC User Guide - Coming Soon!</li>
+			<li>Evaluation Kit Schematic - Coming Soon!</li>
+		</ul>
+
+		<script type="text/javascript">
+
+			function addLink(testFile, url, passText, failText, dom)
+			{
+				var img = new Image();
+				img.onerror = function() {
+					dom.innerHTML += failText;
+				};
+				img.onload = function() {
+					dom.innerHTML += '<a href="' + url + '">' + passText + '</a>';
+				};
+				img.src = testFile;
+				console.log('Test');
+				console.log(img.currentSrc);
+			}
+
+			addLink('../Libraries/PeriphDrivers/Documentation/MAX32680/doc.png',
+				    '../Libraries/PeriphDrivers/Documentation/MAX32680/index.html',
+				    'Peripheral API', 
+				    'The periheral API documentation has not been installed.', 
+				    document.getElementById('periph')
+				);
+
+			addLink('../Tools/Eclipse/cdt/plugins/org.eclipse.platform_4.13.0.v20190916-1045/splash.bmp',
+				    '../Tools/Eclipse/cdt/readme/readme_eclipse.html',
+				    'Eclipse', 
+				    'Eclipse has not been installed.', 
+				    document.getElementById('eclipse')
+				);
+
+			addLink('../Tools/GNUTools/blank.bmp',
+				    'https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm',
+				    'GNU Tools for ARM', 
+				    'The GNU Tools for ARM have not been installed.', 
+				    document.getElementById('gnu-arm')
+				);
+
+			addLink('../Tools/xPack/blank.bmp',
+				    '../Tools/xPack/riscv-none-embed-gcc/README.md',
+				    'GNU Tools for RISC-V', 
+				    'The GNU Tools for RISC-V have not been installed.', 
+				    document.getElementById('gnu-riscv')
+				);
+
+			addLink('../Libraries/FreeRTOS/Documentation/blank.bmp',
+				    '../Libraries/FreeRTOS/readme.txt',
+				    'Free-RTOS', 
+				    'The Free-RTOS libraries have not been installed.', 
+				    document.getElementById('free-rtos')
+				);
+			addLink('../Tools/BitmapConverter/docs/blank.bmp',
+				    '../Tools/BitmapConverter/docs/README.md',
+				    'Bitmap Converter', 
+				    'The bitmap converter has not been installed.', 
+				    document.getElementById('bmp-converter')
+				);
+			addLink('../Tools/SBT/docs/blank.bmp',
+				    '../Tools/SBT/docs/UG7236Rev0_MaximSDK_Secure_Boot_Tool_User_Guide_Preliminary.pdf',
+				    'Secure Boot Tools', 
+				    'The secure boot tools have not been installed.', 
+				    document.getElementById('sbt')
+				);
+			addLink('../Tools/OpenOCD/blank.bmp',
+				    'http://openocd.org/doc/html/index.html',
+				    'OpenOCD', 
+				    'OpenOCD has not been installed.', 
+				    document.getElementById('openocd')
+				);
+			addLink('../Tools/MinGW/msys/1.0/opt/lib/tk8.6/images/logo64.gif',
+				    'http://www.mingw.org/',
+				    'MinGW', 
+				    'The MinGW package has not been installed.', 
+				    document.getElementById('mingw')
+				);
+	</script>
+	</body>
+</html>

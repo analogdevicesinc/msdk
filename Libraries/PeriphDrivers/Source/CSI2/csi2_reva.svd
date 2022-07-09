@@ -1,0 +1,2508 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!-- CSI2 -->
+    <name>CSI2</name>
+    <description>Camera Serial Interface Registers.</description>
+    <baseAddress>0x40062000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <!-- Base Configuration -->
+      <register>
+        <name>CFG_NUM_LANES</name>
+        <description>CFG_NUM_LANES.</description>
+        <addressOffset>0x000</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>LANES</name>
+            <description>Num Lanes for RX controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- PHY Control -->
+      <register>
+        <name>CFG_CLK_LANE_EN</name>
+        <description>CFG_CLK_LANE_EN.</description>
+        <addressOffset>0x004</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable lane clock setting for controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_DATA_LANE_EN</name>
+        <description>CFG_DATA_LANE_EN.</description>
+        <addressOffset>0x008</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable data lane setting for controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- Clock Ratio Handling and Controller Error Reporting -->
+      <register>
+        <name>CFG_FLUSH_COUNT</name>
+        <description>CFG_FLUSH_COUNT.</description>
+        <addressOffset>0x00C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>COUNT</name>
+            <description>Flush count setting for controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_BIT_ERR</name>
+        <description>CFG_BIT_ERR.</description>
+        <addressOffset>0x010</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>MBE</name>
+            <description>Multiple bit ECC error.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SBE</name>
+            <description>Single bit ECC error.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HEADER</name>
+            <description>Header bit location of single bit ECC error.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>CRC</name>
+            <description>CRC error.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_SEND_LVL</name>
+            <description>Video Error Send Level.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_FIFO_WR_OV</name>
+            <description>Video Error Fifo Overflow.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- IRQ Control -->
+      <register>
+        <name>IRQ_STATUS</name>
+        <description>IRQ_STATUS.</description>
+        <addressOffset>0x014</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>CRC</name>
+            <description>CRC error.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SBE</name>
+            <description>Single bit ECC error.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MBE</name>
+            <description>Multiple bit ECC error.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ULPS_ACTIVE</name>
+            <description>ULPS active status change.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ULPS_MARK_ACTIVE</name>
+            <description>ULPS mark active status change.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_SEND_LVL</name>
+            <description>Video Error Send Level.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_FIFO_WR_OV</name>
+            <description>Video Error Fifo Overflow.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IRQ_ENABLE</name>
+        <description>IRQ_ENABLE.</description>
+        <addressOffset>0x018</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>CRC</name>
+            <description>CRC error.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SBE</name>
+            <description>Single bit ECC error.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MBE</name>
+            <description>Multiple bit ECC error.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ULPS_ACTIVE</name>
+            <description>ULPS active status change.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ULPS_MARK_ACTIVE</name>
+            <description>ULPS mark active status change.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_SEND_LVL</name>
+            <description>Video Error Send Level.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_FIFO_WR_OV</name>
+            <description>Video Error Fifo Overflow.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IRQ_CLR</name>
+        <description>IRQ_CLR.</description>
+        <addressOffset>0x01C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>CRC</name>
+            <description>CRC error.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SBE</name>
+            <description>Single bit ECC error.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MBE</name>
+            <description>Multiple bit ECC error.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ULPS_ACTIVE</name>
+            <description>ULPS active status change.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ULPS_MARK_ACTIVE</name>
+            <description>ULPS mark active status change.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_SEND_LVL</name>
+            <description>Video Error Send Level.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>VID_ERR_FIFO_WR_OV</name>
+            <description>Video Error Fifo Overflow.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- ULPS Control -->
+      <register>
+        <name>ULPS_CLK_STATUS</name>
+        <description>ULPS_CLK_STATUS.</description>
+        <addressOffset>0x020</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FIFO</name>
+            <description>FIFO Read/Write register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ULPS_STATUS</name>
+        <description>ULPS_STATUS.</description>
+        <addressOffset>0x024</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DATA_LANE0</name>
+            <description>Data Lane 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA_LANE1</name>
+            <description>Data Lane 1.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ULPS_CLK_MARK_STATUS</name>
+        <description>ULPS_CLK_MARK_STATUS.</description>
+        <addressOffset>0x028</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>CLK_LANE</name>
+            <description>Clock Lane.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ULPS_MARK_STATUS</name>
+        <description>ULPS_MARK_STATUS.</description>
+        <addressOffset>0x02C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DATA_LANE0</name>
+            <description>Data Lane 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA_LANE1</name>
+            <description>Data Lane 1.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- PHY Error Reporting -->
+      <register>
+        <name>PPI_ERRSOT_HS</name>
+        <description>PPI_ERRSOT_HS.</description>
+        <addressOffset>0x030</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>PPI_ERRSOTSYNC_HS</name>
+        <description>PPI_ERRSOTSYNC_HS.</description>
+        <addressOffset>0x034</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>PPI_ERRESC</name>
+        <description>PPI_ERRESC.</description>
+        <addressOffset>0x038</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>PPI_ERRSYNCESC</name>
+        <description>PPI_ERRSYNCESC.</description>
+        <addressOffset>0x03C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>PPI_ERRCONTROL</name>
+        <description>PPI_ERRCONTROL.</description>
+        <addressOffset>0x040</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- MODE Control -->
+      <register>
+        <name>CFG_CPHY_EN</name>
+        <description>CFG_CPHY_EN.</description>
+        <addressOffset>0x044</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_PPI_16_EN</name>
+        <description>CFG_PPI_16_EN.</description>
+        <addressOffset>0x048</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_PACKET_INTERFACE_EN</name>
+        <description>CFG_PACKET_INTERFACE_EN.</description>
+        <addressOffset>0x04C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_VCX_EN</name>
+        <description>CFG_VCX_EN.</description>
+        <addressOffset>0x050</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_BYTE_DATA_FORMAT</name>
+        <description>CFG_BYTE_DATA_FORMAT.</description>
+        <addressOffset>0x054</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- Data Type Disable Control -->
+      <register>
+        <name>CFG_DISABLE_PAYLOAD_0</name>
+        <description>CFG_DISABLE_PAYLOAD_0.</description>
+        <addressOffset>0x058</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>NULL</name>
+            <description>NULL.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BLANK</name>
+            <description>BLANK.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EMBEDDED</name>
+            <description>EMBEDDED.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV420_8BIT</name>
+            <description>YUV420_8BIT.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV420_10BIT</name>
+            <description>YUV420_10BIT.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV420_8BIT_LEG</name>
+            <description>YUV420_8BIT_LEG.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV420_8BIT_CSP</name>
+            <description>YUV420_8BIT_CSP.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV420_10BIT_CSP</name>
+            <description>YUV420_10BIT_CSP.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV422_8BIT</name>
+            <description>YUV422_8BIT.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>YUV422_10BIT</name>
+            <description>YUV422_10BIT.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RGB444</name>
+            <description>RGB444.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RGB555</name>
+            <description>RGB555.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RGB565</name>
+            <description>RGB565.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RGB666</name>
+            <description>RGB666.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RGB888</name>
+            <description>RGB888.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW6</name>
+            <description>RAW6.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW7</name>
+            <description>RAW7.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW8</name>
+            <description>RAW8.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW10</name>
+            <description>RAW10.</description>
+            <bitOffset>27</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW12</name>
+            <description>RAW12.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW14</name>
+            <description>RAW14.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW16</name>
+            <description>RAW16.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW20</name>
+            <description>RAW20.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_DISABLE_PAYLOAD_1</name>
+        <description>CFG_DISABLE_PAYLOAD_1.</description>
+        <addressOffset>0x05C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>USR_DEF_TYPE30</name>
+            <description>User defined type 0x30.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE31</name>
+            <description>User defined type 0x31.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE32</name>
+            <description>User defined type 0x32.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE33</name>
+            <description>User defined type 0x33.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE34</name>
+            <description>User defined type 0x34.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE35</name>
+            <description>User defined type 0x35.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE36</name>
+            <description>User defined type 0x36.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>USR_DEF_TYPE37</name>
+            <description>User defined type 0x37.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- Video Interface Control -->
+      <register>
+        <name>CFG_VID_IGNORE_VC</name>
+        <description>CFG_VID_IGNORE_VC.</description>
+        <addressOffset>0x080</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_VID_VC</name>
+        <description>CFG_VID_VC.</description>
+        <addressOffset>0x084</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_P_FIFO_SEND_LEVEL</name>
+        <description>CFG_P_FIFO_SEND_LEVEL.</description>
+        <addressOffset>0x088</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_VID_VSYNC</name>
+        <description>CFG_VID_VSYNC.</description>
+        <addressOffset>0x08C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_VID_HSYNC_FP</name>
+        <description>CFG_VID_HSYNC_FP.</description>
+        <addressOffset>0x090</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_VID_HSYNC</name>
+        <description>CFG_VID_HSYNC.</description>
+        <addressOffset>0x094</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CFG_VID_HSYNC_BP</name>
+        <description>CFG_VID_HSYNC_BP.</description>
+        <addressOffset>0x098</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- Configuration Signals -->
+      <register>
+        <name>CFG_DATABUS16_SEL</name>
+        <description>CFG_DATABUS16_SEL.</description>
+        <addressOffset>0x400</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable 16-bit data bus.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_D0_SWAP_SEL</name>
+        <description>CFG_D0_SWAP_SEL.</description>
+        <addressOffset>0x404</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SRC</name>
+            <description>Control Source.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PAD_CDRX_L0</name>
+                <description>PAD_CDRX_L0.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L1</name>
+                <description>PAD_CDRX_L1.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L2</name>
+                <description>PAD_CDRX_L2.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L3</name>
+                <description>PAD_CDRX_L3.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L4</name>
+                <description>PAD_CDRX_L4.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_D1_SWAP_SEL</name>
+        <description>CFG_D1_SWAP_SEL.</description>
+        <addressOffset>0x408</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SRC</name>
+            <description>Control Source.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PAD_CDRX_L0</name>
+                <description>PAD_CDRX_L0.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L1</name>
+                <description>PAD_CDRX_L1.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L2</name>
+                <description>PAD_CDRX_L2.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L3</name>
+                <description>PAD_CDRX_L3.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L4</name>
+                <description>PAD_CDRX_L4.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_D2_SWAP_SEL</name>
+        <description>CFG_D2_SWAP_SEL.</description>
+        <addressOffset>0x40C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SRC</name>
+            <description>Control Source.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PAD_CDRX_L0</name>
+                <description>PAD_CDRX_L0.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L1</name>
+                <description>PAD_CDRX_L1.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L2</name>
+                <description>PAD_CDRX_L2.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L3</name>
+                <description>PAD_CDRX_L3.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L4</name>
+                <description>PAD_CDRX_L4.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_D3_SWAP_SEL</name>
+        <description>CFG_D3_SWAP_SEL.</description>
+        <addressOffset>0x410</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SRC</name>
+            <description>Control Source.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PAD_CDRX_L0</name>
+                <description>PAD_CDRX_L0.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L1</name>
+                <description>PAD_CDRX_L1.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L2</name>
+                <description>PAD_CDRX_L2.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L3</name>
+                <description>PAD_CDRX_L3.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L4</name>
+                <description>PAD_CDRX_L4.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_C0_SWAP_SEL</name>
+        <description>CFG_C0_SWAP_SEL.</description>
+        <addressOffset>0x414</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SRC</name>
+            <description>Control Source.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PAD_CDRX_L0</name>
+                <description>PAD_CDRX_L0.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L1</name>
+                <description>PAD_CDRX_L1.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L2</name>
+                <description>PAD_CDRX_L2.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L3</name>
+                <description>PAD_CDRX_L3.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAD_CDRX_L4</name>
+                <description>PAD_CDRX_L4.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CFG_DPDN_SWAP</name>
+        <description>CFG_DPDN_SWAP.</description>
+        <addressOffset>0x418</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>SWAP_DATA_LANE0</name>
+            <description>SWAP_DATA_LANE0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SWAP_DATA_LANE1</name>
+            <description>SWAP_DATA_LANE1.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SWAP_DATA_LANE2</name>
+            <description>SWAP_DATA_LANE2.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SWAP_DATA_LANE3</name>
+            <description>SWAP_DATA_LANE3.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SWAP_CLK_LANE</name>
+            <description>SWAP_CLK_LANE.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RG_CFGCLK_1US_CNT</name>
+        <description>RG_CFGCLK_1US_CNT.</description>
+        <addressOffset>0x41C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>RG_HSRX_CLK_PRE_TIME_GRP0</name>
+        <description>RG_HSRX_CLK_PRE_TIME_GRP0.</description>
+        <addressOffset>0x420</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>RG_HSRX_DATA_PRE_TIME_GRP0</name>
+        <description>RG_HSRX_DATA_PRE_TIME_GRP0.</description>
+        <addressOffset>0x424</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- Non-PPI Control Signals -->
+      <register>
+        <name>RESET_DESKEW</name>
+        <description>RESET_DESKEW.</description>
+        <addressOffset>0x428</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DATA_LANE0</name>
+            <description>DATA_LANE0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA_LANE1</name>
+            <description>DATA_LANE1.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA_LANE2</name>
+            <description>DATA_LANE2.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATA_LANE3</name>
+            <description>DATA_LANE3.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- Miscellaneous Signals -->
+      <register>
+        <name>PMA_RDY</name>
+        <description>PMA_RDY.</description>
+        <addressOffset>0x42C</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- M31 Internal Used Signals -->
+      <register>
+        <name>XCFGI_DW00</name>
+        <description>XCFGI_DW00.</description>
+        <addressOffset>0x430</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW01</name>
+        <description>XCFGI_DW01.</description>
+        <addressOffset>0x434</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW02</name>
+        <description>XCFGI_DW02.</description>
+        <addressOffset>0x438</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW03</name>
+        <description>XCFGI_DW03.</description>
+        <addressOffset>0x43C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW04</name>
+        <description>XCFGI_DW04.</description>
+        <addressOffset>0x440</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW05</name>
+        <description>XCFGI_DW05.</description>
+        <addressOffset>0x444</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW06</name>
+        <description>XCFGI_DW06.</description>
+        <addressOffset>0x448</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW07</name>
+        <description>XCFGI_DW07.</description>
+        <addressOffset>0x44C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW08</name>
+        <description>XCFGI_DW08.</description>
+        <addressOffset>0x450</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW09</name>
+        <description>XCFGI_DW09.</description>
+        <addressOffset>0x454</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW0A</name>
+        <description>XCFGI_DW0A.</description>
+        <addressOffset>0x458</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW0B</name>
+        <description>XCFGI_DW0B.</description>
+        <addressOffset>0x45C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW0C</name>
+        <description>XCFGI_DW0C.</description>
+        <addressOffset>0x460</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>XCFGI_DW0D</name>
+        <description>XCFGI_DW0D.</description>
+        <addressOffset>0x464</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>GPIO_MODE</name>
+        <description>GPIO_MODE.</description>
+        <addressOffset>0x468</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>GPIO_DP_IE</name>
+        <description>GPIO_DP_IE.</description>
+        <addressOffset>0x46C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>GPIO_DN_IE</name>
+        <description>GPIO_DN_IE.</description>
+        <addressOffset>0x470</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>GPIO_DP_C</name>
+        <description>GPIO_DP_C.</description>
+        <addressOffset>0x474</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>GPIO_DN_C</name>
+        <description>GPIO_DN_C.</description>
+        <addressOffset>0x478</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- BIST Signals -->
+      <register>
+        <name>VCONTROL</name>
+        <description>PMA_RDY.</description>
+        <addressOffset>0x47C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>NORMAL_MODE</name>
+            <description>NORMAL_MODE.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LP_RX_DC_TEST</name>
+            <description>LP_RX_DC_TEST.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LP_RX_DC_1</name>
+            <description>LP_RX_DC_1.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LP_RX_DC_0</name>
+            <description>LP_RX_DC_0.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CAL_SEN_1</name>
+            <description>CAL_SEN_1.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CAL_SEN_0</name>
+            <description>CAL_SEN_0.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HSRT_0</name>
+            <description>HSRT_0.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HSRT_1</name>
+            <description>HSRT_1.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LP_RX_PARTBERT</name>
+            <description>LP_RX_PARTBERT.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HS_INT_LOOPBACK</name>
+            <description>HS_INT_LOOPBACK.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HS_RX_PARTBERT</name>
+            <description>HS_RX_PARTBERT.</description>
+            <bitOffset>27</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HS_RX_PRBS9</name>
+            <description>HS_RX_PRBS9.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SUSPEND_MODE</name>
+            <description>SUSPEND_MODE.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MPSOV1</name>
+        <description>MPSOV1.</description>
+        <addressOffset>0x480</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>MPSOV2</name>
+        <description>MPSOV2.</description>
+        <addressOffset>0x484</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>MPSOV3</name>
+        <description>MPSOV3.</description>
+        <addressOffset>0x488</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- Direct Configuration Signals of PMA -->
+      <register>
+        <name>RG_CDRX_DSIRX_EN</name>
+        <description>RG_CDRX_DSIRX_EN.</description>
+        <addressOffset>0x490</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>RXMODE</name>
+            <description>RXMODE.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>CSI</name>
+                <description>CSI RX Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DSI</name>
+                <description>DSI RX Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RG_CDRX_L012_SUBLVDS_EN</name>
+        <description>RG_CDRX_L012_SUBLVDS_EN.</description>
+        <addressOffset>0x494</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>RG_CDRX_L012_HSRT_CTRL</name>
+        <description>RG_CDRX_L012_HSRT_CTRL.</description>
+        <addressOffset>0x498</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- Direct BIST Signals of PMA -->
+      <register>
+        <name>RG_CDRX_BISTHS_PLL_EN</name>
+        <description>RG_CDRX_BISTHS_PLL_EN.</description>
+        <addressOffset>0x49C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>RG_CDRX_BISTHS_PLL_PRE_DIV2</name>
+        <description>RG_CDRX_BISTHS_PLL_PRE_DIV2.</description>
+        <addressOffset>0x4A0</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>RXMODE</name>
+            <description>RXMODE.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>CSI</name>
+                <description>CSI RX Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DSI</name>
+                <description>DSI RX Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RG_CDRX_BISTHS_PLL_FBK_INT</name>
+        <description>RG_CDRX_BISTHS_PLL_FBK_INT.</description>
+        <addressOffset>0x4A4</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- M31 Debug Signals -->
+      <register>
+        <name>DBG1_MUX_SEL</name>
+        <description>DBG1_MUX_SEL.</description>
+        <addressOffset>0x4A8</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>DBG2_MUX_SEL</name>
+        <description>DBG2_MUX_SEL.</description>
+        <addressOffset>0x4AC</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>DBG1_MUX_DOUT</name>
+        <description>DBG1_MUX_DOUT.</description>
+        <addressOffset>0x4B0</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>DBG2_MUX_DOUT</name>
+        <description>DBG2_MUX_DOUT.</description>
+        <addressOffset>0x4B4</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>AON_POWER_READY_N</name>
+        <description>AON_POWER_READY_N.</description>
+        <addressOffset>0x4B8</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>DPHY_RST_N</name>
+        <description>DPHY_RST_N.</description>
+        <addressOffset>0x4BC</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>RXBYTECLKHS_INV</name>
+        <description>RXBYTECLKHS_INV.</description>
+        <addressOffset>0x4C0</addressOffset>
+        <size>32</size>
+      </register>
+      <!-- Video FIFO Registers -->
+      <register>
+        <name>VFIFO_CFG0</name>
+        <description>Video FIFO Configuration Register 0.</description>
+        <addressOffset>0x500</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>VC</name>
+            <description>CSI Virtual Channel.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>DMAMODE</name>
+            <description>DMA Mode, the condition to trigger DMA request..</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>NO_DMA</name>
+                <description>No DMA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DMA_REQ</name>
+                <description>Immediately send DMA request.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FIFO_THD</name>
+                <description>Wait for FIFO above threshold.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FIFO_FULL</name>
+                <description>Wait for FIFO is full.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AHBWAIT</name>
+            <description>AHB Wait Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FIFORM</name>
+            <description>FIFO Read Mode.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERRDE</name>
+            <description>Error Detection Enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FBWM</name>
+            <description>Full Band Width mode.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_CFG1</name>
+        <description>Video FIFO Configuration Register 1.</description>
+        <addressOffset>0x504</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>AHBWCYC</name>
+            <description>Maximal AHB Wait Clock Cycles.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>WAIT_FIRST_FS</name>
+            <description>WAIT_FIRST_FS.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACCU_FRAME_CTRL</name>
+            <description>ACCU_FRAME_CTRL.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACCU_LINE_CTRL</name>
+            <description>ACCU_LINE_CTRL.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACCU_LINE_CNT</name>
+            <description>ACCU_LINE_CNT.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACCU_PIXEL_CNT</name>
+            <description>ACCU_PIXEL_CNT.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ACCU_PIXEL_ZERO</name>
+            <description>ACCU_PIXEL_ZERO.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_CTRL</name>
+        <description>Video FIFO Control Register.</description>
+        <addressOffset>0x508</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FIFOEN</name>
+            <description>Video FIFO Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DIS</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EN</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FLUSH</name>
+            <description>Write 1 to flush FIFO contents.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>THD</name>
+            <description>FIFO Threshold.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_STS</name>
+        <description>Video FIFO Status Register.</description>
+        <addressOffset>0x50C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FEMPTY</name>
+            <description>FIFO empty.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FTHD</name>
+            <description>FIFO above threshold.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFULL</name>
+            <description>FIFO full.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNDERRUN</name>
+            <description>FIFO underrun</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OVERRUN</name>
+            <description>FIFO overrun</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OUTSYNC</name>
+            <description>CSI out of sync</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FMTERR</name>
+            <description>CSI Pixel Format Error</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBWTO</name>
+            <description>AHB wait time out</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FS</name>
+            <description>CSI Frame Start</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FE</name>
+            <description>CSI Frame End</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LS</name>
+            <description>CSI Line Start</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LE</name>
+            <description>CSI Line End</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FELT</name>
+            <description>FIFO remaining entity count</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+          <field>
+            <name>FMT</name>
+            <description>CSI pixel format of current transaction</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_LINE_NUM</name>
+        <description>Video FIFO CSI Line Number Per Frame.</description>
+        <addressOffset>0x510</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>LINE_NUM</name>
+            <description>Number of lines per frame.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>13</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_PIXEL_NUM</name>
+        <description>Video FIFO CSI Pixel Number Per Line.</description>
+        <addressOffset>0x514</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>PIXEL_NUM</name>
+            <description>Number of pixels per line.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_LINE_CNT</name>
+        <description>Video FIFO CSI Line Count.</description>
+        <addressOffset>0x518</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>LINE_CNT</name>
+            <description>Number of received lines in current frame.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_PIXEL_CNT</name>
+        <description>Video FIFO CSI Pixel Count.</description>
+        <addressOffset>0x51C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>PIXEL_CNT</name>
+            <description>Number of received pixels in current line in a frame.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>13</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_FRAME_STS</name>
+        <description>Video FIFO Frame Status Register.</description>
+        <addressOffset>0x520</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FRAME_STATE</name>
+            <description>Frame State.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>ERROR_CODE</name>
+            <description>Error Codes.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_RAW_CTRL</name>
+        <description>Video FIFO RAW-to-RGB Control Register.</description>
+        <addressOffset>0x524</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>RAW_CEN</name>
+            <description>RAW conversion enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_FF_AFO</name>
+            <description>RAW conversion FIFO automatic flush-out.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_FF_FO</name>
+            <description>RAW conversion FIFO flush-out trigger.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_FMT</name>
+            <description>RAW format.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>RGRG_GBGB</name>
+                <description>RGRG GBGB</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>GRGR_BGBG</name>
+                <description>GRGR BGBG</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>GBGB_RGRG</name>
+                <description>GBGB RGRG</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>BGBG_GRGR</name>
+                <description>BGBG GRGR</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RGB_TYP</name>
+            <description>RGB type.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>RGB444</name>
+                <description>RGB444.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RGB555</name>
+                <description>RGB555.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RGB565</name>
+                <description>RGB565.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RGB666</name>
+                <description>RGB666.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RGG888</name>
+                <description>RGG888.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_RAW_BUF0_ADDR</name>
+        <description>Video FIFO RAW-to-RGB Line Buffer0 Address.</description>
+        <addressOffset>0x528</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>RAM address for RAW conversion buffer 0, word-aligned.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>30</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_RAW_BUF1_ADDR</name>
+        <description>Video FIFO RAW-to-RGB Line Buffer1 Address.</description>
+        <addressOffset>0x52C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>RAM address for RAW conversion buffer 1, word-aligned.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>30</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_AHBM_CTRL</name>
+        <description>Video FIFO AHB Master Control Register.</description>
+        <addressOffset>0x530</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>AHBMEN</name>
+            <description>AHB Master Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBMCLR</name>
+            <description>AHB Master Status Clear.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BSTLEN</name>
+            <description>AHB Burst Length.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>VFIFO_THD</name>
+                <description>Video FIFO THD.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ONE_WORD</name>
+                <description>ONE_WORD.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>FOUR_WORDS</name>
+                <description>FOUR_WORDS.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EIGHT_WORDS</name>
+                <description>EIGHT_WORDS.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_AHBM_STS</name>
+        <description>Video FIFO AHB Master Status Register.</description>
+        <addressOffset>0x534</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>HRDY_TO</name>
+            <description>AHB master HREADY time-out.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IDLE_TO</name>
+            <description>AHB master Idle time-out.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TRANS_MAX</name>
+            <description>AHB master maximal transfer count occurrence.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_AHBM_START_ADDR</name>
+        <description>Video FIFO AHB Master Start Address Register.</description>
+        <addressOffset>0x538</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>AHBM_START_ADDR</name>
+            <description>AHB master transfer starting address, word-aligned.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>30</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_AHBM_ADDR_RANGE</name>
+        <description>Video FIFO AHB Master Address Range Register.</description>
+        <addressOffset>0x53C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>AHBM_ADDR_RANGE</name>
+            <description>AHB master address range.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_AHBM_MAX_TRANS</name>
+        <description>Video FIFO AHB Master Maximal Transfer Number Register.</description>
+        <addressOffset>0x540</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>AHBM_MAX_TRANS</name>
+            <description>AHB master maximal number of transfer word count.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>VFIFO_AHBM_TRANS_CNT</name>
+        <description>Video FIFO AHB Master Transfer Count Register.</description>
+        <addressOffset>0x544</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>AHBM_TRANS_CNT</name>
+            <description>AHB master number of words been transferred.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <!-- Interrupt Control Registers -->
+      <register>
+        <name>RX_EINT_VFF_IE</name>
+        <description>RX Video FIFO Interrupt Enable Register.</description>
+        <addressOffset>0x600</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FNEMPTY</name>
+            <description>Video FIFO not empty interrupt enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FTHD</name>
+            <description>Video FIFO above threshold interrupt enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFULL</name>
+            <description>Video FIFO full interrupt enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNDERRUN</name>
+            <description>Video FIFO underrun interrupt enable</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OVERRUN</name>
+            <description>Video FIFO overrun interrupt enable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OUTSYNC</name>
+            <description>CSI out of sync interrupt enable</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FMTERR</name>
+            <description>CSI Pixel Format Error interrupt enable</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBWTO</name>
+            <description>AHB wait time out interrupt enable</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FS</name>
+            <description>CSI Frame Start interrupt enable</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FE</name>
+            <description>CSI Frame End interrupt enable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LS</name>
+            <description>CSI Line Start interrupt enable</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LE</name>
+            <description>CSI Line End interrupt enable</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_OVR</name>
+            <description>Raw FIFO Overrun Interrupt Enable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_AHBERR</name>
+            <description>Raw AHB Error Interrupt Enable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FNEMP_MD</name>
+            <description>Video FIFO not empty detection mode</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FTHD_MD</name>
+            <description>Video FIFO threshold detection mode</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFUL_MD</name>
+            <description>Video FIFO full detection mode</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBM_RDTO</name>
+            <description>AHBM_RDTO</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBM_IDTO</name>
+            <description>AHBM_IDTO</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBM_MAX</name>
+            <description>AHBM_MAX</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RX_EINT_VFF_IF</name>
+        <description>RX Video FIFO Interrupt Flag Register.</description>
+        <addressOffset>0x604</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FNEMPTY</name>
+            <description>Video FIFO not empty interrupt flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FTHD</name>
+            <description>Video FIFO above threshold interrupt flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFULL</name>
+            <description>Video FIFO full interrupt flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNDERRUN</name>
+            <description>Video FIFO underrun interrupt flag</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OVERRUN</name>
+            <description>Video FIFO overrun interrupt flag</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OUTSYNC</name>
+            <description>CSI out of sync interrupt flag</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FMTERR</name>
+            <description>CSI Pixel Format Error interrupt flag</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBWTO</name>
+            <description>AHB wait time out interrupt flag</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FS</name>
+            <description>CSI Frame Start interrupt flag</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FE</name>
+            <description>CSI Frame End interrupt flag</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LS</name>
+            <description>CSI Line Start interrupt flag</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LE</name>
+            <description>CSI Line End interrupt flag</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_OVR</name>
+            <description>Raw FIFO Overrun Interrupt Enable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAW_AHBERR</name>
+            <description>Raw AHB Error Interrupt Enable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBM_RDTO</name>
+            <description>AHBM_RDTO</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBM_IDTO</name>
+            <description>AHBM_IDTO</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AHBM_MAX</name>
+            <description>AHBM_MAX</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RX_EINT_PPI_IE</name>
+        <description>RX D-PHY Interrupt Enable Register.</description>
+        <addressOffset>0x608</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DL0STOP</name>
+            <description>DPHY Data Lane0 Stop State (ppi_stopstate_lan0) interrupt enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1STOP</name>
+            <description>DPHY Data Lane1 Stop State (ppi_stopstate_lan1) interrupt enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0STOP</name>
+            <description>DPHY Clock Lane0 Stop State (ppi_stopstate_clk0) interrupt enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ECONT0</name>
+            <description>DPHY Data Lane0 LP0 Contention Error (ppi_errcontentionp0_lan0) interrupt enable</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ECONT1</name>
+            <description>DPHY Data Lane0 LP1 Contention Error (ppi_errcontentionp1_lan0) interrupt enable</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ESOT</name>
+            <description>DPHY Data Lane0 Start-of-Transmission (SoT) Error (ppi_errsoths_lan0) interrupt enable</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ESOT</name>
+            <description>DPHY Data Lane1 Start-of-Transmission (SoT) Error (ppi_errsoths_lan1) interrupt enable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ESOTS</name>
+            <description>DPHY Data Lane0 SOT Synchronization Error (ppi_errsotsynchs_lan0) interrupt enable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ESOTS</name>
+            <description>DPHY Data Lane1 SOT Synchronization Error (ppi_errsotsynchs_lan1) interrupt enable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0EESC</name>
+            <description>DPHY Data Lane0 Escape Entry Error (ppi_erresc_lan0) interrupt enable</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1EESC</name>
+            <description>DPHY Data Lane1 Escape Entry Error (ppi_erresc_lan1) interrupt enable</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ESESC</name>
+            <description>DPHY Data Lane0 Low-Power Data Transmission Synchronization Error (ppi_errsyncesc_lan0) interrupt enable</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ESESC</name>
+            <description>DPHY Data Lane1 Low-Power Data Transmission Synchronization Error (ppi_errsyncesc_lan0) interrupt enable</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ECTL</name>
+            <description>DPHY Data Lane0 Control Error (ppi_errcontrol_lan0) interrupt enable</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ECTL</name>
+            <description>DPHY Data Lane1 Control Error (ppi_errcontrol_lan0) interrupt enable</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RX_EINT_PPI_IF</name>
+        <description>RX D-PHY Interrupt Flag Register.</description>
+        <addressOffset>0x60C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DL0STOP</name>
+            <description>DPHY Data Lane0 Stop State (ppi_stopstate_lan0) interrupt flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1STOP</name>
+            <description>DPHY Data Lane1 Stop State (ppi_stopstate_lan1) interrupt flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0STOP</name>
+            <description>DPHY Clock Lane0 Stop State (ppi_stopstate_clk0) interrupt flag.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ECONT0</name>
+            <description>DPHY Data Lane0 LP0 Contention Error (ppi_errcontentionp0_lan0) interrupt flag</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ECONT1</name>
+            <description>DPHY Data Lane0 LP1 Contention Error (ppi_errcontentionp1_lan0) interrupt flag</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ESOT</name>
+            <description>DPHY Data Lane0 Start-of-Transmission (SoT) Error (ppi_errsoths_lan0) interrupt flag</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ESOT</name>
+            <description>DPHY Data Lane1 Start-of-Transmission (SoT) Error (ppi_errsoths_lan1) interrupt flag</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ESOTS</name>
+            <description>DPHY Data Lane0 SOT Synchronization Error (ppi_errsotsynchs_lan0) interrupt flag</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ESOTS</name>
+            <description>DPHY Data Lane1 SOT Synchronization Error (ppi_errsotsynchs_lan1) interrupt flag</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0EESC</name>
+            <description>DPHY Data Lane0 Escape Entry Error (ppi_erresc_lan0) interrupt flag</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1EESC</name>
+            <description>DPHY Data Lane1 Escape Entry Error (ppi_erresc_lan1) interrupt flag</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ESESC</name>
+            <description>DPHY Data Lane0 Low-Power Data Transmission Synchronization Error (ppi_errsyncesc_lan0) interrupt flag</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ESESC</name>
+            <description>DPHY Data Lane1 Low-Power Data Transmission Synchronization Error (ppi_errsyncesc_lan0) interrupt flag</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ECTL</name>
+            <description>DPHY Data Lane0 Control Error (ppi_errcontrol_lan0) interrupt flag</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ECTL</name>
+            <description>DPHY Data Lane1 Control Error (ppi_errcontrol_lan0) interrupt flag</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RX_EINT_CTRL_IE</name>
+        <description>RX Controller Interrupt Enable Register.</description>
+        <addressOffset>0x610</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EECC2</name>
+            <description>CSI RX ECC 2-bit Error interrupt enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EECC1</name>
+            <description>CSI RX ECC 1-bit Error interrupt enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ECRC</name>
+            <description>CSI RX CRC Error interrupt enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EID</name>
+            <description>CSI RX Packet Header Data ID Error interrupt enable</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PKTFFOV</name>
+            <description>CSI RX Packet FIFO Overrun interrupt enable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ULPSA</name>
+            <description>CSI Data Lane0 ULPSS Active interrupt enable</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ULPSA</name>
+            <description>CSI Data Lane1 ULPSS Active interrupt enable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ULPSM</name>
+            <description>CSI Data Lane0 ULPSS Mark interrupt enable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ULPSM</name>
+            <description>CSI Data Lane1 ULPSS Mark interrupt enable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0ULPSA</name>
+            <description>CSI Clock Lane0 ULPSS Active interrupt enable</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0ULPSM</name>
+            <description>CSI Data Lane0 ULPSS Mark interrupt enable</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RX_EINT_CTRL_IF</name>
+        <description>RX Controller Interrupt Flag Register.</description>
+        <addressOffset>0x614</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>EECC2</name>
+            <description>CSI RX ECC 2-bit Error interrupt flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EECC1</name>
+            <description>CSI RX ECC 1-bit Error interrupt flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ECRC</name>
+            <description>CSI RX CRC Error interrupt flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>EID</name>
+            <description>CSI RX Packet Header Data ID Error interrupt flag</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PKTFFOV</name>
+            <description>CSI RX Packet FIFO Overrun interrupt flag</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ULPSA</name>
+            <description>CSI Data Lane0 ULPSS Active interrupt flag</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ULPSA</name>
+            <description>CSI Data Lane1 ULPSS Active interrupt flag</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0ULPSM</name>
+            <description>CSI Data Lane0 ULPSS Mark interrupt flag</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1ULPSM</name>
+            <description>CSI Data Lane1 ULPSS Mark interrupt flag</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0ULPSA</name>
+            <description>CSI Clock Lane0 ULPSS Active interrupt flag</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0ULPSM</name>
+            <description>CSI Data Lane0 ULPSS Mark interrupt flag</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PPI_STOPSTATE</name>
+        <description>DPHY PPI Stop State Register.</description>
+        <addressOffset>0x700</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DL0STOP</name>
+            <description>CSI Data Lane0 Stop State.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL1STOP</name>
+            <description>CSI Data Lane1 Stop State.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CL0STOP</name>
+            <description>CSI Clock Lane0 Stop State.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PPI_TURNAROUND_CFG</name>
+        <description>DPHY PPI Turn-Around Configuration Register.</description>
+        <addressOffset>0x704</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DL0TAREQ</name>
+            <description>CSI Data Lane0 turn around request.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0TADIS</name>
+            <description>CSI Data Lane0 turn around disable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DL0FRCRX</name>
+            <description>CSI Data Lane0 force RX mode.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- CSI2 -->
+</device>

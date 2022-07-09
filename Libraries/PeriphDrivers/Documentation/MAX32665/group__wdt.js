@@ -1,0 +1,37 @@
+var group__wdt =
+[
+    [ "WDT_Registers", "group__wdt__registers.html", "group__wdt__registers" ],
+    [ "mxc_wdt_period_t", "group__wdt.html#ga402e160fed5337127134084c4042c598", [
+      [ "MXC_WDT_PERIOD_2_31", "group__wdt.html#gga402e160fed5337127134084c4042c598ae0e4d85b5fe62072c8d79a391b84f75c", null ],
+      [ "MXC_WDT_PERIOD_2_30", "group__wdt.html#gga402e160fed5337127134084c4042c598a4837d066e88e2fceecb690b512c2364d", null ],
+      [ "MXC_WDT_PERIOD_2_29", "group__wdt.html#gga402e160fed5337127134084c4042c598a738ed54f2125857dfe19331aa7b7af4f", null ],
+      [ "MXC_WDT_PERIOD_2_28", "group__wdt.html#gga402e160fed5337127134084c4042c598a64f36a37eb332d7b3aca8247b10ad465", null ],
+      [ "MXC_WDT_PERIOD_2_27", "group__wdt.html#gga402e160fed5337127134084c4042c598aea056296570c7bcd7561d5c53a955cb1", null ],
+      [ "MXC_WDT_PERIOD_2_26", "group__wdt.html#gga402e160fed5337127134084c4042c598a8252d117e27c00a6ad58d63606509608", null ],
+      [ "MXC_WDT_PERIOD_2_25", "group__wdt.html#gga402e160fed5337127134084c4042c598ab2857b754fc1e23584b761945b79b5de", null ],
+      [ "MXC_WDT_PERIOD_2_24", "group__wdt.html#gga402e160fed5337127134084c4042c598abbf198000b931f54c0b666cef44cde8b", null ],
+      [ "MXC_WDT_PERIOD_2_23", "group__wdt.html#gga402e160fed5337127134084c4042c598ab79092e8706162251f9333f1fa231bc4", null ],
+      [ "MXC_WDT_PERIOD_2_22", "group__wdt.html#gga402e160fed5337127134084c4042c598a8f90d2832d7901f0f79d2a7d8f0c949d", null ],
+      [ "MXC_WDT_PERIOD_2_21", "group__wdt.html#gga402e160fed5337127134084c4042c598a6f181816bdabd6faa112907f4c4e997a", null ],
+      [ "MXC_WDT_PERIOD_2_20", "group__wdt.html#gga402e160fed5337127134084c4042c598ac6b087437fd7e3df89050a9b3454b3bc", null ],
+      [ "MXC_WDT_PERIOD_2_19", "group__wdt.html#gga402e160fed5337127134084c4042c598a00ad8586d232f3e8a4e2a5b43bbc3b62", null ],
+      [ "MXC_WDT_PERIOD_2_18", "group__wdt.html#gga402e160fed5337127134084c4042c598a1759232c59a565f33bd31a7f11c765cf", null ],
+      [ "MXC_WDT_PERIOD_2_17", "group__wdt.html#gga402e160fed5337127134084c4042c598a6265f9dcfd0748d2975800450bd20b36", null ],
+      [ "MXC_WDT_PERIOD_2_16", "group__wdt.html#gga402e160fed5337127134084c4042c598a2bd80de10c95f7a0f539559015c16477", null ]
+    ] ],
+    [ "MXC_WDT_ClearIntFlag", "group__wdt.html#gad82681e5605833e6740fb100287e10f5", null ],
+    [ "MXC_WDT_ClearResetFlag", "group__wdt.html#gabef6d4a15432a2bfeee7bc30f30ae416", null ],
+    [ "MXC_WDT_Disable", "group__wdt.html#ga432d61cbf2535f750633d045fbed4f14", null ],
+    [ "MXC_WDT_DisableInt", "group__wdt.html#gacd94865c8871f5f8d01fb60b2632b00d", null ],
+    [ "MXC_WDT_DisableReset", "group__wdt.html#gac26cd15702604c4a9f46baed84bdf77a", null ],
+    [ "MXC_WDT_Enable", "group__wdt.html#ga9f25e5fd4661ddca2ed23d837c83f5b5", null ],
+    [ "MXC_WDT_EnableInt", "group__wdt.html#gafb04f47384eb5ee6af9e178894dc2dd5", null ],
+    [ "MXC_WDT_EnableReset", "group__wdt.html#ga038303b14f3ff9771b7f9f511e75972d", null ],
+    [ "MXC_WDT_GetIntFlag", "group__wdt.html#ga12467c52fd011a002b1f9c0efa11d7db", null ],
+    [ "MXC_WDT_GetResetFlag", "group__wdt.html#gae2acf5376e6ebc5b4ffce66625c8b61c", null ],
+    [ "MXC_WDT_Init", "group__wdt.html#ga63e4d46d9d18c84f4342db3b0af6ee36", null ],
+    [ "MXC_WDT_ResetTimer", "group__wdt.html#ga9d9b340687177f4f4d6e2949fece4bd7", null ],
+    [ "MXC_WDT_SetIntPeriod", "group__wdt.html#gaa97af54926bbc90b0c9b2379045dbb3b", null ],
+    [ "MXC_WDT_SetResetPeriod", "group__wdt.html#ga728057692810f2433103cbb4839658e8", null ],
+    [ "MXC_WDT_Shutdown", "group__wdt.html#ga93c35a51533fd9ae4e81cae08f9bd5d5", null ]
+];

@@ -1,0 +1,1403 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>GCR</name>
+    <description>Global Control Registers.</description>
+    <baseAddress>0x40000000</baseAddress>
+    <addressBlock>
+      <offset>0</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>SCON</name>
+        <description>System Control.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetMask>0xFFFFFFFE</resetMask>
+        <fields>
+          <field>
+            <name>FLASH_PAGE_FLIP</name>
+            <description>Flips the Flash bottom and top halves. (Depending on the total flash size, each half is either 256K or 512K). Initiating a flash page flip will cause a flush of both the data buffer on the DCODE bus and the internal instruction buffer.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Physical layout matches logical layout.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>swapped</name>
+                <description>Bottom half mapped to logical top half and vice versa.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FPU_DIS</name>
+            <description>Floating Point Unit Disable </description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>enable</name>
+                <description>enable Floating point unit</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>disable</name>
+                <description>disable floating point unit </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ICC0_FLUSH</name>
+            <description>Instruction Cache Controller Flush. Write 1 to flush the internal flash cache. This bit is cleared by hardware when the flush is complete.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Code Cache Operation</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>flush</name>
+                <description>Code Caches and CPU instruction buffer are flushed </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SWD_DIS</name>
+            <description>Serial Wire Debug Disable </description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>enable</name>
+                <description>Enable JTAG SWD</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>disable</name>
+                <description>Disable JTAG SWD </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RST0</name>
+        <description>Reset.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>DMA</name>
+            <description>DMA Reset.</description>
+            <bitOffset>0</bitOffset>
+            <enumeratedValues>
+              <name>dma_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>dma_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WDT0</name>
+            <description>Watchdog Timer Reset.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>wdt_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>wdt_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>GPIO0</name>
+            <description>GPIO0 Reset. Setting this bit to 1 resets GPIO0 pins to their default states.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>gpio0_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>gpio0_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMER0</name>
+            <description>Timer0 Reset. Setting this bit to 1 resets Timer 0 blocks.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>timer0_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>timer0_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMER1</name>
+            <description>Timer1 Reset. Setting this bit to 1 resets Timer 1 blocks.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>timer1_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>timer1_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMER2</name>
+            <description>Timer2 Reset. Setting this bit to 1 resets Timer 2 blocks.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>timer2_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>timer2_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>UART0</name>
+            <description>UART0 Reset. Setting this bit to 1 resets all UART 0 blocks.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>uart0_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>uart0_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>UART1</name>
+            <description>UART1 Reset. Setting this bit to 1 resets all UART 1 blocks.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>uart1_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>uart1_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SPI0</name>
+            <description>SPI0 Reset. Setting this bit to 1 resets all SPI 0 blocks.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>spi0_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>spi0_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SPI1</name>
+            <description>SPI1 Reset. Setting this bit to 1 resets all SPI 1 blocks.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>spi1_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>xpi1_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C0</name>
+            <description>I2C0 Reset.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>i2c0_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>i2c0_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RTC</name>
+            <description>Real Time Clock Reset.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>rtc_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>rtc_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SOFT</name>
+            <description>Soft Reset.Write 1 to perform a Soft Reset. A soft reset performs a Peripheral Reset and also resets the GPIO peripheral but does not reset the CPU or Watchdog Timer.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>srst_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>srst_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PERIPH</name>
+            <description>Peripheral Reset. Setting this bit to 1 resets all peripherals. The CPU core, the watchdog timer, and all GPIO pins are unaffected by this reset.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>prst_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>prst_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SYSTEM</name>
+            <description>System Reset. Setting this bit to 1 resets the CPU core and all peripherals, including the watchdog timer.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>system_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>system_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>Reset_Done</name>
+                <description>Reset Complete</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>Reset Busy</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CLK_CTRL</name>
+        <description>Clock Control.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetValue>0x00000008</resetValue>
+        <fields>
+          <field>
+            <name>PSC</name>
+            <description>Prescaler Select. This 3 bit field sets the system operating frequency by controlling the prescaler that divides the output of the PLL0.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div1</name>
+                <description>Divide by 1.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div2</name>
+                <description>Divide by 2.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div4</name>
+                <description>Divide by 4.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>Divide by 8.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div16</name>
+                <description>Divide by 16.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div32</name>
+                <description>Divide by 32.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div64</name>
+                <description>Divide by 64.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div128</name>
+                <description>Divide by 128.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CLKSEL</name>
+            <description>Clock Source Select. This 3 bit field selects the source for the system clock.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>HIRC</name>
+                <description>The internal 96 MHz oscillator is used for the system clock.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>nanoRing</name>
+                <description>The nano-ring output is used for the system clock.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>hfxIn</name>
+                <description>HFXIN is used for the system clock.</description>
+                <value>6</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CLKRDY</name>
+            <description>Clock Ready. This read only bit reflects whether the currently selected system clock source is running.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Switchover to the new clock source (as selected by CLKSEL) has not yet occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>System clock running from CLKSEL clock source.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>X32K_EN</name>
+            <description>32kHz Crystal Oscillator Enable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Is Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Is Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HIRC_EN</name>
+            <description>60MHz High Frequency Internal Reference Clock Enable.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Is Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Is Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>X32K_RDY</name>
+            <description>32kHz Crystal Oscillator Ready</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Not Ready</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Ready</name>
+                <description>X32K Ready</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HIRC_RDY</name>
+            <description>60MHz HIRC Ready.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Not Ready</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>HIRC Ready</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LIRC8K_RDY</name>
+            <description>8kHz Low Frequency Reference Clock Ready.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Not Ready</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Clock Ready</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PM</name>
+        <description>Power Management.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>MODE</name>
+            <description>Operating Mode. This two bit field selects the current operating mode for the device. Note that code execution only occurs during ACTIVE mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Active Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>backup</name>
+                <description>Backup Mode.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>GPIOWK_EN</name>
+            <description>GPIO Wake Up Enable. This bit enables all GPIO pins as potential wakeup sources. Any GPIO configured for wakeup is capable of causing an exit from IDLE or STANDBY modes when this bit is set.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Wake Up Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Wake Up Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RTCWK_EN</name>
+            <description>RTC Alarm Wake Up Enable. This bit enables RTC alarm as wakeup source. If enabled, the desired RTC alarm must be configured via the RTC control registers.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Wake Up Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Wake Up Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HFIOPD</name>
+            <description>HFIO DEEPSLEEP Auto Off. When set, the High-Frequency Internal Oscillator is automatically powered off when in DEEPSLEEP mode. </description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Mode is Active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>deepsleep</name>
+                <description>Powered down in DEEPSLEEP.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PCLK_DIS0</name>
+        <description>Peripheral Clock Disable.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>GPIO0D</name>
+            <description>GPIO0 Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMAD</name>
+            <description>DMA Disable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SPI0D</name>
+            <description>SPI 0 Disable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SPI1D</name>
+            <description>SPI 1 Disable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>UART0D</name>
+            <description>UART 0 Disable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>UART1D</name>
+            <description>UART 1 Disable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C0D</name>
+            <description>I2C 0 Disable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMER0D</name>
+            <description>Timer 0 Disable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMER1D</name>
+            <description>Timer 1 Disable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TIMER2D</name>
+            <description>Timer 2 Disable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>I2C1D</name>
+            <description>I2C 1 Disable.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>GPIODisable</name>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MEM_CTRL</name>
+        <description>Memory Clock Control Register.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>FWS</name>
+            <description>Flash Wait State. These bits define the number of wait-state cycles per Flash data read access. Minimum wait state is 2.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>RAM0_LS</name>
+            <description>System RAM 0 Light Sleep Mode.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Memory is active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>light_sleep</name>
+                <description>Memory is in Light Sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM1_LS</name>
+            <description>System RAM 1 Light Sleep Mode.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Memory is active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>light_sleep</name>
+                <description>Memory is in Light Sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM2_LS</name>
+            <description>System RAM 2 Light Sleep Mode.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Memory is active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>light_sleep</name>
+                <description>Memory is in Light Sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM3_LS</name>
+            <description>System RAM 3 Light Sleep Mode.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Memory is active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>light_sleep</name>
+                <description>Memory is in Light Sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ICACHE_RET</name>
+            <description>ICache RAM Light Sleep Mode.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Memory is active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>light_sleep</name>
+                <description>Memory is in Light Sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MEM_ZCTRL</name>
+        <description>Memory Zeroize Control.</description>
+        <addressOffset>0x2C</addressOffset>
+        <fields>
+          <field>
+            <name>SRAM_ZERO</name>
+            <description>System RAM Block 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>nop</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ICACHE_ZERO</name>
+            <description>Instruction Cache.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>nop</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYS_STAT</name>
+        <description>System Status Register.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>ICECLOCK</name>
+            <description>ARM ICE Lock Status.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>unlocked</name>
+                <description>ICE is unlocked.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>locked</name>
+                <description>ICE is locked.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RST1</name>
+        <description>Reset 1.</description>
+        <addressOffset>0x44</addressOffset>
+        <fields>
+          <field>
+            <name>I2C1</name>
+            <description>I2C1 Reset.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>reset_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>reset_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>reset_done</name>
+                <description>Reset complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Reset in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PCLK_DIS1</name>
+        <description>Peripheral Clock Disable.</description>
+        <addressOffset>0x48</addressOffset>
+        <fields>
+          <field>
+            <name>FLCD</name>
+            <description>Secure Flash Controller Disable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ICCD</name>
+            <description>ICache Clock Disable. </description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EVTEN</name>
+        <description>Event Enable Register.</description>
+        <addressOffset>0x4C</addressOffset>
+        <fields>
+          <field>
+            <name>DMAEVENT</name>
+            <description>Enable DMA event. When this bit is set, a DMA event will cause an RXEV event to wake the CPU from WFE sleep mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_EVT</name>
+            <description>Enable RXEV pin event. When this bit is set, a logic high of GPIO0[24] will cause an RXEV event to wake the CPU from WFE sleep mode. </description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>REV</name>
+        <description>Revision Register.</description>
+        <addressOffset>0x50</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>REVISION</name>
+            <description>Manufacturer Chip Revision. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYS_IE</name>
+        <description>System Status Interrupt Enable</description>
+        <addressOffset>0x54</addressOffset>
+        <fields>
+          <field>
+            <name>ICEULIE</name>
+            <description>Arm ICE Unlocked Interrupt Enable. Set this bit to enable a PWRSEQ IRQ if the Arm ICE is unlocked.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- GCR: Global Control Registers        -->
+</device>

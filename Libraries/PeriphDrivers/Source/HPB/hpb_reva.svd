@@ -1,0 +1,472 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>HPB</name>
+    <description>HyperBus Memory Controller Registers</description>
+    <baseAddress>0x40039000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interupt>
+      <name>HyperBus_Memory_Controller</name>
+      <description>HyperBus Memory Controller interrupt.</description>
+      <value>61</value>
+    </interupt>
+    <registers>
+      <register>
+        <name>STAT</name>
+        <description>HPB Status Register.</description>
+        <addressOffset>0x0000</addressOffset>
+        <fields>
+          <field>
+            <name>RDTXN</name>
+            <description>Read Transaction in Progress</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noread</name>
+                <description>No read transaction currently in progress.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>read</name>
+                <description>Read transaction currently in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDADDRERR</name>
+            <description>Read Address Error</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal_op</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>External read address not responding.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDSLVST</name>
+            <description>Read Slave Status.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RDRSTERR</name>
+            <description>Reset During Read Error. If this field is set a reset orrcured during a read.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal_op</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>Memory controller was reset during read operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDSTALL</name>
+            <description>Read Data Stall.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal_op</name>
+                <description>Memory Controller operating normally.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>stalled</name>
+                <description>Read transaction is stalled because RDS is low (stalled).</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRTXN</name>
+            <description>Write Transaction in Progress</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>nowrite</name>
+                <description>No write transaction currently in progress.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>write</name>
+                <description>Write transaction currently in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRADDRERR</name>
+            <description>Write Address Error. If this field is set a write address error orrcured.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal_op</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>The write address to external memory is invalid.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRRSTERR</name>
+            <description>Reset During Write Error. If this field is set a reset orrcured during a write.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal_op</name>
+                <description>No error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>err</name>
+                <description>Memory controller was reset during write operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTEN</name>
+        <description>HPB INTEN Register.</description>
+        <addressOffset>0x0004</addressOffset>
+        <fields>
+          <field>
+            <name>MEM</name>
+            <description>Hyperbus Memory Interrupt Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable interrupt.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable interrupt.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERR</name>
+            <description>Enables/disables the HPB error interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable error interrupt.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable error interrupt.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>HPB INTFL Register.</description>
+        <addressOffset>0x0008</addressOffset>
+        <fields>
+          <field>
+            <name>MEM</name>
+            <description>Hyperbus Memory Status Flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noint</name>
+                <description>Memory interrupt not active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>Memory interrupt currently pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERR</name>
+            <description>Error interrupt status flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noint</name>
+                <description>Error interrupt not active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>Error interrupt currently pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MEMBADDR[%s]</name>
+        <description>Memory Base Address register. This is the base address of the addressable memory region in this microcontroller’s RAM. Because the addressable memory is mapped in 16M boundaries, the lower 24 bits are fixed to 0.</description>
+        <addressOffset>0x0010</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Memory base address. This sets the base address of the addressable memory region where the port is mapped. Each address space is 512Mbytes. The lower 24 bits are read only and will always read 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MEMCTRL[%s]</name>
+        <description>Memory Control Register.</description>
+        <addressOffset>0x0020</addressOffset>
+        <fields>
+          <field>
+            <name>WRAPSIZE</name>
+            <description>The wrap burst length of HyperBus memory. This bit is 
+ignored when the asymmetry cache support bit is 0. When 
+the asymmetry cache support is 1, this bit should be set the 
+same as wrap size of configuration register in HyperBus 
+memory.
+</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>64B</name>
+                <description>64 bytes</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>16B</name>
+                <description>16 bytes</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>32B</name>
+                <description>32 bytes</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DEVTYPE</name>
+            <description>Select the memory device type.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>hyperFlash</name>
+                <description>HyperFlash</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>xccela_psram</name>
+                <description>Xccela PSRAM</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>hyperRAM</name>
+                <description>HyperRAM</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CRT</name>
+            <description>Configuration Register Target Select. For HyperRAM and Xccela Bus devices, this field selects between read/write target being the devices memory map or configuration register space. For HyperFlash set this field to 0.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>mem_space</name>
+                <description>Access Memory space.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>config_reg</name>
+                <description>Access Configuration Register space.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDLAT_EN</name>
+            <description>Xccela Fixed Read Latency Enable. Set this bit to enable Xccela bus Fixed Read Latency. Set this field to match the latency Type configuration in the target PSRAM.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>variable</name>
+                <description>Variable read latency.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>fixed</name>
+                <description>Fixed read latency.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HSE</name>
+            <description>Xccela Half Sleep Exit. When half sleep exit is enabled, the CS# line is held low for ten clock cycles. This bit is automatically cleared by hardware when a Half Sleep Exit completes.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Half Sleep Exit disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Half Sleep Exit enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MAXLEN</name>
+            <description>Maximum Read/Write. Set this field to the CS# low time in terms of clock cycles.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+          <field>
+            <name>MAX_EN</name>
+            <description>Maximum CS# Length Enable.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>No configured CS# low time.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>CS# low time is configured.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>MEMTIM[%s]</name>
+        <description>Memory timing register.</description>
+        <addressOffset>0x0030</addressOffset>
+        <fields>
+          <field>
+            <name>LAT</name>
+            <description>RAM Latency.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>5clk</name>
+                <description>5 Clock cycles.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>6clk</name>
+                <description>6 Clock cycles.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3clk</name>
+                <description>3 Clock cycles.</description>
+                <value>14</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4clk</name>
+                <description>4 Clock cycles.</description>
+                <value>15</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRCSHD</name>
+            <description>Write Chip Select Hold after CK falling edge.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RDCSHD</name>
+            <description>Read Chip Select Hold after CK falling edge.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>WRCSST</name>
+            <description>Write Chip Select Setup Time to Next CK Rising Edge.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RDCSST</name>
+            <description>Read Chip Select Setup Time to Next CK Rising Edge.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>WRCSHI</name>
+            <description>Write Chip Select High Between Operations.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RDCSHI</name>
+            <description>Read Chip Select High Between Operations.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- HPB: HyperBus Memory Controller Registers-->
+</device>

@@ -1,0 +1,27 @@
+var group___c_r_y_p_t_o___c_r_c___c_t_r_l =
+[
+    [ "MXC_F_CRYPTO_CRC_CTRL_CRC", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gaca7f94401aa22fa69138edef96acbfcf", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_CRC_POS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gae044e5a913bc2c2f4b7f5f62a5c90af8", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_ENT", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga3b9f2f43108b174b362986a53fc985c1", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_ENT_POS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga5e654f7aa9dccbe63885621e4c3a5f45", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_HAM", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga8bf98c969c311ee47363f3579fc8ceb6", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_HAM_POS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga6f9ea2d2ebeafb219f2a2d9cffc5e609", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_HRST", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga4e40c71d29d1d5da99980e3ebdfb4510", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_HRST_POS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga72b232bf9fdc0f693f8bb67685ae6e26", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_MSB", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga018123eae5a84abf91b04c94ef6b494d", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_MSB_POS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga401b0c35bd5976ad6bd3d4cd2ab31f94", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_PRNG", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga215f83b5fa699165178eebd51aa42db1", null ],
+    [ "MXC_F_CRYPTO_CRC_CTRL_PRNG_POS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gae89e405e9894f983e7d2bd78de59bac1", null ],
+    [ "MXC_S_CRYPTO_CRC_CTRL_CRC_DIS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga6854ea366155275a3e106ec5d996b4fd", null ],
+    [ "MXC_S_CRYPTO_CRC_CTRL_CRC_EN", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga06dbbeaa91b71c68c357f288ceab588a", null ],
+    [ "MXC_S_CRYPTO_CRC_CTRL_HRST_RESET", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gaf97c2cca5deac10a8d14adfd6e13f312", null ],
+    [ "MXC_S_CRYPTO_CRC_CTRL_HRST_RFU", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga8cde1804e1a2de80e093d4341d9ca6b6", null ],
+    [ "MXC_S_CRYPTO_CRC_CTRL_MSB_LSBFIRST", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gad1f7986567a4528286e34217d1ffc926", null ],
+    [ "MXC_S_CRYPTO_CRC_CTRL_MSB_MSBFIRST", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga43c694eccdf34905c07bd286c52c2758", null ],
+    [ "MXC_V_CRYPTO_CRC_CTRL_CRC_DIS", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga5dca523f54710fb5a943bbed988d4dc6", null ],
+    [ "MXC_V_CRYPTO_CRC_CTRL_CRC_EN", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga085f885eff2bc3839d217caa1012f0cf", null ],
+    [ "MXC_V_CRYPTO_CRC_CTRL_HRST_RESET", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gaeb3ab2862b5a2519ed51a0895b6efeca", null ],
+    [ "MXC_V_CRYPTO_CRC_CTRL_HRST_RFU", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gae441e34b6a02168833c4aca92ddf1c85", null ],
+    [ "MXC_V_CRYPTO_CRC_CTRL_MSB_LSBFIRST", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#gaa37d368d89905d33bd20bbb090a2b5ec", null ],
+    [ "MXC_V_CRYPTO_CRC_CTRL_MSB_MSBFIRST", "group___c_r_y_p_t_o___c_r_c___c_t_r_l.html#ga3f97825ed71f7dcce1b2e55d6909f40b", null ]
+];

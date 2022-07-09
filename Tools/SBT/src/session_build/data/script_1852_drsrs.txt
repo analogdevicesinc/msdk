@@ -1,0 +1,4 @@
+erase-code-flash-area
+load-file drsrs.hex
+generate-application-startup-signature
+verify-application-startup-signature

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>LPCMP</name>
+    <description>Low Power Comparator</description>
+    <baseAddress>0x40088000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>LPCMP</name>
+      <description>Low Power Comparato</description>
+      <value>103</value>
+    </interrupt>
+    <registers>
+      <register>
+        <dim>3</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>CTRL[%s]</name>
+        <description>Comparator Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Comparator Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>POL</name>
+            <description>Polarity Select</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INT_EN</name>
+            <description>IRQ Enable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OUT</name>
+            <description>Raw Compartor Input.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INT_FL</name>
+            <description>IRQ Flag</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

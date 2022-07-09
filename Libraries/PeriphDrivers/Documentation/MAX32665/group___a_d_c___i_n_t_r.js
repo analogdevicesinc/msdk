@@ -1,0 +1,25 @@
+var group___a_d_c___i_n_t_r =
+[
+    [ "MXC_F_ADC_INTR_ADC_HI_LIMIT_IE", "group___a_d_c___i_n_t_r.html#ga00132b57bee606b3a6d695a7b5c648ae", null ],
+    [ "MXC_F_ADC_INTR_ADC_HI_LIMIT_IE_POS", "group___a_d_c___i_n_t_r.html#gad3c5428d53d5fe8dcfeb46067ea531a8", null ],
+    [ "MXC_F_ADC_INTR_ADC_HI_LIMIT_IF", "group___a_d_c___i_n_t_r.html#ga9aa5ccf20a782303d91f64f8ea7a6f03", null ],
+    [ "MXC_F_ADC_INTR_ADC_HI_LIMIT_IF_POS", "group___a_d_c___i_n_t_r.html#ga60b5010af20c6219f191a5d20929e6b7", null ],
+    [ "MXC_F_ADC_INTR_ADC_LO_LIMIT_IE", "group___a_d_c___i_n_t_r.html#gad8a5e1bd293b1ff107457c3337b474e0", null ],
+    [ "MXC_F_ADC_INTR_ADC_LO_LIMIT_IE_POS", "group___a_d_c___i_n_t_r.html#ga7c816d1ed1d40b7d563cd50b8c8fe652", null ],
+    [ "MXC_F_ADC_INTR_ADC_LO_LIMIT_IF", "group___a_d_c___i_n_t_r.html#ga3c882945037f47275f384352708fa419", null ],
+    [ "MXC_F_ADC_INTR_ADC_LO_LIMIT_IF_POS", "group___a_d_c___i_n_t_r.html#gab9d33251eab91cd8e14475deeff6bda3", null ],
+    [ "MXC_F_ADC_INTR_DONE_IE", "group___a_d_c___i_n_t_r.html#gad5d107e703b6ff847d39ec3ba060d402", null ],
+    [ "MXC_F_ADC_INTR_DONE_IE_POS", "group___a_d_c___i_n_t_r.html#gacd3dabfe9d094e447a266c55d41f4059", null ],
+    [ "MXC_F_ADC_INTR_DONE_IF", "group___a_d_c___i_n_t_r.html#gac28b7042b9c77082a5dc9f7c1af9525c", null ],
+    [ "MXC_F_ADC_INTR_DONE_IF_POS", "group___a_d_c___i_n_t_r.html#ga32f1ee59a857c5540da191b645746853", null ],
+    [ "MXC_F_ADC_INTR_OVERFLOW_IE", "group___a_d_c___i_n_t_r.html#ga72865b66ef3f5c325c912a906554ff9a", null ],
+    [ "MXC_F_ADC_INTR_OVERFLOW_IE_POS", "group___a_d_c___i_n_t_r.html#ga123eedbad4b26662b9f6b3b7712a5623", null ],
+    [ "MXC_F_ADC_INTR_OVERFLOW_IF", "group___a_d_c___i_n_t_r.html#ga7ed2bbc64bbef087ed47854bc406c9d8", null ],
+    [ "MXC_F_ADC_INTR_OVERFLOW_IF_POS", "group___a_d_c___i_n_t_r.html#ga87b3f148dc1d0564e1a8ee7614f783dd", null ],
+    [ "MXC_F_ADC_INTR_PENDING", "group___a_d_c___i_n_t_r.html#ga6a654c24e14e70ed44364791f12f3fd9", null ],
+    [ "MXC_F_ADC_INTR_PENDING_POS", "group___a_d_c___i_n_t_r.html#ga50d202dba53b3bd76eb516df0a6afc8d", null ],
+    [ "MXC_F_ADC_INTR_REF_READY_IE", "group___a_d_c___i_n_t_r.html#ga8e36cdeb5bea53a10caf9158f5d09d3c", null ],
+    [ "MXC_F_ADC_INTR_REF_READY_IE_POS", "group___a_d_c___i_n_t_r.html#ga42f37e3f59c278a59859c30c7eb0b010", null ],
+    [ "MXC_F_ADC_INTR_REF_READY_IF", "group___a_d_c___i_n_t_r.html#ga19c8589169c9ea163bf8656f585e8623", null ],
+    [ "MXC_F_ADC_INTR_REF_READY_IF_POS", "group___a_d_c___i_n_t_r.html#ga50b06417ac984bcaa7aba4bf209ffe09", null ]
+];

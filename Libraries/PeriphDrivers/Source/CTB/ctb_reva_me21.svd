@@ -1,0 +1,1213 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>CTB</name>
+    <description>The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.</description>
+    <baseAddress>0x40001000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>Crypto_Engine</name>
+      <description>Crypto Engine interrupt.</description>
+      <value>27</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>Crypto Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetValue>0xC0000000</resetValue>
+        <fields>
+          <field>
+            <name>RST</name>
+            <description>Reset. This bit is used to reset the crypto accelerator.  All crypto internal states and related registers are reset to their default reset values. Control register such as CRYPTO_CTRL, CIPHER_CTRL, HASH_CTRL, CRC_CTRL, MAA_CTRL (with the exception of the STC bit), HASH_MSG_SZ_[3:0] and MAA_MAWS will retain their values. This bit will automatically clear itself after one cycle.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>reset_write</name>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+            <enumeratedValues>
+              <name>reset_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>reset_done</name>
+                <description>Reset complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Reset in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>INTR</name>
+            <description>Interrupt Enable. Generates an interrupt when done or error set.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SRC</name>
+            <description>Source Select.  This bit selects the hash function and CRC generator input source.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inputFIFO</name>
+                <description>Input FIFO</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>outputFIFO</name>
+                <description>Output FIFO</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="INTR">
+            <name>BSO</name>
+            <description>Byte Swap Output. Note. No byte swap will occur if there is not a full word.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="INTR">
+            <name>BSI</name>
+            <description>Byte Swap Input. Note. No byte swap will occur if there is not a full word.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="INTR">
+            <name>WAIT_EN</name>
+            <description>Wait Pin Enable. This can be used to hold off the crypto DMA until an external memory is ready. This is useful for transferring pages from NAND flash which may take several microseconds to become ready.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WAIT_POL</name>
+            <description>Wait Pin Polarity. When the wait pin is enabled, this bit selects its active state.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>activeLo</name>
+                <description>Active Low.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>activeHi</name>
+                <description>Active High.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRSRC</name>
+            <description>Write FIFO Source Select. This field determines where data written to the write FIFO comes from. When data is written to the write FIFO, it is always written out the DMA. To decrypt or encrypt data, the write FIFO source should be set to the cipher output. To implement memcpy() or memset() functions, or to fill memory with random data, the write FIFO source should be set to the read FIFO. When calculating a HASH or CMAC, the write FIFO should be disabled.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>none</name>
+                <description>None.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>cipherOutput</name>
+                <description>Cipher Output.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>readFIFO</name>
+                <description>Read FIFO.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDSRC</name>
+            <description>Read FIFO Source Select. This field selects the source of the read FIFO. Typically, it is set to use the DMA. To implement a memset() function, the read FIFO DMA should be disabled. To fill memory with random data or to hash random numbers, the read FIFO source should be set to the random number generator.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dmaDisabled</name>
+                <description>DMA Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dmaOrApb</name>
+                <description>DMA Or APB.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>rng</name>
+                <description>RNG.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FLAG_MODE</name>
+            <description>Done Flag Mode. This bit configures the access behavior of the individual CRYPTO_CTRL Done flags (CRYPTO_CTRL[27:24]). This bit is cleared only on reset to limit upkeep, i.e. once set, it will remain set until a reset occurs.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>unres_wr</name>
+                <description>Unrestricted write (0 or 1) of CRYPTO_CTRL[27:24] flags.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>res_wr</name>
+                <description>Access to CRYPTO_CTRL[27:24] are write 1 to clear/write 0 no effect.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMADNEMSK</name>
+            <description>DMA Done Flag Mask. This bit masks the DMA_DONE flag from being used to generate the CRYPTO_CTRL.DONE flag, and this disables a DMA_DONE condition from generating and interrupt. The DMA_DONE flag itself is unaffected and still may be monitored. This allows more optimal interrupt-driven crypto operations using DMA.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not_used</name>
+                <description>DMA_DONE not used in setting CRYPTO_CTRL.DONE bit.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>used</name>
+                <description>DMA_DONE used in setting CRYPTO_CTRL.DONE bit.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMA_DONE</name>
+            <description>DMA Done. DMA write/read operation is complete. This bit must be cleared before starting a DMA operation.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>notDone</name>
+                <description>Not Done.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>done</name>
+                <description>Done.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="DMA_DONE">
+            <name>GLS_DONE</name>
+            <description>Galois Done. FIFO is full and CRC or Hamming Code Generator is enabled. This bit must be cleared before starting a CRC operation Note that DMA_DONE must be polled instead of this bit to determine the end of DMA operation during the utilization of Hamming Code Generator.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA_DONE">
+            <name>HSH_DONE</name>
+            <description>Hash Done. SHA operation is complete. This bit must be cleared before starting a HASH operation.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA_DONE">
+            <name>CPH_DONE</name>
+            <description>Cipher Done. Either AES or DES encryption/decryption operation is complete. This bit must be cleared before starting a cipher operation.</description>
+            <bitOffset>27</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERR</name>
+            <description>AHB Bus Error. This bit is set when the DMA encounters a bus error during a read or write operation. Once this bit is set, the DMA will stop. This bit can only be cleared by resetting the crypto block.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noError</name>
+                <description>No Error.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>error</name>
+                <description>Error.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RDY</name>
+            <description>Ready. Crypto block ready for more data.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Busy.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="DMA_DONE">
+            <name>DONE</name>
+            <description>Done. One or more cryptographic calculations complete (logical OR of done flags).</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CIPHER_CTRL</name>
+        <description>Cipher Control Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>ENC</name>
+            <description>Encrypt. Select encryption or decryption of input data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>encrypt</name>
+                <description>Encrypt.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>decrypt</name>
+                <description>Decrypt.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>KEY</name>
+            <description>Load Key from crypto DMA. This bit is automatically cleared by hardware after the DMA has completed loading the key. When the DMA operation is done, it sets the appropriate crypto DMA Done flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SRC</name>
+            <description>Source of Random key.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>cipherKey</name>
+                <description>User cipher key (0x4000_1060).</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>regFile</name>
+                <description>Key from battery-backed register file (0x4000_5000 to 0x4000_501F).</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>qspiKey_regFile</name>
+                <description>Key from battery-backed register file (0x4000_5020 to 0x4000_502F).</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CIPHER</name>
+            <description>Cipher Operation Select.  Symmetric Block Cipher algorithm selection or memory operation.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>aes128</name>
+                <description>AES 128.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>aes192</name>
+                <description>AES 192.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>aes256</name>
+                <description>AES 256.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>des</name>
+                <description>DES.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>tdes</name>
+                <description>Triple DES.</description>
+                <value>5</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MODE</name>
+            <description>Mode Select. Mode of operation for block cipher or memory operation. DES/TDES cannot be used in CFB, OFB or CTR modes.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ECB</name>
+                <description>ECB Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CBC</name>
+                <description>CBC Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CFB</name>
+                <description>CFB (AES only).</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>OFB</name>
+                <description>OFB (AES only).</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CTR</name>
+                <description>CTR (AES only).</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HVC</name>
+            <description>H Vector Computation.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>DTYPE</name>
+            <description>GCM/CCM data type.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>CCMM</name>
+            <description>CCM M Parameter.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>3</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>CCML</name>
+            <description>CCM L Parameter.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>3</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HASH_CTRL</name>
+        <description>HASH Control Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>INIT</name>
+            <description>Initialize. Initializes hash registers with standard constants.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>nop</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>XOR</name>
+            <description>XOR data with IV from cipher block. Useful when calculating HMAC to XOR the input pad and output pad.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HASH</name>
+            <description>Hash function selection.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>sha1</name>
+                <description>SHA-1.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>sha224</name>
+                <description>SHA 224.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>sha256</name>
+                <description>SHA 256.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>sha384</name>
+                <description>SHA 384.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>sha512</name>
+                <description>SHA 512.</description>
+                <value>5</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LAST</name>
+            <description>Last Message Bit. This bit shall be set along with the HASH_MSG_SZ register prior to hashing the last 512 or 1024-bit block of the message data. It will allow automatic preprocessing of the last message padding, which includes the trailing bit 1, followed by the respective number of zero bits for the last block size and finally the message length represented in bytes. The bit will be automatically cleared at the same time the HASH DONE is set, designating the completion of the last message hash.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEffect</name>
+                <description>No Effect.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>lastMsgData</name>
+                <description>Last Message Data.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CRC_CTRL</name>
+        <description>CRC Control Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>CRC</name>
+            <description>Cyclic Redundancy Check Enable. The CRC cannot be enabled if the PRNG is enabled.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MSB</name>
+            <description>MSB select. This bit selects the order of calculating CRC on data.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>lsbFirst</name>
+                <description>LSB First.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>msbFirst</name>
+                <description>MSB First.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="CRC">
+            <name>PRNG</name>
+            <description>Pseudo Random Number Generator Enable. If entropy is disabled, this outputs one byte of pseudo random data per clock cycle. If entropy is enabled, data is output at a rate of one bit per clock cycle.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CRC">
+            <name>ENT</name>
+            <description>Entropy Enable. If the PRNG is enabled, this mixes the high frequency ring oscillator with the LFSR. If the PRNG is disabled, the raw entropy data is output at a rate of 1 bit per clock. This makes it possible to characterize the quality of the entropy source.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CRC">
+            <name>HAM</name>
+            <description>Hamming Code Enable. Enable hamming code calculation.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HRST</name>
+            <description>Hamming Reset. Reset Hamming code ECC generator for next block.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>write-only</access>
+            <enumeratedValues>
+              <usage>write</usage>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>Starts reset operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA_SRC</name>
+        <description>Crypto DMA Source Address.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>DMA Source Address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA_DEST</name>
+        <description>Crypto DMA Destination Address.</description>
+        <addressOffset>0x14</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>DMA Destination Address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA_CNT</name>
+        <description>Crypto DMA Byte Count.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>DMA Byte Address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>DIN[%s]</name>
+        <description>Crypto Data Input. Data input can be written to this register instead of using the DMA. This register writes to the FIFO. This register occupies four successive words to allow the use of multi-store instructions. Words can be written to any location, they will be placed in the FIFO in the order they are written. The endian swap input control bit affects this register.</description>
+        <addressOffset>0x20</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Crypto Data Input. Input can be written to this register instead of using DMA.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>DOUT[%s]</name>
+        <description>Crypto Data Output. Resulting data from cipher calculation. Data is placed in the lower words of these four registers depending on the algorithm. For block cipher modes, this register holds the result of most recent encryption or decryption operation. These registers are affected by the endian swap bits.</description>
+        <addressOffset>0x30</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Crypto Data Output. Resulting data from cipher calculation. Data is placed in the lower words of these four registers depending on algorithm.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CRC_POLY</name>
+        <description>CRC Polynomial. The polynomial to be used for Galois Field calculations (CRC or LFSR) should be written to this register. This register is affected by the MSB control bit.</description>
+        <addressOffset>0x40</addressOffset>
+        <resetValue>0xEDB88320</resetValue>
+        <fields>
+          <field>
+            <name>POLY</name>
+            <description>CRC Polynomial. The polynomial to be used for Galois Field calculations (CRC or LFSR) should be written to this register. This register is affected by the MSB control bit.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CRC_VAL</name>
+        <description>CRC Value. This is the state for the Galois Field. This register holds the result of a CRC calculation or the current state of the LFSR. This register is affected by the MSB control bit.</description>
+        <addressOffset>0x44</addressOffset>
+        <resetValue>0xFFFFFFFF</resetValue>
+        <fields>
+          <field>
+            <name>VAL</name>
+            <description>CRC Value. This is the state for the Galois Field. This register holds the result of a CRC calculation or the current state of LFSR. This register is affected by the MSB control bit.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HAM_ECC</name>
+        <description>Hamming ECC Register.</description>
+        <addressOffset>0x4C</addressOffset>
+        <fields>
+          <field>
+            <name>ECC</name>
+            <description>Hamming ECC Value. These bits are the even parity of their corresponding bit groups.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>PAR</name>
+            <description>Parity. This is the parity of the entire array.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>even</name>
+                <description>Even.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>odd</name>
+                <description>Odd.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>CIPHER_INIT[%s]</name>
+        <description>Initial Vector. For block cipher operations that use CBC, CFB, OFB, or CNTR modes, this register holds the initial value. This register is updated with each encryption or decryption operation. This register is affected by the endian swap bits.</description>
+        <addressOffset>0x50</addressOffset>
+        <fields>
+          <field>
+            <name>IVEC</name>
+            <description>Initial Vector. For block cipher operations that use CBC, CFB, OFB, or CNTR modes, this register holds the initial value. This register is updated with each encryption or decryption operation. This register is affected by the endian swap bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>CIPHER_KEY[%s]</name>
+        <description>Cipher Key.  This register holds the key used for block cipher operations. The lower words are used for block ciphers that use shorter key lengths. This register is affected by the endian swap input control bits.</description>
+        <addressOffset>0x60</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>KEY</name>
+            <description>Cipher Key. This register holds the key used for block cipher operations. The lower words are used for block ciphers that use shorter kye lengths. This register is affected by the endian swap input control bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>HASH_DIGEST[%s]</name>
+        <description>This register holds the calculated hash value. This register is affected by the endian swap bits.</description>
+        <addressOffset>0x80</addressOffset>
+        <fields>
+          <field>
+            <name>HASH</name>
+            <description>This register holds the calculated hash value. This register is affected by the endian swap bits.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>HASH_MSG_SZ[%s]</name>
+        <description>Message Size. This register holds the lowest 32-bit of message size in bytes.</description>
+        <addressOffset>0xC0</addressOffset>
+        <fields>
+          <field>
+            <name>MSGSZ</name>
+            <description>Message Size. This register holds the lowest 32-bit of message size in bytes.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>AAD_LENGTH[%s]</name>
+        <description>AAD Length Registers.</description>
+        <addressOffset>0xD0</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>LENGTH</name>
+            <description>AAD length in bytes for AES GCM and CCM operations.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>PLD_LENGTH[%s]</name>
+        <description>PLD Length Registers.</description>
+        <addressOffset>0xD8</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>LENGTH</name>
+            <description>PLD length in bytes for AES GCM and CCM operations.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>TAGMIC[%s]</name>
+        <description>TAG/MIC Registers.</description>
+        <addressOffset>0xE0</addressOffset>
+        <fields>
+          <field>
+            <name>LENGTH</name>
+            <description>TAG/MIC output for AES GCM and CCM operations.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_CTRL0</name>
+        <description>SCA Control 0 Register.</description>
+        <addressOffset>0x100</addressOffset>
+        <fields>
+          <field>
+            <name>STC</name>
+            <description>Start Calculation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SCAIE</name>
+            <description>SCA Interrupt Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>disable</name>
+                <description>Disable</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <description>Enable</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ABORT</name>
+            <description>Abort Operation.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERMEM</name>
+            <description>Erase Cryptographic Memory.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MANPARAM</name>
+            <description>ECC Parameter Source.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HWKEY</name>
+            <description>Hardware Key Select.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OPCODE</name>
+            <description>SCA Opcode.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>MODADDR</name>
+            <description>MODULO Address Offset.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>ECCSIZE</name>
+            <description>ECC Size.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_CTRL1</name>
+        <description>SCA Control 1 Register.</description>
+        <addressOffset>0x104</addressOffset>
+        <fields>
+          <field>
+            <name>MAN</name>
+            <description>SCA Mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>auto</name>
+                <description>Auto Mode</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>manual</name>
+                <description>Manual Mode</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AUTOCARRY</name>
+            <description>Automatically propagate the carry for the next operation.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PLUSONE</name>
+            <description>Enable Carry propagation for the next operation.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NRNG</name>
+            <description>NRNG.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CARRYPOS</name>
+            <description>To set Carry location.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>10</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_STAT</name>
+        <description>SCA Status Register.</description>
+        <addressOffset>0x108</addressOffset>
+        <fields>
+          <field>
+            <name>BUSY</name>
+            <description>SCA Busy.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SCAIF</name>
+            <description>SCA Interrupt Flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PVF1</name>
+            <description>Point 1 Verification Failed.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PVF2</name>
+            <description>Point 2 Verification Failed.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FSMERR</name>
+            <description>FSM Transition Error.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>COMPERR</name>
+            <description>EC Computation Error.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MEMERR</name>
+            <description>SCA Memory Access Error.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CARRY</name>
+            <description>Carry on ongoing operation.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>GTE2I2</name>
+            <description>Modulo 2x Result.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ALUNEG1</name>
+            <description>ALU 2 SubSign of the subtraction result for ALU_2.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ALUNEG2</name>
+            <description>ALU 2 SubSign of the subtraction result for ALU_2.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_PPX_ADDR</name>
+        <description>PPX Coordinate Data Pointer Register.</description>
+        <addressOffset>0x10C</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Point P Coordinate Data Pointer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_PPY_ADDR</name>
+        <description>PPY Coordinate Data Pointer Register.</description>
+        <addressOffset>0x110</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Point P Coordinate Data Pointer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_PPZ_ADDR</name>
+        <description>PPZ Coordinate Data Pointer Register.</description>
+        <addressOffset>0x114</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Point P Coordinate Data Pointer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_PQX_ADDR</name>
+        <description>PQX Coordinate Data Pointer Register.</description>
+        <addressOffset>0x118</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Point Q Coordinate Data Pointer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_PQY_ADDR</name>
+        <description>PQY Coordinate Data Pointer Register.</description>
+        <addressOffset>0x11C</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Point Q Coordinate Data Pointer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_PQZ_ADDR</name>
+        <description>PQZ Coordinate Data Pointer Register.</description>
+        <addressOffset>0x120</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Point Q Coordinate Data Pointer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_RDSA_ADDR</name>
+        <description>SCA RDSA Address Register.</description>
+        <addressOffset>0x124</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>The starting address of the R portion for R, S ECDSA signature.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_RES_ADDR</name>
+        <description>SCA Result Address Register.</description>
+        <addressOffset>0x128</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Starting address of result storage.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_OP_BUFF_ADDR</name>
+        <description>SCA Operation Buffer Address Register.</description>
+        <addressOffset>0x12C</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Starting address of operation buffer.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_MODDATA</name>
+        <description>SCA Modulo Data Input Register.</description>
+        <addressOffset>0x130</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Used to load the SCA modulo for modular operations.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_NRNG</name>
+        <description>Starting address for NRNG stored in SRAM.</description>
+        <addressOffset>0x134</addressOffset>
+        <resetValue>0x0</resetValue>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- CRYPTO:
+                                                                                                                                                                                                                             The Cryptographic Accelerator    -->
+</device>

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>PWRSEQ</name>
+  <description>Power Sequencer / Low Power Control Register.</description>
+  <baseAddress>0x40006800</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>LPCN</name>
+    <description>Low Power Control Register.</description>
+    <addressOffset>0x00</addressOffset>
+    <fields>
+     <field>
+      <name>RAMRET0</name>
+      <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Ram Retention.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable System RAM 0 retention.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RAMRET1</name>
+      <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Ram Retention.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable System RAM 1 retention.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RAMRET2</name>
+      <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Ram Retention.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable System RAM 2 retention.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>RAMRET3</name>
+      <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <description>Disable Ram Retention.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <description>Enable System RAM 3 retention.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LPMCLKSEL</name>
+      <description>Low Power Mode APB Clock Select.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>LPMFAST</name>
+      <description>Low Power Mode Clock Select.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BG_DIS</name>
+      <description>Bandgap OFF. This controls the System Bandgap in DeepSleep mode.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>on</name>
+        <description>Bandgap is always ON.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>off</name>
+        <description>Bandgap is OFF in DeepSleep mode (default).</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>LPWKST_CLR</name>
+      <description>Low Power Wakeup Status Register Clear</description>
+      <bitOffset>31</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>LPWKST0</name>
+    <description>Low Power I/O Wakeup Status Register 0. This register indicates the low power wakeup status for GPIO0.</description>
+    <addressOffset>0x04</addressOffset>
+    <fields>
+     <field>
+      <name>WAKEST</name>
+      <description>Wakeup IRQ flags (write ones to clear). One or more of these bits will be set when the corresponding dedicated GPIO pin (s) transition (s) from low to high or high to low. If GPIO wakeup source is selected, using PM.GPIOWKEN register, and the corresponding bit is also selected in LPWKEN register, an interrupt will be gnerated to wake up the CPU from a low power mode.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>LPWKEN0</name>
+    <description>Low Power I/O Wakeup Enable Register 0. This register enables low power wakeup functionality for GPIO0.</description>
+    <addressOffset>0x08</addressOffset>
+    <fields>
+     <field>
+      <name>WAKEEN</name>
+      <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>31</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register derivedFrom="LPWKST0">
+    <name>LPWKST1</name>
+    <description>Low Power I/O Wakeup Status Register 1. This register indicates the low power wakeup status for GPIO1.</description>
+    <addressOffset>0x0C</addressOffset>
+   </register>
+   <register derivedFrom="LPWKEN0">
+    <name>LPWKEN1</name>
+    <description>Low Power I/O Wakeup Enable Register 1. This register enables low power wakeup functionality for GPIO1.</description>
+    <addressOffset>0x10</addressOffset>
+   </register>
+   <register derivedFrom="LPWKST0">
+    <name>LPWKST2</name>
+    <description>Low Power I/O Wakeup Status Register 2. This register indicates the low power wakeup status for GPIO2.</description>
+    <addressOffset>0x14</addressOffset>
+   </register>
+   <register derivedFrom="LPWKEN0">
+    <name>LPWKEN2</name>
+    <description>Low Power I/O Wakeup Enable Register 2. This register enables low power wakeup functionality for GPIO2.</description>
+    <addressOffset>0x18</addressOffset>
+   </register>
+   <register derivedFrom="LPWKST0">
+    <name>LPWKST3</name>
+    <description>Low Power I/O Wakeup Status Register 3. This register indicates the low power wakeup status for GPIO3.</description>
+    <addressOffset>0x1C</addressOffset>
+   </register>
+   <register derivedFrom="LPWKEN0">
+    <name>LPWKEN3</name>
+    <description>Low Power I/O Wakeup Enable Register 3. This register enables low power wakeup functionality for GPIO3.</description>
+    <addressOffset>0x20</addressOffset>
+   </register>      
+   <register>
+    <name>LPPWST</name>
+    <description>Low Power Peripheral Wakeup Status Register.</description>
+    <addressOffset>0x30</addressOffset>
+    <fields>
+     <field>
+      <name>AINCOMP0</name>
+      <description>Analog Input Comparator Wakeup Flag.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BACKUP</name>
+      <description>Backup Mode Wakeup Flag.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RESET</name>
+      <description>Reset Detected Wakeup Flag.</description>
+      <bitOffset>17</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>LPPWEN</name>
+    <description>Low Power Peripheral Wakeup Enable Register.</description>
+    <addressOffset>0x34</addressOffset>
+    <fields>
+     <field>
+      <name>AINCOMP0</name>
+      <description> AINCOMP0 Wakeup Enable. This bit allows wakeup from the AINCOMP0.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>WDT0</name>
+      <description> WDT0 Wakeup Enable. This bit allows wakeup from the WDT0.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>WDT1</name>
+      <description> WDT1 Wakeup Enable. This bit allows wakeup from the WDT1.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CPU1</name>
+      <description> CPU1 Wakeup Enable. This bit allows wakeup from the CPU1.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TMR0</name>
+      <description> TMR0 Wakeup Enable. This bit allows wakeup from the TMR0.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>TMR1</name>
+      <description> TMR1 Wakeup Enable. This bit allows wakeup from the TMR1.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>          
+     <field>
+      <name>TMR2</name>
+      <description> TMR2 Wakeup Enable. This bit allows wakeup from the TMR2.</description>
+      <bitOffset>13</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>          
+     <field>
+      <name>TMR3</name>
+      <description> TMR3 Wakeup Enable. This bit allows wakeup from the TMR3.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>          
+     <field>
+      <name>TMR4</name>
+      <description> TMR4 Wakeup Enable. This bit allows wakeup from the TMR4.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>TMR5</name>
+      <description> TMR5 Wakeup Enable. This bit allows wakeup from the TMR5.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>   
+     <field>
+      <name>UART0</name>
+      <description> UART0 Wakeup Enable. This bit allows wakeup from the UART0.</description>
+      <bitOffset>17</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>  
+     <field>
+      <name>UART1</name>
+      <description> UART1 Wakeup Enable. This bit allows wakeup from the UART1.</description>
+      <bitOffset>18</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>UART2</name>
+      <description> UART2 Wakeup Enable. This bit allows wakeup from the UART2.</description>
+      <bitOffset>19</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>UART3</name>
+      <description> UART3 Wakeup Enable. This bit allows wakeup from the UART3.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>      
+     <field>
+      <name>I2C0</name>
+      <description> I2C0 Wakeup Enable. This bit allows wakeup from the I2C0.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>   
+     <field>
+      <name>I2C1</name>
+      <description> I2C1 Wakeup Enable. This bit allows wakeup from the I2C1.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>I2C2</name>
+      <description> I2C2 Wakeup Enable. This bit allows wakeup from the I2C2.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>    
+     <field>
+      <name>I2S</name>
+      <description> I2S Wakeup Enable. This bit allows wakeup from the I2S.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>SPI1</name>
+      <description> SPI1 Wakeup Enable. This bit allows wakeup from the SPI1.</description>
+      <bitOffset>25</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>   
+     <field>
+      <name>LPCMP</name>
+      <description> LPCMP Wakeup Enable. This bit allows wakeup from the LPCMP.</description>
+      <bitOffset>26</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>                                                                                   
+    </fields>
+   </register>
+   <register>
+    <name>GP0</name>
+    <description>General Purpose Register 0</description>
+    <addressOffset>0x48</addressOffset>
+   </register>
+   <register>
+    <name>GP1</name>
+    <description>General Purpose Register 1</description>
+    <addressOffset>0x4C</addressOffset>
+   </register>
+  </registers>
+ </peripheral>
+<!-- PWRSEQ: Power sequencer          -->
+</device>

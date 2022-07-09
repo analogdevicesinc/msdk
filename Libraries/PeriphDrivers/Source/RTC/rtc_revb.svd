@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>RTC</name>
+    <description>Real Time Clock and Alarm.</description>
+    <baseAddress>0x40006000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>RTC</name>
+      <description>RTC interrupt.</description>
+      <value>3</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>SEC</name>
+        <description>RTC Second Counter. This register contains the 32-bit second counter.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RTS</name>
+            <description>Seconds Counter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SSEC</name>
+        <description>RTC Sub-second Counter. This counter increments at 256Hz. RTC_SEC is incremented when this register rolls over from 0xFF to 0x00.</description>
+        <addressOffset>0x04</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RTSS</name>
+            <description>Sub-Seconds Counter (8-bit).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RAS</name>
+        <description>Time-of-day Alarm.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RAS</name>
+            <description>Time-of-day Alarm.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>20</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RSSA</name>
+        <description>RTC sub-second alarm.  This register contains the reload value for the sub-second alarm.</description>
+        <addressOffset>0x0C</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>RSSA</name>
+            <description>This register contains the reload value for the sub-second alarm.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>RTC Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <resetValue>0x00000008</resetValue>
+        <resetMask>0xFFFFFF38</resetMask>
+        <fields>
+          <field>
+            <name>ENABLE</name>
+            <description>Real Time Clock Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ALARM_TOD_EN</name>
+            <description>Alarm Time-of-Day Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ALARM_SS_EN</name>
+            <description>Alarm Sub-second Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BUSY</name>
+            <description>RTC Busy. This bit is set to 1 by hardware when changes to RTC registers required a synchronized version of the register to be in place.  This bit is automatically cleared by hardware.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>idle</name>
+                <description>Idle.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Busy.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>READY</name>
+            <description>RTC Ready. This bit is set to 1 by hardware when the RTC count registers update.  It can be cleared to 0 by software at any time. It will also be cleared to 0 by hardware just prior to an update of the RTC count register.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Register has not updated.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>READY_INT_EN</name>
+            <description>RTC Ready Interrupt Enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ALARM_TOD_FL</name>
+            <description>Time-of-Day Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pending</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ALARM_SS_FL</name>
+            <description>Sub-second Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pending</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>32KOUT_EN</name>
+            <description>Square Wave Output Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pending</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FREQ_SEL</name>
+            <description>Frequency Output Selection. When SQE=1, these bits specify the output frequency on the SQW pin.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>freq1Hz</name>
+                <description>1 Hz (Compensated).</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq512Hz</name>
+                <description>512 Hz (Compensated).</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq4KHz</name>
+                <description>4 KHz.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq4KHz</name>
+                <description>4 KHz.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>X32K_MODE</name>
+            <description>32kHz Oscillator Mode Select</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noise_immunity</name>
+                <description>Operates in noise immunity mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>quiet</name>
+                <description>Operates in quiet mode. Oscillator warm-up is not required.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>quiet_deep_sleep</name>
+                <description>Operates in noise immunity mode when the processor is in active modes and
+switches to quiet mode when the processor enters DEEPSLEEP. The system waits
+for the 32kHz oscillator to warm-up prior to the processor exiting stop mode.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>quiet_stop</name>
+                <description>Operates in noise immunity mode when the processor is in active modes and
+switches to quiet mode when the processor enters stop mode. The system does
+not wait for the 32kHz oscillator to warm-up prior to the processor exiting stop
+mode and beginning code execution.
+</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRITE_EN</name>
+            <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical RTC bits.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>Not active</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Pending</name>
+                <description>Active</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TRIM</name>
+        <description>RTC Trim Register.</description>
+        <addressOffset>0x14</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>TRIM</name>
+            <description>RTC Trim. This register contains the 2's complement value that specifies the trim resolution. Each increment or decrement of the bit adds or subtracts 1ppm at each 4KHz clock value, with a maximum correction of +/- 127ppm.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>VRTC_TMR</name>
+            <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>24</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OSCCTRL</name>
+        <description>RTC Oscillator Control Register.</description>
+        <addressOffset>0x18</addressOffset>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>FILTER_EN</name>
+            <description>RTC Oscillator Filter Enable</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIAS_SEL</name>
+            <description>RTC Oscillator 4x Bias Current Select. 0: 2x bias current. 1: 4x bias current.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HYST_EN</name>
+            <description>RTC Oscillator Hysteresis Buffer Enable</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIAS_EN</name>
+            <description>RTC Oscillator Bias Current</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>BYPASS</name>
+            <description>RTC Crystal Bypass</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>32KOUT</name>
+            <description>RTC 32kHz Square Wave Output</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- RTC : Real Time Clock & Alarm -->
+</device>

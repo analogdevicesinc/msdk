@@ -1,0 +1,25 @@
+var group___s_d_h_c___e_r___i_n_t___s_t_a_t =
+[
+    [ "MXC_F_SDHC_ER_INT_STAT_ADMA", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga84fd64cfd68d53c7681dafc0b2303f91", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_ADMA_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga2cf03534d5d00707b09222698e19482f", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_AUTO_CMD_12", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga151159970e6622f4f1cd3b0449288a84", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_AUTO_CMD_12_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gada623ede40f83485339b8957a5b2d2f2", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_CRC", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gad2e4df155fa810186fb46ada915ba739", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_CRC_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gaba2ad7b028e9d2830fca99850b6d7b52", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_END_BIT", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga48440245727aff4abebb0aa8f8ca9793", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_END_BIT_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gae927e3e0380bd5208c876decddbd5585", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_IDX", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gafa0bffc30fa41eaa05940aaf6d08d365", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_IDX_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga3757b0f89da653ea39e61d7bcdbbceaf", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_TO", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga0bb67c01a2c786b71fb7b14304fab134", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CMD_TO_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gad373b8fdc7219105d1211c8e2288a491", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CURRENT_LIMIT", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga3445dbfd81f2b003030268539d65f9e7", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_CURRENT_LIMIT_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gaa918c4b57b46bf5bf524218b87092184", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DATA_CRC", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga9296aa2184b26aea2b70279a11c069e2", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DATA_CRC_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gae581f75f982ef1d97f41eb2cd0dd7de1", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DATA_END_BIT", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga9b2582d8fa52ed2dcf303645e5a0f551", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DATA_END_BIT_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gad2c09a997147f75a09ad8aa2af637fb9", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DATA_TO", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga526637366912614c4be2c50a21547b3c", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DATA_TO_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gad1dd9f69b45beb9e720fcad82dd4a7da", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DMA", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#gab8c29fe52fb18b00775f5d3fdb12e090", null ],
+    [ "MXC_F_SDHC_ER_INT_STAT_DMA_POS", "group___s_d_h_c___e_r___i_n_t___s_t_a_t.html#ga773e9fa3a9c21bae20979c4352701d96", null ]
+];

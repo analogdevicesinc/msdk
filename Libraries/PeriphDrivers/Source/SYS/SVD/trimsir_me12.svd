@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>TRIMSIR</name>
+    <description>Trim System Initilazation Registers</description>
+    <baseAddress>0x40005400</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <!-- CFG2 -->
+        <name>BB_SIR2</name>
+        <description>System Init. Configuration Register 2.</description>
+        <addressOffset>0x08</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <!-- FIELD 1 Trim IBRO RBIAS -->
+          <field>
+            <name>TRIM_IBRO_RBIAS</name>
+            <description>HIRC8M Trim</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <!-- FIELD 2 RAM 0 and RAM 1 ECC Enable -->
+          <field>
+            <name>RAM0_1ECCEN</name>
+            <description>RAM 0 and RAM 1 ECC Enable</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>ECC Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>ECC Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 3 RAM 2 ECC Enable -->
+          <field derivedFrom="RAM0_1ECCEN">
+            <name>RAM2ECCEN</name>
+            <description>RAM 2 ECC Enable</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <!-- FIELD 4 RAM 3 ECC Enable -->
+          <field derivedFrom="RAM0_1ECCEN">
+            <name>RAM3ECCEN</name>
+            <description>RAM 3 ECC Enable</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <!-- FIELD 5 ICC 0 ECC Enable -->
+          <field derivedFrom="RAM0ECCEN">
+            <name>ICC0ECCEN</name>
+            <description>ICC 0 ECC Enable</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <!-- FIELD 6 FL 0 ECC Enable -->
+          <field derivedFrom="RAM0ECCEN">
+            <name>FL0ECCEN</name>
+            <description>Flash 0 ECC Enable</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <!-- FIELD 7 FL 1 ECC Enable -->
+          <field derivedFrom="RAM0ECCEN">
+            <name>FL1ECCEN</name>
+            <description>Flash 1 ECC Enable</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <!-- FIELD 8 Trim IBRO -->
+          <field>
+            <name>TRIM_IBRO</name>
+            <description>HIRC8M Trim</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CFG3 -->
+        <name>BB_SIR3</name>
+        <description>System Init. Configuration Register 3.</description>
+        <addressOffset>0x0C</addressOffset>
+        <access>read-write</access>
+      </register>
+      <register>
+        <!-- CFG6 -->
+        <name>BB_SIR6</name>
+        <description>System Init. Configuration Register 6.</description>
+        <addressOffset>0x18</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <!-- FIELD 1 RTCX1 Trim -->
+          <field>
+            <name>RTCX1TRIM</name>
+            <description>RTCX1 Trim</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <!-- FIELD 2 RTCX2 Trim -->
+          <field>
+            <name>RTCX2TRIM</name>
+            <description>RTCX2 Trim</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- TRIMSIR:Trim System Initilazation Registers -->
+</device>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>TRIMSIR</name>
+  <description>Trim System Initilazation Registers</description>
+  <baseAddress>0x40005400</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>RTC</name>
+    <description>RTC Trim System Initialization Register.</description>
+    <addressOffset>0x08</addressOffset>
+    <fields>
+     <field>
+      <name>X1TRIM</name>
+      <description>RTC X1 Trim.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>5</bitWidth>
+     </field>
+     <field>
+      <name>X2TRIM</name>
+      <description>RTC X2 Trim.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>5</bitWidth>
+     </field>
+     <field>
+      <name>LOCK</name>
+      <description>Lock.</description>
+      <bitOffset>31</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>     
+    </fields>    
+   </register>
+   <register>
+    <name>SIMO</name>
+    <description>SIMO Trim System Initialization Register.</description>
+    <addressOffset>0x34</addressOffset>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>CLKDIV</name>
+      <description>SIMO Clock Divide.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>3</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>DIV1</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>DIV16</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>DIV32</name>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>DIV64</name>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>DIV128</name>
+        <value>7</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>   
+    </fields>     
+   </register>
+   <register>
+    <name>IPOLO</name>
+    <description>IPO Low Trim System Initialization Register.</description>
+    <addressOffset>0x3C</addressOffset>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>IPO_LIMITLO</name>
+      <description>IPO Low Limit Trim.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>   
+    </fields>      
+   </register>
+   <register>
+    <name>CTRL</name>
+    <description>Control Trim System Initialization Register.</description>
+    <addressOffset>0x40</addressOffset>
+    <fields>
+     <field>
+      <name>VDDA_LIMITLO</name>
+      <description>VDDA Low Trim Limit.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>7</bitWidth>
+     </field>
+     <field>
+      <name>VDDA_LIMITHI</name>
+      <description>VDDA High Trim Limit.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>7</bitWidth>
+     </field>
+     <field>
+      <name>IPO_LIMITHI</name>
+      <description>IPO High Trim Limit.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>9</bitWidth>
+     </field> 
+     <field>
+      <name>INRO_SEL</name>
+      <description>INRO Clock Select.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>8KHZ</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>16KHZ</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>30KHZ</name>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>      
+     </field>
+     <field>
+      <name>INRO_TRIM</name>
+      <description>INRO Clock Trim.</description>
+      <bitOffset>29</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>                        
+    </fields>      
+   </register>
+   <register>
+    <name>INRO</name>
+    <description>RTC Trim System Initialization Register.</description>
+    <addressOffset>0x44</addressOffset>
+    <fields>
+     <field>
+      <name>TRIM16K</name>
+      <description>INRO 16KHz Trim.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>
+     <field>
+      <name>TRIM30K</name>
+      <description>INRO 30KHz Trim.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>3</bitWidth>
+     </field>
+     <field>
+      <name>LPCLKSEL</name>
+      <description>INRO Low Power Mode Clock Select.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>8KHZ</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>16KHZ</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>30KHZ</name>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>      
+     </field>     
+    </fields>    
+   </register>      
+  </registers>
+ </peripheral>
+<!-- TRIMSIR:Trim System Initilazation Registers -->
+</device>

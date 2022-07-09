@@ -1,0 +1,30 @@
+{
+    "boards":[
+        {
+            "name":"EvKit_V1",
+            "ipaths":[
+                "TFT/evkit/resources"
+            ],
+            "vpaths":[
+                "TFT/evkit/resources"
+            ],
+            "extra_files":[
+                "all_imgs.c"
+            ]
+        },
+        {
+            "name":"FTHR_RevA",
+            "ipaths":[
+                "TFT/fthr"
+            ],
+            "vpaths":[
+                "TFT/fthr"
+            ],
+            "extra_files":[
+                "img_1_rgb565.c",
+                "logo_rgb565.c",
+                "SansSerif16x16.c"
+            ]
+        }
+    ]
+}

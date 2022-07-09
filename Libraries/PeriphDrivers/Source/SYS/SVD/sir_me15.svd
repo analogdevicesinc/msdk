@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SIR</name>
+  <description>System Initialization Registers.</description>
+  <baseAddress>0x40000400</baseAddress>
+  <access>read-only</access>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>SIR_STATUS</name>
+    <description>System Initialization Status Register.</description>
+    <addressOffset>0x00</addressOffset>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>CFG_VALID</name>
+      <description>Configuration Valid Flag.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CFG_ERR</name>
+      <description>Configuration Error Flag.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>SIR_ADDR</name>
+    <description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
+    <addressOffset>0x04</addressOffset>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>ADDR</name>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SIR: System Initialization Registers     -->
+</device>

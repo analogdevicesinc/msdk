@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SPIXFC_FIFO</name>
+  <description>SPI XiP Master Controller FIFO.</description>
+  <baseAddress>0x400BC000</baseAddress>
+  <addressBlock>
+   <offset>0</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>TX_8</name>
+    <description>SPI TX FIFO 8-Bit Write</description>
+    <addressOffset>0x00</addressOffset>
+    <size>8</size>
+    <dataType>uint8_t</dataType>
+   </register>
+   <register>
+    <name>TX_16</name>
+    <description>SPI TX FIFO 16-Bit Write</description>
+    <alternateRegister>TX_8</alternateRegister>
+    <addressOffset>0x00</addressOffset>
+    <size>16</size>
+    <dataType>uint16_t</dataType>
+   </register>
+   <register>
+    <name>TX_32</name>
+    <description>SPI TX FIFO 32-Bit Write</description>
+    <alternateRegister>TX_8</alternateRegister>
+    <addressOffset>0x00</addressOffset>
+    <size>32</size>
+    <dataType>uint32_t</dataType>
+   </register>
+   <register>
+    <name>RX_8</name>
+    <description>SPI RX FIFO 8-Bit Access</description>
+    <addressOffset>0x04</addressOffset>
+    <size>8</size>
+    <dataType>uint8_t</dataType>
+   </register>
+   <register>
+    <name>RX_16</name>
+    <description>SPI RX FIFO 16-Bit Access</description>
+    <alternateRegister>RX_8</alternateRegister>
+    <addressOffset>0x04</addressOffset>
+    <size>16</size>
+    <dataType>uint16_t</dataType>
+   </register>
+   <register>
+    <name>RX_32</name>
+    <description>SPI RX FIFO 32-Bit Access</description>
+    <alternateRegister>RX_8</alternateRegister>
+    <addressOffset>0x04</addressOffset>
+    <size>32</size>
+    <dataType>uint32_t</dataType>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SPIXC_FIFO: SPI XiP Master Controller FIFO -->
+</device>

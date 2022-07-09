@@ -1,0 +1,1380 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>I2C0</name>
+    <description>Inter-Integrated Circuit.</description>
+    <groupName>I2C</groupName>
+    <baseAddress>0x4001D000</baseAddress>
+    <size>32</size>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>I2C0</name>
+      <description>I2C0 IRQ</description>
+      <value>13</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CTRL0</name>
+        <description>Control Register 0.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>I2CEN</name>
+            <description>I2C Enable.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable I2C.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable I2C.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MST</name>
+            <description>Master Mode Enable.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>slave_mode</name>
+                <description>Slave Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>master_mode</name>
+                <description>Master Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>GCEN</name>
+            <description>General Call Address Enable.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Ignore Gneral Call Address.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Acknowledge general call address.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IRXM</name>
+            <description>Interactive Receive Mode.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Interactive Receive Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable Interactive Receive Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ACK</name>
+            <description>Data Acknowledge. This bit defines the acknowledge bit returned by the I2C receiver while IRXM = 1 HW forces ACK to 0 when IRXM = 0.</description>
+            <bitRange>[4:4]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ack</name>
+                <description>return ACK (pulling SDA LOW).</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>nack</name>
+                <description>return NACK (leaving SDA HIGH).</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SCL_OUT</name>
+            <description>SCL Output. This bits control SCL output when SWOE =1.</description>
+            <bitRange>[6:6]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>low</name>
+                <description>Drive SCL low. </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>high</name>
+                <description>Release SCL.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SDA_OUT</name>
+            <description>SDA Output. This bits control SDA output when SWOE = 1. </description>
+            <bitRange>[7:7]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>low</name>
+                <description>Drive SDA low. </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>high</name>
+                <description>Release SDA.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SCL</name>
+            <description>SCL status. This bit reflects the logic gate of SCL signal. </description>
+            <bitRange>[8:8]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>low</name>
+                <description>SCL pin is logic low.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>high</name>
+                <description>SCL pin is logic high.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SDA</name>
+            <description>SDA status. THis bit reflects the logic gate of SDA signal.</description>
+            <bitRange>[9:9]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>low</name>
+                <description>SDA pin is logic low.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>high</name>
+                <description>SDA pin is logic high.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SWOE</name>
+            <description>Software Output Enable.</description>
+            <bitRange>[10:10]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>I2C Outputs SCLO and SDAO disabled. </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>I2C Outputs SCLO and SDAO enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>READ</name>
+            <description>Read. This bit reflects the R/W bit of an address match (AMI = 1) or general call match (GCI = 1). This bit is valid 3 cycles after the relevant interrupt bit is set.</description>
+            <bitRange>[11:11]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>write</name>
+                <description>Write.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>read</name>
+                <description>Read.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SCL_STRD</name>
+            <description>This bit will disable slave clock stretching when set.</description>
+            <bitRange>[12:12]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Slave clock stretching enabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Slave clock stretching disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SCL_PPM</name>
+            <description>SCL Push-Pull Mode. This bit controls whether SCL is operated in a the I2C standard open-drain mode, or in a non-standard push-pull mode where the Hi-Z output isreplaced with Drive-1. The non-standard mode should only be used when operating as a master and communicating with slaves that are guaranteed to never drive SCL low. </description>
+            <bitRange>[13:13]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Standard open-drain operation: drive low for 0, Hi-Z for 1</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Non-standard push-pull operation: drive low for 0, drive high for 1</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STAT</name>
+        <description>Status Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>BUSY</name>
+            <description>Bus transaction active status bit.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>idle</name>
+                <description>I2C Bus Idle.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>I2C Bus Busy.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RXE</name>
+            <description>RX FIFO empty.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not_empty</name>
+                <description>Not Empty.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>empty</name>
+                <description>Empty.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RXF</name>
+            <description>RX FIFO full.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not_full</name>
+                <description>Not Full.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>full</name>
+                <description>Full.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXE</name>
+            <description>TX FIFO empty.</description>
+            <bitRange>[3:3]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not_empty</name>
+                <description>Not Empty.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>empty</name>
+                <description>Empty.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXF</name>
+            <description>TX FIFO full.</description>
+            <bitRange>[4:4]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not_full</name>
+                <description>Not Full.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>full</name>
+                <description>Full.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CKMD</name>
+            <description>SCL Drive Status.</description>
+            <bitRange>[5:5]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>scl_not_active</name>
+                <description>Device not actively driving SCL clock cycles.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>scl_active</name>
+                <description>Device operating as master and actively driving SCL clock cycles.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_FL0</name>
+        <description>Interrupt Status Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>DONEI</name>
+            <description>Transfer Done Interrupt.</description>
+            <bitRange>[0:0]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IRXMI</name>
+            <description>Interactive Receive Interrupt.</description>
+            <bitRange>[1:1]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>GCI</name>
+            <description>Slave General Call Address Match Interrupt.</description>
+            <bitRange>[2:2]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AMI</name>
+            <description>Slave Address Match Interrupt.</description>
+            <bitRange>[3:3]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RXTHI</name>
+            <description>Receive Threshold Interrupt. This bit is automaticcaly cleared when RX_FIFO is below the threshold level.</description>
+            <bitRange>[4:4]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No interrupt is pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending. RX_FIFO equal or more bytes than the threshold.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXTHI</name>
+            <description>Transmit Threshold Interrupt. This bit is automaticcaly cleared when TX_FIFO is above the threshold level.</description>
+            <bitRange>[5:5]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No interrupt is pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending. TX_FIFO has equal or less bytes than the threshold.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>STOPI</name>
+            <description>STOP Interrupt.</description>
+            <bitRange>[6:6]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No interrupt is pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending. TX_FIFO has equal or less bytes than the threshold.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADRACKI</name>
+            <description>Address Acknowledge Interrupt.</description>
+            <bitRange>[7:7]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ARBERI</name>
+            <description>Arbritation error Interrupt.</description>
+            <bitRange>[8:8]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TOERI</name>
+            <description>timeout Error Interrupt.</description>
+            <bitRange>[9:9]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ADRERI</name>
+            <description>Address NACK Error Interrupt.</description>
+            <bitRange>[10:10]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DATAERI</name>
+            <description>Data NACK Error Interrupt.</description>
+            <bitRange>[11:11]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>inactive</name>
+                <description>No Interrupt is Pending.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pending</name>
+                <description>An interrupt is pending.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DNRERI</name>
+            <description>Do Not Respond Error Interrupt.</description>
+            <bitRange>[12:12]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STRTERI</name>
+              <description>Start Error Interrupt.</description>
+              <bitRange>[13:13]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPERI</name>
+              <description>Stop Error Interrupt.</description>
+              <bitRange>[14:14]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXLOI</name>
+              <description>Transmit Lock Out Interrupt.</description>
+              <bitRange>[15:15]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INT_EN0</name>
+          <description>Interrupt Enable Register.</description>
+          <addressOffset>0x0C</addressOffset>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>DONEIE</name>
+              <description>Transfer Done Interrupt Enable.</description>
+              <bitRange>[0:0]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled when DONE = 1.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>IRXMIE</name>
+              <description>Description not available.</description>
+              <bitRange>[1:1]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled when RX_MODE = 1.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>GCIE</name>
+              <description>Slave mode general call address match received input enable.</description>
+              <bitRange>[2:2]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled when GEN_CTRL_ADDR = 1.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>AMIE</name>
+              <description>Slave mode incoming address match interrupt.</description>
+              <bitRange>[3:3]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled when ADDR_MATCH = 1.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RXTHIE</name>
+              <description>RX FIFO Above Treshold Level Interrupt Enable.</description>
+              <bitRange>[4:4]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXTHIE</name>
+              <description>TX FIFO Below Treshold Level Interrupt Enable.</description>
+              <bitRange>[5:5]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPIE</name>
+              <description>Stop Interrupt Enable</description>
+              <bitRange>[6:6]</bitRange>
+              <access>read-write</access>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled when STOP = 1.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ADRACKIE</name>
+              <description>Received Address ACK from Slave Interrupt.</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ARBERIE</name>
+              <description>Master Mode Arbitration Lost Interrupt.</description>
+              <bitRange>[8:8]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TOERIE</name>
+              <description>Timeout Error Interrupt Enable.</description>
+              <bitRange>[9:9]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>ADRERIE</name>
+              <description>Master Mode Address NACK Received Interrupt.</description>
+              <bitRange>[10:10]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DATAERIE</name>
+              <description>Master Mode Data NACK Received Interrupt.</description>
+              <bitRange>[11:11]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>DNRERIE</name>
+              <description>Slave Mode Do Not Respond Interrupt.</description>
+              <bitRange>[12:12]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STRTERIE</name>
+              <description>Out of Sequence START condition detected interrupt.</description>
+              <bitRange>[13:13]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOPERIE</name>
+              <description>Out of Sequence STOP condition detected interrupt.</description>
+              <bitRange>[14:14]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXLOIE</name>
+              <description>TX FIFO Locked Out Interrupt.</description>
+              <bitRange>[15:15]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Interrupt disabled.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Interrupt enabled.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INT_FL1</name>
+          <description>Interrupt Status Register 1.</description>
+          <addressOffset>0x10</addressOffset>
+          <fields>
+            <field>
+              <name>RXOFI</name>
+              <description>Receiver Overflow Interrupt. When operating as a slave receiver, this bit is set when you reach the first data bit and the RX FIFO and shift register are both full.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXUFI</name>
+              <description>Transmit Underflow Interrupt. When operating as a slave transmitter, this bit is set when you reach the first data bit and the TX FIFO is empty and the master is still asking for more data (i.e the master hasn't sent a NACK yet).</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>inactive</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>pending</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>INT_EN1</name>
+          <description>Interrupt Staus Register 1.</description>
+          <addressOffset>0x14</addressOffset>
+          <access>read-write</access>
+          <fields>
+            <field>
+              <name>RXOFIE</name>
+              <description>Receiver Overflow Interrupt Enable.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXUFIE</name>
+              <description>Transmit Underflow Interrupt Enable.</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>No Interrupt is Pending.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>An interrupt is pending.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FIFO_LEN</name>
+          <description>FIFO Configuration Register.</description>
+          <addressOffset>0x18</addressOffset>
+          <fields>
+            <field>
+              <name>RXLEN</name>
+              <description>Receive FIFO Length.</description>
+              <bitRange>[7:0]</bitRange>
+              <access>read-only</access>
+            </field>
+            <field>
+              <name>TXLEN</name>
+              <description>Transmit FIFO Length.</description>
+              <bitRange>[15:8]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_CTRL0</name>
+          <description>Receive Control Register 0.</description>
+          <addressOffset>0x1C</addressOffset>
+          <fields>
+            <field>
+              <name>DNR</name>
+              <description>Do Not Respond.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>respond</name>
+                  <description>Always respond to address match.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>dont_respond</name>
+                  <description>Do not respond to address match when RX_FIFO is not empty.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RXFSH</name>
+              <description>Receive FIFO Flush. This bit is automatically cleared to 0 after the operation. Setting this bit to 1 will affect RX_FIFO status.</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>not_flushed</name>
+                  <description>FIFO not flushed.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>flush</name>
+                  <description>Flush RX_FIFO.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RXTH</name>
+              <description>Receive FIFO Threshold. These bits define the RX_FIFO interrupt threshold.</description>
+              <bitRange>[11:8]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>RX_CTRL1</name>
+          <description>Receive Control Register 1.</description>
+          <addressOffset>0x20</addressOffset>
+          <fields>
+            <field>
+              <name>RXCNT</name>
+              <description>Receive Count Bits. These bits define the number of bytes to be received in a transaction, except for the case RXCNT = 0. RXCNT = 0 means 256 bytes to be received in a transaction.</description>
+              <bitRange>[7:0]</bitRange>
+            </field>
+            <field>
+              <name>RXFIFO</name>
+              <description>Receive FIFO Count. These bits reflect the number of byte in the RX_FIFO. These bits are flushed when I2CEN = 0.</description>
+              <bitRange>[11:8]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_CTRL0</name>
+          <description>Transmit Control Register 0.</description>
+          <addressOffset>0x24</addressOffset>
+          <fields>
+            <field>
+              <name>TXPRELD</name>
+              <description>Transmit FIFO Preaload Mode. Setting this bit will allow for high speed application to preload the transmit FIFO prior to Slave Address Match.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>normal</name>
+                  <description>Normal TX FIFO Operation.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>preload</name>
+                  <description>TX FIFO Preload mode.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXFSH</name>
+              <description>Transmit FIFO Flush. This bit is automatically cleared to 0 after the operation.</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>not_flushed</name>
+                  <description>FIFO not flushed.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>flush</name>
+                  <description>Flush TX_FIFO.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXTH</name>
+              <description>Transmit FIFO Threshold. These bits define the TX_FIFO interrupt threshold.</description>
+              <bitRange>[11:8]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TX_CTRL1</name>
+          <description>Transmit Control Register 1.</description>
+          <addressOffset>0x28</addressOffset>
+          <fields>
+            <field>
+              <name>TXRDY</name>
+              <description>Transmit FIFO Preload Ready.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>not_ready</name>
+                  <description>TX FIFO not ready to transmit preloaded data.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>ready</name>
+                  <description>TX FIFO ready to transmit preloaded data.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXLAST</name>
+              <description>Slave mode transmit last.</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>pause_on_last</name>
+                  <description>Hold SCL low after transmitting the last character in the TX FIFO until more characters are loaded.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>end_on_last</name>
+                  <description>Release SCL after transmitting the last character in the TXT FIFO.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>TXFIFO</name>
+              <description>Transmit FIFO Count. These bits reflect the number of bytes in the TX_FIFO.</description>
+              <bitRange>[11:8]</bitRange>
+              <access>read-only</access>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>FIFO</name>
+          <description>Data Register.</description>
+          <addressOffset>0x2C</addressOffset>
+          <fields>
+            <field>
+              <name>DATA</name>
+              <description>Data is read from or written to this location. Transmit and receive FIFO are separate but both are addressed at this location.</description>
+              <bitOffset>0</bitOffset>
+              <bitWidth>8</bitWidth>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>MSTR_MODE</name>
+          <description>Master Control Register.</description>
+          <addressOffset>0x30</addressOffset>
+          <fields>
+            <field>
+              <name>START</name>
+              <description>Setting this bit to 1 will start a master transfer.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>start</name>
+                  <description>Start Master Mode transfer.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RESTART</name>
+              <description>Setting this bit to 1 will generate a repeated START.</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>restart</name>
+                  <description>Send a repeated start bit.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>STOP</name>
+              <description>Setting this bit to 1 will generate a STOP condition.</description>
+              <bitRange>[2:2]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>stop</name>
+                  <description>Send a stop condition.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>SEA</name>
+              <description>Slave Extend Address Select.</description>
+              <bitRange>[7:7]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>7BIT_ADDR</name>
+                  <description>7-bit address.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>10BIT_ADDR</name>
+                  <description>10-bit address.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CLK_LO</name>
+          <description>Clock Low Register.</description>
+          <addressOffset>0x34</addressOffset>
+          <fields>
+            <field>
+              <name>SCL_LO</name>
+              <description>Clock low. In master mode, these bits define the SCL low period. In slave mode, these bits define the time SCL will be held low after data is outputted.</description>
+              <bitRange>[8:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>CLK_HI</name>
+          <description>Clock high Register.</description>
+          <addressOffset>0x38</addressOffset>
+          <fields>
+            <field>
+              <name>SCL_HI</name>
+              <description>Clock High. In master mode, these bits define the SCL high period.</description>
+              <bitRange>[8:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>TIMEOUT</name>
+          <description>Timeout Register</description>
+          <addressOffset>0x40</addressOffset>
+          <fields>
+            <field>
+              <name>TO</name>
+              <description>SCL Timeout Period</description>
+              <bitRange>[15:0]</bitRange>
+            </field>
+          </fields>
+        </register>
+        <register>
+          <name>SLV_ADDR</name>
+          <description>Slave Address Register.</description>
+          <addressOffset>0x44</addressOffset>
+          <fields>
+            <field>
+              <name>SLA</name>
+              <description>Slave Address.</description>
+              <bitRange>[9:0]</bitRange>
+            </field>
+            <field>
+              <name>EA</name>
+              <description>Slave Mode Extended Address Select.</description>
+              <bitRange>[15:15]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>7BIT_ADDR</name>
+                  <description>7-bit address.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>10BIT_ADDR</name>
+                  <description>10-bit address.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>   
+        <register>
+          <name>DMA</name>
+          <description>DMA Register.</description>
+          <addressOffset>0x48</addressOffset>
+          <fields>
+            <field>
+              <name>TXEN</name>
+              <description>TX channel enable.</description>
+              <bitRange>[0:0]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+            <field>
+              <name>RXEN</name>
+              <description>RX channel enable.</description>
+              <bitRange>[1:1]</bitRange>
+              <enumeratedValues>
+                <enumeratedValue>
+                  <name>dis</name>
+                  <description>Disable.</description>
+                  <value>0</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>en</name>
+                  <description>Enable.</description>
+                  <value>1</value>
+                </enumeratedValue>
+              </enumeratedValues>
+            </field>
+          </fields>
+        </register>
+      </registers>
+ </peripheral>
+<!-- I2C1: Inter-Intergrated Circuit 1 -->
+</device>

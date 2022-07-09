@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd" >
+ <peripheral>
+  <name>PT</name>
+  <description>Pulse Train</description>
+  <groupName>Pulse_Train</groupName>
+  <baseAddress>0x4003C020</baseAddress>
+  <size>32</size>
+  <access>read-write</access>
+  <addressBlock>
+   <offset>0</offset>
+   <size>0x0010</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+<!-- RATE_LENGTH: Pulse Train Configuration -->
+   <register>
+    <name>RATE_LENGTH</name>
+    <description>Pulse Train Configuration</description>
+    <addressOffset>0x0000</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>rate_control</name>
+      <description>Pulse Train Enable and Rate Control. Set to 0 to disable the Pulse Train.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>27</bitWidth>
+<!-- <bitRange>[26:0]</bitRange> -->
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>mode</name>
+      <description>Pulse Train Output Mode/Train Length</description>
+       <bitOffset>27</bitOffset>
+       <bitWidth>5</bitWidth>
+<!-- <bitRange>[31:27]</bitRange> -->
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>32_BIT</name>
+        <description>Pulse train, 32 bit pattern.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>SQUARE_WAVE</name>
+        <description>Square wave mode.</description>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2_BIT</name>
+        <description>Pulse train, 2 bit pattern.</description>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>3_BIT</name>
+        <description>Pulse train, 3 bit pattern.</description>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>4_BIT</name>
+        <description>Pulse train, 4 bit pattern.</description>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>5_BIT</name>
+        <description>Pulse train, 5 bit pattern.</description>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>6_BIT</name>
+        <description>Pulse train, 6 bit pattern.</description>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>7_BIT</name>
+        <description>Pulse train, 7 bit pattern.</description>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8_BIT</name>
+        <description>Pulse train, 8 bit pattern.</description>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>9_BIT</name>
+        <description>Pulse train, 9 bit pattern.</description>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>10_BIT</name>
+        <description>Pulse train, 10 bit pattern.</description>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>11_BIT</name>
+        <description>Pulse train, 11 bit pattern.</description>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>12_BIT</name>
+        <description>Pulse train, 12 bit pattern.</description>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>13_BIT</name>
+        <description>Pulse train, 13 bit pattern.</description>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>14_BIT</name>
+        <description>Pulse train, 14 bit pattern.</description>
+        <value>14</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>15_BIT</name>
+        <description>Pulse train, 15 bit pattern.</description>
+        <value>15</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>16_BIT</name>
+        <description>Pulse train, 16 bit pattern.</description>
+        <value>16</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>17_BIT</name>
+        <description>Pulse train, 17 bit pattern.</description>
+        <value>17</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>18_BIT</name>
+        <description>Pulse train, 18 bit pattern.</description>
+        <value>18</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>19_BIT</name>
+        <description>Pulse train, 19 bit pattern.</description>
+        <value>19</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>20_BIT</name>
+        <description>Pulse train, 20 bit pattern.</description>
+        <value>20</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>21_BIT</name>
+        <description>Pulse train, 21 bit pattern.</description>
+        <value>21</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>22_BIT</name>
+        <description>Pulse train, 22 bit pattern.</description>
+        <value>22</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>23_BIT</name>
+        <description>Pulse train, 23 bit pattern.</description>
+        <value>23</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>24_BIT</name>
+        <description>Pulse train, 24 bit pattern.</description>
+        <value>24</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>25_BIT</name>
+        <description>Pulse train, 25 bit pattern.</description>
+        <value>25</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>26_BIT</name>
+        <description>Pulse train, 26 bit pattern.</description>
+        <value>26</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>27_BIT</name>
+        <description>Pulse train, 27 bit pattern.</description>
+        <value>27</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>28_BIT</name>
+        <description>Pulse train, 28 bit pattern.</description>
+        <value>28</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>29_BIT</name>
+        <description>Pulse train, 29 bit pattern.</description>
+        <value>29</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>30_BIT</name>
+        <description>Pulse train, 30 bit pattern.</description>
+        <value>30</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>31_BIT</name>
+        <description>Pulse train, 31 bit pattern.</description>
+        <value>31</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+<!-- TRAIN: Pulse Train Output Pattern -->
+   <register>
+    <name>TRAIN</name>
+    <description>Write the repeating bit pattern that is shifted out, LSB first, when configured in Pulse Train mode. See PT_RATE_LENGTH.mode for setting the length.</description>
+    <addressOffset>0x0004</addressOffset>
+    <access>read-write</access>
+   </register>
+<!-- LOOP: Pulse Train Loop Count -->
+   <register>
+    <name>LOOP</name>
+    <description>Pulse Train Loop Count</description>
+    <addressOffset>0x0008</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>count</name>
+      <description>Number of loops for this pulse train to repeat.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>16</bitWidth>
+<!-- <bitRange>[15:0]</bitRange> -->
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>delay</name>
+      <description>Delay between loops of the Pulse Train in PT Peripheral Clock cycles</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>12</bitWidth>
+<!-- <bitRange>[27:16]</bitRange> -->
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+<!-- RESTART: Pulse Train Auto-Restart Configuration -->
+   <register>
+    <name>RESTART</name>
+    <description> Pulse Train Auto-Restart Configuration.</description>
+    <addressOffset>0x000C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>pt_x_select</name>
+      <description>Auto-Restart PT X Select</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>5</bitWidth>
+<!-- <bitRange>[4:0]</bitRange> -->
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>on_pt_x_loop_exit</name>
+      <description>Enable Auto-Restart on PT X Loop Exit</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+<!-- <bitRange>[8:7]</bitRange> -->
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>pt_y_select</name>
+      <description>Auto-Restart PT Y Select</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>5</bitWidth>
+<!-- <bitRange>[15:8]</bitRange> -->
+      <access>read-write</access>
+     </field>
+     <field>
+      <name>on_pt_y_loop_exit</name>
+      <description>Enable Auto-Restart on PT Y Loop Exit</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+<!-- <bitRange>[16:15]</bitRange> -->
+      <access>read-write</access>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+</device>

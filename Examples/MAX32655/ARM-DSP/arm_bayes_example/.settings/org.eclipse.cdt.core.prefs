@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/BOARD/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/BOARD/operation=append
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/BOARD/value=EvKit_V1
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PREFIX/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PREFIX/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PREFIX/value=arm-none-eabi-
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/operation=append
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/value=arm_bayes_example
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/operation=append
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/value=MAX32655
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/append=true
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/appendContributed=true

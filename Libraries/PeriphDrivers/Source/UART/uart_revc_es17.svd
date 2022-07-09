@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>UART0</name>
+    <description>UART</description>
+    <baseAddress>0x40020000</baseAddress>
+    <addressBlock>
+      <offset>0</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>UART0</name>
+      <description>UART0 IRQ</description>
+      <value>14</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>RXTHD</name>
+            <description>Receive Threshhold.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>PAREN</name>
+            <description>Enable/disable Parity bit (9th character).</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>No Parity </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Parity enabled as 9th bit</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PAREO</name>
+            <description>When PARITY_EN=1, selects odd or even parity.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Even</name>
+                <description>Even parity selected.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ODD</name>
+                <description>Odd parity selected.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PARMD</name>
+            <description>Selects parity based on 1s or 0s count (when PARITY_EN=1).</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1</name>
+                <description>Parity calculation is based on number of 1s in frame.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>0</name>
+                <description>Parity calculation is based on number of 0s in frame.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TXFLUSH</name>
+            <description>Flushes the TX FIFO buffer.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXFLUSH</name>
+            <description>Flushes the RX FIFO buffer.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SIZE</name>
+            <description>Selects UART character size.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>5</name>
+                <description>5 bits.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>6</name>
+                <description>6 bits.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>7</name>
+                <description>7 bits.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8</name>
+                <description>8 bits.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>STOP</name>
+            <description>Selects the number of stop bits that will be generated.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1</name>
+                <description>1 stop bit.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_5</name>
+                <description>1.5 stop bits.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STAT</name>
+        <description>Status Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <size>32</size>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>TXBUSY</name>
+            <description>Read-only flag indicating the UART transmit status.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXBUSY</name>
+            <description>Read-only flag indicating the UART receiver status.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXEMPTY</name>
+            <description>Read-only flag indicating the RX FIFO state.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXFULL</name>
+            <description>Read-only flag indicating the RX FIFO state.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXEMPTY</name>
+            <description>Read-only flag indicating the TX FIFO state.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXFULL</name>
+            <description>Read-only flag indicating the TX FIFO state.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RXELT</name>
+            <description>Indicates the number of bytes currently in the RX FIFO.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>TXELT</name>
+            <description>Indicates the number of bytes currently in the TX FIFO.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_EN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>FRAMIE</name>
+            <description>Enable for RX Frame Error Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PARITYIE</name>
+            <description>Enable for RX Parity Error interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OVERIE</name>
+            <description>Enable for RX FIFO OVerrun interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFRXIE</name>
+            <description>Enable for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFTXOIE</name>
+            <description>Enable for interrupt when TX FIFO has only one byte remaining.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFTXHIE</name>
+            <description>Enable for interrupt when TX FIFO reaches half the number of bytes allowed in the fifo or less.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INT_STAT</name>
+        <description>Interrupt Status Flags.</description>
+        <addressOffset>0x0C</addressOffset>
+        <size>32</size>
+        <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        <fields>
+          <field>
+            <name>FRAMIS</name>
+            <description>FLAG for RX Frame Error Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PARITYIS</name>
+            <description>FLAG for RX Parity Error interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OVERIS</name>
+            <description>FLAG for RX FIFO Overrun interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFRXIS</name>
+            <description>FLAG for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFTXOIS</name>
+            <description>FLAG for interrupt when TX FIFO has only one byte remaining.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FFTXHIS</name>
+            <description>FLAG for interrupt when TX FIFO reaches half the number of bytes allowed in the fifo or less.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BAUD0</name>
+        <description>Baud rate register. Integer portion.</description>
+        <addressOffset>0x10</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>IDIV</name>
+            <description>Integer portion of baud rate divisor value. IBAUD = InputClock / (factor * Baud Rate Frequency).</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>12</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>BAUD1</name>
+        <description>Baud rate register. Decimal Setting.</description>
+        <addressOffset>0x14</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DDIV</name>
+            <description>Decimal portion of baud rate divisor value. DIV = InputClock/(factor*Baud Rate Frequency). DDIV=(DIV-IDIV)*128.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DATA</name>
+        <description>FIFO Data buffer.</description>
+        <addressOffset>0x20</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Load/unload location for TX and RX FIFO buffers.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>PARITY</name>
+            <description>Parity error flag for next byte to be read from FIFO.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DMA</name>
+        <description>DMA Configuration.</description>
+        <addressOffset>0x30</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>TXCNT</name>
+            <description>TX threshold for DMA transmission.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>TXEN</name>
+            <description>TX DMA channel enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>DMA is disabled </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>DMA is enabled </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RXCNT</name>
+            <description>RX threshold for DMA transmission.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>RXEN</name>
+            <description>RX DMA channel enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>DMA is disabled </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>DMA is enabled </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- UART: UART                 -->
+</device>

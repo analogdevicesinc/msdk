@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+<!-- SFE -->
+  <name>SFE</name>
+  <description>Serial Flash Emulator.</description>
+  <baseAddress>0x400A0000</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>CFG</name>
+    <description>SFE Configuration Register.</description>
+    <addressOffset>0x0400</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>DRLE</name>
+      <description>Data Rise Launch Edge Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>FLOCK</name>
+      <description>Flash Lock.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>  
+     <field>
+      <name>RD_EN</name>
+      <description>RAM Read Enable.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>      
+     <field>
+      <name>WR_EN</name>
+      <description>RAM Write Enable.</description>
+      <bitOffset>17</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field> 
+     <field>
+      <name>RRLOCK</name>
+      <description>RAM Read Lock.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>   
+     <field>
+      <name>RWLOCK</name>
+      <description>RAM Write Lock.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>                  
+    </fields>       
+   </register>
+   <register>
+    <name>HFSA</name>
+    <description>SFE Host Flash Start Address Register.</description>
+    <addressOffset>0x0408</addressOffset>
+    <fields>
+     <field>
+      <name>HFSA</name>
+      <description> Serial Flash Host Flash Start Address.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>22</bitWidth>
+     </field>
+    </fields>     
+   </register>
+   <register>
+    <name>HRSA</name>
+    <description>SFE Host RAM Start Address Register.</description>
+    <addressOffset>0x040C</addressOffset>
+    <fields>
+     <field>
+      <name>HRSA</name>
+      <description> Serial Flash Host RAM Start Address.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>22</bitWidth>
+     </field>
+    </fields>     
+   </register>  
+   <register>
+    <name>SFDP_SBA</name>
+    <description>SFE Discoverable Parameter System Base Register.</description>
+    <addressOffset>0x0410</addressOffset>
+    <fields>
+     <field>
+      <name>SFDP_SBA</name>
+      <description> SFDP upper 24 bits System Base Address.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>24</bitWidth>
+     </field>
+    </fields>     
+   </register>   
+   <register>
+    <name>FLASH_SBA</name>
+    <description>Flash System Base Address Register.</description>
+    <addressOffset>0x0414</addressOffset>
+    <fields>
+     <field>
+      <name>FLASH_SBA</name>
+      <description> FLASH upper 22 bits System Base Address.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>22</bitWidth>
+     </field>
+    </fields>     
+   </register>       
+   <register>
+    <name>FLASH_STA</name>
+    <description>Flash System Top Address Register.</description>
+    <addressOffset>0x0418</addressOffset>
+    <fields>
+     <field>
+      <name>FLASH_STA</name>
+      <description> FLASH upper 22 bits System Top Address.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>22</bitWidth>
+     </field>
+    </fields>     
+   </register>   
+   <register>
+    <name>RAM_SBA</name>
+    <description>RAM System Base Address Register.</description>
+    <addressOffset>0x041C</addressOffset>
+    <fields>
+     <field>
+      <name>RAM_SBA</name>
+      <description> RAM upper 22 bits System Base Address.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>22</bitWidth>
+     </field>
+    </fields>     
+   </register>  
+   <register>
+    <name>RAM_STA</name>
+    <description>RAM System Top Address Register.</description>
+    <addressOffset>0x0420</addressOffset>
+    <fields>
+     <field>
+      <name>RAM_STA</name>
+      <description> RAM upper 22 bits System Top Address.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>22</bitWidth>
+     </field>
+    </fields>     
+   </register>      
+  </registers>
+ </peripheral>
+<!-- AES -->
+</device>

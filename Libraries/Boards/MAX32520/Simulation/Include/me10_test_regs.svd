@@ -1,0 +1,449 @@
+		<peripheral>						<!--     TEST Test Mode		-->
+			<name>TEST</name>
+			<description>Test Modes</description>
+			<prependToName>TEST_</prependToName>
+			<baseAddress>0x40000C00</baseAddress>
+			<addressBlock>
+				<offset>0x00</offset>
+				<size>0x0400</size>
+				<usage>registers</usage>
+			</addressBlock>
+			<registers>
+				<register>
+					<name>TM</name>
+					<description>Test Mode</description>
+					<addressOffset>0x00</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+						<field>
+							<name>TME</name>
+							<description>Test Mode Enable.</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>TTAP_EN</name>
+							<description>TTAP Enable.</description>
+							<bitOffset>1</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>TTAP_PIF</name>
+							<description>TTAP Parallel Interface Enable.</description>
+							<bitOffset>2</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SCAN</name>
+							<description>SCAN Mode Enable.</description>
+							<bitOffset>3</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SCANFB</name>
+							<description>SCAN FB Mode Enable.</description>
+							<bitOffset>4</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SRT</name>
+							<description>Switch Reset Trip Point.</description>
+							<bitOffset>5</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>IDDQ</name>
+							<description>IDDQ Mode Enable.</description>
+							<bitOffset>6</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>XTALSEL</name>
+							<description>Crystal Select.</description>
+							<bitOffset>7</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>LDOOFF</name>
+							<description>LDO Off.</description>
+							<bitOffset>9</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>FTM</name>
+							<description>Flash Test Mode Enable.</description>
+							<bitOffset>10</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SFTM</name>
+							<description>Serial Flash Test Mode Enable.</description>
+							<bitOffset>11</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>FBIST</name>
+							<description>Flash BIST Mode Enable.</description>
+							<bitOffset>12</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SFBIST</name>
+							<description>Serial Flash BIST Mode Enable.</description>
+							<bitOffset>13</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>POR</name>
+							<description>Power On Reset Trigger.</description>
+							<bitOffset>14</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>BOR</name>
+							<description>Battery On Reset Trigger.</description>
+							<bitOffset>15</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SCAN_MD</name>
+							<description>Scan Mode Mode Select.</description>
+							<bitOffset>16</bitOffset>
+							<bitWidth>3</bitWidth>
+						</field>
+						<field>
+							<name>CKT</name>
+							<description>Clock Test Mode.</description>
+							<bitOffset>20</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>DOFF</name>
+							<description>Watchdog Off.</description>
+							<bitOffset>21</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>DCW</name>
+							<description>Disable Crystal Warmup.</description>
+							<bitOffset>22</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SVM_BG</name>
+							<description>SVM Bandgap Test Mode.</description>
+							<bitOffset>24</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SVM_HV</name>
+							<description>SVM High Voltage Test Mode.</description>
+							<bitOffset>25</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>PWCN_BOD</name>
+							<description>Brownout Disable.</description>
+							<bitOffset>26</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>VMAIN_MON_PD</name>
+							<description>VMAIN Monitor Power Down.</description>
+							<bitOffset>27</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>RETLDO_EN</name>
+							<description>Retention LDO Enable.</description>
+							<bitOffset>28</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>NMI_DIS</name>
+							<description>NMI Disable.</description>
+							<bitOffset>28</bitOffset>
+							<bitWidth>31</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>TRCN</name>
+					<description>Trim Control Register.</description>
+					<addressOffset>0x04</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+						<field>
+							<name>CLKDIV</name>
+							<description>Flash Clock Divide.</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>8</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>TCLK</name>
+					<description>Test Clock Control Register.</description>
+					<addressOffset>0x08</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+						<field>
+							<name>VCLKSRC</name>
+							<description>Visual Clock Source.</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>8</bitWidth>
+						</field>
+						<field>
+							<name>VCLKDIV</name>
+							<description>Visual Clock Divide</description>
+							<bitOffset>8</bitOffset>
+							<bitWidth>4</bitWidth>
+						</field>
+						<field>
+							<name>VCLK_MODE</name>
+							<description>Visual Clock Mode Enable</description>
+							<bitOffset>12</bitOffset>
+							<bitWidth>5</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>TMR0</name>
+					<description>Security Test Mode Register.</description>
+					<addressOffset>0x0C</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+						<field>
+							<name>IDS_MODE0</name>
+							<description>Internal Die Shield Test Mode.</description>
+							<bitOffset>19</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>TMR1</name>
+					<description>Clock Test Mode Register.</description>
+					<addressOffset>0x10</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+
+						<field>
+							<name>XTAL_TM1</name>
+							<description>Crystal Test Mode 1.</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>XTAL_TM2</name>
+							<description>Crystal Test Mode 2.</description>
+							<bitOffset>1</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>XTAL_PD</name>
+							<description>Crystal Power Down.</description>
+							<bitOffset>2</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>XTAL_BP</name>
+							<description>Crystal Bypass.</description>
+							<bitOffset>3</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>PLL0_IB</name>
+							<description>PLL0 IBias Test Mode.</description>
+							<bitOffset>4</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>PLL0_VCO</name>
+							<description>PLL0 VCO Test Mode.</description>
+							<bitOffset>5</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>PLL0_SEL</name>
+							<description>PLL0 Select.</description>
+							<bitOffset>6</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>PLL0_CK_BYP</name>
+							<description>PLL0 Clock Bypass Test Mode.</description>
+							<bitOffset>7</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>RESV1</name>
+							<description>Reserved 1.</description>
+							<bitOffset>11</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>HFR_PD</name>
+							<description>High Frequency Ring Power Down.</description>
+							<bitOffset>12</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>8K_PD</name>
+							<description>8kHz Oscillator Power Down.</description>
+							<bitOffset>13</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>RESV2</name>
+							<description>Reserved 2.</description>
+							<bitOffset>14</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>RESV3</name>
+							<description>Reserved 3.</description>
+							<bitOffset>15</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>X32D</name>
+							<description>32kHz Oscillator Disable.</description>
+							<bitOffset>16</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>32KBYP</name>
+							<description>32kHz Oscillator Bypass.</description>
+							<bitOffset>17</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>32K</name>
+							<description>32kHz Oscillator Test Mode.</description>
+							<bitOffset>18</bitOffset>
+							<bitWidth>1</bitWidth>
+						<field>
+							<name>RESV4</name>
+							<description>Reserved 4.</description>
+							<bitOffset>19</bitOffset>
+							<bitWidth>1</bitWidth>
+					</fields>
+				</register>
+				<register>
+					<name>TMR2</name>
+					<description>Peripheral Test Mode Register 0.</description>
+					<addressOffset>0x14</addressOffset>
+					<resetValue>0x00000000</resetValue>
+				</register>
+				<register>
+					<name>TMR3</name>
+					<description>Peripheral Test Mode Register 1</description>
+					<addressOffset>0x18</addressOffset>
+					<resetValue>0x00000000</resetValue>
+				</register>
+				<register>
+					<name>STCR</name>
+					<description>Serial Test Control Register</description>
+					<addressOffset>0x1C</addressOffset>
+					<resetValue>0x00000000</resetValue>
+				</register>
+				<register>
+					<name>MBCN</name>
+					<description>Memory BIST Control Register.</description>
+					<addressOffset>0x20</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+						<field>
+							<name>SYSRAM1</name>
+							<description>SYSRAM1 BIST Enable.</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SYSRAM2</name>
+							<description>SYSRAM2 BIST Enable.</description>
+							<bitOffset>1</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ICACHE</name>
+							<description>ICACHE RAM BIST Enable.</description>
+							<bitOffset>3</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>CRYPTO</name>
+							<description>CRYPTO RAM BIST Enable.</description>
+							<bitOffset>5</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ICACHEXIP</name>
+							<description>ICACHE XIP RAM BIST Enable.</description>
+							<bitOffset>11</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SYSRAM3</name>
+							<description>SYSRAM3 BIST Enable.</description>
+							<bitOffset>16</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SYSRAM4</name>
+							<description>SYSRAM4 BIST Enable.</description>
+							<bitOffset>17</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>MBSTAT</name>
+					<description>Memory BIST Status Register.</description>
+					<addressOffset>0x24</addressOffset>
+					<resetValue>0x00000000</resetValue>
+					<fields>
+						<field>
+							<name>SYSRAM1</name>
+							<description>SYSRAM1 BIST Status.</description>
+							<bitOffset>0</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SYSRAM2</name>
+							<description>SYSRAM2 BIST Status.</description>
+							<bitOffset>1</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ICACHE</name>
+							<description>ICACHE RAM BIST Status.</description>
+							<bitOffset>3</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>CRYPTO</name>
+							<description>CRYPTO RAM BIST Status.</description>
+							<bitOffset>5</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>ICACHEXIP</name>
+							<description>ICACHE XIP RAM BIST Status.</description>
+							<bitOffset>11</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SYSRAM3</name>
+							<description>SYSRAM3 BIST Status.</description>
+							<bitOffset>16</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+						<field>
+							<name>SYSRAM4</name>
+							<description>SYSRAM4 BIST Status.</description>
+							<bitOffset>17</bitOffset>
+							<bitWidth>1</bitWidth>
+						</field>
+					</fields>
+				</register>
+				<register>
+					<name>MBDSEL</name>
+					<description>Memory BIST Diagnostic Select Register</description>
+					<addressOffset>0x28</addressOffset>
+					<resetValue>0x00000000</resetValue>
+				</register>
+				<register>
+					<name>MBDIAG</name>
+					<description>Memory BIST Diagnostic Register</description>
+					<addressOffset>0x2C</addressOffset>
+					<resetValue>0x00000000</resetValue>
+				</register>
+			</registers>
+		</peripheral>

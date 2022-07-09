@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!-- AES -->
+    <name>AES_KEY</name>
+    <description>AES Key Registers.</description>
+    <baseAddress>0x40005000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>key0_qspi_xip</name>
+        <description>AES Key 0.</description>
+        <addressOffset>0x20</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>key1_qspi_xip</name>
+        <description>AES Key 1.</description>
+        <addressOffset>0x24</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>key2_qspi_xip</name>
+        <description>AES Key 2.</description>
+        <addressOffset>0x28</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>key3_qspi_xip</name>
+        <description>AES Key 3.</description>
+        <addressOffset>0x2C</addressOffset>
+        <size>32</size>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- AES -->
+</device>

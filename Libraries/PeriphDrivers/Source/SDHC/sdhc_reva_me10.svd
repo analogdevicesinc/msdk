@@ -1,0 +1,2196 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SDHC</name>
+  <description>SDHC/SDIO Controller</description>
+  <baseAddress>0x40037000</baseAddress>
+  <addressBlock>
+   <offset>0</offset>
+   <size>0x1000</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <interrupt>
+   <name>SDHC</name>
+   <value>66</value>
+  </interrupt>
+  <registers>
+   <register>
+    <name>SDMA</name>
+    <description>SDMA System Address / Argument 2.</description>
+    <addressOffset>0x00</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>ADDR</name>
+      <description>SDMA System Address / Argument 2  of Auto CMD23.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>BLK_SIZE</name>
+    <description>Block Size.</description>
+    <addressOffset>0x04</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>TRANS</name>
+      <description>Transfer Block Size.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>12</bitWidth>
+     </field>
+     <field>
+      <name>HOST_BUF</name>
+      <description>Host SDMA Buffer Boundary.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>3</bitWidth>
+      <enumeratedValues>
+        <enumeratedValue>
+          <name>4KB</name>
+          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>8KB</name>
+          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>16KB</name>
+          <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>32KB</name>
+          <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>64KB</name>
+          <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>128KB</name>
+          <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>256KB</name>
+          <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+          <name>512KB</name>
+          <value>7</value>
+        </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>BLK_CNT</name>
+    <description>Block Count.</description>
+    <addressOffset>0x06</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>COUNT</name>
+      <description>Blocks Count For Current Transfer.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>16</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ARG_1</name>
+    <description>Argument 1.</description>
+    <addressOffset>0x08</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>CMD</name>
+      <description>Command Argument 1.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>TRANS</name>
+    <description>Transfer Mode.</description>
+    <addressOffset>0x0C</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>DMA_EN</name>
+      <description>DMA Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>BLK_CNT_EN</name>
+      <description>Block Count Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>en</name>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>AUTO_CMD_EN</name>
+      <description>Auto CMD Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>disable</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>cmd12</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>cmd23</name>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>READ_WRITE</name>
+      <description>Data Transfer Direction Select.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>write</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>read</name>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>MULTI</name>
+      <description>Multi / Single Block Select.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>multi</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>single</name>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>CMD</name>
+    <description>Command.</description>
+    <addressOffset>0x0E</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>RESP_TYPE</name>
+      <description>Response Type Select.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>none</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>resp136</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>resp48</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>resp48_busy</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>CRC_CHK_EN</name>
+      <description>Command CRC Check Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>en</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>dis</name>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>IDX_CHK_EN</name>
+      <description>Command Index Check Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>en</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>dis</name>
+        <value>0</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>DATA_PRES_SEL</name>
+      <description>Data Present Select.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TYPE</name>
+      <description>Command Type.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>normal</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>suspend</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>resume</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>abort</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>IDX</name>
+      <description>Command Index.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>6</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <dim>8</dim>
+    <dimIncrement>2</dimIncrement>
+    <name>RESP[%s]</name>
+    <description>Response 0 Register 0-15.</description>
+    <addressOffset>0x010</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_RESP</name>
+      <description>Command Response.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>16</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>BUFFER</name>
+    <description>Buffer Data Port.</description>
+    <addressOffset>0x20</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>DATA</name>
+      <description>Buffer Data.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESENT</name>
+    <description>Present State.</description>
+    <addressOffset>0x024</addressOffset>
+    <size>32</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>CMD_COMP</name>
+      <description>Command Inhibit (CMD).</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DAT</name>
+      <description>Command Inhibit (DAT).</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DAT_LINE_ACTIVE</name>
+      <description>DAT Line Active.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>RETUNING</name>
+      <description>Re-Tuning Request.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>WRITE_TRANSFER</name>
+      <description>Write Transfer Active.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>READ_TRANSFER</name>
+      <description>Read Transfer Active.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>BUFFER_WRITE</name>
+      <description>Buffer Write Enable.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>BUFFER_READ</name>
+      <description>Buffer Read Enable.</description>
+      <bitOffset>11</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CARD_INSERTED</name>
+      <description>Card Inserted.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CARD_STATE</name>
+      <description>Card State Stable.</description>
+      <bitOffset>17</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CARD_DETECT</name>
+      <description>Card Detect Pin Level.</description>
+      <bitOffset>18</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>WP</name>
+      <description>Write Protect Switch Pin Level.</description>
+      <bitOffset>19</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DAT_SIGNAL_LEVEL</name>
+      <description>DAT[3:0] Line Signal Level.</description>
+      <bitOffset>20</bitOffset>
+      <bitWidth>4</bitWidth>
+     </field>
+     <field>
+      <name>CMD_SIGNAL_LEVEL</name>
+      <description>CMD Line Signal Level.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>HOST_CN_1</name>
+    <description>Host Control 1.</description>
+    <addressOffset>0x028</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>LED_CN</name>
+      <description>LED Control.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_TRANSFER_WIDTH</name>
+      <description>Data Transfer Width.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>HS_EN</name>
+      <description>High Speed Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DMA_SELECT</name>
+      <description>DMA Select.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>2</bitWidth>
+     </field>
+     <field>
+      <name>EXT_DATA_TRANSFER_WIDTH</name>
+      <description>Extended Data Transfer Width.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_DETECT_TEST</name>
+      <description>Card Detect Test Level.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_DETECT_SIGNAL</name>
+      <description>Card Detect Signal Selection.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PWR</name>
+    <description>Power Control.</description>
+    <addressOffset>0x029</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>BUS_POWER</name>
+      <description>SD Bus Power.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUS_VOLT_SEL</name>
+      <description>SD Bus Voltage Select.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>3</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>1v8_typ</name>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>3v_typ</name>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>3v3_typ</name>
+        <value>7</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>BLK_GAP</name>
+    <description>Block Gap Control.</description>
+    <addressOffset>0x02A</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>STOP</name>
+      <description>Stop At Block Gap Request.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CONT</name>
+      <description>Continue Request.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>READ_WAIT</name>
+      <description>Read Wait Control.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>INTR</name>
+      <description>Interrupt At Block Gap.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>WAKEUP</name>
+    <description>Wakeup Control.</description>
+    <addressOffset>0x02B</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>CARD_INT</name>
+      <description>Wakeup Event Enable On Card Interrupt.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INS</name>
+      <description>Wakeup Event Enable On SD Card Insertion.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_REM</name>
+      <description>Wakeup Event Enable On SD Card Removal.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>CLK_CN</name>
+    <description>Clock Control.</description>
+    <addressOffset>0x02C</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>INTERNAL_CLK_EN</name>
+      <description>Internal Clock Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>INTERNAL_CLK_STABLE</name>
+      <description>Internal Clock Stable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>SD_CLK_EN</name>
+      <description>SD Clock Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CLK_GEN_SEL</name>
+      <description>Clock Generator Select.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>UPPER_SDCLK_FREQ_SEL</name>
+      <description>Upper Bits of SDCLK Frequency Select.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>2</bitWidth>
+     </field>
+     <field>
+      <name>SDCLK_FREQ_SEL</name>
+      <description>SDCLK Frequency Select.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>TO</name>
+    <description>Timeout Control.</description>
+    <addressOffset>0x02E</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>DATA_COUNT_VALUE</name>
+      <description>Data Timeout Counter Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>4</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>2POW13</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW14</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW15</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW16</name>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW17</name>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW18</name>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW19</name>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW20</name>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW21</name>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW22</name>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW23</name>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW24</name>
+        <value>11</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW25</name>
+        <value>12</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW26</name>
+        <value>13</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2POW27</name>
+        <value>14</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>SW_RESET</name>
+    <description>Software Reset.</description>
+    <addressOffset>0x02F</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>RESET_ALL</name>
+      <description>Software Reset For All.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RESET_CMD</name>
+      <description>Software Reset For CMD Line.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RESET_DAT</name>
+      <description>Software Reset For DAT Line.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_STAT</name>
+    <description>Normal Interrupt Status.</description>
+    <addressOffset>0x030</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_COMP</name>
+      <description>Command Complete.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TRANS_COMP</name>
+      <description>Transfer Complete.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BLK_GAP_EVENT</name>
+      <description>Block Gap Event.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DMA</name>
+      <description>DMA Interrupt.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUFF_WR_READY</name>
+      <description>Buffer Write Ready.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUFF_RD_READY</name>
+      <description>Buffer Read Ready.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INSERTION</name>
+      <description>Card Insertion.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_REMOVAL</name>
+      <description>Card Removal.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INTR</name>
+      <description>Card Interrupt.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RETUNING</name>
+      <description>Re-Tuning Event.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>ERR_INTR</name>
+      <description>Error Interrupt.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ER_INT_STAT</name>
+    <description>Error Interrupt Status.</description>
+    <addressOffset>0x032</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_TO</name>
+      <description>Command Timeout Error.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_CRC</name>
+      <description>Command CRC Error.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_END_BIT</name>
+      <description>Command End Bit Error.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_IDX</name>
+      <description>Command Index Error.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_TO</name>
+      <description>Data Timeout Error.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_CRC</name>
+      <description>Data CRC Error.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_END_BIT</name>
+      <description>Data End Bit Error.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CURRENT_LIMIT</name>
+      <description>Current Limit Error.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>AUTO_CMD_12</name>
+      <description>Auto CMD Error.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>ADMA</name>
+      <description>ADMA Error.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DMA</name>
+      <description>DMA Error.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_EN</name>
+    <description>Normal Interrupt Status Enable.</description>
+    <addressOffset>0x034</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_COMP</name>
+      <description>Command Complete Status Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TRANS_COMP</name>
+      <description>Transfer Complete Status Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BLK_GAP</name>
+      <description>Block Gap Event Status Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DMA</name>
+      <description>DMA Interrupt Status Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUFFER_WR</name>
+      <description>Buffer Write Ready Status Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUFFER_RD</name>
+      <description>Buffer Read Ready Status Enable.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INSERT</name>
+      <description>Card Insertion Status Enable.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_REMOVAL</name>
+      <description>Card Removal Status Enable.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INT</name>
+      <description>Card Interrupt Status Enable.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RETUNING</name>
+      <description>Re-Tuning Event Status Enable.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ER_INT_EN</name>
+    <description>Error Interrupt Status Enable.</description>
+    <addressOffset>0x36</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_TO</name>
+      <description>Command Timeout Error Status Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_CRC</name>
+      <description>Command CRC Error Status Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_END_BIT</name>
+      <description>Command End Bit Error Status Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_IDX</name>
+      <description>Command Index Error Status Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_TO</name>
+      <description>Data Timeout Error Status Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_CRC</name>
+      <description>Data CRC Error Status Enable.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_END_BIT</name>
+      <description>Data End Bit Error Status Enable.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>AUTO_CMD_12</name>
+      <description>Auto CMD Error Status Enable.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>ADMA</name>
+      <description>ADMA Error Status Enable.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TUNING</name>
+      <description>Tuning Error Status Enable.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>VENDOR</name>
+      <description>Vendor Specific Error Status Enable.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>INT_SIGNAL</name>
+    <description>Normal Interrupt Signal Enable.</description>
+    <addressOffset>0x038</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_COMP</name>
+      <description>Command Complete Signal Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TRANS_COMP</name>
+      <description>Transfer Complete Signal Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BLK_GAP</name>
+      <description>Block Gap Event Signal Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DMA</name>
+      <description>DMA Interrupt Signal Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUFFER_WR</name>
+      <description>Buffer Write Ready Signal Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>BUFFER_RD</name>
+      <description>Buffer Read Ready Signal Enable.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INSERT</name>
+      <description>Card Insertion Signal Enable.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_REMOVAL</name>
+      <description>Card Removal Signal Enable.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CARD_INT</name>
+      <description>Card Interrupt Signal Enable.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>RETUNING</name>
+      <description>Re-Tuning Event Signal Enable.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ER_INT_SIGNAL</name>
+    <description>Error Interrupt Signal Enable.</description>
+    <addressOffset>0x03A</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_TO</name>
+      <description>Command Timeout Error Signal Enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_CRC</name>
+      <description>Command CRC Error Signal Enable.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_END_BIT</name>
+      <description>Command End Bit Error Signal Enable.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CMD_IDX</name>
+      <description>Command Index Error Signal Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_TO</name>
+      <description>Data Timeout Error Signal Enable.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_CRC</name>
+      <description>Data CRC Error Signal Enable.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DATA_END_BIT</name>
+      <description>Data End Bit Error Signal Enable.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CURRENT_LIMIT</name>
+      <description>Current Limit Error Signal Enable.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>AUTO_CMD_12</name>
+      <description>Auto CMD Error Signal Enable.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>ADMA</name>
+      <description>ADMA Error Signal Enable.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TUNING</name>
+      <description>Tuning Error Signal Enable.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TAR_RESP</name>
+      <description>Target Response Error Signal Enable.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>AUTO_CMD_ER</name>
+    <description>Auto CMD Error Status.</description>
+    <addressOffset>0x03C</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>NOT_EXCUTED</name>
+      <description>Auto CMD12 Not Executed.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>TO</name>
+      <description>Auto CMD Timeout Error.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>CRC</name>
+      <description>Auto CMD CRC Error.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>END_BIT</name>
+      <description>Auto CMD End Bit Error.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>INDEX</name>
+      <description>Auto CMD Index Error.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>NOT_ISSUED</name>
+      <description>Command Not Issued By Auto CMD12 Error.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>HOST_CN_2</name>
+    <description>Host Control 2.</description>
+    <addressOffset>0x03E</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>UHS</name>
+      <description>UHS Mode Select.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>3</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>sdr12</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>sdr25</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>sdr50</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>ddr50</name>
+        <value>4</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>1_8V_SIGNAL</name>
+      <description>1.8V Signaling Enable.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>2</bitWidth>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typrD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>EXCUTE</name>
+      <description>Execute Tuning.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>SAMPLING_CLK</name>
+      <description>Sampling Clock Select.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>ASYNCH_INT</name>
+      <description>Asynchronous Interrupt Enable.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>PRESET_VAL_EN</name>
+      <description>Preset Value Enable.</description>
+      <bitOffset>15</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>CFG_0</name>
+    <description>Capabilities 0-31.</description>
+    <addressOffset>0x040</addressOffset>
+    <size>32</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>TO_FREQ</name>
+      <description>Timeout Clock Frequency.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>6</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>1mhz</name>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>CLK_UNIT</name>
+      <description>Timeout Clock Unit.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_FREQ</name>
+      <description>Base Clock Frequency For SD Clock.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>MAX_BLK_LEN</name>
+      <description>Max Block Length.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>2048_bytes</name>
+        <value>2</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>8_BIT</name>
+      <description>8-bit Support for Embedded Device.</description>
+      <bitOffset>18</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>ADMA2</name>
+      <description>ADMA2 Support.</description>
+      <bitOffset>19</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>HS</name>
+      <description>High Speed Support.</description>
+      <bitOffset>21</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>SDMA</name>
+      <description>SDMA Support.</description>
+      <bitOffset>22</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>SUSPEND</name>
+      <description>Suspend/Resume Support.</description>
+      <bitOffset>23</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>3_3V</name>
+      <description>Voltage Support 3.3V.</description>
+      <bitOffset>24</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>3_0V</name>
+      <description>Voltage Support 3.0V.</description>
+      <bitOffset>25</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>1_8V</name>
+      <description>Voltage Support 1.8V.</description>
+      <bitOffset>26</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>64_BIT_SYS_BUS</name>
+      <description>64-bit System Bus Support.</description>
+      <bitOffset>28</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>ASYNC_INT</name>
+      <description>Asynchronous Interrupt Support.</description>
+      <bitOffset>29</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>SLOT_TYPE</name>
+      <description>Slot Type.</description>
+      <bitOffset>30</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>CFG_1</name>
+    <description>Capabilities 32-63.</description>
+    <addressOffset>0x044</addressOffset>
+    <size>32</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDR50</name>
+      <description>SDR50 Support.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>SDR104</name>
+      <description>SDR104 Support.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>0</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DDR50</name>
+      <description>DDR50 Support.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_A</name>
+      <description>Driver Type A Support.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_C</name>
+      <description>Driver Type C Support.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_D</name>
+      <description>Driver Type D Support.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>TIMER_CNT_TUNING</name>
+      <description>Timer Count for Re-Tuning.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>4</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>dis</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>1sec</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>2sec</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>4sec</name>
+        <value>3</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>8sec</name>
+        <value>4</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>16sec</name>
+        <value>5</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>32sec</name>
+        <value>6</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>64sec</name>
+        <value>7</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>128sec</name>
+        <value>8</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>256sec</name>
+        <value>9</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>512sec</name>
+        <value>10</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>1024sec</name>
+        <value>11</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
+      <name>TUNING_SDR50</name>
+      <description>Use Tuning for SDR50.</description>
+      <bitOffset>13</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>RETUNING</name>
+      <description>Re-Tuning Modes.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_MULTI</name>
+      <description>Clock Multiplier.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>MAX_CURR_CFG</name>
+    <description>Maximum Current Capabilities.</description>
+    <addressOffset>0x048</addressOffset>
+    <size>32</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>3_3V</name>
+      <description>Maximum Current for 3.3V.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>3_0V</name>
+      <description>Maximum Current for 3.0V.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>1_8V</name>
+      <description>Maximum Current for 1.8V.</description>
+      <bitOffset>16</bitOffset>
+      <bitWidth>8</bitWidth>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>FORCE_CMD</name>
+    <description>Force Event for Auto CMD Error Status.</description>
+    <addressOffset>0x050</addressOffset>
+    <size>16</size>
+    <access>write-only</access>
+    <fields>
+     <field>
+      <name>NOT_EXCU</name>
+      <description>Force Event for Auto CMD12 Not Executed.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>write-only</access>
+     </field>
+     <field>
+      <name>TO</name>
+      <description>Force Event for Auto CMD Timeout Error.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>write-only</access>
+     </field>
+     <field>
+      <name>CRC</name>
+      <description>Force Event for Auto CMD CRC Error.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>write-only</access>
+     </field>
+     <field>
+      <name>END_BIT</name>
+      <description>Force Event for Auto CMD End Bit Error.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>write-only</access>
+     </field>
+     <field>
+      <name>INDEX</name>
+      <description>Force Event for Auto CMD Index Error.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>write-only</access>
+     </field>
+     <field>
+      <name>NOT_ISSUED</name>
+      <description>Force Event for Command Not Issued By Auto CMD12 Error.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>write-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>FORCE_EVENT_INT_STAT</name>
+    <description>Force Event for Error Interrupt Status.</description>
+    <addressOffset>0x052</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>CMD_TO</name>
+      <description>Force Event for Command Timeout Error.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CMD_CRC</name>
+      <description>Force Event for Command CRC Error.</description>
+      <bitOffset>1</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CMD_END_BIT</name>
+      <description>Force Event for Command End Bit Error.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CMD_INDEX</name>
+      <description>Force Event for Command Index Error.</description>
+      <bitOffset>3</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DATA_TO</name>
+      <description>Force Event for Data Timeout Error.</description>
+      <bitOffset>4</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DATA_CRC</name>
+      <description>Force Event for Data CRC Error.</description>
+      <bitOffset>5</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DATA_END_BIT</name>
+      <description>Force Event for Data End Bit Error.</description>
+      <bitOffset>6</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CURR_LIMIT</name>
+      <description>Force Event for Current Limit Error.</description>
+      <bitOffset>7</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>AUTO_CMD</name>
+      <description>Force Event for Auto CMD Error.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>ADMA</name>
+      <description>Force Event for ADMA Error.</description>
+      <bitOffset>9</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+     <field>
+      <name>STAT_VENDOR</name>
+      <description>Force Event for Vendor Specific Error Status.</description>
+      <bitOffset>12</bitOffset>
+      <bitWidth>4</bitWidth>
+      <access>write-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ADMA_ER</name>
+    <description>ADMA Error Status.</description>
+    <addressOffset>0x054</addressOffset>
+    <size>8</size>
+    <fields>
+     <field>
+      <name>STATE</name>
+      <description>ADMA Error State.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>2</bitWidth>
+     </field>
+     <field>
+      <name>LEN_MISMATCH</name>
+      <description>ADMA Length Mismatch Error.</description>
+      <bitOffset>2</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ADMA_ADDR_0</name>
+    <description>ADMA System Address 0-31.</description>
+    <addressOffset>0x058</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>ADDR</name>
+      <description>ADMA System Address  Part 1 (part 2 is ADMA_ADDR_1).</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>ADMA_ADDR_1</name>
+    <description>ADMA System Address 32-63.</description>
+    <addressOffset>0x05C</addressOffset>
+    <size>32</size>
+    <fields>
+     <field>
+      <name>ADDR</name>
+      <description>ADMA System Address  Part 1 (part 2 is ADMA_ADDR_1).</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>32</bitWidth>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_0</name>
+    <description>Preset Value for Initialization.</description>
+    <addressOffset>0x060</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_1</name>
+    <description>Preset Value for Default Speed.</description>
+    <addressOffset>0x062</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_2</name>
+    <description>Preset Value for High Speed.</description>
+    <addressOffset>0x064</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_3</name>
+    <description>Preset Value for SDR12.</description>
+    <addressOffset>0x066</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_4</name>
+    <description>Preset Value for SDR25.</description>
+    <addressOffset>0x068</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_5</name>
+    <description>Preset Value for SDR50.</description>
+    <addressOffset>0x06A</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_6</name>
+    <description>Preset Value for SDR104.</description>
+    <addressOffset>0x06C</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>PRESET_7</name>
+    <description>Preset Value for DDR50.</description>
+    <addressOffset>0x06E</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>SDCLK_FREQ</name>
+      <description>SDCLK Frequency Select Value.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>10</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>CLK_GEN</name>
+      <description>Clock Generator Select Value.</description>
+      <bitOffset>10</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+     <field>
+      <name>DRIVER_STRENGTH</name>
+      <description>Driver Strength Select Value.</description>
+      <bitOffset>14</bitOffset>
+      <bitWidth>2</bitWidth>
+      <access>read-only</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>typeB</name>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeA</name>
+        <value>1</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeC</name>
+        <value>2</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>typeD</name>
+        <value>3</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>SHARED_BUS</name>
+    <description>SHARED_BUS.</description>
+    <addressOffset>0x0E0</addressOffset>
+    <size>32</size>
+   </register>   
+   <register>
+    <name>SLOT_INT</name>
+    <description>Slot Interrupt Status.</description>
+    <addressOffset>0x0FC</addressOffset>
+    <size>16</size>
+    <access>read-only</access>
+    <fields>
+     <field>
+      <name>INT_SIGNALS</name>
+      <description>Interrupt Signal For Each Slot.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+      <access>read-only</access>
+     </field>
+    </fields>
+   </register>
+   <register>
+    <name>HOST_CN_VER</name>
+    <description>Host Controller Version.</description>
+    <addressOffset>0x0FE</addressOffset>
+    <size>16</size>
+    <fields>
+     <field>
+      <name>SPEC_VER</name>
+      <description>Specification Version Number.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+     <field>
+      <name>VEND_VER</name>
+      <description>Vendor Version Number.</description>
+      <bitOffset>8</bitOffset>
+      <bitWidth>8</bitWidth>
+     </field>
+    </fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SDHC:
+                                                                                                                                                                     SD Card Controller -->
+</device>

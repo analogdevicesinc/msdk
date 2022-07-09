@@ -1,0 +1,940 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>ADC</name>
+    <description>Inter-Integrated Circuit.</description>
+    <groupName>ADC</groupName>
+    <baseAddress>0x40034000</baseAddress>
+    <size>32</size>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>ADC</name>
+      <description>ADC IRQ</description>
+      <value>20</value>
+    </interrupt>
+    <registers>
+      <register>
+        <!-- CTRL0 -->
+        <name>CTRL0</name>
+        <description>Control Register 0.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <!-- FIELD 1 ADC Enable Control -->
+          <field>
+            <name>ADC_EN</name>
+            <description>ADC Enable.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable ADC.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable ADC.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 2 Bias Enable control -->
+          <field>
+            <name>BIAS_EN</name>
+            <description>Bias Enable.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Bias.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable Bias.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 3 Skip Calibration Control -->
+          <field>
+            <name>SKIP_CAL</name>
+            <description>Skip Calibration Enable.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>no_skip</name>
+                <description>Do not skip calibration.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>skip</name>
+                <description>Skip calibration.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 4 Chop Force Control -->
+          <field>
+            <name>CHOP_FORCE</name>
+            <description>Chop Force Control.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Do not force chop mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Force chop Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 5 Reset SAR -->
+          <field>
+            <name>RESETB</name>
+            <description>Reset ADC.</description>
+            <bitRange>[4:4]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>reset</name>
+                <description>reset ADC.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>activate</name>
+                <description>activate ADC.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CTRL1 -->
+        <name>CTRL1</name>
+        <description>Control Register 1.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <!-- FIELD 1 START conversion -->
+          <field>
+            <name>START</name>
+            <description>Start conversion control.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>stop</name>
+                <description>Stop conversions.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start conversions.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 2 Trigger mode -->
+          <field>
+            <name>TRIG_MODE</name>
+            <description>Trigger mode control.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>software</name>
+                <description>software trigger mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>hardware</name>
+                <description>hardware trigger mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 3 Conversion mode -->
+          <field>
+            <name>CNV_MODE</name>
+            <description>Conversion mode control.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>atomic</name>
+                <description>Do one conversion sequence.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>continuous</name>
+                <description>Do continuous conversion sequences.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 4 Sample clock off control -->
+          <field>
+            <name>SAMP_CK_OFF</name>
+            <description>Sample clock off control.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>always</name>
+                <description>Sample clock always generated.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>cnv_only</name>
+                <description>Sample clock generated only when converting.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 5 Trigger select control -->
+          <field>
+            <name>TRIG_SEL</name>
+            <description>Hardware trigger source select.</description>
+            <bitRange>[6:4]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 6 Temp sensor select control -->
+          <field>
+            <name>TS_SEL</name>
+            <description>Temp sensor select.</description>
+            <bitRange>[7:7]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Temp sensor is not one of the slots in the sequence.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Temp sensor is one of the slots in the sequence.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 7 Averaging control -->
+          <field>
+            <name>AVG</name>
+            <description>Number of samples to average for each output data code.</description>
+            <bitRange>[10:8]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>avg1</name>
+                <description>1 Sample per output code.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>avg2</name>
+                <description>2 Samples per output code.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>avg4</name>
+                <description>4 Samples per output code.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>avg8</name>
+                <description>8 Samples per output code.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>avg16</name>
+                <description>16 Samples per output code.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>avg32</name>
+                <description>32 Samples per output code.</description>
+                <value>5</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 8 Number of slots control -->
+          <field>
+            <name>NUM_SLOTS</name>
+            <description>Number of slots enabled for the conversion sequence</description>
+            <bitRange>[20:16]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CLKCTRL -->
+        <name>CLKCTRL</name>
+        <description>Clock Control Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <!-- FIELD 1 Clock select control -->
+          <field>
+            <name>CLKSEL</name>
+            <description>Clock source select.</description>
+            <bitRange>[1:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>HCLK</name>
+                <description>Select HCLK.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CLK_ADC0</name>
+                <description>Select CLK_ADC0.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CLK_ADC1</name>
+                <description>Select CLK_ADC1.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CLK_ADC2</name>
+                <description>Select CLK_ADC2.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 2 Clock Divider control -->
+          <field>
+            <name>CLKDIV</name>
+            <description>Clock divider control.</description>
+            <bitRange>[6:4]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DIV2</name>
+                <description>Divide by 2.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV4</name>
+                <description>Divide by 4.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV8</name>
+                <description>Divide by 8.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV16</name>
+                <description>Divide by 16.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV1</name>
+                <description>Divide by 1.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- SAMPCLKCTRL -->
+        <name>SAMPCLKCTRL</name>
+        <description>Sample Clock Control Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <!-- FIELD 1 Track count control -->
+          <field>
+            <name>TRACK_CNT</name>
+            <description>Number of cycles for SAMPLE_CLK high time.</description>
+            <bitRange>[15:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 2 Idle count control -->
+          <field>
+            <name>IDLE_CNT</name>
+            <description>Number of cycles for SAMPLE_CLK low time.</description>
+            <bitRange>[31:16]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CHSEL0 -->
+        <name>CHSEL0</name>
+        <description>Channel Select Register 0.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <!-- FIELD 1 Slot 0 ID  -->
+          <field>
+            <name>slot0_id</name>
+            <description>channel assignment for slot 0.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 2 Slot 1 ID  -->
+          <field>
+            <name>slot1_id</name>
+            <description>channel assignment for slot 1.</description>
+            <bitRange>[12:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 3 Slot 2 ID  -->
+          <field>
+            <name>slot2_id</name>
+            <description>channel assignment for slot 2.</description>
+            <bitRange>[20:16]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 4 Slot 3 ID  -->
+          <field>
+            <name>slot3_id</name>
+            <description>channel assignment for slot 3.</description>
+            <bitRange>[28:24]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CHSEL1 -->
+        <name>CHSEL1</name>
+        <description>Channel Select Register 1.</description>
+        <addressOffset>0x14</addressOffset>
+        <fields>
+          <!-- FIELD 1 Slot 4 ID  -->
+          <field>
+            <name>slot4_id</name>
+            <description>channel assignment for slot 4.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 2 Slot 5 ID  -->
+          <field>
+            <name>slot5_id</name>
+            <description>channel assignment for slot 5.</description>
+            <bitRange>[12:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 3 Slot 6 ID  -->
+          <field>
+            <name>slot6_id</name>
+            <description>channel assignment for slot 6.</description>
+            <bitRange>[20:16]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 4 Slot 7 ID  -->
+          <field>
+            <name>slot7_id</name>
+            <description>channel assignment for slot 7.</description>
+            <bitRange>[28:24]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CHSEL2 -->
+        <name>CHSEL2</name>
+        <description>Channel Select Register 2.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <!-- FIELD 1 Slot 8 ID  -->
+          <field>
+            <name>slot8_id</name>
+            <description>channel assignment for slot 8.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 2 Slot 9 ID  -->
+          <field>
+            <name>slot9_id</name>
+            <description>channel assignment for slot 9.</description>
+            <bitRange>[12:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 3 Slot 10 ID  -->
+          <field>
+            <name>slot10_id</name>
+            <description>channel assignment for slot 10.</description>
+            <bitRange>[20:16]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 4 Slot 11 ID  -->
+          <field>
+            <name>slot11_id</name>
+            <description>channel assignment for slot 11.</description>
+            <bitRange>[28:24]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CHSEL3 -->
+        <name>CHSEL3</name>
+        <description>Channel Select Register 3.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <!-- FIELD 1 Slot 12 ID  -->
+          <field>
+            <name>slot12_id</name>
+            <description>channel assignment for slot 12.</description>
+            <bitRange>[4:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 2 Slot 13 ID  -->
+          <field>
+            <name>slot13_id</name>
+            <description>channel assignment for slot 13.</description>
+            <bitRange>[12:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 3 Slot 14 ID  -->
+          <field>
+            <name>slot14_id</name>
+            <description>channel assignment for slot 14.</description>
+            <bitRange>[20:16]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!-- FIELD 4 Slot 15 ID  -->
+          <field>
+            <name>slot15_id</name>
+            <description>channel assignment for slot 15.</description>
+            <bitRange>[28:24]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- RESTART -->
+        <name>RESTART</name>
+        <description>Restart Count Control Register</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>
+          <!-- FIELD 1 Restart Count  -->
+          <field>
+            <name>CNT</name>
+            <description>Number of sample periods to skip before restarting a continuous mode sequence</description>
+            <bitRange>[15:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- RESTART -->
+        <name>DATAFMT</name>
+        <description>Channel Data Format Register</description>
+        <addressOffset>0x3C</addressOffset>
+        <fields>
+          <!-- FIELD 1 Data format control  -->
+          <field>
+            <name>MODE</name>
+            <description>Data format control</description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- FIFODMACTRL -->
+        <name>FIFODMACTRL</name>
+        <description>FIFO and DMA control</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <!-- FIELD 1 DMA enable  -->
+          <field>
+            <name>DMA_EN</name>
+            <description>DMA Enable.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable DMA.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable DMA.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 2 FIFO Flush  -->
+          <field>
+            <name>FLUSH</name>
+            <description>FIFO Flush.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal FIFO operation.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>flush</name>
+                <description>Flush FIFO.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 3 DATA format  -->
+          <field>
+            <name>DATA_FORMAT</name>
+            <description>DATA format control.</description>
+            <bitRange>[3:2]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>data_status</name>
+                <description>Data and Status in FIFO.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>data_only</name>
+                <description>Only Data in FIFO.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>raw_data_only</name>
+                <description>Only Raw Data in FIFO.</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <!-- FIELD 4 FIFO Threshold  -->
+          <field>
+            <name>THRESH</name>
+            <description>FIFO Threshold. These bits define the FIFO interrupt threshold.</description>
+            <bitRange>[15:8]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- DATA -->
+        <name>DATA</name>
+        <description>Data Register (FIFO).</description>
+        <addressOffset>0x44</addressOffset>
+        <fields>
+          <!-- FIELD 1 Data  -->
+          <field>
+            <name>DATA</name>
+            <description>Conversion data.</description>
+            <bitRange>[15:0]</bitRange>
+            <access>read-only</access>
+          </field>
+          <!-- FIELD 2 Channel  -->
+          <field>
+            <name>CHAN</name>
+            <description>Channel for the data.</description>
+            <bitRange>[20:16]</bitRange>
+            <access>read-only</access>
+          </field>
+          <!-- FIELD 3 Invalid Status  -->
+          <field>
+            <name>INVALID</name>
+            <description>Invalid status for the data.</description>
+            <bitRange>[24:24]</bitRange>
+            <access>read-only</access>
+          </field>
+          <!-- FIELD 4 Clipped Status  -->
+          <field>
+            <name>CLIPPED</name>
+            <description>Clipped status for the data.</description>
+            <bitRange>[31:31]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- STATUS -->
+        <name>STATUS</name>
+        <description>Status Register</description>
+        <addressOffset>0x48</addressOffset>
+        <fields>
+          <!-- FIELD 1 Ready status -->
+          <field>
+            <name>READY</name>
+            <description>Indication that the ADC is in ON power state</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-only</access>
+          </field>
+          <!-- FIELD 2 FIFO Empty status -->
+          <field>
+            <name>EMPTY</name>
+            <description>FIFO Empty</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-only</access>
+          </field>
+          <!-- FIELD 3 FIFO Full status -->
+          <field>
+            <name>FULL</name>
+            <description>FIFO full</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-only</access>
+          </field>
+          <!-- FIELD 4 FIFO level -->
+          <field>
+            <name>FIFO_LEVEL</name>
+            <description>Number of entries in FIFO available to read</description>
+            <bitRange>[15:8]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- CHSTATUS -->
+        <name>CHSTATUS</name>
+        <description>Channel Status</description>
+        <addressOffset>0x4C</addressOffset>
+        <fields>
+          <!--  FIELD 1 Channel Status -->
+          <field>
+            <name>CLIPPED</name>
+            <description></description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- INTEN -->
+        <name>INTEN</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x50</addressOffset>
+        <fields>
+          <!--  FIELD 1 Ready enable -->
+          <field>
+            <name>READY</name>
+            <description>ADC is ready.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 2 Abort enable -->
+          <field>
+            <name>ABORT</name>
+            <description>Conversion start is aborted.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 3 Start Detect enable -->
+          <field>
+            <name>START_DET</name>
+            <description>Conversion start is detected.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 4 Sequence Started enable -->
+          <field>
+            <name>SEQ_STARTED</name>
+            <bitRange>[4:4]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 5 Sequence Done enable -->
+          <field>
+            <name>SEQ_DONE</name>
+            <bitRange>[5:5]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 6 Conversion Done enable -->
+          <field>
+            <name>CONV_DONE</name>
+            <bitRange>[6:6]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 7 CLIPPED enable -->
+          <field>
+            <name>CLIPPED</name>
+            <bitRange>[7:7]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 8 FIFO_LVL enable -->
+          <field>
+            <name>FIFO_LVL</name>
+            <bitRange>[8:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 9 FIFO_UFL enable -->
+          <field>
+            <name>FIFO_UFL</name>
+            <bitRange>[9:9]</bitRange>
+            <access>read-write</access>
+          </field>
+          <!--  FIELD 10 FIFO_OFL enable -->
+          <field>
+            <name>FIFO_OFL</name>
+            <bitRange>[10:10]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- INTFL -->
+        <name>INTFL</name>
+        <description>Interrupt Flags Register.</description>
+        <addressOffset>0x54</addressOffset>
+        <fields>
+          <!--  FIELD 1 Ready enable -->
+          <field>
+            <name>READY</name>
+            <description>ADC is ready.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 2 Abort enable -->
+          <field>
+            <name>ABORT</name>
+            <description>Conversion start is aborted.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 3 Start Detect enable -->
+          <field>
+            <name>START_DET</name>
+            <description>Conversion start is detected.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 4 Sequence Started enable -->
+          <field>
+            <name>SEQ_STARTED</name>
+            <bitRange>[4:4]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 5 Sequence Done enable -->
+          <field>
+            <name>SEQ_DONE</name>
+            <bitRange>[5:5]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 6 Conversion Done enable -->
+          <field>
+            <name>CONV_DONE</name>
+            <bitRange>[6:6]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 7 CLIPPED enable -->
+          <field>
+            <name>CLIPPED</name>
+            <bitRange>[7:7]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 8 FIFO_LVL enable -->
+          <field>
+            <name>FIFO_LVL</name>
+            <bitRange>[8:8]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 9 FIFO_UFL enable -->
+          <field>
+            <name>FIFO_UFL</name>
+            <bitRange>[9:9]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+          <!--  FIELD 10 FIFO_OFL enable -->
+          <field>
+            <name>FIFO_OFL</name>
+            <bitRange>[10:10]</bitRange>
+            <access>read-write</access>
+            <modifiedWriteValues>oneToClear</modifiedWriteValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- SFRADDROFFSET -->
+        <name>SFRADDROFFSET</name>
+        <description>SFR Address Offset Register</description>
+        <addressOffset>0x60</addressOffset>
+        <fields>
+          <!--  FIELD 1 Offset-->
+          <field>
+            <name>OFFSET</name>
+            <description>Address Offset for SAR Digital</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- SFRADDR -->
+        <name>SFRADDR</name>
+        <description>SFR Address Register</description>
+        <addressOffset>0x64</addressOffset>
+        <fields>
+          <!--  FIELD 1 Address-->
+          <field>
+            <name>ADDR</name>
+            <description>Address to SAR Digital</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- SFRWRDATA -->
+        <name>SFRWRDATA</name>
+        <description>SFR Write Data Register</description>
+        <addressOffset>0x68</addressOffset>
+        <fields>
+          <!--  FIELD 1 Address-->
+          <field>
+            <name>DATA</name>
+            <description>DATA to SAR Digital</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- SFRRDDATA -->
+        <name>SFRRDDATA</name>
+        <description>SFR Read Data Register</description>
+        <addressOffset>0x6C</addressOffset>
+        <fields>
+          <!--  FIELD 1 Address-->
+          <field>
+            <name>DATA</name>
+            <description>DATA from SAR Digital</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!-- SFRSTATUS -->
+        <name>SFRSTATUS</name>
+        <description>SFR Status Register</description>
+        <addressOffset>0x70</addressOffset>
+        <fields>
+          <!--  FIELD 1 Address-->
+          <field>
+            <name>NACK</name>
+            <description>NACK status for SAR Digital SFR communication</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

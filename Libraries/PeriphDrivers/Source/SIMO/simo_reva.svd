@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+ <peripheral>
+  <name>SIMO</name>
+  <description>Single Inductor Multiple Output Switching Converter</description>
+  <baseAddress>0x40004400</baseAddress>
+  <addressBlock>
+   <offset>0x00</offset>
+   <size>0x400</size>
+   <usage>registers</usage>
+  </addressBlock>
+  <registers>
+   <register>
+    <name>VREGO_A</name>
+    <description>Buck Voltage Regulator A Control Register</description>
+    <addressOffset>0x0004</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+	  <name>VSETA</name>
+	  <description>Regulator Output Voltage Setting</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>7</bitWidth>
+     </field>
+     <field>
+	  <name>RANGEA</name>
+	  <description>Regulator Output Range Set</description>
+	  <bitOffset>7</bitOffset>
+	  <bitWidth>1</bitWidth>
+	  <enumeratedValues>
+	   <enumeratedValue>
+	    <name>low</name>
+	    <description>Low output voltage range</description>
+	    <value>0</value>
+	   </enumeratedValue>
+	   <enumeratedValue>
+	    <name>high</name>
+	    <description>High output voltage range</description>
+	    <value>1</value>
+	   </enumeratedValue>
+	  </enumeratedValues>
+	 </field>
+    </fields>
+   </register>
+   <register>
+	<name>VREGO_B</name>
+	<description>Buck Voltage Regulator B Control Register</description>
+	<addressOffset>0x0008</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>VSETB</name>
+	  <description>Regulator Output Voltage Setting</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>7</bitWidth>
+	 </field>
+	 <field>
+	  <name>RANGEB</name>
+	  <description>Regulator Output Range Set</description>
+	  <bitOffset>7</bitOffset>
+	  <bitWidth>1</bitWidth>
+	  <enumeratedValues>
+	   <enumeratedValue>
+	    <name>low</name>
+		<description>Low output voltage range</description>
+		<value>0</value>
+	   </enumeratedValue>
+	   <enumeratedValue>
+		<name>high</name>
+		<description>High output voltage range</description>
+		<value>1</value>
+	   </enumeratedValue>
+	  </enumeratedValues>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>VREGO_C</name>
+	<description>Buck Voltage Regulator C Control Register</description>
+	<addressOffset>0x000C</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>VSETC</name>
+	  <description>Regulator Output Voltage Setting</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>7</bitWidth>
+	 </field>
+	 <field>
+	  <name>RANGEC</name>
+	  <description>Regulator Output Range Set</description>
+	  <bitOffset>7</bitOffset>
+	  <bitWidth>1</bitWidth>
+	  <enumeratedValues>
+	   <enumeratedValue>
+		<name>low</name>
+		<description>Low output voltage range</description>
+		<value>0</value>
+	   </enumeratedValue>
+	   <enumeratedValue>
+		<name>high</name>
+		<description>High output voltage range</description>
+		<value>1</value>
+	   </enumeratedValue>
+	  </enumeratedValues>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>VREGO_D</name>
+	<description>Buck Voltage Regulator D Control Register</description>
+	<addressOffset>0x0010</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>VSETD</name>
+	  <description>Regulator Output Voltage Setting</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>7</bitWidth>
+	 </field>
+	 <field>
+	  <name>RANGED</name>
+	  <description>Regulator Output Range Set</description>
+	  <bitOffset>7</bitOffset>
+	  <bitWidth>1</bitWidth>
+	  <enumeratedValues>
+	   <enumeratedValue>
+		<name>low</name>
+		<description>Low output voltage range</description>
+		<value>0</value>
+	   </enumeratedValue>
+	   <enumeratedValue>
+		<name>high</name>
+		<description>High output voltage range</description>
+		<value>1</value>
+	   </enumeratedValue>
+	  </enumeratedValues>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>IPKA</name>
+	<description>High Side FET Peak Current VREGO_A/VREGO_B Register</description>
+	<addressOffset>0x0014</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>IPKSETA</name>
+	  <description>Voltage Regulator Peak Current Setting</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	 <field>
+	  <name>IPKSETB</name>
+	  <description>Voltage Regulator Peak Current Setting</description>
+	  <bitOffset>4</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>				
+   </register>
+   <register>
+	<name>IPKB</name>
+	<description>High Side FET Peak Current VREGO_C/VREGO_D Register</description>
+	<addressOffset>0x0018</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>IPKSETC</name>
+	  <description>Voltage Regulator Peak Current Setting</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	 <field>
+	  <name>IPKSETD</name>
+	  <description>Voltage Regulator Peak Current Setting</description>
+	  <bitOffset>4</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>				
+   </register>
+   <register>
+	<name>MAXTON</name>
+	<description>Maximum High Side FET Time On Register</description>
+	<addressOffset>0x001C</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>TONSET</name>
+	  <description>Sets the maximum on time for the high side FET, each increment represents 500ns</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ILOAD_A</name>
+	<description>Buck Cycle Count VREGO_A Register</description>
+	<addressOffset>0x0020</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ILOADA</name>
+	  <description>Number of buck cycles that occur within the cycle clock</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ILOAD_B</name>
+	<description>Buck Cycle Count VREGO_B Register</description>
+	<addressOffset>0x0024</addressOffset>
+	<access>read-only</access>
+ 	<fields>
+	 <field>
+	  <name>ILOADB</name>
+	  <description>Number of buck cycles that occur within the cycle clock</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ILOAD_C</name>
+	<description>Buck Cycle Count VREGO_C Register</description>
+	<addressOffset>0x0028</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ILOADC</name>
+	  <description>Number of buck cycles that occur within the cycle clock</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ILOAD_D</name>
+	<description>Buck Cycle Count VREGO_D Register</description>
+	<addressOffset>0x002C</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ILOADD</name>
+	  <description>Number of buck cycles that occur within the cycle clock</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>BUCK_ALERT_THR_A</name>
+	<description>Buck Cycle Count Alert VERGO_A Register</description>
+	<addressOffset>0x0030</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>BUCKTHRA</name>
+	  <description>Threshold for ILOADA to generate the BUCK_ALERT</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>BUCK_ALERT_THR_B</name>
+	<description>Buck Cycle Count Alert VERGO_B Register</description>
+	<addressOffset>0x0034</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>BUCKTHRB</name>
+	  <description>Threshold for ILOADB to generate the BUCK_ALERT</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>BUCK_ALERT_THR_C</name>
+	<description>Buck Cycle Count Alert VERGO_C Register</description>
+	<addressOffset>0x0038</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>BUCKTHRC</name>
+	  <description>Threshold for ILOADC to generate the BUCK_ALERT</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>BUCK_ALERT_THR_D</name>
+	<description>Buck Cycle Count Alert VERGO_D Register</description>
+	<addressOffset>0x003C</addressOffset>
+	<access>read-write</access>
+	<fields>
+	 <field>
+	  <name>BUCKTHRD</name>
+	  <description>Threshold for ILOADD to generate the BUCK_ALERT</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>8</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>BUCK_OUT_READY</name>
+	<description>Buck Regulator Output Ready Register</description>
+	<addressOffset>0x0040</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>BUCKOUTRDYA</name>
+	  <description>When set, indicates that the output voltage has reached its regulated value</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>1</bitWidth>
+	  <enumeratedValues>
+	   <enumeratedValue>
+		<name>notrdy</name>
+		<description>Output voltage not in range</description>
+		<value>0</value>
+	   </enumeratedValue>
+	   <enumeratedValue>
+		<name>rdy</name>
+		<description>Output voltage in range</description>
+		<value>1</value>
+	   </enumeratedValue>
+	  </enumeratedValues>
+	 </field>
+	 <field derivedFrom="BUCKOUTRDYA">
+	  <name>BUCKOUTRDYB</name>
+	  <description>When set, indicates that the output voltage has reached its regulated value</description>
+	  <bitOffset>1</bitOffset>
+	  <bitWidth>1</bitWidth>
+	 </field>
+	 <field derivedFrom="BUCKOUTRDYA">
+	  <name>BUCKOUTRDYC</name>
+	  <description>When set, indicates that the output voltage has reached its regulated value</description>
+	  <bitOffset>2</bitOffset>
+	  <bitWidth>1</bitWidth>
+	 </field>
+	 <field derivedFrom="BUCKOUTRDYA">
+	  <name>BUCKOUTRDYD</name>
+	  <description>When set, indicates that the output voltage has reached its regulated value</description>
+	  <bitOffset>3</bitOffset>
+	  <bitWidth>1</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ZERO_CROSS_CAL_A</name>
+	<description>Zero Cross Calibration VERGO_A Register</description>
+	<addressOffset>0x0044</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ZXCALA</name>
+	  <description>Zero Cross Calibrartion Value VREGO_A</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ZERO_CROSS_CAL_B</name>
+	<description>Zero Cross Calibration VERGO_B Register</description>
+	<addressOffset>0x0048</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ZXCALB</name>
+	  <description>Zero Cross Calibrartion Value VREGO_B</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ZERO_CROSS_CAL_C</name>
+	<description>Zero Cross Calibration VERGO_C Register</description>
+	<addressOffset>0x004C</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ZXCALC</name>
+	  <description>Zero Cross Calibrartion Value VREGO_C</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>
+   </register>
+   <register>
+	<name>ZERO_CROSS_CAL_D</name>
+	<description>Zero Cross Calibration VERGO_D Register</description>
+	<addressOffset>0x0050</addressOffset>
+	<access>read-only</access>
+	<fields>
+	 <field>
+	  <name>ZXCALD</name>
+	  <description>Zero Cross Calibrartion Value VREGO_D</description>
+	  <bitOffset>0</bitOffset>
+	  <bitWidth>4</bitWidth>
+	 </field>
+	</fields>
+   </register>
+  </registers>
+ </peripheral>
+<!-- SIMO: SIMO Registers-->
+</device>

@@ -1,0 +1,37 @@
+[submodule "Libraries/MAXUSB"]
+	path = Libraries/MAXUSB
+	url = git@github.com:Analog-Devices-MSDK/Libraries-maxusb.git
+[submodule "Libraries/SDHC"]
+	path = Libraries/SDHC
+	url = git@github.com:Analog-Devices-MSDK/Libraries-sdhc.git
+[submodule "Libraries/FreeRTOS-Plus"]
+	path = Libraries/FreeRTOS-Plus
+	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
+[submodule "Libraries/FreeRTOS"]
+	path = Libraries/FreeRTOS
+	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS.git
+[submodule "Libraries/lwIP"]
+	path = Libraries/lwIP
+	url = git@github.com:Analog-Devices-MSDK/Libraries-lwIP.git
+[submodule "msdk-internal"]
+	path = msdk-internal
+	url = git@github.com:Analog-Devices-MSDK/msdk-internal.git
+	branch = master
+[submodule "Libraries/FCL"]
+	path = Libraries/FCL
+	url = git@github.com:Analog-Devices-MSDK/Libraries-fcl.git
+[submodule "Libraries/Cordio"]
+	path = Libraries/Cordio
+	url = ssh://gerrit.maxim-ic.com:29418/cordio-open
+	branch = master
+[submodule "Libraries/littlefs"]
+	path = Libraries/littlefs
+	url = git@github.com:Analog-Devices-MSDK/Libraries-littlefs.git
+	branch = master
+[submodule "Libraries/MiscDrivers"]
+	path = Libraries/MiscDrivers
+	url = git@github.com:Analog-Devices-MSDK/Libraries-miscDrivers.git
+[submodule "LC3"]
+	path = Libraries/LC3
+	url = ssh://gerrit.maxim-ic.com:29418/lc3
+	branch = master
