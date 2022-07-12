@@ -69,7 +69,6 @@ volatile uint32_t cnn_time; // Stopwatch
 #define NUM_IN_CHANNLES 48
 #define NUM_OUT_CHANNLES 64
 #define INFER_SIZE 30976      // size of inference 64x88x88/16
-
 #define TFT_BUFF_SIZE   50    // TFT buffer size
 
 uint32_t cnn_out_packed[INFER_SIZE / 4];
@@ -196,7 +195,6 @@ void load_input_serial(void)
                 tmp = tmp | (rxdata[j] << 8 * (3 - j));
             }
 
-#if 1
             //read crc
             crc = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
             crc_result = gen_crc(rxdata, 4);
@@ -208,7 +206,6 @@ void load_input_serial(void)
                 while (1);
             }
 
-#endif
             //fill input buffer
             in_data[i] = tmp;
         }
@@ -523,18 +520,6 @@ uint8_t r, g, b;
     MXC_TFT_WritePixel(col, row, 1, 1, color);
 }
 
-void TFT_test(unsigned char value)
-{
-    for (int r = 0; r < TFT_H; r++) {
-        //value++;
-        for (int c = 0; c < TFT_W; c++) {
-            write_TFT_pixel(r, c, value);
-        }
-
-        //value %= 3;
-    }
-}
-
 void unfold_display_packed(unsigned char* in_buff, unsigned char* out_buff)
 {
     int index = 0;
@@ -619,7 +604,6 @@ int main(void)
 #ifdef USE_CAMERA
     initialize_camera();
     //run_camera();
-
 #else
     printf("Start SerialLoader.py script...\n");
 #endif
@@ -690,16 +674,16 @@ int main(void)
             __WFI();    // Wait for CNN
         }
 
-        /// unload
+        // unload
         //dump_inference();
-        //send_output(); // send CNN output to UART
-
-        //TFT_test(1);
-        //while(1);
 
         printf("Display mask\n");
         cnn_unload_packed(cnn_out_packed);
         unfold_display_packed((unsigned char*)cnn_out_packed, cnn_out_unfolded);
+        
+#ifndef USE_CAMERA
+        send_output(); // send CNN output to UART
+#endif
         MXC_Delay(SEC(1));
 
 #ifdef USE_CAMERA
