@@ -83,6 +83,25 @@ typedef enum{
 /* Defined in boot_lower.S */
 extern void Boot_Lower(void);
 
+void ledSuccessPattern(void)
+{
+    /* Green LED blinks */ 
+    volatile int i,j;
+    for(j = 0; j < 10; j++) {
+    LED_Toggle(1);
+    for(i = 0; i < 0xFFFFF; i++) {}
+    }
+}
+void ledFailPattern(void)
+{
+    /* Red LED blinks */
+    volatile int i,j;
+    for(j = 0; j < 10; j++) {
+        LED_Toggle(0);
+        for(i = 0; i < 0xFFFFF; i++) {}
+    }
+}
+
 /* http://home.thep.lu.se/~bjorn/crc/ */
 /*************************************************************************************************/
 /*!
@@ -124,12 +143,7 @@ void crc32(const void *data, size_t n_bytes, uint32_t* crc)
 void bootError(void)
 {
     /* Flash the failure LED */
-    int j;
-    volatile int i;
-    for(j = 0; j < 10; j++) {
-        LED_Toggle(0);
-        for(i = 0; i < 0xFFFFF; i++) {}
-    }
+    ledFailPattern();
     NVIC_SystemReset();
 }
 
@@ -227,12 +241,12 @@ static int flashWrite(uint32_t* address, uint32_t* data, uint32_t len)
 uint32_t externFileOperation(externFileOp_t fileOperation)
 {
     uint32_t internalFlashStartingAddress = FLASH0_START;
-    uint8_t extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = {0};
+    uint8_t  extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = {0};
     uint32_t startingAddress = 0x00000000 + sizeof(fileHeader_t);
     uint32_t fileLen = fileHeader.fileLen;
     uint32_t crcResult = 0;
     uint32_t err = 0;
-    /* Read blocks from ext flash and calcualte crc */
+    /* Read blocks from ext flash and perform desired fileOperation */
     while(fileLen >= EXT_FLASH_BLOCK_SIZE){
         Ext_Flash_Read(startingAddress, extFlashBlockBuff,EXT_FLASH_BLOCK_SIZE,Ext_Flash_DataLine_Quad);
         if(fileOperation == CALC_CRC32_OP){
@@ -245,7 +259,7 @@ uint32_t externFileOperation(externFileOp_t fileOperation)
         fileLen -= EXT_FLASH_BLOCK_SIZE;
         startingAddress += EXT_FLASH_BLOCK_SIZE;
     }
-    /* read remaining that did not fill a block */
+    /* Read remaining data that did not fill a block */
     if(fileLen){
         Ext_Flash_Read(startingAddress, extFlashBlockBuff,fileLen,Ext_Flash_DataLine_Quad);
         if(fileOperation == CALC_CRC32_OP){
@@ -260,32 +274,7 @@ uint32_t externFileOperation(externFileOp_t fileOperation)
     
     return crcResult;
 }
-void ledSuccessPattern(void)
-{
-    volatile int i,j;
-    for(j = 0; j < 10; j++) {
-    LED_Toggle(0);
-    LED_Toggle(1);
-    for(i = 0; i < 0xFFFFF; i++) {}
-    }
-}
-void ledCRCFailPattern(void)
-{
-    volatile int i,j;
-    for(j = 0; j < 10; j++) {
-        LED_Toggle(1);
-        for(i = 0; i < 0xFFFFF; i++) {}
-    }
-}
-void ledExternMemFailPattern(void)
-{
-    LED_On(1);
-    volatile int i,j;
-    for(j = 0; j < 10; j++) {
-        LED_Toggle(0);
-        for(i = 0; i < 0xFFFFF; i++) {}
-    }
-}
+
 int main(void)
 {
     /* Delay to prevent bricks */
@@ -315,7 +304,7 @@ int main(void)
             crcResult = externFileOperation(CALC_CRC32_OP);
             /* Check the calculated digest against what was received */
             if(fileHeader.fileCRC != crcResult){
-                ledCRCFailPattern();
+                ledFailPattern();
             }
             else{
                 /* Calculate how many pages the new image will occupy, +1 for remainder */
@@ -340,7 +329,7 @@ int main(void)
     }
     else {
         /* external flash init error */
-        ledExternMemFailPattern();
+        ledFailPattern();
         bootError();
     }
 
