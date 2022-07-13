@@ -1,11 +1,11 @@
-# U-Net Hi-Resolution Demo
+# UNet Hi-Resolution Demo
 
 
 
 Description
 -----------
 
-This demo shows a U-Net network with 352x352 input, trained to segment images into four categories and color them as follows:
+This demo shows a UNet network with 352x352 input, trained to segment images into four categories and color them as follows:
 
 - Building: Red
 - Tree: Green

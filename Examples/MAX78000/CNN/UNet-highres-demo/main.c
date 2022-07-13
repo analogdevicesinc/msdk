@@ -603,7 +603,6 @@ int main(void)
 
 #ifdef USE_CAMERA
     initialize_camera();
-    //run_camera();
 #else
     printf("Start SerialLoader.py script...\n");
 #endif

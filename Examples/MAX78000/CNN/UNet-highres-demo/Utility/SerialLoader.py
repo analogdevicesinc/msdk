@@ -17,7 +17,7 @@ else:
     ser = serial.Serial('COM52')
     ser.baudrate = 115200 # Setup the default baudrate
     
-pattern_enable = False #True
+pattern_enable = False # If True, it overwrites the image with a fix pattern (for debugging)
 ser.timeout = 0.001
 output_filename = 'CNNout_sampledata.txt'
 
