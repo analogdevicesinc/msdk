@@ -56,6 +56,9 @@ extern "C" {
  * @{
  */
 
+#define MXC_RTC_MAX_SSEC        (MXC_F_RTC_SSEC_SSEC+1)
+#define MXC_RTC_TRIM_TMR_IRQ    0x0                         //Place holder to prevent build errors, RevA function which uses this will never be called
+
 /* **** Definitions **** */
 /**
  * @brief   Bitmasks for each of the RTC's Frequency.

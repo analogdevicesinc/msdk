@@ -51,7 +51,7 @@ extern "C" {
  * @param irq_callback  Function to be called at IRQ context
  *
  */
-void NVIC_SetVector (IRQn_Type irqn, void (*irq_callback) (void));
+void MXC_NVIC_SetVector (IRQn_Type irqn, void (*irq_callback) (void));
 
 /**
  * @brief Copy NVIC vector table to RAM and set NVIC to RAM based table.
