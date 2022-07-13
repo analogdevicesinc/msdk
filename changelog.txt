@@ -5,7 +5,7 @@
 -----------------------
 -- ARM CMSIS Library --
 -----------------------
-* Updated to version 5.9.0
+* Updated to version 5.9.0.
 * Relocated CMSIS library files to Libraries/CMSIS/5.9.0 directory.
 
 --------------------------------
