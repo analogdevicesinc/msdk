@@ -57,15 +57,19 @@
 #include "wdxs/wdxs_stream.h"
 #include "wdxs_file.h"
 #include "board.h"
-
+#include "flc.h"
+#include "wsf_cs.h"
+#include "Ext_Flash.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
+extern uint32_t _flash_update;
+extern uint32_t _eflash_update;
 #if (BT_VER > 8)
 
 /* PHY Test Modes */
-#define DATS_PHY_1M                       1
 #define DATS_PHY_2M                       2
+#define DATS_PHY_1M                       1
 #define DATS_PHY_CODED                    3
 
 #endif /* BT_VER */
@@ -340,18 +344,18 @@ static void trimStart(void)
  *  \return ATT status.
  */
 /*************************************************************************************************/
+
 uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
                          uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-    /* print received data */
-    APP_TRACE_INFO0((const char*) pValue);
-
-    /* send back some data */
-    datsSendData(connId);
-
+    if(len == sizeof(fileHeader_t))
+    {
+        fileHeader_t *tmpHeader;
+        tmpHeader = (fileHeader_t*)pValue;
+        initHeader(tmpHeader);
+    }
     return ATT_SUCCESS;
 }
-
 /*************************************************************************************************/
 /*!
 *
@@ -873,6 +877,7 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void WdxsResetSystem(void)
 {
+    APP_TRACE_INFO0("Reseting!");
     /* Wait for the console to finish printing */
     volatile int i;
     for(i = 0; i < 0xFFFFF; i++) {}
