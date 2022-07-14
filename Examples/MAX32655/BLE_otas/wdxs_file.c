@@ -52,8 +52,6 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
-extern uint32_t _flash_update;
-extern uint32_t _eflash_update;
 
 static fileHeader_t fileHeader = { .fileCRC = 0,
                                  .fileLen = 0};
