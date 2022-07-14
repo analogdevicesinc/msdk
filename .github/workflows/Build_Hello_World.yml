@@ -33,14 +33,10 @@ jobs:
           SUBDIRS=$(find . -type d -name "Hello_World")
           for dir in ${SUBDIRS}
           do
-              echo "---------------------------------------"
-              echo " Validation build for ${dir}"
-              echo "---------------------------------------"
-              set WORKING_DIR $PWD
-              cd ${dir}
-              make clean
-              make libclean
-              make -j8
-              cd $WORKING_DIR
+            echo "---------------------------------------"
+            echo " Validation build for ${dir}"
+            echo "---------------------------------------"
+            make -C ${dir} clean
+            make -C ${dir} libclean
+            make -C ${dir} -j8
           done
-          cd ..
