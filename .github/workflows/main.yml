@@ -31,6 +31,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
+          echo $PATH
           cd Examples/MAX32665/Hello_World
           make clean
           make libclean
