@@ -7,7 +7,7 @@ segmentation mask
 
 ## Example Usage
 
-Load and run U-Net Hi-Resolution demo on MAX78000 EVKIT or Feather board. Next, run the host application to send the image:
+Load and run UNet Hi-Resolution demo on MAX78000 EVKIT or Feather board. Next, run the host application to send the image:
 
 ```
 $ python SerialLoader.py image1.png COM52 115200

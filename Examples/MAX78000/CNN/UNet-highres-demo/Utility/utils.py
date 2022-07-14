@@ -228,9 +228,4 @@ def send_image_receive_output(ser, folded_image, output_filename):
             f.write('\n')        
 
     print('Output saved.')
-                
 
-
-
-
-    
