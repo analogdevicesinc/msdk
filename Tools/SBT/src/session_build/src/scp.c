@@ -56,6 +56,9 @@
 #include "scp.h"
 #include "maxim_c_utils.h"
 
+#ifndef MAX_ARG_LEN
+#define MAX_ARG_LEN			4096
+#endif
 
 u8 response[UCL_AES_BLOCKSIZE];
 
@@ -1050,8 +1053,9 @@ int parse_scp_script(const char * filename, script_cmd_list_t ** script, size_t 
 		regex_t regex;
 		regmatch_t rm[10];
 		int result;
-		char name[100];
-		char param[3][100];
+		char name[MAX_ARG_LEN];
+		char param[3][MAX_ARG_LEN];
+		size_t memcpyLen;
 
 		size_t nb_params = 0;
 
@@ -1066,22 +1070,42 @@ int parse_scp_script(const char * filename, script_cmd_list_t ** script, size_t 
 
 		result = regexec(&regex, line, 10, rm, 0);
 		if (!result) {
-			memcpy(name, &(line[rm[1].rm_so]), rm[1].rm_eo - rm[1].rm_so);
+			memcpyLen = rm[1].rm_eo - rm[1].rm_so;
+			if(memcpyLen > MAX_ARG_LEN) {
+				print_error("Argument length overflow, max length is %d", MAX_ARG_LEN);
+				return ERR_MEMORY_ERROR;
+			}
+			memcpy(name, &(line[rm[1].rm_so]), memcpyLen);
 			name[rm[1].rm_eo - rm[1].rm_so] = '\0';
 			if(rm[3].rm_eo != -1){
-				memcpy(param[0], &(line[rm[3].rm_so]), rm[3].rm_eo - rm[3].rm_so);
+				memcpyLen = rm[3].rm_eo - rm[3].rm_so;
+				if(memcpyLen > MAX_ARG_LEN) {
+					print_error("Argument length overflow, max length is %d", MAX_ARG_LEN);
+					return ERR_MEMORY_ERROR;
+				}
+				memcpy(param[0], &(line[rm[3].rm_so]), memcpyLen);
 				param[0][rm[3].rm_eo - rm[3].rm_so] = '\0';
 				replace_extra_params(param[0]);
 				nb_params++;
 
 				if(rm[5].rm_eo != -1){
-					memcpy(param[1], &(line[rm[5].rm_so]), rm[5].rm_eo - rm[5].rm_so);
+					memcpyLen = rm[5].rm_eo - rm[5].rm_so;
+					if(memcpyLen > MAX_ARG_LEN) {
+						print_error("Argument length overflow, max length is %d", MAX_ARG_LEN);
+						return ERR_MEMORY_ERROR;
+					}
+					memcpy(param[1], &(line[rm[5].rm_so]), memcpyLen);
 					param[1][rm[5].rm_eo - rm[5].rm_so] = '\0';
 					replace_extra_params(param[1]);
 					nb_params++;
 
 					if(rm[7].rm_eo != -1){
-						memcpy(param[2], &(line[rm[7].rm_so]), rm[7].rm_eo - rm[7].rm_so);
+						memcpyLen = rm[7].rm_eo - rm[7].rm_so;
+						if(memcpyLen > MAX_ARG_LEN) {
+							print_error("Argument length overflow, max length is %d", MAX_ARG_LEN);
+							return ERR_MEMORY_ERROR;
+						}
+						memcpy(param[2], &(line[rm[7].rm_so]), memcpyLen);
 						param[2][rm[7].rm_eo - rm[7].rm_so] = '\0';
 						replace_extra_params(param[2]);
 						nb_params++;
