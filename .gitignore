@@ -11,3 +11,5 @@ msdk-internal
 Libraries/PeriphDrivers/bin/MAX32520/softfp/libPeriphDriver_softfp.a
 Tools/GNUTools
 Tools/xPack
+*.o
+*.d

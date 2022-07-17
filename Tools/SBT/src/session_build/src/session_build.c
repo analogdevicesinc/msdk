@@ -66,6 +66,9 @@
 #include "log.h"
 #include "utils.h"
 
+#ifndef MAX_ARG_LEN
+#define MAX_ARG_LEN			4096
+#endif
 
 config_option_t config_option[] = {
 		{"flash_size_mb", OT_INT,  &config_g.flash_mb, 0, 0},
@@ -189,8 +192,9 @@ int load_args (int argc, char **argv, int start_index)
 		regex_t regex;
 		regmatch_t rm[3];
 		int ret;
-		char name[100];
-		char value[100];
+		char name[MAX_ARG_LEN];
+		char value[MAX_ARG_LEN];
+		size_t memcpyLen;
 
 		ret = regcomp(&regex, "^\\s*([0-9a-zA-Z_-]*)=(.*)\\s*", REG_EXTENDED);
 		if (ret) {
@@ -199,9 +203,20 @@ int load_args (int argc, char **argv, int start_index)
 
 		ret = regexec(&regex, argv[k], 3, rm, 0);
 		if (!ret) {
-			memcpy(name, &(argv[k][rm[1].rm_so]), rm[1].rm_eo - rm[1].rm_so);
+			memcpyLen = rm[1].rm_eo - rm[1].rm_so;
+			if(memcpyLen > MAX_ARG_LEN) {
+				print_error("Argument length overflow, max length is %d", MAX_ARG_LEN);
+				return ERR_MEMORY_ERROR;
+			}
+			memcpy(name, &(argv[k][rm[1].rm_so]), memcpyLen);
 			name[rm[1].rm_eo - rm[1].rm_so] = '\0';
-			memcpy(value, &argv[k][rm[2].rm_so], rm[2].rm_eo - rm[2].rm_so);
+
+			memcpyLen = rm[2].rm_eo - rm[2].rm_so;
+			if(memcpyLen > MAX_ARG_LEN) {
+				print_error("Argument length overflow, max length is %d", MAX_ARG_LEN);
+				return ERR_MEMORY_ERROR;
+			}
+			memcpy(value, &argv[k][rm[2].rm_so], memcpyLen);
 			value[rm[2].rm_eo - rm[2].rm_so] = '\0';
 			parse_store_option (name, value);
 		}else {
