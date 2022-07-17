@@ -35,3 +35,74 @@ ownership rights.
 [Final Copyright](https://www.maximintegrated.com/en/aboutus/legal/copyrights/default-copyright.html "Final Copyright")
 
 [Final Software License Agreement](https://www.maximintegrated.com/en/aboutus/legal/sla/no-distribute.html "Final SLA")
+
+## Introduction
+
+The Maxim Microcontrollers SDK (MaximSDK), now a part of Analog Devices, contains tools and resources to develop firmware for the MAX-series of microcontrollers.  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.
+
+In general, the MaximSDK can be broken into two main pieces:  code vs toolchain.  This repository contains the code, while the toolchain has all the programs you need to build that code for the MAX-series microcontrollers.
+
+## Installation
+
+### Automatic Installer
+
+The MaximSDK is available via an automatic installer for the platforms below.  The automatic installer will retrieve the latest _release_ version of this repository.
+
+* [Windows 10](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
+
+* [Ubuntu Linux](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
+
+    * This file must be made executable before it can be run. Use the command `chmod +x MaximMicrosSDK_linux.run`. Alternatively, set “Allow executing as program” in the Ubuntu GUI.
+
+* [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
+
+    * For MacOS the installer is distributed inside of a .dmg disk image file. Double click the downloaded file to mount it. Afterwards, the installer executable will be made available inside the mounted drive.
+
+
+### Completing the Installation on MacOS
+
+On MacOS, some additional missing packages must be manually installed via [Homebrew](https://brew.sh/).
+
+**For non-M1 platforms:**
+
+1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+
+2. Then, open a terminal and run the command...
+
+```shell
+brew install libusb-compat libftdi hidapi libusb
+```
+
+
+**For M1 platforms**:
+
+You must use a Rosetta terminal to install Homebrew:
+
+1. Open a terminal and update Rosetta.
+
+```shell
+softwareupdate --install-rosetta --agree-to-license
+```
+
+2. Close the terminal.
+
+3. Run a new terminal in Rosetta:
+
+    1. Go to Finder > Applications and find your Terminal
+
+    2. Right-Click Terminal and Duplicate it.  Rename it to "Terminal i386".
+
+    3. Rich-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+
+    4. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
+
+4. From your Rosetta terminal follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+
+5. Run the command...
+
+```shell
+brew install libusb-compat libftdi hidapi libusb
+```
+
+
+
