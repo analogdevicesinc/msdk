@@ -26,3 +26,6 @@
 [submodule "Libraries/LC3"]
 	path = Libraries/LC3
 	url = ../Libraries-lc3.git
+[submodule "Libraries/FreeRTOS-Plus"]
+	path = Libraries/FreeRTOS-Plus
+	url = https://github.com/Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
