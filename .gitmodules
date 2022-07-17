@@ -5,9 +5,6 @@
 [submodule "Libraries/SDHC"]
 	path = Libraries/SDHC
 	url = https://github.com/Analog-Devices-MSDK/Libraries-sdhc.git
-[submodule "Libraries/FreeRTOS-plus"]
-	path = Libraries/FreeRTOS-plus
-	url = https://github.com/Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
 [submodule "Libraries/FreeRTOS"]
 	path = Libraries/FreeRTOS
 	url = https://github.com/Analog-Devices-MSDK/Libraries-freeRTOS.git
