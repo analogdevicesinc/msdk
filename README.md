@@ -46,7 +46,7 @@ In general, the MaximSDK can be broken into two main pieces:  code vs toolchain.
 
 ### Automatic Installer
 
-The MaximSDK is available via an automatic installer for the platforms below.  The automatic installer will retrieve the latest _release_ version of this repository.
+The MaximSDK is available via an automatic installer for the platforms below.  The automatic installer will retrieve the latest _release_ version of this repository _and_ the latest toolchain for your OS.
 
 * [Windows 10](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
 
@@ -104,5 +104,20 @@ softwareupdate --install-rosetta --agree-to-license
 brew install libusb-compat libftdi hidapi libusb
 ```
 
+### Installing from the Github Repo
 
+To fully clone this repo with all of its submodules, you'll need to set up an SSH key for your Github account.  See the [Github Docs on SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) for instructions.
 
+Once you've set up an SSH key for your account, you can clone this repository with the command:
+
+```shell
+git clone --recurse git@github.com:Analog-Devices-MSDK/msdk.git
+```
+
+This will clone the root repo and all of its submodules.  However, the Github repo does not contain the SDK's toolchain.  The easiest way to obtain the toolchain for your OS is via the [Automatic Installer](#automatic-installer).  At minimum, install the components:
+* GNU RISC-V Embedded GCC
+* GNU Tools for ARM Embedded Processors
+* Open On-Chip Debugger
+* MSYS2 (on Windows only)
+
+Alternatively, the toolchain can be manually installed.  (Manual instructions WIP)
