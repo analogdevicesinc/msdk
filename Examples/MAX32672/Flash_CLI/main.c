@@ -62,6 +62,7 @@
 #include "semphr.h"
 #include "task.h"
 #include "uart.h"
+#include "ecc_regs.h"
 
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
@@ -256,35 +257,45 @@ int flash_verify(uint32_t address, uint32_t length, uint32_t* data)
 }
 
 //******************************************************************************
-int flash_write(uint32_t startaddr, uint32_t length, uint32_t* data)
+int flash_write(uint32_t startaddr, uint32_t length, uint32_t* data) 
 {
-    int i = 0;
+	int i = 0;
 
-    // Check if flash controller is busy
-    if (MXC_FLC0->ctrl & MXC_F_FLC_CTRL_PEND) {
-        return E_BUSY;
+	// Check if flash controller is busy
+	if (MXC_FLC0->ctrl & MXC_F_FLC_CTRL_PEND) {
+		return E_BUSY;
+	}
+
+	if (!check_erased(startaddr, length)) {
+		return E_INVALID;
+	}
+
+    // Ensure size is multiple of 128-bits
+    if (0 != length % 4) {
+		LOGV("Write number of characters which is multiple of 4 : %d \n", length);
+        return E_BAD_PARAM;
     }
 
-    if (!check_erased(startaddr, length)) {
-        return E_INVALID;
+	MXC_ICC_Disable();
+
+    for (uint32_t dest_addr = startaddr; dest_addr < (startaddr + length * 4); dest_addr += 16) {
+        // Write 4 words at a time
+    	int error_status = MXC_FLC_Write128(dest_addr, &(data[i]));
+    	for(int j = 0; j < 4; j++) {
+    		LOGV("Write addr 0x%08X: %c\r\n", dest_addr + 4*(i + j), data[i + j]);
+    	}
+		if (error_status != E_NO_ERROR) {
+			printf("Failure in writing a word : error %i addr: 0x%08x to addr: 0x%08x\n", error_status, dest_addr, dest_addr + 16);
+			return error_status;
+		}
+
+        i += 4;
     }
 
-    MXC_ICC_Disable();
 
-    for (uint32_t testaddr = startaddr; i < length; testaddr += 4) {
-        // Write a word
-        int error_status = MXC_FLC_Write(testaddr, 4, &data[i]);
-        LOGV("Write addr 0x%08X: %c\r\n", testaddr, data[i]);
-        if (error_status != E_NO_ERROR) {
-            printf("Failure in writing a word : error %i addr: 0x%08x\n", error_status, testaddr);
-            return error_status;
-        }
-        i++;
-    }
+	MXC_ICC_Enable();
 
-    MXC_ICC_Enable();
-
-    return flash_verify(startaddr, length, data);
+	return flash_verify(startaddr, length, data);
 }
 
 // *****************************************************************************
@@ -322,13 +333,26 @@ int check_erased(uint32_t startaddr, uint32_t length)
 }
 
 //******************************************************************************
-void flash_init(void)
+void flash_init(void) 
 {
-    // Set flash clock divider to generate a 1MHz clock from the APB clock
-    // APB clock is 54MHz on the real silicon
-    MXC_FLC0->clkdiv = 24;
+	MXC_ECC->en |= MXC_F_ECC_EN_RAM0_1;
+	MXC_ECC->en |= MXC_F_ECC_EN_RAM2;
+	MXC_ECC->en |= MXC_F_ECC_EN_RAM3;
+	MXC_ECC->en |= MXC_F_ECC_EN_ICC0;
+	MXC_ECC->en |= MXC_F_ECC_EN_FL0;
+	MXC_ECC->en |= MXC_F_ECC_EN_FL1;
+
+	// Set flash clock divider to generate a 1MHz clock from the APB clock
+	// APB clock is 54MHz on the real silicon
+	MXC_FLC0->clkdiv = 24;
 
     MXC_FLC_ClearFlags(0x3);
+}
+
+int flash_uninit(void)
+{
+    MXC_FLC_ClearFlags(MXC_F_FLC_INTR_DONE | MXC_F_FLC_INTR_AF);
+    return 0;
 }
 
 //******************************************************************************
@@ -355,30 +379,31 @@ uint32_t calculate_crc(uint32_t* array, uint32_t length)
 }
 
 //******************************************************************************
-int main(void)
+int main(void) 
 {
-    printf("\n\n*************** Flash Control CLI Example ***************\n");
-    printf("\nThis example demonstrates the CLI commands feature of FreeRTOS, various features");
-    printf("\nof the Flash Controller (page erase and write), and how to use the CTB to");
-    printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n\n");
+	printf("\n\n*************** Flash Control CLI Example ***************\n");
+	printf("\nThis example demonstrates the CLI commands feature of FreeRTOS, various features");
+	printf("\nof the Flash Controller (page erase and write), and how to use the CTB to");
+	printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n");
+	printf("\nSince ECC is open by default, to make this example work properly");
+	printf("\nMXC_FLC_Write128 function is used.\n\n");
+	NVIC_SetRAM();
+	// Initialize the Flash
+	flash_init();
 
-    NVIC_SetRAM();
-    // Initialize the Flash
-    flash_init();
+	/* Configure task */
+	if ((xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
+					configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
+				    tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
+		printf("xTaskCreate() failed to create a task.\n");
+	}
+	else {
+		/* Start scheduler */
+		printf("Starting FreeRTOS scheduler.\n");
+		vTaskStartScheduler();
+	}
 
-    /* Configure task */
-    if ((xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
-                     configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                     tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
-        printf("xTaskCreate() failed to create a task.\n");
-    } else {
-        /* Start scheduler */
-        printf("Starting FreeRTOS scheduler.\n");
-        vTaskStartScheduler();
-    }
+	while (1);
 
-    while (1)
-        ;
-
-    return 0;
+	return 0;
 }
