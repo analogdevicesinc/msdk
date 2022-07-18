@@ -95,25 +95,25 @@ int MXC_RTC_Trim(int8_t trm)
 
 int MXC_RTC_GetFlags(void)
 {
-    return MXC_RTC_RevA_GetFlags();
+    return MXC_RTC_RevA_GetFlags((mxc_rtc_reva_regs_t *)MXC_RTC);
 }
 
 int MXC_RTC_ClearFlags(int flags)
 {
-    return MXC_RTC_RevA_ClearFlags(flags);
+    return MXC_RTC_RevA_ClearFlags((mxc_rtc_reva_regs_t*) MXC_RTC, flags);
 }
 
 int MXC_RTC_GetSubSecond(void)
 {
-    return MXC_RTC_RevA_GetSubSecond();
+    return MXC_RTC_RevA_GetSubSecond((mxc_rtc_reva_regs_t*) MXC_RTC);
 }
 
 int MXC_RTC_GetSecond(void)
 {
-    return MXC_RTC_RevA_GetSecond();
+    return MXC_RTC_RevA_GetSecond((mxc_rtc_reva_regs_t*) MXC_RTC);
 }
 
 int MXC_RTC_GetTime(uint32_t* sec, uint32_t* subsec)
 {
-    return MXC_RTC_RevA_GetTime(sec, subsec);
+    return MXC_RTC_RevA_GetTime((mxc_rtc_reva_regs_t*) MXC_RTC, sec, subsec);
 }

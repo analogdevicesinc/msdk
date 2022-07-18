@@ -86,87 +86,83 @@ void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 
 void MXC_LP_RetentionRegEnable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_RETREG_EN;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_RETREG_EN;
 }
 
 void MXC_LP_RetentionRegDisable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_RETREG_EN;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_RETREG_EN;
 }
 
 int  MXC_LP_RetentionRegIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_RETREG_EN);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_RETREG_EN);
 }
 
 void MXC_LP_BandgapOn(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_BGOFF;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_BGOFF;
 }
 
 void MXC_LP_BandgapOff(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_BGOFF;
 }
 
 int MXC_LP_BandgapIsOn(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_BGOFF);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_BGOFF);
 }
 
 void MXC_LP_PORVCOREoreMonitorEnable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS;
 }
 
 void MXC_LP_PORVCOREoreMonitorDisable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS;
 }
 
 int MXC_LP_PORVCOREoreMonitorIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS);
 }
 
 void MXC_LP_LDOEnable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_LDO_DIS;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
 }
 
 void MXC_LP_LDODisable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_LDO_DIS;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
 }
 
 int  MXC_LP_LDOIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LDO_DIS);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_LDO_DIS);
 }
 
 void MXC_LP_FastWakeupEnable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_FASTWK_EN;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_FASTWK_EN;
 }
 
 void MXC_LP_FastWakeupDisable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_FASTWK_EN;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_FASTWK_EN;
 }
 
 int  MXC_LP_FastWakeupIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_FASTWK_EN);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_FASTWK_EN);
 }
 
 void MXC_LP_ClearWakeStatus(void)
 {
     // Write 1 to clear
-    MXC_PWRSEQ->lpwkst0 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkst1 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkst2 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkst3 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lppwst = 0xFFFFFFFF;
+    MXC_PWRSEQ->lppwkfl = 0xFFFFFFFF;
 }
 
 void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)

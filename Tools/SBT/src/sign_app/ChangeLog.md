@@ -169,3 +169,5 @@ Initial version, from crk_sign
 
 - Fix parse Option output message. Only signal when paramter is unknown in debug mode. 
 
+**Date:** July 2022
+- Extended maximum argument length
