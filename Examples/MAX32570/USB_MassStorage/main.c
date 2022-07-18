@@ -283,11 +283,11 @@ static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
     if (sud->wValue == config_descriptor.config_descriptor.bConfigurationValue) {
         configured = 1;
         MXC_SETBIT(&evtFlags, EVENT_ENUM_COMP);
-        return msc_configure(&msc_cfg, config_descriptor.msc_interface_descriptor.bInterfaceNumber);  /* Configure the device class */
+        return msc_configure(&msc_cfg);  /* Configure the device class */
     }
     else if (sud->wValue == 0) {
         configured = 0;
-        return msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        return msc_deconfigure();
     }
     
     return -1;
@@ -335,7 +335,7 @@ static int eventCallback(maxusb_event_t evt, void* data)
         MXC_USB_Disconnect();
         configured = 0;
         enum_clearconfig();
-        msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        msc_deconfigure();
         usbAppSleep();
         break;
         
@@ -351,7 +351,7 @@ static int eventCallback(maxusb_event_t evt, void* data)
     case MAXUSB_EVENT_BRST:
         usbAppWakeup();
         enum_clearconfig();
-        msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        msc_deconfigure();
         configured = 0;
         suspended = 0;
         break;

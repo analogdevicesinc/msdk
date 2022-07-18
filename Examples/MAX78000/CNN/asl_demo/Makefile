@@ -110,9 +110,6 @@ LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
 CMSIS_ROOT := $(LIBS_DIR)/CMSIS
 export CMSIS_ROOT
 # TODO: Remove dependency on export CMSIS_ROOT
-BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
-$(info $(BOARD_DIR))
-PERIPH_DRIVER_DIR := $(LIBS_DIR)/PeriphDrivers
 
 # Select 'GCC' or 'IAR' compiler
 COMPILER ?= GCC
@@ -126,6 +123,13 @@ COMPILER ?= GCC
 
 $(info Added settings from project.mk...)
 include ./project.mk
+
+# One final UC/LC check in case user set TARGET in project.mk
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
+export TARGET
+export TARGET_UC
+export TARGET_LC
 
 # *******************************************************************************
 # Set up search paths, and auto-detect all source code on those paths.
@@ -231,18 +235,19 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # for the target microcontroller.
 
 # Include the BSP
+BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
 include $(BOARD_DIR)/board.mk
 
 # Include the peripheral driver
+PERIPH_DRIVER_DIR := $(LIBS_DIR)/PeriphDrivers
 include $(PERIPH_DRIVER_DIR)/periphdriver.mk
 
 # *******************************************************************************
 # Include the rules for building for this target. All other makefiles should be
 # included before this one.
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
+# include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
-# 	Extend the functionality of the "all" recipe here
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph

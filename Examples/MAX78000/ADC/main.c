@@ -41,7 +41,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <mxc.h>
-#include "config.h"
+#include "example_config.h"
 
 /***** Globals *****/
 #ifdef USE_INTERRUPTS

@@ -90,9 +90,9 @@ COMPILER=GCC
 
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
-LIBS_DIR=../../../Libraries
+LIBS_DIR=../../../../Libraries
 else
-LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
+LIBS_DIR=..//$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
 #LIBS_DIR = ./Libraries
 

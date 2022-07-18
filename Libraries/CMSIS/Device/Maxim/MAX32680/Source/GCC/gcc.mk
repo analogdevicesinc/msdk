@@ -45,6 +45,7 @@ BINS_NOPATH := $(foreach NAME,$(BINS),$(basename $(notdir $(NAME))).bin)
 OBJS_NOPATH := $(SRCS_NOPATH:.c=.o)
 OBJS_NOPATH += $(BINS_NOPATH:.bin=.o)
 OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
+OBJS        += $(PROJ_OBJS)
 
 ################################################################################
 # Goals
@@ -345,6 +346,18 @@ endif
 
 # The rule for linking the application.
 ${BUILD_DIR}/%.elf:
+	@echo -T $(call fixpath,${LINKERFILE})                                 \
+	      --entry ${ENTRY}                                                       \
+	      $(call fixpath,${LDFLAGS})                                             \
+	      -o $(call fixpath,${@})                                                \
+	      $(call fixpath,$(filter %.o, ${^}))                                    \
+	      -Xlinker --start-group                                                 \
+	      $(call fixpath,$(filter %.a, ${^}))                                    \
+	      ${PROJ_LIBS}                                                           \
+	      ${STD_LIBS}                                                            \
+	      -Xlinker --end-group                                                   \
+	      | sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ln_args.txt
+
 	@if [ 'x${VERBOSE}' = x ];                                                   \
 	 then                                                                        \
 	     echo "  LD    ${@} ${LNK_SCP}";                                         \
@@ -359,17 +372,8 @@ ${BUILD_DIR}/%.elf:
 	          ${PROJ_LIBS}                                                       \
 	          ${STD_LIBS}                                                        \
 	          -Xlinker --end-group;                                              \
-	 fi;                                                                         \
-	${LD} -T $(call fixpath,${LINKERFILE})                                       \
-	      --entry ${ENTRY}                                                       \
-	      $(call fixpath,${LDFLAGS})                                             \
-	      -o $(call fixpath,${@})                                                \
-	      $(call fixpath,$(filter %.o, ${^}))                                    \
-	      -Xlinker --start-group                                                 \
-	      $(call fixpath,$(filter %.a, ${^}))                                    \
-	      ${PROJ_LIBS}                                                           \
-	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group
+	 fi
+	@${LD} @${BUILD_DIR}/ln_args.txt
 
 # Create S-Record output file
 %.srec: %.elf

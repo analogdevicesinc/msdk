@@ -49,7 +49,7 @@
 #include "sampledata.h"
 #include "mxc_delay.h"
 #include "camera.h"
-#include "config.h"
+#include "example_config.h"
 
 #define CNN_NUM_OUTPUTS     27     // number of classes
 #define NUM_OUTPUTS CNN_NUM_OUTPUTS
