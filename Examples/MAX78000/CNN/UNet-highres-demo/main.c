@@ -69,7 +69,6 @@ volatile uint32_t cnn_time; // Stopwatch
 #define NUM_IN_CHANNLES 48
 #define NUM_OUT_CHANNLES 64
 #define INFER_SIZE 30976      // size of inference 64x88x88/16
-
 #define TFT_BUFF_SIZE   50    // TFT buffer size
 
 uint32_t cnn_out_packed[INFER_SIZE / 4];
@@ -196,7 +195,6 @@ void load_input_serial(void)
                 tmp = tmp | (rxdata[j] << 8 * (3 - j));
             }
 
-#if 1
             //read crc
             crc = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
             crc_result = gen_crc(rxdata, 4);
@@ -208,7 +206,6 @@ void load_input_serial(void)
                 while (1);
             }
 
-#endif
             //fill input buffer
             in_data[i] = tmp;
         }
@@ -491,8 +488,8 @@ void cnn_unload_packed(uint32_t* p_out)
 
 void write_TFT_pixel(int row, int col, unsigned char value)
 {
-int color;
-uint8_t r, g, b;
+    int color;
+    uint8_t r, g, b;
 
     // Only display mask in TFT limits
     if ((col >= TFT_W) || (row >= TFT_H)) {
@@ -523,18 +520,6 @@ uint8_t r, g, b;
     MXC_TFT_WritePixel(col, row, 1, 1, color);
 }
 
-void TFT_test(unsigned char value)
-{
-    for (int r = 0; r < TFT_H; r++) {
-        //value++;
-        for (int c = 0; c < TFT_W; c++) {
-            write_TFT_pixel(r, c, value);
-        }
-
-        //value %= 3;
-    }
-}
-
 void unfold_display_packed(unsigned char* in_buff, unsigned char* out_buff)
 {
     int index = 0;
@@ -544,7 +529,7 @@ void unfold_display_packed(unsigned char* in_buff, unsigned char* out_buff)
         for (int c = 0; c < 16; c++) {
             int idx = 22 * r + 88 * 22 * c;
 
-            for (int d = 0; d < 22; d ++) {
+            for (int d = 0; d < 22; d++) {
                 out_buff[index + d] = in_buff[idx + d];
             }
 
@@ -581,7 +566,108 @@ void unfold_display_packed(unsigned char* in_buff, unsigned char* out_buff)
             write_TFT_pixel(s1, (15 + 16 * s2), (temp[3] & 0x03) >> 0);
         }
     }
+}
 
+// define mask colors in RGB565
+#define R 0x00F8U
+#define G 0xE007U
+#define B 0x1F00U
+#define N 0x0000U
+uint16_t mask_line[352];
+
+inline uint16_t set_mask_color(unsigned char x)
+{
+    uint16_t color = N;
+
+    color = (x == 1) ? G :
+            (x == 2) ? B :
+            (x == 3) ? R : N;
+    return color;
+}
+
+void unfold_display_packed_fast(unsigned char* in_buff, unsigned char* out_buff)
+{
+    int index = 0;
+    unsigned char temp[4];
+
+    for (int r = 0; r < 88; r++) {
+        for (int c = 0; c < 16; c++) {
+            int idx = 22 * r + 88 * 22 * c;
+
+            for (int d = 0; d < 22; d++) {
+                out_buff[index + d] = in_buff[idx + d];
+            }
+
+            index += 22;
+        }
+    }
+
+    for (int s1 = 0; s1 < 352; s1++) {
+        for (int s2 = 0; s2 < 22; s2++) {
+#ifdef BOARD_FTHR_REVA
+            temp[0] = out_buff[s1 * 88 + s2 + 00];
+            temp[1] = out_buff[s1 * 88 + s2 + 22];
+            temp[2] = out_buff[s1 * 88 + s2 + 44];
+            temp[3] = out_buff[s1 * 88 + s2 + 66];
+
+            // bit manipulations to place each 2 bits into a byte
+            mask_line[0 + 16 * s2] = set_mask_color((temp[0] & 0xc0) >> 6);
+            mask_line[1 + 16 * s2] = set_mask_color((temp[1] & 0xc0) >> 6);
+            mask_line[2 + 16 * s2] = set_mask_color((temp[2] & 0xc0) >> 6);
+            mask_line[3 + 16 * s2] = set_mask_color((temp[3] & 0xc0) >> 6);
+
+            mask_line[4 + 16 * s2] = set_mask_color((temp[0] & 0x30) >> 4);
+            mask_line[5 + 16 * s2] = set_mask_color((temp[1] & 0x30) >> 4);
+            mask_line[6 + 16 * s2] = set_mask_color((temp[2] & 0x30) >> 4);
+            mask_line[7 + 16 * s2] = set_mask_color((temp[3] & 0x30) >> 4);
+
+            mask_line[8 + 16 * s2] = set_mask_color((temp[0] & 0x0c) >> 2);
+            mask_line[9 + 16 * s2] = set_mask_color((temp[1] & 0x0c) >> 2);
+            mask_line[10 + 16 * s2] = set_mask_color((temp[2] & 0x0c) >> 2);
+            mask_line[11 + 16 * s2] = set_mask_color((temp[3] & 0x0c) >> 2);
+
+            mask_line[12 + 16 * s2] = set_mask_color((temp[0] & 0x03) >> 0);
+            mask_line[13 + 16 * s2] = set_mask_color((temp[1] & 0x03) >> 0);
+            mask_line[14 + 16 * s2] = set_mask_color((temp[2] & 0x03) >> 0);
+            mask_line[15 + 16 * s2] = set_mask_color((temp[3] & 0x03) >> 0);
+#endif
+#ifdef BOARD_EVKIT_V1
+            temp[0] = out_buff[s1 * 88 + 21 - s2 + 00];
+            temp[1] = out_buff[s1 * 88 + 21 - s2 + 22];
+            temp[2] = out_buff[s1 * 88 + 21 - s2 + 44];
+            temp[3] = out_buff[s1 * 88 + 21 - s2 + 66];
+
+            // bit manipulations to place each 2 bits into a byte in reverse order
+            mask_line[0 + 16 * s2] = set_mask_color((temp[3] & 0x03) >> 0);
+            mask_line[1 + 16 * s2] = set_mask_color((temp[2] & 0x03) >> 0);
+            mask_line[2 + 16 * s2] = set_mask_color((temp[1] & 0x03) >> 0);
+            mask_line[3 + 16 * s2] = set_mask_color((temp[0] & 0x03) >> 0);
+
+            mask_line[4 + 16 * s2] = set_mask_color((temp[3] & 0x0c) >> 2);
+            mask_line[5 + 16 * s2] = set_mask_color((temp[2] & 0x0c) >> 2);
+            mask_line[6 + 16 * s2] = set_mask_color((temp[1] & 0x0c) >> 2);
+            mask_line[7 + 16 * s2] = set_mask_color((temp[0] & 0x0c) >> 2);
+
+            mask_line[8 + 16 * s2] = set_mask_color((temp[3] & 0x30) >> 4);
+            mask_line[9 + 16 * s2] = set_mask_color((temp[2] & 0x30) >> 4);
+            mask_line[10 + 16 * s2] = set_mask_color((temp[1] & 0x30) >> 4);
+            mask_line[11 + 16 * s2] = set_mask_color((temp[0] & 0x30) >> 4);
+
+            mask_line[12 + 16 * s2] = set_mask_color((temp[3] & 0xc0) >> 6);
+            mask_line[13 + 16 * s2] = set_mask_color((temp[2] & 0xc0) >> 6);
+            mask_line[14 + 16 * s2] = set_mask_color((temp[1] & 0xc0) >> 6);
+            mask_line[15 + 16 * s2] = set_mask_color((temp[0] & 0xc0) >> 6);
+#endif
+        }
+
+        if (s1 < TFT_H) // limit to display height
+#ifdef BOARD_FTHR_REVA
+            MXC_TFT_ShowImageCameraRGB565(0, s1, (uint8_t*)&mask_line[0], TFT_W, 1); // limit to display width
+#endif
+#ifdef BOARD_EVKIT_V1
+            MXC_TFT_ShowImageCameraRGB565(0, s1, (uint8_t*)&mask_line[352 - TFT_W], TFT_W, 1); // limit to display width, offset=(352-TFT_W) due to reverse order
+#endif
+    }
 }
 
 void TFT_Print(char* str, int x, int y, int font, int length)
@@ -619,7 +705,6 @@ int main(void)
 #ifdef USE_CAMERA
     initialize_camera();
     //run_camera();
-
 #else
     printf("Start SerialLoader.py script...\n");
 #endif
@@ -690,16 +775,17 @@ int main(void)
             __WFI();    // Wait for CNN
         }
 
-        /// unload
+        // unload
         //dump_inference();
-        //send_output(); // send CNN output to UART
-
-        //TFT_test(1);
-        //while(1);
 
         printf("Display mask\n");
         cnn_unload_packed(cnn_out_packed);
-        unfold_display_packed((unsigned char*)cnn_out_packed, cnn_out_unfolded);
+        //unfold_display_packed((unsigned char*)cnn_out_packed, cnn_out_unfolded);
+        unfold_display_packed_fast((unsigned char*)cnn_out_packed, cnn_out_unfolded);
+
+#ifndef USE_CAMERA
+        send_output(); // send CNN output to UART
+#endif
         MXC_Delay(SEC(1));
 
 #ifdef USE_CAMERA

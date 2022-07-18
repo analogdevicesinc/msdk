@@ -1,11 +1,11 @@
-# U-Net Hi-Resolution Demo
+# UNet Hi-Resolution Demo
 
 
 
 Description
 -----------
 
-This demo shows a U-Net network with 352x352 input, trained to segment images into four categories and color them as follows:
+This demo shows a UNet network with 352x352 input, trained to segment images into four categories and color them as follows:
 
 - Building: Red
 - Tree: Green
@@ -85,7 +85,13 @@ If using Linux, perform this step:
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
+### Running Demo
 
+If camera mode is selected (#define USE_CAMERA), a captured camera image and calculated mask are both displayed on TFT. 
+
+If the project is built without `#define USE_CAMERA`, offline sample data image is transfered over serial port from PC and calculated mask is sent back to PC. 
+
+Check the [README](Utility/README.md)  in the `Utility` folder for instructions on how to send serial images.
 
 ### References
 

@@ -70,7 +70,7 @@
 #define TFT_W   320
 #define TFT_H   240
 
-//#define PATTERN_GEN
+//#define PATTERN_GEN //  Replaces captured image with internally generated pattern
 
 void process_img(void);
 int initialize_camera(void);
