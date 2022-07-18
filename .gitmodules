@@ -28,4 +28,4 @@
 	url = https://github.com/Analog-Devices-MSDK/Libraries-miscDrivers.git
 [submodule "Libraries/LC3"]
 	path = Libraries/LC3
-	url = ssh://gerrit.maxim-ic.com:29418/lc3
+	url = ../Libraries-lc3.git
