@@ -7,5 +7,7 @@
 # description of the default behavior and the full list of
 # available config variables.
 
-
-
+# This example is only compatible with the FTHR board,
+# so we override the BOARD value to hard-set it.
+override BOARD=FTHR_RevA
+$(warning Warning: This project is forced to compile for the FTHR board only!)

@@ -53,7 +53,7 @@
 #include "keypad.h"
 #include "led.h"
 #include "pb.h"
-#include "config.h"
+#include "example_config.h"
 
 #ifdef BOARD_FTHR_REVA
 
