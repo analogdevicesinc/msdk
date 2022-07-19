@@ -47,7 +47,7 @@
 #include "gpio.h"
 
 /***** Definitions *****/
-#ifdef FTHR_Apps_P1
+#if defined(BOARD_FTHR_APPS_P1)
 	#define MXC_GPIO_PORT_IN                MXC_GPIO0
 	#define MXC_GPIO_PIN_IN                 MXC_GPIO_PIN_2
 

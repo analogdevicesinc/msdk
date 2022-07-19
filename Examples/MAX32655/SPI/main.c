@@ -65,19 +65,18 @@
 #define SPI_SPEED       100000      // Bit Rate
 
 // Board Selection
-#ifdef FTHR_Apps_P1				// Defined in board.h
-#define SPI             MXC_SPI1
-#define SPI_IRQ         SPI1_IRQn
-#define MOSI_PIN        21
-#define MISO_PIN        22
-#define FTHR_Defined    1
-
+#if defined(BOARD_FTHR_APPS_P1)				// Defined in board.h
+    #define SPI             MXC_SPI1
+    #define SPI_IRQ         SPI1_IRQn
+    #define MOSI_PIN        21
+    #define MISO_PIN        22
+    #define FTHR_Defined    1
 #else
-#define SPI             MXC_SPI0
-#define SPI_IRQ         SPI0_IRQn
-#define MOSI_PIN        5
-#define MISO_PIN        6
-#define FTHR_Defined    0
+    #define SPI             MXC_SPI0
+    #define SPI_IRQ         SPI0_IRQn
+    #define MOSI_PIN        5
+    #define MISO_PIN        6
+    #define FTHR_Defined    0
 #endif
 
 /***** Globals *****/
