@@ -1,4 +1,4 @@
-name: Build_Hello_World
+name: Build_Examples
 
 # Controls when the workflow will run
 on:
