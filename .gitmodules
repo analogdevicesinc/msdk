@@ -27,4 +27,4 @@
 	url = git@github.com:Analog-Devices-MSDK/Libraries-lc3.git
 [submodule "Libraries/FreeRTOS-Plus"]
 	path = Libraries/FreeRTOS-Plus
-	url = git@github.com:Analog-Devices-MSDK//Libraries-freeRTOS_plus.git
+	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
