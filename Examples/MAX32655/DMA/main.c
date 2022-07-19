@@ -233,14 +233,9 @@ int main(void)
     
     if (fail == 0) {
         printf("Example Succeeded\n");
-    }
-    else {
+    } else {
         printf("Example Failed\n");
-        
-        while (1);
     }
-    
-    while (1);
     
     return 0;
 }

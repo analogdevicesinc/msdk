@@ -262,8 +262,6 @@ int main() {
 	printf("\nPlayback starting.\n");
 	playback_audio(eor_addr);															// Playback audio recording
 	printf("Playback ended.\n");
-
-	while(1);
-
+	
 	return E_NO_ERROR;
 }

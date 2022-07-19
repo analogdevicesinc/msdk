@@ -94,6 +94,5 @@ int main(void)
 
 			printf("Waking up from SLEEP mode.\n");
     	}
-        
     }
 }
