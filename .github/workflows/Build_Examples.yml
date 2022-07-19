@@ -24,7 +24,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          submodules: recursive 
+          submodules: recursive
+          ssh-key: /home/btm-ci/.ssh/id_rsa
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
