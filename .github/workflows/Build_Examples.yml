@@ -40,7 +40,7 @@ jobs:
           done
           
           # Find all of the examples, exclude the MAX32752, currently in development
-          SUBDIRS=$(find -mindepth 3 . -not -path "./MAX32572*"  -name "?akefile" -printf '%h\n')
+          SUBDIRS=$(find . -mindepth 3 -not -path "./MAX32572*"  -name "?akefile" -printf '%h\n')
 
           # Exclude some examples
           SUBDIRS=${SUBDIRS//"./MAX32570/MAX32570_Demo_BareMetal"/}
