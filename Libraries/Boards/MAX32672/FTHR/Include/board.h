@@ -57,6 +57,8 @@ extern "C" {
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON  0 /// Active state of LEDs
 
+#define FTHR			/// Used in examples to control program flow.
+
 /**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful
