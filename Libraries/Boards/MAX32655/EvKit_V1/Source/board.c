@@ -77,11 +77,11 @@ static void ext_flash_board_init_quad(bool quadEnabled)
     sdio23.port = MXC_GPIO0;
     sdio23.mask = (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
     sdio23.pad  = MXC_GPIO_PAD_NONE;
-    sdio23.vssel = MXC_GPIO_VSSEL_VDDIO;
+    sdio23.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     if(quadEnabled) {
         /* Enable these pins as SPI SDIO2/3*/
-        sdio23.func = MXC_GPIO_FUNC_ALT2;
+        sdio23.func = MXC_GPIO_FUNC_ALT1;
         MXC_GPIO_Config(&sdio23);
 
     } else {
