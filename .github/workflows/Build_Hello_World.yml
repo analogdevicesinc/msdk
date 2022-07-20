@@ -24,11 +24,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          submodules: recursive 
+          submodules: false
 
       # Runs a set of commands using the runners shell
       - name: Build all Hello_World examples
         run: |
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
+
           cd Examples
           SUBDIRS=$(find . -type d -name "Hello_World")
           for dir in ${SUBDIRS}
