@@ -46,6 +46,7 @@
 #include "nvic_table.h"
 #include "dma.h"
 #include "dma_regs.h"
+#include "ecc_regs.h"
 
 /***** Definitions *****/
 
@@ -221,10 +222,18 @@ void example2(void)
     return;
 }
 
+void disableECCforRAM(void) {
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
+	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
+	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
+}
+
 // *****************************************************************************
 int main(void)
 {
     printf("***** DMA Example *****\n");
+
+    disableECCforRAM();
 
     NVIC_EnableIRQ(DMA0_IRQn);
     example1();
