@@ -3,8 +3,8 @@ name: Build_Hello_World
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
+  #push:
+  #  branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -30,7 +30,7 @@ jobs:
       - name: Build all Hello_World examples
         run: |
           cd Examples
-          SUBDIRS=$(find . -type d -name "Hello_World")
+          SUBDIRS=$(find . -type d -name "BLE")
           for dir in ${SUBDIRS}
           do
             echo "---------------------------------------"
@@ -40,3 +40,12 @@ jobs:
             make -C ${dir} libclean
             make -C ${dir} -j8
           done
+          cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
+          chmod +x Examples_tests/local_testLauncher.sh
+          cd Examples_tests/
+          ./local_testLauncher.sh
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+            name: my-artifact
+            path: Examples_tests/results/
