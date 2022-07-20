@@ -40,6 +40,7 @@ jobs:
             make -C ${dir} libclean
             make -C ${dir} -j8
           done
+          cd ../
           cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
           chmod +x Examples_tests/local_testLauncher.sh
           cd Examples_tests/
