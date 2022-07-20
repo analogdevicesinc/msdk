@@ -114,6 +114,8 @@ void printTime() {
 
 // *****************************************************************************
 int configureRTC() {
+	for (i = 0; i < 0xFFFFFF; i++);	// Prevent bricks
+	
 	printf("\n\n***************** RTC Wake from Backup Example *****************\n\n");
 	printf("The time-of-day alarm is set to wake the device every %d seconds.\n", TIME_OF_DAY_SEC);
 	printf("When the alarm goes off it will print the current time to the console.\n\n");

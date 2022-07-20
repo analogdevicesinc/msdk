@@ -173,9 +173,6 @@ int main(void)
         while(1);
     }
     
-    printf("RTC started\n");
-    printTime();
-    
     if(MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
         return E_BUSY;
     }
@@ -213,6 +210,9 @@ int main(void)
         printf("Example Failed\n");
         while(1);
     }
+
+    printf("RTC started\n");
+    printTime();
     
     while (1) {
         if (buttonPressed) {

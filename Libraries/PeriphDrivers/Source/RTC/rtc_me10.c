@@ -69,7 +69,7 @@ int MXC_RTC_Init (uint32_t sec, uint8_t ssec)
     MXC_SYS_RTCClockEnable();
     MXC_SYS_Reset_Periph(MXC_SYS_RESET_RTC);
 
-    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
 // *****************************************************************************

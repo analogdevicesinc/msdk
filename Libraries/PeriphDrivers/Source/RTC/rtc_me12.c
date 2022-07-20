@@ -76,12 +76,12 @@ int MXC_RTC_Stop(void)
     return MXC_RTC_RevA_Stop((mxc_rtc_reva_regs_t*) MXC_RTC);
 }
 
-int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
+int MXC_RTC_Init(uint32_t sec, uint16_t ssec)
 {
 	MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_PD;
 	MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
     
-    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
 int MXC_RTC_SquareWave(mxc_rtc_reva_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
