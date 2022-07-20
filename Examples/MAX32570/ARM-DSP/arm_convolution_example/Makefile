@@ -93,7 +93,7 @@ COMPILER=GCC
 ifeq "$(MAXIM_PATH)" ""
 LIBS_DIR=../../../../Libraries
 else
-LIBS_DIR=$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
+LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
 #LIBS_DIR = ./Libraries
 
