@@ -237,7 +237,7 @@ int MXC_UART_SetStopBits(mxc_uart_regs_t* uart, mxc_uart_stop_t stopBits);
  * @brief   Sets the type of parity generation used
  * 
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * @param   parity       see \ref UART Parity Types for details
+ * @param   parity       see UART Parity Types for details
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -247,7 +247,7 @@ int MXC_UART_SetParity(mxc_uart_regs_t* uart, mxc_uart_parity_t parity);
  * @brief   Sets the flow control used
  * 
  * @param   uart            Pointer to UART registers (selects the UART block used.)
- * @param   flowCtrl        see \ref UART Flow Control Types for details
+ * @param   flowCtrl        see UART Flow Control Types for details
  * @param   rtsThreshold    Number of bytes remaining in the RX FIFO when RTS is asserted
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
@@ -373,7 +373,7 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes,
  * @param   len          The number of bytes to read.
  * @param   callback     The function to call when the read is complete
  *
- * @return  See \ref MXC_ERROR_CODES for a list of return values
+ * @return  See \ref MXC_Error_Codes for a list of return values
  */
 int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes,
                             unsigned int len, mxc_uart_dma_complete_cb_t callback);
@@ -407,7 +407,7 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* by
  * @param   len          The number of bytes to write.
  * @param   callback     The function to call when the write is complete
  *
- * @return  See \ref MXC_ERROR_CODES for a list of return values
+ * @return  See \ref MXC_Error_Codes for a list of return values
  */
 int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes,
                                 unsigned int len, mxc_uart_dma_complete_cb_t callback);
@@ -658,7 +658,7 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t* uart);
 /**
  * @brief   Provide TXCount for asynchronous transactions..
  *
- * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   req     Pointer to UART request structure.
  * 
  * @return  Returns transmit bytes (in FIFO).
  */
@@ -667,7 +667,7 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t* req);
 /**
  * @brief   Provide RXCount for asynchronous transactions..
  *
- * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   req     Pointer to UART request structure.
  * 
  * @return  Returns receive bytes (in FIFO).
  */
