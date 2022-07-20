@@ -70,39 +70,45 @@ const mxc_gpio_cfg_t led_pin[] = {
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
-static int ext_flash_board_init_quad(bool quadEnabled)
+static void ext_flash_board_init_quad(bool quadEnabled)
 {
-    int err = E_NO_ERROR;
-    mxc_spi_pins_t qspi_flash_pins;
+    mxc_gpio_cfg_t sdio23;
 
-    qspi_flash_pins.clock   = true;
-    qspi_flash_pins.ss0     = true;
-    qspi_flash_pins.ss1     = false;
-    qspi_flash_pins.ss2     = false;
-    qspi_flash_pins.miso    = true;
-    qspi_flash_pins.mosi    = true;
-    qspi_flash_pins.vddioh  = true;
+    sdio23.port = MXC_GPIO0;
+    sdio23.mask = (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
+    sdio23.pad  = MXC_GPIO_PAD_NONE;
+    sdio23.vssel = MXC_GPIO_VSSEL_VDDIO;
 
     if(quadEnabled) {
-        qspi_flash_pins.sdio2 = true;
-        qspi_flash_pins.sdio3 = true;
+        /* Enable these pins as SPI SDIO2/3*/
+        sdio23.func = MXC_GPIO_FUNC_ALT2;
+        MXC_GPIO_Config(&sdio23);
+
     } else {
-        qspi_flash_pins.sdio2 = false;
-        qspi_flash_pins.sdio3 = false;
 
         /* Control these pins as GPIO and set high when not using quad mode.
          * The W25 used on this board multiplexes the HOLD and WP functions on these
          * pins when not using quad mode
          */
-        mxc_gpio_cfg_t sdio23;
-        sdio23.port = MXC_GPIO0;
-        sdio23.mask = (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
         sdio23.func = MXC_GPIO_FUNC_OUT;
-        sdio23.pad  = MXC_GPIO_PAD_NONE;
-        sdio23.vssel = MXC_GPIO_VSSEL_VDDIO;
         MXC_GPIO_Config(&sdio23);
         MXC_GPIO_OutSet(sdio23.port, sdio23.mask);
     }
+}
+
+/******************************************************************************/
+static int ext_flash_board_init(void)
+{
+    mxc_spi_pins_t qspi_flash_pins;
+    int err = E_NO_ERROR;
+
+    qspi_flash_pins.clock   = true;
+    qspi_flash_pins.ss0     = true;
+    qspi_flash_pins.ss1     = true;
+    qspi_flash_pins.ss2     = true;
+    qspi_flash_pins.miso    = true;
+    qspi_flash_pins.mosi    = true;
+    qspi_flash_pins.vddioh  = true;
 
     err = MXC_SPI_Init(MXC_SPI0, 1, 1, 1, 0, EXT_FLASH_BAUD, qspi_flash_pins);
     if(err != E_NO_ERROR) {
@@ -112,14 +118,10 @@ static int ext_flash_board_init_quad(bool quadEnabled)
     MXC_SPI_SetDataSize(MXC_SPI0, 8);
     MXC_SPI_SetMode(MXC_SPI0, SPI_MODE_0);
 
-    return err;
-}
-
-/******************************************************************************/
-static int ext_flash_board_init(void)
-{
     /* Leave the quad pins disabled, enable for quad transactions. */
-    return ext_flash_board_init_quad(false);
+    ext_flash_board_init_quad(false);
+
+    return err;
 }
 
 /******************************************************************************/
@@ -138,10 +140,7 @@ static int ext_flash_board_read(uint8_t* read, unsigned len, unsigned deassert, 
             break;
         case Ext_Flash_DataLine_Quad:
             spi_width = SPI_WIDTH_QUAD;
-            err = ext_flash_board_init_quad(true);
-            if(err != E_NO_ERROR) {
-                return err;
-            }
+            ext_flash_board_init_quad(true);
             break;
         default:
             return E_BAD_PARAM;
@@ -171,7 +170,7 @@ static int ext_flash_board_read(uint8_t* read, unsigned len, unsigned deassert, 
 
     if(width == Ext_Flash_DataLine_Quad) {
         /* Restore the SPI config to disable quad pins */
-        err = ext_flash_board_init_quad(false);
+        ext_flash_board_init_quad(false);
     }
 
     return err;
@@ -193,10 +192,7 @@ static int ext_flash_board_write(const uint8_t* write, unsigned len, unsigned de
             break;
         case Ext_Flash_DataLine_Quad:
             spi_width = SPI_WIDTH_QUAD;
-            err = ext_flash_board_init_quad(true);
-            if(err != E_NO_ERROR) {
-                return err;
-            }
+            ext_flash_board_init_quad(true);
             break;
         default:
             return E_BAD_PARAM;
@@ -226,7 +222,7 @@ static int ext_flash_board_write(const uint8_t* write, unsigned len, unsigned de
 
     if(width == Ext_Flash_DataLine_Quad) {
         /* Restore the SPI config to disable quad pins */
-        err = ext_flash_board_init_quad(false);
+        ext_flash_board_init_quad(false);
     }
 
     return err;
