@@ -314,9 +314,7 @@ int main(void)
     printf("\n*** Init LCD ***\n");
 
 #ifdef BOARD_EVKIT_V1
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
-                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-    MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+    MXC_TFT_Init();
     MXC_TFT_ClearScreen();
     MXC_TFT_ShowImage(0, 0, image_bitmap_1);
 #endif

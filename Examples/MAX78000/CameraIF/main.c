@@ -279,7 +279,13 @@ int main(void)
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
+#ifdef BOARD_EVKIT_V1
+    MXC_TFT_Init();
+#endif
+
+#ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+#endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.
