@@ -48,10 +48,15 @@
 #include "nvic_table.h"
 #include "i2c_regs.h"
 #include "i2c.h"
+#include "board.h"
 
 /***** Definitions *****/
-#define I2C_MASTER MXC_I2C0 // SCL P0_6; SDA P0_7
-#define I2C_FREQ   100000   // 100kHZ
+#if defined(FTHR)
+	#define I2C_MASTER  MXC_I2C2   	// SCL P0_19; SDA P0_18
+#else
+	#define I2C_MASTER  MXC_I2C0   	// SCL P0_6; SDA P0_7
+#endif
+#define I2C_FREQ    100000    	// 100kHZ
 
 typedef enum { FAILED, PASSED } test_t;
 
@@ -63,9 +68,14 @@ int main()
 {
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
-    printf("\nsame bus as I2C0 (SCL - P0.6, SDA - P0.7). Enable I2C0 pullup resistors");
-    printf("\nby connecting jumpers JP4 and JP5.");
 
+#if defined(FTHR)
+    printf("\nsame bus as I2C2 (SCL - P0.18, SDA - P0.19).\n\n");
+#else
+    printf("\nsame bus as I2C0 (SCL - P0.6, SDA - P0.7). Enable I2C0 pullup resistors");
+    printf("\nby connecting jumpers JP4 and JP5.\n\n");
+#endif
+    
     int error;
 
     //Setup the I2CM
