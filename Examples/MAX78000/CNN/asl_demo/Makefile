@@ -245,7 +245,7 @@ include $(PERIPH_DRIVER_DIR)/periphdriver.mk
 # *******************************************************************************
 # Include the rules for building for this target. All other makefiles should be
 # included before this one.
-# include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
+include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
 
