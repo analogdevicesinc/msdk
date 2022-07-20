@@ -484,7 +484,7 @@ int MXC_CAN_RevA_ObjectConfigure(mxc_can_reva_regs_t* can, mxc_can_obj_cfg_t cfg
             MXC_CAN_PowerControl(MXC_CAN_GET_IDX((mxc_can_regs_t*) can), MXC_CAN_PWR_CTRL_FULL);
             can->mode |= MXC_F_CAN_REVA_MODE_RST;
             can->mode |= MXC_F_CAN_REVA_MODE_DMA;
-            can->fdctrl |= MXC_F_CAN_REVA_FDCTRL_FDEN | MXC_F_CAN_REVA_FDCTRL_BRSEN | MXC_F_CAN_REVA_FDCTRL_EXTBT | MXC_F_CAN_REVA_FDCTRL_ISO;
+            can->fdctrl |= MXC_F_CAN_REVA_FDCTRL_EXTBT;
             can->mode &= ~MXC_F_CAN_REVA_MODE_RST;
             break;
         case MXC_CAN_OBJ_CFG_RX_RTR_TX_DATA:        // Configure object to auto TX on RTR frames not allowed
@@ -907,7 +907,9 @@ int MXC_CAN_RevA_Handler(mxc_can_reva_regs_t* can, uint8_t* intfl, uint8_t* eint
 int MXC_CAN_RevA_Control(mxc_can_reva_regs_t* can, mxc_can_ctrl_t ctrl, uint32_t ctrl_arg)
 {
     if(ctrl == MXC_CAN_CTRL_SET_FD_MODE) {                  // Set FD Mode
-        return E_NO_ERROR;
+        can->mode |= MXC_F_CAN_REVA_MODE_RST;
+        can->fdctrl |= MXC_F_CAN_REVA_FDCTRL_FDEN | MXC_F_CAN_REVA_FDCTRL_BRSEN | MXC_F_CAN_REVA_FDCTRL_ISO;
+        can->mode &= ~MXC_F_CAN_REVA_MODE_RST;
     }
     else if(ctrl == MXC_CAN_CTRL_ABORT_TX) {                // Abort transmission
         can->cmd = MXC_F_CAN_REVA_CMD_ABORT;
