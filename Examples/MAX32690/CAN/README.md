@@ -1,6 +1,6 @@
 ## Description
 
-This example demonstrates how to perform various CAN transactions, namely, sending a CAN 2.0 message, an RTR message, and/or a CAN FD message, as well as receiving a CAN message (any type). These operations can be enbled and disabled with the macros at the top of main.c. And they can be performed using either blocking, non-blocking or DMA methods (also selectable with the macros defined at top of main.c.)
+This example demonstrates how to perform various CAN transactions, specifically, sending a CAN 2.0 message and/or an RTR message, as well as receiving a CAN message (any type except CAN FD). These operations can be enbled and disabled with the macros at the top of main.c. And they can be performed using either blocking, non-blocking or DMA methods (also selectable with the macros defined at top of main.c.)
 
 Connect CAN signals on header JH8 to CAN bus.
 
@@ -17,12 +17,12 @@ Connect CAN signals on header JH8 to CAN bus.
 The Console UART of the device will output these messages:
 
 ```
-************************** CAN Example *********************************
+*********************** CAN Example ******************************
 This example demonstrates how to perform various CAN transactions,
-namely, sending a CAN 2.0 message, an RTR message, and/or a CAN FD message,
-as well as receiving a CAN message (any type). These operations can be
-performed with either blocking, non-blocking or DMA methods (selectable
-with the macros defined above.)
+specifically, sending a CAN 2.0 message and/or an RTR message, as
+well as receiving a CAN message (any type except CAN FD). These
+operations can be performed with either blocking, non-blocking or
+DMA methods (selectable with the macros defined above.)
 
 Connect CAN signals on header JH8 to CAN bus.
 
@@ -32,19 +32,17 @@ Sending standard CAN message...
 Message sent!
 Sending RTR message...
 Message sent!
-Sending CAN FD message...
-Message sent!
 
 Ready to receive message.
 Message received!
-MSG ID: 29-bit ID - 0x255
+MSG ID: 29-bit ID - 0x1aa
 RTR: 0
 FDF: 0
 BRS: 0
 ESI: 0
 DLC: 8
 Data Received:
-11 22 33 44 55 66 77 88
+1 3 5 7 9 2 4 6
 
 Example complete.
 ```
