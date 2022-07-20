@@ -88,6 +88,10 @@
 #error "You must select either USE_BUTTON or USE_ALARM, not both."
 #endif
 
+#if (USE_BUTTON && DISABLE_GPIO)
+#error "GPIOs must remain enabled if  the push button is used as the wakeup source."
+#endif
+
 #if (DO_BACKUP && DO_POWERDOWN)
 #error "You must select either DO_BACKUP or DO_POWERDOWN or neither, not both."
 #endif
