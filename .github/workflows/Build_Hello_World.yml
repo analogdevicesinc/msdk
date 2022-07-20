@@ -10,11 +10,7 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-# allow only a single workflow to run at any given time
-# second instance of a workflow will wait on the frist to finish
-# third instance cancels the second instance and waits on the frist to finish
-concurrency:
-  group: msdk_testing
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -34,7 +30,7 @@ jobs:
       - name: Build all Hello_World examples
         run: |
           cd Examples
-          SUBDIRS=$(find . -type d -name "BLE")
+          SUBDIRS=$(find . -type d -name "Hello_World")
           for dir in ${SUBDIRS}
           do
             echo "---------------------------------------"
@@ -44,13 +40,4 @@ jobs:
             make -C ${dir} libclean
             make -C ${dir} -j8
           done
-          cd ../
-          cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
-          chmod +x Examples_tests/local_testLauncher.sh
-          cd Examples_tests/
-          ./local_testLauncher.sh
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-            name: my-artifact
-            path: Examples_tests/results/
+         
