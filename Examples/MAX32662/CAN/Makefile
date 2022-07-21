@@ -107,7 +107,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Set MXC_OPTIMIZE to override the default optimization level 
-MXC_OPTIMIZE_CFLAGS=-O0
+#MXC_OPTIMIZE_CFLAGS=-O0
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld

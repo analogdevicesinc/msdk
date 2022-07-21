@@ -107,37 +107,37 @@ void mxc_assert(const char* expr, const char* file, int line)
 /******************************************************************************/
 int Board_Init(void)
 {
-    // int err;
-    // Ext_Flash_Config_t exf_cfg = {
-    //                         .init = ext_flash_board_init,
-    //                         .read = ext_flash_board_read,
-    //                         .write = ext_flash_board_write,
-    //                         .clock = ext_flash_clock
-    //                      };
+    int err;
+    Ext_Flash_Config_t exf_cfg = {
+                            .init = ext_flash_board_init,
+                            .read = ext_flash_board_read,
+                            .write = ext_flash_board_write,
+                            .clock = ext_flash_clock
+                         };
 
-    // // Enable GPIO
-    // MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
-    // MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
-    // MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
-    // MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO3);
+    // Enable GPIO
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO3);
 
-    // if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
-    //     return err;
-    // }
+    if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
+        return err;
+    }
 
-    // if ((err = Console_Init()) < E_NO_ERROR) {
-    //     return err;
-    // }
+    if ((err = Console_Init()) < E_NO_ERROR) {
+        return err;
+    }
 
-    // if ((err = PB_Init()) != E_NO_ERROR) {
-    //     MXC_ASSERT_FAIL();
-    //     return err;
-    // }
+    if ((err = PB_Init()) != E_NO_ERROR) {
+        MXC_ASSERT_FAIL();
+        return err;
+    }
 
-    // if ((err = LED_Init()) != E_NO_ERROR) {
-    //     MXC_ASSERT_FAIL();
-    //     return err;
-    // }
+    if ((err = LED_Init()) != E_NO_ERROR) {
+        MXC_ASSERT_FAIL();
+        return err;
+    }
 
     return E_NO_ERROR;
 }
