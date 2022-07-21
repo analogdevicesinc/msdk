@@ -35,6 +35,7 @@
 
 #include "MAX32xxx.h"
 #include "message.h"
+#include "tsc2046.h"
 
 #include <FreeRTOS.h>
 #include <task.h>

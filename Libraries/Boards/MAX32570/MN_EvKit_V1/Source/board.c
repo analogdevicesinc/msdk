@@ -48,6 +48,8 @@
 #include "i2c.h"
 #include "mxc_sys.h"
 #include "Ext_Flash.h"
+#include "tft_ssd2119.h"
+#include "tsc2046.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -135,6 +137,34 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
+
+    /* Set HW related configureation to TFT display */
+    mxc_tft_spi_config tft_spi_config = {
+        .regs   = MXC_SPI1,
+        .gpio   = {MXC_GPIO0, MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5 | MXC_GPIO_PIN_31, MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+        .freq   = 12000000,
+        .ss_idx = 0,
+    };
+
+    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO1, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t tft_bl_pin = {MXC_GPIO1, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    
+    MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
+
+    /* Set HW related configureation to Touchscreen controller */
+    mxc_ts_spi_config ts_spi_config = {
+        .regs   = MXC_SPI0,
+        .gpio   = {MXC_GPIO0, MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5, MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+        .freq   = 200000,
+        .ss_idx = 0,
+    };
+
+    /* Touch screen controller interrupt signal */
+    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    /* Touch screen controller busy signal */
+    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    /* Initialize Touch Screen controller */
+    MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
 
     return E_NO_ERROR;
 }

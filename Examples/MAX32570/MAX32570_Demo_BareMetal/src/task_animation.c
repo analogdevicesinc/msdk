@@ -42,6 +42,7 @@
 #include "utils.h"
 
 #include "task_logo_animation.h"
+#include "tft_ssd2119.h"
 
 /********************************* 		DEFINES		 *************************/
 #define NB_SPRITE (32)
