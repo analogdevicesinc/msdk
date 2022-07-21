@@ -3,14 +3,14 @@
 Simple Bootloader that reloads the main flash image. Using an external memory device is preferable,
 the update speed is limited by the erase/write time of the internal flash.
 
-A 32 bit CRC value is appended to the end of the update flash image. 
+A 32 bit CRC and legnth value is appended to the beggning of the update flash image. 
 CRC32 is used to verify the integrity of the update image. If a valid update image is identified,
 the main flash section is erased and replaced with the update image. If no valid update image
 is identified, the Bootloader will boot the exiting image in the main flash space.
 
 __0x10000000__: Bootloader  
 __0x10004000__: Main flash space  
-__0x10040000__: Update flash space
+
 
 ## Setup
 

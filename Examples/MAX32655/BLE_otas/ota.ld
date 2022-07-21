@@ -41,7 +41,6 @@ MEMORY {
     BOOT       (rx) : ORIGIN = 0x10000000,          LENGTH = BOOTLOADER_LEN
     FLASH      (rx) : ORIGIN = FLASH_MAIN_ORIGIN,   LENGTH = FLASH_MAIN_LEN
     PAL_NVM_DB (r)  : ORIGIN = PAL_NVM_ORIGIN,      LENGTH = _PAL_NVM_SIZE
-    FLASH_UP   (rx) : ORIGIN = 0x10040000,          LENGTH = FLASH_SECTION_LEN
     SRAM      (rwx) : ORIGIN = 0x20000000,          LENGTH = 0x20000
 }
 
@@ -61,13 +60,6 @@ SECTIONS {
         KEEP(*(.eh_frame*))
         _etext = .;
     } > FLASH
-
-    .flash_update (NOLOAD) :
-    {
-        _flash_update = ALIGN(., 4); 
-        . = . + FLASH_SECTION_LEN;
-        _eflash_update = ALIGN(., 4);
-    } > FLASH_UP
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */

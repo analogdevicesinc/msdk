@@ -128,7 +128,7 @@ attsCccMainCback connId=1 handle=588
 hciCoreTxAclStart len=5
 ```
 
-OTA procedure, initiated by peer.
+Upon reception of `btn 2 s` command
 ```
 WDXS: FTC Write: len=12                                                         
 WDXS: FTC Write: op=1 handle=0                                                  
@@ -147,36 +147,65 @@ WDXS: Task Handler Evt=1
 WDXS: FTC Send                                                                  
 hciCoreTxAclStart len=10                                                        
 WDXS: AttHook handle=581 event=18                                               
-WDXS: Task Handler Evt=1                                                        
-WDXS: FTC Write: len=16                                                         
-WDXS: FTC Write: op=3 handle=1                                                  
-WDXS: FTC PutReq handle=1 offset=0, len=190064                                  
-WDXS: FTC PutReq handle=1 status=0                                              
-WDXS: FTC SendRsp op=4 handle=1 status=0                                        
-hciCoreTxAclStart len=5                                                         
-WDXS: Task Handler Evt=1                                                        
-WDXS: FTC Send                                                                  
-hciCoreTxAclStart len=14                                                        
-WDXS: AttHook handle=581 event=18                                               
-WDXS: Task Handler Evt=1                                                        
-WDXS: FTC SendRsp op=10 handle=1 status=0                                       
-WDXS: Task Handler Evt=1                                                        
-WDXS: FTC Send                                                                  
-hciCoreTxAclStart len=10                                                        
-WDXS: AttHook handle=581 event=18                                               
-WDXS: Task Handler Evt=1                                                        
-WDXS: FTC Write: len=3                                                          
-WDXS: FTC Write: op=7 handle=1                                                  
-WDXS: FTC VerifyReq: handle=1                                                   
-CRC start addr: 0x10300000 Len: 0x0002E66C                                      
-WDXS: FTC SendRsp op=8 handle=1 status=0                                        
-hciCoreTxAclStart len=5                                                         
-WDXS: Task Handler Evt=1                                                        
-WDXS: FTC Send                                                                  
-hciCoreTxAclStart len=11                                                        
-WDXS: AttHook handle=581 event=18                                               
+WDXS: Task Handler Evt=1  
+```
+
+Upon reception of `btn 2 m` command
+```
+WDXS: FTC Write: len=16
+WDXS: FTC Write: op=3 handle=1
+WDXS: FTC PutReq handle=1 offset=0, len=199096
+>>> Erasing 4 64K sectors in external flash <<<
+WDXS: FTC PutReq handle=1 status=0
+WDXS: FTC SendRsp op=4 handle=1 status=0
+hciCoreTxAclStart len=5
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+hciCoreTxAclStart len=14
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+WDXS: FTC SendRsp op=10 handle=1 status=0
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+hciCoreTxAclStart len=10
+WDXS: AttHook handle=581 event=18
 WDXS: Task Handler Evt=1
 ```
+
+Upon reception of `btn 2 l` command 
+```
+WDXS: FTC Write: len=3
+WDXS: FTC Write: op=7 handle=1
+WDXS: FTC VerifyReq: handle=1
+CRC start addr: 0x00000000 Len: 0x000309B8
+CRC From File : 0x10EE9CE0
+CRC Calculated: 0x10EE9CE0
+WDXS: FTC SendRsp op=8 handle=1 status=0
+hciCoreTxAclStart len=5
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+hciCoreTxAclStart len=11
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+```
+
+Upon reception of `btn 2 x` command 
+```
+hciCoreTxAclStart len=5
+dmConnSmExecute event=25 state=3
+dmConnSmExecute event=29 state=4
+dmConnCcbDealloc 1
+AttsCccClearTable connId=1
+smpDbGetRecord: connId: 1 type: 0
+smpDbAddDevice
+SmpDbSetFailureCount: connId: 1 count: 0
+smpSmExecute event=10 state=0
+Dats got evt 40
+Reseting!
+```
+
+On successful update the device resets and connects once again.
+
 
 ### Commands
 Type the desired command and parameter (if applicable) and press enter to execute the command.  
