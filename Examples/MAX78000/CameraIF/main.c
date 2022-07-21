@@ -1,55 +1,41 @@
-/******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
-
-/**
- * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360 camera sensors as defined in the makefile.
- *
- * @details This example uses the UART to stream out the image captured from the camera.
- *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
- *          The image is prepended with a header that is interpreted by the grab_image.py
- *          python script.  The data from this example through the UART is in a binary format.
- *          Instructions: 1) Load and execute this example. The example will initialize the camera
- *                        and start the repeating binary output of camera frame data.
- *                        2) Run 'sudo grab_image.py /dev/ttyUSB0 115200'
- *                           Substitute the /dev/ttyUSB0 string for the serial port on your system.
- *                           The python program will read in the binary data from this example and
- *                           output a png image.
- */
+/*******************************************************************************
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 #include "mxc.h"
 #include "mxc_device.h"
 #include "mxc_delay.h"
@@ -58,139 +44,141 @@
 #include "board.h"
 
 #include "camera.h"
-#include "utils.h"
+#include "cameraif.h"
 #include "dma.h"
+#include "console.h"
 
 
-// Configuration options
-// ------------------------
-#define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
-#define STREAM_ENABLE
-/* If enabled, camera is setup in streaming mode to send the image
-line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
-image first and then sends to TFT or serial port.
-With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in 
-stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144 
-if stream mode is disabled, or 320x240 if enabled
-*/
-// #define BUTTON
-/*
-If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
-will be captured continuously.
-*/
+#define CAMERA_FREQ 10000000
 
-// ------------------------
+// Convenience struct for describing a complete captured image.
+typedef struct {
+    uint8_t* raw;           // Pointer to raw img data in SRAM.
+    uint32_t imglen;        // Length of img data (in bytes)
+    uint32_t w;             // Width of the image (in pixels)
+    uint32_t h;             // Height of the image (in pixels)
+    uint8_t* pixel_format;  // Pixel format string
+} img_data_t;
 
-/*
-Compiler definitions...  These configure TFT and camera settings based on the options above
-*/
-#ifdef ENABLE_TFT
+img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode_t dma_mode, int dma_channel) {
+    // This demonstrates the most basic blocking capture of a single image.
+    // The raw data for the entire image will be saved into an SRAM buffer.
+    // For the purposes of demonstration this function contains the full setup
+    // sequence for capturing an image.  In practice, 'camera_setup' can be 
+    // broken out into a separate initialization sequence if you're not
+    // reconfiguring the camera settings on the fly.
 
-    #ifdef BOARD_EVKIT_V1
-    #include "tft_ssd2119.h"
-    #endif
+    img_data_t img_data;
 
-    #ifdef BOARD_FTHR_REVA
-    #include "tft_ili9341.h"
-    #endif
+    // 1. Configure the camera with the 'camera_setup' function.  
+    // Image dimensions should fall within the limitations 
+    // of the camera hardware and MCU SRAM limits.  In this simple capture mode the
+    // camera.h drivers will allocate an SRAM buffer whose size is equal to
+    // width * height * bytes_per_pixel.  See camera.c for implementation details.
+    printf("Configuring camera\n");
+    int ret = camera_setup(
+        w, // width
+        h, // height
+        pixel_format, // pixel format
+        FIFO_FOUR_BYTE, // FIFO mode (four bytes is suitable for most cases)
+        dma_mode, // DMA (enabling DMA will drastically decrease capture time)
+        dma_channel // Allocate the DMA channel retrieved in initialization
+    );
 
+    // Error check the setup function.
+    if (ret != STATUS_OK) {
+        printf("Failed to configure camera!  Error %i\n", ret);
+        return img_data;
+    }
+
+    // 2. Start the camera capture with the 'camera_start_capture_image()' function.
+    // This will 'launch' the image capture, but is non-blocking.  The CameraIF peripheral's
+    // hardware handles the capture in the background.
+    printf("Capturing image\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+    camera_start_capture_image(); 
+
+    // 3. Wait until the image is fully received.  The camera drivers
+    // will populate an SRAM buffer with the received camera data.  If the
+    // buffer is accessed before the image is fully received, the image might
+    // contain artifacts or partial captures.
+    while(!camera_is_image_rcv()); 
+    int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (Took %ius)\n", elapsed_us);
+
+    // 4. Retrieve details of the captured image from the camera driver with the
+    // 'camera_get_image' function.  We don't need to copy any image data here, we'll
+    // just retrieve a pointer to the camera driver's internal SRAM buffer.
+    img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
+    camera_get_image(&img_data.raw, &img_data.imglen, &img_data.w, &img_data.h); // Retrieve info using driver function.
+    printf(
+        "Captured %ux%u %s image to buffer location 0x%x (%i bytes)\n", 
+        img_data.w, img_data.h, img_data.pixel_format, img_data.raw, img_data.imglen
+    );
+
+    // 5. At this point, the "raw" byte pointer is pointing to the fully captured raw
+    // image data, which is stored in a byte array with length 'imgLen' and all the info
+    // needed to decode the image data has been collected.
+
+    return img_data;
+}
+
+void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel) {
+    // This demonstrates a more advanced streaming-based image capture.
+    // With this method, the camera drivers don't need to allocate space for the entire
+    // image in SRAM.  Instead, space for 2 rows is allocated for a DMA-enabled
+    // swapping buffer.  This theoretically allows for higher image resolutions, but
+    // comes at the cost of stricter timing requirements.  Each buffered line must be
+    // serviced in time, otherwise the buffer will overflow.
+    img_data_t img_data;
+
+#ifdef CAMERA_OV7692
+    camera_write_reg(0x11, 0x6); // set camera clock prescaller to prevent streaming overflow for QVGA
 #endif
+    
+    // 1. Configure the camera.  This is the same as the standard blocking capture, except
+    // the DMA mode is set to "STREAMING_DMA".
+    printf("Configuring camera\n");
+    int ret = camera_setup(
+        w, // width
+        h, // height
+        pixel_format, // pixel format
+        FIFO_FOUR_BYTE, // FIFO mode (four bytes is suitable for most cases)
+        STREAMING_DMA, // Set streaming mode
+        dma_channel // Allocate the DMA channel retrieved in initialization
+    );
 
-#define CAMERA_FREQ (10 * 1000 * 1000)
+    // Error check the setup function.
+    if (ret != STATUS_OK) {
+        printf("Failed to configure camera!  Error %i\n", ret);
+        return;
+    }
 
-#if defined(CAMERA_HM01B0)
-    #define CAMERA_MONO
+    // 2. Retrieve image format and info.
+    img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
+    camera_get_image(&img_data.raw, &img_data.imglen, &img_data.w, &img_data.h); // Retrieve info using driver function.
 
-    #ifdef STREAM_ENABLE
-    #define IMAGE_XRES  324/2
-    #define IMAGE_YRES  244/2
-
-    #else
-    #define IMAGE_XRES 80
-    #define IMAGE_YRES 80
-
-    #endif
-#endif
-
-#if defined(CAMERA_HM0360)
-    #define CAMERA_MONO
-
-    #ifdef STREAM_ENABLE
-    #define IMAGE_XRES  320
-    #define IMAGE_YRES  240
-
-    #else
-    #define IMAGE_XRES 80
-    #define IMAGE_YRES 80
-
-    #endif
-#endif
-
-#if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
-
-    #ifdef ENABLE_TFT
-        #ifdef STREAM_ENABLE
-        #define IMAGE_XRES  320
-        #define IMAGE_YRES  240
-        
-        #else
-        #define IMAGE_XRES  176
-        #define IMAGE_YRES  144
-        #endif
-
-    #else
-        #ifdef STREAM_ENABLE
-            #define IMAGE_XRES 80
-            #define IMAGE_YRES 80
-        #else
-            #define IMAGE_XRES 176
-            #define IMAGE_YRES 144
-        #endif
-
-    #endif
-#endif
-
-#define CON_BAUD 115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define X_START     0
-#define Y_START     0
-
-void process_img(void)
-{
-    uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
-
-    // Get the details of the image from the camera driver.
-    camera_get_image(&raw, &imgLen, &w, &h);
-
-#ifndef STREAM_ENABLE
-    // buffers the entire image and send to serial or TFT
-#ifndef ENABLE_TFT
-    // Send the image through the UART to the console if no TFT
-    // A python program will read from the console and write
-    // to an image file
-    utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
-#else
-#ifndef CAMERA_MONO
-    // Send the image to TFT
-    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, h, w);
-#else
-    MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, h, w);
-#endif // #ifndef CAMERA_MONO
-#endif // ##ifndef ENABLE_TFT
-
-#else // #ifndef STREAM_ENABLE
-    // STREAM mode
+    // 3. Tell the host that we're about to send an image.
+    clear_serial_buffer();
+    snprintf(
+        g_serial_buffer,
+        SERIAL_BUFFER_SIZE, 
+        "*IMG* %s %i %i %i", // Format img info into a string
+        img_data.pixel_format, 
+        img_data.imglen,
+        img_data.w,
+        img_data.h
+    );
+    send_msg(g_serial_buffer); // Send the img info to the host
+    
+    // 4. Start the image capture.  Image data will immediately start streaming
+    // into the streaming buffer.
+    camera_start_capture_image();
+    
+    // 5. Transmit the image data line-by-line over UART.
     uint8_t* data = NULL;
-    // send image line by line to PC, or TFT
-#ifndef ENABLE_TFT
-    // initialize the communication by providing image format and size
-    utils_stream_img_to_pc_init(raw, imgLen, w, h, camera_get_pixel_format());
-#endif
-
-    // Get image line by line
+    int row_len = w * 2; // Each row will contain 2 bytes per pixel
     for (int i = 0; i < h; i++) {
-
         // Wait until camera streaming buffer is full
         while ((data = get_camera_stream_buffer()) == NULL) {
             if (camera_is_image_rcv()) {
@@ -198,44 +186,32 @@ void process_img(void)
             }
         };
 
-#ifndef ENABLE_TFT
-        // Send one line to PC
-        utils_stream_image_row_to_pc(data, w * 2);
+        MXC_UART_Write(Con_Uart, data, &row_len);
+        // utils_stream_image_row_to_pc(data, row_len);
 
-#else
-#ifndef CAMERA_MONO
-        // Send one line to TFT
-        MXC_TFT_ShowImageCameraRGB565(X_START, Y_START + i, data, w, 1);
-
-#else
-        MXC_TFT_ShowImageCameraMono(X_START, Y_START + i, data, w, 1);
-
-#endif
-#endif
         // Release stream buffer
         release_camera_stream_buffer();
     }
 
     stream_stat_t* stat = get_camera_stream_statistic();
 
-    //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    //printf("OVERFLOW = %d\n", stat->overflow_count);
-    if (stat->overflow_count > 0) {
-        LED_On(LED2); // Turn on red LED if overflow detected
-
-        while (1);
-    }
-
-#endif //#ifndef STREAM_ENABLE
+    printf("DMA transfer count = %d\n", stat->dma_transfer_count);
+    printf("OVERFLOW = %d\n", stat->overflow_count);
 }
 
 // *****************************************************************************
 int main(void)
 {
+    // Initialization...
     int ret = 0;
     int slaveAddress;
     int id;
     int dma_channel;
+    dmamode_t dma_mode = USE_DMA;
+    unsigned int imgres_w = 64;
+    unsigned int imgres_h = 64;
+
+    console_init();
 
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
@@ -244,19 +220,44 @@ int main(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
+    if ((ret = MXC_UART_Init(Con_Uart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+        return ret;
+    }
+
+    // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
+    printf("Establishing communication with host...\n");
+    char* sync = "*SYNC*";
+    while(1) {
+        // Transmit sync string
+        send_msg(sync);
+        LED_Toggle(LED1);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+
+        int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
+        if (available > 0) {
+            char* buffer = (char*)malloc(available);
+            MXC_UART_Read(Con_Uart, (uint8_t*)buffer, &available);
+            if (strcmp(buffer, sync) == 0) {
+                // Received sync string back, break the loop.
+                LED_On(LED1);
+                break;
+            }
+            free(buffer);
+        }
+    }
+
+    printf("Established communications with host!\n");
+    print_help();
+
+    printf("Initializing DMA\n");
+
     // Initialize DMA for camera interface
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
 
-    mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
-
-    if ((ret = MXC_UART_Init(ConsoleUart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
-        return ret;
-    }
-
     // Initialize the camera driver.
     camera_init(CAMERA_FREQ);
-    printf("\n\nCamera Example\n");
+    printf("Initializing camera\n");
 
     slaveAddress = camera_get_slave_address();
     printf("Camera I2C slave address: %02x\n", slaveAddress);
@@ -276,80 +277,79 @@ int main(void)
     camera_set_vflip(0);
 #endif
 
-#ifdef ENABLE_TFT
-    printf("Init TFT\n");
-    /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-    MXC_TFT_SetBackGroundColor(4);
-#endif
-    // Setup the camera image dimensions, pixel format and data acquiring details.
-#ifndef STREAM_ENABLE
-#ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // RGB565
-#else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // Mono
-#endif
-
-#ifdef ENABLE_TFT
-    /* Set the screen rotation */
-    MXC_TFT_SetRotation(SCREEN_ROTATE);
-    /* Change entry mode settings */
-    MXC_TFT_WriteReg(0x0011, 0x6858);
-#endif
-#else
-#ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
-#else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // Mono stream
-#endif
-
-#ifdef ENABLE_TFT
-    /* Set the screen rotation */
-#ifdef EvKit_V1
-    MXC_TFT_SetRotation(SCREEN_FLIP);
-#endif
-#ifdef FTHR_RevA
-    MXC_TFT_SetRotation(ROTATE_180);
-#endif
-
-#endif
-#endif //#ifndef STREAM_ENABLE
-
-    if (ret != STATUS_OK) {
-        printf("Error returned from setting up camera. Error %d\n", ret);
-        return -1;
-    }
-
-    MXC_Delay(SEC(1));
-
-#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-    camera_write_reg(0x11, 0x6); // set camera clock prescaller to prevent streaming overflow for QVGA
-#endif
-
-    // Start capturing a first camera image frame.
-    printf("Starting\n");
-#ifdef BUTTON
-    while(!PB_Get(0));
-#endif
-    camera_start_capture_image();
-
+    printf("Awaiting command from host\n");
+    // Main processing loop.
     while (1) {
-        // Check if image is acquired.
-#ifndef STREAM_ENABLE
-        if (camera_is_image_rcv())
-#endif
-        {
-            // Process the image, send it through the UART console.
-            process_img();
 
-            // Prepare for another frame capture.
-            LED_Toggle(LED1);
-        #ifdef BUTTON
-            while(!PB_Get(0));
-        #endif            
-            camera_start_capture_image();
+        // Check for any incoming serial commands
+        cmd_t cmd = CMD_UNKNOWN;
+        if (recv_cmd(&cmd)) {
+            // Process the received command...
+
+            if (cmd == CMD_UNKNOWN) {
+                printf("Uknown command '%s'\n", g_serial_buffer);
+
+            }
+
+            else if (cmd == CMD_IMGRES) {
+                sscanf(g_serial_buffer, "imgres %u %u", &imgres_w, &imgres_h);
+                printf("Set image resolution to width %u, height %u\n", imgres_w, imgres_h);
+            }
+
+            else if (cmd == CMD_ENABLE_DMA) {
+                dma_mode = USE_DMA;
+                printf("Enabled DMA on channel %i\n", dma_channel);
+                // TODO: Disabling DMA and then re-enabling it does not seem to work.
+            }
+
+            else if (cmd == CMD_DISABLE_DMA) {
+                dma_mode = NO_DMA;
+                printf("Disabled DMA\n");
+            }
+
+            else if (cmd == CMD_CAPTURE) {
+                // Perform a blocking image capture with the current camera settings.
+                // See the 'capture_img' function and 'img_data_t' struct for more details.
+                img_data_t img_data = capture_img(
+                    imgres_w,
+                    imgres_h,
+                    PIXFORMAT_RGB565,
+                    dma_mode,
+                    dma_channel
+                );
+
+                // Send the image data over the serial port...
+                // First, tell the host that we're about to send the image.
+                clear_serial_buffer();
+                snprintf(
+                    g_serial_buffer,
+                    SERIAL_BUFFER_SIZE, 
+                    "*IMG* %s %i %i %i", // Format img info into a string
+                    img_data.pixel_format, 
+                    img_data.imglen, 
+                    img_data.w, 
+                    img_data.h
+                );
+                send_msg(g_serial_buffer); // Send the img info to the host
+
+                // Now, send the image data.  The host should now be expecting
+                // to receive 'imglen' bytes.
+                clear_serial_buffer();
+                MXC_UART_Write(Con_Uart, img_data.raw, (int*)&img_data.imglen); // Blast the raw data over the serial port.
+            }
+
+            else if (cmd == CMD_STREAM) {
+                // Perform a streaming image capture with the current camera settings.
+                stream_img(
+                    imgres_w,
+                    imgres_h,
+                    PIXFORMAT_RGB565,
+                    dma_channel
+                );
+            }
+
+            // Clear the serial buffer for the next command
+            clear_serial_buffer();
         }
     }
-
-    return ret;
 }
