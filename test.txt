@@ -1,4 +1,2 @@
 blah blah blah
-gibberish
-more junk
-mas? 
+testing dats connected while test running
