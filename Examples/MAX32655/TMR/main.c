@@ -262,7 +262,7 @@ int main(void)
     PB_RegisterCallback(0, (pb_callback) PB1Handler);
     
     while (1) {
-        if (MXC_GPIO_InGet(pb_pin[PB2].port, pb_pin[PB2].mask) == 0) {
+        if ( PB_Get(PB2) == TRUE ) {
             MXC_NVIC_SetVector(TMR4_IRQn, OneshotTimerHandler);
             NVIC_EnableIRQ(TMR4_IRQn);
             
