@@ -138,3 +138,16 @@ int PB_Get(unsigned int pb)
     MXC_ASSERT(pb < num_pbs);
     return !MXC_GPIO_InGet(pb_pin[pb].port, pb_pin[pb].mask);
 }
+
+int PB_IsPressedAny(void)
+{
+    int i=0;
+
+    for (i=0; i<num_pbs; i++) {
+        if ( PB_Get(i) ) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
