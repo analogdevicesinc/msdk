@@ -89,9 +89,9 @@ int main(void)
     
     while (1) {
         /* Flash LED when starting ADC cycle */
-        LED_On(LED1);
+        LED_On(LED_RED);
         MXC_TMR_Delay(MXC_TMR0, MSEC(10));
-        LED_Off(LED1);
+        LED_Off(LED_RED);
         
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
