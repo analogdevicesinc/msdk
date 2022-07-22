@@ -44,6 +44,7 @@
 #include <stdint.h>
 #include "pwrseq_regs.h"
 #include "mcr_regs.h"
+#include "gcr_regs.h"
 #include "gpio.h"
 
 #ifdef __cplusplus

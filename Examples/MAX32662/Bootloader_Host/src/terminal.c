@@ -55,7 +55,7 @@ int terminal_init(void)
 {
     int ret = 0;
     
-    ret = MXC_UART_Init(PC_COM_PORT, 115200, MAP_A);
+    ret = MXC_UART_Init(PC_COM_PORT, 115200, MXC_UART_APB_CLK, MAP_A);
 
     return ret;
 }

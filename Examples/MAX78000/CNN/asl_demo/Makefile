@@ -248,7 +248,6 @@ include $(PERIPH_DRIVER_DIR)/periphdriver.mk
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
-# 	Extend the functionality of the "all" recipe here
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph

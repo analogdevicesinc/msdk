@@ -80,7 +80,7 @@ export TARGET_LC
 # TODO: Remove dependency on exporting these (distclean needs it)
 
 # Default board.
-BOARD ?= EvKit_V1
+BOARD ?= FTHR_RevA
 
 # *******************************************************************************
 # Locate the MaximSDK

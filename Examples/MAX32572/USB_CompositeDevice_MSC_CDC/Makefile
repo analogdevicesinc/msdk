@@ -119,7 +119,7 @@ BOARD_DIR=$(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
 include $(BOARD_DIR)/board.mk
 
 # Include the peripheral driver
-PERIPH_DRIVER_DIR=$(LIBS_DIR)/PeriphDrivers
+PERIPH_DRIVER_DIR=${abspath $(LIBS_DIR)/PeriphDrivers}
 include $(PERIPH_DRIVER_DIR)/periphdriver.mk
 export PERIPH_DRIVER_DIR
 

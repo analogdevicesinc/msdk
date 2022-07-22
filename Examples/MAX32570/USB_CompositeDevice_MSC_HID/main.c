@@ -321,12 +321,12 @@ static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
         msc_cfg.in_ep = composite_config_descriptor.endpoint_descriptor_2.bEndpointAddress & 0x7;
         msc_cfg.in_maxpacket = composite_config_descriptor.endpoint_descriptor_2.wMaxPacketSize;
         
-        msc_configure(&msc_cfg, composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        msc_configure(&msc_cfg);
         return hidkbd_configure(composite_config_descriptor.endpoint_descriptor_3.bEndpointAddress & USB_EP_NUM_MASK);
     }
     else if (sud->wValue == 0) {
         configured = 0;
-        msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        msc_deconfigure();
         return hidkbd_deconfigure();
     }
     
@@ -349,7 +349,7 @@ static int eventCallback(maxusb_event_t evt, void* data)
         configured = 0;
         enum_clearconfig();
         hidkbd_deconfigure();
-        msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        msc_deconfigure();
         usbAppSleep();
         break;
         
@@ -366,7 +366,7 @@ static int eventCallback(maxusb_event_t evt, void* data)
         usbAppWakeup();
         enum_clearconfig();
         hidkbd_deconfigure();
-        msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        msc_deconfigure();
         configured = 0;
         suspended = 0;
         break;

@@ -69,6 +69,8 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
+#ifndef __riscv /* RISCV does not have access to MXC_SPI0 */
+
 /******************************************************************************/
 static void ext_flash_board_init_quad(bool quadEnabled)
 {
@@ -270,6 +272,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
 
     return MXC_SPI_MasterTransaction(&qspi_dummy_req);
 }
+#endif /* __riscv */
 
 /******************************************************************************/
 void mxc_assert(const char* expr, const char* file, int line)
@@ -284,6 +287,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 int Board_Init(void)
 {
     int err;
+
+#ifndef __riscv /* RISCV does not have access to MXC_SPI0 */
     Ext_Flash_Config_t exf_cfg = {
                             .init = ext_flash_board_init,
                             .read = ext_flash_board_read,
@@ -294,6 +299,7 @@ int Board_Init(void)
     if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
         return err;
     }
+#endif
 
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);

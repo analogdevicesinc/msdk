@@ -108,17 +108,13 @@ PROJ_CFLAGS+=-Wall
 #MXC_OPTIMIZE_CFLAGS=-O1
 
 # Point this variable to a linker file to override the default file
-LINKER=$(TARGET_LC).ld
-
 ifeq ($(MAKECMDGOALS),sla)
 PROJ_CFLAGS+=-D__SLA_FWK__
 LINKER=$(TARGET_LC)_sla.ld
-endif
-
-ifeq ($(MAKECMDGOALS),ram)
-PROJ_CFLAGS+=-D__RAM_FWK__
+else
 LINKER=$(TARGET_LC)_ram.ld
 endif
+PROJ_CFLAGS+=-D__RAM_FWK__
 
 # if not exist use default one
 ifeq ("$(wildcard $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER) )","")
