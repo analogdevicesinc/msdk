@@ -76,7 +76,6 @@ void watchdog_timeout_handler()
 // *****************************************************************************
 void WDT0_IRQHandler(void)
 {
-
     watchdog_timeout_handler();
 }
 // *****************************************************************************
@@ -90,23 +89,22 @@ void WDT_Setup()
 int main(void)
 {
     MXC_WDT_Init(MXC_WDT0);
-    
-    
+
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_DisableReset(MXC_WDT0);
         MXC_WDT_Enable(MXC_WDT0);
         printf("Watchdog reset\n");
     }
-    
+
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("Press a button to create watchdog interrupt or reset:\n");
     printf("SW2 = timeout interrupt\n");
     LED_Off(0);
-    
+
     //blink LED3 three times at startup
     int numBlinks = 3;
-    
+
     while (numBlinks) {
         LED_On(1);
         MXC_Delay(MXC_DELAY_MSEC(500));
@@ -114,13 +112,12 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(500));
         numBlinks--;
     }
-    
+
     MXC_WDT_Init(MXC_WDT0);
     //setup watchdog
     WDT_Setup();
-    
+
     while (1) {
-    
         //Push SW2 to start longer delay - shows Interrupt before the reset happens
         if (MXC_GPIO_InGet(pb_pin[SW2].port, pb_pin[SW2].mask) == 0) {
             printf("Enabling Timeout Interrupt...\n");
@@ -129,16 +126,17 @@ int main(void)
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
-            
-            while (1);
+
+            while (1)
+                ;
         }
-        
+
         //blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_Off(0);
-        
+
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }

@@ -48,8 +48,9 @@ volatile uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
-  printf("\n*** FAIL ***\n\n");
-  while (1);
+    printf("\n*** FAIL ***\n\n");
+    while (1)
+        ;
 }
 
 // 48-channel 48x48 data input (110592 bytes total / 2304 bytes per channel):
@@ -91,89 +92,88 @@ static const uint32_t input_44[] = SAMPLE_INPUT_44;
 
 void load_input(void)
 {
-  // This function loads the sample data input -- replace with actual data
+    // This function loads the sample data input -- replace with actual data
 
-  memcpy32((uint32_t *) 0x50400700, input_0, 2304);
-  memcpy32((uint32_t *) 0x50408700, input_4, 2304);
-  memcpy32((uint32_t *) 0x50410700, input_8, 2304);
-  memcpy32((uint32_t *) 0x50418700, input_12, 2304);
-  memcpy32((uint32_t *) 0x50800700, input_16, 2304);
-  memcpy32((uint32_t *) 0x50808700, input_20, 2304);
-  memcpy32((uint32_t *) 0x50810700, input_24, 2304);
-  memcpy32((uint32_t *) 0x50818700, input_28, 2304);
-  memcpy32((uint32_t *) 0x50c00700, input_32, 2304);
-  memcpy32((uint32_t *) 0x50c08700, input_36, 2304);
-  memcpy32((uint32_t *) 0x50c10700, input_40, 2304);
-  memcpy32((uint32_t *) 0x50c18700, input_44, 2304);
+    memcpy32((uint32_t*)0x50400700, input_0, 2304);
+    memcpy32((uint32_t*)0x50408700, input_4, 2304);
+    memcpy32((uint32_t*)0x50410700, input_8, 2304);
+    memcpy32((uint32_t*)0x50418700, input_12, 2304);
+    memcpy32((uint32_t*)0x50800700, input_16, 2304);
+    memcpy32((uint32_t*)0x50808700, input_20, 2304);
+    memcpy32((uint32_t*)0x50810700, input_24, 2304);
+    memcpy32((uint32_t*)0x50818700, input_28, 2304);
+    memcpy32((uint32_t*)0x50c00700, input_32, 2304);
+    memcpy32((uint32_t*)0x50c08700, input_36, 2304);
+    memcpy32((uint32_t*)0x50c10700, input_40, 2304);
+    memcpy32((uint32_t*)0x50c18700, input_44, 2304);
 }
 
-  // Truncated further checks...
+// Truncated further checks...
 // Expected output of layer 18 for aisegment_unet given the sample input (known-answer test)
 // Delete this function for production code
 static const uint32_t sample_output[] = SAMPLE_OUTPUT;
 int check_output(void)
 {
-  int i;
-  uint32_t mask, len;
-  volatile uint32_t *addr;
-  const uint32_t *ptr = sample_output;
+    int i;
+    uint32_t mask, len;
+    volatile uint32_t* addr;
+    const uint32_t* ptr = sample_output;
 
-  while ((addr = (volatile uint32_t *) *ptr++) != 0) {
-    mask = *ptr++;
-    len = *ptr++;
-    for (i = 0; i < len; i++)
-      if ((*addr++ & mask) != *ptr++) {
-        printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
-               i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
-        return CNN_FAIL;
-      }
-  }
+    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+        mask = *ptr++;
+        len  = *ptr++;
+        for (i = 0; i < len; i++)
+            if ((*addr++ & mask) != *ptr++) {
+                printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
+                       i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
+                return CNN_FAIL;
+            }
+    }
 
-  return CNN_OK;
+    return CNN_OK;
 }
 
 int main(void)
 {
-  MXC_ICC_Enable(MXC_ICC0); // Enable cache
+    MXC_ICC_Enable(MXC_ICC0); // Enable cache
 
-  // Switch to 100 MHz clock
-  MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-  SystemCoreClockUpdate();
+    // Switch to 100 MHz clock
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    SystemCoreClockUpdate();
 
-  printf("Waiting...\n");
+    printf("Waiting...\n");
 
-  // DO NOT DELETE THIS LINE:
-  MXC_Delay(SEC(2)); // Let debugger interrupt if needed
+    // DO NOT DELETE THIS LINE:
+    MXC_Delay(SEC(2)); // Let debugger interrupt if needed
 
-  // Enable peripheral, enable CNN interrupt, turn on CNN clock
-  // CNN clock: APB (50 MHz) div 1
-  cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    // Enable peripheral, enable CNN interrupt, turn on CNN clock
+    // CNN clock: APB (50 MHz) div 1
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 
-  printf("\n*** CNN Inference Test ***\n");
+    printf("\n*** CNN Inference Test ***\n");
 
-  cnn_init(); // Bring state machine into consistent state
-  cnn_load_weights(); // Load kernels
-  cnn_load_bias();
-  cnn_configure(); // Configure state machine
-  load_input(); // Load data input
-  cnn_start(); // Start CNN processing
+    cnn_init();         // Bring state machine into consistent state
+    cnn_load_weights(); // Load kernels
+    cnn_load_bias();
+    cnn_configure(); // Configure state machine
+    load_input();    // Load data input
+    cnn_start();     // Start CNN processing
 
-  SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-  while (cnn_time == 0)
-    __WFI(); // Wait for CNN
+    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
+    while (cnn_time == 0) __WFI();      // Wait for CNN
 
-  if (check_output() != CNN_OK) fail();
+    if (check_output() != CNN_OK)
+        fail();
 
-  printf("\n*** PASS ***\n\n");
+    printf("\n*** PASS ***\n\n");
 
 #ifdef CNN_INFERENCE_TIMER
-  printf("Approximate inference time: %u us\n\n", cnn_time);
+    printf("Approximate inference time: %u us\n\n", cnn_time);
 #endif
 
-  cnn_disable(); // Shut down CNN clock, disable peripheral
+    cnn_disable(); // Shut down CNN clock, disable peripheral
 
-
-  return 0;
+    return 0;
 }
 
 /*
@@ -203,4 +203,3 @@ int main(void)
   Weight memory: 279,264 bytes out of 442,368 bytes total (63%)
   Bias memory:   876 bytes out of 2,048 bytes total (43%)
 */
-

@@ -57,22 +57,20 @@
 // *****************************************************************************
 int main(void)
 {
-  /* Switch to ISO clock, IPO disabled in LPM. */
-  MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_DIV, MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1);
-  MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ISO);
-  MXC_SYS_ClockSourceDisable(MXC_SYS_CLOCK_IPO);
+    /* Switch to ISO clock, IPO disabled in LPM. */
+    MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_DIV, MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1);
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ISO);
+    MXC_SYS_ClockSourceDisable(MXC_SYS_CLOCK_IPO);
 
-  /* Enable RISCV debugger GPIO */
-  MXC_GPIO_Config(&gpio_cfg_rv_jtag);
+    /* Enable RISCV debugger GPIO */
+    MXC_GPIO_Config(&gpio_cfg_rv_jtag);
 
-  /* Start the RISCV core */
-  MXC_SYS_RISCVRun();
+    /* Start the RISCV core */
+    MXC_SYS_RISCVRun();
 
-  /* Delay for 5 seconds before going to low power mode. */
-  MXC_Delay(MXC_DELAY_SEC(5));
+    /* Delay for 5 seconds before going to low power mode. */
+    MXC_Delay(MXC_DELAY_SEC(5));
 
-  /* Enter LPM */
-  while (1) {
-    MXC_LP_EnterSleepMode();
-  }
+    /* Enter LPM */
+    while (1) { MXC_LP_EnterSleepMode(); }
 }

@@ -46,13 +46,13 @@
 #include "dma.h"
 
 /***** Definitions *****/
-#define POLY    0xEDB88320
-#define CHECK   0xDEBB20E3
+#define POLY  0xEDB88320
+#define CHECK 0xDEBB20E3
 
-#define SYNC	0
-#define ASYNC	1
+#define SYNC  0
+#define ASYNC 1
 
-#define DATA_LENGTH   100
+#define DATA_LENGTH 100
 
 /***** Globals *****/
 volatile int wait;
@@ -71,8 +71,7 @@ void Test_Result(int result)
     if (result) {
         printf(" \n**Test Failed**\n\n");
         fail++;
-    }
-    else {
+    } else {
         printf(" \n**Test Passed**\n\n");
     }
 }
@@ -81,56 +80,54 @@ void Test_CRC(int asynchronous)
 {
     uint32_t array[101];
     int i;
-    
+
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
-    
-    for (i = 0; i < DATA_LENGTH; i++) {
-        array[i] = i;
-    }
-    
+
+    for (i = 0; i < DATA_LENGTH; i++) { array[i] = i; }
+
     // define the CRC parameters
     mxc_crc_req_t crc_req = {
-        array,              // pointer to data
-        DATA_LENGTH,        // length of data
-        0                   // initial crc result
+        array,       // pointer to data
+        DATA_LENGTH, // length of data
+        0            // initial crc result
     };
-    
+
     MXC_CRC_Init();
 
     MXC_CRC_SetPoly(POLY);
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CRC_Compute(&crc_req);
     }
-    
+
     printf("\nComputed CRC: %x", crc_req.resultCRC);
-    
+
     array[DATA_LENGTH] = ~crc_req.resultCRC;
-    
+
     crc_req.dataLen = DATA_LENGTH + 1;
-    
+
     MXC_CRC_Init();
 
     MXC_CRC_SetPoly(POLY);
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CRC_Compute(&crc_req);
     }
-    
+
     printf("\nCRC Check Result: %x", crc_req.resultCRC);
-    
+
     Test_Result(CHECK != crc_req.resultCRC);
     MXC_CRC_Shutdown();
 }
@@ -139,24 +136,24 @@ void Test_CRC(int asynchronous)
 int main(void)
 {
     printf("\n***** CRC Example *****\n\n");
-    
+
     Test_CRC(SYNC);
-    
+
     //Release DMA Channel 0 to use it for CRC transaction (Any DMA channel can be used)
     MXC_DMA_ReleaseChannel(0);
     MXC_NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler);
     NVIC_EnableIRQ(DMA0_IRQn);
     __enable_irq();
     Test_CRC(ASYNC);
-    
+
     if (fail) {
         printf("\nExample Failed");
-    }
-    else {
+    } else {
         printf("\nExample Succeeded");
     }
-    
+
     printf("\n\n");
-    
-    while (1);
+
+    while (1)
+        ;
 }

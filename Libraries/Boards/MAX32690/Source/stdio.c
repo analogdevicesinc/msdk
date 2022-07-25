@@ -40,12 +40,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 #include <unistd.h>
 #include <sys/stat.h>
 #endif /* __GNUC__ */
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 #include <rt_misc.h>
 #pragma import(__use_no_semihosting_swi)
 
@@ -58,11 +58,11 @@ FILE __stdin;
 #endif /* __CC_ARM */
 
 /* Defines - Compiler Specific */
-#if defined ( __ICCARM__ )
-#define STDIN_FILENO    0   // Defines that are not included in the DLIB.
-#define STDOUT_FILENO   1
-#define STDERR_FILENO   2
-#define EBADF          -1
+#if defined(__ICCARM__)
+#define STDIN_FILENO  0 // Defines that are not included in the DLIB.
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+#define EBADF         -1
 #endif /* __ICCARM__ */
 
 #include "mxc_device.h"
@@ -70,13 +70,13 @@ FILE __stdin;
 #include "board.h"
 #include "uart.h"
 
-#define MXC_UARTn   MXC_UART_GET_UART(CONSOLE_UART)
-#define UART_FIFO   MXC_UART_GET_FIFO(CONSOLE_UART)
+#define MXC_UARTn MXC_UART_GET_UART(CONSOLE_UART)
+#define UART_FIFO MXC_UART_GET_FIFO(CONSOLE_UART)
 /* The following libc stub functions are required for a proper link with printf().
  * These can be tailored for a complete stdio implementation.
  * GNUC requires all functions below. IAR & KEIL only use read and write.
  */
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 int _open(const char* name, int flags, int mode)
 {
     return -1;
@@ -101,131 +101,141 @@ int _fstat(int file, struct stat* st)
 
 /* Handle IAR and ARM/Keil Compilers for _read/_write. Keil uses fputc and
    fgetc for stdio */
-#if defined (__ICCARM__) || defined ( __GNUC__ )
+#if defined(__ICCARM__) || defined(__GNUC__)
 
-#if defined ( __GNUC__ )                        // GNUC _read function prototype
+#if defined(__GNUC__) // GNUC _read function prototype
 int _read(int file, char* ptr, int len)
-#elif defined ( __ICCARM__ )                    // IAR Compiler _read function prototype
+#elif defined(__ICCARM__) // IAR Compiler _read function prototype
 int __read(int file, unsigned char* ptr, size_t len)
-#endif /* __GNUC__ */
+#endif                    /* __GNUC__ */
 {
-    #if defined ( __ICCARM__ )
+#if defined(__ICCARM__)
     size_t n;
-    #else
+#else
     int n;
-    #endif
+#endif
 
     int num = 0;
-    
+
     switch (file) {
-    case STDIN_FILENO:
-        for (n = 0; n < len; n++) {
-            *ptr = MXC_UART_ReadCharacter(MXC_UARTn);
-            
-            while (MXC_UART_WriteCharacter(MXC_UARTn, *ptr) == E_OVERFLOW);
-            
-            if (*ptr == '\r') {
-                *ptr = '\n';
-                num++;
+        case STDIN_FILENO:
+            for (n = 0; n < len; n++) {
+                *ptr = MXC_UART_ReadCharacter(MXC_UARTn);
+
+                while (MXC_UART_WriteCharacter(MXC_UARTn, *ptr) == E_OVERFLOW)
+                    ;
+
+                if (*ptr == '\r') {
+                    *ptr = '\n';
+                    num++;
+                    ptr++;
+
+                    break;
+                }
+
                 ptr++;
-                
-                break;
+                num++;
             }
-            
-            ptr++;
-            num++;
-        }
-        
-        break;
-        
-    default:
-        errno = EBADF;
-        return -1;
+
+            break;
+
+        default:
+            errno = EBADF;
+            return -1;
     }
-    
+
     return num;
 }
 
 /* newlib/libc printf() will eventually call write() to get the data to the stdout */
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 // GNUC _write function prototype
 int _write(int file, char* ptr, int len)
 {
     int n;
-#elif defined ( __ICCARM__ )                // IAR Compiler _read function prototype
+#elif defined(__ICCARM__) // IAR Compiler _read function prototype
 // IAR EW _write function prototype
-int __write(int file, const unsigned char* ptr, size_t len) {
+int __write(int file, const unsigned char* ptr, size_t len)
+{
     size_t n;
-#endif /* __GNUC__ */
-    
-    
+#endif                    /* __GNUC__ */
+
     switch (file) {
-    case STDOUT_FILENO:
-    case STDERR_FILENO:
-    
-        // This function should be as fast as possible
-        // So we'll forgo the UART driver for now
-        for (n = 0; n < len; n++) {
-            if (*ptr == '\n') {
+        case STDOUT_FILENO:
+        case STDERR_FILENO:
+
+            // This function should be as fast as possible
+            // So we'll forgo the UART driver for now
+            for (n = 0; n < len; n++) {
+                if (*ptr == '\n') {
+                    // Wait until there's room in the FIFO
+                    while (MXC_UART_WriteCharacter(MXC_UARTn, '\r') == E_OVERFLOW)
+                        ;
+                }
+
                 // Wait until there's room in the FIFO
-                while (MXC_UART_WriteCharacter(MXC_UARTn, '\r') == E_OVERFLOW);
+                while (MXC_UART_WriteCharacter(MXC_UARTn, *ptr) == E_OVERFLOW)
+                    ;
+
+                ptr++;
             }
-            
-            // Wait until there's room in the FIFO
-            while (MXC_UART_WriteCharacter(MXC_UARTn, *ptr) == E_OVERFLOW);
-            
-            ptr++;
-        }
-        
-        break;
-        
-    default:
-        errno = EBADF;
-        return -1;
+
+            break;
+
+        default:
+            errno = EBADF;
+            return -1;
     }
-    
+
     return len;
 }
 
 #endif /* ( __ICCARM__ ) || ( __GNUC__ ) */
 
 /* Handle Keil/ARM Compiler which uses fputc and fgetc for stdio */
-#if defined ( __CC_ARM )
-int fputc(int c, FILE * f) {
+#if defined(__CC_ARM)
+int fputc(int c, FILE* f)
+{
     if (c != '\n') {
-        while (MXC_UART_WriteCharacter(MXC_UARTn, c) == E_OVERFLOW);
+        while (MXC_UART_WriteCharacter(MXC_UARTn, c) == E_OVERFLOW)
+            ;
+    } else {
+        while (MXC_UART_WriteCharacter(MXC_UARTn, '\r') == E_OVERFLOW)
+            ;
+
+        while (MXC_UART_WriteCharacter(MXC_UARTn, '\n') == E_OVERFLOW)
+            ;
     }
-    else {
-        while (MXC_UART_WriteCharacter(MXC_UARTn, '\r') == E_OVERFLOW);
-        
-        while (MXC_UART_WriteCharacter(MXC_UARTn, '\n') == E_OVERFLOW);
-    }
-    
+
     return 0;
 }
 
-int fgetc(FILE * f) {
+int fgetc(FILE* f)
+{
     return (MXC_UART_ReadCharacter(MXC_UARTn));
 }
 
-int ferror(FILE * f) {
+int ferror(FILE* f)
+{
     return EOF;
 }
 
-void _ttywrch(int c) {
+void _ttywrch(int c)
+{
     if (c != '\n') {
-        while (MXC_UART_WriteCharacter(MXC_UARTn, c) == E_OVERFLOW);
-    }
-    else {
-        while (MXC_UART_WriteCharacter(MXC_UARTn, '\r') == E_OVERFLOW);
-        
-        while (MXC_UART_WriteCharacter(MXC_UARTn, '\n') == E_OVERFLOW);
+        while (MXC_UART_WriteCharacter(MXC_UARTn, c) == E_OVERFLOW)
+            ;
+    } else {
+        while (MXC_UART_WriteCharacter(MXC_UARTn, '\r') == E_OVERFLOW)
+            ;
+
+        while (MXC_UART_WriteCharacter(MXC_UARTn, '\n') == E_OVERFLOW)
+            ;
     }
 }
 
-void _sys_exit(int return_code) {
+void _sys_exit(int return_code)
+{
     while (1) {}
 }
 #endif
-
-

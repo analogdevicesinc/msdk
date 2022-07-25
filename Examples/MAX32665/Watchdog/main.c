@@ -63,22 +63,21 @@
 
 /***** Globals *****/
 #if defined(BOARD_FTHR)
-	static mxc_gpio_cfg_t pb_pin[] = {
-		{MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-		{MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-	};
+static mxc_gpio_cfg_t pb_pin[] = {
+    {MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+};
 #elif defined(BOARD_FTHR2)
-	static mxc_gpio_cfg_t pb_pin[] = {
-		{MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-		{MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-	};
+static mxc_gpio_cfg_t pb_pin[] = {
+    {MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    {MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+};
 #else
-	static mxc_gpio_cfg_t pb_pin[] = {
-		{MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
-		{MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
-	};
+static mxc_gpio_cfg_t pb_pin[] = {
+    {MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+};
 #endif
-
 
 /***** Functions *****/
 
@@ -92,8 +91,8 @@ void watchdog_timeout_handler()
 }
 
 // *****************************************************************************
-void WDT0_IRQHandler(void){
-
+void WDT0_IRQHandler(void)
+{
     watchdog_timeout_handler();
 }
 // *****************************************************************************
@@ -105,12 +104,12 @@ void MXC_WDT_Setup()
 
 void blinkled(int led, int num_of_blink)
 {
-	for (int i=0; i<num_of_blink; i++) {
-	    LED_On(led);
-	    MXC_Delay(MXC_DELAY_MSEC(100));
-	    LED_Off(led);
-	    MXC_Delay(MXC_DELAY_MSEC(100));
-	}
+    for (int i = 0; i < num_of_blink; i++) {
+        LED_On(led);
+        MXC_Delay(MXC_DELAY_MSEC(100));
+        LED_Off(led);
+        MXC_Delay(MXC_DELAY_MSEC(100));
+    }
 }
 
 // *****************************************************************************
@@ -118,12 +117,12 @@ int main(void)
 {
     MXC_WDT_Init(MXC_WDT0);
 
-	if(MXC_WDT_GetResetFlag(MXC_WDT0)) {
+    if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_DisableReset(MXC_WDT0);
         MXC_WDT_Enable(MXC_WDT0);
         printf("\nWatchdog reset\n");
-	}
+    }
 
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("Press a button to create watchdog interrupt or reset:\n");
@@ -142,28 +141,28 @@ int main(void)
     //setup watchdog
     MXC_WDT_Setup();
 
-    while(1) {
-
+    while (1) {
         //Push SW1 to reset watchdog
-        if(MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
+        if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
             printf("\nResetting Program...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_18);
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             MXC_WDT_ResetTimer(MXC_WDT0);
-            while(1);
-
+            while (1)
+                ;
         }
 
         //Push SW2 to start longer delay - shows Interrupt before the reset happens
-        if(MXC_GPIO_InGet(pb_pin[SW2].port, pb_pin[SW2].mask) == 0) {
+        if (MXC_GPIO_InGet(pb_pin[SW2].port, pb_pin[SW2].mask) == 0) {
             printf("\nEnabling Timeout Interrupt...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_27);
             MXC_WDT_SetIntPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_26);
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
-            while(1);
+            while (1)
+                ;
         }
 
         //blink LED0

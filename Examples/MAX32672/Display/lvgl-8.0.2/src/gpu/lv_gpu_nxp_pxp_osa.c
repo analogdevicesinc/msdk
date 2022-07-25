@@ -40,8 +40,8 @@
 #include "fsl_pxp.h"
 
 #if defined(SDK_OS_FREE_RTOS)
-    #include "FreeRTOS.h"
-    #include "semphr.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 #endif
 
 /*********************
@@ -64,9 +64,9 @@ static void _lv_gpu_nxp_pxp_run(void);
  **********************/
 
 #if defined(SDK_OS_FREE_RTOS)
-    static SemaphoreHandle_t s_pxpIdle;
+static SemaphoreHandle_t s_pxpIdle;
 #else
-    static volatile bool s_pxpIdle;
+static volatile bool s_pxpIdle;
 #endif
 
 /**********************
@@ -86,7 +86,7 @@ void PXP_IRQHandler(void)
     BaseType_t taskAwake = pdFALSE;
 #endif
 
-    if(kPXP_CompleteFlag & PXP_GetStatusFlags(LV_GPU_NXP_PXP_ID)) {
+    if (kPXP_CompleteFlag & PXP_GetStatusFlags(LV_GPU_NXP_PXP_ID)) {
         PXP_ClearStatusFlags(LV_GPU_NXP_PXP_ID, kPXP_CompleteFlag);
 #if defined(SDK_OS_FREE_RTOS)
         xSemaphoreGiveFromISR(s_pxpIdle, &taskAwake);
@@ -94,7 +94,6 @@ void PXP_IRQHandler(void)
 #else
         s_pxpIdle = true;
 #endif
-
     }
 }
 
@@ -109,7 +108,7 @@ static lv_res_t _lv_gpu_nxp_pxp_interrupt_init(void)
 {
 #if defined(SDK_OS_FREE_RTOS)
     s_pxpIdle = xSemaphoreCreateBinary();
-    if(s_pxpIdle == NULL) {
+    if (s_pxpIdle == NULL) {
         return LV_RES_INV;
     }
 
@@ -147,20 +146,18 @@ static void _lv_gpu_nxp_pxp_run(void)
     PXP_Start(LV_GPU_NXP_PXP_ID);
 
 #if defined(SDK_OS_FREE_RTOS)
-    if(xSemaphoreTake(s_pxpIdle, portMAX_DELAY) != pdTRUE) {
+    if (xSemaphoreTake(s_pxpIdle, portMAX_DELAY) != pdTRUE) {
         LV_LOG_ERROR("xSemaphoreTake error. Task halted.");
-        for(; ;) ;
+        for (;;)
+            ;
     }
 #else
-    while(s_pxpIdle == false) {
-    }
+    while (s_pxpIdle == false) {}
 #endif
 }
 
-lv_nxp_pxp_cfg_t pxp_default_cfg = {
-    .pxp_interrupt_init = _lv_gpu_nxp_pxp_interrupt_init,
-    .pxp_interrupt_deinit = _lv_gpu_nxp_pxp_interrupt_deinit,
-    .pxp_run = _lv_gpu_nxp_pxp_run
-};
+lv_nxp_pxp_cfg_t pxp_default_cfg = {.pxp_interrupt_init   = _lv_gpu_nxp_pxp_interrupt_init,
+                                    .pxp_interrupt_deinit = _lv_gpu_nxp_pxp_interrupt_deinit,
+                                    .pxp_run              = _lv_gpu_nxp_pxp_run};
 
 #endif /*LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT*/

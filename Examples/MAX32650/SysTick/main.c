@@ -46,7 +46,7 @@
 #include "led.h"
 
 /* **** Definitions **** */
-#define USE_SYSTEM_CLK 1
+#define USE_SYSTEM_CLK         1
 #define SYSTICK_PERIOD_SYS_CLK 4800000 //40ms with 120MHz system clock
 #define SYSTICK_PERIOD_EXT_CLK 3277    //100ms with 32768Hz external RTC clock
 
@@ -67,10 +67,9 @@ int main(void)
     printf("\n************ Blinky SysTick ****************\n");
     uint32_t sysTicks;
 
-    if(USE_SYSTEM_CLK) {
+    if (USE_SYSTEM_CLK) {
         sysTicks = SYSTICK_PERIOD_SYS_CLK;
-    }
-    else {
+    } else {
         sysTicks = SYSTICK_PERIOD_EXT_CLK;
     }
 
@@ -79,12 +78,12 @@ int main(void)
     printf("SysTick Clock = %d Hz\n", MXC_SYS_SysTick_GetFreq());
     printf("SysTick Period = %d ticks\n", sysTicks);
 
-    if(error != E_NO_ERROR) {
+    if (error != E_NO_ERROR) {
         printf("ERROR: Ticks is not valid");
         LED_On(1);
     }
 
     LED_On(0);
 
-    while(1) {}
+    while (1) {}
 }

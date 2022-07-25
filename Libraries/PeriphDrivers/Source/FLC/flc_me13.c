@@ -68,64 +68,52 @@ void MXC_FLC_ME13_Flash_Operation(void)
 
     /* Flush all instruction caches */
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
-    
+
     /* Wait for flush to complete */
     while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {}
 
     // Clear the line fill buffer by reading 2 pages from flash
-    volatile uint32_t *line_addr;
+    volatile uint32_t* line_addr;
     volatile uint32_t __unused line; // __unused attribute removes warning
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
-    line = *line_addr;
+    line      = *line_addr;
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
-    line = *line_addr;
+    line      = *line_addr;
 }
 
 //******************************************************************************
 int MXC_FLC_ME13_GetByAddress(mxc_flc_regs_t** flc, uint32_t addr)
 {
-
-    if(addr < MXC_FLASH1_MEM_BASE && addr >= MXC_FLASH0_MEM_BASE) {
-        *flc =  MXC_FLC0;
-    }
-    else if(addr >= MXC_FLASH1_MEM_BASE &&
-             addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
-        *flc = MXC_FLC1;
-    }
-    else if(addr >= MXC_INFO0_MEM_BASE &&
-             addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+    if (addr < MXC_FLASH1_MEM_BASE && addr >= MXC_FLASH0_MEM_BASE) {
         *flc = MXC_FLC0;
-    }
-    else if(addr >= MXC_INFO1_MEM_BASE &&
-             addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+    } else if (addr >= MXC_FLASH1_MEM_BASE && addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         *flc = MXC_FLC1;
-    }
-    else {
+    } else if (addr >= MXC_INFO0_MEM_BASE && addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+        *flc = MXC_FLC0;
+    } else if (addr >= MXC_INFO1_MEM_BASE && addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+        *flc = MXC_FLC1;
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 
 //******************************************************************************
 int MXC_FLC_ME13_GetPhysicalAddress(uint32_t addr, uint32_t* result)
 {
-    if(addr < MXC_FLASH1_MEM_BASE && addr >= MXC_FLASH0_MEM_BASE) {
+    if (addr < MXC_FLASH1_MEM_BASE && addr >= MXC_FLASH0_MEM_BASE) {
         *result = addr & (MXC_FLASH_MEM_SIZE - 1);
-    }
-    else if(addr >= MXC_FLASH1_MEM_BASE && addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
+    } else if (addr >= MXC_FLASH1_MEM_BASE && addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         *result = (addr - MXC_FLASH_MEM_SIZE) & (MXC_FLASH_MEM_SIZE - 1);
-    }
-    else if(addr >= MXC_INFO0_MEM_BASE && addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+    } else if (addr >= MXC_INFO0_MEM_BASE && addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE)) {
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
-    }
-    else if(addr >= MXC_INFO1_MEM_BASE && addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+    } else if (addr >= MXC_INFO1_MEM_BASE && addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE)) {
         *result = ((addr - MXC_INFO_MEM_SIZE) & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -140,7 +128,7 @@ int MXC_FLC_Init()
 
 //******************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
 __attribute__((section(".flashprog")))
 #endif
@@ -151,7 +139,7 @@ int MXC_FLC_Busy(void)
 
 //******************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
 __attribute__((section(".flashprog")))
 #endif
@@ -160,20 +148,20 @@ int MXC_FLC_PageErase(uint32_t address)
     int err;
     uint32_t addr;
     mxc_flc_regs_t* flc = NULL;
-    
+
     // Get FLC Instance
-    if((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
-    
-    if((err = MXC_FLC_ME13_GetPhysicalAddress(address, &addr)) < E_NO_ERROR) {
+
+    if ((err = MXC_FLC_ME13_GetPhysicalAddress(address, &addr)) < E_NO_ERROR) {
         return err;
     }
-    
-    err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*) flc, addr);
+
+    err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)flc, addr);
     // Flush the cache
     MXC_FLC_ME13_Flash_Operation();
-    
+
     return err;
 }
 
@@ -182,24 +170,24 @@ int MXC_FLC_MassErase(void)
 {
     int err, i;
     mxc_flc_regs_t* flc;
-    
-    for(i = 0; i < MXC_FLC_INSTANCES; i++) {
+
+    for (i = 0; i < MXC_FLC_INSTANCES; i++) {
         flc = MXC_FLC_GET_FLC(i);
-        err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*) flc);
-        
-        if(err != E_NO_ERROR) {
+        err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*)flc);
+
+        if (err != E_NO_ERROR) {
             return err;
         }
-        
+
         MXC_FLC_ME13_Flash_Operation();
     }
-    
+
     return E_NO_ERROR;
 }
 
 //******************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
 __attribute__((section(".flashprog")))
 #endif
@@ -209,32 +197,32 @@ int MXC_FLC_Write128(uint32_t address, uint32_t* data)
     int err;
     mxc_flc_regs_t* flc = NULL;
     uint32_t addr;
-    
+
     // Address checked if it is 128-bit aligned
-    if(address & 0xF) {
+    if (address & 0xF) {
         return E_BAD_PARAM;
     }
-    
+
     // Get FLC Instance
-    if((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
-    
-    if((err = MXC_FLC_ME13_GetPhysicalAddress(address, &addr)) < E_NO_ERROR) {
+
+    if ((err = MXC_FLC_ME13_GetPhysicalAddress(address, &addr)) < E_NO_ERROR) {
         return err;
     }
-    
-    if((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*) flc, addr, data)) != E_NO_ERROR) {
+
+    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)flc, addr, data)) != E_NO_ERROR) {
         return err;
     }
-    
+
     // Flush the cache
     MXC_FLC_ME13_Flash_Operation();
-    
-    if((err = MXC_FLC_Com_VerifyData(address, 4, data)) != E_NO_ERROR) {
+
+    if ((err = MXC_FLC_Com_VerifyData(address, 4, data)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -244,35 +232,34 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
     uint32_t addr, aligned;
     int err;
     mxc_flc_regs_t* flc = NULL;
-    
+
     // Address checked if it is byte addressable
-    if(address & 0x3) {
+    if (address & 0x3) {
         return E_BAD_PARAM;
     }
-    
+
     // Align address to 128-bit word
     aligned = address & 0xfffffff0;
-    
+
     // Get FLC Instance
-    if((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
-    
-    if((err = MXC_FLC_ME13_GetPhysicalAddress(aligned, &addr)) < E_NO_ERROR) {
+
+    if ((err = MXC_FLC_ME13_GetPhysicalAddress(aligned, &addr)) < E_NO_ERROR) {
         return err;
     }
-    
-    if((MXC_MCR->eccen & MXC_F_MCR_ECCEN_FL0ECCEN)
-            ||(MXC_MCR->eccen & MXC_F_MCR_ECCEN_FL1ECCEN)) {
-            
+
+    if ((MXC_MCR->eccen & MXC_F_MCR_ECCEN_FL0ECCEN) ||
+        (MXC_MCR->eccen & MXC_F_MCR_ECCEN_FL1ECCEN)) {
         return E_BAD_STATE;
     }
 
-    err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t*) flc, address, data, addr);
+    err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t*)flc, address, data, addr);
 
     // Flush the cache
     MXC_FLC_ME13_Flash_Operation();
-    
+
     return err;
 }
 
@@ -289,15 +276,15 @@ void MXC_FLC_Read(int address, void* buffer, int len)
 }
 
 //******************************************************************************
-void MXC_FLC_SetFLCInt(mxc_flc_regs_t *flc)
+void MXC_FLC_SetFLCInt(mxc_flc_regs_t* flc)
 {
-    MXC_FLC_RevA_SetFLCInt((mxc_flc_reva_regs_t*) flc);
+    MXC_FLC_RevA_SetFLCInt((mxc_flc_reva_regs_t*)flc);
 }
 
 //******************************************************************************
 mxc_flc_regs_t* MXC_FLC_GetFLCInt(void)
 {
-    return ((mxc_flc_regs_t*) MXC_FLC_RevA_GetFLCInt());
+    return ((mxc_flc_regs_t*)MXC_FLC_RevA_GetFLCInt());
 }
 
 //******************************************************************************
@@ -329,12 +316,12 @@ int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
     int err;
     mxc_flc_regs_t* flc;
-    
-    if((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
+
+    if ((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
-    
-    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*) flc, address);
+
+    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
 }
 
 //******************************************************************************
@@ -342,12 +329,12 @@ int MXC_FLC_LockInfoBlock(uint32_t address)
 {
     int err;
     mxc_flc_regs_t* flc;
-    
-    if((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
+
+    if ((err = MXC_FLC_ME13_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
-    
-    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*) flc, address);
+
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
 }
 
 //******************************************************************************

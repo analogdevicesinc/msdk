@@ -47,83 +47,56 @@
 #include <semphr.h>
 
 /********************************* 		DEFINES		 *************************/
-#define NB_SPRITE	(32)
+#define NB_SPRITE (32)
 
 /********************************* 		TYPE DEF	 *************************/
 
 /********************************* 		VARIABLES	 *************************/
 static const int logo_maxim_data[] = {
-	maxim_logo_only_small_000_bmp,
-	maxim_logo_only_small_001_bmp,
-	maxim_logo_only_small_002_bmp,
-	maxim_logo_only_small_003_bmp,
-	maxim_logo_only_small_004_bmp,
-	maxim_logo_only_small_005_bmp,
-	maxim_logo_only_small_006_bmp,
-	maxim_logo_only_small_007_bmp,
-	maxim_logo_only_small_008_bmp,
-	maxim_logo_only_small_009_bmp,
-	maxim_logo_only_small_010_bmp,
-	maxim_logo_only_small_011_bmp,
-	maxim_logo_only_small_012_bmp,
-	maxim_logo_only_small_013_bmp,
-	maxim_logo_only_small_014_bmp,
-	maxim_logo_only_small_015_bmp,
-	maxim_logo_only_small_016_bmp,
-	maxim_logo_only_small_017_bmp,
-	maxim_logo_only_small_018_bmp,
-	maxim_logo_only_small_019_bmp,
-	maxim_logo_only_small_020_bmp,
-	maxim_logo_only_small_021_bmp,
-	maxim_logo_only_small_022_bmp,
-	maxim_logo_only_small_023_bmp,
-	maxim_logo_only_small_024_bmp,
-	maxim_logo_only_small_025_bmp,
-	maxim_logo_only_small_026_bmp,
-	maxim_logo_only_small_027_bmp,
-	maxim_logo_only_small_028_bmp,
-	maxim_logo_only_small_029_bmp,
-	maxim_logo_only_small_030_bmp,
-	maxim_logo_only_small_031_bmp
-};
+    maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp, maxim_logo_only_small_002_bmp,
+    maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp, maxim_logo_only_small_005_bmp,
+    maxim_logo_only_small_006_bmp, maxim_logo_only_small_007_bmp, maxim_logo_only_small_008_bmp,
+    maxim_logo_only_small_009_bmp, maxim_logo_only_small_010_bmp, maxim_logo_only_small_011_bmp,
+    maxim_logo_only_small_012_bmp, maxim_logo_only_small_013_bmp, maxim_logo_only_small_014_bmp,
+    maxim_logo_only_small_015_bmp, maxim_logo_only_small_016_bmp, maxim_logo_only_small_017_bmp,
+    maxim_logo_only_small_018_bmp, maxim_logo_only_small_019_bmp, maxim_logo_only_small_020_bmp,
+    maxim_logo_only_small_021_bmp, maxim_logo_only_small_022_bmp, maxim_logo_only_small_023_bmp,
+    maxim_logo_only_small_024_bmp, maxim_logo_only_small_025_bmp, maxim_logo_only_small_026_bmp,
+    maxim_logo_only_small_027_bmp, maxim_logo_only_small_028_bmp, maxim_logo_only_small_029_bmp,
+    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp};
 
-static volatile int g_animation_status= 0;
+static volatile int g_animation_status = 0;
 static xSemaphoreHandle xAnimLock;
 
 /******************************   STATIC FUNCTIONS  **************************/
 
-
 /******************************   PUBLIC FUNCTIONS  **************************/
 void logo_animation_start(void)
 {
-	g_animation_status = 1;
-	xSemaphoreGive( xAnimLock );
+    g_animation_status = 1;
+    xSemaphoreGive(xAnimLock);
 }
 
 void logo_animation_stop(void)
 {
-	// stop animation
-	g_animation_status = 0;
+    // stop animation
+    g_animation_status = 0;
 }
 
-void vAnimTask( void *pvParameters )
+void vAnimTask(void* pvParameters)
 {
-	(void) pvParameters;
-	int nb = 0;
+    (void)pvParameters;
+    int nb = 0;
 
     xAnimLock = xSemaphoreCreateBinary();
 
-	for( ;; )  {
+    for (;;) {
+        while (xSemaphoreTake(xAnimLock, 0xFFFF) != pdTRUE) { ; }
 
-		while (xSemaphoreTake( xAnimLock, 0xFFFF ) != pdTRUE) {
-			;
-		}
-
-		while (g_animation_status) {
-			MXC_TFT_ShowImage(4, 10, logo_maxim_data[nb]);
-			nb = (nb+1) % NB_SPRITE;
-			vTaskDelay( 50 );
-		}
-	}
+        while (g_animation_status) {
+            MXC_TFT_ShowImage(4, 10, logo_maxim_data[nb]);
+            nb = (nb + 1) % NB_SPRITE;
+            vTaskDelay(50);
+        }
+    }
 }
-

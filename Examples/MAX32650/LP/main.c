@@ -63,22 +63,22 @@
 #include "uart.h"
 #include "nvic_table.h"
 
-#define DELAY_IN_SEC    2
-#define USE_CONSOLE     1
+#define DELAY_IN_SEC 2
+#define USE_CONSOLE  1
 
-#define USE_BUTTON      1
-#define USE_ALARM       0
+#define USE_BUTTON 1
+#define USE_ALARM  0
 
-#define DO_SLEEP        1
-#define DO_BACKGROUND   0
-#define DO_DEEPSLEEP    1
-#define DO_BACKUP       0
+#define DO_SLEEP      1
+#define DO_BACKGROUND 0
+#define DO_DEEPSLEEP  1
+#define DO_BACKUP     0
 
 #if (!(USE_BUTTON || USE_ALARM))
-    #error "You must set either USE_BUTTON or USE_ALARM to 1."
+#error "You must set either USE_BUTTON or USE_ALARM to 1."
 #endif
 #if (USE_BUTTON && USE_ALARM)
-    #error "You must select either USE_BUTTON or USE_ALARM, not both."
+#error "You must select either USE_BUTTON or USE_ALARM, not both."
 #endif
 
 // *****************************************************************************
@@ -87,7 +87,7 @@ volatile int alarmed;
 void alarmHandler(void)
 {
     int flags = MXC_RTC_GetFlags();
-    alarmed = 1;
+    alarmed   = 1;
 
     if (flags & MXC_F_RTC_CTRL_SSEC_ALARM_FL) {
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_SSEC_ALARM_FL);
@@ -102,20 +102,27 @@ void alarmHandler(void)
 void setTrigger(int waitForTrigger)
 {
     alarmed = 0;
-    while(MXC_RTC_Init(0, 0) == E_BUSY);
-    while(MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY);
-    while(MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY);
-    while(MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY);
-    while(MXC_RTC_Start() == E_BUSY);
+    while (MXC_RTC_Init(0, 0) == E_BUSY)
+        ;
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY)
+        ;
+    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY)
+        ;
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY)
+        ;
+    while (MXC_RTC_Start() == E_BUSY)
+        ;
 
     if (waitForTrigger) {
-        while(!alarmed);
+        while (!alarmed)
+            ;
     }
 
-    // Wait for serial transactions to complete.
-    #if USE_CONSOLE
-    while(MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
-    #endif // USE_CONSOLE
+// Wait for serial transactions to complete.
+#if USE_CONSOLE
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
+#endif // USE_CONSOLE
 }
 #endif // USE_ALARM
 
@@ -133,21 +140,22 @@ void setTrigger(int waitForTrigger)
     int tmp;
 
     if (waitForTrigger) {
-        while(PB_Get(0) == 0);
+        while (PB_Get(0) == 0)
+            ;
 
         // Debounce the button press.
-        for (tmp = 0; tmp < 0x800000; tmp++) {
-            __NOP();
-        }
+        for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
     }
 
     // Wait for button to be "up" (unpressed).
-    while(PB_Get(0) == 1);
+    while (PB_Get(0) == 1)
+        ;
 
-    // Wait for serial transactions to complete.
-    #if USE_CONSOLE
-    while(MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
-    #endif // USE_CONSOLE
+// Wait for serial transactions to complete.
+#if USE_CONSOLE
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
+#endif // USE_CONSOLE
 }
 #endif // USE_BUTTON
 
@@ -208,7 +216,7 @@ int main(void)
     MXC_LP_DisableSRAM2();
     MXC_LP_DisableSRAM1();
     MXC_LP_DisableSRAM6();
-    
+
     MXC_LP_EnableSRAM0(); // Global variables are in RAM0
 
 #if USE_CONSOLE
@@ -254,8 +262,7 @@ int main(void)
 #endif // USE_CONSOLE
         setTrigger(0);
         MXC_LP_EnterBackupMode();
-#endif // DO_BACKUP
+#endif // DO_BACKUP \
        //
     }
 }
-

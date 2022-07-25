@@ -31,7 +31,6 @@
  *
  ******************************************************************************/
 
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
@@ -51,9 +50,11 @@
 #include "camera.h"
 #include "example_config.h"
 
-#define CNN_NUM_OUTPUTS     27     // number of classes
-#define NUM_OUTPUTS CNN_NUM_OUTPUTS
-const char classes[CNN_NUM_OUTPUTS][10] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Empty", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+#define CNN_NUM_OUTPUTS 27 // number of classes
+#define NUM_OUTPUTS     CNN_NUM_OUTPUTS
+const char classes[CNN_NUM_OUTPUTS][10] = {"A", "B", "C", "D", "E", "F",     "G", "H", "I",
+                                           "J", "K", "L", "M", "N", "Empty", "O", "P", "Q",
+                                           "R", "S", "T", "U", "V", "W",     "X", "Y", "Z"};
 
 volatile uint32_t cnn_time; // Stopwatch
 uint32_t input_0_camera[1024];
@@ -63,7 +64,8 @@ uint32_t input_2_camera[1024];
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1);
+    while (1)
+        ;
 }
 
 #ifdef USE_SAMPLEDATA
@@ -85,19 +87,22 @@ void load_input(void)
     const uint32_t* in1 = input_1_camera;
     const uint32_t* in2 = input_2_camera;
 #endif
-    
+
     for (i = 0; i < 1024; i++) {
-        while (((*((volatile uint32_t*) 0x50000004) & 1)) != 0);  // Wait for FIFO 0
-        
-        *((volatile uint32_t*) 0x50000008) = *in0++;  // Write FIFO 0
-        
-        while (((*((volatile uint32_t*) 0x50000004) & 2)) != 0);  // Wait for FIFO 1
-        
-        *((volatile uint32_t*) 0x5000000c) = *in1++;  // Write FIFO 1
-        
-        while (((*((volatile uint32_t*) 0x50000004) & 4)) != 0);  // Wait for FIFO 2
-        
-        *((volatile uint32_t*) 0x50000010) = *in2++;  // Write FIFO 2
+        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
+            ; // Wait for FIFO 0
+
+        *((volatile uint32_t*)0x50000008) = *in0++; // Write FIFO 0
+
+        while (((*((volatile uint32_t*)0x50000004) & 2)) != 0)
+            ; // Wait for FIFO 1
+
+        *((volatile uint32_t*)0x5000000c) = *in1++; // Write FIFO 1
+
+        while (((*((volatile uint32_t*)0x50000004) & 4)) != 0)
+            ; // Wait for FIFO 2
+
+        *((volatile uint32_t*)0x50000010) = *in2++; // Write FIFO 2
     }
 }
 
@@ -106,12 +111,11 @@ static int32_t ml_data[CNN_NUM_OUTPUTS];
 static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 static int32_t ml_data_avg[CNN_NUM_OUTPUTS];
 
-uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
-                        int16_t* out_class, double* out_prob);
+uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, double* out_prob);
 void softmax_layer(void)
 {
-    cnn_unload((uint32_t*) ml_data);
-    softmax_q17p14_q15((const q31_t*) ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t*)ml_data);
+    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 /* **************************************************************************** */
@@ -137,13 +141,13 @@ void TFT_Print(char* str, int x, int y, int font)
     // fonts id
     text_t text;
     text.data = str;
-    text.len = 36;
+    text.len  = 36;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
-#define X_OFFSET    47
-#define Y_OFFSET    30
-#define SCALE       2.2
+#define X_OFFSET 47
+#define Y_OFFSET 30
+#define SCALE    2.2
 
 /* **************************************************************************** */
 void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int length)
@@ -171,7 +175,8 @@ void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int 
             g = ptr1[j];
             b = ptr2[j];
 #ifdef BOARD_EVKIT_V1
-            color  = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+            color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) |
+                     (r & 0xF8));
 #endif
 #ifdef BOARD_FTHR_REVA
             color = RGB(r, g, b); // convert to RGB565
@@ -192,17 +197,17 @@ void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int 
 /* **************************************************************************** */
 void process_camera_img(uint32_t* data0, uint32_t* data1, uint32_t* data2)
 {
-    uint8_t*   frame_buffer;
-    uint32_t  imgLen;
-    uint32_t  w, h, x, y;
+    uint8_t* frame_buffer;
+    uint32_t imgLen;
+    uint32_t w, h, x, y;
     uint8_t* ptr0;
     uint8_t* ptr1;
     uint8_t* ptr2;
     uint8_t* buffer;
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
-    ptr0 = (uint8_t*)data0;
-    ptr1 = (uint8_t*)data1;
-    ptr2 = (uint8_t*)data2;
+    ptr0   = (uint8_t*)data0;
+    ptr1   = (uint8_t*)data1;
+    ptr2   = (uint8_t*)data2;
     buffer = frame_buffer;
     for (y = 0; y < h; y++) {
         for (x = 0; x < w; x++, ptr0++, ptr1++, ptr2++) {
@@ -211,7 +216,7 @@ void process_camera_img(uint32_t* data0, uint32_t* data1, uint32_t* data2)
             *ptr1 = (*buffer); // green
             buffer++;
             *ptr2 = (*buffer); // blue
-            buffer += 2; // skip msb=0 for RGB888 & DMA
+            buffer += 2;       // skip msb=0 for RGB888 & DMA
         }
     }
 }
@@ -268,7 +273,8 @@ void convert_img_signed_to_unsigned(uint32_t* data0, uint32_t* data1, uint32_t* 
 /* **************************************************************************** */
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*) 0x50100000) & (1 << 12)) != 1 << 12) ;
+    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
+        ;
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
 }
@@ -279,7 +285,6 @@ int gen_random_no(int randNo)
     return ((rand() % randNo) + 1);
 }
 
-
 /* **************************************************************************** */
 int main(void)
 {
@@ -287,9 +292,9 @@ int main(void)
     int digs, tens;
     int ret = 0;
     char buff[TFT_BUFF_SIZE];
-    int16_t out_class = -1;
+    int16_t out_class  = -1;
     double probability = 0;
-#if defined (BOARD_FTHR_REVA)
+#if defined(BOARD_FTHR_REVA)
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
     MXC_Delay(200000);
     /* Enable camera power */
@@ -312,14 +317,15 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = MXC_GPIO2;
     gpio_out.mask = MXC_GPIO_PIN_5;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
     /* Initialize TFT display */
     printf("Init LCD.\n");
 #ifdef BOARD_EVKIT_V1
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
+                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
     MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
     MXC_TFT_ClearScreen();
     MXC_TFT_ShowImage(0, 0, image_bitmap_1);
@@ -329,7 +335,7 @@ int main(void)
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_270);
     MXC_TFT_ShowImage(0, 0, image_bitmap_1);
-    MXC_TFT_SetForeGroundColor(WHITE);   // set chars to white
+    MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
 #endif
     //MXC_Delay(1000000);
     // Initialize camera.
@@ -338,7 +344,8 @@ int main(void)
     // Initialize DMA for camera interface
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
-    ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel);
+    ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA,
+                       dma_channel);
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
@@ -355,11 +362,12 @@ int main(void)
     sprintf(buff, "PRESS PB1 TO START!          ");
     TFT_Print(buff, 55, 180, font_2);
     printf("********** Press PB1 to capture an image **********\r\n");
-    while (!PB_Get(0));
-    int frame = 0;
-    int skip = 0;
+    while (!PB_Get(0))
+        ;
+    int frame      = 0;
+    int skip       = 0;
     int continuous = 0;
- #define SKIP  3
+#define SKIP 3
     while (1) {
         //while(!PB_Get(0));
         // MXC_TFT_ClearScreen();
@@ -392,17 +400,17 @@ int main(void)
         }
         memset(buff, 32, TFT_BUFF_SIZE);
         convert_img_unsigned_to_signed(input_0_camera, input_1_camera, input_2_camera);
-        cnn_init(); // Bring state machine into consistent state
+        cnn_init();         // Bring state machine into consistent state
         cnn_load_weights(); // Load kernels
         cnn_load_bias();
         cnn_configure(); // Configure state machine
-        cnn_start(); // Start CNN processing
-        load_input(); // Load data input via FIFO
+        cnn_start();     // Start CNN processing
+        load_input();    // Load data input via FIFO
         while (cnn_time == 0) {
-            __WFI();    // Wait for CNN
+            __WFI(); // Wait for CNN
         }
         // softmax_layer();
-        cnn_unload((uint32_t*) ml_data);
+        cnn_unload((uint32_t*)ml_data);
         printf("Time for CNN: %d us\n\n", cnn_time);
         for (int i = 0; i < CNN_NUM_OUTPUTS; i++) {
             ml_data_avg[i] += ml_data[i];
@@ -412,7 +420,7 @@ int main(void)
         if (skip % SKIP != 0) {
             continue;
         }
-        softmax_q17p14_q15((const q31_t*) ml_data_avg, CNN_NUM_OUTPUTS, ml_softmax);
+        softmax_q17p14_q15((const q31_t*)ml_data_avg, CNN_NUM_OUTPUTS, ml_softmax);
         printf("Classification results:\n");
         for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
             digs = (1000 * (ml_softmax[i]) + 0x4000) >> 15;
@@ -442,53 +450,49 @@ int main(void)
 }
 
 /* **************************************************************************** */
-uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
-                        int16_t* out_class, double* out_prob)
+uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, double* out_prob)
 {
     char buff[TFT_BUFF_SIZE];
     int32_t temp[NUM_OUTPUTS];
-    q15_t max = 0;    // soft_max output is 0->32767
-    int32_t max_ml = 1 << 31; // ml before going to soft_max
+    q15_t max         = 0;       // soft_max output is 0->32767
+    int32_t max_ml    = 1 << 31; // ml before going to soft_max
     int16_t max_index = -1;
     memcpy(temp, ml_data, sizeof(int32_t) * NUM_OUTPUTS);
     /* find the top 5 classes */
     for (int top = 0; top < 5; top++) {
         /* find the class with highest */
         for (int i = 0; i < NUM_OUTPUTS; i++) {
-            if ((int32_t) temp[i] > max_ml) {
-                max_ml = (int32_t) temp[i];
-                max = ml_soft[i];
+            if ((int32_t)temp[i] > max_ml) {
+                max_ml    = (int32_t)temp[i];
+                max       = ml_soft[i];
                 max_index = i;
             }
         }
         if (top == 0) {
             *out_class = max_index;
-            *out_prob = 100.0 * max / 32768.0;
+            *out_prob  = 100.0 * max / 32768.0;
             /// MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
-            sprintf(buff, "%s (%0.1f%%)", classes[max_index],
-                    (double) 100.0 * max / 32768.0);
+            sprintf(buff, "%s (%0.1f%%)", classes[max_index], (double)100.0 * max / 32768.0);
             TFT_Print(buff, 100, 8, font_1);
             //sprintf(buff, "__________________________ ");
             //TFT_Print(buff, 1, 50, urw_gothic_12_white_bg_grey);
             //sprintf(buff, "Top classes:");
             //TFT_Print(buff, 1, 80, urw_gothic_13_white_bg_grey);
-        }
-        else {
+        } else {
             //sprintf(buff, "%s (%0.1f%%)", classes[max_index],
             //         (double) 100.0 * max / 32768.0);
             //TFT_Print(buff, 20, 80 + 20 * top, urw_gothic_12_white_bg_grey);
         }
         /* reset for next top */
         temp[max_index] = 1 << 31;
-        max_ml = 1 << 31;
-        max_index = -1;
+        max_ml          = 1 << 31;
+        max_index       = -1;
     }
     /* check if probability is low */
     if (*out_prob > 50) {
         return 1;
-    }
-    else {
+    } else {
         return 0;
     }
 }

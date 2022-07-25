@@ -37,11 +37,11 @@
 #include "max78000.h"
 #include "gcr_regs.h"
 
-volatile uint32_t mailbox __attribute__ ((section (".mailbox")));
-uint32_t SystemCoreClock __attribute__ ((section (".shared")));
+volatile uint32_t mailbox __attribute__((section(".mailbox")));
+uint32_t SystemCoreClock __attribute__((section(".shared")));
 
 void __enable_irq(void)
-{   
+{
     // Set the MIE bit if we're outside the interrupt context
     __asm volatile("csrw mstatus, 0x8");
 }
@@ -82,9 +82,9 @@ __weak int Board_Init(void)
  */
 __weak void SystemInit(void)
 {
-  // ARM core does this stuff for us
-  // but riscv needs variables initialized
-  SystemCoreClockUpdate();
+    // ARM core does this stuff for us
+    // but riscv needs variables initialized
+    SystemCoreClockUpdate();
 
-  Board_Init();
+    Board_Init();
 }

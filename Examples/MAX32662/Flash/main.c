@@ -51,9 +51,9 @@
 #include "gcr_regs.h"
 
 /***** Definitions *****/
-#define TESTSIZE        8192		    // Page size
+#define TESTSIZE 8192 // Page size
 
-#define DATASIZE 		(TESTSIZE / 2)  // Half a page size to prevent RAM overflow
+#define DATASIZE (TESTSIZE / 2) // Half a page size to prevent RAM overflow
 
 #define MXC_FLASH_MEM_SIZE_TEST MXC_FLASH_MEM_SIZE
 
@@ -91,7 +91,7 @@ int flash_fill(uint32_t address, uint32_t size, uint32_t data)
         // Write remaining bytes in a 32-bit unit
 
         uint32_t last_word = 0xffffffff;
-        uint32_t mask = 0xff;
+        uint32_t mask      = 0xff;
 
         while (size > 0) {
             last_word &= (data | ~mask);
@@ -116,15 +116,15 @@ int flash_fill(uint32_t address, uint32_t size, uint32_t data)
 int flash_verify(uint32_t address, uint32_t length, uint8_t* data)
 {
     volatile uint8_t* ptr;
-    
-    
-    for (ptr = (uint8_t*) address; ptr < (uint8_t*)(address + length); ptr++, data++) {
+
+    for (ptr = (uint8_t*)address; ptr < (uint8_t*)(address + length); ptr++, data++) {
         if (*ptr != *data) {
-            printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int) ptr, (unsigned int) *ptr, (unsigned int) *data);
+            printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
+                   (unsigned int)*data);
             return E_UNKNOWN;
         }
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -133,14 +133,13 @@ int flash_verify(uint32_t address, uint32_t length, uint8_t* data)
 int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
     uint32_t* ptr;
-    
-    for (ptr = (uint32_t*) startaddr; ptr < (uint32_t*)(startaddr + length); ptr++) {
-    
+
+    for (ptr = (uint32_t*)startaddr; ptr < (uint32_t*)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
         }
     }
-    
+
     return 1;
 }
 
@@ -157,18 +156,17 @@ int check_not_erased(uint32_t startaddr, uint32_t length)
 {
     uint32_t* ptr;
     int erasedvaluefound = 0;
-    
-    for (ptr = (uint32_t*) startaddr; ptr < (uint32_t*)(startaddr + length); ptr++) {
+
+    for (ptr = (uint32_t*)startaddr; ptr < (uint32_t*)(startaddr + length); ptr++) {
         if (*ptr == 0xFFFFFFFF) {
             if (!erasedvaluefound) {
                 erasedvaluefound = 1;
-            }
-            else {
+            } else {
                 return 0;
             }
         }
     }
-    
+
     return 1;
 }
 
@@ -179,15 +177,15 @@ void FLC_IRQHandler(void)
     uint32_t temp;
     isr_cnt++;
     temp = MXC_FLC->intr;
-    
+
     if (temp & MXC_F_FLC_INTR_DONE_IF) {
         MXC_FLC->intr &= ~MXC_F_FLC_INTR_DONE_IF;
     }
-    
+
     if (temp & MXC_F_FLC_INTR_AF_IF) {
         MXC_FLC->intr &= ~MXC_F_FLC_INTR_AF_IF;
     }
-    
+
     isr_flags = temp;
 }
 
@@ -196,7 +194,7 @@ void flash_init(void)
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
     MXC_FLC->clkdiv = 24;
-    
+
     MXC_FLC_ClearFlags(0x3);
     // Setup and enable interrupt
     MXC_NVIC_SetVector(FLC_IRQn, FLC_IRQHandler);
@@ -209,7 +207,6 @@ void flash_init(void)
 void interrupt_enabler(mxc_flc_regs_t* regs)
 {
     regs->intr = (MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_AF_IE);
-    
 }
 
 //******************************************************************************
@@ -217,88 +214,88 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
 {
     int retval;
     uint32_t start_align, start_len, end_align, end_len, i;
-    
+
     MXC_ASSERT(buffer);
-    
+
     // Align start and end on page boundaries, calculate length of data to buffer
     start_align = start - (start % MXC_FLASH_PAGE_SIZE);
-    start_len = (start % MXC_FLASH_PAGE_SIZE);
-    end_align = end - (end % MXC_FLASH_PAGE_SIZE);
-    end_len = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
-    
+    start_len   = (start % MXC_FLASH_PAGE_SIZE);
+    end_align   = end - (end % MXC_FLASH_PAGE_SIZE);
+    end_len     = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
+
     // Make sure the length of buffer is sufficient
     if ((length < start_len) || (length < end_len)) {
         return E_BAD_PARAM;
     }
-    
-    
+
     // Start and end address are in the same page
     if (start_align == end_align) {
         if (length < (start_len + end_len)) {
             return E_BAD_PARAM;
         }
-        
+
         // Buffer first page data and last page data, erase and write
-        memcpy(buffer, (void*) start_align, start_len);
-        memcpy(&buffer[start_len], (void*) end, end_len);
+        memcpy(buffer, (void*)start_align, start_len);
+        memcpy(&buffer[start_len], (void*)end, end_len);
         retval = MXC_FLC_PageErase(start_align);
-        
+
         if (retval != E_NO_ERROR) {
             return retval;
         }
-        
+
         retval = MXC_FLC_Write(start_align, start_len, buffer);
-        
+
         if (retval != E_NO_ERROR) {
             return retval;
         }
-        
+
         retval = MXC_FLC_Write(end, end_len, &buffer[start_len]);
-        
+
         if (retval != E_NO_ERROR) {
             return retval;
         }
-        
+
         return E_NO_ERROR;
     }
-    
+
     // Buffer, erase, and write the data in the first page
-    memcpy(buffer, (void*) start_align, start_len);
+    memcpy(buffer, (void*)start_align, start_len);
     retval = MXC_FLC_PageErase(start_align);
-    
+
     if (retval != E_NO_ERROR) {
         return retval;
     }
-    
+
     retval = MXC_FLC_Write(start_align, start_len, buffer);
-    
+
     if (retval != E_NO_ERROR) {
         return retval;
     }
-    
+
     // Buffer, erase, and write the data in the last page
-    memcpy(buffer, (void*) end, end_len);
+    memcpy(buffer, (void*)end, end_len);
     retval = MXC_FLC_PageErase(end_align);
-    
+
     if (retval != E_NO_ERROR) {
         return retval;
     }
-    
+
     retval = MXC_FLC_Write(end, end_len, buffer);
-    
+
     if (retval != E_NO_ERROR) {
         return retval;
     }
-    
+
     // Erase the remaining pages. MultiPageErase will not erase if start is greater than end.
-    for (i = (start_align + MXC_FLASH_PAGE_SIZE); i < (end_align - MXC_FLASH_PAGE_SIZE); i += MXC_FLASH_PAGE_SIZE) {
+    for (i = (start_align + MXC_FLASH_PAGE_SIZE); i < (end_align - MXC_FLASH_PAGE_SIZE);
+         i += MXC_FLASH_PAGE_SIZE) {
         retval = MXC_FLC_PageErase(i);
-        
+
         if (retval != E_NO_ERROR) {
             break;
         }
     }
-    
+
     return retval;
 }
 
@@ -318,17 +315,15 @@ int main(void)
     // Clear and enable flash programming interrupts
     MXC_FLC_EnableInt((MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_AF_IE));
     isr_flags = 0;
-    isr_cnt = 0;
+    isr_cnt   = 0;
 
     error_status = MXC_FLC_MassErase();
 
     if (error_status == E_NO_ERROR) {
         printf("Flash erased.\n");
-    }
-    else if (error_status == E_BAD_STATE) {
+    } else if (error_status == E_BAD_STATE) {
         printf("Flash erase operation is not allowed in this state.\n");
-    }
-    else {
+    } else {
         printf("Fail to erase flash's content.\n");
         fail += 1;
     }
@@ -342,8 +337,7 @@ int main(void)
     // Check flash's content
     if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_SIZE_TEST)) {
         printf("Flash mass erase is verified.\n");
-    }
-    else {
+    } else {
         printf("Flash mass erase failed.\n");
         fail += 1;
     }
@@ -352,9 +346,7 @@ int main(void)
     printf("Size of testdata : %d\n", sizeof(testdata));
 
     // Initializing Test Data
-    for (i = 0; i < DATASIZE; i++) {
-        testdata[i] = i;
-    }
+    for (i = 0; i < DATASIZE; i++) { testdata[i] = i; }
 
     MXC_ICC_Disable();
     i = 0;
@@ -362,7 +354,7 @@ int main(void)
     for (testaddr = (MXC_FLASH_MEM_BASE); i < TESTSIZE; testaddr += 4) {
         // Clear and enable flash programming interrupts
         isr_flags = 0;
-        isr_cnt = 0;
+        isr_cnt   = 0;
 
         // Write a word
         if (MXC_FLC_Write(testaddr, 4, &testdata[i % DATASIZE]) != E_NO_ERROR) {
@@ -373,12 +365,12 @@ int main(void)
 
         // Checking Interrupt
         if ((isr_cnt != 1) && (isr_flags != MXC_F_FLC_INTR_DONE_IF)) {
-            printf("Interrupt did not occur at 0x%08x\n", (unsigned int) testaddr);
+            printf("Interrupt did not occur at 0x%08x\n", (unsigned int)testaddr);
             fail += 1;
         }
 
         // Verify that word is written properly
-        if (flash_verify(testaddr, 4, (uint8_t*) &testdata[i % DATASIZE]) != E_NO_ERROR) {
+        if (flash_verify(testaddr, 4, (uint8_t*)&testdata[i % DATASIZE]) != E_NO_ERROR) {
             printf("Word is not written properly.\n");
             fail += 1;
             break;
@@ -386,52 +378,48 @@ int main(void)
 
         if (i < 16) {
             printf("Word %d written properly and has been verified.\n", i);
-        }
-        else if (i == 16) {
+        } else if (i == 16) {
             printf("Continuing for %d more words...\n", TESTSIZE - i);
         }
 
         i++;
     }
-    
+
     //Page Erase
     MXC_FLC_PageErase(MXC_FLASH_MEM_BASE);
-    
+
     if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_PAGE_SIZE)) {
         printf("Page Erase is verified\n");
-    }
-    else {
+    } else {
         printf("Page Erase failed\n");
         fail += 1;
     }
 
     // Erase parital pages or wide range of pages and keep the data on the page not inbetween start and end.
     start = (MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE + 0x500);
-	end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
+    end   = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
     flash_erase(start, end, buffer, 0x1000);
 
     if (check_erased(start, ((end - start) - 0x1000))) {
         printf("Flash Erase is verified\n");
-    }
-    else {
+    } else {
         printf("Flash Erase failed\n");
         fail += 1;
     }
-    
+
     MXC_ICC_Enable();
-    
-    
+
     printf("\n");
-    
+
     if (fail == 0) {
         printf("Example Succeeded\n");
-    }
-    else {
+    } else {
         printf("Example Failed\n");
     }
-    
-    while (1);
-    
+
+    while (1)
+        ;
+
     return 0;
 }
 

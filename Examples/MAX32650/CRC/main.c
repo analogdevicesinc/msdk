@@ -50,7 +50,7 @@
 /* **** Globals **** */
 
 /* **** Functions **** */
-int crc_sw(uint8_t *data, uint8_t len, uint32_t polynomial)
+int crc_sw(uint8_t* data, uint8_t len, uint32_t polynomial)
 {
     int i, j;
     uint32_t temp;
@@ -78,7 +78,7 @@ int main(void)
     printf("\n***** CRC Example *****\n");
 
     uint8_t data[] = {0x14, 0x78, 0x9C, 0xDE};
-    uint8_t len = sizeof(data)/sizeof(data[0]);
+    uint8_t len    = sizeof(data) / sizeof(data[0]);
     uint32_t sw_crc;
     uint32_t hw_crc;
 
@@ -121,7 +121,7 @@ int main(void)
     sw_crc = crc_sw(data, len, MXC_TPU_CRC32_ETHERNET);
 
     //Generate hardware result
-    if(MXC_TPU_CRC(data, len, MXC_TPU_CRC32_ETHERNET, &hw_crc) != E_SUCCESS) {
+    if (MXC_TPU_CRC(data, len, MXC_TPU_CRC32_ETHERNET, &hw_crc) != E_SUCCESS) {
         printf("Failed CRYPTO_CRC()\n");
         return -1;
     }
@@ -129,7 +129,7 @@ int main(void)
     printf("Calculated CRC = 0x%08x\n", hw_crc);
     printf("Expected CRC   = 0x%08x\n", sw_crc);
 
-    if(hw_crc != sw_crc) {
+    if (hw_crc != sw_crc) {
         printf("CRC Failed!\n");
     } else {
         printf("CRC Passed!\n");

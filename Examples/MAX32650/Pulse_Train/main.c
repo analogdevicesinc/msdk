@@ -50,9 +50,9 @@
 #include "pt.h"
 
 /***** Definitions *****/
-#define    ALL_PT    0xFFFF
+#define ALL_PT 0xFFFF
 /***** Globals *****/
-#define PTG	MXC_PTG
+#define PTG MXC_PTG
 
 /***** Functions *****/
 
@@ -60,12 +60,13 @@
 static void PB_Start_Stop_handler()
 {
     uint32_t enablePTMask;
-    for(int i = 0; i < 20000; i++);
+    for (int i = 0; i < 20000; i++)
+        ;
 
     //Check if any pulse trains are running
     if (MXC_PT_IsActive(PTG, ALL_PT)) {
         //stop all pulse trains
-    	MXC_PT_Stop(PTG, ALL_PT);
+        MXC_PT_Stop(PTG, ALL_PT);
     } else {
         //start PT14 and PT15
         enablePTMask = MXC_F_PTG_ENABLE_PT14 | MXC_F_PTG_ENABLE_PT15;
@@ -77,7 +78,7 @@ static void PB_Start_Stop_handler()
 void PT_IRQHandler(void)
 {
     printf("flags = 0x%08x\n", MXC_PT_GetFlags(PTG));
-    
+
     MXC_PT_ClearFlags(PTG, ALL_PT);
 }
 
@@ -86,17 +87,17 @@ void ContinuousPulseTrain(void)
 {
     //Setup GPIO to PT output function
     //GPIO P2.28 uses PT14
-    
+
     //setup PT configuration
     mxc_pt_cfg_t ptConfig;
-    ptConfig.channel = 14;							//PT14
-    ptConfig.bps = 2;           					//bit rate
-    ptConfig.ptLength = 5;      					//bits
-    ptConfig.pattern = 0x16;
-    ptConfig.loop = 0;          					//continuous loop
-    ptConfig.loopDelay = 0;
+    ptConfig.channel      = 14; //PT14
+    ptConfig.bps          = 2;  //bit rate
+    ptConfig.ptLength     = 5;  //bits
+    ptConfig.pattern      = 0x16;
+    ptConfig.loop         = 0; //continuous loop
+    ptConfig.loopDelay    = 0;
     ptConfig.outputSelect = 0;
-    
+
     MXC_PT_Config(PTG, &ptConfig);
 }
 
@@ -105,9 +106,9 @@ void SquareWave(void)
 {
     //Setup GPIO to PT output function
     //GPIO P0.23 uses PT15
-    
-    uint32_t freq = 10;//Hz
-    MXC_PT_SqrWaveConfig(PTG, 15, freq, 0);					//PT15
+
+    uint32_t freq = 10;                     //Hz
+    MXC_PT_SqrWaveConfig(PTG, 15, freq, 0); //PT15
 }
 
 // *****************************************************************************
@@ -122,13 +123,13 @@ int main(void)
     //Setup push button to start/stop All pulse train
     PB_RegisterCallback(1, (pb_callback)PB_Start_Stop_handler);
 
-    NVIC_EnableIRQ(PT_IRQn);         	  //enabled default interrupt handler
-    MXC_PT_EnableInt(PTG, ALL_PT);        //enabled interrupts for all PT
-    MXC_PT_Init(PTG, MXC_PT_CLK_DIV1);    //initialize pulse trains
-    
+    NVIC_EnableIRQ(PT_IRQn);           //enabled default interrupt handler
+    MXC_PT_EnableInt(PTG, ALL_PT);     //enabled interrupts for all PT
+    MXC_PT_Init(PTG, MXC_PT_CLK_DIV1); //initialize pulse trains
+
     //configure and start pulse trains
     ContinuousPulseTrain();
     SquareWave();
-    
+
     while (1) {}
 }

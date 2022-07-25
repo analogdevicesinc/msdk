@@ -74,7 +74,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1);
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -157,7 +158,7 @@ int Debug_Init(void)
     MXC_GPIO1->en0_clr = 0x0f;
     MXC_GPIO1->en1_set = 0x0f;
     MXC_GPIO1->en2_clr = 0x0f;
-    
+
     return E_NO_ERROR;
 }
 #endif // __riscv

@@ -36,31 +36,30 @@
 #include "gcr_regs.h"
 #include "mxc_device.h"
 
-uint32_t MXC_EMCC_ID (mxc_emcc_info_t id)
+uint32_t MXC_EMCC_ID(mxc_emcc_info_t id)
 {
-    return MXC_EMCC_RevA_ID ((mxc_emcc_reva_regs_t*) MXC_EMCC, id);
+    return MXC_EMCC_RevA_ID((mxc_emcc_reva_regs_t*)MXC_EMCC, id);
 }
 
 uint32_t MXC_EMCC_CacheSize(void)
 {
-    return MXC_EMCC_RevA_CacheSize((mxc_emcc_reva_regs_t*) MXC_EMCC);
-    
+    return MXC_EMCC_RevA_CacheSize((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 uint32_t MXC_EMCC_MemSize(void)
 {
-    return MXC_EMCC_RevA_MemSize((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    return MXC_EMCC_RevA_MemSize((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 void MXC_EMCC_Enable(void)
 {
     MXC_GCR->sysctrl &= ~MXC_F_GCR_SYSCTRL_SYSCACHE_DIS;
-    MXC_EMCC_RevA_Enable((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    MXC_EMCC_RevA_Enable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 void MXC_EMCC_Disable(void)
 {
-    MXC_EMCC_RevA_Disable((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    MXC_EMCC_RevA_Disable((mxc_emcc_reva_regs_t*)MXC_EMCC);
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_SYSCACHE_DIS;
 }
 
@@ -71,25 +70,25 @@ void MXC_EMCC_Flush(void)
 
 void MXC_EMCC_WriteAllocateEnable(void)
 {
-    MXC_EMCC_RevA_WriteAllocateEnable((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    MXC_EMCC_RevA_WriteAllocateEnable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 void MXC_EMCC_WriteAllocateDisable(void)
 {
-    MXC_EMCC_RevA_WriteAllocateDisable((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    MXC_EMCC_RevA_WriteAllocateDisable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 void MXC_EMCC_CriticalWordFirstEnable(void) //cwfst_dis
 {
-    MXC_EMCC_RevA_CriticalWordFirstEnable((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    MXC_EMCC_RevA_CriticalWordFirstEnable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 void MXC_EMCC_CriticalWordFirstDisable(void) //cwfst_dis
 {
-    MXC_EMCC_RevA_CriticalWordFirstDisable((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    MXC_EMCC_RevA_CriticalWordFirstDisable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
 uint32_t MXC_EMCC_Ready(void)
 {
-    return MXC_EMCC_RevA_Ready((mxc_emcc_reva_regs_t*) MXC_EMCC);
+    return MXC_EMCC_RevA_Ready((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }

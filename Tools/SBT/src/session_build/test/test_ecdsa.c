@@ -54,19 +54,16 @@ static FILE* temp_file = NULL;
  */
 int init_suite1(void)
 {
-   if (NULL == (temp_file = fopen("test/session_build.ini", "w+"))) {
-      return -1;
-   }
-   else {
-      return 0;
-   }
+    if (NULL == (temp_file = fopen("test/session_build.ini", "w+"))) {
+        return -1;
+    } else {
+        return 0;
+    }
 }
 
 void setup_suite1(void)
 {
-
-      return;
-
+    return;
 }
 
 /* The suite cleanup function.
@@ -75,122 +72,112 @@ void setup_suite1(void)
  */
 int clean_suite1(void)
 {
-
-      return 0;
-
+    return 0;
 }
 
 void teardown_suite1(void)
 {
-
-      return ;
-
+    return;
 }
 
 void test_readECDSA_1(void)
 {
+    unsigned int result;
+    unsigned char privkey[]  = {0x7a, 0xc8, 0x8a, 0x77, 0x09, 0x5c, 0xe1, 0x3e, 0x59, 0x3b, 0x83,
+                               0x90, 0x40, 0x64, 0xf9, 0x83, 0x51, 0xdf, 0x9e, 0xd4, 0x30, 0xeb,
+                               0x14, 0x3c, 0x4a, 0xbc, 0x55, 0xa9, 0x84, 0xe5, 0x7f, 0x39};
+    unsigned char pubkey_X[] = {0x3b, 0xe1, 0x24, 0x61, 0x9c, 0xbb, 0xeb, 0x51, 0xe9, 0x85, 0x32,
+                                0x8e, 0x8e, 0x33, 0xd3, 0x21, 0xca, 0xde, 0x19, 0x62, 0x8c, 0xc0,
+                                0xdb, 0x43, 0x30, 0x4a, 0x7b, 0x27, 0xf2, 0xdb, 0x8e, 0xfe};
 
-	unsigned int result;
-	unsigned char privkey[] = {0x7a, 0xc8, 0x8a, 0x77, 0x09, 0x5c, 0xe1,
-			0x3e, 0x59, 0x3b, 0x83, 0x90, 0x40, 0x64, 0xf9, 0x83, 0x51, 0xdf, 0x9e,
-			0xd4, 0x30, 0xeb, 0x14, 0x3c, 0x4a, 0xbc, 0x55, 0xa9, 0x84, 0xe5, 0x7f, 0x39};
-	unsigned char pubkey_X[] = {0x3b, 0xe1, 0x24, 0x61, 0x9c, 0xbb, 0xeb, 0x51, 0xe9,
-			0x85, 0x32, 0x8e, 0x8e, 0x33, 0xd3, 0x21, 0xca, 0xde, 0x19, 0x62, 0x8c, 0xc0,
-			0xdb, 0x43, 0x30, 0x4a, 0x7b, 0x27, 0xf2, 0xdb, 0x8e, 0xfe};
+    unsigned char pubkey_Y[] = {0xa8, 0x23, 0xc8, 0x85, 0x79, 0x48, 0xdc, 0x68, 0x8f, 0x3a, 0x3e,
+                                0xf3, 0xf6, 0xf2, 0x20, 0xa5, 0x14, 0xf0, 0x5c, 0x2c, 0x6c, 0x1c,
+                                0xef, 0x8c, 0x9f, 0x2f, 0x8d, 0xf1, 0x1d, 0xcf, 0x01, 0x42};
 
-	unsigned char pubkey_Y[] = {0xa8, 0x23, 0xc8, 0x85, 0x79, 0x48, 0xdc, 0x68, 0x8f, 0x3a,
-			0x3e, 0xf3, 0xf6, 0xf2, 0x20, 0xa5, 0x14, 0xf0, 0x5c, 0x2c, 0x6c, 0x1c, 0xef, 0x8c,
-			0x9f, 0x2f, 0x8d, 0xf1, 0x1d, 0xcf, 0x01, 0x42};
+    ecdsa_key_t key;
 
-	ecdsa_key_t key;
-
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test.key");
-	CU_ASSERT_EQUAL(result, ERR_OK);
-	CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test.key");
+    CU_ASSERT_EQUAL(result, ERR_OK);
+    CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
 }
-
 
 void test_readECDSA_cases(void)
 {
+    unsigned int result;
+    unsigned char privkey[]  = {0x7a, 0xc8, 0x8a, 0x77, 0x09, 0x5c, 0xe1, 0x3e, 0x59, 0x3b, 0x83,
+                               0x90, 0x40, 0x64, 0xf9, 0x83, 0x51, 0xdf, 0x9e, 0xd4, 0x30, 0xeb,
+                               0x14, 0x3c, 0x4a, 0xbc, 0x55, 0xa9, 0x84, 0xe5, 0x7f, 0x39};
+    unsigned char pubkey_X[] = {0x3b, 0xe1, 0x24, 0x61, 0x9c, 0xbb, 0xeb, 0x51, 0xe9, 0x85, 0x32,
+                                0x8e, 0x8e, 0x33, 0xd3, 0x21, 0xca, 0xde, 0x19, 0x62, 0x8c, 0xc0,
+                                0xdb, 0x43, 0x30, 0x4a, 0x7b, 0x27, 0xf2, 0xdb, 0x8e, 0xfe};
 
-	unsigned int result;
-	unsigned char privkey[] = {0x7a, 0xc8, 0x8a, 0x77, 0x09, 0x5c, 0xe1,
-			0x3e, 0x59, 0x3b, 0x83, 0x90, 0x40, 0x64, 0xf9, 0x83, 0x51, 0xdf, 0x9e,
-			0xd4, 0x30, 0xeb, 0x14, 0x3c, 0x4a, 0xbc, 0x55, 0xa9, 0x84, 0xe5, 0x7f, 0x39};
-	unsigned char pubkey_X[] = {0x3b, 0xe1, 0x24, 0x61, 0x9c, 0xbb, 0xeb, 0x51, 0xe9,
-			0x85, 0x32, 0x8e, 0x8e, 0x33, 0xd3, 0x21, 0xca, 0xde, 0x19, 0x62, 0x8c, 0xc0,
-			0xdb, 0x43, 0x30, 0x4a, 0x7b, 0x27, 0xf2, 0xdb, 0x8e, 0xfe};
+    unsigned char pubkey_Y[] = {0xa8, 0x23, 0xc8, 0x85, 0x79, 0x48, 0xdc, 0x68, 0x8f, 0x3a, 0x3e,
+                                0xf3, 0xf6, 0xf2, 0x20, 0xa5, 0x14, 0xf0, 0x5c, 0x2c, 0x6c, 0x1c,
+                                0xef, 0x8c, 0x9f, 0x2f, 0x8d, 0xf1, 0x1d, 0xcf, 0x01, 0x42};
 
-	unsigned char pubkey_Y[] = {0xa8, 0x23, 0xc8, 0x85, 0x79, 0x48, 0xdc, 0x68, 0x8f, 0x3a,
-			0x3e, 0xf3, 0xf6, 0xf2, 0x20, 0xa5, 0x14, 0xf0, 0x5c, 0x2c, 0x6c, 0x1c, 0xef, 0x8c,
-			0x9f, 0x2f, 0x8d, 0xf1, 0x1d, 0xcf, 0x01, 0x42};
+    ecdsa_key_t key;
 
-	ecdsa_key_t key;
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_lower.key");
+    CU_ASSERT_EQUAL(result, ERR_OK);
+    CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
 
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_lower.key");
-	CU_ASSERT_EQUAL(result, ERR_OK);
-	CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_upper.key");
+    CU_ASSERT_EQUAL(result, ERR_OK);
+    CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
 
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_upper.key");
-	CU_ASSERT_EQUAL(result, ERR_OK);
-	CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
-
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_mixed_case.key");
-	CU_ASSERT_EQUAL(result, ERR_OK);
-	CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
-	CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_mixed_case.key");
+    CU_ASSERT_EQUAL(result, ERR_OK);
+    CU_ASSERT(memcmp(key.ecdsa_privkey, privkey, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.x, pubkey_X, key.ecdsa_len) == 0);
+    CU_ASSERT(memcmp(key.ecdsa_pubkey.y, pubkey_Y, key.ecdsa_len) == 0);
 }
 
 void test_readECDSA_2(void)
 {
-	unsigned int result;
-	ecdsa_key_t key;
+    unsigned int result;
+    ecdsa_key_t key;
 
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_bad.key");
-	CU_ASSERT_EQUAL(result, ERR_BAD_FORMAT);
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_bad.key");
+    CU_ASSERT_EQUAL(result, ERR_BAD_FORMAT);
 }
 
 void test_readECDSA_Empty(void)
 {
-	unsigned int result;
-	ecdsa_key_t key;
+    unsigned int result;
+    ecdsa_key_t key;
 
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_empty.key");
-	CU_ASSERT_EQUAL(result, ERR_FILE_ERROR);
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_test_empty.key");
+    CU_ASSERT_EQUAL(result, ERR_FILE_ERROR);
 }
 
 void test_readECDSA_nofile(void)
 {
-	unsigned int result;
-	ecdsa_key_t key;
+    unsigned int result;
+    ecdsa_key_t key;
 
-	result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_do_not_exist.key");
-	CU_ASSERT_EQUAL(result, ENOENT);
+    result = read_file_ecdsa_keypair(&key, "test/data/ecdsa_do_not_exist.key");
+    CU_ASSERT_EQUAL(result, ENOENT);
 }
 
-
-
-
 static CU_TestInfo tests_ECDSA[] = {
-  { "test of ECDSA file reading 1", test_readECDSA_1 },
-  { "test of ECDSA file reading Bad", test_readECDSA_2 },
-  { "test of ECDSA file reading Empty", test_readECDSA_Empty },
-  { "test of ECDSA file reading No File", test_readECDSA_nofile },
-  { "test of ECDSA file reading Cases", test_readECDSA_cases },
-	CU_TEST_INFO_NULL,
+    {"test of ECDSA file reading 1", test_readECDSA_1},
+    {"test of ECDSA file reading Bad", test_readECDSA_2},
+    {"test of ECDSA file reading Empty", test_readECDSA_Empty},
+    {"test of ECDSA file reading No File", test_readECDSA_nofile},
+    {"test of ECDSA file reading Cases", test_readECDSA_cases},
+    CU_TEST_INFO_NULL,
 };
 
-CU_SuiteInfo suites [] = { { "ECDSA", init_suite1, clean_suite1, setup_suite1, teardown_suite1, tests_ECDSA },
-		CU_SUITE_INFO_NULL,
-	};
-
+CU_SuiteInfo suites[] = {
+    {"ECDSA", init_suite1, clean_suite1, setup_suite1, teardown_suite1, tests_ECDSA},
+    CU_SUITE_INFO_NULL,
+};
 
 /* The main() function for setting up and running the tests.
  * Returns a CUE_SUCCESS on successful running, another
@@ -198,10 +185,10 @@ CU_SuiteInfo suites [] = { { "ECDSA", init_suite1, clean_suite1, setup_suite1, t
  */
 int TS_ECDSA(void)
 {
-   if (0 !=  CU_register_suites(suites)){
-	   CU_cleanup_registry();
-	   return CU_get_error();
-   }
+    if (0 != CU_register_suites(suites)) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
-   return ERR_OK;
+    return ERR_OK;
 }

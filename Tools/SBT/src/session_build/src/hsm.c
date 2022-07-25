@@ -46,52 +46,39 @@
 #include <libhsm/HSM.h>
 #endif /* _MAXIM_HSM */
 
-int hsm_login(void){
-
-
+int hsm_login(void)
+{
 #ifdef _MAXIM_HSM
-	int i;
-	int resu;
+    int i;
+    int resu;
 
-
-	print_info ("HSM try open connection\n");
-	/* Open HSM Session and Login using OCS Cards */
-	resu = CKR_GENERAL_ERROR;
-	for(i = 0; (i<3 && resu != CKR_OK); i++)
-	{
-		resu = HSM_Login (&session, config_g.hsm_slot_nb);
-	}
-	if (ERR_OK != resu)
-	{
-		print_error ("Unable to open connection with HSM.\n");
-		HSM_pError (resu);
-		return resu;
-	}
+    print_info("HSM try open connection\n");
+    /* Open HSM Session and Login using OCS Cards */
+    resu = CKR_GENERAL_ERROR;
+    for (i = 0; (i < 3 && resu != CKR_OK); i++) {
+        resu = HSM_Login(&session, config_g.hsm_slot_nb);
+    }
+    if (ERR_OK != resu) {
+        print_error("Unable to open connection with HSM.\n");
+        HSM_pError(resu);
+        return resu;
+    }
 #endif /* _MAXIM_HSM */
 
-
-
-	return ERR_OK;
+    return ERR_OK;
 }
 
-
-int hsm_close(void){
-
-
+int hsm_close(void)
+{
 #ifdef _MAXIM_HSM
-	int resu;
+    int resu;
 
-	/* Close HSM Sessions */
-		resu = HSM_Close (session);
-		if (ERR_OK != resu)
-		{
-			print_warn ("Warning: fails to close HSM connection\n");
-		}
+    /* Close HSM Sessions */
+    resu = HSM_Close(session);
+    if (ERR_OK != resu) {
+        print_warn("Warning: fails to close HSM connection\n");
+    }
 #endif /* _MAXIM_HSM */
 
-
-
-	return ERR_OK;
+    return ERR_OK;
 }
-
-

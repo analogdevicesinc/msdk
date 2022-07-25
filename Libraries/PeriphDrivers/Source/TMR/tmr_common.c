@@ -45,9 +45,9 @@ void MXC_TMR_Common_Delay(mxc_tmr_regs_t* tmr, unsigned long us)
     if (!us) {
         return;
     }
-    
+
     MXC_TMR_TO_Start(tmr, us);
-    
+
     while (MXC_TMR_TO_Check(tmr) != E_TIME_OUT) {}
 }
 
@@ -56,7 +56,7 @@ int MXC_TMR_Common_TO_Check(mxc_tmr_regs_t* tmr)
     if (MXC_TMR_GetFlags(tmr)) {
         return E_TIME_OUT;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -76,23 +76,23 @@ unsigned int MXC_TMR_Common_TO_Remaining(mxc_tmr_regs_t* tmr)
 {
     uint32_t remaining_ticks, remaining_time;
     mxc_tmr_unit_t units;
-    
+
     remaining_ticks = MXC_TMR_GetCompare(tmr) - MXC_TMR_GetCount(tmr);
     MXC_TMR_GetTime(tmr, remaining_ticks, &remaining_time, &units);
-    
+
     switch (units) {
-    case TMR_UNIT_NANOSEC:
-    default:
-        return (remaining_time / 1000);
-        
-    case TMR_UNIT_MICROSEC:
-        return (remaining_time);
-        
-    case TMR_UNIT_MILLISEC:
-        return (remaining_time * 1000);
-        
-    case TMR_UNIT_SEC:
-        return (remaining_time * 1000000);
+        case TMR_UNIT_NANOSEC:
+        default:
+            return (remaining_time / 1000);
+
+        case TMR_UNIT_MICROSEC:
+            return (remaining_time);
+
+        case TMR_UNIT_MILLISEC:
+            return (remaining_time * 1000);
+
+        case TMR_UNIT_SEC:
+            return (remaining_time * 1000000);
     }
 }
 
@@ -112,20 +112,20 @@ unsigned int MXC_TMR_Common_TO_Elapsed(mxc_tmr_regs_t* tmr)
 {
     uint32_t elapsed;
     mxc_tmr_unit_t units;
-    MXC_TMR_GetTime (tmr, tmr->cnt, &elapsed, &units);
-    
+    MXC_TMR_GetTime(tmr, tmr->cnt, &elapsed, &units);
+
     switch (units) {
-    case TMR_UNIT_NANOSEC:
-    default:
-        return (elapsed / 1000);
-        
-    case TMR_UNIT_MICROSEC:
-        return (elapsed);
-        
-    case TMR_UNIT_MILLISEC:
-        return (elapsed * 1000);
-        
-    case TMR_UNIT_SEC:
-        return (elapsed * 1000000);
+        case TMR_UNIT_NANOSEC:
+        default:
+            return (elapsed / 1000);
+
+        case TMR_UNIT_MICROSEC:
+            return (elapsed);
+
+        case TMR_UNIT_MILLISEC:
+            return (elapsed * 1000);
+
+        case TMR_UNIT_SEC:
+            return (elapsed * 1000000);
     }
 }

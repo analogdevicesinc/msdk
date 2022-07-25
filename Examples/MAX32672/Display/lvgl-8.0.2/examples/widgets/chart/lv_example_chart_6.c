@@ -1,27 +1,27 @@
 #include "../../lv_examples.h"
 #if LV_USE_CHART && LV_BUILD_EXAMPLES
 
-static lv_obj_t * chart;
-static lv_chart_series_t * ser;
-static lv_chart_cursor_t * cursor;
+static lv_obj_t* chart;
+static lv_chart_series_t* ser;
+static lv_chart_cursor_t* cursor;
 
-static void event_cb(lv_event_t * e)
+static void event_cb(lv_event_t* e)
 {
     static int32_t last_id = -1;
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t * obj = lv_event_get_target(e);
+    lv_event_code_t code   = lv_event_get_code(e);
+    lv_obj_t* obj          = lv_event_get_target(e);
 
-    if(code == LV_EVENT_VALUE_CHANGED) {
+    if (code == LV_EVENT_VALUE_CHANGED) {
         last_id = lv_chart_get_pressed_point(obj);
-        if(last_id != LV_CHART_POINT_NONE) {
+        if (last_id != LV_CHART_POINT_NONE) {
             lv_chart_set_cursor_point(obj, cursor, NULL, last_id);
         }
-    }
-    else if(code == LV_EVENT_DRAW_PART_END) {
-        lv_obj_draw_part_dsc_t * dsc = lv_event_get_draw_part_dsc(e);
-        if(dsc->part == LV_PART_CURSOR && dsc->p1 && dsc->p2 && dsc->p1->y == dsc->p2->y && last_id >= 0) {
-            lv_coord_t * data_array = lv_chart_get_y_array(chart, ser);
-            lv_coord_t v = data_array[last_id];
+    } else if (code == LV_EVENT_DRAW_PART_END) {
+        lv_obj_draw_part_dsc_t* dsc = lv_event_get_draw_part_dsc(e);
+        if (dsc->part == LV_PART_CURSOR && dsc->p1 && dsc->p2 && dsc->p1->y == dsc->p2->y &&
+            last_id >= 0) {
+            lv_coord_t* data_array = lv_chart_get_y_array(chart, ser);
+            lv_coord_t v           = data_array[last_id];
             char buf[16];
             lv_snprintf(buf, sizeof(buf), "%d", v);
 
@@ -37,7 +37,7 @@ static void event_cb(lv_event_t * e)
             lv_draw_rect_dsc_t draw_rect_dsc;
             lv_draw_rect_dsc_init(&draw_rect_dsc);
             draw_rect_dsc.bg_color = lv_palette_main(LV_PALETTE_BLUE);
-            draw_rect_dsc.radius = 3;
+            draw_rect_dsc.radius   = 3;
 
             lv_draw_rect(&a, dsc->clip_area, &draw_rect_dsc);
 
@@ -68,17 +68,16 @@ void lv_example_chart_6(void)
     lv_obj_add_event_cb(chart, event_cb, LV_EVENT_ALL, NULL);
     lv_obj_refresh_ext_draw_size(chart);
 
-    cursor = lv_chart_add_cursor(chart, lv_palette_main(LV_PALETTE_BLUE), LV_DIR_LEFT | LV_DIR_BOTTOM);
+    cursor =
+        lv_chart_add_cursor(chart, lv_palette_main(LV_PALETTE_BLUE), LV_DIR_LEFT | LV_DIR_BOTTOM);
 
     ser = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_RED), LV_CHART_AXIS_PRIMARY_Y);
     uint32_t i;
-    for(i = 0; i < 10; i++) {
-        lv_chart_set_next_value(chart, ser, lv_rand(10,90));
-    }
+    for (i = 0; i < 10; i++) { lv_chart_set_next_value(chart, ser, lv_rand(10, 90)); }
 
     lv_chart_set_zoom_x(chart, 500);
 
-    lv_obj_t * label = lv_label_create(lv_scr_act());
+    lv_obj_t* label = lv_label_create(lv_scr_act());
     lv_label_set_text(label, "Click on a point");
     lv_obj_align_to(label, chart, LV_ALIGN_OUT_TOP_MID, 0, -5);
 }

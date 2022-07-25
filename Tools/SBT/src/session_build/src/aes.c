@@ -49,57 +49,44 @@
 #include "scp_utils.h"
 #include <log.h>
 
-
-int aes_checksum (u8 * crc, const u8 * data, int size, int trunk)
+int aes_checksum(u8* crc, const u8* data, int size, int trunk)
 {
-	int i, j;
-	u8 keynull[16];
-	u8 h[16];
-	int resu;
-	u8 input[16];
+    int i, j;
+    u8 keynull[16];
+    u8 h[16];
+    int resu;
+    u8 input[16];
 
-	for (i = 0; i < 16; i++){
-		h[i] = keynull[i] = 0;
-	}
+    for (i = 0; i < 16; i++) { h[i] = keynull[i] = 0; }
 
-	for (i = 0; i < size; i += 16)
-	{
-		for (j = 0; j < 16; j++){
-			if (i + j < size){
-				input[j] = h[j] ^ data[i + j];
-			}else {
-				input[j] = h[j];
-			}
-		}
+    for (i = 0; i < size; i += 16) {
+        for (j = 0; j < 16; j++) {
+            if (i + j < size) {
+                input[j] = h[j] ^ data[i + j];
+            } else {
+                input[j] = h[j];
+            }
+        }
 
-		resu = ucl_aes_ecb (h, input, 16, keynull, 16, UCL_CIPHER_ENCRYPT);
+        resu = ucl_aes_ecb(h, input, 16, keynull, 16, UCL_CIPHER_ENCRYPT);
 
-		if (resu != UCL_OK)
-		{
-			print_error("AES checksum : AES ECB (%x)\n", resu);
-			return (resu);
-		}
-	}
+        if (resu != UCL_OK) {
+            print_error("AES checksum : AES ECB (%x)\n", resu);
+            return (resu);
+        }
+    }
 
-	for (i = 0; i < trunk; i++){
-		crc[i] = h[i];
-	}
+    for (i = 0; i < trunk; i++) { crc[i] = h[i]; }
 
-	return ERR_OK;
+    return ERR_OK;
 }
 
+void print_aeskey(const uint8_t* key, const char* keyname)
+{
+    unsigned int i;
 
-void print_aeskey(const uint8_t * key, const char * keyname){
-	unsigned int i;
+    print_debug("\tAES Key %s :", keyname);
 
-	print_debug("\tAES Key %s :", keyname);
-
-	for(i = 0; i < 16; i++){
-		print_d("%02x", key[i]);
-	}
-	print_d("\n");
+    for (i = 0; i < 16; i++) { print_d("%02x", key[i]); }
+    print_d("\n");
 }
-
-
-
-

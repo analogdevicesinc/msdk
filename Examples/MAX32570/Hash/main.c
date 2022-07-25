@@ -53,7 +53,6 @@ volatile int counter;
 
 char temp[] = {0x00, 0x00, 0x00};
 
-
 void CRYPTO_IRQHandler(void)
 {
     MXC_CTB_Handler();
@@ -61,7 +60,7 @@ void CRYPTO_IRQHandler(void)
 
 void Test_Callback(void* req, int result)
 {
-    wait = 0;
+    wait            = 0;
     callback_result = result;
 }
 
@@ -69,8 +68,7 @@ void Test_Result(int result)
 {
     if (result) {
         printf(" * Failed *\n\n");
-    }
-    else {
+    } else {
         printf("   Passed  \n\n");
     }
 }
@@ -78,7 +76,7 @@ void Test_Result(int result)
 void ascii_to_byte(const char* src, char* dst, int len)
 {
     int i;
-    
+
     for (i = 0; i < len; ++i) {
         int val;
         temp[0] = *src;
@@ -90,62 +88,55 @@ void ascii_to_byte(const char* src, char* dst, int len)
     }
 }
 
-
 void Test_Hash(int asynchronous)
 {
     printf(asynchronous ? "Test Hash Async\n" : "Test Hash Sync\n");
-    
-    unsigned char sha256_msg[] = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%&*()";
-    
+
+    unsigned char sha256_msg[] =
+        "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%&*()";
+
     char _sha256_result[] = "93bfb2299f7427f021ad038cec5054b4db2e935f3ae10d64e4e6a40a77269803";
     char sha256_result[33];
     ascii_to_byte(_sha256_result, sha256_result, 32);
-    
+
     unsigned char destination[33];
     unsigned int msgLen = sizeof(sha256_msg) - 1;
-    
+
     memset(destination, 0, sizeof(destination));
-    
+
     // Reset Crypto Block
     MXC_CTB_Init(MXC_CTB_FEATURE_HASH);
     MXC_CTB_EnableInt();
-    
+
     // Select the Hash Function
     MXC_CTB_Hash_SetFunction(MXC_CTB_HASH_SHA256);
-    
-    mxc_ctb_hash_req_t hash_req = {
-        sha256_msg,
-        msgLen,
-        destination,
-        &Test_Callback
-    };
-    
+
+    mxc_ctb_hash_req_t hash_req = {sha256_msg, msgLen, destination, &Test_Callback};
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Hash_ComputeAsync(&hash_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_Hash_Compute(&hash_req);
     }
-    
+
     Test_Result(memcmp(sha256_result, destination, 32));
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_HASH);
-    
+
     return;
 }
-
 
 int main(void)
 {
     printf("\n\n********** CTB Hash Example **********\n\n");
-    
+
     Test_Hash(0);
     Test_Hash(1);
-    
+
     printf("\n*** Done ***\n");
-    
+
     return 0;
 }
-

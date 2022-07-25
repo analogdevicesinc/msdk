@@ -46,14 +46,13 @@
 #include <MAX32xxx.h>
 
 /***** Definitions *****/
-#define POLY    0xEDB88320
-#define CHECK   0xDEBB20E3
+#define POLY  0xEDB88320
+#define CHECK 0xDEBB20E3
 /***** Globals *****/
 volatile int wait;
 volatile int callback_result;
 volatile int counter;
 /***** Functions *****/
-
 
 void CRYPTO_IRQHandler(void)
 {
@@ -62,7 +61,7 @@ void CRYPTO_IRQHandler(void)
 
 void Test_Callback(void* req, int result)
 {
-    wait = 0;
+    wait            = 0;
     callback_result = result;
 }
 
@@ -70,72 +69,62 @@ void Test_Result(int result)
 {
     if (result) {
         printf(" * Failed *\n");
-    }
-    else {
+    } else {
         printf("   Passed  \n");
     }
 }
-
 
 void Test_CRC(int asynchronous)
 {
     uint32_t array[101];
     int i;
-    
+
     printf(asynchronous ? "Test CRC Async\n" : "Test CRC Sync\n");
-    
-    for (i = 0; i < 100; i++) {
-        array[i] = i;
-    }
-    
+
+    for (i = 0; i < 100; i++) { array[i] = i; }
+
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
-    
+
     // Load CRC polynomial into crc polynomial register
     MXC_CTB_CRC_SetPoly(POLY);
-    
-    mxc_ctb_crc_req_t crc_req = {
-        (uint8_t*)& array,
-        400,
-        0,
-        &Test_Callback
-    };
-    
+
+    mxc_ctb_crc_req_t crc_req = {(uint8_t*)&array, 400, 0, &Test_Callback};
+
     MXC_CTB_EnableInt();
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_CRC_Compute(&crc_req);
     }
-    
+
     array[100] = ~(crc_req.resultCRC);
-    
+
     crc_req.dataLen += sizeof(array[100]);
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_CRC_Compute(&crc_req);
     }
-    
+
     Test_Result(CHECK != crc_req.resultCRC);
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
 }
-
 
 // *****************************************************************************
 int main(void)
 {
     Test_CRC(0);
     Test_CRC(1);
-    
+
     while (1) {}
 }

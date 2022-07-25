@@ -56,18 +56,20 @@
 #include "simo_regs.h"
 
 /***** Definitions *****/
-#define LED_ALARM           0
-#define LED_TODA            1
+#define LED_ALARM 0
+#define LED_TODA  1
 
-#define TIME_OF_DAY_SEC     10
-#define SUBSECOND_MSEC_0    250
-#define SUBSECOND_MSEC_1    500
+#define TIME_OF_DAY_SEC  10
+#define SUBSECOND_MSEC_0 250
+#define SUBSECOND_MSEC_1 500
 
-#define MSEC_TO_RSSA(x) (0 - ((x * 4096) / 1000)) /* Converts a time in milleseconds to the equivalent RSSA register value. */
+#define MSEC_TO_RSSA(x) \
+    (0 - ((x * 4096) /  \
+          1000)) /* Converts a time in milleseconds to the equivalent RSSA register value. */
 
-#define SECS_PER_MIN        60
-#define SECS_PER_HR         (60 * SECS_PER_MIN)
-#define SECS_PER_DAY        (24 * SECS_PER_HR)
+#define SECS_PER_MIN 60
+#define SECS_PER_HR  (60 * SECS_PER_MIN)
+#define SECS_PER_DAY (24 * SECS_PER_HR)
 
 /***** Globals *****/
 int ss_interval = SUBSECOND_MSEC_0;
@@ -89,33 +91,36 @@ void RTC_IRQHandler(void)
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM);
         LED_Toggle(LED_TODA);
 
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY);
-		
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
+            ;
+
         /* Set a new alarm TIME_OF_DAY_SEC seconds from current time. */
-        /* Don't need to check busy here as it was checked in MXC_RTC_DisableInt() */		
+        /* Don't need to check busy here as it was checked in MXC_RTC_DisableInt() */
         time = MXC_RTC_GetSecond();
 
         if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
             /* Handle Error */
         }
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY);
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
+            ;
 
         // Toggle the sub-second alarm interval.
         if (ss_interval == SUBSECOND_MSEC_0) {
             ss_interval = SUBSECOND_MSEC_1;
-        }
-        else {
+        } else {
             ss_interval = SUBSECOND_MSEC_0;
         }
 
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY);
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY)
+            ;
 
         if (MXC_RTC_SetSubsecondAlarm(MSEC_TO_RSSA(ss_interval)) != E_NO_ERROR) {
             /* Handle Error */
         }
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY);
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY)
+            ;
     }
 
     return;
@@ -133,15 +138,13 @@ void printTime()
     double subsec;
 
     do {
-    	rtc_readout = MXC_RTC_GetSubSecond();
-    }
-    while (rtc_readout == E_BUSY);
+        rtc_readout = MXC_RTC_GetSubSecond();
+    } while (rtc_readout == E_BUSY);
     subsec = rtc_readout / 4096.0;
 
     do {
-    	rtc_readout = MXC_RTC_GetSecond();
-    }
-    while (rtc_readout == E_BUSY);
+        rtc_readout = MXC_RTC_GetSecond();
+    } while (rtc_readout == E_BUSY);
     sec = rtc_readout;
 
     day = sec / SECS_PER_DAY;
@@ -165,23 +168,23 @@ int main(void)
     volatile int i;
 
     /* Delay to prevent bricks */
-    for(i = 0; i < 0xFFFFFF; i++);
+    for (i = 0; i < 0xFFFFFF; i++)
+        ;
 
     /* Set the system clock to the 32 MHz clock for the RTC trim */
     /* Enable 32 MHz clock if not already enabled */
-    if(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {
-
+    if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {
         /* Power VREGO_D */
         MXC_SIMO->vrego_d = (0x3c << MXC_F_SIMO_VREGO_D_VSETD_POS);
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
 
         /* Restore btleldoctrl setting */
         MXC_GCR->btleldoctrl = 0x3055;
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
 
         /* Enable 32Mhz oscillator */
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
-        while(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {}
+        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {}
     }
 
     /* Switch the system clock to the 32 MHz oscillator */
@@ -191,16 +194,20 @@ int main(void)
     Console_Init();
 
     printf("\n*************************** RTC Example ****************************\n\n");
-    printf("The RTC is enabled and the sub-second alarm set to trigger every %d ms.\n", SUBSECOND_MSEC_0);
+    printf("The RTC is enabled and the sub-second alarm set to trigger every %d ms.\n",
+           SUBSECOND_MSEC_0);
     printf("(LED 1) is toggled each time the sub-second alarm triggers.\n\n");
-    printf("The time-of-day alarm is set to %d seconds.  When the time-of-day alarm\n", TIME_OF_DAY_SEC);
-    printf("triggers, the rate of the sub-second alarm is switched to %d ms.\n\n",      SUBSECOND_MSEC_1);
+    printf("The time-of-day alarm is set to %d seconds.  When the time-of-day alarm\n",
+           TIME_OF_DAY_SEC);
+    printf("triggers, the rate of the sub-second alarm is switched to %d ms.\n\n",
+           SUBSECOND_MSEC_1);
     printf("(LED 2) is toggled each time the time-of-day alarm triggers.\n\n");
-    printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing PB1\n", TIME_OF_DAY_SEC);
+    printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing PB1\n",
+           TIME_OF_DAY_SEC);
     printf("will output the current value of the RTC to the console UART.\n\n");
 
     /* Setup callback to receive notification of when button is pressed. */
-    PB_RegisterCallback(0, (pb_callback) buttonHandler);
+    PB_RegisterCallback(0, (pb_callback)buttonHandler);
 
     /* Turn LED off initially */
     LED_On(LED_ALARM);
@@ -210,14 +217,16 @@ int main(void)
         printf("Failed RTC Initialization\n");
         printf("Example Failed\n");
 
-        while (1);
+        while (1)
+            ;
     }
 
     if (MXC_RTC_Start() != E_NO_ERROR) {
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
 
-        while (1);
+        while (1)
+            ;
     }
 
     printf("RTC started\n");
@@ -227,7 +236,7 @@ int main(void)
     NVIC_DisableIRQ(RTC_IRQn);
 
     rtcTrim = MXC_RTC_TrimCrystal();
-    if(rtcTrim < 0) {
+    if (rtcTrim < 0) {
         printf("Error trimming RTC %d\n", rtcTrim);
     } else {
         printf("RTC Trimmed to %d Hz\n", rtcTrim);
@@ -236,7 +245,7 @@ int main(void)
 
     /* Reset the interrupt state and enable interrupts */
     MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE | MXC_F_RTC_CTRL_SSEC_ALARM_IE |
-        MXC_F_RTC_CTRL_RDY_IE);
+                       MXC_F_RTC_CTRL_RDY_IE);
     MXC_RTC_ClearFlags(MXC_RTC_GetFlags());
 
     NVIC_EnableIRQ(RTC_IRQn);
@@ -252,7 +261,8 @@ int main(void)
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
 
-        while (1);
+        while (1)
+            ;
     }
 
     if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {
@@ -267,7 +277,8 @@ int main(void)
         printf("Failed RTC_SetSubsecondAlarm\n");
         printf("Example Failed\n");
 
-        while (1);
+        while (1)
+            ;
     }
 
     if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY) {
@@ -278,7 +289,8 @@ int main(void)
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
 
-        while (1);
+        while (1)
+            ;
     }
 
     while (1) {

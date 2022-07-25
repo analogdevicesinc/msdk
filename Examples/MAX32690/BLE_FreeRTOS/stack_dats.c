@@ -70,20 +70,15 @@
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      2048U
-#define DEFAULT_TX_POWER                        0 /* dBm */
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
+#define DEFAULT_TX_POWER                   0 /* dBm */
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = {
-    { 16,              8 },
-    { 32,              4 },
-    { 192,             8 },
-    { 256,             16 }
-};
+static wsfBufPoolDesc_t mainPoolDesc[] = {{16, 8}, {32, 4}, {192, 8}, {256, 16}};
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -94,7 +89,6 @@ volatile int wutTrimComplete;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
-
 
 /*************************************************************************************************/
 /*!
@@ -213,10 +207,11 @@ void WUT0_IRQHandler(void)
 /*************************************************************************************************/
 void wutTrimCb(int err)
 {
-    if(err != E_NO_ERROR) {
+    if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("32 kHz trim error %d\n", err);
     } else {
-        APP_TRACE_INFO1("32kHz trimmed to 0x%x", (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >> MXC_F_TRIMSIR_RTC_RTCX1_POS);
+        APP_TRACE_INFO1("32kHz trimmed to 0x%x", (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >>
+                                                     MXC_F_TRIMSIR_RTC_RTCX1_POS);
     }
     wutTrimComplete = 1;
 }
@@ -241,40 +236,40 @@ void setInterruptPriority(void)
     configMAX_SYSCALL_INTERRUPT_PRIORITY, lower priority number is higher priority */
 
     /* Setup BLE hardware interrupt priorities */
-    NVIC_SetPriority(BTLE_TX_DONE_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_RX_RCVD_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_RX_ENG_DET_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_SFD_DET_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_SFD_TO_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_GP_EVENT_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_CFO_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_SIG_DET_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_AGC_EVENT_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_RFFE_SPIM_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_TX_AES_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_RX_AES_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_INV_APB_ADDR_IRQn, (configMAX_PRIORITIES-2));
-    NVIC_SetPriority(BTLE_IQ_DATA_VALID_IRQn, (configMAX_PRIORITIES-2));
+    NVIC_SetPriority(BTLE_TX_DONE_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_RX_RCVD_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_RX_ENG_DET_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_SFD_DET_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_SFD_TO_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_GP_EVENT_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_CFO_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_SIG_DET_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_AGC_EVENT_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_RFFE_SPIM_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_TX_AES_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_RX_AES_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_INV_APB_ADDR_IRQn, (configMAX_PRIORITIES - 2));
+    NVIC_SetPriority(BTLE_IQ_DATA_VALID_IRQn, (configMAX_PRIORITIES - 2));
 
     /* Setup scheduler timer priorities */
-    NVIC_SetPriority(TMR0_IRQn, (configMAX_PRIORITIES-1));
-    NVIC_SetPriority(TMR1_IRQn, (configMAX_PRIORITIES-1));
+    NVIC_SetPriority(TMR0_IRQn, (configMAX_PRIORITIES - 1));
+    NVIC_SetPriority(TMR1_IRQn, (configMAX_PRIORITIES - 1));
 
-    NVIC_SetPriority(WUT0_IRQn, configMAX_PRIORITIES-1);
+    NVIC_SetPriority(WUT0_IRQn, configMAX_PRIORITIES - 1);
 
     /* Setup additional peripheral timer priorities */
-    NVIC_SetPriority(UART0_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(UART1_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(UART2_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(UART3_IRQn, (configMAX_PRIORITIES-0));
+    NVIC_SetPriority(UART0_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(UART1_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(UART2_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(UART3_IRQn, (configMAX_PRIORITIES - 0));
 
-    NVIC_SetPriority(DMA0_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(DMA1_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(DMA2_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(DMA3_IRQn, (configMAX_PRIORITIES-0));
+    NVIC_SetPriority(DMA0_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(DMA1_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(DMA2_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(DMA3_IRQn, (configMAX_PRIORITIES - 0));
 
-    NVIC_SetPriority(GPIO0_IRQn, (configMAX_PRIORITIES-0));
-    NVIC_SetPriority(GPIO1_IRQn, (configMAX_PRIORITIES-0));
+    NVIC_SetPriority(GPIO0_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(GPIO1_IRQn, (configMAX_PRIORITIES - 0));
 }
 
 void trim32k(void)
@@ -289,10 +284,10 @@ void trim32k(void)
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
-    if(MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
+    if (MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
         APP_TRACE_INFO0("Error with 32k trim");
     } else {
-        while(!wutTrimComplete) {}
+        while (!wutTrimComplete) {}
     }
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
@@ -312,7 +307,7 @@ void bleStartup(void)
     /* Configurations must be persistent. */
     static BbRtCfg_t mainBbRtCfg;
 
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
     /* Set 5.0 requirements. */
@@ -347,22 +342,20 @@ void bleStartup(void)
     AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg     = &mainBbRtCfg,
-        .wlSizeCfg    = 4,
-        .rlSizeCfg    = 4,
-        .plSizeCfg    = 4,
-        .pLlRtCfg     = &mainLlRtCfg,
-        .pFreeMem     = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable()
-    };
+    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
+                           .wlSizeCfg    = 4,
+                           .rlSizeCfg    = 4,
+                           .plSizeCfg    = 4,
+                           .pLlRtCfg     = &mainLlRtCfg,
+                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
+                           .freeMemAvail = WsfHeapCountAvailable()};
 
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
-    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlSetBdAddr((uint8_t*)&bdAddr);
 #endif
 
     trim32k();

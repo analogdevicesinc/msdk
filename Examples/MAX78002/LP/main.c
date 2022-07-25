@@ -66,20 +66,20 @@
 #include "rtc.h"
 #include "uart.h"
 
-#define DELAY_IN_SEC    4
-#define USE_CONSOLE     1
+#define DELAY_IN_SEC 4
+#define USE_CONSOLE  1
 
-#define USE_BUTTON      0
-#define USE_ALARM       1
+#define USE_BUTTON 0
+#define USE_ALARM  1
 
-#define DISABLE_GPIO	0 // it configures all GPIOs as input to save power
+#define DISABLE_GPIO 0 // it configures all GPIOs as input to save power
 
-#define DO_SLEEP        1
-#define DO_LPM          1
-#define DO_UPM          0
-#define DO_STANDBY      1
-#define DO_BACKUP       1   // will reset after wakeing up`
-#define DO_POWERDOWN    0   // will reset after wakeing up
+#define DO_SLEEP     1
+#define DO_LPM       1
+#define DO_UPM       0
+#define DO_STANDBY   1
+#define DO_BACKUP    1 // will reset after wakeing up`
+#define DO_POWERDOWN 0 // will reset after wakeing up
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -99,7 +99,7 @@ volatile int alarmed;
 void alarmHandler(void)
 {
     int flags = MXC_RTC->ctrl;
-    alarmed = 1;
+    alarmed   = 1;
 
     if ((flags & MXC_F_RTC_CTRL_SSEC_ALARM) >> MXC_F_RTC_CTRL_SSEC_ALARM_POS) {
         MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_SSEC_ALARM);
@@ -114,24 +114,31 @@ void setTrigger(int waitForTrigger)
 {
     alarmed = 0;
 
-    while (MXC_RTC_Init(0, 0) == E_BUSY);
+    while (MXC_RTC_Init(0, 0) == E_BUSY)
+        ;
 
-    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY);
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
+        ;
 
-    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY);
+    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY)
+        ;
 
-    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY);
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
+        ;
 
-    while (MXC_RTC_Start() == E_BUSY);
+    while (MXC_RTC_Start() == E_BUSY)
+        ;
 
     if (waitForTrigger) {
-        while (!alarmed);
+        while (!alarmed)
+            ;
     }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
 
 #endif // USE_CONSOLE
 }
@@ -151,18 +158,18 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed);
+        while (!buttonPressed)
+            ;
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x240000; tmp++) {
-        __NOP();
-    }
+    for (tmp = 0; tmp < 0x240000; tmp++) { __NOP(); }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
 
 #endif // USE_CONSOLE
 }
@@ -176,9 +183,12 @@ int main(void)
 
 #if USE_ALARM
 #if USE_CONSOLE
-    printf("This code cycles through the MAX78002 power modes, using the RTC alarm to exit from each mode.  The modes will change every %d seconds.\n\n", DELAY_IN_SEC);
+    printf("This code cycles through the MAX78002 power modes, using the RTC alarm to exit from "
+           "each mode.  The modes will change every %d seconds.\n\n",
+           DELAY_IN_SEC);
 #if !DISABLE_GPIO
-	printf("Set the EvKit power monitor display to System Power Mode to measure the power in each mode.\n\n");
+    printf("Set the EvKit power monitor display to System Power Mode to measure the power in each "
+           "mode.\n\n");
 #endif
 #endif // USE_CONSOLE
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
@@ -186,45 +196,46 @@ int main(void)
 
 #if USE_BUTTON
 #if USE_CONSOLE
-    printf("This code cycles through the MAX78002 power modes, using a push button (PB1) to exit from each mode and enter the next.\n\n");
+    printf("This code cycles through the MAX78002 power modes, using a push button (PB1) to exit "
+           "from each mode and enter the next.\n\n");
 #endif // USE_CONSOLE
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
-	// Configure trig1 for system power measurement
-	mxc_gpio_cfg_t gpio_trig1;
+    // Configure trig1 for system power measurement
+    mxc_gpio_cfg_t gpio_trig1;
     gpio_trig1.port = MXC_GPIO1;
     gpio_trig1.mask = MXC_GPIO_PIN_6;
-    gpio_trig1.pad = MXC_GPIO_PAD_NONE;
+    gpio_trig1.pad  = MXC_GPIO_PAD_NONE;
     gpio_trig1.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_trig1);
 
 #if DISABLE_GPIO
-	// To save power, configure all GPIOs as input, only keep console (or LEDs)
-	mxc_gpio_cfg_t gpios_in;
+    // To save power, configure all GPIOs as input, only keep console (or LEDs)
+    mxc_gpio_cfg_t gpios_in;
 
-	// all GPIOs input with pullup
-	gpios_in.pad = MXC_GPIO_PAD_PULL_UP;
-	gpios_in.func = MXC_GPIO_FUNC_IN;
-	gpios_in.vssel = MXC_GPIO_VSSEL_VDDIO;
+    // all GPIOs input with pullup
+    gpios_in.pad   = MXC_GPIO_PAD_PULL_UP;
+    gpios_in.func  = MXC_GPIO_FUNC_IN;
+    gpios_in.vssel = MXC_GPIO_VSSEL_VDDIO;
 
-	// PORT3 input
-	gpios_in.port = MXC_GPIO3;
-	gpios_in.mask = 0xFFFFFFFF;
-	MXC_GPIO_Config(&gpios_in);
+    // PORT3 input
+    gpios_in.port = MXC_GPIO3;
+    gpios_in.mask = 0xFFFFFFFF;
+    MXC_GPIO_Config(&gpios_in);
 
-	// PORT2 input
-	gpios_in.port = MXC_GPIO2;
-	MXC_GPIO_Config(&gpios_in);
+    // PORT2 input
+    gpios_in.port = MXC_GPIO2;
+    MXC_GPIO_Config(&gpios_in);
 
-	// PORT1 input
-	gpios_in.port = MXC_GPIO1;
-	MXC_GPIO_Config(&gpios_in);
+    // PORT1 input
+    gpios_in.port = MXC_GPIO1;
+    MXC_GPIO_Config(&gpios_in);
 
-	// PORT0 input except consule
-	gpios_in.port = MXC_GPIO0;
-	gpios_in.mask = 0xFFFFFFFD;    // except UART0-TX for debug
-	MXC_GPIO_Config(&gpios_in);
+    // PORT0 input except consule
+    gpios_in.port = MXC_GPIO0;
+    gpios_in.mask = 0xFFFFFFFD; // except UART0-TX for debug
+    MXC_GPIO_Config(&gpios_in);
 
 #endif
 
@@ -233,14 +244,15 @@ int main(void)
 #else
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
-	LED_On(LED1);
-	MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
-    setTrigger(1);;
-	MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-	LED_Off(LED1);
+    LED_On(LED1);
+    MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
+    setTrigger(1);
+    ;
+    MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
+    LED_Off(LED1);
 
 #if USE_BUTTON
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*) &pb_pin[0]);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
@@ -252,13 +264,13 @@ int main(void)
         printf("Entering SLEEP mode.\n");
 #endif // USE_CONSOLE
         setTrigger(0);
-		LED_On(LED1);
-		MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
+        LED_On(LED1);
+        MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterSleepMode();
-		MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-		LED_Off(LED1);
+        MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
+        LED_Off(LED1);
         printf("Waking up from SLEEP mode.\n");
-		MXC_Delay(SEC(2));
+        MXC_Delay(SEC(2));
 #endif // DO_SLEEP
 
 #if DO_LPM
@@ -266,12 +278,12 @@ int main(void)
         printf("Entering Low power mode.\n");
 #endif // USE_CONSOLE
         setTrigger(0);
-		LED_On(LED1);
+        LED_On(LED1);
         MXC_LP_EnterLowPowerMode();
-		MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-		LED_Off(LED1);
+        MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
+        LED_Off(LED1);
         printf("Waking up from Low power mode.\n");
-		MXC_Delay(SEC(2));
+        MXC_Delay(SEC(2));
 #endif // DO_LPM
 
 #if DO_UPM
@@ -279,13 +291,13 @@ int main(void)
         printf("Entering Micro power mode.\n");
 #endif // USE_CONSOLE
         setTrigger(0);
-		LED_On(LED1);
-		MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
+        LED_On(LED1);
+        MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterMicroPowerMode();
-		MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-		LED_Off(LED1);
+        MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
+        LED_Off(LED1);
         printf("Waking up from Micro power mode.\n");
-		MXC_Delay(SEC(2));
+        MXC_Delay(SEC(2));
 #endif // DO_UPM
 
 #if DO_STANDBY
@@ -293,14 +305,14 @@ int main(void)
         printf("Entering STANDBY mode.\n");
 #endif // USE_CONSOLE
         setTrigger(0);
-		LED_On(LED1);
-		MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
-		MXC_LP_ClearWakeStatus();
+        LED_On(LED1);
+        MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
+        MXC_LP_ClearWakeStatus();
         MXC_LP_EnterStandbyMode();
-		MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-		LED_Off(LED1);
-		printf("Waking up from STANDBY mode.\n");
-		MXC_Delay(SEC(2));
+        MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
+        LED_Off(LED1);
+        printf("Waking up from STANDBY mode.\n");
+        MXC_Delay(SEC(2));
 #endif // DO_STANDBY
 
 #if DO_BACKUP
@@ -308,38 +320,39 @@ int main(void)
         printf("Entering BACKUP mode.\n");
 #endif // USE_CONSOLE
         setTrigger(0);
-		MXC_LP_ClearWakeStatus();
-		LED_On(LED1);
-		MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
-		// power is not shown in this mode as it resets after wakeup
+        MXC_LP_ClearWakeStatus();
+        LED_On(LED1);
+        MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
+        // power is not shown in this mode as it resets after wakeup
         MXC_LP_EnterBackupMode();
-		while(1);  // we should not come here
-#endif // DO_BACKUP
+        while (1)
+            ; // we should not come here
+#endif        // DO_BACKUP
 
 #if DO_POWERDOWN
 #if USE_CONSOLE
         printf("Entering Power Down mode, press reset or P3.0/1 = 0 to restart.\n");
 #endif // USE_CONSOLE
-       setTrigger(0);
+        setTrigger(0);
 
-	   mxc_gpio_cfg_t gpio_in;
+        mxc_gpio_cfg_t gpio_in;
 
-	   // The two GPIO3 pins are pulled down to 0 by default due to internal weak pulldown.
-       // As soon as you enter PDM mode, the pin becomes a weak pull-up and causes an immidiate wakeup condition.
-	   // To avoid, configure P3.3 and P3.1 as input with pullup for PDM to work properly"
-	   gpio_in.port = MXC_GPIO3;
-       gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
-       gpio_in.func = MXC_GPIO_FUNC_IN;
-	   gpio_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        // The two GPIO3 pins are pulled down to 0 by default due to internal weak pulldown.
+        // As soon as you enter PDM mode, the pin becomes a weak pull-up and causes an immidiate wakeup condition.
+        // To avoid, configure P3.3 and P3.1 as input with pullup for PDM to work properly"
+        gpio_in.port  = MXC_GPIO3;
+        gpio_in.pad   = MXC_GPIO_PAD_PULL_UP;
+        gpio_in.func  = MXC_GPIO_FUNC_IN;
+        gpio_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
-	   gpio_in.mask = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1;
-       MXC_GPIO_Config(&gpio_in);
+        gpio_in.mask = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1;
+        MXC_GPIO_Config(&gpio_in);
 
-	   LED_On(LED1);
-	   // power is not shown in this mode as it resets after wakeup
-       MXC_LP_EnterPowerDownMode();
-	   while(1); // we should not come here
-#endif // DO_POWERDOWN
-
+        LED_On(LED1);
+        // power is not shown in this mode as it resets after wakeup
+        MXC_LP_EnterPowerDownMode();
+        while (1)
+            ; // we should not come here
+#endif        // DO_POWERDOWN
     }
 }

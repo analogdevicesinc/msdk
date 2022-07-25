@@ -57,74 +57,76 @@ Macros
 **************************************************************************************************/
 #if (BT_VER > 8)
 /* PHY Test Modes */
-#define DATC_PHY_1M                       1
-#define DATC_PHY_2M                       2
-#define DATC_PHY_CODED                    3
+#define DATC_PHY_1M    1
+#define DATC_PHY_2M    2
+#define DATC_PHY_CODED 3
 #endif /* BT_VER */
 
 /* Size of WDXC file discovery dataset */
-#define DATC_WDXC_MAX_FILES               4
+#define DATC_WDXC_MAX_FILES 4
 
 /*! WSF message event starting value */
-#define DATC_MSG_START                    0xA0
+#define DATC_MSG_START 0xA0
 
 /*! Data rate timer period in seconds */
-#define DATC_WDXS_DATA_RATE_TIMEOUT       4
+#define DATC_WDXS_DATA_RATE_TIMEOUT 4
 
 extern uint32_t _binary_fw_update_bin_start;
 extern uint32_t _binary_fw_update_bin_end;
 
-#define FILE_SIZE                         (uint32_t)(((uint32_t)&_binary_fw_update_bin_end) - ((uint32_t)&_binary_fw_update_bin_start))
-#define BLOCK_OFFSET_INIT                 0x0
-#define BLOCK_SIZE                        224
-#define CRC32_LEN                         4
+#define FILE_SIZE \
+    (uint32_t)(((uint32_t)&_binary_fw_update_bin_end) - ((uint32_t)&_binary_fw_update_bin_start))
+#define BLOCK_OFFSET_INIT 0x0
+#define BLOCK_SIZE        224
+#define CRC32_LEN         4
 
 /*! Button press handling constants */
-#define BTN_SHORT_MS                      200
-#define BTN_MED_MS                        500
-#define BTN_LONG_MS                       1000
+#define BTN_SHORT_MS 200
+#define BTN_MED_MS   500
+#define BTN_LONG_MS  1000
 
-#define BTN_1_TMR                         MXC_TMR2
-#define BTN_2_TMR                         MXC_TMR3
+#define BTN_1_TMR MXC_TMR2
+#define BTN_2_TMR MXC_TMR3
 
-#define SCAN_START_EVT                    0x99
-#define SCAN_START_MS                     500
+#define SCAN_START_EVT 0x99
+#define SCAN_START_MS  500
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
-typedef struct{
+typedef struct {
     uint32_t fileLen;
     uint32_t fileCRC;
-}fileHeader_t;
+} fileHeader_t;
 fileHeader_t fileHeader;
 /*! application control block */
 struct {
-    uint16_t          hdlList[DM_CONN_MAX][APP_DB_HDL_LIST_LEN];   /*! Cached handle list */
-    wsfHandlerId_t    handlerId;                      /*! WSF hander ID */
-    bool_t            scanning;                       /*! TRUE if scanning */
-    bool_t            autoConnect;                    /*! TRUE if auto-connecting */
-    uint8_t           discState[DM_CONN_MAX];         /*! Service discovery state */
-    uint8_t           hdlListLen;                     /*! Cached handle list length */
-    uint8_t           btnConnId;                      /*! The index of the connection ID for button presses */
-    bool_t            sendingFile[DM_CONN_MAX];
-    bool_t            fileVerified[DM_CONN_MAX];
-    uint32_t          blockOffset[DM_CONN_MAX];
-    wsfEfsFileInfo_t  fileList[DM_CONN_MAX][DATC_WDXC_MAX_FILES]; /*! Buffer to hold WDXC file list */
-    uint8_t*          fileData;                       /*! Pointer for accessing the fw_update image*/
-    uint32_t          fileCRC;                        /*! Holds the CRC32 value of the file */
+    uint16_t hdlList[DM_CONN_MAX][APP_DB_HDL_LIST_LEN]; /*! Cached handle list */
+    wsfHandlerId_t handlerId;                           /*! WSF hander ID */
+    bool_t scanning;                                    /*! TRUE if scanning */
+    bool_t autoConnect;                                 /*! TRUE if auto-connecting */
+    uint8_t discState[DM_CONN_MAX];                     /*! Service discovery state */
+    uint8_t hdlListLen;                                 /*! Cached handle list length */
+    uint8_t btnConnId; /*! The index of the connection ID for button presses */
+    bool_t sendingFile[DM_CONN_MAX];
+    bool_t fileVerified[DM_CONN_MAX];
+    uint32_t blockOffset[DM_CONN_MAX];
+    wsfEfsFileInfo_t fileList[DM_CONN_MAX]
+                             [DATC_WDXC_MAX_FILES]; /*! Buffer to hold WDXC file list */
+    uint8_t* fileData;                              /*! Pointer for accessing the fw_update image*/
+    uint32_t fileCRC;                               /*! Holds the CRC32 value of the file */
 
-    appDbHdl_t        resListRestoreHdl;              /*! Resolving List restoration handle */
-    bool_t            restoringResList;               /*! Restoring resolving list from NVM */
-    wsfTimer_t        scanTimer;                      /* Timer for starting the scanner */
+    appDbHdl_t resListRestoreHdl; /*! Resolving List restoration handle */
+    bool_t restoringResList;      /*! Restoring resolving list from NVM */
+    wsfTimer_t scanTimer;         /* Timer for starting the scanner */
 } datcCb;
 
 /*! connection control block */
 typedef struct {
-    appDbHdl_t          dbHdl;                        /*! Device database record handle type */
-    uint8_t             addrType;                     /*! Type of address of device to connect to */
-    bdAddr_t            addr;                         /*! Address of device to connect to */
-    bool_t              doConnect;                    /*! TRUE to issue connect on scan complete */
+    appDbHdl_t dbHdl; /*! Device database record handle type */
+    uint8_t addrType; /*! Type of address of device to connect to */
+    bdAddr_t addr;    /*! Address of device to connect to */
+    bool_t doConnect; /*! TRUE to issue connect on scan complete */
 } datcConnInfo_t;
 
 datcConnInfo_t datcConnInfo;
@@ -135,20 +137,20 @@ datcConnInfo_t datcConnInfo;
 
 /*! configurable parameters for master */
 static const appMasterCfg_t datcMasterCfg = {
-    96,                                      /*! The scan interval, in 0.625 ms units */
-    48,                                      /*! The scan window, in 0.625 ms units  */
-    0,                                       /*! The scan duration in ms */
-    DM_DISC_MODE_NONE,                       /*! The GAP discovery mode */
-    DM_SCAN_TYPE_ACTIVE                      /*! The scan type (active or passive) */
+    96,                 /*! The scan interval, in 0.625 ms units */
+    48,                 /*! The scan window, in 0.625 ms units  */
+    0,                  /*! The scan duration in ms */
+    DM_DISC_MODE_NONE,  /*! The GAP discovery mode */
+    DM_SCAN_TYPE_ACTIVE /*! The scan type (active or passive) */
 };
 
 /*! configurable parameters for security */
 static const appSecCfg_t datcSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG,    /*! Authentication and bonding flags */
-    DM_KEY_DIST_IRK,                        /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,      /*! Responder key distribution flags */
-    FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-    FALSE                                   /*! TRUE to initiate security upon connection */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
+    DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
+    FALSE,                               /*! TRUE if Out-of-band pairing data is present */
+    FALSE                                /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -156,50 +158,49 @@ static const bool_t datcSendOobData = FALSE;
 
 /*! SMP security parameter configuration */
 static const smpCfg_t datcSmpCfg = {
-    500,                                    /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT,                    /*! I/O Capability */
-    7,                                      /*! Minimum encryption key length */
-    16,                                     /*! Maximum encryption key length */
-    1,                                      /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                                      /*! Device authentication requirements */
-    64000,                                  /*! Maximum repeated attempts timeout in msec */
-    64000,                                  /*! Time msec before attemptExp decreases */
-    2                                       /*! Repeated attempts multiplier exponent */
+    500,                 /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    7,                   /*! Minimum encryption key length */
+    16,                  /*! Maximum encryption key length */
+    1,                   /*! Attempts to trigger 'repeated attempts' timeout */
+    0,                   /*! Device authentication requirements */
+    64000,               /*! Maximum repeated attempts timeout in msec */
+    64000,               /*! Time msec before attemptExp decreases */
+    2                    /*! Repeated attempts multiplier exponent */
 };
 
 /*! Connection parameters */
 static const hciConnSpec_t datcConnCfg = {
-    6,                                      /*! Minimum connection interval in 1.25ms units */
-    6,                                      /*! Maximum connection interval in 1.25ms units */
-    0,                                      /*! Connection latency */
-    600,                                    /*! Supervision timeout in 10ms units */
-    0,                                      /*! Unused */
-    0                                       /*! Unused */
+    6,   /*! Minimum connection interval in 1.25ms units */
+    6,   /*! Maximum connection interval in 1.25ms units */
+    0,   /*! Connection latency */
+    600, /*! Supervision timeout in 10ms units */
+    0,   /*! Unused */
+    0    /*! Unused */
 };
 
 /*! Configurable parameters for service and characteristic discovery */
 static const appDiscCfg_t datcDiscCfg = {
-    FALSE,                                  /*! TRUE to wait for a secure connection before initiating discovery */
-    TRUE                                    /*! TRUE to fall back on database hash to verify handles when no bond exists. */
+    FALSE, /*! TRUE to wait for a secure connection before initiating discovery */
+    TRUE   /*! TRUE to fall back on database hash to verify handles when no bond exists. */
 };
 
 static const appCfg_t datcAppCfg = {
-    FALSE,                                  /*! TRUE to abort service discovery if service not found */
-    TRUE                                    /*! TRUE to disconnect if ATT transaction times out */
+    FALSE, /*! TRUE to abort service discovery if service not found */
+    TRUE   /*! TRUE to disconnect if ATT transaction times out */
 };
 
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t datcAttCfg = {
-    15,                               /* ATT server service discovery connection idle timeout in seconds */
-    241,                              /* desired ATT MTU */
-    ATT_MAX_TRANS_TIMEOUT,            /* transcation timeout in seconds */
-    4                                 /* number of queued prepare writes supported by server */
+    15,                    /* ATT server service discovery connection idle timeout in seconds */
+    241,                   /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4                      /* number of queued prepare writes supported by server */
 };
 
 /*! local IRK */
-static uint8_t localIrk[] = {
-    0xA6, 0xD9, 0xFF, 0x70, 0xD6, 0x1E, 0xF0, 0xA4, 0x46, 0x5F, 0x8D, 0x68, 0x19, 0xF3, 0xB4, 0x96
-};
+static uint8_t localIrk[] = {0xA6, 0xD9, 0xFF, 0x70, 0xD6, 0x1E, 0xF0, 0xA4,
+                             0x46, 0x5F, 0x8D, 0x68, 0x19, 0xF3, 0xB4, 0x96};
 
 /**************************************************************************************************
   ATT Client Discovery Data
@@ -207,11 +208,11 @@ static uint8_t localIrk[] = {
 
 /*! Discovery states:  enumeration of services to be discovered */
 enum {
-    DATC_DISC_GATT_SVC,      /*! GATT service */
-    DATC_DISC_GAP_SVC,       /*! GAP service */
-    DATC_DISC_WP_SVC,        /*! Arm Ltd. proprietary service */
-    DATC_DISC_WDXC_SCV,      /*! Arm Ltd. Wireless Data Exchange service */
-    DATC_DISC_SVC_MAX        /*! Discovery complete */
+    DATC_DISC_GATT_SVC, /*! GATT service */
+    DATC_DISC_GAP_SVC,  /*! GAP service */
+    DATC_DISC_WP_SVC,   /*! Arm Ltd. proprietary service */
+    DATC_DISC_WDXC_SCV, /*! Arm Ltd. Wireless Data Exchange service */
+    DATC_DISC_SVC_MAX   /*! Discovery complete */
 };
 
 /*! the Client handle list, datcCb.hdlList[], is set as follows:
@@ -231,20 +232,20 @@ enum {
  */
 
 /*! Start of each service's handles in the the handle list */
-#define DATC_DISC_GATT_START       0
-#define DATC_DISC_GAP_START        (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
-#define DATC_DISC_WP_START         (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
-#define DATC_DISC_WDXC_START       (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
-#define DATC_DISC_HDL_LIST_LEN     (DATC_DISC_WDXC_START + WDXC_HDL_LIST_LEN)
+#define DATC_DISC_GATT_START   0
+#define DATC_DISC_GAP_START    (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
+#define DATC_DISC_WP_START     (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
+#define DATC_DISC_WDXC_START   (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
+#define DATC_DISC_HDL_LIST_LEN (DATC_DISC_WDXC_START + WDXC_HDL_LIST_LEN)
 
 /*! Pointers into handle list for each service's handles */
-static uint16_t *pDatcGattHdlList[DM_CONN_MAX];
-static uint16_t *pDatcGapHdlList[DM_CONN_MAX];
-static uint16_t *pDatcWpHdlList[DM_CONN_MAX];
-static uint16_t *pDatcWdxHdlList[DM_CONN_MAX];
+static uint16_t* pDatcGattHdlList[DM_CONN_MAX];
+static uint16_t* pDatcGapHdlList[DM_CONN_MAX];
+static uint16_t* pDatcWpHdlList[DM_CONN_MAX];
+static uint16_t* pDatcWdxHdlList[DM_CONN_MAX];
 
 /* LESC OOB configuration */
-static dmSecLescOobCfg_t *datcOobCfg;
+static dmSecLescOobCfg_t* datcOobCfg;
 
 /**************************************************************************************************
   ATT Client Configuration Data
@@ -282,7 +283,7 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
 };
 
 /* Characteristic configuration list length */
-#define DATC_DISC_CFG_LIST_LEN   (sizeof(datcDiscCfgList) / sizeof(attcDiscCfg_t))
+#define DATC_DISC_CFG_LIST_LEN (sizeof(datcDiscCfgList) / sizeof(attcDiscCfg_t))
 
 /* sanity check:  make sure configuration list length is <= handle list length */
 WSF_CT_ASSERT(DATC_DISC_CFG_LIST_LEN <= DATC_DISC_HDL_LIST_LEN);
@@ -298,11 +299,11 @@ extern void setAdvTxPower(void);
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcDmCback(dmEvt_t *pDmEvt)
+static void datcDmCback(dmEvt_t* pDmEvt)
 {
-    dmEvt_t   *pMsg;
-    uint16_t  len;
-    uint16_t  reportLen;
+    dmEvt_t* pMsg;
+    uint16_t len;
+    uint16_t reportLen;
 
     if (pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND) {
         DmSecSetEccKey(&pDmEvt->eccMsg.data.key);
@@ -334,7 +335,7 @@ static void datcDmCback(dmEvt_t *pDmEvt)
         if ((pMsg = WsfMsgAlloc(len + reportLen)) != NULL) {
             memcpy(pMsg, pDmEvt, len);
             if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND) {
-                pMsg->scanReport.pData = (uint8_t *) ((uint8_t *) pMsg + len);
+                pMsg->scanReport.pData = (uint8_t*)((uint8_t*)pMsg + len);
                 memcpy(pMsg->scanReport.pData, pDmEvt->scanReport.pData, reportLen);
             }
             WsfMsgSend(datcCb.handlerId, pMsg);
@@ -351,13 +352,13 @@ static void datcDmCback(dmEvt_t *pDmEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcAttCback(attEvt_t *pEvt)
+static void datcAttCback(attEvt_t* pEvt)
 {
-    attEvt_t *pMsg;
+    attEvt_t* pMsg;
 
     if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
         memcpy(pMsg, pEvt, sizeof(attEvt_t));
-        pMsg->pValue = (uint8_t *) (pMsg + 1);
+        pMsg->pValue = (uint8_t*)(pMsg + 1);
         memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
         WsfMsgSend(datcCb.handlerId, pMsg);
     }
@@ -374,10 +375,9 @@ static void datcAttCback(attEvt_t *pEvt)
 /*************************************************************************************************/
 static void datcRestartScanningHandler(void)
 {
-    datcCb.autoConnect = TRUE;
+    datcCb.autoConnect     = TRUE;
     datcConnInfo.doConnect = FALSE;
-    AppScanStart(datcMasterCfg.discMode, datcMasterCfg.scanType,
-                 datcMasterCfg.scanDuration);
+    AppScanStart(datcMasterCfg.discMode, datcMasterCfg.scanType, datcMasterCfg.scanDuration);
 }
 
 /*************************************************************************************************/
@@ -404,7 +404,7 @@ static void datcRestartScanning(void)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcScanStart(dmEvt_t *pMsg)
+static void datcScanStart(dmEvt_t* pMsg)
 {
     if (pMsg->hdr.status == HCI_SUCCESS) {
         datcCb.scanning = TRUE;
@@ -420,10 +420,10 @@ static void datcScanStart(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcScanStop(dmEvt_t *pMsg)
+static void datcScanStop(dmEvt_t* pMsg)
 {
     if (pMsg->hdr.status == HCI_SUCCESS) {
-        datcCb.scanning = FALSE;
+        datcCb.scanning    = FALSE;
         datcCb.autoConnect = FALSE;
 
         /* Open connection */
@@ -443,11 +443,11 @@ static void datcScanStop(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcScanReport(dmEvt_t *pMsg)
+static void datcScanReport(dmEvt_t* pMsg)
 {
-    uint8_t *pData;
+    uint8_t* pData;
     appDbHdl_t dbHdl;
-    bool_t  connect = FALSE;
+    bool_t connect = FALSE;
 
     /* disregard if not scanning or autoconnecting */
     if (!datcCb.scanning || !datcCb.autoConnect) {
@@ -455,7 +455,8 @@ static void datcScanReport(dmEvt_t *pMsg)
     }
 
     /* if we already have a bond with this device then connect to it */
-    if ((dbHdl = AppDbFindByAddr(pMsg->scanReport.addrType, pMsg->scanReport.addr)) != APP_DB_HDL_NONE) {
+    if ((dbHdl = AppDbFindByAddr(pMsg->scanReport.addrType, pMsg->scanReport.addr)) !=
+        APP_DB_HDL_NONE) {
         /* if this is a directed advertisement where the initiator address is an RPA */
         if (DM_RAND_ADDR_RPA(pMsg->scanReport.directAddr, pMsg->scanReport.directAddrType)) {
             /* resolve direct address to see if it's addressed to us */
@@ -471,12 +472,11 @@ static void datcScanReport(dmEvt_t *pMsg)
     }
     /* Search for "OTAS" name */
     if (!connect && ((pData = DmFindAdType(DM_ADV_TYPE_LOCAL_NAME, pMsg->scanReport.len,
-                                   pMsg->scanReport.pData)) != NULL)) {
+                                           pMsg->scanReport.pData)) != NULL)) {
         /* check length and device name */
         if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'O') &&
-                (pData[DM_AD_DATA_IDX+1] == 'T') &&
-                (pData[DM_AD_DATA_IDX+2] == 'A') &&
-                (pData[DM_AD_DATA_IDX+3] == 'S')) {
+            (pData[DM_AD_DATA_IDX + 1] == 'T') && (pData[DM_AD_DATA_IDX + 2] == 'A') &&
+            (pData[DM_AD_DATA_IDX + 3] == 'S')) {
             connect = TRUE;
         }
     }
@@ -489,7 +489,7 @@ static void datcScanReport(dmEvt_t *pMsg)
         /* Store peer information for connect on scan stop */
         datcConnInfo.addrType = DmHostAddrType(pMsg->scanReport.addrType);
         memcpy(datcConnInfo.addr, pMsg->scanReport.addr, sizeof(bdAddr_t));
-        datcConnInfo.dbHdl = dbHdl;
+        datcConnInfo.dbHdl     = dbHdl;
         datcConnInfo.doConnect = TRUE;
     }
 }
@@ -503,9 +503,8 @@ static void datcScanReport(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcOpen(dmEvt_t *pMsg)
+static void datcOpen(dmEvt_t* pMsg)
 {
-
 }
 
 /*************************************************************************************************/
@@ -517,9 +516,8 @@ static void datcOpen(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcValueNtf(attEvt_t *pMsg)
+static void datcValueNtf(attEvt_t* pMsg)
 {
-
 }
 
 /*************************************************************************************************/
@@ -531,14 +529,14 @@ static void datcValueNtf(attEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcSetup(dmEvt_t *pMsg)
+static void datcSetup(dmEvt_t* pMsg)
 {
-    datcCb.scanning = FALSE;
-    datcCb.autoConnect = FALSE;
-    datcConnInfo.doConnect = FALSE;
+    datcCb.scanning         = FALSE;
+    datcCb.autoConnect      = FALSE;
+    datcConnInfo.doConnect  = FALSE;
     datcCb.restoringResList = FALSE;
 
-    DmConnSetConnSpec((hciConnSpec_t *) &datcConnCfg);
+    DmConnSetConnSpec((hciConnSpec_t*)&datcConnCfg);
 }
 
 /*************************************************************************************************/
@@ -550,7 +548,7 @@ static void datcSetup(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcRestoreResolvingList(dmEvt_t *pMsg)
+static void datcRestoreResolvingList(dmEvt_t* pMsg)
 {
     /* Restore first device to resolving list in Controller. */
     datcCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
@@ -572,7 +570,7 @@ static void datcRestoreResolvingList(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcPrivAddDevToResListInd(dmEvt_t *pMsg)
+static void datcPrivAddDevToResListInd(dmEvt_t* pMsg)
 {
     /* Check if in the process of restoring the Device List from NV */
     if (datcCb.restoringResList) {
@@ -585,7 +583,6 @@ static void datcPrivAddDevToResListInd(dmEvt_t *pMsg)
         }
     }
 }
-
 
 /*************************************************************************************************/
 /*!
@@ -601,8 +598,8 @@ static void datcDiscGapCmpl(dmConnId_t connId)
     appDbHdl_t dbHdl;
 
     /* if RPA Only attribute found on peer device */
-    if ((pDatcGapHdlList[connId-1][GAP_RPAO_HDL_IDX] != ATT_HANDLE_NONE) &&
-            ((dbHdl = AppDbGetHdl(connId)) != APP_DB_HDL_NONE)) {
+    if ((pDatcGapHdlList[connId - 1][GAP_RPAO_HDL_IDX] != ATT_HANDLE_NONE) &&
+        ((dbHdl = AppDbGetHdl(connId)) != APP_DB_HDL_NONE)) {
         /* update DB */
         AppDbSetPeerRpao(dbHdl, TRUE);
         AppDbNvmStorePeerRpao(dbHdl);
@@ -621,9 +618,8 @@ static void datcDiscGapCmpl(dmConnId_t connId)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcWdxcFtdCallback(dmConnId_t connId, uint16_t fileHdl, uint16_t len, uint8_t *pData)
+static void datcWdxcFtdCallback(dmConnId_t connId, uint16_t fileHdl, uint16_t len, uint8_t* pData)
 {
-
 }
 /*************************************************************************************************/
 /*!
@@ -636,8 +632,9 @@ static void datcWdxcFtdCallback(dmConnId_t connId, uint16_t fileHdl, uint16_t le
 /*************************************************************************************************/
 static void sendFileHeader(dmConnId_t connId)
 {
-    if (pDatcWpHdlList[connId-1][WPC_P1_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
-        AttcWriteCmd(connId, pDatcWpHdlList[connId-1][WPC_P1_DAT_HDL_IDX], sizeof(fileHeader_t),(uint8_t*)&fileHeader);
+    if (pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
+        AttcWriteCmd(connId, pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX], sizeof(fileHeader_t),
+                     (uint8_t*)&fileHeader);
     }
 }
 /*************************************************************************************************/
@@ -661,10 +658,12 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
 
         MXC_TMR_SW_Start(MXC_TMR2);
         datcCb.sendingFile[connId - 1] = TRUE;
-        WdxcFtdSendBlock(connId, BLOCK_SIZE, (uint8_t*)&datcCb.fileData[datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT]);
+        WdxcFtdSendBlock(
+            connId, BLOCK_SIZE,
+            (uint8_t*)&datcCb.fileData[datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT]);
         datcCb.blockOffset[connId - 1] += BLOCK_SIZE;
     } else if (op == WDX_FTC_OP_EOF) {
-        if(handle == WDX_FLIST_HANDLE) {
+        if (handle == WDX_FLIST_HANDLE) {
             /* on discovery completion we can send the header */
             sendFileHeader(connId);
             /* File discovery complete */
@@ -673,12 +672,13 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
             /* Stop timer, calculate time and Bps */
             uint32_t usec = MXC_TMR_SW_Stop(MXC_TMR2);
             APP_TRACE_INFO1(">>> File transfer complete %d us <<<\n", usec);
-            APP_TRACE_INFO3("file_size = %d usec = %d bps = %d\n", FILE_SIZE, usec, ((FILE_SIZE*1000)/(usec / 1000))*8);
+            APP_TRACE_INFO3("file_size = %d usec = %d bps = %d\n", FILE_SIZE, usec,
+                            ((FILE_SIZE * 1000) / (usec / 1000)) * 8);
             datcCb.sendingFile[connId - 1] = FALSE;
         }
     } else if (op == WDX_FTC_OP_VERIFY_RSP) {
         APP_TRACE_INFO1(">>> Verify complete status: %d <<<\n", status);
-        if(status)
+        if (status)
             datcCb.fileVerified[connId - 1] = FALSE;
         else
             datcCb.fileVerified[connId - 1] = TRUE;
@@ -695,9 +695,9 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
 /*************************************************************************************************/
 static void datcBtnCback(uint8_t btn)
 {
-    dmConnId_t  connId = datcCb.btnConnId;
-    dmConnId_t  connIdList[DM_CONN_MAX];
-    uint8_t     numConnections = AppConnOpenList(connIdList);
+    dmConnId_t connId = datcCb.btnConnId;
+    dmConnId_t connIdList[DM_CONN_MAX];
+    uint8_t numConnections = AppConnOpenList(connIdList);
 
     /* button actions when connected */
     if (numConnections > 0) {
@@ -731,30 +731,35 @@ static void datcBtnCback(uint8_t btn)
                 break;
 
 #if (BT_VER > 8)
-            case APP_UI_BTN_1_EX_LONG: {
-                static uint32_t  coded_phy_cnt = 0;
+            case APP_UI_BTN_1_EX_LONG:
+            {
+                static uint32_t coded_phy_cnt = 0;
                 /* Toggle PHY Test Mode */
                 coded_phy_cnt++;
-                switch ( coded_phy_cnt & 0x3 ) {
-                    case  0:
+                switch (coded_phy_cnt & 0x3) {
+                    case 0:
                         /* 1M PHY */
                         APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT, HCI_PHY_LE_1M_BIT, HCI_PHY_OPTIONS_NONE);
+                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT,
+                                 HCI_PHY_LE_1M_BIT, HCI_PHY_OPTIONS_NONE);
                         break;
                     case 1:
                         /* 2M PHY */
                         APP_TRACE_INFO0("2 MBit TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT, HCI_PHY_LE_2M_BIT, HCI_PHY_OPTIONS_NONE);
+                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT,
+                                 HCI_PHY_LE_2M_BIT, HCI_PHY_OPTIONS_NONE);
                         break;
                     case 2:
                         /* Coded S2 PHY */
                         APP_TRACE_INFO0("LE Coded S2 TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT, HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S2_PREFERRED);
+                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
+                                 HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S2_PREFERRED);
                         break;
                     case 3:
                         /* Coded S8 PHY */
                         APP_TRACE_INFO0("LE Coded S8 TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT, HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S8_PREFERRED);
+                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
+                                 HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S8_PREFERRED);
                         break;
                 }
                 break;
@@ -769,13 +774,14 @@ static void datcBtnCback(uint8_t btn)
 
             case APP_UI_BTN_2_MED:
                 if ((datcCb.discState[connId - 1] > DATC_DISC_WDXC_SCV) &&
-                        (datcCb.sendingFile[connId - 1] == FALSE)) {
+                    (datcCb.sendingFile[connId - 1] == FALSE)) {
                     /* Start the WDXC data stream */
                     datcCb.blockOffset[connId - 1] = BLOCK_OFFSET_INIT;
 
                     /* Put file request */
-                    WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle, BLOCK_OFFSET_INIT, FILE_SIZE,
-                    BLOCK_OFFSET_INIT+FILE_SIZE, 0);
+                    WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle,
+                                      BLOCK_OFFSET_INIT, FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE,
+                                      0);
                 }
                 break;
 
@@ -858,10 +864,10 @@ static void datcBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void datcDiscCback(dmConnId_t connId, uint8_t status)
 {
-    switch(status) {
+    switch (status) {
         case APP_DISC_INIT:
             /* set handle list when initialization requested */
-            AppDiscSetHdlList(connId, datcCb.hdlListLen, datcCb.hdlList[connId-1]);
+            AppDiscSetHdlList(connId, datcCb.hdlListLen, datcCb.hdlList[connId - 1]);
             break;
 
         case APP_DISC_READ_DATABASE_HASH:
@@ -876,37 +882,37 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
 
         case APP_DISC_START:
             /* initialize discovery state */
-            datcCb.discState[connId-1] = DATC_DISC_GATT_SVC;
+            datcCb.discState[connId - 1] = DATC_DISC_GATT_SVC;
 
             /* store possible change in cache by hash */
             AppDbNvmStoreCacheByHash(AppDbGetHdl(connId));
 
             /* discover GATT service */
-            GattDiscover(connId, pDatcGattHdlList[connId-1]);
+            GattDiscover(connId, pDatcGattHdlList[connId - 1]);
             break;
 
         case APP_DISC_FAILED:
             if (pAppCfg->abortDisc) {
                 /* if discovery failed for proprietary data service then disconnect */
-                if (datcCb.discState[connId-1] == DATC_DISC_WP_SVC) {
+                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
                     AppConnClose(connId);
                     break;
                 }
             }
-        /* Else falls through. */
+            /* Else falls through. */
 
         case APP_DISC_CMPL:
             /* next discovery state */
-            datcCb.discState[connId-1]++;
+            datcCb.discState[connId - 1]++;
 
-            if (datcCb.discState[connId-1] == DATC_DISC_GAP_SVC) {
+            if (datcCb.discState[connId - 1] == DATC_DISC_GAP_SVC) {
                 /* discover GAP service */
-                GapDiscover(connId, pDatcGapHdlList[connId-1]);
-            } else if (datcCb.discState[connId-1] == DATC_DISC_WP_SVC) {
+                GapDiscover(connId, pDatcGapHdlList[connId - 1]);
+            } else if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
                 /* discover proprietary data service */
-                WpcP1Discover(connId, pDatcWpHdlList[connId-1]);
-            } else if (datcCb.discState[connId-1] == DATC_DISC_WDXC_SCV) {
-                WdxcWdxsDiscover(connId, pDatcWdxHdlList[connId-1]);
+                WpcP1Discover(connId, pDatcWpHdlList[connId - 1]);
+            } else if (datcCb.discState[connId - 1] == DATC_DISC_WDXC_SCV) {
+                WdxcWdxsDiscover(connId, pDatcWdxHdlList[connId - 1]);
             } else {
                 /* discovery complete */
                 AppDiscComplete(connId, APP_DISC_CMPL);
@@ -919,14 +925,16 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
 
                 /* start configuration */
                 AppDiscConfigure(connId, APP_DISC_CFG_START, DATC_DISC_CFG_LIST_LEN,
-                                 (attcDiscCfg_t *) datcDiscCfgList, DATC_DISC_HDL_LIST_LEN, datcCb.hdlList[connId-1]);
+                                 (attcDiscCfg_t*)datcDiscCfgList, DATC_DISC_HDL_LIST_LEN,
+                                 datcCb.hdlList[connId - 1]);
             }
             break;
 
         case APP_DISC_CFG_START:
             /* start configuration */
             AppDiscConfigure(connId, APP_DISC_CFG_START, DATC_DISC_CFG_LIST_LEN,
-                             (attcDiscCfg_t *) datcDiscCfgList, DATC_DISC_HDL_LIST_LEN, datcCb.hdlList[connId-1]);
+                             (attcDiscCfg_t*)datcDiscCfgList, DATC_DISC_HDL_LIST_LEN,
+                             datcCb.hdlList[connId - 1]);
             break;
 
         case APP_DISC_CFG_CMPL:
@@ -951,34 +959,34 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcProcMsg(dmEvt_t *pMsg)
+static void datcProcMsg(dmEvt_t* pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
 
-    switch(pMsg->hdr.event) {
-
+    switch (pMsg->hdr.event) {
         case ATTC_HANDLE_VALUE_NTF:
-            datcValueNtf((attEvt_t *) pMsg);
+            datcValueNtf((attEvt_t*)pMsg);
             break;
 
         case ATTC_WRITE_CMD_RSP:
-        case ATTC_WRITE_RSP: {
+        case ATTC_WRITE_RSP:
+        {
+            dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-            dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
-
-            if ((((attEvt_t *) pMsg)->hdr.status == ATT_SUCCESS) &&
-                    (((attEvt_t *) pMsg)->handle == pDatcWdxHdlList[connId-1][WDXC_FTD_HDL_IDX])) {
-                
-                if(datcCb.sendingFile[connId - 1] == TRUE) {
+            if ((((attEvt_t*)pMsg)->hdr.status == ATT_SUCCESS) &&
+                (((attEvt_t*)pMsg)->handle == pDatcWdxHdlList[connId - 1][WDXC_FTD_HDL_IDX])) {
+                if (datcCb.sendingFile[connId - 1] == TRUE) {
                     uint32_t blockSize;
-                    if((datcCb.blockOffset[connId - 1] + BLOCK_SIZE) > FILE_SIZE) {
+                    if ((datcCb.blockOffset[connId - 1] + BLOCK_SIZE) > FILE_SIZE) {
                         blockSize = FILE_SIZE - datcCb.blockOffset[connId - 1];
                     } else {
                         blockSize = BLOCK_SIZE;
                     }
 
                     /* Keep writing the file */
-                    WdxcFtdSendBlock(connId, blockSize, (uint8_t*)&datcCb.fileData[datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT]);
+                    WdxcFtdSendBlock(connId, blockSize,
+                                     (uint8_t*)&datcCb.fileData[datcCb.blockOffset[connId - 1] -
+                                                                BLOCK_OFFSET_INIT]);
                     datcCb.blockOffset[connId - 1] += blockSize;
                 }
             }
@@ -1015,7 +1023,8 @@ static void datcProcMsg(dmEvt_t *pMsg)
             break;
 
         case DM_CONN_CLOSE_IND:
-            APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status, pMsg->connClose.reason);
+            APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status,
+                            pMsg->connClose.reason);
             switch (pMsg->connClose.reason) {
                 case HCI_ERR_CONN_TIMEOUT:
                     APP_TRACE_INFO0(" TIMEOUT");
@@ -1039,7 +1048,7 @@ static void datcProcMsg(dmEvt_t *pMsg)
 
         case DM_SEC_PAIR_CMPL_IND:
             DmSecGenerateEccKeyReq();
-            AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t) pMsg->hdr.param));
+            AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
             uiEvent = APP_UI_SEC_PAIR_CMPL;
             break;
 
@@ -1059,10 +1068,9 @@ static void datcProcMsg(dmEvt_t *pMsg)
         case DM_SEC_AUTH_REQ_IND:
 
             if (pMsg->authReq.oob) {
-                dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
+                dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
                 /* TODO: Perform OOB Exchange with the peer. */
-
 
                 /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
 
@@ -1093,7 +1101,8 @@ static void datcProcMsg(dmEvt_t *pMsg)
 
 #if (BT_VER > 8)
         case DM_PHY_UPDATE_IND:
-            APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
+            APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy,
+                            pMsg->phyUpdate.txPhy);
             break;
 #endif /* BT_VER */
 
@@ -1122,8 +1131,7 @@ static void datcProcMsg(dmEvt_t *pMsg)
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for(int j = 0; j < 8; ++j)
-        r = (r & 1? 0: (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -1139,13 +1147,12 @@ uint32_t crc32_for_byte(uint32_t r)
  */
 /*************************************************************************************************/
 static uint32_t table[0x100] = {0};
-void crc32(const void *data, size_t n_bytes, uint32_t* crc)
+void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 {
-    if(!*table) {
-        for(size_t i = 0; i < 0x100; ++i)
-            table[i] = crc32_for_byte(i);
+    if (!*table) {
+        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
     }
-    for(size_t i = 0; i < n_bytes; ++i) {
+    for (size_t i = 0; i < n_bytes; ++i) {
         *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
     }
 }
@@ -1171,12 +1178,12 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
 
     datcCb.btnConnId = 1;
     /* Set configuration pointers */
-    pAppMasterCfg = (appMasterCfg_t *) &datcMasterCfg;
-    pAppSecCfg = (appSecCfg_t *) &datcSecCfg;
-    pAppDiscCfg = (appDiscCfg_t *) &datcDiscCfg;
-    pAppCfg = (appCfg_t *)&datcAppCfg;
-    pSmpCfg = (smpCfg_t *) &datcSmpCfg;
-    pAttCfg = (attCfg_t *) &datcAttCfg;
+    pAppMasterCfg = (appMasterCfg_t*)&datcMasterCfg;
+    pAppSecCfg    = (appSecCfg_t*)&datcSecCfg;
+    pAppDiscCfg   = (appDiscCfg_t*)&datcDiscCfg;
+    pAppCfg       = (appCfg_t*)&datcAppCfg;
+    pSmpCfg       = (smpCfg_t*)&datcSmpCfg;
+    pAttCfg       = (attCfg_t*)&datcAttCfg;
 
     /* Initialize application framework */
     AppMasterInit();
@@ -1195,12 +1202,12 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
     fileHeader.fileLen = FILE_SIZE;
     APP_TRACE_INFO2("File addr: %08X file size: %08X", (uint32_t)datcCb.fileData, FILE_SIZE);
     APP_TRACE_INFO1("Update File CRC: 0x%08X", datcCb.fileCRC);
-    
+
     int i;
-    for(i = 0; i < DM_CONN_MAX; i++) {
-        datcCb.sendingFile[i] = FALSE;
+    for (i = 0; i < DM_CONN_MAX; i++) {
+        datcCb.sendingFile[i]  = FALSE;
         datcCb.fileVerified[i] = FALSE;
-        datcCb.blockOffset[i] = BLOCK_OFFSET_INIT;
+        datcCb.blockOffset[i]  = BLOCK_OFFSET_INIT;
     }
 
     /* Setup scan start timer */
@@ -1220,16 +1227,16 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 {
-    if(btnId == 1) {
+    if (btnId == 1) {
         /* Start/stop button timer */
-        if(state == PAL_BTN_POS_UP) {
+        if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
-            if((btnUs > 0) && (btnUs < BTN_SHORT_MS*1000)) {
+            if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
-            } else if (btnUs < BTN_MED_MS*1000) {
+            } else if (btnUs < BTN_MED_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_1_MED);
-            } else if (btnUs < BTN_LONG_MS*1000) {
+            } else if (btnUs < BTN_LONG_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_1_LONG);
             } else {
                 AppUiBtnTest(APP_UI_BTN_1_EX_LONG);
@@ -1240,14 +1247,14 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         }
     } else if (btnId == 2) {
         /* Start/stop button timer */
-        if(state == PAL_BTN_POS_UP) {
+        if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
-            if((btnUs > 0) && (btnUs < BTN_SHORT_MS*1000)) {
+            if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
-            } else if (btnUs < BTN_MED_MS*1000) {
+            } else if (btnUs < BTN_MED_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_2_MED);
-            } else if (btnUs < BTN_LONG_MS*1000) {
+            } else if (btnUs < BTN_LONG_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_2_LONG);
             } else {
                 AppUiBtnTest(APP_UI_BTN_2_EX_LONG);
@@ -1271,13 +1278,13 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
  *  \return None.
  */
 /*************************************************************************************************/
-void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
 {
     if (pMsg != NULL) {
         /* process ATT messages */
         if (pMsg->event <= ATT_CBACK_END) {
             /* process discovery-related ATT messages */
-            AppDiscProcAttMsg((attEvt_t *) pMsg);
+            AppDiscProcAttMsg((attEvt_t*)pMsg);
 
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
@@ -1285,20 +1292,20 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         /* process DM messages */
         else if (pMsg->event <= DM_CBACK_END) {
             /* process advertising and connection-related messages */
-            AppMasterProcDmMsg((dmEvt_t *) pMsg);
+            AppMasterProcDmMsg((dmEvt_t*)pMsg);
 
             /* process security-related messages */
-            AppMasterSecProcDmMsg((dmEvt_t *) pMsg);
+            AppMasterSecProcDmMsg((dmEvt_t*)pMsg);
 
             /* process discovery-related messages */
-            AppDiscProcDmMsg((dmEvt_t *) pMsg);
+            AppDiscProcDmMsg((dmEvt_t*)pMsg);
         }
 
         /* perform profile and user interface-related operations */
-        datcProcMsg((dmEvt_t *) pMsg);
+        datcProcMsg((dmEvt_t*)pMsg);
 
         /* perform wdxc operations */
-        WdxcProcMsg((wsfMsgHdr_t *) pMsg);
+        WdxcProcMsg((wsfMsgHdr_t*)pMsg);
     }
 }
 
@@ -1313,12 +1320,12 @@ static void datcInitSvcHdlList()
 {
     uint8_t i;
 
-    for (i=0; i<DM_CONN_MAX; i++) {
+    for (i = 0; i < DM_CONN_MAX; i++) {
         /*! Pointers into handle list for each service's handles */
         pDatcGattHdlList[i] = &datcCb.hdlList[i][DATC_DISC_GATT_START];
-        pDatcGapHdlList[i] = &datcCb.hdlList[i][DATC_DISC_GAP_START];
-        pDatcWpHdlList[i] = &datcCb.hdlList[i][DATC_DISC_WP_START];
-        pDatcWdxHdlList[i] = &datcCb.hdlList[i][DATC_DISC_WDXC_START];
+        pDatcGapHdlList[i]  = &datcCb.hdlList[i][DATC_DISC_GAP_START];
+        pDatcWpHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_WP_START];
+        pDatcWdxHdlList[i]  = &datcCb.hdlList[i][DATC_DISC_WDXC_START];
     }
 }
 /*************************************************************************************************/

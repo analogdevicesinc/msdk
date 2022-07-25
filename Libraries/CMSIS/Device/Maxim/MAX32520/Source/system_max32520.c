@@ -46,7 +46,7 @@
 // Backup mode entry point
 extern void Reset_Handler(void);
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 
 uint32_t SystemCoreClock = IPO_FREQ;
 
@@ -56,8 +56,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
             base_freq = INRO_FREQ;
             break;
@@ -110,7 +109,7 @@ __weak void SystemInit(void)
 {
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-#if defined ( __CC_ARM) || defined ( __GNUC__)
+#if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (unsigned long)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
@@ -129,9 +128,9 @@ __weak void SystemInit(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0); 
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1); 
- 
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
+
     //MXC_GPIO0->vssel |= 0xFFFFFFFF;      Not supported according to UG Rev 0.94
     MXC_GPIO0->pssel |= 0xFFFFFFFF;
     MXC_GPIO0->pdpu_sel0 |= 0xFFFFFFFF;
@@ -140,6 +139,6 @@ __weak void SystemInit(void)
     MXC_GPIO1->pssel |= 0xFFFFFFFF;
     MXC_GPIO1->pdpu_sel0 |= 0xFFFFFFFF;
     MXC_GPIO1->pdpu_sel1 &= ~(0xFFFFFFFF);
-    
+
     Board_Init();
 }

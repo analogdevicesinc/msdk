@@ -53,7 +53,7 @@
 #define IMAGE_SIZE_Y  (64)
 #define CAMERA_FREQ   (10 * 1000 * 1000)
 
-#define TFT_BUFF_SIZE   30    // TFT buffer size
+#define TFT_BUFF_SIZE 30 // TFT buffer size
 
 const char classes[CNN_NUM_OUTPUTS][10] = {"Cat", "Dog"};
 
@@ -65,7 +65,8 @@ uint32_t input_2_camera[1024];
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1);
+    while (1)
+        ;
 }
 
 #ifdef USE_SAMPLEDATA
@@ -89,9 +90,9 @@ void cnn_load_input(void)
     const uint32_t* in2 = input_2_camera;
 #endif
 
-   	memcpy32((uint32_t *) 0x51800000, in0, 1024);
-   	memcpy32((uint32_t *) 0x52800000, in1, 1024);
-   	memcpy32((uint32_t *) 0x53800000, in2, 1024);
+    memcpy32((uint32_t*)0x51800000, in0, 1024);
+    memcpy32((uint32_t*)0x52800000, in1, 1024);
+    memcpy32((uint32_t*)0x53800000, in2, 1024);
 }
 
 // Classification layer:
@@ -100,8 +101,8 @@ static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
 void softmax_layer(void)
 {
-    cnn_unload((uint32_t*) ml_data);
-    softmax_q17p14_q15((const q31_t*) ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t*)ml_data);
+    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 /* **************************************************************************** */
@@ -135,9 +136,9 @@ void process_camera_img(uint32_t* data0, uint32_t* data1, uint32_t* data2)
     uint8_t* buffer;
 
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
-    ptr0 = (uint8_t*)data0;
-    ptr1 = (uint8_t*)data1;
-    ptr2 = (uint8_t*)data2;
+    ptr0   = (uint8_t*)data0;
+    ptr1   = (uint8_t*)data1;
+    ptr2   = (uint8_t*)data2;
     buffer = frame_buffer;
 
     for (y = 0; y < h; y++) {
@@ -210,7 +211,7 @@ int main(void)
     int i;
     int digs, tens;
     int ret = 0;
-    int result[CNN_NUM_OUTPUTS];// = {0};
+    int result[CNN_NUM_OUTPUTS]; // = {0};
     int dma_channel;
 
     printf("\n\nCats-vs-Dogs Evkit Demo\n");
@@ -252,7 +253,8 @@ int main(void)
     printf("Init Camera.\n");
     camera_init(CAMERA_FREQ);
 
-    ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel);
+    ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA,
+                       dma_channel);
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
@@ -264,7 +266,8 @@ int main(void)
     while (1) {
         printf("********** Press PB1 to capture an image **********\r\n");
 
-        while (!PB_Get(0));
+        while (!PB_Get(0))
+            ;
 
 #ifdef USE_SAMPLEDATA
         // Copy the sampledata reference to the camera buffer as a test.
@@ -287,20 +290,21 @@ int main(void)
         // Enable CNN clock
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);
 
-        cnn_init(); // Bring state machine into consistent state
-//        cnn_load_weights(); // No need to reload kernels
-//        cnn_load_bias(); // No need to reload bias
+        cnn_init();      // Bring state machine into consistent state
+                         //        cnn_load_weights(); // No need to reload kernels
+                         //        cnn_load_bias(); // No need to reload bias
         cnn_configure(); // Configure state machine
         cnn_load_input();
         cnn_start();
 
         while (cnn_time == 0) {
-            __WFI();    // Wait for CNN interrupt
+            __WFI(); // Wait for CNN interrupt
         }
 
         // Switch CNN clock and disable PLL
-        MXC_GCR->pclkdiv = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-                           | MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK;
+        MXC_GCR->pclkdiv =
+            (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+            MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK;
         MXC_GCR->ipll_ctrl &= ~MXC_F_GCR_IPLL_CTRL_EN;
 
         // Unload CNN data
@@ -315,11 +319,12 @@ int main(void)
         printf("Classification results:\n");
 
         for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
-            digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
-            tens = digs % 10;
-            digs = digs / 10;
+            digs      = (1000 * ml_softmax[i] + 0x4000) >> 15;
+            tens      = digs % 10;
+            digs      = digs / 10;
             result[i] = digs;
-            printf("[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i, classes[i], result[i], tens);
+            printf("[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i, classes[i], result[i],
+                   tens);
         }
 
         printf("\n");

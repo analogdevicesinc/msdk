@@ -75,28 +75,27 @@ int MXC_TRNG_RevB_Shutdown(void)
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t *trng)
+void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t* trng)
 {
     uint32_t temp;
     mxc_trng_complete_t cb;
-    
+
     // if this is last block, disable interrupt before reading trng->data
-    if(TRNG_maxLength <= TRNG_count + 4) {
+    if (TRNG_maxLength <= TRNG_count + 4) {
         trng->ctrl &= ~MXC_F_TRNG_REVB_CTRL_RND_IE;
     }
-    
+
     temp = trng->data;
-    
-    if((TRNG_count + 3) < TRNG_maxLength) {
+
+    if ((TRNG_count + 3) < TRNG_maxLength) {
         memcpy(&(TRNG_data[TRNG_count]), (uint8_t*)(&temp), 4);
         TRNG_count += 4;
-    }
-    else {
+    } else {
         memcpy(&(TRNG_data[TRNG_count]), (uint8_t*)(&temp), TRNG_maxLength & 0x03);
         TRNG_count += (TRNG_maxLength & 0x03);
     }
-    
-    if(TRNG_maxLength == TRNG_count) {
+
+    if (TRNG_maxLength == TRNG_count) {
         cb = MXC_TRNG_Callback;
         cb(0, 0);
     }
@@ -108,53 +107,56 @@ void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t *trng)
 
 int MXC_TRNG_RevB_RandomInt(mxc_trng_revb_regs_t* trng)
 {
-    while(!(trng->status & MXC_F_TRNG_REVB_STATUS_RDY));
-    
-    return (int) trng->data;
+    while (!(trng->status & MXC_F_TRNG_REVB_STATUS_RDY))
+        ;
+
+    return (int)trng->data;
 }
 
 int MXC_TRNG_RevB_Random(uint8_t* data, uint32_t len)
 {
     unsigned int i, temp;
-    
-    if(data == NULL) {
+
+    if (data == NULL) {
         return E_NULL_PTR;
     }
-    
-    for(i = 0; (i + 3) < len; i+=4) {
+
+    for (i = 0; (i + 3) < len; i += 4) {
         temp = MXC_TRNG_RandomInt();
         memcpy(&(data[i]), (uint8_t*)(&temp), 4);
     }
-    
-    if(len & 0x03) {
+
+    if (len & 0x03) {
         temp = MXC_TRNG_RandomInt();
         memcpy(&(data[i]), (uint8_t*)(&temp), len & 0x03);
     }
-    
+
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t* trng, uint8_t* data, uint32_t len, mxc_trng_complete_t callback)
+void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t* trng, uint8_t* data, uint32_t len,
+                               mxc_trng_complete_t callback)
 {
     MXC_ASSERT(data && callback);
-    
-    if(len == 0) {
+
+    if (len == 0) {
         return;
     }
-    
-    TRNG_data = data;
-    TRNG_count = 0;
-    TRNG_maxLength = len;
+
+    TRNG_data         = data;
+    TRNG_count        = 0;
+    TRNG_maxLength    = len;
     MXC_TRNG_Callback = callback;
-    
+
     // Enable interrupts
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_RND_IE;
 }
 
 void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t* trng)
 {
-  /*Generate AES Key */
-  trng->ctrl |= MXC_F_TRNG_REVB_CTRL_KEYGEN;
+    /*Generate AES Key */
+    trng->ctrl |= MXC_F_TRNG_REVB_CTRL_KEYGEN;
 
-  while(trng->ctrl & MXC_F_TRNG_REVB_CTRL_KEYGEN);
+    while (trng->ctrl & MXC_F_TRNG_REVB_CTRL_KEYGEN)
+        ;
 }

@@ -68,20 +68,15 @@
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      2048U
-#define DEFAULT_TX_POWER                        0 /* dBm */
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
+#define DEFAULT_TX_POWER                   0 /* dBm */
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = {
-    { 16,              8 },
-    { 32,              4 },
-    { 192,             8 },
-    { 256,            16 }
-};
+static wsfBufPoolDesc_t mainPoolDesc[] = {{16, 8}, {32, 4}, {192, 8}, {256, 16}};
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -159,11 +154,11 @@ void WUT_IRQHandler(void)
 /*************************************************************************************************/
 void wutTrimCb(int err)
 {
-
-    if(err != E_NO_ERROR) {
+    if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("32 kHz trim error %d\n", err);
     } else {
-        APP_TRACE_INFO1("32kHz trimmed to 0x%x", (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_X1TRIM) >> MXC_F_TRIMSIR_RTC_X1TRIM_POS);
+        APP_TRACE_INFO1("32kHz trimmed to 0x%x", (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_X1TRIM) >>
+                                                     MXC_F_TRIMSIR_RTC_X1TRIM_POS);
     }
     wutTrimComplete = 1;
 }
@@ -195,12 +190,11 @@ void setAdvTxPower(void)
 /*************************************************************************************************/
 int main(void)
 {
-
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     /* Configurations must be persistent. */
     static BbRtCfg_t mainBbRtCfg;
 
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
     /* Set 5.0 requirements. */
@@ -235,22 +229,20 @@ int main(void)
     AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg     = &mainBbRtCfg,
-        .wlSizeCfg    = 4,
-        .rlSizeCfg    = 4,
-        .plSizeCfg    = 4,
-        .pLlRtCfg     = &mainLlRtCfg,
-        .pFreeMem     = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable()
-    };
+    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
+                           .wlSizeCfg    = 4,
+                           .rlSizeCfg    = 4,
+                           .plSizeCfg    = 4,
+                           .pLlRtCfg     = &mainLlRtCfg,
+                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
+                           .freeMemAvail = WsfHeapCountAvailable()};
 
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
-    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlSetBdAddr((uint8_t*)&bdAddr);
 #endif
 
     /* Start the 32 MHz crystal and the BLE DBB counter to trim the 32 kHz crystal */
@@ -262,7 +254,7 @@ int main(void)
     /* Execute the trim procedure */
     wutTrimComplete = 0;
     MXC_WUT_TrimCrystalAsync(wutTrimCb);
-    while(!wutTrimComplete) {}
+    while (!wutTrimComplete) {}
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
     PalBbDisable();

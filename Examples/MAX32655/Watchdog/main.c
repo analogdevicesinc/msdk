@@ -62,7 +62,7 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define     OVERFLOW       //Test Windowed timer 
+#define OVERFLOW //Test Windowed timer
 //OVERFLOW
 //UNDERFLOW
 
@@ -73,8 +73,8 @@ extern const mxc_gpio_cfg_t pb_pin[];
 static mxc_wdt_cfg_t cfg;
 
 // refers to array, do not change constants
-#define SW1         0
-#define LED         0
+#define SW1 0
+#define LED 0
 /***** Functions *****/
 
 // *****************************************************************************
@@ -120,36 +120,35 @@ int main(void)
 {
     cfg.mode = MXC_WDT_WINDOWED;
     MXC_WDT_Init(MXC_WDT0, &cfg);
-    
+
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
-        
+
         if (resetFlags == MXC_F_WDT_CTRL_RST_LATE) {
             printf("\nWatchdog Reset occured too late (OVERFLOW)\n");
-        }
-        else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
+        } else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
             printf("\nWatchdog Reset occured too soon (UNDERFLOW)\n");
         }
-        
+
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_ClearIntFlag(MXC_WDT0);
         MXC_WDT_EnableReset(MXC_WDT0);
         MXC_WDT_Enable(MXC_WDT0);
     }
-    
+
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("Watchdog timer is configured in Windowed mode. You can\n");
     printf("select between two tests: Timer Overflow and Underflow.\n");
     printf("\nPress a button to create watchdog interrupt and reset:\n");
     printf("SW3 (P0.18) = timeout and reset program\n\n");
-    
+
     //Blink LED
     // MXC_GPIO_OutClr(led_pin[0].port,led_pin[0].mask);
     LED_Off(0);
-    
+
     //Blink LED three times at startup
     int numBlinks = 3;
-    
+
     while (numBlinks) {
         LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(100));
@@ -157,26 +156,27 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(100));
         numBlinks--;
     }
-    
+
     //Setup watchdog
     MXC_WDT_Setup();
-    
+
     //Push SW1 to start longer delay - shows Interrupt before the reset happens
-    
+
     while (1) {
         //Push SW1 to reset watchdog
         if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
             SW1_Callback();
 #ifdef OVERFLOW
-            
-            while (1);
-            
+
+            while (1)
+                ;
+
 #else
             MXC_Delay(MXC_DELAY_MSEC(200));
             MXC_WDT_ResetTimer(MXC_WDT0);
 #endif
         }
-        
+
         //blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_On(0);

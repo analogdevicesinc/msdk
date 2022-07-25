@@ -51,32 +51,30 @@
  *  This example will search Info memory and try to find 0xffffffff data
  *  If it could be found 4 test bytes will be written in that address.
  */
-#define WITH_WRITE_TEST         		0   // set it to test write test
+#define WITH_WRITE_TEST 0 // set it to test write test
 
 // Memory Address
 // User infoblock area is Infoblock 1
 // Write-only area of Infoblock 1: 0x10802000 - 0x10802FFF
 // R/W area of Infoblock 1: 0x10803000 - 0x10803FFF
-#define READABLE_AREA_OFFSET 			0x1000
-#define INFO_MEM_READABLE_AREA          (MXC_INFO1_MEM_BASE + READABLE_AREA_OFFSET)
-#define INFO_MEM_READABLE_AREA_SIZE     (MXC_INFO1_MEM_SIZE - READABLE_AREA_OFFSET)
+#define READABLE_AREA_OFFSET        0x1000
+#define INFO_MEM_READABLE_AREA      (MXC_INFO1_MEM_BASE + READABLE_AREA_OFFSET)
+#define INFO_MEM_READABLE_AREA_SIZE (MXC_INFO1_MEM_SIZE - READABLE_AREA_OFFSET)
 
-#define INFO_MEM_USER_AREA				MXC_INFO1_MEM_BASE
-#define INFO_MEM_USER_AREA_SIZE			MXC_INFO1_MEM_SIZE
-
+#define INFO_MEM_USER_AREA      MXC_INFO1_MEM_BASE
+#define INFO_MEM_USER_AREA_SIZE MXC_INFO1_MEM_SIZE
 
 /***** Static Functions *****/
 static void dump_section(unsigned int address, unsigned int length)
 {
     unsigned int i;
-    volatile uint32_t* addr = (uint32_t*) address;
+    volatile uint32_t* addr = (uint32_t*)address;
 
     length /= 4; // on each loop print 4 bytes
 
     for (i = 0; i < length; i++) {
-
         if (!(i % 4)) {
-            printf("\n0x%08x:", (unsigned int) addr);
+            printf("\n0x%08x:", (unsigned int)addr);
         }
 
         // add extra space
@@ -92,15 +90,15 @@ static void dump_section(unsigned int address, unsigned int length)
 #if WITH_WRITE_TEST
 static int write_test(void)
 {
-    int ret = 0;
+    int ret                     = 0;
     uint32_t test_val[]         = {0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00};
-    volatile uint32_t* addr     = (uint32_t*) INFO_MEM_READABLE_AREA;
-    volatile uint32_t* end_addr = (uint32_t*) (INFO_MEM_READABLE_AREA + INFO_MEM_READABLE_AREA_SIZE);
+    volatile uint32_t* addr     = (uint32_t*)INFO_MEM_READABLE_AREA;
+    volatile uint32_t* end_addr = (uint32_t*)(INFO_MEM_READABLE_AREA + INFO_MEM_READABLE_AREA_SIZE);
 
     // find free slot
     while (addr < end_addr) {
         if (*addr == 0xffffffff) {
-            printf("\n\nFree Addr: 0x%X\n", (uint32_t) addr);
+            printf("\n\nFree Addr: 0x%X\n", (uint32_t)addr);
             break;
         }
         addr += 4; // align 128bit, 4bytes*4 = 16bytes
@@ -121,7 +119,7 @@ static int write_test(void)
     if (ret == 0) {
         /* Dump user section */
         printf("\n\n***** After Write OTP Section *****\n");
-        dump_section((unsigned int) addr, 32);
+        dump_section((unsigned int)addr, 32);
     }
 
     return ret;
@@ -131,7 +129,7 @@ static int write_test(void)
 //******************************************************************************
 int main(void)
 {
-	printf("\n\n***** Info Memory Read/Write Example *****\n");
+    printf("\n\n***** Info Memory Read/Write Example *****\n");
     printf("***** This example demonstrates how you can read/write Info memory *****\n");
 
     /* Dump user section */

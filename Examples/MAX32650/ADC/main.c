@@ -50,7 +50,7 @@
 /* Change to #undef USE_INTERRUPTS for polling mode */
 // #define USE_INTERRUPTS
 
-#define ADC_CHANNEL     MXC_ADC_CH_0
+#define ADC_CHANNEL MXC_ADC_CH_0
 
 /***** Globals *****/
 #ifdef USE_INTERRUPTS
@@ -76,62 +76,64 @@ void ADC_IRQHandler(void)
 int main(void)
 {
     // unsigned int overflow;
-    
+
     printf("\n***** ADC Example ***** \n");
-    
+
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
-        
-        while (1);
+
+        while (1)
+            ;
     }
-    
+
     /* Set up LIMIT0 to monitor high and low trip points */
-    while(MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_PWR_UP_ACTIVE));
+    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_PWR_UP_ACTIVE))
+        ;
     MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_3, ADC_CHANNEL);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_3, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_3, 0x25);
     MXC_ADC_EnableMonitor(MXC_ADC_MONITOR_3);
-    
+
 #ifdef USE_INTERRUPTS
     NVIC_EnableIRQ(ADC_IRQn);
 #endif
-    
+
     while (1) {
         /* Flash LED when starting ADC cycle */
         LED_On(1);
         MXC_Delay(MXC_DELAY_MSEC(10));
         LED_Off(1);
-        
+
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(ADC_CHANNEL, adc_complete_cb);
-        
+
         while (!adc_done) {};
-        
+
 #else
         MXC_ADC_StartConversion(ADC_CHANNEL);
-        
+
 #endif
         static uint8_t overflow;
-        
+
         overflow = (MXC_ADC_GetData(&adc_val) == E_OVERFLOW ? 1 : 0);
-        
+
         /* Determine if programmable limits on AIN0 were exceeded */
         //MXC_ADC_GetFlags()
-		if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
-			printf("%s Limit on AIN0 ", (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
-			MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
-		}
-		else {
-			printf("                   ");
-		}
-		printf("\n");
+        if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
+            printf("%s Limit on AIN0 ",
+                   (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
+            MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
+        } else {
+            printf("                   ");
+        }
+        printf("\n");
 
-		/* Display results on OLED display, display asterisk if overflow */
+        /* Display results on OLED display, display asterisk if overflow */
         printf("0: 0x%04x%s\n\n", adc_val, overflow ? "*" : " ");
-        
+
         /* Delay for 1/4 second before next reading */
         MXC_Delay(MXC_DELAY_MSEC(1000));
     }

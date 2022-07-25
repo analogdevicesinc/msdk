@@ -82,18 +82,20 @@
 
 #include "mxc_errors.h"
 
-static char *getParamString(const char *commandString, size_t paramNo) {
-  BaseType_t length;
-  const char *param = FreeRTOS_CLIGetParameter(commandString, paramNo, &length);
-  if (!param) return NULL;
-  char *buff = (char *)pvPortMalloc(length + 1);
-  strncpy(buff, param, length);
-  buff[length] = 0;
-  return buff;
+static char* getParamString(const char* commandString, size_t paramNo)
+{
+    BaseType_t length;
+    const char* param = FreeRTOS_CLIGetParameter(commandString, paramNo, &length);
+    if (!param)
+        return NULL;
+    char* buff = (char*)pvPortMalloc(length + 1);
+    strncpy(buff, param, length);
+    buff[length] = 0;
+    return buff;
 }
 
-static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char *pcCommandString);
+static BaseType_t prvEraseCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
@@ -106,38 +108,42 @@ static const CLI_Command_Definition_t xEraseCommand = {
 
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvWriteCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char *pcCommandString);
+static BaseType_t prvWriteCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
 a time. */
 static const CLI_Command_Definition_t xWriteCommand = {
     "write",
-    "\r\nwrite <word offset> <text>: \r\n Writes text string to flash starting at the 32-bit word in the flash page\n specified by \"word offset\" (e.g. word offset=3 -> address offset=0xC,\n word offset=4 -> address offset=0x10)\r\n",
+    "\r\nwrite <word offset> <text>: \r\n Writes text string to flash starting at the 32-bit word "
+    "in the flash page\n specified by \"word offset\" (e.g. word offset=3 -> address offset=0xC,\n "
+    "word offset=4 -> address offset=0x10)\r\n",
     prvWriteCommand, /* The function to run. */
     2                /* The user can enter any number of commands. */
 };
 
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvReadCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char *pcCommandString);
+static BaseType_t prvReadCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char* pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
 a time. */
 static const CLI_Command_Definition_t xReadCommand = {
     "read",
-    "\r\nread <word offset> <number of letters>: \r\n Reads text from flash starting at the 32-bit word in the flash page\n specified by \"word offset\" (e.g. word offset=3 -> address offset=0xC,\n word offset=4 -> address offset=0x10)\r\n",
+    "\r\nread <word offset> <number of letters>: \r\n Reads text from flash starting at the 32-bit "
+    "word in the flash page\n specified by \"word offset\" (e.g. word offset=3 -> address "
+    "offset=0xC,\n word offset=4 -> address offset=0x10)\r\n",
     prvReadCommand, /* The function to run. */
     2               /* The user can enter any number of commands. */
 };
 
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvCRCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                const char *pcCommandString);
+static BaseType_t prvCRCCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                const char* pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
@@ -149,126 +155,128 @@ static const CLI_Command_Definition_t xCRCCommand = {
 };
 /*-----------------------------------------------------------*/
 
-void vRegisterCLICommands(void) {
-  /* Register all the command line commands defined immediately above. */
-  FreeRTOS_CLIRegisterCommand(&xEraseCommand);
-  FreeRTOS_CLIRegisterCommand(&xWriteCommand);
-  FreeRTOS_CLIRegisterCommand(&xReadCommand);
-  FreeRTOS_CLIRegisterCommand(&xCRCCommand);
+void vRegisterCLICommands(void)
+{
+    /* Register all the command line commands defined immediately above. */
+    FreeRTOS_CLIRegisterCommand(&xEraseCommand);
+    FreeRTOS_CLIRegisterCommand(&xWriteCommand);
+    FreeRTOS_CLIRegisterCommand(&xReadCommand);
+    FreeRTOS_CLIRegisterCommand(&xCRCCommand);
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char *pcCommandString) {
-  /* Remove compile time warnings about unused parameters, and check the
+static BaseType_t prvEraseCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
   write buffer is not NULL.  NOTE - for simplicity, this example assumes the
   write buffer length is adequate, so does not check for buffer overflows. */
-  (void)pcCommandString;
-  (void)xWriteBufferLen;
-  configASSERT(pcWriteBuffer);
-  if (!check_erased(FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE)) {
-    portENTER_CRITICAL();
-    int retval = MXC_FLC_PageErase(FLASH_STORAGE_START_ADDR);
-    portEXIT_CRITICAL();
-    if (retval != E_NO_ERROR) {
-      memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-      sprintf(pcWriteBuffer, "Erase failed with error %i\r\n", retval);
-      return pdFALSE;
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+    if (!check_erased(FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE)) {
+        portENTER_CRITICAL();
+        int retval = MXC_FLC_PageErase(FLASH_STORAGE_START_ADDR);
+        portEXIT_CRITICAL();
+        if (retval != E_NO_ERROR) {
+            memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+            sprintf(pcWriteBuffer, "Erase failed with error %i\r\n", retval);
+            return pdFALSE;
+        }
     }
-  }
-  memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-  sprintf(pcWriteBuffer, "Success\r\n");
-  return pdFALSE;
-}
-/*-----------------------------------------------------------*/
-
-static BaseType_t prvWriteCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char *pcCommandString) {
-  /* Remove compile time warnings about unused parameters, and check the
-  write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-  write buffer length is adequate, so does not check for buffer overflows. */
-  (void)pcCommandString;
-  (void)xWriteBufferLen;
-  configASSERT(pcWriteBuffer);
-
-  const char *pcParameterOffset, *pcParameterText;
-
-  /* Obtain the parameter string. */
-  pcParameterOffset = getParamString(pcCommandString, 1);
-  pcParameterText = getParamString(pcCommandString, 2);
-
-  int offset = atoi(pcParameterOffset);
-  uint32_t *data = (uint32_t *)pvPortMalloc(strlen(pcParameterText) * 4);
-  for (int i = 0; i < strlen(pcParameterText); i++) {
-    data[i] = (uint32_t)pcParameterText[i];
-  }
-  portENTER_CRITICAL();
-  int retval = flash_write(FLASH_STORAGE_START_ADDR + offset * 4,
-                           strlen(pcParameterText), data);
-  portEXIT_CRITICAL();
-  vPortFree(data);
-  if (retval != E_NO_ERROR) {
-    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sprintf(pcWriteBuffer, "Write failed with error %i\r\n", retval);
-  } else {
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     sprintf(pcWriteBuffer, "Success\r\n");
-  }
-
-  return pdFALSE;
+    return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvReadCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char *pcCommandString) {
-  /* Remove compile time warnings about unused parameters, and check the
+static BaseType_t prvWriteCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
   write buffer is not NULL.  NOTE - for simplicity, this example assumes the
   write buffer length is adequate, so does not check for buffer overflows. */
-  (void)pcCommandString;
-  (void)xWriteBufferLen;
-  configASSERT(pcWriteBuffer);
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
 
-  const char *pcParameterOffset, *pcParameterLength;
+    const char *pcParameterOffset, *pcParameterText;
 
-  /* Obtain the parameter string. */
-  pcParameterOffset = getParamString(pcCommandString, 1);
-  pcParameterLength = getParamString(pcCommandString, 2);
+    /* Obtain the parameter string. */
+    pcParameterOffset = getParamString(pcCommandString, 1);
+    pcParameterText   = getParamString(pcCommandString, 2);
 
-  int offset = atoi(pcParameterOffset);
-  int length = atoi(pcParameterLength);
-  uint8_t *data = (uint8_t *)pvPortMalloc(length);
+    int offset     = atoi(pcParameterOffset);
+    uint32_t* data = (uint32_t*)pvPortMalloc(strlen(pcParameterText) * 4);
+    for (int i = 0; i < strlen(pcParameterText); i++) { data[i] = (uint32_t)pcParameterText[i]; }
+    portENTER_CRITICAL();
+    int retval = flash_write(FLASH_STORAGE_START_ADDR + offset * 4, strlen(pcParameterText), data);
+    portEXIT_CRITICAL();
+    vPortFree(data);
+    if (retval != E_NO_ERROR) {
+        memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+        sprintf(pcWriteBuffer, "Write failed with error %i\r\n", retval);
+    } else {
+        memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+        sprintf(pcWriteBuffer, "Success\r\n");
+    }
 
-  int retval = flash_read(FLASH_STORAGE_START_ADDR + offset * 4, length, data);
-  if (retval != E_NO_ERROR) {
-    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sprintf(pcWriteBuffer, "Read failed with error %i\r\n", retval);
-  } else {
-    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sprintf(pcWriteBuffer, "Success: \r\n");
-    strncat(pcWriteBuffer, (char *)data, length);
-    strcat(pcWriteBuffer, "\r\n");
-  }
-  vPortFree(data);
-
-  return pdFALSE;
+    return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvCRCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
-                                const char *pcCommandString) {
-  /* Remove compile time warnings about unused parameters, and check the
+static BaseType_t prvReadCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
   write buffer is not NULL.  NOTE - for simplicity, this example assumes the
   write buffer length is adequate, so does not check for buffer overflows. */
-  (void)pcCommandString;
-  (void)xWriteBufferLen;
-  configASSERT(pcWriteBuffer);
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
 
-  portENTER_CRITICAL();
-  uint32_t crc = calculate_crc((uint32_t *)FLASH_STORAGE_START_ADDR,
-                               MXC_FLASH_PAGE_SIZE / sizeof(uint32_t));
-  portEXIT_CRITICAL();
-  memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-  sprintf(pcWriteBuffer, "CRC: 0x%08X\r\n", crc);
-  return pdFALSE;
+    const char *pcParameterOffset, *pcParameterLength;
+
+    /* Obtain the parameter string. */
+    pcParameterOffset = getParamString(pcCommandString, 1);
+    pcParameterLength = getParamString(pcCommandString, 2);
+
+    int offset    = atoi(pcParameterOffset);
+    int length    = atoi(pcParameterLength);
+    uint8_t* data = (uint8_t*)pvPortMalloc(length);
+
+    int retval = flash_read(FLASH_STORAGE_START_ADDR + offset * 4, length, data);
+    if (retval != E_NO_ERROR) {
+        memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+        sprintf(pcWriteBuffer, "Read failed with error %i\r\n", retval);
+    } else {
+        memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+        sprintf(pcWriteBuffer, "Success: \r\n");
+        strncat(pcWriteBuffer, (char*)data, length);
+        strcat(pcWriteBuffer, "\r\n");
+    }
+    vPortFree(data);
+
+    return pdFALSE;
+}
+/*-----------------------------------------------------------*/
+
+static BaseType_t prvCRCCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
+  write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+  write buffer length is adequate, so does not check for buffer overflows. */
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+
+    portENTER_CRITICAL();
+    uint32_t crc =
+        calculate_crc((uint32_t*)FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE / sizeof(uint32_t));
+    portEXIT_CRITICAL();
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    sprintf(pcWriteBuffer, "CRC: 0x%08X\r\n", crc);
+    return pdFALSE;
 }
 /*-----------------------------------------------------------*/

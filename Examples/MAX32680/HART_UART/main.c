@@ -51,9 +51,9 @@
 
 /***** Definitions *****/
 
-#define HART_BANNER_LEN		26
-#define HART_ECHO_BAN_LEN	21
-#define HART_BUFFER_MAX_LEN	512
+#define HART_BANNER_LEN     26
+#define HART_ECHO_BAN_LEN   21
+#define HART_BUFFER_MAX_LEN 512
 
 /***** Globals *****/
 
@@ -62,16 +62,16 @@
 // *****************************************************************************
 int main(void)
 {
-	int retval = 0;
-	uint8_t hart_message[HART_BANNER_LEN] =    {"\nHello from MAX32680 HART\n"};
-	uint8_t hart_echo_ban[HART_ECHO_BAN_LEN] = {"\nEcho from MAX32680: "};
+    int retval                               = 0;
+    uint8_t hart_message[HART_BANNER_LEN]    = {"\nHello from MAX32680 HART\n"};
+    uint8_t hart_echo_ban[HART_ECHO_BAN_LEN] = {"\nEcho from MAX32680: "};
 
-	uint8_t hart_rx_buffer[HART_BUFFER_MAX_LEN];
-	uint8_t hart_tx_buffer[HART_BUFFER_MAX_LEN];
+    uint8_t hart_rx_buffer[HART_BUFFER_MAX_LEN];
+    uint8_t hart_tx_buffer[HART_BUFFER_MAX_LEN];
 
-	uint32_t rx_length = 0;
-	int i = 0;
-    int prev_cd_stat = 1;
+    uint32_t rx_length = 0;
+    int i              = 0;
+    int prev_cd_stat   = 1;
 
     printf("\n\n\n\n\nMAX32680 HART UART Example\n\n");
 
@@ -85,24 +85,26 @@ int main(void)
     printf("Roger Meier's CoolTerm.\n\n");
     printf("Setup the terminal at 1200 baud, with 1 stop bit, ODD parity, and connect.\n");
     printf("Upon execution of this example a hello message is sent via HART then loopback.\n");
-    printf("To send via CoolTerm SET RTS via mouse click, type message, then CLEAR RTS via mouse\n");
+    printf(
+        "To send via CoolTerm SET RTS via mouse click, type message, then CLEAR RTS via mouse\n");
     printf("NOTE: Set is indicated by the RTS button color as light green, or lit.\n");
     printf("The message will be returned with \"Echo from MAX32680\" appended.\n\n\n");
 
-
-	retval = hart_uart_setup(NORMAL_HART_TRANSCEIVE_MODE);
+    retval = hart_uart_setup(NORMAL_HART_TRANSCEIVE_MODE);
     if (retval != E_NO_ERROR) {
-    	printf("Failed to setup HART UART Error: %d. Halting...\n", retval);
-    	while (1);
+        printf("Failed to setup HART UART Error: %d. Halting...\n", retval);
+        while (1)
+            ;
     }
 
     // Note banner strings are NOT null terminated
     printf("Sending HART Banner Now...\n");
 
-	retval = hart_uart_send(hart_message, HART_BANNER_LEN);
+    retval = hart_uart_send(hart_message, HART_BANNER_LEN);
     if (retval != E_NO_ERROR) {
-		printf("Failed to send HART Banner Error: %d. Halting...\n", retval);
-		while (1);
+        printf("Failed to send HART Banner Error: %d. Halting...\n", retval);
+        while (1)
+            ;
     }
 
     printf("\nReady to Echo HART Messages...\n");
@@ -110,52 +112,45 @@ int main(void)
     //
     // Infinite HART UART loopback
     //
-  	while (1) {
-  		retval = hart_uart_get_received_packet(hart_rx_buffer, &rx_length);
+    while (1) {
+        retval = hart_uart_get_received_packet(hart_rx_buffer, &rx_length);
 
-  		if (retval == E_BUSY) {
-  			if (prev_cd_stat != retval) {
-				// HART Carrier Detected
-				printf("HART Carrier ACTIVE\n");
-				prev_cd_stat = retval;
-  			}
-  		}
-  		else if (retval == E_NONE_AVAIL) {
-  			// No HART Carrier Detected
-  			if (prev_cd_stat != retval) {
-  				printf("No HART Carrier Detected\n");
-				prev_cd_stat = retval;
-  			}
-  		}
-  		else if (retval == E_SUCCESS) {
-  			if (rx_length > 0) {
-				// Got a response
-				printf("HEX received:\n");
-				for (i=0; i<rx_length; i++) {
-					printf("0x%02X ", hart_rx_buffer[i]);
-				}
-				printf("\n");
+        if (retval == E_BUSY) {
+            if (prev_cd_stat != retval) {
+                // HART Carrier Detected
+                printf("HART Carrier ACTIVE\n");
+                prev_cd_stat = retval;
+            }
+        } else if (retval == E_NONE_AVAIL) {
+            // No HART Carrier Detected
+            if (prev_cd_stat != retval) {
+                printf("No HART Carrier Detected\n");
+                prev_cd_stat = retval;
+            }
+        } else if (retval == E_SUCCESS) {
+            if (rx_length > 0) {
+                // Got a response
+                printf("HEX received:\n");
+                for (i = 0; i < rx_length; i++) { printf("0x%02X ", hart_rx_buffer[i]); }
+                printf("\n");
 
-				printf("\nASCII received: ");
-				for (i=0; i<rx_length; i++) {
-					printf("%c", hart_rx_buffer[i]);
-				}
-				printf("\n");
+                printf("\nASCII received: ");
+                for (i = 0; i < rx_length; i++) { printf("%c", hart_rx_buffer[i]); }
+                printf("\n");
 
-				//
-				// Now reply to sender (Mostly Echo)
-				//
-				memcpy(hart_tx_buffer, hart_echo_ban, HART_ECHO_BAN_LEN);
-				memcpy(hart_tx_buffer + HART_ECHO_BAN_LEN, hart_rx_buffer, rx_length);
+                //
+                // Now reply to sender (Mostly Echo)
+                //
+                memcpy(hart_tx_buffer, hart_echo_ban, HART_ECHO_BAN_LEN);
+                memcpy(hart_tx_buffer + HART_ECHO_BAN_LEN, hart_rx_buffer, rx_length);
 
-				retval = hart_uart_send(hart_tx_buffer, HART_ECHO_BAN_LEN + rx_length);
-				if (retval != E_SUCCESS) {
-			    	printf("Failed to send HART message. Error: %d\n", retval);
-				}
-				else {
-					printf("HART echo sent\n");
-				}
-  			}
-  		}
-  	}
+                retval = hart_uart_send(hart_tx_buffer, HART_ECHO_BAN_LEN + rx_length);
+                if (retval != E_SUCCESS) {
+                    printf("Failed to send HART message. Error: %d\n", retval);
+                } else {
+                    printf("HART echo sent\n");
+                }
+            }
+        }
+    }
 }

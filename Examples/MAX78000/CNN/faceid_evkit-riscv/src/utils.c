@@ -42,7 +42,6 @@
 
 /***************************** VARIABLES *************************************/
 
-
 /************************    PUBLIC FUNCTIONS  *******************************/
 
 uint32_t utils_get_time_ms(void)
@@ -52,7 +51,7 @@ uint32_t utils_get_time_ms(void)
     uint32_t ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    sec    = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 
@@ -61,25 +60,21 @@ uint32_t utils_get_time_ms(void)
 
 static void utils_send_byte(mxc_uart_regs_t* uart, uint8_t value)
 {
-    while (MXC_UART_WriteCharacter(uart, value) == E_OVERFLOW) { }
+    while (MXC_UART_WriteCharacter(uart, value) == E_OVERFLOW) {}
 }
 
 void utils_send_bytes(mxc_uart_regs_t* uart, uint8_t* ptr, int length)
 {
     int i;
 
-    for (i = 0; i < length; i++) {
-        utils_send_byte(uart, ptr[i]);
-    }
+    for (i = 0; i < length; i++) { utils_send_byte(uart, ptr[i]); }
 }
 
+#pragma GCC optimize("-O0")
 
-#pragma GCC optimize ("-O0")
-
-#define DEBUG_COMPORT   MXC_UART0
+#define DEBUG_COMPORT MXC_UART0
 
 /***************************** VARIABLES *************************************/
-
 
 /************************    PUBLIC FUNCTIONS  *******************************/
 
@@ -104,7 +99,6 @@ void utils_hexDump(const char* title, uint8_t* buf, uint32_t len)
     printf("\n");
 }
 
-
 int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat)
 {
     int len;
@@ -128,15 +122,15 @@ int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* p
     // Transmit the image length in bytes
     utils_send_byte(DEBUG_COMPORT, (imgLen >> 24) & 0xff); // high byte
     utils_send_byte(DEBUG_COMPORT, (imgLen >> 16) & 0xff); // low byte
-    utils_send_byte(DEBUG_COMPORT, (imgLen >> 8)  & 0xff); // low byte
-    utils_send_byte(DEBUG_COMPORT, (imgLen >> 0)  & 0xff); // low byte
+    utils_send_byte(DEBUG_COMPORT, (imgLen >> 8) & 0xff);  // low byte
+    utils_send_byte(DEBUG_COMPORT, (imgLen >> 0) & 0xff);  // low byte
 
     // Send the image pixel bytes
     while (imgLen) {
         len = imgLen;
         utils_send_bytes(DEBUG_COMPORT, img, len);
-        img       += len;
-        imgLen    -= len;
+        img += len;
+        imgLen -= len;
     }
 
     return 0;
