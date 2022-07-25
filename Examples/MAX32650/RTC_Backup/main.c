@@ -114,8 +114,6 @@ void printTime() {
 
 // *****************************************************************************
 int configureRTC() {
-	for (i = 0; i < 0xFFFFFF; i++);	// Prevent bricks
-	
 	printf("\n\n***************** RTC Wake from Backup Example *****************\n\n");
 	printf("The time-of-day alarm is set to wake the device every %d seconds.\n", TIME_OF_DAY_SEC);
 	printf("When the alarm goes off it will print the current time to the console.\n\n");
@@ -143,8 +141,6 @@ int configureRTC() {
 	if(MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY) {						// Enable TOD interrupt
 		return E_BUSY;
 	}
-
-//	MXC_LP_EnableRTCAlarmWakeup();														// Enable RTC as wakeup source
 
 	if(MXC_RTC_Start() != E_NO_ERROR) {													// Re-start RTC
 		printf("Failed RTC_Start\n");
