@@ -54,6 +54,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
-            name: my-artifact
+            name: failure-report
             path: Examples_tests/results/
 

@@ -7,10 +7,8 @@ PROJ_AFLAGS += -DSRAM_ORIGIN=0x20000000
 # Total memory allocated for boxes will be 2*MAILBOX_SIZE
 # Will work with small MAILBOX_SIZE, cores will experience more interrupts
 # and higher communication latency.
-# Minimum value is 4
+# Minimum value is 16
 MAILBOX_SIZE = 64
-PROJ_AFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
-PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
 
 ifneq ($(RISCV_CORE),)
 # RISCV core
@@ -31,6 +29,11 @@ PROJ_AFLAGS+=-DSRAM_SIZE=0x1C000  # Save last SRAM instance for RISCV cache, ICC
 PROJ_AFLAGS+=-DARM_SRAM_SIZE=0x10000
 PROJ_AFLAGS+=-DARM_FLASH_SIZE=0x50000
 else
-PROJ_AFLAGS+=-DSRAM_SIZE=0x20000  # Full size SRAM 
+# Just ARM core
+PROJ_AFLAGS+=-DSRAM_SIZE=0x20000  # Full size SRAM
+MAILBOX_SIZE = 0 # No need for mailboxes if we're only using ARM core
 endif
 endif
+
+PROJ_AFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
+PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)

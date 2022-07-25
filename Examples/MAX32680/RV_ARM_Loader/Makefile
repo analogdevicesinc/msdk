@@ -36,13 +36,6 @@ ifeq "$(PROJECT)" ""
 PROJECT=max32680
 endif
 
-# Load and start the RISCV core
-RISCV_LOAD=1
-
-# Directory for RISCV code 
-RISCV_APP_DIR=../Hello_World
-RISCV_APP_BIN=buildrv/max32680.bin
-
 # Specify the target processor
 ifeq "$(TARGET)" ""
 TARGET=MAX32680
@@ -88,6 +81,8 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # Where to find header files for this test
 IPATH = .
 
+PROJ_CFLAGS = 
+
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
 
@@ -112,30 +107,43 @@ PROJ_CFLAGS+=-Wall
 #MXC_OPTIMIZE_CFLAGS=-O1
 
 # Point this variable to a linker file to override the default file
-LINKER=$(TARGET_LC).ld
-LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
+# LINKER=$(TARGET_LC).ld
+# LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
 
 ################################################################################
 # RISCV build rules
 
-ifneq "$(RISCV_LOAD)" ""
+# Load and start the RISCV core
+RISCV_LOAD=1
+
+# Directory for RISCV code 
+RISCV_APP_DIR=../Hello_World
+
+# Binary name for RISCV code
+RISCV_APP_BIN=buildrv/$(PROJECT).bin
+
 # Firmware update files, do not rename
 RISCV_LOCAL_BIN=riscv.bin
+RISCV_LOCAL_OBJ=build/riscv.o
 
-# Include bin file for firmware update image
-BINS+=${RISCV_LOCAL_BIN}
+PROJ_OBJS = ${RISCV_LOCAL_OBJ}
+
 
 # Target for creating the fw_update bin file
 ${RISCV_LOCAL_BIN}:
-	$(MAKE) -C ${RISCV_APP_DIR} RISCV_CORE=1 release
+	$(MAKE) -C ${RISCV_APP_DIR} RISCV_CORE=1 RISCV_LOAD=0
+	$(MAKE) -C ${RISCV_APP_DIR} buildrv/$(PROJECT).bin RISCV_CORE=1 RISCV_LOAD=0
 	@cp ${RISCV_APP_DIR}/$(RISCV_APP_BIN) ${RISCV_LOCAL_BIN}
 
-riscv_clean: 
-	@rm -f ${RISCV_LOCAL_BIN}
+${RISCV_LOCAL_OBJ}: riscv.S ${RISCV_LOCAL_BIN}
+	@mkdir -p build
+	@${CC} ${AFLAGS} -o ${@} -c riscv.S
 
-else
-riscv_clean:
-endif
+clean.riscv: 
+	@rm -f ${RISCV_LOCAL_BIN}
+	$(MAKE) -C ${RISCV_APP_DIR} RISCV_CORE=1 clean
+
+clean: clean.riscv
 
 ################################################################################
 # Include external library makefiles here

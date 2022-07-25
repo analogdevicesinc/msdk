@@ -1,13 +1,9 @@
-
 [submodule "Libraries/MAXUSB"]
 	path = Libraries/MAXUSB
 	url = git@github.com:Analog-Devices-MSDK/Libraries-maxusb.git
 [submodule "Libraries/SDHC"]
 	path = Libraries/SDHC
 	url = git@github.com:Analog-Devices-MSDK/Libraries-sdhc.git
-[submodule "Libraries/FreeRTOS-plus"]
-	path = Libraries/FreeRTOS-plus
-	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
 [submodule "Libraries/FreeRTOS"]
 	path = Libraries/FreeRTOS
 	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS.git
@@ -29,3 +25,6 @@
 [submodule "Libraries/LC3"]
 	path = Libraries/LC3
 	url = git@github.com:Analog-Devices-MSDK/Libraries-lc3.git
+[submodule "Libraries/FreeRTOS-Plus"]
+	path = Libraries/FreeRTOS-Plus
+	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
