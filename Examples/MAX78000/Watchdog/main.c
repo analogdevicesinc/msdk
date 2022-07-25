@@ -63,7 +63,7 @@
 #define LATE_SW_NAME     "SW1"
 #define EARLY_SW_NAME    "SW2"
 #else
-#error "This example has been written to work with the MAX78000 EV Kit and FTHR boards."
+#warning "This example has been written to work with the MAX78000 EV Kit and FTHR boards."
 #endif
 
 /***** Globals *****/
