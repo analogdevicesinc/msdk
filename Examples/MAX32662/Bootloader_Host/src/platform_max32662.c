@@ -123,9 +123,9 @@ int plt_spi_init(void)
     // Configure the peripheral
     mxc_spi_pins_t spiPins;
     spiPins.clock = TRUE;
-    spiPins.ss0 = TRUE;
-    spiPins.miso = TRUE;
-    spiPins.mosi = TRUE;
+    spiPins.ss0   = TRUE;
+    spiPins.miso  = TRUE;
+    spiPins.mosi  = TRUE;
     spiPins.vssel = TRUE;
     spiPins.map_a = TRUE;
     MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spiPins);

@@ -69,57 +69,59 @@ int main(void)
     printf("\n******************** ADC Example ********************\n");
     printf("\nADC readings are taken on ADC channel %d every 250ms\n", ADC_CHANNEL);
     printf("and are subsequently printed to the terminal.\n\n");
-    
+
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
-        while (1);
+        while (1)
+            ;
     }
-    
+
     /* Set up LIMIT0 to monitor high and low trip points */
-    while(MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_AFE_PWR_UP_ACTIVE));
+    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_AFE_PWR_UP_ACTIVE))
+        ;
     MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_3, ADC_CHANNEL);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_3, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_3, 0x25);
     MXC_ADC_EnableMonitor(MXC_ADC_MONITOR_3);
-    
+
 #ifdef USE_INTERRUPTS
     NVIC_EnableIRQ(ADC_IRQn);
 #endif
-    
+
     while (1) {
         /* Flash LED when starting ADC cycle */
         LED_On(LED_RED);
         MXC_TMR_Delay(MXC_TMR0, MSEC(10));
         LED_Off(LED_RED);
-        
+
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(ADC_CHANNEL, adc_complete_cb);
-        
+
         while (!adc_done) {};
 #else
         MXC_ADC_StartConversion(ADC_CHANNEL);
 #endif
         static uint8_t overflow;
-        
+
         overflow = (MXC_ADC_GetData(&adc_val) == E_OVERFLOW ? 1 : 0);
-        
+
         /* Display results on OLED display, display asterisk if overflow */
         printf("%d: 0x%04x%s\n\n", ADC_CHANNEL, adc_val, overflow ? "*" : " ");
-        
+
         /* Determine if programmable limits on AIN0 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
-            printf(" %s Limit on AIN0 ", (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
+            printf(" %s Limit on AIN0 ",
+                   (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
-        }
-        else {
+        } else {
             printf("                   ");
         }
-        
+
         printf("\n");
-        
+
         /* Delay for 1/4 second before next reading */
         MXC_TMR_Delay(MXC_TMR0, MSEC(250));
     }
