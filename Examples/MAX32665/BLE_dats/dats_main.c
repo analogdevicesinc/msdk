@@ -53,7 +53,7 @@
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
-#if(BT_VER > 8)
+#if (BT_VER > 8)
 
 /* PHY Test Modes */
 #define DATS_PHY_1M    1
@@ -230,7 +230,7 @@ static void datsSendData(dmConnId_t connId)
 {
     uint8_t str[] = "hello back";
 
-    if(AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
+    if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
         /* send notification */
         AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
     }
@@ -250,28 +250,28 @@ static void datsDmCback(dmEvt_t* pDmEvt)
     dmEvt_t* pMsg;
     uint16_t len;
 
-    if(pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND) {
+    if (pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND) {
         DmSecSetEccKey(&pDmEvt->eccMsg.data.key);
 
         /* If the local device sends OOB data. */
-        if(datsSendOobData) {
+        if (datsSendOobData) {
             uint8_t oobLocalRandom[SMP_RAND_LEN];
             SecRand(oobLocalRandom, SMP_RAND_LEN);
             DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
         }
-    } else if(pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
-        if(datsOobCfg == NULL) {
+    } else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
+        if (datsOobCfg == NULL) {
             datsOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
         }
 
-        if(datsOobCfg) {
+        if (datsOobCfg) {
             Calc128Cpy(datsOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
             Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
         }
     } else {
         len = DmSizeOfEvt(pDmEvt);
 
-        if((pMsg = WsfMsgAlloc(len)) != NULL) {
+        if ((pMsg = WsfMsgAlloc(len)) != NULL) {
             memcpy(pMsg, pDmEvt, len);
             WsfMsgSend(datsCb.handlerId, pMsg);
         }
@@ -291,7 +291,7 @@ static void datsAttCback(attEvt_t* pEvt)
 {
     attEvt_t* pMsg;
 
-    if((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
+    if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
         memcpy(pMsg, pEvt, sizeof(attEvt_t));
         pMsg->pValue = (uint8_t*)(pMsg + 1);
         memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
@@ -313,9 +313,9 @@ static void datsCccCback(attsCccEvt_t* pEvt)
     appDbHdl_t dbHdl;
 
     /* If CCC not set from initialization and there's a device record and currently bonded */
-    if((pEvt->handle != ATT_HANDLE_NONE) &&
-       ((dbHdl = AppDbGetHdl((dmConnId_t)pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
-       AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
+    if ((pEvt->handle != ATT_HANDLE_NONE) &&
+        ((dbHdl = AppDbGetHdl((dmConnId_t)pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
+        AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
         /* Store value in device database. */
         AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
         AppDbNvmStoreCccTbl(dbHdl);
@@ -340,7 +340,7 @@ static void trimStart(void)
 
     /* Start the 32 kHz crystal trim procedure */
     err = MXC_WUT_TrimCrystalAsync(wutTrimCb);
-    if(err != E_NO_ERROR) {
+    if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("Error starting 32kHz crystal trim %d", err);
     }
 }
@@ -355,7 +355,7 @@ static void trimStart(void)
 uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
                          uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
 {
-    if(len < 64) {
+    if (len < 64) {
         /* print received data if not a speed test message */
         APP_TRACE_INFO0((const char*)pValue);
 
@@ -380,7 +380,7 @@ static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
     dmSecKey_t* pPeerKey;
 
     /* if peer IRK present */
-    if((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL) {
+    if ((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL) {
         /* set advertising peer address */
         AppSetAdvPeerAddr(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr);
     }
@@ -398,8 +398,8 @@ static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
 /*************************************************************************************************/
 static void datsPrivRemDevFromResListInd(dmEvt_t* pMsg)
 {
-    if(pMsg->hdr.status == HCI_SUCCESS) {
-        if(AppDbGetHdl((dmConnId_t)pMsg->hdr.param) != APP_DB_HDL_NONE) {
+    if (pMsg->hdr.status == HCI_SUCCESS) {
+        if (AppDbGetHdl((dmConnId_t)pMsg->hdr.param) != APP_DB_HDL_NONE) {
             uint8_t addrZeros[BDA_ADDR_LEN] = {0};
 
             /* clear advertising peer address and its type */
@@ -464,7 +464,7 @@ static void datsRestoreResolvingList(dmEvt_t* pMsg)
     /* Restore first device to resolving list in Controller. */
     datsCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
 
-    if(datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
+    if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
         /* No device to restore.  Setup application. */
         datsSetup(pMsg);
     } else {
@@ -484,14 +484,14 @@ static void datsRestoreResolvingList(dmEvt_t* pMsg)
 static void datsPrivAddDevToResListInd(dmEvt_t* pMsg)
 {
     /* Check if in the process of restoring the Device List from NV */
-    if(datsCb.restoringResList) {
+    if (datsCb.restoringResList) {
         /* Set the advertising peer address. */
         datsPrivAddDevToResList(datsCb.resListRestoreHdl);
 
         /* Retore next device to resolving list in Controller. */
         datsCb.resListRestoreHdl = AppAddNextDevToResList(datsCb.resListRestoreHdl);
 
-        if(datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
+        if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
             /* No additional device to restore. Setup application. */
             datsSetup(pMsg);
         }
@@ -513,7 +513,7 @@ static void datsProcMsg(dmEvt_t* pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
 
-    switch(pMsg->hdr.event) {
+    switch (pMsg->hdr.event) {
         case DM_RESET_CMPL_IND:
             AttsCalculateDbHash();
             DmSecGenerateEccKeyReq();
@@ -543,7 +543,7 @@ static void datsProcMsg(dmEvt_t* pMsg)
 
             APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status,
                             pMsg->connClose.reason);
-            switch(pMsg->connClose.reason) {
+            switch (pMsg->connClose.reason) {
                 case HCI_ERR_CONN_TIMEOUT:
                     APP_TRACE_INFO0(" TIMEOUT");
                     break;
@@ -584,14 +584,14 @@ static void datsProcMsg(dmEvt_t* pMsg)
 
         case DM_SEC_AUTH_REQ_IND:
 
-            if(pMsg->authReq.oob) {
+            if (pMsg->authReq.oob) {
                 dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
                 /* TODO: Perform OOB Exchange with the peer. */
 
                 /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
 
-                if(datsOobCfg != NULL) {
+                if (datsOobCfg != NULL) {
                     DmSecSetOob(connId, datsOobCfg);
                 }
 
@@ -620,7 +620,7 @@ static void datsProcMsg(dmEvt_t* pMsg)
             APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
             break;
 
-#if(BT_VER > 8)
+#if (BT_VER > 8)
         case DM_PHY_UPDATE_IND:
             APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy,
                             pMsg->phyUpdate.txPhy);
@@ -636,7 +636,7 @@ static void datsProcMsg(dmEvt_t* pMsg)
             break;
     }
 
-    if(uiEvent != APP_UI_NONE) {
+    if (uiEvent != APP_UI_NONE) {
         AppUiAction(uiEvent);
     }
 }
@@ -688,21 +688,21 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 static void datsBtnCback(uint8_t btn)
 {
-#if(BT_VER > 8)
+#if (BT_VER > 8)
     dmConnId_t connId;
-    if((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
+    if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
 #else
-    if(AppConnIsOpen() != DM_CONN_ID_NONE)
+    if (AppConnIsOpen() != DM_CONN_ID_NONE)
 #endif /* BT_VER */
     {
-        switch(btn) {
-#if(BT_VER > 8)
+        switch (btn) {
+#if (BT_VER > 8)
             case APP_UI_BTN_2_SHORT:
             {
                 static uint32_t coded_phy_cnt = 0;
                 /* Toggle PHY Test Mode */
                 coded_phy_cnt++;
-                switch(coded_phy_cnt & 0x3) {
+                switch (coded_phy_cnt & 0x3) {
                     case 0:
                         /* 1M PHY */
                         APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
@@ -737,7 +737,7 @@ static void datsBtnCback(uint8_t btn)
                 break;
         }
     } else {
-        switch(btn) {
+        switch (btn) {
             case APP_UI_BTN_1_SHORT:
                 /* start advertising */
                 AppAdvStart(APP_MODE_AUTO_INIT);
@@ -784,7 +784,7 @@ static void datsBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void datsWsfBufDiagnostics(WsfBufDiag_t* pInfo)
 {
-    if(pInfo->type == WSF_BUF_ALLOC_FAILED) {
+    if (pInfo->type == WSF_BUF_ALLOC_FAILED) {
         APP_TRACE_INFO2("Dats got WSF Buffer Allocation Failure - Task: %d Len: %d",
                         pInfo->param.alloc.taskId, pInfo->param.alloc.len);
     }
@@ -802,16 +802,16 @@ static void datsWsfBufDiagnostics(WsfBufDiag_t* pInfo)
 /*************************************************************************************************/
 static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 {
-    if(btnId == 1) {
+    if (btnId == 1) {
         /* Start/stop button timer */
-        if(state == PAL_BTN_POS_UP) {
+        if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
-            if((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
+            if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
-            } else if(btnUs < BTN_MED_MS * 1000) {
+            } else if (btnUs < BTN_MED_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_1_MED);
-            } else if(btnUs < BTN_LONG_MS * 1000) {
+            } else if (btnUs < BTN_LONG_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_1_LONG);
             } else {
                 AppUiBtnTest(APP_UI_BTN_1_EX_LONG);
@@ -820,16 +820,16 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
             /* Button down, start the timer */
             MXC_TMR_SW_Start(BTN_1_TMR);
         }
-    } else if(btnId == 2) {
+    } else if (btnId == 2) {
         /* Start/stop button timer */
-        if(state == PAL_BTN_POS_UP) {
+        if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
-            if((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
+            if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
-            } else if(btnUs < BTN_MED_MS * 1000) {
+            } else if (btnUs < BTN_MED_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_2_MED);
-            } else if(btnUs < BTN_LONG_MS * 1000) {
+            } else if (btnUs < BTN_LONG_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_2_LONG);
             } else {
                 AppUiBtnTest(APP_UI_BTN_2_EX_LONG);
@@ -855,16 +855,16 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 /*************************************************************************************************/
 void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
 {
-    if(pMsg != NULL) {
+    if (pMsg != NULL) {
         APP_TRACE_INFO1("Dats got evt %d", pMsg->event);
 
         /* process ATT messages */
-        if(pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
+        if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
         }
         /* process DM messages */
-        else if(pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
             /* process advertising and connection-related messages */
             AppSlaveProcDmMsg((dmEvt_t*)pMsg);
 
@@ -905,7 +905,7 @@ void DatsStart(void)
     /* Register for app framework button callbacks */
     AppUiBtnRegister(datsBtnCback);
 
-#if(BT_VER > 8)
+#if (BT_VER > 8)
     DmPhyInit();
 #endif /* BT_VER */
 

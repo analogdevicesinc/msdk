@@ -126,7 +126,7 @@ static void mainWsfInit(void)
     WsfHeapAlloc(memUsed);
     WsfOsInit();
     WsfTimerInit();
-#if(WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
+#if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
 #endif
@@ -159,7 +159,7 @@ void WUT_IRQHandler(void)
 /*************************************************************************************************/
 void wutTrimCb(int err)
 {
-    if(err != E_NO_ERROR) {
+    if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("32 kHz trim error %d\n", err);
     } else {
         APP_TRACE_INFO1("32kHz trimmed to 0x%x", (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >>
@@ -201,12 +201,12 @@ int main(void)
 
     PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
-#if(BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
     /* Set 5.0 requirements. */
     mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_0;
 #endif
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
-#if(BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
 #endif
 
@@ -262,7 +262,7 @@ int main(void)
     /* Execute the trim procedure */
     wutTrimComplete = 0;
     MXC_WUT_TrimCrystalAsync(wutTrimCb);
-    while(!wutTrimComplete) {}
+    while (!wutTrimComplete) {}
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
     PalBbDisable();

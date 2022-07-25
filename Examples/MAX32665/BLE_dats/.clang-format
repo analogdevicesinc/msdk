@@ -13,7 +13,7 @@ AllowShortLoopsOnASingleLine: 'true'
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: 'false'
-BinPackArguments: 'true'
+# BinPackArguments: 'true'
 BinPackParameters: 'true'
 BraceWrapping:
     AfterCaseLabel: 'true'
@@ -37,7 +37,7 @@ SortIncludes: 'false'
 SpaceAfterCStyleCast: 'false'
 SpaceAfterLogicalNot: 'false'
 SpaceBeforeAssignmentOperators: 'true'
-SpaceBeforeParens: Never
+SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: 'false'
 SpaceInEmptyParentheses: 'false'
 SpacesInCStyleCastParentheses: 'false'
