@@ -64,7 +64,6 @@
 // Enable which functions are demonstrated
 #define SEND_CAN 		1  	// Demonstrates sending a standard CAN 2.0 message
 #define SEND_RTR		1	// Demonstrates sending an RTR message, disable by setting to 0
-#define SEND_CANFD		1	// Demonstrates sending a CAN FD message, disable by setting to 0
 #define RECEIVE_CAN 	1	// Demonstrates receiving a CAN message (any type)
 
 /***** Globals *****/
@@ -86,12 +85,12 @@ int main(void)
 {
 	int err;
 
-	printf("\n\n************************** CAN Example *********************************\n");
+	printf("\n\n*********************** CAN Example ******************************\n");
 	printf("This example demonstrates how to perform various CAN transactions,\n");
-	printf("namely, sending a CAN 2.0 message, an RTR message, and/or a CAN FD message,\n");
-	printf("as well as receiving a CAN message (any type). These operations can be\n");
-	printf("performed with either blocking, non-blocking or DMA methods (selectable\n");
-	printf("with the macros defined above.)\n\n");
+	printf("specifically, sending a CAN 2.0 message and/or an RTR message, as\n");
+	printf("well as receiving a CAN message (any type except CAN FD). These\n");
+	printf("operations can be performed with either blocking, non-blocking or\n");
+	printf("DMA methods (selectable with the macros defined above.)\n\n");
 	printf("Connect CAN signals on header JH8 to CAN bus.\n\n");
 
   #if ASYNC || DMA
@@ -110,11 +109,6 @@ int main(void)
 	// Set bitrate
 	MXC_CAN_SetBitRate(0, MXC_CAN_BITRATE_SEL_NOMINAL, 500000, MXC_CAN_BIT_SEGMENTS(7, 2, 2));		// Nominal bitrate 500kHz, TSEG1 - 7, TSEG2 - 2
 	if((err = MXC_CAN_GetBitRate(0, MXC_CAN_BITRATE_SEL_NOMINAL)) != 500000) {
-		LED_On(0);
-		while(1);
-	}
-	MXC_CAN_SetBitRate(0, MXC_CAN_BITRATE_SEL_FD_DATA, 2000000, MXC_CAN_BIT_SEGMENTS(7, 2, 2));		// FD bitrate 2MHz, TSEG1 - 7, TSEG2 - 2
-	if((err = MXC_CAN_GetBitRate(0, MXC_CAN_BITRATE_SEL_FD_DATA)) != 2000000) {
 		LED_On(0);
 		while(1);
 	}
@@ -153,19 +147,6 @@ int main(void)
 	msg_tx.dlc = 8;
 	msgSend(0, &msg_tx, data_tx, 8);
   #endif // SEND_RTR
-
-  #if SEND_CANFD
-	/* Send CAN FD message with 48 data bytes */
-	printf("Sending CAN FD message...\n");
-
-	msg_tx.msg_id = MXC_CAN_EXTENDED_ID(0x12345678);
-	msg_tx.rtr = 0;
-	msg_tx.fdf = 1;
-	msg_tx.brs = 1;
-	msg_tx.esi = 0;
-	msg_tx.dlc = 14;
-	msgSend(0, &msg_tx, data_tx, 48);
-  #endif // SEND_CANFD
 
   #if RECEIVE_CAN
 	/* Demonstrate message receive. */

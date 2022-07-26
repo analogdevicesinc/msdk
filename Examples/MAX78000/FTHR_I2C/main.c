@@ -54,7 +54,7 @@
 #include "dma.h"
 
 #ifdef  BOARD_EVKIT_V1
-#error This example is not supported by the standard EvKit.
+#warning This example is not supported by the standard EvKit.
 #endif
 
 /***** Definitions *****/

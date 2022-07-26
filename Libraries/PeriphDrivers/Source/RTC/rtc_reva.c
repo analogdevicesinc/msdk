@@ -170,7 +170,7 @@ int MXC_RTC_RevA_Stop (mxc_rtc_reva_regs_t *rtc)
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_Init (mxc_rtc_reva_regs_t *rtc, uint32_t sec, uint8_t ssec)
+int MXC_RTC_RevA_Init (mxc_rtc_reva_regs_t *rtc, uint32_t sec, uint32_t ssec)
 {
     if (MXC_RTC_RevA_GetBusyFlag(rtc)) {
         return E_BUSY;

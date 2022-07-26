@@ -49,6 +49,10 @@
 #include "board.h"
 #include "led.h"
 
+#ifdef BOARD_EVKIT_V1
+#warning "This example is not supported by the MAX78000EVKIT."
+#endif
+
 #define WAIT_FOR_KEYPRESS
 
 // The I2C peripheral the ADXL343 is connected to and the bus speed.

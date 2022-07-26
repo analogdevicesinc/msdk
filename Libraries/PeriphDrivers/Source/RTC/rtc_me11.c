@@ -78,7 +78,7 @@ int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
     // Enable clock
     MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
 
-    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_RTSS));
 }
 
 int MXC_RTC_SquareWave(mxc_rtc_reva_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)

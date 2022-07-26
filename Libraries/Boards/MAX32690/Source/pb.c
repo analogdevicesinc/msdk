@@ -118,11 +118,11 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
     if (callback) {
 
         if(MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
-            NVIC_EnableIRQ(GPIOWAKE_IRQn);
-
             /* Save the GPIO4 callback and pb index */
             gpio4_callback = callback;
             gpio4_pb = pb;
+
+            NVIC_EnableIRQ(GPIOWAKE_IRQn);
             return E_NO_ERROR;
         } 
         // Register callback

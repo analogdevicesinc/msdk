@@ -142,8 +142,6 @@ int configureRTC() {
 		return E_BUSY;
 	}
 
-//	MXC_LP_EnableRTCAlarmWakeup();														// Enable RTC as wakeup source
-
 	if(MXC_RTC_Start() != E_NO_ERROR) {													// Re-start RTC
 		printf("Failed RTC_Start\n");
 		printf("Example Failed\n");

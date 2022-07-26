@@ -56,7 +56,7 @@
 #include "ff.h"
 
 #ifdef BOARD_EVKIT_V1
-#error  This example is not supported by the MAX78000EVKIT.
+#warning  This example is not supported by the MAX78000EVKIT.
 #endif
 
 /***** Definitions *****/

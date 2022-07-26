@@ -47,7 +47,9 @@ mxc_can_drv_version_t MXC_CAN_GetVersion(void)
 /**********************************************************************************************************************************************************************/
 mxc_can_capabilities_t MXC_CAN_GetCapabilities(void)
 {
-    return MXC_CAN_RevA_GetCapabilities();
+    mxc_can_capabilities_t ret = MXC_CAN_RevA_GetCapabilities();
+    ret.fd_mode = 0;
+    return ret;
 }
 
 /**********************************************************************************************************************************************************************/
@@ -158,6 +160,9 @@ int MXC_CAN_GetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel)
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if(can == 0) {
         return E_BAD_PARAM;
+    } 
+    else if(sel == MXC_CAN_BITRATE_SEL_FD_DATA) {
+        return E_NOT_SUPPORTED;
     }
 
     return MXC_CAN_RevA_GetBitRate((mxc_can_reva_regs_t*) can, sel, MXC_CAN_GetClock(can_idx));
@@ -169,6 +174,9 @@ int MXC_CAN_SetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel, uint32_t bit
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if(can == 0) {
         return E_BAD_PARAM;
+    }
+    else if(sel == MXC_CAN_BITRATE_SEL_FD_DATA) {
+        return E_NOT_SUPPORTED;
     }
 
     uint8_t seg1 = (bit_segments & (0xFF << MXC_CAN_SEG1_SHIFT)) >> MXC_CAN_SEG1_SHIFT;
@@ -238,6 +246,9 @@ int MXC_CAN_WriteTXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, const uint8_
     if(can == 0) {
         return E_BAD_PARAM;
     }
+    else if(info->fdf != 0) {
+        return E_NOT_SUPPORTED;
+    }
 
     return MXC_CAN_RevA_WriteTXFIFO((mxc_can_reva_regs_t*) can, info, data, size);  
 }
@@ -248,6 +259,9 @@ int MXC_CAN_ReadRXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, uint8_t* data
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if(can == 0) {
         return E_BAD_PARAM;
+    }
+    else if(info->fdf != 0) {
+        return E_NOT_SUPPORTED;
     }
 
     return MXC_CAN_RevA_ReadRXFIFO((mxc_can_reva_regs_t*) can, info, data, size, false);
@@ -260,6 +274,9 @@ int MXC_CAN_MessageSend(uint32_t can_idx, mxc_can_req_t* req)
     if(can == 0) {
         return E_BAD_PARAM;
     }
+    else if(req->msg_info->fdf != 0) {
+        return E_NOT_SUPPORTED;
+    }
 
     return MXC_CAN_RevA_MessageSend((mxc_can_reva_regs_t*) can, req);
 }
@@ -271,6 +288,9 @@ int MXC_CAN_MessageSendAsync(uint32_t can_idx, mxc_can_req_t* req)
     if(can == 0) {
         return E_BAD_PARAM;
     }
+    else if(req->msg_info->fdf != 0) {
+        return E_NOT_SUPPORTED;
+    }
     
     return MXC_CAN_RevA_MessageSendAsync((mxc_can_reva_regs_t*) can, req);
 }
@@ -281,6 +301,9 @@ int MXC_CAN_MessageSendDMA(uint32_t can_idx, mxc_can_req_t* req)
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if(can == 0) {
         return E_BAD_PARAM;
+    }
+    else if(req->msg_info->fdf != 0) {
+        return E_NOT_SUPPORTED;
     }
     
     return MXC_CAN_RevA_MessageSendDMA((mxc_can_reva_regs_t*) can, req);
@@ -317,6 +340,9 @@ int MXC_CAN_MessageReadDMA(uint32_t can_idx, mxc_can_req_t* req, void (*dma_cb) 
     if(can == 0) {
         return E_BAD_PARAM;
     }
+    else if(req->msg_info->fdf != 0) {
+        return E_NOT_SUPPORTED;
+    }
 
     // Set Appropriate DMA Request Select
     if(can_idx == 0) {
@@ -345,6 +371,9 @@ int MXC_CAN_Control(uint32_t can_idx, mxc_can_ctrl_t ctrl, uint32_t ctrl_arg)
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if(can == 0) {
         return E_BAD_PARAM;
+    }
+    else if(ctrl == MXC_CAN_CTRL_SET_FD_MODE) {
+        return E_NOT_SUPPORTED;
     }
 
     return MXC_CAN_RevA_Control((mxc_can_reva_regs_t*) can, ctrl, ctrl_arg);
