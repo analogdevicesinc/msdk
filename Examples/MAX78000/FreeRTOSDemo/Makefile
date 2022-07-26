@@ -74,10 +74,6 @@ else
 TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 endif
-export TARGET
-export TARGET_UC
-export TARGET_LC
-# TODO: Remove dependency on exporting these (distclean needs it)
 
 # Default board.
 BOARD ?= EvKit_V1
@@ -96,40 +92,50 @@ BOARD ?= EvKit_V1
 # - MAXIM_PATH : Tell this Makefile where to find the MaximSDK.  Ex:  MAXIM_PATH=C:/MaximSDK
 
 
-DEPTH=../../../
-ifeq "$(MAXIM_PATH)" ""
-$(warning Warning: MAXIM_PATH is not set!)
-MAXIM_PATH = $(abspath $(DEPTH))
-endif
-
+ifneq "$(MAXIM_PATH)" ""
 # Sanitize MAXIM_PATH for backslashes
 MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
-
 # Locate some other useful paths...
 LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
 CMSIS_ROOT := $(LIBS_DIR)/CMSIS
-export CMSIS_ROOT
-# TODO: Remove dependency on export CMSIS_ROOT
-
-# Select 'GCC' or 'IAR' compiler
-COMPILER ?= GCC
+endif
 
 # *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET and BOARD 
+# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
 # in case project.mk needs to reference those values.  However, we also include
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
 
 
-$(info Added settings from project.mk...)
 include ./project.mk
+$(info Loaded project.mk)
+
+# *******************************************************************************
+# Final path sanitization and re-calculation.  No options here.
+
+ifeq "$(MAXIM_PATH)" ""
+# MAXIM_PATH is still not defined...
+DEPTH=../../../
+MAXIM_PATH = $(abspath $(DEPTH))
+$(warning Warning:  MAXIM_PATH is not set!  It's recommended to set MAXIM_PATH in your environment or in project.mk)
+$(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
+else
+# Sanitize MAXIM_PATH for backslashes
+MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
+# Locate some other useful paths...
+LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
+CMSIS_ROOT := $(LIBS_DIR)/CMSIS
+endif
 
 # One final UC/LC check in case user set TARGET in project.mk
 TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
+
 export TARGET
 export TARGET_UC
 export TARGET_LC
+export CMSIS_ROOT
+# TODO: Remove dependency on exports for these variables.
 
 # *******************************************************************************
 # Set up search paths, and auto-detect all source code on those paths.
@@ -155,6 +161,11 @@ export TARGET_LC
 #			on any VPATH, in which case you can add the full path to the file here.
 #			You should use the "+=" operator with this option.
 #			Ex:  SRCS += your/specific/source/file.c
+# - AUTOSEARCH : Set whether this Makefile should automatically detect .c files on
+#				VPATH and add them to the build.  This is enabled by default.  Set
+#				to 0 to disable.  If autosearch is disabled, source files must be
+#				manually added to SRCS.
+#				Ex:  AUTOSEARCH = 0
 
 
 # Where to find source files for this project.
@@ -165,8 +176,13 @@ VPATH := $(VPATH)
 IPATH += .
 IPATH := $(IPATH)
 
+AUTOSEARCH ?= 1
+ifeq ($(AUTOSEARCH), 1)
 # Auto-detect all C source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+endif
+
+# Collapse SRCS before passing them on to the next stage
 SRCS := $(SRCS)
 
 # *******************************************************************************
@@ -194,6 +210,11 @@ PROJECT ?= $(TARGET_UC)
 # - LINKERFILE : Override the default linkerfile.
 #			Ex: LINKERFILE = customlinkerfile.ld
 
+
+# Select 'GCC' or 'IAR' compiler
+ifeq "$(COMPILER)" ""
+COMPILER := GCC
+endif
 
 # Set compiler optimization level
 ifeq "$(MAKECMDGOALS)" "release"
@@ -229,16 +250,160 @@ LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # *******************************************************************************
-# Include the Board-Support Package (BSP) and Peripheral Drivers libraries
-# for the target microcontroller.
+# Libraries
 
-# Include the BSP
+# This section offers "toggle switches" to include or exclude the libraries that
+# are available in the MaximSDK.  Set a configuration variable to 1 to include the
+# library in the build, or 0 to exclude.
+
+# Each library may also have its own library specific configuration variables.
+
+# Configuration variables:
+# - LIB_BOARD : Include the Board-Support Package (BSP) library. (Enabled by default)
+# - LIB_PERIPHDRIVERS : Include the peripheral driver library.  (Enabled by default)
+# - LIB_CMSIS_DSP : Include the CMSIS-DSP library.
+# - LIB_CORDIO : Include the Cordio BLE library
+# - LIB_FCL : Include the Free Cryptographic Library (FCL)
+# - LIB_FREERTOS : Include the FreeRTOS and FreeRTOS-Plus-CLI libraries
+# - LIB_LC3 : Include the Low Complexity Communication Codec (LC3) library
+# - LIB_LTTLEFS : Include the "little file system" (littleFS) library
+# - LIB_LWIP : Include the lwIP library
+# - LIB_MAXUSB : Include the MAXUSB library
+# - LIB_SDHC : Include the SDHC library
+
+
+# BSP (Enabled by default)
+# ************************
+LIB_BOARD ?= 1
+ifeq ($(LIB_BOARD), 1)
 BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
 include $(BOARD_DIR)/board.mk
+endif
+# ************************
 
-# Include the peripheral driver
+# PeriphDrivers (Enabled by default)
+# ************************
+LIB_PERIPHDRIVERS ?= 1
+ifeq ($(LIB_PERIPHDRIVERS), 1)
 PERIPH_DRIVER_DIR := $(LIBS_DIR)/PeriphDrivers
 include $(PERIPH_DRIVER_DIR)/periphdriver.mk
+endif
+# ************************
+
+# CMSIS-DSP (Disabled by default)
+# ************************
+LIB_CMSIS_DSP ?= 0
+ifeq ($(LIB_CMSIS_DSP), 1)
+# Include the CMSIS-DSP library
+include $(LIBS_DIR)/CMSIS/5.9.0/DSP/CMSIS-DSP.mk
+endif
+# ************************
+
+# Cordio (Disabled by default)
+# ************************
+LIB_CORDIO ?= 0
+ifeq ($(LIB_CORDIO), 1)
+# Cordio Library Options
+DEBUG           ?= 1
+TRACE           ?= 1
+BT_VER          ?= 9
+INIT_CENTRAL    ?= 1
+INIT_OBSERVER   ?= 1
+INIT_ENCRYPTED  ?= 1
+
+# Enter standby mode when idle
+STANDBY_ENABLED ?= 0
+
+# Select either option, or both for combined Host and Controller on single core
+BLE_HOST        ?= 1
+BLE_CONTROLLER  ?= 1
+
+# Disable these trace messages for the speed testing
+PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
+
+# Include the Cordio Library
+CORDIO_DIR ?= $(LIBS_DIR)/Cordio
+include $(CORDIO_DIR)/platform/targets/maxim/build/cordio.mk
+endif
+# ************************
+
+# FCL (Disabled by default)
+# ************************
+LIB_FCL ?= 0
+ifeq ($(LIB_FCL), 1)
+FCL_DIR  ?= $(LIBS_DIR)/FCL
+include $(FCL_DIR)/fcl.mk
+endif
+# ************************
+
+# FreeRTOS (Disabled by default)
+# ************************
+LIB_FREERTOS ?= 0
+ifeq ($(LIB_FREERTOS), 1)
+# Where to find FreeRTOSConfig.h
+RTOS_CONFIG_DIR ?= .
+
+# Include FreeRTOS-Plus-CLI
+IPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
+VPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
+SRCS += FreeRTOS_CLI.c
+
+# Include the FreeRTOS library
+include $(LIBS_DIR)/FreeRTOS/freertos.mk
+endif
+# ************************
+
+# LC3 (Disabled by default)
+# ************************
+LIB_LC3 ?= 0
+ifeq ($(LIB_LC3), 1)
+LC3_ROOT ?= $(LIBS_DIR)/LC3
+include $(LC3_ROOT)/build/sources.mk
+endif
+# ************************
+
+# littleFS (Disabled by default)
+# ************************
+LIB_LITTLEFS ?= 0
+ifeq ($(LIB_LITTLEFS), 1)
+LITTLEFS_DIR ?= $(LIBS_DIR)/littlefs
+include $(LITTLEFS_DIR)/littlefs.mk
+endif
+# ************************
+
+# lwIP (Disabled by default)
+# ************************
+LIB_LWIP ?= 0
+ifeq ($(LIB_LWIP), 1)
+LWIP_DIR ?= $(LIBS_DIR)/lwIP
+include $(LWIP_DIR)/lwip.mk
+endif
+# ************************
+
+# MAXUSB (Disabled by default)
+# ************************
+LIB_MAXUSB ?= 0
+ifeq ($(LIB_MAXUSB), 1)
+MAXUSB_DIR ?= $(LIBS_DIR)/MAXUSB
+include $(MAXUSB_DIR)/maxusb.mk
+endif
+# ************************
+
+# SDHC (Disabled by default)
+# ************************
+LIB_SDHC ?= 0
+ifeq ($(LIB_SDHC), 1)
+# Set the SDHC driver directory
+SDHC_DRIVER_DIR ?= $(LIBS_DIR)/SDHC
+
+# Set the FAT32 driver directory
+FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/ff13
+
+# Include the SDHC library
+include $(FAT32_DRIVER_DIR)/fat32.mk
+include $(SDHC_DRIVER_DIR)/sdhc.mk
+endif
+# ************************
 
 # *******************************************************************************
 # Include the rules for building for this target. All other makefiles should be
