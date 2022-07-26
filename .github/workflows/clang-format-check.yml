@@ -32,5 +32,5 @@ jobs:
           CFILES=$(find . -iname "*.c")
           for cFile in ${CFILES}
           do
-            clang-format -style=file -n --ferror-limit=1 -Werror ${cFile}
+            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${cFile}
           done
