@@ -296,7 +296,7 @@ static void print_line_rgb565(const unsigned char* line, int nb_of_pixel)
 {
     line += (nb_of_pixel * 2) - 2;
 
-    for (int i = 0; i<nb_of_pixel> > 2; i++) {
+    for (int i = 0; i < (nb_of_pixel >> 2); i++) {
         g_fifo[0] = (0x01000100 | (line[1] << 16) | line[0]);
         line -= 2;
         g_fifo[1] = (0x01000100 | (line[1] << 16) | line[0]);
