@@ -791,7 +791,8 @@ void __attribute__((interrupt("machine"))) illegal_insn_handler(void)
     (void)mcause;
     (void)mepc;
     (void)uepc;
-    while (1) {}
+    while (1) {
+    }
 }
 
 void __enable_irq(void)

@@ -374,7 +374,8 @@ int main(void)
 {
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0xFFFFFF; i++) {}
+    for (i = 0; i < 0xFFFFFF; i++) {
+    }
 
     /* Setup manual CTS/RTS to lockout console and wake from deep sleep */
     MXC_GPIO_Config(&uart_cts);
@@ -446,7 +447,9 @@ int main(void)
 
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
-    while (1) { __NOP(); }
+    while (1) {
+        __NOP();
+    }
 
     /* Quiet GCC warnings */
     return -1;

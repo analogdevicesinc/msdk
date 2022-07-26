@@ -107,7 +107,8 @@ void lv_textarea_add_char(lv_obj_t* obj, uint32_t c)
 
 #if LV_BIG_ENDIAN_SYSTEM
     if (c != 0)
-        while (*letter_buf == 0) ++letter_buf;
+        while (*letter_buf == 0)
+            ++letter_buf;
 #endif
 
     lv_res_t res = insert_handler(obj, letter_buf);
@@ -995,7 +996,9 @@ static void pwd_char_hider(lv_obj_t* obj)
         size_t bullet_len = strlen(bullet);
         char* txt_tmp     = lv_mem_buf_get(enc_len * bullet_len + 1);
         int32_t i;
-        for (i = 0; i < enc_len; i++) { lv_memcpy(&txt_tmp[i * bullet_len], bullet, bullet_len); }
+        for (i = 0; i < enc_len; i++) {
+            lv_memcpy(&txt_tmp[i * bullet_len], bullet, bullet_len);
+        }
 
         txt_tmp[i * bullet_len] = '\0';
 

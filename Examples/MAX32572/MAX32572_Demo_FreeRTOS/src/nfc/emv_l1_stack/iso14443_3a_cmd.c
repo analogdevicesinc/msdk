@@ -105,7 +105,9 @@ int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t* uid)
             }
 
             //Check BCC
-            for (i = 0, bcc = 0; i < 4; i++) { bcc ^= uid[i]; }
+            for (i = 0, bcc = 0; i < 4; i++) {
+                bcc ^= uid[i];
+            }
 
             if (bcc != uid[4]) {
                 ret = ISO14443_3_ERR_TRANSMISSION;

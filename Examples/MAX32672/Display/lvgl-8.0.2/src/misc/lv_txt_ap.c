@@ -153,7 +153,8 @@ void _lv_txt_ap_proc(const char* txt, char* txt_out)
 
     i = 0;
     j = 0;
-    while (j < txt_length) ch_enc[j++] = _lv_txt_encoded_next(txt, &i);
+    while (j < txt_length)
+        ch_enc[j++] = _lv_txt_encoded_next(txt, &i);
 
     ch_enc[j] = 0;
 
@@ -209,8 +210,10 @@ void _lv_txt_ap_proc(const char* txt, char* txt_out)
         j++;
     }
     ch_fin[j] = 0;
-    for (i = 0; i < txt_length; i++) ch_enc[i] = 0;
-    for (i = 0; i < j; i++) ch_enc[i] = ch_fin[i];
+    for (i = 0; i < txt_length; i++)
+        ch_enc[i] = 0;
+    for (i = 0; i < j; i++)
+        ch_enc[i] = ch_fin[i];
     lv_mem_free(ch_fin);
 
     txt_out_temp = txt_out;

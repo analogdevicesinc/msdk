@@ -176,7 +176,8 @@ LV_ATTRIBUTE_FAST_MEM void _lv_blend_fill(const lv_area_t* clip_area, const lv_a
     if (mask && disp->driver->antialiasing == 0 && mask) {
         int32_t mask_w = lv_area_get_width(&draw_area);
         int32_t i;
-        for (i = 0; i < mask_w; i++) mask[i] = mask[i] > 128 ? LV_OPA_COVER : LV_OPA_TRANSP;
+        for (i = 0; i < mask_w; i++)
+            mask[i] = mask[i] > 128 ? LV_OPA_COVER : LV_OPA_TRANSP;
     }
 
     if (disp->driver->set_px_cb) {
@@ -242,7 +243,8 @@ LV_ATTRIBUTE_FAST_MEM void _lv_blend_map(const lv_area_t* clip_area, const lv_ar
     if (mask && disp->driver->antialiasing == 0) {
         int32_t mask_w = lv_area_get_width(&draw_area);
         int32_t i;
-        for (i = 0; i < mask_w; i++) mask[i] = mask[i] > 128 ? LV_OPA_COVER : LV_OPA_TRANSP;
+        for (i = 0; i < mask_w; i++)
+            mask[i] = mask[i] > 128 ? LV_OPA_COVER : LV_OPA_TRANSP;
     }
     if (disp->driver->set_px_cb) {
         map_set_px(disp_area, disp_buf, &draw_area, map_area, map_buf, opa, mask, mask_res);

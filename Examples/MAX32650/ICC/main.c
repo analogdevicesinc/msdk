@@ -154,5 +154,6 @@ int main(void)
     } else {
         printf("EXAMPLE FAILED\n");
     }
-    while (1) {}
+    while (1) {
+    }
 }

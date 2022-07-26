@@ -166,7 +166,9 @@ static int reg_write_buf(uint8_t reg, uint8_t* buf, int len)
     i2c->mstctrl |= MXC_F_I2C_MSTCTRL_START;
     i2c->fifo = reg;
 
-    while (len--) { i2c->fifo = *buf++; }
+    while (len--) {
+        i2c->fifo = *buf++;
+    }
 
     i2c->mstctrl |= MXC_F_I2C_MSTCTRL_STOP;
 

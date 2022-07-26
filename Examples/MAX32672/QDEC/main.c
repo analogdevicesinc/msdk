@@ -107,7 +107,8 @@ int main(void)
     error = MXC_QDEC_Init(&req);
     if (error != E_NO_ERROR) {
         printf("\nFail to initialize QDEC. Error: %d\n", error);
-        while (1) {};
+        while (1) {
+        };
     }
 
     direction = MXC_QDEC_GetDirection();

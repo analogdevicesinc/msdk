@@ -176,15 +176,18 @@ int main(void)
     if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {
         /* Power VREGO_D */
         MXC_SIMO->vrego_d = (0x3c << MXC_F_SIMO_VREGO_D_VSETD_POS);
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {
+        }
 
         /* Restore btleldoctrl setting */
         MXC_GCR->btleldoctrl = 0x3055;
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {
+        }
 
         /* Enable 32Mhz oscillator */
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
-        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {}
+        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {
+        }
     }
 
     /* Switch the system clock to the 32 MHz oscillator */

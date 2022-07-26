@@ -81,7 +81,9 @@ int compareArrays(char* a, char* b, int len)
 int padMessage(char* arr, int len)
 {
     int i;
-    for (i = len; i < ((len + 15) & 0xFFFFFFF0); i++) { arr[i] = 0; }
+    for (i = len; i < ((len + 15) & 0xFFFFFFF0); i++) {
+        arr[i] = 0;
+    }
     return i;
 }
 

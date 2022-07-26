@@ -698,7 +698,9 @@ static lv_coord_t grid_align(lv_coord_t cont_size, bool auto_size, uint8_t align
         }
 
         /*Get the full grid size with gap*/
-        for (i = 0; i < track_num; i++) { grid_size += size_array[i] + gap; }
+        for (i = 0; i < track_num; i++) {
+            grid_size += size_array[i] + gap;
+        }
         grid_size -= gap;
 
         /*Calculate the position of the first item and set gap is necessary*/
@@ -728,13 +730,17 @@ static lv_coord_t grid_align(lv_coord_t cont_size, bool auto_size, uint8_t align
     }
 
     /*Set the position of all tracks from the start position, gaps and track sizes*/
-    for (i = 0; i < track_num - 1; i++) { pos_array[i + 1] = pos_array[i] + size_array[i] + gap; }
+    for (i = 0; i < track_num - 1; i++) {
+        pos_array[i + 1] = pos_array[i] + size_array[i] + gap;
+    }
 
     lv_coord_t total_gird_size =
         pos_array[track_num - 1] + size_array[track_num - 1] - pos_array[0];
 
     if (reverse) {
-        for (i = 0; i < track_num; i++) { pos_array[i] = cont_size - pos_array[i] - size_array[i]; }
+        for (i = 0; i < track_num; i++) {
+            pos_array[i] = cont_size - pos_array[i] - size_array[i];
+        }
     }
 
     /*Return the full size of the grid*/

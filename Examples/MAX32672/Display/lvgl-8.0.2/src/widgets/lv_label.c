@@ -1183,7 +1183,9 @@ static void lv_label_refr_text(lv_obj_t* obj)
             }
 
             if (lv_label_set_dot_tmp(obj, &label->text[byte_id_ori], len)) {
-                for (i = 0; i < LV_LABEL_DOT_NUM; i++) { label->text[byte_id_ori + i] = '.'; }
+                for (i = 0; i < LV_LABEL_DOT_NUM; i++) {
+                    label->text[byte_id_ori + i] = '.';
+                }
                 label->text[byte_id_ori + LV_LABEL_DOT_NUM] = '\0';
                 label->dot_end                              = letter_id + LV_LABEL_DOT_NUM;
             }

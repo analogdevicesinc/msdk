@@ -339,7 +339,8 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
 
     /* TODO: Timeout on clock switch, use this for untrimmed parts. */
-    while (!(MXC_GCR->clkctrl & ready)) {}
+    while (!(MXC_GCR->clkctrl & ready)) {
+    }
     return E_NO_ERROR;
 
     do {

@@ -91,7 +91,9 @@ void vAnimTask(void* pvParameters)
     xAnimLock = xSemaphoreCreateBinary();
 
     for (;;) {
-        while (xSemaphoreTake(xAnimLock, 0xFFFF) != pdTRUE) { ; }
+        while (xSemaphoreTake(xAnimLock, 0xFFFF) != pdTRUE) {
+            ;
+        }
 
         while (g_animation_status) {
             MXC_TFT_ShowImage(4, 10, logo_maxim_data[nb]);

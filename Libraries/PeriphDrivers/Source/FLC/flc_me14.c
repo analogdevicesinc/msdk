@@ -70,7 +70,8 @@ void MXC_FLC_ME14_Flash_Operation(void)
     MXC_GCR->scon |= MXC_F_GCR_SCON_CCACHE_FLUSH;
 
     /* Wait for flush to complete */
-    while (MXC_GCR->scon & MXC_F_GCR_SCON_CCACHE_FLUSH) {}
+    while (MXC_GCR->scon & MXC_F_GCR_SCON_CCACHE_FLUSH) {
+    }
 
     // Clear the line fill buffer by reading 2 pages from flash
     volatile uint32_t* line_addr;

@@ -343,7 +343,9 @@ static uint32_t lv_bidi_get_next_paragraph(const char* txt)
 
     _lv_txt_encoded_next(txt, &i);
 
-    while (txt[i] != '\0' && txt[i] != '\n' && txt[i] != '\r') { _lv_txt_encoded_next(txt, &i); }
+    while (txt[i] != '\0' && txt[i] != '\n' && txt[i] != '\r') {
+        _lv_txt_encoded_next(txt, &i);
+    }
 
     return i;
 }

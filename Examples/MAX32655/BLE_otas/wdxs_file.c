@@ -106,7 +106,8 @@ static uint8_t wdxsFileErase(uint8_t* address, uint32_t size)
         APP_TRACE_INFO1(">>> Erasing %d 64K sectors in external flash <<<", sectors);
         while (sectors) {
             /* TODO:  Debug as to why this is needed */
-            for (i = 0; i < 0xFFFF; i++) {}
+            for (i = 0; i < 0xFFFF; i++) {
+            }
             Ext_Flash_Erase(address32, Ext_Flash_Erase_64K);
             sectors--;
             address32 += EXT_FLASH_SECTOR_SIZE;
@@ -147,7 +148,8 @@ static uint8_t wdxsFileRead(uint8_t* pBuf, uint8_t* pAddress, uint32_t size)
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j)
+        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -166,7 +168,8 @@ static uint32_t table[0x100] = {0};
 void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 {
     if (!*table) {
-        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i)
+            table[i] = crc32_for_byte(i);
     }
     for (size_t i = 0; i < n_bytes; ++i) {
         *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;

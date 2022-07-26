@@ -111,5 +111,6 @@ int main(void)
 
     printf("\n\nExample complete.\n");
 
-    while (1) {}
+    while (1) {
+    }
 }

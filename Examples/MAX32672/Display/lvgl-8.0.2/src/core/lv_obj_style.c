@@ -95,7 +95,9 @@ void lv_obj_add_style(lv_obj_t* obj, lv_style_t* style, lv_style_selector_t sele
     obj->styles = lv_mem_realloc(obj->styles, obj->style_cnt * sizeof(_lv_obj_style_t));
 
     uint32_t j;
-    for (j = obj->style_cnt - 1; j > i; j--) { obj->styles[j] = obj->styles[j - 1]; }
+    for (j = obj->style_cnt - 1; j > i; j--) {
+        obj->styles[j] = obj->styles[j - 1];
+    }
 
     lv_memset_00(&obj->styles[i], sizeof(_lv_obj_style_t));
     obj->styles[i].style    = style;
@@ -136,7 +138,9 @@ void lv_obj_remove_style(lv_obj_t* obj, lv_style_t* style, lv_style_selector_t s
 
         /*Shift the styles after `i` by one*/
         uint32_t j;
-        for (j = i; j < (uint32_t)obj->style_cnt - 1; j++) { obj->styles[j] = obj->styles[j + 1]; }
+        for (j = i; j < (uint32_t)obj->style_cnt - 1; j++) {
+            obj->styles[j] = obj->styles[j + 1];
+        }
 
         obj->style_cnt--;
         obj->styles = lv_mem_realloc(obj->styles, obj->style_cnt * sizeof(_lv_obj_style_t));
@@ -158,7 +162,9 @@ void lv_obj_report_style_change(lv_style_t* style)
 
     while (d) {
         uint32_t i;
-        for (i = 0; i < d->screen_cnt; i++) { report_style_change_core(style, d->screens[i]); }
+        for (i = 0; i < d->screen_cnt; i++) {
+            report_style_change_core(style, d->screens[i]);
+        }
         d = lv_disp_get_next(d);
     }
 }
@@ -558,7 +564,9 @@ static _lv_obj_style_t* get_trans_style(lv_obj_t* obj, lv_style_selector_t selec
     obj->style_cnt++;
     obj->styles = lv_mem_realloc(obj->styles, obj->style_cnt * sizeof(_lv_obj_style_t));
 
-    for (i = obj->style_cnt - 1; i > 0; i--) { obj->styles[i] = obj->styles[i - 1]; }
+    for (i = obj->style_cnt - 1; i > 0; i--) {
+        obj->styles[i] = obj->styles[i - 1];
+    }
 
     lv_memset_00(&obj->styles[0], sizeof(_lv_obj_style_t));
     obj->styles[0].style = lv_mem_alloc(sizeof(lv_style_t));

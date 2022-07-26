@@ -126,7 +126,8 @@ int main(void)
         MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
     cnn_start(); // Start CNN processing
 
-    while (cnn_time == 0) asm volatile("wfi"); // Wait for CNN
+    while (cnn_time == 0)
+        asm volatile("wfi"); // Wait for CNN
 
     // Switch CNN clock to PLL (200 MHz) div 4
 

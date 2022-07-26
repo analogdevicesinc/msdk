@@ -239,7 +239,8 @@ void MXC_WUT_RevA_Edge(mxc_wut_reva_regs_t* wut)
     // Wait for a WUT edge
     uint32_t tmp = wut->cnt;
 
-    while (tmp == wut->cnt) {}
+    while (tmp == wut->cnt) {
+    }
 }
 
 /* ************************************************************************** */
@@ -277,5 +278,6 @@ void MXC_WUT_RevA_Delay_MS(mxc_wut_reva_regs_t* wut, uint32_t waitMs, uint32_t t
             500) /
            1000;
 
-    while (wut->cnt < tmp) {}
+    while (wut->cnt < tmp) {
+    }
 }

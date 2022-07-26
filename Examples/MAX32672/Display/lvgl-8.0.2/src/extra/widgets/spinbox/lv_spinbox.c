@@ -366,7 +366,8 @@ static void lv_spinbox_event(const lv_obj_class_t* class_p, lv_event_t* e)
 
             spinbox->step = 1;
             uint16_t i;
-            for (i = 0; i < pos; i++) spinbox->step *= 10;
+            for (i = 0; i < pos; i++)
+                spinbox->step *= 10;
         }
     } else if (code == LV_EVENT_KEY) {
         lv_indev_type_t indev_type = lv_indev_get_type(lv_indev_get_act());
@@ -418,8 +419,12 @@ static void lv_spinbox_updatevalue(lv_obj_t* obj)
     /*Add leading zeros*/
     int lz_cnt = spinbox->digit_count - (int)strlen(digits);
     if (lz_cnt > 0) {
-        for (i = (uint16_t)strlen(digits); i >= 0; i--) { digits[i + lz_cnt] = digits[i]; }
-        for (i = 0; i < lz_cnt; i++) { digits[i] = '0'; }
+        for (i = (uint16_t)strlen(digits); i >= 0; i--) {
+            digits[i + lz_cnt] = digits[i];
+        }
+        for (i = 0; i < lz_cnt; i++) {
+            digits[i] = '0';
+        }
     }
 
     int32_t intDigits;

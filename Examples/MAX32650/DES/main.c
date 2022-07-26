@@ -212,5 +212,6 @@ int main(void)
     TDES_ECB_dec();
 
     printf("\nExample complete.\n");
-    while (1) {}
+    while (1) {
+    }
 }

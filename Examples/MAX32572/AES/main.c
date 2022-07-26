@@ -426,7 +426,8 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) {}
+    while (1) {
+    }
 
     return 0;
 }

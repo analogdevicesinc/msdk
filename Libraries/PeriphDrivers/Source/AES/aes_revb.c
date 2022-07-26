@@ -195,7 +195,9 @@ int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
                  req->encryption << MXC_F_AES_REVB_CTRL_TYPE_POS);
 
     while (remain / 4) {
-        for (i = 0; i < 4; i++) { aes->fifo = SWAP_BYTES(req->inputData[3 - i]); }
+        for (i = 0; i < 4; i++) {
+            aes->fifo = SWAP_BYTES(req->inputData[3 - i]);
+        }
         req->inputData += 4;
 
         while (!(aes->intfl & MXC_F_AES_REVB_INTFL_DONE))
@@ -212,11 +214,15 @@ int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
     }
 
     if (remain % 4) {
-        for (i = 0; i < remain; i++) { aes->fifo = SWAP_BYTES(req->inputData[remain - 1 - i]); }
+        for (i = 0; i < remain; i++) {
+            aes->fifo = SWAP_BYTES(req->inputData[remain - 1 - i]);
+        }
         req->inputData += remain;
 
         // Pad last block with 0's
-        for (i = remain; i < 4; i++) { aes->fifo = 0; }
+        for (i = remain; i < 4; i++) {
+            aes->fifo = 0;
+        }
 
         while (!(aes->intfl & MXC_F_AES_REVB_INTFL_DONE))
             ;

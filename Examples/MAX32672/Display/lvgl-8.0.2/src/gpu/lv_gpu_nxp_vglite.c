@@ -605,7 +605,9 @@ static void _sw_blit(lv_gpu_nxp_vglite_blit_info_t* blit)
     } else if (blit->opa >= LV_OPA_MIN) {
         /* alpha blending */
         for (y = 0; y < h; y++) {
-            for (x = 0; x < w; x++) { dst[x] = lv_color_mix(src[x], dst[x], blit->opa); }
+            for (x = 0; x < w; x++) {
+                dst[x] = lv_color_mix(src[x], dst[x], blit->opa);
+            }
             src += srcStridePx;
             dst += dstStridePx;
         }

@@ -89,13 +89,15 @@ int main(void)
     if (MXC_SPI_Init(MASTER_SPI, 1, 0, 1, 0, MASTER_SPI_SPEED) != E_NO_ERROR) {
         printf("\nError configuring SPI\n");
 
-        while (1) {}
+        while (1) {
+        }
     }
 
     if (MXC_SPI_SetDataSize(MASTER_SPI, 8) != E_NO_ERROR) {
         printf("\nError setting Data size\n");
 
-        while (1) {}
+        while (1) {
+        }
     }
 
     // Initialize RX buffer to store data
@@ -145,5 +147,6 @@ int main(void)
 
     MXC_SPI_Shutdown(MASTER_SPI);
 
-    while (1) {}
+    while (1) {
+    }
 }

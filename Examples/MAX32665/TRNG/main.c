@@ -80,7 +80,9 @@ void print(char* stuff)
 {
     int i, j, size = 4;
     for (i = 0; i < 4; ++i) {
-        for (j = 0; j < 4; ++j) { printf("0x%x ", stuff[i * size + j]); }
+        for (j = 0; j < 4; ++j) {
+            printf("0x%x ", stuff[i * size + j]);
+        }
         printf("\n");
     }
     return;
@@ -112,7 +114,9 @@ int main(void)
     ascii_to_byte(_key, key, MXC_AES_KEY_128_LEN);
 
     char iv[MXC_AES_KEY_128_LEN];
-    for (i = 0; i < LEN; ++i) { iv[i] = var_rnd_no[i]; }
+    for (i = 0; i < LEN; ++i) {
+        iv[i] = var_rnd_no[i];
+    }
 
     const char* _msg = "00000000000000000000000000000000";
     char msg[MXC_AES_DATA_LEN];

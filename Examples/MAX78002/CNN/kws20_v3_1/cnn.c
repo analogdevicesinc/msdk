@@ -93,7 +93,9 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 static const uint32_t kernels[] = KERNELS;
@@ -107,7 +109,8 @@ int cnn_load_weights(void)
     while ((addr = (volatile uint32_t*)*ptr++) != 0) {
         *((volatile uint8_t*)((uint32_t)addr | 1)) = 0x01; // Set address
         len                                        = *ptr++;
-        while (len-- > 0) *addr++ = *ptr++;
+        while (len-- > 0)
+            *addr++ = *ptr++;
     }
 
     return CNN_OK;

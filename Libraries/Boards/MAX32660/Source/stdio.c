@@ -153,6 +153,7 @@ void _ttywrch(int c)
 
 void _sys_exit(int return_code)
 {
-    while (1) {}
+    while (1) {
+    }
 }
 #endif

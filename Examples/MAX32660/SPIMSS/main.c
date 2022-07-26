@@ -123,7 +123,9 @@ int main(void)
 
     for (i = 1; i < 17; i++) {
         //Initialize transmit and receive buffers
-        for (j = 0; j < TEST_LEN; j++) { txData[j] = j + OFFSET; }
+        for (j = 0; j < TEST_LEN; j++) {
+            txData[j] = j + OFFSET;
+        }
         memset(rxData, 0x0, TEST_LEN * 2);
 
         // Configure the peripheral
@@ -132,7 +134,8 @@ int main(void)
             printf("Error configuring SPI\n");
             while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
                 ;
-            while (1) {}
+            while (1) {
+            }
         }
 
         req.tx_data  = txData;

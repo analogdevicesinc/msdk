@@ -441,7 +441,8 @@ int main(void)
 
         MXC_ADC_StartConversionAsync(adc_complete_cb);
 
-        while (!adc_done) {};
+        while (!adc_done) {
+        };
 #endif
 
 #ifdef DMA
@@ -457,7 +458,8 @@ int main(void)
         MXC_DMA_ReleaseChannel(0);
         MXC_ADC_StartConversionDMA(&adc_conv, &adc_val[0], adc_dma_callback);
 
-        while (!dma_done) {};
+        while (!dma_done) {
+        };
 #endif
         ShowAdcResult();
 

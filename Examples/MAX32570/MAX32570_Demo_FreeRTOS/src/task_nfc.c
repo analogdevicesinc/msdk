@@ -646,7 +646,9 @@ void vGetNFCTask(void* pvParameter)
     xNFCLock = xSemaphoreCreateBinary();
 
     for (;;) {
-        while (xSemaphoreTake(xNFCLock, 0xFFFF) != pdTRUE) { ; }
+        while (xSemaphoreTake(xNFCLock, 0xFFFF) != pdTRUE) {
+            ;
+        }
 
         msgNFC.pcType = 'L';
         msgNFC.len    = 0;

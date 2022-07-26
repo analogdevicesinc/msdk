@@ -94,7 +94,8 @@ int main()
 
     if ((err = MXC_I2S_Init(&cfg, dma_ctz_cb)) != E_NO_ERROR) {
         printf("Error in I2S_Init: %d\n", err);
-        while (1) {}
+        while (1) {
+        }
     }
 
     printf("I2S Configured\n");
@@ -126,7 +127,8 @@ int main()
 
     if ((err = MXC_I2S_Shutdown()) != E_NO_ERROR) {
         printf("Could not shut down I2S driver: %d\n", err);
-        while (1) {}
+        while (1) {
+        }
     }
 
     while (1)

@@ -137,13 +137,16 @@ int main(void)
     for (i = 2; i < 17; i++) {
         // Sending out 2 to 16 bits
 
-        for (j = 0; j < DATA_LEN; j++) { tx_data[j] = DATA_VALUE; }
+        for (j = 0; j < DATA_LEN; j++) {
+            tx_data[j] = DATA_VALUE;
+        }
 
         // Configure the peripheral
         if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins) != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
 
-            while (1) {}
+            while (1) {
+            }
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
@@ -166,7 +169,8 @@ int main(void)
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
 
-            while (1) {}
+            while (1) {
+            }
         }
 
         retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
@@ -174,7 +178,8 @@ int main(void)
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
 
-            while (1) {}
+            while (1) {
+            }
         }
 
 #ifdef MASTERSYNC
@@ -232,7 +237,8 @@ int main(void)
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
 
-            while (1) {}
+            while (1) {
+            }
         } else {
             printf("-->%2d Bits Transaction Successful\n", i);
         }
@@ -242,7 +248,8 @@ int main(void)
         if (retVal != E_NO_ERROR) {
             printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
 
-            while (1) {}
+            while (1) {
+            }
         }
     }
 

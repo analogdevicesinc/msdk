@@ -106,7 +106,8 @@ int main()
         Console_Init();
         printf("\nError in I2S_Init: %d\n", err);
 
-        while (1) {}
+        while (1) {
+        }
     }
 
     MXC_DMA_ReleaseChannel(0);
@@ -132,7 +133,8 @@ int main()
         Console_Init();
         printf("\nCould not shut down I2S driver: %d\n", err);
 
-        while (1) {}
+        while (1) {
+        }
     }
 
     Console_Init();

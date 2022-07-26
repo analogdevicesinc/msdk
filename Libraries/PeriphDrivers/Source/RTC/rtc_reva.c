@@ -49,7 +49,8 @@
 
 void MXC_RTC_Wait_BusyToClear(void)
 {
-    while (MXC_RTC_REVA_IS_BUSY) {}
+    while (MXC_RTC_REVA_IS_BUSY) {
+    }
 }
 
 int MXC_RTC_RevA_GetBusyFlag(mxc_rtc_reva_regs_t* rtc)

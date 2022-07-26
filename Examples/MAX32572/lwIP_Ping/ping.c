@@ -114,7 +114,9 @@ static void ping_prepare_echo(struct icmp_echo_hdr* iecho, u16_t len)
     iecho->seqno  = lwip_htons(++ping_seq_num);
 
     /* fill the additional data buffer with some data */
-    for (i = 0; i < data_len; i++) { ((char*)iecho)[sizeof(struct icmp_echo_hdr) + i] = (char)i; }
+    for (i = 0; i < data_len; i++) {
+        ((char*)iecho)[sizeof(struct icmp_echo_hdr) + i] = (char)i;
+    }
 
     iecho->chksum = inet_chksum(iecho, len);
 }

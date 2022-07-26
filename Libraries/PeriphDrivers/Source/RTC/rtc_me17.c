@@ -222,13 +222,15 @@ int MXC_RTC_TrimCrystal(void)
 
         /* Wait for an RTC edge */
         MXC_RTC_ClearFlags(MXC_RTC_GetFlags());
-        while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_SSEC_ALARM)) {}
+        while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_SSEC_ALARM)) {
+        }
 
         MXC_TMR_Start(MXC_TMR3);
 
         /* Wait for an RTC edge */
         MXC_RTC_ClearFlags(MXC_RTC_GetFlags());
-        while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_SSEC_ALARM)) {}
+        while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_SSEC_ALARM)) {
+        }
 
         /* Capture the TMR count and adjust for processing delay */
         elapsed = MXC_TMR_GetCount(MXC_TMR3);

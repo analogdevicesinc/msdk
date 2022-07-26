@@ -409,10 +409,14 @@ static uint32_t write_tx_fifo(void* tx, mxc_i2s_wsize_t wordSize, int smpl_cnt)
 
     if (wordSize == MXC_I2S_DATASIZE_BYTE) {
         uint8_t* tx8 = (uint8_t*)tx;
-        for (int i = 0; i < 4; i++) { write_val |= (tx8[smpl_cnt++] << (i * 8)); }
+        for (int i = 0; i < 4; i++) {
+            write_val |= (tx8[smpl_cnt++] << (i * 8));
+        }
     } else if (wordSize == MXC_I2S_DATASIZE_HALFWORD) {
         uint16_t* tx16 = (uint16_t*)tx;
-        for (int i = 0; i < 2; i++) { write_val |= (tx16[smpl_cnt++] << (i * 16)); }
+        for (int i = 0; i < 2; i++) {
+            write_val |= (tx16[smpl_cnt++] << (i * 16));
+        }
     } else if (wordSize == MXC_I2S_DATASIZE_WORD) {
         uint32_t* tx32 = (uint32_t*)tx;
         write_val      = tx32[smpl_cnt];
@@ -572,7 +576,9 @@ int MXC_I2S_RevA_Transaction(mxc_i2s_reva_regs_t* i2s, mxc_i2s_req_t* i2s_req)
 
     i2s->ctrl1ch0 |= MXC_F_I2S_REVA_CTRL1CH0_EN; // Enable I2S RX/TX
 
-    while (MXC_GetLock(&txn_lock, 1) != E_NO_ERROR) { MXC_I2S_RevA_Handler(i2s); }
+    while (MXC_GetLock(&txn_lock, 1) != E_NO_ERROR) {
+        MXC_I2S_RevA_Handler(i2s);
+    }
 
     MXC_FreeLock(&txn_lock);
 

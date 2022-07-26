@@ -110,7 +110,9 @@ int main(void)
     printf("Test Length \t: %d bytes\n\n", BUFF_SIZE);
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
+    for (i = 0; i < BUFF_SIZE; i++) {
+        TxData[i] = i;
+    }
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifdef DMA
@@ -130,7 +132,8 @@ int main(void)
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
 
-        while (1) {}
+        while (1) {
+        }
     }
 
     error = MXC_UART_Init(MXC_UART1, UART_BAUD);
@@ -138,7 +141,8 @@ int main(void)
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
 
-        while (1) {}
+        while (1) {
+        }
     }
 
     printf("-->UART Initialized\n\n");
@@ -171,7 +175,8 @@ int main(void)
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
 
-        while (1) {}
+        while (1) {
+        }
     }
 
 #ifdef DMA
@@ -184,7 +189,8 @@ int main(void)
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
 
-        while (1) {}
+        while (1) {
+        }
     }
 
 #ifdef DMA
@@ -221,5 +227,6 @@ int main(void)
         LED_On(0);
     }
 
-    while (1) {}
+    while (1) {
+    }
 }

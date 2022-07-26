@@ -254,7 +254,8 @@ int main(void)
     /* Execute the trim procedure */
     wutTrimComplete = 0;
     MXC_WUT_TrimCrystalAsync(wutTrimCb);
-    while (!wutTrimComplete) {}
+    while (!wutTrimComplete) {
+    }
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
     PalBbDisable();

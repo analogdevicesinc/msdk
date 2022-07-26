@@ -120,7 +120,8 @@ __weak void SystemInit(void)
 #ifdef DEBUG
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFF; i++) {}
+    for (i = 0; i < 0x3FFFF; i++) {
+    }
 #endif
 
     /* Configure the interrupt controller to use the application vector table in */

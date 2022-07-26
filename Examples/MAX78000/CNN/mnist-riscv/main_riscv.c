@@ -121,7 +121,8 @@ int main(void)
     load_input();    // Load data input
     cnn_start();     // Start CNN processing
 
-    while (cnn_time == 0) asm volatile("wfi"); // Wait for CNN
+    while (cnn_time == 0)
+        asm volatile("wfi"); // Wait for CNN
 
     if (check_output() != CNN_OK)
         fail();

@@ -1240,10 +1240,14 @@ LV_ATTRIBUTE_FAST_MEM static lv_draw_mask_res_t lv_draw_mask_fade(lv_opa_t* mask
     int32_t i;
 
     if (abs_y <= p->cfg.y_top) {
-        for (i = 0; i < len; i++) { mask_buf[i] = mask_mix(mask_buf[i], p->cfg.opa_top); }
+        for (i = 0; i < len; i++) {
+            mask_buf[i] = mask_mix(mask_buf[i], p->cfg.opa_top);
+        }
         return LV_DRAW_MASK_RES_CHANGED;
     } else if (abs_y >= p->cfg.y_bottom) {
-        for (i = 0; i < len; i++) { mask_buf[i] = mask_mix(mask_buf[i], p->cfg.opa_bottom); }
+        for (i = 0; i < len; i++) {
+            mask_buf[i] = mask_mix(mask_buf[i], p->cfg.opa_bottom);
+        }
         return LV_DRAW_MASK_RES_CHANGED;
     } else {
         /*Calculate the opa proportionally*/
@@ -1252,7 +1256,9 @@ LV_ATTRIBUTE_FAST_MEM static lv_draw_mask_res_t lv_draw_mask_fade(lv_opa_t* mask
         lv_opa_t opa_act = (int32_t)((int32_t)(abs_y - p->cfg.y_top) * opa_diff) / y_diff;
         opa_act += p->cfg.opa_top;
 
-        for (i = 0; i < len; i++) { mask_buf[i] = mask_mix(mask_buf[i], opa_act); }
+        for (i = 0; i < len; i++) {
+            mask_buf[i] = mask_mix(mask_buf[i], opa_act);
+        }
         return LV_DRAW_MASK_RES_CHANGED;
     }
 }
@@ -1289,7 +1295,9 @@ LV_ATTRIBUTE_FAST_MEM static lv_draw_mask_res_t lv_draw_mask_map(lv_opa_t* mask_
     }
 
     int32_t i;
-    for (i = 0; i < len; i++) { mask_buf[i] = mask_mix(mask_buf[i], map_tmp[i]); }
+    for (i = 0; i < len; i++) {
+        mask_buf[i] = mask_mix(mask_buf[i], map_tmp[i]);
+    }
 
     return LV_DRAW_MASK_RES_CHANGED;
 }

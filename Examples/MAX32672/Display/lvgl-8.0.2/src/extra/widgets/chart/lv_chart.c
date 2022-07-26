@@ -530,7 +530,9 @@ void lv_chart_set_all_value(lv_obj_t* obj, lv_chart_series_t* ser, lv_coord_t va
 
     lv_chart_t* chart = (lv_chart_t*)obj;
     uint16_t i;
-    for (i = 0; i < chart->point_cnt; i++) { ser->y_points[i] = value; }
+    for (i = 0; i < chart->point_cnt; i++) {
+        ser->y_points[i] = value;
+    }
     ser->start_point = 0;
     lv_chart_refresh(obj);
 }
@@ -1742,7 +1744,9 @@ static void new_points_alloc(lv_obj_t* obj, lv_chart_series_t* ser, uint32_t cnt
             return;
         /*Initialize the new points*/
         if (cnt > point_cnt_old) {
-            for (i = point_cnt_old - 1; i < cnt; i++) { (*a)[i] = LV_CHART_POINT_NONE; }
+            for (i = point_cnt_old - 1; i < cnt; i++) {
+                (*a)[i] = LV_CHART_POINT_NONE;
+            }
         }
     }
 }

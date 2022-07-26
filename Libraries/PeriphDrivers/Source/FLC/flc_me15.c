@@ -57,7 +57,8 @@ void MXC_FLC_ME15_Flash_Operation(void)
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
 
     /* Wait for flush to complete */
-    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {}
+    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {
+    }
 }
 
 //******************************************************************************

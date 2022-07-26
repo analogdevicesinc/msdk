@@ -134,7 +134,9 @@ int main(void)
 
     // Read data from RAM
     printf("Reading data from RAM and store it inside the read_buffer \n");
-    for (i = 0; i < BUFFER_SIZE; i++) { read_buffer[i] = *(address + i); }
+    for (i = 0; i < BUFFER_SIZE; i++) {
+        read_buffer[i] = *(address + i);
+    }
 
     // Verify data being read from RAM
     if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
@@ -146,5 +148,6 @@ int main(void)
     // Disable the SPIXR
     MXC_SPIXR_Disable();
 
-    while (1) {}
+    while (1) {
+    }
 }

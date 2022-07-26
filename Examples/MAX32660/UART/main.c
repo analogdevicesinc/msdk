@@ -96,10 +96,13 @@ int main(void)
     printf("\n-->Test Length \t: %d bytes\n\n", BUFF_SIZE);
 
     // Print everything out
-    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {}
+    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {
+    }
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
+    for (i = 0; i < BUFF_SIZE; i++) {
+        TxData[i] = i;
+    }
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifdef DMA
@@ -117,17 +120,20 @@ int main(void)
     if ((error = MXC_UART_Init(UART0, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        while (1) {
+        }
     }
 
     if ((error = MXC_UART_Init(UART1, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        while (1) {
+        }
     }
 
     printf("-->UART Initialized\n\n");
-    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {}
+    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {
+    }
 
     mxc_uart_req_t read_req;
     read_req.uart     = UART1;
@@ -155,7 +161,8 @@ int main(void)
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while (1) {}
+        while (1) {
+        }
     }
 
 #ifdef DMA
@@ -167,13 +174,16 @@ int main(void)
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while (1) {}
+        while (1) {
+        }
     }
 
 #ifdef DMA
-    while (DMA_FLAG) {}
+    while (DMA_FLAG) {
+    }
 #else
-    while (READ_FLAG) {}
+    while (READ_FLAG) {
+    }
     if (READ_FLAG != E_NO_ERROR) {
         printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
         fail++;

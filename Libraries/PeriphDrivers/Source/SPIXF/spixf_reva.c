@@ -318,7 +318,8 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
                 // Wait for there to be room in the TXFIFO
                 while (((spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) >>
                         MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT_POS) >
-                       (MXC_CFG_SPIXFC_FIFO_DEPTH - 2)) {}
+                       (MXC_CFG_SPIXFC_FIFO_DEPTH - 2)) {
+                }
 
                 if (states.head_rem > 1) {
                     fifo->tx_16 =

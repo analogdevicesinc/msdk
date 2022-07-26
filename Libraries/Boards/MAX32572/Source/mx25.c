@@ -192,7 +192,8 @@ int MX25_Quad(int enable)
 
     MX25_Read_SR(&pre_buf);
 
-    while (flash_busy()) {}
+    while (flash_busy()) {
+    }
 
     if (enable) {
         pre_buf |= MX25_QE_MASK;
@@ -206,11 +207,13 @@ int MX25_Quad(int enable)
 
     MX25_Write_SR(pre_buf);
 
-    while (flash_busy()) {}
+    while (flash_busy()) {
+    }
 
     MX25_Read_SR(&post_buf);
 
-    while (flash_busy()) {}
+    while (flash_busy()) {
+    }
 
     if (enable) {
         if (!(post_buf & MX25_QE_MASK)) {
@@ -245,7 +248,8 @@ int MX25_Write_Protect(int enable)
 
     MX25_Write_SR(pre_buf);
 
-    while (flash_busy()) {}
+    while (flash_busy()) {
+    }
 
     MX25_Read_SR(&post_buf);
 

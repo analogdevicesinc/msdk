@@ -70,7 +70,8 @@ int main(void)
     MXC_GCR->pclkdis1 &= ~MXC_F_GCR_PCLKDIS1_CPU1;   // Enable RISC-V clock
 
     for (i = 0; i < (1 << 27); i++)
-        ;        // Let debugger interrupt if needed
-    while (1) {} //__WFI(); // Let RISC-V run
+        ; // Let debugger interrupt if needed
+    while (1) {
+    } //__WFI(); // Let RISC-V run
     return 0;
 }

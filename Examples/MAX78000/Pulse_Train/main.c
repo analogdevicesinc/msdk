@@ -119,5 +119,6 @@ int main(void)
     ContinuousPulseTrain(CONT_WV_CH);
     SquareWave(SQ_WV_CH);
 
-    while (1) {}
+    while (1) {
+    }
 }

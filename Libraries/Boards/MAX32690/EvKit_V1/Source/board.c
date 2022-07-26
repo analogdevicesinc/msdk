@@ -179,7 +179,8 @@ __weak void NMI_Handler(void)
 #ifdef DEBUG
     printf("NMI Handler\n");
 #endif
-    while (1) {}
+    while (1) {
+    }
 }
 
 /******************************************************************************/
@@ -188,5 +189,6 @@ __weak void HardFault_Handler(void)
 #ifdef DEBUG
     printf("HardFault_Handler\n");
 #endif
-    while (1) {}
+    while (1) {
+    }
 }

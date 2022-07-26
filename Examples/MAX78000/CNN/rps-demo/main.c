@@ -512,7 +512,8 @@ int main(void)
         load_input();    // Load data input via FIFO
         MXC_TMR_SW_Start(MXC_TMR0);
 
-        while (cnn_time == 0) __WFI(); // Wait for CNN
+        while (cnn_time == 0)
+            __WFI(); // Wait for CNN
 
         softmax_layer();
 

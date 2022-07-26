@@ -258,7 +258,8 @@ ADDR: 0x%x to ADDR: 0x%x\n",
 #endif
 #endif
 
-    while (!PB_Get(0)) {}
+    while (!PB_Get(0)) {
+    }
 
     // Initialize the Flash (see notes in 'flash_init' definition)
     flash_init();

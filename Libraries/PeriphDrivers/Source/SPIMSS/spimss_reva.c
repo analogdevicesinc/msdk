@@ -236,7 +236,8 @@ int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* 
     spi->mode &= ~(MXC_F_SPIMSS_REVA_MODE_SSV); // This will assert the Slave Select.
     spi->ctrl |= MXC_F_SPIMSS_REVA_CTRL_ENABLE; // Enable/Start SPI
 
-    while (MXC_SPIMSS_RevA_MasterTransHandler(spi, req) != 0) {}
+    while (MXC_SPIMSS_RevA_MasterTransHandler(spi, req) != 0) {
+    }
 
     spi->mode |= MXC_F_SPIMSS_REVA_MODE_SSV;
 
@@ -257,7 +258,8 @@ int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* r
 
     while (MXC_SPIMSS_RevA_SlaveTransHandler(spi, req) != 0) {
         spi->ctrl |= MXC_F_SPIMSS_REVA_CTRL_ENABLE; // Enable/Start SPI
-        while ((spi->int_fl & MXC_F_SPIMSS_REVA_INT_FL_TXST) == MXC_F_SPIMSS_REVA_INT_FL_TXST) {}
+        while ((spi->int_fl & MXC_F_SPIMSS_REVA_INT_FL_TXST) == MXC_F_SPIMSS_REVA_INT_FL_TXST) {
+        }
     }
 
     spi->ctrl &=

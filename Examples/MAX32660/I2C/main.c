@@ -122,7 +122,9 @@ int slaveHandler(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event, void* data)
             break;
         case MXC_I2C_EVT_MASTER_RD:
             // Echo data from Srxdata buffer
-            for (int i = 0; i < I2C_BYTES; i++) { Stxdata[i] = Srxdata[i]; }
+            for (int i = 0; i < I2C_BYTES; i++) {
+                Stxdata[i] = Srxdata[i];
+            }
             txnum       = I2C_BYTES;
             txcnt       = 0;
             i2c->intfl0 = MXC_F_I2C_INTFL0_TXLOI | MXC_F_I2C_INTFL0_AMI;
@@ -166,10 +168,14 @@ void printData(void)
 {
     int i;
     printf("\n-->TxData: ");
-    for (i = 0; i < sizeof(txdata); ++i) { printf("%02x ", txdata[i]); }
+    for (i = 0; i < sizeof(txdata); ++i) {
+        printf("%02x ", txdata[i]);
+    }
 
     printf("\n\n-->RxData: ");
-    for (i = 0; i < sizeof(rxdata); ++i) { printf("%02x ", rxdata[i]); }
+    for (i = 0; i < sizeof(rxdata); ++i) {
+        printf("%02x ", rxdata[i]);
+    }
 
     printf("\n");
 
@@ -264,14 +270,16 @@ int main()
         printf("Error writing: %d\n", error);
         return FAILED;
     }
-    while (DMA_FLAG == 0) {};
+    while (DMA_FLAG == 0) {
+    };
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {};
+    while (I2C_FLAG == 1) {
+    };
 #endif
 
     printf("\n-->Result: \n");

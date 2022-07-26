@@ -511,7 +511,9 @@ int read_binary_file(char* filename, u8* p_pucData, size_t* file_size)
     }
 
     print_debug(SSIZET_FMT " bytes read\n", *file_size);
-    for (i = 0; i < (int)(*file_size); i++) { print_d("%02x", p_pucData[i]); }
+    for (i = 0; i < (int)(*file_size); i++) {
+        print_d("%02x", p_pucData[i]);
+    }
     print_d("\n");
 
     fclose(pFile);

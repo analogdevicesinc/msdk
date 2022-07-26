@@ -146,7 +146,9 @@ void setTrigger(int waitForTrigger)
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
+    for (tmp = 0; tmp < 0x800000; tmp++) {
+        __NOP();
+    }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE

@@ -237,8 +237,10 @@ int MXC_FLC_RevA_Write32(mxc_flc_reva_regs_t* flc, uint32_t logicAddr, uint32_t 
     flc->ctrl |= MXC_F_FLC_REVA_CTRL_WR;
 
     /* Wait until flash operation is complete */
-    while ((flc->ctrl & MXC_F_FLC_REVA_CTRL_PEND) != 0) {}
-    while (MXC_busy_flc(flc)) {}
+    while ((flc->ctrl & MXC_F_FLC_REVA_CTRL_PEND) != 0) {
+    }
+    while (MXC_busy_flc(flc)) {
+    }
 
     /* Lock flash */
     flc->ctrl &= ~MXC_F_FLC_REVA_CTRL_UNLOCK;
@@ -339,8 +341,10 @@ int MXC_FLC_RevA_Write128(mxc_flc_reva_regs_t* flc, uint32_t addr, uint32_t* dat
     flc->ctrl |= MXC_F_FLC_REVA_CTRL_WR;
 
     /* Wait until flash operation is complete */
-    while ((flc->ctrl & MXC_F_FLC_REVA_CTRL_PEND) != 0) {}
-    while (MXC_busy_flc(flc)) {}
+    while ((flc->ctrl & MXC_F_FLC_REVA_CTRL_PEND) != 0) {
+    }
+    while (MXC_busy_flc(flc)) {
+    }
 
     /* Lock flash */
     flc->ctrl &= ~MXC_F_FLC_REVA_CTRL_UNLOCK;

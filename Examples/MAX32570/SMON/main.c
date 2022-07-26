@@ -70,7 +70,9 @@ void Test1()
 
     flags = 0x00;
 
-    while (!(flags)) { flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1; }
+    while (!(flags)) {
+        flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1;
+    }
 
     printf("\nAlarm Flags After Error: 0x%x\n", flags);
 
@@ -98,7 +100,9 @@ void Test2()
 
     flags = 0x00;
 
-    while (!(flags)) { flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0; }
+    while (!(flags)) {
+        flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0;
+    }
 
     printf("\nAlarm Flags After Error: 0x%x", flags);
     printf("\nData: 0x%x\n", MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE);

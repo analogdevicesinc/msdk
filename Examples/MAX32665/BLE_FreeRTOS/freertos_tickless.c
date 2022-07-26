@@ -159,16 +159,19 @@ static void deepSleep(void)
     /* Check to see if VCOREA is ready on  */
     if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
         /* Wait for VCOREB to be ready */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
 
         /* Move VCORE switch back to VCOREB */
         MXC_MCR->ctrl =
             (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
         /* Raise the VCORE_B voltage */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
         MXC_SIMO_SetVregO_B(1000);
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
     }
 
     MXC_LP_ICache0PowerUp();

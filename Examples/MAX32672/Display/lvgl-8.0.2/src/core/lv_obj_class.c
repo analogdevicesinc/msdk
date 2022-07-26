@@ -197,7 +197,8 @@ static uint32_t get_instance_size(const lv_obj_class_t* class_p)
 {
     /*Find a base in which instance size is set*/
     const lv_obj_class_t* base = class_p;
-    while (base && base->instance_size == 0) base = base->base_class;
+    while (base && base->instance_size == 0)
+        base = base->base_class;
 
     if (base == NULL)
         return 0; /*Never happens: set at least in `lv_obj` class*/

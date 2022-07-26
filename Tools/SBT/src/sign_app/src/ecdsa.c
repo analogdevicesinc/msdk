@@ -172,20 +172,28 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 
     print_debug("Payload(%d):", input_size);
 
-    for (i = 0; i < input_size; i++) { print_d("%02x", input[i]); }
+    for (i = 0; i < input_size; i++) {
+        print_d("%02x", input[i]);
+    }
     print_d("\n");
 
     print_debug("Signature:\n");
     print_d("\tr:");
 
-    for (i = 0; i < 32; i++) { print_d("%02x", ucl_signature.r[i]); }
+    for (i = 0; i < 32; i++) {
+        print_d("%02x", ucl_signature.r[i]);
+    }
     print_d("\n");
 
     print_d("\ts:");
-    for (i = 0; i < 32; i++) { print_d("%02x", ucl_signature.s[i]); }
+    for (i = 0; i < 32; i++) {
+        print_d("%02x", ucl_signature.s[i]);
+    }
     print_d("\n");
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { signature[i] = ucl_signature.r[i]; }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
+        signature[i] = ucl_signature.r[i];
+    }
 
     for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
         signature[ECDSA_MODULUS_LEN + i] = ucl_signature.s[i];
@@ -367,20 +375,28 @@ int read_file_signed_ecdsa_publickey(u8* x, u8* y, u8* r, u8* s, size_t size, co
 
     print_debug("Public Key:\n");
     print_d("\tX:\t");
-    for (i = 0; i < size; i++) { print_d("%02x", x[i]); }
+    for (i = 0; i < size; i++) {
+        print_d("%02x", x[i]);
+    }
     print_d("\n");
 
     print_d("\tY:\t");
-    for (i = 0; i < size; i++) { print_d("%02x", y[i]); }
+    for (i = 0; i < size; i++) {
+        print_d("%02x", y[i]);
+    }
     print_d("\n");
 
     print_debug("Public Key Signature:\n");
     print_d("\tr :\t");
-    for (i = 0; i < size; i++) { print_d("%02x", r[i]); }
+    for (i = 0; i < size; i++) {
+        print_d("%02x", r[i]);
+    }
     print_d("\n");
 
     print_d("\ts :\t");
-    for (i = 0; i < size; i++) { print_d("%02x", s[i]); }
+    for (i = 0; i < size; i++) {
+        print_d("%02x", s[i]);
+    }
     print_d("\n");
 
     fclose(pFile);
@@ -400,15 +416,21 @@ void print_ecdsaKey(ecdsa_key_t key)
 #endif /* _MAXIM_HSM */
     {
         print_d("\tX:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_pubkey.x[i]); }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
+            print_d("%02x", key.ecdsa_pubkey.x[i]);
+        }
         print_d("\n");
 
         print_d("\tY:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_pubkey.y[i]); }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
+            print_d("%02x", key.ecdsa_pubkey.y[i]);
+        }
         print_d("\n");
 
         print_d("\tD:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_privkey[i]); }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
+            print_d("%02x", key.ecdsa_privkey[i]);
+        }
         print_d("\n");
     }
 }

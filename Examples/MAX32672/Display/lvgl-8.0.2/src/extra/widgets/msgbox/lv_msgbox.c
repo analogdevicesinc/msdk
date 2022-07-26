@@ -98,7 +98,9 @@ lv_obj_t* lv_msgbox_create(lv_obj_t* parent, const char* title, const char* txt,
                                       LV_BTNMATRIX_CTRL_CLICK_TRIG | LV_BTNMATRIX_CTRL_NO_REPEAT);
 
         uint32_t btn_cnt = 0;
-        while (btn_txts[btn_cnt] && btn_txts[btn_cnt][0] != '\0') { btn_cnt++; }
+        while (btn_txts[btn_cnt] && btn_txts[btn_cnt][0] != '\0') {
+            btn_cnt++;
+        }
 
         const lv_font_t* font = lv_obj_get_style_text_font(btns, LV_PART_ITEMS);
         lv_coord_t btn_h      = lv_font_get_line_height(font) + LV_DPI_DEF / 10;

@@ -77,7 +77,9 @@ void lv_example_table_2(void)
     lv_obj_remove_style(table, NULL, LV_PART_ITEMS | LV_STATE_PRESSED);
 
     uint32_t i;
-    for (i = 0; i < ITEM_CNT; i++) { lv_table_set_cell_value_fmt(table, i, 0, "Item %d", i + 1); }
+    for (i = 0; i < ITEM_CNT; i++) {
+        lv_table_set_cell_value_fmt(table, i, 0, "Item %d", i + 1);
+    }
 
     lv_obj_align(table, LV_ALIGN_CENTER, 0, -20);
 

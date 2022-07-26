@@ -87,7 +87,8 @@ lv_res_t lv_obj_event_base(const lv_obj_class_t* class_p, lv_event_t* e)
         base = class_p->base_class;
 
     /*Find a base in which Call the ancestor's event handler_cb is set*/
-    while (base && base->event_cb == NULL) base = base->base_class;
+    while (base && base->event_cb == NULL)
+        base = base->base_class;
 
     if (base == NULL)
         return LV_RES_OK;

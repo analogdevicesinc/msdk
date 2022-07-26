@@ -666,7 +666,9 @@ static uint8_t CalculateCRC8(uint8_t* data, int len)
     int i;
     uint8_t crc = 0;
 
-    for (i = 0; i < len; i++) { crc = update_crc8(crc, data[i]); }
+    for (i = 0; i < len; i++) {
+        crc = update_crc8(crc, data[i]);
+    }
 
     return crc;
 }

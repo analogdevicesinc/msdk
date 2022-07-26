@@ -121,7 +121,8 @@ size_t strlcpy(char* dst, const char* src, size_t dest_size)
         if (dest_size != 0) {
             *dst = '\0';
         }
-        while (*src++) {};
+        while (*src++) {
+        };
     }
 
     return (src - osrc - 1);

@@ -221,7 +221,9 @@ void load_input(void)
     if (retVal != E_NO_ERROR) {
         printf("SPI Transaction failed!\n");
     } else {
-        for (i = 0; i < DATA_LEN; i++) { rx_data[i] = unsigned_to_signed(rx_data[i]); }
+        for (i = 0; i < DATA_LEN; i++) {
+            rx_data[i] = unsigned_to_signed(rx_data[i]);
+        }
 
         memcpy32((uint32_t*)0x50408000, input, 6400);
     }
@@ -561,8 +563,9 @@ int main(void)
         show_image(input, NULL, 0, 80, 1, 0, MIRROR);
 
         LED_On(LED1);
-        cnn_start();                   // Start CNN processing
-        while (cnn_time == 0) __WFI(); // Wait for CNN
+        cnn_start(); // Start CNN processing
+        while (cnn_time == 0)
+            __WFI(); // Wait for CNN
         LED_Off(LED1);
         cnn_unload((uint32_t*)ml_data32);
 

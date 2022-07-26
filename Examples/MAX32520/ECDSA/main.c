@@ -309,7 +309,9 @@ int aes_test(void)
 
     uint8_t testmessage[256];
 
-    for (i = 0; i < sizeof(testmessage); i++) { testmessage[i] = (uint8_t)i; }
+    for (i = 0; i < sizeof(testmessage); i++) {
+        testmessage[i] = (uint8_t)i;
+    }
 
     printf("AES Test\n");
     printf("UCL_AES_BLOCKSIZE %d\n", UCL_AES_BLOCKSIZE);
@@ -508,5 +510,6 @@ int main(void)
 
     printf("Program exit.\n");
 
-    while (1) {}
+    while (1) {
+    }
 }

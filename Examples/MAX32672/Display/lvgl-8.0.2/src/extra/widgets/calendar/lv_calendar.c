@@ -67,7 +67,9 @@ void lv_calendar_set_day_names(lv_obj_t* obj, const char* day_names[])
 {
     lv_calendar_t* calendar = (lv_calendar_t*)obj;
     uint32_t i;
-    for (i = 0; i < 7; i++) { calendar->map[i] = day_names[i]; }
+    for (i = 0; i < 7; i++) {
+        calendar->map[i] = day_names[i];
+    }
 }
 
 void lv_calendar_set_today_date(lv_obj_t* obj, uint32_t year, uint32_t month, uint32_t day)
@@ -108,7 +110,9 @@ void lv_calendar_set_showed_date(lv_obj_t* obj, uint32_t year, uint32_t month)
 
     /*Remove the disabled state but revert it for day names*/
     lv_btnmatrix_clear_btn_ctrl_all(obj, LV_BTNMATRIX_CTRL_DISABLED);
-    for (i = 0; i < 7; i++) { lv_btnmatrix_set_btn_ctrl(obj, i, LV_BTNMATRIX_CTRL_DISABLED); }
+    for (i = 0; i < 7; i++) {
+        lv_btnmatrix_set_btn_ctrl(obj, i, LV_BTNMATRIX_CTRL_DISABLED);
+    }
 
     uint8_t act_mo_len = get_month_length(d.year, d.month);
     uint8_t day_first  = get_day_of_week(d.year, d.month, 1);

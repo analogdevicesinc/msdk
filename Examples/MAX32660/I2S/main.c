@@ -97,7 +97,8 @@ int main()
     if ((err = MXC_I2S_Init(&config, dma_ctz_cb)) != E_NO_ERROR) {
         Console_Init();
         printf("\nError in I2S_Init: %d\n", err);
-        while (1) {}
+        while (1) {
+        }
     }
 
     NVIC_EnableIRQ(DMA0_IRQn);
@@ -130,7 +131,8 @@ int main()
     if ((err = MXC_I2S_Shutdown()) != E_NO_ERROR) {
         Console_Init();
         printf("\nCould not shut down I2S driver: %d\n", err);
-        while (1) {}
+        while (1) {
+        }
     }
 
     Console_Init();

@@ -60,17 +60,25 @@ int scp_lite_cmd(const uint8_t* data, size_t data_len, const uint8_t* address)
     payload[ipayload++] = SCP_LITE_SYNC2;
 
     /* Destination Address */
-    for (i = 0; i < 4; i++) { payload[ipayload++] = address[i]; }
+    for (i = 0; i < 4; i++) {
+        payload[ipayload++] = address[i];
+    }
 
     /* Payload Length */
-    for (i = 4; i != 0; i--) { payload[ipayload++] = (data_len >> (8 * (i - 1))) & 255; }
+    for (i = 4; i != 0; i--) {
+        payload[ipayload++] = (data_len >> (8 * (i - 1))) & 255;
+    }
 
     /* Payload */
-    for (i = 0; i < data_len; i++) { payload[ipayload++] = data[i]; }
+    for (i = 0; i < data_len; i++) {
+        payload[ipayload++] = data[i];
+    }
 
     ASSERT_OK(ecdsa_sign(payload, ipayload, signature, config_g.ecdsaKey));
 
-    for (i = 0; i < ECDSA_MODULUS_LEN * 2; i++) { payload[ipayload++] = signature[i]; }
+    for (i = 0; i < ECDSA_MODULUS_LEN * 2; i++) {
+        payload[ipayload++] = signature[i];
+    }
 
     return packet_send(payload, ipayload, "scp-lite-load-ram", "scp_lite_load_mem");
 }

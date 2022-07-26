@@ -212,7 +212,9 @@ LV_ATTRIBUTE_FAST_MEM static void draw_bg(const lv_area_t* coords, const lv_area
             grad_map = lv_mem_buf_get(coords_w * sizeof(lv_color_t));
 
             int32_t i;
-            for (i = 0; i < coords_w; i++) { grad_map[i] = grad_get(dsc, coords_w, i); }
+            for (i = 0; i < coords_w; i++) {
+                grad_map[i] = grad_get(dsc, coords_w, i);
+            }
         }
 
         bool split = false;
@@ -1127,7 +1129,9 @@ LV_ATTRIBUTE_FAST_MEM static void shadow_draw_corner_buf(const lv_area_t* coords
     if (sw == 1) {
         int32_t i;
         lv_opa_t* res_buf = (lv_opa_t*)sh_buf;
-        for (i = 0; i < size * size; i++) { res_buf[i] = (sh_buf[i] >> SHADOW_UPSCALE_SHIFT); }
+        for (i = 0; i < size * size; i++) {
+            res_buf[i] = (sh_buf[i] >> SHADOW_UPSCALE_SHIFT);
+        }
         return;
     }
 
@@ -1137,7 +1141,9 @@ LV_ATTRIBUTE_FAST_MEM static void shadow_draw_corner_buf(const lv_area_t* coords
     /*The result is required in lv_opa_t not uint16_t*/
     uint32_t x;
     lv_opa_t* res_buf = (lv_opa_t*)sh_buf;
-    for (x = 0; x < size * size; x++) { res_buf[x] = sh_buf[x]; }
+    for (x = 0; x < size * size; x++) {
+        res_buf[x] = sh_buf[x];
+    }
 #else
     sw += sw_ori & 1;
     if (sw > 1) {
@@ -1154,7 +1160,9 @@ LV_ATTRIBUTE_FAST_MEM static void shadow_draw_corner_buf(const lv_area_t* coords
     }
     int32_t x;
     lv_opa_t* res_buf = (lv_opa_t*)sh_buf;
-    for (x = 0; x < size * size; x++) { res_buf[x] = sh_buf[x]; }
+    for (x = 0; x < size * size; x++) {
+        res_buf[x] = sh_buf[x];
+    }
 #endif
 }
 

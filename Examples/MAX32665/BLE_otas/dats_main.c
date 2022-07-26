@@ -877,7 +877,8 @@ void WdxsResetSystem(void)
 {
     /* Wait for the console to finish printing */
     volatile int i;
-    for (i = 0; i < 0xFFFFF; i++) {}
+    for (i = 0; i < 0xFFFFF; i++) {
+    }
     NVIC_SystemReset();
 }
 

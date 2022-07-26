@@ -225,7 +225,9 @@ void lv_gpu_stm32_dma2d_blend(lv_color_t* buf, lv_coord_t buf_w, const lv_color_
 void lv_gpu_stm32_dma2d_wait_cb(lv_disp_drv_t* drv)
 {
     if (drv && drv->wait_cb) {
-        while (DMA2D->CR & DMA2D_CR_START_Msk) { drv->wait_cb(drv); }
+        while (DMA2D->CR & DMA2D_CR_START_Msk) {
+            drv->wait_cb(drv);
+        }
     } else {
         while (DMA2D->CR & DMA2D_CR_START_Msk)
             ;

@@ -129,7 +129,8 @@ int main(void)
     cnn_start();     // Start CNN processing
     load_input();    // Load data input via FIFO
 
-    while (cnn_time == 0) __WFI(); // Wait for CNN
+    while (cnn_time == 0)
+        __WFI(); // Wait for CNN
 
     //if (check_output() != CNN_OK) fail();
     softmax_layer();

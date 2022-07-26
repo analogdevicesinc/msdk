@@ -227,7 +227,9 @@ void lv_table_set_row_cnt(lv_obj_t* obj, uint16_t row_cnt)
         uint16_t old_cell_cnt = old_row_cnt * table->col_cnt;
         uint32_t new_cell_cnt = table->col_cnt * table->row_cnt;
         uint32_t i;
-        for (i = new_cell_cnt; i < old_cell_cnt; i++) { lv_mem_free(table->cell_data[i]); }
+        for (i = new_cell_cnt; i < old_cell_cnt; i++) {
+            lv_mem_free(table->cell_data[i]);
+        }
     }
 
     table->cell_data =
@@ -264,7 +266,9 @@ void lv_table_set_col_cnt(lv_obj_t* obj, uint16_t col_cnt)
         uint16_t old_cell_cnt = old_col_cnt * table->row_cnt;
         uint32_t new_cell_cnt = table->col_cnt * table->row_cnt;
         uint32_t i;
-        for (i = new_cell_cnt; i < old_cell_cnt; i++) { lv_mem_free(table->cell_data[i]); }
+        for (i = new_cell_cnt; i < old_cell_cnt; i++) {
+            lv_mem_free(table->cell_data[i]);
+        }
     }
 
     char** new_cell_data = lv_mem_alloc(table->row_cnt * table->col_cnt * sizeof(char*));
@@ -277,7 +281,9 @@ void lv_table_set_col_cnt(lv_obj_t* obj, uint16_t col_cnt)
     /*Initialize the new fields*/
     if (old_col_cnt < col_cnt) {
         uint32_t col;
-        for (col = old_col_cnt; col < col_cnt; col++) { table->col_w[col] = LV_DPI_DEF; }
+        for (col = old_col_cnt; col < col_cnt; col++) {
+            table->col_w[col] = LV_DPI_DEF;
+        }
     }
 
     /*The new column(s) messes up the mapping of `cell_data`*/
@@ -506,10 +512,12 @@ static void lv_table_event(const lv_obj_class_t* class_p, lv_event_t* e)
         lv_point_t* p = lv_event_get_param(e);
         uint32_t i;
         lv_coord_t w = 0;
-        for (i = 0; i < table->col_cnt; i++) w += table->col_w[i];
+        for (i = 0; i < table->col_cnt; i++)
+            w += table->col_w[i];
 
         lv_coord_t h = 0;
-        for (i = 0; i < table->row_cnt; i++) h += table->row_h[i];
+        for (i = 0; i < table->row_cnt; i++)
+            h += table->row_h[i];
 
         p->x = w;
         p->y = h;

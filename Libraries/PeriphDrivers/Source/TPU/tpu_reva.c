@@ -152,10 +152,12 @@ int MXC_TPU_RevA_CRC(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len,
     tpu->dma_cnt = len;
 
     // Wait for dma done flag
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {}
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {
+    }
 
     // Wait until operation is complete
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {}
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {
+    }
 
     // Clear gls done flag
     tpu->ctrl |= MXC_F_TPU_REVA_CTRL_GLS_DONE;
@@ -179,7 +181,8 @@ int MXC_TPU_RevA_Ham_Config(mxc_tpu_reva_regs_t* tpu)
 
     // Reset hamming code
     tpu->crc_ctrl = MXC_F_TPU_REVA_CRC_CTRL_HRST;
-    while (tpu->crc_ctrl & MXC_F_TPU_REVA_CRC_CTRL_HRST) {}
+    while (tpu->crc_ctrl & MXC_F_TPU_REVA_CRC_CTRL_HRST) {
+    }
 
     // Enable Hamming code
     tpu->crc_ctrl |= MXC_F_TPU_REVA_CRC_CTRL_HAM;
@@ -215,10 +218,12 @@ int MXC_TPU_RevA_Ham(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len,
     tpu->dma_cnt = len;
 
     // Wait until operation is complete
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {}
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {
+    }
 
     // Wait for dma done flag
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {}
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {
+    }
 
     // Clear gls done flag
     tpu->ctrl |= MXC_F_TPU_REVA_CTRL_GLS_DONE;
@@ -306,13 +311,15 @@ int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t* tpu, const char* src, c
 
     for (i = 0; i < numBlocks; i++) {
         // Wait until ready for data
-        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY)) {}
+        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY)) {
+        }
 
         // Load plaintext into data in register to start the operation
         memcpy32((void*)&tpu->data_in[0], (void*)src, dataLength);
 
         // Wait until operation is complete
-        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_CPH_DONE)) {}
+        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_CPH_DONE)) {
+        }
 
         // Copy data out
         memcpy32((void*)outptr, (void*)&tpu->data_out[0], dataLength);
@@ -442,7 +449,8 @@ int MXC_TPU_RevA_Hash_Config(mxc_tpu_reva_regs_t* tpu, mxc_tpu_hashfunsel_t func
     tpu->hash_ctrl |= MXC_F_TPU_REVA_HASH_CTRL_INIT;
 
     // Wait until operation is complete
-    while (tpu->hash_ctrl & MXC_F_TPU_REVA_HASH_CTRL_INIT) {}
+    while (tpu->hash_ctrl & MXC_F_TPU_REVA_HASH_CTRL_INIT) {
+    }
 
     return E_SUCCESS;
 }
@@ -526,7 +534,8 @@ int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_has
         }
 
         // Wait until operation is complete
-        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_HSH_DONE)) {}
+        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_HSH_DONE)) {
+        }
     }
 
     // Clear the done flags

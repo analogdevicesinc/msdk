@@ -131,7 +131,9 @@ void vGetKEYTask(void* pvParameters)
     msgKBD.pcType = 'K'; // it is keyboard message
 
     for (;;) {
-        while (xSemaphoreTake(xKBDLock, 0xFFFF) != pdTRUE) { ; }
+        while (xSemaphoreTake(xKBDLock, 0xFFFF) != pdTRUE) {
+            ;
+        }
 
         key_press[0] = '\0';
 

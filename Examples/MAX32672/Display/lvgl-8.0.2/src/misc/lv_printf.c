@@ -160,7 +160,9 @@ static inline bool _is_digit(char ch)
 static unsigned int _atoi(const char** str)
 {
     unsigned int i = 0U;
-    while (_is_digit(**str)) { i = i * 10U + (unsigned int)(*((*str)++) - '0'); }
+    while (_is_digit(**str)) {
+        i = i * 10U + (unsigned int)(*((*str)++) - '0');
+    }
     return i;
 }
 
@@ -173,15 +175,21 @@ static size_t _out_rev(out_fct_type out, char* buffer, size_t idx, size_t maxlen
     // pad spaces up to given width
     if (!(flags & FLAGS_LEFT) && !(flags & FLAGS_ZEROPAD)) {
         size_t i;
-        for (i = len; i < width; i++) { out(' ', buffer, idx++, maxlen); }
+        for (i = len; i < width; i++) {
+            out(' ', buffer, idx++, maxlen);
+        }
     }
 
     // reverse string
-    while (len) { out(buf[--len], buffer, idx++, maxlen); }
+    while (len) {
+        out(buf[--len], buffer, idx++, maxlen);
+    }
 
     // append pad spaces up to given width
     if (flags & FLAGS_LEFT) {
-        while (idx - start_idx < width) { out(' ', buffer, idx++, maxlen); }
+        while (idx - start_idx < width) {
+            out(' ', buffer, idx++, maxlen);
+        }
     }
 
     return idx;
@@ -198,7 +206,9 @@ static size_t _ntoa_format(out_fct_type out, char* buffer, size_t idx, size_t ma
             (negative || (flags & (FLAGS_PLUS | FLAGS_SPACE)))) {
             width--;
         }
-        while ((len < prec) && (len < PRINTF_NTOA_BUFFER_SIZE)) { buf[len++] = '0'; }
+        while ((len < prec) && (len < PRINTF_NTOA_BUFFER_SIZE)) {
+            buf[len++] = '0';
+        }
         while ((flags & FLAGS_ZEROPAD) && (len < width) && (len < PRINTF_NTOA_BUFFER_SIZE)) {
             buf[len++] = '0';
         }
@@ -385,7 +395,9 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
             }
         }
         // add extra 0s
-        while ((len < PRINTF_FTOA_BUFFER_SIZE) && (count-- > 0U)) { buf[len++] = '0'; }
+        while ((len < PRINTF_FTOA_BUFFER_SIZE) && (count-- > 0U)) {
+            buf[len++] = '0';
+        }
         if (len < PRINTF_FTOA_BUFFER_SIZE) {
             // add decimal
             buf[len++] = '.';
@@ -405,7 +417,9 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
         if (width && (negative || (flags & (FLAGS_PLUS | FLAGS_SPACE)))) {
             width--;
         }
-        while ((len < width) && (len < PRINTF_FTOA_BUFFER_SIZE)) { buf[len++] = '0'; }
+        while ((len < width) && (len < PRINTF_FTOA_BUFFER_SIZE)) {
+            buf[len++] = '0';
+        }
     }
 
     if (len < PRINTF_FTOA_BUFFER_SIZE) {
@@ -526,7 +540,8 @@ static size_t _etoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
                          0, minwidth - 1, FLAGS_ZEROPAD | FLAGS_PLUS);
         // might need to right-pad spaces
         if (flags & FLAGS_LEFT) {
-            while (idx - start_idx < width) out(' ', buffer, idx++, maxlen);
+            while (idx - start_idx < width)
+                out(' ', buffer, idx++, maxlen);
         }
     }
     return idx;
@@ -781,13 +796,17 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
                 unsigned int l = 1U;
                 // pre padding
                 if (!(flags & FLAGS_LEFT)) {
-                    while (l++ < width) { out(' ', buffer, idx++, maxlen); }
+                    while (l++ < width) {
+                        out(' ', buffer, idx++, maxlen);
+                    }
                 }
                 // char output
                 out((char)va_arg(va, int), buffer, idx++, maxlen);
                 // post padding
                 if (flags & FLAGS_LEFT) {
-                    while (l++ < width) { out(' ', buffer, idx++, maxlen); }
+                    while (l++ < width) {
+                        out(' ', buffer, idx++, maxlen);
+                    }
                 }
                 format++;
                 break;
@@ -802,7 +821,9 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
                     l = (l < precision ? l : precision);
                 }
                 if (!(flags & FLAGS_LEFT)) {
-                    while (l++ < width) { out(' ', buffer, idx++, maxlen); }
+                    while (l++ < width) {
+                        out(' ', buffer, idx++, maxlen);
+                    }
                 }
                 // string output
                 while ((*p != 0) && (!(flags & FLAGS_PRECISION) || precision--)) {
@@ -810,7 +831,9 @@ static int _vsnprintf(out_fct_type out, char* buffer, const size_t maxlen, const
                 }
                 // post padding
                 if (flags & FLAGS_LEFT) {
-                    while (l++ < width) { out(' ', buffer, idx++, maxlen); }
+                    while (l++ < width) {
+                        out(' ', buffer, idx++, maxlen);
+                    }
                 }
                 format++;
                 break;

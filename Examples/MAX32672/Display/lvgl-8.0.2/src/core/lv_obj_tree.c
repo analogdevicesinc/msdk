@@ -388,7 +388,9 @@ static void obj_del_core(lv_obj_t* obj)
         }
 
         uint32_t id = i;
-        for (i = id; i < disp->screen_cnt - 1; i++) { disp->screens[i] = disp->screens[i + 1]; }
+        for (i = id; i < disp->screen_cnt - 1; i++) {
+            disp->screens[i] = disp->screens[i + 1];
+        }
         disp->screen_cnt--;
         disp->screens = lv_mem_realloc(disp->screens, disp->screen_cnt * sizeof(lv_obj_t*));
     }
@@ -417,7 +419,9 @@ static lv_obj_tree_walk_res_t walk_core(lv_obj_t* obj, lv_obj_tree_walk_cb_t cb,
         lv_disp_t* disp = lv_disp_get_next(NULL);
         while (disp) {
             uint32_t i;
-            for (i = 0; i < disp->screen_cnt; i++) { walk_core(disp->screens[i], cb, user_data); }
+            for (i = 0; i < disp->screen_cnt; i++) {
+                walk_core(disp->screens[i], cb, user_data);
+            }
             disp = lv_disp_get_next(disp);
         }
         return LV_OBJ_TREE_WALK_END; /*The value doesn't matter as it wasn't called recursively*/

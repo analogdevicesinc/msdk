@@ -85,5 +85,6 @@ int main(void)
 
     LED_On(0);
 
-    while (1) {}
+    while (1) {
+    }
 }

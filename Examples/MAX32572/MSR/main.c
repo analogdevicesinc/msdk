@@ -105,7 +105,9 @@ static void start_msr_sdma(void)
     MSR_SDMA->ip_addr = (uint32_t)&msr_sdma_code;
     MSR_SDMA->ctrl |= MXC_F_SDMA_CTRL_EN;
     /* Wait for the SDMA to finish re-initialization */
-    while (!MSR_SDMA->irq_flag) { ; }
+    while (!MSR_SDMA->irq_flag) {
+        ;
+    }
     /* Clear irq_flag */
     MSR_SDMA->irq_flag = 1;
     NVIC_ClearPendingIRQ(MSR_SDMA_IRQn);
@@ -219,7 +221,9 @@ int main(void)
 
         msr_ctrl      = GETSWIPE_BUSY; /* signal to SDMA to get swipe data */
         sdma_irq_flag = 0;
-        while (!sdma_irq_flag) { ; }
+        while (!sdma_irq_flag) {
+            ;
+        }
 
         /* check exit code */
         switch (msr_ctrl) {

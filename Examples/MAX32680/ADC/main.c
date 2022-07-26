@@ -106,7 +106,8 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {};
+        while (!adc_done) {
+        };
 #else
         adc_val  = MXC_ADC_StartConversion(MXC_ADC_CH_0);
         overflow = (adc_val == E_OVERFLOW ? 1 : 0);

@@ -149,7 +149,9 @@ void test_function(void)
 
     for (temp = 0; temp < ITERATIONS; temp++) {
         // Read data from RAM
-        for (i = 0; i < BUFFER_SIZE; i++) { read_buffer[i] = *(address + i); }
+        for (i = 0; i < BUFFER_SIZE; i++) {
+            read_buffer[i] = *(address + i);
+        }
 
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
@@ -181,5 +183,6 @@ int main(void)
 
     printf("Example complete.\n");
 
-    while (1) {}
+    while (1) {
+    }
 }

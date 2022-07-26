@@ -115,7 +115,9 @@ int slaveHandler(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event, void* data)
         case MXC_I2C_EVT_MASTER_RD:
 
             // Serve as a 16 byte loopback, returning data*2
-            for (int i = 0; i < I2C_BYTES; i++) { Stxdata[i] = i; }
+            for (int i = 0; i < I2C_BYTES; i++) {
+                Stxdata[i] = i;
+            }
 
             txnum        = I2C_BYTES;
             txcnt        = 0;
@@ -167,11 +169,15 @@ void printData(void)
     int i;
     printf("\n-->TxData: ");
 
-    for (i = 0; i < sizeof(txdata); ++i) { printf("%02x ", txdata[i]); }
+    for (i = 0; i < sizeof(txdata); ++i) {
+        printf("%02x ", txdata[i]);
+    }
 
     printf("\n\n-->RxData: ");
 
-    for (i = 0; i < sizeof(rxdata); ++i) { printf("%02x ", rxdata[i]); }
+    for (i = 0; i < sizeof(rxdata); ++i) {
+        printf("%02x ", rxdata[i]);
+    }
 
     printf("\n");
 
@@ -271,7 +277,8 @@ int main()
         return FAILED;
     }
 
-    while (DMA_FLAG == 0) {};
+    while (DMA_FLAG == 0) {
+    };
 
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
@@ -279,7 +286,8 @@ int main()
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {};
+    while (I2C_FLAG == 1) {
+    };
 
 #endif
 

@@ -129,7 +129,8 @@ int main(void)
     cnn_start();        // Start CNN processing
 
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0) __WFI();      // Wait for CNN
+    while (cnn_time == 0)
+        __WFI(); // Wait for CNN
 
     cnn_boost_disable(MXC_GPIO2, MXC_GPIO_PIN_5); // Turn off the boost circuit
 

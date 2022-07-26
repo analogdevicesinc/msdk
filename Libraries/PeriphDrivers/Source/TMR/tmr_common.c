@@ -48,7 +48,8 @@ void MXC_TMR_Common_Delay(mxc_tmr_regs_t* tmr, unsigned long us)
 
     MXC_TMR_TO_Start(tmr, us);
 
-    while (MXC_TMR_TO_Check(tmr) != E_TIME_OUT) {}
+    while (MXC_TMR_TO_Check(tmr) != E_TIME_OUT) {
+    }
 }
 
 int MXC_TMR_Common_TO_Check(mxc_tmr_regs_t* tmr)

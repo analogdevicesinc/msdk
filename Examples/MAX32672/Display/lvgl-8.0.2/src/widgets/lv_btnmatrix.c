@@ -249,7 +249,9 @@ void lv_btnmatrix_set_btn_ctrl_all(lv_obj_t* obj, lv_btnmatrix_ctrl_t ctrl)
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
     ;
     uint16_t i;
-    for (i = 0; i < btnm->btn_cnt; i++) { lv_btnmatrix_set_btn_ctrl(obj, i, ctrl); }
+    for (i = 0; i < btnm->btn_cnt; i++) {
+        lv_btnmatrix_set_btn_ctrl(obj, i, ctrl);
+    }
 }
 
 void lv_btnmatrix_clear_btn_ctrl_all(lv_obj_t* obj, lv_btnmatrix_ctrl_t ctrl)
@@ -259,7 +261,9 @@ void lv_btnmatrix_clear_btn_ctrl_all(lv_obj_t* obj, lv_btnmatrix_ctrl_t ctrl)
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
     ;
     uint16_t i;
-    for (i = 0; i < btnm->btn_cnt; i++) { lv_btnmatrix_clear_btn_ctrl(obj, i, ctrl); }
+    for (i = 0; i < btnm->btn_cnt; i++) {
+        lv_btnmatrix_clear_btn_ctrl(obj, i, ctrl);
+    }
 }
 
 void lv_btnmatrix_set_btn_width(lv_obj_t* obj, uint16_t btn_id, uint8_t width)
@@ -713,7 +717,9 @@ static void draw_main(lv_event_t* e)
 
     for (btn_i = 0; btn_i < btnm->btn_cnt; btn_i++, txt_i++) {
         /*Search the next valid text in the map*/
-        while (strcmp(btnm->map_p[txt_i], "\n") == 0) { txt_i++; }
+        while (strcmp(btnm->map_p[txt_i], "\n") == 0) {
+            txt_i++;
+        }
 
         /*Skip hidden buttons*/
         if (button_is_hidden(btnm->ctrl_bits[btn_i]))

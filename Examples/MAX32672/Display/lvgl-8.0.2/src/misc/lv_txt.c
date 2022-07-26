@@ -477,7 +477,9 @@ void _lv_txt_ins(char* txt_buf, uint32_t pos, const char* ins_txt)
 
     /*Copy the second part into the end to make place to text to insert*/
     size_t i;
-    for (i = new_len; i >= pos + ins_len; i--) { txt_buf[i] = txt_buf[i - ins_len]; }
+    for (i = new_len; i >= pos + ins_len; i--) {
+        txt_buf[i] = txt_buf[i - ins_len];
+    }
 
     /*Copy the text into the new space*/
     lv_memcpy_small(txt_buf + pos, ins_txt, ins_len);
@@ -499,7 +501,9 @@ void _lv_txt_cut(char* txt, uint32_t pos, uint32_t len)
 
     /*Copy the second part into the end to make place to text to insert*/
     uint32_t i;
-    for (i = pos; i <= old_len - len; i++) { txt[i] = txt[i + len]; }
+    for (i = pos; i <= old_len - len; i++) {
+        txt[i] = txt[i + len];
+    }
 }
 
 /**

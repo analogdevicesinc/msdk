@@ -287,7 +287,8 @@ void trim32k(void)
     if (MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
         APP_TRACE_INFO0("Error with 32k trim");
     } else {
-        while (!wutTrimComplete) {}
+        while (!wutTrimComplete) {
+        }
     }
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */

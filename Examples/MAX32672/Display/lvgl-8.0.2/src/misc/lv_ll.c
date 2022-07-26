@@ -313,7 +313,9 @@ uint32_t _lv_ll_get_len(const lv_ll_t* ll_p)
     uint32_t len = 0;
     void* node;
 
-    for (node = _lv_ll_get_head(ll_p); node != NULL; node = _lv_ll_get_next(ll_p, node)) { len++; }
+    for (node = _lv_ll_get_head(ll_p); node != NULL; node = _lv_ll_get_next(ll_p, node)) {
+        len++;
+    }
 
     return len;
 }

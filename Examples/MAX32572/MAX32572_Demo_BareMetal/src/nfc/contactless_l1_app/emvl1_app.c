@@ -484,10 +484,16 @@ void print_matrix_header(void)
 {
     int i;
     printf("\nStep Index:                 ");
-    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("%8d | ", i); }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("%8d | ", i);
+    }
     printf("\n");
-    for (i = 0; i < MATRIX_HORIZONTAL_NUM_TICKS; i++) { printf("-"); }
-    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("-----------"); }
+    for (i = 0; i < MATRIX_HORIZONTAL_NUM_TICKS; i++) {
+        printf("-");
+    }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("-----------");
+    }
     printf("\n");
 }
 
@@ -516,7 +522,9 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+                print_comb_math(val_array[j]);
+            }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -529,7 +537,9 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         i = key_press - '0';
         print_matrix_header();
         printf("%s", name);
-        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+            print_comb_math(val_array[j]);
+        }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -566,7 +576,9 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+                printf("%08X | ", val_array[j]);
+            }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -586,7 +598,9 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
         print_matrix_header();
 
         printf("%s", name);
-        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+            printf("%08X | ", val_array[j]);
+        }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -628,7 +642,9 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+                printf("     %3d | ", val_array[j]);
+            }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -645,7 +661,9 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
         print_matrix_header();
 
         printf("%s", name);
-        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+            printf("     %3d | ", val_array[j]);
+        }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -799,8 +817,12 @@ void print_matrix_spacer(void)
 {
     int i = 0;
 
-    for (i = 0; i < 27; i++) { printf("-"); }
-    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("-----------"); }
+    for (i = 0; i < 27; i++) {
+        printf("-");
+    }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("-----------");
+    }
     printf("\n");
 }
 
@@ -2208,7 +2230,9 @@ void pbm_commands(void)
                 // this uses current_block_num (set by 'B')
                 printf("\nWrite Block: %d\n", current_block_num);
 
-                for (i = 0; i < 8; i++) { data_buffer[i] = 0; }
+                for (i = 0; i < 8; i++) {
+                    data_buffer[i] = 0;
+                }
 
                 data_buffer[8]  = 0xDE;
                 data_buffer[9]  = 0xAD;
@@ -2378,7 +2402,9 @@ void pbm_commands(void)
             case 'k':
                 printf("\nWrite Trailer for Key B: %d\n", current_block_num);
 
-                for (i = 0; i < 8; i++) { data_buffer[i] = 0; }
+                for (i = 0; i < 8; i++) {
+                    data_buffer[i] = 0;
+                }
 
                 // Key A
                 data_buffer[0] = (current_key >> 40) & 0xFF;
@@ -2486,7 +2512,9 @@ void pbm_commands(void)
                 // erase a block by filling with all 0
                 printf("\nErase Block (Fill with 0x00s)\n: %d\n", current_block_num);
 
-                for (i = 0; i < 16; i++) { data_buffer[i] = 0; }
+                for (i = 0; i < 16; i++) {
+                    data_buffer[i] = 0;
+                }
 
                 status = pbm_write_block(current_block_num, data_buffer);
 

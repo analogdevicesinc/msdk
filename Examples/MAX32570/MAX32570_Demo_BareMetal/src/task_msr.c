@@ -160,7 +160,9 @@ void msr_start(void)
     MSR_SDMA->ip_addr = (uint32_t)&msr_sdma_code;
     MSR_SDMA->ctrl |= MXC_F_SDMA_CTRL_EN;
     /* Wait for the SDMA to finish re-initialization */
-    while (!MSR_SDMA->irq_flag) { ; }
+    while (!MSR_SDMA->irq_flag) {
+        ;
+    }
     /* Clear irq_flag */
     MSR_SDMA->irq_flag = 1;
     NVIC_ClearPendingIRQ(MSR_SDMA_IRQn);

@@ -141,5 +141,6 @@ int main(void)
     ContinuousPulseTrain();
     SquareWave();
 
-    while (1) {}
+    while (1) {
+    }
 }

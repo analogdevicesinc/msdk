@@ -738,18 +738,22 @@ static void indev_encoder_proc(lv_indev_t* i, lv_indev_data_t* data)
         if (lv_group_get_editing(g)) {
             int32_t s;
             if (data->enc_diff < 0) {
-                for (s = 0; s < -data->enc_diff; s++) lv_group_send_data(g, LV_KEY_LEFT);
+                for (s = 0; s < -data->enc_diff; s++)
+                    lv_group_send_data(g, LV_KEY_LEFT);
             } else if (data->enc_diff > 0) {
-                for (s = 0; s < data->enc_diff; s++) lv_group_send_data(g, LV_KEY_RIGHT);
+                for (s = 0; s < data->enc_diff; s++)
+                    lv_group_send_data(g, LV_KEY_RIGHT);
             }
         }
         /*In navigate mode focus on the next/prev objects*/
         else {
             int32_t s;
             if (data->enc_diff < 0) {
-                for (s = 0; s < -data->enc_diff; s++) lv_group_focus_prev(g);
+                for (s = 0; s < -data->enc_diff; s++)
+                    lv_group_focus_prev(g);
             } else if (data->enc_diff > 0) {
-                for (s = 0; s < data->enc_diff; s++) lv_group_focus_next(g);
+                for (s = 0; s < data->enc_diff; s++)
+                    lv_group_focus_next(g);
             }
         }
     }

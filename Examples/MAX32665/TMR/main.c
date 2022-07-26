@@ -220,7 +220,9 @@ int main(void)
     NVIC_EnableIRQ(OST_TIMER_IRQn);
     OneshotTimer();
 
-    while (1) { ; }
+    while (1) {
+        ;
+    }
 
     return 0;
 }

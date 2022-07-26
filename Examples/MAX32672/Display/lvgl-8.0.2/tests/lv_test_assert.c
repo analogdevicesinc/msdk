@@ -356,7 +356,8 @@ static void read_png_file(png_img_t* p, const char* file_name)
 static void png_release(png_img_t* p)
 {
     int y;
-    for (y = 0; y < p->height; y++) free(p->row_pointers[y]);
+    for (y = 0; y < p->height; y++)
+        free(p->row_pointers[y]);
     free(p->row_pointers);
 }
 

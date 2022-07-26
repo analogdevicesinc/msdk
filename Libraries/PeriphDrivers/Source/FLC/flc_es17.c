@@ -460,7 +460,8 @@ static int mxc_encrypt_sequence(const uint8_t* pt, uint8_t* ct, uint32_t addr, i
         memcpy((void*)&MXC_CTB->crypto_din[0], (void*)(pt_buf), 16);
 
         // Wait until operation is complete
-        while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) {}
+        while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) {
+        }
 
         // Copy the data out
         memcpy((void*)(ct_buf), (void*)&MXC_CTB->crypto_dout[0], 16);

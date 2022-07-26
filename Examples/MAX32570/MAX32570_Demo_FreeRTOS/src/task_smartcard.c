@@ -206,7 +206,9 @@ void vGetATRTask(void* pvParameters)
     msgSCI.pcType = 'K';
 
     for (;;) {
-        while (xSemaphoreTake(xATRLock, 0xFFFF) != pdTRUE) { ; }
+        while (xSemaphoreTake(xATRLock, 0xFFFF) != pdTRUE) {
+            ;
+        }
 
         while (g_sc_active_polling) {
             SCAPI_ioctl(g_card_slot, IOCTL_GET_CARD_STATE, &status);

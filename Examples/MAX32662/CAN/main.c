@@ -131,7 +131,9 @@ int main(void)
 
     mxc_can_msg_info_t msg_tx;
     uint8_t data_tx[64];
-    for (int i = 0; i < 64; i++) { data_tx[i] = i; }
+    for (int i = 0; i < 64; i++) {
+        data_tx[i] = i;
+    }
 
     printf("Press button SW2 to begin example.\n");
     while (!PB_Get(0))

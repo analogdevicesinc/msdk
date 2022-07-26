@@ -121,7 +121,9 @@ int main(void)
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
-        for (j = 0; j < DATA_LEN; j++) { tx_data[j] = DATA_VALUE; }
+        for (j = 0; j < DATA_LEN; j++) {
+            tx_data[j] = DATA_VALUE;
+        }
 
         mxc_spi_pins_t spi_pin_init;
         spi_pin_init.clock = true;
@@ -134,7 +136,8 @@ int main(void)
         // Configure the peripheral
         if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pin_init) != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
-            while (1) {}
+            while (1) {
+            }
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));

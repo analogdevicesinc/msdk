@@ -196,7 +196,8 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
         return E_OVERFLOW;
     }
 
-    while (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) {}
+    while (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) {
+    }
 
     if (check_done) {
         while (!(pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE))
@@ -219,7 +220,9 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
     //
     // Transmit the data
     //
-    for (i = 0; i < byte_length; i++) { pSPIm->fifo8[0] = data[i]; }
+    for (i = 0; i < byte_length; i++) {
+        pSPIm->fifo8[0] = data[i];
+    }
 
     //
     // Receive the data

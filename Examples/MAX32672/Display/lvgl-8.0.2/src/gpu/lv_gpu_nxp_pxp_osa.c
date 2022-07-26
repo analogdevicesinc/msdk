@@ -152,7 +152,8 @@ static void _lv_gpu_nxp_pxp_run(void)
             ;
     }
 #else
-    while (s_pxpIdle == false) {}
+    while (s_pxpIdle == false) {
+    }
 #endif
 }
 
