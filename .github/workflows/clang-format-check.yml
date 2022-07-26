@@ -29,6 +29,10 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: clang-format-check
         run: |
+          # Deinit all of the submodules
+          set +e
+          git submodule deinit --all
+          set -e
           CFILES=$(find . -iname "*.c")
           for cFile in ${CFILES}
           do
