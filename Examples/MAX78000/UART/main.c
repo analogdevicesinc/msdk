@@ -66,7 +66,7 @@ volatile int DMA_FLAG;
 #define READING_UART 2
 #define WRITING_UART 3
 #else
-#error "This example has been written for the MAX78000 Ev Kit or FTHR board."
+#warning "This example has been written for the MAX78000 Ev Kit or FTHR board."
 #endif
 
 /***** Functions *****/

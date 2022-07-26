@@ -1,0 +1,25 @@
+var group___c_t_b___register___offsets =
+[
+    [ "MXC_R_CTB_AAD_LENGTH", "group___c_t_b___register___offsets.html#gadd8f2ece5e979eb2d8ec3a8a606873b2", null ],
+    [ "MXC_R_CTB_CIPHER_CTRL", "group___c_t_b___register___offsets.html#ga6ec72ee43281a7f9b206fc1ad6e04da9", null ],
+    [ "MXC_R_CTB_CIPHER_INIT", "group___c_t_b___register___offsets.html#gaeaeb65001d8954b977a0ed50e0b916ff", null ],
+    [ "MXC_R_CTB_CIPHER_KEY", "group___c_t_b___register___offsets.html#ga737a4308f3c5e89708d79f24838d132c", null ],
+    [ "MXC_R_CTB_CRC_CTRL", "group___c_t_b___register___offsets.html#ga8d50a1491d23b1c366c35c6caa9c7ac8", null ],
+    [ "MXC_R_CTB_CRC_POLY", "group___c_t_b___register___offsets.html#gacc4706a1e2332ae45173569cb8e72dc3", null ],
+    [ "MXC_R_CTB_CRC_PRNG", "group___c_t_b___register___offsets.html#ga21bc1e99e01f5f39c007f53f58fca941", null ],
+    [ "MXC_R_CTB_CRC_VAL", "group___c_t_b___register___offsets.html#ga2c8a0ed8f5528c7ae4a8ce7ca2fa5066", null ],
+    [ "MXC_R_CTB_CTRL", "group___c_t_b___register___offsets.html#gae6f5881432f74b43fb033ee392d6344c", null ],
+    [ "MXC_R_CTB_DIN", "group___c_t_b___register___offsets.html#gaed2bcd7904cf6d5c26bce97d8328d102", null ],
+    [ "MXC_R_CTB_DMA_CNT", "group___c_t_b___register___offsets.html#gaf4e18e43808113d5ca3621679eb68556", null ],
+    [ "MXC_R_CTB_DMA_DEST", "group___c_t_b___register___offsets.html#ga0d32e1c407b01a1f642d08386b665907", null ],
+    [ "MXC_R_CTB_DMA_SRC", "group___c_t_b___register___offsets.html#ga72e5b7aeb4eccc0d7ff1d7df08cc027a", null ],
+    [ "MXC_R_CTB_DOUT", "group___c_t_b___register___offsets.html#gada6e25ddf0cb72b06628d041848606c4", null ],
+    [ "MXC_R_CTB_HAM_ECC", "group___c_t_b___register___offsets.html#ga6ea54ddcf2860f23d512eb22fa8a2baa", null ],
+    [ "MXC_R_CTB_HASH_CTRL", "group___c_t_b___register___offsets.html#ga3a447a62e20adda0c4cff7acb443435b", null ],
+    [ "MXC_R_CTB_HASH_DIGEST", "group___c_t_b___register___offsets.html#gafdb700991d8986394b362900ba213bd7", null ],
+    [ "MXC_R_CTB_HASH_MSG_SZ", "group___c_t_b___register___offsets.html#ga508c329d8c6fab62d333ff3a202f066f", null ],
+    [ "MXC_R_CTB_MAA_CTRL", "group___c_t_b___register___offsets.html#gaa05243ecec8b0c53ffdda61e487959fe", null ],
+    [ "MXC_R_CTB_MAA_MAWS", "group___c_t_b___register___offsets.html#gaf08475b71878c4f3c8a15d08984cb2f9", null ],
+    [ "MXC_R_CTB_PLD_LENGTH", "group___c_t_b___register___offsets.html#ga492a2a96f8be91311eb9fdcf4ab752da", null ],
+    [ "MXC_R_CTB_TAGMIC", "group___c_t_b___register___offsets.html#ga7ef6e14b9915e304c6926579b3731fce", null ]
+];

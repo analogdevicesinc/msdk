@@ -118,10 +118,10 @@ int MXC_RTC_Stop (void);
 /**
  * @brief     Initialize the sec and ssec registers and enable RTC
  * @param     sec    set the RTC Sec counter (32-bit)
- * @param     ssec   set the RTC Sub-second counter (8-bit)
+ * @param     ssec   set the RTC Sub-second counter (12-bit)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_Init (uint32_t sec, uint8_t ssec);
+int MXC_RTC_Init (uint32_t sec, uint16_t ssec);
 
 /**
  * @brief     Allow generation of Square Wave on the SQW pin

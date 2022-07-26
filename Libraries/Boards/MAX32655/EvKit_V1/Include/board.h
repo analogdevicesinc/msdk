@@ -50,6 +50,13 @@
 extern "C" {
 #endif
 
+/* 
+    Define board name:
+    Use as #if defined(BOARD_EVKIT_V1)
+    Not as #if BOARD_EVKIT_V1
+*/
+#define BOARD_EVKIT_V1    1     /// Used in examples to control program flow.
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART        0      /// UART instance to use for console
 #endif
@@ -76,8 +83,6 @@ extern "C" {
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD       5000000
 #endif
-
-#define EvKit_V1				    /// Used in examples to control program flow
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

@@ -1,0 +1,27 @@
+var group___c_a_n___m_o_d_e =
+[
+    [ "MXC_F_CAN_MODE_AFM", "group___c_a_n___m_o_d_e.html#ga300679aa1ff3bb8d9be99b2fe1e01758", null ],
+    [ "MXC_F_CAN_MODE_AFM_POS", "group___c_a_n___m_o_d_e.html#gaace77692943d6dd26a1b4bbed07ff2d6", null ],
+    [ "MXC_F_CAN_MODE_DMA", "group___c_a_n___m_o_d_e.html#ga746c882d427811bc087ddd849a3acfc3", null ],
+    [ "MXC_F_CAN_MODE_DMA_POS", "group___c_a_n___m_o_d_e.html#gadea8aa67ea22fa64353cdddcf4519899", null ],
+    [ "MXC_F_CAN_MODE_LOM", "group___c_a_n___m_o_d_e.html#ga8b938e28d81a7886e3ab51c9f9ea4622", null ],
+    [ "MXC_F_CAN_MODE_LOM_POS", "group___c_a_n___m_o_d_e.html#gad32c5482316913cf5fbab6fa88696c94", null ],
+    [ "MXC_F_CAN_MODE_RST", "group___c_a_n___m_o_d_e.html#ga4e176d0dfbc21ee82d3d91d2c39640fe", null ],
+    [ "MXC_F_CAN_MODE_RST_POS", "group___c_a_n___m_o_d_e.html#ga505eb493a879b51dbe051e9df110caaf", null ],
+    [ "MXC_F_CAN_MODE_RXTRIG", "group___c_a_n___m_o_d_e.html#ga3a330063582446d7f6d6125e6ce04385", null ],
+    [ "MXC_F_CAN_MODE_RXTRIG_POS", "group___c_a_n___m_o_d_e.html#gaf79650cd98368fabb105f7227cebf1d5", null ],
+    [ "MXC_F_CAN_MODE_SLP", "group___c_a_n___m_o_d_e.html#ga250cf6c58682d14d074a866c2105785a", null ],
+    [ "MXC_F_CAN_MODE_SLP_POS", "group___c_a_n___m_o_d_e.html#ga9cacdeeacd6146a58a2587f580837a93", null ],
+    [ "MXC_S_CAN_MODE_RXTRIG_16W", "group___c_a_n___m_o_d_e.html#gaa6a82b2db493fcb91767a81a23e32a6e", null ],
+    [ "MXC_S_CAN_MODE_RXTRIG_1W", "group___c_a_n___m_o_d_e.html#ga947f4b268d8daaef857df9e26763d5e9", null ],
+    [ "MXC_S_CAN_MODE_RXTRIG_32W", "group___c_a_n___m_o_d_e.html#ga77ed047f1eea2a63c7ffc9bd5eda5682", null ],
+    [ "MXC_S_CAN_MODE_RXTRIG_4W", "group___c_a_n___m_o_d_e.html#ga01171bd68e460a87302eac270f0289da", null ],
+    [ "MXC_S_CAN_MODE_RXTRIG_64W", "group___c_a_n___m_o_d_e.html#ga8831be92f2666e2fb33b7242d18f7d65", null ],
+    [ "MXC_S_CAN_MODE_RXTRIG_8W", "group___c_a_n___m_o_d_e.html#gafe2c1bca974eda004c87fe42b9116e0b", null ],
+    [ "MXC_V_CAN_MODE_RXTRIG_16W", "group___c_a_n___m_o_d_e.html#ga42f7f682abc01e7af75cb0697069f09c", null ],
+    [ "MXC_V_CAN_MODE_RXTRIG_1W", "group___c_a_n___m_o_d_e.html#ga13f6aefe3bee92ebc849a5ff41ba1306", null ],
+    [ "MXC_V_CAN_MODE_RXTRIG_32W", "group___c_a_n___m_o_d_e.html#ga6ade9a0438f33a61392b377565ad381c", null ],
+    [ "MXC_V_CAN_MODE_RXTRIG_4W", "group___c_a_n___m_o_d_e.html#ga0731bc68e250f6d60a0a9365d7c6cada", null ],
+    [ "MXC_V_CAN_MODE_RXTRIG_64W", "group___c_a_n___m_o_d_e.html#ga0e909a03bc25a40f56cbe8d824b67d62", null ],
+    [ "MXC_V_CAN_MODE_RXTRIG_8W", "group___c_a_n___m_o_d_e.html#ga714401a71eb27faa1d1c6e03b8afeb87", null ]
+];

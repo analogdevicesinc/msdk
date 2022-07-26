@@ -55,7 +55,7 @@ typedef enum {
 
 #define MXC_BUSY_TIMEOUT 1000   // Timeout counts for the Busy bit
 
-int MXC_RTC_RevA_Init (mxc_rtc_reva_regs_t *rtc, uint32_t sec, uint8_t ssec);
+int MXC_RTC_RevA_Init (mxc_rtc_reva_regs_t *rtc, uint32_t sec, uint32_t ssec);
 int MXC_RTC_RevA_EnableInt (mxc_rtc_reva_regs_t *rtc, uint32_t mask);
 int MXC_RTC_RevA_DisableInt (mxc_rtc_reva_regs_t *rtc, uint32_t mask);
 int MXC_RTC_RevA_SetTimeofdayAlarm (mxc_rtc_reva_regs_t *rtc, uint32_t ras);
