@@ -139,10 +139,10 @@ int PB_Get(unsigned int pb)
 
 int PB_IsPressedAny(void)
 {
-    int i=0;
+    int i = 0;
 
-    for (i=0; i<num_pbs; i++) {
-        if ( PB_Get(i) ) {
+    for (i = 0; i < num_pbs; i++) {
+        if (PB_Get(i)) {
             return 1;
         }
     }
