@@ -43,40 +43,39 @@
 
 /* **** Functions **** */
 
-int MXC_WDT_RevB_Init(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t *cfg)
+int MXC_WDT_RevB_Init(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
 {
     if (wdt == NULL || cfg == NULL) {
         return E_NULL_PTR;
     }
 
-    if(cfg->mode & MXC_WDT_REVB_WINDOWED){
+    if (cfg->mode & MXC_WDT_REVB_WINDOWED) {
         wdt->ctrl |= MXC_F_WDT_REVB_CTRL_WIN_EN;
-    }
-    else{
+    } else {
         wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_WIN_EN);
     }
-    
+
     return E_NO_ERROR;
 }
 
-void MXC_WDT_RevB_SetIntPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t *cfg)
+void MXC_WDT_RevB_SetIntPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
 {
     MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_INT_LATE_VAL, cfg->upperIntPeriod);
 
-    if(cfg->mode & MXC_WDT_REVB_WINDOWED){
-        MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL, \
-           (cfg->lowerIntPeriod<<MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL_POS));
+    if (cfg->mode & MXC_WDT_REVB_WINDOWED) {
+        MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL,
+                     (cfg->lowerIntPeriod << MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL_POS));
     }
 }
 
-void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t *cfg)
+void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
 {
-    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_LATE_VAL, \
-       (cfg->upperResetPeriod << MXC_F_WDT_REVB_CTRL_RST_LATE_VAL_POS));
+    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_LATE_VAL,
+                 (cfg->upperResetPeriod << MXC_F_WDT_REVB_CTRL_RST_LATE_VAL_POS));
 
-    if(cfg->mode & MXC_WDT_REVB_WINDOWED){
-        MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL, \
-           (cfg->lowerResetPeriod << MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL_POS));
+    if (cfg->mode & MXC_WDT_REVB_WINDOWED) {
+        MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL,
+                     (cfg->lowerResetPeriod << MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL_POS));
     }
 }
 
@@ -92,20 +91,18 @@ void MXC_WDT_RevB_Disable(mxc_wdt_revb_regs_t* wdt)
 
 void MXC_WDT_RevB_EnableInt(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable)
 {
-    if(enable) {
+    if (enable) {
         wdt->ctrl |= MXC_F_WDT_REVB_CTRL_WDT_INT_EN;
-    }
-    else {
+    } else {
         wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_WDT_INT_EN);
     }
 }
 
 void MXC_WDT_RevB_EnableReset(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable)
 {
-    if(enable) {
+    if (enable) {
         wdt->ctrl |= MXC_F_WDT_REVB_CTRL_WDT_RST_EN;
-    }
-    else {
+    } else {
         wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_WDT_RST_EN);
     }
 }
@@ -118,7 +115,7 @@ void MXC_WDT_RevB_ResetTimer(mxc_wdt_revb_regs_t* wdt)
 
 int MXC_WDT_RevB_GetResetFlag(mxc_wdt_revb_regs_t* wdt)
 {
-    return (wdt->ctrl &(MXC_F_WDT_REVB_CTRL_RST_LATE | MXC_F_WDT_REVB_CTRL_RST_EARLY));
+    return (wdt->ctrl & (MXC_F_WDT_REVB_CTRL_RST_LATE | MXC_F_WDT_REVB_CTRL_RST_EARLY));
 }
 
 void MXC_WDT_RevB_ClearResetFlag(mxc_wdt_revb_regs_t* wdt)
@@ -128,7 +125,7 @@ void MXC_WDT_RevB_ClearResetFlag(mxc_wdt_revb_regs_t* wdt)
 
 int MXC_WDT_RevB_GetIntFlag(mxc_wdt_revb_regs_t* wdt)
 {
-    return !!(wdt->ctrl &(MXC_F_WDT_REVB_CTRL_INT_LATE | MXC_F_WDT_REVB_CTRL_INT_EARLY));
+    return !!(wdt->ctrl & (MXC_F_WDT_REVB_CTRL_INT_LATE | MXC_F_WDT_REVB_CTRL_INT_EARLY));
 }
 
 void MXC_WDT_RevB_ClearIntFlag(mxc_wdt_revb_regs_t* wdt)

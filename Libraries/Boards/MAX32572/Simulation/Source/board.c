@@ -48,8 +48,9 @@ extern uint32_t SystemCoreClock;
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -62,12 +63,12 @@ void SystemCoreClockUpdate(void)
 int Board_Init(void)
 {
     int err;
-    
+
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 

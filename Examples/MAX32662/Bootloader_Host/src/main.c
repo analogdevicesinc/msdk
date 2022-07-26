@@ -53,68 +53,72 @@
 /******************************* Type Definitions ****************************/
 
 /******************************* 	Variables 	  ****************************/
-extern int bootloader_menu(const char *parentName);
+extern int bootloader_menu(const char* parentName);
 
 /******************************* Static Functions ****************************/
-static int select_interface(const char *parentName)
+static int select_interface(const char* parentName)
 {
-	int ret;
+    int ret;
 
-	list_t list[] = {	{"I2C",	NULL},
-						{"SPI",	NULL},
-	};
+    list_t list[] = {
+        {"I2C", NULL},
+        {"SPI", NULL},
+    };
 
     while (1) {
-    	ret = terminal_select_from_list(parentName, list, sizeof(list) / sizeof(list[0]), 1);
-    	if (ret == KEY_CANCEL) {
-    		break;
-    	}
+        ret = terminal_select_from_list(parentName, list, sizeof(list) / sizeof(list[0]), 1);
+        if (ret == KEY_CANCEL) {
+            break;
+        }
 
-    	if (ret == 1) {
-    		bl_update_interface(plt_i2c_read, plt_i2c_write);
-    		terminal_printf("Host-<->Target interface configured as I2C\r\n");
-    		ret = 0; // means success
-    		break;
-    	}
-    	else if (ret == 2) {
-    		bl_update_interface(plt_spi_read, plt_spi_write);
-    		terminal_printf("Host-<->Target interface configured as SPI\r\n");
-    		ret = 0; // means success
-    		break;
-    	}
+        if (ret == 1) {
+            bl_update_interface(plt_i2c_read, plt_i2c_write);
+            terminal_printf("Host-<->Target interface configured as I2C\r\n");
+            ret = 0; // means success
+            break;
+        } else if (ret == 2) {
+            bl_update_interface(plt_spi_read, plt_spi_write);
+            terminal_printf("Host-<->Target interface configured as SPI\r\n");
+            ret = 0; // means success
+            break;
+        }
     }
 
-	return ret;
+    return ret;
 }
 
-static int update_fw_nonsecure_MAX32662_blinkled_slow_P0_13(const char *parentName)
+static int update_fw_nonsecure_MAX32662_blinkled_slow_P0_13(const char* parentName)
 {
-	return bl_flash_image(nonsecure_MAX32662_blinkled_slow_P0_13);
+    return bl_flash_image(nonsecure_MAX32662_blinkled_slow_P0_13);
 }
 
-static int update_fw_nonsecure_MAX32662_blinkled_fast_P0_13(const char *parentName)
+static int update_fw_nonsecure_MAX32662_blinkled_fast_P0_13(const char* parentName)
 {
-	return bl_flash_image(nonsecure_MAX32662_blinkled_fast_P0_13);
+    return bl_flash_image(nonsecure_MAX32662_blinkled_fast_P0_13);
 }
 
-static int update_fw_devkey_MAX32662_blinkled_fast_P0_13(const char *parentName)
+static int update_fw_devkey_MAX32662_blinkled_fast_P0_13(const char* parentName)
 {
-	return bl_flash_image(devkey_MAX32662_blinkled_fast_P0_13);
+    return bl_flash_image(devkey_MAX32662_blinkled_fast_P0_13);
 }
 
-static int update_fw_devkey_MAX32662_blinkled_slow_P0_13(const char *parentName)
+static int update_fw_devkey_MAX32662_blinkled_slow_P0_13(const char* parentName)
 {
-	return bl_flash_image(devkey_MAX32662_blinkled_slow_P0_13);
+    return bl_flash_image(devkey_MAX32662_blinkled_slow_P0_13);
 }
 
 /******************************* Public Functions ****************************/
 static list_t list[] = {
-	{"Select Interface",     							 			select_interface		},
-    {"Bootloader Test Menu", 							 			bootloader_menu			},
-    {"Load MSBL: Non-secure MAX32662 blinkled fast P0.13",   		update_fw_nonsecure_MAX32662_blinkled_fast_P0_13	},
-    {"Load MSBL: Non-secure MAX32662 blinkled slow P0.13",   		update_fw_nonsecure_MAX32662_blinkled_slow_P0_13	},
-    {"Load MSBL: MAX32662 blinkled fast P0.13 (development key)",   update_fw_devkey_MAX32662_blinkled_fast_P0_13		},
-    {"Load MSBL: MAX32662 blinkled slow P0.13 (development key)",   update_fw_devkey_MAX32662_blinkled_slow_P0_13		},
+    {"Select Interface", select_interface},
+    {"Bootloader Test Menu", bootloader_menu},
+    {"Load MSBL: Non-secure MAX32662 blinkled fast P0.13",
+     update_fw_nonsecure_MAX32662_blinkled_fast_P0_13},
+    {"Load MSBL: Non-secure MAX32662 blinkled slow P0.13",
+     update_fw_nonsecure_MAX32662_blinkled_slow_P0_13},
+    {"Load MSBL: MAX32662 blinkled fast P0.13 (development key)",
+     update_fw_devkey_MAX32662_blinkled_fast_P0_13},
+    {"Load MSBL: MAX32662 blinkled slow P0.13 (development key)",
+     update_fw_devkey_MAX32662_blinkled_slow_P0_13},
 };
 
 int main(void)
@@ -129,8 +133,9 @@ int main(void)
     terminal_printf("\r\n***********Bootloader Host Example***********\r\n");
     terminal_printf("The purpose of this example is:\r\n");
     terminal_printf("   1- Demonstrate how bootloader device can be program\r\n");
-    terminal_printf("   2- Provide platform independent bootloader protocol (files under bootloader folder)\r\n");
-	terminal_printf("\r\nThis example can be ported on any platform\r\n");
+    terminal_printf("   2- Provide platform independent bootloader protocol (files under "
+                    "bootloader folder)\r\n");
+    terminal_printf("\r\nThis example can be ported on any platform\r\n");
     terminal_printf("If you would like to port it on other platform\r\n");
     terminal_printf("you need to update terminal.c and platform_max32662.c files\r\n");
     terminal_printf("\r\n");
@@ -152,6 +157,6 @@ int main(void)
     bl_init(&plt);
 
     while (1) {
-    	terminal_select_from_list("Main Menu", list, sizeof(list) / sizeof(list[0]), 1);
+        terminal_select_from_list("Main Menu", list, sizeof(list) / sizeof(list[0]), 1);
     }
 }

@@ -39,7 +39,7 @@
  *
  */
 
-#define S_MODULE_NAME   "MAIN"
+#define S_MODULE_NAME "MAIN"
 
 /***** Includes *****/
 #include <stdio.h>
@@ -67,16 +67,16 @@
 
 /***** Definitions *****/
 //----------------------------------------------------------
-#define SYS_DIV         1       // 1,2,4,8,16,32,128    clock div
-#define CLOCK_SOURCE    0       // 0: IPO,  1: ISO, 2: IBRO
+#define SYS_DIV      1 // 1,2,4,8,16,32,128    clock div
+#define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
 //------------------------------------------------------------
 
 extern volatile void const* __FlashStart_; // Defined in linker file
 
-__attribute__((section(".shared__at__mailbox")))
-volatile uint32_t mail_box[ARM_MAILBOX_SIZE + RISCV_MAILBOX_SIZE];
-volatile uint32_t *arm_mail_box = &mail_box[0];
-volatile uint32_t *riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
+__attribute__((section(
+    ".shared__at__mailbox"))) volatile uint32_t mail_box[ARM_MAILBOX_SIZE + RISCV_MAILBOX_SIZE];
+volatile uint32_t* arm_mail_box   = &mail_box[0];
+volatile uint32_t* riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
 
 void WakeISR(void)
 {
@@ -92,53 +92,53 @@ void WUT_IRQHandler()
 static void ARM_low_power(int lp_mode)
 {
     switch (lp_mode) {
-    case 0:
-        PR_DEBUG("Active\n");
-        break;
+        case 0:
+            PR_DEBUG("Active\n");
+            break;
 
-    case 1:
-        PR_DEBUG("Enter SLEEP\n");
-        MXC_LP_EnterSleepMode();
-        PR_DEBUG("Exit SLEEP\n");
-        break;
+        case 1:
+            PR_DEBUG("Enter SLEEP\n");
+            MXC_LP_EnterSleepMode();
+            PR_DEBUG("Exit SLEEP\n");
+            break;
 
-    case 2:
-        PR_DEBUG("Enter LPM\n");
-        MXC_LP_EnterLowPowerMode();
-        PR_DEBUG("Exit LPM\n");
-        break;
+        case 2:
+            PR_DEBUG("Enter LPM\n");
+            MXC_LP_EnterLowPowerMode();
+            PR_DEBUG("Exit LPM\n");
+            break;
 
-    case 3:
-        PR_DEBUG("Enter UPM\n");
-        MXC_LP_EnterMicroPowerMode();
-        PR_DEBUG("Exit UPM\n");
-        break;
+        case 3:
+            PR_DEBUG("Enter UPM\n");
+            MXC_LP_EnterMicroPowerMode();
+            PR_DEBUG("Exit UPM\n");
+            break;
 
-    case 4:
-        PR_DEBUG("Enter STANDBY\n");
-        MXC_LP_EnterStandbyMode();
-        PR_DEBUG("Exit STANDBY\n");
-        break;
+        case 4:
+            PR_DEBUG("Enter STANDBY\n");
+            MXC_LP_EnterStandbyMode();
+            PR_DEBUG("Exit STANDBY\n");
+            break;
 
-    case 5:
-        PR_DEBUG("Enter BACKUP\n");
-        MXC_LP_EnterBackupMode();
-        PR_DEBUG("Exit BACKUP\n");
-        break;
+        case 5:
+            PR_DEBUG("Enter BACKUP\n");
+            MXC_LP_EnterBackupMode();
+            PR_DEBUG("Exit BACKUP\n");
+            break;
 
-    case 6:
-        PR_DEBUG("Enter POWERDOWN, disable WUT\n");
-        MXC_WUT_Disable();
-        MXC_Delay(SEC(2));
-        MXC_LP_EnterPowerDownMode();
-        PR_DEBUG("Exit SHUTDOWN\n");
-        break;
+        case 6:
+            PR_DEBUG("Enter POWERDOWN, disable WUT\n");
+            MXC_WUT_Disable();
+            MXC_Delay(SEC(2));
+            MXC_LP_EnterPowerDownMode();
+            PR_DEBUG("Exit SHUTDOWN\n");
+            break;
 
-    default:
-        PR_DEBUG("Enter SLEEP\n");
-        MXC_LP_EnterSleepMode();
-        PR_DEBUG("Exit SLEEP\n");
-        break;
+        default:
+            PR_DEBUG("Enter SLEEP\n");
+            MXC_LP_EnterSleepMode();
+            PR_DEBUG("Exit SLEEP\n");
+            break;
     }
 }
 #endif
@@ -151,21 +151,21 @@ static void screen_faceID(void);
 static int init(void);
 static int key_process(int key);
 
-State g_state = {"faceID", init, key_process, NULL, 0 };
+State g_state = {"faceID", init, key_process, NULL, 0};
 
 #ifdef TFT_ENABLE
 static text_t screen_msg[] = {
     // info
-    { (char*) "FACEID DEMO", strlen("FACEID DEMO")},
-    { (char*) "Process Time:",  strlen("Process Time:")},
+    {(char*)"FACEID DEMO", strlen("FACEID DEMO")},
+    {(char*)"Process Time:", strlen("Process Time:")},
 };
 #ifdef BOARD_EVKIT_V1
 static int bitmap = logo_white_bg_darkgrey_bmp;
-static int font = urw_gothic_12_grey_bg_white;
+static int font   = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
-static int bitmap = (int)& logo_rgb565[0];
-static int font = (int)& SansSerif16x16[0];
+static int bitmap = (int)&logo_rgb565[0];
+static int font   = (int)&SansSerif16x16[0];
 #endif
 #endif
 
@@ -179,8 +179,8 @@ static void screen_faceID(void)
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_ShowImage(BACK_X, BACK_Y, left_arrow_bmp); // back button icon
 #endif
-    MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL);  // FACEID DEMO
-    MXC_TFT_PrintFont(12, 240, font, &screen_msg[1], NULL);  // Process Time:
+    MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL);   // FACEID DEMO
+    MXC_TFT_PrintFont(12, 240, font, &screen_msg[1], NULL); // Process Time:
     // texts
 #ifdef TS_ENABLE
     MXC_TS_RemoveAllButton();
@@ -191,11 +191,11 @@ static void screen_faceID(void)
 
 static int init(void)
 {
-    uint8_t*   raw;
-    uint32_t  w, h;
+    uint8_t* raw;
+    uint32_t w, h;
     area_t area1 = {150, 240, 50, 30};
     area_t area2 = {60, 290, 180, 30};
-    
+
     screen_faceID();
 
     while (1) {
@@ -220,8 +220,8 @@ static int init(void)
         //Get and display image
         if (riscv_mail_box[0] == IMAGE_READY) {
             raw = (uint8_t*)riscv_mail_box[1];
-            h = riscv_mail_box[2];
-            w = riscv_mail_box[3];
+            h   = riscv_mail_box[2];
+            w   = riscv_mail_box[3];
             // Clear mailbox
             riscv_mail_box[0] = 0;
 
@@ -230,7 +230,7 @@ static int init(void)
             MXC_TS_Stop();
 #endif
 
-#ifdef TFT_ENABLE   // Display captured image
+#ifdef TFT_ENABLE // Display captured image
 #ifdef BOARD_EVKIT_V1
             MXC_TFT_ShowImageCameraRGB565(X_IMAGE_START, Y_IMAGE_START, raw, h, w);
 #endif
@@ -248,10 +248,10 @@ static int init(void)
         else if (riscv_mail_box[0] == RESULT_READY) {
             text_t cnnTime, cnnResult;
 
-            cnnTime.data = (char*)&riscv_mail_box[2];
-            cnnTime.len = riscv_mail_box[1];
+            cnnTime.data   = (char*)&riscv_mail_box[2];
+            cnnTime.len    = riscv_mail_box[1];
             cnnResult.data = (char*)&riscv_mail_box[7];
-            cnnResult.len = riscv_mail_box[6];
+            cnnResult.len  = riscv_mail_box[6];
 
             // Clear mailbox
             riscv_mail_box[0] = 0;
@@ -264,9 +264,9 @@ static int init(void)
 #ifdef TFT_ENABLE
             // Display CNN result
             MXC_TFT_ClearArea(&area1, 4);
-            MXC_TFT_PrintFont(150, 240, font, &cnnTime,  NULL);
+            MXC_TFT_PrintFont(150, 240, font, &cnnTime, NULL);
             MXC_TFT_ClearArea(&area2, 4);
-            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &cnnResult,  NULL);
+            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &cnnResult, NULL);
 #endif // #ifdef TFT_ENABLE
 
 #ifdef TS_ENABLE
@@ -291,12 +291,12 @@ static int init(void)
 static int key_process(int key)
 {
     switch (key) {
-    case KEY_1:
-        state_set_current(get_home_state());
-        break;
+        case KEY_1:
+            state_set_current(get_home_state());
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return 0;
@@ -321,58 +321,62 @@ int main(void)
     printf("SYS Clock Div= %d \n", SYS_DIV);
 
     switch (SYS_DIV) {
-    case 1:
-        MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1;
-        break;
+        case 1:
+            MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV1;
+            break;
 
-    case 2:
-        MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV2;
-        break;
+        case 2:
+            MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV2;
+            break;
 
-    case 4:
-        MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV4;
-        break;
+        case 4:
+            MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV4;
+            break;
 
-    case 8:
-        MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV8;
-        break;
+        case 8:
+            MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV8;
+            break;
 
-    case 16:
-        MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV16;
-        break;
+        case 16:
+            MXC_GCR->clkctrl |= MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV16;
+            break;
 
-    default:
-        printf("UNKNOWN DIV \n");
+        default:
+            printf("UNKNOWN DIV \n");
 
-        while (1);
+            while (1)
+                ;
     }
 
-    printf("MXC_GCR->clkctrl: SYSCLK_SEL %x \n", (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS);
-    printf("MXC_GCR->clkctrl: SYSCLK_DIV %x \n", (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS);
+    printf("MXC_GCR->clkctrl: SYSCLK_SEL %x \n",
+           (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS);
+    printf("MXC_GCR->clkctrl: SYSCLK_DIV %x \n",
+           (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS);
 
     switch (CLOCK_SOURCE) {
-    case 0:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
-        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-        MXC_GCR->pm &= ~MXC_F_GCR_PM_IPO_PD;  // enable IPO=100MHz during sleep
-        break;
+        case 0:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
+            MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+            MXC_GCR->pm &= ~MXC_F_GCR_PM_IPO_PD; // enable IPO=100MHz during sleep
+            break;
 
-    case 1:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
-        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ISO);
-        MXC_GCR->pm &= ~MXC_F_GCR_PM_ISO_PD;  // enable ISO=60MHz during sleep
-        break;
+        case 1:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
+            MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ISO);
+            MXC_GCR->pm &= ~MXC_F_GCR_PM_ISO_PD; // enable ISO=60MHz during sleep
+            break;
 
-    case 2:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IBRO);
-        MXC_GCR->pm &= ~MXC_F_GCR_PM_IBRO_PD;  // enable IBRO=7.3728MHz during sleep
-        break;
+        case 2:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IBRO);
+            MXC_GCR->pm &= ~MXC_F_GCR_PM_IBRO_PD; // enable IBRO=7.3728MHz during sleep
+            break;
 
-    default:
-        printf("UNKNOWN CLOCK SOURCE \n");
+        default:
+            printf("UNKNOWN CLOCK SOURCE \n");
 
-        while (1);
+            while (1)
+                ;
     }
 
     SystemCoreClockUpdate();
@@ -397,14 +401,16 @@ int main(void)
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_180);
     MXC_TFT_SetBackGroundColor(4);
-    MXC_TFT_SetForeGroundColor(WHITE);   // set font color to white
+    MXC_TFT_SetForeGroundColor(WHITE); // set font color to white
 #endif
 
 #ifdef TS_ENABLE
     /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
+                              MXC_GPIO_VSSEL_VDDIOH};
     /* Touch screen controller busy signal */
-    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
+                               MXC_GPIO_VSSEL_VDDIOH};
     /* Initialize Touch Screen controller */
     MXC_TS_Init(MXC_SPI0, 2, &int_pin, &busy_pin);
     MXC_TS_Start();
@@ -423,9 +429,9 @@ int main(void)
     printf("RISC-V mailbox: %x\n", &riscv_mail_box[0]);
 
     // Let RISC-V run
-    MXC_FCR->urvbootaddr = (uint32_t) &__FlashStart_;// Set RISC-V boot address
+    MXC_FCR->urvbootaddr = (uint32_t)&__FlashStart_; // Set RISC-V boot address
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR); // Enable Semaphore clock
-    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR); // Set wakeup ISR
+    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR);         // Set wakeup ISR
     /* set wakeup by risc-v */
     NVIC_EnableIRQ(RISCV_IRQn);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CPU1); // Enable RISC-V clock
@@ -434,7 +440,7 @@ int main(void)
     MXC_WUT_GetTicks(LP_TIME, MXC_WUT_UNIT_MILLISEC, &ticks);
 
     // config structure for one shot timer to trigger in a number of ticks
-    cfg.mode = MXC_WUT_MODE_ONESHOT;
+    cfg.mode    = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
 
     // Init WUT
@@ -450,7 +456,8 @@ int main(void)
 #ifndef TFT_ENABLE
     int i;
 
-    for (i = 0; i < (1 << 27); i++); // Let debugger interrupt if needed
+    for (i = 0; i < (1 << 27); i++)
+        ; // Let debugger interrupt if needed
 
     __WFI(); // ARM sleeps
 #endif

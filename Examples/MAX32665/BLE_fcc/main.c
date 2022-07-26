@@ -44,14 +44,14 @@
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      2048U
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
-#define FREQ_HOP_PERIOD_US                      20000
+#define FREQ_HOP_PERIOD_US 20000
 
 /* Bluetooth DBB registers */
-#define MXC_R_CONST_OUPUT       *((volatile uint16_t*)(0x40052040))
-#define MXC_R_PATTERN_GEN       *((volatile uint16_t*)(0x4005203C))
-#define MXC_R_TX_CTRL           *((volatile uint16_t*)(0x4005101C))
+#define MXC_R_CONST_OUPUT *((volatile uint16_t*)(0x40052040))
+#define MXC_R_PATTERN_GEN *((volatile uint16_t*)(0x4005203C))
+#define MXC_R_TX_CTRL     *((volatile uint16_t*)(0x4005101C))
 
 /**************************************************************************************************
   Global Variables
@@ -94,19 +94,19 @@ extern volatile int8_t tx_rfpower_on;
 /*************************************************************************************************/
 static uint8_t* getPhyStr(void)
 {
-    switch(phy) {
+    switch (phy) {
         case LL_TEST_PHY_LE_1M:
         default:
-            memcpy(phy_str,"1M PHY",7);
+            memcpy(phy_str, "1M PHY", 7);
             break;
         case LL_TEST_PHY_LE_2M:
-            memcpy(phy_str,"2M PHY",7);
+            memcpy(phy_str, "2M PHY", 7);
             break;
         case LL_TEST_PHY_LE_CODED_S8:
-            memcpy(phy_str,"S8 PHY",7);
+            memcpy(phy_str, "S8 PHY", 7);
             break;
         case LL_TEST_PHY_LE_CODED_S2:
-            memcpy(phy_str,"S2 PHY",7);
+            memcpy(phy_str, "S2 PHY", 7);
             break;
     }
     return phy_str;
@@ -131,11 +131,11 @@ void TMR2_IRQHandler(void)
 
     /* Start the next channel */
     res = LlEnhancedTxTest(txFreqHopCh++, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-    if(res != LL_SUCCESS)
+    if (res != LL_SUCCESS)
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
 
     /* Wrap the channels */
-    if(txFreqHopCh == 40)
+    if (txFreqHopCh == 40)
         txFreqHopCh = 0;
 
     /* Restart the timeout */
@@ -185,11 +185,11 @@ static void processConsoleRX(uint8_t rxByte)
     int res;
 
     /* Holds the state of the command and the parameter */
-    static uint8_t cmd = 0;
+    static uint8_t cmd   = 0;
     static uint8_t param = 0;
 
     /* Determines if the incoming character is a command or a parameter */
-    if(cmd == 0)
+    if (cmd == 0)
         cmd = rxByte;
     else
         param = rxByte;
@@ -197,7 +197,8 @@ static void processConsoleRX(uint8_t rxByte)
     switch (cmd) {
         case '0':
 
-            APP_TRACE_INFO1("Transmit RF channel 0 (2402M), 255 bytes/pkt, 0xPRBS9, %s, forever ..", getPhyStr());
+            APP_TRACE_INFO1("Transmit RF channel 0 (2402M), 255 bytes/pkt, 0xPRBS9, %s, forever ..",
+                            getPhyStr());
             res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_PRBS9, phy, 0);
             APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
             cmd = 0;
@@ -205,7 +206,9 @@ static void processConsoleRX(uint8_t rxByte)
 
         case '1':
 
-            APP_TRACE_INFO1("Transmit RF channel 19 (2440M), 255 bytes/pkt, 0xPRBS9, %s, forever ..", getPhyStr());
+            APP_TRACE_INFO1(
+                "Transmit RF channel 19 (2440M), 255 bytes/pkt, 0xPRBS9, %s, forever ..",
+                getPhyStr());
             res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_PRBS9, phy, 0);
             APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
             cmd = 0;
@@ -213,7 +216,9 @@ static void processConsoleRX(uint8_t rxByte)
 
         case '2':
 
-            APP_TRACE_INFO1("Transmit RF channel 39 (2480M), 255 bytes/pkt, 0xPRBS9, %s, forever ..", getPhyStr());
+            APP_TRACE_INFO1(
+                "Transmit RF channel 39 (2480M), 255 bytes/pkt, 0xPRBS9, %s, forever ..",
+                getPhyStr());
             res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_PRBS9, phy, 0);
             APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
             cmd = 0;
@@ -229,7 +234,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         case '4':
 
-            if(param == 0) {
+            if (param == 0) {
                 APP_TRACE_INFO0("Select transmit power");
                 APP_TRACE_INFO0(" 0: -15 dBm");
                 APP_TRACE_INFO0(" 1: -10 dBm");
@@ -245,48 +250,48 @@ static void processConsoleRX(uint8_t rxByte)
                 case '0':
                     llc_api_set_txpower(-15);
                     LlSetAdvTxPower(-15);
-					APP_TRACE_INFO1("Power set to -15, Amp_coef = %x", dbb_seq_get_rfpower(-15));
+                    APP_TRACE_INFO1("Power set to -15, Amp_coef = %x", dbb_seq_get_rfpower(-15));
                     break;
                 case '1':
                     llc_api_set_txpower(-10);
                     LlSetAdvTxPower(-10);
-					APP_TRACE_INFO1("Power set to -10, Amp_coef = %x", dbb_seq_get_rfpower(-10));
+                    APP_TRACE_INFO1("Power set to -10, Amp_coef = %x", dbb_seq_get_rfpower(-10));
                     break;
                 case '2':
                     llc_api_set_txpower(-5);
                     LlSetAdvTxPower(-5);
-					APP_TRACE_INFO1("Power set to -5, Amp_coef = %x", dbb_seq_get_rfpower(-5));
+                    APP_TRACE_INFO1("Power set to -5, Amp_coef = %x", dbb_seq_get_rfpower(-5));
                     break;
                 case '3':
                     llc_api_set_txpower(-2);
                     LlSetAdvTxPower(-2);
-					APP_TRACE_INFO1("Power set to -2, Amp_coef = %x", dbb_seq_get_rfpower(-2));
+                    APP_TRACE_INFO1("Power set to -2, Amp_coef = %x", dbb_seq_get_rfpower(-2));
                     break;
                 case '4':
                     llc_api_set_txpower(0);
                     LlSetAdvTxPower(0);
-					APP_TRACE_INFO1("Power set to 0, Amp_coef = %x", dbb_seq_get_rfpower(0));
+                    APP_TRACE_INFO1("Power set to 0, Amp_coef = %x", dbb_seq_get_rfpower(0));
                     break;
                 case '5':
                     llc_api_set_txpower(2);
                     LlSetAdvTxPower(2);
-					APP_TRACE_INFO1("Power set to 2, Amp_coef = %x", dbb_seq_get_rfpower(2));
+                    APP_TRACE_INFO1("Power set to 2, Amp_coef = %x", dbb_seq_get_rfpower(2));
                     break;
                 case '6':
                     llc_api_set_txpower(4);
                     LlSetAdvTxPower(4);
-					APP_TRACE_INFO1("Power set to 4.5, Amp_coef = %x", dbb_seq_get_rfpower(4));
+                    APP_TRACE_INFO1("Power set to 4.5, Amp_coef = %x", dbb_seq_get_rfpower(4));
                     break;
                 default:
                     APP_TRACE_INFO0("Invalid selection");
                     break;
             }
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
 
         case '5':
-            if(param == 0) {
+            if (param == 0) {
                 APP_TRACE_INFO0("Select transmit channel");
                 APP_TRACE_INFO0(" 0:  0 (2402M)");
                 APP_TRACE_INFO0(" 1: 19 (2440M)");
@@ -335,7 +340,7 @@ static void processConsoleRX(uint8_t rxByte)
             MXC_R_CONST_OUPUT = 0x0;
             MXC_R_PATTERN_GEN = 0x4B;
 
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
 
@@ -343,16 +348,16 @@ static void processConsoleRX(uint8_t rxByte)
             APP_TRACE_INFO0("Disabling TX");
 
             /* Disable constant TX */
-            MXC_R_TX_CTRL = 0x2;
+            MXC_R_TX_CTRL     = 0x2;
             MXC_R_PATTERN_GEN = 0x48;
 
             PalBbDisable();
-            
+
             cmd = 0;
             break;
 
         case '8':
-            if(param == 0) {
+            if (param == 0) {
                 /* Set the PHY */
                 APP_TRACE_INFO0("Select PHY");
                 APP_TRACE_INFO0("1: 1M");
@@ -383,10 +388,10 @@ static void processConsoleRX(uint8_t rxByte)
                     APP_TRACE_INFO0("Invalid selection");
                     break;
             }
-			
-			llc_api_set_phy(phy, BB_PHY_OPTIONS_DEFAULT);
-			
-            cmd = 0;
+
+            llc_api_set_phy(phy, BB_PHY_OPTIONS_DEFAULT);
+
+            cmd   = 0;
             param = 0;
             break;
         case '9':
@@ -414,7 +419,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         default:
             APP_TRACE_INFO0("Invalid selection");
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
     }
@@ -427,7 +432,7 @@ static void processConsoleRX(uint8_t rxByte)
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
@@ -459,7 +464,8 @@ static void mainWsfInit(void)
     const uint16_t maxRptBufSize = 12 + 2 + 255;
 
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
-    const uint16_t dataBufSize = 12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+    const uint16_t dataBufSize =
+        12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
@@ -468,12 +474,12 @@ static void mainWsfInit(void)
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
     wsfBufPoolDesc_t poolDesc[] = {
-        { 16,            8 },
-        { 32,            4 },
-        { 128,           mainLlRtCfg.maxAdvReports },
-        { maxRptBufSize, mainLlRtCfg.maxAdvReports },       /* Extended reports. */
-        { dataBufSize,   mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf + mainLlRtCfg.numIsoRxBuf }
-    };
+        {16, 8},
+        {32, 4},
+        {128, mainLlRtCfg.maxAdvReports},
+        {maxRptBufSize, mainLlRtCfg.maxAdvReports}, /* Extended reports. */
+        {dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
+                          mainLlRtCfg.numIsoRxBuf}};
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -536,15 +542,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg     = &mainBbRtCfg,
-        .wlSizeCfg    = 4,
-        .rlSizeCfg    = 4,
-        .plSizeCfg    = 4,
-        .pLlRtCfg     = &mainLlRtCfg,
-        .pFreeMem     = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable()
-    };
+    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
+                           .wlSizeCfg    = 4,
+                           .rlSizeCfg    = 4,
+                           .plSizeCfg    = 4,
+                           .pLlRtCfg     = &mainLlRtCfg,
+                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
+                           .freeMemAvail = WsfHeapCountAvailable()};
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
@@ -552,7 +556,7 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
-    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlSetBdAddr((uint8_t*)&bdAddr);
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
     WsfOsRegisterSleepCheckFunc(ChciTrService);

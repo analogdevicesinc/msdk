@@ -49,8 +49,9 @@ volatile uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
-  printf("\n*** FAIL ***\n\n");
-  while (1);
+    printf("\n*** FAIL ***\n\n");
+    while (1)
+        ;
 }
 
 // 3-channel 32x32 data input (3072 bytes total / 1024 bytes per channel):
@@ -59,9 +60,9 @@ static const uint32_t input_60[] = SAMPLE_INPUT_60;
 
 void load_input(void)
 {
-  // This function loads the sample data input -- replace with actual data
+    // This function loads the sample data input -- replace with actual data
 
-  memcpy32((uint32_t *) 0x54860000, input_60, 1024);
+    memcpy32((uint32_t*)0x54860000, input_60, 1024);
 }
 
 // Expected output of layer 32 for cifar-100-effnet2 given the sample input (known-answer test)
@@ -69,23 +70,23 @@ void load_input(void)
 static const uint32_t sample_output[] = SAMPLE_OUTPUT;
 int check_output(void)
 {
-  int i;
-  uint32_t mask, len;
-  volatile uint32_t *addr;
-  const uint32_t *ptr = sample_output;
+    int i;
+    uint32_t mask, len;
+    volatile uint32_t* addr;
+    const uint32_t* ptr = sample_output;
 
-  while ((addr = (volatile uint32_t *) *ptr++) != 0) {
-    mask = *ptr++;
-    len = *ptr++;
-    for (i = 0; i < len; i++)
-      if ((*addr++ & mask) != *ptr++) {
-        printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
-               i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
-        return CNN_FAIL;
-      }
-  }
+    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+        mask = *ptr++;
+        len  = *ptr++;
+        for (i = 0; i < len; i++)
+            if ((*addr++ & mask) != *ptr++) {
+                printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
+                       i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
+                return CNN_FAIL;
+            }
+    }
 
-  return CNN_OK;
+    return CNN_OK;
 }
 
 // Classification layer:
@@ -94,73 +95,76 @@ static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
 void softmax_layer(void)
 {
-  cnn_unload((uint32_t *) ml_data);
-  softmax_q17p14_q15((const q31_t *) ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t*)ml_data);
+    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 int main(void)
 {
-  int i;
-  int digs, tens;
+    int i;
+    int digs, tens;
 
-  MXC_ICC_Enable(MXC_ICC0); // Enable cache
+    MXC_ICC_Enable(MXC_ICC0); // Enable cache
 
-  // Switch to 120 MHz clock
-  MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-  MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
-  SystemCoreClockUpdate();
+    // Switch to 120 MHz clock
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
+    SystemCoreClockUpdate();
 
-  printf("Waiting...\n");
+    printf("Waiting...\n");
 
-  // DO NOT DELETE THIS LINE:
-  MXC_Delay(SEC(2)); // Let debugger interrupt if needed
+    // DO NOT DELETE THIS LINE:
+    MXC_Delay(SEC(2)); // Let debugger interrupt if needed
 
-  // Enable peripheral, enable CNN interrupt, turn on CNN clock
-  // CNN clock: PLL (200 MHz) div 4
-  cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
+    // Enable peripheral, enable CNN interrupt, turn on CNN clock
+    // CNN clock: PLL (200 MHz) div 4
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
 
-  printf("\n*** CNN Inference Test ***\n");
+    printf("\n*** CNN Inference Test ***\n");
 
-  cnn_init(); // Bring state machine into consistent state
-  cnn_load_weights(); // Load kernels
-  cnn_load_bias();
-  cnn_configure(); // Configure state machine
-  load_input(); // Load data input
-  // CNN clock: PLL (200 MHz) div 1
-  MXC_GCR->pclkdiv = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-                     | MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
-  cnn_start(); // Start CNN processing
+    cnn_init();         // Bring state machine into consistent state
+    cnn_load_weights(); // Load kernels
+    cnn_load_bias();
+    cnn_configure(); // Configure state machine
+    load_input();    // Load data input
+    // CNN clock: PLL (200 MHz) div 1
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
+    cnn_start(); // Start CNN processing
 
-  SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-  while (cnn_time == 0)
-    __WFI(); // Wait for CNN
+    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
+    while (cnn_time == 0)
+        __WFI(); // Wait for CNN
 
-  // Switch CNN clock to PLL (200 MHz) div 4
+    // Switch CNN clock to PLL (200 MHz) div 4
 
-  MXC_GCR->pclkdiv = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-                     | MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
-  if (check_output() != CNN_OK) fail();
-  softmax_layer();
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
+    if (check_output() != CNN_OK)
+        fail();
+    softmax_layer();
 
-  printf("\n*** PASS ***\n\n");
+    printf("\n*** PASS ***\n\n");
 
 #ifdef CNN_INFERENCE_TIMER
-  printf("Approximate inference time: %u us\n\n", cnn_time);
+    printf("Approximate inference time: %u us\n\n", cnn_time);
 #endif
 
-  cnn_disable(); // Shut down CNN clock, disable peripheral
+    cnn_disable(); // Shut down CNN clock, disable peripheral
 
-  MXC_GCR->ipll_ctrl &= ~MXC_F_GCR_IPLL_CTRL_EN; // Disable IPLL
+    MXC_GCR->ipll_ctrl &= ~MXC_F_GCR_IPLL_CTRL_EN; // Disable IPLL
 
-  printf("Classification results:\n");
-  for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
-    digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
-    tens = digs % 10;
-    digs = digs / 10;
-    printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
-  }
+    printf("Classification results:\n");
+    for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
+        digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
+        tens = digs % 10;
+        digs = digs / 10;
+        printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
+    }
 
-  return 0;
+    return 0;
 }
 
 /*
@@ -204,4 +208,3 @@ int main(void)
   Weight memory: 753,952 bytes out of 2,396,160 bytes total (31%)
   Bias memory:   5,236 bytes out of 8,192 bytes total (64%)
 */
-

@@ -42,22 +42,22 @@
 
 /* **** Functions **** */
 
-int MXC_ICC_ID(mxc_icc_regs_t *icc, mxc_icc_info_t cid)
+int MXC_ICC_ID(mxc_icc_regs_t* icc, mxc_icc_info_t cid)
 {
-    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t*) icc, cid);
+    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t*)icc, cid);
 }
 
-void MXC_ICC_Enable(mxc_icc_regs_t *icc)
+void MXC_ICC_Enable(mxc_icc_regs_t* icc)
 {
-    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t*) icc);
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t*)icc);
 }
 
-void MXC_ICC_Disable(mxc_icc_regs_t *icc)
+void MXC_ICC_Disable(mxc_icc_regs_t* icc)
 {
-    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t*) icc);
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t*)icc);
 }
 
-void MXC_ICC_Flush(mxc_icc_regs_t *icc)
+void MXC_ICC_Flush(mxc_icc_regs_t* icc)
 {
     MXC_ICC_Disable(icc);
     MXC_ICC_Enable(icc);

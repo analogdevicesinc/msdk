@@ -69,8 +69,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 /******************************************************************************/
 /* This function overrides the one in system_max32680.c                       */
@@ -85,19 +86,19 @@ void SystemCoreClockUpdate(void)
 int Board_Init(void)
 {
     int err;
-    
+
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
-    
+
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-    
+
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     /*
         if ((err = PB_Init()) != E_NO_ERROR) {
             MXC_ASSERT_FAIL();
@@ -109,8 +110,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-    
-    
+
     return E_NO_ERROR;
 }
 
@@ -118,11 +118,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if (MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_APB_CLK) < 0) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -130,11 +130,11 @@ int Console_Init(void)
 int Console_Shutdown(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Shutdown(ConsoleUart)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -143,4 +143,3 @@ void NMI_Handler(void)
 {
     __NOP();
 }
-

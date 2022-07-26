@@ -62,40 +62,35 @@ void MXC_FLC_ME10_Flash_Operation(void)
 }
 
 //******************************************************************************
-int MXC_FLC_ME10_GetByAddress(mxc_flc_regs_t **flc, uint32_t addr)
+int MXC_FLC_ME10_GetByAddress(mxc_flc_regs_t** flc, uint32_t addr)
 {
-
-    if((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
+    if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
         *flc = MXC_FLC;
-    }
-    else if((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+    } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
         *flc = MXC_FLC;
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 
 //******************************************************************************
-int MXC_FLC_ME10_GetPhysicalAddress(uint32_t addr, uint32_t *result)
+int MXC_FLC_ME10_GetPhysicalAddress(uint32_t addr, uint32_t* result)
 {
-    if((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
+    if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
         *result = addr - MXC_FLASH_MEM_BASE;
-    }
-    else if((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+    } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 
 // *****************************************************************************
-int MXC_FLC_Init (void)
+int MXC_FLC_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_FLC);
     return E_NO_ERROR;
@@ -103,21 +98,21 @@ int MXC_FLC_Init (void)
 
 // *****************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
-__attribute__ ( (section (".flashprog")))
+__attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_Busy (void)
+int MXC_FLC_Busy(void)
 {
     return MXC_FLC_RevA_Busy();
 }
 
 // *****************************************************************************
-int MXC_FLC_MassErase (void)
+int MXC_FLC_MassErase(void)
 {
     int err;
 
-    if((err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*) MXC_FLC)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*)MXC_FLC)) != E_NO_ERROR) {
         return err;
     }
 
@@ -128,20 +123,21 @@ int MXC_FLC_MassErase (void)
 
 // *****************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
-__attribute__ ( (section (".flashprog")))
+__attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_PageErase (uint32_t address)
+int MXC_FLC_PageErase(uint32_t address)
 {
     int err;
     uint32_t physicalAddress;
 
-    if((err = MXC_FLC_ME10_GetPhysicalAddress(address, &physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME10_GetPhysicalAddress(address, &physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*) MXC_FLC, physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)MXC_FLC, physicalAddress)) !=
+        E_NO_ERROR) {
         return err;
     }
 
@@ -151,32 +147,32 @@ int MXC_FLC_PageErase (uint32_t address)
 }
 
 // *****************************************************************************
-void MXC_FLC_Read (int address, void* buffer, int len)
+void MXC_FLC_Read(int address, void* buffer, int len)
 {
-    if(address < MXC_FLASH_MEM_BASE || address >= (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
+    if (address < MXC_FLASH_MEM_BASE || address >= (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         return;
     }
     MXC_FLC_Com_Read(address, buffer, len);
 }
 
 // *****************************************************************************
-int MXC_FLC_Write (uint32_t address, uint32_t length, uint32_t *buffer)
+int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer)
 {
     return MXC_FLC_Com_Write(address, length, buffer);
 }
 
 // *****************************************************************************
-int MXC_FLC_Write32 (uint32_t address, uint32_t data)
+int MXC_FLC_Write32(uint32_t address, uint32_t data)
 {
     int err;
     uint32_t physicalAddress, aligned;
 
     aligned = address & ~0xf;
-    if((err = MXC_FLC_ME10_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME10_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
-    err = MXC_FLC_RevA_Write32((mxc_flc_reva_regs_t*) MXC_FLC, address, data, physicalAddress);
+    err = MXC_FLC_RevA_Write32((mxc_flc_reva_regs_t*)MXC_FLC, address, data, physicalAddress);
 
     MXC_FLC_ME10_Flash_Operation();
 
@@ -185,21 +181,22 @@ int MXC_FLC_Write32 (uint32_t address, uint32_t data)
 
 // *****************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
-__attribute__ ( (section (".flashprog")))
+__attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_Write128 (uint32_t address, uint32_t *data)
+int MXC_FLC_Write128(uint32_t address, uint32_t* data)
 {
     int err;
     uint32_t physicalAddress, aligned;
 
     aligned = address & ~0xf;
-    if((err = MXC_FLC_ME10_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME10_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*) MXC_FLC, physicalAddress, data)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)MXC_FLC, physicalAddress, data)) !=
+        E_NO_ERROR) {
         return err;
     }
 
@@ -209,39 +206,39 @@ int MXC_FLC_Write128 (uint32_t address, uint32_t *data)
 }
 
 // *****************************************************************************
-int MXC_FLC_EnableInt (uint32_t mask)
+int MXC_FLC_EnableInt(uint32_t mask)
 {
     return MXC_FLC_RevA_EnableInt(mask);
 }
 
 // *****************************************************************************
-int MXC_FLC_DisableInt (uint32_t mask)
+int MXC_FLC_DisableInt(uint32_t mask)
 {
     return MXC_FLC_RevA_DisableInt(mask);
 }
 
 // *****************************************************************************
-int MXC_FLC_GetFlags (void)
+int MXC_FLC_GetFlags(void)
 {
     return MXC_FLC_RevA_GetFlags();
 }
 
 // *****************************************************************************
-int MXC_FLC_ClearFlags (uint32_t mask)
+int MXC_FLC_ClearFlags(uint32_t mask)
 {
     return MXC_FLC_RevA_ClearFlags(mask);
 }
 
 // *****************************************************************************
-int MXC_FLC_UnlockInfoBlock (uint32_t address)
+int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
-    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*) MXC_FLC, address);
+    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*)MXC_FLC, address);
 }
 
 // *****************************************************************************
-int MXC_FLC_LockInfoBlock (uint32_t address)
+int MXC_FLC_LockInfoBlock(uint32_t address)
 {
-    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*) MXC_FLC, address);
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)MXC_FLC, address);
 }
 
 //******************************************************************************

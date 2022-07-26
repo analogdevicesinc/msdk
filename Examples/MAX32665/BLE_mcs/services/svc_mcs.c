@@ -17,9 +17,7 @@
  */
 /*************************************************************************************************/
 
-
 #include "svc_mcs.h"
-
 
 /**************************************************************************************************
   Macros
@@ -35,49 +33,52 @@
 #define MCS_SEC_PERMIT_WRITE SVC_SEC_PERMIT_WRITE
 #endif
 
-
 /**************************************************************************************************
  Service variables
 **************************************************************************************************/
 
 /*Service variables declaration*/
-const uint8_t attMcsSvcUuid[ATT_128_UUID_LEN] =   {ATT_UUID_MCS_SERVICE};
+const uint8_t attMcsSvcUuid[ATT_128_UUID_LEN] = {ATT_UUID_MCS_SERVICE};
 
 /*Characteristic variables declaration*/
 const uint8_t svcMcsButtonUuid[ATT_128_UUID_LEN] = {ATT_UUID_MCS_BUTTON};
-const uint8_t svcMcsRUuid[ATT_128_UUID_LEN] = {ATT_UUID_MCS_R};
-const uint8_t svcMcsGUuid[ATT_128_UUID_LEN] = {ATT_UUID_MCS_G};
-const uint8_t svcMcsBUuid[ATT_128_UUID_LEN] = {ATT_UUID_MCS_B};
+const uint8_t svcMcsRUuid[ATT_128_UUID_LEN]      = {ATT_UUID_MCS_R};
+const uint8_t svcMcsGUuid[ATT_128_UUID_LEN]      = {ATT_UUID_MCS_G};
+const uint8_t svcMcsBUuid[ATT_128_UUID_LEN]      = {ATT_UUID_MCS_B};
 
 static const uint8_t mcsValSvc[] = {ATT_UUID_MCS_SERVICE};
-static const uint16_t mcsLenSvc = sizeof(mcsValSvc);
+static const uint16_t mcsLenSvc  = sizeof(mcsValSvc);
 
-static const uint8_t mcsButtonValCh[] = {ATT_PROP_READ | ATT_PROP_NOTIFY, UINT16_TO_BYTES(MCS_BUTTON_HDL), ATT_UUID_MCS_BUTTON};
-static const uint16_t mcsButtonLenCh = sizeof(mcsButtonValCh);
+static const uint8_t mcsButtonValCh[] = {ATT_PROP_READ | ATT_PROP_NOTIFY,
+                                         UINT16_TO_BYTES(MCS_BUTTON_HDL), ATT_UUID_MCS_BUTTON};
+static const uint16_t mcsButtonLenCh  = sizeof(mcsButtonValCh);
 
-static const uint8_t mcsRValCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(MCS_R_HDL), ATT_UUID_MCS_R};
-static const uint16_t mcsRLenCh = sizeof(mcsRValCh);
+static const uint8_t mcsRValCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(MCS_R_HDL),
+                                    ATT_UUID_MCS_R};
+static const uint16_t mcsRLenCh  = sizeof(mcsRValCh);
 
-static const uint8_t mcsGValCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(MCS_G_HDL), ATT_UUID_MCS_G};
-static const uint16_t mcsGLenCh = sizeof(mcsGValCh);
+static const uint8_t mcsGValCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(MCS_G_HDL),
+                                    ATT_UUID_MCS_G};
+static const uint16_t mcsGLenCh  = sizeof(mcsGValCh);
 
-static const uint8_t mcsBValCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(MCS_B_HDL), ATT_UUID_MCS_B};
-static const uint16_t mcsBLenCh = sizeof(mcsBValCh);
+static const uint8_t mcsBValCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(MCS_B_HDL),
+                                    ATT_UUID_MCS_B};
+static const uint16_t mcsBLenCh  = sizeof(mcsBValCh);
 
 /*Characteristic values declaration*/
-static uint8_t mcsButtonVal[] = {0};
+static uint8_t mcsButtonVal[]         = {0};
 static const uint16_t mcsButtonValLen = sizeof(mcsButtonVal);
 
-static uint8_t mcsButtonValChCcc[] = {UINT16_TO_BYTES(0x0000)};
+static uint8_t mcsButtonValChCcc[]         = {UINT16_TO_BYTES(0x0000)};
 static const uint16_t mcsButtonLenValChCcc = sizeof(mcsButtonValChCcc);
 
-static uint8_t mcsRVal[] = {0};
+static uint8_t mcsRVal[]         = {0};
 static const uint16_t mcsRValLen = sizeof(mcsRVal);
 
-static uint8_t mcsGVal[] = {0};
+static uint8_t mcsGVal[]         = {0};
 static const uint16_t mcsGValLen = sizeof(mcsGVal);
 
-static uint8_t mcsBVal[] = {0};
+static uint8_t mcsBVal[]         = {0};
 static const uint16_t mcsBValLen = sizeof(mcsBVal);
 
 /**************************************************************************************************
@@ -88,116 +89,47 @@ static const uint16_t mcsBValLen = sizeof(mcsBVal);
 static const attsAttr_t mcsList[] = {
     /*-----------------------------*/
     /* Service declaration */
-    {
-        attPrimSvcUuid,
-        (uint8_t *) mcsValSvc,
-        (uint16_t *) &mcsLenSvc,
-        sizeof(mcsValSvc),
-        0,
-        MCS_SEC_PERMIT_READ
-    },
+    {attPrimSvcUuid, (uint8_t*)mcsValSvc, (uint16_t*)&mcsLenSvc, sizeof(mcsValSvc), 0,
+     MCS_SEC_PERMIT_READ},
 
     /*----------------------------*/
     /* Button characteristic declaration */
-    {
-        attChUuid,
-        (uint8_t *) mcsButtonValCh,
-        (uint16_t *) &mcsButtonLenCh,
-        sizeof(mcsButtonValCh),
-        0,
-        MCS_SEC_PERMIT_READ
-    },
+    {attChUuid, (uint8_t*)mcsButtonValCh, (uint16_t*)&mcsButtonLenCh, sizeof(mcsButtonValCh), 0,
+     MCS_SEC_PERMIT_READ},
     /* Button characteristic value */
-    {
-        svcMcsButtonUuid,
-        (uint8_t *) mcsButtonVal,
-        (uint16_t *) &mcsButtonValLen,
-        sizeof(mcsButtonVal),
-        0,
-        MCS_SEC_PERMIT_READ
-    },
+    {svcMcsButtonUuid, (uint8_t*)mcsButtonVal, (uint16_t*)&mcsButtonValLen, sizeof(mcsButtonVal), 0,
+     MCS_SEC_PERMIT_READ},
     /*Button characteristic value descriptor*/
-    {
-        attCliChCfgUuid,
-        (uint8_t *) mcsButtonValChCcc,
-        (uint16_t *) &mcsButtonLenValChCcc,
-        sizeof(mcsButtonValChCcc),
-        ATTS_SET_CCC,
-        (ATTS_PERMIT_READ | SVC_SEC_PERMIT_WRITE)
-    },
+    {attCliChCfgUuid, (uint8_t*)mcsButtonValChCcc, (uint16_t*)&mcsButtonLenValChCcc,
+     sizeof(mcsButtonValChCcc), ATTS_SET_CCC, (ATTS_PERMIT_READ | SVC_SEC_PERMIT_WRITE)},
 
     /*-----------------------------*/
     /* R characteristic declaration */
-    {
-        attChUuid,
-        (uint8_t *) mcsRValCh,
-        (uint16_t *) &mcsRLenCh,
-        sizeof(mcsRValCh),
-        ATTS_SET_WRITE_CBACK,
-        (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)
-    },
+    {attChUuid, (uint8_t*)mcsRValCh, (uint16_t*)&mcsRLenCh, sizeof(mcsRValCh), ATTS_SET_WRITE_CBACK,
+     (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)},
     /* R characteristic characteristic value */
-    {
-        svcMcsRUuid,
-        (uint8_t *) mcsRVal,
-        (uint16_t *) &mcsRValLen,
-        sizeof(mcsRVal),
-        ATTS_SET_WRITE_CBACK,
-        (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)
-    },
+    {svcMcsRUuid, (uint8_t*)mcsRVal, (uint16_t*)&mcsRValLen, sizeof(mcsRVal), ATTS_SET_WRITE_CBACK,
+     (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)},
 
     /*-----------------------------*/
     /* G characteristic declaration */
-    {
-        attChUuid,
-        (uint8_t *) mcsGValCh,
-        (uint16_t *) &mcsGLenCh,
-        sizeof(mcsGValCh),
-        ATTS_SET_WRITE_CBACK,
-        (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)
-    },
+    {attChUuid, (uint8_t*)mcsGValCh, (uint16_t*)&mcsGLenCh, sizeof(mcsGValCh), ATTS_SET_WRITE_CBACK,
+     (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)},
     /* G characteristic characteristic value */
-    {
-        svcMcsGUuid,
-        (uint8_t *) mcsGVal,
-        (uint16_t *) &mcsGValLen,
-        sizeof(mcsGVal),
-        ATTS_SET_WRITE_CBACK,
-        (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)
-    },
+    {svcMcsGUuid, (uint8_t*)mcsGVal, (uint16_t*)&mcsGValLen, sizeof(mcsGVal), ATTS_SET_WRITE_CBACK,
+     (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)},
 
     /*-----------------------------*/
     /*  B characteristic declaration */
-    {
-        attChUuid,
-        (uint8_t *) mcsBValCh,
-        (uint16_t *) &mcsBLenCh,
-        sizeof(mcsBValCh),
-        ATTS_SET_WRITE_CBACK,
-        (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)
-    },
+    {attChUuid, (uint8_t*)mcsBValCh, (uint16_t*)&mcsBLenCh, sizeof(mcsBValCh), ATTS_SET_WRITE_CBACK,
+     (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)},
     /* B characteristic value */
-    {
-        svcMcsBUuid,
-        (uint8_t *) mcsBVal,
-        (uint16_t *) &mcsBValLen,
-        sizeof(mcsBVal),
-        ATTS_SET_WRITE_CBACK,
-        (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)
-    }
-};
-
+    {svcMcsBUuid, (uint8_t*)mcsBVal, (uint16_t*)&mcsBValLen, sizeof(mcsBVal), ATTS_SET_WRITE_CBACK,
+     (MCS_SEC_PERMIT_READ | MCS_SEC_PERMIT_WRITE)}};
 
 /* Test group structure */
-static attsGroup_t svcMcsGroup = {
-    NULL,
-    (attsAttr_t *) mcsList,
-    NULL,
-    NULL,
-    MCS_START_HDL,
-    MCS_END_HDL
-};
-
+static attsGroup_t svcMcsGroup = {NULL, (attsAttr_t*)mcsList, NULL,
+                                  NULL, MCS_START_HDL,        MCS_END_HDL};
 
 /*************************************************************************************************/
 /*!
@@ -210,7 +142,6 @@ void SvcMcsAddGroup(void)
 {
     AttsAddGroup(&svcMcsGroup);
 }
-
 
 /*************************************************************************************************/
 /*!
@@ -236,6 +167,6 @@ void SvcMcsRemoveGroup(void)
 /*************************************************************************************************/
 void SvcMcsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
 {
-    svcMcsGroup.readCback = readCback;
+    svcMcsGroup.readCback  = readCback;
     svcMcsGroup.writeCback = writeCback;
 }

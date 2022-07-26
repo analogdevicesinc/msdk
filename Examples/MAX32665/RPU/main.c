@@ -63,7 +63,8 @@ void HardFault_Handler(void)
     printf("\n\nHard Fault reached\n");
     printf("Press reset to run the example again\n");
     printf("Example Complete\n");
-    while(1);
+    while (1)
+        ;
 }
 
 int Core1_Main(void)
@@ -73,20 +74,23 @@ int Core1_Main(void)
     // We need to disallow everything we don't want to access
     // the RPU_Allow function can only be used to selectively
     // allow masters that have already been disallowed
-    err = MXC_RPU_Disallow(MXC_RPU_TMR3, (~MXC_RPU_SYS1_ALLOW) & 0x1FF);  // Acquire exclusive access to TMR3
+    err = MXC_RPU_Disallow(MXC_RPU_TMR3,
+                           (~MXC_RPU_SYS1_ALLOW) & 0x1FF); // Acquire exclusive access to TMR3
 
-    if(err == E_BAD_STATE) {
+    if (err == E_BAD_STATE) {
         LED_On(0);
-        while(1);
-    } else if(err == E_BAD_PARAM) {
-        while(1);
+        while (1)
+            ;
+    } else if (err == E_BAD_PARAM) {
+        while (1)
+            ;
     }
 
     LED_On(1);
 
-    while(1);
+    while (1)
+        ;
 }
-
 
 // *****************************************************************************
 int main(void)
@@ -108,5 +112,6 @@ int main(void)
     printf("TMR3 Control Register: 0x%08x\n", invalidaddr);
 
     printf("Did not fault\n");
-    while(1);
+    while (1)
+        ;
 }

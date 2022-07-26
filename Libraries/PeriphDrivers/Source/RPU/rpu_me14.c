@@ -43,18 +43,15 @@
 /* **** Functions **** */
 int MXC_RPU_Allow(mxc_rpu_device_t periph, uint32_t allow_mask)
 {
-	return MXC_RPU_RevA_Allow(periph, allow_mask);
+    return MXC_RPU_RevA_Allow(periph, allow_mask);
 }
 
 int MXC_RPU_Disallow(mxc_rpu_device_t periph, uint32_t disallow_mask)
 {
-	return MXC_RPU_RevA_Disallow(periph, disallow_mask);
+    return MXC_RPU_RevA_Disallow(periph, disallow_mask);
 }
 
 int MXC_RPU_IsAllowed(void)
 {
-	return MXC_RPU_RevA_IsAllowed();
+    return MXC_RPU_RevA_IsAllowed();
 }
-
-
-

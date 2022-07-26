@@ -12,9 +12,9 @@ void lv_example_span_1(void)
     lv_style_set_border_color(&style, lv_palette_main(LV_PALETTE_ORANGE));
     lv_style_set_pad_all(&style, 2);
 
-    lv_obj_t * spans = lv_spangroup_create(lv_scr_act());
+    lv_obj_t* spans = lv_spangroup_create(lv_scr_act());
     lv_obj_set_width(spans, 300);
-    lv_obj_set_height(spans,300);
+    lv_obj_set_height(spans, 300);
     lv_obj_center(spans);
     lv_obj_add_style(spans, &style, 0);
 
@@ -23,7 +23,7 @@ void lv_example_span_1(void)
     lv_spangroup_set_indent(spans, 20);
     lv_spangroup_set_mode(spans, LV_SPAN_MODE_BREAK);
 
-    lv_span_t * span = lv_spangroup_new_span(spans);
+    lv_span_t* span = lv_spangroup_new_span(spans);
     lv_span_set_text(span, "china is a beautiful country.");
     lv_style_set_text_color(&span->style, lv_palette_main(LV_PALETTE_RED));
     lv_style_set_text_decor(&span->style, LV_TEXT_DECOR_STRIKETHROUGH | LV_TEXT_DECOR_UNDERLINE);
@@ -32,7 +32,7 @@ void lv_example_span_1(void)
     span = lv_spangroup_new_span(spans);
     lv_span_set_text_static(span, "good good study, day day up.");
 #if LV_FONT_MONTSERRAT_24
-    lv_style_set_text_font(&span->style,  &lv_font_montserrat_24);
+    lv_style_set_text_font(&span->style, &lv_font_montserrat_24);
 #endif
     lv_style_set_text_color(&span->style, lv_palette_main(LV_PALETTE_GREEN));
 

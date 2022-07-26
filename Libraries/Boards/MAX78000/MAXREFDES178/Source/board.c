@@ -66,7 +66,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1);
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -75,17 +76,17 @@ int Board_Init(void)
 #ifndef __riscv
     int err;
 
-    for(unsigned long delay_count = 0 ; delay_count < 500000; delay_count++ );
+    for (unsigned long delay_count = 0; delay_count < 500000; delay_count++)
+        ;
 
-    
     // Set SWDCLK and SWDIO pads to 3.3V
     // MXC_GPIO0->vssel |= (3 << 28);
-    
+
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
-    
+
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
@@ -94,15 +95,15 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     MXC_SIMO->vrego_c = 0x43; // Set CNN voltage
-#endif // __riscv
-    
+#endif                        // __riscv
+
     return E_NO_ERROR;
 }
 
@@ -110,11 +111,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 

@@ -59,7 +59,7 @@ int main(void)
     printf("\n\n\n");
     printf("**********Hello World Example**********\n");
 
-    while(1) {
+    while (1) {
         LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_Off(0);

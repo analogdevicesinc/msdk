@@ -64,8 +64,8 @@ extern const mxc_gpio_cfg_t pb_pin[];
 extern const mxc_gpio_cfg_t led_pin[];
 
 // refers to array, do not change constants
-#define SW1         0
-#define LED         0
+#define SW1 0
+#define LED 0
 /***** Functions *****/
 
 // *****************************************************************************
@@ -93,25 +93,25 @@ void MXC_WDT_Setup()
 int main(void)
 {
     MXC_WDT_Init(MXC_WDT0);
-    
+
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_EnableReset(MXC_WDT0);
         MXC_WDT_Enable(MXC_WDT0);
         printf("Watchdog reset\n");
     }
-    
+
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("Press a button to create watchdog interrupt or reset:\n");
     printf("SW2 (P0.16)= reset program\n");
     printf("SW3 (P0.17)= timeout interrupt\n\n");
-    
+
     //Blink LED
     MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-    
+
     //Blink LED three times at startup
     int numBlinks = 3;
-    
+
     while (numBlinks) {
         MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
         MXC_Delay(MXC_DELAY_MSEC(100));
@@ -119,10 +119,10 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(100));
         numBlinks--;
     }
-    
+
     //Setup watchdog
     MXC_WDT_Setup();
-    
+
     while (1) {
         //Push SW1 to reset watchdog
         if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
@@ -132,16 +132,17 @@ int main(void)
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
-            
-            while (1);
+
+            while (1)
+                ;
         }
-        
+
         //blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
         MXC_Delay(MXC_DELAY_MSEC(500));
         MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-        
+
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }

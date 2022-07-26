@@ -1,13 +1,12 @@
 #include "../../lv_examples.h"
 #if LV_USE_METER && LV_BUILD_EXAMPLES
 
-static lv_obj_t * meter;
+static lv_obj_t* meter;
 
-static void set_value(void * indic, int32_t v)
+static void set_value(void* indic, int32_t v)
 {
     lv_meter_set_indicator_end_value(meter, indic, v);
 }
-
 
 /**
  * A meter with multiple arcs
@@ -22,15 +21,18 @@ void lv_example_meter_2(void)
     lv_obj_remove_style(meter, NULL, LV_PART_INDICATOR);
 
     /*Add a scale first*/
-    lv_meter_scale_t * scale = lv_meter_add_scale(meter);
+    lv_meter_scale_t* scale = lv_meter_add_scale(meter);
     lv_meter_set_scale_ticks(meter, scale, 11, 2, 10, lv_palette_main(LV_PALETTE_GREY));
     lv_meter_set_scale_major_ticks(meter, scale, 1, 2, 30, lv_color_hex3(0xeee), 10);
     lv_meter_set_scale_range(meter, scale, 0, 100, 270, 90);
 
     /*Add a three arc indicator*/
-    lv_meter_indicator_t * indic1 = lv_meter_add_arc(meter, scale, 10, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_meter_indicator_t * indic2 = lv_meter_add_arc(meter, scale, 10, lv_palette_main(LV_PALETTE_GREEN), -10);
-    lv_meter_indicator_t * indic3 = lv_meter_add_arc(meter, scale, 10, lv_palette_main(LV_PALETTE_BLUE), -20);
+    lv_meter_indicator_t* indic1 =
+        lv_meter_add_arc(meter, scale, 10, lv_palette_main(LV_PALETTE_RED), 0);
+    lv_meter_indicator_t* indic2 =
+        lv_meter_add_arc(meter, scale, 10, lv_palette_main(LV_PALETTE_GREEN), -10);
+    lv_meter_indicator_t* indic3 =
+        lv_meter_add_arc(meter, scale, 10, lv_palette_main(LV_PALETTE_BLUE), -20);
 
     /*Create an animation to set the value*/
     lv_anim_t a;

@@ -62,8 +62,8 @@ uint8_t overflow;
 #ifdef USE_INTERRUPTS
 void adc_complete_cb(void* req, int adcRead)
 {
-	overflow = (adcRead == E_OVERFLOW ? 1 : 0);
-	adc_val = adcRead;
+    overflow = (adcRead == E_OVERFLOW ? 1 : 0);
+    adc_val  = adcRead;
     adc_done = 1;
     return;
 }
@@ -76,56 +76,57 @@ void ADC_IRQHandler(void)
 int main(void)
 {
     printf("********** ADC Example **********\n");
-    
+
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
-        
-        while (1);
+
+        while (1)
+            ;
     }
-    
+
     /* Set up LIMIT0 to monitor high and low trip points */
     MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_0, MXC_ADC_CH_0);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_0, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_0, 0x25);
     MXC_ADC_EnableMonitor(MXC_ADC_MONITOR_0);
-    
+
 #ifdef USE_INTERRUPTS
     NVIC_EnableIRQ(ADC_IRQn);
 #endif
-    
-    
+
     while (1) {
         /* Flash LED when starting ADC cycle */
         LED_On(0);
         MXC_TMR_Delay(MXC_TMR0, MSEC(10));
         LED_Off(0);
-        
+
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
-        
-        while (!adc_done) {};
+
+        while (!adc_done) {
+        };
 #else
-        adc_val = MXC_ADC_StartConversion(MXC_ADC_CH_0);
+        adc_val  = MXC_ADC_StartConversion(MXC_ADC_CH_0);
         overflow = (adc_val == E_OVERFLOW ? 1 : 0);
 #endif
 
         /* Display results on OLED display, display asterisk if overflow */
         printf("0: 0x%04x%s\n\n", adc_val, overflow ? "*" : " ");
-        
+
         /* Determine if programmable limits on AIN0 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
-            printf(" %s Limit on AIN0 ", (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
+            printf(" %s Limit on AIN0 ",
+                   (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
-        }
-        else {
+        } else {
             printf("                   ");
         }
-        
+
         printf("\n");
-        
+
         /* Delay for 1/4 second before next reading */
         MXC_TMR_Delay(MXC_TMR0, MSEC(250));
     }

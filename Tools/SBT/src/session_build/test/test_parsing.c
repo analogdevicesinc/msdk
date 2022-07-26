@@ -54,12 +54,11 @@ static FILE* temp_file = NULL;
  */
 int init_suite_parsing(void)
 {
-   if (NULL == (temp_file = fopen("test/session_build.ini", "w+"))) {
-      return -1;
-   }
-   else {
-      return 0;
-   }
+    if (NULL == (temp_file = fopen("test/session_build.ini", "w+"))) {
+        return -1;
+    } else {
+        return 0;
+    }
 }
 
 /* The suite cleanup function.
@@ -68,13 +67,12 @@ int init_suite_parsing(void)
  */
 int clean_suite_parsing(void)
 {
-   if (0 != fclose(temp_file)) {
-      return -1;
-   }
-   else {
-      temp_file = NULL;
-      return 0;
-   }
+    if (0 != fclose(temp_file)) {
+        return -1;
+    } else {
+        temp_file = NULL;
+        return 0;
+    }
 }
 
 /* Simple test of fprintf().
@@ -83,35 +81,33 @@ int clean_suite_parsing(void)
  */
 void test_LongHex(void)
 {
-	unsigned int ptr;
-	unsigned int result;
+    unsigned int ptr;
+    unsigned int result;
 
-	result = parse_longhex(&ptr,"15745420");
-	CU_ASSERT_EQUAL(ptr,0x15745420);
-	CU_ASSERT_EQUAL(result,ERR_OK);
-	result = parse_longhex(&ptr,"0x15745420");
-	CU_ASSERT_EQUAL(ptr,0x15745420);
-	CU_ASSERT_EQUAL(result,ERR_OK);
-	result = parse_longhex(&ptr,"sdfsdfsdfs");
-	CU_ASSERT_EQUAL(result,ERR_INVALID_OPTION_FORMAT);
-	result = parse_longhex(&ptr,"0x1574542");
-	CU_ASSERT_EQUAL(result,ERR_INVALID_OPTION_FORMAT);
-	result = parse_longhex(&ptr,"0x1574q542");
-	CU_ASSERT_EQUAL(result,ERR_INVALID_OPTION_FORMAT);
-	result = parse_longhex(&ptr,"0x");
-	CU_ASSERT_EQUAL(result,ERR_INVALID_OPTION_FORMAT);
-	result = parse_longhex(&ptr,"0x157405424");
-	CU_ASSERT_EQUAL(result,ERR_INVALID_OPTION_FORMAT);
-
+    result = parse_longhex(&ptr, "15745420");
+    CU_ASSERT_EQUAL(ptr, 0x15745420);
+    CU_ASSERT_EQUAL(result, ERR_OK);
+    result = parse_longhex(&ptr, "0x15745420");
+    CU_ASSERT_EQUAL(ptr, 0x15745420);
+    CU_ASSERT_EQUAL(result, ERR_OK);
+    result = parse_longhex(&ptr, "sdfsdfsdfs");
+    CU_ASSERT_EQUAL(result, ERR_INVALID_OPTION_FORMAT);
+    result = parse_longhex(&ptr, "0x1574542");
+    CU_ASSERT_EQUAL(result, ERR_INVALID_OPTION_FORMAT);
+    result = parse_longhex(&ptr, "0x1574q542");
+    CU_ASSERT_EQUAL(result, ERR_INVALID_OPTION_FORMAT);
+    result = parse_longhex(&ptr, "0x");
+    CU_ASSERT_EQUAL(result, ERR_INVALID_OPTION_FORMAT);
+    result = parse_longhex(&ptr, "0x157405424");
+    CU_ASSERT_EQUAL(result, ERR_INVALID_OPTION_FORMAT);
 }
 
 void test_Hex(void)
 {
-	unsigned int ptr;
+    unsigned int ptr;
 
-	parse_hex(&ptr,"15");
-	CU_ASSERT_EQUAL(ptr,0x15);
-
+    parse_hex(&ptr, "15");
+    CU_ASSERT_EQUAL(ptr, 0x15);
 }
 
 /* The main() function for setting up and running the tests.
@@ -120,25 +116,24 @@ void test_Hex(void)
  */
 int TS_Parsing(void)
 {
-   CU_pSuite pSuite = NULL;
+    CU_pSuite pSuite = NULL;
 
-   /* add a suite to the registry */
-   pSuite = CU_add_suite("Parsing", init_suite_parsing, clean_suite_parsing);
-   if (NULL == pSuite) {
-      CU_cleanup_registry();
-      return CU_get_error();
-   }
+    /* add a suite to the registry */
+    pSuite = CU_add_suite("Parsing", init_suite_parsing, clean_suite_parsing);
+    if (NULL == pSuite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
-   /* add the tests to the suite */
-   /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
-   if ((NULL == CU_add_test(pSuite, "test of LongHex", test_LongHex)) ||
-       (NULL == CU_add_test(pSuite, "test of Hex", test_Hex )))
+    /* add the tests to the suite */
+    /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
+    if ((NULL == CU_add_test(pSuite, "test of LongHex", test_LongHex)) ||
+        (NULL == CU_add_test(pSuite, "test of Hex", test_Hex)))
 
-   {
-      CU_cleanup_registry();
-      return CU_get_error();
-   }
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
-
-   return ERR_OK;
+    return ERR_OK;
 }

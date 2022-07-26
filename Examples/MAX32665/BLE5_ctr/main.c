@@ -37,9 +37,9 @@
 #include "pal_cfg.h"
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      2048U
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
-#define DEFAULT_TX_POWER                        0 /* dBm */
+#define DEFAULT_TX_POWER 0 /* dBm */
 
 /**************************************************************************************************
   Global Variables
@@ -62,7 +62,7 @@ static LlRtCfg_t mainLlRtCfg;
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
@@ -86,12 +86,11 @@ static void mainLoadConfiguration(void)
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 
     /* Adjust the extended advertising and ISO settings */
-    mainLlRtCfg.maxAdvSets            = 2;
-    mainLlRtCfg.maxAdvReports         = 4;
-    mainLlRtCfg.numIsoTxBuf           = 8;
-    mainLlRtCfg.maxCis                = 2;
-    mainLlRtCfg.maxBis                = 2;
-
+    mainLlRtCfg.maxAdvSets    = 2;
+    mainLlRtCfg.maxAdvReports = 4;
+    mainLlRtCfg.numIsoTxBuf   = 8;
+    mainLlRtCfg.maxCis        = 2;
+    mainLlRtCfg.maxBis        = 2;
 }
 
 /*************************************************************************************************/
@@ -105,7 +104,8 @@ static void mainWsfInit(void)
     const uint16_t maxRptBufSize = 12 + 2 + 255;
 
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
-    const uint16_t dataBufSize = 12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+    const uint16_t dataBufSize =
+        12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
@@ -114,12 +114,12 @@ static void mainWsfInit(void)
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
     wsfBufPoolDesc_t poolDesc[] = {
-        { 16,            8 },
-        { 32,            4 },
-        { 128,           mainLlRtCfg.maxAdvReports },
-        { maxRptBufSize, mainLlRtCfg.maxAdvReports },       /* Extended reports. */
-        { dataBufSize,   mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf + mainLlRtCfg.numIsoRxBuf }
-    };
+        {16, 8},
+        {32, 4},
+        {128, mainLlRtCfg.maxAdvReports},
+        {maxRptBufSize, mainLlRtCfg.maxAdvReports}, /* Extended reports. */
+        {dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
+                          mainLlRtCfg.numIsoRxBuf}};
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -186,15 +186,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg     = &mainBbRtCfg,
-        .wlSizeCfg    = 4,
-        .rlSizeCfg    = 4,
-        .plSizeCfg    = 4,
-        .pLlRtCfg     = &mainLlRtCfg,
-        .pFreeMem     = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable()
-    };
+    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
+                           .wlSizeCfg    = 4,
+                           .rlSizeCfg    = 4,
+                           .plSizeCfg    = 4,
+                           .pLlRtCfg     = &mainLlRtCfg,
+                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
+                           .freeMemAvail = WsfHeapCountAvailable()};
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
@@ -202,7 +200,7 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
-    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlSetBdAddr((uint8_t*)&bdAddr);
     LlSetAdvTxPower(DEFAULT_TX_POWER);
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);

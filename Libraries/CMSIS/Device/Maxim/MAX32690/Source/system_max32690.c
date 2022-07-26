@@ -39,11 +39,10 @@
 #include "mxc_sys.h"
 #include "icc.h"
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 
 uint32_t SystemCoreClock;
-volatile uint32_t mailbox __attribute__ ((section (".mailbox")));
-
+volatile uint32_t mailbox __attribute__((section(".mailbox")));
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -51,8 +50,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
             base_freq = EXTCLK_FREQ;
             break;
@@ -109,7 +107,6 @@ __weak int Board_Init(void)
 
 __weak void PalSysInit(void)
 {
-    
 }
 
 /* This function is called just before control is transferred to main().
@@ -123,12 +120,13 @@ __weak void SystemInit(void)
 #ifdef DEBUG
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFF; i++) {}
+    for (i = 0; i < 0x3FFFF; i++) {
+    }
 #endif
 
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-#if defined ( __CC_ARM) || defined ( __GNUC__)
+#if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (unsigned long)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
@@ -146,7 +144,6 @@ __weak void SystemInit(void)
 
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
-
 
     PalSysInit();
 

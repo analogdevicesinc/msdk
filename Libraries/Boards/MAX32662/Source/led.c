@@ -46,7 +46,7 @@ int LED_Init(void)
         if (MXC_GPIO_Config(&led_pin[i]) != E_NO_ERROR) {
             retval = E_UNKNOWN;
         }
-        LED_Off(i);                 // Set the output value
+        LED_Off(i); // Set the output value
     }
 
     return retval;

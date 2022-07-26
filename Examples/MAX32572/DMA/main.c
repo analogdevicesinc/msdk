@@ -38,7 +38,6 @@
  *              second being a transfer with reload and callback.
  */
 
-
 /***** Includes *****/
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,8 +51,8 @@
 #define MAX_SIZE    64
 
 /***** Globals *****/
-int mychannel = -1;
-int fail = 0;
+int mychannel     = -1;
+int fail          = 0;
 volatile int flag = 0;
 
 /***** Functions *****/
@@ -77,33 +76,35 @@ void DMA0_IRQHandler()
 void example1(void)
 {
     printf("Transfer from memory to memory.\n");
-    
+
     int retval;
     int i = 0;
-    
+
     //Initialize data before transfer
-    uint8_t* srcdata, *dstdata;
-    srcdata = (uint8_t*) malloc(MAX_SIZE);
-    dstdata = (uint8_t*) malloc(MAX_SIZE);
-    
+    uint8_t *srcdata, *dstdata;
+    srcdata = (uint8_t*)malloc(MAX_SIZE);
+    dstdata = (uint8_t*)malloc(MAX_SIZE);
+
     for (i = 0; i < MAX_SIZE; ++i) {
         srcdata[i] = i;
         dstdata[i] = 0;
     }
-    
+
     retval = MXC_DMA_Init();
-    
+
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_Init().\n");
-        
-        while (1);
+
+        while (1)
+            ;
     }
-    
+
     flag = 0;
     MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
-    
-    while (flag == 0);
-    
+
+    while (flag == 0)
+        ;
+
     // //Demo of acquiring channels
     // for (i = 0; i < MAX_CHANNEL; ++i) {
     //     retval = MXC_DMA_AcquireChannel();
@@ -113,7 +114,7 @@ void example1(void)
     //     }
     //     channels[i] = retval;
     // }
-    
+
     // //Only keeping the first channel [0] for use
     // for (i = 1; i < MAX_CHANNEL; ++i) {
     //     retval = MXC_DMA_ReleaseChannel(channels[i]);
@@ -122,13 +123,13 @@ void example1(void)
     //         while(1);
     //     }
     // }
-    
+
     // mxc_dma_srcdst_t firstTransfer;
     // firstTransfer.ch = channels[0];
     // firstTransfer.source = srcdata;
     // firstTransfer.dest = dstdata;
     // firstTransfer.len = MAX_SIZE;
-    
+
     // mxc_dma_config_t config;
     // config.ch = channels[0];
     // config.reqsel = MXC_DMA_REQUEST_MEMTOMEM;
@@ -136,57 +137,57 @@ void example1(void)
     // config.dstwd = MXC_DMA_WIDTH_WORD;
     // config.srcinc_en = 1;
     // config.dstinc_en = 1;
-    
+
     // retval = MXC_DMA_ConfigChannel(config, firstTransfer);
-    
+
     // if (retval != E_NO_ERROR) {
     //     printf("Failed to config channel\n");
     //     while(1);
     // }
-    
+
     // printf("Starting transfer\n");
-    
+
     // if (MXC_DMA_Start(channels[0]) != E_NO_ERROR) {
     //     printf("Failed to start.\n");
     //     while(1);
     // }
-    
+
     //Validate
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-        
-        while (1);
-        
+
+        while (1)
+            ;
+
         fail += 1;
-    }
-    else {
+    } else {
         printf("Data verified.\n");
     }
-    
+
     // if (MXC_DMA_ReleaseChannel(channels[0]) != E_NO_ERROR) {
     //     printf("Failed to release channel 0\n");
     //     while(1);
     // }
-    
+
     free(srcdata);
     free(dstdata);
-    
+
     return;
 }
 
 void example2(void)
 {
     printf("\nTransfer with Reload and Callback.\n");
-    
+
     int i, retval;
-    
+
     //Init data
-    uint8_t* srcdata, *dstdata, *srcdata2, *dstdata2;
-    srcdata = (uint8_t*) malloc(MAX_SIZE);
-    dstdata = (uint8_t*) malloc(MAX_SIZE);
-    srcdata2 = (uint8_t*) malloc(MAX_SIZE);
-    dstdata2 = (uint8_t*) malloc(MAX_SIZE);
-    
+    uint8_t *srcdata, *dstdata, *srcdata2, *dstdata2;
+    srcdata  = (uint8_t*)malloc(MAX_SIZE);
+    dstdata  = (uint8_t*)malloc(MAX_SIZE);
+    srcdata2 = (uint8_t*)malloc(MAX_SIZE);
+    dstdata2 = (uint8_t*)malloc(MAX_SIZE);
+
     for (i = 0; i < MAX_SIZE; ++i) {
         srcdata[i] = i;
         dstdata[i] = 0;
@@ -194,79 +195,79 @@ void example2(void)
         srcdata2[i] = MAX_SIZE - 1 - i;
         dstdata2[i] = 0;
     }
-    
+
     NVIC_EnableIRQ(DMA0_IRQn);
     __enable_irq();
     MXC_DMA_Init();
     mychannel = MXC_DMA_AcquireChannel();
-    
+
     mxc_dma_srcdst_t firstTransfer;
-    firstTransfer.ch = mychannel;
+    firstTransfer.ch     = mychannel;
     firstTransfer.source = srcdata;
-    firstTransfer.dest = dstdata;
-    firstTransfer.len = MAX_SIZE;
-    
+    firstTransfer.dest   = dstdata;
+    firstTransfer.len    = MAX_SIZE;
+
     mxc_dma_config_t config;
-    config.ch = mychannel;
-    config.reqsel = MXC_DMA_REQUEST_MEMTOMEM;
-    config.srcwd = MXC_DMA_WIDTH_WORD;
-    config.dstwd = MXC_DMA_WIDTH_WORD;
+    config.ch        = mychannel;
+    config.reqsel    = MXC_DMA_REQUEST_MEMTOMEM;
+    config.srcwd     = MXC_DMA_WIDTH_WORD;
+    config.dstwd     = MXC_DMA_WIDTH_WORD;
     config.srcinc_en = 1;
     config.dstinc_en = 1;
-    
+
     mxc_dma_adv_config_t advConfig;
-    advConfig.ch = mychannel;
-    advConfig.prio = MXC_DMA_PRIO_HIGH;
+    advConfig.ch         = mychannel;
+    advConfig.prio       = MXC_DMA_PRIO_HIGH;
     advConfig.reqwait_en = 0;
-    advConfig.tosel = MXC_DMA_TIMEOUT_4_CLK;
-    advConfig.pssel = MXC_DMA_PRESCALE_DISABLE;
+    advConfig.tosel      = MXC_DMA_TIMEOUT_4_CLK;
+    advConfig.pssel      = MXC_DMA_PRESCALE_DISABLE;
     advConfig.burst_size = 32;
-    
+
     MXC_DMA_ConfigChannel(config, firstTransfer);
     MXC_DMA_AdvConfigChannel(advConfig);
-    
+
     mxc_dma_srcdst_t secondTransfer;
-    secondTransfer.ch = mychannel;
+    secondTransfer.ch     = mychannel;
     secondTransfer.source = srcdata2;
-    secondTransfer.dest = dstdata2;
-    secondTransfer.len = MAX_SIZE;
-    
+    secondTransfer.dest   = dstdata2;
+    secondTransfer.len    = MAX_SIZE;
+
     MXC_DMA_SetSrcDst(firstTransfer);
-    
+
     retval = MXC_DMA_SetSrcReload(secondTransfer);
-    
+
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_SetReload.\n");
     }
-    
+
     MXC_DMA_SetCallback(mychannel, my_int_func);
     MXC_DMA_EnableInt(mychannel);
     MXC_DMA_Start(mychannel);
-    
+
     // Validate
-    if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 ||
-            memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
+    if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 || memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-        
-        while (1);
-        
+
+        while (1)
+            ;
+
         fail += 1;
-    }
-    else {
+    } else {
         printf("Data verified.\n");
     }
-    
+
     if (MXC_DMA_ReleaseChannel(mychannel) != E_NO_ERROR) {
         printf("Failed to release channel 0\n");
-        
-        while (1);
+
+        while (1)
+            ;
     }
-    
+
     free(srcdata);
     free(dstdata);
     free(srcdata2);
     free(dstdata2);
-    
+
     return;
 }
 
@@ -274,23 +275,24 @@ void example2(void)
 int main(void)
 {
     printf("***** DMA Example *****\n");
-    
+
     NVIC_EnableIRQ(DMA0_IRQn);
     example1();
     example2();
-    
+
     printf("\n");
-    
+
     if (fail == 0) {
         printf("Example Succeeded\n");
-    }
-    else {
+    } else {
         printf("Example failed\n");
-        
-        while (1);
+
+        while (1)
+            ;
     }
-    
-    while (1);
-    
+
+    while (1)
+        ;
+
     return 0;
 }
