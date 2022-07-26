@@ -36,7 +36,7 @@ jobs:
       - name: Build all Hello_World examples
         run: |
           cd Examples
-          SUBDIRS=$(find . -type d -name "BLE")
+          SUBDIRS=$(find . -type d -name "BLE*")
           for dir in ${SUBDIRS}
           do
             echo "---------------------------------------"
