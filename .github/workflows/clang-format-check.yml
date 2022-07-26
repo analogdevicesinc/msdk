@@ -31,7 +31,7 @@ jobs:
         run: |
           # Deinit all of the submodules
           set +e
-          git submodule deinit --all
+          git submodule deinit --force --all
           set -e
           CFILES=$(find . -iname "*.c")
           for cFile in ${CFILES}
