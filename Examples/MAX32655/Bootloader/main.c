@@ -90,8 +90,9 @@ void ledSuccessPattern(void)
     /* Green LED blinks */ 
     volatile int i,j;
     for(j = 0; j < 10; j++) {
-    LED_Toggle(1);
-    DELAY(0xFFFFF);
+        LED_Toggle(1);
+        DELAY(0xFFFFF);
+    }
 }
 void ledFailPattern(void)
 {
