@@ -61,7 +61,9 @@ extern uint32_t _flash1;
 #define FLASH1_START            ((uint32_t)&_flash1)
 #define FLASH_ERASED_WORD       0xFFFFFFFF
 #define CRC32_LEN               4
-#define EXT_FLASH_BLOCK_SIZE     224
+#define EXT_FLASH_BLOCK_SIZE    224
+
+#define DELAY(loopCount)		for(i = 0; i < loopCount; i++) {}
 
 /**************************************************************************************************
   Local Variables
@@ -88,8 +90,8 @@ void ledSuccessPattern(void)
     /* Green LED blinks */ 
     volatile int i,j;
     for(j = 0; j < 10; j++) {
-    LED_Toggle(1);
-    for(i = 0; i < 0xFFFFF; i++) {}
+        LED_Toggle(1);
+        DELAY(0xFFFFF);
     }
 }
 void ledFailPattern(void)
@@ -98,7 +100,7 @@ void ledFailPattern(void)
     volatile int i,j;
     for(j = 0; j < 10; j++) {
         LED_Toggle(0);
-        for(i = 0; i < 0xFFFFF; i++) {}
+        DELAY(0xFFFFF);
     }
 }
 
@@ -279,13 +281,19 @@ int main(void)
 {
     /* Delay to prevent bricks */
     volatile int i;
-    for(i = 0; i < 0x3FFFFF; i++) {}
+    DELAY(0x3FFFFF);
+    
     int err = 0x00000000;
     uint32_t startingAddress = 0x00000000;
     uint32_t crcResult = 0x00000000;
-    LED_Init();
-    LED_Off(0);
-    LED_Off(1);
+
+   LED_Init();
+    for (int led=0; led<num_leds; led++) {
+        LED_On(led);
+        DELAY(0x3FFFFF);
+        LED_Off(led);
+        DELAY(0x3FFFFF);
+    }
 
      /* disable interrupts to prevent these operations from being interrupted */
     __disable_irq();
@@ -337,4 +345,6 @@ int main(void)
     Boot_Lower();
 
     while (1) {}
+
+    return 0;
 }

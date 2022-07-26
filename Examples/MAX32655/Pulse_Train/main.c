@@ -50,18 +50,16 @@
 #define    ALL_PT    0x0C
 
 // PT Selection
-#ifdef FTHR_Apps_P1				// Defined in board.h
-#define ContPulse_PT            0
-#define SquareWave_PT           1
-#define ContPulse_Pin           18
-#define SquareWave_Pin          19
-
+#if defined(BOARD_FTHR_APPS_P1)		// Defined in board.h
+    #define ContPulse_PT            0
+    #define SquareWave_PT           1
+    #define ContPulse_Pin           18
+    #define SquareWave_Pin          19
 #else
-#define ContPulse_PT            2
-#define SquareWave_PT           3
-#define ContPulse_Pin           16
-#define SquareWave_Pin          17
-
+    #define ContPulse_PT            2
+    #define SquareWave_PT           3
+    #define ContPulse_Pin           16
+    #define SquareWave_Pin          17
 #endif
 
 /***** Globals *****/
@@ -126,5 +124,5 @@ int main(void)
     ContinuousPulseTrain();
     SquareWave();
     
-    while (1) {}
+    return 0;
 }

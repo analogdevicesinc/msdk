@@ -77,13 +77,12 @@
 #define CONT_TIMER      MXC_TMR1            // Can be MXC_TMR0 through MXC_TMR5
 
 // Board Selection
-#ifdef FTHR_Apps_P1				// Defined in board.h
-#define LED1_Pin        18
-#define LED2_Pin        19
-
+#if defined(BOARD_FTHR_APPS_P1) 			// Defined in board.h
+    #define LED1_Pin    18
+    #define LED2_Pin    19
 #else  // EvKit_V1
-#define LED1_Pin        24
-#define LED2_Pin        25
+    #define LED1_Pin    24
+    #define LED2_Pin    25
 #endif
 
 // Check Frequency bounds
@@ -263,7 +262,7 @@ int main(void)
     PB_RegisterCallback(0, (pb_callback) PB1Handler);
     
     while (1) {
-        if (MXC_GPIO_InGet(pb_pin[PB2].port, pb_pin[PB2].mask) == 0) {
+        if ( PB_Get(PB2) == TRUE ) {
             MXC_NVIC_SetVector(TMR4_IRQn, OneshotTimerHandler);
             NVIC_EnableIRQ(TMR4_IRQn);
             

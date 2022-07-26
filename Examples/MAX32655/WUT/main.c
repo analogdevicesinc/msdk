@@ -49,34 +49,6 @@
 
 /***** Definitions *****/
 #define MILLISECONDS_WUT 5000
-/***** Globals *****/
-volatile int buttonPressed;
-
-/***** Functions *****/
-void buttonHandler(void* pb)
-{
-    buttonPressed = 1;
-}
-
-void setTrigger(int waitForTrigger)
-{
-    int tmp;
-    
-    buttonPressed = 0;
-    
-    if (waitForTrigger) {
-        while (!buttonPressed);
-    }
-    
-    // Debounce the button press.
-    for (tmp = 0; tmp < 0x80000; tmp++) {
-        __NOP();
-    }
-    
-    // Wait for serial transactions to complete.
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
-    
-}
 
 void WUT_IRQHandler()
 {
@@ -92,9 +64,7 @@ int main(void)
     printf("/************** Wakeup timer example ********************/\n");
     printf("This example is to show how the Wakeup timer is used and configured\n");
     printf("Press PB1 to put the chip into sleep and then the wakeup timer will wake up in %d Miliseconds \n", MILLISECONDS_WUT);
-    
-    PB_RegisterCallback(0, buttonHandler);
-    
+
     // Get ticks based off of milliseconds
     MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
     
@@ -108,16 +78,21 @@ int main(void)
     //Config WUT
     MXC_WUT_Config(&cfg);
     MXC_LP_EnableWUTAlarmWakeup();
-    
+
+    NVIC_EnableIRQ(WUT_IRQn);
+
     while (1) {
-        setTrigger(1);
-        
-        printf("Entering SLEEP mode.\n");
-        NVIC_EnableIRQ(WUT_IRQn);
-        MXC_WUT_Enable();
-        
-        MXC_LP_EnterSleepMode();
-        
-        printf("Waking up from SLEEP mode.\n");
+    	if(PB_Get(0) == TRUE) {
+			printf("Entering SLEEP mode.\n");
+
+			MXC_WUT_Enable();
+
+            // wait until UART transmit
+            while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
+
+			MXC_LP_EnterSleepMode();
+
+			printf("Waking up from SLEEP mode.\n");
+    	}
     }
 }

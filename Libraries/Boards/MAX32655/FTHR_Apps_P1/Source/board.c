@@ -72,8 +72,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 /******************************************************************************/
 void mxc_assert(const char* expr, const char* file, int line)
 {
+    #ifdef DEBUG
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-
+    #endif
     while (1);
 }
 

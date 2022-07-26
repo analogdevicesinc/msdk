@@ -60,12 +60,12 @@
 #include "Ext_Flash.h"
 
 /***** Definitions *****/
-#ifdef FTHR_Apps_P1
-#define I2C_MASTER 						MXC_I2C1  // SCL P0_16; SDA P0_17
-#define CONNECT_NUM						2
+#if defined(BOARD_FTHR_APPS_P1)
+	#define I2C_MASTER 					MXC_I2C1  // SCL P0_16; SDA P0_17
+	#define CONNECT_NUM					2
 #else
-#define I2C_MASTER 						MXC_I2C2  // SCL P0_30; SDA P0_31
-#define	CONNECT_NUM						3
+	#define I2C_MASTER 					MXC_I2C2  // SCL P0_30; SDA P0_31
+	#define	CONNECT_NUM					3
 #endif
 
 #define BUF_SIZE						16000
@@ -262,8 +262,6 @@ int main() {
 	printf("\nPlayback starting.\n");
 	playback_audio(eor_addr);															// Playback audio recording
 	printf("Playback ended.\n");
-
-	while(1);
-
+	
 	return E_NO_ERROR;
 }

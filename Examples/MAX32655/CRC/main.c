@@ -154,5 +154,5 @@ int main(void)
     
     printf("\n\n");
     
-    while (1) {}
+    return 0;
 }

@@ -137,6 +137,16 @@ void PB_IntClear(unsigned int pb);
  * @retval     FALSE  The button is not pressed.
  */
 int PB_Get(unsigned int pb);
+
+/**
+ * @brief      Check all push buttons state.
+ * 
+ * @retval     TRUE   if any button is pressed.
+ * @retval     FALSE  if no any button is not pressed.
+ */
+int PB_IsPressedAny(void);
+
+
 /**@}*/
 #ifdef __cplusplus
 }

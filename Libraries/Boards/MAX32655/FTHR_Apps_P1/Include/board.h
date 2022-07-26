@@ -49,6 +49,13 @@
 extern "C" {
 #endif
 
+/* 
+    Define board name:
+    Use as #if defined(BOARD_FTHR_APPS_P1)
+    Not as #if BOARD_FTHR_APPS_P1
+*/
+#define BOARD_FTHR_APPS_P1    1     /// Used in examples to control program flow.
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART    0      /// UART instance to use for console
 #endif
@@ -71,8 +78,6 @@ extern "C" {
 
 #define LED_OFF         1       /// Inactive state of LEDs
 #define LED_ON          0       /// Active state of LEDs
-
-#define FTHR_Apps_P1			/// Used in examples to control program flow.
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
