@@ -37,6 +37,8 @@ jobs:
       - name: clang-format-commit
         run: |
 
+          echo "Hello World"
+          
           # Remove the submodules
           git submodule deinit --force --all
 
