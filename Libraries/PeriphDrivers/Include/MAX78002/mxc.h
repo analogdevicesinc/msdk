@@ -59,8 +59,6 @@
 #include "adafruit_3315_touch.h"
 #endif
 
-
-
 /*
  *  Peripheral Driver Includes
  */

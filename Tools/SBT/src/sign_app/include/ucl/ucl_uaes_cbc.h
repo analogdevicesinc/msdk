@@ -36,7 +36,6 @@
 extern "C" {
 #endif /* _ cplusplus  */
 
-
 /** @file ucl_uaes_cbc.h
  * @defgroup UCL_CBC_UAES USIP AES CBC
  * Encrypt / Decrypt with USIP&reg; AES in CBC (Cipher Block Chaining) mode.
@@ -50,7 +49,6 @@ extern "C" {
  *
  * @ingroup UCL_CBC
  */
-
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-CBC</b>.
@@ -77,9 +75,7 @@ extern "C" {
  *
  * @ingroup UCL_CBC_UAES
  */
-int ucl_uaes_cbc(u8 *dst, u8 *src, u8 *key, u8 *IV,
-                 u32 len, int mode);
-
+int ucl_uaes_cbc(u8* dst, u8* src, u8* key, u8* IV, u32 len, int mode);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-CBC Init</b>.
@@ -102,9 +98,7 @@ int ucl_uaes_cbc(u8 *dst, u8 *src, u8 *key, u8 *IV,
  * @retval #UCL_INVALID_MODE   The mode is not one of those described
  *
  * @ingroup UCL_CBC_UAES */
-int ucl_uaes_cbc_init(ucl_uaes_ctx_t *ctx, u8 *key, u8 *IV,
-                      int mode);
-
+int ucl_uaes_cbc_init(ucl_uaes_ctx_t* ctx, u8* key, u8* IV, int mode);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-CBC Core</b>.
@@ -125,8 +119,7 @@ int ucl_uaes_cbc_init(ucl_uaes_ctx_t *ctx, u8 *key, u8 *IV,
  * @retval #UCL_INVALID_ARG    The byte length is not a multiple of 16
  *
  * @ingroup UCL_CBC_UAES */
-int ucl_uaes_cbc_core(u8 *dst, ucl_uaes_ctx_t *ctx, u8 *src, u32 len);
-
+int ucl_uaes_cbc_core(u8* dst, ucl_uaes_ctx_t* ctx, u8* src, u32 len);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-CBC Finish</b>.
@@ -140,8 +133,7 @@ int ucl_uaes_cbc_core(u8 *dst, ucl_uaes_ctx_t *ctx, u8 *src, u32 len);
  * @retval #UCL_INVALID_OUTPUT The output is the pointer #NULL
  *
  * @ingroup UCL_CBC_UAES */
-int ucl_uaes_cbc_finish(ucl_uaes_ctx_t *ctx);
-
+int ucl_uaes_cbc_finish(ucl_uaes_ctx_t* ctx);
 
 #ifdef __cplusplus
 }

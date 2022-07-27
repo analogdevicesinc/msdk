@@ -35,14 +35,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! WSF message event starting value */
-#define MCS_MSG_START               0xA0
+#define MCS_MSG_START 0xA0
 
 /*! WSF message event enumeration */
 enum {
-    MCS_BUTTON_TIMER_IND = MCS_MSG_START,/*/< Button state BLE notify timer event */
-    MCS_BUTTON_PRESS_DUR/*/< Button press duration timer event */
+    MCS_BUTTON_TIMER_IND = MCS_MSG_START, /*/< Button state BLE notify timer event */
+    MCS_BUTTON_PRESS_DUR                  /*/< Button press duration timer event */
 };
-
 
 /**************************************************************************************************
   Function Declarations
@@ -67,7 +66,6 @@ void McsAppStart(void);
 /*************************************************************************************************/
 void McsAppHandlerInit(wsfHandlerId_t handlerId);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for the application.
@@ -78,7 +76,7 @@ void McsAppHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
+void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
 
 #ifdef __cplusplus
 };
