@@ -19,13 +19,11 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
 
-    else:
+    if: github.ref != "pull/*"
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: false
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
 
   clang-format-commit:
     runs-on:
