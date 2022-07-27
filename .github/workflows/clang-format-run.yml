@@ -9,6 +9,8 @@ jobs:
 
   clang-format-run:
 
+    # Only works on pull requests
+    if: github.ref == 'pull/*'
     runs-on:
       - self-hosted
 
@@ -17,6 +19,11 @@ jobs:
         with:
           submodules: false
           # Only works on pull requests
+    
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          # Only runs on pull requests, get on the correct branch
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
 
