@@ -36,7 +36,6 @@
  *
  **************************************************************************** */
 
-
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -44,11 +43,7 @@
 
 /***** Global Variables *****/
 
-typedef enum {
-	MAP_A,
-	MAP_B,
-	MAP_C
-} sys_map_t;
+typedef enum { MAP_A, MAP_B, MAP_C } sys_map_t;
 
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_swda;
@@ -57,14 +52,12 @@ extern const mxc_gpio_cfg_t gpio_cfg_swdb;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 
-
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1a;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1b;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1c;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
-
 
 extern const mxc_gpio_cfg_t gpio_cfg_spi0;
 extern const mxc_gpio_cfg_t gpio_cfg_spi1a;
@@ -77,6 +70,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_32kcal;
 extern const mxc_gpio_cfg_t gpio_cfg_i2s0a;
 extern const mxc_gpio_cfg_t gpio_cfg_i2s0b;
 
-
 #endif /* _MXC_PINS_H_ */
-

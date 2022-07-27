@@ -37,22 +37,17 @@
 #define _DEMO_CONFIG_H_
 
 /*****************************     DEFINES    *********************************/
-#define SMARTCARD_EXT_AFE_3V		(0)
-#define SMARTCARD_EXT_AFE_5V		(1)
+#define SMARTCARD_EXT_AFE_3V (0)
+#define SMARTCARD_EXT_AFE_5V (1)
 
 /*
  *  To select 5V or 3V working mode
  *  Class A (5V) and Class B (3V) mode selection
  */
-#define SMARTCARD_EXT_AFE_Voltage	(SMARTCARD_EXT_AFE_5V)
-
-
-
+#define SMARTCARD_EXT_AFE_Voltage (SMARTCARD_EXT_AFE_5V)
 
 /*****************************     TYPE DEF  *********************************/
 
-
 /*****************************     FUNCTIONS *********************************/
-
 
 #endif // _DEMO_CONFIG_H_

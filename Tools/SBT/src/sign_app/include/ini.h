@@ -24,12 +24,10 @@ extern "C" {
 
 /* Typedef for prototype of handler function. */
 #if INI_HANDLER_LINENO
-typedef int (*ini_handler)(void* user, const char* section,
-                           const char* name, const char* value,
+typedef int (*ini_handler)(void* user, const char* section, const char* name, const char* value,
                            int lineno);
 #else
-typedef int (*ini_handler)(void* user, const char* section,
-                           const char* name, const char* value);
+typedef int (*ini_handler)(void* user, const char* section, const char* name, const char* value);
 #endif
 
 /* Typedef for prototype of fgets-style reader function. */
@@ -57,8 +55,7 @@ int ini_parse_file(FILE* file, ini_handler handler, void* user);
 /* Same as ini_parse(), but takes an ini_reader function pointer instead of
    filename. Used for implementing custom or string-based I/O (see also
    ini_parse_string). */
-int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler,
-                     void* user);
+int ini_parse_stream(ini_reader reader, void* stream, ini_handler handler, void* user);
 
 /* Same as ini_parse(), but takes a zero-terminated string with the INI data
 instead of a file. Useful for parsing INI data from a network socket or

@@ -49,25 +49,22 @@ extern "C" {
  * @ingroup UCL_CBC_MAC
  */
 
-
 /** <b>TDES-CBC-MAC Context</b>.
  *
  * @ingroup UCL_TDES_CBC_MAC
  */
-struct ucl_tdes_ctx
-{
+struct ucl_tdes_ctx {
     /** DES Context.*/
     ucl_des_ctx_t des_ctx;
     /** Second Key.*/
     u32 key2[2];
-} ;
+};
 
 /** <b>TDES-CBC-MAC Context</b>.
  *
  * @ingroup UCL_TDES_CBC_MAC
  */
 typedef struct ucl_tdes_ctx ucl_tdes_ctx_t;
-
 
 /*============================================================================*/
 /** <b>TDES-CBC-MAC</b>.
@@ -93,9 +90,7 @@ typedef struct ucl_tdes_ctx ucl_tdes_ctx_t;
  *
  * @ingroup UCL_TDES_CBC_MAC
  */
-int ucl_tdes_cbc_mac(u8 *mac, u32 mac_byteLen, u8 *key, u8 *data,
-                     u32 data_byteLen);
-
+int ucl_tdes_cbc_mac(u8* mac, u32 mac_byteLen, u8* key, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>TDES-CBC-MAC Init</b>.
@@ -114,8 +109,7 @@ int ucl_tdes_cbc_mac(u8 *mac, u32 mac_byteLen, u8 *key, u8 *data,
  *
  * @ingroup UCL_TDES_CBC_MAC
  */
-int ucl_tdes_cbc_mac_init(ucl_tdes_ctx_t *ctx, u8 *key);
-
+int ucl_tdes_cbc_mac_init(ucl_tdes_ctx_t* ctx, u8* key);
 
 /*============================================================================*/
 /** <b>TDES-CBC-MAC Core</b>.
@@ -138,9 +132,7 @@ int ucl_tdes_cbc_mac_init(ucl_tdes_ctx_t *ctx, u8 *key);
  *
  * @ingroup UCL_TDES_CBC_MAC
  */
-int ucl_tdes_cbc_mac_core(ucl_tdes_ctx_t *ctx, u8 *data,
-                          u32 data_length);
-
+int ucl_tdes_cbc_mac_core(ucl_tdes_ctx_t* ctx, u8* data, u32 data_length);
 
 /*============================================================================*/
 /** <b>TDES-CBC-MAC Finish</b>.
@@ -159,9 +151,7 @@ int ucl_tdes_cbc_mac_core(ucl_tdes_ctx_t *ctx, u8 *data,
  *
  * @ingroup UCL_TDES_CBC_MAC
  */
-int ucl_tdes_cbc_mac_finish(u8 *mac, u32 mac_byteLen,
-                            ucl_tdes_ctx_t *ctx);
-
+int ucl_tdes_cbc_mac_finish(u8* mac, u32 mac_byteLen, ucl_tdes_ctx_t* ctx);
 
 #ifdef __cplusplus
 }

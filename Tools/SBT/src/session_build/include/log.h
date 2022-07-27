@@ -37,29 +37,35 @@
 #ifndef __LOG_H__
 #define __LOG_H__
 
-
-#define LOG_L_SUCCESS	1
-#define LOG_L_ERROR		1
-#define LOG_L_WARN		2
-#define LOG_L_INFO		3
-#define LOG_L_DEBUG		4
+#define LOG_L_SUCCESS 1
+#define LOG_L_ERROR   1
+#define LOG_L_WARN    2
+#define LOG_L_INFO    3
+#define LOG_L_DEBUG   4
 
 #ifdef __WIN
 
-#include <windows.h>   
+#include <windows.h>
 HANDLE hConsole;
 short bg_color_g;
 
-#define BLU		FOREGROUND_BLUE	| FOREGROUND_GREEN
-#define GRN		FOREGROUND_GREEN
-#define RED		FOREGROUND_RED
+#define BLU FOREGROUND_BLUE | FOREGROUND_GREEN
+#define GRN FOREGROUND_GREEN
+#define RED FOREGROUND_RED
 
-#define YEL		FOREGROUND_RED | FOREGROUND_GREEN
-#define WHT		FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED
+#define YEL FOREGROUND_RED | FOREGROUND_GREEN
+#define WHT FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED
 
-
-#define set_color(COL)	do{ if(USE_COLOR) SetConsoleTextAttribute(hConsole, COL | FOREGROUND_INTENSITY | bg_color_g); } while(0)
-#define reset_color()	do{ if(USE_COLOR) SetConsoleTextAttribute(hConsole, WHT | bg_color_g); } while(0)
+#define set_color(COL)                                                                  \
+    do {                                                                                \
+        if (USE_COLOR)                                                                  \
+            SetConsoleTextAttribute(hConsole, COL | FOREGROUND_INTENSITY | bg_color_g); \
+    } while (0)
+#define reset_color()                                            \
+    do {                                                         \
+        if (USE_COLOR)                                           \
+            SetConsoleTextAttribute(hConsole, WHT | bg_color_g); \
+    } while (0)
 
 #else /* WINDOWS */
 
@@ -72,49 +78,61 @@ short bg_color_g;
 #define WHT   "\e[1m\x1B[37m"
 #define RESET "\x1B[0m"
 
-#define set_color(COL)	do{ if(USE_COLOR) printf(COL); } while(0)
-#define reset_color()	do{ if(USE_COLOR) printf(RESET); } while(0)
+#define set_color(COL)   \
+    do {                 \
+        if (USE_COLOR)   \
+            printf(COL); \
+    } while (0)
+#define reset_color()      \
+    do {                   \
+        if (USE_COLOR)     \
+            printf(RESET); \
+    } while (0)
 
 #endif
 
+#define print_success(...) print_lvl(LOG_L_SUCCESS, "SUCCESS", GRN, __VA_ARGS__)
+#define print_info(...)    print_lvl(LOG_L_INFO, "INFO", BLU, __VA_ARGS__)
+#define print_warn(...)    print_lvl(LOG_L_WARN, "WARNING", YEL, __VA_ARGS__)
+#define print_debug(...)   print_lvl(LOG_L_DEBUG, "DEBUG", WHT, __VA_ARGS__)
+#define print_error(...)   print_lvl(LOG_L_ERROR, "ERROR", RED, __VA_ARGS__)
 
+#define print_lvl(LVL, LVL_STR, COLR, ...) \
+    do {                                   \
+        if (LVL <= verbose) {              \
+            set_color(COLR);               \
+            printf("[" LVL_STR "] - ");    \
+            printf(__VA_ARGS__);           \
+            reset_color();                 \
+        }                                  \
+    } while (0)
 
-#define print_success(...) 	print_lvl(LOG_L_SUCCESS, "SUCCESS", GRN, __VA_ARGS__)
-#define print_info(...) 	print_lvl(LOG_L_INFO, "INFO", BLU, __VA_ARGS__)
-#define print_warn(...) 	print_lvl(LOG_L_WARN, "WARNING", YEL, __VA_ARGS__)
-#define print_debug(...) 	print_lvl(LOG_L_DEBUG, "DEBUG", WHT, __VA_ARGS__)
-#define print_error(...) 	print_lvl(LOG_L_ERROR, "ERROR", RED, __VA_ARGS__)
+#define print_g(...) print_lcol(LOG_L_SUCCESS, GRN, __VA_ARGS__)
+#define print_i(...) print_lcol(LOG_L_INFO, BLU, __VA_ARGS__)
+#define print_w(...) print_lcol(LOG_L_WARN, YEL, __VA_ARGS__)
+#define print_d(...) print_lcol(LOG_L_DEBUG, WHT, __VA_ARGS__)
+#define print_e(...) print_lcol(LOG_L_ERROR, RED, __VA_ARGS__)
 
-#define print_lvl(LVL, LVL_STR, COLR, ...) 	do{ if( LVL <= verbose){ \
-				set_color(COLR);\
-				printf("["LVL_STR"] - "); printf(__VA_ARGS__);  \
-				reset_color();\
-				} } while(0)
+#define print_cb(...) print_col(BLU, __VA_ARGS__)
+#define print_cy(...) print_col(YEL, __VA_ARGS__)
+#define print_cw(...) print_col(WHT, __VA_ARGS__)
+#define print_cr(...) print_col(RED, __VA_ARGS__)
+#define print_cg(...) print_col(GRN, __VA_ARGS__)
 
-#define print_g(...) 	print_lcol(LOG_L_SUCCESS, GRN, __VA_ARGS__)
-#define print_i(...) 	print_lcol(LOG_L_INFO, BLU, __VA_ARGS__)
-#define print_w(...) 	print_lcol(LOG_L_WARN, YEL, __VA_ARGS__)
-#define print_d(...) 	print_lcol(LOG_L_DEBUG, WHT, __VA_ARGS__)
-#define print_e(...) 	print_lcol(LOG_L_ERROR, RED, __VA_ARGS__)
+#define print_lcol(LVL, COLR, ...) \
+    do {                           \
+        if (LVL <= verbose) {      \
+            set_color(COLR);       \
+            printf(__VA_ARGS__);   \
+            reset_color();         \
+        }                          \
+    } while (0)
 
-#define print_cb(...) 	print_col(BLU, __VA_ARGS__)
-#define print_cy(...) 	print_col(YEL, __VA_ARGS__)
-#define print_cw(...) 	print_col(WHT, __VA_ARGS__)
-#define print_cr(...) 	print_col(RED, __VA_ARGS__)
-#define print_cg(...) 	print_col(GRN, __VA_ARGS__)
-
-#define print_lcol(LVL, COLR, ...) 	do{ if( LVL <= verbose){ \
-				set_color(COLR);\
-				printf(__VA_ARGS__);  \
-				reset_color();\
-				} } while(0)
-
-
-#define print_col(COLR, ...) 	do{ \
-				set_color(COLR);\
-				printf(__VA_ARGS__);  \
-				reset_color();\
-				} while(0)
-
+#define print_col(COLR, ...) \
+    do {                     \
+        set_color(COLR);     \
+        printf(__VA_ARGS__); \
+        reset_color();       \
+    } while (0)
 
 #endif /* __LOG_H__ */

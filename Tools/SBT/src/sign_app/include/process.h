@@ -38,28 +38,25 @@
 #define __PROCESS_H__
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 /**
  * Option type
  */
-typedef enum{
-	OT_HEX = 1,      //!< One byte hex
-	OT_LONGHEX,  //!< Four bytes Hex
-	OT_DATAHEX,  //!< Variable Length Hex
-	OT_STRING,   //!< String
-	OT_INT,      //!< Decimal Integer
-	OT_FILE,     //!< File name or path
-	OT_YESNO,    //!< Yes or No
-	OT_ALGO,     //!< Signing Algorithm
-	OT_BOOTMETHOD//!< Boot Method
-}option_type_t;
+typedef enum {
+    OT_HEX = 1,   //!< One byte hex
+    OT_LONGHEX,   //!< Four bytes Hex
+    OT_DATAHEX,   //!< Variable Length Hex
+    OT_STRING,    //!< String
+    OT_INT,       //!< Decimal Integer
+    OT_FILE,      //!< File name or path
+    OT_YESNO,     //!< Yes or No
+    OT_ALGO,      //!< Signing Algorithm
+    OT_BOOTMETHOD //!< Boot Method
+} option_type_t;
 
-
-typedef enum {bm_direct, bm_cmsis} bootmethod_t;
+typedef enum { bm_direct, bm_cmsis } bootmethod_t;
 
 /**
  * Parse a string for hex encoded data
@@ -68,7 +65,7 @@ typedef enum {bm_direct, bm_cmsis} bootmethod_t;
  * @param length expected length
  * @return ERR_OK if success otherwise error code
  */
-int parse_datahex(unsigned char * ptr, const char * str, int length);
+int parse_datahex(unsigned char* ptr, const char* str, int length);
 
 /**
  * Parse a String for 4 bytes hex encoded data
@@ -76,8 +73,7 @@ int parse_datahex(unsigned char * ptr, const char * str, int length);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_longhex(unsigned int * ptr, const char * str);
-
+int parse_longhex(unsigned int* ptr, const char* str);
 
 /**
  * Parse a String for 1 bytes hex encoded data
@@ -85,7 +81,7 @@ int parse_longhex(unsigned int * ptr, const char * str);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_hex(unsigned int * ptr, const char * str);
+int parse_hex(unsigned int* ptr, const char* str);
 
 /**
  * Parse a string for yes or no keywords
@@ -93,7 +89,7 @@ int parse_hex(unsigned int * ptr, const char * str);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_yesno(unsigned char * ptr, const char * str);
+int parse_yesno(unsigned char* ptr, const char* str);
 
 /**
  * Parse a String for decimal encoded integer data
@@ -101,8 +97,7 @@ int parse_yesno(unsigned char * ptr, const char * str);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_int(unsigned int * ptr, const char * str);
-
+int parse_int(unsigned int* ptr, const char* str);
 
 /**
  * Parse a String for clean string
@@ -110,8 +105,7 @@ int parse_int(unsigned int * ptr, const char * str);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_string(char * ptr, const char * str);
-
+int parse_string(char* ptr, const char* str);
 
 /**
  * Parse a String for a signing algorithm keyword
@@ -119,8 +113,7 @@ int parse_string(char * ptr, const char * str);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_algo(unsigned char * ptr, const char * str);
-
+int parse_algo(unsigned char* ptr, const char* str);
 
 /**
  * Parse a String for a boot method keyword
@@ -128,8 +121,7 @@ int parse_algo(unsigned char * ptr, const char * str);
  * @param str string to parse
  * @return ERR_OK if success otherwise error code
  */
-int parse_bootmethod(bootmethod_t * ptr, const char * str);
-
+int parse_bootmethod(bootmethod_t* ptr, const char* str);
 
 /**
  * Parse an option according to its type and store its value in the corresponding variable
@@ -139,11 +131,10 @@ int parse_bootmethod(bootmethod_t * ptr, const char * str);
  * @param min parsing option
  * @return ERR_OK if success otherwise error code
  */
-int parse_store (option_type_t type, void * ptr, const char * value, int min);
-
+int parse_store(option_type_t type, void* ptr, const char* value, int min);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif	/* __PROCESS_H__ */
+#endif /* __PROCESS_H__ */
