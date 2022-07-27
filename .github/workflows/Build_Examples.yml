@@ -5,7 +5,7 @@ on:
   # Dependency to a forking workflow
   workflow_run:
     workflows: [clang-format-check]
-    type:
+    types:
       - completed
 
   # Allows you to run this workflow manually from the Actions tab

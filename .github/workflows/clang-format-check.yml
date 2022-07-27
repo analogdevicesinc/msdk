@@ -50,6 +50,11 @@ jobs:
             clang-format --verbose -style=file -i ${hFile}
           done
 
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
+
       - name: Push reformatted files
         uses: EndBug/add-and-commit@v9.0.1
         with:
