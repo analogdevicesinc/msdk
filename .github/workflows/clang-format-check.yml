@@ -37,18 +37,18 @@ jobs:
           set -e
 
           # Reformat all of the c files
-          CFILES=$(find . -iname "*.c")
-          for cFile in ${CFILES}
-          do
-            clang-format --verbose -style=file -i ${cFile}
-          done
+          # CFILES=$(find . -iname "*.c")
+          # for cFile in ${CFILES}
+          # do
+          #   clang-format --verbose -style=file -i ${cFile}
+          # done
           
-          # Reformat all of the header files
-          HFILES=$(find . -iname "*.h" -not -name "*regs*")
-          for hFile in ${HFILES}
-          do
-            clang-format --verbose -style=file -i ${hFile}
-          done
+          # # Reformat all of the header files
+          # HFILES=$(find . -iname "*.h" -not -name "*regs*")
+          # for hFile in ${HFILES}
+          # do
+          #   clang-format --verbose -style=file -i ${hFile}
+          # done
 
       - name: Push reformatted files
         uses: EndBug/add-and-commit@v9.0.1
