@@ -31,9 +31,13 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: clang-format-check
         run: |
-          # Deinit all of the submodules
+
           set +e
+          # Deinit all of the submodules
           git submodule deinit --force --all
+
+          # Get on the appropriate branch
+          git checkout -b ${{ github.github_ref }}
           set -e
 
           # Reformat all of the c files
