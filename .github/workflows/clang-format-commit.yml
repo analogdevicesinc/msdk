@@ -17,16 +17,15 @@ jobs:
           submodules: false
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+  # checkout:
+  #   runs-on:
+  #     - self-hosted
 
-  checkout:
-    runs-on:
-      - self-hosted
-
-    if: github.ref != "pull/*"
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
+  #   if: github.ref != "pull/*"
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         submodules: false
 
   clang-format-commit:
     runs-on:
@@ -38,7 +37,7 @@ jobs:
         run: |
 
           echo "Hello World"
-          
+
           # Remove the submodules
           git submodule deinit --force --all
 
