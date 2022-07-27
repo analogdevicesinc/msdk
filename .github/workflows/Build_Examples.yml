@@ -4,7 +4,7 @@ name: Build_Examples
 on:
   # Dependency to a forking workflow
   workflow_run:
-    workflows: [clang-format-check]
+    workflows: [clang-format]
     types:
       - completed
 

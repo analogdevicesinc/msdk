@@ -1,12 +1,12 @@
-name: clang-format-check
+name: clang-format
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  pull_request:
-    branches: [ "main" ]
-  push:
-    branches: [ "main" ]
+  # Dependency to a forking workflow
+  workflow_run:
+    workflows: [checkout, checkout-pr]
+    types:
+      - completed
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,38 +21,30 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
-          repository: ${{ github.repository }}
-          ref: ${{ github.ref }}
 
       # Runs a set of commands using the runners shell
-      - name: clang-format-check
+      - name: clang-format
         run: |
 
-          set +e
-          # Deinit all of the submodules
+          # Remove the submodules
           git submodule deinit --force --all
 
-          # Get on the appropriate branch
-          git checkout -b ${{ github.ref }}
-          set -e
+          # Test modification
+          echo "// test modification" >> Examples/MAX32665/Hello_World/main.c
 
-          # Reformat all of the c files
-          CFILES=$(find . -iname "*.c")
-          for cFile in ${CFILES}
-          do
-            clang-format --verbose -style=file -i ${cFile}
-          done
+          # # Reformat all of the c files
+          # CFILES=$(find . -iname "*.c")
+          # for cFile in ${CFILES}
+          # do
+          #   clang-format --verbose -style=file -i ${cFile}
+          # done
           
-          # Reformat all of the header files
-          HFILES=$(find . -iname "*.h" -not -name "*regs*")
-          for hFile in ${HFILES}
-          do
-            clang-format --verbose -style=file -i ${hFile}
-          done
+          # # Reformat all of the header files
+          # HFILES=$(find . -iname "*.h" -not -name "*regs*")
+          # for hFile in ${HFILES}
+          # do
+          #   clang-format --verbose -style=file -i ${hFile}
+          # done
 
           # Update the submodules, this will use ssh
           git submodule init
