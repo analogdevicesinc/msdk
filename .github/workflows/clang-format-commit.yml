@@ -1,32 +1,38 @@
-name: clang-format-check
+name: clang-format-commit
 
 # Controls when the workflow will run
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "clang-format-check:"
-  clang-format-check:
+  clang-format-commit:
     # The type of runner that the job will run on
     runs-on:
       - self-hosted
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      if: github.ref == "pull/*"
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            submodules: false
+            repository: ${{ github.event.pull_request.head.repo.full_name }}
+            ref: ${{ github.event.pull_request.head.ref }}
+
+      else:
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            submodules: false
 
       # Runs a set of commands using the runners shell
-      - name: clang-format-check
+      - name: clang-format-commit
         run: |
 
           # Remove the submodules
@@ -36,17 +42,24 @@ jobs:
           CFILES=$(find . -iname "*.c")
           for cFile in ${CFILES}
           do
-            clang-format --verbose -style=file -n -Werror ${cFile}
+            clang-format --verbose -style=file -i ${cFile}
           done
           
           # Reformat all of the header files
           HFILES=$(find . -iname "*.h" -not -name "*regs*")
           for hFile in ${HFILES}
           do
-            clang-format --verbose -style=file -n -Werror ${hFile}
+            clang-format --verbose -style=file -i ${hFile}
           done
 
           # Update the submodules, this will use ssh
           git submodule init
           git submodule sync
           git submodule update --init --recursive
+
+      - name: Push reformatted files
+        uses: EndBug/add-and-commit@v9.0.1
+        with:
+          add: '*'
+          message: 'clang-format bot reformatting.'
+          push: true
