@@ -10,6 +10,8 @@ PROJ_CFLAGS+=-DMAX32520_A2
 
 1. Build the example with scpa configuration ("make scpa")      <br />
 2. The SCP package will be generated under scp_packets folder   <br />
+3. Send SCP Packages to device with scp_sender or SBT GUI tool  <br />
+   Please check: https://pdfserv.maximintegrated.com/en/an/ug7637-secure-boot-tools.pdf  <br />
 
 ## Required Connections
 
