@@ -6,11 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkout:
+  checkout-pr:
     runs-on:
       - self-hosted
 
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     if: github.ref == "pull/*"
     steps:
       - uses: actions/checkout@v3
@@ -19,6 +18,10 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
 
+  checkout:
+    runs-on:
+      - self-hosted
+      
     if: github.ref != "pull/*"
     steps:
       - uses: actions/checkout@v3
