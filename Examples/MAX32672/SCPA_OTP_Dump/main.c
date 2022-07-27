@@ -100,6 +100,10 @@ static int otp_dump(unsigned int address, unsigned int length)
 #error "This example shall be build with SCPA configuration"
 #endif
 
+/*
+ *  This example can be executed on the Secure micro controller which has Secure ROM Bootloader,
+ *  If part number you have is not secure one you can not execute it on the device
+ */
 int scpa_erase(unsigned int dest, unsigned int length)
 {
 	(void)dest;

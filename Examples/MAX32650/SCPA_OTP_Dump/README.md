@@ -6,10 +6,12 @@ by applet mechanism.
 This example will generate .srec file. Then generate SCP (Secure Communication Protocol) package. 
 
 Before build example please set correct silicon (A1, A2...) version you have in MakeFile as below <br />
-PROJ_CFLAGS+=-DMAX32520_A2
+PROJ_CFLAGS+=-DMAX32651_A1
 
 1. Build the example with scpa configuration ("make scpa")      <br />
 2. The SCP package will be generated under scp_packets folder   <br />
+3. Send SCP Packages to device with scp_sender or SBT GUI tool  <br />
+   Please check: https://pdfserv.maximintegrated.com/en/an/ug7637-secure-boot-tools.pdf  <br />
 
 ## Required Connections
 
