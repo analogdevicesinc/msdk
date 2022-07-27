@@ -115,17 +115,18 @@ $(info Loaded project.mk)
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH=../../../
-MAXIM_PATH = $(abspath $(DEPTH))
+DEPTH := ../../../
+MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  It's recommended to set MAXIM_PATH in your environment or in project.mk)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
 else
 # Sanitize MAXIM_PATH for backslashes
 MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
-# Locate some other useful paths...
+endif
+
+# Final recalculation of LIBS_DIR/CMSIS_ROOT
 LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
 CMSIS_ROOT := $(LIBS_DIR)/CMSIS
-endif
 
 # One final UC/LC check in case user set TARGET in project.mk
 TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
