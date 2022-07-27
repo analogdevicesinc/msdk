@@ -38,3 +38,9 @@ jobs:
           do
             clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${cFile}
           done
+          
+          HFILES=$(find . -iname "*.h" -not -name "*regs*")
+          for hFile in ${HFILES}
+          do
+            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${hFile}
+          done
