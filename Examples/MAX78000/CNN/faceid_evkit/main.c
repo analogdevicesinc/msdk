@@ -299,8 +299,8 @@ int main(void)
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
-	/* Initialize TFT display */
-	MXC_TFT_Init();
+    /* Initialize TFT display */
+    MXC_TFT_Init();
     /* Set the screen rotation */
     MXC_TFT_SetRotation(SCREEN_ROTATE);
     /* Change entry mode settings */
@@ -317,8 +317,8 @@ int main(void)
 #endif
 
 #ifdef TS_ENABLE
-	/* Initialize Touch Screen controller */
-	MXC_TS_Init();
+    /* Initialize Touch Screen controller */
+    MXC_TS_Init();
     MXC_TS_Start();
 #endif
 
