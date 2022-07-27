@@ -33,14 +33,20 @@ jobs:
           set +e
           git submodule deinit --force --all
           set -e
+
+          # Reformat all of the c files
           CFILES=$(find . -iname "*.c")
           for cFile in ${CFILES}
           do
-            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${cFile}
+            clang-format --verbose -style=file -i ${cFile}
           done
           
+          # Reformat all of the header files
           HFILES=$(find . -iname "*.h" -not -name "*regs*")
           for hFile in ${HFILES}
           do
-            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${hFile}
+            clang-format --verbose -style=file -i ${hFile}
           done
+
+          # Commit the changes
+          git commit -a -m "clang-format bot: reformatting .c and .h files."
