@@ -1,0 +1,329 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/Immediate_need_7_25_22/fromSDK0502022/tft_ili9341.c",
+			"settings":
+			{
+				"buffer_size": 43948,
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+			]
+		},
+		{
+			"file": "Libraries/MiscDrivers/Display/tft_ili9341.c",
+			"settings":
+			{
+				"buffer_size": 22532,
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C Single File.sublime-build",
+				"Run"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/RAhmadi/Documents/GitHub/msdk",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Examples",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Libraries",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Libraries/MiscDrivers",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Libraries/MiscDrivers/Display"
+	],
+	"file_history":
+	[
+		"/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/WorkSpaces/eclipse-workspace_ai_hackaton/FTHR_TFT/main.c",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Examples/MAX78000/TFT_Demo/main.c",
+		"/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/WorkSpaces/eclipse-workspace_011922/Ai85_fthr_TFT/main.c",
+		"/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/WorkSpaces/eclipse-workspace_011922/AI85_TFT/main.c",
+		"/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/Immediate_need_7_25_22/fromSDK0502022/dma.h",
+		"/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/Immediate_need_7_25_22/fromSDK0502022/dma_me17.c",
+		"/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/Immediate_need_7_25_22/fromSDK0502022/dma_reva.c",
+		"/C/MaximSDK_062422/Examples/MAX78000/CameraIF/main.c",
+		"/C/MaximSDK_062422/Examples/MAX78000/CameraIF/Makefile",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Libraries/Boards/MAX78000/FTHR_RevA/board.mk",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Libraries/Boards/MAX78000/EvKit_V1/board.mk",
+		"/C/MaximSDK_062422/Libraries/Boards/MAX78000/EvKit_V1/Source/board.c",
+		"/C/MaximSDK_062422/Libraries/MiscDrivers/Display/adafruit_3315_tft.h",
+		"/C/MaximSDK_062422/Libraries/MiscDrivers/Display/tft_ili9341.h",
+		"/C/MaximSDK_062422/Libraries/MiscDrivers/Display/tft_ssd2119.c",
+		"/C/MaximSDK_062422/Libraries/MiscDrivers/Display/tft_ssd2119.h",
+		"/C/MaximSDK_062422/Libraries/MiscDrivers/Display/tft_ili9341.c",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Examples/MAX78000/CameraIF/project.mk",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Examples/MAX78000/CNN/UNet-highres-demo/project.mk",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Examples/MAX78000/CNN/UNet-highres-demo/main.c",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk/Examples/MAX78000/CNN/cats-dogs_demo/project.mk",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk_upstream/Examples/MAX78000/CameraIF/main.c",
+		"/C/Users/RAhmadi/eclipse-workspace_062422/ADC_EVKIT/.settings/org.eclipse.cdt.core.prefs",
+		"/C/MaximSDK_062422/Examples/MAX78000/ADC/.settings/org.eclipse.cdt.core.prefs",
+		"/C/MaximSDK_062422/Examples/MAX78000/CameraIF/.settings/org.eclipse.cdt.core.prefs",
+		"/C/Users/RAhmadi/eclipse-workspace_062422/CAM_FTHR/.settings/org.eclipse.cdt.core.prefs",
+		"/C/Users/RAhmadi/eclipse-workspace_062422/ADC_EVKIT/.settings/org.eclipse.cdt.codan.core.prefs",
+		"/C/MaximSDK_062422/Examples/MAX78000/GPIO/Makefile",
+		"/C/Users/RAhmadi/eclipse-workspace_062422/MAX78000_Camera_IF/main.c",
+		"/C/MaximSDK_062422/Examples/MAX78000/GPIO/main.c",
+		"/C/MaximSDK_062422/Libraries_ori/Boards/MAX78000/FTHR_RevA/Include/board.h",
+		"/C/MaximSDK_062422/Libraries/Boards/MAX78000/FTHR_RevA/Include/board.h",
+		"/C/MaximSDK_062422/Libraries_ori/Boards/MAX78000/EvKit_V1/Include/board.h",
+		"/C/MaximSDK_062422/Libraries/Boards/MAX78000/EvKit_V1/Include/board.h",
+		"/C/MaximSDK_062422/Libraries_ori/Boards/MAX78000/EvKit_V1/Source/board.c",
+		"/C/MaximSDK_062422/Libraries_ori/MiscDrivers/Camera/camera.c",
+		"/C/MaximSDK_062422/Libraries/MiscDrivers/Camera/camera.c",
+		"/C/Users/RAhmadi/Documents/GitHub/msdk_upstream/Examples/MAX78000/CNN/UNet-highres-demo/main.c",
+		"/C/Users/RAhmadi/.ssh/id_ed25519.pub",
+		"/C/Users/RAhmadi/Documents/ATT67496.vsconfig",
+		"/C/Users/RAhmadi/AppData/Roaming/Sublime Text/Packages/User/test.sublime-build",
+		"/C/Users/RAhmadi/AppData/Roaming/Sublime Text/Packages/User/Preferences.sublime-settings"
+	],
+	"find":
+	{
+		"height": 27.3333333333
+	},
+	"find_in_files":
+	{
+		"height": 102.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"mtmode"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"path": "C:\\Users\\RAhmadi\\Documents\\GitHub\\msdk"
+		}
+	],
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/RAhmadi/OneDrive - Analog Devices, Inc/_MOVETOADI_072522/Immediate_need_7_25_22/fromSDK0502022/tft_ili9341.c",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 43948,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								22609,
+								22609
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10565.3333333,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Libraries/MiscDrivers/Display/tft_ili9341.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22532,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1848,
+								1848
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.3333333333
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 126.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/c++.sublime-build",
+	"project": "",
+	"replace":
+	{
+		"height": 50.6666666667
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 226.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
