@@ -45,8 +45,3 @@ jobs:
           do
             clang-format --verbose -style=file -n -Werror ${hFile}
           done
-
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
