@@ -26,7 +26,7 @@ jobs:
         with:
           submodules: false
           repository: ${{ github.repository }}
-          ref: ${{ github.github_ref }}
+          ref: ${{ github.ref }}
 
       # Runs a set of commands using the runners shell
       - name: clang-format-check
@@ -37,7 +37,7 @@ jobs:
           git submodule deinit --force --all
 
           # Get on the appropriate branch
-          git checkout -b ${{ github.github_ref }}
+          git checkout -b ${{ github.ref }}
           set -e
 
           # Reformat all of the c files
