@@ -4,7 +4,7 @@ name: clang-format
 on:
   # Dependency to a forking workflow
   workflow_run:
-    workflows: [checkout, checkout-pr]
+    workflows: ["checkout", "checkout-pr"]
     types:
       - completed
 
