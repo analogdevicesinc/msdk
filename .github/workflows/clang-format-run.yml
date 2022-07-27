@@ -6,31 +6,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkout-pr:
+  clang-format-run:
     runs-on:
       - self-hosted
-
-    if: github.ref == "pull/*"
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: false
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-  # checkout:
-  #   runs-on:
-  #     - self-hosted
-
-  #   if: github.ref != "pull/*"
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         submodules: false
-
-  clang-format-run:
-    runs-on:
-      - self-hosted
-    steps:
 
       # Runs a set of commands using the runners shell
       - name: clang-format-run
