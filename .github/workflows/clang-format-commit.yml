@@ -22,7 +22,6 @@ jobs:
     runs-on:
       - self-hosted
 
-
     if: github.ref != "pull/*"
     steps:
       - uses: actions/checkout@v3
