@@ -1,3 +1,14 @@
+# This Makefile is used to manage the inclusion of the various
+# libraries that are available in the MaximSDK.  'include'-ing 
+# libs.mk offers 'toggle switch' variables that can be used to
+# manage the inclusion of the available libraries.
+
+# Each library below may also have its own set of configuration
+# variables that can be overridden.
+
+# If LIBS_DIR is not specified, this Makefile will locate itself.
+LIBS_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 # BSP (Enabled by default)
 # ************************
 LIB_BOARD ?= 1
