@@ -185,9 +185,35 @@ int MXC_SPIXF_SetSPIFrequency(unsigned int hz)
 }
 
 /* ************************************************************************** */
+int MXC_SPIXF_SetSPIFrequencyRead(unsigned int hz)
+{
+    return MXC_SPIXF_RevA_SetSPIFrequency(NULL,
+                                          (mxc_spixfm_reva_regs_t*)MXC_SPIXF, hz);
+}
+
+/* ************************************************************************** */
+int MXC_SPIXF_SetSPIFrequencyWrite(unsigned int hz)
+{
+    return MXC_SPIXF_RevA_SetSPIFrequency((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
+                                          NULL, hz);
+}
+
+/* ************************************************************************** */
 uint32_t MXC_SPIXF_GetSPIFrequency(void)
 {
     return MXC_SPIXF_RevA_GetSPIFrequency((mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+}
+
+/* ************************************************************************** */
+uint32_t MXC_SPIXF_GetSPIFrequencyRead(void)
+{
+    return MXC_SPIXF_RevA_GetSPIFrequency((mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+}
+
+/* ************************************************************************** */
+uint32_t MXC_SPIXF_GetSPIFrequencyWrite(void)
+{
+    return MXC_SPIXF_RevA_GetSPIFrequencyWrite((mxc_spixfc_reva_regs_t*)MXC_SPIXFC);
 }
 
 /* ************************************************************************** */
