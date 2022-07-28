@@ -36,17 +36,14 @@
 #ifndef _SMARTCARD_H_
 #define _SMARTCARD_H_
 
-
 #include "smartcard_api.h"
 #include "MAX325xx_afe.h"
 
-
 /*****************************     DEFINES    *********************************/
-#define SC_SLOT_NUMBER	SCI_1_BYPASS_SLOT
+#define SC_SLOT_NUMBER SCI_1_BYPASS_SLOT
 
 /*****************************     FUNCTIONS *********************************/
 int sc_init(void);
 void sc_set_afe_intterrupt(unsigned int status);
-
 
 #endif /* _SMARTCARD_H_ */

@@ -53,7 +53,6 @@ extern "C" {
 
 /* **** Definitions **** */
 
-
 /* **** Function Prototypes **** */
 
 #ifdef __cplusplus

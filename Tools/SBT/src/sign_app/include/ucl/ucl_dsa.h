@@ -57,7 +57,7 @@ extern "C" {
  *
  * @ingroup UCL_DSA
  */
-int ucl_dsa_keygen(u8 *y,u8 *x, u8 *p,u32 plength, u8 *q, u8 *g);
+int ucl_dsa_keygen(u8* y, u8* x, u8* p, u32 plength, u8* q, u8* g);
 
 /** <b>DSA signature </b>.
  * DSA Signature computation using supplied hash function.
@@ -93,7 +93,8 @@ int ucl_dsa_keygen(u8 *y,u8 *x, u8 *p,u32 plength, u8 *q, u8 *g);
  * @ingroup UCL_DSA
  */
 
-int ucl_dsa_sign(u8 *r_and_others,u8 *s,u8 *p,u32 plength, u8 *q, u8 *g, u8 *x,u8 *input, u32 inputlength,u32 configuration);
+int ucl_dsa_sign(u8* r_and_others, u8* s, u8* p, u32 plength, u8* q, u8* g, u8* x, u8* input,
+                 u32 inputlength, u32 configuration);
 
 /** <b>DSA signature verification </b>.
  * DSA Signature verification using supplied hash function.
@@ -129,8 +130,9 @@ int ucl_dsa_sign(u8 *r_and_others,u8 *s,u8 *p,u32 plength, u8 *q, u8 *g, u8 *x,u
  * @ingroup UCL_DSA
  */
 
-int ucl_dsa_verify(u8 *r,u8 *s,u8 *p,u32 plength, u8 *q, u8 *g, u8 *y,u8 *input, u32 inputlength,u32 configuration);
+int ucl_dsa_verify(u8* r, u8* s, u8* p, u32 plength, u8* q, u8* g, u8* y, u8* input,
+                   u32 inputlength, u32 configuration);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */
-#endif//UCL_DSA_H
+#endif //UCL_DSA_H

@@ -52,7 +52,7 @@ extern "C" {
 
 /* NOTE: EXTCLK needs to be defined by user based on the clock they supply */
 #ifndef EXTCLK_FREQ
-#define EXTCLK_FREQ               75000000
+#define EXTCLK_FREQ 75000000
 #endif
 
 /* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
@@ -61,34 +61,34 @@ extern "C" {
 		 available value.*/
 /* NOTE: INRO was previously named NANORING */
 #ifndef INRO_FREQ
-#define INRO_FREQ                 30000
+#define INRO_FREQ 30000
 #endif
 
 #ifndef IPO_FREQ
-#define IPO_FREQ                  100000000
+#define IPO_FREQ 100000000
 #endif
 
 #ifndef ISO_FREQ
-#define ISO_FREQ                  60000000
+#define ISO_FREQ 60000000
 #endif
 
 #ifndef IBRO_FREQ
-#define IBRO_FREQ                 7372800
+#define IBRO_FREQ 7372800
 #endif
 
 #ifndef ERTCO_FREQ
-#define ERTCO_FREQ                32768
-#endif
-	
-#ifndef HIRC_FREQ
-#define HIRC_FREQ                 IPO_FREQ
+#define ERTCO_FREQ 32768
 #endif
 
-extern uint32_t SystemCoreClock;                            /*!< System Clock Frequency (Core Clock)  */
+#ifndef HIRC_FREQ
+#define HIRC_FREQ IPO_FREQ
+#endif
+
+extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
 #ifdef PeripheralClock
 #warning PeripheralClock define is being overidden.
 #else
-#define PeripheralClock           (SystemCoreClock /2)    /*!< Peripheral Clock Frequency */
+#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
 #endif
 
 /*

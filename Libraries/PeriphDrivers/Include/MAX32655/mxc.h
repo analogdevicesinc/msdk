@@ -73,5 +73,4 @@
 #include "wdt.h"
 #include "wut.h"
 
-
 #endif /* __MAX32xxx_H_ */

@@ -39,7 +39,6 @@
  *
  **************************************************************************** */
 
-
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -54,7 +53,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
 
-
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
@@ -65,7 +63,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart2;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3;
-
 
 extern const mxc_gpio_cfg_t antenna_ctrl0;
 extern const mxc_gpio_cfg_t antenna_ctrl1;

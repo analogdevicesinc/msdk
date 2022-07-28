@@ -34,7 +34,6 @@
 extern "C" {
 #endif /* _ cplusplus  */
 
-
 /** @file ucl_trng.h
  * @defgroup UCL_TRNG USIP TRNG
  * USIP&reg; True Random Number Generation.
@@ -48,7 +47,6 @@ extern "C" {
  * @ingroup UCL_RAND
  */
 
-
 /** <b>TRNG Interface Option</b>.
  * The random output does not contain any null byte.
  *
@@ -61,7 +59,6 @@ extern "C" {
  * @ingroup UCL_TRNG
  */
 #define UCL_RAND_DEFAULT 0
-
 
 /*============================================================================*/
 /** <b>USIP&reg; TRNG Read</b>.
@@ -81,8 +78,7 @@ extern "C" {
  *
  * @ingroup UCL_TRNG
  */
-int ucl_trng_read(u8 *rand, u32 rand_byteLen, int option);
-
+int ucl_trng_read(u8* rand, u32 rand_byteLen, int option);
 
 #ifdef __cplusplus
 }
