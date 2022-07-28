@@ -59,144 +59,148 @@ extern "C" {
  * @{
  */
 
-#define MXC_CAN_FILT_PER_OBJ                                2
+#define MXC_CAN_FILT_PER_OBJ 2
 
 // SEG1 = PROPAGATION_SEGMENT + PHASE_SEG1
-#define MXC_CAN_SEG1_SHIFT                                  16
-#define MXC_CAN_SEG1(seg1_tq)                               ((seg1_tq & 0xFF) << MXC_CAN_SEG1_SHIFT)
-#define MXC_CAN_SEG2_SHIFT                                  8
-#define MXC_CAN_SEG2(seg2_tq)                               ((seg2_tq & 0xFF) << MXC_CAN_SEG2_SHIFT)
-#define MXC_CAN_SJW_SHIFT                                   0
-#define MXC_CAN_SJW(sjw_tq)                                 ((sjw_tq & 0xFF) << MXC_CAN_SJW_SHIFT)
-#define MXC_CAN_BIT_SEGMENTS(seg1_tq, seg2_tq, sjw_tq)      (MXC_CAN_SEG1(seg1_tq) | MXC_CAN_SEG2(seg2_tq) | MXC_CAN_SJW(sjw_tq))
+#define MXC_CAN_SEG1_SHIFT    16
+#define MXC_CAN_SEG1(seg1_tq) ((seg1_tq & 0xFF) << MXC_CAN_SEG1_SHIFT)
+#define MXC_CAN_SEG2_SHIFT    8
+#define MXC_CAN_SEG2(seg2_tq) ((seg2_tq & 0xFF) << MXC_CAN_SEG2_SHIFT)
+#define MXC_CAN_SJW_SHIFT     0
+#define MXC_CAN_SJW(sjw_tq)   ((sjw_tq & 0xFF) << MXC_CAN_SJW_SHIFT)
+#define MXC_CAN_BIT_SEGMENTS(seg1_tq, seg2_tq, sjw_tq) \
+    (MXC_CAN_SEG1(seg1_tq) | MXC_CAN_SEG2(seg2_tq) | MXC_CAN_SJW(sjw_tq))
 
-#define MXC_CAN_NOMINAL_MAX_SEG1TQ                          16
-#define MXC_CAN_NOMINAL_MAX_SEG2TQ                          8
-#define MXC_CAN_NOMINAL_MAX_SJWTQ                           4
-#define MXC_CAN_NOMINAL_MAX_PRESCALER                       0x40
-#define MXC_CAN_FD_DATA_MAX_SEG1TQ                          64
-#define MXC_CAN_FD_DATA_MAX_SEG2TQ                          16
-#define MXC_CAN_FD_DATA_MAX_SJWTQ                           16
-#define MXC_CAN_FD_DATA_MAX_PRESCALER                       0x400
+#define MXC_CAN_NOMINAL_MAX_SEG1TQ    16
+#define MXC_CAN_NOMINAL_MAX_SEG2TQ    8
+#define MXC_CAN_NOMINAL_MAX_SJWTQ     4
+#define MXC_CAN_NOMINAL_MAX_PRESCALER 0x40
+#define MXC_CAN_FD_DATA_MAX_SEG1TQ    64
+#define MXC_CAN_FD_DATA_MAX_SEG2TQ    16
+#define MXC_CAN_FD_DATA_MAX_SJWTQ     16
+#define MXC_CAN_FD_DATA_MAX_PRESCALER 0x400
 
-#define MXC_CAN_FILT_OP_TYPE_SHIFT                          0
-#define MXC_CAN_FILT_OP_TYPE_MASK                           0x000F
-#define MXC_CAN_FILT_SEL_SHIFT                              4
-#define MXC_CAN_FILT_SEL_MASK                               0x00F0
+#define MXC_CAN_FILT_OP_TYPE_SHIFT 0
+#define MXC_CAN_FILT_OP_TYPE_MASK  0x000F
+#define MXC_CAN_FILT_SEL_SHIFT     4
+#define MXC_CAN_FILT_SEL_MASK      0x00F0
 
-#define MXC_CAN_MSG_INFO_IDE_BIT                            0x80000000
-#define MXC_CAN_STANDARD_ID(id)                             (id & 0x7FFUL)
-#define MXC_CAN_EXTENDED_ID(id)                             ((id & 0x1FFFFFFFUL) | MXC_CAN_MSG_INFO_IDE_BIT)
+#define MXC_CAN_MSG_INFO_IDE_BIT 0x80000000
+#define MXC_CAN_STANDARD_ID(id)  (id & 0x7FFUL)
+#define MXC_CAN_EXTENDED_ID(id)  ((id & 0x1FFFFFFFUL) | MXC_CAN_MSG_INFO_IDE_BIT)
 
-#define MXC_CAN_BUF_CFG_IDE                                 0x80
-#define MXC_CAN_BUF_CFG_SRR                                 0x40
-#define MXC_CAN_BUF_CFG_RTR(rtr)                            ((!!rtr) << 6)
-#define MXC_CAN_BUF_CFG_FDF(fdf)                            ((!!fdf) << 5)
-#define MXC_CAN_BUF_CFG_BRS(brs)                            ((!!brs) << 4)
-#define MXC_CAN_BUF_CFG_DLC(dlc)                            (dlc & 0xF)
+#define MXC_CAN_BUF_CFG_IDE      0x80
+#define MXC_CAN_BUF_CFG_SRR      0x40
+#define MXC_CAN_BUF_CFG_RTR(rtr) ((!!rtr) << 6)
+#define MXC_CAN_BUF_CFG_FDF(fdf) ((!!fdf) << 5)
+#define MXC_CAN_BUF_CFG_BRS(brs) ((!!brs) << 4)
+#define MXC_CAN_BUF_CFG_DLC(dlc) (dlc & 0xF)
 
-#define MXC_CAN_BUF_CFG_EXT_ID_TX1(id)                      ((id & (0xFF << 21)) >> 21)
-#define MXC_CAN_BUF_CFG_EXT_ID_TX2(id)                      ((id & (0xFF << 13)) >> 13)
-#define MXC_CAN_BUF_CFG_EXT_ID_TX3(id)                      ((id & (0xFF << 5)) >> 5)
-#define MXC_CAN_BUF_CFG_EXT_ID_TX4(id)                      ((id & 0x1F) << 3)
-#define MXC_CAN_BUF_CFG_EXT_ID_RX1(rxdata)                  (rxdata << 21)
-#define MXC_CAN_BUF_CFG_EXT_ID_RX2(rxdata)                  (rxdata << 13)
-#define MXC_CAN_BUF_CFG_EXT_ID_RX3(rxdata)                  (rxdata << 5)
-#define MXC_CAN_BUF_CFG_EXT_ID_RX4(rxdata)                  ((rxdata & 0xF8) >> 3)
-#define MXC_CAN_BUF_CFG_EXT_ID_RTR(rtr)                     ((!!rtr) << 2)
-#define MXC_CAN_BUF_CFG_EXT_ID_ESI(esi)                     ((!!esi) << 1)
+#define MXC_CAN_BUF_CFG_EXT_ID_TX1(id)     ((id & (0xFF << 21)) >> 21)
+#define MXC_CAN_BUF_CFG_EXT_ID_TX2(id)     ((id & (0xFF << 13)) >> 13)
+#define MXC_CAN_BUF_CFG_EXT_ID_TX3(id)     ((id & (0xFF << 5)) >> 5)
+#define MXC_CAN_BUF_CFG_EXT_ID_TX4(id)     ((id & 0x1F) << 3)
+#define MXC_CAN_BUF_CFG_EXT_ID_RX1(rxdata) (rxdata << 21)
+#define MXC_CAN_BUF_CFG_EXT_ID_RX2(rxdata) (rxdata << 13)
+#define MXC_CAN_BUF_CFG_EXT_ID_RX3(rxdata) (rxdata << 5)
+#define MXC_CAN_BUF_CFG_EXT_ID_RX4(rxdata) ((rxdata & 0xF8) >> 3)
+#define MXC_CAN_BUF_CFG_EXT_ID_RTR(rtr)    ((!!rtr) << 2)
+#define MXC_CAN_BUF_CFG_EXT_ID_ESI(esi)    ((!!esi) << 1)
 
-#define MXC_CAN_BUF_CFG_STD_ID_TX1(id)                      ((id & (0xFF << 3)) >> 3)
-#define MXC_CAN_BUF_CFG_STD_ID_TX2(id)                      ((id & 0x7) << 5)
-#define MXC_CAN_BUF_CFG_STD_ID_RX1(rxdata)                  (rxdata << 3)
-#define MXC_CAN_BUF_CFG_STD_ID_RX2(rxdata)                  ((rxdata & 0xE0) >> 5)
-#define MXC_CAN_BUF_CFG_STD_ID_RTR(rtr)                     ((!!rtr) << 6)
-#define MXC_CAN_BUF_CFG_STD_ID_ESI(esi)                     ((!!esi) << 3)
+#define MXC_CAN_BUF_CFG_STD_ID_TX1(id)     ((id & (0xFF << 3)) >> 3)
+#define MXC_CAN_BUF_CFG_STD_ID_TX2(id)     ((id & 0x7) << 5)
+#define MXC_CAN_BUF_CFG_STD_ID_RX1(rxdata) (rxdata << 3)
+#define MXC_CAN_BUF_CFG_STD_ID_RX2(rxdata) ((rxdata & 0xE0) >> 5)
+#define MXC_CAN_BUF_CFG_STD_ID_RTR(rtr)    ((!!rtr) << 6)
+#define MXC_CAN_BUF_CFG_STD_ID_ESI(esi)    ((!!esi) << 3)
 
-#define MXC_CAN_LEC_NO_ERR                                  0U
-#define MXC_CAN_LEC_BIT_ERR                                 1U
-#define MXC_CAN_LEC_STUFF_ERR                               2U
-#define MXC_CAN_LEC_CRC_ERR                                 3U
-#define MXC_CAN_LEC_FORM_ERR                                4U
-#define MXC_CAN_LEC_ACK_ERR                                 5U
-#define MXC_CAN_ECC_ERROR_CODE_MASK                         (MXC_F_CAN_REVA_ECC_ACKER | MXC_F_CAN_REVA_ECC_FRMER | MXC_F_CAN_REVA_ECC_CRCER | MXC_F_CAN_REVA_ECC_STFER | MXC_F_CAN_REVA_ECC_BER)
+#define MXC_CAN_LEC_NO_ERR    0U
+#define MXC_CAN_LEC_BIT_ERR   1U
+#define MXC_CAN_LEC_STUFF_ERR 2U
+#define MXC_CAN_LEC_CRC_ERR   3U
+#define MXC_CAN_LEC_FORM_ERR  4U
+#define MXC_CAN_LEC_ACK_ERR   5U
+#define MXC_CAN_ECC_ERROR_CODE_MASK                                                   \
+    (MXC_F_CAN_REVA_ECC_ACKER | MXC_F_CAN_REVA_ECC_FRMER | MXC_F_CAN_REVA_ECC_CRCER | \
+     MXC_F_CAN_REVA_ECC_STFER | MXC_F_CAN_REVA_ECC_BER)
 
-#define MXC_CAN_UNIT_STATE_INACTIVE                         0U
-#define MXC_CAN_UNIT_STATE_ACTIVE                           1U
-#define MXC_CAN_UNIT_STATE_PASSIVE                          2U
-#define MXC_CAN_UNIT_STATE_BUS_OFF                          3U
+#define MXC_CAN_UNIT_STATE_INACTIVE 0U
+#define MXC_CAN_UNIT_STATE_ACTIVE   1U
+#define MXC_CAN_UNIT_STATE_PASSIVE  2U
+#define MXC_CAN_UNIT_STATE_BUS_OFF  3U
 
-#define MXC_CAN_DMA_LEN(msg_id)                             (msg_id & MXC_CAN_MSG_INFO_IDE_BIT ? 5 : 3)
+#define MXC_CAN_DMA_LEN(msg_id) (msg_id & MXC_CAN_MSG_INFO_IDE_BIT ? 5 : 3)
 
-#define MXC_CAN_TXSCNT_MAX                                  0x80
-#define MXC_CAN_ERRPSV_THRESH                               0x80
+#define MXC_CAN_TXSCNT_MAX    0x80
+#define MXC_CAN_ERRPSV_THRESH 0x80
 
 /**
  * @brief  Struct containing information about the version of the CAN library
  */
 typedef struct {
-    uint16_t api;                                           ///< CMSIS API Version
-    uint16_t drv;                                           ///< Maxim CAN SDK Version
+    uint16_t api; ///< CMSIS API Version
+    uint16_t drv; ///< Maxim CAN SDK Version
 } mxc_can_drv_version_t;
 
 /**
  * @brief  Struct containing the capabilities of the CAN driver.
  */
 typedef struct {
-    uint32_t num_objects;                                   ///< Number of objects available
-    uint32_t reentrant_operation;                           ///< Reentrant calls to MessageSend/Read, ObjectConfigure, and CAN_Control supported
-    uint32_t fd_mode;                                       ///< CAN FD supported
-    uint32_t restricted_mode;                               ///< Restricted mode supported
-    uint32_t monitor_mode;                                  ///< Monitor mode supported
-    uint32_t internal_loopback;                             ///< Internal loopback supported
-    uint32_t external_loopback;                             ///< External loopback supported
-    uint32_t rsv;                                           ///< Reserved for future use
+    uint32_t num_objects; ///< Number of objects available
+    uint32_t
+        reentrant_operation; ///< Reentrant calls to MessageSend/Read, ObjectConfigure, and CAN_Control supported
+    uint32_t fd_mode;           ///< CAN FD supported
+    uint32_t restricted_mode;   ///< Restricted mode supported
+    uint32_t monitor_mode;      ///< Monitor mode supported
+    uint32_t internal_loopback; ///< Internal loopback supported
+    uint32_t external_loopback; ///< External loopback supported
+    uint32_t rsv;               ///< Reserved for future use
 } mxc_can_capabilities_t;
 
 /**
  * @brief  Selects power state of the CAN peripherals
  */
 typedef enum {
-    MXC_CAN_PWR_CTRL_OFF,                                   ///< Shut off power to peripherals
-    MXC_CAN_PWR_CTRL_SLEEP,                                 ///< Put peripherals to sleep
-    MXC_CAN_PWR_CTRL_FULL,                                  ///< Peripherals fully awake
+    MXC_CAN_PWR_CTRL_OFF,   ///< Shut off power to peripherals
+    MXC_CAN_PWR_CTRL_SLEEP, ///< Put peripherals to sleep
+    MXC_CAN_PWR_CTRL_FULL,  ///< Peripherals fully awake
 } mxc_can_pwr_ctrl_t;
 
 /**
  * @brief  Selects which bitrate to perform operation on
  */
 typedef enum {
-    MXC_CAN_BITRATE_SEL_NOMINAL,                            ///< Set bitrate for classic CAN frames
-    MXC_CAN_BITRATE_SEL_FD_DATA,                            ///< Reserved for future use. Not supported on MAX32690, included to prevent build errors.
+    MXC_CAN_BITRATE_SEL_NOMINAL, ///< Set bitrate for classic CAN frames
+    MXC_CAN_BITRATE_SEL_FD_DATA, ///< Reserved for future use. Not supported on MAX32690, included to prevent build errors.
 } mxc_can_bitrate_sel_t;
 
 /**
  * @brief  Selects the CAN driver's mode of operation
  */
 typedef enum {
-    MXC_CAN_MODE_INITIALIZATION,                            ///< Reset mode
-    MXC_CAN_MODE_NORMAL,                                    ///< Normal operating mode
-    MXC_CAN_MODE_RESTRICTED,                                ///< Restricted mode
-    MXC_CAN_MODE_MONITOR,                                   ///< Listen-only mode
-    MXC_CAN_MODE_LOOPBACK,                                  ///< Loopback mode
-    MXC_CAN_MODE_RSV,                                       ///< Reserved for future use
-    MXC_CAN_MODE_LOOPBACK_W_TXD,                            ///< Loopback mode with transmit pin disconnected
+    MXC_CAN_MODE_INITIALIZATION, ///< Reset mode
+    MXC_CAN_MODE_NORMAL,         ///< Normal operating mode
+    MXC_CAN_MODE_RESTRICTED,     ///< Restricted mode
+    MXC_CAN_MODE_MONITOR,        ///< Listen-only mode
+    MXC_CAN_MODE_LOOPBACK,       ///< Loopback mode
+    MXC_CAN_MODE_RSV,            ///< Reserved for future use
+    MXC_CAN_MODE_LOOPBACK_W_TXD, ///< Loopback mode with transmit pin disconnected
 } mxc_can_mode_t;
 
 /**
  * @brief  Struct containing information about the objects associated with a particular CAN driver.
  */
 typedef struct {
-    int32_t tx;                                             ///< Object supports transmission
-    int32_t rx;                                             ///< Object supports receive
-    int32_t rx_rtr_tx_data;                                 ///< Object supports RTR reception and automatic data frame transmission
-    int32_t tx_rtr_rx_data;                                 ///< Object supports RTR transmission and automatic data fram reception
-    int32_t multiple_filters;                               ///< Number of filters supported by the object
-    int32_t exact_filtering;                                ///< Object can support exact message ID filters
-    int32_t mask_filtering;                                 ///< Object can support mask message ID filters
-    int32_t range_filtering;                                ///< Object can support range message ID filters
-    int32_t message_depth;                                  ///< Message depth of transmit and receive buffers
-    int32_t reserved;                                       ///< Reserved for future use
+    int32_t tx;             ///< Object supports transmission
+    int32_t rx;             ///< Object supports receive
+    int32_t rx_rtr_tx_data; ///< Object supports RTR reception and automatic data frame transmission
+    int32_t tx_rtr_rx_data; ///< Object supports RTR transmission and automatic data fram reception
+    int32_t multiple_filters; ///< Number of filters supported by the object
+    int32_t exact_filtering;  ///< Object can support exact message ID filters
+    int32_t mask_filtering;   ///< Object can support mask message ID filters
+    int32_t range_filtering;  ///< Object can support range message ID filters
+    int32_t message_depth;    ///< Message depth of transmit and receive buffers
+    int32_t reserved;         ///< Reserved for future use
 } mxc_can_obj_capabilities_t;
 
 /**
@@ -204,22 +208,35 @@ typedef struct {
  */
 typedef enum {
     // Select one from Group 1 {
-    MXC_CAN_FILT_CFG_EXACT_ADD = 0,                                     ///< Add exact filter
-    MXC_CAN_FILT_CFG_EXACT_DEL = 1,                                     ///< Remove exact filter
-    MXC_CAN_FILT_CFG_RSV1 = 2,                                          ///< NOT SUPPORTED ON MAX32690
-    MXC_CAN_FILT_CFG_RSV2 = 3,                                          ///< NOT SUPPORTED ON MAX32690
-    MXC_CAN_FILT_CFG_MASK_ADD = 4,                                      ///< Add maskable filter
-    MXC_CAN_FILT_CFG_MASK_DEL = 5,                                      ///< Remove maskable filter
+    MXC_CAN_FILT_CFG_EXACT_ADD = 0, ///< Add exact filter
+    MXC_CAN_FILT_CFG_EXACT_DEL = 1, ///< Remove exact filter
+    MXC_CAN_FILT_CFG_RSV1      = 2, ///< NOT SUPPORTED ON MAX32690
+    MXC_CAN_FILT_CFG_RSV2      = 3, ///< NOT SUPPORTED ON MAX32690
+    MXC_CAN_FILT_CFG_MASK_ADD  = 4, ///< Add maskable filter
+    MXC_CAN_FILT_CFG_MASK_DEL  = 5, ///< Remove maskable filter
     // } end group 1
 
     // Select one from group 2 {
-    MXC_CAN_FILT_CFG_DUAL_GEN = 0 << MXC_CAN_FILT_SEL_SHIFT,            ///< Reccomended only for middleware use
-    MXC_CAN_FILT_CFG_DUAL1_STD_ID = 1 << MXC_CAN_FILT_SEL_SHIFT,        ///< Perform operation on dual filter 1, for 11-bit message ID's
-    MXC_CAN_FILT_CFG_DUAL1_EXT_ID = 2 << MXC_CAN_FILT_SEL_SHIFT,        ///< Perform operation on dual filter 1, for 29-bit message ID's
-    MXC_CAN_FILT_CFG_DUAL2_STD_ID = 3 << MXC_CAN_FILT_SEL_SHIFT,        ///< Perform operation on dual filter 2, for 11-bit message ID's
-    MXC_CAN_FILT_CFG_DUAL2_EXT_ID = 4 << MXC_CAN_FILT_SEL_SHIFT,        ///< Perform operation on dual filter 2, for 29-bit message ID's
-    MXC_CAN_FILT_CFG_SINGLE_STD_ID = 5 << MXC_CAN_FILT_SEL_SHIFT,       ///< Perform operation on single filter, for 11-bit message ID's
-    MXC_CAN_FILT_CFG_SINGLE_EXT_ID = 6 << MXC_CAN_FILT_SEL_SHIFT,       ///< Perform operation on single filter, for 29-bit message ID's
+    MXC_CAN_FILT_CFG_DUAL_GEN =
+        0 << MXC_CAN_FILT_SEL_SHIFT, ///< Reccomended only for middleware use
+    MXC_CAN_FILT_CFG_DUAL1_STD_ID =
+        1
+        << MXC_CAN_FILT_SEL_SHIFT, ///< Perform operation on dual filter 1, for 11-bit message ID's
+    MXC_CAN_FILT_CFG_DUAL1_EXT_ID =
+        2
+        << MXC_CAN_FILT_SEL_SHIFT, ///< Perform operation on dual filter 1, for 29-bit message ID's
+    MXC_CAN_FILT_CFG_DUAL2_STD_ID =
+        3
+        << MXC_CAN_FILT_SEL_SHIFT, ///< Perform operation on dual filter 2, for 11-bit message ID's
+    MXC_CAN_FILT_CFG_DUAL2_EXT_ID =
+        4
+        << MXC_CAN_FILT_SEL_SHIFT, ///< Perform operation on dual filter 2, for 29-bit message ID's
+    MXC_CAN_FILT_CFG_SINGLE_STD_ID =
+        5
+        << MXC_CAN_FILT_SEL_SHIFT, ///< Perform operation on single filter, for 11-bit message ID's
+    MXC_CAN_FILT_CFG_SINGLE_EXT_ID =
+        6
+        << MXC_CAN_FILT_SEL_SHIFT, ///< Perform operation on single filter, for 29-bit message ID's
     // } end group 2
 } mxc_can_filt_cfg_t;
 
@@ -227,81 +244,84 @@ typedef enum {
  * @brief  Struct detailing the current status of the CAN driver.
  */
 typedef struct {
-    uint32_t unit_state;                                    ///< State of the CAN bus
-    uint32_t last_error_code;                               ///< Last error code recorded
-    uint32_t tx_err_cnt;                                    ///< Number of transmission errors
-    uint32_t rx_err_cnt;                                    ///< Number of receive errors
-    uint32_t can_idx;                                       ///< Index of CAN peripheral status was retrieved for        
+    uint32_t unit_state;      ///< State of the CAN bus
+    uint32_t last_error_code; ///< Last error code recorded
+    uint32_t tx_err_cnt;      ///< Number of transmission errors
+    uint32_t rx_err_cnt;      ///< Number of receive errors
+    uint32_t can_idx;         ///< Index of CAN peripheral status was retrieved for
 } mxc_can_stat_t;
 
 /**
  * @brief  Contains information about the message to be sent or the message received.
  */
 typedef struct {
-    uint32_t msg_id;                                        ///< Message ID
-    uint32_t rtr;                                           ///< Remote transmit request frame
-    uint32_t fdf;                                           ///< FD frame
-    uint32_t brs;                                           ///< FD format bit rate switch
-    uint32_t esi;                                           ///< FD format error state indicator
-    uint32_t dlc;                                           ///< Data length code
-    uint32_t rsv;                                           ///< Reserved for future use
+    uint32_t msg_id; ///< Message ID
+    uint32_t rtr;    ///< Remote transmit request frame
+    uint32_t fdf;    ///< FD frame
+    uint32_t brs;    ///< FD format bit rate switch
+    uint32_t esi;    ///< FD format error state indicator
+    uint32_t dlc;    ///< Data length code
+    uint32_t rsv;    ///< Reserved for future use
 } mxc_can_msg_info_t;
 
 /**
  * @brief  Used to set the features available to a CAN object
  */
 typedef enum {
-    MXC_CAN_OBJ_CFG_INACTIVE,                               ///< Object disabled
-    MXC_CAN_OBJ_CFG_TXRX,                                   ///< Object can transmit and/or receive messages
-    MXC_CAN_OBJ_CFG_RSV,                                    ///< Reserved for future use
-    MXC_CAN_OBJ_CFG_RX_RTR_TX_DATA,                         ///< NOT SUPPORTED ON MAX32690
-    MXC_CAN_OBJ_CFG_TX_RTR_RX_DATA,                         ///< NOT SUPPORTED ON MAX32690
+    MXC_CAN_OBJ_CFG_INACTIVE,       ///< Object disabled
+    MXC_CAN_OBJ_CFG_TXRX,           ///< Object can transmit and/or receive messages
+    MXC_CAN_OBJ_CFG_RSV,            ///< Reserved for future use
+    MXC_CAN_OBJ_CFG_RX_RTR_TX_DATA, ///< NOT SUPPORTED ON MAX32690
+    MXC_CAN_OBJ_CFG_TX_RTR_RX_DATA, ///< NOT SUPPORTED ON MAX32690
 } mxc_can_obj_cfg_t;
 
 /**
  * @brief  Selects the control operation for the CAN driver to perform
  */
 typedef enum {
-    MXC_CAN_CTRL_SET_FD_MODE,                               ///< No effect on MAX32690 (FD mode always enabled when CAN active)
-    MXC_CAN_CTRL_ABORT_TX,                                  ///< Abort transmission
-    MXC_CAN_CTRL_RETRANSMISSION,                            ///< Enable/disable auto retransmission on error
-    MXC_CAN_CTRL_TRANSCEIVER_DLY,                           ///< Set transceiver delay
+    MXC_CAN_CTRL_SET_FD_MODE,    ///< No effect on MAX32690 (FD mode always enabled when CAN active)
+    MXC_CAN_CTRL_ABORT_TX,       ///< Abort transmission
+    MXC_CAN_CTRL_RETRANSMISSION, ///< Enable/disable auto retransmission on error
+    MXC_CAN_CTRL_TRANSCEIVER_DLY, ///< Set transceiver delay
 } mxc_can_ctrl_t;
 
 /**
  * @brief  State which bus has entered to trigger unit event
  */
 typedef enum {
-    MXC_CAN_UNIT_EVT_INACTIVE,                              ///< Peripherals entered inactive state (sleep, shutdown)
-    MXC_CAN_UNIT_EVT_ACTIVE,                                ///< Peripherals entered active state
-    MXC_CAN_UNIT_EVT_WARNING,                               ///< Peripheral received error warning
-    MXC_CAN_UNIT_EVT_PASSIVE,                               ///< Peripheral entered passive state
-    MXC_CAN_UNIT_EVT_BUS_OFF,                               ///< Bus turned off
+    MXC_CAN_UNIT_EVT_INACTIVE, ///< Peripherals entered inactive state (sleep, shutdown)
+    MXC_CAN_UNIT_EVT_ACTIVE,   ///< Peripherals entered active state
+    MXC_CAN_UNIT_EVT_WARNING,  ///< Peripheral received error warning
+    MXC_CAN_UNIT_EVT_PASSIVE,  ///< Peripheral entered passive state
+    MXC_CAN_UNIT_EVT_BUS_OFF,  ///< Bus turned off
 } mxc_can_unit_evt_t;
 
 /**
  * @brief  Selects which object to notify/handle
  */
 typedef enum {
-    MXC_CAN_OBJ_EVT_TX_COMPLETE,                            ///< Transmission complete
-    MXC_CAN_OBJ_EVT_RX,                                     ///< Message received
-    MXC_CAN_OBJ_EVT_RX_OVERRUN,                             ///< RXFIFO overflow
+    MXC_CAN_OBJ_EVT_TX_COMPLETE, ///< Transmission complete
+    MXC_CAN_OBJ_EVT_RX,          ///< Message received
+    MXC_CAN_OBJ_EVT_RX_OVERRUN,  ///< RXFIFO overflow
 } mxc_can_obj_evt_t;
 
 /**
  * @brief  Struct containing information about CAN message
  */
 typedef struct {
-    mxc_can_msg_info_t* msg_info;                           ///< Pointer to struct containing information about the format of the message
-    uint8_t* data;                                          ///< Pointer to array of data bytes (either data to transmit or where to store data received)
-    uint8_t data_sz;                                        ///< MessageSend - number of data bytes to transmit, MessageRead - maximum number of data bytes that can be stored in "data"
+    mxc_can_msg_info_t*
+        msg_info; ///< Pointer to struct containing information about the format of the message
+    uint8_t*
+        data; ///< Pointer to array of data bytes (either data to transmit or where to store data received)
+    uint8_t
+        data_sz; ///< MessageSend - number of data bytes to transmit, MessageRead - maximum number of data bytes that can be stored in "data"
 } mxc_can_req_t;
 
 ///< Callback used when a bus event occurs
-typedef void (*mxc_can_unit_event_cb_t) (uint32_t can_idx, uint32_t event);
+typedef void (*mxc_can_unit_event_cb_t)(uint32_t can_idx, uint32_t event);
 
 ///< Callback used when a transmission event occurs
-typedef void (*mxc_can_object_event_cb_t) (uint32_t can_idx, uint32_t event);
+typedef void (*mxc_can_object_event_cb_t)(uint32_t can_idx, uint32_t event);
 
 /**
  * @brief   Get information about the version of the CMSIS API and Maxim CAN SDK
@@ -327,7 +347,8 @@ mxc_can_capabilities_t MXC_CAN_GetCapabilities(void);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg, mxc_can_unit_event_cb_t unit_cb, mxc_can_object_event_cb_t obj_cb);
+int MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg, mxc_can_unit_event_cb_t unit_cb,
+                 mxc_can_object_event_cb_t obj_cb);
 
 /**
  * @brief   Free CAN resources (does not reset or disable CAN peripherals)
@@ -425,7 +446,8 @@ int MXC_CAN_GetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel);
  * 
  * @warning MAX32690 does not support CAN FD, passing MXC_CAN_BITRATE_SEL_FD_DATA will return an error.
  */
-int MXC_CAN_SetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel, uint32_t bitrate, uint32_t bit_segments);
+int MXC_CAN_SetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel, uint32_t bitrate,
+                       uint32_t bit_segments);
 
 /**
  * @brief   Sets the operating mode of the CAN peripherals
@@ -479,8 +501,9 @@ int MXC_CAN_ObjectConfigure(uint32_t can_idx, mxc_can_obj_cfg_t cfg);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32690 does not support CAN FD, setting info->fdf will return an error.
- */ 
-int MXC_CAN_WriteTXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, const uint8_t* data, uint8_t size);
+ */
+int MXC_CAN_WriteTXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, const uint8_t* data,
+                        uint8_t size);
 
 /**
  * @brief   Reads data from RX FIFO if data available
@@ -493,7 +516,7 @@ int MXC_CAN_WriteTXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, const uint8_
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32690 does not support CAN FD, setting info->fdf will return an error.
- */ 
+ */
 int MXC_CAN_ReadRXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, uint8_t* data, uint8_t size);
 
 /**
@@ -566,7 +589,7 @@ int MXC_CAN_MessageReadAsync(uint32_t can_idx, mxc_can_req_t* req);
  * 
  * @warning MAX32690 does not support receiving CAN FD messages.
  */
-int MXC_CAN_MessageReadDMA(uint32_t can_idx, mxc_can_req_t* req, void (*dma_cb) (int, int));
+int MXC_CAN_MessageReadDMA(uint32_t can_idx, mxc_can_req_t* req, void (*dma_cb)(int, int));
 
 /**
  * @brief   General interrupt handler for MessageSendAsync and MessageReadAsync
@@ -600,7 +623,8 @@ int MXC_CAN_Control(uint32_t can_idx, mxc_can_ctrl_t ctrl, uint32_t ctrl_arg);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CAN_SetWakeupTimer(uint32_t can_idx, uint8_t prescaler, uint16_t wup_filter_tm, uint32_t wup_expire_tm);
+int MXC_CAN_SetWakeupTimer(uint32_t can_idx, uint8_t prescaler, uint16_t wup_filter_tm,
+                           uint32_t wup_expire_tm);
 
 /*
  * @brief   Get status of the bus unit

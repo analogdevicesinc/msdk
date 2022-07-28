@@ -39,9 +39,7 @@
 
 /*****************************     MACROS    *********************************/
 
-
 /*****************************     VARIABLES *********************************/
-
 
 /*****************************     FUNCTIONS *********************************/
 
@@ -51,6 +49,6 @@ void utils_send_bytes(mxc_uart_regs_t* uart, uint8_t* ptr, int length);
 
 void utils_delay_ms(uint32_t ms);
 void utils_hexDump(const char* title, uint8_t* buf, uint32_t len);
-int  utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat);
+int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat);
 
 #endif // _UTILS_H_

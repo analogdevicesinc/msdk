@@ -3,7 +3,6 @@
  * @brief   System-specific header file
  */
 
-
 /*******************************************************************************
  * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -54,22 +53,22 @@ extern "C" {
  *----------------------------------------------------------------------------*/
 
 #ifndef HFX_FREQ
-#define HFX_FREQ                32768
+#define HFX_FREQ 32768
 #endif
 
 /* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 #ifndef NANORING_FREQ
-#define NANORING_FREQ           8000
+#define NANORING_FREQ 8000
 #endif
 
 #ifndef HIRC96_FREQ
-#define HIRC96_FREQ             96000000
+#define HIRC96_FREQ 96000000
 #endif
 
-extern uint32_t SystemCoreClock;    /*!< System Clock Frequency (Core Clock)  */
+extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
-#define         PeripheralClock     (SystemCoreClock /2)    /*!< Peripheral Clock Frequency */
+#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
 #endif
 
 /*

@@ -39,7 +39,6 @@
  * @brief   Board support package API.
  */
 
-
 #include <stdio.h>
 #include "spixf.h"
 
@@ -51,25 +50,24 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART    0      /// UART instance to use for console
+#define CONSOLE_UART 0 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD    115200  /// Console baud rate
+#define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define LED_OFF         1       /// Inactive state of LEDs
-#define LED_ON          0       /// Active state of LEDs
+#define LED_OFF 1 /// Inactive state of LEDs
+#define LED_ON  0 /// Active state of LEDs
 
 #ifndef MX25_BAUD
-#define MX25_BAUD       3000000
+#define MX25_BAUD 3000000
 #endif
 // #define MX25_SPI                    MXC_SPIXC
 // #define MX25_SSEL                   0
 // // #define SPI_CHAR_BITS               8
 
 // const spixc_cfg_t mx25_spixc_cfg;
-
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -121,7 +119,8 @@ int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_wi
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 
-int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, mxc_spixf_width_t width);
+int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert,
+                     mxc_spixf_width_t width);
 
 /**
  * \brief   Send clocks on SCLK.
@@ -129,7 +128,8 @@ int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, mxc_
  * @param   deassert    Deassert slave select at the end of the transaction.
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
-int MX25_Clock(unsigned len, unsigned deassert);;
+int MX25_Clock(unsigned len, unsigned deassert);
+;
 
 #ifdef __cplusplus
 }

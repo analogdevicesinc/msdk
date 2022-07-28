@@ -38,18 +38,17 @@
 #define __SCP_MAXQ1852_H__
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Process a MSP Script
  * @return ERR_OK if no error and an error code otherwise
  */
-int process_script_maxq1852_ecdsa (void);
+int process_script_maxq1852_ecdsa(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif				/* __SCP_MAXQ1852_H__ */
+#endif /* __SCP_MAXQ1852_H__ */

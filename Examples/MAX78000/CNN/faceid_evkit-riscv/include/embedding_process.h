@@ -36,26 +36,24 @@
 
 #include <stdint.h>
 
-
 /*****************************     MACROS    *********************************/
 
 #define thresh_for_unknown_subject 9993
 //#define thresh_for_unknown_subject 313600
-#define closest_sub_buffer_size 3*7
+#define closest_sub_buffer_size 3 * 7
 
 /*****************************     VARIABLES *********************************/
 
-typedef struct  __attribute__((packed)) sMeanDistance {
+typedef struct __attribute__((packed)) sMeanDistance {
     uint8_t subID;
     uint8_t number;
     int32_t distance;
 } tsMeanDistance;
 
-typedef struct  __attribute__((packed)) sMinDistance {
+typedef struct __attribute__((packed)) sMinDistance {
     uint8_t subID;
     int32_t distance;
 } tsMinDistance;
-
 
 /*****************************     FUNCTIONS *********************************/
 

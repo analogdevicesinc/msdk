@@ -36,7 +36,6 @@
  *
  **************************************************************************** */
 
-
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -114,4 +113,3 @@ extern const mxc_gpio_cfg_t gpio_cfg_cmp2;
 extern const mxc_gpio_cfg_t gpio_cfg_cmp3;
 
 #endif /* _MXC_PINS_H_ */
-
