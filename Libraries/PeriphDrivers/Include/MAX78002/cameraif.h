@@ -57,6 +57,7 @@ extern "C" {
  * @{
  */
 
+
 /* **** Definitions **** */
 
 /**
@@ -64,9 +65,9 @@ extern "C" {
  *
  */
 typedef enum {
-    MXC_PCIF_DATAWIDTH_8_BIT = 0, ///<
-    MXC_PCIF_DATAWIDTH_10_BIT,    ///<
-    MXC_PCIF_DATAWIDTH_12_BIT,    ///<
+    MXC_PCIF_DATAWIDTH_8_BIT = 0,      ///<
+    MXC_PCIF_DATAWIDTH_10_BIT,         ///<
+    MXC_PCIF_DATAWIDTH_12_BIT,         ///<
 } mxc_pcif_datawidth_t;
 
 /**
@@ -74,9 +75,9 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_PCIF_GPIO_DATAWIDTH_8_BIT = 0, ///<
-    MXC_PCIF_GPIO_DATAWIDTH_10_BIT,    ///<
-    MXC_PCIF_GPIO_DATAWIDTH_12_BIT,    ///<
+    MXC_PCIF_GPIO_DATAWIDTH_8_BIT = 0,      ///<
+    MXC_PCIF_GPIO_DATAWIDTH_10_BIT,         ///<
+    MXC_PCIF_GPIO_DATAWIDTH_12_BIT,         ///<
 } mxc_pcif_gpio_datawidth_t;
 
 /**
@@ -84,8 +85,8 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_PCIF_READMODE_SINGLE_MODE = 1, ///<
-    MXC_PCIF_READMODE_CONTINUES_MODE,  ///<
+    MXC_PCIF_READMODE_SINGLE_MODE = 1,      ///<
+    MXC_PCIF_READMODE_CONTINUES_MODE,       ///<
 } mxc_pcif_readmode_t;
 
 /**
@@ -93,9 +94,10 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_PCIF_TIMINGSEL_HSYNC_and_VSYNC = 0, ///<
-    MXC_PCIF_TIMINGSEL_SAV_and_EAV,         ///<
+    MXC_PCIF_TIMINGSEL_HSYNC_and_VSYNC = 0,     ///<
+    MXC_PCIF_TIMINGSEL_SAV_and_EAV,             ///<
 } mxc_pcif_timingsel_t;
+
 
 /* **** Function Prototypes **** */
 
@@ -113,7 +115,7 @@ int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth);
  *
  * @param  datawidth 8/10/12 bit
  */
-void MXC_PCIF_SetDataWidth(mxc_pcif_datawidth_t datawidth);
+void MXC_PCIF_SetDataWidth(mxc_pcif_datawidth_t  datawidth);
 
 /**
  * @brief   Set the desired timing mode for the camera interface.
@@ -148,7 +150,7 @@ void MXC_PCIF_DisableInt(uint32_t flags);
  *
  * @param  readmode Single mode or Continues mode
  */
-void MXC_PCIF_Start(mxc_pcif_readmode_t readmode);
+void MXC_PCIF_Start(mxc_pcif_readmode_t  readmode);
 
 /**
  * @brief  Stop capture, disable Parallel camera interface

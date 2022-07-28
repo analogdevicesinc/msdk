@@ -50,6 +50,7 @@ extern "C" {
  * @ingroup UCL_ECB
  */
 
+
 /*============================================================================*/
 /** <b>USIP&reg; AES-ECB</b>.
  * Complete process.
@@ -73,7 +74,8 @@ extern "C" {
  * @retval #UCL_INVALID_ARG    @p len is not a multiple of 16
  *
  * @ingroup UCL_UAES_ECB */
-int ucl_uaes_ecb(u8* dst, u8* src, u8* key, u32 len, int mode);
+int ucl_uaes_ecb(u8 *dst, u8 *src, u8 *key, u32 len, int mode);
+
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-ECB Init</b>.
@@ -95,7 +97,8 @@ int ucl_uaes_ecb(u8* dst, u8* src, u8* key, u32 len, int mode);
  * @retval #UCL_INVALID_MODE The mode is not one of those described
  *
  * @ingroup UCL_UAES_ECB */
-int ucl_uaes_ecb_init(ucl_uaes_ctx_t* ctx, u8* key, int mode);
+int ucl_uaes_ecb_init(ucl_uaes_ctx_t *ctx, u8 *key, int mode);
+
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-ECB Core</b>.
@@ -116,7 +119,8 @@ int ucl_uaes_ecb_init(ucl_uaes_ctx_t* ctx, u8* key, int mode);
  * @retval #UCL_INVALID_ARG    The byte length is not a multiple of 16
  *
  * @ingroup UCL_UAES_ECB */
-int ucl_uaes_ecb_core(u8* dst, ucl_uaes_ctx_t* ctx, u8* src, u32 len);
+int ucl_uaes_ecb_core(u8 *dst, ucl_uaes_ctx_t *ctx, u8 *src, u32 len);
+
 
 /*============================================================================*/
 /** <b>USIP&reg; AES-ECB Finish</b>.
@@ -130,7 +134,8 @@ int ucl_uaes_ecb_core(u8* dst, ucl_uaes_ctx_t* ctx, u8* src, u32 len);
  * @retval #UCL_INVALID_OUTPUT The output is the pointer #NULL
  *
  * @ingroup UCL_UAES_ECB */
-int ucl_uaes_ecb_finish(ucl_uaes_ctx_t* ctx);
+int ucl_uaes_ecb_finish(ucl_uaes_ctx_t *ctx);
+
 
 #ifdef _cplusplus
 }

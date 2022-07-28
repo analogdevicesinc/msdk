@@ -39,6 +39,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 #include "spixf.h"
 
@@ -50,15 +51,16 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART    0      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
-#define LED_OFF 0 /// Inactive state of LEDs
-#define LED_ON  1 /// Active state of LEDs
+#define LED_OFF         0       /// Inactive state of LEDs
+#define LED_ON          1       /// Active state of LEDs
+
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -78,6 +80,7 @@ int Console_Init(void);
  * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
  */
 int Console_PrepForSleep(void);
+
 
 #ifdef __cplusplus
 }

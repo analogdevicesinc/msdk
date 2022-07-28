@@ -35,22 +35,31 @@
 *
 */
 
-#ifdef DEBUG
-#define RV_ASSERT(rv)                             \
-    do {                                          \
-        if (rv) {                                 \
-            cout << __FILE__ << __LINE__ << endl; \
-            return rv;                            \
-        }                                         \
-    } while (0)
-#else
-#define RV_ASSERT(func) \
-    rv = func;          \
-    do {                \
-        if (rv) {       \
-            return rv;  \
-        }               \
-    } while (0)
-#endif
+
+#ifdef DEBUG  
+    #define RV_ASSERT(rv) \
+        do \
+        { \
+            if (rv) \
+            { \
+                cout << __FILE__ << __LINE__ << endl; \
+                return rv; \
+            } \
+        } while(0)
+#else  
+    #define RV_ASSERT(func) \
+        rv = func;\
+		do \
+        { \
+            if (rv) \
+            { \
+                return rv; \
+            } \
+        } while(0)
+#endif 
+
+
+
+
 
 CK_RV HSM_pError(CK_RV rv);

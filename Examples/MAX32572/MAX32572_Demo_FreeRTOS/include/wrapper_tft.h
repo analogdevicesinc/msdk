@@ -37,16 +37,18 @@
 #ifndef _WRAPPER_TFT_H_
 #define _WRAPPER_TFT_H_
 
+
 #include "MAX32xxx.h"
 
 /*************************************** DEFINES *****************************/
+
 
 /************************************** TYPE DEF *****************************/
 void TFT_Init(void);
 void TFT_SetBackGroundColor(unsigned char index_color);
 void TFT_ShowImage(int x0, int y0, int id);
-void TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area);
-void TFT_ClearArea(area_t* area, int color);
-void TFT_SetPalette(int img_id);
+void TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area);
+void TFT_ClearArea( area_t *area, int color);
+void TFT_SetPalette( int img_id );
 
 #endif //_WRAPPER_TFT_H_

@@ -56,9 +56,9 @@ extern "C" {
 #include "mxc_assert.h"
 
 /***** Definitions *****/
-#define NORMAL_HART_TRANSCEIVE_MODE 0
-#define HART_TEST_MODE_TX_1200      1
-#define HART_TEST_MODE_TX_2200      2
+#define NORMAL_HART_TRANSCEIVE_MODE	0
+#define HART_TEST_MODE_TX_1200		1
+#define HART_TEST_MODE_TX_2200		2
 
 /***** Function Prototypes *****/
 /**
@@ -104,7 +104,7 @@ void hart_uart_test_transmit_2200(void);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int hart_uart_send(uint8_t* data, uint32_t length);
+int hart_uart_send(uint8_t *data, uint32_t length);
 
 /**
  * @brief   Unload the data received from the HART.
@@ -124,6 +124,7 @@ int hart_uart_get_received_packet(uint8_t* buffer, uint32_t* packet_length);
  *          handler or periodically by the application if UART interrupts are disabled.
  */
 void hart_uart_handler(void);
+
 
 /**@} end of group hart_uart */
 

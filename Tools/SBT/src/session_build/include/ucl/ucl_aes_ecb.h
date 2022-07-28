@@ -45,6 +45,7 @@ extern "C" {
  * @ingroup UCL_ECB
  */
 
+
 /*============================================================================*/
 /** <b>AES-ECB</b>.
  * Complete process.
@@ -71,7 +72,9 @@ extern "C" {
  *
  * @ingroup UCL_ECB_AES
  */
-int ucl_aes_ecb(u8* dst, u8* src, u32 len, u8* key, u32 keylen, int mode);
+int ucl_aes_ecb(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen,
+                int mode);
+
 
 /*============================================================================*/
 /** <b>AES-ECB Init</b>.
@@ -100,7 +103,8 @@ int ucl_aes_ecb(u8* dst, u8* src, u32 len, u8* key, u32 keylen, int mode);
  *
  * @ingroup UCL_ECB_AES
  */
-int ucl_aes_ecb_init(ucl_aes_ctx_t* ctx, u8* key, u32 keylen, int mode);
+int ucl_aes_ecb_init(ucl_aes_ctx_t *ctx, u8 *key, u32 keylen, int mode);
+
 
 /*============================================================================*/
 /** <b>AES-ECB Core</b>.
@@ -123,7 +127,8 @@ int ucl_aes_ecb_init(ucl_aes_ctx_t* ctx, u8* key, u32 keylen, int mode);
  *
  * @ingroup UCL_ECB_AES
  */
-int ucl_aes_ecb_core(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len);
+int ucl_aes_ecb_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
+
 
 /*============================================================================*/
 /** <b>AES-ECB Finish</b>.
@@ -138,7 +143,8 @@ int ucl_aes_ecb_core(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len);
  *
  * @ingroup UCL_ECB_AES
  */
-int ucl_aes_ecb_finish(ucl_aes_ctx_t* ctx);
+int ucl_aes_ecb_finish(ucl_aes_ctx_t *ctx);
+
 
 /** <b>AES-ECB Core</b>.
  * Process the Data.
@@ -159,7 +165,8 @@ int ucl_aes_ecb_finish(ucl_aes_ctx_t* ctx);
  *          #UCL_AES_BLOCKSIZE
  *
  * @ingroup UCL_ECB_AES */
-int ucl_aes_ecb_core_context(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len);
+  int ucl_aes_ecb_core_context(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
+
 
 #ifdef __cplusplus
 }

@@ -56,32 +56,19 @@ extern "C" {
 /* **** Definitions **** */
 /** @brief   Enumeration for the EMAC interrupt events */
 typedef enum {
-    MXC_EMAC_EVENT_MPS =
-        MXC_F_EMAC_INT_EN_MPS, /**! Management Packet Sent Interrupt                   */
-    MXC_EMAC_EVENT_RXCMPL =
-        MXC_F_EMAC_INT_EN_RXCMPL, /**! Receive Complete Interrupt                         */
-    MXC_EMAC_EVENT_RXUBR =
-        MXC_F_EMAC_INT_EN_RXUBR, /**! RX Used Bit Read Interrupt                         */
-    MXC_EMAC_EVENT_TXUBR =
-        MXC_F_EMAC_INT_EN_TXUBR, /**! TX Used Bit Read Interrupt                         */
-    MXC_EMAC_EVENT_TXUR =
-        MXC_F_EMAC_INT_EN_TXUR, /**! Ethernet Transmit Underrun Interrupt               */
-    MXC_EMAC_EVENT_RLE =
-        MXC_F_EMAC_INT_EN_RLE, /**! Retry Limit Exceeded Interrupt                     */
-    MXC_EMAC_EVENT_TXERR =
-        MXC_F_EMAC_INT_EN_TXERR, /**! Transmit Buffers Exhausted In Mid-Frame Interrupt  */
-    MXC_EMAC_EVENT_TXCMPL =
-        MXC_F_EMAC_INT_EN_TXCMPL, /**! Transmit Complete Interrupt                        */
-    MXC_EMAC_EVENT_LC =
-        MXC_F_EMAC_INT_EN_LC, /**! Link Change Interrupt                              */
-    MXC_EMAC_EVENT_RXOR =
-        MXC_F_EMAC_INT_EN_RXOR, /**! Receive Overrun Interrupt                          */
-    MXC_EMAC_EVENT_HRESPNO =
-        MXC_F_EMAC_INT_EN_HRESPNO, /**! HRESP Not OK Interrupt                             */
-    MXC_EMAC_EVENT_PPR =
-        MXC_F_EMAC_INT_EN_PPR, /**! Pause Packet Received Interrupt                    */
-    MXC_EMAC_EVENT_PTZ =
-        MXC_F_EMAC_INT_EN_PTZ /**! Pause Time Zero Interrupt                          */
+    MXC_EMAC_EVENT_MPS      = MXC_F_EMAC_INT_EN_MPS,        /**! Management Packet Sent Interrupt                   */
+    MXC_EMAC_EVENT_RXCMPL   = MXC_F_EMAC_INT_EN_RXCMPL,     /**! Receive Complete Interrupt                         */
+    MXC_EMAC_EVENT_RXUBR    = MXC_F_EMAC_INT_EN_RXUBR,      /**! RX Used Bit Read Interrupt                         */
+    MXC_EMAC_EVENT_TXUBR    = MXC_F_EMAC_INT_EN_TXUBR,      /**! TX Used Bit Read Interrupt                         */
+    MXC_EMAC_EVENT_TXUR     = MXC_F_EMAC_INT_EN_TXUR,       /**! Ethernet Transmit Underrun Interrupt               */
+    MXC_EMAC_EVENT_RLE      = MXC_F_EMAC_INT_EN_RLE,        /**! Retry Limit Exceeded Interrupt                     */
+    MXC_EMAC_EVENT_TXERR    = MXC_F_EMAC_INT_EN_TXERR,      /**! Transmit Buffers Exhausted In Mid-Frame Interrupt  */
+    MXC_EMAC_EVENT_TXCMPL   = MXC_F_EMAC_INT_EN_TXCMPL,     /**! Transmit Complete Interrupt                        */
+    MXC_EMAC_EVENT_LC       = MXC_F_EMAC_INT_EN_LC,         /**! Link Change Interrupt                              */
+    MXC_EMAC_EVENT_RXOR     = MXC_F_EMAC_INT_EN_RXOR,       /**! Receive Overrun Interrupt                          */
+    MXC_EMAC_EVENT_HRESPNO  = MXC_F_EMAC_INT_EN_HRESPNO,    /**! HRESP Not OK Interrupt                             */
+    MXC_EMAC_EVENT_PPR      = MXC_F_EMAC_INT_EN_PPR,        /**! Pause Packet Received Interrupt                    */
+    MXC_EMAC_EVENT_PTZ      = MXC_F_EMAC_INT_EN_PTZ         /**! Pause Time Zero Interrupt                          */
 } mxc_emac_events_t;
 
 /* **** Structures **** */
@@ -89,32 +76,32 @@ typedef enum {
  * @brief   The callback called on EMAC interrupt event
  *
  */
-typedef void (*mxc_emac_cb_func_t)(void);
+typedef void (*mxc_emac_cb_func_t) (void);
 
 /**
  * @brief   The microsecond delay function used by the driver
  *
  */
-typedef int (*mxc_emac_delay_func_t)(unsigned long);
+typedef int (*mxc_emac_delay_func_t) (unsigned long);
 
 /**
  * @brief   The table of callback functions for EMAC interrupt events
  *
  */
 typedef struct {
-    mxc_emac_cb_func_t mps_handler;
-    mxc_emac_cb_func_t rxcmpl_handler;
-    mxc_emac_cb_func_t rxubr_handler;
-    mxc_emac_cb_func_t txubr_handler;
-    mxc_emac_cb_func_t txur_handler;
-    mxc_emac_cb_func_t rle_handler;
-    mxc_emac_cb_func_t txerr_handler;
-    mxc_emac_cb_func_t txcmpl_handler;
-    mxc_emac_cb_func_t lc_handler;
-    mxc_emac_cb_func_t rxor_handler;
-    mxc_emac_cb_func_t hrespno_handler;
-    mxc_emac_cb_func_t ppr_handler;
-    mxc_emac_cb_func_t ptz_handler;
+    mxc_emac_cb_func_t                          mps_handler;
+    mxc_emac_cb_func_t                          rxcmpl_handler;
+    mxc_emac_cb_func_t                          rxubr_handler;
+    mxc_emac_cb_func_t                          txubr_handler;
+    mxc_emac_cb_func_t                          txur_handler;
+    mxc_emac_cb_func_t                          rle_handler;
+    mxc_emac_cb_func_t                          txerr_handler;
+    mxc_emac_cb_func_t                          txcmpl_handler;
+    mxc_emac_cb_func_t                          lc_handler;
+    mxc_emac_cb_func_t                          rxor_handler;
+    mxc_emac_cb_func_t                          hrespno_handler;
+    mxc_emac_cb_func_t                          ppr_handler;
+    mxc_emac_cb_func_t                          ptz_handler;
 } mxc_emac_cb_funcs_tbl_t;
 
 /**
@@ -122,34 +109,35 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned int addr;
-    unsigned int ctrl;
+    unsigned int                                addr;
+    unsigned int                                ctrl;
 } mxc_emac_dma_desc_t;
+
 
 /**
  * @brief   The information needed by the EMAC driver to operate
  *
  */
 typedef struct {
-    mxc_emac_regs_t* regs;
-    unsigned int rx_tail;
-    unsigned int tx_head;
-    unsigned int tx_tail;
-    void* rx_buffer;
-    void* tx_buffer;
-    mxc_emac_dma_desc_t* rx_ring;
-    mxc_emac_dma_desc_t* tx_ring;
-    unsigned int rx_buffer_dma;
-    unsigned int rx_ring_dma;
-    unsigned int tx_ring_dma;
-    unsigned short phy_addr;
-
-    unsigned int first_init;
-    unsigned int rx_buffer_size;
-    unsigned int rx_ring_size;
-    unsigned int tx_ring_size;
-    mxc_emac_delay_func_t delay_us;
-    mxc_emac_cb_funcs_tbl_t cb_funcs;
+    mxc_emac_regs_t                             *regs;
+    unsigned int                                rx_tail;
+    unsigned int                                tx_head;
+    unsigned int                                tx_tail;
+    void                                        *rx_buffer;
+    void                                        *tx_buffer;
+    mxc_emac_dma_desc_t                         *rx_ring;
+    mxc_emac_dma_desc_t                         *tx_ring;
+    unsigned int                                rx_buffer_dma;
+    unsigned int                                rx_ring_dma;
+    unsigned int                                tx_ring_dma;
+    unsigned short                              phy_addr;
+    
+    unsigned int                                first_init;
+    unsigned int                                rx_buffer_size;
+    unsigned int                                rx_ring_size;
+    unsigned int                                tx_ring_size;
+    mxc_emac_delay_func_t                       delay_us;
+    mxc_emac_cb_funcs_tbl_t                     cb_funcs;
 } mxc_emac_device_t;
 
 /**
@@ -157,17 +145,17 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned char* rx_buff;
-    unsigned char* rx_ring_buff;
-    unsigned char* tx_ring_buff;
-    unsigned int rx_buff_size;
-    unsigned int rx_ring_buff_size;
-    unsigned int tx_ring_buff_size;
-    unsigned short phy_addr;
-    unsigned int interrupt_mode;
-    unsigned int interrupt_events;
-    mxc_emac_delay_func_t delay_us;
-    mxc_emac_cb_funcs_tbl_t conf_cb_funcs;
+    unsigned char                               *rx_buff;
+    unsigned char                               *rx_ring_buff;
+    unsigned char                               *tx_ring_buff;
+    unsigned int                                rx_buff_size;
+    unsigned int                                rx_ring_buff_size;
+    unsigned int                                tx_ring_buff_size;
+    unsigned short                              phy_addr;
+    unsigned int                                interrupt_mode;
+    unsigned int                                interrupt_events;
+    mxc_emac_delay_func_t                       delay_us;
+    mxc_emac_cb_funcs_tbl_t                     conf_cb_funcs;
 } mxc_emac_config_t;
 
 /* **** Function Prototypes **** */
@@ -183,7 +171,7 @@ typedef struct {
  * @return     #E_NULL_PTR        if pointer is null
  * @return     #E_INVALID         if parameter is invalid
  */
-int MXC_EMAC_Init(mxc_emac_config_t* config);
+int MXC_EMAC_Init (mxc_emac_config_t *config);
 
 /**
  * @brief      Set configuration for EMAC device
@@ -195,7 +183,7 @@ int MXC_EMAC_Init(mxc_emac_config_t* config);
  * @return     #E_INVALID         if parameter is invalid
  * @return     #E_UNINITIALIZED   if device is uninitialized
  */
-int MXC_EMAC_SetConfiguration(mxc_emac_config_t* config);
+int MXC_EMAC_SetConfiguration (mxc_emac_config_t *config);
 
 /**
  * @brief      Set EMAC hardware address
@@ -205,7 +193,7 @@ int MXC_EMAC_SetConfiguration(mxc_emac_config_t* config);
  * @return     #E_NO_ERROR        if successful
  * @return     #E_NULL_PTR        if pointer is null
  */
-int MXC_EMAC_SetHwAddr(unsigned char* enetaddr);
+int MXC_EMAC_SetHwAddr (unsigned char *enetaddr);
 
 /**
  * @brief      Enable interrupt events
@@ -215,7 +203,7 @@ int MXC_EMAC_SetHwAddr(unsigned char* enetaddr);
  * @return     #E_NO_ERROR        if successful
  * @return     #E_UNINITIALIZED   if device is uninitialized
  */
-int MXC_EMAC_EnableInterruptEvents(unsigned int events);
+int MXC_EMAC_EnableInterruptEvents (unsigned int events);
 
 /**
  * @brief      Disable interrupt events
@@ -225,7 +213,7 @@ int MXC_EMAC_EnableInterruptEvents(unsigned int events);
  * @return     #E_NO_ERROR        if successful
  * @return     #E_UNINITIALIZED   if device is uninitialized
  */
-int MXC_EMAC_DisableInterruptEvents(unsigned int events);
+int MXC_EMAC_DisableInterruptEvents (unsigned int events);
 
 /* ************************************************************************* */
 /* Low-Level Functions                                                       */
@@ -238,14 +226,14 @@ int MXC_EMAC_DisableInterruptEvents(unsigned int events);
  * @return     #E_NO_DEVICE       if no phy device
  * @return     #E_NO_RESPONSE     if link down
  */
-int MXC_EMAC_Start(void);
+int MXC_EMAC_Start (void);
 
 /**
  * @brief      Stop EMAC device
  *
  * @return     #E_NO_ERROR        if successful
  */
-int MXC_EMAC_Stop(void);
+int MXC_EMAC_Stop (void);
 
 /**
  * @brief      Read link status
@@ -253,7 +241,7 @@ int MXC_EMAC_Stop(void);
  * @return     #E_NO_ERROR        link up
  * @return     #E_NO_DEVICE       link down
  */
-int MXC_EMAC_ReadLinkStatus(void);
+int MXC_EMAC_ReadLinkStatus (void);
 
 /* ************************************************************************* */
 /* Transaction-Level Functions                                               */
@@ -271,7 +259,7 @@ int MXC_EMAC_ReadLinkStatus(void);
  * @return     #E_OVERFLOW        if transmission is exhausted
  * @return     #E_TIME_OUT        if transmission timeout occurs
  */
-int MXC_EMAC_SendSync(const void* packet, unsigned int length);
+int MXC_EMAC_SendSync (const void *packet, unsigned int length);
 
 /**
  * @brief      Send Ethernet packet in async mode
@@ -282,7 +270,7 @@ int MXC_EMAC_SendSync(const void* packet, unsigned int length);
  * @return     #E_NO_ERROR        if successful
  * @return     #E_NULL_PTR        if pointer is null
  */
-int MXC_EMAC_SendAsync(const void* packet, unsigned int length);
+int MXC_EMAC_SendAsync (const void *packet, unsigned int length);
 
 /**
  * @brief      Receive Ethernet packet
@@ -295,7 +283,7 @@ int MXC_EMAC_SendAsync(const void* packet, unsigned int length);
  * @return     #E_NULL_PTR        if pointer is null
  * @return     #E_NONE_AVAIL      if received packet does not fit into the receive buffer
  */
-int MXC_EMAC_Recv(void* rx_buff, unsigned int max_len);
+int MXC_EMAC_Recv (void *rx_buff, unsigned int max_len);
 
 /**
  * @brief      Used for interrupt handling
@@ -304,7 +292,7 @@ int MXC_EMAC_Recv(void* rx_buff, unsigned int max_len);
  *             handler or periodically by the application if EMAC interrupts are disabled.
  *
  */
-void MXC_EMAC_IrqHandler(void);
+void MXC_EMAC_IrqHandler (void);
 
 /**@} end of group emac */
 

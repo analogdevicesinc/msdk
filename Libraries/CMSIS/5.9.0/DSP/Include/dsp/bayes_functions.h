@@ -23,6 +23,7 @@
  * limitations under the License.
  */
 
+ 
 #ifndef _BAYES_FUNCTIONS_H_
 #define _BAYES_FUNCTIONS_H_
 
@@ -45,20 +46,22 @@
  * DSP/Testing/PatternGeneration/Bayes.py
  */
 
-#ifdef __cplusplus
-extern "C" {
+#ifdef   __cplusplus
+extern "C"
+{
 #endif
 
 /**
  * @brief Instance structure for Naive Gaussian Bayesian estimator.
  */
-typedef struct {
-    uint32_t vectorDimension;     /**< Dimension of vector space */
-    uint32_t numberOfClasses;     /**< Number of different classes  */
-    const float32_t* theta;       /**< Mean values for the Gaussians */
-    const float32_t* sigma;       /**< Variances for the Gaussians */
-    const float32_t* classPriors; /**< Class prior probabilities */
-    float32_t epsilon;            /**< Additive value to variances */
+typedef struct
+{
+  uint32_t vectorDimension;  /**< Dimension of vector space */
+  uint32_t numberOfClasses;  /**< Number of different classes  */
+  const float32_t *theta;          /**< Mean values for the Gaussians */
+  const float32_t *sigma;          /**< Variances for the Gaussians */
+  const float32_t *classPriors;    /**< Class prior probabilities */
+  float32_t epsilon;         /**< Additive value to variances */
 } arm_gaussian_naive_bayes_instance_f32;
 
 /**
@@ -72,11 +75,14 @@ typedef struct {
  *
  */
 
-uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32* S,
-                                              const float32_t* in, float32_t* pOutputProbabilities,
-                                              float32_t* pBufferB);
 
-#ifdef __cplusplus
+uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S, 
+   const float32_t * in, 
+   float32_t *pOutputProbabilities,
+   float32_t *pBufferB);
+
+
+#ifdef   __cplusplus
 }
 #endif
 

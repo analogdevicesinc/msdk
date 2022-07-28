@@ -40,9 +40,9 @@
  * @note To create the device: mknode /dev/hwrandom c 10 183
  *
  * @ingroup UCL_LINUX */
-#if __usip == 1
+#if __usip==1
 #define UCL_UTRNG_DEV "/dev/hwrandom"
-#elif __jibe == 1
+#elif __jibe==1
 #define UCL_UTRNG_DEV "/dev/hw_random"
 #else
 #define UCL_UTRNG_DEV "/dev/urandom"

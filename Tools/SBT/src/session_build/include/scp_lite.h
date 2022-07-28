@@ -38,8 +38,10 @@
 #define __SCP_LITE_H__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
 
 /**
  * Format and generate a SCP-lite command
@@ -48,13 +50,14 @@ extern "C" {
  * @param address
  * @return ERR_OK if success otherwise error code
  */
-int scp_lite_cmd(const uint8_t* data, size_t data_len, const uint8_t* address);
+int scp_lite_cmd (const uint8_t * data, size_t data_len, const uint8_t * address);
+
 
 /**
  * Format and generate a SCP-lite response
  * @return ERR_OK if success otherwise error code
  */
-int scp_lite_response(void);
+int scp_lite_response (void);
 
 /**
  * Read a S19 data file and generate a corresponding command/response
@@ -62,16 +65,18 @@ int scp_lite_response(void);
  * @param sfilename
  * @return ERR_OK if success otherwise error code
  */
-int scp_lite_load_ram(char* ptr_address_offset, const char* sfilename);
+int scp_lite_load_ram (char *ptr_address_offset, const char * sfilename);
+
 
 /**
  * Process an SCP-lite script
  * @return ERR_OK if success otherwise error code
  */
-int process_script_scp_lite_ecdsa(void);
+int process_script_scp_lite_ecdsa (void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __SCP_LITE_H__ */
+#endif	/* __SCP_LITE_H__ */

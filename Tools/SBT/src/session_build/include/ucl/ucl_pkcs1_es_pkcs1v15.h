@@ -36,6 +36,7 @@
 extern "C" {
 #endif /* _ cplusplus  */
 
+
 /** @file ucl_pkcs1_es_pkcs1v15.h
  * @defgroup UCL_PKCS1V21_RSAESPKCS1V15 RSAES-PKCS1-v1.5
  * @ref PKCS1 "PKCS #1 V2.1" Section 7.2: RSAES-PKCS1-v1_5.
@@ -55,6 +56,7 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21
  */
+
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 encryption</b>.
@@ -78,8 +80,10 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
-                                  ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_es_pkcs1v15_encrypt(u8 *output, u8 *input,
+                                  u32 input_length, 
+                                  ucl_rsa_public_key_t *keyPu);
+
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 decryption</b>.
@@ -108,8 +112,8 @@ int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
-                                  ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_es_pkcs1v15_decrypt(u8 *output, u32 *output_length, u8 *input, ucl_rsa_private_key_t *keyPr);
+
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 decryption with CRT</b>.
@@ -136,8 +140,8 @@ int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_crt_decrypt(u8* output, u32* output_length, u8* input,
-                                      ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_es_pkcs1v15_crt_decrypt(u8 *output, u32 *output_length, u8 *input, ucl_rsa_crt_private_key_t *keyPr);
+
 
 #ifdef __cplusplus
 }

@@ -46,6 +46,7 @@ extern "C" {
  * @ingroup UCL_OFB
  */
 
+
 /*============================================================================*/
 /** <b>3DES-OFB</b>.
  * Complete process.
@@ -79,7 +80,9 @@ extern "C" {
  *
  * @ingroup UCL_OFB_3DES
  */
-int ucl_3des_ofb(u8* dataOut, u8* dataIn, u8* key, u8* IV, u32 data_byteLen, int mode);
+int ucl_3des_ofb(u8 *dataOut, u8 *dataIn, u8 *key, u8 *IV,
+                 u32 data_byteLen, int mode);
+
 
 /*============================================================================*/
 /** <b>3DES-OFB Init</b>.
@@ -105,7 +108,9 @@ int ucl_3des_ofb(u8* dataOut, u8* dataIn, u8* key, u8* IV, u32 data_byteLen, int
  *
  * @ingroup UCL_OFB_3DES
  */
-int ucl_3des_ofb_init(ucl_3des_ctx_t* ctx, u8* key, u8* IV, int mode);
+int ucl_3des_ofb_init(ucl_3des_ctx_t *ctx, u8 *key, u8 *IV,
+                      int mode);
+
 
 /*============================================================================*/
 /** <b>3DES-OFB Core</b>.
@@ -127,7 +132,9 @@ int ucl_3des_ofb_init(ucl_3des_ctx_t* ctx, u8* key, u8* IV, int mode);
  *
  * @ingroup UCL_OFB_3DES
  */
-int ucl_3des_ofb_core(u8* dataOut, ucl_3des_ctx_t* ctx, u8* dataIn, u32 data_byteLen);
+int ucl_3des_ofb_core(u8 *dataOut, ucl_3des_ctx_t *ctx,
+                      u8 *dataIn, u32 data_byteLen);
+
 
 /*============================================================================*/
 /** <b>3DES-OFB Finish</b>.
@@ -142,7 +149,7 @@ int ucl_3des_ofb_core(u8* dataOut, ucl_3des_ctx_t* ctx, u8* dataIn, u32 data_byt
  *
  * @ingroup UCL_OFB_3DES
  */
-int ucl_3des_ofb_finish(ucl_3des_ctx_t* ctx);
+int ucl_3des_ofb_finish(ucl_3des_ctx_t *ctx);
 
 #ifdef __cplusplus
 }

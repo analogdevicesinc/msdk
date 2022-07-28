@@ -50,6 +50,7 @@ extern "C" {
  * @see UCL_OPERATION_MODES
  * @ingroup UCL_BLOCK_CIPHER */
 
+
 /*============================================================================*/
 /** <b>AES Block Size</b>.
  * The byte length of the DES core data block.
@@ -68,14 +69,17 @@ extern "C" {
 
 /** <b>AES maximum round number</b>.
  * @ingroup UCL_AES */
-#define UCL_AES_MAXNR 14
+#define UCL_AES_MAXNR   14
+
 
 /*============================================================================*/
 /** <b>AES Key</b>.
  * @ingroup UCL_AES */
-struct ucl_aes_key {
-    u32 rd_key[4 * (UCL_AES_MAXNR + 1)]; /**< Round key.        */
-    int rounds;                          /**< Number of rounds. */
+struct ucl_aes_key
+{
+    
+    u32 rd_key[4 *(UCL_AES_MAXNR + 1)]; /**< Round key.        */
+    int rounds;                         /**< Number of rounds. */
 };
 
 /** <b>AES Key</b>.
@@ -87,25 +91,27 @@ typedef struct ucl_aes_key ucl_aes_key_t;
  * @see UCL_OPERATION_MODES
  *
  * @ingroup UCL_AES */
-struct ucl_aes_ctx {
+struct ucl_aes_ctx
+{
     int mode;                     /**< Ciphering Mode.    */
     u8 memory[UCL_AES_BLOCKSIZE]; /**< Intermediate state.*/
     u32 index;                    /**< index.             */
 #if defined(__rw20)
-    int key_id;
-    //for cmac
-    u8 k1[UCL_AES_KEYLEN_256];
-    u8 k2[UCL_AES_KEYLEN_256];
+  int key_id;
+  //for cmac
+  u8 k1[UCL_AES_KEYLEN_256];
+  u8 k2[UCL_AES_KEYLEN_256];
 #else
-    u8 origin_key[UCL_AES_KEYLEN_256]; /**<origin key, w/o modification*/
-    int origin_keylen;
-    ucl_aes_key_t key; /**< AES Sub-keys.      */
+  u8 origin_key[UCL_AES_KEYLEN_256];/**<origin key, w/o modification*/
+  int origin_keylen;
+  ucl_aes_key_t key;            /**< AES Sub-keys.      */
 #endif
 };
 
 /** <b>AES Context</b>.
  * @ingroup UCL_AES */
 typedef struct ucl_aes_ctx ucl_aes_ctx_t;
+
 
 /*============================================================================*/
 /** <b>AES for Single Block</b>.
@@ -129,7 +135,7 @@ typedef struct ucl_aes_ctx ucl_aes_ctx_t;
  *
  * @ingroup UCL_AES
  */
-int ucl_aes(u8* dst, u8* src, u8* key, u32 keylen, int mode);
+int ucl_aes(u8 *dst, u8 *src, u8 *key, u32 keylen, int mode);
 
 #ifdef __cplusplus
 }

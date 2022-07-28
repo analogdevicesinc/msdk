@@ -36,6 +36,7 @@
  * @brief   Board support package API.
  */
 
+
 #ifndef _BOARD_H
 #define _BOARD_H
 
@@ -50,36 +51,37 @@ extern "C" {
 #define BOARD_AUD01_REVA
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART    0      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 19200 /// Console baud rate
+#define CONSOLE_BAUD    19200  /// Console baud rate
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_OFF         1       /// Inactive state of LEDs
+#define LED_ON          0       /// Active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
-#define LED_RED LED1
+#define LED1            0
+#define LED_RED         LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
-#define LED_GREEN LED2
+#define LED2            1
+#define LED_GREEN       LED2
 
 /**
  *  A reference to LED2 (BLUE LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED3     2
-#define LED_BLUE LED3
+#define LED3            2
+#define LED_BLUE        LED3
+
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -121,8 +123,8 @@ int Debug_Init(void);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-#define POWER_OFF 0
-#define POWER_ON  1
+#define POWER_OFF         0
+#define POWER_ON          1
 int Microphone_Power(int on);
 
 /**
@@ -132,8 +134,8 @@ int Microphone_Power(int on);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-#define CLOCK_DISABLE 0
-#define CLOCK_ENABLE  1
+#define CLOCK_DISABLE     0
+#define CLOCK_ENABLE	  1
 int Audio_Codec_Clock_Enable(int enable);
 
 /**
@@ -143,8 +145,8 @@ int Audio_Codec_Clock_Enable(int enable);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-#define I2S_INTERNAL 0
-#define I2S_EXTERNAL 1
+#define I2S_INTERNAL     0
+#define I2S_EXTERNAL     1
 int Internal_External_I2S_Select(int sel);
 
 /**
@@ -154,9 +156,10 @@ int Internal_External_I2S_Select(int sel);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-#define CNN_BOOST_DISABLE 0
-#define CNN_BOOST_ENABLE  1
+#define CNN_BOOST_DISABLE    0
+#define CNN_BOOST_ENABLE     1
 int CNN_Boost_Enable(int enable);
+
 
 /**
  * \brief   Camera power control.

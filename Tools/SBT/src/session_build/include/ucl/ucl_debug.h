@@ -30,16 +30,18 @@
 #include "ucl/ucl_config.h"
 #include <stdio.h>
 
-#define __userland_format(fmt)   "%s:%d " fmt "\n"
-#define __userland_format_source __func__, __LINE__
+#define __userland_format(fmt)		"%s:%d " fmt "\n"
+#define __userland_format_source	__func__, __LINE__
 
-#define _userland_debug(fmt) __userland_format(fmt), __userland_format_source
+#define _userland_debug(fmt)		__userland_format(fmt), \
+					__userland_format_source
 
-#ifdef DEBUG /* defined using the kernel config */
-#warning "DEBUG traces are enabled"
-#define dbg_print(fmt, arg...) printf(_userland_debug(fmt), ##arg)
+#ifdef DEBUG	/* defined using the kernel config */
+# warning "DEBUG traces are enabled"
+# define dbg_print(fmt, arg...) printf(_userland_debug(fmt), ##arg)
 #else
-#define dbg_print(fmt, arg...)
+# define dbg_print(fmt, arg...)
 #endif
+
 
 #endif /*UCL_DEBUG_H*/

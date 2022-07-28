@@ -34,13 +34,15 @@
 *******************************************************************************
 */
 
+
 #ifndef _BITMAP_H_
 #define _BITMAP_H_
 
 // bitmaps id
-#define ADI_Logo_RGB_Solid_small_256_bmp 0
+#define    ADI_Logo_RGB_Solid_small_256_bmp                   0
 
 // fonts id
-#define urw_gothic_12_grey_bg_white 0
+#define    urw_gothic_12_grey_bg_white                        0
+
 
 #endif //_BITMAP_H_

@@ -38,18 +38,19 @@ typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(int key);
 typedef void (*Time_Tick)(void);
 
+
 typedef struct _State {
-    char* name;
-    Init_func init;
-    Keypad_process prcss_key;
-    Time_Tick tick;
-    unsigned int timeout;
+    char*            name;
+    Init_func       init;
+    Keypad_process  prcss_key;
+    Time_Tick       tick;
+    unsigned int    timeout;
 } State;
 
 void state_init(void);
 
 State* state_get_current(void);
-int state_set_current(State* state);
+int   state_set_current(State* state);
 
 State* get_home_state(void);
 State* get_keypad_state(void);

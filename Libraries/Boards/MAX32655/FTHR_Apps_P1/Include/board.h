@@ -39,6 +39,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 
 #ifndef _BOARD_H
@@ -53,55 +54,55 @@ extern "C" {
     Use as #if defined(BOARD_FTHR_APPS_P1)
     Not as #if BOARD_FTHR_APPS_P1
 */
-#define BOARD_FTHR_APPS_P1 1 /// Used in examples to control program flow.
+#define BOARD_FTHR_APPS_P1    1     /// Used in examples to control program flow.
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART    0      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
 #ifndef HCI_UART
-#define HCI_UART 3 /// LP UART
+#define HCI_UART            3   /// LP UART
 #endif
 
 #ifndef TERMINAL_UART
-#define TERMINAL_UART CONSOLE_UART
+#define TERMINAL_UART       CONSOLE_UART
 #endif
 
 #ifndef USER_UART
-#define USER_UART 3
+#define USER_UART           3
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_OFF         1       /// Inactive state of LEDs
+#define LED_ON          0       /// Active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
-#define LED_RED LED1
+#define LED1            0
+#define LED_RED         LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
-#define LED_GREEN LED2
+#define LED2            1
+#define LED_GREEN       LED2
 
 /**
  *  A reference to LED2 (BLUE LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED3     2
-#define LED_BLUE LED3
+#define LED3            2
+#define LED_BLUE        LED3
 
 /* References to the pins connected to the two user buttons */
-#define BUTTON1 0
-#define BUTTON2 1
+#define BUTTON1			0
+#define BUTTON2			1
 
 #define BUTTON_PRESSED  1
 #define BUTTON_RELEASED 0
@@ -151,8 +152,8 @@ int Debug_Init(void);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-#define POWER_OFF 0
-#define POWER_ON  1
+#define POWER_OFF         0
+#define POWER_ON          1
 int Microphone_Power(int on);
 
 /**
@@ -163,6 +164,7 @@ int Microphone_Power(int on);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int Camera_Power(int on);
+
 
 #ifdef __cplusplus
 }

@@ -163,12 +163,27 @@
    * Please refer to \ref ChangeLog_pg.
    */
 
+
+
+
+
+
+
+
+
+
+
 /**
  * @defgroup groupExamples Examples
  */
 
+
+
+
+
 #ifndef _ARM_MATH_H
 #define _ARM_MATH_H
+
 
 #include "arm_math_types.h"
 #include "arm_math_memory.h"
@@ -176,7 +191,7 @@
 #include "dsp/none.h"
 #include "dsp/utils.h"
 
-#include "dsp/basic_math_functions.h"
+#include "dsp/basic_math_functions.h"  
 #include "dsp/interpolation_functions.h"
 #include "dsp/bayes_functions.h"
 #include "dsp/matrix_functions.h"
@@ -191,16 +206,27 @@
 #include "dsp/filtering_functions.h"
 #include "dsp/quaternion_math_functions.h"
 
-#ifdef __cplusplus
-extern "C" {
+
+
+#ifdef   __cplusplus
+extern "C"
+{
 #endif
+
+
+
 
 //#define TABLE_SPACING_Q31     0x400000
 //#define TABLE_SPACING_Q15     0x80
 
-#ifdef __cplusplus
+
+
+
+
+#ifdef   __cplusplus
 }
 #endif
+
 
 #endif /* _ARM_MATH_H */
 

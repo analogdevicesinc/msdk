@@ -47,6 +47,7 @@ extern "C" {
  * @ingroup UCL_MISC
  */
 
+
 /** <b>DES Primitive self test</b>.
  * Test DES.
  *
@@ -58,6 +59,7 @@ extern "C" {
  * @ingroup UCL_STEST
  */
 int ucl_cipher_des_stest(void);
+
 
 /** <b>3DES Primitive self test</b>.
  * Test 3DES.
@@ -71,7 +73,7 @@ int ucl_cipher_des_stest(void);
  */
 int ucl_cipher_3des_stest(void);
 
-int ucl_cipher_3des_eee_stest(void);
+  int ucl_cipher_3des_eee_stest(void);
 
 /** <b>AES Primitive self test</b>.
  * Test AES 128/192/256 bits key length.
@@ -84,6 +86,8 @@ int ucl_cipher_3des_eee_stest(void);
  * @ingroup UCL_STEST
  */
 int ucl_cipher_aes_stest(void);
+
+
 
 /** <b>RSA Primitive self test</b>.
  * Test RSA encryption, decryption and CRT decryption.
@@ -120,7 +124,7 @@ int ucl_pkc_public_rsa_stest(void);
  * @ingroup UCL_STEST
  */
 
-int ucl_pkc_dsa_stest(void);
+  int ucl_pkc_dsa_stest(void);
 
 /** <b>ECDSA secp224r1 SHA-1 self test</b>.
  * Test ECDSA function (verify/sign) for the secp224r1 curve and the SHA-1 hash function.
@@ -132,7 +136,8 @@ int ucl_pkc_dsa_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p224r1_sha1_stest(void);
+  int ucl_ecdsa_p224r1_sha1_stest(void);
+
 
 /** <b>ECDSA secp224r1 SHA-1 self test</b>.
  * Test ECDSA function (verify/sign) for the secp224r1 curve and the SHA-1 hash function.
@@ -144,7 +149,7 @@ int ucl_ecdsa_p224r1_sha1_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p224r1_sha224_stest(void);
+  int ucl_ecdsa_p224r1_sha224_stest(void);
 /** <b>ECDSA secp521r1 SHA-512 self test</b>.
  * Test ECDSA function (verify/sign) for the secp521r1 curve and the SHA-512 hash function.
  *
@@ -155,7 +160,7 @@ int ucl_ecdsa_p224r1_sha224_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p521r1_sha512_stest(void);
+  int ucl_ecdsa_p521r1_sha512_stest(void);
 /** <b>ECDSA secp384r1 SHA-384 self test</b>.
  * Test ECDSA function (verify/sign) for the secp384r1 curve and the SHA-384 hash function.
  *
@@ -166,7 +171,7 @@ int ucl_ecdsa_p521r1_sha512_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p384r1_sha384_stest(void);
+  int ucl_ecdsa_p384r1_sha384_stest(void);
 /** <b>ECDSA secp160r1 SHA-256 self test</b>.
  * Test ECDSA function (verify/sign) for the secp160r1 curve and the SHA-256 hash function.
  *
@@ -177,7 +182,7 @@ int ucl_ecdsa_p384r1_sha384_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p160r1_sha256_stest(void);
+  int ucl_ecdsa_p160r1_sha256_stest(void);
 /** <b>ECDSA secp160r1 SHA-1 self test</b>.
  * Test ECDSA function (verify/sign) for the secp160r1 curve and the SHA-1 hash function.
  *
@@ -188,7 +193,7 @@ int ucl_ecdsa_p160r1_sha256_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p160r1_sha1_stest(void);
+  int ucl_ecdsa_p160r1_sha1_stest(void);
 /** <b>ECDSA secp192r1 SHA-1 self test</b>.
  * Test ECDSA function (verify/sign) for the secp192r1 curve and the SHA-1 hash function.
  *
@@ -199,7 +204,7 @@ int ucl_ecdsa_p160r1_sha1_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p192r1_sha1_stest(void);
+  int ucl_ecdsa_p192r1_sha1_stest(void);
 /** <b>ECDSA secp192r1 SHA-256 self test</b>.
  * Test ECDSA function (verify/sign) for the secp192r1 curve and the SHA-256 hash function.
  *
@@ -210,7 +215,7 @@ int ucl_ecdsa_p192r1_sha1_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p192r1_sha256_stest(void);
+  int ucl_ecdsa_p192r1_sha256_stest(void);
 /** <b>ECDSA secp256r1 SHA-256 self test</b>.
  * Test ECDSA function (verify/sign) for the secp256r1 curve and the SHA-256 hash function.
  *
@@ -221,7 +226,7 @@ int ucl_ecdsa_p192r1_sha256_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p256r1_sha256_stest(void);
+  int ucl_ecdsa_p256r1_sha256_stest(void);
 
 /** <b>ECDSA secp256r1 SHA-1 self test</b>.
  * Test ECDSA function with the new API (verify) for the secp256r1 curve and the SHA-1 hash function.
@@ -233,7 +238,7 @@ int ucl_ecdsa_p256r1_sha256_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p256r1_sha1_stest(void);
+  int ucl_ecdsa_p256r1_sha1_stest(void);
 
 //NEW API
 
@@ -247,7 +252,7 @@ int ucl_ecdsa_p256r1_sha1_stest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p224r1_sha1_selftest(void);
+  int ucl_ecdsa_p224r1_sha1_selftest(void);
 /** <b>ECDSA secp224r1 SHA-224 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp224r1 curve and the SHA-224 hash function.
  *
@@ -258,7 +263,7 @@ int ucl_ecdsa_p224r1_sha1_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p224r1_sha224_selftest(void);
+  int ucl_ecdsa_p224r1_sha224_selftest(void);
 /** <b>ECDSA secp521r1 SHA-512 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp521r1 curve and the SHA-512 hash function.
  *
@@ -269,7 +274,7 @@ int ucl_ecdsa_p224r1_sha224_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p521r1_sha512_selftest(void);
+  int ucl_ecdsa_p521r1_sha512_selftest(void);
 /** <b>ECDSA secp384r1 SHA-384 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp384r1 curve and the SHA-384 hash function.
  *
@@ -280,7 +285,7 @@ int ucl_ecdsa_p521r1_sha512_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p384r1_sha384_selftest(void);
+  int ucl_ecdsa_p384r1_sha384_selftest(void);
 /** <b>ECDSA secp160r1 SHA-256 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp160r1 curve and the SHA-256 hash function.
  *
@@ -291,7 +296,7 @@ int ucl_ecdsa_p384r1_sha384_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p160r1_sha256_selftest(void);
+  int ucl_ecdsa_p160r1_sha256_selftest(void);
 /** <b>ECDSA secp160r1 SHA-1 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp160r1 curve and the SHA-1 hash function.
  *
@@ -302,7 +307,7 @@ int ucl_ecdsa_p160r1_sha256_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p160r1_sha1_selftest(void);
+  int ucl_ecdsa_p160r1_sha1_selftest(void);
 /** <b>ECDSA secp192r1 SHA-1 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp192r1 curve and the SHA-1 hash function.
  *
@@ -313,7 +318,7 @@ int ucl_ecdsa_p160r1_sha1_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p192r1_sha1_selftest(void);
+  int ucl_ecdsa_p192r1_sha1_selftest(void);
 /** <b>ECDSA secp192r1 SHA-256 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp192r1 curve and the SHA-256 hash function.
  *
@@ -324,7 +329,7 @@ int ucl_ecdsa_p192r1_sha1_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p192r1_sha256_selftest(void);
+  int ucl_ecdsa_p192r1_sha256_selftest(void);
 /** <b>ECDSA secp256r1 SHA-256 self test</b>.
  * Test ECDSA function with the new API (verify/sign) for the secp256r1 curve and the SHA-256 hash function.
  *
@@ -335,7 +340,7 @@ int ucl_ecdsa_p192r1_sha256_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p256r1_sha256_selftest(void);
+  int ucl_ecdsa_p256r1_sha256_selftest(void);
 
 /** <b>ECDSA secp256r1 SHA-1 self test</b>.
  * Test ECDSA function with the new API (verify) for the secp256r1 curve and the SHA-1 hash function.
@@ -347,7 +352,8 @@ int ucl_ecdsa_p256r1_sha256_selftest(void);
  *
  * @ingroup UCL_STEST
  */
-int ucl_ecdsa_p256r1_sha1_selftest(void);
+  int ucl_ecdsa_p256r1_sha1_selftest(void);
+
 
 /** <b>HDES self test</b>.
  * Test HDES hash function.
@@ -360,6 +366,7 @@ int ucl_ecdsa_p256r1_sha1_selftest(void);
  * @ingroup UCL_STEST
  */
 int ucl_hash_hdes_stest(void);
+
 
 /** <b>SHA256 self test</b>.
  * Test SHA256 hash function.
@@ -397,6 +404,7 @@ int ucl_hash_sha384_stest(void);
  */
 int ucl_hash_sha224_stest(void);
 
+
 /** <b>SHA512 self test</b>.
  * Test SHA512 hash function.
  *
@@ -409,6 +417,7 @@ int ucl_hash_sha224_stest(void);
  */
 int ucl_hash_sha512_stest(void);
 
+
 /** <b>SHA1 self test</b>.
  * Test SHA1 hash function.
  *
@@ -420,6 +429,7 @@ int ucl_hash_sha512_stest(void);
  * @ingroup UCL_STEST
  */
 int ucl_hash_sha1_stest(void);
+
 
 /** <b>MD5 self test</b>.
  * Test MD5 hash function.
@@ -441,6 +451,7 @@ int ucl_hash_md5_stest(void);
  */
 int ucl_hash_sm3_stest(void);
 
+
 /** <b>RIPEMD160 self test</b>.
  * Test RIPEMD160 hash function.
  *
@@ -453,14 +464,16 @@ int ucl_hash_sm3_stest(void);
  */
 int ucl_hash_ripemd160_stest(void);
 
-int ucl_hmac_sha256_stest(void);
-int ucl_hmac_sha224_stest(void);
-int ucl_hmac_sha384_stest(void);
-int ucl_hmac_sha512_stest(void);
-int ucl_hmac_sha1_stest(void);
+
+  int ucl_hmac_sha256_stest(void);
+  int ucl_hmac_sha224_stest(void);
+  int ucl_hmac_sha384_stest(void);
+  int ucl_hmac_sha512_stest(void);
+  int ucl_hmac_sha1_stest(void);
 
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
 
 #endif /*UCL_STEST_H_*/
+

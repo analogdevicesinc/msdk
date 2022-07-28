@@ -39,6 +39,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 
 #ifndef _BOARD_H
@@ -53,60 +54,61 @@ extern "C" {
     Use as #if defined(BOARD_EVKIT_V1)
     Not as #if BOARD_EVKIT_V1
 */
-#define BOARD_EVKIT_V1 1
+#define BOARD_EVKIT_V1      1
+
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 1 /// UART instance to use for console
+#define CONSOLE_UART        1      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD        115200  /// Console baud rate
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_OFF             1       /// Inactive state of LEDs
+#define LED_ON              0       /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD 4000000
+#define EXT_FLASH_BAUD           4000000
 #endif
 
 #ifndef HCI_UART
-#define HCI_UART 0
+#define HCI_UART            0
 #endif
 
 #ifndef TERMINAL_UART
-#define TERMINAL_UART CONSOLE_UART
+#define TERMINAL_UART       CONSOLE_UART
 #endif
 
 #ifndef USER_UART
-#define USER_UART 2
+#define USER_UART           2
 #endif
 
 #ifndef HCI_UART_MAP
-#define HCI_UART_MAP MAP_A
+#define HCI_UART_MAP        MAP_A
 #endif
 
 #ifndef TERMINAL_UART_MAP
-#define TERMINAL_UART_MAP MAP_A
+#define TERMINAL_UART_MAP   MAP_A
 #endif
 
 #ifndef USER_UART_MAP
-#define USER_UART_MAP MAP_A
+#define USER_UART_MAP       MAP_A
 #endif
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
-#define LED_RED LED1
+#define LED1                0
+#define LED_RED             LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
-#define LED_GREEN LED2
+#define LED2                1
+#define LED_GREEN           LED2
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -127,6 +129,7 @@ int Console_Init(void);
  * @returns #E_NO_ERROR if everything is successful
  */
 int Console_Shutdown(void);
+
 
 #ifdef __cplusplus
 }

@@ -61,10 +61,11 @@ extern "C" {
  * Enumeration type for the EMCC Cache ID Register
  */
 typedef enum {
-    EMCC_CACHE_ID_RELNUM,  // Release Number
-    EMCC_CACHE_ID_PARTNUM, // Part Number
-    EMCC_CACHE_ID_CCHID    // Cache ID
-} mxc_emcc_cache_id_t;
+    EMCC_CACHE_ID_RELNUM,    // Release Number
+    EMCC_CACHE_ID_PARTNUM,   // Part Number
+    EMCC_CACHE_ID_CCHID      // Cache ID
+}
+mxc_emcc_cache_id_t;
 
 /***** Function Prototypes *****/
 
@@ -73,64 +74,66 @@ typedef enum {
  * @param   id      Enumeration type for the EMCC Cache ID Register
  * @returns The contents of EMCC cache ID Register
  */
-uint32_t MXC_EMCC_ID(mxc_emcc_cache_id_t id);
+uint32_t MXC_EMCC_ID (mxc_emcc_cache_id_t id);
 
 /**
  * @brief   Gets the cache size in Kbytes. The default value is 16KB.
  * @returns Cache size, in Kbytes
  */
-uint32_t MXC_EMCC_CacheSize(void);
+uint32_t MXC_EMCC_CacheSize (void);
 
 /**
  * @brief   Gets the main memory size in units of 128KB. The default value is 512MB.
  * @returns Main memory size, in units of 128KB
  */
-uint32_t MXC_EMCC_MemSize(void);
+uint32_t MXC_EMCC_MemSize (void);
 
 /**
  * @brief   Enables the data cache controller
  */
-void MXC_EMCC_Enable(void);
+void MXC_EMCC_Enable (void);
 
 /**
  * @brief   Disables the data cache controller
  */
-void MXC_EMCC_Disable(void);
+void MXC_EMCC_Disable (void);
 
 /**
  * @brief   Flushes the data cache controller
  */
-void MXC_EMCC_Flush(void);
+void MXC_EMCC_Flush (void);
 
 /**
  * @brief   Enables write-allocate mode with data cache controller
  */
-void MXC_EMCC_WriteAllocEnable(void);
+void MXC_EMCC_WriteAllocEnable (void);
 
 /**
  * @brief   Disables write-allocate mode with data cache controller
  */
-void MXC_EMCC_WriteAllocDisable(void);
+void MXC_EMCC_WriteAllocDisable (void);
 
 /**
  * @brief   Enables critical-word-first mode with data cache controller
  */
-void MXC_EMCC_CriticalWordFirstEnable(void);
+void MXC_EMCC_CriticalWordFirstEnable (void);
 
 /**
  * @brief   Disables critical-word-first mode with data cache controller
  */
-void MXC_EMCC_CriticalWordFirstDisable(void);
+void MXC_EMCC_CriticalWordFirstDisable (void);
 
 /**
  * @brief   Reads the EMCC Cache ready flag, which is set and cleared by hardware
  * @returns EMCC Cache ready flag
  */
-uint32_t MXC_EMCC_Ready(void);
+uint32_t MXC_EMCC_Ready (void);
+
 
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif /* _EMCC_H_*/
 /**

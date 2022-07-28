@@ -39,6 +39,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 
 #ifndef _BOARD_H
@@ -53,46 +54,48 @@ extern "C" {
     Use as #if defined(BOARD_FTHR)
     Not as #if BOARD_FTHR
 */
-#define BOARD_FTHR 1
+#define BOARD_FTHR      1
+
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 1 /// UART instance to use for console
+#define CONSOLE_UART    1      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_OFF         1       /// Inactive state of LEDs
+#define LED_ON          0       /// Active state of LEDs
 
-#define LED_RED   0
-#define LED_BLUE  1
-#define LED_GREEN 2
+#define LED_RED         0
+#define LED_BLUE        1
+#define LED_GREEN       2
 
 #ifndef HCI_UART
-#define HCI_UART 2
+#define HCI_UART            2
 #endif
 
 #ifndef TERMINAL_UART
-#define TERMINAL_UART CONSOLE_UART
+#define TERMINAL_UART       CONSOLE_UART
 #endif
 
 #ifndef USER_UART
-#define USER_UART 0
+#define USER_UART           0
 #endif
 
 #ifndef HCI_UART_MAP
-#define HCI_UART_MAP MAP_A
+#define HCI_UART_MAP        MAP_A
 #endif
 
 #ifndef TERMINAL_UART_MAP
-#define TERMINAL_UART_MAP MAP_B
+#define TERMINAL_UART_MAP   MAP_B
 #endif
 
 #ifndef USER_UART_MAP
-#define USER_UART_MAP MAP_A
+#define USER_UART_MAP       MAP_A
 #endif
+
 
 /**
  * \brief   Initialize the BSP and board interfaces.

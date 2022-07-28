@@ -37,19 +37,21 @@
 #define _UTILS_H_
 
 /*****************************     DEFINES    *********************************/
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+#define ARRAY_SIZE(arr)		(sizeof(arr)/sizeof(arr[0]))
+
 
 /*****************************     TYPE DEF  *********************************/
-typedef void (*TimerCb)(void);
+typedef void (*TimerCb) (void);
 
 /*****************************     FUNCTIONS *********************************/
 unsigned int utils_get_time_ms(void);
 unsigned int utils_get_time_tick(void);
 void utils_delay_ms(unsigned int ms);
-void utils_hex2char(char chr, char* msg);
+void utils_hex2char(char chr, char *msg);
+
 
 // Timer functions
-void timer_init(TimerCb cb);
+void timer_init( TimerCb cb );
 void timer_stop(void);
 void timer_start(unsigned int to);
 

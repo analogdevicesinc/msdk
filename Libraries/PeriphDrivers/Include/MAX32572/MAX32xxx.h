@@ -2,7 +2,7 @@
  * @file    MAX32xxx.h
  * @brief   Includes all the required dependancies.
  */
-
+  
 /* *****************************************************************************
  * Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
  *
@@ -79,5 +79,6 @@
 #include "tmr.h"
 #include "uart.h"
 #include "wdt.h"
+
 
 #endif /* __MAX32xxx_H_ */

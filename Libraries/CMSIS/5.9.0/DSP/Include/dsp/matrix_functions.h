@@ -23,6 +23,7 @@
  * limitations under the License.
  */
 
+ 
 #ifndef _MATRIX_FUNCTIONS_H_
 #define _MATRIX_FUNCTIONS_H_
 
@@ -32,8 +33,9 @@
 #include "dsp/none.h"
 #include "dsp/utils.h"
 
-#ifdef __cplusplus
-extern "C" {
+#ifdef   __cplusplus
+extern "C"
+{
 #endif
 
 /**
@@ -107,52 +109,57 @@ extern "C" {
  * return <code>ARM_MATH_SUCCESS</code>.
  */
 
-/**
+  /**
    * @brief Instance structure for the floating-point matrix structure.
    */
-typedef struct {
-    uint16_t numRows; /**< number of rows of the matrix.     */
-    uint16_t numCols; /**< number of columns of the matrix.  */
-    float32_t* pData; /**< points to the data of the matrix. */
-} arm_matrix_instance_f32;
-
-/**
+  typedef struct
+  {
+    uint16_t numRows;     /**< number of rows of the matrix.     */
+    uint16_t numCols;     /**< number of columns of the matrix.  */
+    float32_t *pData;     /**< points to the data of the matrix. */
+  } arm_matrix_instance_f32;
+ 
+ /**
    * @brief Instance structure for the floating-point matrix structure.
    */
-typedef struct {
-    uint16_t numRows; /**< number of rows of the matrix.     */
-    uint16_t numCols; /**< number of columns of the matrix.  */
-    float64_t* pData; /**< points to the data of the matrix. */
-} arm_matrix_instance_f64;
+  typedef struct
+  {
+    uint16_t numRows;     /**< number of rows of the matrix.     */
+    uint16_t numCols;     /**< number of columns of the matrix.  */
+    float64_t *pData;     /**< points to the data of the matrix. */
+  } arm_matrix_instance_f64;
 
-/**
+ /**
    * @brief Instance structure for the Q7 matrix structure.
    */
-typedef struct {
-    uint16_t numRows; /**< number of rows of the matrix.     */
-    uint16_t numCols; /**< number of columns of the matrix.  */
-    q7_t* pData;      /**< points to the data of the matrix. */
-} arm_matrix_instance_q7;
+  typedef struct
+  {
+    uint16_t numRows;     /**< number of rows of the matrix.     */
+    uint16_t numCols;     /**< number of columns of the matrix.  */
+    q7_t *pData;         /**< points to the data of the matrix. */
+  } arm_matrix_instance_q7;
 
-/**
+  /**
    * @brief Instance structure for the Q15 matrix structure.
    */
-typedef struct {
-    uint16_t numRows; /**< number of rows of the matrix.     */
-    uint16_t numCols; /**< number of columns of the matrix.  */
-    q15_t* pData;     /**< points to the data of the matrix. */
-} arm_matrix_instance_q15;
+  typedef struct
+  {
+    uint16_t numRows;     /**< number of rows of the matrix.     */
+    uint16_t numCols;     /**< number of columns of the matrix.  */
+    q15_t *pData;         /**< points to the data of the matrix. */
+  } arm_matrix_instance_q15;
 
-/**
+  /**
    * @brief Instance structure for the Q31 matrix structure.
    */
-typedef struct {
-    uint16_t numRows; /**< number of rows of the matrix.     */
-    uint16_t numCols; /**< number of columns of the matrix.  */
-    q31_t* pData;     /**< points to the data of the matrix. */
-} arm_matrix_instance_q31;
+  typedef struct
+  {
+    uint16_t numRows;     /**< number of rows of the matrix.     */
+    uint16_t numCols;     /**< number of columns of the matrix.  */
+    q31_t *pData;         /**< points to the data of the matrix. */
+  } arm_matrix_instance_q31;
 
-/**
+  /**
    * @brief Floating-point matrix addition.
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -160,10 +167,12 @@ typedef struct {
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_add_f32(const arm_matrix_instance_f32* pSrcA,
-                           const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
+arm_status arm_mat_add_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+        arm_matrix_instance_f32 * pDst);
 
-/**
+  /**
    * @brief Q15 matrix addition.
    * @param[in]   pSrcA  points to the first input matrix structure
    * @param[in]   pSrcB  points to the second input matrix structure
@@ -171,10 +180,12 @@ arm_status arm_mat_add_f32(const arm_matrix_instance_f32* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_add_q15(const arm_matrix_instance_q15* pSrcA,
-                           const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst);
+arm_status arm_mat_add_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+        arm_matrix_instance_q15 * pDst);
 
-/**
+  /**
    * @brief Q31 matrix addition.
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -182,10 +193,12 @@ arm_status arm_mat_add_q15(const arm_matrix_instance_q15* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_add_q31(const arm_matrix_instance_q31* pSrcA,
-                           const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+arm_status arm_mat_add_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+        arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief Floating-point, complex, matrix multiplication.
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -193,11 +206,12 @@ arm_status arm_mat_add_q31(const arm_matrix_instance_q31* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_cmplx_mult_f32(const arm_matrix_instance_f32* pSrcA,
-                                  const arm_matrix_instance_f32* pSrcB,
-                                  arm_matrix_instance_f32* pDst);
+arm_status arm_mat_cmplx_mult_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+        arm_matrix_instance_f32 * pDst);
 
-/**
+  /**
    * @brief Q15, complex,  matrix multiplication.
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -205,11 +219,13 @@ arm_status arm_mat_cmplx_mult_f32(const arm_matrix_instance_f32* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_cmplx_mult_q15(const arm_matrix_instance_q15* pSrcA,
-                                  const arm_matrix_instance_q15* pSrcB,
-                                  arm_matrix_instance_q15* pDst, q15_t* pScratch);
+arm_status arm_mat_cmplx_mult_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+        arm_matrix_instance_q15 * pDst,
+        q15_t * pScratch);
 
-/**
+  /**
    * @brief Q31, complex, matrix multiplication.
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -217,9 +233,21 @@ arm_status arm_mat_cmplx_mult_q15(const arm_matrix_instance_q15* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_cmplx_mult_q31(const arm_matrix_instance_q31* pSrcA,
-                                  const arm_matrix_instance_q31* pSrcB,
-                                  arm_matrix_instance_q31* pDst);
+arm_status arm_mat_cmplx_mult_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+        arm_matrix_instance_q31 * pDst);
+
+  /**
+   * @brief Floating-point matrix transpose.
+   * @param[in]  pSrc  points to the input matrix
+   * @param[out] pDst  points to the output matrix
+   * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
+   * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
+arm_status arm_mat_trans_f32(
+  const arm_matrix_instance_f32 * pSrc,
+        arm_matrix_instance_f32 * pDst);
 
 /**
    * @brief Floating-point matrix transpose.
@@ -228,75 +256,78 @@ arm_status arm_mat_cmplx_mult_q31(const arm_matrix_instance_q31* pSrcA,
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_trans_f32(const arm_matrix_instance_f32* pSrc, arm_matrix_instance_f32* pDst);
+arm_status arm_mat_trans_f64(
+  const arm_matrix_instance_f64 * pSrc,
+        arm_matrix_instance_f64 * pDst);
 
-/**
-   * @brief Floating-point matrix transpose.
-   * @param[in]  pSrc  points to the input matrix
-   * @param[out] pDst  points to the output matrix
-   * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
-   * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
-   */
-arm_status arm_mat_trans_f64(const arm_matrix_instance_f64* pSrc, arm_matrix_instance_f64* pDst);
-
-/**
+  /**
    * @brief Floating-point complex matrix transpose.
    * @param[in]  pSrc  points to the input matrix
    * @param[out] pDst  points to the output matrix
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_cmplx_trans_f32(const arm_matrix_instance_f32* pSrc,
-                                   arm_matrix_instance_f32* pDst);
+arm_status arm_mat_cmplx_trans_f32(
+  const arm_matrix_instance_f32 * pSrc,
+  arm_matrix_instance_f32 * pDst);
 
-/**
+
+  /**
    * @brief Q15 matrix transpose.
    * @param[in]  pSrc  points to the input matrix
    * @param[out] pDst  points to the output matrix
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_trans_q15(const arm_matrix_instance_q15* pSrc, arm_matrix_instance_q15* pDst);
+arm_status arm_mat_trans_q15(
+  const arm_matrix_instance_q15 * pSrc,
+        arm_matrix_instance_q15 * pDst);
 
-/**
+  /**
    * @brief Q15 complex matrix transpose.
    * @param[in]  pSrc  points to the input matrix
    * @param[out] pDst  points to the output matrix
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_cmplx_trans_q15(const arm_matrix_instance_q15* pSrc,
-                                   arm_matrix_instance_q15* pDst);
+arm_status arm_mat_cmplx_trans_q15(
+  const arm_matrix_instance_q15 * pSrc,
+  arm_matrix_instance_q15 * pDst);
 
-/**
+  /**
    * @brief Q7 matrix transpose.
    * @param[in]  pSrc  points to the input matrix
    * @param[out] pDst  points to the output matrix
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_trans_q7(const arm_matrix_instance_q7* pSrc, arm_matrix_instance_q7* pDst);
+arm_status arm_mat_trans_q7(
+  const arm_matrix_instance_q7 * pSrc,
+        arm_matrix_instance_q7 * pDst);
 
-/**
+  /**
    * @brief Q31 matrix transpose.
    * @param[in]  pSrc  points to the input matrix
    * @param[out] pDst  points to the output matrix
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_trans_q31(const arm_matrix_instance_q31* pSrc, arm_matrix_instance_q31* pDst);
+arm_status arm_mat_trans_q31(
+  const arm_matrix_instance_q31 * pSrc,
+        arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief Q31 complex matrix transpose.
    * @param[in]  pSrc  points to the input matrix
    * @param[out] pDst  points to the output matrix
    * @return    The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
    * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_cmplx_trans_q31(const arm_matrix_instance_q31* pSrc,
-                                   arm_matrix_instance_q31* pDst);
+arm_status arm_mat_cmplx_trans_q31(
+  const arm_matrix_instance_q31 * pSrc,
+  arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief Floating-point matrix multiplication
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -304,10 +335,12 @@ arm_status arm_mat_cmplx_trans_q31(const arm_matrix_instance_q31* pSrc,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_f32(const arm_matrix_instance_f32* pSrcA,
-                            const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
+arm_status arm_mat_mult_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+        arm_matrix_instance_f32 * pDst);
 
-/**
+  /**
    * @brief Floating-point matrix multiplication
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -315,19 +348,23 @@ arm_status arm_mat_mult_f32(const arm_matrix_instance_f32* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_f64(const arm_matrix_instance_f64* pSrcA,
-                            const arm_matrix_instance_f64* pSrcB, arm_matrix_instance_f64* pDst);
+arm_status arm_mat_mult_f64(
+  const arm_matrix_instance_f64 * pSrcA,
+  const arm_matrix_instance_f64 * pSrcB,
+        arm_matrix_instance_f64 * pDst);
 
-/**
+  /**
    * @brief Floating-point matrix and vector multiplication
    * @param[in]  pSrcMat  points to the input matrix structure
    * @param[in]  pVec     points to vector
    * @param[out] pDst     points to output vector
    */
-void arm_mat_vec_mult_f32(const arm_matrix_instance_f32* pSrcMat, const float32_t* pVec,
-                          float32_t* pDst);
+void arm_mat_vec_mult_f32(
+  const arm_matrix_instance_f32 *pSrcMat, 
+  const float32_t *pVec, 
+  float32_t *pDst);
 
-/**
+  /**
    * @brief Q7 matrix multiplication
    * @param[in]  pSrcA   points to the first input matrix structure
    * @param[in]  pSrcB   points to the second input matrix structure
@@ -336,18 +373,24 @@ void arm_mat_vec_mult_f32(const arm_matrix_instance_f32* pSrcMat, const float32_
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_q7(const arm_matrix_instance_q7* pSrcA, const arm_matrix_instance_q7* pSrcB,
-                           arm_matrix_instance_q7* pDst, q7_t* pState);
+arm_status arm_mat_mult_q7(
+  const arm_matrix_instance_q7 * pSrcA,
+  const arm_matrix_instance_q7 * pSrcB,
+        arm_matrix_instance_q7 * pDst,
+        q7_t * pState);
 
-/**
+  /**
    * @brief Q7 matrix and vector multiplication
    * @param[in]  pSrcMat  points to the input matrix structure
    * @param[in]  pVec     points to vector
    * @param[out] pDst     points to output vector
    */
-void arm_mat_vec_mult_q7(const arm_matrix_instance_q7* pSrcMat, const q7_t* pVec, q7_t* pDst);
+void arm_mat_vec_mult_q7(
+  const arm_matrix_instance_q7 *pSrcMat, 
+  const q7_t *pVec, 
+  q7_t *pDst);
 
-/**
+  /**
    * @brief Q15 matrix multiplication
    * @param[in]  pSrcA   points to the first input matrix structure
    * @param[in]  pSrcB   points to the second input matrix structure
@@ -356,19 +399,24 @@ void arm_mat_vec_mult_q7(const arm_matrix_instance_q7* pSrcMat, const q7_t* pVec
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_q15(const arm_matrix_instance_q15* pSrcA,
-                            const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst,
-                            q15_t* pState);
+arm_status arm_mat_mult_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+        arm_matrix_instance_q15 * pDst,
+        q15_t * pState);
 
-/**
+  /**
    * @brief Q15 matrix and vector multiplication
    * @param[in]  pSrcMat  points to the input matrix structure
    * @param[in]  pVec     points to vector
    * @param[out] pDst     points to output vector
    */
-void arm_mat_vec_mult_q15(const arm_matrix_instance_q15* pSrcMat, const q15_t* pVec, q15_t* pDst);
+void arm_mat_vec_mult_q15(
+  const arm_matrix_instance_q15 *pSrcMat, 
+  const q15_t *pVec, 
+  q15_t *pDst);
 
-/**
+  /**
    * @brief Q15 matrix multiplication (fast variant) for Cortex-M3 and Cortex-M4
    * @param[in]  pSrcA   points to the first input matrix structure
    * @param[in]  pSrcB   points to the second input matrix structure
@@ -377,11 +425,13 @@ void arm_mat_vec_mult_q15(const arm_matrix_instance_q15* pSrcMat, const q15_t* p
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_fast_q15(const arm_matrix_instance_q15* pSrcA,
-                                 const arm_matrix_instance_q15* pSrcB,
-                                 arm_matrix_instance_q15* pDst, q15_t* pState);
+arm_status arm_mat_mult_fast_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+        arm_matrix_instance_q15 * pDst,
+        q15_t * pState);
 
-/**
+  /**
    * @brief Q31 matrix multiplication
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -389,10 +439,12 @@ arm_status arm_mat_mult_fast_q15(const arm_matrix_instance_q15* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_q31(const arm_matrix_instance_q31* pSrcA,
-                            const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+arm_status arm_mat_mult_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+        arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief Q31 matrix multiplication
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -401,19 +453,24 @@ arm_status arm_mat_mult_q31(const arm_matrix_instance_q31* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_opt_q31(const arm_matrix_instance_q31* pSrcA,
-                                const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst,
-                                q31_t* pState);
+arm_status arm_mat_mult_opt_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+        arm_matrix_instance_q31 * pDst,
+        q31_t *pState);
 
-/**
+  /**
    * @brief Q31 matrix and vector multiplication
    * @param[in]  pSrcMat  points to the input matrix structure
    * @param[in]  pVec     points to vector
    * @param[out] pDst     points to output vector
    */
-void arm_mat_vec_mult_q31(const arm_matrix_instance_q31* pSrcMat, const q31_t* pVec, q31_t* pDst);
+void arm_mat_vec_mult_q31(
+  const arm_matrix_instance_q31 *pSrcMat, 
+  const q31_t *pVec, 
+  q31_t *pDst);
 
-/**
+  /**
    * @brief Q31 matrix multiplication (fast variant) for Cortex-M3 and Cortex-M4
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -421,11 +478,12 @@ void arm_mat_vec_mult_q31(const arm_matrix_instance_q31* pSrcMat, const q31_t* p
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_mult_fast_q31(const arm_matrix_instance_q31* pSrcA,
-                                 const arm_matrix_instance_q31* pSrcB,
-                                 arm_matrix_instance_q31* pDst);
+arm_status arm_mat_mult_fast_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+        arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief Floating-point matrix subtraction
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -433,10 +491,12 @@ arm_status arm_mat_mult_fast_q31(const arm_matrix_instance_q31* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_sub_f32(const arm_matrix_instance_f32* pSrcA,
-                           const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
+arm_status arm_mat_sub_f32(
+  const arm_matrix_instance_f32 * pSrcA,
+  const arm_matrix_instance_f32 * pSrcB,
+        arm_matrix_instance_f32 * pDst);
 
-/**
+  /**
    * @brief Floating-point matrix subtraction
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -444,10 +504,12 @@ arm_status arm_mat_sub_f32(const arm_matrix_instance_f32* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_sub_f64(const arm_matrix_instance_f64* pSrcA,
-                           const arm_matrix_instance_f64* pSrcB, arm_matrix_instance_f64* pDst);
+arm_status arm_mat_sub_f64(
+  const arm_matrix_instance_f64 * pSrcA,
+  const arm_matrix_instance_f64 * pSrcB,
+        arm_matrix_instance_f64 * pDst);
 
-/**
+  /**
    * @brief Q15 matrix subtraction
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -455,10 +517,12 @@ arm_status arm_mat_sub_f64(const arm_matrix_instance_f64* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_sub_q15(const arm_matrix_instance_q15* pSrcA,
-                           const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst);
+arm_status arm_mat_sub_q15(
+  const arm_matrix_instance_q15 * pSrcA,
+  const arm_matrix_instance_q15 * pSrcB,
+        arm_matrix_instance_q15 * pDst);
 
-/**
+  /**
    * @brief Q31 matrix subtraction
    * @param[in]  pSrcA  points to the first input matrix structure
    * @param[in]  pSrcB  points to the second input matrix structure
@@ -466,10 +530,12 @@ arm_status arm_mat_sub_q15(const arm_matrix_instance_q15* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_sub_q31(const arm_matrix_instance_q31* pSrcA,
-                           const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+arm_status arm_mat_sub_q31(
+  const arm_matrix_instance_q31 * pSrcA,
+  const arm_matrix_instance_q31 * pSrcB,
+        arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief Floating-point matrix scaling.
    * @param[in]  pSrc   points to the input matrix
    * @param[in]  scale  scale factor
@@ -477,10 +543,12 @@ arm_status arm_mat_sub_q31(const arm_matrix_instance_q31* pSrcA,
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_scale_f32(const arm_matrix_instance_f32* pSrc, float32_t scale,
-                             arm_matrix_instance_f32* pDst);
+arm_status arm_mat_scale_f32(
+  const arm_matrix_instance_f32 * pSrc,
+        float32_t scale,
+        arm_matrix_instance_f32 * pDst);
 
-/**
+  /**
    * @brief Q15 matrix scaling.
    * @param[in]  pSrc        points to input matrix
    * @param[in]  scaleFract  fractional portion of the scale factor
@@ -489,10 +557,13 @@ arm_status arm_mat_scale_f32(const arm_matrix_instance_f32* pSrc, float32_t scal
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_scale_q15(const arm_matrix_instance_q15* pSrc, q15_t scaleFract, int32_t shift,
-                             arm_matrix_instance_q15* pDst);
+arm_status arm_mat_scale_q15(
+  const arm_matrix_instance_q15 * pSrc,
+        q15_t scaleFract,
+        int32_t shift,
+        arm_matrix_instance_q15 * pDst);
 
-/**
+  /**
    * @brief Q31 matrix scaling.
    * @param[in]  pSrc        points to input matrix
    * @param[in]  scaleFract  fractional portion of the scale factor
@@ -501,56 +572,77 @@ arm_status arm_mat_scale_q15(const arm_matrix_instance_q15* pSrc, q15_t scaleFra
    * @return     The function returns either
    * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
    */
-arm_status arm_mat_scale_q31(const arm_matrix_instance_q31* pSrc, q31_t scaleFract, int32_t shift,
-                             arm_matrix_instance_q31* pDst);
+arm_status arm_mat_scale_q31(
+  const arm_matrix_instance_q31 * pSrc,
+        q31_t scaleFract,
+        int32_t shift,
+        arm_matrix_instance_q31 * pDst);
 
-/**
+  /**
    * @brief  Q31 matrix initialization.
    * @param[in,out] S         points to an instance of the floating-point matrix structure.
    * @param[in]     nRows     number of rows in the matrix.
    * @param[in]     nColumns  number of columns in the matrix.
    * @param[in]     pData     points to the matrix data array.
    */
-void arm_mat_init_q31(arm_matrix_instance_q31* S, uint16_t nRows, uint16_t nColumns, q31_t* pData);
+void arm_mat_init_q31(
+        arm_matrix_instance_q31 * S,
+        uint16_t nRows,
+        uint16_t nColumns,
+        q31_t * pData);
 
-/**
+  /**
    * @brief  Q15 matrix initialization.
    * @param[in,out] S         points to an instance of the floating-point matrix structure.
    * @param[in]     nRows     number of rows in the matrix.
    * @param[in]     nColumns  number of columns in the matrix.
    * @param[in]     pData     points to the matrix data array.
    */
-void arm_mat_init_q15(arm_matrix_instance_q15* S, uint16_t nRows, uint16_t nColumns, q15_t* pData);
+void arm_mat_init_q15(
+        arm_matrix_instance_q15 * S,
+        uint16_t nRows,
+        uint16_t nColumns,
+        q15_t * pData);
 
-/**
+  /**
    * @brief  Floating-point matrix initialization.
    * @param[in,out] S         points to an instance of the floating-point matrix structure.
    * @param[in]     nRows     number of rows in the matrix.
    * @param[in]     nColumns  number of columns in the matrix.
    * @param[in]     pData     points to the matrix data array.
    */
-void arm_mat_init_f32(arm_matrix_instance_f32* S, uint16_t nRows, uint16_t nColumns,
-                      float32_t* pData);
+void arm_mat_init_f32(
+        arm_matrix_instance_f32 * S,
+        uint16_t nRows,
+        uint16_t nColumns,
+        float32_t * pData);
 
-/**
+
+
+  /**
    * @brief Floating-point matrix inverse.
    * @param[in]  src   points to the instance of the input floating-point matrix structure.
    * @param[out] dst   points to the instance of the output floating-point matrix structure.
    * @return The function returns ARM_MATH_SIZE_MISMATCH, if the dimensions do not match.
    * If the input matrix is singular (does not have an inverse), then the algorithm terminates and returns error status ARM_MATH_SINGULAR.
    */
-arm_status arm_mat_inverse_f32(const arm_matrix_instance_f32* src, arm_matrix_instance_f32* dst);
+  arm_status arm_mat_inverse_f32(
+  const arm_matrix_instance_f32 * src,
+  arm_matrix_instance_f32 * dst);
 
-/**
+
+  /**
    * @brief Floating-point matrix inverse.
    * @param[in]  src   points to the instance of the input floating-point matrix structure.
    * @param[out] dst   points to the instance of the output floating-point matrix structure.
    * @return The function returns ARM_MATH_SIZE_MISMATCH, if the dimensions do not match.
    * If the input matrix is singular (does not have an inverse), then the algorithm terminates and returns error status ARM_MATH_SINGULAR.
    */
-arm_status arm_mat_inverse_f64(const arm_matrix_instance_f64* src, arm_matrix_instance_f64* dst);
+  arm_status arm_mat_inverse_f64(
+  const arm_matrix_instance_f64 * src,
+  arm_matrix_instance_f64 * dst);
 
-/**
+ /**
    * @brief Floating-point Cholesky decomposition of Symmetric Positive Definite Matrix.
    * @param[in]  src   points to the instance of the input floating-point matrix structure.
    * @param[out] dst   points to the instance of the output floating-point matrix structure.
@@ -559,9 +651,11 @@ arm_status arm_mat_inverse_f64(const arm_matrix_instance_f64* src, arm_matrix_in
    * If the matrix is ill conditioned or only semi-definite, then it is better using the LDL^t decomposition.
    * The decomposition is returning a lower triangular matrix.
    */
-arm_status arm_mat_cholesky_f64(const arm_matrix_instance_f64* src, arm_matrix_instance_f64* dst);
+  arm_status arm_mat_cholesky_f64(
+  const arm_matrix_instance_f64 * src,
+  arm_matrix_instance_f64 * dst);
 
-/**
+ /**
    * @brief Floating-point Cholesky decomposition of Symmetric Positive Definite Matrix.
    * @param[in]  src   points to the instance of the input floating-point matrix structure.
    * @param[out] dst   points to the instance of the output floating-point matrix structure.
@@ -570,53 +664,61 @@ arm_status arm_mat_cholesky_f64(const arm_matrix_instance_f64* src, arm_matrix_i
    * If the matrix is ill conditioned or only semi-definite, then it is better using the LDL^t decomposition.
    * The decomposition is returning a lower triangular matrix.
    */
-arm_status arm_mat_cholesky_f32(const arm_matrix_instance_f32* src, arm_matrix_instance_f32* dst);
+  arm_status arm_mat_cholesky_f32(
+  const arm_matrix_instance_f32 * src,
+  arm_matrix_instance_f32 * dst);
 
-/**
+  /**
    * @brief Solve UT . X = A where UT is an upper triangular matrix
    * @param[in]  ut  The upper triangular matrix
    * @param[in]  a  The matrix a
    * @param[out] dst The solution X of UT . X = A
    * @return The function returns ARM_MATH_SINGULAR, if the system can't be solved.
   */
-arm_status arm_mat_solve_upper_triangular_f32(const arm_matrix_instance_f32* ut,
-                                              const arm_matrix_instance_f32* a,
-                                              arm_matrix_instance_f32* dst);
+  arm_status arm_mat_solve_upper_triangular_f32(
+  const arm_matrix_instance_f32 * ut,
+  const arm_matrix_instance_f32 * a,
+  arm_matrix_instance_f32 * dst);
 
-/**
+ /**
    * @brief Solve LT . X = A where LT is a lower triangular matrix
    * @param[in]  lt  The lower triangular matrix
    * @param[in]  a  The matrix a
    * @param[out] dst The solution X of LT . X = A
    * @return The function returns ARM_MATH_SINGULAR, if the system can't be solved.
    */
-arm_status arm_mat_solve_lower_triangular_f32(const arm_matrix_instance_f32* lt,
-                                              const arm_matrix_instance_f32* a,
-                                              arm_matrix_instance_f32* dst);
+  arm_status arm_mat_solve_lower_triangular_f32(
+  const arm_matrix_instance_f32 * lt,
+  const arm_matrix_instance_f32 * a,
+  arm_matrix_instance_f32 * dst);
 
-/**
+
+  /**
    * @brief Solve UT . X = A where UT is an upper triangular matrix
    * @param[in]  ut  The upper triangular matrix
    * @param[in]  a  The matrix a
    * @param[out] dst The solution X of UT . X = A
    * @return The function returns ARM_MATH_SINGULAR, if the system can't be solved.
   */
-arm_status arm_mat_solve_upper_triangular_f64(const arm_matrix_instance_f64* ut,
-                                              const arm_matrix_instance_f64* a,
-                                              arm_matrix_instance_f64* dst);
+  arm_status arm_mat_solve_upper_triangular_f64(
+  const arm_matrix_instance_f64 * ut,
+  const arm_matrix_instance_f64 * a,
+  arm_matrix_instance_f64 * dst);
 
-/**
+ /**
    * @brief Solve LT . X = A where LT is a lower triangular matrix
    * @param[in]  lt  The lower triangular matrix
    * @param[in]  a  The matrix a
    * @param[out] dst The solution X of LT . X = A
    * @return The function returns ARM_MATH_SINGULAR, if the system can't be solved.
    */
-arm_status arm_mat_solve_lower_triangular_f64(const arm_matrix_instance_f64* lt,
-                                              const arm_matrix_instance_f64* a,
-                                              arm_matrix_instance_f64* dst);
+  arm_status arm_mat_solve_lower_triangular_f64(
+  const arm_matrix_instance_f64 * lt,
+  const arm_matrix_instance_f64 * a,
+  arm_matrix_instance_f64 * dst);
 
-/**
+
+  /**
    * @brief Floating-point LDL decomposition of Symmetric Positive Semi-Definite Matrix.
    * @param[in]  src   points to the instance of the input floating-point matrix structure.
    * @param[out] l   points to the instance of the output floating-point triangular matrix structure.
@@ -626,10 +728,13 @@ arm_status arm_mat_solve_lower_triangular_f64(const arm_matrix_instance_f64* lt,
    * If the input matrix does not have a decomposition, then the algorithm terminates and returns error status ARM_MATH_DECOMPOSITION_FAILURE.
    * The decomposition is returning a lower triangular matrix.
    */
-arm_status arm_mat_ldlt_f32(const arm_matrix_instance_f32* src, arm_matrix_instance_f32* l,
-                            arm_matrix_instance_f32* d, uint16_t* pp);
+  arm_status arm_mat_ldlt_f32(
+  const arm_matrix_instance_f32 * src,
+  arm_matrix_instance_f32 * l,
+  arm_matrix_instance_f32 * d,
+  uint16_t * pp);
 
-/**
+ /**
    * @brief Floating-point LDL decomposition of Symmetric Positive Semi-Definite Matrix.
    * @param[in]  src   points to the instance of the input floating-point matrix structure.
    * @param[out] l   points to the instance of the output floating-point triangular matrix structure.
@@ -639,10 +744,13 @@ arm_status arm_mat_ldlt_f32(const arm_matrix_instance_f32* src, arm_matrix_insta
    * If the input matrix does not have a decomposition, then the algorithm terminates and returns error status ARM_MATH_DECOMPOSITION_FAILURE.
    * The decomposition is returning a lower triangular matrix.
    */
-arm_status arm_mat_ldlt_f64(const arm_matrix_instance_f64* src, arm_matrix_instance_f64* l,
-                            arm_matrix_instance_f64* d, uint16_t* pp);
+  arm_status arm_mat_ldlt_f64(
+  const arm_matrix_instance_f64 * src,
+  arm_matrix_instance_f64 * l,
+  arm_matrix_instance_f64 * d,
+  uint16_t * pp);
 
-#ifdef __cplusplus
+#ifdef   __cplusplus
 }
 #endif
 

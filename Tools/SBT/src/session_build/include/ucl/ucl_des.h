@@ -34,6 +34,7 @@
 extern "C" {
 #endif /* _ cplusplus  */
 
+
 /** @file ucl_des.h
  * @defgroup UCL_DES DES
  * The Data Encryption Standard (DES), see @ref FIPS46_3 "FIPS PUB 46.3 NIST".
@@ -59,6 +60,7 @@ extern "C" {
  * @see UCL_OPERATION_MODES
  * @ingroup UCL_BLOCK_CIPHER
  */
+
 
 /*============================================================================*/
 /** <b>DES Block Size</b>.
@@ -95,11 +97,13 @@ extern "C" {
  * This structure is involved in the operation modes.
  * @ingroup UCL_DES
  */
-struct ucl_des_ctx {
+struct ucl_des_ctx
+{
+
     int mode;     /**< Ciphering Mode.     */
     u8 memory[8]; /**< Intermediate state. */
     u32 index;    /**< Index.              */
-    u32 subKeys[UCL_DES_NB_SUBKEYS * 2];
+    u32 subKeys[UCL_DES_NB_SUBKEYS*2];
     /**< DES Sub-keys.
      * @see UCL_DES_NB_SUBKEYS
      */
@@ -109,6 +113,7 @@ struct ucl_des_ctx {
  * @ingroup UCL_DES
  */
 typedef struct ucl_des_ctx ucl_des_ctx_t;
+
 
 /*============================================================================*/
 /** <b>DES for Single Block</b>.
@@ -134,9 +139,9 @@ typedef struct ucl_des_ctx ucl_des_ctx_t;
  *
  * @ingroup UCL_DES
  */
-int ucl_des(u8* dst, u8* src, u8* key, int mode);
+int ucl_des(u8 *dst, u8 *src, u8 *key, int mode);
 
-int ucl_des_dpa2(u8* dst, u8* src, u8* key, int mode);
+int ucl_des_dpa2(u8 *dst, u8 *src, u8 *key, int mode);
 
 /** <b>3DES-CBC Xor</b>.
  * Xor 2 buffers and store the result in a third.
@@ -149,6 +154,8 @@ int ucl_des_dpa2(u8* dst, u8* src, u8* key, int mode);
  * @ingroup UCL_CBC_3DES
  */
 void ucl_do_xor(u8* buffOut, u8* buffIn1, u8* buffIn2, int length);
+
+
 
 #ifdef __cplusplus
 }

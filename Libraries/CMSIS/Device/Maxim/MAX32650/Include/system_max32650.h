@@ -34,6 +34,7 @@
  *
  **************************************************************************** */
 
+
 #ifndef _SYSTEM_MAX32650_H_
 #define _SYSTEM_MAX32650_H_
 
@@ -48,40 +49,41 @@ extern "C" {
  *----------------------------------------------------------------------------*/
 
 #ifndef CRYPTO_FREQ
-#define CRYPTO_FREQ_A1 40000000
-#define CRYPTO_FREQ_A3 50000000
+#define CRYPTO_FREQ_A1             40000000
+#define CRYPTO_FREQ_A3             50000000
 #endif
 
 #ifndef HFX_FREQ
-#define HFX_FREQ 24000000
+#define HFX_FREQ                24000000
 #endif
 
 /* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 #ifndef NANORING_FREQ
-#define NANORING_FREQ 8000
+#define NANORING_FREQ           8000
 #endif
 
 #ifndef HIRC96_FREQ
-#define HIRC96_FREQ 120000000
+#define HIRC96_FREQ             120000000
 #endif
 
 #ifndef HIRC8_FREQ
-#define HIRC8_FREQ 8000000
+#define HIRC8_FREQ              8000000
 #endif
 
-#ifndef IBRO_FREQ
-#define IBRO_FREQ 7372800
-#endif
+#ifndef IBRO_FREQ	
+#define IBRO_FREQ              7372800	
+#endif	
+	
+#ifndef ERTCO_FREQ	
+#define ERTCO_FREQ            32768	
+#endif	
 
-#ifndef ERTCO_FREQ
-#define ERTCO_FREQ 32768
-#endif
 
-extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
-extern uint8_t ChipRevision;     /*!< System Clock Frequency (Core Clock)  */
+extern uint32_t SystemCoreClock;                            /*!< System Clock Frequency (Core Clock)  */
+extern uint8_t ChipRevision;                            /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
-#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
+#define         PeripheralClock     (SystemCoreClock /2)    /*!< Peripheral Clock Frequency */
 #endif
 
 /*

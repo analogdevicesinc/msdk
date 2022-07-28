@@ -62,10 +62,11 @@ uint32_t WdxsFileGetBaseAddr(void);
 /*************************************************************************************************/
 uint32_t WdxsFileGetVerifiedLength(void);
 
-/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
+/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* WDXS_FILE_H */
+

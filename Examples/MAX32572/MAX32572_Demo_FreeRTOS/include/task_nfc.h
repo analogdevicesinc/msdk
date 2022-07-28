@@ -36,10 +36,13 @@
 #ifndef _TASK_NFC_H_
 #define _TASK_NFC_H_
 
+
 /*****************************     DEFINES    *********************************/
+
 
 /*****************************     FUNCTIONS *********************************/
 void nfc_enable_polling(void);
 void nfc_disable_polling(void);
+
 
 #endif /* _TASK_NFC_H_ */

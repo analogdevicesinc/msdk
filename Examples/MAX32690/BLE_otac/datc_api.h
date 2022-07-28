@@ -53,6 +53,7 @@ void DatcStart(void);
 /*************************************************************************************************/
 void DatcHandlerInit(wsfHandlerId_t handlerId);
 
+
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for the application.
@@ -63,7 +64,7 @@ void DatcHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };

@@ -87,6 +87,7 @@ void PeriphStart(void);
 /*************************************************************************************************/
 void PeriphHandlerInit(wsfHandlerId_t handlerId);
 
+
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for the application.
@@ -97,7 +98,7 @@ void PeriphHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };

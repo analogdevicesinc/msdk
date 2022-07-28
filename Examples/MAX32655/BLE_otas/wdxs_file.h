@@ -24,10 +24,10 @@
 extern "C" {
 #endif
 
-typedef struct {
+typedef struct{
     uint32_t fileLen;
     uint32_t fileCRC;
-} fileHeader_t;
+}fileHeader_t;
 
 /*! \addtogroup WIRELESS_DATA_EXCHANGE_PROFILE
  *  \{ */
@@ -74,11 +74,12 @@ uint32_t WdxsFileGetVerifiedLength(void);
  *  \return None.
  */
 /*************************************************************************************************/
-void initHeader(fileHeader_t* header);
-/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
+void initHeader(fileHeader_t *header);
+/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* WDXS_FILE_H */
+

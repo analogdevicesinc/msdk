@@ -54,8 +54,8 @@ extern "C" {
  * 
  */
 typedef enum {
-    MXC_LPCMP_POL_RISE, //< Comparator interrupt happens on rising edge of comparator output
-    MXC_LPCMP_POL_FALL, //< Comparator interrupt occurs on falling edge of comparator output
+    MXC_LPCMP_POL_RISE,       //< Comparator interrupt happens on rising edge of comparator output
+    MXC_LPCMP_POL_FALL,       //< Comparator interrupt occurs on falling edge of comparator output
 } mxc_lpcmp_polarity_t;
 
 /**
@@ -63,14 +63,10 @@ typedef enum {
  * 
  */
 typedef enum {
-    MXC_LPCMP_CMP0 =
-        0, //< Comparator output high when positive input is greater than negative input
-    MXC_LPCMP_CMP1 =
-        1, //< Comparator output high when negative input is greater than positive input
-    MXC_LPCMP_CMP2 =
-        2, //< Comparator output high when negative input is greater than positive input
-    MXC_LPCMP_CMP3 =
-        3, //< Comparator output high when negative input is greater than positive input
+    MXC_LPCMP_CMP0 = 0,     //< Comparator output high when positive input is greater than negative input
+    MXC_LPCMP_CMP1 = 1,     //< Comparator output high when negative input is greater than positive input
+    MXC_LPCMP_CMP2 = 2,     //< Comparator output high when negative input is greater than positive input
+    MXC_LPCMP_CMP3 = 3,     //< Comparator output high when negative input is greater than positive input
 } mxc_lpcmp_cmpsel_t;
 
 /**

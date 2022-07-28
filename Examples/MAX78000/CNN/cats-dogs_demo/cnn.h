@@ -45,7 +45,7 @@ typedef int16_t q15_t;
 
 /* Return codes */
 #define CNN_FAIL 0
-#define CNN_OK   1
+#define CNN_OK 1
 
 /*
   SUMMARY OF OPS
@@ -71,23 +71,22 @@ typedef int16_t q15_t;
 
 /* Port pin actions used to signal that processing is active */
 
-#define CNN_START    LED_On(1)
+#define CNN_START LED_On(1)
 #define CNN_COMPLETE LED_Off(1)
-#define SYS_START    LED_On(0)
+#define SYS_START LED_On(0)
 #define SYS_COMPLETE LED_Off(0)
 
 /* Run software SoftMax on unloaded data */
-void softmax_q17p14_q15(const q31_t* vec_in, const uint16_t dim_vec, q15_t* p_out);
+void softmax_q17p14_q15(const q31_t * vec_in, const uint16_t dim_vec, q15_t * p_out);
 /* Shift the input, then calculate SoftMax */
-void softmax_shift_q17p14_q15(q31_t* vec_in, const uint16_t dim_vec, uint8_t in_shift,
-                              q15_t* p_out);
+void softmax_shift_q17p14_q15(q31_t * vec_in, const uint16_t dim_vec, uint8_t in_shift, q15_t * p_out);
 
 /* Stopwatch - holds the runtime when accelerator finishes */
 extern volatile uint32_t cnn_time;
 
 /* Custom memcopy routines used for weights and data */
-void memcpy32(uint32_t* dst, const uint32_t* src, int n);
-void memcpy32_const(uint32_t* dst, int n);
+void memcpy32(uint32_t *dst, const uint32_t *src, int n);
+void memcpy32_const(uint32_t *dst, int n);
 
 /* Enable clocks and power to accelerator, enable interrupt */
 int cnn_enable(uint32_t clock_source, uint32_t clock_divider);
@@ -120,12 +119,12 @@ int cnn_stop(void);
 int cnn_continue(void);
 
 /* Unload results from accelerator */
-int cnn_unload(uint32_t* out_buf);
+int cnn_unload(uint32_t *out_buf);
 
 /* Turn on the boost circuit */
-int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin);
+int cnn_boost_enable(mxc_gpio_regs_t *port, uint32_t pin);
 
 /* Turn off the boost circuit */
-int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin);
+int cnn_boost_disable(mxc_gpio_regs_t *port, uint32_t pin);
 
 #endif // __CNN_H__

@@ -35,8 +35,8 @@
  * ownership rights.
  *
  *************************************************************************** */
-
-/* Define to prevent redundant inclusion */
+ 
+ /* Define to prevent redundant inclusion */
 #ifndef _MXC_UART_H_
 #define _MXC_UART_H_
 
@@ -60,8 +60,8 @@ typedef struct _mxc_uart_req_t mxc_uart_req_t;
  * 
  */
 typedef enum {
-    MXC_UART_STOP_1, ///< UART Stop 1 clock cycle
-    MXC_UART_STOP_2, ///< UART Stop 2 clock cycle (1.5 clocks for 5 bit characters)
+    MXC_UART_STOP_1,    ///< UART Stop 1 clock cycle 
+    MXC_UART_STOP_2,    ///< UART Stop 2 clock cycle (1.5 clocks for 5 bit characters)
 } mxc_uart_stop_t;
 
 /**
@@ -69,11 +69,11 @@ typedef enum {
  * 
  */
 typedef enum {
-    MXC_UART_PARITY_DISABLE, ///< UART Parity Disabled
-    MXC_UART_PARITY_EVEN_0,  ///< UART Parity Even, 0 based
-    MXC_UART_PARITY_EVEN_1,  ///< UART Parity Even, 1 based
-    MXC_UART_PARITY_ODD_0,   ///< UART Parity Odd, 0 based
-    MXC_UART_PARITY_ODD_1,   ///< UART Parity Odd, 1 based
+    MXC_UART_PARITY_DISABLE,    ///< UART Parity Disabled
+    MXC_UART_PARITY_EVEN_0,     ///< UART Parity Even, 0 based
+    MXC_UART_PARITY_EVEN_1,     ///< UART Parity Even, 1 based
+    MXC_UART_PARITY_ODD_0,      ///< UART Parity Odd, 0 based
+    MXC_UART_PARITY_ODD_1,      ///< UART Parity Odd, 1 based
 } mxc_uart_parity_t;
 
 /**
@@ -81,21 +81,21 @@ typedef enum {
  * 
  */
 typedef enum {
-    MXC_UART_FLOW_DIS, ///< UART Flow Control Disabled
-    MXC_UART_FLOW_EN,  ///< UART Flow Control Enabled
+    MXC_UART_FLOW_DIS,      ///< UART Flow Control Disabled
+    MXC_UART_FLOW_EN,       ///< UART Flow Control Enabled
 } mxc_uart_flow_t;
 
 /**
  * @brief      Clock settings */
 typedef enum {
-    MXC_UART_APB_CLK = 0,
-    MXC_UART_EXT_CLK = 1,
+    MXC_UART_APB_CLK = 0,                                          
+    MXC_UART_EXT_CLK = 1,              
     /*8M (IBRO) and 32M (EFRO) clocks can be used for UARTs 0,1 and 2*/
-    MXC_UART_IBRO_CLK = 2,
+    MXC_UART_IBRO_CLK = 2,  
     MXC_UART_ERFO_CLK = 3,
     /*32K (ERTCO) and INRO clocks can only be used for UART3*/
     MXC_UART_ERTCO_CLK = 4,
-    MXC_UART_INRO_CLK  = 5,
+    MXC_UART_INRO_CLK = 5,                   
 } mxc_uart_clock_t;
 
 /**
@@ -122,21 +122,21 @@ typedef void (*mxc_uart_dma_complete_cb_t)(mxc_uart_req_t* req, int num, int res
  * @note    "callback" only needs to be initialized for interrupt driven (Async) and DMA transactions.
  */
 struct _mxc_uart_req_t {
-    mxc_uart_regs_t* uart;   ///<Point to UART registers
-    const uint8_t* txData;   ///< Buffer containing transmit data. For character sizes
-                             ///< < 8 bits, pad the MSB of each byte with zeros. For
-                             ///< character sizes > 8 bits, use two bytes per character
-                             ///< and pad the MSB of the upper byte with zeros
-    uint8_t* rxData;         ///< Buffer to store received data For character sizes
-                             ///< < 8 bits, pad the MSB of each byte with zeros. For
-                             ///< character sizes > 8 bits, use two bytes per character
-                             ///< and pad the MSB of the upper byte with zeros
-    uint32_t txLen;          ///< Number of bytes to be sent from txData
-    uint32_t rxLen;          ///< Number of bytes to be stored in rxData
-    volatile uint32_t txCnt; ///< Number of bytes actually transmitted from txData
-    volatile uint32_t rxCnt; ///< Number of bytes stored in rxData
+    mxc_uart_regs_t* uart;      ///<Point to UART registers
+    const uint8_t  *txData;     ///< Buffer containing transmit data. For character sizes
+                                ///< < 8 bits, pad the MSB of each byte with zeros. For 
+                                ///< character sizes > 8 bits, use two bytes per character
+                                ///< and pad the MSB of the upper byte with zeros
+    uint8_t        *rxData;     ///< Buffer to store received data For character sizes
+                                ///< < 8 bits, pad the MSB of each byte with zeros. For 
+                                ///< character sizes > 8 bits, use two bytes per character
+                                ///< and pad the MSB of the upper byte with zeros
+    uint32_t        txLen;      ///< Number of bytes to be sent from txData
+    uint32_t        rxLen;      ///< Number of bytes to be stored in rxData
+    volatile uint32_t        txCnt;      ///< Number of bytes actually transmitted from txData
+    volatile uint32_t        rxCnt;      ///< Number of bytes stored in rxData
 
-    mxc_uart_complete_cb_t callback; ///< Pointer to function called when transaction is complete
+    mxc_uart_complete_cb_t callback;  ///< Pointer to function called when transaction is complete
 };
 
 /***** Function Prototypes *****/
@@ -307,7 +307,7 @@ int MXC_UART_ReadCharacterRaw(mxc_uart_regs_t* uart);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_UART_WriteCharacterRaw(mxc_uart_regs_t* uart, uint8_t character);
+int MXC_UART_WriteCharacterRaw (mxc_uart_regs_t* uart, uint8_t character);
 
 /**
  * @brief   Reads the next available character
@@ -361,7 +361,8 @@ int MXC_UART_Write(mxc_uart_regs_t* uart, const uint8_t* byte, int* len);
  *
  * @return  The number of bytes actually read.
  */
-unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len);
+unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes,
+                                    unsigned int len);
 
 /**
  * @brief   Unloads bytes from the receive FIFO user DMA for longer reads.
@@ -373,8 +374,8 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, un
  *
  * @return  See \ref MXC_ERROR_CODES for a list of return values
  */
-int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-                           mxc_uart_dma_complete_cb_t callback);
+int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes,
+                            unsigned int len, mxc_uart_dma_complete_cb_t callback);
 
 /**
  * @brief   Get the number of bytes currently available in the receive FIFO.
@@ -395,7 +396,7 @@ unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t* uart);
  * @return  The number of bytes actually written.
  */
 unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* bytes,
-                                  unsigned int len);
+                                    unsigned int len);
 
 /**
  * @brief   Loads bytes into the transmit FIFO using DMA for longer writes
@@ -407,8 +408,8 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* by
  *
  * @return  See \ref MXC_ERROR_CODES for a list of return values
  */
-int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes, unsigned int len,
-                            mxc_uart_dma_complete_cb_t callback);
+int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes,
+                                unsigned int len, mxc_uart_dma_complete_cb_t callback);
 
 /**
  * @brief   Get the amount of free space available in the transmit FIFO.
@@ -606,7 +607,7 @@ int MXC_UART_TransactionDMA(mxc_uart_req_t* req);
  * @param   ch          DMA channel
  * @param   error       Error status
  */
-void MXC_UART_DMACallback(int ch, int error);
+void MXC_UART_DMACallback (int ch, int error);
 
 /**
  * @brief   Async callback 
@@ -616,7 +617,7 @@ void MXC_UART_DMACallback(int ch, int error);
  * 
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_UART_AsyncCallback(mxc_uart_regs_t* uart, int retVal);
+int MXC_UART_AsyncCallback (mxc_uart_regs_t* uart, int retVal);
 
 /**
  * @brief   stop any async callbacks
@@ -625,7 +626,7 @@ int MXC_UART_AsyncCallback(mxc_uart_regs_t* uart, int retVal);
  * 
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_UART_AsyncStop(mxc_uart_regs_t* uart);
+int MXC_UART_AsyncStop (mxc_uart_regs_t* uart);
 
 /**
  * @brief   Abort any asynchronous requests in progress.

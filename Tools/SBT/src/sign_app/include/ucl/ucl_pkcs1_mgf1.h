@@ -58,8 +58,8 @@ extern "C" {
  * @ingroup UCL_PKCS1V21
  */
 
-/*============================================================================*/
-/** <b>PKCS#1 MGF1 hash function selection</b>.
+  /*============================================================================*/
+  /** <b>PKCS#1 MGF1 hash function selection</b>.
    * this function allows to select the PKCS#1 MGF1 hash function, whatever the hash
    * function used in the PKCS#1 scheme
    * This is not a GOOD PRACTICE !! but Android test suite allows that
@@ -76,10 +76,10 @@ extern "C" {
    * @ingroup UCL_PKCS1V21_MGF1
    */
 
-int ucl_set_mgf1_hash_function(int hash_identifier);
+  int ucl_set_mgf1_hash_function(int hash_identifier);
 
-/*============================================================================*/
-/** <b>PKCS#1 MGF1 hash function selection clearance</b>.
+  /*============================================================================*/
+  /** <b>PKCS#1 MGF1 hash function selection clearance</b>.
    * this function allows to unselect the PKCS#1 MGF1 hash function, i.e. once done, the hash
    * function used in the MGF1 will be the same than in the PKCS#1 scheme
    * This is the GOOD PRACTICE !! 
@@ -91,10 +91,10 @@ int ucl_set_mgf1_hash_function(int hash_identifier);
    * @ingroup UCL_PKCS1V21_MGF1
    */
 
-void ucl_clear_mgf1_hash_function(void);
+  void ucl_clear_mgf1_hash_function(void);
 
-/*============================================================================*/
-/** <b>PKCS#1 MGF1 hash function retrieval </b>.
+  /*============================================================================*/
+  /** <b>PKCS#1 MGF1 hash function retrieval </b>.
    * this function returns the PKCS#1 MGF1 hash function, whatever the hash
    * function used in the PKCS#1 scheme
    * if the MGF1 hash function has been set using the ucl_set_mgf1_hash_function
@@ -113,8 +113,7 @@ void ucl_clear_mgf1_hash_function(void);
    * @ingroup UCL_PKCS1V21_MGF1
    */
 
-int ucl_get_mgf1_hash_function(void);
+  int ucl_get_mgf1_hash_function(void);
 
-int ucl_pkcs1_mgf1_hash(u8* mask, u32 mask_length, u8* mgf_seed, u32 mgf_seed_length,
-                        int hash_identifier);
-#endif //PKCS1_MGF1_H_
+int ucl_pkcs1_mgf1_hash(u8 *mask, u32 mask_length, u8 *mgf_seed, u32 mgf_seed_length,int hash_identifier);
+#endif//PKCS1_MGF1_H_

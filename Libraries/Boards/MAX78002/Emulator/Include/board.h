@@ -36,6 +36,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 
 #ifndef _BOARD_H
@@ -46,26 +47,26 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART    0      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_OFF         1       /// Inactive state of LEDs
+#define LED_ON          0       /// Active state of LEDs
 
 /**
  *  A reference to LED1 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1 0
+#define LED1            0
 /**
  *  A reference to LED2 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2 1
+#define LED2            1
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -99,6 +100,7 @@ int Console_PrepForSleep(void);
  */
 int Debug_Init(void);
 #endif // __riscv
+
 
 #ifdef __cplusplus
 }

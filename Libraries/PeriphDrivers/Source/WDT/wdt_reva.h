@@ -42,7 +42,7 @@
 /* **** Definitions **** */
 typedef enum {
     MXC_WDT_REVA_DISABLE = 0,
-    MXC_WDT_REVA_ENABLE  = 1,
+    MXC_WDT_REVA_ENABLE = 1,
 } mxc_wdt_reva_en_t;
 
 /* **** Functions **** */

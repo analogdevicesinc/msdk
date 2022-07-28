@@ -39,7 +39,7 @@
  *
  **************************************************************************** */
 
-/* Define to prevent redundant inclusion */
+/* Define to prevent redundant inclusion */ 
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -118,7 +118,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_pt14_1;
 extern const mxc_gpio_cfg_t gpio_cfg_pt15_1;
 extern const mxc_gpio_cfg_t gpio_cfg_rtcsqw;
 extern const mxc_gpio_cfg_t gpio_cfg_spixfc;
-extern const mxc_gpio_cfg_t gpio_cfg_spixr;
+extern const mxc_gpio_cfg_t gpio_cfg_spixr; 
 extern const mxc_gpio_cfg_t gpio_cfg_hyp;
 extern const mxc_gpio_cfg_t gpio_cfg_hyp_cs0;
 extern const mxc_gpio_cfg_t gpio_cfg_hyp_cs1;
@@ -138,3 +138,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_i2s;
 #endif
 
 #endif /* _MXC_PINS_H_ */
+

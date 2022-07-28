@@ -63,14 +63,14 @@ extern "C" {
  * @brief     Initialize the semaphore peripheral
  * @return    #E_NO_ERROR if semaphore acquired.
  */
-int MXC_SEMA_Init(void);
+int MXC_SEMA_Init (void);
 
 /**
  * @brief     Attempt to get a semaphore.
  * @param     sema   Number of semaphore you are trying to get.
  * @return    #E_NO_ERROR if semaphore acquired. #E_BUSY if semaphore is already locked.
  */
-int MXC_SEMA_GetSema(unsigned sema);
+int MXC_SEMA_GetSema (unsigned sema);
 
 /**
  * @brief     Check a semaphore.
@@ -78,26 +78,26 @@ int MXC_SEMA_GetSema(unsigned sema);
  * @return    #E_NO_ERROR if semaphore is free. #E_BUSY if semaphore is already locked.
  * @note      Will not be atomic if you call this function and then attempt to MXC_SEMA_GetSema().
  */
-int MXC_SEMA_CheckSema(unsigned sema);
+int MXC_SEMA_CheckSema (unsigned sema);
 
 /**
  * @brief     Check all semaphores.
  * @return    Status of all semaphores. Each semaphore will be represented by 1 bit.
  * @note      Will not be atomic if you call this function and then attempt to MXC_SEMA_GetSema().
  */
-uint32_t MXC_SEMA_Status(void);
+uint32_t MXC_SEMA_Status (void);
 
 /**
  * @brief     Frees the semaphore.
  * @param     sema   Number of semaphore want to free.
  */
-void MXC_SEMA_FreeSema(unsigned sema);
+void MXC_SEMA_FreeSema (unsigned sema);
 
 /**
  * @brief     Shutdown the semaphore peripheral
  * @return    #E_NO_ERROR if semaphore released.
  */
-int MXC_SEMA_Shutdown(void);
+int MXC_SEMA_Shutdown (void);
 
 /**@} end of group sema */
 

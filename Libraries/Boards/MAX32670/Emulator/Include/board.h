@@ -39,6 +39,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 // #include "spixfc.h"
 
@@ -50,21 +51,22 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 1 /// UART instance to use for console
+#define CONSOLE_UART    1      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
-#define LED_OFF 0 /// Inactive state of LEDs
-#define LED_ON  1 /// Active state of LEDs
+#define LED_OFF         0       /// Inactive state of LEDs
+#define LED_ON          1       /// Active state of LEDs
 
-#define MX25_SPI  MXC_SPIXFC
-#define MX25_SSEL 0
+#define MX25_SPI                    MXC_SPIXFC
+#define MX25_SSEL                   0
 // #define SPI_CHAR_BITS               8
 
 // const spixfc_cfg_t mx25_spim_cfg;
+
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -108,6 +110,7 @@ int Console_PrepForSleep(void);
 //  * @param   deassert    Deassert slave select at the end of the transaction.
 //  * @param   width       spi_width_t for how many data lines to use
 //  * \returns #E_NO_ERROR if successful, !=0 otherwise
+
 
 // int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, spixfc_width_t width);
 

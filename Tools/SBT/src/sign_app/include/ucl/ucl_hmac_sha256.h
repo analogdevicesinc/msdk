@@ -46,6 +46,7 @@ extern "C" {
  * @ingroup UCL_HMAC
  */
 
+
 /*============================================================================*/
 /** <b>The complete process of HMAC-SHA256</b>.
  *
@@ -64,8 +65,9 @@ extern "C" {
  *
  * @ingroup UCL_HMAC_SHA256
  */
-int ucl_hmac_sha256(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
-                    u32 key_byteLen);
+int ucl_hmac_sha256(u8 *mac, u32 mac_byteLen, u8 *message,
+                    u32 message_byteLen, u8 *key, u32 key_byteLen);
+
 
 /** <b>The initialisation of HMAC-SHA256</b>.
  *
@@ -80,7 +82,9 @@ int ucl_hmac_sha256(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, 
  *
  * @ingroup UCL_HMAC_SHA256
  */
-int ucl_hmac_sha256_init(ucl_sha256_ctx_t* context, u8* key, u32 key_byteLen);
+int ucl_hmac_sha256_init(ucl_sha256_ctx_t *context, u8 *key,
+                         u32 key_byteLen);
+
 
 /** <b>The core of SHA256 </b>.
  *
@@ -98,7 +102,9 @@ int ucl_hmac_sha256_init(ucl_sha256_ctx_t* context, u8* key, u32 key_byteLen);
  *
  * @ingroup UCL_HMAC_SHA256
  */
-int ucl_hmac_sha256_core(ucl_sha256_ctx_t* context, u8* data, u32 byteLen);
+int ucl_hmac_sha256_core(ucl_sha256_ctx_t *context,
+                         u8 *data, u32 byteLen);
+
 
 /** <b>Finish the process of SHA256</b>.
  *
@@ -119,8 +125,9 @@ int ucl_hmac_sha256_core(ucl_sha256_ctx_t* context, u8* data, u32 byteLen);
  *
  * @ingroup UCL_HMAC_SHA256
  */
-int ucl_hmac_sha256_finish(u8* mac, u32 mac_byteLen, ucl_sha256_ctx_t* context, u8* key,
-                           u32 key_byteLen);
+int ucl_hmac_sha256_finish(u8 *mac, u32 mac_byteLen,
+                           ucl_sha256_ctx_t *context, u8 *key, u32 key_byteLen);
+
 
 #ifdef __cplusplus
 }

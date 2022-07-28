@@ -41,9 +41,12 @@
 
 /* Global includes */
 
+
 int kb_init(void);
 int kb_get_key(void);
 int kb_read_num(unsigned int timeout);
 int kb_select_from_list_xcol(const char* title, const char** items, int nb_items, int nb_col);
 
+
 #endif // _KEYPAD_H_
+

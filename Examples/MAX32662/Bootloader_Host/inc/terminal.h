@@ -37,20 +37,21 @@
 /*******************************      INCLUDES    ****************************/
 
 /*******************************      DEFINES     ****************************/
-#define KEY_ESC    -1
-#define KEY_CANCEL -1
+#define KEY_ESC			-1
+#define KEY_CANCEL		-1
 
 /******************************* Type Definitions ****************************/
 typedef struct {
     const char* name;
-    int (*callback)(const char* parentName);
+    int (*callback)(const char *parentName);
 } list_t;
 
 /******************************* Public Functions ****************************/
-int terminal_init(void);
-int terminal_printf(const char* format, ...);
+int  terminal_init(void);
+int  terminal_printf(const char* format, ...);
 void terminal_hexdump(const char* title, char* buf, unsigned int len);
-int terminal_read_num(unsigned int timeout);
-int terminal_select_from_list(const char* title, const list_t* items, int nb_items, int nb_col);
+int  terminal_read_num(unsigned int timeout);
+int  terminal_select_from_list(const char* title, const list_t *items, int nb_items, int nb_col);
+
 
 #endif // _TERMINAL_H_

@@ -41,13 +41,14 @@
 /******************************* Type Definitions ****************************/
 
 /******************************* Global Variables ****************************/
-extern const char devkey_MAX32662_blinkled_fast_P0_13[];
-extern const char devkey_MAX32662_blinkled_slow_P0_13[];
-extern const char nonsecure_MAX32662_blinkled_fast_P0_13[];
-extern const char nonsecure_MAX32662_blinkled_slow_P0_13[];
-extern const char devkey_MAX32670_blinkled_P0_22[];
-extern const char devkey_MAX32670_blinkled_P0_23[];
+extern const char devkey_MAX32662_blinkled_fast_P0_13[ ];
+extern const char devkey_MAX32662_blinkled_slow_P0_13[ ];
+extern const char nonsecure_MAX32662_blinkled_fast_P0_13[ ];
+extern const char nonsecure_MAX32662_blinkled_slow_P0_13[ ];
+extern const char devkey_MAX32670_blinkled_P0_22[ ];
+extern const char devkey_MAX32670_blinkled_P0_23[ ];
 
 /******************************* Public Functions ****************************/
+
 
 #endif // _TEST_IMAGES_H_

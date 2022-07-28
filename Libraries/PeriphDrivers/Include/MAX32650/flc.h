@@ -60,10 +60,10 @@ extern "C" {
 /***** Definitions *****/
 
 /// Bit mask that can be used to find the starting address of a page in flash
-#define MXC_FLASH_PAGE_MASK ~(MXC_FLASH_PAGE_SIZE - 1)
+#define MXC_FLASH_PAGE_MASK         ~(MXC_FLASH_PAGE_SIZE - 1)
 
 /// Calculate the address of a page in flash from the page number
-#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((unsigned long)page * MXC_FLASH_PAGE_SIZE))
+#define MXC_FLASH_PAGE_ADDR(page)   (MXC_FLASH_MEM_BASE + ((unsigned long)page * MXC_FLASH_PAGE_SIZE))
 
 /***** Function Prototypes *****/
 
@@ -71,28 +71,28 @@ extern "C" {
  * @brief      Initializes the flash controller for erase/write operations
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_FLC_Init(void);
-
+int MXC_FLC_Init (void);
+  
 /**
  * @brief      Checks if Flash controller is busy.
  * @details    Reading or executing from flash is not possible if flash is busy
  *             with an erase or write operation.
  * @return     If non-zero, flash operation is in progress
  */
-int MXC_FLC_Busy(void);
-
+int MXC_FLC_Busy (void);
+  
 /**
  * @brief      Erases the entire flash array.
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_FLC_MassErase(void);
+int MXC_FLC_MassErase (void);
 
 /**
  * @brief      Erases the page of flash at the specified address.
  * @param      address  Any address within the page to erase.
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_FLC_PageErase(uint32_t address);
+int MXC_FLC_PageErase (uint32_t address);
 
 /**
  * @brief      Read Data out of Flash from an address
@@ -102,7 +102,7 @@ int MXC_FLC_PageErase(uint32_t address);
  * @param[in]  len      The length of the buffer
  *
  */
-void MXC_FLC_Read(int address, void* buffer, int len);
+void MXC_FLC_Read (int address, void* buffer, int len);
 
 /**
  * @brief      Writes data to flash.
@@ -112,7 +112,7 @@ void MXC_FLC_Read(int address, void* buffer, int len);
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer);
+int MXC_FLC_Write (uint32_t address, uint32_t length, uint32_t *buffer);
 
 /**
  * @brief      Writes the specified 32-bit value to flash.
@@ -121,7 +121,7 @@ int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer);
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_FLC_Write32(uint32_t address, uint32_t data);
+int MXC_FLC_Write32 (uint32_t address, uint32_t data);
 
 /**
  * @brief      Writes the specified 128-bits of data to flash.
@@ -130,7 +130,7 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data);
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_FLC_Write128(uint32_t address, uint32_t* data);
+int MXC_FLC_Write128 (uint32_t address, uint32_t *data);
 
 /**
  * @brief      Enable flash interrupts
@@ -138,7 +138,7 @@ int MXC_FLC_Write128(uint32_t address, uint32_t* data);
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_FLC_EnableInt(uint32_t flags);
+int MXC_FLC_EnableInt (uint32_t flags);
 
 /**
  * @brief      Disable flash interrupts
@@ -146,13 +146,13 @@ int MXC_FLC_EnableInt(uint32_t flags);
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_FLC_DisableInt(uint32_t flags);
+int MXC_FLC_DisableInt (uint32_t flags);
 
 /**
  * @brief      Retrieve flash interrupt flags
  * @return     Mask of active flags.
  */
-int MXC_FLC_GetFlags(void);
+int MXC_FLC_GetFlags (void);
 
 /**
  * @brief      Clear flash interrupt flags
@@ -161,21 +161,21 @@ int MXC_FLC_GetFlags(void);
  * @return     #E_NO_ERROR if successful, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_FLC_ClearFlags(uint32_t flags);
+int MXC_FLC_ClearFlags (uint32_t flags);
 
 /**
  * @brief      Unlock info block
  * @param[in]  address  The address in the info block needing written to
  * @return     #E_NO_ERROR If function is successful.
  */
-int MXC_FLC_UnlockInfoBlock(uint32_t address);
+int MXC_FLC_UnlockInfoBlock (uint32_t address);
 
 /**
  * @brief      Lock info block
  * @param[in]  address  The address in the info block needing written to
  * @return     #E_NO_ERROR If function is successful.
  */
-int MXC_FLC_LockInfoBlock(uint32_t address);
+int MXC_FLC_LockInfoBlock (uint32_t address);
 /**@} end of group flc */
 
 #ifdef __cplusplus

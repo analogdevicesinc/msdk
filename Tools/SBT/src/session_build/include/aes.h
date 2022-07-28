@@ -38,7 +38,8 @@
 #define __AES_H__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -49,17 +50,18 @@ extern "C" {
  * @param trunk number of CRC byte to return
  * @return ERR_OK if success otherwise error code
  */
-int aes_checksum(u8* crc, const uint8_t* data, int size, int trunk);
+int aes_checksum (u8 * crc, const uint8_t * data, int size, int trunk);
 
 /**
  * Display an AES key
  * @param key Key data to be displayed
  * @param keyname Key name
  */
-void print_aeskey(const uint8_t* key, const char* keyname);
+void print_aeskey(const uint8_t * key, const char * keyname );
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AES_H__ */
+#endif				/* __AES_H__ */

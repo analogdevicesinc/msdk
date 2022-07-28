@@ -36,6 +36,7 @@
  *
  **************************************************************************** */
 
+
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -48,6 +49,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
+
 
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
@@ -71,6 +73,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart5b_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart5c_P1_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart5c_P0_flow;
 
+
 extern const mxc_gpio_cfg_t gpio_cfg_spi0;
 // NOTE: SPI1 definied here with SS1 only, SS0 is on port0 by itself.
 extern const mxc_gpio_cfg_t gpio_cfg_spi1;
@@ -80,6 +83,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi2b;
 // NOTE: SPI3 defined here with SS0 only, and NOT SS1, SS2, or SS3
 extern const mxc_gpio_cfg_t gpio_cfg_spi3;
 
+
 // Timers are only defined once, depending on package, each timer could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr1;
@@ -87,6 +91,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_tmr2;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr3;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr4;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr5;
+
 
 // Pulse trains are only defined once, depending on package, each PT could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_pt0;
@@ -97,6 +102,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_pt4;
 extern const mxc_gpio_cfg_t gpio_cfg_pt5;
 extern const mxc_gpio_cfg_t gpio_cfg_pt6;
 extern const mxc_gpio_cfg_t gpio_cfg_pt7;
+
 
 extern const mxc_gpio_cfg_t gpio_cfg_owm;
 extern const mxc_gpio_cfg_t gpio_cfg_owmb;
@@ -109,14 +115,18 @@ extern const mxc_gpio_cfg_t gpio_cfg_P1a_clcd;
 extern const mxc_gpio_cfg_t gpio_cfg_P1b_clcd;
 extern const mxc_gpio_cfg_t gpio_cfg_P2_clcd;
 
+
 extern const mxc_gpio_cfg_t gpio_cfg_rtcsqw;
 extern const mxc_gpio_cfg_t gpio_cfg_rtcsqwb;
+
 
 extern const mxc_gpio_cfg_t gpio_cfg_sdhc;
 extern const mxc_gpio_cfg_t gpio_cfg_sdhcb;
 
+
 extern const mxc_gpio_cfg_t gpio_cfg_sc0;
 extern const mxc_gpio_cfg_t gpio_cfg_sc1;
+
 
 // Note that both P0 and P1 must be configured for proper operation
 extern const mxc_gpio_cfg_t gpio_cfg_spixf;
@@ -126,6 +136,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_spixr_P1;
 // Note that both P2a and P2b must be configured for proper operation
 extern const mxc_gpio_cfg_t gpio_cfg_emac_P2a;
 extern const mxc_gpio_cfg_t gpio_cfg_emac_P2b;
+
 
 // Note that all of the following must be configured for proper operation
 extern const mxc_gpio_cfg_t gpio_cfg_kbd_P2;
@@ -139,3 +150,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_pcif_pclk;
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_pwrdwn;
 
 #endif /* _MXC_PINS_H_ */
+

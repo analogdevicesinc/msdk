@@ -36,6 +36,7 @@
  *
  **************************************************************************** */
 
+
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -45,12 +46,13 @@
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_extclk;
 extern const mxc_gpio_cfg_t gpio_cfg_hfextclk;
-extern const mxc_gpio_cfg_t gpio_cfg_lpextclk;
+extern const mxc_gpio_cfg_t gpio_cfg_lpextclk; 
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
+
 
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
@@ -95,8 +97,8 @@ extern const mxc_gpio_cfg_t gpio_cfg_tmr3b;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr3c;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr3d;
 
-extern const mxc_gpio_cfg_t gpio_cfg_lptmr0;
-extern const mxc_gpio_cfg_t gpio_cfg_lptmr1;
+extern const mxc_gpio_cfg_t gpio_cfg_lptmr0; 
+extern const mxc_gpio_cfg_t gpio_cfg_lptmr1; 
 
 extern const mxc_gpio_cfg_t gpio_cfg_i2s0;
 
@@ -129,3 +131,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_ain10;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain11;
 
 #endif /* _MXC_PINS_H_ */
+

@@ -55,7 +55,7 @@ extern "C" {
  * @param      cfg   Pointer to configuration structure describing the pin.
  * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
  */
-int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t* cfg);
+int MXC_AFE_GPIO_Config (const mxc_gpio_cfg_t *cfg);
 
 #ifdef __cplusplus
 }

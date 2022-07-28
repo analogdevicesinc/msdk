@@ -60,32 +60,32 @@ extern "C" {
 /* **** Definitions **** */
 
 typedef enum {
-    LEFT_JUSTIFIED  = 0,
+    LEFT_JUSTIFIED= 0,
     RIGHT_JUSTIFIED = 1,
 } mxc_i2s_justify_t;
 
 typedef enum {
     STEREO_MODE = 0,
-    MONO_MODE   = 1,
+    MONO_MODE = 1,
 } mxc_i2s_audio_mode_t;
 
 /** @brief I2S audio directions */
 typedef enum {
     AUDIO_OUT = 1,
-    AUDIO_IN  = 2,
+    AUDIO_IN = 2,
 } mxc_i2s_direction_t;
 
 /** @brief I2S Configuration Struct */
 typedef struct {
-    mxc_i2s_justify_t justify;
-    mxc_i2s_audio_mode_t audio_mode;
-    mxc_i2s_direction_t audio_direction;
-    uint16_t sample_rate;
-    unsigned int start_immediately;
-    unsigned int dma_reload_en;
-    void* src_addr;
-    void* dst_addr;
-    uint32_t length;
+    mxc_i2s_justify_t           justify;
+    mxc_i2s_audio_mode_t        audio_mode;
+    mxc_i2s_direction_t         audio_direction;
+    uint16_t                    sample_rate;
+    unsigned int                start_immediately;
+    unsigned int                dma_reload_en;
+    void                        *src_addr;
+    void                        *dst_addr;
+    uint32_t                    length;
 } mxc_i2s_config_t;
 
 /* **** Function Prototypes **** */
@@ -101,7 +101,7 @@ typedef struct {
  * functions.
  * @return #E_NO_ERROR if successful
  */
-int MXC_I2S_Init(const mxc_i2s_config_t* cfg, void (*dma_ctz_cb)(int, int));
+int MXC_I2S_Init(const mxc_i2s_config_t *cfg, void (*dma_ctz_cb)(int, int));
 
 /**
  * @brief      Release I2S
@@ -168,7 +168,7 @@ int MXC_I2S_DMA_ClearFlags(void);
  *             the transfer. The unused addr parameter is ignored.
  * @return     #E_NO_ERROR
  */
-int MXC_I2S_DMA_SetAddrCnt(void* src_addr, void* dst_addr, unsigned int count);
+int MXC_I2S_DMA_SetAddrCnt(void *src_addr, void *dst_addr, unsigned int count);
 
 /**
  * @brief      Sets the DMA reload address and count
@@ -180,7 +180,8 @@ int MXC_I2S_DMA_SetAddrCnt(void* src_addr, void* dst_addr, unsigned int count);
  *             set to these. The DMA reload flag clears after a reload occurs.
  * @return     #E_NO_ERROR
  */
-int MXC_I2S_DMA_SetReload(void* src_addr, void* dst_addr, unsigned int count);
+int MXC_I2S_DMA_SetReload(void *src_addr, void *dst_addr, unsigned int count);
+
 
 #ifdef __cplusplus
 }

@@ -46,6 +46,6 @@
 void utils_delay_ms(unsigned int ms);
 unsigned int utils_get_time_ms(void);
 void utils_hexDump(const char* title, unsigned char* buf, unsigned int len);
-int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat);
+int  utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat);
 
 #endif // _UTILS_H_

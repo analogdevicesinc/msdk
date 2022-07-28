@@ -31,6 +31,7 @@
  *
  *************************************************************************** */
 
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -41,17 +42,18 @@
 #include "mxc_delay.h"
 #include "htmr_reva_regs.h"
 
+
 /* **** Definitions **** */
 
-int MXC_HTMR_RevA_Init(mxc_htmr_reva_regs_t* htmr, uint32_t sec, uint8_t ssec);
-int MXC_HTMR_RevA_Start(mxc_htmr_reva_regs_t* htmr);
-int MXC_HTMR_RevA_Stop(mxc_htmr_reva_regs_t* htmr);
-int MXC_HTMR_RevA_GetShortCount(mxc_htmr_reva_regs_t* htmr);
-int MXC_HTMR_RevA_GetLongCount(mxc_htmr_reva_regs_t* htmr);
-int MXC_HTMR_RevA_SetLongAlarm(mxc_htmr_reva_regs_t* htmr, uint32_t ras);
-int MXC_HTMR_RevA_SetShortAlarm(mxc_htmr_reva_regs_t* htmr, uint32_t rssa);
-int MXC_HTMR_RevA_CheckBusy(mxc_htmr_reva_regs_t* htmr);
-int MXC_HTMR_RevA_GetFlags(mxc_htmr_reva_regs_t* htmr);
-int MXC_HTMR_RevA_ClearFlags(mxc_htmr_reva_regs_t* htmr, int flags);
-int MXC_HTMR_RevA_EnableInt(mxc_htmr_reva_regs_t* htmr, uint32_t mask);
-int MXC_HTMR_RevA_DisableInt(mxc_htmr_reva_regs_t* htmr, uint32_t mask);
+int MXC_HTMR_RevA_Init (mxc_htmr_reva_regs_t *htmr, uint32_t sec, uint8_t ssec);
+int MXC_HTMR_RevA_Start (mxc_htmr_reva_regs_t *htmr);
+int MXC_HTMR_RevA_Stop (mxc_htmr_reva_regs_t *htmr);
+int MXC_HTMR_RevA_GetShortCount (mxc_htmr_reva_regs_t *htmr);
+int MXC_HTMR_RevA_GetLongCount (mxc_htmr_reva_regs_t *htmr);
+int MXC_HTMR_RevA_SetLongAlarm (mxc_htmr_reva_regs_t *htmr, uint32_t ras);
+int MXC_HTMR_RevA_SetShortAlarm (mxc_htmr_reva_regs_t *htmr, uint32_t rssa);
+int MXC_HTMR_RevA_CheckBusy (mxc_htmr_reva_regs_t *htmr);
+int MXC_HTMR_RevA_GetFlags (mxc_htmr_reva_regs_t *htmr);
+int MXC_HTMR_RevA_ClearFlags (mxc_htmr_reva_regs_t *htmr, int flags);
+int MXC_HTMR_RevA_EnableInt (mxc_htmr_reva_regs_t *htmr, uint32_t mask);
+int MXC_HTMR_RevA_DisableInt (mxc_htmr_reva_regs_t *htmr, uint32_t mask);

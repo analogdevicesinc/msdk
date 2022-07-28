@@ -37,9 +37,11 @@
 #define _UTILS_H_
 
 /*****************************     MACROS    *********************************/
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+#define ARRAY_SIZE(arr)     (sizeof(arr)/sizeof(arr[0]))
+
 
 /*****************************     VARIABLES *********************************/
+
 
 /*****************************     FUNCTIONS *********************************/
 unsigned int utils_get_time_ms(void);

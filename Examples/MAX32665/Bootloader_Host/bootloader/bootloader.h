@@ -38,41 +38,41 @@
 #include "bootloader_cmd.h"
 
 /*******************************      DEFINES     ****************************/
-#define GPIO_IDX_BL0 0 // RESET PIN
-#define GPIO_IDX_BL1 1 // MFIO  PIN
+#define GPIO_IDX_BL0	0	// RESET PIN
+#define GPIO_IDX_BL1	1	// MFIO  PIN
 
 /******************************* Type Definitions ****************************/
-typedef int (*comm_read_t)(unsigned char* dst, unsigned int len);
-typedef int (*comm_write_t)(unsigned char* src, unsigned int len);
+typedef int (*comm_read_t)(unsigned char *dst, unsigned int len);
+typedef int (*comm_write_t)(unsigned char *src, unsigned int len);
 
 typedef struct {
-    comm_read_t read;
-    comm_write_t write;
-    void (*gpio_set)(unsigned int idx, int state);
-    void (*delay_ms)(unsigned int ms);
-    int (*printf)(const char* pcFmt, ...);
+	comm_read_t  read;
+	comm_write_t write;
+	void (*gpio_set)(unsigned int idx, int state);
+	void (*delay_ms)(unsigned int ms);
+	int  (*printf)(const char *pcFmt, ...);
 } bl_conf_struct_t;
 
 /******************************* Public Functions ****************************/
-int bl_init(bl_conf_struct_t* plt_funcs);
-int bl_update_interface(comm_read_t read_func, comm_write_t write_func);
+int bl_init(bl_conf_struct_t *plt_funcs);
+int bl_update_interface(comm_read_t read_func,  comm_write_t write_func);
 //
 int bl_hard_reset_then_enter_bl_mode(void);
 int bl_enter_bl_mode(void);
 int bl_exit_bl_mode(void);
-int bl_get_partnumber(char* buf, unsigned int maxLen);
-int bl_get_version(char* buf, unsigned int maxLen);
-int bl_get_usn(char* buf, unsigned int maxLen);
-int bl_get_page_size(unsigned int* page_size);
+int bl_get_partnumber(char *buf, unsigned int maxLen);
+int bl_get_version(char *buf, unsigned int maxLen);
+int bl_get_usn(char *buf, unsigned int maxLen);
+int bl_get_page_size(unsigned int *page_size);
 int bl_erase_app(void);
 int bl_set_num_pages(int page_num);
-int bl_set_iv(unsigned char* iv);
-int bl_set_auth(unsigned char* auth);
-int bl_write_page(const char* page, unsigned int page_len);
-int bl_flash_image(const char* image);
+int bl_set_iv(unsigned char *iv);
+int bl_set_auth(unsigned char *auth);
+int bl_write_page(const char *page, unsigned int page_len);
+int bl_flash_image(const char *image);
 
 // Bootloader configuration section
-int bl_get_target_configure(const char* target_bl_version, void* bl_cfg_struct);
+int bl_get_target_configure(const char *target_bl_version, void *bl_cfg_struct);
 int bl_update_cfg_enter_bl_check(int enable);
 int bl_update_cfg_set_ebl_pin(int port, int pin);
 int bl_update_cfg_set_ebl_pin_polarity(int polarity);
@@ -80,7 +80,7 @@ int bl_update_cfg_set_valid_mark_check(int enable);
 int bl_update_cfg_enable_uart(int enable);
 int bl_update_cfg_enable_i2c(int enable);
 int bl_update_cfg_enable_spi(int enable);
-int bl_update_cfg_set_i2c_addr(const char* target_bl_version, unsigned char addr);
+int bl_update_cfg_set_i2c_addr(const char *target_bl_version, unsigned char addr);
 int bl_update_cfg_set_crc_check(int enable);
 int bl_update_cfg_lock_swd(int enable);
 int bl_update_cfg_set_bl_exit_mode(BLExitMode_t mode);

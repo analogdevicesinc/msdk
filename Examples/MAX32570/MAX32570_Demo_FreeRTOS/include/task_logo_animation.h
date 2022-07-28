@@ -36,10 +36,13 @@
 #ifndef _TASK_LOGO_ANIMATION_H_
 #define _TASK_LOGO_ANIMATION_H_
 
+
 /*****************************    DEFINES    *********************************/
+
 
 /*****************************     FUNCTIONS *********************************/
 void logo_animation_start(void);
 void logo_animation_stop(void);
+
 
 #endif /* _TASK_LOGO_ANIMATION_H_ */

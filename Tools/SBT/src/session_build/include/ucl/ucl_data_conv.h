@@ -44,6 +44,7 @@ extern "C" {
  * @ingroup UCL_DATA
  */
 
+
 /*============================================================================*/
 /** <b>Words swap byte</b>.
  * Convet the endianess of 32-bit words array.
@@ -60,7 +61,8 @@ extern "C" {
  *
  * @ingroup UCL_DATA_CONV
  */
-int ucl_data_wsb(u32* output, u32* input, u32 len);
+int ucl_data_wsb(u32 *output, u32 *input, u32 len);
+
 
 /*============================================================================*/
 /** <b>PKCS #1 OS2IP</b>.
@@ -80,7 +82,8 @@ int ucl_data_wsb(u32* output, u32* input, u32 len);
  *
  * @ingroup UCL_DATA_CONV
  */
-int ucl_data_os2int(u32* it, u32 it_length, u8* os, u32 os_length);
+int ucl_data_os2int(u32 *it, u32 it_length, u8 *os, u32 os_length);
+
 
 /*============================================================================*/
 /** <b>PKCS #1 I2OSP</b>.
@@ -100,7 +103,8 @@ int ucl_data_os2int(u32* it, u32 it_length, u8* os, u32 os_length);
  *
  * @ingroup UCL_DATA_CONV
  */
-int ucl_data_int2os(u8* os, u32 os_length, u32* it, u32 it_length);
+int ucl_data_int2os(u8 *os, u32 os_length, u32 *it, u32 it_length);
+
 
 #ifdef __cplusplus
 }

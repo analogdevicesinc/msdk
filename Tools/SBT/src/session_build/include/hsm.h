@@ -38,11 +38,14 @@
 *
 */
 
+
 #ifndef __HSM_H__
 #define __HSM_H__
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -56,6 +59,7 @@ int hsm_login(void);
  * @return
  */
 int hsm_close(void);
+
 
 #ifdef __cplusplus
 }

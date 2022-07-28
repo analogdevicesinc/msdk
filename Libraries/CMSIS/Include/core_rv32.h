@@ -1,4 +1,4 @@
-/**************************************************************************/ /**
+/**************************************************************************//**
  * @file     core_cm4.h
  * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File
  * @version  V3.20
@@ -34,12 +34,13 @@
    POSSIBILITY OF SUCH DAMAGE.
    ---------------------------------------------------------------------------*/
 
-#if defined(__ICCARM__)
-#pragma system_include /* treat file as system include file for MISRA check */
+
+#if defined ( __ICCARM__ )
+ #pragma system_include  /* treat file as system include file for MISRA check */
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
 #ifndef __CORE_CM4_H_GENERIC
@@ -58,6 +59,7 @@ extern "C" {
      Function-like macros are used to allow more efficient code.
  */
 
+
 /*******************************************************************************
  *                 CMSIS definitions
  ******************************************************************************/
@@ -66,104 +68,104 @@ extern "C" {
  */
 
 /*  CMSIS CM4 definitions */
-#define __CM4_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
-#define __CM4_CMSIS_VERSION_SUB  (0x20) /*!< [15:0]  CMSIS HAL sub version    */
-#define __CM4_CMSIS_VERSION             \
-    ((__CM4_CMSIS_VERSION_MAIN << 16) | \
-     __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
+#define __CM4_CMSIS_VERSION_MAIN  (0x03)                                   /*!< [31:16] CMSIS HAL main version   */
+#define __CM4_CMSIS_VERSION_SUB   (0x20)                                   /*!< [15:0]  CMSIS HAL sub version    */
+#define __CM4_CMSIS_VERSION       ((__CM4_CMSIS_VERSION_MAIN << 16) | \
+                                    __CM4_CMSIS_VERSION_SUB          )     /*!< CMSIS HAL version number         */
 
-#define __CORTEX_M (0x04) /*!< Cortex-M Core                    */
+#define __CORTEX_M                (0x04)                                   /*!< Cortex-M Core                    */
 
-#if defined(__CC_ARM)
+
+#if   defined ( __CC_ARM )
 // #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler          */
 // #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler       */
-#define __STATIC_INLINE static __inline
+ #define __STATIC_INLINE  static __inline
 
-#elif defined(__ICCARM__)
+#elif defined ( __ICCARM__ )
 // #define __ASM            __asm                                      /*!< asm keyword for IAR Compiler          */
 // #define __INLINE         inline                                     /*!< inline keyword for IAR Compiler. Only available in High optimization mode! */
-#define __STATIC_INLINE static inline
+ #define __STATIC_INLINE  static inline
 
-#elif defined(__TMS470__)
+#elif defined ( __TMS470__ )
 // #define __ASM            __asm                                      /*!< asm keyword for TI CCS Compiler       */
-#define __STATIC_INLINE static inline
+ #define __STATIC_INLINE  static inline
 
-#elif defined(__GNUC__)
+#elif defined ( __GNUC__ )
 // #define __ASM            __asm                                      /*!< asm keyword for GNU Compiler          */
 // #define __INLINE         inline                                     /*!< inline keyword for GNU Compiler       */
-#define __STATIC_INLINE static inline
+ #define __STATIC_INLINE  static inline
 
-#elif defined(__TASKING__)
+#elif defined ( __TASKING__ )
 // #define __ASM            __asm                                      /*!< asm keyword for TASKING Compiler      */
 // #define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler   */
-#define __STATIC_INLINE static inline
+ #define __STATIC_INLINE  static inline
 
 #endif
 
 /** __FPU_USED indicates whether an FPU is used or not. For this, __FPU_PRESENT has to be checked prior to making use of FPU specific registers and functions.
 */
-#if defined(__CC_ARM)
-#if defined __TARGET_FPU_VFP
-#if (__FPU_PRESENT == 1)
-#define __FPU_USED 1
-#else
-#warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-#define __FPU_USED 0
-#endif
-#else
-#define __FPU_USED 0
+#if defined ( __CC_ARM )
+  #if defined __TARGET_FPU_VFP
+    #if (__FPU_PRESENT == 1)
+      #define __FPU_USED       1
+    #else
+      #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0
+    #endif
+  #else
+    #define __FPU_USED         0
+  #endif
+
+#elif defined ( __ICCARM__ )
+  #if defined __ARMVFP__
+    #if (__FPU_PRESENT == 1)
+      #define __FPU_USED       1
+    #else
+      #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0
+    #endif
+  #else
+    #define __FPU_USED         0
+  #endif
+
+#elif defined ( __TMS470__ )
+  #if defined __TI_VFP_SUPPORT__
+    #if (__FPU_PRESENT == 1)
+      #define __FPU_USED       1
+    #else
+      #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0
+    #endif
+  #else
+    #define __FPU_USED         0
+  #endif
+
+#elif defined ( __GNUC__ )
+  #if defined (__VFP_FP__) && !defined(__SOFTFP__)
+    #if (__FPU_PRESENT == 1)
+      #define __FPU_USED       1
+    #else
+      #warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0
+    #endif
+  #else
+    #define __FPU_USED         0
+  #endif
+
+#elif defined ( __TASKING__ )
+  #if defined __FPU_VFP__
+    #if (__FPU_PRESENT == 1)
+      #define __FPU_USED       1
+    #else
+      #error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
+      #define __FPU_USED       0
+    #endif
+  #else
+    #define __FPU_USED         0
+  #endif
 #endif
 
-#elif defined(__ICCARM__)
-#if defined __ARMVFP__
-#if (__FPU_PRESENT == 1)
-#define __FPU_USED 1
-#else
-#warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-#define __FPU_USED 0
-#endif
-#else
-#define __FPU_USED 0
-#endif
-
-#elif defined(__TMS470__)
-#if defined __TI_VFP_SUPPORT__
-#if (__FPU_PRESENT == 1)
-#define __FPU_USED 1
-#else
-#warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-#define __FPU_USED 0
-#endif
-#else
-#define __FPU_USED 0
-#endif
-
-#elif defined(__GNUC__)
-#if defined(__VFP_FP__) && !defined(__SOFTFP__)
-#if (__FPU_PRESENT == 1)
-#define __FPU_USED 1
-#else
-#warning "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-#define __FPU_USED 0
-#endif
-#else
-#define __FPU_USED 0
-#endif
-
-#elif defined(__TASKING__)
-#if defined __FPU_VFP__
-#if (__FPU_PRESENT == 1)
-#define __FPU_USED 1
-#else
-#error "Compiler generates FPU instructions for a device without an FPU (check __FPU_PRESENT)"
-#define __FPU_USED 0
-#endif
-#else
-#define __FPU_USED 0
-#endif
-#endif
-
-#include <stdint.h> /* standard types definitions                      */
+#include <stdint.h>                      /* standard types definitions                      */
 //#include <core_cmInstr.h>                /* Core Instruction Access                         */
 //#include <core_cmFunc.h>                 /* Core Function Access                            */
 //#include <core_cm4_simd.h>               /* Compiler specific SIMD Intrinsics               */
@@ -177,30 +179,30 @@ extern "C" {
 
 /* check device defines and use defaults */
 #if defined __CHECK_DEVICE_DEFINES
-#ifndef __CM4_REV
-#define __CM4_REV 0x0000
-#warning "__CM4_REV not defined in device header file; using default!"
-#endif
+  #ifndef __CM4_REV
+    #define __CM4_REV               0x0000
+    #warning "__CM4_REV not defined in device header file; using default!"
+  #endif
 
-#ifndef __FPU_PRESENT
-#define __FPU_PRESENT 0
-#warning "__FPU_PRESENT not defined in device header file; using default!"
-#endif
+  #ifndef __FPU_PRESENT
+    #define __FPU_PRESENT             0
+    #warning "__FPU_PRESENT not defined in device header file; using default!"
+  #endif
 
-#ifndef __MPU_PRESENT
-#define __MPU_PRESENT 0
-#warning "__MPU_PRESENT not defined in device header file; using default!"
-#endif
+  #ifndef __MPU_PRESENT
+    #define __MPU_PRESENT             0
+    #warning "__MPU_PRESENT not defined in device header file; using default!"
+  #endif
 
-#ifndef __NVIC_PRIO_BITS
-#define __NVIC_PRIO_BITS 4
-#warning "__NVIC_PRIO_BITS not defined in device header file; using default!"
-#endif
+  #ifndef __NVIC_PRIO_BITS
+    #define __NVIC_PRIO_BITS          4
+    #warning "__NVIC_PRIO_BITS not defined in device header file; using default!"
+  #endif
 
-#ifndef __Vendor_SysTickConfig
-#define __Vendor_SysTickConfig 0
-#warning "__Vendor_SysTickConfig not defined in device header file; using default!"
-#endif
+  #ifndef __Vendor_SysTickConfig
+    #define __Vendor_SysTickConfig    0
+    #warning "__Vendor_SysTickConfig not defined in device header file; using default!"
+  #endif
 #endif
 
 /* IO definitions (access restrictions to peripheral registers) */
@@ -212,57 +214,57 @@ extern "C" {
     \li for automatic generation of peripheral register debug information.
 */
 #ifdef __cplusplus
-#define __I volatile /*!< Defines 'read only' permissions                 */
+  #define   __I     volatile             /*!< Defines 'read only' permissions                 */
 #else
-#define __I volatile const /*!< Defines 'read only' permissions                 */
+  #define   __I     volatile const       /*!< Defines 'read only' permissions                 */
 #endif
-#define __O  volatile /*!< Defines 'write only' permissions                */
-#define __IO volatile /*!< Defines 'read / write' permissions              */
+#define     __O     volatile             /*!< Defines 'write only' permissions                */
+#define     __IO    volatile             /*!< Defines 'read / write' permissions              */
 
 /*@} end of group Cortex_M4 */
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t get_mstatus(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mstatus(void)
 {
-    uint32_t retval;
-    __asm volatile("csrr %0, mstatus" : "=r"(retval));
-    return retval;
+  uint32_t retval;
+  __asm volatile("csrr %0, mstatus": "=r" (retval));
+  return retval;
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t get_mtvec(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mtvec(void)
 {
-    uint32_t retval;
-    __asm volatile("csrr %0, mtvec" : "=r"(retval));
-    return retval;
+  uint32_t retval;
+  __asm volatile("csrr %0, mtvec": "=r" (retval));
+  return retval;
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t get_mepc(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mepc(void)
 {
-    uint32_t retval;
-    __asm volatile("csrr %0, mepc" : "=r"(retval));
-    return retval;
+  uint32_t retval;
+  __asm volatile("csrr %0, mepc": "=r" (retval));
+  return retval;
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t get_mcause(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mcause(void)
 {
-    uint32_t retval;
-    __asm volatile("csrr %0, mcause" : "=r"(retval));
-    return retval;
+  uint32_t retval;
+  __asm volatile("csrr %0, mcause": "=r" (retval));
+  return retval;
 }
 
-__attribute__((always_inline)) __STATIC_INLINE uint32_t get_uepc(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_uepc(void)
 {
-    uint32_t retval;
-    __asm volatile("csrr %0, uepc" : "=r"(retval));
-    return retval;
+  uint32_t retval;
+  __asm volatile("csrr %0, uepc": "=r" (retval));
+  return retval;
 }
 
 /** \brief  No Operation
 
     No Operation does nothing. This instruction can be used for code alignment purposes.
  */
-__attribute__((always_inline)) __STATIC_INLINE void __NOP(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE void __NOP(void)
 {
-    __asm volatile("nop");
+  __asm volatile ("nop");
 }
 
 /** \brief  Wait For Interrupt
@@ -270,9 +272,9 @@ __attribute__((always_inline)) __STATIC_INLINE void __NOP(void)
     Wait For Interrupt is a hint instruction that suspends execution
     until one of a number of events occurs.
  */
-__attribute__((always_inline)) __STATIC_INLINE void __WFI(void)
+__attribute__( ( always_inline ) ) __STATIC_INLINE void __WFI(void)
 {
-    __asm volatile("wfi");
+  __asm volatile ("wfi");
 }
 
 /*******************************************************************************
@@ -299,47 +301,47 @@ __attribute__((always_inline)) __STATIC_INLINE void __WFI(void)
  * @brief Structure type to access the GCR Registers.
  */
 typedef struct {
-    __IO uint32_t irq0_enable;        /**< <tt>\b 0x00:<\tt> */
-    __IO uint32_t irq0_pending;       /**< <tt>\b 0x04:<\tt>  */
-    __IO uint32_t irq0_set_pending;   /**< <tt>\b 0x08:<\tt>  */
-    __IO uint32_t irq0_clear_pending; /**< <tt>\b 0x0c:<\tt>  */
-    __IO uint32_t irq1_enable;        /**< <tt>\b 0x10:<\tt> */
-    __IO uint32_t irq1_pending;       /**< <tt>\b 0x14:<\tt>  */
-    __IO uint32_t irq1_set_pending;   /**< <tt>\b 0x18:<\tt>  */
-    __IO uint32_t irq1_clear_pending; /**< <tt>\b 0x1c:<\tt>  */
+    __IO uint32_t irq0_enable;            /**< <tt>\b 0x00:<\tt> */
+    __IO uint32_t irq0_pending;           /**< <tt>\b 0x04:<\tt>  */
+    __IO uint32_t irq0_set_pending;       /**< <tt>\b 0x08:<\tt>  */
+    __IO uint32_t irq0_clear_pending;     /**< <tt>\b 0x0c:<\tt>  */
+    __IO uint32_t irq1_enable;            /**< <tt>\b 0x10:<\tt> */
+    __IO uint32_t irq1_pending;           /**< <tt>\b 0x14:<\tt>  */
+    __IO uint32_t irq1_set_pending;       /**< <tt>\b 0x18:<\tt>  */
+    __IO uint32_t irq1_clear_pending;     /**< <tt>\b 0x1c:<\tt>  */
 } mxc_intr_regs_t;
 
 typedef struct {
-    __IO uint32_t event0_enable;        /**< <tt>\b 0x20:<\tt>*/
-    __IO uint32_t event0_pending;       /**< <tt>\b 0x24:<\tt> */
-    __IO uint32_t event0_set_pending;   /**< <tt>\b 0x28:<\tt> */
-    __IO uint32_t event0_clear_pending; /**< <tt>\b 0x2C:<\tt> */
-    __IO uint32_t event1_enable;        /**< <tt>\b 0x30:<\tt>*/
-    __IO uint32_t event1_pending;       /**< <tt>\b 0x34:<\tt> */
-    __IO uint32_t event1_set_pending;   /**< <tt>\b 0x38:<\tt> */
-    __IO uint32_t event1_clear_pending; /**< <tt>\b 0x3C:<\tt> */
-} mxc_event_regs_t;
+    __IO uint32_t event0_enable;          /**< <tt>\b 0x20:<\tt>*/
+    __IO uint32_t event0_pending;         /**< <tt>\b 0x24:<\tt> */
+    __IO uint32_t event0_set_pending;     /**< <tt>\b 0x28:<\tt> */
+    __IO uint32_t event0_clear_pending;   /**< <tt>\b 0x2C:<\tt> */
+    __IO uint32_t event1_enable;          /**< <tt>\b 0x30:<\tt>*/
+    __IO uint32_t event1_pending;         /**< <tt>\b 0x34:<\tt> */
+    __IO uint32_t event1_set_pending;     /**< <tt>\b 0x38:<\tt> */
+    __IO uint32_t event1_clear_pending;   /**< <tt>\b 0x3C:<\tt> */
+ } mxc_event_regs_t;
 
 typedef struct {
-    __IO uint32_t sleep_ctrl;   /**< <tt>\b 0x40:<\tt>  */
-    __IO uint32_t sleep_status; /**< <tt>\b 0x44:<\tt>  */
-} mxc_sleep_regs_t;
+    __IO uint32_t sleep_ctrl;            /**< <tt>\b 0x40:<\tt>  */
+    __IO uint32_t sleep_status;          /**< <tt>\b 0x44:<\tt>  */
+ } mxc_sleep_regs_t;
 
 /* Software Triggered Interrupt Register Definitions */
-#define NVIC_STIR_INTID_Pos 0                                /*!< STIR: INTLINESNUM Position */
-#define NVIC_STIR_INTID_Msk (0x1FFUL << NVIC_STIR_INTID_Pos) /*!< STIR: INTLINESNUM Mask */
+#define NVIC_STIR_INTID_Pos                 0                                          /*!< STIR: INTLINESNUM Position */
+#define NVIC_STIR_INTID_Msk                (0x1FFUL << NVIC_STIR_INTID_Pos)            /*!< STIR: INTLINESNUM Mask */
 
 /*@} end of group CMSIS_NVIC */
 
-#define MXC_BASE_INTR ((uint32_t)0xE5070000UL)
+#define MXC_BASE_INTR                   ((uint32_t)0xE5070000UL)
 //#define MXC_BASE_INTR                   ((uint32_t)0xE5000000UL)
-#define MXC_INTR       ((mxc_intr_regs_t*)MXC_BASE_INTR)
-#define MXC_BASE_EVENT ((uint32_t)0xE5070020UL)
+#define MXC_INTR                        ((mxc_intr_regs_t *)MXC_BASE_INTR)
+#define MXC_BASE_EVENT                  ((uint32_t)0xE5070020UL)
 //#define MXC_BASE_EVENT                  ((uint32_t)0xE5000020UL)
-#define MXC_EVENT      ((mxc_event_regs_t*)MXC_BASE_EVENT)
-#define MXC_BASE_SLEEP ((uint32_t)0xE5070040UL)
+#define MXC_EVENT                       ((mxc_event_regs_t *)MXC_BASE_EVENT)
+#define MXC_BASE_SLEEP                  ((uint32_t)0xE5070040UL)
 //#define MXC_BASE_SLEEP                  ((uint32_t)0xE5000040UL)
-#define MXC_SLEEP ((mxc_sleep_regs_t*)MXC_BASE_SLEEP)
+#define MXC_SLEEP                       ((mxc_sleep_regs_t *)MXC_BASE_SLEEP)
 
 /*******************************************************************************
  *                Hardware Abstraction Layer
@@ -354,6 +356,8 @@ typedef struct {
 /** \defgroup CMSIS_Core_FunctionInterface Functions and Instructions Reference
 */
 
+
+
 /* ##########################   NVIC functions  #################################### */
 /** \ingroup  CMSIS_Core_FunctionInterface
     \defgroup CMSIS_Core_NVICFunctions NVIC Functions
@@ -361,9 +365,12 @@ typedef struct {
     @{
  */
 // IRQn < 32
-#define CLEAR_PENDING0(IRQn) MXC_INTR->irq0_clear_pending |= 1 << IRQn
+#define CLEAR_PENDING0(IRQn) \
+  MXC_INTR->irq0_clear_pending |= 1 << IRQn
 // IRQ >= 32
-#define CLEAR_PENDING1(IRQn) MXC_INTR->irq1_clear_pending |= 1 << (IRQn - 32)
+#define CLEAR_PENDING1(IRQn) \
+  MXC_INTR->irq1_clear_pending |= 1 << (IRQn-32)
+
 
 /** \brief  Enable External Interrupt
 
@@ -373,16 +380,18 @@ typedef struct {
  */
 __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
 {
-    // MLB - Moved global enable into __enable_irq
-    // handled event specific enable here
-    if (IRQn < 32) {
-        MXC_INTR->irq0_enable |= (1 << IRQn);
-        MXC_EVENT->event0_enable |= (1 << IRQn);
-    } else {
-        MXC_INTR->irq1_enable |= (1 << (IRQn - 32));
-        MXC_EVENT->event1_enable |= (1 << (IRQn - 32));
-    }
+  // MLB - Moved global enable into __enable_irq
+  // handled event specific enable here
+  if(IRQn<32) {
+    MXC_INTR->irq0_enable |= (1 << IRQn);
+    MXC_EVENT->event0_enable |= (1 << IRQn);
+  } else {
+    MXC_INTR->irq1_enable |= (1 << (IRQn-32));
+    MXC_EVENT->event1_enable |= (1 << (IRQn-32));
 }
+
+}
+
 
 /** \brief  Disable External Interrupt
 
@@ -392,39 +401,39 @@ __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
 {
-    // MLB - Moved Global Disable into __disable_irq
-    // handled event specific interrupt here
-    if (IRQn < 32) {
-        MXC_INTR->irq0_enable &= ~(1 << IRQn);
-        MXC_EVENT->event0_enable &= ~(1 << IRQn);
-    } else {
-        MXC_INTR->irq1_enable &= ~(1 << (IRQn - 32));
-        MXC_EVENT->event1_enable &= ~(1 << (IRQn - 32));
-    }
+  // MLB - Moved Global Disable into __disable_irq
+  // handled event specific interrupt here
+  if(IRQn<32){
+    MXC_INTR->irq0_enable &= ~(1 << IRQn);
+    MXC_EVENT->event0_enable &= ~(1 << IRQn);
+  } else {
+    MXC_INTR->irq1_enable &= ~(1 << (IRQn-32));
+    MXC_EVENT->event1_enable &= ~(1 << (IRQn-32));
+}
 }
 
 __STATIC_INLINE void NVIC_EnableEVENT(IRQn_Type EVENT)
 {
-    if (EVENT < 32)
-        MXC_EVENT->event0_enable |= (1 << EVENT);
-    else
-        MXC_EVENT->event1_enable |= (1 << (EVENT - 32));
+  if(EVENT<32)
+    MXC_EVENT->event0_enable |= (1 << EVENT);
+  else
+    MXC_EVENT->event1_enable |= (1 << (EVENT-32));
 }
 
 __STATIC_INLINE void NVIC_DisableEVENT(IRQn_Type EVENT)
 {
-    if (EVENT < 32)
-        MXC_EVENT->event0_enable &= ~(1 << EVENT);
-    else
-        MXC_EVENT->event1_enable &= ~(1 << (EVENT - 32));
+  if(EVENT<32)
+    MXC_EVENT->event0_enable &= ~(1 << EVENT);
+  else
+    MXC_EVENT->event1_enable &= ~(1 << (EVENT-32));
 }
 
 __STATIC_INLINE void NVIC_ClearPendingEVENT(IRQn_Type EVENT)
 {
-    if (EVENT < 32)
-        MXC_EVENT->event0_clear_pending |= (1 << EVENT);
-    else
-        MXC_EVENT->event1_clear_pending |= (1 << (EVENT - 32));
+  if(EVENT<32)
+    MXC_EVENT->event0_clear_pending |= (1 << EVENT);
+  else
+    MXC_EVENT->event1_clear_pending |= (1 << (EVENT-32));
 }
 
 // Implemented in system_riscv_*.c
@@ -432,12 +441,12 @@ void __enable_irq(void);
 
 __STATIC_INLINE void __disable_irq(void)
 {
-    // Atomic disable
-    __asm volatile("csrw mstatus, 0x0");
+  // Atomic disable
+  __asm volatile("csrw mstatus, 0x0");
 
-    // Set the MPIE bit
-    int mstatus = 0x80;
-    __asm volatile("csrw mstatus, %0" : /* no output */ : "r"(mstatus));
+  // Set the MPIE bit
+  int mstatus = 0x80;
+  __asm volatile("csrw mstatus, %0" : /* no output */ : "r" (mstatus));
 }
 
 /** \brief  Get Pending Interrupt
@@ -452,11 +461,12 @@ __STATIC_INLINE void __disable_irq(void)
  */
 __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
 {
-    if (IRQn < 32)
-        return (MXC_INTR->irq0_pending & (1 << IRQn));
-    else
-        return (MXC_INTR->irq1_pending & (1 << (IRQn - 32)));
+  if(IRQn<32)
+    return (MXC_INTR->irq0_pending & (1 << IRQn));
+  else
+    return (MXC_INTR->irq1_pending & (1 << (IRQn-32)));
 }
+
 
 /** \brief  Set Pending Interrupt
 
@@ -466,8 +476,9 @@ __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
-    //NVIC->ISPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* set interrupt pending */
+  //NVIC->ISPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* set interrupt pending */
 }
+
 
 /** \brief  Clear Pending Interrupt
 
@@ -477,15 +488,16 @@ __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 {
-    //NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrupt */
-    if (IRQn < 32) {
-        MXC_INTR->irq0_clear_pending |= (1 << IRQn);
-        MXC_EVENT->event0_clear_pending |= (1 << IRQn);
-    } else {
-        MXC_INTR->irq1_clear_pending |= (1 << (IRQn - 32));
-        MXC_EVENT->event1_clear_pending |= (1 << (IRQn - 32));
-    }
+  //NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrupt */
+  if(IRQn<32) {
+    MXC_INTR->irq0_clear_pending |= (1 << IRQn);
+    MXC_EVENT->event0_clear_pending |= (1 << IRQn);
+  } else{
+    MXC_INTR->irq1_clear_pending |= (1 << (IRQn-32));
+    MXC_EVENT->event1_clear_pending |= (1 << (IRQn-32));
 }
+}
+
 
 /** \brief  Get Active Interrupt
 
@@ -498,8 +510,7 @@ __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE uint32_t NVIC_GetActive(IRQn_Type IRQn)
 {
-    return (
-        0); //((uint32_t)((NVIC->IABR[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) & 0x1F)))?1:0)); /* Return 1 if active else 0 */
+  return(0); //((uint32_t)((NVIC->IABR[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) & 0x1F)))?1:0)); /* Return 1 if active else 0 */
 }
 
 /** \brief  System Reset
@@ -508,14 +519,13 @@ __STATIC_INLINE uint32_t NVIC_GetActive(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_SystemReset(void)
 {
-    //__DSB();                                                     /* Ensure all outstanding memory accesses included
-    //                                                                buffered write are completed before reset */
-    // SCB->AIRCR  = ((0x5FA << SCB_AIRCR_VECTKEY_Pos)      |
-    //               (SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) |
-    //                SCB_AIRCR_SYSRESETREQ_Msk);                   /* Keep priority group unchanged */
-    //__DSB();                                                     /* Ensure completion of memory access */
-    while (1)
-        ; /* wait until reset */
+  //__DSB();                                                     /* Ensure all outstanding memory accesses included
+  //                                                                buffered write are completed before reset */
+ // SCB->AIRCR  = ((0x5FA << SCB_AIRCR_VECTKEY_Pos)      |
+  //               (SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) |
+ //                SCB_AIRCR_SYSRESETREQ_Msk);                   /* Keep priority group unchanged */
+  //__DSB();                                                     /* Ensure completion of memory access */
+  while(1);                                                    /* wait until reset */
 }
 
 /**
@@ -523,9 +533,9 @@ __STATIC_INLINE void NVIC_SystemReset(void)
  */
 __STATIC_INLINE uint32_t CSR_GetPCMR(void)
 {
-    uint32_t reg;
-    __asm volatile("csrr %0, 0x7A1" : "=r"(reg));
-    return reg;
+  uint32_t reg;
+  __asm volatile ("csrr %0, 0x7A1": "=r" (reg));
+  return reg;
 }
 
 /**
@@ -533,7 +543,7 @@ __STATIC_INLINE uint32_t CSR_GetPCMR(void)
  */
 __STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
 {
-    __asm volatile("csrw 0x7A1, %0" : /* no output */ : "r"(reg));
+  __asm volatile("csrw 0x7A1, %0" : /* no output */ : "r" (reg));
 }
 
 /**
@@ -541,9 +551,9 @@ __STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
  */
 __STATIC_INLINE uint32_t CSR_GetPCER(void)
 {
-    uint32_t reg;
-    __asm volatile("csrr %0, 0x7A0" : "=r"(reg));
-    return reg;
+  uint32_t reg;
+  __asm volatile ("csrr %0, 0x7A0": "=r" (reg));
+  return reg;
 }
 
 /**
@@ -551,7 +561,7 @@ __STATIC_INLINE uint32_t CSR_GetPCER(void)
  */
 __STATIC_INLINE void CSR_SetPCER(uint32_t reg)
 {
-    __asm volatile("csrw 0x7A0, %0" : /* no output */ : "r"(reg));
+  __asm volatile("csrw 0x7A0, %0" : /* no output */ : "r" (reg));
 }
 
 /**
@@ -559,9 +569,9 @@ __STATIC_INLINE void CSR_SetPCER(uint32_t reg)
  */
 __STATIC_INLINE uint32_t CSR_GetPCCR(void)
 {
-    uint32_t reg;
-    __asm volatile("csrr %0, 0x780" : "=r"(reg));
-    return reg;
+  uint32_t reg;
+  __asm volatile ("csrr %0, 0x780": "=r" (reg));
+  return reg;
 }
 
 /**
@@ -569,7 +579,7 @@ __STATIC_INLINE uint32_t CSR_GetPCCR(void)
  */
 __STATIC_INLINE void CSR_SetPCCR(uint32_t reg)
 {
-    __asm volatile("csrw 0x780, %0" : /* no output */ : "r"(reg));
+  __asm volatile("csrw 0x780, %0" : /* no output */ : "r" (reg));
 }
 
 /*@} end of CMSIS_Core_NVICFunctions */
@@ -583,3 +593,4 @@ __STATIC_INLINE void CSR_SetPCCR(uint32_t reg)
 #ifdef __cplusplus
 }
 #endif
+

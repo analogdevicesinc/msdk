@@ -36,11 +36,14 @@
 #ifndef _MESSAGE_H_
 #define _MESSAGE_H_
 
+
 /*****************************    TYPE DEF    *********************************/
-typedef struct _message {
-    unsigned char pcType;
-    int len;
-    unsigned char pcMessage[50];
-} message_t;
+typedef struct _message
+{
+    unsigned char	pcType;
+    int 			len;
+    unsigned char	pcMessage[50];
+}message_t;
+
 
 #endif /* _MESSAGE_H_ */

@@ -40,21 +40,21 @@
 #include "qdec.h"
 #include "qdec_reva_regs.h"
 
-int MXC_QDEC_RevA_Init(mxc_qdec_reva_regs_t* qdec, mxc_qdec_req_t* req);
-int MXC_QDEC_RevA_Shutdown(mxc_qdec_reva_regs_t* qdec);
-void MXC_QDEC_RevA_EnableInt(mxc_qdec_reva_regs_t* qdec, uint32_t flags);
-void MXC_QDEC_RevA_DisableInt(mxc_qdec_reva_regs_t* qdec, uint32_t flags);
-int MXC_QDEC_RevA_GetFlags(mxc_qdec_reva_regs_t* qdec);
-void MXC_QDEC_RevA_ClearFlags(mxc_qdec_reva_regs_t* qdec, uint32_t flags);
-void MXC_QDEC_RevA_SetMaxCount(mxc_qdec_reva_regs_t* qdec, uint32_t maxCount);
-int MXC_QDEC_RevA_GetMaxCount(mxc_qdec_reva_regs_t* qdec);
-void MXC_QDEC_RevA_SetInitial(mxc_qdec_reva_regs_t* qdec, uint32_t initial);
-int MXC_QDEC_RevA_GetInitial(mxc_qdec_reva_regs_t* qdec);
-void MXC_QDEC_RevA_SetCompare(mxc_qdec_reva_regs_t* qdec, uint32_t compare);
-int MXC_QDEC_RevA_GetCompare(mxc_qdec_reva_regs_t* qdec);
-void MXC_QDEC_RevA_SetIndex(mxc_qdec_reva_regs_t* qdec, uint32_t index);
-int MXC_QDEC_RevA_GetIndex(mxc_qdec_reva_regs_t* qdec);
-int MXC_QDEC_RevA_GetCapture(mxc_qdec_reva_regs_t* qdec);
-int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t* qdec);
-int MXC_QDEC_RevA_GetPosition(mxc_qdec_reva_regs_t* qdec);
-int MXC_QDEC_RevA_GetDirection(mxc_qdec_reva_regs_t* qdec);
+int MXC_QDEC_RevA_Init (mxc_qdec_reva_regs_t* qdec, mxc_qdec_req_t *req);
+int MXC_QDEC_RevA_Shutdown (mxc_qdec_reva_regs_t* qdec);
+void MXC_QDEC_RevA_EnableInt (mxc_qdec_reva_regs_t* qdec, uint32_t flags);
+void MXC_QDEC_RevA_DisableInt (mxc_qdec_reva_regs_t* qdec, uint32_t flags);
+int MXC_QDEC_RevA_GetFlags (mxc_qdec_reva_regs_t* qdec);
+void MXC_QDEC_RevA_ClearFlags (mxc_qdec_reva_regs_t* qdec, uint32_t flags);
+void MXC_QDEC_RevA_SetMaxCount (mxc_qdec_reva_regs_t* qdec, uint32_t maxCount);
+int MXC_QDEC_RevA_GetMaxCount (mxc_qdec_reva_regs_t* qdec);
+void MXC_QDEC_RevA_SetInitial (mxc_qdec_reva_regs_t* qdec, uint32_t initial);
+int MXC_QDEC_RevA_GetInitial (mxc_qdec_reva_regs_t* qdec);
+void MXC_QDEC_RevA_SetCompare (mxc_qdec_reva_regs_t* qdec, uint32_t compare);
+int MXC_QDEC_RevA_GetCompare (mxc_qdec_reva_regs_t* qdec);
+void MXC_QDEC_RevA_SetIndex (mxc_qdec_reva_regs_t* qdec, uint32_t index);
+int MXC_QDEC_RevA_GetIndex (mxc_qdec_reva_regs_t* qdec);
+int MXC_QDEC_RevA_GetCapture (mxc_qdec_reva_regs_t* qdec);
+int MXC_QDEC_RevA_Handler (mxc_qdec_reva_regs_t* qdec);
+int MXC_QDEC_RevA_GetPosition (mxc_qdec_reva_regs_t* qdec);
+int MXC_QDEC_RevA_GetDirection (mxc_qdec_reva_regs_t* qdec);

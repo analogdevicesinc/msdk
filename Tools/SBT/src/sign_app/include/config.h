@@ -37,13 +37,16 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define VERBOSE_LEVEL 4
-#define USE_COLOR     1
+#define VERBOSE_LEVEL				4
+#define USE_COLOR					1
 
-#define MAX_LINE          512
-#define ECDSA_MODULUS_LEN 32
-#define MAX_STRING        10240
+#define MAX_LINE					512
+#define ECDSA_MODULUS_LEN 			32
+#define MAX_STRING 					10240
+
 
 uint8_t verbose;
 
+
 #endif /* __CONFIG_H__ */
+

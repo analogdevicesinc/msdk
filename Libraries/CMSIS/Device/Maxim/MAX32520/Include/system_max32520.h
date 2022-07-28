@@ -57,24 +57,26 @@ extern "C" {
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: INO was previosly LIRC8  */
 #ifndef INRO_FREQ
-#define INRO_FREQ 8000
+#define INRO_FREQ              8000
 #endif
 
 /* NOTE: IPO was previously HIRC96. */
 #ifndef IPO_FREQ
-#define IPO_FREQ 120000000
+#define IPO_FREQ             120000000
 #endif
 
 /* NOTE: IBRO was previously HIRC8M. */
 #ifndef IBRO_FREQ
-#define IBRO_FREQ 7372800
+#define IBRO_FREQ              7372800
 #endif
 
-extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
+
+
+extern uint32_t SystemCoreClock;                            /*!< System Clock Frequency (Core Clock)  */
 #ifdef PeripheralClock
 #warning PeripheralClock define is being overidden.
 #else
-#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
+#define         PeripheralClock     (SystemCoreClock /2)    /*!< Peripheral Clock Frequency */
 #endif
 
 /*

@@ -36,6 +36,7 @@
  * @brief   Board support package API.
  */
 
+
 #include <stdio.h>
 
 #ifndef _BOARD_H
@@ -48,31 +49,31 @@ extern "C" {
 #define BOARD_EVKIT_V1
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART    0      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
+#define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
-#define SCCB_SCL_PORT MXC_GPIO0       /// SCCB clock port
-#define SCCB_SCL_PIN  MXC_GPIO_PIN_16 /// SCCB clock pin
-#define SCCB_SDA_PORT MXC_GPIO0       /// SCCB data port
-#define SCCB_SDA_PIN  MXC_GPIO_PIN_17 /// SCCB data pin
+#define SCCB_SCL_PORT   MXC_GPIO0        /// SCCB clock port
+#define SCCB_SCL_PIN    MXC_GPIO_PIN_16  /// SCCB clock pin
+#define SCCB_SDA_PORT   MXC_GPIO0        /// SCCB data port
+#define SCCB_SDA_PIN    MXC_GPIO_PIN_17  /// SCCB data pin
 
-#define LED_OFF 0 /// Inactive state of LEDs
-#define LED_ON  1 /// Active state of LEDs
+#define LED_OFF         0       /// Inactive state of LEDs
+#define LED_ON          1       /// Active state of LEDs
 
 /**
  *  A reference to LED1 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1 0
+#define LED1            0
 /**
  *  A reference to LED2 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2 1
+#define LED2            1
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -114,6 +115,7 @@ int Debug_Init(void);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int Camera_Power(int on);
+
 
 #ifdef __cplusplus
 }

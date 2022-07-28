@@ -40,18 +40,20 @@
 #ifndef __PKCS_H__
 #define __PKCS_H__
 
+
 #ifndef __IMPORT
 #define __extern extern
 #else
 #define __extern
 #endif
 
-__extern CK_C_OpenSession pC_OpenSession;   // Function pointer
-__extern CK_C_CloseSession pC_CloseSession; // Function pointer
-__extern CK_C_Initialize pC_Initialize;     // Function pointer
-__extern CK_C_Finalize pC_Finalize;         // Function pointer
-__extern CK_C_GetSlotList pC_GetSlotList;   // Function pointer
-__extern CK_C_GetSlotInfo pC_GetSlotInfo;   // Function pointer
+
+__extern CK_C_OpenSession pC_OpenSession;    // Function pointer  
+__extern CK_C_CloseSession pC_CloseSession;    // Function pointer
+__extern CK_C_Initialize pC_Initialize;    // Function pointer  
+__extern CK_C_Finalize pC_Finalize;    // Function pointer  
+__extern CK_C_GetSlotList pC_GetSlotList;    // Function pointer  
+__extern CK_C_GetSlotInfo pC_GetSlotInfo;    // Function pointer  
 
 __extern CK_C_GetTokenInfo pC_GetTokenInfo;
 __extern CK_C_WaitForSlotEvent pC_WaitForSlotEvent;
@@ -70,6 +72,7 @@ __extern CK_C_Encrypt pC_Encrypt;
 __extern CK_C_EncryptUpdate pC_EncryptUpdate;
 __extern CK_C_EncryptFinal pC_EncryptFinal;
 
+
 __extern CK_C_FindObjectsInit pC_FindObjectsInit;
 __extern CK_C_FindObjects pC_FindObjects;
 __extern CK_C_FindObjectsFinal pC_FindObjectsFinal;
@@ -79,7 +82,9 @@ __extern CK_C_CreateObject pC_CreateObject;
 __extern CK_C_GenerateKey pC_GenerateKey;
 __extern CK_C_GenerateKeyPair pC_GenerateKeyPair;
 
+
 __extern CK_C_WrapKey pC_WrapKey;
 __extern CK_C_UnwrapKey pC_UnwrapKey;
 
 #endif
+

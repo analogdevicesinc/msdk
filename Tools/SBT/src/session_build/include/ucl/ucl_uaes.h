@@ -34,6 +34,7 @@
 extern "C" {
 #endif /* _ cplusplus  */
 
+
 /** @file ucl_uaes.h
  * @defgroup UCL_UAES USIP AES Interface
  * Interface for Hardware AES.
@@ -52,6 +53,7 @@ extern "C" {
  * @ingroup UCL_BLOCK_CIPHER
  */
 
+
 /** <b>UAES Key Byte Size</b>.
  *  @ingroup UCL_UAES */
 #define UCL_UAES_KEY_SIZE 16
@@ -59,14 +61,17 @@ extern "C" {
  *  @ingroup UCL_UAES */
 #define UCL_UAES_BLOCK_SIZE 16
 
+
 /** <b>USIP&reg; AES Interface definition </b>.
  *  @ingroup UCL_UAES */
-struct usip_aes {
-    int (*setkey)(const u8* key);            /**< Set key */
-    int (*dkeygen)(void);                    /**< Generate decryption key */
-    int (*decrypt)(u8* dataOut, u8* dataIn); /**< Decryption */
-    int (*encrypt)(u8* dataOut, u8* dataIn); /**< Encryption */
+struct usip_aes
+{
+    int(*setkey)(const u8 *key);            /**< Set key */
+    int(*dkeygen)(void);                    /**< Generate decryption key */
+    int(*decrypt)(u8 *dataOut, u8 *dataIn); /**< Decryption */
+    int(*encrypt)(u8 *dataOut, u8 *dataIn); /**< Encryption */
 };
+
 
 /** <b>USIP&reg; AES Interface typedef</b>.
  */
@@ -76,7 +81,8 @@ typedef struct usip_aes usip_aes_t;
  * This structure is involved in the operation rmac.
  *
  * @ingroup UCL_UAES */
-struct ucl_uaes_ctx {
+struct ucl_uaes_ctx
+{
     /** Ciphering mode.*/
     int mode;
     /** Intermediate state.*/
@@ -90,12 +96,13 @@ struct ucl_uaes_ctx {
  */
 typedef struct ucl_uaes_ctx ucl_uaes_ctx_t;
 
+
 /** <b>USIP&reg; AES Set Key Option</b>.
  * The function #ucl_uaes_setkey set an encryption key.
  *
  * @ingroup UCL_UAES
  */
-#define UCL_UAES_SET_KEY 0
+#define UCL_UAES_SET_KEY    0
 /** <b>USIP&reg; AES Set Key Option</b>.
  * The function #ucl_uaes_setkey set a key, and precalculates the decryption
  * key.
@@ -109,7 +116,7 @@ typedef struct ucl_uaes_ctx ucl_uaes_ctx_t;
  *
  * @ingroup UCL_UAES
  */
-#define UCL_UAES_SET_DKEY 2
+#define UCL_UAES_SET_DKEY   2
 /** <b>USIP&reg; AES Set Key Option</b>.
  * The function #ucl_uaes_setkey precalculates the decryption key with
  * the current key and set a new key.
@@ -117,6 +124,7 @@ typedef struct ucl_uaes_ctx ucl_uaes_ctx_t;
  * @ingroup UCL_UAES
  */
 #define UCL_UAES_SET_DKEY_AND_KEY 3
+
 
 /*============================================================================*/
 /** <b>USIP&reg; AES Set Key</b>
@@ -139,7 +147,8 @@ typedef struct ucl_uaes_ctx ucl_uaes_ctx_t;
  * @ingroup UCL_UAES
  */
 
-int ucl_uaes_setkey(const u8* key, int option);
+int ucl_uaes_setkey(const u8 *key, int option);
+
 
 /*============================================================================*/
 /** <b>USIP&reg; AES Decryption</b>
@@ -157,7 +166,8 @@ int ucl_uaes_setkey(const u8* key, int option);
  *
  * @ingroup UCL_UAES
  */
-int ucl_uaes_decrypt(u8* plaintext, u8* ciphertext);
+int ucl_uaes_decrypt(u8 *plaintext, u8 *ciphertext);
+
 
 /*============================================================================*/
 /** <b>USIP&reg; AES Encryption</b>
@@ -175,7 +185,8 @@ int ucl_uaes_decrypt(u8* plaintext, u8* ciphertext);
  *
  * @ingroup UCL_UAES
  */
-int ucl_uaes_encrypt(u8* ciphertext, u8* plaintext);
+int ucl_uaes_encrypt(u8 *ciphertext, u8 *plaintext);
+
 
 #ifdef _cplusplus
 }

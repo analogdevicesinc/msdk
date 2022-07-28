@@ -48,8 +48,7 @@ mxc_can_drv_version_t MXC_CAN_RevA_GetVersion(void);
 
 mxc_can_capabilities_t MXC_CAN_RevA_GetCapabilities(void);
 
-int MXC_CAN_RevA_Init(mxc_can_reva_regs_t* can, mxc_can_unit_event_cb_t unit_cb,
-                      mxc_can_object_event_cb_t obj_cb);
+int MXC_CAN_RevA_Init(mxc_can_reva_regs_t* can, mxc_can_unit_event_cb_t unit_cb, mxc_can_object_event_cb_t obj_cb);
 
 int MXC_CAN_RevA_UnInit(mxc_can_reva_regs_t* can);
 
@@ -65,27 +64,23 @@ int MXC_CAN_RevA_ClearFlags(mxc_can_reva_regs_t* can, uint8_t flags, uint8_t ext
 
 int MXC_CAN_RevA_GetBitRate(mxc_can_reva_regs_t* can, mxc_can_bitrate_sel_t sel, int can_clk);
 
-int MXC_CAN_RevA_SetBitRate(mxc_can_reva_regs_t* can, int can_clk, mxc_can_bitrate_sel_t sel,
-                            uint32_t bitrate, uint8_t seg1, uint8_t seg2, uint8_t sjw);
+int MXC_CAN_RevA_SetBitRate(mxc_can_reva_regs_t* can, int can_clk, mxc_can_bitrate_sel_t sel, uint32_t bitrate, uint8_t seg1, uint8_t seg2, uint8_t sjw);
 
 int MXC_CAN_RevA_SetMode(mxc_can_reva_regs_t* can, mxc_can_mode_t mode);
 
 mxc_can_obj_capabilities_t MXC_CAN_RevA_ObjectGetCapabilities(mxc_can_reva_regs_t* can);
 
-int MXC_CAN_RevA_ObjectSetFilter(mxc_can_reva_regs_t* can, mxc_can_filt_cfg_t cfg, uint32_t id,
-                                 uint32_t arg);
+int MXC_CAN_RevA_ObjectSetFilter(mxc_can_reva_regs_t* can, mxc_can_filt_cfg_t cfg, uint32_t id, uint32_t arg);
 
 int MXC_CAN_RevA_ObjectConfigure(mxc_can_reva_regs_t* can, mxc_can_obj_cfg_t cfg);
 
-int MXC_CAN_RevA_WriteTXFIFO(mxc_can_reva_regs_t* can, mxc_can_msg_info_t* info,
-                             const uint8_t* data, uint8_t size);
+int MXC_CAN_RevA_WriteTXFIFO(mxc_can_reva_regs_t* can, mxc_can_msg_info_t* info, const uint8_t* data, uint8_t size);
 
-int MXC_CAN_RevA_ReadRXFIFO(mxc_can_reva_regs_t* can, mxc_can_msg_info_t* info, uint8_t* data,
-                            uint8_t size, bool dma);
+int MXC_CAN_RevA_ReadRXFIFO(mxc_can_reva_regs_t* can, mxc_can_msg_info_t* info, uint8_t* data, uint8_t size, bool dma);
 
 int MXC_CAN_RevA_MessageSend(mxc_can_reva_regs_t* can, mxc_can_req_t* req);
 
-int MXC_CAN_RevA_MessageSendAsync(mxc_can_reva_regs_t* can, mxc_can_req_t* req);
+int MXC_CAN_RevA_MessageSendAsync(mxc_can_reva_regs_t* can, mxc_can_req_t* req); 
 
 int MXC_CAN_RevA_MessageSendDMA(mxc_can_reva_regs_t* can, mxc_can_req_t* req);
 
@@ -93,15 +88,13 @@ int MXC_CAN_RevA_MessageRead(mxc_can_reva_regs_t* can, mxc_can_req_t* req);
 
 int MXC_CAN_RevA_MessageReadAsync(mxc_can_reva_regs_t* can, mxc_can_req_t* req);
 
-int MXC_CAN_RevA_MessageReadDMA(mxc_can_reva_regs_t* can, mxc_can_req_t* req,
-                                mxc_dma_reqsel_t reqsel, void (*dma_cb)(int, int));
+int MXC_CAN_RevA_MessageReadDMA(mxc_can_reva_regs_t* can, mxc_can_req_t* req, mxc_dma_reqsel_t reqsel, void (*dma_cb) (int, int));
 
 int MXC_CAN_RevA_Handler(mxc_can_reva_regs_t* can, uint8_t* intfl, uint8_t* eintfl);
 
 int MXC_CAN_RevA_Control(mxc_can_reva_regs_t* can, mxc_can_ctrl_t ctrl, uint32_t ctrl_arg);
 
-int MXC_CAN_RevA_SetWakeupTimer(mxc_can_reva_regs_t* can, uint8_t prescaler, uint16_t wup_filter_tm,
-                                uint32_t wup_expire_tm);
+int MXC_CAN_RevA_SetWakeupTimer(mxc_can_reva_regs_t* can, uint8_t prescaler, uint16_t wup_filter_tm, uint32_t wup_expire_tm);
 
 mxc_can_stat_t MXC_CAN_RevA_GetStatus(mxc_can_reva_regs_t* can);
 

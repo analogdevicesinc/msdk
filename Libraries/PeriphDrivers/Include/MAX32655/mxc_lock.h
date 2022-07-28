@@ -76,14 +76,14 @@ extern "C" {
  *
  * @return     #E_NO_ERROR if everything successful, #E_BUSY if lock is taken.
  */
-int MXC_GetLock(uint32_t* lock, uint32_t value);
+int MXC_GetLock (uint32_t *lock, uint32_t value);
 
 /**
  * @brief         Free the given lock.
  * @param[in,out] lock  Pointer to the variable used for the lock. When the lock
  *                      is free, the value pointed to by @p lock is set to zero.
  */
-void MXC_FreeLock(uint32_t* lock);
+void MXC_FreeLock (uint32_t *lock);
 
 /**@} end of group mxc_lock_utilities */
 

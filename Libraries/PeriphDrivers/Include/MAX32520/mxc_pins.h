@@ -36,6 +36,7 @@
  *
  **************************************************************************** */
 
+
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -44,6 +45,7 @@
 /***** Global Variables *****/
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
+
 
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
@@ -66,5 +68,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_tmr3;
 extern const mxc_gpio_cfg_t gpio_cfg_sfe;
 extern const mxc_gpio_cfg_t gpio_cfg_sfe_ss0;
 extern const mxc_gpio_cfg_t gpio_cfg_sfe_ss1;
-
+ 
 #endif /* _MXC_PINS_H_ */
+

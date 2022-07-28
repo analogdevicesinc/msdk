@@ -58,6 +58,7 @@ extern "C" {
  * @ingroup UCL_DATA
  */
 
+
 /*============================================================================*/
 /** <b>UCL Stack Initialisation</b>.
  * Reserve memory for stack.
@@ -79,7 +80,8 @@ extern "C" {
  *
  * @ingroup UCL_STACK
  */
-int ucl_stack_init(u32* pt_stack, int size);
+int ucl_stack_init(u32 *pt_stack, int size);
+
 
 /*============================================================================*/
 /** <b>UCL Stack Allocation</b>.
@@ -95,7 +97,8 @@ int ucl_stack_init(u32* pt_stack, int size);
  *
  * @ingroup UCL_STACK
  */
-int ucl_stack_alloc(u32** pt, int nbWord);
+int ucl_stack_alloc(u32 **pt, int nbWord);
+
 
 /*============================================================================*/
 /** <b>Free UCL Stack Allocation</b>.
@@ -109,7 +112,8 @@ int ucl_stack_alloc(u32** pt, int nbWord);
  *
  * @ingroup UCL_STACK
  */
-int ucl_stack_free(u32** pt);
+int ucl_stack_free(u32 **pt);
+
 
 /*============================================================================*/
 /** <b>UCL Stack Size</b>.
@@ -121,6 +125,7 @@ int ucl_stack_free(u32** pt);
  * @ingroup UCL_STACK
  */
 int ucl_stack_size(void);
+
 
 #ifdef __cplusplus
 }

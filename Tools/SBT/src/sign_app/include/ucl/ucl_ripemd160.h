@@ -56,13 +56,15 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
+
 /** <b>The RIPEMD160 context</b>.
  * This structure is associated to the 'step by step' process.
  *
  * @ingroup UCL_RIPEMD160
  */
 
-struct ucl_ripemd160_ctx {
+struct ucl_ripemd160_ctx
+{
     /** Intermediate and then final hash. */
     u32 state[5];
     /** Counter in bits. */
@@ -96,6 +98,7 @@ typedef struct ucl_ripemd160_ctx ucl_ripemd160_ctx_t;
  */
 #define UCL_RIPEMD160_HASHW32SIZE 5
 
+
 /*============================================================================*/
 /** <b>RIPEMD160</b>.
  * The complete process of RIPEMD160.
@@ -113,7 +116,8 @@ typedef struct ucl_ripemd160_ctx ucl_ripemd160_ctx_t;
  *
  * @ingroup UCL_RIPEMD160
  */
-int __API__ ucl_ripemd160(u8* hash, u8* data, u32 data_byteLen);
+int __API__ ucl_ripemd160(u8 *hash, u8 *data, u32 data_byteLen);
+
 
 /** <b>RIPEMD160 Init</b>.
  * The initialisation of RIPEMD160.
@@ -127,7 +131,8 @@ int __API__ ucl_ripemd160(u8* hash, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_RIPEMD160
  */
-int __API__ ucl_ripemd160_init(ucl_ripemd160_ctx_t* context);
+int __API__ ucl_ripemd160_init(ucl_ripemd160_ctx_t *context);
+
 
 /** <b>RIPEMD160 Core</b>.
  * The core of RIPEMD160.
@@ -147,7 +152,9 @@ int __API__ ucl_ripemd160_init(ucl_ripemd160_ctx_t* context);
  *
  * @ingroup UCL_RIPEMD160
  */
-int __API__ ucl_ripemd160_core(ucl_ripemd160_ctx_t* context, u8* data, u32 data_byteLen);
+int __API__ ucl_ripemd160_core(ucl_ripemd160_ctx_t *context, u8 *data,
+                       u32 data_byteLen);
+
 
 /** <b>RIPEMD160 Finish</b>.
  * Finish the process of RIPEMD160.
@@ -168,10 +175,11 @@ int __API__ ucl_ripemd160_core(ucl_ripemd160_ctx_t* context, u8* data, u32 data_
  *
  * @ingroup UCL_RIPEMD160
  */
-int __API__ ucl_ripemd160_finish(u8* hash, ucl_ripemd160_ctx_t* context);
+int __API__ ucl_ripemd160_finish(u8 *hash, ucl_ripemd160_ctx_t *context);
+
 
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif //HASH_RIPEMD160
+#endif//HASH_RIPEMD160
 #endif /* _UCL_RIMPEMD160_H_ */

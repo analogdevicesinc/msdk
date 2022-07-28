@@ -33,18 +33,19 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
+
 // includes
 #include <stdio.h>
 #include <stdint.h>
 
 // Defines
-#define CAM_OV7670 (1)
-#define CAM_OV7725 (2)
-#define CAM_OV2640 (3)
-#define CAM_GC0308 (4) // implementation not finalized yet
+#define CAM_OV7670     (1)
+#define CAM_OV7725     (2)
+#define CAM_OV2640     (3)
+#define CAM_GC0308     (4)  // implementation not finalized yet
 
-#define ACTIVE_CAMERA CAM_OV7725
-#define CAMERA_FREQ   (15 * 1000 * 1000) //PT generates ~12.5MHz for 15MHz
+#define ACTIVE_CAMERA   CAM_OV7725
+#define CAMERA_FREQ     (15 * 1000 * 1000) //PT generates ~12.5MHz for 15MHz
 
 #include "ov7670_regs.h"
 #include "ov7725_regs.h"
@@ -63,12 +64,12 @@ typedef enum {
 
 typedef enum {
     // Special Resolutions
-    FRAMESIZE_SP, // special
+    FRAMESIZE_SP,       // special
     // CIF Resolutions
-    FRAMESIZE_CIF, // 352x288
+    FRAMESIZE_CIF,      // 352x288
     // VGA Resolutions
-    FRAMESIZE_QVGA, // 320x240
-    FRAMESIZE_VGA,  // 640x480
+    FRAMESIZE_QVGA,     // 320x240
+    FRAMESIZE_VGA,      // 640x480
 } framesize_t;
 
 typedef enum {
@@ -80,6 +81,7 @@ typedef enum {
     GAINCEILING_64X,
     GAINCEILING_128X,
 } gainceiling_t;
+
 
 typedef struct _camera {
     // Sensor function pointers
@@ -165,5 +167,6 @@ uint8_t* camera_get_pixel_format(void);
 
 //
 void camera_get_image(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h);
+
 
 #endif // __CAMERA_H__

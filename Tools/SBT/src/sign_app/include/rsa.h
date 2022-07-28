@@ -38,7 +38,8 @@
 #define __RSA_H__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <config.h>
@@ -51,16 +52,18 @@ extern "C" {
 #include <libhsm/HSM.h>
 #endif /* _MAXIM_HSM */
 
-typedef struct {
-    ucl_rsa_public_key_t keyPu;
-    ucl_rsa_private_key_t keyPr;
+
+typedef struct{
+	ucl_rsa_public_key_t keyPu;
+	ucl_rsa_private_key_t keyPr;
 #ifdef _MAXIM_HSM
-    CK_OBJECT_HANDLE HSM_Objkey;
-    CK_OBJECT_HANDLE HSM_Objpubkey;
-    char HSM_KeyLabel[MAX_LINE];
-    int in_hsm;
+	CK_OBJECT_HANDLE HSM_Objkey;
+	CK_OBJECT_HANDLE HSM_Objpubkey;
+	char HSM_KeyLabel[MAX_LINE];
+	int in_hsm;
 #endif
 } rsa_key_t;
+
 
 /**
  * Perform a RSA Signature
@@ -70,7 +73,8 @@ typedef struct {
  * @param key RSA key used to sign
  * @return ERR_OK if success otherwise error code
  */
-int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, rsa_key_t key);
+int rsa_sign (const uint8_t * input, unsigned int input_size, uint8_t * signature, rsa_key_t key);
+
 
 /**
  * Read a Signed RSA public key
@@ -83,9 +87,12 @@ int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, 
  * @param filename file top read
  * @return ERR_OK if success otherwise error code
  */
-int read_file_signed_rsa_publickey(uint8_t* modulus, size_t* modulus_len, uint8_t* public_exponent,
-                                   size_t public_exponent_len, uint8_t* signature,
-                                   size_t* signature_len, const char* filename);
+int read_file_signed_rsa_publickey (
+		uint8_t * modulus, size_t * modulus_len,
+		uint8_t * public_exponent, size_t public_exponent_len,
+		uint8_t * signature, size_t * signature_len,
+		const char * filename);
+
 
 /**
  * Read a RSA Key pair in an ASCII encoded UCL format file
@@ -93,13 +100,15 @@ int read_file_signed_rsa_publickey(uint8_t* modulus, size_t* modulus_len, uint8_
  * @param filename name of the file to read the data
  * @return ERR_OK if success otherwise error code
  */
-int read_file_rsa_keypair(rsa_key_t* rsaKey, char* filename);
+int read_file_rsa_keypair(rsa_key_t * rsaKey, char *filename);
+
 
 /**
  * Print RSA key component
  * @param key Key to display
  */
 void print_rsakey(rsa_key_t key);
+
 
 #ifdef _MAXIM_HSM
 /**
@@ -108,11 +117,11 @@ void print_rsakey(rsa_key_t key);
  * @param keyname Name of the key to load
  * @return ERR_OK if success otherwise error code
  */
-int load_HSM_rsa_key(rsa_key_t* rsaKey, char* keyname);
-#endif /* _MAXIM_HSM */
+int load_HSM_rsa_key (rsa_key_t * rsaKey, char *keyname);
+#endif	/* _MAXIM_HSM */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __RSA_H__ */
+#endif	/* __RSA_H__ */

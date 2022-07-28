@@ -59,7 +59,7 @@ void ucl_gcm_init_r(void);
  *
  * @ingroup UCL_GCM_AES
  */
-void ucl_gcm_init_prod(u8* h);
+void ucl_gcm_init_prod(u8 *h);
 #endif
 
 #ifdef LARGE_MEMORY
@@ -77,7 +77,7 @@ void ucl_gcm_init_prod(u8* h);
  *
  * @ingroup UCL_GCM_AES
  */
-int ucl_gcm_init_m0(u8* key, u32 keylen, int mode);
+int  ucl_gcm_init_m0(u8 *key,u32 keylen,int mode);
 #endif
 
 /** <b>AES-GCM</b>.
@@ -103,9 +103,7 @@ the maximum value is 2^64
  * @ingroup UCL_GCM_AES
 
  */
-int ucl_aes_gcm_auth(u8* auth_tag, int auth_tag_bit_len, u8* c, u8* p, int input_bit_len_high,
-                     int input_bit_len_low, u8* aad, int aad_bit_len_high, int aad_bit_len_low,
-                     u8* key, u8* iv, int iv_bit_len_high, int iv_bit_len_low, int mode);
+int ucl_aes_gcm_auth(u8 *auth_tag,int auth_tag_bit_len,u8 *c,u8 *p,int input_bit_len_high,int input_bit_len_low,u8 *aad, int aad_bit_len_high,int aad_bit_len_low, u8 *key,u8 *iv,int iv_bit_len_high, int iv_bit_len_low,int mode);
 /** <b>AES-GMAC</b>.
  * computes the GMAC data (tag) from authenticated add. data
  * @param[out]  auth_tag: result, u8 array representing the tag
@@ -126,9 +124,8 @@ the maximum value is 2^64
  * @ingroup UCL_GCM_AES
 
  */
-int ucl_aes_gmac_auth(u8* auth_tag, int auth_tag_bit_len, u8* aad, int aad_bit_len_high,
-                      int aad_bit_len_low, u8* key, u8* iv, int iv_bit_len_high,
-                      int iv_bit_len_low);
+int ucl_aes_gmac_auth(u8 *auth_tag,int auth_tag_bit_len,u8 *aad, int aad_bit_len_high,int aad_bit_len_low, u8 *key,u8 *iv,int iv_bit_len_high, int iv_bit_len_low);
+
 
 /** <b>AES-GCM</b>.
  * computes the GCM data (crypto+tag) from plaintext and authenticated add. data
@@ -154,9 +151,7 @@ the maximum value is 2^64
  * @ingroup UCL_GCM_AES
 
  */
-int ucl_aes_gcm(u8* auth_tag, int auth_tag_bit_len, u8* c, u8* p, int input_bit_len_high,
-                int input_bit_len_low, u8* aad, int aad_bit_len_high, int aad_bit_len_low, u8* key,
-                u32 keylen, u8* iv, int iv_bit_len_high, int iv_bit_len_low, int mode);
+int ucl_aes_gcm(u8 *auth_tag,int auth_tag_bit_len,u8 *c,u8 *p,int input_bit_len_high,int input_bit_len_low,u8 *aad, int aad_bit_len_high,int aad_bit_len_low, u8 *key,u32 keylen,u8 *iv,int iv_bit_len_high, int iv_bit_len_low,int mode);
 /** <b>AES-GMAC</b>.
  * computes the GMAC data (tag) from authenticated add. data
  * @param[out]  auth_tag: result, u8 array representing the tag
@@ -178,13 +173,12 @@ the maximum value is 2^64
  * @ingroup UCL_GCM_AES
 
  */
-int ucl_aes_gmac(u8* auth_tag, int auth_tag_bit_len, u8* aad, int aad_bit_len_high,
-                 int aad_bit_len_low, u8* key, u32 keylen, u8* iv, int iv_bit_len_high,
-                 int iv_bit_len_low);
+int ucl_aes_gmac(u8 *auth_tag,int auth_tag_bit_len,u8 *aad, int aad_bit_len_high,int aad_bit_len_low, u8 *key,u32 keylen,u8 *iv,int iv_bit_len_high, int iv_bit_len_low);
 
-void ucl_gcm_ghash_core(u8* x, u8* h, u8* c, int n, int u, int m, int v);
-int ucl_gcm_ghash_finish(u8* x, u8* h, u8* c, int n, int u, int m, int v, int input_bit_len_high,
-                         int input_bit_len_low);
+
+
+void ucl_gcm_ghash_core(u8 *x,u8 *h,u8 *c,int n,int u,int m,int v);
+int ucl_gcm_ghash_finish(u8 *x,u8 *h,u8 *c,int n,int u,int m,int v,int input_bit_len_high,int input_bit_len_low);
 
 /** <b>AES-GCM multi-block initialization</b>.
  * the AES-GCM multi-block processing defines three steps: initialization, blocks processing, final processing
@@ -213,9 +207,7 @@ the maximum value is 2^64
 
  */
 
-int ucl_aes_gcm_init(u8* res, u8* h, u8* eky0, u8* y, u8* aad, int aad_bit_len_high,
-                     int aad_bit_len_low, u8* key, u32 keylen, u8* iv, int iv_bit_len_high,
-                     int iv_bit_len_low, int mode);
+int  ucl_aes_gcm_init(u8 *res,u8 *h,u8 *eky0,u8 *y,u8 *aad,int aad_bit_len_high,int aad_bit_len_low,u8 *key,u32 keylen,u8 *iv,int iv_bit_len_high, int iv_bit_len_low,int mode);
 
 /** <b>AES-GCM multi-block core processing</b>.
  * the AES-GCM multi-block processing defines three steps: initialization, blocks core processing, final processing
@@ -242,9 +234,7 @@ int ucl_aes_gcm_init(u8* res, u8* h, u8* eky0, u8* y, u8* aad, int aad_bit_len_h
  * @ingroup UCL_GCM_AES
 
  */
-int ucl_aes_gcm_core(u8* res, int auth_tag_bit_len, u8* c, u8* p, int input_bit_len_high,
-                     int input_bit_len_low, int aad_bit_len_high, int aad_bit_len_low, u8* h, u8* y,
-                     u8* key, u32 keylen, int mode);
+int  ucl_aes_gcm_core(u8 *res,int auth_tag_bit_len,u8 *c,u8 *p,int input_bit_len_high,int input_bit_len_low,int aad_bit_len_high,int aad_bit_len_low,u8 *h,u8 *y,u8 *key,u32 keylen,int mode);
 
 /** <b>AES-GCM multi-block final processing</b>.
  * the AES-GCM multi-block processing defines three steps: initialization, blocks processing, final processing
@@ -273,11 +263,9 @@ int ucl_aes_gcm_core(u8* res, int auth_tag_bit_len, u8* c, u8* p, int input_bit_
 
  */
 
-int ucl_aes_gcm_finish(u8* auth_tag, int auth_tag_bit_len, u8* res, u8* c, u8* p,
-                       int input_bit_len_high, int input_bit_len_low, int inputtot_bit_len_high,
-                       int inputtot_bit_len_low, int aad_bit_len_high, int aad_bit_len_low, u8* h,
-                       u8* eky0, u8* y, u8* key, u32 keylen, int mode);
+int  ucl_aes_gcm_finish(u8 *auth_tag,int auth_tag_bit_len,u8 *res,u8 *c,u8 *p,int input_bit_len_high,int input_bit_len_low,int inputtot_bit_len_high,int inputtot_bit_len_low,int aad_bit_len_high,int aad_bit_len_low,u8 *h,u8 *eky0,u8 *y,u8 *key,u32 keylen,int mode);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */
+

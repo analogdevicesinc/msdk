@@ -38,7 +38,8 @@
 #define __ECDSA_H__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include <maxim_c_utils.h>
@@ -53,17 +54,18 @@ extern "C" {
 /**
  * ECDSA Key Structure
  */
-typedef struct {
-    ucl_type_ecc_u8_affine_point ecdsa_pubkey;
-    uint8_t ecdsa_privkey[ECDSA_MODULUS_LEN];
-    size_t ecdsa_len;
+typedef struct{
+	ucl_type_ecc_u8_affine_point ecdsa_pubkey;
+	uint8_t ecdsa_privkey[ECDSA_MODULUS_LEN];
+	size_t ecdsa_len;
 #ifdef _MAXIM_HSM
-    CK_OBJECT_HANDLE HSM_Objkey;
-    CK_OBJECT_HANDLE HSM_Objpubkey;
-    char HSM_KeyLabel[MAX_LINE];
-    int in_hsm;
+	CK_OBJECT_HANDLE HSM_Objkey;
+	CK_OBJECT_HANDLE HSM_Objpubkey;
+	char HSM_KeyLabel[MAX_LINE];
+	int in_hsm;
 #endif
 } ecdsa_key_t;
+
 
 /**
  * Compute the ECDSA signature of data provided in the input buffer
@@ -73,8 +75,8 @@ typedef struct {
  * @param key ECDSA key to sign the data
  * @return ERR_OK if success otherwise error code
  */
-int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned char* signature,
-               ecdsa_key_t key);
+int ecdsa_sign (const unsigned char *input, unsigned int input_size, unsigned char *signature, ecdsa_key_t key);
+
 
 /**
  * Read an ECDSA Key pair in an ASCII encoded UCL format file
@@ -82,7 +84,7 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
  * @param filename name of the file to read the data
  * @return ERR_OK if success otherwise error code
  */
-int read_file_ecdsa_keypair(ecdsa_key_t* key, char* filename);
+int read_file_ecdsa_keypair (ecdsa_key_t * key, char * filename);
 
 /**
  * Read an signed ECDSA public key
@@ -94,13 +96,15 @@ int read_file_ecdsa_keypair(ecdsa_key_t* key, char* filename);
  * @param filename name of the file to read the data
  * @return ERR_OK if success otherwise error code
  */
-int read_file_signed_ecdsa_publickey(u8* x, u8* y, u8* r, u8* s, size_t size, const char* filename);
+int read_file_signed_ecdsa_publickey (u8 * x, u8 * y, u8 * r, u8 * s, size_t size, const char *filename);
+
 
 /**
  * Print ECDSA key component
  * @param key Key to display
  */
 void print_ecdsaKey(ecdsa_key_t key);
+
 
 #ifdef _MAXIM_HSM
 /**
@@ -109,11 +113,12 @@ void print_ecdsaKey(ecdsa_key_t key);
  * @param keyname Name of the key to load
  * @return ERR_OK if success otherwise error code
  */
-int load_HSM_ecdsa_key(ecdsa_key_t* key, char* keyname);
-#endif /* _MAXIM_HSM */
+int load_HSM_ecdsa_key (ecdsa_key_t * key, char *keyname);
+#endif				/* _MAXIM_HSM */
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __ECDSA_H__ */
+#endif	/* __ECDSA_H__ */

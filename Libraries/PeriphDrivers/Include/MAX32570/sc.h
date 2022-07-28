@@ -58,11 +58,10 @@ extern "C" {
  * Bitmasks for each smart card device
  */
 typedef enum {
-    MXC_SC_DEV_MIN = 0,
-    MXC_SC_DEV0    = MXC_SC_DEV_MIN, /**< Smart Card 0 */
-    MXC_SC_DEV1,                     /**< Smart Card 1 */
+    MXC_SC_DEV_MIN = 0, MXC_SC_DEV0 = MXC_SC_DEV_MIN,   /**< Smart Card 0 */
+    MXC_SC_DEV1,                                        /**< Smart Card 1 */
     MXC_SC_DEV_MAX = MXC_SC_DEV1,
-    MXC_SC_DEV_COUNT /**< Number of Smart Card Devices */
+    MXC_SC_DEV_COUNT                                    /**< Number of Smart Card Devices */
 } mxc_sc_id_t;
 
 /* **** Structures **** */
@@ -71,7 +70,7 @@ typedef enum {
   *
   */
 typedef struct {
-    mxc_scn_regs_t* reg_sc;
+    mxc_scn_regs_t  *reg_sc;
 } mxc_sc_info_t;
 
 /**
@@ -79,9 +78,10 @@ typedef struct {
   *
   */
 typedef struct {
-    unsigned char first_init;
-    mxc_sc_info_t sc[MXC_SC_DEV_COUNT];
+    unsigned char   first_init;
+    mxc_sc_info_t   sc[MXC_SC_DEV_COUNT];
 } mxc_sc_context_t;
+
 
 /* **** Function Prototypes **** */
 
@@ -91,7 +91,7 @@ typedef struct {
  * @param       id Smart Card interface id
  * @return      Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int mxc_sc_init(mxc_sc_id_t id);
+int mxc_sc_init (mxc_sc_id_t id);
 
 #ifdef __cplusplus
 }

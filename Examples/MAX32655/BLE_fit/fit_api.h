@@ -35,7 +35,7 @@ extern "C" {
 **************************************************************************************************/
 
 #ifndef FIT_CONN_MAX
-#define FIT_CONN_MAX 1
+#define FIT_CONN_MAX                  1
 #endif
 
 /**************************************************************************************************
@@ -61,6 +61,7 @@ void FitStart(void);
 /*************************************************************************************************/
 void FitHandlerInit(wsfHandlerId_t handlerId);
 
+
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for the application.
@@ -71,7 +72,7 @@ void FitHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void FitHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };

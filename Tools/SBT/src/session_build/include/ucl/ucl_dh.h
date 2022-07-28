@@ -83,18 +83,20 @@ extern "C" {
  * @ingroup UCL_PKC
  */
 
+
 /* ========================================================================== */
 
 /** <b>DH Context</b>.
  *
  * @ingroup UCL_DH
  */
-struct ucl_dh_ctx {
-    u8* module; /**< The module                             */
-    u8* base;   /**< The base                               */
-    u8* secret; /**< The secret                             */
+struct ucl_dh_ctx
+{
+    u8 *module; /**< The module                             */
+    u8 *base;   /**< The base                               */
+    u8 *secret; /**< The secret                             */
     u32 len;    /**< Module (base and secret) byte length   */
-    void* ctx;  /**< The precalculation context             */
+    void *ctx;  /**< The precalculation context             */
 };
 
 /** <b>DH Context typedef</b>.
@@ -102,6 +104,7 @@ struct ucl_dh_ctx {
  * @ingroup UCL_DH
  */
 typedef struct ucl_dh_ctx ucl_dh_ctx_t;
+
 
 /* ========================================================================== */
 
@@ -113,7 +116,7 @@ typedef struct ucl_dh_ctx ucl_dh_ctx_t;
 /** <b>Modular exponentiation use FBEM method</b>.
  * @ingroup UCL_DH
  */
-#define UCL_MOD_EXP_METHOD_FBEM 2
+#define UCL_MOD_EXP_METHOD_FBEM  2
 
 /** <b>Specific error</b>.
  * @ingroup UCL_DH
@@ -124,6 +127,7 @@ typedef struct ucl_dh_ctx ucl_dh_ctx_t;
  * @ingroup UCL_DH
  */
 #define UCL_DATA_TOO_SMALL -102
+
 
 /* ========================================================================== */
 
@@ -141,7 +145,8 @@ typedef struct ucl_dh_ctx ucl_dh_ctx_t;
  *
  * @ingroup UCL_DH
  */
-int ucl_dh_save_ctx(u8* data, u32 datalen, ucl_dh_ctx_t dh_ctx);
+int ucl_dh_save_ctx(u8 *data, u32 datalen, ucl_dh_ctx_t dh_ctx);
+
 
 /** <b>Restore the Diffie-Hellman Context</b>.
  *
@@ -160,7 +165,9 @@ int ucl_dh_save_ctx(u8* data, u32 datalen, ucl_dh_ctx_t dh_ctx);
  *
  * @ingroup UCL_DH
  */
-int ucl_dh_restore_ctx(ucl_dh_ctx_t* dh_ctx, u8* data, u32 datalen, u32* buffer, u32 size);
+int ucl_dh_restore_ctx(ucl_dh_ctx_t *dh_ctx, u8 *data, u32 datalen,
+                       u32 *buffer, u32 size);
+
 
 /** <b>Diffie-Hellman Initialization</b>.
  * Init the context.
@@ -181,7 +188,8 @@ int ucl_dh_restore_ctx(ucl_dh_ctx_t* dh_ctx, u8* data, u32 datalen, u32* buffer,
  *
  * @ingroup UCL_DH
  */
-int ucl_dh_init(ucl_dh_ctx_t* dh_ctx, u32* buffer, u32 size, int option);
+int ucl_dh_init(ucl_dh_ctx_t *dh_ctx, u32 *buffer, u32 size, int option);
+
 
 /** <b>Diffie-Hellman Secret Generation</b>.
  * Generate a secret.
@@ -192,7 +200,8 @@ int ucl_dh_init(ucl_dh_ctx_t* dh_ctx, u32* buffer, u32 size, int option);
  *
  * @ingroup UCL_DH
  */
-int ucl_dh_gen_secret(ucl_dh_ctx_t* dh_ctx);
+int ucl_dh_gen_secret(ucl_dh_ctx_t *dh_ctx);
+
 
 /** <b>Diffie-Hellman Message Generation</b>.
  * Generate the message from the secret.
@@ -206,7 +215,8 @@ int ucl_dh_gen_secret(ucl_dh_ctx_t* dh_ctx);
  *
  * @ingroup UCL_DH
  */
-int ucl_dh_gen_mess(u8* m, ucl_dh_ctx_t* dh_ctx);
+int ucl_dh_gen_mess(u8 *m, ucl_dh_ctx_t *dh_ctx);
+
 
 /** <b>Diffie-Hellman Shared-Key Generation</b>.
  * Generate the key from the second parts message and the secret.
@@ -222,7 +232,8 @@ int ucl_dh_gen_mess(u8* m, ucl_dh_ctx_t* dh_ctx);
  *
  * @ingroup UCL_DH
  */
-int ucl_dh_gen_key(u8* key, u32 keylen, u8* m, ucl_dh_ctx_t* dh_ctx);
+int ucl_dh_gen_key(u8 *key, u32 keylen, u8 *m, ucl_dh_ctx_t *dh_ctx);
+
 
 /* ========================================================================== */
 #ifdef __cplusplus

@@ -60,12 +60,12 @@ extern "C" {
  *
  */
 typedef enum {
-    SMON_EXTSENSOR_0 = MXC_F_SMON_EXTSCN_EXTS_EN0,
-    SMON_EXTSENSOR_1 = MXC_F_SMON_EXTSCN_EXTS_EN1,
-    SMON_EXTSENSOR_2 = MXC_F_SMON_EXTSCN_EXTS_EN2,
-    SMON_EXTSENSOR_3 = MXC_F_SMON_EXTSCN_EXTS_EN3,
-    SMON_EXTSENSOR_4 = MXC_F_SMON_EXTSCN_EXTS_EN4,
-    SMON_EXTSENSOR_5 = MXC_F_SMON_EXTSCN_EXTS_EN5,
+    SMON_EXTSENSOR_0        = MXC_F_SMON_EXTSCN_EXTS_EN0,
+    SMON_EXTSENSOR_1        = MXC_F_SMON_EXTSCN_EXTS_EN1,
+    SMON_EXTSENSOR_2        = MXC_F_SMON_EXTSCN_EXTS_EN2,
+    SMON_EXTSENSOR_3        = MXC_F_SMON_EXTSCN_EXTS_EN3,
+    SMON_EXTSENSOR_4        = MXC_F_SMON_EXTSCN_EXTS_EN4,
+    SMON_EXTSENSOR_5        = MXC_F_SMON_EXTSCN_EXTS_EN5,
 } mxc_smon_ext_sensor_t;
 
 /**
@@ -73,13 +73,13 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_CLK_DIVIDE_1  = MXC_S_SMON_EXTSCN_DIVCLK_DIV1,
-    SMON_CLK_DIVIDE_2  = MXC_S_SMON_EXTSCN_DIVCLK_DIV2,
-    SMON_CLK_DIVIDE_4  = MXC_S_SMON_EXTSCN_DIVCLK_DIV4,
-    SMON_CLK_DIVIDE_8  = MXC_S_SMON_EXTSCN_DIVCLK_DIV8,
-    SMON_CLK_DIVIDE_16 = MXC_S_SMON_EXTSCN_DIVCLK_DIV16,
-    SMON_CLK_DIVIDE_32 = MXC_S_SMON_EXTSCN_DIVCLK_DIV32,
-    SMON_CLK_DIVIDE_64 = MXC_S_SMON_EXTSCN_DIVCLK_DIV64,
+    SMON_CLK_DIVIDE_1       = MXC_S_SMON_EXTSCN_DIVCLK_DIV1,
+    SMON_CLK_DIVIDE_2       = MXC_S_SMON_EXTSCN_DIVCLK_DIV2,
+    SMON_CLK_DIVIDE_4       = MXC_S_SMON_EXTSCN_DIVCLK_DIV4,
+    SMON_CLK_DIVIDE_8       = MXC_S_SMON_EXTSCN_DIVCLK_DIV8,
+    SMON_CLK_DIVIDE_16      = MXC_S_SMON_EXTSCN_DIVCLK_DIV16,
+    SMON_CLK_DIVIDE_32      = MXC_S_SMON_EXTSCN_DIVCLK_DIV32,
+    SMON_CLK_DIVIDE_64      = MXC_S_SMON_EXTSCN_DIVCLK_DIV64,
 } mxc_smon_clk_divide_t;
 
 /**
@@ -87,13 +87,13 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_FREQ_DIVIDE_4   = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ2000HZ,
-    SMON_FREQ_DIVIDE_8   = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ1000HZ,
-    SMON_FREQ_DIVIDE_16  = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ500HZ,
-    SMON_FREQ_DIVIDE_32  = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ250HZ,
-    SMON_FREQ_DIVIDE_64  = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ125HZ,
-    SMON_FREQ_DIVIDE_128 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ63HZ,
-    SMON_FREQ_DIVIDE_256 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ31HZ,
+    SMON_FREQ_DIVIDE_4      = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ2000HZ,
+    SMON_FREQ_DIVIDE_8      = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ1000HZ,
+    SMON_FREQ_DIVIDE_16     = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ500HZ,
+    SMON_FREQ_DIVIDE_32     = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ250HZ,
+    SMON_FREQ_DIVIDE_64     = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ125HZ,
+    SMON_FREQ_DIVIDE_128    = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ63HZ,
+    SMON_FREQ_DIVIDE_256    = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ31HZ,
 } mxc_smon_freq_divide_t;
 
 /**
@@ -101,9 +101,9 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_VTM_THRESHOLD_1_6, ///< 1.6 V
-    SMON_VTM_THRESHOLD_2_2, ///< 2.2 V
-    SMON_VTM_THRESHOLD_2_8, ///< 2.8 V
+    SMON_VTM_THRESHOLD_1_6,         ///< 1.6 V
+    SMON_VTM_THRESHOLD_2_2,         ///< 2.2 V
+    SMON_VTM_THRESHOLD_2_8,         ///< 2.8 V
 } mxc_smon_vtm_t;
 
 /**
@@ -111,8 +111,8 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_TEMP_THRESHOLD_NEG_50, ///< -50 *C
-    SMON_TEMP_THRESHOLD_NEG_30, ///< -30 *C
+    SMON_TEMP_THRESHOLD_NEG_50,     ///< -50 *C
+    SMON_TEMP_THRESHOLD_NEG_30,     ///< -30 *C
 } mxc_smon_temp_t;
 
 /**
@@ -120,8 +120,8 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_DFD_INTERRUPT_NMI, ///< DRS/NMI
-    SMON_DFD_INTERRUPT_PFW, ///< PFW IRQ
+    SMON_DFD_INTERRUPT_NMI,         ///< DRS/NMI
+    SMON_DFD_INTERRUPT_PFW,         ///< PFW IRQ
 } mxc_smon_interrupt_mode_t;
 
 /**
@@ -129,8 +129,8 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_DFD_LOWPOWER_ENABLE,  ///< DFD enabled during LowPower mode
-    SMON_DFD_LOWPOWER_DISABLE, ///< DFD disabled during LowPower mode
+    SMON_DFD_LOWPOWER_ENABLE,       ///< DFD enabled during LowPower mode
+    SMON_DFD_LOWPOWER_DISABLE,      ///< DFD disabled during LowPower mode
 } mxc_smon_lowpower_mode_t;
 
 /**
@@ -138,9 +138,9 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_EXTSENSOR = MXC_F_SMON_SECST_EXTSRS,
-    SMON_INTSENSOR = MXC_F_SMON_SECST_INTSRS,
-    SMON_SECALARM  = MXC_F_SMON_SECST_SECALRS,
+    SMON_EXTSENSOR  = MXC_F_SMON_SECST_EXTSRS,
+    SMON_INTSENSOR  = MXC_F_SMON_SECST_INTSRS,
+    SMON_SECALARM   = MXC_F_SMON_SECST_SECALRS,
 } mxc_smon_busy_t;
 
 /**
@@ -273,8 +273,8 @@ void MXC_SMON_DisablePUFTrimErase();
  *
  * @return  int            see \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode,
-                                        mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay);
+int MXC_SMON_DigitalFaultDetectorEnable(mxc_smon_interrupt_mode_t interruptMode, \
+                                            mxc_smon_lowpower_mode_t lowPowerMode, uint32_t delay);
 
 /**
  * @brief   Get Flags set in Security Alarm Register

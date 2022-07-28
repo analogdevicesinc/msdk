@@ -59,41 +59,40 @@
 
 /* **** Functions **** */
 
-int MXC_FLC_RevA_Busy(void);
+int MXC_FLC_RevA_Busy (void);
 
-int MXC_FLC_RevA_MassErase(mxc_flc_reva_regs_t* flc);
+int MXC_FLC_RevA_MassErase (mxc_flc_reva_regs_t *flc);
 
-int MXC_FLC_RevA_PageErase(mxc_flc_reva_regs_t* flc, uint32_t addr);
+int MXC_FLC_RevA_PageErase (mxc_flc_reva_regs_t *flc,uint32_t addr);
 
-int MXC_FLC_RevA_Write32(mxc_flc_reva_regs_t* flc, uint32_t locgialAddr, uint32_t data,
-                         uint32_t physicalAddr);
+int MXC_FLC_RevA_Write32 (mxc_flc_reva_regs_t *flc, uint32_t locgialAddr, uint32_t data, uint32_t physicalAddr);
 
-int MXC_FLC_RevA_Write32Using128(mxc_flc_reva_regs_t* flc, uint32_t locgialAddr, uint32_t data,
-                                 uint32_t physicalAddr);
+int MXC_FLC_RevA_Write32Using128 (mxc_flc_reva_regs_t *flc, uint32_t locgialAddr, uint32_t data, uint32_t physicalAddr);
 
-int MXC_FLC_RevA_Write128(mxc_flc_reva_regs_t* flc, uint32_t addr, uint32_t* data);
+int MXC_FLC_RevA_Write128 (mxc_flc_reva_regs_t *flc, uint32_t addr, uint32_t *data);
 
-void MXC_FLC_RevA_SetFLCInt(mxc_flc_reva_regs_t* flc);
+void MXC_FLC_RevA_SetFLCInt (mxc_flc_reva_regs_t *flc);
 
-mxc_flc_reva_regs_t* MXC_FLC_RevA_GetFLCInt(void);
+mxc_flc_reva_regs_t* MXC_FLC_RevA_GetFLCInt (void);
 
-int MXC_FLC_RevA_EnableInt(uint32_t mask);
+int MXC_FLC_RevA_EnableInt (uint32_t mask);
 
-int MXC_FLC_RevA_DisableInt(uint32_t mask);
+int MXC_FLC_RevA_DisableInt (uint32_t mask);
 
-int MXC_FLC_RevA_GetFlags(void);
+int MXC_FLC_RevA_GetFlags (void);
 
-int MXC_FLC_RevA_ClearFlags(uint32_t mask);
+int MXC_FLC_RevA_ClearFlags (uint32_t mask);
 
-int MXC_FLC_RevA_UnlockInfoBlock(mxc_flc_reva_regs_t* flc, uint32_t address);
+int MXC_FLC_RevA_UnlockInfoBlock (mxc_flc_reva_regs_t *flc, uint32_t address);
 
-int MXC_FLC_RevA_LockInfoBlock(mxc_flc_reva_regs_t* flc, uint32_t address);
+int MXC_FLC_RevA_LockInfoBlock (mxc_flc_reva_regs_t *flc, uint32_t address);
 
 int MXC_FLC_RevA_BlockPageWrite(uint32_t address, uint32_t bank_base);
 
 int MXC_FLC_RevA_BlockPageRead(uint32_t address, uint32_t bank_base);
 
 /**@} end of group flc */
+
 
 #ifdef __cplusplus
 }

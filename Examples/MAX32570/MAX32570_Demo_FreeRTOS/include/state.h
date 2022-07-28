@@ -49,38 +49,41 @@
 #include <queue.h>
 #include <semphr.h>
 
+
 /********************************* 		DEFINES		 *************************/
+
 
 /********************************* 		TYPE DEF	 ************************/
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(unsigned int key);
-typedef int (*MSR_process)(unsigned char* msg, unsigned int msg_len);
-typedef int (*NFC_process)(unsigned char* msg, unsigned int msg_len);
+typedef int (*MSR_process)(unsigned char *msg, unsigned int msg_len);
+typedef int (*NFC_process)(unsigned char *msg, unsigned int msg_len);
 typedef int (*Time_Tick)(void);
 
 typedef struct _State {
-    char* name;
-    Init_func init;
-    Keypad_process prcss_key;
-    Time_Tick tick;
-    unsigned int timeout;
-    MSR_process prcss_msr;
-    NFC_process prcss_nfc;
+	char 			*name;
+	Init_func 		init;
+	Keypad_process 	prcss_key;
+	Time_Tick 		tick;
+	unsigned int	timeout;
+	MSR_process		prcss_msr;
+	NFC_process		prcss_nfc;
 } State;
 
+
 /******************************   PUBLIC FUNCTIONS  **************************/
-void state_init(void);
-State* state_get_current(void);
-int state_set_current(State* state);
+void  state_init(void);
+State *state_get_current(void);
+int   state_set_current(State *state);
 
 // states
-State* get_home_state(void);
-State* get_smartcard_state(void);
-State* get_msr_state(void);
-State* get_keypad_state(void);
-State* get_nfc_state(void);
-State* get_slide_state(void);
-State* get_info_state(void);
-State* get_idle_state(void);
+State *get_home_state(void);
+State *get_smartcard_state(void);
+State *get_msr_state(void);
+State *get_keypad_state(void);
+State *get_nfc_state(void);
+State *get_slide_state(void);
+State *get_info_state(void);
+State *get_idle_state(void);
 
 #endif // _STATE_H_

@@ -37,15 +37,16 @@
 #include "i2s.h"
 #include "spimss_reva_regs.h"
 
-int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* req,
-                      void (*dma_ctz_cb)(int, int));
-int MXC_I2S_RevA_Shutdown(mxc_spimss_reva_regs_t* spimss);
-int MXC_I2S_RevA_Mute(mxc_spimss_reva_regs_t* spimss);
-int MXC_I2S_RevA_Unmute(mxc_spimss_reva_regs_t* spimss);
-int MXC_I2S_RevA_Pause(mxc_spimss_reva_regs_t* spimss);
-int MXC_I2S_RevA_Unpause(mxc_spimss_reva_regs_t* spimss);
-int MXC_I2S_RevA_Stop(mxc_spimss_reva_regs_t* spimss);
-int MXC_I2S_RevA_Start(mxc_spimss_reva_regs_t* spimss);
+
+
+int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t *spimss, const mxc_i2s_config_t *req, void (*dma_ctz_cb)(int, int));
+int MXC_I2S_RevA_Shutdown(mxc_spimss_reva_regs_t *spimss);
+int MXC_I2S_RevA_Mute(mxc_spimss_reva_regs_t *spimss);
+int MXC_I2S_RevA_Unmute(mxc_spimss_reva_regs_t *spimss);
+int MXC_I2S_RevA_Pause(mxc_spimss_reva_regs_t *spimss);
+int MXC_I2S_RevA_Unpause(mxc_spimss_reva_regs_t *spimss);
+int MXC_I2S_RevA_Stop(mxc_spimss_reva_regs_t *spimss);
+int MXC_I2S_RevA_Start(mxc_spimss_reva_regs_t *spimss);
 int MXC_I2S_RevA_DMA_ClearFlags(void);
-int MXC_I2S_RevA_DMA_SetAddrCnt(void* src_addr, void* dst_addr, unsigned int count);
-int MXC_I2S_RevA_DMA_SetReload(void* src_addr, void* dst_addr, unsigned int count);
+int MXC_I2S_RevA_DMA_SetAddrCnt(void *src_addr, void *dst_addr, unsigned int count);
+int MXC_I2S_RevA_DMA_SetReload(void *src_addr, void *dst_addr, unsigned int count);

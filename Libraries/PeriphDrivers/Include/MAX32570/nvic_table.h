@@ -51,13 +51,13 @@ extern "C" {
  * @param irq_callback  Function to be called at IRQ context
  *
  */
-void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
+void MXC_NVIC_SetVector (IRQn_Type irqn, void (*irq_callback) (void));
 
 /**
  * @brief Copy NVIC vector table to RAM and set NVIC to RAM based table.
  *
  */
-void NVIC_SetRAM(void);
+void NVIC_SetRAM (void);
 
 /**
  * @brief      Get Interrupt Vector
@@ -67,7 +67,7 @@ void NVIC_SetRAM(void);
  * @param[in]  IRQn  Interrupt number.
  * @return     Address of interrupt handler function
  */
-uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
+uint32_t MXC_NVIC_GetVector (IRQn_Type IRQn);
 
 #ifdef __cplusplus
 }

@@ -36,7 +36,9 @@
 #define USERLAND_CRYPTO_H
 #include "ucl/ucl_config.h"
 
-#if defined(JIBE_LINUX_HW)
+
+
+#if defined (JIBE_LINUX_HW)
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,54 +53,60 @@
 #include <ucl/ucl_des.h>
 #include <ucl/ucl_aes.h>
 
-#define AF_ALG  38
+#define AF_ALG 38
 #define SOL_ALG 279
 
-#define SPLICE_F_GIFT   (0x08) /* pages passed in are a gift */
-#define AES_BLOCKLENGTH (UCL_AES_BLOCKSIZE)
-#define DES3_KEYLENGTH  (UCL_3DES_KEYSIZE)
-#define DES_BLOCKLENGTH (UCL_DES_BLOCKSIZE)
-#define DES_KEYLENGTH   (UCL_DES_KEYSIZE)
+#define SPLICE_F_GIFT	(0x08)	/* pages passed in are a gift */
+#define AES_BLOCKLENGTH	(UCL_AES_BLOCKSIZE)
+#define DES3_KEYLENGTH	(UCL_3DES_KEYSIZE)
+#define DES_BLOCKLENGTH	(UCL_DES_BLOCKSIZE)
+#define DES_KEYLENGTH	(UCL_DES_KEYSIZE)
+
 
 #ifndef TRUE
-#define TRUE  (!!1)
-#define FALSE (!TRUE)
+#define TRUE	(!!1)
+#define FALSE	(!TRUE)
 #endif
 
-#define VOID_PARAM ((unsigned int)-1)
+#define VOID_PARAM	((unsigned int) -1)
 
 struct sockaddr_alg {
-    __u16 salg_family;
-    __u8 salg_type[14];
-    __u32 salg_feat;
-    __u32 salg_mask;
-    __u8 salg_name[64];
+	__u16	salg_family;
+	__u8	salg_type[14];
+	__u32	salg_feat;
+	__u32	salg_mask;
+	__u8	salg_name[64];
 };
 
 struct af_alg_iv {
-    __u32 ivlen;
-    __u8 iv[0];
+	__u32	ivlen;
+	__u8	iv[0];
 };
 
 /* Socket options */
-#define ALG_SET_KEY 1
-#define ALG_SET_IV  2
-#define ALG_SET_OP  3
+#define ALG_SET_KEY			1
+#define ALG_SET_IV			2
+#define ALG_SET_OP			3
 
 /* Operations */
-#define ALG_OP_DECRYPT 0
-#define ALG_OP_ENCRYPT 1
+#define ALG_OP_DECRYPT			0
+#define ALG_OP_ENCRYPT			1
 
 int crypto_hw_init(void);
 int crypto_hw_exit(void);
-int crypto_hw_set_key(const unsigned char* algo, const unsigned char* key, unsigned int keylen);
-int crypto_hw_set_3des_key(const unsigned char* key, unsigned int start, unsigned int end);
-int crypto_hw_get_key(unsigned char* key);
-void crypto_hw_3des_flush_key(void);
+int crypto_hw_set_key(const unsigned char *algo, const unsigned char *key, unsigned int keylen);
+int crypto_hw_set_3des_key(const unsigned char *key, unsigned int start, unsigned int end);
+int crypto_hw_get_key(unsigned char *key);
+void crypto_hw_3des_flush_key( void );
 int crypto_hw_set_mode(int mode);
-int crypto_hw_get_mode(void);
-int crypto_hw(unsigned int op, const unsigned char* bufferIn, unsigned char* bufferOut,
-              unsigned int buflen, unsigned char* oiv, unsigned int blocklen);
+int crypto_hw_get_mode( void );
+int crypto_hw(unsigned int op,
+	     const unsigned char *bufferIn,
+	     unsigned char *bufferOut,
+	     unsigned int buflen,
+	     unsigned char *oiv,
+         unsigned int blocklen);
+
 
 #endif /*#if defined (JIBE_LINUX_HW)*/
 
