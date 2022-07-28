@@ -37,6 +37,7 @@
 #define _WRAPPER_TFT_H_
 
 #include "MAX32xxx.h"
+#include "tft_ssd2119.h"
 
 /*************************************** DEFINES *****************************/
 

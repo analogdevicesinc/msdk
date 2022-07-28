@@ -300,7 +300,7 @@ int main(void)
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    MXC_TFT_Init();
     /* Set the screen rotation */
     MXC_TFT_SetRotation(SCREEN_ROTATE);
     /* Change entry mode settings */
@@ -317,14 +317,8 @@ int main(void)
 #endif
 
 #ifdef TS_ENABLE
-    /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                              MXC_GPIO_VSSEL_VDDIOH};
-    /* Touch screen controller busy signal */
-    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                               MXC_GPIO_VSSEL_VDDIOH};
     /* Initialize Touch Screen controller */
-    MXC_TS_Init(MXC_SPI0, 2, &int_pin, &busy_pin);
+    MXC_TS_Init();
     MXC_TS_Start();
 #endif
 

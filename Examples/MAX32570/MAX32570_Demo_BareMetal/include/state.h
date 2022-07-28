@@ -41,6 +41,7 @@
 
 #include "bitmap.h"
 #include "keypad.h"
+#include "tft_ssd2119.h"
 
 /********************************* 		DEFINES		 *************************/
 

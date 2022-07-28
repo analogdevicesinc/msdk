@@ -40,7 +40,7 @@
 #include "bitmap.h"
 #include "keypad.h"
 #include "state.h"
-#include "tft.h"
+#include "tft_ssd2119.h"
 
 /*********************************      DEFINES      *************************/
 #define TICK_TIMEOUT 2000

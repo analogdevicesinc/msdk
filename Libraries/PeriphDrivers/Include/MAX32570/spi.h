@@ -52,6 +52,13 @@
  * @{
  */
 
+/* 
+ * The mxc_spi_regs_t and some macro naming are changed during time
+ * OLD_SPI_API flag is to used the change on upper layer.
+ * OLD_SPI_API is used by peripheral that use SPI layer like TFT, Touchscreen driver
+ */
+#define OLD_SPI_API 1
+
 /***** Definitions *****/
 
 /**

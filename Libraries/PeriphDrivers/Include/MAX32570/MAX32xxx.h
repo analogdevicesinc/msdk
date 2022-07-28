@@ -56,8 +56,6 @@
 #include "board.h"
 #include "led.h"
 #include "pb.h"
-#include "tft.h"
-#include "touchscreen.h"
 
 /*
  *  Peripheral Driver Includes

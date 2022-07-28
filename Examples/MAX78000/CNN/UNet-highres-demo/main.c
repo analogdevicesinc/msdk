@@ -708,9 +708,7 @@ int main(void)
     // Initialize TFT display.
     printf("Init TFT\n");
 #ifdef BOARD_EVKIT_V1
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
-                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-    MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+    MXC_TFT_Init();
 #endif
 #ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);

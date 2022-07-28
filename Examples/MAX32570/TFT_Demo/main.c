@@ -50,6 +50,8 @@
 #include "utils.h"
 #include "state.h"
 
+#include "tft_ssd2119.h"
+
 /***** Definitions *****/
 
 /***** Globals *****/
