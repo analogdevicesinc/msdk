@@ -47,7 +47,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 
 /***** Definitions *****/
@@ -395,7 +394,7 @@ int main(void)
         fail += 1;
     }
 
-    // Erase parital pages or wide range of pages and keep the data on the page not inbetween start and end.
+    // Erase partial pages or wide range of pages and keep the data on the page not in between start and end.
     start = (MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE + 0x500);
     end   = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
     flash_erase(start, end, buffer, 0x1000);
@@ -409,16 +408,11 @@ int main(void)
 
     MXC_ICC_Enable();
 
-    printf("\n");
-
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
+        printf("\nExample Failed\n");
     }
-
-    while (1)
-        ;
 
     return 0;
 }

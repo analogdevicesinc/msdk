@@ -42,11 +42,8 @@
 #include <stdint.h>
 #include <string.h>
 #include "mxc_device.h"
-#include "max32670.h"
-#include "board.h"
 #include "dma.h"
 #include "aes.h"
-#include "aes_regs.h"
 
 /***** Definitions *****/
 #define MXC_AES_DATA_LENGTH 8 //4 words
@@ -153,9 +150,6 @@ int main(void)
         printf("\nExample Succeeded\n");
     } else {
         printf("Example Failed\n");
-    }
-
-    while (1) {
     }
 
     return 0;

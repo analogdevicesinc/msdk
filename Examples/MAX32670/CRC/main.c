@@ -41,9 +41,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "mxc_device.h"
-#include "max32670.h"
 #include "nvic_table.h"
-#include "board.h"
 #include "crc.h"
 #include "dma.h"
 
@@ -141,13 +139,10 @@ int main(void)
     Test_CRC(1);
 
     if (fail) {
-        printf("\nExample Failed");
+        printf("\nExample Failed\n");
     } else {
-        printf("\nExample Succeeded");
+        printf("\nExample Succeeded\n");
     }
 
-    printf("\n\n");
-
-    while (1) {
-    }
+    return 0;
 }
