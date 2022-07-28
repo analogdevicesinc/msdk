@@ -57,8 +57,7 @@
  * OLD_SPI_API flag is to used the change on upper layer.
  * OLD_SPI_API is used by peripheral that use SPI layer like TFT, Touchscreen driver
  */
-#define OLD_SPI_API     1 
-
+#define OLD_SPI_API 1
 
 /***** Definitions *****/
 

@@ -5890,7 +5890,7 @@ static __INLINE q7_t arm_bilinear_interp_q7(arm_bilinear_interp_instance_q7* S, 
    * @} end of BilinearInterpolate group
    */
 
-#if defined(__CC_ARM) //Keil
+#if defined(__CC_ARM) //Keil \
                       //SMMLAR
 #define multAcc_32x32_keep32_R(a, x, y) \
     a = (q31_t)(((((q63_t)a) << 32) + ((q63_t)x * y) + 0x80000000LL) >> 32)
