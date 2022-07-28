@@ -50,7 +50,6 @@
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
-
 const mxc_gpio_cfg_t pb_pin[] = {
     {MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
     {MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
@@ -62,7 +61,6 @@ const mxc_gpio_cfg_t led_pin[] = {
     {MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
-
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
 //     UART_PARITY_DISABLE,
@@ -125,8 +123,6 @@ int Board_Init(void)
 
     MXC_SIMO->vrego_c = 0x43; // Set CNN voltage
 
-#endif // __riscv
-
     /* TFT reset and backlight signal */
     mxc_tft_spi_config tft_spi_config = {
         .regs   = MXC_SPI0,
@@ -155,6 +151,7 @@ int Board_Init(void)
     /* Initialize Touch Screen controller */
     MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
 
+#endif // __riscv
     return E_NO_ERROR;
 }
 
