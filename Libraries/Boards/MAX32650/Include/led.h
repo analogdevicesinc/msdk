@@ -56,11 +56,11 @@ extern "C" {
 
 /* **** Definitions **** */
 #ifndef LED_OFF
-#define LED_OFF     1   /**< Define to turn off the LED. */
+#define LED_OFF 1 /**< Define to turn off the LED. */
 #endif
 
 #ifndef LED_ON
-#define LED_ON      0   /**< Define to turn on the LED. */
+#define LED_ON 0 /**< Define to turn on the LED. */
 #endif
 
 /* **** Global Variables **** */

@@ -24,5 +24,4 @@
 #define UCL_UNDEFINED_HASH -1
 //extern int hash_size[MAX_HASH_FUNCTIONS];
 
-
-#endif//UCL_HASH
+#endif //UCL_HASH

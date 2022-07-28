@@ -35,10 +35,8 @@
 #ifndef __APP_LOOP_H__
 #define __APP_LOOP_H__
 
-
 /*****************************************************************************/
-int  app_loop_init(void);
+int app_loop_init(void);
 void app_loop_endless(void);
-
 
 #endif // __APP_LOOP_H__

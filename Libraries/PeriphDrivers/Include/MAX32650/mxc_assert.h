@@ -46,7 +46,6 @@
 
 /* **** Includes **** */
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -56,7 +55,7 @@ extern "C" {
  * @defgroup   mxc_assertions Assertion Checks for Debugging
  * @brief      Assertion checks for debugging.
  * @{
- */ 
+ */
 /* **** Definitions **** */
 /**
  * @note       Macro that checks the expression for true and generates an assertion if false. The symbol @c MXC_ASSERT_ENABLE must be
@@ -65,11 +64,10 @@ extern "C" {
 
 #ifdef MXC_ASSERT_ENABLE
 
-#define MXC_ASSERT(expr)                                \
-if (!(expr))                                            \
-{                                                       \
-    mxc_assert(#expr, __FILE__, __LINE__);              \
-}
+#define MXC_ASSERT(expr)                       \
+    if (!(expr)) {                             \
+        mxc_assert(#expr, __FILE__, __LINE__); \
+    }
 
 /**
  * Macro that generates an assertion with the message "FAIL".
@@ -98,7 +96,7 @@ if (!(expr))                                            \
  * @note       To use debug assertions, the symbol @c MXC_ASSERT_ENABLE must be
  *             defined. 
  */
-void mxc_assert(const char *expr, const char *file, int line);
+void mxc_assert(const char* expr, const char* file, int line);
 
 /**@} end of group MXC_Assertions*/
 

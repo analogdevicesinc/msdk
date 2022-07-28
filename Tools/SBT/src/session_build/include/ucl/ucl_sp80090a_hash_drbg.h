@@ -44,7 +44,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* _ cplusplus  */
- 
+
 #define UCL_SP800_90A_SHA256_SEEDLENGTH 55
 #define UCL_SP800_90A_SHA512_SEEDLENGTH 111
 
@@ -59,23 +59,21 @@ extern "C" {
  * @ingroup UCL_RAND
  */
 
-
 /** <b>SP800-90A Hash DRBG Internal State structure</b>.
  * The implementation follow the specification.
  * Therefore, the functions names are similar to the specification routines names.
  * @ingroup UCL_SP80090A
  */
 
-struct ucl_sp80090a_internal_state
-{
-  /** the value V, updated during each call */
-  u8 v[UCL_SP800_90A_SHA512_SEEDLENGTH];
-  /** the constant C, depending on the seed */
-  u8 c[UCL_SP800_90A_SHA512_SEEDLENGTH];
-  /** the reseed counter, indicating how many requests can be made since the instantiation or a reseeding */
-  u64 reseed_counter;
-  /** the reseed limit number, requiring a reseeding if the reseed counter reaches this value */
-  u64 reseed_limit;
+struct ucl_sp80090a_internal_state {
+    /** the value V, updated during each call */
+    u8 v[UCL_SP800_90A_SHA512_SEEDLENGTH];
+    /** the constant C, depending on the seed */
+    u8 c[UCL_SP800_90A_SHA512_SEEDLENGTH];
+    /** the reseed counter, indicating how many requests can be made since the instantiation or a reseeding */
+    u64 reseed_counter;
+    /** the reseed limit number, requiring a reseeding if the reseed counter reaches this value */
+    u64 reseed_limit;
 };
 
 typedef struct ucl_sp80090a_internal_state ucl_sp80090a_internal_state_t;
@@ -99,7 +97,9 @@ typedef struct ucl_sp80090a_internal_state ucl_sp80090a_internal_state_t;
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_SP80090A
  */
-int ucl_sp80090a_hash_df_sha256(u8 *requested_bits,u8 *entropy_input,u32 entropy_input_len,u8 *nonce,u32 nonce_len,u8 *personalization_string,u32 personalization_string_len,u32 nb_of_bits_to_return);
+int ucl_sp80090a_hash_df_sha256(u8* requested_bits, u8* entropy_input, u32 entropy_input_len,
+                                u8* nonce, u32 nonce_len, u8* personalization_string,
+                                u32 personalization_string_len, u32 nb_of_bits_to_return);
 
 /** <b>SP800690A hash DRBG internal state reseeding  based on SHA256</b>.
  * this function updates the internal state, using the provided entropy input and the additional input
@@ -119,7 +119,9 @@ int ucl_sp80090a_hash_df_sha256(u8 *requested_bits,u8 *entropy_input,u32 entropy
  * @ingroup UCL_SP80090A
  */
 
-int ucl_sp80090a_reseeding_sha256(ucl_sp80090a_internal_state_t *internal_state,u8 *entropy_input,u32 entropy_input_len,u8 *additional_input,u32 additional_input_len);
+int ucl_sp80090a_reseeding_sha256(ucl_sp80090a_internal_state_t* internal_state, u8* entropy_input,
+                                  u32 entropy_input_len, u8* additional_input,
+                                  u32 additional_input_len);
 
 /** <b>SP800690A hash DRBG internal state instantiation  based on SHA256</b>.
  * this function instantiates the internal state, using the provided entropy input, the nonce and the personalization string
@@ -142,7 +144,10 @@ int ucl_sp80090a_reseeding_sha256(ucl_sp80090a_internal_state_t *internal_state,
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_SP80090A
  */
-int ucl_sp80090a_instantiate_sha256(ucl_sp80090a_internal_state_t *internal_state,u8 *entropy_input,u32 entropy_input_len,u8 *nonce,u32 nonce_len,u8 *personalization_string,u32 personalization_string_len);
+int ucl_sp80090a_instantiate_sha256(ucl_sp80090a_internal_state_t* internal_state,
+                                    u8* entropy_input, u32 entropy_input_len, u8* nonce,
+                                    u32 nonce_len, u8* personalization_string,
+                                    u32 personalization_string_len);
 
 /** <b>SP800690A hashgen function  based on SHA256</b>.
  * this function returns generated bits to the generate function
@@ -159,8 +164,7 @@ int ucl_sp80090a_instantiate_sha256(ucl_sp80090a_internal_state_t *internal_stat
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_SP80090A
  */
-int hashgen_sha256(u8 *requested_bits,int nb_of_bits_to_return,u8 *v);
-
+int hashgen_sha256(u8* requested_bits, int nb_of_bits_to_return, u8* v);
 
 /** <b>SP800690A bits generation function based on SHA256 </b>.
  * this function returns requested pseudorandom bits
@@ -179,15 +183,24 @@ int hashgen_sha256(u8 *requested_bits,int nb_of_bits_to_return,u8 *v);
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_SP80090A
  */
-  int ucl_sp80090a_hash_drbg_sha256_generate(u8 *requested_bits,int nb_of_bits_to_return,ucl_sp80090a_internal_state_t *internal_state,u8 *additional_input,int additional_input_len);
+int ucl_sp80090a_hash_drbg_sha256_generate(u8* requested_bits, int nb_of_bits_to_return,
+                                           ucl_sp80090a_internal_state_t* internal_state,
+                                           u8* additional_input, int additional_input_len);
 
-int ucl_sp80090a_hash_df_sha512(u8 *requested_bits,u8 *entropy_input,u32 entropy_input_len,u8 *nonce,u32 nonce_len,u8 *personalization_string,u32 personalization_string_len,u32 nb_of_bits_to_return);
-int ucl_sp80090a_reseeding_sha512(ucl_sp80090a_internal_state_t *internal_state,u8 *entropy_input,u32 entropy_input_len,u8 *additional_input,u32 additional_input_len);
-int ucl_sp80090a_instantiate_sha512(ucl_sp80090a_internal_state_t *internal_state,u8 *entropy_input,u32 entropy_input_len,u8 *nonce,u32 nonce_len,u8 *personalization_string,u32 personalization_string_len);
+int ucl_sp80090a_hash_df_sha512(u8* requested_bits, u8* entropy_input, u32 entropy_input_len,
+                                u8* nonce, u32 nonce_len, u8* personalization_string,
+                                u32 personalization_string_len, u32 nb_of_bits_to_return);
+int ucl_sp80090a_reseeding_sha512(ucl_sp80090a_internal_state_t* internal_state, u8* entropy_input,
+                                  u32 entropy_input_len, u8* additional_input,
+                                  u32 additional_input_len);
+int ucl_sp80090a_instantiate_sha512(ucl_sp80090a_internal_state_t* internal_state,
+                                    u8* entropy_input, u32 entropy_input_len, u8* nonce,
+                                    u32 nonce_len, u8* personalization_string,
+                                    u32 personalization_string_len);
 
-  u32 __API__ ceiling_div(u32 a,u32 b);
+u32 __API__ ceiling_div(u32 a, u32 b);
 
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif//UCL_SP80090A_HASH_DRBG_H
+#endif //UCL_SP80090A_HASH_DRBG_H

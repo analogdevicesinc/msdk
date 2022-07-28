@@ -63,33 +63,31 @@ extern "C" {
  * Enumeration type for setting the number Bits per Pixel for the LCD screen 
  */
 typedef enum {
-    MXC_BPP1 = MXC_S_CLCD_CTRL_BPP_BPP1,    /**< 1 Bits per Pixel.                       */
-    MXC_BPP2 = MXC_S_CLCD_CTRL_BPP_BPP2,    /**< 2 Bits per Pixel.                       */
-    MXC_BPP4 = MXC_S_CLCD_CTRL_BPP_BPP4,    /**< 4 Bits per Pixel.                       */
-    MXC_BPP8 = MXC_S_CLCD_CTRL_BPP_BPP8,    /**< 8 Bits per Pixel.                       */
-    MXC_BPP16 = MXC_S_CLCD_CTRL_BPP_BPP16,  /**< 16 Bits per Pixel.                      */
-    MXC_BPP24 = MXC_S_CLCD_CTRL_BPP_BPP24,  /**< 24 Bits per Pixel.                      */
+    MXC_BPP1  = MXC_S_CLCD_CTRL_BPP_BPP1,  /**< 1 Bits per Pixel.                       */
+    MXC_BPP2  = MXC_S_CLCD_CTRL_BPP_BPP2,  /**< 2 Bits per Pixel.                       */
+    MXC_BPP4  = MXC_S_CLCD_CTRL_BPP_BPP4,  /**< 4 Bits per Pixel.                       */
+    MXC_BPP8  = MXC_S_CLCD_CTRL_BPP_BPP8,  /**< 8 Bits per Pixel.                       */
+    MXC_BPP16 = MXC_S_CLCD_CTRL_BPP_BPP16, /**< 16 Bits per Pixel.                      */
+    MXC_BPP24 = MXC_S_CLCD_CTRL_BPP_BPP24, /**< 24 Bits per Pixel.                      */
 } mxc_clcd_bpp_t;
 
 /** 
  * Structure type for configuring the CLCD peripheral. 
  */
-typedef struct mxc_clcd_cfg
-{
-    uint32_t            width;
-    uint32_t            height;
-    uint32_t            frequency;
-    uint32_t            vfrontporch;
-    uint32_t            vbackporch;
-    uint32_t            vsyncwidth;
-    uint32_t            hfrontporch;
-    uint32_t            hbackporch;
-    uint32_t            hsyncwidth;
-    uint32_t            *palette;
-    uint32_t            paletteSize;
-    mxc_clcd_bpp_t      bpp;
+typedef struct mxc_clcd_cfg {
+    uint32_t width;
+    uint32_t height;
+    uint32_t frequency;
+    uint32_t vfrontporch;
+    uint32_t vbackporch;
+    uint32_t vsyncwidth;
+    uint32_t hfrontporch;
+    uint32_t hbackporch;
+    uint32_t hsyncwidth;
+    uint32_t* palette;
+    uint32_t paletteSize;
+    mxc_clcd_bpp_t bpp;
 } mxc_clcd_cfg_t;
-
 
 /* **** Function Prototypes **** */
 
@@ -133,8 +131,6 @@ int MXC_CLCD_Disable(void);
 int MXC_CLCD_SetFrameAddr(void* addr);
 
 /**@} end of group clcd */
-
-
 
 #ifdef __cplusplus
 }

@@ -46,7 +46,6 @@ extern "C" {
  * @ingroup UCL_CFB
  */
 
-
 /*============================================================================*/
 /** <b>DES-CFB</b>.
  * Complete process.
@@ -75,9 +74,7 @@ extern "C" {
  *
  * @ingroup UCL_CFB_DES
  */
-int ucl_des_cfb(u8 *dataOut, u8 *dataIn, u8 *key, u8 *IV,
-                u32 data_byteLen, int mode);
-
+int ucl_des_cfb(u8* dataOut, u8* dataIn, u8* key, u8* IV, u32 data_byteLen, int mode);
 
 /*============================================================================*/
 /** <b>DES-CFB Init</b>.
@@ -101,9 +98,7 @@ int ucl_des_cfb(u8 *dataOut, u8 *dataIn, u8 *key, u8 *IV,
  *
  * @ingroup UCL_CFB_DES
  */
-int ucl_des_cfb_init(ucl_des_ctx_t *ctx, u8 *key, u8 *IV,
-                     int mode);
-
+int ucl_des_cfb_init(ucl_des_ctx_t* ctx, u8* key, u8* IV, int mode);
 
 /*============================================================================*/
 /** <b>DES-CFB Core</b>.
@@ -126,9 +121,7 @@ int ucl_des_cfb_init(ucl_des_ctx_t *ctx, u8 *key, u8 *IV,
  *
  * @ingroup UCL_CFB_DES
  */
-int ucl_des_cfb_core(u8 *dataOut, ucl_des_ctx_t *ctx,
-                     u8 *dataIn, u32 data_byteLen);
-
+int ucl_des_cfb_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>DES-CFB Finish</b>.
@@ -143,7 +136,7 @@ int ucl_des_cfb_core(u8 *dataOut, ucl_des_ctx_t *ctx,
  *
  * @ingroup UCL_CFB_DES
  */
-int ucl_des_cfb_finish(ucl_des_ctx_t *ctx);
+int ucl_des_cfb_finish(ucl_des_ctx_t* ctx);
 
 #ifdef __cplusplus
 }

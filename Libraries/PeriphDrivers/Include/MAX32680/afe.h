@@ -56,19 +56,19 @@ extern "C" {
 #include "infoblock.h"
 
 /***** Definitions *****/
-#define AFE_REG_ADDR_BANK_POS	23
-#define AFE_REG_ADDR_BANK		((uint32_t)(0x03 << AFE_REG_ADDR_BANK_POS))
-#define AFE_REG_ADDR_POS		16
-#define AFE_REG_ADDR			((uint32_t)(0x7F << AFE_REG_ADDR_POS))
-#define AFE_REG_ADDR_LEN_POS	0
-#define AFE_REG_ADDR_LEN		((uint32_t)(0x07 << AFE_REG_ADDR_LEN_POS))
-#define AFE_REG_ADDR_READ_BIT   0x80
-#define AFE_CRC_LEN				1
+#define AFE_REG_ADDR_BANK_POS 23
+#define AFE_REG_ADDR_BANK     ((uint32_t)(0x03 << AFE_REG_ADDR_BANK_POS))
+#define AFE_REG_ADDR_POS      16
+#define AFE_REG_ADDR          ((uint32_t)(0x7F << AFE_REG_ADDR_POS))
+#define AFE_REG_ADDR_LEN_POS  0
+#define AFE_REG_ADDR_LEN      ((uint32_t)(0x07 << AFE_REG_ADDR_LEN_POS))
+#define AFE_REG_ADDR_READ_BIT 0x80
+#define AFE_CRC_LEN           1
 
-#define AFE_ADC0_BANK			0
-#define AFE_ADC1_BANK			1
-#define AFE_DAC_BANK			2
-#define AFE_HART_BANK			3
+#define AFE_ADC0_BANK 0
+#define AFE_ADC1_BANK 1
+#define AFE_DAC_BANK  2
+#define AFE_HART_BANK 3
 
 /***** Function Prototypes *****/
 /**
