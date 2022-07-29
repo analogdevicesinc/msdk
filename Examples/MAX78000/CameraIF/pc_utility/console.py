@@ -12,7 +12,7 @@ Run "python console.py -h" for help.
 
 from serial import Serial
 from threading import Thread, Lock
-import signal
+import traceback
 import re
 from imgConverter import convert
 import argparse
@@ -51,13 +51,40 @@ class CameraIFConsole():
                     self.quit()
                 elif _input == "help" or _input == "h":
                     self.help()
-                else:
-                    self.lock_input.acquire()
-                    self.input = _input
-                    self.lock_input.release()
+                    _input = ""
+                elif "set-reg" in _input:
+                    expr = re.compile("set-reg (\w+) (\w+)")
+                    match = expr.findall(_input)
+                    if len(match) == 1:
+                        values = match[0]
+                        reg = int(values[0], 0)
+                        # ^ Using a base of 0 auto-detects the number format.
+                        # This allows for decoding of hex prefixes (0x45), binary (0b14),
+                        # standard base 10, etc. automatically.
+                        val = int(values[1], 0)
+                        _input = f"set-reg {reg} {val}"
+                    else:
+                        print(f"Failed to parse set-reg command: '{_input}'")
+                        _input = ""
+
+                elif "get-reg" in _input:
+                    expr = re.compile("get-reg (\w+)")
+                    match = expr.findall(_input)
+                    if len(match) == 1:
+                        # Since there is just a single value in the regex, 'match' will
+                        # contain the register address.
+                        reg = int(match[0], 0)
+                        _input = f"get-reg {reg}"
+                    else:
+                        print(f"Failed to parse get-reg command: '{_input}'")
+                        _input = ""
+
+                self.lock_input.acquire()
+                self.input = _input
+                self.lock_input.release()
 
         except Exception as e:
-            print(e)
+            print(traceback.format_exc())
             self.quit()
 
     """
@@ -125,18 +152,18 @@ class CameraIFConsole():
                                 # Received expected header, parse parameters from regex
                                 values = match[0]
                                 pixel_format = values[0]
-                                length = int(values[1])
+                                expected = int(values[1])
                                 w = int(values[2])
                                 h = int(values[3])
 
                                 # Enter "receive" mode, where we'll wait for the expected
                                 # number of bytes.
-                                print(f"Waiting for {length} bytes...")
-                                img_raw = self.s.read(length)
+                                print(f"Waiting for {expected} bytes...")
+                                img_raw = self.s.read(expected)
                                 
-                                if (len(img_raw) != length):
+                                if (len(img_raw) != expected):
                                     # Failed to receive expected number of bytes.
-                                    print(f"Image receive failed!  Only received {len(img_raw)/length} bytes")
+                                    print(f"Image receive failed!  Only received {len(img_raw)}/{expected} bytes")
                                 else:
                                     convert(img_raw, "Image.png", w, h, pixel_format)
                                     image = cv2.imread("image.png")
@@ -144,7 +171,7 @@ class CameraIFConsole():
                                     cv2.waitKey(1)
 
         except Exception as e:
-            print(e)
+            print(traceback.format_exc())
             self.quit()
 
     def quit(self):
@@ -158,8 +185,6 @@ class CameraIFConsole():
         print("\t'help' : Prints this help string")
         print("\t'capture' : This command will perform a blocking capture of a single image.")
         print("\t'imgres' <width> <height> : Set the image resolution of the camera to <width> x <height>")
-        print("\t'enable_dma' : Enables DMA for standard blocking captures ('capture')")
-        print("\t'disable_dma' : Disables DMA for standard blocking captures ('capture')")
         print("\t'stream' : Performs a line-by-line streaming DMA capture of a single image.")
 
 # Set up command-line arguments
