@@ -83,8 +83,7 @@ void MXC_WDT_Enable(mxc_wdt_regs_t* wdt)
 {
 	if((MXC_GCR->revision & 0x00F0) == 0x00A0) {
 		MXC_WDT_RevB_Enable((mxc_wdt_revb_regs_t*) wdt);
-	}
-	else {
+	} else {
 		__disable_irq();
 		wdt->rst = 0xFE;
 		wdt->rst = 0XED;
@@ -96,8 +95,7 @@ void MXC_WDT_Disable(mxc_wdt_regs_t* wdt)
 {
 	if((MXC_GCR->revision & 0x00F0) == 0x00A0) {
 		MXC_WDT_RevB_Disable((mxc_wdt_revb_regs_t*) wdt);
-	}
-	else {
+	} else {
 		__disable_irq();
 		wdt->rst = 0xDE;
 		wdt->rst = 0XAD;
