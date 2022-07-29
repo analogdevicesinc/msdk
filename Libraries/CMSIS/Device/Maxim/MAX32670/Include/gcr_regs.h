@@ -532,6 +532,9 @@ typedef struct {
  #define MXC_F_GCR_RST1_I2S_POS                         23 /**< RST1_I2S Position */
  #define MXC_F_GCR_RST1_I2S                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_I2S_POS)) /**< RST1_I2S Mask */
 
+ #define MXC_F_GCR_RST1_ABB_POS                         24 /**< RST1_ABB Position */
+ #define MXC_F_GCR_RST1_ABB                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_ABB_POS)) /**< RST1_ABB Mask */
+
 /**@} end of group GCR_RST1_Register */
 
 /**
@@ -566,6 +569,12 @@ typedef struct {
 
  #define MXC_F_GCR_PCLKDIS1_I2S_POS                     23 /**< PCLKDIS1_I2S Position */
  #define MXC_F_GCR_PCLKDIS1_I2S                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_I2S_POS)) /**< PCLKDIS1_I2S Mask */
+
+ #define MXC_F_GCR_PCLKDIS1_ABB_POS                     24 /**< PCLKDIS1_ABB Position */
+ #define MXC_F_GCR_PCLKDIS1_ABB                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_ABB_POS)) /**< PCLKDIS1_ABB Mask */
+
+ #define MXC_F_GCR_PCLKDIS1_ABBXO32_POS                 25 /**< PCLKDIS1_ABBXO32 Position */
+ #define MXC_F_GCR_PCLKDIS1_ABBXO32                     ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_ABBXO32_POS)) /**< PCLKDIS1_ABBXO32 Mask */
 
 /**@} end of group GCR_PCLKDIS1_Register */
 

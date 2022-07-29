@@ -403,8 +403,13 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
-    /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 and 64 for the rst register. */
-    if (reset > 63) {
+    if(reset == MXC_SYS_RESET_RTC) {                    // RTC reset bit is different for RevA and RevB
+        if((MXC_GCR->revision & 0x00F0) == 0xA0) {      // If RevA, switch to reset bit in PCLKDIS0
+            reset = MXC_F_GCR_RST0_RTC_POS;
+        }
+    }
+    
+    if (reset > 63) {                              /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 and 64 for the rst register. */
         reset -= 64;
         MXC_MCR->rst = (0x1 << reset);
 		while (MXC_MCR->rst & (0x1 << reset));

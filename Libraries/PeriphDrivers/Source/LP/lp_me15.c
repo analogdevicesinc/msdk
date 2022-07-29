@@ -234,10 +234,12 @@ void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr)
     if(tmr == MXC_TMR4) {
         MXC_GCR->pm |= MXC_F_GCR_PM_LPTMR0_WE;
         MXC_PWRSEQ->lppwken  |= MXC_F_PWRSEQ_LPPWKEN_LPTMR0;
+        MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR0_I | MXC_F_MCR_LPPIOCTRL_LPTMR0_O;
     }
     else {
         MXC_GCR->pm |= MXC_F_GCR_PM_LPTMR1_WE;
         MXC_PWRSEQ->lppwken  |= MXC_F_PWRSEQ_LPPWKEN_LPTMR1;
+        MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR1_I | MXC_F_MCR_LPPIOCTRL_LPTMR1_O;
     }
 }
 
@@ -248,11 +250,29 @@ void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr)
     if(tmr == MXC_TMR4) {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_LPTMR0_WE;
         MXC_PWRSEQ->lppwken  &= ~MXC_F_PWRSEQ_LPPWKEN_LPTMR0;
+        MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR0_I | MXC_F_MCR_LPPIOCTRL_LPTMR0_O);
     }
     else {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_LPTMR1_WE;
         MXC_PWRSEQ->lppwken  &= ~MXC_F_PWRSEQ_LPPWKEN_LPTMR1;
+        MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR1_I | MXC_F_MCR_LPPIOCTRL_LPTMR1_O);
     }
+}
+
+void MXC_LP_EnableUARTWakeup (void)
+{
+    MXC_GCR->pm |= MXC_F_GCR_PM_LPUART0_WE;
+    MXC_PWRSEQ->lppwken |= MXC_F_PWRSEQ_LPPWKEN_LPUART0;
+    MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPUART0_RX  | MXC_F_MCR_LPPIOCTRL_LPUART0_TX |
+                          MXC_F_MCR_LPPIOCTRL_LPUART0_RTS | MXC_F_MCR_LPPIOCTRL_LPUART0_CTS;
+}
+
+void MXC_LP_DisableUARTWakeup (void)
+{
+    MXC_GCR->pm &= ~MXC_F_GCR_PM_LPUART0_WE;
+    MXC_PWRSEQ->lppwken &= ~MXC_F_PWRSEQ_LPPWKEN_LPUART0;
+    MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPUART0_RX  | MXC_F_MCR_LPPIOCTRL_LPUART0_TX |
+                            MXC_F_MCR_LPPIOCTRL_LPUART0_RTS | MXC_F_MCR_LPPIOCTRL_LPUART0_CTS);
 }
 
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
