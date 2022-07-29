@@ -50,12 +50,12 @@
 #include "board.h"
 
 /***** Definitions *****/
-#if defined(BOARD_FTHR_APPS_P1)   // Defined in board.h
-    #define I2C_MASTER  MXC_I2C1  // SCL P0_16; SDA P0_17
+#if defined(BOARD_FTHR_APPS_P1) // Defined in board.h
+#define I2C_MASTER MXC_I2C1     // SCL P0_16; SDA P0_17
 #else
-    #define I2C_MASTER  MXC_I2C2  // SCL P0_30; SDA P0_31
+#define I2C_MASTER MXC_I2C2 // SCL P0_30; SDA P0_31
 #endif
-#define I2C_FREQ    100000    // 100kHZ
+#define I2C_FREQ 100000 // 100kHZ
 
 /***** Globals *****/
 
@@ -74,7 +74,7 @@ int main()
 #endif
 
     //Setup the I2CM
-    if ( E_NO_ERROR != MXC_I2C_Init(I2C_MASTER, 1, 0) ) {
+    if (E_NO_ERROR != MXC_I2C_Init(I2C_MASTER, 1, 0)) {
         printf("-->Failed master\n");
         return -1;
     } else {
@@ -84,26 +84,25 @@ int main()
     printf("-->Scanning started\n");
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
     mxc_i2c_req_t reqMaster;
-    reqMaster.i2c = I2C_MASTER;
-    reqMaster.addr = 0;
-    reqMaster.tx_buf = NULL;
-    reqMaster.tx_len = 0;
-    reqMaster.rx_buf = NULL;
-    reqMaster.rx_len = 0;
-    reqMaster.restart = 0;
+    reqMaster.i2c      = I2C_MASTER;
+    reqMaster.addr     = 0;
+    reqMaster.tx_buf   = NULL;
+    reqMaster.tx_len   = 0;
+    reqMaster.rx_buf   = NULL;
+    reqMaster.rx_len   = 0;
+    reqMaster.restart  = 0;
     reqMaster.callback = NULL;
 
-    for(uint8_t address = 8; address < 120; address++) {
-
-    	printf(".");
+    for (uint8_t address = 8; address < 120; address++) {
+        printf(".");
         fflush(0);
 
         reqMaster.addr = address;
-    	if ( E_NO_ERROR == MXC_I2C_MasterTransaction(&reqMaster) ) {
-    		printf("\nFound slave ID %03d; 0x%02X\n", address, address);
-    		counter++;
-    	}
-    	MXC_Delay(MXC_DELAY_MSEC(200));
+        if (E_NO_ERROR == MXC_I2C_MasterTransaction(&reqMaster)) {
+            printf("\nFound slave ID %03d; 0x%02X\n", address, address);
+            counter++;
+        }
+        MXC_Delay(MXC_DELAY_MSEC(200));
     }
 
     printf("\n-->Scan finished. %d devices found\n", counter);

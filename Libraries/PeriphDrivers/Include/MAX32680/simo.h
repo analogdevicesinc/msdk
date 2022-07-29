@@ -55,8 +55,8 @@ extern "C" {
  */
 
 /* **** Definitions **** */
-#define VREGO_LOW_RANGE_BASE	500
-#define VREGO_HIGH_RANGE_BASE	600
+#define VREGO_LOW_RANGE_BASE  500
+#define VREGO_HIGH_RANGE_BASE 600
 
 /* **** Function Prototypes **** */
 void MXC_SIMO_setVregO_A(uint32_t voltage);

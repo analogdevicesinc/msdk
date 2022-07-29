@@ -50,24 +50,30 @@
 
 extern uint32_t __isr_vector_core1;
 
-void Core1_Start(void) {
+void Core1_Start(void)
+{
     MXC_GCR->gp0 = (uint32_t)(&__isr_vector_core1);
     MXC_GCR->perckcn1 &= ~MXC_F_GCR_PERCKCN1_CPU1D;
 }
 
-void Core1_Stop(void) {
+void Core1_Stop(void)
+{
     MXC_GCR->perckcn1 |= MXC_F_GCR_PERCKCN1_CPU1D;
 }
 
-__weak int Core1_Main(void) {
-    // The user should declare this in application code, so we'll just spin 
-    while(1);
+__weak int Core1_Main(void)
+{
+    // The user should declare this in application code, so we'll just spin
+    while (1)
+        ;
 }
-__weak void PreInit_Core1(void) {
+__weak void PreInit_Core1(void)
+{
     return;
 }
 
-__weak void SystemInit_Core1(void) {
+__weak void SystemInit_Core1(void)
+{
     /* Configure the interrupt controller to use the application vector table in
      * the application space */
     SCB->VTOR = (unsigned long)&__isr_vector_core1;
@@ -84,9 +90,11 @@ __weak void SystemInit_Core1(void) {
 
     // Invalidate cache and wait until ready
     MXC_ICC1->invalidate = 1;
-    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY));
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
+        ;
 
     // Enable Cache
     MXC_ICC1->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY));
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
+        ;
 }

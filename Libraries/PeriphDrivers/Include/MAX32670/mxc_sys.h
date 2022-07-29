@@ -85,49 +85,77 @@ typedef enum {
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
 typedef enum {
-    MXC_SYS_PERIPH_CLOCK_GPIO0       = MXC_F_GCR_PCLKDIS0_GPIO0_POS,                    /**< Disable MXC_F_GCR_PCLKDIS0_GPIO0 clock */
-    MXC_SYS_PERIPH_CLOCK_GPIO1       = MXC_F_GCR_PCLKDIS0_GPIO1_POS,                    /**< Disable MXC_F_GCR_PCLKDIS0_GPIO1 clock */
-    MXC_SYS_PERIPH_CLOCK_DMA         = MXC_F_GCR_PCLKDIS0_DMA_POS,                      /**< Disable MXC_F_GCR_PCLKDIS0_DMA clock */
-    MXC_SYS_PERIPH_CLOCK_SPI0        = MXC_F_GCR_PCLKDIS0_SPI0_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_SPI0 clock */
-    MXC_SYS_PERIPH_CLOCK_SPI1        = MXC_F_GCR_PCLKDIS0_SPI1_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_SPI1 clock */
-    MXC_SYS_PERIPH_CLOCK_SPI2        = MXC_F_GCR_PCLKDIS0_SPI2_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_SPI2 clock */
-    MXC_SYS_PERIPH_CLOCK_UART0       = MXC_F_GCR_PCLKDIS0_UART0_POS,                    /**< Disable MXC_F_GCR_PCLKDIS0_UART0 clock */
-    MXC_SYS_PERIPH_CLOCK_UART1       = MXC_F_GCR_PCLKDIS0_UART1_POS,                    /**< Disable MXC_F_GCR_PCLKDIS0_UART1 clock */
-    MXC_SYS_PERIPH_CLOCK_I2C0        = MXC_F_GCR_PCLKDIS0_I2C0_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_I2C0 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR0        = MXC_F_GCR_PCLKDIS0_TMR0_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_T0 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR1        = MXC_F_GCR_PCLKDIS0_TMR1_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_T1 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR2        = MXC_F_GCR_PCLKDIS0_TMR2_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_T2 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR3        = MXC_F_GCR_PCLKDIS0_TMR3_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_T3 clock */
-    MXC_SYS_PERIPH_CLOCK_I2C1        = MXC_F_GCR_PCLKDIS0_I2C1_POS,                     /**< Disable MXC_F_GCR_PCLKDIS0_I2C1 clock */
+    MXC_SYS_PERIPH_CLOCK_GPIO0 =
+        MXC_F_GCR_PCLKDIS0_GPIO0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO0 clock */
+    MXC_SYS_PERIPH_CLOCK_GPIO1 =
+        MXC_F_GCR_PCLKDIS0_GPIO1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO1 clock */
+    MXC_SYS_PERIPH_CLOCK_DMA =
+        MXC_F_GCR_PCLKDIS0_DMA_POS, /**< Disable MXC_F_GCR_PCLKDIS0_DMA clock */
+    MXC_SYS_PERIPH_CLOCK_SPI0 =
+        MXC_F_GCR_PCLKDIS0_SPI0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SPI0 clock */
+    MXC_SYS_PERIPH_CLOCK_SPI1 =
+        MXC_F_GCR_PCLKDIS0_SPI1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SPI1 clock */
+    MXC_SYS_PERIPH_CLOCK_SPI2 =
+        MXC_F_GCR_PCLKDIS0_SPI2_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SPI2 clock */
+    MXC_SYS_PERIPH_CLOCK_UART0 =
+        MXC_F_GCR_PCLKDIS0_UART0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_UART0 clock */
+    MXC_SYS_PERIPH_CLOCK_UART1 =
+        MXC_F_GCR_PCLKDIS0_UART1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_UART1 clock */
+    MXC_SYS_PERIPH_CLOCK_I2C0 =
+        MXC_F_GCR_PCLKDIS0_I2C0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_I2C0 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR0 =
+        MXC_F_GCR_PCLKDIS0_TMR0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_T0 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR1 =
+        MXC_F_GCR_PCLKDIS0_TMR1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_T1 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR2 =
+        MXC_F_GCR_PCLKDIS0_TMR2_POS, /**< Disable MXC_F_GCR_PCLKDIS0_T2 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR3 =
+        MXC_F_GCR_PCLKDIS0_TMR3_POS, /**< Disable MXC_F_GCR_PCLKDIS0_T3 clock */
+    MXC_SYS_PERIPH_CLOCK_I2C1 =
+        MXC_F_GCR_PCLKDIS0_I2C1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_I2C1 clock */
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
-    MXC_SYS_PERIPH_CLOCK_UART2       = (MXC_F_GCR_PCLKDIS1_UART2_POS + 32),             /**< Disable MXC_F_GCR_PCLKDIS1_UART2 clock */
-    MXC_SYS_PERIPH_CLOCK_TRNG        = (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32),              /**< Disable MXC_F_GCR_PCLKDIS1_TRNG clock */
-    MXC_SYS_PERIPH_CLOCK_WDT0        = (MXC_F_GCR_PCLKDIS1_WWDT0_POS + 32),             /**< Disable MXC_F_GCR_PCLKDIS1_WDT0 clock */
-    MXC_SYS_PERIPH_CLOCK_WDT1        = (MXC_F_GCR_PCLKDIS1_WWDT1_POS + 32),             /**< Disable MXC_F_GCR_PCLKDIS1_WDT1 clock */
-    MXC_SYS_PERIPH_CLOCK_ICACHE      = (MXC_F_GCR_PCLKDIS1_ICC0_POS + 32),              /**< Disable MXC_F_GCR_PCLKDIS1_ICACHE clock */
-    MXC_SYS_PERIPH_CLOCK_CRC         = (MXC_F_GCR_PCLKDIS1_CRC_POS + 32),               /**< Disable MXC_F_GCR_PCLKDIS1_CRC clock */
-    MXC_SYS_PERIPH_CLOCK_AES         = (MXC_F_GCR_PCLKDIS1_AES_POS + 32),               /**< Disable MXC_F_GCR_PCLKDIS1_AES clock */
-    MXC_SYS_PERIPH_CLOCK_I2C2        = (MXC_F_GCR_PCLKDIS1_I2C2_POS + 32),              /**< Disable MXC_F_GCR_PCLKDIS1_I2C2 clock */
-    MXC_SYS_PERIPH_CLOCK_I2S         = (MXC_F_GCR_PCLKDIS1_I2S_POS + 32),               /**< Disable MXC_F_GCR_PCLKDIS1_I2S clock */
-    MXC_SYS_PERIPH_CLOCK_ABB         = (MXC_F_GCR_PCLKDIS1_ABB_POS + 32),               /**< Disable MXC_F_GCR_PCLKDIS1_ABB clock */
-    MXC_SYS_PERIPH_CLOCK_ABBX032     = (MXC_F_GCR_PCLKDIS1_ABBXO32_POS + 32),           /**< Disable MXC_F_GCR_PCLKDIS1_ABBXO32 clock */
+    MXC_SYS_PERIPH_CLOCK_UART2 = 
+        (MXC_F_GCR_PCLKDIS1_UART2_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_UART2 clock */
+    MXC_SYS_PERIPH_CLOCK_TRNG = 
+        (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_TRNG clock */
+    MXC_SYS_PERIPH_CLOCK_WDT0 = 
+        (MXC_F_GCR_PCLKDIS1_WWDT0_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_WDT0 clock */
+    MXC_SYS_PERIPH_CLOCK_WDT1 = 
+        (MXC_F_GCR_PCLKDIS1_WWDT1_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_WDT1 clock */
+    MXC_SYS_PERIPH_CLOCK_ICACHE = 
+        (MXC_F_GCR_PCLKDIS1_ICC0_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_ICACHE clock */
+    MXC_SYS_PERIPH_CLOCK_CRC = 
+        (MXC_F_GCR_PCLKDIS1_CRC_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_CRC clock */
+    MXC_SYS_PERIPH_CLOCK_AES = 
+        (MXC_F_GCR_PCLKDIS1_AES_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_AES clock */
+    MXC_SYS_PERIPH_CLOCK_I2C2 = 
+        (MXC_F_GCR_PCLKDIS1_I2C2_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2C2 clock */
+    MXC_SYS_PERIPH_CLOCK_I2S = 
+        (MXC_F_GCR_PCLKDIS1_I2S_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2S clock */
+    MXC_SYS_PERIPH_CLOCK_ABB = 
+        (MXC_F_GCR_PCLKDIS1_ABB_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_ABB clock */
+    MXC_SYS_PERIPH_CLOCK_ABBX032 = 
+        (MXC_F_GCR_PCLKDIS1_ABBXO32_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_ABBXO32 clock */
     /* LPGCR PCLKDIS Below this line we add 64 to seperate GCR and LPGCR registers */
-    MXC_SYS_PERIPH_CLOCK_TMR4        = (MXC_F_MCR_CLKDIS_LPTMR0_POS + 64),                  /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR5        = (MXC_F_MCR_CLKDIS_LPTMR1_POS + 64),                  /**< Disable MXC_F_LPGCR_PCLKDIS_TMR5 clock */
-    MXC_SYS_PERIPH_CLOCK_UART3       = (MXC_F_MCR_CLKDIS_LPUART0_POS + 64),                 /**< Disable MXC_F_LPGCR_PCLKDIS_UART3 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR4 = 
+        (MXC_F_MCR_CLKDIS_LPTMR0_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */
+    MXC_SYS_PERIPH_CLOCK_TMR5 =
+        (MXC_F_MCR_CLKDIS_LPTMR1_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR5 clock */
+    MXC_SYS_PERIPH_CLOCK_UART3 =
+        (MXC_F_MCR_CLKDIS_LPUART0_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_UART3 clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_IPO     = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
-    MXC_SYS_CLOCK_IBRO    = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
-    MXC_SYS_CLOCK_ERFO    = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
-    MXC_SYS_CLOCK_INRO    = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
-    MXC_SYS_CLOCK_ERTCO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
-    MXC_SYS_CLOCK_EXTCLK  = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK
+    MXC_SYS_CLOCK_IPO    = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
+    MXC_SYS_CLOCK_IBRO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
+    MXC_SYS_CLOCK_ERFO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
+    MXC_SYS_CLOCK_INRO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
+    MXC_SYS_CLOCK_ERTCO  = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
+    MXC_SYS_CLOCK_EXTCLK = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK
 } mxc_sys_system_clock_t;
 
-#define MXC_SYS_USN_CHECKSUM_LEN    16
+#define MXC_SYS_USN_CHECKSUM_LEN 16
 
 /***** Function Prototypes *****/
 
@@ -137,32 +165,32 @@ typedef enum {
  * @param checksum  Optional pointer to store the AES checksum.
  * @returns       E_NO_ERROR if everything is successful.
  */
-int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
+int MXC_SYS_GetUSN(uint8_t* usn, uint8_t* checksum);
 
 /**
  * @brief Determines if the selected peripheral clock is enabled.
  * @param clock   Enumeration for desired clock.
  * @returns       0 is the clock is disabled, non 0 if the clock is enabled.
  */
-int MXC_SYS_IsClockEnabled (mxc_sys_periph_clock_t clock);
+int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);
 
 /**
  * @brief Disables the selected peripheral clock.
  * @param clock   Enumeration for desired clock.
  */
-void MXC_SYS_ClockDisable (mxc_sys_periph_clock_t clock);
+void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);
 
 /**
  * @brief Enables the selected peripheral clock.
  * @param clock   Enumeration for desired clock.
  */
-void MXC_SYS_ClockEnable (mxc_sys_periph_clock_t clock);
+void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);
 
 /**
  * @brief Enables the 32kHz oscillator
  * @param mxc_sys_cfg   Not used, may be NULL.
  */
-void MXC_SYS_RTCClockEnable (void);
+void MXC_SYS_RTCClockEnable(void);
 
 /**
  * @brief Disables the 32kHz oscillator
@@ -175,14 +203,14 @@ int MXC_SYS_RTCClockDisable();
  * @param      clock The clock to enable
  * @return     E_NO_ERROR if everything is successful
  */
-int MXC_SYS_ClockSourceEnable (mxc_sys_system_clock_t clock);
+int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Disable System Clock Source
  * @param      clock The clock to disable
  * @return     E_NO_ERROR if everything is successful
  */
-int MXC_SYS_ClockSourceDisable (mxc_sys_system_clock_t clock);
+int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Select the system clock.
@@ -190,19 +218,19 @@ int MXC_SYS_ClockSourceDisable (mxc_sys_system_clock_t clock);
  * @param tmr       Optional tmr pointer for timeout. NULL if undesired.
  * @returns         E_NO_ERROR if everything is successful.
  */
-int MXC_SYS_Clock_Select (mxc_sys_system_clock_t clock);
+int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Wait for a clock to enable with timeout
  * @param      ready The clock to wait for
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
-int MXC_SYS_Clock_Timeout (uint32_t ready);
+int MXC_SYS_Clock_Timeout(uint32_t ready);
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param           Enumeration for what to reset. Can reset multiple items at once.
  */
-void MXC_SYS_Reset_Periph (mxc_sys_reset_t reset);
+void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
 
 #ifdef __cplusplus
 }

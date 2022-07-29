@@ -48,21 +48,21 @@
 /************************************************************************************/
 
 typedef struct {
-    uint16_t    x;
-    uint16_t    y;
-    uint16_t    w;
-    uint16_t    h;
+    uint16_t x;
+    uint16_t y;
+    uint16_t w;
+    uint16_t h;
 } area_t;
 
 typedef struct {
-    char*    data;
+    char* data;
     int len;
 } text_t;
 
 typedef enum {
     SCREEN_NORMAL,
-	SCREEN_FLIP,
-	SCREEN_ROTATE,
+    SCREEN_FLIP,
+    SCREEN_ROTATE,
 } tft_rotation_t;
 
 /************************************************************************************/
@@ -79,7 +79,8 @@ typedef enum {
  *
  * @return     See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl, mxc_gpio_cfg_t* bl_ctrl);
+int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl,
+                 mxc_gpio_cfg_t* bl_ctrl);
 
 /**
  * @brief      Turns backlight on or off
@@ -122,7 +123,7 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
  */
 void MXC_TFT_ShowImage(int x0, int y0, int id);
 
-void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
+void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t* image, int iWidth, int iHeight);
 
 /**
  * @brief      Fills screen with one color
@@ -212,4 +213,3 @@ void MXC_TFT_SetRotation(tft_rotation_t rotation);
 void MXC_TFT_WriteReg(unsigned short command, unsigned short data);
 
 #endif /* _TFT_H_ */
-

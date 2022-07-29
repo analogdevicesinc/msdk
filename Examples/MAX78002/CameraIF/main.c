@@ -67,32 +67,33 @@
 #define ENABLE_TFT
 
 #if defined(CAMERA_HM01B0)
-#define IMAGE_XRES  324/2
-#define IMAGE_YRES  244/2
+#define IMAGE_XRES 324 / 2
+#define IMAGE_YRES 244 / 2
 #define CAMERA_MONO
 #endif
 
 #if defined(CAMERA_HM0360)
-#define IMAGE_XRES  320
-#define IMAGE_YRES  240
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 #define CAMERA_MONO
 #endif
 
 #if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
-#define IMAGE_XRES  320
-#define IMAGE_YRES  240
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
 #endif
 
-#define CON_BAUD 115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define X_START     0
-#define Y_START     0
+#define CON_BAUD \
+    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define X_START 0
+#define Y_START 0
 
 void process_img(void)
 {
-    uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint8_t* raw;
+    uint32_t imgLen;
+    uint32_t w, h;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -104,12 +105,12 @@ void process_img(void)
     // to an image file
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
 #else
-    #ifndef CAMERA_MONO
+#ifndef CAMERA_MONO
     // Send the image to TFT
     MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
-    #else
+#else
     MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, h, w);
-    #endif // #ifndef CAMERA_MONO
+#endif // #ifndef CAMERA_MONO
 #endif // ##ifndef ENABLE_TFT
 }
 
@@ -173,9 +174,11 @@ int main(void)
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // RGB565
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // RGB565
 #else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // Mono
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // Mono
 #endif
 
     if (ret != STATUS_OK) {

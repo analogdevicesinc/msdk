@@ -74,10 +74,6 @@ else
 TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 endif
-export TARGET
-export TARGET_UC
-export TARGET_LC
-# TODO: Remove dependency on exporting these (distclean needs it)
 
 # Default board.
 BOARD ?= EvKit_V1
@@ -96,40 +92,51 @@ BOARD ?= EvKit_V1
 # - MAXIM_PATH : Tell this Makefile where to find the MaximSDK.  Ex:  MAXIM_PATH=C:/MaximSDK
 
 
-DEPTH=../../../../
-ifeq "$(MAXIM_PATH)" ""
-$(warning Warning: MAXIM_PATH is not set!)
-MAXIM_PATH = $(abspath $(DEPTH))
-endif
-
+ifneq "$(MAXIM_PATH)" ""
 # Sanitize MAXIM_PATH for backslashes
 MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
-
 # Locate some other useful paths...
 LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
 CMSIS_ROOT := $(LIBS_DIR)/CMSIS
-export CMSIS_ROOT
-# TODO: Remove dependency on export CMSIS_ROOT
-
-# Select 'GCC' or 'IAR' compiler
-COMPILER ?= GCC
+endif
 
 # *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET and BOARD 
+# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
 # in case project.mk needs to reference those values.  However, we also include
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
 
 
-$(info Added settings from project.mk...)
 include ./project.mk
+$(info Loaded project.mk)
+
+# *******************************************************************************
+# Final path sanitization and re-calculation.  No options here.
+
+ifeq "$(MAXIM_PATH)" ""
+# MAXIM_PATH is still not defined...
+DEPTH := ../../../../
+MAXIM_PATH := $(abspath $(DEPTH))
+$(warning Warning:  MAXIM_PATH is not set!  It's recommended to set MAXIM_PATH in your environment or in project.mk)
+$(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
+else
+# Sanitize MAXIM_PATH for backslashes
+MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
+endif
+
+# Final recalculation of LIBS_DIR/CMSIS_ROOT
+LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
+CMSIS_ROOT := $(LIBS_DIR)/CMSIS
 
 # One final UC/LC check in case user set TARGET in project.mk
 TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
+
 export TARGET
 export TARGET_UC
 export TARGET_LC
+export CMSIS_ROOT
+# TODO: Remove dependency on exports for these variables.
 
 # *******************************************************************************
 # Set up search paths, and auto-detect all source code on those paths.
@@ -155,6 +162,11 @@ export TARGET_LC
 #			on any VPATH, in which case you can add the full path to the file here.
 #			You should use the "+=" operator with this option.
 #			Ex:  SRCS += your/specific/source/file.c
+# - AUTOSEARCH : Set whether this Makefile should automatically detect .c files on
+#				VPATH and add them to the build.  This is enabled by default.  Set
+#				to 0 to disable.  If autosearch is disabled, source files must be
+#				manually added to SRCS.
+#				Ex:  AUTOSEARCH = 0
 
 
 # Where to find source files for this project.
@@ -167,8 +179,13 @@ IPATH += .
 IPATH += include
 IPATH := $(IPATH)
 
+AUTOSEARCH ?= 1
+ifeq ($(AUTOSEARCH), 1)
 # Auto-detect all C source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+endif
+
+# Collapse SRCS before passing them on to the next stage
 SRCS := $(SRCS)
 
 # *******************************************************************************
@@ -196,6 +213,11 @@ PROJECT ?= $(TARGET_UC)
 # - LINKERFILE : Override the default linkerfile.
 #			Ex: LINKERFILE = customlinkerfile.ld
 
+
+# Select 'GCC' or 'IAR' compiler
+ifeq "$(COMPILER)" ""
+COMPILER := GCC
+endif
 
 # Set compiler optimization level
 ifeq "$(MAKECMDGOALS)" "release"
@@ -231,16 +253,28 @@ LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # *******************************************************************************
-# Include the Board-Support Package (BSP) and Peripheral Drivers libraries
-# for the target microcontroller.
+# Libraries
 
-# Include the BSP
-BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
-include $(BOARD_DIR)/board.mk
+# This section offers "toggle switches" to include or exclude the libraries that
+# are available in the MaximSDK.  Set a configuration variable to 1 to include the
+# library in the build, or 0 to exclude.
 
-# Include the peripheral driver
-PERIPH_DRIVER_DIR := $(LIBS_DIR)/PeriphDrivers
-include $(PERIPH_DRIVER_DIR)/periphdriver.mk
+# Each library may also have its own library specific configuration variables.
+
+# Configuration variables:
+# - LIB_BOARD : Include the Board-Support Package (BSP) library. (Enabled by default)
+# - LIB_PERIPHDRIVERS : Include the peripheral driver library.  (Enabled by default)
+# - LIB_CMSIS_DSP : Include the CMSIS-DSP library.
+# - LIB_CORDIO : Include the Cordio BLE library
+# - LIB_FCL : Include the Free Cryptographic Library (FCL)
+# - LIB_FREERTOS : Include the FreeRTOS and FreeRTOS-Plus-CLI libraries
+# - LIB_LC3 : Include the Low Complexity Communication Codec (LC3) library
+# - LIB_LTTLEFS : Include the "little file system" (littleFS) library
+# - LIB_LWIP : Include the lwIP library
+# - LIB_MAXUSB : Include the MAXUSB library
+# - LIB_SDHC : Include the SDHC library
+
+include $(LIBS_DIR)/libs.mk
 
 # *******************************************************************************
 # Include the rules for building for this target. All other makefiles should be

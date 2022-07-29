@@ -50,11 +50,11 @@
 #include "board.h"
 
 /* Shadow register definitions */
-#define MXC_R_SIR_SHR13         *((uint32_t*)(0x40005434))
-#define MXC_R_SIR_SHR17         *((uint32_t*)(0x40005444))
+#define MXC_R_SIR_SHR13 *((uint32_t*)(0x40005434))
+#define MXC_R_SIR_SHR17 *((uint32_t*)(0x40005444))
 
 /* Stringification macros */
-#define STRING(x) STRING_(x)
+#define STRING(x)  STRING_(x)
 #define STRING_(x) #x
 
 extern void bleStartup(void);
@@ -68,24 +68,23 @@ extern void bleStartup(void);
  *
  * =======================================================
  */
-void vAssertCalled( const char * const pcFileName, unsigned long ulLine )
+void vAssertCalled(const char* const pcFileName, unsigned long ulLine)
 {
     volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
     /* Parameters are not used. */
-    ( void ) ulLine;
-    ( void ) pcFileName;
+    (void)ulLine;
+    (void)pcFileName;
 
-    __asm volatile( "cpsid i" );
+    __asm volatile("cpsid i");
     {
         /* You can step out of this function to debug the assertion by using
         the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
         value. */
-        while( ulSetToNonZeroInDebuggerToContinue == 0 )
-        {
+        while (ulSetToNonZeroInDebuggerToContinue == 0) {
         }
     }
-    __asm volatile( "cpsie i" );
+    __asm volatile("cpsie i");
 }
 
 /* =| vApplicationIdleHook |==============================
@@ -116,15 +115,15 @@ void vApplicationIdleHook(void)
  */
 void turnOffUnused(void)
 {
-  /* Prevent SIMO leakage in DS by reducing the SIMO buck clock */
-  if(MXC_GCR->revision == 0xA2) {
-    MXC_R_SIR_SHR13 = 0x0;
-    MXC_R_SIR_SHR17 &= ~(0xC0);
-  } else if(MXC_GCR->revision == 0xA4) {
-    MXC_R_SIR_SHR17 &= ~(0xC0);
-  }
+    /* Prevent SIMO leakage in DS by reducing the SIMO buck clock */
+    if (MXC_GCR->revision == 0xA2) {
+        MXC_R_SIR_SHR13 = 0x0;
+        MXC_R_SIR_SHR17 &= ~(0xC0);
+    } else if (MXC_GCR->revision == 0xA4) {
+        MXC_R_SIR_SHR17 &= ~(0xC0);
+    }
 
-  MXC_LP_USBSWLPDisable();
+    MXC_LP_USBSWLPDisable();
 }
 
 /* =| main |==============================================
@@ -147,8 +146,9 @@ int main(void)
 
     /* Delay to prevent bricks */
     volatile int i;
-    for(i = 0; i < 0x3FFFFF; i++) {}
-    
+    for (i = 0; i < 0x3FFFFF; i++) {
+    }
+
     /* Turn off unused hardware to conserve power */
     turnOffUnused();
 
@@ -168,7 +168,6 @@ int main(void)
     return -1;
 }
 
-
 typedef struct __attribute__((packed)) ContextStateFrame {
     uint32_t r0;
     uint32_t r1;
@@ -183,20 +182,19 @@ typedef struct __attribute__((packed)) ContextStateFrame {
 /*****************************************************************/
 void HardFault_Handler(void)
 {
-    __asm(
-        " TST LR, #4\n"
-        " ITE EQ \n"
-        " MRSEQ R0, MSP \n"
-        " MRSNE R0, PSP \n"
-        " B HardFault_Decoder \n");
+    __asm(" TST LR, #4\n"
+          " ITE EQ \n"
+          " MRSEQ R0, MSP \n"
+          " MRSNE R0, PSP \n"
+          " B HardFault_Decoder \n");
 }
 
 /*****************************************************************/
 /* Disable optimizations for this function so "frame" argument */
 /* does not get optimized away */
-__attribute__((optimize("O0")))
-void HardFault_Decoder(sContextStateFrame *frame)
+__attribute__((optimize("O0"))) void HardFault_Decoder(sContextStateFrame* frame)
 {
     /* Hang here */
-    while(1) {}
+    while (1) {
+    }
 }

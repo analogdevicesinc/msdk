@@ -61,7 +61,6 @@
 #include "utils.h"
 #include "dma.h"
 
-
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
@@ -86,79 +85,80 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 */
 #ifdef ENABLE_TFT
 
-    #ifdef BOARD_EVKIT_V1
-    #include "tft_ssd2119.h"
-    #endif
+#ifdef BOARD_EVKIT_V1
+#include "tft_ssd2119.h"
+#endif
 
-    #ifdef BOARD_FTHR_REVA
-    #include "tft_ili9341.h"
-    #endif
+#ifdef BOARD_FTHR_REVA
+#include "tft_ili9341.h"
+#endif
 
 #endif
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
 #if defined(CAMERA_HM01B0)
-    #define CAMERA_MONO
+#define CAMERA_MONO
 
-    #ifdef STREAM_ENABLE
-    #define IMAGE_XRES  324/2
-    #define IMAGE_YRES  244/2
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES 324 / 2
+#define IMAGE_YRES 244 / 2
 
-    #else
-    #define IMAGE_XRES 80
-    #define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 80
+#define IMAGE_YRES 80
 
-    #endif
+#endif
 #endif
 
 #if defined(CAMERA_HM0360)
-    #define CAMERA_MONO
+#define CAMERA_MONO
 
-    #ifdef STREAM_ENABLE
-    #define IMAGE_XRES  320
-    #define IMAGE_YRES  240
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
-    #else
-    #define IMAGE_XRES 80
-    #define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 80
+#define IMAGE_YRES 80
 
-    #endif
+#endif
 #endif
 
 #if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
 
-    #ifdef ENABLE_TFT
-        #ifdef STREAM_ENABLE
-        #define IMAGE_XRES  320
-        #define IMAGE_YRES  240
-        
-        #else
-        #define IMAGE_XRES  176
-        #define IMAGE_YRES  144
-        #endif
+#ifdef ENABLE_TFT
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
-    #else
-        #ifdef STREAM_ENABLE
-            #define IMAGE_XRES 80
-            #define IMAGE_YRES 80
-        #else
-            #define IMAGE_XRES 176
-            #define IMAGE_YRES 144
-        #endif
-
-    #endif
+#else
+#define IMAGE_XRES 176
+#define IMAGE_YRES 144
 #endif
 
-#define CON_BAUD 115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define X_START     0
-#define Y_START     0
+#else
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES 80
+#define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 176
+#define IMAGE_YRES 144
+#endif
+
+#endif
+#endif
+
+#define CON_BAUD \
+    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define X_START 0
+#define Y_START 0
 
 void process_img(void)
 {
-    uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint8_t* raw;
+    uint32_t imgLen;
+    uint32_t w, h;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -190,7 +190,6 @@ void process_img(void)
 
     // Get image line by line
     for (int i = 0; i < h; i++) {
-
         // Wait until camera streaming buffer is full
         while ((data = get_camera_stream_buffer()) == NULL) {
             if (camera_is_image_rcv()) {
@@ -223,7 +222,8 @@ void process_img(void)
     if (stat->overflow_count > 0) {
         LED_On(LED_RED); // Turn on red LED if overflow detected
 
-        while (1);
+        while (1)
+            ;
     }
 
 #endif //#ifndef STREAM_ENABLE
@@ -279,15 +279,23 @@ int main(void)
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
+#ifdef BOARD_EVKIT_V1
+    MXC_TFT_Init();
+#endif
+
+#ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+#endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
 #ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // RGB565
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // RGB565
 #else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // Mono
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // Mono
 #endif
 
 #ifdef ENABLE_TFT
@@ -298,9 +306,11 @@ int main(void)
 #endif
 #else
 #ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel); // RGB565 stream
 #else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // Mono stream
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel); // Mono stream
 #endif
 
 #ifdef ENABLE_TFT
@@ -325,17 +335,18 @@ int main(void)
 #if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
     // set camera clock prescaller to prevent streaming overflow for QVGA
 #ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x8);  // can be set to 0x6 in release mode ( -o2 )
+    camera_write_reg(0x11, 0x8); // can be set to 0x6 in release mode ( -o2 )
 #endif
 #ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xE);  // can be set to 0xB in release mode ( -o2 )
+    camera_write_reg(0x11, 0xE); // can be set to 0xB in release mode ( -o2 )
 #endif
 #endif
 
     // Start capturing a first camera image frame.
     printf("Starting\n");
 #ifdef BUTTON
-    while(!PB_Get(0));
+    while (!PB_Get(0))
+        ;
 #endif
     camera_start_capture_image();
 
@@ -350,9 +361,10 @@ int main(void)
 
             // Prepare for another frame capture.
             LED_Toggle(LED_GREEN);
-        #ifdef BUTTON
-            while(!PB_Get(0));
-        #endif            
+#ifdef BUTTON
+            while (!PB_Get(0))
+                ;
+#endif
             camera_start_capture_image();
         }
     }

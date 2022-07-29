@@ -47,6 +47,7 @@
 #include <MAX32xxx.h>
 
 #include "bitmap.h"
+#include "tft_ssd2119.h"
 
 /***** Definitions *****/
 
@@ -60,27 +61,27 @@ int main(void)
     int count = 0;
     printf("\n***********Hello World!***********\n");
     printf("\nLED1 toggles every 500 ms\n");
-    
+
     // initialize display
     MXC_TFT_Init();
-    
+
     // Display image
-    MXC_TFT_ShowImage(65, 140, maxim_big_logo_bmp);  // display image on screen
+    MXC_TFT_ShowImage(65, 140, maxim_big_logo_bmp); // display image on screen
     // Update palette, Use palette from logo_white_bg_white_bmp
     MXC_TFT_SetPalette(logo_white_bg_white_bmp);
     // set up font
     MXC_TFT_SetFont(urw_gothic_13_grey_bg_white);
-    
+
     // Set print area
     area_t print = {10, 20, 300, 85};
     MXC_TFT_ConfigPrintf(&print);
-    
+
     while (1) {
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
-        
+
         // print on display
         MXC_TFT_Printf("Counter = %d\n", count);
         // print on console

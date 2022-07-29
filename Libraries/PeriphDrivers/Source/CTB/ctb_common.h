@@ -33,8 +33,7 @@
 
 #include "ctb.h"
 
-unsigned int MXC_CTB_Common_Hash_GetBlockSize (mxc_ctb_hash_func_t function);
-unsigned int MXC_CTB_Common_Hash_GetDigestSize (mxc_ctb_hash_func_t function);
-unsigned int MXC_CTB_Common_Cipher_GetKeySize (mxc_ctb_cipher_t cipher);
-unsigned int MXC_CTB_Common_Cipher_GetBlockSize (mxc_ctb_cipher_t cipher);
-
+unsigned int MXC_CTB_Common_Hash_GetBlockSize(mxc_ctb_hash_func_t function);
+unsigned int MXC_CTB_Common_Hash_GetDigestSize(mxc_ctb_hash_func_t function);
+unsigned int MXC_CTB_Common_Cipher_GetKeySize(mxc_ctb_cipher_t cipher);
+unsigned int MXC_CTB_Common_Cipher_GetBlockSize(mxc_ctb_cipher_t cipher);

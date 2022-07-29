@@ -50,7 +50,7 @@
 #include "mxc_delay.h"
 #include "utils.h"
 #include "state.h"
-#include "tft.h"
+#include "tft_ssd2119.h"
 #include "bitmap.h"
 #include "keypad.h"
 #include "led.h"
@@ -58,35 +58,26 @@
 
 int main(void)
 {
-	/* Enable cache */
+    /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
 
     /* Set system clock to 100 MHz */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
-	int key;
-	unsigned int start_time;
-	State* state;
+    int key;
+    unsigned int start_time;
+    State* state;
 
-	/* Initialize RTC */
+    /* Initialize RTC */
     MXC_RTC_Init(0, 0);
     MXC_RTC_Start();
 
-    /* TFT reset and backlight signal */
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO3, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-    mxc_gpio_cfg_t tft_bl_pin = {MXC_GPIO0, MXC_GPIO_PIN_27, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI1, 0, &tft_reset_pin, &tft_bl_pin);
+    MXC_TFT_Init();
 
-    /* Enable Touchscreen */
-    /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-    /* Touch screen controller busy signal */
-    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
     /* Initialize Touch Screen controller */
-    MXC_TS_Init(MXC_SPI1, 1, &int_pin, &busy_pin);
+    MXC_TS_Init();
     MXC_TS_Start();
 
     /* Display Home page */

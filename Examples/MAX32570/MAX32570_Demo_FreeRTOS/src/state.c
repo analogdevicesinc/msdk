@@ -35,32 +35,31 @@
 
 #include "state.h"
 
-
 /********************************* 		VARIABLES	 *************************/
-static State *g_state = NULL;
+static State* g_state = NULL;
 
 /********************************* Public Functions **************************/
 void state_init(void)
 {
-	TFT_SetBackGroundColor(0);
+    TFT_SetBackGroundColor(0);
     TFT_ShowImage(52, 87, maxim_integrated_large_bmp);
 
-    vTaskDelay( (1 * configTICK_RATE_HZ) ); // 1 second
+    vTaskDelay((1 * configTICK_RATE_HZ)); // 1 second
 
-	state_set_current(get_home_state());
+    state_set_current(get_home_state());
 }
 
-int state_set_current(State *state)
+int state_set_current(State* state)
 {
-	if (state != g_state) {
-		g_state = state;
-		g_state->init();
-	}
+    if (state != g_state) {
+        g_state = state;
+        g_state->init();
+    }
 
-	return 0;
+    return 0;
 }
 
-State *state_get_current(void)
+State* state_get_current(void)
 {
-	return g_state;
+    return g_state;
 }

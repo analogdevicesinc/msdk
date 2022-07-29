@@ -101,8 +101,6 @@ void MXC_SEMA_FreeSema(unsigned sema);
  */
 int MXC_SEMA_Shutdown(void);
 
-
-
 /**@} end of group sema */
 
 #ifdef __cplusplus

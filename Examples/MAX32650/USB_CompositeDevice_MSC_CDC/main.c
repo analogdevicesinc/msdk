@@ -46,13 +46,13 @@
 #include "mscmem.h"
 
 /* **** Definitions **** */
-#define EVENT_ENUM_COMP     MAXUSB_NUM_EVENTS
-#define EVENT_REMOTE_WAKE   (EVENT_ENUM_COMP + 1)
+#define EVENT_ENUM_COMP   MAXUSB_NUM_EVENTS
+#define EVENT_REMOTE_WAKE (EVENT_ENUM_COMP + 1)
 
-#define BUFFER_SIZE  64
+#define BUFFER_SIZE 64
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
+#define TOSTRING(x)  STRINGIFY(x)
 
 /* **** Global Data **** */
 volatile int configured;
@@ -82,33 +82,26 @@ static msc_cfg_t msc_cfg = {
 };
 
 static const msc_idstrings_t ids = {
-    "MAXIM",            /* Vendor string.  Maximum of 8 bytes */
-    "MSC Example",      /* Product string.  Maximum of 16 bytes */
-    "1.0"               /* Version string.  Maximum of 4 bytes */
+    "MAXIM",       /* Vendor string.  Maximum of 8 bytes */
+    "MSC Example", /* Product string.  Maximum of 16 bytes */
+    "1.0"          /* Version string.  Maximum of 4 bytes */
 };
 
 /* This EP assignment must match the Configuration Descriptor */
 static acm_cfg_t acm_cfg = {
-  2,                  /* EP OUT */
-  MXC_USBHS_MAX_PACKET, /* OUT max packet size */
-  3,                  /* EP IN */
-  MXC_USBHS_MAX_PACKET, /* IN max packet size */
-  4,                  /* EP Notify */
-  MXC_USBHS_MAX_PACKET, /* Notify max packet size */
+    2,                    /* EP OUT */
+    MXC_USBHS_MAX_PACKET, /* OUT max packet size */
+    3,                    /* EP IN */
+    MXC_USBHS_MAX_PACKET, /* IN max packet size */
+    4,                    /* EP Notify */
+    MXC_USBHS_MAX_PACKET, /* Notify max packet size */
 };
 
 static volatile int usb_read_complete;
 
 /* Functions to control "disk" memory. See msc.h for definitions. */
-static const msc_mem_t mem = {
-	    mscmem_Init,
-	    mscmem_Start,
-	    mscmem_Stop,
-	    mscmem_Ready,
-	    mscmem_Size,
-	    mscmem_Read,
-	    mscmem_Write
-};
+static const msc_mem_t mem = {mscmem_Init, mscmem_Start, mscmem_Stop, mscmem_Ready,
+                              mscmem_Size, mscmem_Read,  mscmem_Write};
 
 /**
  * User-supplied function to delay usec micro-seconds
@@ -118,7 +111,7 @@ static const msc_mem_t mem = {
 void delay_us(unsigned int usec)
 {
     /* mxc_delay() takes unsigned long, so can't use it directly */
-	MXC_Delay(usec);
+    MXC_Delay(usec);
 }
 
 /* ************************************************************************** */
@@ -126,40 +119,44 @@ int main(void)
 {
     maxusb_cfg_options_t usb_opts;
 
-    printf("\n\n***** " TOSTRING(TARGET) " USB Composite Device (CDCACM and Mass Storage) Example *****\n");
+    printf("\n\n***** " TOSTRING(
+        TARGET) " USB Composite Device (CDCACM and Mass Storage) Example *****\n");
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */
-    configured = 0;
-    suspended = 0;
-    event_flags = 0;
+    configured     = 0;
+    suspended      = 0;
+    event_flags    = 0;
     remote_wake_en = 0;
 
     /* Start out in full speed */
-    usb_opts.enable_hs = 1;							/* 0:Full Speed		1:High Speed */
-    usb_opts.delay_us = delay_us; 					/* Function which will be used for delays */
-    usb_opts.init_callback = usbStartupCallback;
+    usb_opts.enable_hs         = 1;        /* 0:Full Speed		1:High Speed */
+    usb_opts.delay_us          = delay_us; /* Function which will be used for delays */
+    usb_opts.init_callback     = usbStartupCallback;
     usb_opts.shutdown_callback = usbShutdownCallback;
 
     /* Initialize the usb module */
     if (MXC_USB_Init(&usb_opts) != 0) {
         printf("usb_init() failed\n");
-        while (1);
+        while (1)
+            ;
     }
 
     /* Initialize the enumeration module */
     if (enum_init() != 0) {
         printf("enum_init() failed\n");
-        while (1);
+        while (1)
+            ;
     }
 
     /* Register enumeration data */
     enum_register_descriptor(ENUM_DESC_DEVICE, (uint8_t*)&composite_device_descriptor, 0);
     enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t*)&composite_config_descriptor, 0);
     if (usb_opts.enable_hs) {
-	/* Two additional descriptors needed for high-speed operation */
-	enum_register_descriptor(ENUM_DESC_OTHER, (uint8_t*)&composite_config_descriptor_hs, 0);
-	enum_register_descriptor(ENUM_DESC_QUAL, (uint8_t*)&composite_device_qualifier_descriptor, 0);
+        /* Two additional descriptors needed for high-speed operation */
+        enum_register_descriptor(ENUM_DESC_OTHER, (uint8_t*)&composite_config_descriptor_hs, 0);
+        enum_register_descriptor(ENUM_DESC_QUAL, (uint8_t*)&composite_device_qualifier_descriptor,
+                                 0);
     }
     enum_register_descriptor(ENUM_DESC_STRING, lang_id_desc, 0);
     enum_register_descriptor(ENUM_DESC_STRING, mfg_id_desc, 1);
@@ -178,12 +175,14 @@ int main(void)
     /* Initialize the class driver */
     if (msc_init(&composite_config_descriptor.msc_interface_descriptor, &ids, &mem) != 0) {
         printf("msc_init() failed\n");
-        while (1);
+        while (1)
+            ;
     }
 
     if (acm_init(&composite_config_descriptor.comm_interface_descriptor) != 0) {
         printf("acm_init() failed\n");
-        while (1);
+        while (1)
+            ;
     }
 
     /* Register callbacks */
@@ -198,7 +197,6 @@ int main(void)
 
     /* Wait for events */
     while (1) {
-
         echoUSB();
 
         if (suspended || !configured) {
@@ -218,9 +216,10 @@ int main(void)
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_BRST)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_BRST);
                 printf("Bus Reset\n");
-            } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_BRSTDN)) {										///
-        		MXC_CLRBIT(&event_flags, MAXUSB_EVENT_BRSTDN);
-        		printf("Bus Reset Done: %s speed\n", (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) ? "High" : "Full");
+            } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_BRSTDN)) { ///
+                MXC_CLRBIT(&event_flags, MAXUSB_EVENT_BRSTDN);
+                printf("Bus Reset Done: %s speed\n",
+                       (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) ? "High" : "Full");
             } else if (MXC_GETBIT(&event_flags, MAXUSB_EVENT_SUSP)) {
                 MXC_CLRBIT(&event_flags, MAXUSB_EVENT_SUSP);
                 printf("Suspended\n");
@@ -241,30 +240,28 @@ int main(void)
 /******************************************************************************/
 static void echoUSB(void)
 {
-  int chars;
-  uint8_t buffer[BUFFER_SIZE];
+    int chars;
+    uint8_t buffer[BUFFER_SIZE];
 
-  if ((chars = acm_canread()) > 0) {
+    if ((chars = acm_canread()) > 0) {
+        if (chars > BUFFER_SIZE) {
+            chars = BUFFER_SIZE;
+        }
 
-    if (chars > BUFFER_SIZE) {
-      chars = BUFFER_SIZE;
+        // Read the data from USB
+        if (acm_read(buffer, chars) != chars) {
+            printf("acm_read() failed\n");
+            return;
+        }
+
+        // Echo it back
+        if (acm_present()) {
+            if (acm_write(buffer, chars) != chars) {
+                printf("acm_write() failed\n");
+            }
+        }
     }
-
-    // Read the data from USB
-    if (acm_read(buffer, chars) != chars) {
-      printf("acm_read() failed\n");
-      return;
-    }
-
-    // Echo it back
-    if (acm_present()) {
-      if (acm_write(buffer, chars) != chars) {
-        printf("acm_write() failed\n");
-      }
-    }
-  }
 }
-
 
 /******************************************************************************/
 int usbStartupCallback()
@@ -291,33 +288,40 @@ int usbShutdownCallback()
     return E_NO_ERROR;
 }
 
-
 /* ************************************************************************** */
 
 static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
 {
     /* Confirm the configuration value */
     if (sud->wValue == composite_config_descriptor.config_descriptor.bConfigurationValue) {
-//    	on++;
+        //    	on++;
         configured = 1;
         MXC_SETBIT(&event_flags, EVENT_ENUM_COMP);
-    	if (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) {													///
-    	    msc_cfg.out_ep = composite_config_descriptor_hs.endpoint_descriptor_1.bEndpointAddress & 0x7;
-    	    msc_cfg.out_maxpacket = composite_config_descriptor_hs.endpoint_descriptor_1.wMaxPacketSize;
-    	    msc_cfg.in_ep = composite_config_descriptor_hs.endpoint_descriptor_2.bEndpointAddress & 0x7;
-    	    msc_cfg.in_maxpacket = composite_config_descriptor_hs.endpoint_descriptor_2.wMaxPacketSize;
-    	} else {
-			msc_cfg.out_ep = composite_config_descriptor.endpoint_descriptor_1.bEndpointAddress & 0x7;
-			msc_cfg.out_maxpacket = composite_config_descriptor.endpoint_descriptor_1.wMaxPacketSize;
-			msc_cfg.in_ep = composite_config_descriptor.endpoint_descriptor_2.bEndpointAddress & 0x7;
-			msc_cfg.in_maxpacket = composite_config_descriptor.endpoint_descriptor_2.wMaxPacketSize;
-    	}
+        if (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) { ///
+            msc_cfg.out_ep =
+                composite_config_descriptor_hs.endpoint_descriptor_1.bEndpointAddress & 0x7;
+            msc_cfg.out_maxpacket =
+                composite_config_descriptor_hs.endpoint_descriptor_1.wMaxPacketSize;
+            msc_cfg.in_ep =
+                composite_config_descriptor_hs.endpoint_descriptor_2.bEndpointAddress & 0x7;
+            msc_cfg.in_maxpacket =
+                composite_config_descriptor_hs.endpoint_descriptor_2.wMaxPacketSize;
+        } else {
+            msc_cfg.out_ep =
+                composite_config_descriptor.endpoint_descriptor_1.bEndpointAddress & 0x7;
+            msc_cfg.out_maxpacket =
+                composite_config_descriptor.endpoint_descriptor_1.wMaxPacketSize;
+            msc_cfg.in_ep =
+                composite_config_descriptor.endpoint_descriptor_2.bEndpointAddress & 0x7;
+            msc_cfg.in_maxpacket = composite_config_descriptor.endpoint_descriptor_2.wMaxPacketSize;
+        }
 
         acm_cfg.out_ep = composite_config_descriptor.endpoint_descriptor_4.bEndpointAddress & 0x7;
         acm_cfg.out_maxpacket = composite_config_descriptor.endpoint_descriptor_4.wMaxPacketSize;
         acm_cfg.in_ep = composite_config_descriptor.endpoint_descriptor_5.bEndpointAddress & 0x7;
         acm_cfg.in_maxpacket = composite_config_descriptor.endpoint_descriptor_5.wMaxPacketSize;
-        acm_cfg.notify_ep = composite_config_descriptor.endpoint_descriptor_3.bEndpointAddress & 0x7;
+        acm_cfg.notify_ep =
+            composite_config_descriptor.endpoint_descriptor_3.bEndpointAddress & 0x7;
         acm_cfg.notify_maxpacket = composite_config_descriptor.endpoint_descriptor_3.wMaxPacketSize;
 
         msc_configure(&msc_cfg);
@@ -377,7 +381,7 @@ static void usbAppWakeup(void)
 }
 
 /* ************************************************************************** */
-static int eventCallback(maxusb_event_t evt, void *data)
+static int eventCallback(maxusb_event_t evt, void* data)
 {
     /* Set event flag */
     MXC_SETBIT(&event_flags, evt);
@@ -391,14 +395,14 @@ static int eventCallback(maxusb_event_t evt, void *data)
             configured = 0;
             enum_clearconfig();
             msc_deconfigure();
-            acm_deconfigure();            
+            acm_deconfigure();
             usbAppSleep();
             break;
         case MAXUSB_EVENT_VBUS:
             MXC_USB_EventClear(MAXUSB_EVENT_BRST);
             MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
-    	    MXC_USB_EventClear(MAXUSB_EVENT_BRSTDN);												///
-    	    MXC_USB_EventEnable(MAXUSB_EVENT_BRSTDN, eventCallback, NULL);						///
+            MXC_USB_EventClear(MAXUSB_EVENT_BRSTDN);                       ///
+            MXC_USB_EventEnable(MAXUSB_EVENT_BRSTDN, eventCallback, NULL); ///
             MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
             MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
             MXC_USB_Connect();
@@ -410,17 +414,21 @@ static int eventCallback(maxusb_event_t evt, void *data)
             msc_deconfigure();
             acm_deconfigure();
             configured = 0;
-            suspended = 0;
+            suspended  = 0;
             break;
-    	case MAXUSB_EVENT_BRSTDN:																///
-    	    if (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) {
-				enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t*)&composite_config_descriptor_hs, 0);
-				enum_register_descriptor(ENUM_DESC_OTHER, (uint8_t*)&composite_config_descriptor, 0);
-    	    } else {
-				enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t*)&composite_config_descriptor, 0);
-				enum_register_descriptor(ENUM_DESC_OTHER, (uint8_t*)&composite_config_descriptor_hs, 0);
-    	    }
-    	    break;
+        case MAXUSB_EVENT_BRSTDN: ///
+            if (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) {
+                enum_register_descriptor(ENUM_DESC_CONFIG,
+                                         (uint8_t*)&composite_config_descriptor_hs, 0);
+                enum_register_descriptor(ENUM_DESC_OTHER, (uint8_t*)&composite_config_descriptor,
+                                         0);
+            } else {
+                enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t*)&composite_config_descriptor,
+                                         0);
+                enum_register_descriptor(ENUM_DESC_OTHER, (uint8_t*)&composite_config_descriptor_hs,
+                                         0);
+            }
+            break;
         case MAXUSB_EVENT_SUSP:
             usbAppSleep();
             break;
@@ -438,7 +446,7 @@ static int eventCallback(maxusb_event_t evt, void *data)
 
 void USB_IRQHandler(void)
 {
-	MXC_USB_EventHandler();
+    MXC_USB_EventHandler();
 }
 
 /******************************************************************************/
@@ -447,5 +455,3 @@ static int usbReadCallback(void)
     usb_read_complete = 1;
     return 0;
 }
-
-

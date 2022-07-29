@@ -42,22 +42,22 @@
 /* **** Functions **** */
 void MXC_SIMO_SetVregO_A(uint32_t voltage)
 {
-    MXC_SIMO_RevA_SetVregO_A((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
+    MXC_SIMO_RevA_SetVregO_A((mxc_simo_reva_regs_t*)MXC_SIMO, voltage);
 }
 
 void MXC_SIMO_SetVregO_B(uint32_t voltage)
 {
-    MXC_SIMO_RevA_SetVregO_B((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
+    MXC_SIMO_RevA_SetVregO_B((mxc_simo_reva_regs_t*)MXC_SIMO, voltage);
 }
 
 void MXC_SIMO_SetVregO_C(uint32_t voltage)
 {
-    MXC_SIMO_RevA_SetVregO_C((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
+    MXC_SIMO_RevA_SetVregO_C((mxc_simo_reva_regs_t*)MXC_SIMO, voltage);
 }
 
 void MXC_SIMO_SetVregO_D(uint32_t voltage)
 {
-    MXC_SIMO_RevA_SetVregO_D((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
+    MXC_SIMO_RevA_SetVregO_D((mxc_simo_reva_regs_t*)MXC_SIMO, voltage);
 }
 
 // void MXC_SIMO_setIpkA(uint32_t peak_current)
@@ -127,20 +127,20 @@ void MXC_SIMO_SetVregO_D(uint32_t voltage)
 
 uint32_t MXC_SIMO_GetOutReadyA(void)
 {
-    return MXC_SIMO_RevA_GetOutReadyA((mxc_simo_reva_regs_t*) MXC_SIMO);
+    return MXC_SIMO_RevA_GetOutReadyA((mxc_simo_reva_regs_t*)MXC_SIMO);
 }
 
 uint32_t MXC_SIMO_GetOutReadyB(void)
 {
-    return MXC_SIMO_RevA_GetOutReadyB((mxc_simo_reva_regs_t*) MXC_SIMO);
+    return MXC_SIMO_RevA_GetOutReadyB((mxc_simo_reva_regs_t*)MXC_SIMO);
 }
 
 uint32_t MXC_SIMO_GetOutReadyC(void)
 {
-    return MXC_SIMO_RevA_GetOutReadyC((mxc_simo_reva_regs_t*) MXC_SIMO);
+    return MXC_SIMO_RevA_GetOutReadyC((mxc_simo_reva_regs_t*)MXC_SIMO);
 }
 
 uint32_t MXC_SIMO_GetOutReadyD(void)
 {
-    return MXC_SIMO_RevA_GetOutReadyD((mxc_simo_reva_regs_t*) MXC_SIMO);
+    return MXC_SIMO_RevA_GetOutReadyD((mxc_simo_reva_regs_t*)MXC_SIMO);
 }

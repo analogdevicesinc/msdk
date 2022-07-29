@@ -40,7 +40,7 @@
 #define _SECURITY_MONITOR_H_
 
 /* AES */
-#define AES_BASE        0x40005000
+#define AES_BASE 0x40005000
 
 int smon_init(void);
 int smon_check_aes_key(void);

@@ -54,16 +54,17 @@
 // *****************************************************************************
 int main(void)
 {
-  printf("ARM: RV_ARM_Loader\n");
+    printf("ARM: RV_ARM_Loader\n");
 
-  MXC_Delay(MXC_DELAY_SEC(2));
+    MXC_Delay(MXC_DELAY_SEC(2));
 
-  /* Enable RISCV debugger GPIO */
-  MXC_GPIO_Config(&gpio_cfg_rv_jtag);
+    /* Enable RISCV debugger GPIO */
+    MXC_GPIO_Config(&gpio_cfg_rv_jtag);
 
-  /* Start the RISCV core */
-  MXC_SYS_RISCVRun();
+    /* Start the RISCV core */
+    MXC_SYS_RISCVRun();
 
-  /* Enter LPM */
-  while (1) {}
+    /* Enter LPM */
+    while (1) {
+    }
 }

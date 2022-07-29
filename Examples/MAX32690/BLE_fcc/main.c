@@ -44,9 +44,9 @@
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      2048U
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
-#define FREQ_HOP_PERIOD_US                      20000
+#define FREQ_HOP_PERIOD_US 20000
 
 /**************************************************************************************************
   Global Variables
@@ -86,19 +86,19 @@ extern void dbb_seq_tx_disable(void);
 /*************************************************************************************************/
 static uint8_t* getPhyStr(uint8_t phy)
 {
-    switch(phy) {
+    switch (phy) {
         case LL_TEST_PHY_LE_1M:
         default:
-            memcpy(phy_str,"1M PHY",7);
+            memcpy(phy_str, "1M PHY", 7);
             break;
         case LL_TEST_PHY_LE_2M:
-            memcpy(phy_str,"2M PHY",7);
+            memcpy(phy_str, "2M PHY", 7);
             break;
         case LL_TEST_PHY_LE_CODED_S8:
-            memcpy(phy_str,"S8 PHY",7);
+            memcpy(phy_str, "S8 PHY", 7);
             break;
         case LL_TEST_PHY_LE_CODED_S2:
-            memcpy(phy_str,"S2 PHY",7);
+            memcpy(phy_str, "S2 PHY", 7);
             break;
     }
     return phy_str;
@@ -123,11 +123,11 @@ void TMR2_IRQHandler(void)
 
     /* Start the next channel */
     res = LlEnhancedTxTest(txFreqHopCh++, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-    if(res != LL_SUCCESS)
+    if (res != LL_SUCCESS)
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
 
     /* Wrap the channels */
-    if(txFreqHopCh == 40)
+    if (txFreqHopCh == 40)
         txFreqHopCh = 0;
 
     /* Restart the timeout */
@@ -179,11 +179,11 @@ static void processConsoleRX(uint8_t rxByte)
     int res;
 
     /* Holds the state of the command and the parameter */
-    static uint8_t cmd = 0;
+    static uint8_t cmd   = 0;
     static uint8_t param = 0;
 
     /* Determines if the incoming character is a command or a parameter */
-    if(cmd == 0)
+    if (cmd == 0)
         cmd = rxByte;
     else
         param = rxByte;
@@ -191,7 +191,8 @@ static void processConsoleRX(uint8_t rxByte)
     switch (cmd) {
         case '0':
 
-            APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..", getPhyStr(phy));
+            APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
+                            getPhyStr(phy));
             res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
             APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
             cmd = 0;
@@ -199,7 +200,8 @@ static void processConsoleRX(uint8_t rxByte)
 
         case '1':
 
-            APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..", getPhyStr(phy));
+            APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
+                            getPhyStr(phy));
             res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
             APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
             cmd = 0;
@@ -207,7 +209,8 @@ static void processConsoleRX(uint8_t rxByte)
 
         case '2':
 
-            APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..", getPhyStr(phy));
+            APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
+                            getPhyStr(phy));
             res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
             APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
             cmd = 0;
@@ -223,7 +226,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         case '4':
 
-            if(param == 0) {
+            if (param == 0) {
                 APP_TRACE_INFO0("Select transmit power");
                 APP_TRACE_INFO0(" 0: -10 dBm");
                 APP_TRACE_INFO0(" 1:   0 dBm");
@@ -251,12 +254,12 @@ static void processConsoleRX(uint8_t rxByte)
                     APP_TRACE_INFO0("Invalid selection");
                     break;
             }
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
 
         case '5':
-            if(param == 0) {
+            if (param == 0) {
                 APP_TRACE_INFO0("Select transmit channel");
                 APP_TRACE_INFO0(" 0: 0");
                 APP_TRACE_INFO0(" 1: 19");
@@ -291,7 +294,7 @@ static void processConsoleRX(uint8_t rxByte)
             /* Enable constant TX */
             dbb_seq_tx_enable();
 
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
 
@@ -302,12 +305,12 @@ static void processConsoleRX(uint8_t rxByte)
             dbb_seq_tx_disable();
 
             PalBbDisable();
-            
+
             cmd = 0;
             break;
 
         case '8':
-            if(param == 0) {
+            if (param == 0) {
                 /* Set the PHY */
                 APP_TRACE_INFO0("Select PHY");
                 APP_TRACE_INFO0("1: 1M");
@@ -339,7 +342,7 @@ static void processConsoleRX(uint8_t rxByte)
                     break;
             }
 
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
         case '9':
@@ -368,7 +371,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         default:
             APP_TRACE_INFO0("Invalid selection");
-            cmd = 0;
+            cmd   = 0;
             param = 0;
             break;
     }
@@ -381,7 +384,7 @@ static void processConsoleRX(uint8_t rxByte)
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
@@ -413,7 +416,8 @@ static void mainWsfInit(void)
     const uint16_t maxRptBufSize = 12 + 2 + 255;
 
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
-    const uint16_t dataBufSize = 12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+    const uint16_t dataBufSize =
+        12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
@@ -422,12 +426,12 @@ static void mainWsfInit(void)
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
     wsfBufPoolDesc_t poolDesc[] = {
-        { 16,            8 },
-        { 32,            4 },
-        { 128,           mainLlRtCfg.maxAdvReports },
-        { maxRptBufSize, mainLlRtCfg.maxAdvReports },       /* Extended reports. */
-        { dataBufSize,   mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf + mainLlRtCfg.numIsoRxBuf }
-    };
+        {16, 8},
+        {32, 4},
+        {128, mainLlRtCfg.maxAdvReports},
+        {maxRptBufSize, mainLlRtCfg.maxAdvReports}, /* Extended reports. */
+        {dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
+                          mainLlRtCfg.numIsoRxBuf}};
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -490,15 +494,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg     = &mainBbRtCfg,
-        .wlSizeCfg    = 4,
-        .rlSizeCfg    = 4,
-        .plSizeCfg    = 4,
-        .pLlRtCfg     = &mainLlRtCfg,
-        .pFreeMem     = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable()
-    };
+    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
+                           .wlSizeCfg    = 4,
+                           .rlSizeCfg    = 4,
+                           .plSizeCfg    = 4,
+                           .pLlRtCfg     = &mainLlRtCfg,
+                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
+                           .freeMemAvail = WsfHeapCountAvailable()};
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
@@ -506,7 +508,7 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
-    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlSetBdAddr((uint8_t*)&bdAddr);
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
     WsfOsRegisterSleepCheckFunc(ChciTrService);

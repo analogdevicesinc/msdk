@@ -38,23 +38,21 @@
  ******************************************************************************/
 
 typedef struct {
-  uint8_t cmd;          /* Controller command # */
-  uint8_t delay;        /* Delay in ms after executing this command/data sequence */
-  uint8_t len;          /* Length of data */
-  uint8_t *data;
+    uint8_t cmd;   /* Controller command # */
+    uint8_t delay; /* Delay in ms after executing this command/data sequence */
+    uint8_t len;   /* Length of data */
+    uint8_t* data;
 } st7735s_regcfg_t;
 
 typedef struct {
-  void (*delayfn)(uint32_t ms);  /* Platform-specific delay function */
-  int (*sendfn)(uint8_t *cmd,
-		unsigned int cmd_len,
-		uint8_t *data,
-		unsigned int data_len); /* Platform-specific transmit function */
-  st7735s_regcfg_t *regcfg;      /* Panel-specific configuration */
-  unsigned int ncfgs;            /* Number of elements in the regcfg array */
+    void (*delayfn)(uint32_t ms); /* Platform-specific delay function */
+    int (*sendfn)(uint8_t* cmd, unsigned int cmd_len, uint8_t* data,
+                  unsigned int data_len); /* Platform-specific transmit function */
+    st7735s_regcfg_t* regcfg;             /* Panel-specific configuration */
+    unsigned int ncfgs;                   /* Number of elements in the regcfg array */
 } st7735s_cfg_t;
 
 int st7735s_pixel(uint32_t x, uint32_t y, uint32_t z);
-int st7735s_write_pixels(uint8_t *data, unsigned int len);
+int st7735s_write_pixels(uint8_t* data, unsigned int len);
 int st7735s_xyloc(uint8_t row, uint8_t col);
-int st7735s_init(st7735s_cfg_t *cfg);
+int st7735s_init(st7735s_cfg_t* cfg);

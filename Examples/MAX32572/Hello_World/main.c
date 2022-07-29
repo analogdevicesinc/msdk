@@ -62,7 +62,7 @@ int main(void)
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
-        
+
         // print on console
         printf("\nCounter = %d", count++);
     }

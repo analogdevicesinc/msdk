@@ -51,44 +51,45 @@
 /* **** Functions **** */
 
 /* ************************************************************************** */
-void MXC_HPB_RegRead8 (mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegRead8(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegRead8((mxc_hpb_reva_regs_t*) MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegRead8((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegWrite8 (mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegWrite8(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegWrite8((mxc_hpb_reva_regs_t*) MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegWrite8((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegRead16 (mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegRead16(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegRead16((mxc_hpb_reva_regs_t*) MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegRead16((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegWrite16 (mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegWrite16(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegWrite16((mxc_hpb_reva_regs_t*) MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegWrite16((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-int MXC_HPB_Init (mxc_hpb_mem_config_t *mem0, mxc_hpb_mem_config_t *mem1)
+int MXC_HPB_Init(mxc_hpb_mem_config_t* mem0, mxc_hpb_mem_config_t* mem1)
 {
     /* Enable HyperBus Clocks */
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_HPB);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SYSCACHE);
-    
+
     /* Select drive strength on CK pin */
     MXC_GCFR->reg0 = (2 << MXC_F_GCFR_REG0_CKPDRV_POS) | (MXC_F_GCFR_REG0_RDSDLL_EN);
 
     /* If Hyperbus, also select drive strength on NCK pin and enable RDS DLL */
-    if ((mem0 && (mem0->device_type != MXC_HPB_DEV_XCCELA_PSRAM)) || (mem1 && (mem1->device_type != MXC_HPB_DEV_XCCELA_PSRAM))) {
+    if ((mem0 && (mem0->device_type != MXC_HPB_DEV_XCCELA_PSRAM)) ||
+        (mem1 && (mem1->device_type != MXC_HPB_DEV_XCCELA_PSRAM))) {
         MXC_GCFR->reg0 |= (2 << MXC_F_GCFR_REG0_CKNDRV_POS);
     }
-    
+
     /* Configure HyperBus GPIO Pins */
     if (mem0) {
         MXC_GPIO_Config(&gpio_cfg_hpb_cs0);
@@ -97,27 +98,27 @@ int MXC_HPB_Init (mxc_hpb_mem_config_t *mem0, mxc_hpb_mem_config_t *mem1)
         MXC_GPIO_Config(&gpio_cfg_hpb_cs1);
     }
     MXC_GPIO_Config(&gpio_cfg_hpb);
-    
+
     /* Reset the controller */
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_HPB);
-    
-    return MXC_HPB_RevA_Init((mxc_hpb_reva_regs_t*) MXC_HPB, mem0, mem1);
+
+    return MXC_HPB_RevA_Init((mxc_hpb_reva_regs_t*)MXC_HPB, mem0, mem1);
 }
 
 /* ************************************************************************** */
-uint32_t MXC_HPB_GetStatus (void)
+uint32_t MXC_HPB_GetStatus(void)
 {
-    return MXC_HPB_RevA_GetStatus((mxc_hpb_reva_regs_t*) MXC_HPB);
+    return MXC_HPB_RevA_GetStatus((mxc_hpb_reva_regs_t*)MXC_HPB);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_EnableInt (unsigned polarity)
+void MXC_HPB_EnableInt(unsigned polarity)
 {
-    MXC_HPB_RevA_EnableInt((mxc_hpb_reva_regs_t*) MXC_HPB, polarity);
+    MXC_HPB_RevA_EnableInt((mxc_hpb_reva_regs_t*)MXC_HPB, polarity);
 }
 
 /* ************************************************************************** */
-unsigned MXC_HPB_GetFlag (void)
+unsigned MXC_HPB_GetFlag(void)
 {
-    return MXC_HPB_RevA_GetFlag((mxc_hpb_reva_regs_t*) MXC_HPB);
+    return MXC_HPB_RevA_GetFlag((mxc_hpb_reva_regs_t*)MXC_HPB);
 }

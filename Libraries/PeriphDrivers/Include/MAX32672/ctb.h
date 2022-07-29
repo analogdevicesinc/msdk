@@ -59,21 +59,20 @@ extern "C" {
  * @brief Callback funtion for ctb
  * 
  */
-typedef void (*mxc_ctb_complete_cb_t) (void* req, int result);
+typedef void (*mxc_ctb_complete_cb_t)(void* req, int result);
 
 /**
   * @brief  Enumeration type for Crypto Toolbox features
   *
   */
 typedef enum {
-    MXC_CTB_FEATURE_DMA     = 1 << 0,
-    MXC_CTB_FEATURE_ECC     = 1 << 1,
-    MXC_CTB_FEATURE_CRC     = 1 << 2,
-    MXC_CTB_FEATURE_HASH    = 1 << 4,
-    MXC_CTB_FEATURE_CIPHER  = 1 << 5,
-    MXC_CTB_FEATURE_TRNG    = 1 << 6
+    MXC_CTB_FEATURE_DMA    = 1 << 0,
+    MXC_CTB_FEATURE_ECC    = 1 << 1,
+    MXC_CTB_FEATURE_CRC    = 1 << 2,
+    MXC_CTB_FEATURE_HASH   = 1 << 4,
+    MXC_CTB_FEATURE_CIPHER = 1 << 5,
+    MXC_CTB_FEATURE_TRNG   = 1 << 6
 } mxc_ctb_features_t;
-
 
 /* ************************************************************************* */
 /* DMA Definitions                                                           */
@@ -84,10 +83,10 @@ typedef enum {
   *
   */
 struct _mxc_ctb_dma_req_t {
-    uint8_t* sourceBuffer;            ///< pointer to source data
-    uint8_t* destBuffer;              ///< pointer to destination buffer
-    uint32_t length;                  ///< length of source data
-    mxc_ctb_complete_cb_t callback;   ///< Null callback indicates a blocking operation
+    uint8_t* sourceBuffer;          ///< pointer to source data
+    uint8_t* destBuffer;            ///< pointer to destination buffer
+    uint32_t length;                ///< length of source data
+    mxc_ctb_complete_cb_t callback; ///< Null callback indicates a blocking operation
 } typedef mxc_ctb_dma_req_t;
 
 /**
@@ -104,9 +103,9 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_DMA_WRITE_FIFO_CIPHER     = MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT,
-    MXC_CTB_DMA_WRITE_FIFO_READ_FIFO  = MXC_V_CTB_CTRL_WRSRC_READFIFO,
-    MXC_CTB_DMA_WRITE_FIFO_NONE       = MXC_V_CTB_CTRL_WRSRC_NONE
+    MXC_CTB_DMA_WRITE_FIFO_CIPHER    = MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT,
+    MXC_CTB_DMA_WRITE_FIFO_READ_FIFO = MXC_V_CTB_CTRL_WRSRC_READFIFO,
+    MXC_CTB_DMA_WRITE_FIFO_NONE      = MXC_V_CTB_CTRL_WRSRC_NONE
 } mxc_ctb_dma_write_source_t;
 
 /* ************************************************************************* */
@@ -139,10 +138,7 @@ struct _mxc_ctb_crc_req_t {
  * @brief CRC data bit order
  *  
  */
-typedef enum {
-    MXC_CTB_CRC_LSB_FIRST,
-    MXC_CTB_CRC_MSB_FIRST
-} mxc_ctb_crc_bitorder_t;
+typedef enum { MXC_CTB_CRC_LSB_FIRST, MXC_CTB_CRC_MSB_FIRST } mxc_ctb_crc_bitorder_t;
 
 /* ************************************************************************* */
 /* Hash Definitions                                                                            */
@@ -164,12 +160,12 @@ struct _mxc_ctb_hash_req_t {
   *
   */
 typedef enum {
-    MXC_CTB_HASH_DIS             = MXC_V_CTB_HASH_CTRL_HASH_DIS,            // Disable
-    MXC_CTB_HASH_SHA1            = MXC_V_CTB_HASH_CTRL_HASH_SHA1,           // Select SHA1
-    MXC_CTB_HASH_SHA224          = MXC_V_CTB_HASH_CTRL_HASH_SHA224,         // Select SHA224
-    MXC_CTB_HASH_SHA256          = MXC_V_CTB_HASH_CTRL_HASH_SHA256,         // Select SHA256
-    MXC_CTB_HASH_SHA384          = MXC_V_CTB_HASH_CTRL_HASH_SHA384,         // Select SHA384
-    MXC_CTB_HASH_SHA512          = MXC_V_CTB_HASH_CTRL_HASH_SHA512          // Select SHA384
+    MXC_CTB_HASH_DIS    = MXC_V_CTB_HASH_CTRL_HASH_DIS,    // Disable
+    MXC_CTB_HASH_SHA1   = MXC_V_CTB_HASH_CTRL_HASH_SHA1,   // Select SHA1
+    MXC_CTB_HASH_SHA224 = MXC_V_CTB_HASH_CTRL_HASH_SHA224, // Select SHA224
+    MXC_CTB_HASH_SHA256 = MXC_V_CTB_HASH_CTRL_HASH_SHA256, // Select SHA256
+    MXC_CTB_HASH_SHA384 = MXC_V_CTB_HASH_CTRL_HASH_SHA384, // Select SHA384
+    MXC_CTB_HASH_SHA512 = MXC_V_CTB_HASH_CTRL_HASH_SHA512  // Select SHA384
 } mxc_ctb_hash_func_t;
 
 /**
@@ -177,8 +173,8 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_HASH_SOURCE_INFIFO    = 0,
-    MXC_CTB_HASH_SOURCE_OUTFIFO   = 1
+    MXC_CTB_HASH_SOURCE_INFIFO  = 0,
+    MXC_CTB_HASH_SOURCE_OUTFIFO = 1
 } mxc_ctb_hash_source_t;
 
 /* ************************************************************************* */
@@ -202,11 +198,11 @@ struct _mxc_ctb_cipher_req_t {
   *
   */
 typedef enum {
-    MXC_CTB_MODE_ECB  = MXC_V_CTB_CIPHER_CTRL_MODE_ECB, ///< Electronic Code Book
-    MXC_CTB_MODE_CBC  = MXC_V_CTB_CIPHER_CTRL_MODE_CBC, ///< Cipher Block Chaining
-    MXC_CTB_MODE_CFB  = MXC_V_CTB_CIPHER_CTRL_MODE_CFB, ///< Cipher Feedback
-    MXC_CTB_MODE_CTR  = MXC_V_CTB_CIPHER_CTRL_MODE_CTR, ///< Counter
-    MXC_CTB_MODE_OFB  = MXC_V_CTB_CIPHER_CTRL_MODE_OFB  ///< Output Feedback
+    MXC_CTB_MODE_ECB = MXC_V_CTB_CIPHER_CTRL_MODE_ECB, ///< Electronic Code Book
+    MXC_CTB_MODE_CBC = MXC_V_CTB_CIPHER_CTRL_MODE_CBC, ///< Cipher Block Chaining
+    MXC_CTB_MODE_CFB = MXC_V_CTB_CIPHER_CTRL_MODE_CFB, ///< Cipher Feedback
+    MXC_CTB_MODE_CTR = MXC_V_CTB_CIPHER_CTRL_MODE_CTR, ///< Counter
+    MXC_CTB_MODE_OFB = MXC_V_CTB_CIPHER_CTRL_MODE_OFB  ///< Output Feedback
 } mxc_ctb_cipher_mode_t;
 
 /**
@@ -214,12 +210,12 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_CIPHER_DIS           = MXC_V_CTB_CIPHER_CTRL_CIPHER_DIS,       ///< Disable
-    MXC_CTB_CIPHER_AES128        = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES128,    ///< Select AES-128
-    MXC_CTB_CIPHER_AES192        = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES192,    ///< Select AES-192
-    MXC_CTB_CIPHER_AES256        = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES256,    ///< Select AES-256
-    MXC_CTB_CIPHER_DES           = MXC_V_CTB_CIPHER_CTRL_CIPHER_DES,       ///< Select DES
-    MXC_CTB_CIPHER_TDES          = MXC_V_CTB_CIPHER_CTRL_CIPHER_TDES       ///< Select TDES
+    MXC_CTB_CIPHER_DIS    = MXC_V_CTB_CIPHER_CTRL_CIPHER_DIS,    ///< Disable
+    MXC_CTB_CIPHER_AES128 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES128, ///< Select AES-128
+    MXC_CTB_CIPHER_AES192 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES192, ///< Select AES-192
+    MXC_CTB_CIPHER_AES256 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES256, ///< Select AES-256
+    MXC_CTB_CIPHER_DES    = MXC_V_CTB_CIPHER_CTRL_CIPHER_DES,    ///< Select DES
+    MXC_CTB_CIPHER_TDES   = MXC_V_CTB_CIPHER_CTRL_CIPHER_TDES    ///< Select TDES
 } mxc_ctb_cipher_t;
 
 /**
@@ -227,19 +223,16 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_CIPHER_KEY_SOFTWARE  = 0,
-    MXC_CTB_CIPHER_KEY_AES_KEY2  = 2,
-    MXC_CTB_CIPHER_KEY_AES_KEY3  = 3
+    MXC_CTB_CIPHER_KEY_SOFTWARE = 0,
+    MXC_CTB_CIPHER_KEY_AES_KEY2 = 2,
+    MXC_CTB_CIPHER_KEY_AES_KEY3 = 3
 } mxc_ctb_cipher_key_t;
 
 /** 
  * @brief Cipher operation
  *  
  */
-typedef enum {
-    MXC_CTB_CIPHER_ENCRYPTION,
-    MXC_CTB_CIPHER_DECRYPTION
-} mxc_ctb_cipher_operation_t;
+typedef enum { MXC_CTB_CIPHER_ENCRYPTION, MXC_CTB_CIPHER_DECRYPTION } mxc_ctb_cipher_operation_t;
 
 /***** Function Prototypes *****/
 
@@ -255,60 +248,60 @@ typedef enum {
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_Init (uint32_t features);
+int MXC_CTB_Init(uint32_t features);
 
 /**
  * @brief   Detects what CTB features exist, see \ref mxc_ctb_features_t
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-uint32_t MXC_CTB_CheckFeatures (void);
+uint32_t MXC_CTB_CheckFeatures(void);
 
 /**
  * @brief   Enable CTB Interrupts
  *
  */
-void MXC_CTB_EnableInt ();
+void MXC_CTB_EnableInt();
 
 /**
  * @brief   Disable CTB Interrupts
  *
  */
-void MXC_CTB_DisableInt ();
+void MXC_CTB_DisableInt();
 
 /**
  * @brief   Checks the global CTB Ready Status
  *
  * @return  Nonzero if ready, zero if not ready or \ref MXC_Error_Codes.
  */
-int MXC_CTB_Ready (void);
+int MXC_CTB_Ready(void);
 
 /**
  * @brief   Clears the selected feature's done bits, see \ref mxc_ctb_features_t
  *
  * @param   features   bit banded value indicating features to clear
  */
-void MXC_CTB_DoneClear (uint32_t features);
+void MXC_CTB_DoneClear(uint32_t features);
 
 /**
  * @brief   Returns CTB features showing operations complete, see \ref mxc_ctb_features_t
  *
  * @return  CTB features showing operations complete, see \ref mxc_ctb_features_t.
  */
-uint32_t MXC_CTB_Done (void);
+uint32_t MXC_CTB_Done(void);
 
 /**
  * @brief   Resets the selected features, see \ref mxc_ctb_features_t
  *
  * @param   features   bit banded value indicating features to reset
  */
-void MXC_CTB_Reset (uint32_t features);
+void MXC_CTB_Reset(uint32_t features);
 
 /**
  * @brief   Invalidates the CTB's internal cache.
  * @note    For best security, should be done after every operation
  */
-void MXC_CTB_CacheInvalidate (void);
+void MXC_CTB_CacheInvalidate(void);
 
 /**
  * @brief   Disable and reset portions of the CTB
@@ -318,20 +311,20 @@ void MXC_CTB_CacheInvalidate (void);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_Shutdown (uint32_t features);
+int MXC_CTB_Shutdown(uint32_t features);
 
 /**
  * @brief   Check which CTB features are enabled
  *
  * @return  CTB features showing features enabled, see \ref mxc_ctb_features_t.
  */
-uint32_t MXC_CTB_GetEnabledFeatures (void);
+uint32_t MXC_CTB_GetEnabledFeatures(void);
 
 /**
  * @brief   This function should be called from the CTB ISR Handler
  *          when using Async functions
  */
-void MXC_CTB_Handler (void);
+void MXC_CTB_Handler(void);
 
 /************************************/
 /* CTB DMA - Used for all features  */
@@ -344,7 +337,7 @@ void MXC_CTB_Handler (void);
  * @param   source    The source of the data for DMA read operations
  *                    see \ref mxc_ctb_dma_read_source_t for a list of sources
  */
-void MXC_CTB_DMA_SetReadSource (mxc_ctb_dma_read_source_t source);
+void MXC_CTB_DMA_SetReadSource(mxc_ctb_dma_read_source_t source);
 
 /**
  * @brief   Get the source the DMA reads from
@@ -352,7 +345,7 @@ void MXC_CTB_DMA_SetReadSource (mxc_ctb_dma_read_source_t source);
  * @return  The source of the data for DMA read operations
  *          see \ref mxc_ctb_dma_read_source_t for a list of sources
  */
-mxc_ctb_dma_read_source_t MXC_CTB_DMA_GetReadSource (void);
+mxc_ctb_dma_read_source_t MXC_CTB_DMA_GetReadSource(void);
 
 /**
  * @brief   Set the source the DMA write fifo reads from
@@ -360,7 +353,7 @@ mxc_ctb_dma_read_source_t MXC_CTB_DMA_GetReadSource (void);
  * @param   source    The source of the data for DMA write operations
  *                    see \ref mxc_ctb_dma_write_source_t for a list of sources
  */
-void MXC_CTB_DMA_SetWriteSource (mxc_ctb_dma_write_source_t source);
+void MXC_CTB_DMA_SetWriteSource(mxc_ctb_dma_write_source_t source);
 
 /**
  * @brief   Set the source the DMA write fifo reads from
@@ -368,7 +361,7 @@ void MXC_CTB_DMA_SetWriteSource (mxc_ctb_dma_write_source_t source);
  * @return  The source of the data for DMA write operations
  *          see \ref mxc_ctb_dma_write_source_t for a list of sources
  */
-mxc_ctb_dma_write_source_t MXC_CTB_DMA_GetWriteSource (void);
+mxc_ctb_dma_write_source_t MXC_CTB_DMA_GetWriteSource(void);
 
 /**
  * @brief   Set the source address of the DMA
@@ -377,14 +370,14 @@ mxc_ctb_dma_write_source_t MXC_CTB_DMA_GetWriteSource (void);
  *
  * @param   source    pointer to the source location
  */
-void MXC_CTB_DMA_SetSource (uint8_t* source);
+void MXC_CTB_DMA_SetSource(uint8_t* source);
 
 /**
  * @brief   Set the destination address of the DMA
  *
  * @param   dest  pointer to destination
  */
-void MXC_CTB_DMA_SetDestination (uint8_t* dest);
+void MXC_CTB_DMA_SetDestination(uint8_t* dest);
 
 /**
  * @brief   Set the source and destination addresses of the DMA
@@ -395,7 +388,7 @@ void MXC_CTB_DMA_SetDestination (uint8_t* dest);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_DMA_SetupOperation (mxc_ctb_dma_req_t* req);
+int MXC_CTB_DMA_SetupOperation(mxc_ctb_dma_req_t* req);
 
 /**
  * @brief   Start a DMA transfer defined by the request object
@@ -407,7 +400,7 @@ int MXC_CTB_DMA_SetupOperation (mxc_ctb_dma_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_DMA_DoOperation (mxc_ctb_dma_req_t* req);
+int MXC_CTB_DMA_DoOperation(mxc_ctb_dma_req_t* req);
 
 /**
  * @brief   Start a DMA transfer of fixed size
@@ -415,7 +408,7 @@ int MXC_CTB_DMA_DoOperation (mxc_ctb_dma_req_t* req);
  * @param   length Number of bytes to transfer
  *
  */
-void MXC_CTB_DMA_StartTransfer (uint32_t length);
+void MXC_CTB_DMA_StartTransfer(uint32_t length);
 
 /* ************************************************************************* */
 /* True Random Number Generator (TRNG) functions                             */
@@ -426,7 +419,7 @@ void MXC_CTB_DMA_StartTransfer (uint32_t length);
  *
  * @return  A random 32-bit number
  */
-int MXC_CTB_TRNG_RandomInt (void);
+int MXC_CTB_TRNG_RandomInt(void);
 
 /**
  * @brief   Get a random number of length len
@@ -436,7 +429,7 @@ int MXC_CTB_TRNG_RandomInt (void);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_TRNG_Random (uint8_t* data, uint32_t len);
+int MXC_CTB_TRNG_Random(uint8_t* data, uint32_t len);
 
 /**
  * @brief   Get a random number of length len, do not block while generating data
@@ -447,7 +440,7 @@ int MXC_CTB_TRNG_Random (uint8_t* data, uint32_t len);
  * @param   callback  Function that will be called when all data has been generated
  *
  */
-void MXC_CTB_TRNG_RandomAsync (uint8_t* data, uint32_t len, mxc_ctb_complete_cb_t callback);
+void MXC_CTB_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_ctb_complete_cb_t callback);
 
 /* ************************************************************************* */
 /* Error Correction Code (ECC) functions                                     */
@@ -462,21 +455,21 @@ void MXC_CTB_TRNG_RandomAsync (uint8_t* data, uint32_t len, mxc_ctb_complete_cb_
  * @note    ECC calculation is shared with CRC, when ECC is enabled, CRC
  *          computation is not possible
  */
-void MXC_CTB_ECC_Enable ();
+void MXC_CTB_ECC_Enable();
 
 /**
  * @brief   Disable ECC Calculation
  * @note    ECC calculation is shared with CRC, when ECC is enabled, CRC
  *          computation is not possible
  */
-void MXC_CTB_ECC_Disable ();
+void MXC_CTB_ECC_Disable();
 
 /**
  * @brief   Get the Result of an ECC Calculation
  *
  * @return  The result of the ECC calculation
  */
-uint32_t MXC_CTB_ECC_GetResult (void);
+uint32_t MXC_CTB_ECC_GetResult(void);
 
 /*******************************/
 /* High Level Functions        */
@@ -491,7 +484,7 @@ uint32_t MXC_CTB_ECC_GetResult (void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_ECC_Compute (mxc_ctb_ecc_req_t* req);
+int MXC_CTB_ECC_Compute(mxc_ctb_ecc_req_t* req);
 
 /**
  * @brief   Check for single or dual bit errors in a block of data
@@ -502,7 +495,7 @@ int MXC_CTB_ECC_Compute (mxc_ctb_ecc_req_t* req);
  * @return  Positive values for 1 or 2 bit errors, respectively
  *          otherwise, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_ECC_ErrorCheck (mxc_ctb_ecc_req_t* req);
+int MXC_CTB_ECC_ErrorCheck(mxc_ctb_ecc_req_t* req);
 
 /**
  * @brief   Compute the ECC value for a block of data up to 8kB in size
@@ -512,7 +505,7 @@ int MXC_CTB_ECC_ErrorCheck (mxc_ctb_ecc_req_t* req);
  *
  * @param   req   Structure containing data for the ECC request
  */
-void MXC_CTB_ECC_ComputeAsync (mxc_ctb_ecc_req_t* req);
+void MXC_CTB_ECC_ComputeAsync(mxc_ctb_ecc_req_t* req);
 
 /**
  * @brief   Check for single or dual bit errors in a block of data
@@ -521,7 +514,7 @@ void MXC_CTB_ECC_ComputeAsync (mxc_ctb_ecc_req_t* req);
  *
  * @param   req   Structure containing data for the ECC request
  */
-void MXC_CTB_ECC_ErrorCheckAsync (mxc_ctb_ecc_req_t* req);
+void MXC_CTB_ECC_ErrorCheckAsync(mxc_ctb_ecc_req_t* req);
 
 /* ************************************************************************* */
 /* Cyclic Redundancy Check (CRC) functions                                   */
@@ -536,35 +529,35 @@ void MXC_CTB_ECC_ErrorCheckAsync (mxc_ctb_ecc_req_t* req);
  *
  * @param   bitOrder  The direction to perform CRC calculation in, \ref mxc_ctb_crc_bitorder_t
  */
-void MXC_CTB_CRC_SetDirection (mxc_ctb_crc_bitorder_t bitOrder);
+void MXC_CTB_CRC_SetDirection(mxc_ctb_crc_bitorder_t bitOrder);
 
 /**
  * @brief   Set the bit-order of CRC calculation
  *
  * @return  The direction of calculation, 1 for MSB first, 0 for LSB first , \ref mxc_ctb_crc_bitorder_t
  */
-mxc_ctb_crc_bitorder_t MXC_CTB_CRC_GetDirection (void);
+mxc_ctb_crc_bitorder_t MXC_CTB_CRC_GetDirection(void);
 
 /**
  * @brief   Set the Polynomial for CRC calculation
  *
  * @param   poly  The polynomial to use for CRC calculation
  */
-void MXC_CTB_CRC_SetPoly (uint32_t poly);
+void MXC_CTB_CRC_SetPoly(uint32_t poly);
 
 /**
  * @brief   Get the polynomial for CRC calculation
  *
  * @return  The polynomial used in calculation
  */
-uint32_t MXC_CTB_CRC_GetPoly (void);
+uint32_t MXC_CTB_CRC_GetPoly(void);
 
 /**
  * @brief   Get the result of a CRC calculation
  *
  * @return  The calculated CRC value
  */
-uint32_t MXC_CTB_CRC_GetResult (void);
+uint32_t MXC_CTB_CRC_GetResult(void);
 
 /*******************************/
 /* High Level Functions        */
@@ -579,7 +572,7 @@ uint32_t MXC_CTB_CRC_GetResult (void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_CRC_Compute (mxc_ctb_crc_req_t* req);
+int MXC_CTB_CRC_Compute(mxc_ctb_crc_req_t* req);
 
 /**
  * @brief   Perform a CRC computation asynchronously
@@ -589,7 +582,7 @@ int MXC_CTB_CRC_Compute (mxc_ctb_crc_req_t* req);
  *
  * @param   req   Structure containing the data for calculation
  */
-void MXC_CTB_CRC_ComputeAsync (mxc_ctb_crc_req_t* req);
+void MXC_CTB_CRC_ComputeAsync(mxc_ctb_crc_req_t* req);
 
 /* ************************************************************************* */
 /* Hash functions                                                            */
@@ -606,7 +599,7 @@ void MXC_CTB_CRC_ComputeAsync (mxc_ctb_crc_req_t* req);
  *
  * @return  Block size in bytes
  */
-unsigned int MXC_CTB_Hash_GetBlockSize (mxc_ctb_hash_func_t function);
+unsigned int MXC_CTB_Hash_GetBlockSize(mxc_ctb_hash_func_t function);
 
 /**
  * @brief   Get the digest size for a given hash function
@@ -615,21 +608,21 @@ unsigned int MXC_CTB_Hash_GetBlockSize (mxc_ctb_hash_func_t function);
  *
  * @return  Digest size in bytes
  */
-unsigned int MXC_CTB_Hash_GetDigestSize (mxc_ctb_hash_func_t function);
+unsigned int MXC_CTB_Hash_GetDigestSize(mxc_ctb_hash_func_t function);
 
 /**
  * @brief   Set the algorithm to use for hash computation
  *
  * @param   function  See \ref mxc_ctb_hash_func_t for options
  */
-void MXC_CTB_Hash_SetFunction (mxc_ctb_hash_func_t function);
+void MXC_CTB_Hash_SetFunction(mxc_ctb_hash_func_t function);
 
 /**
  * @brief   Get the algorithm to use for hash computation
  *
  * @return  See \ref mxc_ctb_hash_func_t for options
  */
-mxc_ctb_hash_func_t MXC_CTB_Hash_GetFunction (void);
+mxc_ctb_hash_func_t MXC_CTB_Hash_GetFunction(void);
 
 /**
  * @brief   Set whether to use automatic padding of the input data
@@ -637,14 +630,14 @@ mxc_ctb_hash_func_t MXC_CTB_Hash_GetFunction (void);
  *
  * @param   pad   Use hardware padding of the data
  */
-void MXC_CTB_Hash_SetAutoPad (int pad);
+void MXC_CTB_Hash_SetAutoPad(int pad);
 
 /**
  * @brief   Get whether to use automatic padding of the input data
  *
  * @return  Using hardware padding of the data
  */
-int MXC_CTB_Hash_GetAutoPad (void);
+int MXC_CTB_Hash_GetAutoPad(void);
 
 /**
  * @brief   Get the result of a hash computation
@@ -652,7 +645,7 @@ int MXC_CTB_Hash_GetAutoPad (void);
  * @param   digest   buffer to store the ouctbt of the hash algorithm
  * @param   len      location to store the length of the digest
  */
-void MXC_CTB_Hash_GetResult (uint8_t* digest, int* len);
+void MXC_CTB_Hash_GetResult(uint8_t* digest, int* len);
 
 /**
  * @brief   Set the size of the data input into the hash computation
@@ -660,21 +653,21 @@ void MXC_CTB_Hash_GetResult (uint8_t* digest, int* len);
  *
  * @param   size  Size of the data in bytes
  */
-void MXC_CTB_Hash_SetMessageSize (uint32_t size);
+void MXC_CTB_Hash_SetMessageSize(uint32_t size);
 
 /**
  * @brief   Set the source of data for the hash computation
  *
  * @param   source  see \ref mxc_ctb_hash_source_t for options
  */
-void MXC_CTB_Hash_SetSource (mxc_ctb_hash_source_t source);
+void MXC_CTB_Hash_SetSource(mxc_ctb_hash_source_t source);
 
 /**
  * @brief   Get the source of data for the hash computation
  *
  * @return  See \ref mxc_ctb_hash_source_t for options
  */
-mxc_ctb_hash_source_t MXC_CTB_Hash_GetSource (void);
+mxc_ctb_hash_source_t MXC_CTB_Hash_GetSource(void);
 
 /**
  * @brief   Initialize the hash computation unit
@@ -682,7 +675,7 @@ mxc_ctb_hash_source_t MXC_CTB_Hash_GetSource (void);
  *          This function blocks until load is complete
  *
  */
-void MXC_CTB_Hash_InitializeHash (void);
+void MXC_CTB_Hash_InitializeHash(void);
 
 /************************/
 /* High Level Functions */
@@ -696,7 +689,7 @@ void MXC_CTB_Hash_InitializeHash (void);
  *
  * @return See \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_CTB_Hash_Compute (mxc_ctb_hash_req_t* req);
+int MXC_CTB_Hash_Compute(mxc_ctb_hash_req_t* req);
 
 /**
  * @brief   Compute a Hash Digest
@@ -705,7 +698,7 @@ int MXC_CTB_Hash_Compute (mxc_ctb_hash_req_t* req);
  *
  * @param   req   Structure containing all data needed for a hash computation
  */
-void MXC_CTB_Hash_ComputeAsync (mxc_ctb_hash_req_t* req);
+void MXC_CTB_Hash_ComputeAsync(mxc_ctb_hash_req_t* req);
 
 /* ************************************************************************* */
 /* Cipher functions                                                          */
@@ -722,7 +715,7 @@ void MXC_CTB_Hash_ComputeAsync (mxc_ctb_hash_req_t* req);
  *
  * @return  Size of the key in bytes
  */
-unsigned int MXC_CTB_Cipher_GetKeySize (mxc_ctb_cipher_t cipher);
+unsigned int MXC_CTB_Cipher_GetKeySize(mxc_ctb_cipher_t cipher);
 
 /**
  * @brief   Get the block size for a given cipher type
@@ -731,62 +724,62 @@ unsigned int MXC_CTB_Cipher_GetKeySize (mxc_ctb_cipher_t cipher);
  *
  * @return  Size of the block in bytes
  */
-unsigned int MXC_CTB_Cipher_GetBlockSize (mxc_ctb_cipher_t cipher);
+unsigned int MXC_CTB_Cipher_GetBlockSize(mxc_ctb_cipher_t cipher);
 
 /**
  * @brief   Set the block mode used for cipher operations
  *
  * @param   mode   See \ref mxc_ctb_cipher_mode_t for options
  */
-void MXC_CTB_Cipher_SetMode (mxc_ctb_cipher_mode_t mode);
+void MXC_CTB_Cipher_SetMode(mxc_ctb_cipher_mode_t mode);
 
 /**
  * @brief   Get the block mode used for cipher operations
  *
  * @return  See \ref mxc_ctb_cipher_mode_t for options
  */
-mxc_ctb_cipher_mode_t MXC_CTB_Cipher_GetMode (void);
+mxc_ctb_cipher_mode_t MXC_CTB_Cipher_GetMode(void);
 
 /**
  * @brief   Set the cipher type used for cipher operations
  *
  * @param   cipher   See \ref mxc_ctb_cipher_t for options
  */
-void MXC_CTB_Cipher_SetCipher (mxc_ctb_cipher_t cipher);
+void MXC_CTB_Cipher_SetCipher(mxc_ctb_cipher_t cipher);
 
 /**
  * @brief   Get the cipher type used for cipher operations
  *
  * @return  See \ref mxc_ctb_cipher_t for options
  */
-mxc_ctb_cipher_t MXC_CTB_Cipher_GetCipher (void);
+mxc_ctb_cipher_t MXC_CTB_Cipher_GetCipher(void);
 
 /**
  * @brief   Set the source of the key used in cipher operations
  *
  * @param   source   See \ref mxc_ctb_cipher_key_t for options
  */
-void MXC_CTB_Cipher_SetKeySource (mxc_ctb_cipher_key_t source);
+void MXC_CTB_Cipher_SetKeySource(mxc_ctb_cipher_key_t source);
 
 /**
  * @brief   Get the cipher type used for cipher operations
  *
  * @return  See \ref mxc_ctb_cipher_key_t for options
  */
-mxc_ctb_cipher_key_t MXC_CTB_Cipher_GetKeySource (void);
+mxc_ctb_cipher_key_t MXC_CTB_Cipher_GetKeySource(void);
 
 /**
  * @brief   Load the cipher key from the selected source
  *
  */
-void MXC_CTB_Cipher_LoadKey (void);
+void MXC_CTB_Cipher_LoadKey(void);
 
 /**
  * @brief   Configure for encryption or decryption
  *
  * @param   operation Set to perform encryption/decryption \ref mxc_ctb_cipher_operation_t
  */
-void MXC_CTB_Cipher_SetOperation (mxc_ctb_cipher_operation_t operation);
+void MXC_CTB_Cipher_SetOperation(mxc_ctb_cipher_operation_t operation);
 
 /**
  * @brief   Set the cipher key
@@ -795,7 +788,7 @@ void MXC_CTB_Cipher_SetOperation (mxc_ctb_cipher_operation_t operation);
  * @param   key   buffer containing key
  * @param   len   length of key (dependent on cipher used)
  */
-void MXC_CTB_Cipher_SetKey (uint8_t* key, uint32_t len);
+void MXC_CTB_Cipher_SetKey(uint8_t* key, uint32_t len);
 
 /**
  * @brief   Set the initial value used for cipher operations
@@ -803,7 +796,7 @@ void MXC_CTB_Cipher_SetKey (uint8_t* key, uint32_t len);
  * @param   iv   buffer containing iv
  * @param   len  length of initial value
  */
-void MXC_CTB_Cipher_SetIV (uint8_t* iv, uint32_t len);
+void MXC_CTB_Cipher_SetIV(uint8_t* iv, uint32_t len);
 
 /**
  * @brief   Get the initial value used for cipher operations
@@ -811,7 +804,7 @@ void MXC_CTB_Cipher_SetIV (uint8_t* iv, uint32_t len);
  * @param   ivOut   buffer containing iv
  * @param   len     length of buffer
  */
-void MXC_CTB_Cipher_GetIV (uint8_t* ivOut, uint32_t len);
+void MXC_CTB_Cipher_GetIV(uint8_t* ivOut, uint32_t len);
 
 /************************/
 /* High Level Functions */
@@ -825,7 +818,7 @@ void MXC_CTB_Cipher_GetIV (uint8_t* ivOut, uint32_t len);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_Cipher_Encrypt (mxc_ctb_cipher_req_t* req);
+int MXC_CTB_Cipher_Encrypt(mxc_ctb_cipher_req_t* req);
 
 /**
  * @brief   Perform a decryption using the cipher feature
@@ -835,7 +828,7 @@ int MXC_CTB_Cipher_Encrypt (mxc_ctb_cipher_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_Cipher_Decrypt (mxc_ctb_cipher_req_t* req);
+int MXC_CTB_Cipher_Decrypt(mxc_ctb_cipher_req_t* req);
 
 /**
  * @brief   Perform an encryption using the cipher feature
@@ -844,7 +837,7 @@ int MXC_CTB_Cipher_Decrypt (mxc_ctb_cipher_req_t* req);
  *
  * @param   req  Structure containing data for the encryption
  */
-void MXC_CTB_Cipher_EncryptAsync (mxc_ctb_cipher_req_t* req);
+void MXC_CTB_Cipher_EncryptAsync(mxc_ctb_cipher_req_t* req);
 
 /**
  * @brief   Perform a decryption using the cipher feature
@@ -853,11 +846,11 @@ void MXC_CTB_Cipher_EncryptAsync (mxc_ctb_cipher_req_t* req);
  *
  * @param   req  Structure containing data for the decryption
  */
-void MXC_CTB_Cipher_DecryptAsync (mxc_ctb_cipher_req_t* req);
+void MXC_CTB_Cipher_DecryptAsync(mxc_ctb_cipher_req_t* req);
 
 #ifdef __cplusplus
 }
 #endif
 /**@} end of group ctb */
 
-#endif  /* _CTB_H_ */
+#endif /* _CTB_H_ */
