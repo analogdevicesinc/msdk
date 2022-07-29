@@ -42,8 +42,6 @@
 #include <string.h>
 #include "mxc_device.h"
 #include "nvic_table.h"
-#include "pb.h"
-#include "board.h"
 #include "gpio.h"
 
 /***** Definitions *****/

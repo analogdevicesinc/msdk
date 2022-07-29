@@ -67,15 +67,11 @@
 //UNDERFLOW
 
 /***** Globals *****/
-//use push buttons defined in board.h
-extern const mxc_gpio_cfg_t pb_pin[];
-extern const mxc_gpio_cfg_t led_pin[];
 
 static mxc_wdt_cfg_t cfg;
 
 // refers to array, do not change constants
 #define SW1 0
-#define LED 0
 /***** Functions *****/
 
 // *****************************************************************************
@@ -143,18 +139,14 @@ int main(void)
     printf("\nPress a button to create watchdog interrupt and reset:\n");
     printf("SW1 (P0.20)= timeout and reset program\n\n");
 
-    //Blink LED
-    MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-
     //Blink LED three times at startup
     int numBlinks = 3;
 
-    while (numBlinks) {
-        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
+    while (numBlinks--) {
+        LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(100));
-        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
+        LED_Off(0);
         MXC_Delay(MXC_DELAY_MSEC(100));
-        numBlinks--;
     }
 
     //Setup watchdog
@@ -164,7 +156,7 @@ int main(void)
 
     while (1) {
         //Push SW1 to reset watchdog
-        if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
+        if (PB_Get(SW1) == TRUE) {
             SW1_Callback();
 #ifdef OVERFLOW
 
@@ -179,9 +171,9 @@ int main(void)
 
         //blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
-        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
+        LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(500));
-        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
+        LED_Off(0);
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
