@@ -777,53 +777,94 @@ int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_re
         return E_BUSY;
     }
 
-    // Check if frequency is too high
-    if (hz > PeripheralClock) {
+    if (spixfm) {
+        // Check if frequency is too high
+        if (hz > PeripheralClock) {
+            return E_BAD_PARAM;
+        }
+
+        // Make sure that we can generate this frequency
+        clocks = (PeripheralClock / (2 * hz));
+        hi_clk = clocks / 2;
+        lo_clk = clocks / 2;
+
+        if (clocks % 2) {
+            hi_clk += 1;
+        }
+
+        if (hi_clk == 0) {
+            spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_LO_CLK;
+            spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_HI_CLK;
+        } else if (hi_clk > 15) {
+            MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
+                         1 << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
+            MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
+                         1 << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
+        } else {
+            MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
+                         lo_clk << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
+            MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
+                         hi_clk << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
+        }
+    }
+
+    if (spixfc) {
+        // Check if frequency is too high
+        if (hz > SystemCoreClock) {
+            return E_BAD_PARAM;
+        }
+
+        // Make sure that we can generate this frequency
+        clocks = (SystemCoreClock / (2 * hz));
+        hi_clk = clocks / 2;
+        lo_clk = clocks / 2;
+
+        if (clocks % 2) {
+            hi_clk += 1;
+        }
+
+        if (hi_clk == 0) {
+            spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_LO_CLK;
+            spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_HI_CLK;
+        } else if (hi_clk > 15) {
+            MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
+                         1 << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
+            MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
+                         1 << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
+        } else {
+            MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
+                         lo_clk << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
+            MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
+                         hi_clk << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
+        }
+    }
+
+    if (spixfc) {
+        return MXC_SPIXF_RevA_GetSPIFrequencyWrite(spixfc);
+    } else if (spixfm) {
+        return MXC_SPIXF_RevA_GetSPIFrequency(spixfm);
+    } else {
         return E_BAD_PARAM;
     }
-
-    // Make sure that we can generate this frequency
-    clocks = (PeripheralClock / (2 * hz));
-    hi_clk = clocks;
-    lo_clk = clocks;
-
-    if (clocks % 2) {
-        hi_clk += 1;
-        lo_clk += 1;
-    }
-
-    if (hi_clk == 0) {
-        spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_LO_CLK;
-        spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_HI_CLK;
-        spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_LO_CLK;
-        spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_HI_CLK;
-    } else if (hi_clk > 15) {
-        MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
-                     1 << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
-        MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
-                     1 << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
-        MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
-                     1 << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
-        MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
-                     1 << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
-    } else {
-        MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
-                     lo_clk << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
-        MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
-                     hi_clk << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
-        MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
-                     lo_clk << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
-        MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
-                     hi_clk << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
-    }
-
-    return MXC_SPIXF_RevA_GetSPIFrequency(spixfm);
 }
 
 uint32_t MXC_SPIXF_RevA_GetSPIFrequency(mxc_spixfm_reva_regs_t* spixfm)
 {
     uint32_t clocks;
     clocks = ((spixfm->cfg & MXC_F_SPIXFM_REVA_CFG_HI_CLK) >> MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
+
+    // Avoid divide by zero
+    if (clocks == 0) {
+        clocks = 0x10;
+    }
+
+    return SystemCoreClock / (2 * clocks);
+}
+
+uint32_t MXC_SPIXF_RevA_GetSPIFrequencyWrite(mxc_spixfc_reva_regs_t* spixfc)
+{
+    uint32_t clocks;
+    clocks = ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_HI_CLK) >> MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
 
     // Avoid divide by zero
     if (clocks == 0) {

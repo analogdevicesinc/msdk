@@ -221,6 +221,7 @@ int MXC_SPIXF_RevA_GetSSPolarity(mxc_spixfc_reva_regs_t* spixfc);
 int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
                                    unsigned int hz);
 uint32_t MXC_SPIXF_RevA_GetSPIFrequency(mxc_spixfm_reva_regs_t* spixfm);
+uint32_t MXC_SPIXF_RevA_GetSPIFrequencyWrite(mxc_spixfc_reva_regs_t* spixfc);
 int MXC_SPIXF_RevA_SetSSActiveTime(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
                                    mxc_spixf_ssact_t ssact);
 mxc_spixf_ssact_t MXC_SPIXF_RevA_GetSSActiveTime(mxc_spixfc_reva_regs_t* spixfc);
