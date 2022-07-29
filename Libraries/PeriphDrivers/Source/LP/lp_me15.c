@@ -260,7 +260,7 @@ void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr)
     }
 }
 
-void MXC_LP_EnableUARTWakeup (void)
+void MXC_LP_EnableUARTWakeup(void)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_LPUART0_WE;
     MXC_PWRSEQ->lppwken |= MXC_F_PWRSEQ_LPPWKEN_LPUART0;
@@ -268,7 +268,7 @@ void MXC_LP_EnableUARTWakeup (void)
                           MXC_F_MCR_LPPIOCTRL_LPUART0_RTS | MXC_F_MCR_LPPIOCTRL_LPUART0_CTS;
 }
 
-void MXC_LP_DisableUARTWakeup (void)
+void MXC_LP_DisableUARTWakeup(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_LPUART0_WE;
     MXC_PWRSEQ->lppwken &= ~MXC_F_PWRSEQ_LPPWKEN_LPUART0;
