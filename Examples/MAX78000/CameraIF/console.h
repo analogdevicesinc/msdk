@@ -8,12 +8,15 @@
 
 typedef enum {
     CMD_UNKNOWN = -1,
-    CMD_CAPTURE = 0,
+    CMD_RESET = 0,
+    CMD_CAPTURE,
     CMD_IMGRES,
-    CMD_ENABLE_DMA,
-    CMD_DISABLE_DMA,
-    CMD_STREAM
+    CMD_STREAM,
+    CMD_SETREG,
+    CMD_GETREG
 } cmd_t;
+
+extern char* cmd_table[];
 
 static mxc_uart_regs_t* Con_Uart = MXC_UART_GET_UART(CONSOLE_UART);
 extern char g_serial_buffer[SERIAL_BUFFER_SIZE];

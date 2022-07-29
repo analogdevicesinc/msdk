@@ -7,11 +7,12 @@ int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'main' as part of initialization
 char* cmd_table[] = {
+    "reset",
     "capture",
     "imgres",
-    "enable_dma",
-    "disable_dma",
-    "stream"
+    "stream",
+    "set-reg",
+    "get-reg"
 };
 
 int starts_with(char* a, char* b) {
@@ -20,7 +21,7 @@ int starts_with(char* a, char* b) {
     char* ptr_b = b;
 
     while(*ptr_a && *ptr_b) {
-        if (*a != *b) {
+        if (*ptr_a != *ptr_b) {
             return 0;            
         }
         ptr_a++;
