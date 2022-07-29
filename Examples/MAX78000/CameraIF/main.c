@@ -60,11 +60,20 @@ typedef struct {
     uint8_t* pixel_format;  // Pixel format string
 } img_data_t;
 
+typedef struct {
+    int dma_channel;
+    dmamode_t dma_mode;
+    unsigned int imgres_w;
+    unsigned int imgres_h;
+} app_settings_t;
+
+app_settings_t g_app_settings;
+
 img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode_t dma_mode, int dma_channel) {
     // This demonstrates the most basic blocking capture of a single image.
     // The raw data for the entire image will be saved into an SRAM buffer.
     // For the purposes of demonstration this function contains the full setup
-    // sequence for capturing an image.  In practice, 'camera_setup' can be 
+    // sequence for capturing an image.  In practice, step 1 can be 
     // broken out into a separate initialization sequence if you're not
     // reconfiguring the camera settings on the fly.
 
@@ -88,6 +97,7 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     // Error check the setup function.
     if (ret != STATUS_OK) {
         printf("Failed to configure camera!  Error %i\n", ret);
+        img_data.raw = NULL;
         return img_data;
     }
 
@@ -116,9 +126,8 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
         img_data.w, img_data.h, img_data.pixel_format, img_data.raw, img_data.imglen
     );
 
-    // 5. At this point, the "raw" byte pointer is pointing to the fully captured raw
-    // image data, which is stored in a byte array with length 'imgLen' and all the info
-    // needed to decode the image data has been collected.
+    // 5. At this point, "img_data.raw" is pointing to the fully captured
+    // image data, and all the info needed to decode it has been collected.
 
     return img_data;
 }
@@ -129,11 +138,12 @@ void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channe
     // image in SRAM.  Instead, space for 2 rows is allocated for a DMA-enabled
     // swapping buffer.  This theoretically allows for higher image resolutions, but
     // comes at the cost of stricter timing requirements.  Each buffered line must be
-    // serviced in time, otherwise the buffer will overflow.
+    // serviced before the next row is received, otherwise the buffer will overflow.
+
     img_data_t img_data;
 
 #ifdef CAMERA_OV7692
-    camera_write_reg(0x11, 0x6); // set camera clock prescaller to prevent streaming overflow for QVGA
+    camera_write_reg(0x11, 0x18); // set camera clock prescaller to prevent streaming overflow for QVGA
 #endif
     
     // 1. Configure the camera.  This is the same as the standard blocking capture, except
@@ -164,39 +174,126 @@ void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channe
         g_serial_buffer,
         SERIAL_BUFFER_SIZE, 
         "*IMG* %s %i %i %i", // Format img info into a string
-        img_data.pixel_format, 
+        img_data.pixel_format,
         img_data.imglen,
         img_data.w,
         img_data.h
     );
     send_msg(g_serial_buffer); // Send the img info to the host
-    
+
     // 4. Start the image capture.  Image data will immediately start streaming
-    // into the streaming buffer.
+    // into the streaming buffer via DMA.
     camera_start_capture_image();
     
+    MXC_TMR_SW_Start(MXC_TMR0);
+
     // 5. Transmit the image data line-by-line over UART.
     uint8_t* data = NULL;
     int row_len = w * 2; // Each row will contain 2 bytes per pixel
-    for (int i = 0; i < h; i++) {
-        // Wait until camera streaming buffer is full
-        while ((data = get_camera_stream_buffer()) == NULL) {
-            if (camera_is_image_rcv()) {
-                break;
-            }
-        };
-
-        MXC_UART_Write(Con_Uart, data, &row_len);
-        // utils_stream_image_row_to_pc(data, row_len);
-
-        // Release stream buffer
-        release_camera_stream_buffer();
+    while (!camera_is_image_rcv()) {
+        if ((data = get_camera_stream_buffer()) != NULL) { // The stream buffer will return 'NULL' until an image row is received.
+            MXC_UART_Write(Con_Uart, data, &row_len); // Transmit the row
+            release_camera_stream_buffer();
+        }
     }
+
+    int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (Took %ius)\n", elapsed_us);
 
     stream_stat_t* stat = get_camera_stream_statistic();
 
     printf("DMA transfer count = %d\n", stat->dma_transfer_count);
     printf("OVERFLOW = %d\n", stat->overflow_count);
+}
+
+void service_console() {
+    // Check for any incoming serial commands
+        cmd_t cmd = CMD_UNKNOWN;
+        if (recv_cmd(&cmd)) {
+            // Process the received command...
+
+            if (cmd == CMD_UNKNOWN) {
+                printf("Uknown command '%s'\n", g_serial_buffer);
+            }
+
+            else if (cmd == CMD_RESET) {
+                // Issue a soft reset
+                MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
+            }
+
+            else if (cmd == CMD_IMGRES) {
+                sscanf(g_serial_buffer, "imgres %u %u", &g_app_settings.imgres_w, &g_app_settings.imgres_h);
+                printf("Set image resolution to width %u, height %u\n", g_app_settings.imgres_w, g_app_settings.imgres_h);
+            }
+
+            else if (cmd == CMD_CAPTURE) {
+                // Perform a blocking image capture with the current camera settings.
+                // See the 'capture_img' function and 'img_data_t' struct for more details.
+                img_data_t img_data = capture_img(
+                    g_app_settings.imgres_w,
+                    g_app_settings.imgres_h,
+                    PIXFORMAT_RGB565,
+                    g_app_settings.dma_mode,
+                    g_app_settings.dma_channel
+                );
+
+                if (img_data.raw != NULL) {
+                    // Send the image data over the serial port...
+                    // First, tell the host that we're about to send the image.
+                    clear_serial_buffer();
+                    snprintf(
+                        g_serial_buffer,
+                        SERIAL_BUFFER_SIZE, 
+                        "*IMG* %s %i %i %i", // Format img info into a string
+                        img_data.pixel_format, 
+                        img_data.imglen, 
+                        img_data.w,
+                        img_data.h
+                    );
+                    send_msg(g_serial_buffer); // Send the img info to the host
+
+                    // Now, send the image data.  The host should now be expecting
+                    // to receive 'imglen' bytes.
+                    clear_serial_buffer();
+                    MXC_UART_Write(Con_Uart, img_data.raw, (int*)&img_data.imglen); // Blast the raw data over the serial port.   
+                }
+            }
+
+            else if (cmd == CMD_STREAM) {
+
+                // Perform a streaming image capture with the current camera settings.
+                stream_img(
+                    g_app_settings.imgres_w,
+                    g_app_settings.imgres_h,
+                    PIXFORMAT_RGB565,
+                    g_app_settings.dma_channel
+                );
+            }
+
+            else if (cmd == CMD_SETREG) {
+                unsigned int reg;
+                unsigned int val;
+                // ^ Declaring these as unsigned ints instead of uintX_t 
+                // avoids some issues caused by type-casting inside of sscanf.
+                // The casts are done after the string parsing...
+
+                sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
+                printf("Writing 0x%x to reg 0x%x\n", val, reg);
+                camera_write_reg((uint8_t)reg, (uint8_t)val);
+            }
+
+            else if (cmd == CMD_GETREG) {
+                unsigned int reg;
+                uint8_t val;
+                sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
+                camera_read_reg((uint8_t)reg, &val);
+                snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Register 0x%x=0x%x", reg, val);
+                send_msg(g_serial_buffer);
+            }
+
+            // Clear the serial buffer for the next command
+            clear_serial_buffer();
+        }
 }
 
 // *****************************************************************************
@@ -206,10 +303,9 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
-    int dma_channel;
-    dmamode_t dma_mode = USE_DMA;
-    unsigned int imgres_w = 64;
-    unsigned int imgres_h = 64;
+    g_app_settings.dma_mode = USE_DMA;
+    g_app_settings.imgres_w = 64;
+    g_app_settings.imgres_h = 64;
 
     console_init();
 
@@ -224,9 +320,10 @@ int main(void)
         return ret;
     }
 
-    // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
     printf("Establishing communication with host...\n");
     char* sync = "*SYNC*";
+
+    // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
     while(1) {
         // Transmit sync string
         send_msg(sync);
@@ -253,7 +350,7 @@ int main(void)
 
     // Initialize DMA for camera interface
     MXC_DMA_Init();
-    dma_channel = MXC_DMA_AcquireChannel();
+    g_app_settings.dma_channel = MXC_DMA_AcquireChannel();
 
     // Initialize the camera driver.
     camera_init(CAMERA_FREQ);
@@ -280,76 +377,6 @@ int main(void)
     printf("Awaiting command from host\n");
     // Main processing loop.
     while (1) {
-
-        // Check for any incoming serial commands
-        cmd_t cmd = CMD_UNKNOWN;
-        if (recv_cmd(&cmd)) {
-            // Process the received command...
-
-            if (cmd == CMD_UNKNOWN) {
-                printf("Uknown command '%s'\n", g_serial_buffer);
-
-            }
-
-            else if (cmd == CMD_IMGRES) {
-                sscanf(g_serial_buffer, "imgres %u %u", &imgres_w, &imgres_h);
-                printf("Set image resolution to width %u, height %u\n", imgres_w, imgres_h);
-            }
-
-            else if (cmd == CMD_ENABLE_DMA) {
-                dma_mode = USE_DMA;
-                printf("Enabled DMA on channel %i\n", dma_channel);
-                // TODO: Disabling DMA and then re-enabling it does not seem to work.
-            }
-
-            else if (cmd == CMD_DISABLE_DMA) {
-                dma_mode = NO_DMA;
-                printf("Disabled DMA\n");
-            }
-
-            else if (cmd == CMD_CAPTURE) {
-                // Perform a blocking image capture with the current camera settings.
-                // See the 'capture_img' function and 'img_data_t' struct for more details.
-                img_data_t img_data = capture_img(
-                    imgres_w,
-                    imgres_h,
-                    PIXFORMAT_RGB565,
-                    dma_mode,
-                    dma_channel
-                );
-
-                // Send the image data over the serial port...
-                // First, tell the host that we're about to send the image.
-                clear_serial_buffer();
-                snprintf(
-                    g_serial_buffer,
-                    SERIAL_BUFFER_SIZE, 
-                    "*IMG* %s %i %i %i", // Format img info into a string
-                    img_data.pixel_format, 
-                    img_data.imglen, 
-                    img_data.w, 
-                    img_data.h
-                );
-                send_msg(g_serial_buffer); // Send the img info to the host
-
-                // Now, send the image data.  The host should now be expecting
-                // to receive 'imglen' bytes.
-                clear_serial_buffer();
-                MXC_UART_Write(Con_Uart, img_data.raw, (int*)&img_data.imglen); // Blast the raw data over the serial port.
-            }
-
-            else if (cmd == CMD_STREAM) {
-                // Perform a streaming image capture with the current camera settings.
-                stream_img(
-                    imgres_w,
-                    imgres_h,
-                    PIXFORMAT_RGB565,
-                    dma_channel
-                );
-            }
-
-            // Clear the serial buffer for the next command
-            clear_serial_buffer();
-        }
+        service_console();
     }
 }
