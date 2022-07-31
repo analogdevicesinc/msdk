@@ -398,8 +398,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
-    // RTC reset bit is different for RevA and RevB
-    if(reset == MXC_SYS_RESET_RTC) {
+    if(reset == MXC_SYS_RESET_RTC) { // RTC reset bit is different for RevA and RevB
         if((MXC_GCR->revision & 0x00F0) == 0xA0) { // If RevA, switch to reset bit in RST0
             reset = MXC_F_GCR_RST0_RTC_POS;
         }
