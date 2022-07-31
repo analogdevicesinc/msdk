@@ -81,7 +81,7 @@ void MXC_WDT_SetResetPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_cfg_t* cfg)
 
 void MXC_WDT_Enable(mxc_wdt_regs_t* wdt)
 {
-	MXC_WDT_RevB_Enable((mxc_wdt_revb_regs_t*) wdt);
+    MXC_WDT_RevB_Enable((mxc_wdt_revb_regs_t*) wdt);
 }
 
 void MXC_WDT_Disable(mxc_wdt_regs_t* wdt)
