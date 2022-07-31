@@ -405,7 +405,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
             reset = MXC_F_GCR_RST0_RTC_POS;
         }
     }
-    
+
     /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 and 64 for the rst register. */
     if (reset > 63) {
         reset -= 64;
