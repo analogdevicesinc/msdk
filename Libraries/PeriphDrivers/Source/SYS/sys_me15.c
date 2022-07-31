@@ -410,14 +410,17 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     if (reset > 63) {
         reset -= 64;
         MXC_MCR->rst = (0x1 << reset);
-        while (MXC_MCR->rst & (0x1 << reset));
+        while (MXC_MCR->rst & (0x1 << reset))
+            ;
     } else if (reset > 31) {
         reset -= 32;
         MXC_GCR->rst1 = (0x1 << reset);
-        while (MXC_GCR->rst1 & (0x1 << reset));
+        while (MXC_GCR->rst1 & (0x1 << reset))
+            ;
     } else {
         MXC_GCR->rst0 = (0x1 << reset);
-        while (MXC_GCR->rst0 & (0x1 << reset));
+        while (MXC_GCR->rst0 & (0x1 << reset))
+            ;
     }
 }
 /**@} end of mxc_sys */
