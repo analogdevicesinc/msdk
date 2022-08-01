@@ -1,7 +1,10 @@
+#ifndef CNN_H
+#define CNN_h
 #include <stdint.h>
 #include "mxc.h"
 #include "gcfr_regs.h"
 
+// Enables all 4 CNN quadrants and their memories.
 int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
 {
   // Reset all domains, restore power to CNN
@@ -18,6 +21,7 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
   return 1;
 }
 
+// Initializes all 4 CNN quadrants with max speed SRAM
 int cnn_init(void)
 {
   *((volatile uint32_t *) 0x50001000) = 0x00000000; // AON control
@@ -37,6 +41,10 @@ int cnn_init(void)
   return 1;
 }
 
+// Utility function for incrementing a pointer in CNN data SRAM.
+// There are 4 quadrants, so the memory address must be "stitched"
+// together.
+// Returns a new address pointer, or NULL if the address overflowed.
 static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
     int val = (int)ptr;
     if (val != 0x5041FFFC && val != 0x5081FFFC && val != 0x50C1FFFC && val != 0x5101FFFC ) {
@@ -59,21 +67,23 @@ static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
     }
 }
 
+// Union for doing "in-place" type-casting of 4 bytes
+// into a 32-bit word.  Using a union for this increasing
+// the speed of the conversion by almost 50%.
 union bytes_to_word {
     uint8_t* b;
     uint32_t* word;
 };
 
+// Write 'len' bytes from 'bytes' to the CNN data SRAM pointer 'addr'.
+// Returns the next-most empty address in CNN data SRAM.
 static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_t* addr) {
     int i = 0;
     union bytes_to_word u;
 
     while (i < len) {
       u.b = &bytes[i];
-      // *addr = bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24);
       *addr = *u.word;
-      // ^ Casting through the union will reverse the bytes.  ARM core has a dedicated
-      // bytes reversal instruction we can leverage here.
       i += 4;
       addr = increment_cnn_sram_ptr(addr);
     }
@@ -81,6 +91,8 @@ static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_
     return addr;
 }
 
+// Read 'len' bytes from the CNN data SRAM pointer 'addr' into the 'out_bytes' array.
+// Returns the next-most CNN data SRAM address after all bytes have been read.
 static inline uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, uint32_t* addr) {
     int i = 0;
     uint32_t word = *addr;
@@ -97,3 +109,5 @@ static inline uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, ui
 
     return addr;
 }
+
+#endif
