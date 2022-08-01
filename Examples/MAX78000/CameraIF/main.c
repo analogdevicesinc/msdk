@@ -50,6 +50,8 @@
 #include "example_config.h"
 #include "cnn.h"
 
+#include "max78000.h"
+
 
 // This data struct describes a complete captured image.
 typedef struct {
@@ -211,46 +213,6 @@ uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_t* addr) {
         i += 4;
         addr = increment_cnn_sram_ptr(addr);
     }
-    // while ((int)addr < 0x50420000) {
-    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
-    //     i += 4;
-    //     addr++;
-    //     if (i > len - 1) { return addr; }
-    // }
-    // addr = (uint32_t*)0x50800000; // Quadrant 1 start
-    // while ((int)addr < 0x50820000) {
-    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
-    //     i += 4;
-    //     addr++;
-    //     if (i > len - 1) { return addr; }
-    // }
-    // addr = (uint32_t*)0x50C00000; // Quadrant 2 start
-    // while ((int)addr < 0x50C20000) {
-    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
-    //     i += 4;
-    //     addr++;
-    //     if (i > len - 1) { return addr; }
-    // }
-    // addr = (uint32_t*)0x51000000; // Quadrant 3 start
-    // while ((int)addr < 0x51020000) {
-    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
-    //     i += 4;
-    //     addr++;
-    //     if (i > len - 1) { return addr; }
-    // }
-    // for (int i = 0; i < len; i++) {
-    //     word |= bytes[i] << (8 * j);
-    //     if (j == 3) {
-    //         // 32-bit word has been formed.
-    //         // Write to CNN SRAM and reset j
-    //         *addr = word;
-    //         addr = increment_cnn_sram_ptr(addr);
-    //         j = 0;
-    //         word = 0;
-    //     } else {
-    //         j++;
-    //     }
-    // }
 
     return addr;
 }
@@ -270,17 +232,6 @@ uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, uint32_t* addr) 
     }
 
     return addr;
-
-    // for (int i = 0; i < len; i++) {
-    //     out_bytes[i] = (word & (0xFF << (8*j))) >> (8*j);
-    //     if (j == 3) {
-    //         addr = increment_cnn_sram_ptr(addr);
-    //         word = *addr;
-    //         j = 0;
-    //     } else {
-    //         j++;
-    //     }
-    // }
 }
 
 void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel) {
@@ -483,29 +434,6 @@ int main(void)
     // CNN clock: APB (50 MHz) div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
     cnn_init();
-
-    // int len = 1000;
-    // char* test = (char*)malloc(len);    
-    // uint32_t* start = (uint32_t*)0x50400000;
-    // MXC_TMR_SW_Start(MXC_TMR0);
-    // uint32_t* end = write_bytes_to_cnn_sram((uint8_t*)test, len, start);
-    // int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    // printf("0x%x->0x%x (%ius)\n", (int)start, (int)end, elapsed);
-    // uint8_t* read = (uint8_t*)malloc(len);
-    // read_bytes_from_cnn_sram(read, len, start);
-    // printf("Verification:");
-    // for (int i = 0; i < len; i++) {
-    //     printf("%c", read[i]);
-    // }
-    // printf("\n");
-    // MXC_TMR_SW_Start(MXC_TMR0);
-    // uint32_t* cnn_ptr = (uint32_t*)0x50400000;
-    // while(cnn_ptr != NULL) {
-    //     cnn_ptr = increment_cnn_sram_ptr(cnn_ptr);
-    // }
-    // int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    // printf("Elapsed: %i\n", elapsed);
-    // while(1);
 
 #ifndef TFT_ENABLE
     console_init();
