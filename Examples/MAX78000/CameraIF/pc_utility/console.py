@@ -34,6 +34,7 @@ class CameraIFConsole():
         self.thr_get_input.start()
         self.thr_serial.start()
         print("Started CameraIF console.  Type 'help' for help, 'quit' to quit.")
+        self.help()
         
 
     """
@@ -184,9 +185,12 @@ class CameraIFConsole():
         print("Available commands:")
         print("\t'quit' : Quits this console")
         print("\t'help' : Prints this help string")
+        print("\t'reset' : Issue a soft reset to the host MCU.")
         print("\t'capture' : This command will perform a blocking capture of a single image.")
         print("\t'imgres' <width> <height> : Set the image resolution of the camera to <width> x <height>")
         print("\t'stream' : Performs a line-by-line streaming DMA capture of a single image.")
+        print("\t'set-reg' <register> <value> : Write a value to a camera register.\n\t\tAuto-converts all integer types (hex, binary, etc.)\n\t\tEx: set-reg 0x11 0b1")
+        print("\t'get-reg' <register> : Prints the value in a camera register.\n\t\tAuto-converts all integer types (hex, binary, etc.)\n\t\tEx: get-reg 0x11")
 
 # Set up command-line arguments
 parser = argparse.ArgumentParser()
