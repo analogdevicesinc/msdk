@@ -139,7 +139,7 @@ void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t* ctb_regs)
     ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_INTR;
     
     // Enable IRQ
-    #ifdef CRYPTO_IRQn
+    #ifndef __riscv
     NVIC_EnableIRQ(CRYPTO_IRQn);
     #endif
 }
@@ -147,7 +147,7 @@ void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t* ctb_regs)
 void MXC_CTB_RevA_DisableInt(mxc_ctb_reva_regs_t* ctb_regs)
 {
     // Disable IRQ
-    #ifdef CRYPTO_IRQn
+    #ifndef __riscv
     NVIC_DisableIRQ(CRYPTO_IRQn);
     #endif
     
