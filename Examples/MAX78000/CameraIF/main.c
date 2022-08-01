@@ -47,11 +47,11 @@
 #include "cameraif.h"
 #include "dma.h"
 #include "console.h"
+#include "example_config.h"
+#include "cnn.h"
 
 
-#define CAMERA_FREQ 10000000
-
-// Convenience struct for describing a complete captured image.
+// This data struct describes a complete captured image.
 typedef struct {
     uint8_t* raw;           // Pointer to raw img data in SRAM.
     uint32_t imglen;        // Length of img data (in bytes)
@@ -60,6 +60,8 @@ typedef struct {
     uint8_t* pixel_format;  // Pixel format string
 } img_data_t;
 
+
+// This struct contains global application settings
 typedef struct {
     int dma_channel;
     dmamode_t dma_mode;
@@ -70,8 +72,9 @@ typedef struct {
 app_settings_t g_app_settings;
 
 img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode_t dma_mode, int dma_channel) {
-    // This demonstrates the most basic blocking capture of a single image.
-    // The raw data for the entire image will be saved into an SRAM buffer.
+    // This demonstrates a basic blocking capture of a single image.
+    // The raw data for the entire image will be saved into a general purpose SRAM buffer.
+
     // For the purposes of demonstration this function contains the full setup
     // sequence for capturing an image.  In practice, step 1 can be 
     // broken out into a separate initialization sequence if you're not
@@ -132,19 +135,167 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     return img_data;
 }
 
+void stream_to_uart(img_data_t img_data) {
+    // This functions demonstrates streaming image data to UART.
+    // It assumes that the camera has been set up for streaming
+    // already, and then transmits the streaming buffer line-by-line
+    // to the UART peripheral.  It should be noted that the max baud
+    // rate of 921600 is extremely slow in comparison to the camera's
+    // output datarate.
+
+    printf("Initiating UART stream...\n");
+    // Tell the host console we're about to send an image.
+    clear_serial_buffer();
+    snprintf(
+        g_serial_buffer,
+        SERIAL_BUFFER_SIZE, 
+        "*IMG* %s %i %i %i", // Format img info into a string
+        img_data.pixel_format,
+        img_data.imglen,
+        img_data.w,
+        img_data.h
+    );
+    send_msg(g_serial_buffer); // Send the img info to the host
+
+    // Start the image capture.  Image data will immediately start streaming
+    // into the streaming buffer via DMA.
+    camera_start_capture_image();
+
+    MXC_TMR_SW_Start(MXC_TMR0);
+
+    // Transmit the data line-by-line
+    uint8_t* data = NULL;
+    int buffer_size = camera_get_stream_buffer_size();
+    while (!camera_is_image_rcv()) {
+        if ((data = get_camera_stream_buffer()) != NULL) { // The stream buffer will return 'NULL' until an image row is received.
+            MXC_UART_Write(Con_Uart, data, &buffer_size); // Transmit the row
+            release_camera_stream_buffer();
+        }
+    }
+
+    int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (Took %ius)\n", elapsed_us);
+}
+
+inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
+    int val = (int)ptr;
+    if (val != 0x5041FFFC && val != 0x5081FFFC && val != 0x50C1FFFC && val != 0x5101FFFC ) {
+        return ptr + 1;
+    }
+    else if (val == 0x5041FFFC) { // Quadrant 0 end
+        //printf("Transitioned to quadrant 1\n");
+        return (uint32_t*)0x50800000; // Quadrant 1 start
+    }
+    else if (val == 0x5081FFFC) { // Quadrant 1 end
+        //printf("Transitioned to quadrant 2\n");
+        return (uint32_t*)0x50C00000; // Quadrant 2 start
+    }
+    else if (val == 0x50C1FFFC) { // Quadrant 2 end
+        //printf("Transitioned to quadrant 3\n");
+        return (uint32_t*)0x51000000; // Quadrant 3 start
+    }
+    else if (val >= 0x5101FFFC) { // Quadrant 3 end
+        //printf("End of CNN SRAM\n");
+        return NULL; // End of CNN SRAM, return NULL
+    }
+    else {
+        return NULL;
+    }
+}
+
+uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_t* addr) {
+    int i = 0;
+
+    while (i < len) {
+        *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
+        i += 4;
+        addr = increment_cnn_sram_ptr(addr);
+    }
+    // while ((int)addr < 0x50420000) {
+    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
+    //     i += 4;
+    //     addr++;
+    //     if (i > len - 1) { return addr; }
+    // }
+    // addr = (uint32_t*)0x50800000; // Quadrant 1 start
+    // while ((int)addr < 0x50820000) {
+    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
+    //     i += 4;
+    //     addr++;
+    //     if (i > len - 1) { return addr; }
+    // }
+    // addr = (uint32_t*)0x50C00000; // Quadrant 2 start
+    // while ((int)addr < 0x50C20000) {
+    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
+    //     i += 4;
+    //     addr++;
+    //     if (i > len - 1) { return addr; }
+    // }
+    // addr = (uint32_t*)0x51000000; // Quadrant 3 start
+    // while ((int)addr < 0x51020000) {
+    //     *addr = (bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24));
+    //     i += 4;
+    //     addr++;
+    //     if (i > len - 1) { return addr; }
+    // }
+    // for (int i = 0; i < len; i++) {
+    //     word |= bytes[i] << (8 * j);
+    //     if (j == 3) {
+    //         // 32-bit word has been formed.
+    //         // Write to CNN SRAM and reset j
+    //         *addr = word;
+    //         addr = increment_cnn_sram_ptr(addr);
+    //         j = 0;
+    //         word = 0;
+    //     } else {
+    //         j++;
+    //     }
+    // }
+
+    return addr;
+}
+
+uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, uint32_t* addr) {
+    int i = 0;
+    uint32_t word = *addr;
+
+    while (i < len) {
+        out_bytes[i] = word & 0xFF;
+        out_bytes[i+1] = (word >> 8) & 0xFF;
+        out_bytes[i+2] = (word >> 16) & 0xFF;
+        out_bytes[i+3] = (word >> 24) & 0xFF;
+        addr = increment_cnn_sram_ptr(addr);
+        word = *addr;
+        i+=4;
+    }
+
+    return addr;
+
+    // for (int i = 0; i < len; i++) {
+    //     out_bytes[i] = (word & (0xFF << (8*j))) >> (8*j);
+    //     if (j == 3) {
+    //         addr = increment_cnn_sram_ptr(addr);
+    //         word = *addr;
+    //         j = 0;
+    //     } else {
+    //         j++;
+    //     }
+    // }
+}
+
 void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel) {
     // This demonstrates a more advanced streaming-based image capture.
-    // With this method, the camera drivers don't need to allocate space for the entire
+    // By using streaming, the camera drivers don't need to allocate space for the entire
     // image in SRAM.  Instead, space for 2 rows is allocated for a DMA-enabled
     // swapping buffer.  This theoretically allows for higher image resolutions, but
-    // comes at the cost of stricter timing requirements.  Each buffered line must be
+    // comes at the cost of drastically increased timing requirements.  Each buffered line must be
     // serviced before the next row is received, otherwise the buffer will overflow.
 
     img_data_t img_data;
 
-#ifdef CAMERA_OV7692
-    camera_write_reg(0x11, 0x18); // set camera clock prescaller to prevent streaming overflow for QVGA
-#endif
+// #ifdef CAMERA_OV7692
+//     camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow for QVGA
+// #endif
     
     // 1. Configure the camera.  This is the same as the standard blocking capture, except
     // the DMA mode is set to "STREAMING_DMA".
@@ -168,7 +319,36 @@ void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channe
     img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
     camera_get_image(&img_data.raw, &img_data.imglen, &img_data.w, &img_data.h); // Retrieve info using driver function.
 
-    // 3. Tell the host that we're about to send an image.
+    // 3. The camera is now ready for streaming, and will start immediately upon calling
+    // the camera_start_capture_image() function.  After calling this function, poll
+    // the stream buffer.  When get_camera_stream_buffer() != NULL, transfer the buffered 
+    // image data to its output destination.  The timing requirements for this at high
+    // speeds are very strict to avoid overflow.
+    printf("Starting streaming...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+    camera_start_capture_image();
+
+    // Transmit the data line-by-line
+    uint8_t* data = NULL;
+    int buffer_size = camera_get_stream_buffer_size();
+    uint32_t* cnn_addr = (uint32_t*)0x50400000;
+
+    while (!camera_is_image_rcv()) {
+        if ((data = get_camera_stream_buffer()) != NULL) { // The stream buffer will return 'NULL' until an image row is received.
+            // MXC_UART_Write(Con_Uart, data, &buffer_size); // Transmit the row
+            cnn_addr = write_bytes_to_cnn_sram(data, buffer_size, cnn_addr);
+            release_camera_stream_buffer();
+        }
+    }
+
+    int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (Took %ius)\n", elapsed_us);
+
+    stream_stat_t* stat = get_camera_stream_statistic();
+    printf("DMA transfer count = %d\n", stat->dma_transfer_count);
+    printf("OVERFLOW = %d\n", stat->overflow_count);
+
+    // Tell the host console we're about to send an image.
     clear_serial_buffer();
     snprintf(
         g_serial_buffer,
@@ -181,31 +361,17 @@ void stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channe
     );
     send_msg(g_serial_buffer); // Send the img info to the host
 
-    // 4. Start the image capture.  Image data will immediately start streaming
-    // into the streaming buffer via DMA.
-    camera_start_capture_image();
-    
-    MXC_TMR_SW_Start(MXC_TMR0);
-
-    // 5. Transmit the image data line-by-line over UART.
-    uint8_t* data = NULL;
-    int row_len = w * 2; // Each row will contain 2 bytes per pixel
-    while (!camera_is_image_rcv()) {
-        if ((data = get_camera_stream_buffer()) != NULL) { // The stream buffer will return 'NULL' until an image row is received.
-            MXC_UART_Write(Con_Uart, data, &row_len); // Transmit the row
-            release_camera_stream_buffer();
-        }
+    int transfer_len = SERIAL_BUFFER_SIZE;
+    uint8_t* bytes = (uint8_t*)malloc(transfer_len);
+    cnn_addr = (uint32_t*)0x50400000;
+    for (int i = 0; i < img_data.imglen; i += transfer_len) {
+        cnn_addr = read_bytes_from_cnn_sram(bytes, transfer_len, cnn_addr);
+        MXC_UART_Write(Con_Uart, bytes, &transfer_len);
     }
-
-    int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Done! (Took %ius)\n", elapsed_us);
-
-    stream_stat_t* stat = get_camera_stream_statistic();
-
-    printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    printf("OVERFLOW = %d\n", stat->overflow_count);
 }
 
+
+// Service serial console commands
 void service_console() {
     // Check for any incoming serial commands
         cmd_t cmd = CMD_UNKNOWN;
@@ -307,8 +473,6 @@ int main(void)
     g_app_settings.imgres_w = 64;
     g_app_settings.imgres_h = 64;
 
-    console_init();
-
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
 
@@ -316,9 +480,35 @@ int main(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
-    if ((ret = MXC_UART_Init(Con_Uart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
-        return ret;
-    }
+    // CNN clock: APB (50 MHz) div 1
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_init();
+
+    // int len = 1000;
+    // char* test = (char*)malloc(len);    
+    // uint32_t* start = (uint32_t*)0x50400000;
+    // MXC_TMR_SW_Start(MXC_TMR0);
+    // uint32_t* end = write_bytes_to_cnn_sram((uint8_t*)test, len, start);
+    // int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    // printf("0x%x->0x%x (%ius)\n", (int)start, (int)end, elapsed);
+    // uint8_t* read = (uint8_t*)malloc(len);
+    // read_bytes_from_cnn_sram(read, len, start);
+    // printf("Verification:");
+    // for (int i = 0; i < len; i++) {
+    //     printf("%c", read[i]);
+    // }
+    // printf("\n");
+    // MXC_TMR_SW_Start(MXC_TMR0);
+    // uint32_t* cnn_ptr = (uint32_t*)0x50400000;
+    // while(cnn_ptr != NULL) {
+    //     cnn_ptr = increment_cnn_sram_ptr(cnn_ptr);
+    // }
+    // int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    // printf("Elapsed: %i\n", elapsed);
+    // while(1);
+
+#ifndef TFT_ENABLE
+    console_init();
 
     printf("Establishing communication with host...\n");
     char* sync = "*SYNC*";
@@ -345,6 +535,7 @@ int main(void)
 
     printf("Established communications with host!\n");
     print_help();
+#endif
 
     printf("Initializing DMA\n");
 
@@ -353,8 +544,8 @@ int main(void)
     g_app_settings.dma_channel = MXC_DMA_AcquireChannel();
 
     // Initialize the camera driver.
-    camera_init(CAMERA_FREQ);
     printf("Initializing camera\n");
+    camera_init(CAMERA_FREQ);
 
     slaveAddress = camera_get_slave_address();
     printf("Camera I2C slave address: %02x\n", slaveAddress);
