@@ -1,0 +1,73 @@
+/*###ICF### Section handled by ICF editor, don't touch! ****/
+/*-Editor annotation file-*/
+/* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_1.xml" */
+/*-Specials-*/
+
+
+
+define symbol __ICFEDIT_intvec_start__ = 0x10000200;
+/*-Memory Regions-*/
+define symbol __ICFEDIT_region_SPIX_start__    = 0x08000000;    /* WARNING --->  Fix all the address Range */
+define symbol __ICFEDIT_region_SPIX_end__      = 0x0FA12000;
+define symbol __ICFEDIT_region_HEADER_start_1__  = 0x10000000;  /* sb_sla_header content live here */
+define symbol __ICFEDIT_region_HEADER_end_1__    = 0x1000001F;  
+define symbol __ICFEDIT_region_FLASH_start__   = 0x10000020;
+define symbol __ICFEDIT_region_FLASH_end__     = 0x101FFFE0;
+define symbol __ICFEDIT_region_RAM_start__     = 0x20000000;
+define symbol __ICFEDIT_region_RAM_end__       = 0x20032000;
+define symbol __ICFEDIT_region_SPID_start__    = 0x80000000;
+define symbol __ICFEDIT_region_SPID_end__      = 0x9E848000;
+
+
+/*-Sizes-*/
+define symbol __ICFEDIT_size_cstack__ = 0x500;
+define symbol __ICFEDIT_size_heap__   = 0x500;
+
+define symbol __ICFEDIT_size_slaheader__ = 0x200;
+
+/**** End of ICF editor section. ###ICF###*/
+
+define memory mem with size    =   4G;
+define region SPIXF_region     =   mem:[from __ICFEDIT_region_SPIX_start__ to __ICFEDIT_region_SPIX_end__];
+define region FLASH_region     =   mem:[from __ICFEDIT_region_FLASH_start__ to __ICFEDIT_region_FLASH_end__];
+define region RAM_region       =   mem:[from __ICFEDIT_region_RAM_start__ to __ICFEDIT_region_RAM_end__];
+define region HEADER_region_1  =   mem:[from  __ICFEDIT_region_HEADER_start_1__ to __ICFEDIT_region_HEADER_end_1__];
+
+define block CSTACK    with alignment = 8, size = __ICFEDIT_size_cstack__   { };
+define block HEAP      with alignment = 8, size = __ICFEDIT_size_heap__     { };
+
+
+do not initialize  { section .noinit };
+initialize by copy { readwrite };
+if (isdefinedsymbol(__USE_DLIB_PERTHREAD))
+{
+  // Required in a multi-threaded application
+  initialize by copy with packing = none { section __DLIB_PERTHREAD };
+}
+
+
+initialize manually { section .xip_section };
+
+define block PAD_INT_BEG with fixed order { section .sb_sla_header_padding, section .intvec };
+
+define block TRAIL_END with fixed order { readonly section .sb_sla_trailer };
+
+define block XIP { readonly section .xip_section };
+
+define block FLASHINRAM { readonly section .flashprog };
+
+place in SPIXF_region { block XIP };
+
+"CODE":
+place in FLASH_region { readonly, first block PAD_INT_BEG, last block TRAIL_END };
+
+place in RAM_region { block FLASHINRAM };
+place in RAM_region  { block HEAP };
+place at end of RAM_region { block RamBottom with fixed order {readwrite, block CSTACK} }; 
+
+"HEADER":
+place in HEADER_region_1 { readonly section .sb_sla_header };
+
+
+
+

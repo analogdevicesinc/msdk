@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <fileVersion>5</fileVersion>
+    <fileChecksum>3283819060</fileChecksum>
+    <configuration>
+        <name>Debug</name>
+        <outputs>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\EvKit_V1\Source\board.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\GPIO\gpio_common.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\GPIO\gpio_me17.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\LP\lp_me17.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\ICC\icc_me17.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\ICC\icc_reva.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\Source\led.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\Source\pb.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\Source\stdio.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\UART\uart_me17.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\nvic_table.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.0.0\gpio_common.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.0.0\uart_me17.o</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\mxc_lock.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\mxc_lock.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.0.0\gpio_me17.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32655 BSP _BSP.EvKit V1_1.0.0\pb.o</file>
+            <file>$PROJ_DIR$\..\main.c</file>
+            <file>$PROJ_DIR$\..\RTE\Device\MAX32655_Cortex-M4\system_max32655.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\sys_me17.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32655 BSP _BSP.EvKit V1_1.0.0\stdio.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32655 BSP _BSP.EvKit V1_1.0.0\led.o</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\UART\uart_common.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\mxc_delay.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32655 BSP _BSP.EvKit V1_1.0.0\board.o</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\pins_me17.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\sys_me17.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.0.0\uart_common.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.ICC_1.0.0\icc_me17.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.0.0\gpio_reva.o</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\mxc_delay.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\nvic_table.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\mxc_assert.o</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\UART\uart_revb.c</file>
+            <file>$PROJ_DIR$\..\RTE\Device\MAX32655_Cortex-M4\low_level_init.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\low_level_init.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\pins_me17.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Low Power_1.0.0\lp_me17.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.0\system_max32655.o</file>
+            <file>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\mxc_assert.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.ICC_1.0.0\icc_reva.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.0.0\uart_revb.o</file>
+        </outputs>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\EvKit_V1\Source\board.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 26</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\GPIO\gpio_common.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 12</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\GPIO\gpio_me17.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 16</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 31</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\LP\lp_me17.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 39</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\ICC\icc_me17.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\ICC\icc_reva.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\Source\led.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 23</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\Source\pb.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 17</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\Boards\MAX32655\Source\stdio.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 21</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\UART\uart_me17.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 13</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\nvic_table.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 33</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\mxc_lock.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 15</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 22</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\RTE\Device\MAX32655_Cortex-M4\system_max32655.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 40</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\UART\uart_common.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 29</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\pins_me17.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 38</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\sys_me17.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 20</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\mxc_delay.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 25</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\UART\uart_revb.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 43</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\RTE\Device\MAX32655_Cortex-M4\low_level_init.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 37</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Users\faisal.tariq\IAR-CMSIS-Packs\Maxim\MAX32655\1.0.0\Libraries\PeriphDrivers\Source\SYS\mxc_assert.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 34</file>
+                </tool>
+            </outputs>
+        </file>
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>ILINK</tool>
+        </forcedrebuild>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs />
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>ILINK</tool>
+        </forcedrebuild>
+    </configuration>
+</project>
