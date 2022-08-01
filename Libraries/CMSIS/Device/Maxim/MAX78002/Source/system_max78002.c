@@ -38,11 +38,10 @@
 #include "gcr_regs.h"
 #include "mxc_sys.h"
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 
-uint32_t SystemCoreClock __attribute__ ((section (".shared")));
-volatile uint32_t mailbox __attribute__ ((section (".mailbox")));
-
+uint32_t SystemCoreClock __attribute__((section(".shared")));
+volatile uint32_t mailbox __attribute__((section(".mailbox")));
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -50,8 +49,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
             base_freq = EXTCLK_FREQ;
             break;
@@ -62,11 +60,11 @@ __weak void SystemCoreClockUpdate(void)
             base_freq = IPO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPLL:
-        	base_freq = IPLL_FREQ;
-        	break;
+            base_freq = IPLL_FREQ;
+            break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EBO:
-        	base_freq = EBO_FREQ;
-        	break;
+            base_freq = EBO_FREQ;
+            break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
             base_freq = IBRO_FREQ;
             break;
@@ -119,7 +117,7 @@ __weak void SystemInit(void)
 {
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-#if defined ( __CC_ARM) || defined ( __GNUC__)
+#if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (unsigned long)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */

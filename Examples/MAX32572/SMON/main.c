@@ -44,7 +44,6 @@
 
 #include <MAX32xxx.h>
 
-
 /***** Definitions *****/
 
 /***** Globals *****/
@@ -53,59 +52,59 @@
 void Test1()
 {
     uint32_t flags = MXC_SMON_GetFlags();
-    
+
     flags = flags & MXC_F_SMON_SECALM_EXTSWARN1;
-    
+
     printf("\n\nAlarm Flags Before Error: 0x%x", flags);
-    
+
     mxc_smon_ext_cfg_t cfg;
-    
+
     cfg.sensorNumber = SMON_EXTSENSOR_1;
-    cfg.clockDivide = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
-    cfg.errorCount = 1;
-    
+    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
+    cfg.errorCount   = 1;
+
     MXC_SMON_ExtSensorEnable(&cfg, 5000);
-    
+
     flags = 0x00;
-    
+
     while (!(flags)) {
         flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1;
     }
-    
+
     printf("\nAlarm Flags After Error: 0x%x\n", flags);
-    
+
     MXC_SMON_ClearFlags(MXC_F_SMON_SECALM_EXTSWARN1);
 }
 
 void Test2()
 {
     uint32_t flags = MXC_SMON_GetFlags();
-    
+
     flags = flags & MXC_F_SMON_SECALM_EXTSWARN0;
-    
+
     printf("\n\nAlarm Flags Before Error: 0x%x", flags);
-    
+
     mxc_smon_ext_cfg_t cfg;
-    
+
     cfg.sensorNumber = SMON_EXTSENSOR_0;
-    cfg.clockDivide = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
-    cfg.data = 0x51;
-    cfg.errorCount = 1;
-    
+    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
+    cfg.data         = 0x51;
+    cfg.errorCount   = 1;
+
     MXC_SMON_SelfDestructByteEnable(&cfg, 5000);
     printf("\nData before Error: 0x%x\n", (MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE));
-    
+
     flags = 0x00;
-    
+
     while (!(flags)) {
         flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0;
     }
-    
+
     printf("\nAlarm Flags After Error: 0x%x", flags);
     printf("\nData: 0x%x\n", MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE);
-    
+
     MXC_SMON_ClearFlags(MXC_F_SMON_SECALM_EXTSWARN0);
 }
 
@@ -117,16 +116,16 @@ int main(void)
     printf("pins of External Sensor 0 and External Sensor 1.\n");
     printf("To cause sensor error you will have to remove\n");
     printf("the jumper after initialization.\n");
-    
+
     MXC_SMON_Init();
-    
+
     printf("\nExternal Sensor 1 Enabled\n");
     printf("Remove Jumper on Sensor 1 to cause sensor 1 warning");
     Test1();
-    
+
     printf("\n\nSelf Destruct Byte Enabled for External Sensor 0\n");
     printf("Remove Jumper on Sensor 0 to destroy the byte");
     Test2();
-    
+
     printf("\nExample Completed\n\n");
 }

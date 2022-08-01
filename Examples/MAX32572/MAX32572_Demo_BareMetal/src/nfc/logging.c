@@ -59,9 +59,9 @@ void do_log(int32_t req_level, ...)
 {
     va_list ap;
 
-    if ( req_level <= g_logging_level ) {
+    if (req_level <= g_logging_level) {
         va_start(ap, req_level);
-        const char *fmt = va_arg(ap, const char *);
+        const char* fmt = va_arg(ap, const char*);
         vprintf(fmt, ap);
         va_end(ap);
     }

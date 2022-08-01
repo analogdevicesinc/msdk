@@ -45,11 +45,9 @@
 #include "simo_regs.h"
 #include "mxc_delay.h"
 
-
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
-
 
 /* GPIO Information
  *
@@ -74,11 +72,16 @@ extern uint32_t SystemCoreClock;
  *		1 : Data is available when I2S WS signal is high (right channel)
  */
 
-const mxc_gpio_cfg_t mic_power_ctrl_pin = {MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t codec_clk_en_pin = {MXC_GPIO1, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t i2s_int_ext_sel_pin = {MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t cnn_boost_en_pin = {MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-const mxc_gpio_cfg_t mic_ws_sel_pin = {MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+const mxc_gpio_cfg_t mic_power_ctrl_pin  = {MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+const mxc_gpio_cfg_t codec_clk_en_pin    = {MXC_GPIO1, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT,
+                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+const mxc_gpio_cfg_t i2s_int_ext_sel_pin = {MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_OUT,
+                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+const mxc_gpio_cfg_t cnn_boost_en_pin    = {MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT,
+                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+const mxc_gpio_cfg_t mic_ws_sel_pin      = {MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
 
 const mxc_gpio_cfg_t led_pin[] = {
     {MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
@@ -91,8 +94,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -100,16 +104,16 @@ int Board_Init(void)
 {
 #ifndef __riscv
     int err;
-     
+
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
-    
+
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
-     
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
@@ -144,7 +148,7 @@ int Board_Init(void)
     // Wait for external 1.8V buck-converter to become available
     MXC_Delay(200000);
 #endif // __riscv
-    
+
     return E_NO_ERROR;
 }
 
@@ -152,11 +156,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -164,11 +168,11 @@ int Console_Init(void)
 int Console_Shutdown(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Shutdown(ConsoleUart)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -186,7 +190,7 @@ int Debug_Init(void)
     MXC_GPIO1->en0_clr = 0x0f;
     MXC_GPIO1->en1_set = 0x0f;
     MXC_GPIO1->en2_clr = 0x0f;
-    
+
     return E_NO_ERROR;
 }
 #endif // __riscv
@@ -200,10 +204,10 @@ int Camera_Power(int on)
 /******************************************************************************/
 int Microphone_Power(int on)
 {
-	if (on)
-    	MXC_GPIO_OutSet(mic_power_ctrl_pin.port, mic_power_ctrl_pin.mask);
+    if (on)
+        MXC_GPIO_OutSet(mic_power_ctrl_pin.port, mic_power_ctrl_pin.mask);
     else
-    	MXC_GPIO_OutClr(mic_power_ctrl_pin.port, mic_power_ctrl_pin.mask);
+        MXC_GPIO_OutClr(mic_power_ctrl_pin.port, mic_power_ctrl_pin.mask);
 
     return E_NO_ERROR;
 }
@@ -211,10 +215,10 @@ int Microphone_Power(int on)
 /******************************************************************************/
 int Audio_Codec_Clock_Enable(int enable)
 {
-	if (enable)
-    	MXC_GPIO_OutSet(codec_clk_en_pin.port, codec_clk_en_pin.mask);
+    if (enable)
+        MXC_GPIO_OutSet(codec_clk_en_pin.port, codec_clk_en_pin.mask);
     else
-    	MXC_GPIO_OutClr(codec_clk_en_pin.port, codec_clk_en_pin.mask);
+        MXC_GPIO_OutClr(codec_clk_en_pin.port, codec_clk_en_pin.mask);
 
     return E_NO_ERROR;
 }
@@ -222,10 +226,10 @@ int Audio_Codec_Clock_Enable(int enable)
 /******************************************************************************/
 int Internal_External_I2S_Select(int sel)
 {
-	if (sel)
-    	MXC_GPIO_OutSet(i2s_int_ext_sel_pin.port, i2s_int_ext_sel_pin.mask);
+    if (sel)
+        MXC_GPIO_OutSet(i2s_int_ext_sel_pin.port, i2s_int_ext_sel_pin.mask);
     else
-    	MXC_GPIO_OutClr(i2s_int_ext_sel_pin.port, i2s_int_ext_sel_pin.mask);
+        MXC_GPIO_OutClr(i2s_int_ext_sel_pin.port, i2s_int_ext_sel_pin.mask);
 
     return E_NO_ERROR;
 }
@@ -233,10 +237,10 @@ int Internal_External_I2S_Select(int sel)
 /******************************************************************************/
 int CNN_Boost_Enable(int enable)
 {
-	if (enable)
-    	MXC_GPIO_OutSet(cnn_boost_en_pin.port, cnn_boost_en_pin.mask);
+    if (enable)
+        MXC_GPIO_OutSet(cnn_boost_en_pin.port, cnn_boost_en_pin.mask);
     else
-    	MXC_GPIO_OutClr(cnn_boost_en_pin.port, cnn_boost_en_pin.mask);
+        MXC_GPIO_OutClr(cnn_boost_en_pin.port, cnn_boost_en_pin.mask);
 
     return E_NO_ERROR;
 }
@@ -244,8 +248,5 @@ int CNN_Boost_Enable(int enable)
 /******************************************************************************/
 void SD_Get_Connections(mxc_spi_regs_t** spi, mxc_gpio_regs_t** ssPort, int* ssPin)
 {
-   return;
+    return;
 }
-
-
-

@@ -48,14 +48,13 @@
 #include "dma.h"
 
 /***** Definitions *****/
-#define POLY    0xEDB88320
-#define CHECK   0xDEBB20E3
+#define POLY  0xEDB88320
+#define CHECK 0xDEBB20E3
 /***** Globals *****/
 volatile int wait;
 volatile int callback_result;
 volatile int counter;
 /***** Functions *****/
-
 
 void CTB_IRQHandler(void)
 {
@@ -64,7 +63,7 @@ void CTB_IRQHandler(void)
 
 void Test_Callback(void* req, int result)
 {
-    wait = 0;
+    wait            = 0;
     callback_result = result;
 }
 
@@ -72,63 +71,55 @@ void Test_Result(int result)
 {
     if (result) {
         printf(" * Failed *\n\n");
-    }
-    else {
+    } else {
         printf("   Passed  \n\n");
     }
 }
-
 
 void Test_CRC(int asynchronous)
 {
     uint32_t array[101];
     int i;
-    
+
     printf(asynchronous ? "Test CRC Async\n" : "Test CRC Sync\n");
-    
+
     for (i = 0; i < 100; i++) {
         array[i] = i;
     }
-    
+
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
-    
+
     // Load CRC polynomial into crc polynomial register
     MXC_CTB_CRC_SetPoly(POLY);
-    
-    mxc_ctb_crc_req_t crc_req = {
-        (uint8_t*)& array,
-        400,
-        0,
-        &Test_Callback
-    };
-    
-    MXC_CTB_EnableInt();
-    
-    if (asynchronous) {
-        wait = 1;
-        MXC_CTB_CRC_ComputeAsync(&crc_req);
-        
 
-        while (wait);
-    }
-    else {
-        MXC_CTB_CRC_Compute(&crc_req);
-    }
-    
-    array[100] = ~(crc_req.resultCRC);
-    
-    crc_req.dataLen += sizeof(array[100]);
-    
+    mxc_ctb_crc_req_t crc_req = {(uint8_t*)&array, 400, 0, &Test_Callback};
+
+    MXC_CTB_EnableInt();
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_CRC_Compute(&crc_req);
     }
-    
+
+    array[100] = ~(crc_req.resultCRC);
+
+    crc_req.dataLen += sizeof(array[100]);
+
+    if (asynchronous) {
+        wait = 1;
+        MXC_CTB_CRC_ComputeAsync(&crc_req);
+
+        while (wait)
+            ;
+    } else {
+        MXC_CTB_CRC_Compute(&crc_req);
+    }
+
     Test_Result(CHECK != crc_req.resultCRC);
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
 }
@@ -136,10 +127,11 @@ void Test_CRC(int asynchronous)
 // *****************************************************************************
 int main(void)
 {
-	printf("\n************ CRC Example ***********\n");
-	Test_CRC(0);
-	NVIC_EnableIRQ(CRYPTO_IRQn);
+    printf("\n************ CRC Example ***********\n");
+    Test_CRC(0);
+    NVIC_EnableIRQ(CRYPTO_IRQn);
     Test_CRC(1);
-    
-    while (1) {}
+
+    while (1) {
+    }
 }

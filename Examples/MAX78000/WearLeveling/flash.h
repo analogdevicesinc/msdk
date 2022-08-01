@@ -36,14 +36,13 @@
  * @brief   Flash read/write/erase functions declaration
  */
 
-
 #ifndef FLASH_H_
 #define FLASH_H_
 
 // Flash operations log
 //#define FLASH_DEBUG
 #ifdef FLASH_DEBUG
-#define LOGF(...)		 printf(__VA_ARGS__)
+#define LOGF(...) printf(__VA_ARGS__)
 #else
 #define LOGF(...)
 #endif
@@ -63,8 +62,8 @@
  * @param size Data size
  * @return Error code
  */
-int flash_read(const struct lfs_config *c, lfs_block_t block,
-            lfs_off_t off, void *buffer, lfs_size_t size);
+int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* buffer,
+               lfs_size_t size);
 
 /**
  * @brief Writes flash memory
@@ -76,8 +75,8 @@ int flash_read(const struct lfs_config *c, lfs_block_t block,
  * @param size Data size
  * @return Error code
  */
-int flash_write(const struct lfs_config *c, lfs_block_t block,
-             lfs_off_t off, const void *buffer, lfs_size_t size);
+int flash_write(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, const void* buffer,
+                lfs_size_t size);
 
 /**
  * @brief Erases flash memory block
@@ -86,7 +85,7 @@ int flash_write(const struct lfs_config *c, lfs_block_t block,
  * @param block Flash memory block number
  * @return Error code
  */
-int flash_erase(const struct lfs_config *c, lfs_block_t block);
+int flash_erase(const struct lfs_config* c, lfs_block_t block);
 
 /**
  * @brief Performs pending flash operations
@@ -94,7 +93,7 @@ int flash_erase(const struct lfs_config *c, lfs_block_t block);
  * @param c LittleFS config
  * @return Error code
  */
-int flash_sync(const struct lfs_config *c);
+int flash_sync(const struct lfs_config* c);
 
 /**
  * @brief Verifies data in flash
@@ -130,6 +129,6 @@ int check_erased(uint32_t startaddr, uint32_t length);
  * @param verify Whether to verify written data
  * @return Error code
  */
-int flash_write4(uint32_t startaddr, uint32_t length, uint32_t *data, bool verify);
+int flash_write4(uint32_t startaddr, uint32_t length, uint32_t* data, bool verify);
 
 #endif /* FLASH_H_ */

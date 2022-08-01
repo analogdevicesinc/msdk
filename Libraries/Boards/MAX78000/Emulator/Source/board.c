@@ -85,8 +85,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -101,24 +102,24 @@ int Board_Init(void)
 {
 #ifndef __riscv
     int err;
-    
-    MXC_GCR->perckcn0 = 0; // enable all clocks
+
+    MXC_GCR->perckcn0 = 0;         // enable all clocks
     MXC_GCR->perckcn1 = (1 << 31); // except CPU1
-    
+
     MXC_GCR->clkctrl = 0x001F0800; // en all clocks
     // sel HIRC96
     // div 1
-    
+
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 #endif
-    
+
     return E_NO_ERROR;
 }
 
@@ -126,11 +127,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -138,11 +139,11 @@ int Console_Init(void)
 int Console_Shutdown(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Shutdown(ConsoleUart)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 /******************************************************************************/

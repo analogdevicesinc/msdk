@@ -45,16 +45,14 @@ int MXC_WDT_Init(mxc_wdt_regs_t* wdt, mxc_wdt_cfg_t* cfg)
 {
     if (wdt == MXC_WDT0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT0);
-    }
-    else if (wdt == MXC_WDT1) {
+    } else if (wdt == MXC_WDT1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT1);
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     MXC_WDT_RevB_Init(wdt, cfg);
-    
+
     return E_NO_ERROR;
 }
 
@@ -62,14 +60,12 @@ int MXC_WDT_Shutdown(mxc_wdt_regs_t* wdt)
 {
     if (wdt == MXC_WDT0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT0);
-    }
-    else if (wdt == MXC_WDT1) {
+    } else if (wdt == MXC_WDT1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT1);
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 

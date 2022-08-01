@@ -50,20 +50,19 @@
 #include "spi.h"
 #include "dma.h"
 
-
 /***** Preprocessors *****/
-#define MASTERSYNC 		       		// 1. MASTERSYNC
+#define MASTERSYNC // 1. MASTERSYNC
 // 2. MASTERASYNC
 // 3. MASTERDMA
 
 /***** Definitions *****/
-#define DATA_LEN        100	   		// Words
-#define DATA_VALUE      0xA5A5	  	// This is for master mode only...
-#define VALUE	        0xFFFF
-#define SPI_SPEED       100000  	// Bit Rate
+#define DATA_LEN   100    // Words
+#define DATA_VALUE 0xA5A5 // This is for master mode only...
+#define VALUE      0xFFFF
+#define SPI_SPEED  100000 // Bit Rate
 
-#define SPI			MXC_SPI0
-#define SPI_IRQ 	SPI0_IRQn
+#define SPI     MXC_SPI0
+#define SPI_IRQ SPI0_IRQn
 
 /***** Globals *****/
 uint16_t rx_data[DATA_LEN];
@@ -90,11 +89,10 @@ void DMA1_Handler(void)
     DMA1_FLAG = 1;
 }
 
-void SPI_Callback(mxc_spi_req_t *req, int error)
+void SPI_Callback(mxc_spi_req_t* req, int error)
 {
     SPI_FLAG = error;
 }
-
 
 int main(void)
 {
@@ -102,57 +100,57 @@ int main(void)
     uint16_t temp;
     mxc_spi_req_t req;
 
-
     printf("\n**************************** SPI MASTER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.4) and\n");
     printf("MOSI (P0.5) pins.  Connect these two pins together.  This demo shows SPI\n");
     printf("sending different bit sizes each run through. \n");
 
-    printf("\nThis demo can be configured to show Asynchronous, Synchronous or DMA transactions for SPI0\n");
+    printf("\nThis demo can be configured to show Asynchronous, Synchronous or DMA transactions "
+           "for SPI0\n");
 
-    for (i=1; i<17; i++)
-    {
-        if (i== 1) { // Sending out 2 to 16 bits 
+    for (i = 1; i < 17; i++) {
+        if (i == 1) { // Sending out 2 to 16 bits
             continue;
         }
 
-        memset(tx_data, 0x0, DATA_LEN*sizeof(uint16_t));
+        memset(tx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         for (j = 0; j < DATA_LEN; j++) {
             tx_data[j] = DATA_VALUE;
         }
 
         // Configure the peripheral
-        if (MXC_SPI_Init(SPI, 1, 0, 1, 0,SPI_SPEED) != E_NO_ERROR) {
+        if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED) != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
-            while (1) {}
+            while (1) {
+            }
         }
 
-        memset(rx_data, 0x0, DATA_LEN*sizeof(uint16_t));
+        memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         //SPI Request
-        req.spi = SPI;
-        req.txData = (uint8_t*)tx_data;
-        req.rxData = (uint8_t*)rx_data;
-        req.txLen = DATA_LEN;
-        req.rxLen = DATA_LEN;
-        req.ssIdx = 0;
+        req.spi        = SPI;
+        req.txData     = (uint8_t*)tx_data;
+        req.rxData     = (uint8_t*)rx_data;
+        req.txLen      = DATA_LEN;
+        req.rxLen      = DATA_LEN;
+        req.ssIdx      = 0;
         req.ssDeassert = 1;
-        req.txCnt = 0;
-        req.rxCnt = 0;
+        req.txCnt      = 0;
+        req.rxCnt      = 0;
         req.completeCB = (spi_complete_cb_t)SPI_Callback;
-        SPI_FLAG = 1;
+        SPI_FLAG       = 1;
 
-        retVal = MXC_SPI_SetDataSize(SPI,i);
-        if(retVal != E_NO_ERROR){
-            printf("\nSPI SET DATASIZE ERROR: %d\n",retVal);
-        	return retVal;
+        retVal = MXC_SPI_SetDataSize(SPI, i);
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
+            return retVal;
         }
 
         retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-        if(retVal != E_NO_ERROR){
-            printf("\nSPI SET WIDTH ERROR: %d\n",retVal);
-        	return retVal;
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
+            return retVal;
         }
 
 #ifdef MASTERSYNC
@@ -163,7 +161,8 @@ int main(void)
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 
-        while(SPI_FLAG==1);
+        while (SPI_FLAG == 1)
+            ;
 #endif
 
 #ifdef MASTERDMA
@@ -180,33 +179,32 @@ int main(void)
 
         MXC_SPI_MasterTransactionDMA(&req);
 
-        while(DMA1_FLAG == 0 || DMA0_FLAG == 0);
-        if(MXC_DMA->int_fl & MXC_F_DMA_INT_FL_IPEND) {
-        	while(MXC_DMA->int_fl & MXC_F_DMA_INT_FL_IPEND);
+        while (DMA1_FLAG == 0 || DMA0_FLAG == 0)
+            ;
+        if (MXC_DMA->int_fl & MXC_F_DMA_INT_FL_IPEND) {
+            while (MXC_DMA->int_fl & MXC_F_DMA_INT_FL_IPEND)
+                ;
         }
 #endif
 
         uint8_t bits = MXC_SPI_GetDataSize(SPI);
 
-        for(j=0; j<DATA_LEN; j++) {
-            if(bits <=8) {
-                if(j<(DATA_LEN/2)) {
-                    temp = VALUE >>(16-bits);
-                    temp = (temp<<8)|temp;
+        for (j = 0; j < DATA_LEN; j++) {
+            if (bits <= 8) {
+                if (j < (DATA_LEN / 2)) {
+                    temp = VALUE >> (16 - bits);
+                    temp = (temp << 8) | temp;
                     temp &= DATA_VALUE;
                     tx_data[j] = temp;
-                }
-                else if(j == (DATA_LEN/2) && DATA_LEN % 2 == 1) {
-                    temp = VALUE >> (16-bits);
+                } else if (j == (DATA_LEN / 2) && DATA_LEN % 2 == 1) {
+                    temp = VALUE >> (16 - bits);
                     temp &= DATA_VALUE;
-                    tx_data[j] = temp ;
-                }
-                else {
+                    tx_data[j] = temp;
+                } else {
                     tx_data[j] = 0x0000;
                 }
-            }
-            else {
-                temp = VALUE >>(16-bits);
+            } else {
+                temp = VALUE >> (16 - bits);
                 temp &= DATA_VALUE;
                 tx_data[j] = temp;
             }
@@ -215,16 +213,16 @@ int main(void)
         // Compare Sent data vs Received data
         // Printf needs the Uart turned on since they share the same pins
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
-            printf("\n-->%2d Bits Transaction Failed\n",i);
+            printf("\n-->%2d Bits Transaction Failed\n", i);
             return E_BAD_STATE;
         } else {
-            printf("\n-->%2d Bits Transaction Successful\n",i);
+            printf("\n-->%2d Bits Transaction Successful\n", i);
         }
 
         retVal = MXC_SPI_Shutdown(SPI);
-        if(retVal != E_NO_ERROR){
-            printf("\n-->SPI SHUTDOWN ERROR: %d\n",retVal);
-        	return retVal;
+        if (retVal != E_NO_ERROR) {
+            printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
+            return retVal;
         }
     }
 

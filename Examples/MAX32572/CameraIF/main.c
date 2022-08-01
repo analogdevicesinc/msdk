@@ -47,17 +47,16 @@
 #include "camera.h"
 #include "utils.h"
 
-
 void process_img(void)
 {
-    uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
-    
+    uint8_t* raw;
+    uint32_t imgLen;
+    uint32_t w, h;
+
     camera_get_image(&raw, &imgLen, &w, &h);
-    
+
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
-    
+
     /* ... */
 }
 
@@ -71,27 +70,26 @@ int main(void)
     printf("\n* Connect P1.11 to P1.20!*");
     printf("\n* UART0 is used to debug");
     printf("\n* UART1 is used to send image bytes to pc\n");
-    
+
     // enable catch
     MXC_ICC_Enable();
-    
+
     // To send image to PC
     MXC_UART_Init(MXC_UART1, 460800);
-    
+
     camera_init();
     printf("Camera Slave Addr: 0x%X\n", camera_get_id());
     camera_dump_registers();
-    
+
     camera_start_campture_image();
-    
+
     while (1) {
-    
         if (camera_is_image_rcv()) {
             process_img();
             utils_delay_ms(2000);
             camera_start_campture_image();
         }
     }
-    
+
     return ret;
 }

@@ -23,7 +23,7 @@
  * free function, otherwise compilation would fail.
  */
 #ifdef free
-    #undef free
+#undef free
 #endif
 
 /**********************
@@ -33,7 +33,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static const char * lv_fs_get_real_path(const char * path);
+static const char* lv_fs_get_real_path(const char* path);
 
 /**********************
  *  STATIC VARIABLES
@@ -49,67 +49,69 @@ static const char * lv_fs_get_real_path(const char * path);
 
 void _lv_fs_init(void)
 {
-    _lv_ll_init(&LV_GC_ROOT(_lv_fsdrv_ll), sizeof(lv_fs_drv_t *));
+    _lv_ll_init(&LV_GC_ROOT(_lv_fsdrv_ll), sizeof(lv_fs_drv_t*));
 }
 
 bool lv_fs_is_ready(char letter)
 {
-    lv_fs_drv_t * drv = lv_fs_get_drv(letter);
+    lv_fs_drv_t* drv = lv_fs_get_drv(letter);
 
-    if(drv == NULL) return false; /*An unknown driver in not ready*/
+    if (drv == NULL)
+        return false; /*An unknown driver in not ready*/
 
-    if(drv->ready_cb == NULL) return true; /*Assume the driver is always ready if no handler provided*/
+    if (drv->ready_cb == NULL)
+        return true; /*Assume the driver is always ready if no handler provided*/
 
     return drv->ready_cb(drv);
 }
 
-lv_fs_res_t lv_fs_open(lv_fs_file_t * file_p, const char * path, lv_fs_mode_t mode)
+lv_fs_res_t lv_fs_open(lv_fs_file_t* file_p, const char* path, lv_fs_mode_t mode)
 {
-    if(path == NULL) {
+    if (path == NULL) {
         LV_LOG_WARN("Can't open file: path is NULL");
         return LV_FS_RES_INV_PARAM;
     }
 
-    char letter = path[0];
-    lv_fs_drv_t * drv = lv_fs_get_drv(letter);
+    char letter      = path[0];
+    lv_fs_drv_t* drv = lv_fs_get_drv(letter);
 
-    if(drv == NULL) {
+    if (drv == NULL) {
         LV_LOG_WARN("Can't open file (%s): unknown driver letter", path);
         return LV_FS_RES_NOT_EX;
     }
 
-    if(drv->ready_cb) {
-        if(drv->ready_cb(drv) == false) {
+    if (drv->ready_cb) {
+        if (drv->ready_cb(drv) == false) {
             LV_LOG_WARN("Can't open file (%s): driver not ready", path);
             return LV_FS_RES_HW_ERR;
         }
     }
 
-    if(drv->open_cb == NULL) {
+    if (drv->open_cb == NULL) {
         LV_LOG_WARN("Can't open file (%s): open function not exists", path);
         return LV_FS_RES_NOT_IMP;
     }
 
-    const char * real_path = lv_fs_get_real_path(path);
-    void *file_d = drv->open_cb(drv, real_path, mode);
+    const char* real_path = lv_fs_get_real_path(path);
+    void* file_d          = drv->open_cb(drv, real_path, mode);
 
-    if(file_d == NULL || file_d == (void*)(-1)) {
+    if (file_d == NULL || file_d == (void*)(-1)) {
         return LV_FS_RES_UNKNOWN;
     }
 
-    file_p->drv = drv;
+    file_p->drv    = drv;
     file_p->file_d = file_d;
 
     return LV_FS_RES_OK;
 }
 
-lv_fs_res_t lv_fs_close(lv_fs_file_t * file_p)
+lv_fs_res_t lv_fs_close(lv_fs_file_t* file_p)
 {
-    if(file_p->drv == NULL) {
+    if (file_p->drv == NULL) {
         return LV_FS_RES_INV_PARAM;
     }
 
-    if(file_p->drv->close_cb == NULL) {
+    if (file_p->drv->close_cb == NULL) {
         return LV_FS_RES_NOT_IMP;
     }
 
@@ -121,45 +123,51 @@ lv_fs_res_t lv_fs_close(lv_fs_file_t * file_p)
     return res;
 }
 
-lv_fs_res_t lv_fs_read(lv_fs_file_t * file_p, void * buf, uint32_t btr, uint32_t * br)
+lv_fs_res_t lv_fs_read(lv_fs_file_t* file_p, void* buf, uint32_t btr, uint32_t* br)
 {
-    if(br != NULL) *br = 0;
-    if(file_p->drv == NULL) return LV_FS_RES_INV_PARAM;
-    if(file_p->drv->read_cb == NULL) return LV_FS_RES_NOT_IMP;
+    if (br != NULL)
+        *br = 0;
+    if (file_p->drv == NULL)
+        return LV_FS_RES_INV_PARAM;
+    if (file_p->drv->read_cb == NULL)
+        return LV_FS_RES_NOT_IMP;
 
     uint32_t br_tmp = 0;
     lv_fs_res_t res = file_p->drv->read_cb(file_p->drv, file_p->file_d, buf, btr, &br_tmp);
-    if(br != NULL) *br = br_tmp;
+    if (br != NULL)
+        *br = br_tmp;
 
     return res;
 }
 
-lv_fs_res_t lv_fs_write(lv_fs_file_t * file_p, const void * buf, uint32_t btw, uint32_t * bw)
+lv_fs_res_t lv_fs_write(lv_fs_file_t* file_p, const void* buf, uint32_t btw, uint32_t* bw)
 {
-    if(bw != NULL) *bw = 0;
+    if (bw != NULL)
+        *bw = 0;
 
-    if(file_p->drv == NULL) {
+    if (file_p->drv == NULL) {
         return LV_FS_RES_INV_PARAM;
     }
 
-    if(file_p->drv->write_cb == NULL) {
+    if (file_p->drv->write_cb == NULL) {
         return LV_FS_RES_NOT_IMP;
     }
 
     uint32_t bw_tmp = 0;
     lv_fs_res_t res = file_p->drv->write_cb(file_p->drv, file_p->file_d, buf, btw, &bw_tmp);
-    if(bw != NULL) *bw = bw_tmp;
+    if (bw != NULL)
+        *bw = bw_tmp;
 
     return res;
 }
 
-lv_fs_res_t lv_fs_seek(lv_fs_file_t * file_p, uint32_t pos, lv_fs_whence_t whence)
+lv_fs_res_t lv_fs_seek(lv_fs_file_t* file_p, uint32_t pos, lv_fs_whence_t whence)
 {
-    if(file_p->drv == NULL) {
+    if (file_p->drv == NULL) {
         return LV_FS_RES_INV_PARAM;
     }
 
-    if(file_p->drv->seek_cb == NULL) {
+    if (file_p->drv->seek_cb == NULL) {
         return LV_FS_RES_NOT_IMP;
     }
 
@@ -168,14 +176,14 @@ lv_fs_res_t lv_fs_seek(lv_fs_file_t * file_p, uint32_t pos, lv_fs_whence_t whenc
     return res;
 }
 
-lv_fs_res_t lv_fs_tell(lv_fs_file_t * file_p, uint32_t * pos)
+lv_fs_res_t lv_fs_tell(lv_fs_file_t* file_p, uint32_t* pos)
 {
-    if(file_p->drv == NULL) {
+    if (file_p->drv == NULL) {
         *pos = 0;
         return LV_FS_RES_INV_PARAM;
     }
 
-    if(file_p->drv->tell_cb == NULL) {
+    if (file_p->drv->tell_cb == NULL) {
         *pos = 0;
         return LV_FS_RES_NOT_IMP;
     }
@@ -185,48 +193,49 @@ lv_fs_res_t lv_fs_tell(lv_fs_file_t * file_p, uint32_t * pos)
     return res;
 }
 
-lv_fs_res_t lv_fs_dir_open(lv_fs_dir_t * rddir_p, const char * path)
+lv_fs_res_t lv_fs_dir_open(lv_fs_dir_t* rddir_p, const char* path)
 {
-    if(path == NULL) return LV_FS_RES_INV_PARAM;
+    if (path == NULL)
+        return LV_FS_RES_INV_PARAM;
 
-    char letter = path[0];
-    lv_fs_drv_t * drv = lv_fs_get_drv(letter);
+    char letter      = path[0];
+    lv_fs_drv_t* drv = lv_fs_get_drv(letter);
 
-    if(drv == NULL) {
+    if (drv == NULL) {
         return LV_FS_RES_NOT_EX;
     }
 
-    if(drv->ready_cb) {
-        if(drv->ready_cb(drv) == false) {
+    if (drv->ready_cb) {
+        if (drv->ready_cb(drv) == false) {
             return LV_FS_RES_HW_ERR;
         }
     }
 
-    if(drv->dir_open_cb == NULL) {
+    if (drv->dir_open_cb == NULL) {
         return LV_FS_RES_NOT_IMP;
     }
 
-    const char * real_path = lv_fs_get_real_path(path);
-    void *dir_d = drv->dir_open_cb(drv, real_path);
+    const char* real_path = lv_fs_get_real_path(path);
+    void* dir_d           = drv->dir_open_cb(drv, real_path);
 
-    if(dir_d == NULL || dir_d == (void*)(-1)) {
+    if (dir_d == NULL || dir_d == (void*)(-1)) {
         return LV_FS_RES_UNKNOWN;
     }
 
-    rddir_p->drv = drv;
+    rddir_p->drv   = drv;
     rddir_p->dir_d = dir_d;
 
     return LV_FS_RES_OK;
 }
 
-lv_fs_res_t lv_fs_dir_read(lv_fs_dir_t * rddir_p, char * fn)
+lv_fs_res_t lv_fs_dir_read(lv_fs_dir_t* rddir_p, char* fn)
 {
-    if(rddir_p->drv == NULL || rddir_p->dir_d == NULL) {
+    if (rddir_p->drv == NULL || rddir_p->dir_d == NULL) {
         fn[0] = '\0';
         return LV_FS_RES_INV_PARAM;
     }
 
-    if(rddir_p->drv->dir_read_cb == NULL) {
+    if (rddir_p->drv->dir_read_cb == NULL) {
         fn[0] = '\0';
         return LV_FS_RES_NOT_IMP;
     }
@@ -236,13 +245,13 @@ lv_fs_res_t lv_fs_dir_read(lv_fs_dir_t * rddir_p, char * fn)
     return res;
 }
 
-lv_fs_res_t lv_fs_dir_close(lv_fs_dir_t * rddir_p)
+lv_fs_res_t lv_fs_dir_close(lv_fs_dir_t* rddir_p)
 {
-    if(rddir_p->drv == NULL || rddir_p->dir_d == NULL) {
+    if (rddir_p->drv == NULL || rddir_p->dir_d == NULL) {
         return LV_FS_RES_INV_PARAM;
     }
 
-    if(rddir_p->drv->dir_close_cb == NULL) {
+    if (rddir_p->drv->dir_close_cb == NULL) {
         return LV_FS_RES_NOT_IMP;
     }
 
@@ -254,28 +263,30 @@ lv_fs_res_t lv_fs_dir_close(lv_fs_dir_t * rddir_p)
     return res;
 }
 
-void lv_fs_drv_init(lv_fs_drv_t * drv)
+void lv_fs_drv_init(lv_fs_drv_t* drv)
 {
     lv_memset_00(drv, sizeof(lv_fs_drv_t));
 }
 
-void lv_fs_drv_register(lv_fs_drv_t * drv_p)
+void lv_fs_drv_register(lv_fs_drv_t* drv_p)
 {
     /*Save the new driver*/
-    lv_fs_drv_t ** new_drv;
+    lv_fs_drv_t** new_drv;
     new_drv = _lv_ll_ins_head(&LV_GC_ROOT(_lv_fsdrv_ll));
     LV_ASSERT_MALLOC(new_drv);
-    if(new_drv == NULL) return;
+    if (new_drv == NULL)
+        return;
 
     *new_drv = drv_p;
 }
 
-lv_fs_drv_t * lv_fs_get_drv(char letter)
+lv_fs_drv_t* lv_fs_get_drv(char letter)
 {
-    lv_fs_drv_t ** drv;
+    lv_fs_drv_t** drv;
 
-    _LV_LL_READ(&LV_GC_ROOT(_lv_fsdrv_ll), drv) {
-        if((*drv)->letter == letter) {
+    _LV_LL_READ(&LV_GC_ROOT(_lv_fsdrv_ll), drv)
+    {
+        if ((*drv)->letter == letter) {
             return *drv;
         }
     }
@@ -283,12 +294,13 @@ lv_fs_drv_t * lv_fs_get_drv(char letter)
     return NULL;
 }
 
-char * lv_fs_get_letters(char * buf)
+char* lv_fs_get_letters(char* buf)
 {
-    lv_fs_drv_t ** drv;
+    lv_fs_drv_t** drv;
     uint8_t i = 0;
 
-    _LV_LL_READ(&LV_GC_ROOT(_lv_fsdrv_ll), drv) {
+    _LV_LL_READ(&LV_GC_ROOT(_lv_fsdrv_ll), drv)
+    {
         buf[i] = (*drv)->letter;
         i++;
     }
@@ -298,14 +310,13 @@ char * lv_fs_get_letters(char * buf)
     return buf;
 }
 
-const char * lv_fs_get_ext(const char * fn)
+const char* lv_fs_get_ext(const char* fn)
 {
     size_t i;
-    for(i = strlen(fn); i > 0; i--) {
-        if(fn[i] == '.') {
+    for (i = strlen(fn); i > 0; i--) {
+        if (fn[i] == '.') {
             return &fn[i + 1];
-        }
-        else if(fn[i] == '/' || fn[i] == '\\') {
+        } else if (fn[i] == '/' || fn[i] == '\\') {
             return ""; /*No extension if a '\' or '/' found*/
         }
     }
@@ -313,54 +324,60 @@ const char * lv_fs_get_ext(const char * fn)
     return ""; /*Empty string if no '.' in the file name.*/
 }
 
-char * lv_fs_up(char * path)
+char* lv_fs_up(char* path)
 {
     size_t len = strlen(path);
-    if(len == 0) return path;
+    if (len == 0)
+        return path;
 
     len--; /*Go before the trailing '\0'*/
 
     /*Ignore trailing '/' or '\'*/
-    while(path[len] == '/' || path[len] == '\\') {
+    while (path[len] == '/' || path[len] == '\\') {
         path[len] = '\0';
-        if(len > 0)
+        if (len > 0)
             len--;
         else
             return path;
     }
 
     size_t i;
-    for(i = len; i > 0; i--) {
-        if(path[i] == '/' || path[i] == '\\') break;
+    for (i = len; i > 0; i--) {
+        if (path[i] == '/' || path[i] == '\\')
+            break;
     }
 
-    if(i > 0) path[i] = '\0';
+    if (i > 0)
+        path[i] = '\0';
 
     return path;
 }
 
-const char * lv_fs_get_last(const char * path)
+const char* lv_fs_get_last(const char* path)
 {
     size_t len = strlen(path);
-    if(len == 0) return path;
+    if (len == 0)
+        return path;
 
     len--; /*Go before the trailing '\0'*/
 
     /*Ignore trailing '/' or '\'*/
-    while(path[len] == '/' || path[len] == '\\') {
-        if(len > 0)
+    while (path[len] == '/' || path[len] == '\\') {
+        if (len > 0)
             len--;
         else
             return path;
     }
 
     size_t i;
-    for(i = len; i > 0; i--) {
-        if(path[i] == '/' || path[i] == '\\') break;
+    for (i = len; i > 0; i--) {
+        if (path[i] == '/' || path[i] == '\\')
+            break;
     }
 
     /*No '/' or '\' in the path so return with path itself*/
-    if(i == 0) return path;
+    if (i == 0)
+        return path;
 
     return &path[i + 1];
 }
@@ -373,10 +390,11 @@ const char * lv_fs_get_last(const char * path)
  * @param path path string (E.g. S:/folder/file.txt)
  * @return pointer to the beginning of the real path (E.g. /folder/file.txt)
  */
-static const char * lv_fs_get_real_path(const char * path)
+static const char* lv_fs_get_real_path(const char* path)
 {
     path++; /*Ignore the driver letter*/
-    if(*path == ':') path++;
+    if (*path == ':')
+        path++;
 
     return path;
 }

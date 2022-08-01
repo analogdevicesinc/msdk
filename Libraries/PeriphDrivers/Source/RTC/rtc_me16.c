@@ -77,14 +77,14 @@ int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
 {
     // Enable clock
     MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
-    
+
     return MXC_RTC_RevA_Init(MXC_RTC, sec, ssec);
 }
 
 int MXC_RTC_SquareWave(mxc_rtc_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
-    
+
     return MXC_RTC_RevA_SquareWave(MXC_RTC, sqe, ft);
 }
 

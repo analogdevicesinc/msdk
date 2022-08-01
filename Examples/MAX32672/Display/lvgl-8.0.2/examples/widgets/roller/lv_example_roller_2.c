@@ -1,11 +1,11 @@
 #include "../../lv_examples.h"
 #if LV_USE_ROLLER && LV_FONT_MONTSERRAT_22 && LV_BUILD_EXAMPLES
 
-static void event_handler(lv_event_t * e)
+static void event_handler(lv_event_t* e)
 {
     lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t * obj = lv_event_get_target(e);
-    if(code == LV_EVENT_VALUE_CHANGED) {
+    lv_obj_t* obj        = lv_event_get_target(e);
+    if (code == LV_EVENT_VALUE_CHANGED) {
         char buf[32];
         lv_roller_get_selected_str(obj, buf, sizeof(buf));
         LV_LOG_USER("Selected value: %s", buf);
@@ -22,8 +22,8 @@ void lv_example_roller_2(void)
     lv_style_init(&style_sel);
     lv_style_set_text_font(&style_sel, &lv_font_montserrat_22);
 
-    const char * opts = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
-    lv_obj_t *roller;
+    const char* opts = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
+    lv_obj_t* roller;
 
     /*A roller on the left with left aligned text, and custom width*/
     roller = lv_roller_create(lv_scr_act());

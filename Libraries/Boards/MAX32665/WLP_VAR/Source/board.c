@@ -49,24 +49,23 @@
 #include "mxc_sys.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t * ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
-const mxc_gpio_cfg_t pb_pin[] = {
-};
-const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
+const mxc_gpio_cfg_t pb_pin[] = {};
+const unsigned int num_pbs    = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
-const mxc_gpio_cfg_t led_pin[] = {
-};
-const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+const mxc_gpio_cfg_t led_pin[] = {};
+const unsigned int num_leds    = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
-void mxc_assert(const char *expr, const char *file, int line)
+void mxc_assert(const char* expr, const char* file, int line)
 {
-    #ifdef DEBUG
+#ifdef DEBUG
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    #endif
-    while (1);
+#endif
+    while (1)
+        ;
 }
 
 /******************************************************************************/

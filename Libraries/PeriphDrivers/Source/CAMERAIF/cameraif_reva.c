@@ -51,61 +51,64 @@
 
 int MXC_PCIF_RevA_Init(void)
 {
-    MXC_SYS_ClockEnable (MXC_SYS_PERIPH_CLOCK_PCIF);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PCIF);
     //MXC_GPIO_Config (&gpio_cfg_pcif_P0);
     //MXC_GPIO_Config (&gpio_cfg_pcif_P1);
     //MXC_GPIO_Config (&gpio_cfg_pcif_hsync);
     //MXC_GPIO_Config (&gpio_cfg_pcif_vsync);
     //MXC_GPIO_Config (&gpio_cfg_pcif_pclk);
     //MXC_GPIO_Config (&gpio_cfg_pcif_pwrdwn);
-    
+
     //MXC_GPIO_OutClr (gpio_cfg_pcif_pwrdwn.port, gpio_cfg_pcif_pwrdwn.mask);
-    
+
     return 0;
 }
 
-void MXC_PCIF_RevA_SetDatawidth (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_datawith_t  datawith)
+void MXC_PCIF_RevA_SetDatawidth(mxc_cameraif_reva_regs_t* cameraif,
+                                mxc_pcif_reva_datawith_t datawith)
 {
-    cameraif->ctrl &= ~ (MXC_F_CAMERAIF_REVA_CTRL_DATA_WIDTH);
+    cameraif->ctrl &= ~(MXC_F_CAMERAIF_REVA_CTRL_DATA_WIDTH);
     cameraif->ctrl |= (datawith << MXC_F_CAMERAIF_REVA_CTRL_DATA_WIDTH_POS);
 }
 
-void MXC_PCIF_RevA_SetTimingSel (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_timingsel_t timingsel)
+void MXC_PCIF_RevA_SetTimingSel(mxc_cameraif_reva_regs_t* cameraif,
+                                mxc_pcif_reva_timingsel_t timingsel)
 {
-    cameraif->ctrl &= ~ (MXC_F_CAMERAIF_REVA_CTRL_DS_TIMING_EN);
-    cameraif->ctrl |= (timingsel  << MXC_F_CAMERAIF_REVA_CTRL_DS_TIMING_EN_POS);
+    cameraif->ctrl &= ~(MXC_F_CAMERAIF_REVA_CTRL_DS_TIMING_EN);
+    cameraif->ctrl |= (timingsel << MXC_F_CAMERAIF_REVA_CTRL_DS_TIMING_EN_POS);
 }
 
-void MXC_PCIF_RevA_SetThreshold (mxc_cameraif_reva_regs_t *cameraif, int fifo_thrsh)
+void MXC_PCIF_RevA_SetThreshold(mxc_cameraif_reva_regs_t* cameraif, int fifo_thrsh)
 {
-    cameraif->ctrl  &= ~ (MXC_F_CAMERAIF_REVA_CTRL_FIFO_THRSH);
-    cameraif->ctrl  |= ( (fifo_thrsh << MXC_F_CAMERAIF_REVA_CTRL_FIFO_THRSH_POS) & MXC_F_CAMERAIF_REVA_CTRL_FIFO_THRSH);
+    cameraif->ctrl &= ~(MXC_F_CAMERAIF_REVA_CTRL_FIFO_THRSH);
+    cameraif->ctrl |= ((fifo_thrsh << MXC_F_CAMERAIF_REVA_CTRL_FIFO_THRSH_POS) &
+                       MXC_F_CAMERAIF_REVA_CTRL_FIFO_THRSH);
 }
 
-void MXC_PCIF_RevA_EnableInt (mxc_cameraif_reva_regs_t *cameraif, uint32_t flags)
+void MXC_PCIF_RevA_EnableInt(mxc_cameraif_reva_regs_t* cameraif, uint32_t flags)
 {
     cameraif->int_en |= (flags & PCIF_REVA_IE_MASK);
 }
 
-void MXC_PCIF_RevA_DisableInt (mxc_cameraif_reva_regs_t *cameraif, uint32_t flags)
+void MXC_PCIF_RevA_DisableInt(mxc_cameraif_reva_regs_t* cameraif, uint32_t flags)
 {
-    cameraif->int_en &= ~ (flags & PCIF_REVA_IE_MASK);
+    cameraif->int_en &= ~(flags & PCIF_REVA_IE_MASK);
 }
 
-void MXC_PCIF_RevA_Start (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_readmode_t  readmode)
+void MXC_PCIF_RevA_Start(mxc_cameraif_reva_regs_t* cameraif, mxc_pcif_reva_readmode_t readmode)
 {
-    cameraif->ctrl &= ~ (MXC_F_CAMERAIF_REVA_CTRL_READ_MODE);
+    cameraif->ctrl &= ~(MXC_F_CAMERAIF_REVA_CTRL_READ_MODE);
     cameraif->ctrl |= (readmode & MXC_F_CAMERAIF_REVA_CTRL_READ_MODE);
 }
 
-void MXC_PCIF_RevA_Stop (mxc_cameraif_reva_regs_t *cameraif)
+void MXC_PCIF_RevA_Stop(mxc_cameraif_reva_regs_t* cameraif)
 {
-    cameraif->ctrl &= ~ (MXC_F_CAMERAIF_REVA_CTRL_READ_MODE);
+    cameraif->ctrl &= ~(MXC_F_CAMERAIF_REVA_CTRL_READ_MODE);
 }
 
-unsigned int MXC_PCIF_RevA_GetData (mxc_cameraif_reva_regs_t *cameraif)
+unsigned int MXC_PCIF_RevA_GetData(mxc_cameraif_reva_regs_t* cameraif)
 {
-    return (unsigned int) (cameraif->fifo_data);
+    return (unsigned int)(cameraif->fifo_data);
 }
 
 /**@} end of group cameraif */

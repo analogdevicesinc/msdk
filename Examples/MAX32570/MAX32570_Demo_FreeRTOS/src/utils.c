@@ -37,12 +37,9 @@
 #include "MAX32xxx.h"
 #include "utils.h"
 
-
 /***************************** VARIABLES *************************************/
 
-
 /************************   STATIC FUNCTIONS  *******************************/
-
 
 /************************   PUBLIC FUNCTIONS  *******************************/
 unsigned int utils_get_time_ms(void)
@@ -54,29 +51,29 @@ unsigned int utils_get_time_ms(void)
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
     sec    = MXC_RTC_GetSecond();
 
-    ms = (sec*1000) +  (int)(subsec*1000);
+    ms = (sec * 1000) + (int)(subsec * 1000);
 
     return ms;
 }
 
 void utils_delay_ms(unsigned int ms)
 {
-	MXC_Delay(ms * 1000UL);
+    MXC_Delay(ms * 1000UL);
 }
 
-void utils_hex2char(char chr, char *msg)
+void utils_hex2char(char chr, char* msg)
 {
     int i;
     char c;
 
     c = chr >> 4;
-    for (i=0;i<2;i++) {
-		if (c < 10) {
-			*msg = '0'+ c;
-		} else {
-			*msg = 'A' + c - 10;
-		}
-		c = chr & 0x0F;
-		msg++;
+    for (i = 0; i < 2; i++) {
+        if (c < 10) {
+            *msg = '0' + c;
+        } else {
+            *msg = 'A' + c - 10;
+        }
+        c = chr & 0x0F;
+        msg++;
     }
 }

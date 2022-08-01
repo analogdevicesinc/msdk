@@ -56,17 +56,17 @@
 **************************************************************************************************/
 
 /*! Button press handling constants */
-#define BTN_SHORT_MS                      200
-#define BTN_MED_MS                        500
-#define BTN_LONG_MS                       1000
+#define BTN_SHORT_MS 200
+#define BTN_MED_MS   500
+#define BTN_LONG_MS  1000
 
-#define BTN_1_TMR                         MXC_TMR2
-#define BTN_2_TMR                         MXC_TMR3
+#define BTN_1_TMR MXC_TMR2
+#define BTN_2_TMR MXC_TMR3
 
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
-    MCS_APP_GATT_SC_CCC_IDX,           /*! GATT service, service changed characteristic */
-    MCS_APP_BT_CCC_IDX,                /*! MCS characteristic */
+    MCS_APP_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
+    MCS_APP_BT_CCC_IDX,      /*! MCS characteristic */
     MCS_APP_NUM_CCC_IDX
 };
 
@@ -76,10 +76,10 @@ enum {
 
 /*! Application message type */
 typedef union {
-    wsfMsgHdr_t     hdr;
-    dmEvt_t         dm;
-    attsCccEvt_t    ccc;
-    attEvt_t        att;
+    wsfMsgHdr_t hdr;
+    dmEvt_t dm;
+    attsCccEvt_t ccc;
+    attEvt_t att;
 } mcsMsg_t;
 
 /**************************************************************************************************
@@ -88,22 +88,22 @@ typedef union {
 
 /*! configurable parameters for advertising */
 static const appAdvCfg_t mcsAppAdvCfg = {
-    {30000,     0,     0},                  /*! Advertising durations in ms */
-    {   96,  1600,     0}                   /*! Advertising intervals in 0.625 ms units */
+    {30000, 0, 0}, /*! Advertising durations in ms */
+    {96, 1600, 0}  /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
 static const appSlaveCfg_t mcsAppSlaveCfg = {
-    1,                                      /*! Maximum connections */
+    1, /*! Maximum connections */
 };
 
 /*! configurable parameters for security */
 static const appSecCfg_t mcsAppSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG,    /*! Authentication and bonding flags */
-    DM_KEY_DIST_IRK,                        /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,      /*! Responder key distribution flags */
-    FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-    FALSE                                   /*! TRUE to initiate security upon connection */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
+    DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
+    FALSE,                               /*! TRUE if Out-of-band pairing data is present */
+    FALSE                                /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -111,40 +111,39 @@ static const bool_t mcsAppSendOobData = FALSE;
 
 /*! SMP security parameter configuration */
 static const smpCfg_t mcsAppSmpCfg = {
-    500,                                    /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT,                    /*! I/O Capability */
-    7,                                      /*! Minimum encryption key length */
-    16,                                     /*! Maximum encryption key length */
-    1,                                      /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                                      /*! Device authentication requirements */
-    64000,                                  /*! Maximum repeated attempts timeout in msec */
-    64000,                                  /*! Time msec before attemptExp decreases */
-    2                                       /*! Repeated attempts multiplier exponent */
+    500,                 /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    7,                   /*! Minimum encryption key length */
+    16,                  /*! Maximum encryption key length */
+    1,                   /*! Attempts to trigger 'repeated attempts' timeout */
+    0,                   /*! Device authentication requirements */
+    64000,               /*! Maximum repeated attempts timeout in msec */
+    64000,               /*! Time msec before attemptExp decreases */
+    2                    /*! Repeated attempts multiplier exponent */
 };
 
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t mcsAppUpdateCfg = {
-    0,                                      /*! Connection idle period in ms before attempting
+    0,   /*! Connection idle period in ms before attempting
                                               connection parameter update; set to zero to disable */
-    640,                                    /*! Minimum connection interval in 1.25ms units */
-    800,                                    /*! Maximum connection interval in 1.25ms units */
-    3,                                      /*! Connection latency */
-    900,                                    /*! Supervision timeout in 10ms units */
-    5                                       /*! Number of update attempts before giving up */
+    640, /*! Minimum connection interval in 1.25ms units */
+    800, /*! Maximum connection interval in 1.25ms units */
+    3,   /*! Connection latency */
+    900, /*! Supervision timeout in 10ms units */
+    5    /*! Number of update attempts before giving up */
 };
 
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t mcsAppAttCfg = {
-    15,                               /* ATT server service discovery connection idle timeout in seconds */
-    241,                              /* desired ATT MTU */
-    ATT_MAX_TRANS_TIMEOUT,            /* transcation timeout in seconds */
-    4                                 /* number of queued prepare writes supported by server */
+    15,                    /* ATT server service discovery connection idle timeout in seconds */
+    241,                   /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4                      /* number of queued prepare writes supported by server */
 };
 
 /*! local IRK */
-static uint8_t localIrk[] = {
-    0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93, 0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85
-};
+static uint8_t localIrk[] = {0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
+                             0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85};
 
 /**************************************************************************************************
   Advertising Data
@@ -153,22 +152,22 @@ static uint8_t localIrk[] = {
 /*! advertising data, discoverable mode */
 static const uint8_t mcsAppAdvDataDisc[] = {
     /*! flags */
-    2,                                      /*! length */
-    DM_ADV_TYPE_FLAGS,                      /*! AD type */
-    DM_FLAG_LE_GENERAL_DISC |               /*! flags */
-    DM_FLAG_LE_BREDR_NOT_SUP,
+    2,                        /*! length */
+    DM_ADV_TYPE_FLAGS,        /*! AD type */
+    DM_FLAG_LE_GENERAL_DISC | /*! flags */
+        DM_FLAG_LE_BREDR_NOT_SUP,
 
     /*! manufacturer specific data */
-    3,                                      /*! length */
-    DM_ADV_TYPE_MANUFACTURER,               /*! AD type */
-    UINT16_TO_BYTES(HCI_ID_ANALOG)          /*! company ID */
+    3,                             /*! length */
+    DM_ADV_TYPE_MANUFACTURER,      /*! AD type */
+    UINT16_TO_BYTES(HCI_ID_ANALOG) /*! company ID */
 };
 
 /*! scan data, discoverable mode */
 static const uint8_t mcsAppScanDataDisc[] = {
     /*! device name */
-    4,                                      /*! length */
-    DM_ADV_TYPE_LOCAL_NAME,                 /*! AD type */
+    4,                      /*! length */
+    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
     'M',
     'C',
     'S',
@@ -176,9 +175,9 @@ static const uint8_t mcsAppScanDataDisc[] = {
 
 /*! Mcs measurement configuration */
 static const mcsCfg_t mcsMcsCfg = {
-    2,        /*! Mcs measurement timer expiration period in seconds */
-    1,        /*! Perform mcs measurement after this many timer periods */
-    3         /*! Send mcs level notification to peer when below this level. */
+    2, /*! Mcs measurement timer expiration period in seconds */
+    1, /*! Perform mcs measurement after this many timer periods */
+    3  /*! Send mcs level notification to peer when below this level. */
 };
 
 /**************************************************************************************************
@@ -188,8 +187,8 @@ static const mcsCfg_t mcsMcsCfg = {
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
 static const attsCccSet_t mcsAppCccSet[MCS_APP_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
-    {GATT_SC_CH_CCC_HDL,    ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_NONE},   /* MCS_APP_GATT_SC_CCC_IDX */
-    {MCS_BUTTON_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE}    /* MCS_BUTTON_SM_CCC_IDX */
+    {GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE}, /* MCS_APP_GATT_SC_CCC_IDX */
+    {MCS_BUTTON_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE} /* MCS_BUTTON_SM_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -198,13 +197,13 @@ static const attsCccSet_t mcsAppCccSet[MCS_APP_NUM_CCC_IDX] = {
 
 /*! application control block */
 static struct {
-    wsfHandlerId_t    handlerId;          /* WSF handler ID */
-    appDbHdl_t        resListRestoreHdl;  /*! Resolving List last restored handle */
-    bool_t            restoringResList;   /*! Restoring resolving list from NVM */
+    wsfHandlerId_t handlerId;     /* WSF handler ID */
+    appDbHdl_t resListRestoreHdl; /*! Resolving List last restored handle */
+    bool_t restoringResList;      /*! Restoring resolving list from NVM */
 } mcsAppCb;
 
 /* LESC OOB configuration */
-static dmSecLescOobCfg_t *mcsAppOobCfg;
+static dmSecLescOobCfg_t* mcsAppOobCfg;
 
 extern void setAdvTxPower(void);
 /*************************************************************************************************/
@@ -216,10 +215,10 @@ extern void setAdvTxPower(void);
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppDmCback(dmEvt_t *pDmEvt)
+static void mcsAppDmCback(dmEvt_t* pDmEvt)
 {
-    dmEvt_t   *pMsg;
-    uint16_t  len;
+    dmEvt_t* pMsg;
+    uint16_t len;
 
     if (pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND) {
         DmSecSetEccKey(&pDmEvt->eccMsg.data.key);
@@ -258,13 +257,13 @@ static void mcsAppDmCback(dmEvt_t *pDmEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppAttCback(attEvt_t *pEvt)
+static void mcsAppAttCback(attEvt_t* pEvt)
 {
-    attEvt_t  *pMsg;
+    attEvt_t* pMsg;
 
     if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
         memcpy(pMsg, pEvt, sizeof(attEvt_t));
-        pMsg->pValue = (uint8_t *)(pMsg + 1);
+        pMsg->pValue = (uint8_t*)(pMsg + 1);
         memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
         WsfMsgSend(mcsAppCb.handlerId, pMsg);
     }
@@ -279,15 +278,15 @@ static void mcsAppAttCback(attEvt_t *pEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppCccCback(attsCccEvt_t *pEvt)
+static void mcsAppCccCback(attsCccEvt_t* pEvt)
 {
-    appDbHdl_t    dbHdl;
-    attsCccEvt_t  *pMsg;
+    appDbHdl_t dbHdl;
+    attsCccEvt_t* pMsg;
 
     /* If CCC not set from initialization and there's a device record and currently bonded */
     if ((pEvt->handle != ATT_HANDLE_NONE) &&
-            ((dbHdl = AppDbGetHdl((dmConnId_t) pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
-            AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
+        ((dbHdl = AppDbGetHdl((dmConnId_t)pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
+        AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
         /* Store value in device database. */
         AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
         AppDbNvmStoreCccTbl(dbHdl);
@@ -308,9 +307,10 @@ static void mcsAppCccCback(attsCccEvt_t *pEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppProcCccState(mcsMsg_t *pMsg)
+static void mcsAppProcCccState(mcsMsg_t* pMsg)
 {
-    APP_TRACE_INFO3("ccc state ind value:%d handle:%d idx:%d", pMsg->ccc.value, pMsg->ccc.handle, pMsg->ccc.idx);
+    APP_TRACE_INFO3("ccc state ind value:%d handle:%d idx:%d", pMsg->ccc.value, pMsg->ccc.handle,
+                    pMsg->ccc.idx);
 }
 
 /*************************************************************************************************/
@@ -325,7 +325,7 @@ static void mcsAppProcCccState(mcsMsg_t *pMsg)
 /*************************************************************************************************/
 static void mcsAppPrivAddDevToResList(appDbHdl_t dbHdl)
 {
-    dmSecKey_t *pPeerKey;
+    dmSecKey_t* pPeerKey;
 
     /* if peer IRK present */
     if ((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL) {
@@ -344,11 +344,11 @@ static void mcsAppPrivAddDevToResList(appDbHdl_t dbHdl)
 *  \return None.
 */
 /*************************************************************************************************/
-static void mcsAppPrivRemDevFromResListInd(dmEvt_t *pMsg)
+static void mcsAppPrivRemDevFromResListInd(dmEvt_t* pMsg)
 {
     if (pMsg->hdr.status == HCI_SUCCESS) {
-        if (AppDbGetHdl((dmConnId_t) pMsg->hdr.param) != APP_DB_HDL_NONE) {
-            uint8_t addrZeros[BDA_ADDR_LEN] = { 0 };
+        if (AppDbGetHdl((dmConnId_t)pMsg->hdr.param) != APP_DB_HDL_NONE) {
+            uint8_t addrZeros[BDA_ADDR_LEN] = {0};
 
             /* clear advertising peer address and its type */
             AppSetAdvPeerAddr(HCI_ADDR_TYPE_PUBLIC, addrZeros);
@@ -365,10 +365,10 @@ static void mcsAppPrivRemDevFromResListInd(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppClose(dmEvt_t *pMsg)
+static void mcsAppClose(dmEvt_t* pMsg)
 {
     /* stop mcs measurement */
-    McsButtonCheckStop((dmConnId_t) pMsg->hdr.param);
+    McsButtonCheckStop((dmConnId_t)pMsg->hdr.param);
 }
 
 /*************************************************************************************************/
@@ -381,7 +381,7 @@ static void mcsAppClose(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-void mcsAppDisplayStackVersion(const char *pVersion)
+void mcsAppDisplayStackVersion(const char* pVersion)
 {
     APP_TRACE_INFO1("Stack Version: %s", pVersion);
 }
@@ -396,18 +396,21 @@ void mcsAppDisplayStackVersion(const char *pVersion)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppSetup(dmEvt_t *pMsg)
+static void mcsAppSetup(dmEvt_t* pMsg)
 {
     /* Initialize control information */
     mcsAppCb.restoringResList = FALSE;
 
     /* set advertising and scan response data for discoverable mode */
-    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(mcsAppAdvDataDisc), (uint8_t *) mcsAppAdvDataDisc);
-    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(mcsAppScanDataDisc), (uint8_t *) mcsAppScanDataDisc);
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(mcsAppAdvDataDisc),
+                  (uint8_t*)mcsAppAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(mcsAppScanDataDisc),
+                  (uint8_t*)mcsAppScanDataDisc);
 
     /* set advertising and scan response data for connectable mode */
-    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(mcsAppAdvDataDisc), (uint8_t *) mcsAppAdvDataDisc);
-    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(mcsAppScanDataDisc), (uint8_t *) mcsAppScanDataDisc);
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(mcsAppAdvDataDisc), (uint8_t*)mcsAppAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(mcsAppScanDataDisc),
+                  (uint8_t*)mcsAppScanDataDisc);
 
     /* start advertising; automatically set connectable/discoverable mode and bondable mode */
     AppAdvStart(APP_MODE_AUTO_INIT);
@@ -422,7 +425,7 @@ static void mcsAppSetup(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppRestoreResolvingList(dmEvt_t *pMsg)
+static void mcsAppRestoreResolvingList(dmEvt_t* pMsg)
 {
     /* Restore first device to resolving list in Controller. */
     mcsAppCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
@@ -444,7 +447,7 @@ static void mcsAppRestoreResolvingList(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppPrivAddDevToResListInd(dmEvt_t *pMsg)
+static void mcsAppPrivAddDevToResListInd(dmEvt_t* pMsg)
 {
     /* Check if in the process of restoring the Device List from NV */
     if (mcsAppCb.restoringResList) {
@@ -459,7 +462,7 @@ static void mcsAppPrivAddDevToResListInd(dmEvt_t *pMsg)
             mcsAppSetup(pMsg);
         }
     } else {
-        mcsAppPrivAddDevToResList(AppDbGetHdl((dmConnId_t) pMsg->hdr.param));
+        mcsAppPrivAddDevToResList(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
     }
 }
 
@@ -472,11 +475,11 @@ static void mcsAppPrivAddDevToResListInd(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppProcMsg(dmEvt_t *pMsg)
+static void mcsAppProcMsg(dmEvt_t* pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
 
-    switch(pMsg->hdr.event) {
+    switch (pMsg->hdr.event) {
         case ATTS_CCC_STATE_IND:
             mcsAppProcCccState((mcsMsg_t*)pMsg);
             break;
@@ -503,7 +506,8 @@ static void mcsAppProcMsg(dmEvt_t *pMsg)
             break;
 
         case DM_CONN_CLOSE_IND:
-            APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status, pMsg->connClose.reason);
+            APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status,
+                            pMsg->connClose.reason);
             switch (pMsg->connClose.reason) {
                 case HCI_ERR_CONN_TIMEOUT:
                     APP_TRACE_INFO0(" TIMEOUT");
@@ -527,7 +531,7 @@ static void mcsAppProcMsg(dmEvt_t *pMsg)
 
         case DM_SEC_PAIR_CMPL_IND:
             DmSecGenerateEccKeyReq();
-            AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t) pMsg->hdr.param));
+            AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
             uiEvent = APP_UI_SEC_PAIR_CMPL;
             break;
 
@@ -547,10 +551,9 @@ static void mcsAppProcMsg(dmEvt_t *pMsg)
         case DM_SEC_AUTH_REQ_IND:
 
             if (pMsg->authReq.oob) {
-                dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
+                dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
                 /* TODO: Perform OOB Exchange with the peer. */
-
 
                 /* TODO: Fill mcsAppOobCfg peerConfirm and peerRandom with value passed out of band */
 
@@ -609,12 +612,12 @@ void McsAppHandlerInit(wsfHandlerId_t handlerId)
     mcsAppCb.handlerId = handlerId;
 
     /* Set configuration pointers */
-    pAppSlaveCfg = (appSlaveCfg_t *) &mcsAppSlaveCfg;
-    pAppAdvCfg = (appAdvCfg_t *) &mcsAppAdvCfg;
-    pAppSecCfg = (appSecCfg_t *) &mcsAppSecCfg;
-    pAppUpdateCfg = (appUpdateCfg_t *) &mcsAppUpdateCfg;
-    pSmpCfg = (smpCfg_t *) &mcsAppSmpCfg;
-    pAttCfg = (attCfg_t *) &mcsAppAttCfg;
+    pAppSlaveCfg  = (appSlaveCfg_t*)&mcsAppSlaveCfg;
+    pAppAdvCfg    = (appAdvCfg_t*)&mcsAppAdvCfg;
+    pAppSecCfg    = (appSecCfg_t*)&mcsAppSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t*)&mcsAppUpdateCfg;
+    pSmpCfg       = (smpCfg_t*)&mcsAppSmpCfg;
+    pAttCfg       = (attCfg_t*)&mcsAppAttCfg;
 
     /* Initialize application framework */
     AppSlaveInit();
@@ -624,7 +627,7 @@ void McsAppHandlerInit(wsfHandlerId_t handlerId)
     DmSecSetLocalIrk(localIrk);
 
     /* initialize mcs server */
-    McsInit(handlerId, (mcsCfg_t *) &mcsMcsCfg);
+    McsInit(handlerId, (mcsCfg_t*)&mcsMcsCfg);
 }
 
 /*************************************************************************************************/
@@ -654,16 +657,16 @@ static void mcsAppBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 {
-    if(btnId == 1) {
+    if (btnId == 1) {
         /* Start/stop button timer */
-        if(state == PAL_BTN_POS_UP) {
+        if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_1_TMR);
-            if((btnUs > 0) && (btnUs < BTN_SHORT_MS*1000)) {
+            if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_1_SHORT);
-            } else if (btnUs < BTN_MED_MS*1000) {
+            } else if (btnUs < BTN_MED_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_1_MED);
-            } else if (btnUs < BTN_LONG_MS*1000) {
+            } else if (btnUs < BTN_LONG_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_1_LONG);
             } else {
                 AppUiBtnTest(APP_UI_BTN_1_EX_LONG);
@@ -674,14 +677,14 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
         }
     } else if (btnId == 2) {
         /* Start/stop button timer */
-        if(state == PAL_BTN_POS_UP) {
+        if (state == PAL_BTN_POS_UP) {
             /* Button Up, stop the timer, call the action function */
             unsigned btnUs = MXC_TMR_SW_Stop(BTN_2_TMR);
-            if((btnUs > 0) && (btnUs < BTN_SHORT_MS*1000)) {
+            if ((btnUs > 0) && (btnUs < BTN_SHORT_MS * 1000)) {
                 AppUiBtnTest(APP_UI_BTN_2_SHORT);
-            } else if (btnUs < BTN_MED_MS*1000) {
+            } else if (btnUs < BTN_MED_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_2_MED);
-            } else if (btnUs < BTN_LONG_MS*1000) {
+            } else if (btnUs < BTN_LONG_MS * 1000) {
                 AppUiBtnTest(APP_UI_BTN_2_LONG);
             } else {
                 AppUiBtnTest(APP_UI_BTN_2_EX_LONG);
@@ -704,7 +707,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
  *  \return None.
  */
 /*************************************************************************************************/
-static void mcsAppWsfBufDiagnostics(WsfBufDiag_t *pInfo)
+static void mcsAppWsfBufDiagnostics(WsfBufDiag_t* pInfo)
 {
     if (pInfo->type == WSF_BUF_ALLOC_FAILED) {
         APP_TRACE_INFO2("McsApp got WSF Buffer Allocation Failure - Task: %d Len: %d",
@@ -722,7 +725,7 @@ static void mcsAppWsfBufDiagnostics(WsfBufDiag_t *pInfo)
  *  \return None.
  */
 /*************************************************************************************************/
-void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
 {
     if (pMsg != NULL) {
         APP_TRACE_INFO1("McsApp got evt %d", pMsg->event);
@@ -735,14 +738,14 @@ void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         /* process DM messages */
         else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
             /* process advertising and connection-related messages */
-            AppSlaveProcDmMsg((dmEvt_t *) pMsg);
+            AppSlaveProcDmMsg((dmEvt_t*)pMsg);
 
             /* process security-related messages */
-            AppSlaveSecProcDmMsg((dmEvt_t *) pMsg);
+            AppSlaveSecProcDmMsg((dmEvt_t*)pMsg);
         }
 
         /* perform profile and user interface-related operations */
-        mcsAppProcMsg((dmEvt_t *) pMsg);
+        mcsAppProcMsg((dmEvt_t*)pMsg);
     }
 }
 
@@ -760,7 +763,7 @@ void McsAppStart(void)
     DmConnRegister(DM_CLIENT_ID_APP, mcsAppDmCback);
     AttRegister(mcsAppAttCback);
     AttConnRegister(AppServerConnCback);
-    AttsCccRegister(MCS_APP_NUM_CCC_IDX, (attsCccSet_t *) mcsAppCccSet, mcsAppCccCback);
+    AttsCccRegister(MCS_APP_NUM_CCC_IDX, (attsCccSet_t*)mcsAppCccSet, mcsAppCccCback);
 
     SvcMcsCbackRegister(NULL, McsWriteCback);
     SvcMcsAddGroup();

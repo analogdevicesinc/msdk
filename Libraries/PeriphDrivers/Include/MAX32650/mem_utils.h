@@ -45,12 +45,10 @@
  * @defgroup    mem_utils Memory Utility Functions 
  * @ingroup     devicelibs 
  * @{
- */ 
+ */
 /* **** Definitions **** */
 
-
 /* **** Global Data **** */
-
 
 /* **** Function Prototypes **** */
 
@@ -63,9 +61,7 @@
  * @note       This function assumes the destination and source are 32-bit
  *             word aligned. A minimum of 1 word is copied (len = 4).
  */
-void memcpy32(uint32_t * dst, uint32_t * src, unsigned int len);
-
-
+void memcpy32(uint32_t* dst, uint32_t* src, unsigned int len);
 
 /**
  *
@@ -101,9 +97,8 @@ void memcpy32(uint32_t * dst, uint32_t * src, unsigned int len);
  * @retval     #E_NO_ERROR Contents of @c src and @c dst are equal
  * @retval     #E_INVALID Memory is not equal
  */
-int memcmp32(uint32_t * dst, uint32_t * src, unsigned int len);
+int memcmp32(uint32_t* dst, uint32_t* src, unsigned int len);
 
 /**@} end of group mem_utils */
 
 #endif /* _MEM_UTILS_H_ */
-

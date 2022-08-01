@@ -45,11 +45,11 @@
 
 int MXC_DMA_Init(void)
 {
-    if(!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
+    if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA);
     }
-    
+
     return MXC_DMA_RevA_Init();
 }
 
@@ -153,7 +153,8 @@ int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callbac
     return MXC_DMA_RevA_MemCpy(dest, src, len, callback);
 }
 
-int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
+int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
+                       mxc_dma_trans_chain_t callback)
 {
     return MXC_DMA_RevA_DoTransfer(config, firstSrcDst, callback);
 }

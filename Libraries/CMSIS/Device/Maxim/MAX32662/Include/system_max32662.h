@@ -3,7 +3,6 @@
  * @brief   System-specific header file
  */
 
-
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -52,53 +51,53 @@ extern "C" {
 
 /* NOTE: EXTCLK needs to be defined by user based on the clock they supply */
 #ifndef EXTCLK_FREQ
-#define EXTCLK_FREQ               75000000
+#define EXTCLK_FREQ 75000000
 #endif
 
 /* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: INRO was previously named NANORING */
 #ifndef INRO_FREQ
-#define INRO_FREQ                 8000
+#define INRO_FREQ 8000
 #endif
 
 #ifndef IPO_FREQ
-#define IPO_FREQ                  100000000
+#define IPO_FREQ 100000000
 #endif
 
 #ifndef ERFO_FREQ
-#define ERFO_FREQ                 24576000
+#define ERFO_FREQ 24576000
 #endif
 
 #ifndef IBRO_FREQ
-#define IBRO_FREQ                 7372800
+#define IBRO_FREQ 7372800
 #endif
 
 #ifndef ERTCO_FREQ
-#define ERTCO_FREQ                32768
+#define ERTCO_FREQ 32768
 #endif
-  
+
 #ifndef HIRC_FREQ
-#define HIRC_FREQ                 IPO_FREQ
+#define HIRC_FREQ IPO_FREQ
 #endif
 
 #ifndef HFX_FREQ
-#define HFX_FREQ                  32768
+#define HFX_FREQ 32768
 #endif
 
 /* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 #ifndef NANORING_FREQ
-#define NANORING_FREQ             8000
+#define NANORING_FREQ 8000
 #endif
 
 #ifndef HIRC96_FREQ
-#define HIRC96_FREQ               96000000
+#define HIRC96_FREQ 96000000
 #endif
 
-extern uint32_t SystemCoreClock;    /*!< System Clock Frequency (Core Clock)  */
+extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
-#define PeripheralClock           (SystemCoreClock / 2)    /*!< Peripheral Clock Frequency */
+#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
 #endif
 
 /*

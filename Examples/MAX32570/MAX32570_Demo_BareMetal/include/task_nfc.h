@@ -36,12 +36,10 @@
 #ifndef _TASK_NFC_H_
 #define _TASK_NFC_H_
 
-
 /*****************************     DEFINES    *********************************/
 
 /*****************************     FUNCTIONS *********************************/
-int  nfc_init(void);
-int  nfc_tick(char *msg, int *msg_len);
-
+int nfc_init(void);
+int nfc_tick(char* msg, int* msg_len);
 
 #endif /* _TASK_NFC_H_ */
