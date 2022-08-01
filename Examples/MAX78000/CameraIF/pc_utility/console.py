@@ -17,6 +17,7 @@ import re
 from imgConverter import convert
 import argparse
 import cv2
+from rich import print
 
 class CameraIFConsole():
     def __init__(self, port, baudrate=921600, timeout=5):
