@@ -75,7 +75,6 @@ typedef enum {
     MXC_SYS_RESET1_CRC       = (MXC_F_GCR_RST1_CRC_POS + 32),      /**< Reset CRC */
     MXC_SYS_RESET1_I2C2      = (MXC_F_GCR_RST1_I2C2_POS + 32),     /**< Reset I2C2*/
     MXC_SYS_RESET1_I2S       = (MXC_F_GCR_RST1_I2S_POS + 32),      /**< Reset I2S*/
-    MXC_SYS_RESET1_ABB       = (MXC_F_GCR_RST1_ABB_POS + 32),      /**< Reset ABB*/
     /* LPGCR RESET Below this line we add 64 to separate LPGCR and GCR */
     MXC_SYS_RESET_TMR4       = (MXC_F_MCR_RST_LPTMR0_POS + 64),    /**< Reset TMR4 */
     MXC_SYS_RESET_TMR5       = (MXC_F_MCR_RST_LPTMR1_POS + 64),    /**< Reset TMR5 */
@@ -132,10 +131,6 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_I2C2_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2C2 clock */
     MXC_SYS_PERIPH_CLOCK_I2S = 
         (MXC_F_GCR_PCLKDIS1_I2S_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2S clock */
-    MXC_SYS_PERIPH_CLOCK_ABB = 
-        (MXC_F_GCR_PCLKDIS1_ABB_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_ABB clock */
-    MXC_SYS_PERIPH_CLOCK_ABBX032 = 
-        (MXC_F_GCR_PCLKDIS1_ABBXO32_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_ABBXO32 clock */
     /* LPGCR PCLKDIS Below this line we add 64 to seperate GCR and LPGCR registers */
     MXC_SYS_PERIPH_CLOCK_TMR4 = 
         (MXC_F_MCR_CLKDIS_LPTMR0_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */

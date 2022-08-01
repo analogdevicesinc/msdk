@@ -964,12 +964,6 @@
             <bitOffset>23</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="I2C1">
-            <name>ABB</name>
-            <description>ABB Reset.</description>
-            <bitOffset>24</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
@@ -1041,18 +1035,6 @@
             <name>I2S</name>
             <description>I2S Clock Disable.</description>
             <bitOffset>23</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
-            <name>ABB</name>
-            <description>ABB Clock Disable.</description>
-            <bitOffset>24</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
-            <name>ABBXO32</name>
-            <description>ABB data path clock Disable.</description>
-            <bitOffset>25</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
