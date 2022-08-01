@@ -223,8 +223,8 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t* tmr, unsigned long us)
         ticks >>= 1;
         ++clk_shift;
     }
-    
-    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t) clk_shift << MXC_F_TMR_REVA_CN_PRES_POS;
+
+    mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)clk_shift << MXC_F_TMR_REVA_CN_PRES_POS;
 
 #if TARGET_NUM == 32570
     mxc_tmr_cfg_t cfg = {0, 0, 0, 0, NULL};
