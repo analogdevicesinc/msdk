@@ -10,9 +10,10 @@ jobs:
   clang-format-run:
 
     # Do not run on main branch
-    if: github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/main' || github.repository != 'Analog-Devices-MSDK/msdk'
     runs-on:
       - self-hosted
+      - software
 
     steps:
       - uses: actions/checkout@v3
