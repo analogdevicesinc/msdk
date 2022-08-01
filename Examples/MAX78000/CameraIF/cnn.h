@@ -36,3 +36,64 @@ int cnn_init(void)
 
   return 1;
 }
+
+static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
+    int val = (int)ptr;
+    if (val != 0x5041FFFC && val != 0x5081FFFC && val != 0x50C1FFFC && val != 0x5101FFFC ) {
+        return ptr + 1;
+    }
+    else if (val == 0x5041FFFC) { // Quadrant 0 end
+        return (uint32_t*)0x50800000; // Quadrant 1 start
+    }
+    else if (val == 0x5081FFFC) { // Quadrant 1 end
+        return (uint32_t*)0x50C00000; // Quadrant 2 start
+    }
+    else if (val == 0x50C1FFFC) { // Quadrant 2 end
+        return (uint32_t*)0x51000000; // Quadrant 3 start
+    }
+    else if (val >= 0x5101FFFC) { // Quadrant 3 end
+        return NULL; // End of CNN SRAM, return NULL
+    }
+    else {
+        return NULL;
+    }
+}
+
+union bytes_to_word {
+    uint8_t* b;
+    uint32_t* word;
+};
+
+static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_t* addr) {
+    int i = 0;
+    union bytes_to_word u;
+
+    while (i < len) {
+      u.b = &bytes[i];
+      // *addr = bytes[i] | (bytes[i+1] << 8) | (bytes[i+2] << 16) | (bytes[i+3] << 24);
+      *addr = *u.word;
+      // ^ Casting through the union will reverse the bytes.  ARM core has a dedicated
+      // bytes reversal instruction we can leverage here.
+      i += 4;
+      addr = increment_cnn_sram_ptr(addr);
+    }
+
+    return addr;
+}
+
+static inline uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, uint32_t* addr) {
+    int i = 0;
+    uint32_t word = *addr;
+
+    while (i < len) {
+        out_bytes[i] = word & 0xFF;
+        out_bytes[i+1] = (word >> 8) & 0xFF;
+        out_bytes[i+2] = (word >> 16) & 0xFF;
+        out_bytes[i+3] = (word >> 24) & 0xFF;
+        addr = increment_cnn_sram_ptr(addr);
+        word = *addr;
+        i+=4;
+    }
+
+    return addr;
+}
