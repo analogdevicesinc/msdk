@@ -9,8 +9,11 @@ jobs:
 
   clang-format-run:
 
-    # Do not run on main branch
-    if: github.ref != 'refs/heads/main' || github.repository != 'Analog-Devices-MSDK/msdk'
+    # Do not run on Analog-Devices-MSDK/msdk:main branch
+    if: |
+      !(github.ref == 'refs/heads/main' &&
+      github.repository == 'Analog-Devices-MSDK/msdk')
+
     runs-on:
       - self-hosted
       - software
@@ -29,27 +32,7 @@ jobs:
       - name: clang-format-run
         run: |
 
-          # Remove the submodules
-          git submodule deinit --force --all
-
-          # Reformat all of the c files
-          CFILES=$(find . -iname "*.c")
-          for cFile in ${CFILES}
-          do
-            clang-format --verbose -style=file -i ${cFile}
-          done
-          
-          # Reformat all of the header files
-          HFILES=$(find . -iname "*.h" -not -name "*regs*")
-          for hFile in ${HFILES}
-          do
-            clang-format --verbose -style=file -i ${hFile}
-          done
-
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
+          bash -ex .github/workflows/clang-format-run.sh
 
       - name: Push reformatted files
         uses: EndBug/add-and-commit@v9.0.1
