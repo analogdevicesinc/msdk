@@ -393,7 +393,7 @@ int MXC_ADC_Convert(mxc_adc_conversion_req_t* req);
  *
  * @return     return E_NO_ERROR OR E_BUSY
  */
-int MXC_ADC_ConvertAsync (mxc_adc_conversion_req_t* req);
+int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t* req);
 
 /**
  * @brief   Monitor a specific channel for an out of range event

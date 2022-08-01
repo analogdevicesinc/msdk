@@ -543,10 +543,10 @@ int MXC_ADC_RevA_Convert(mxc_adc_reva_regs_t* adc, mxc_adc_conversion_req_t* req
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevA_ConvertAsync (mxc_adc_reva_regs_t* adc, mxc_adc_conversion_req_t* req)
+int MXC_ADC_RevA_ConvertAsync(mxc_adc_reva_regs_t* adc, mxc_adc_conversion_req_t* req)
 {
     //check lock
-    if (MXC_GetLock ((uint32_t*) &async_req, (uint32_t) req) != E_NO_ERROR) {
+    if (MXC_GetLock((uint32_t*)&async_req, (uint32_t)req) != E_NO_ERROR) {
         return E_BUSY;
     }
 
@@ -557,9 +557,9 @@ int MXC_ADC_RevA_ConvertAsync (mxc_adc_reva_regs_t* adc, mxc_adc_conversion_req_
     adc->ctrl &= ~(MXC_F_ADC_REVA_CTRL_CH_SEL);
     //set selction its to next channel to convert
     adc->ctrl |= (req->channel << MXC_F_ADC_REVA_CTRL_CH_SEL_POS) & MXC_F_ADC_REVA_CTRL_CH_SEL;
-    
+
     if (req->channel <= AIN7) {
-        MXC_ADC_RevA_SetExtScale (adc, req->scale);
+        MXC_ADC_RevA_SetExtScale(adc, req->scale);
     }
 
     //clear ADC done interrupt flag
