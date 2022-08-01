@@ -51,35 +51,34 @@
 int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 {
     int error;
-    mxc_gpio_regs_t *gpio = cfg->port;
+    mxc_gpio_regs_t* gpio = cfg->port;
 
     // Configure alternate function
-    error = MXC_GPIO_RevA_SetAF ((mxc_gpio_reva_regs_t*)gpio, cfg->func, cfg->mask);
-    
-    if(error != E_NO_ERROR) {
+    error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t*)gpio, cfg->func, cfg->mask);
+
+    if (error != E_NO_ERROR) {
         return error;
     }
 
     // Configure the pad
     switch (cfg->pad) {
-    case MXC_GPIO_PAD_NONE:
-    	gpio->padctrl0 &= ~cfg->mask;
-        break;
-        
-    case MXC_GPIO_PAD_PULL_UP:
-    	gpio->padctrl0 |=  cfg->mask;
-        gpio->ps |=  cfg->mask;
-        break;
-        
-    case MXC_GPIO_PAD_PULL_DOWN:
-    	gpio->padctrl0 |=  cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
-        
-    default:
-        return E_BAD_PARAM;
-    }
-    
-    return  E_NO_ERROR;
-}
+        case MXC_GPIO_PAD_NONE:
+            gpio->padctrl0 &= ~cfg->mask;
+            break;
 
+        case MXC_GPIO_PAD_PULL_UP:
+            gpio->padctrl0 |= cfg->mask;
+            gpio->ps |= cfg->mask;
+            break;
+
+        case MXC_GPIO_PAD_PULL_DOWN:
+            gpio->padctrl0 |= cfg->mask;
+            gpio->ps &= ~cfg->mask;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+    }
+
+    return E_NO_ERROR;
+}

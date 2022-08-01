@@ -55,18 +55,18 @@ void MXC_WUT_RevA_Init(mxc_wut_reva_regs_t* wut, mxc_wut_reva_pres_t pres)
 {
     // Disable timer and clear settings
     wut->ctrl = 0;
-    
+
     // Clear interrupt flag
     wut->intfl = MXC_F_WUT_REVA_INTFL_IRQ_CLR;
-    
+
     // Set the prescaler
     wut->ctrl |= pres;
-    
+
     // Initialize the compare register
     wut->cmp = 0xFFFFFFFF;
-    
+
     // Initialize the local variables
-    wut_count = 0;
+    wut_count    = 0;
     wut_snapshot = 0;
 }
 
@@ -93,10 +93,10 @@ void MXC_WUT_RevA_Config(mxc_wut_reva_regs_t* wut, const mxc_wut_reva_cfg_t* cfg
 {
     // Configure the timer
     wut->ctrl |= (wut->ctrl & ~(MXC_F_WUT_REVA_CTRL_TMODE | MXC_F_WUT_REVA_CTRL_TPOL)) |
-               ((cfg->mode << MXC_F_WUT_REVA_CTRL_TMODE_POS) & MXC_F_WUT_REVA_CTRL_TMODE);
-               
+                 ((cfg->mode << MXC_F_WUT_REVA_CTRL_TMODE_POS) & MXC_F_WUT_REVA_CTRL_TMODE);
+
     wut->cnt = 0x1;
-    
+
     wut->cmp = cfg->cmp_cnt;
 }
 
@@ -143,90 +143,93 @@ void MXC_WUT_RevA_SetCount(mxc_wut_reva_regs_t* wut, uint32_t cnt)
 }
 
 /* ************************************************************************* */
-int MXC_WUT_RevA_GetTicks(mxc_wut_reva_regs_t* wut, uint32_t timerClock, uint32_t time, mxc_wut_reva_unit_t units, uint32_t* ticks)
+int MXC_WUT_RevA_GetTicks(mxc_wut_reva_regs_t* wut, uint32_t timerClock, uint32_t time,
+                          mxc_wut_reva_unit_t units, uint32_t* ticks)
 {
     uint32_t unit_div0, unit_div1;
     uint32_t prescale;
     uint64_t temp_ticks;
-    
-    prescale = ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS)
-               | (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
-               
+
+    prescale = ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
+               (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
+
     switch (units) {
-    case MXC_WUT_REVA_UNIT_NANOSEC:
-        unit_div0 = 1000000;
-        unit_div1 = 1000;
-        break;
-        
-    case MXC_WUT_REVA_UNIT_MICROSEC:
-        unit_div0 = 1000;
-        unit_div1 = 1000;
-        break;
-        
-    case MXC_WUT_REVA_UNIT_MILLISEC:
-        unit_div0 = 1;
-        unit_div1 = 1000;
-        break;
-        
-    case MXC_WUT_REVA_UNIT_SEC:
-        unit_div0 = 1;
-        unit_div1 = 1;
-        break;
-        
-    default:
-        return E_BAD_PARAM;
+        case MXC_WUT_REVA_UNIT_NANOSEC:
+            unit_div0 = 1000000;
+            unit_div1 = 1000;
+            break;
+
+        case MXC_WUT_REVA_UNIT_MICROSEC:
+            unit_div0 = 1000;
+            unit_div1 = 1000;
+            break;
+
+        case MXC_WUT_REVA_UNIT_MILLISEC:
+            unit_div0 = 1;
+            unit_div1 = 1000;
+            break;
+
+        case MXC_WUT_REVA_UNIT_SEC:
+            unit_div0 = 1;
+            unit_div1 = 1;
+            break;
+
+        default:
+            return E_BAD_PARAM;
     }
-    
-    temp_ticks = (uint64_t) time * (timerClock / unit_div0) / (unit_div1 * (1 << (prescale & 0xF)));
-    
+
+    temp_ticks = (uint64_t)time * (timerClock / unit_div0) / (unit_div1 * (1 << (prescale & 0xF)));
+
     //make sure ticks is within a 32 bit value
-    if (!(temp_ticks & 0xffffffff00000000)  && (temp_ticks & 0xffffffff)) {
+    if (!(temp_ticks & 0xffffffff00000000) && (temp_ticks & 0xffffffff)) {
         *ticks = temp_ticks;
         return E_NO_ERROR;
     }
-    
+
     return E_INVALID;
 }
 
 /* ************************************************************************* */
-int MXC_WUT_RevA_GetTime(mxc_wut_reva_regs_t* wut, uint32_t timerClock, uint32_t ticks, uint32_t* time, mxc_wut_reva_unit_t* units)
+int MXC_WUT_RevA_GetTime(mxc_wut_reva_regs_t* wut, uint32_t timerClock, uint32_t ticks,
+                         uint32_t* time, mxc_wut_reva_unit_t* units)
 {
     uint64_t temp_time = 0;
-    uint32_t prescale = ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS)
-                        | (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
-                        
-    temp_time = (uint64_t) ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
-    
+    uint32_t prescale =
+        ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS) |
+        (((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES3) >> (MXC_F_WUT_REVA_CTRL_PRES3_POS)) << 3);
+
+    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
+
     if (!(temp_time & 0xffffffff00000000)) {
-        *time = temp_time;
+        *time  = temp_time;
         *units = MXC_WUT_REVA_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
-    
-    temp_time = (uint64_t) ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
-    
+
+    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
+
     if (!(temp_time & 0xffffffff00000000)) {
-        *time = temp_time;
+        *time  = temp_time;
         *units = MXC_WUT_REVA_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
-    
-    temp_time = (uint64_t) ticks * 1000 * (1 << (prescale & 0xF)) / timerClock;
-    
+
+    temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / timerClock;
+
     if (!(temp_time & 0xffffffff00000000)) {
-        *time = temp_time;
+        *time  = temp_time;
         *units = MXC_WUT_REVA_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
-    
-    temp_time = (uint64_t) ticks * (1 << (prescale & 0xF)) / timerClock;
-    
+
+    temp_time = (uint64_t)ticks * (1 << (prescale & 0xF)) / timerClock;
+
     if (!(temp_time & 0xffffffff00000000)) {
-        *time = temp_time;
+        *time  = temp_time;
         *units = MXC_WUT_REVA_UNIT_SEC;
         return E_NO_ERROR;
     }
-    
+
     return E_INVALID;
 }
 
@@ -235,8 +238,9 @@ void MXC_WUT_RevA_Edge(mxc_wut_reva_regs_t* wut)
 {
     // Wait for a WUT edge
     uint32_t tmp = wut->cnt;
-    
-    while (tmp == wut->cnt) {}
+
+    while (tmp == wut->cnt) {
+    }
 }
 
 /* ************************************************************************** */
@@ -249,7 +253,7 @@ uint32_t MXC_WUT_RevA_GetSleepTicks(mxc_wut_reva_regs_t* wut)
 void MXC_WUT_RevA_Store(mxc_wut_reva_regs_t* wut)
 {
     MXC_WUT_RevA_Edge(wut);
-    wut_count = wut->cnt;
+    wut_count    = wut->cnt;
     wut_snapshot = wut->snapshot;
 }
 
@@ -258,9 +262,8 @@ void MXC_WUT_RevA_RestoreBBClock(mxc_wut_reva_regs_t* wut, uint32_t dbbFreq, uin
 {
     /* restore DBB clock from WUT */
     MXC_WUT_RevA_Edge(wut);
-    wut->preset = wut_snapshot + (uint64_t)(wut->cnt - wut_count + 1)
-                  * dbbFreq / timerClock;
-    wut->reload = 1;  // arm DBB_CNT update on the next rising WUT clock
+    wut->preset = wut_snapshot + (uint64_t)(wut->cnt - wut_count + 1) * dbbFreq / timerClock;
+    wut->reload = 1; // arm DBB_CNT update on the next rising WUT clock
     MXC_WUT_RevA_Edge(wut);
 }
 
@@ -268,11 +271,13 @@ void MXC_WUT_RevA_RestoreBBClock(mxc_wut_reva_regs_t* wut, uint32_t dbbFreq, uin
 void MXC_WUT_RevA_Delay_MS(mxc_wut_reva_regs_t* wut, uint32_t waitMs, uint32_t timerClock)
 {
     /* assume WUT is already running */
-    uint32_t  tmp = wut->cnt;
-    
-    tmp += (waitMs * (timerClock /
-           (0x1 << ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >> MXC_F_WUT_REVA_CTRL_PRES_POS)))
-            + 500) / 1000 ;
-            
-    while (wut->cnt < tmp) {}
+    uint32_t tmp = wut->cnt;
+
+    tmp += (waitMs * (timerClock / (0x1 << ((wut->ctrl & MXC_F_WUT_REVA_CTRL_PRES) >>
+                                            MXC_F_WUT_REVA_CTRL_PRES_POS))) +
+            500) /
+           1000;
+
+    while (wut->cnt < tmp) {
+    }
 }

@@ -124,7 +124,7 @@ extern "C" {
 
   Returns 0 on success, negative if error.
 */
-int adxl343_get_axis_data(int16_t *ptr);
+int adxl343_get_axis_data(int16_t* ptr);
 
 /*
   Set data output rate.
@@ -199,7 +199,7 @@ int adxl343_set_int_map(uint8_t map);
 
   Returns 0 on success, negative if error.
 */
-int adxl343_get_int_source(uint8_t *srcs);
+int adxl343_get_int_source(uint8_t* srcs);
 
 /*
   Set X, Y and Z axis offsets.
@@ -209,7 +209,7 @@ int adxl343_get_int_source(uint8_t *srcs);
 
   Returns 0 on success, negative if error.
 */
-int adxl343_set_offsets(const int8_t *offs);
+int adxl343_set_offsets(const int8_t* offs);
 
 /*
   Initialize device.
@@ -218,7 +218,7 @@ int adxl343_set_offsets(const int8_t *offs);
 
   Returns 0 on success, negative if error.
 */
-int adxl343_init(mxc_i2c_regs_t *i2c_inst);
+int adxl343_init(mxc_i2c_regs_t* i2c_inst);
 
 #ifdef __cplusplus
 }

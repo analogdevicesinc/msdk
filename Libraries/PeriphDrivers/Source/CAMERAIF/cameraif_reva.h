@@ -31,7 +31,6 @@
 *
 ******************************************************************************/
 
-
 /****** Includes *******/
 #include <stdint.h>
 #include "cameraif_reva_regs.h"
@@ -43,9 +42,9 @@
  *
  */
 typedef enum {
-    MXC_PCIF_REVA_DATAWITH_8_BIT = 0,      ///<
-    MXC_PCIF_REVA_DATAWITH_10_BIT,         ///<
-    MXC_PCIF_REVA_DATAWITH_12_BIT,         ///<
+    MXC_PCIF_REVA_DATAWITH_8_BIT = 0, ///<
+    MXC_PCIF_REVA_DATAWITH_10_BIT,    ///<
+    MXC_PCIF_REVA_DATAWITH_12_BIT,    ///<
 } mxc_pcif_reva_datawith_t;
 
 /**
@@ -53,8 +52,8 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_PCIF_REVA_READMODE_SINGLE_MODE = 1,      ///<
-    MXC_PCIF_REVA_READMODE_CONTINUES_MODE,       ///<
+    MXC_PCIF_REVA_READMODE_SINGLE_MODE = 1, ///<
+    MXC_PCIF_REVA_READMODE_CONTINUES_MODE,  ///<
 } mxc_pcif_reva_readmode_t;
 
 /**
@@ -62,19 +61,21 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_PCIF_REVA_TIMINGSEL_HSYNC_and_VSYNC = 0,     ///<
-    MXC_PCIF_REVA_TIMINGSEL_SAV_and_EAV,             ///<
+    MXC_PCIF_REVA_TIMINGSEL_HSYNC_and_VSYNC = 0, ///<
+    MXC_PCIF_REVA_TIMINGSEL_SAV_and_EAV,         ///<
 } mxc_pcif_reva_timingsel_t;
 
 /******* Globals *******/
 
 /****** Functions ******/
-int MXC_PCIF_RevA_Init (void);
-void MXC_PCIF_RevA_SetDatawidth (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_datawith_t  datawith);
-void MXC_PCIF_RevA_SetTimingSel (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_timingsel_t timingsel);
-void MXC_PCIF_RevA_SetThreshold (mxc_cameraif_reva_regs_t *cameraif, int fifo_thrsh);
-void MXC_PCIF_RevA_EnableInt (mxc_cameraif_reva_regs_t *cameraif, uint32_t flags);
-void MXC_PCIF_RevA_DisableInt (mxc_cameraif_reva_regs_t *cameraif, uint32_t flags);
-void MXC_PCIF_RevA_Start (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_readmode_t  readmode);
-void MXC_PCIF_RevA_Stop (mxc_cameraif_reva_regs_t *cameraif);
-unsigned int MXC_PCIF_RevA_GetData (mxc_cameraif_reva_regs_t *cameraif);
+int MXC_PCIF_RevA_Init(void);
+void MXC_PCIF_RevA_SetDatawidth(mxc_cameraif_reva_regs_t* cameraif,
+                                mxc_pcif_reva_datawith_t datawith);
+void MXC_PCIF_RevA_SetTimingSel(mxc_cameraif_reva_regs_t* cameraif,
+                                mxc_pcif_reva_timingsel_t timingsel);
+void MXC_PCIF_RevA_SetThreshold(mxc_cameraif_reva_regs_t* cameraif, int fifo_thrsh);
+void MXC_PCIF_RevA_EnableInt(mxc_cameraif_reva_regs_t* cameraif, uint32_t flags);
+void MXC_PCIF_RevA_DisableInt(mxc_cameraif_reva_regs_t* cameraif, uint32_t flags);
+void MXC_PCIF_RevA_Start(mxc_cameraif_reva_regs_t* cameraif, mxc_pcif_reva_readmode_t readmode);
+void MXC_PCIF_RevA_Stop(mxc_cameraif_reva_regs_t* cameraif);
+unsigned int MXC_PCIF_RevA_GetData(mxc_cameraif_reva_regs_t* cameraif);

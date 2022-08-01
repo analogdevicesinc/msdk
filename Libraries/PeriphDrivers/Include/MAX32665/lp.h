@@ -61,31 +61,27 @@ extern "C" {
  */
 
 typedef enum {
-	MXC_RETAIN_NONE= MXC_S_PWRSEQ_LPCN_RAMRET_DIS,
-	MXC_RETAIN_32k = MXC_S_PWRSEQ_LPCN_RAMRET_EN1,
-	MXC_RETAIN_64k = MXC_S_PWRSEQ_LPCN_RAMRET_EN2,
-	MXC_RETAIN_ALL = MXC_S_PWRSEQ_LPCN_RAMRET_EN3
+    MXC_RETAIN_NONE = MXC_S_PWRSEQ_LPCN_RAMRET_DIS,
+    MXC_RETAIN_32k  = MXC_S_PWRSEQ_LPCN_RAMRET_EN1,
+    MXC_RETAIN_64k  = MXC_S_PWRSEQ_LPCN_RAMRET_EN2,
+    MXC_RETAIN_ALL  = MXC_S_PWRSEQ_LPCN_RAMRET_EN3
 } mxc_ram_retained_t;
 
 /**
  * @brief   Enumeration type for voltage selection
  *
  */
-typedef enum {
-    MXC_LP_V0_9 = 0,
-    MXC_LP_V1_0,
-    MXC_LP_V1_1
-} mxc_lp_ovr_t;
+typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
 
 /**
  * @brief   Enumeration type for PM Mode
  *
  */
 typedef enum {
-    MXC_LP_HIRC = MXC_F_GCR_PM_HIRCPD,
+    MXC_LP_HIRC    = MXC_F_GCR_PM_HIRCPD,
     MXC_LP_HIRC96M = MXC_F_GCR_PM_HIRC96MPD,
-    MXC_LP_HIRC8M = MXC_F_GCR_PM_HIRC8MPD,
-    MXC_LP_XTAL = MXC_F_GCR_PM_XTALPB,
+    MXC_LP_HIRC8M  = MXC_F_GCR_PM_HIRC8MPD,
+    MXC_LP_XTAL    = MXC_F_GCR_PM_XTALPB,
 } mxc_lp_cfg_ds_pd_t;
 
 /**
@@ -100,7 +96,7 @@ void MXC_LP_ClearWakeStatus(void);
  * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.  
@@ -108,7 +104,7 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.  
@@ -123,12 +119,12 @@ void MXC_LP_DisableRTCAlarmWakeup(void);
 /**
  * @brief      Enables the WUT alarm to wake up the device from any low power mode.
  */
-void MXC_LP_EnableWUTAlarmWakeup (void);
+void MXC_LP_EnableWUTAlarmWakeup(void);
 
 /**
  * @brief      Disables the WUT alarm from waking up the device.
  */
-void MXC_LP_DisableWUTAlarmWakeup (void);
+void MXC_LP_DisableWUTAlarmWakeup(void);
 
 /**
  * @brief Puts System Ram 0 in light sleep
@@ -414,41 +410,41 @@ void MXC_LP_EnterShutDownMode(void);
  *
  * @param[in]  ovr   The ovr options are only 0.9V, 1.0V, and 1.1V use enum mxc_lp_ovr_t
  */
-void MXC_LP_SetOVR (mxc_lp_ovr_t ovr);
+void MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
 
 /**
  * @brief      Turn bandgap on
  */
-void MXC_LP_BandgapOn (void);
+void MXC_LP_BandgapOn(void);
 
 /**
  * @brief      Turn bandgap off
  */
-void MXC_LP_BandgapOff (void);
+void MXC_LP_BandgapOff(void);
 
 /**
  * @brief      Is the bandgap on or off
  *
  * @return     1 = bandgap on , 0 = bandgap off
  */
-int MXC_LP_BandgapIsOn (void);
+int MXC_LP_BandgapIsOn(void);
 
 /**
  * @brief      Is Fast wake up is Enabled
  *
  * @return     1 = enabled , 0 = disabled
  */
-int  MXC_LP_FastWakeupIsEnabled (void);
+int MXC_LP_FastWakeupIsEnabled(void);
 
 /**
  * @brief      Enables the USB to wake up the device from any low power mode.
  */
-void MXC_LP_EnableUSBWakeup (void);
+void MXC_LP_EnableUSBWakeup(void);
 
 /**
  * @brief      Disables the USB from waking up the device.
  */
-void MXC_LP_DisableUSBWakeup (void);
+void MXC_LP_DisableUSBWakeup(void);
 
 /**
  * @brief      Configure which clocks are powered down at deep sleep and which are not affected.
@@ -460,127 +456,127 @@ void MXC_LP_DisableUSBWakeup (void);
  *
  * @return     #E_NO_ERROR or error based on \ref MXC_Error_Codes
  */
-int MXC_LP_ConfigDeepSleepClocks (uint32_t mask);
+int MXC_LP_ConfigDeepSleepClocks(uint32_t mask);
 
 /**
  * @brief Disable Icache 0 in light sleep
  */
-void MXC_LP_ICache0LightSleepDisable (void);
+void MXC_LP_ICache0LightSleepDisable(void);
 
 /**
  * @brief Disable Icache 1 in light sleep
  */
-void MXC_LP_ICache1LightSleepDisable (void);
+void MXC_LP_ICache1LightSleepDisable(void);
 
 /**
  * @brief Disable Icache XIP in light sleep
  */
-void MXC_LP_ICacheXIPLightSleepDisable (void);
+void MXC_LP_ICacheXIPLightSleepDisable(void);
 
 /**
  * @brief Enable System Cache in light sleep
  */
-void MXC_LP_SRCCLightSleepEnable (void);
+void MXC_LP_SRCCLightSleepEnable(void);
 
 /**
  * @brief Enable Crypto in light sleep
  */
-void MXC_LP_CryptoLightSleepEnable (void);
+void MXC_LP_CryptoLightSleepEnable(void);
 
 /**
  * @brief Enable USB in light sleep
  */
-void MXC_LP_USBFIFOLightSleepEnable (void);
+void MXC_LP_USBFIFOLightSleepEnable(void);
 
 /**
  * @brief Enable ROM 0 in light sleep
  */
-void MXC_LP_ROM0LightSleepEnable (void);
+void MXC_LP_ROM0LightSleepEnable(void);
 
 /**
  * @brief Enable ROM 0 in light sleep
  */
-void MXC_LP_ROM1LightSleepEnable (void);
+void MXC_LP_ROM1LightSleepEnable(void);
 
 /**
  * @brief Disable System Ram 0 in light sleep
  */
-void MXC_LP_SysRam0LightSleepDisable (void);
+void MXC_LP_SysRam0LightSleepDisable(void);
 
 /**
  * @brief Disable System Ram 1 in light sleep
  */
-void MXC_LP_SysRam1LightSleepDisable (void);
+void MXC_LP_SysRam1LightSleepDisable(void);
 
 /**
  * @brief Disable System Ram 2 in light sleep
  */
-void MXC_LP_SysRam2LightSleepDisable (void);
+void MXC_LP_SysRam2LightSleepDisable(void);
 
 /**
  * @brief Disable System Ram 3 in light sleep
  */
-void MXC_LP_SysRam3LightSleepDisable (void);
+void MXC_LP_SysRam3LightSleepDisable(void);
 
 /**
  * @brief Disable System Ram 4 in light sleep
  */
-void MXC_LP_SysRam4LightSleepDisable (void);
+void MXC_LP_SysRam4LightSleepDisable(void);
 
 /**
  * @brief Disable System Ram 5 in light sleep
  */
-void MXC_LP_SysRam5LightSleepDisable (void);
+void MXC_LP_SysRam5LightSleepDisable(void);
 
 /**
  * @brief Disable System Cache in light sleep
  */
-void MXC_LP_SRCCLightSleepDisable (void);
+void MXC_LP_SRCCLightSleepDisable(void);
 
 /**
  * @brief Disable Crypto in light sleep
  */
-void MXC_LP_CryptoLightSleepDisable (void);
+void MXC_LP_CryptoLightSleepDisable(void);
 
 /**
  * @brief Disable USB in light sleep
  */
-void MXC_LP_USBFIFOLightSleepDisable (void);
+void MXC_LP_USBFIFOLightSleepDisable(void);
 
 /**
  * @brief Disable ROM 0 in light sleep
  */
-void MXC_LP_ROM0LightSleepDisable (void);
+void MXC_LP_ROM0LightSleepDisable(void);
 
 /**
  * @brief Disable ROM 1 in light sleep
  */
-void MXC_LP_ROM1LightSleepDisable (void);
+void MXC_LP_ROM1LightSleepDisable(void);
 
 /**
  * @brief Shutdown SRCC
  */
-void MXC_LP_SRCCShutdown (void);
+void MXC_LP_SRCCShutdown(void);
 
 /**
  * @brief PowerUp SRCC
  */
-void MXC_LP_SRCCPowerUp (void);
+void MXC_LP_SRCCPowerUp(void);
 
 /**
  * @brief Enable Icache XIP in light sleep
  */
-void MXC_LP_ICacheXIPLightSleepEnable (void);
+void MXC_LP_ICacheXIPLightSleepEnable(void);
 
 /**
  * @brief Enable Icache 0 in light sleep
  */
-void MXC_LP_ICache0LightSleepEnable (void);
+void MXC_LP_ICache0LightSleepEnable(void);
 
 /**
  * @brief Enable Icache 0 in light sleep
  */
-void MXC_LP_ICache1LightSleepEnable (void);
+void MXC_LP_ICache1LightSleepEnable(void);
 
 #ifdef __cplusplus
 }

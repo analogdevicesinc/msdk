@@ -31,7 +31,7 @@ extern "C" {
  * @retval #UCL_INVALID_OUTPUT One of the output is the pointer NULL
  *
  * @ingroup UCL_CMAC_3DES */
-int  ucl_3des_subkey_generation(u8 *k1, u8 *k2,u8 *key, u32 keylen);
+int ucl_3des_subkey_generation(u8* k1, u8* k2, u8* key, u32 keylen);
 
 /** <b>3DES-CMAC</b>.
  * 3DES CMAC tag computation
@@ -54,7 +54,7 @@ int  ucl_3des_subkey_generation(u8 *k1, u8 *k2,u8 *key, u32 keylen);
  * tlen is expressed in number of bytes
  * len is expressed in number of bytes
  * @ingroup UCL_CMAC_3DES */
-int  ucl_3des_cmac_compute(u8 *t,int tlen, u8 *src, u32 len, u8 *key, u32 keylen);
+int ucl_3des_cmac_compute(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen);
 
 /** <b>3DES-CMAC</b>.
  * 3DES CMAC tag verification
@@ -76,7 +76,7 @@ int  ucl_3des_cmac_compute(u8 *t,int tlen, u8 *src, u32 len, u8 *key, u32 keylen
  * tlen is expressed in number of bytes
  * len is expressed in number of bytes
  * @ingroup UCL_CMAC_3DES */
-int  ucl_3des_cmac_verify(u8 *t,int tlen, u8 *src, u32 len, u8 *key, u32 keylen);
+int ucl_3des_cmac_verify(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

@@ -46,7 +46,6 @@ extern "C" {
  * @ingroup UCL_ECB
  */
 
-
 /*============================================================================*/
 /** <b>3DES-ECB</b>.
  * Complete process.
@@ -75,9 +74,7 @@ extern "C" {
  *
  * @ingroup UCL_3DES_ECB
  */
-int ucl_3des_ecb(u8 *dataOut, u8 *dataIn, u8 *key, u32 data_byteLen,
-                 int mode);
-
+int ucl_3des_ecb(u8* dataOut, u8* dataIn, u8* key, u32 data_byteLen, int mode);
 
 /*============================================================================*/
 /** <b>3DES-ECB Init</b>.
@@ -100,8 +97,7 @@ int ucl_3des_ecb(u8 *dataOut, u8 *dataIn, u8 *key, u32 data_byteLen,
  *
  * @ingroup UCL_3DES_ECB
  */
-int ucl_3des_ecb_init(ucl_3des_ctx_t *ctx, u8 *key, int mode);
-
+int ucl_3des_ecb_init(ucl_3des_ctx_t* ctx, u8* key, int mode);
 
 /*============================================================================*/
 /** <b>3DES-ECB Core</b>.
@@ -124,9 +120,7 @@ int ucl_3des_ecb_init(ucl_3des_ctx_t *ctx, u8 *key, int mode);
  *
  * @ingroup UCL_3DES_ECB
  */
-int ucl_3des_ecb_core(u8 *dataOut, ucl_3des_ctx_t *ctx,
-                      u8 *dataIn, u32 data_byteLen);
-
+int ucl_3des_ecb_core(u8* dataOut, ucl_3des_ctx_t* ctx, u8* dataIn, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>3DES-ECB Finish</b>.
@@ -141,7 +135,7 @@ int ucl_3des_ecb_core(u8 *dataOut, ucl_3des_ctx_t *ctx,
  *
  * @ingroup UCL_3DES_ECB
  */
-int ucl_3des_ecb_finish(ucl_3des_ctx_t *ctx);
+int ucl_3des_ecb_finish(ucl_3des_ctx_t* ctx);
 
 #ifdef __cplusplus
 }

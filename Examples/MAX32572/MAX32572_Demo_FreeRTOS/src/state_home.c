@@ -42,8 +42,8 @@
 
 /********************************* 		VARIABLES	 *************************/
 static text_t text_msg[] = {
-	{(char *)"MAX32572 - FreeRTOS Demo",24},
-	{(char *)"Select an activity", 18},
+    {(char*)"MAX32572 - FreeRTOS Demo", 24},
+    {(char*)"Select an activity", 18},
 };
 
 /********************************* Static Functions **************************/
@@ -52,82 +52,81 @@ static int init(void)
     TFT_SetPalette(integrated_only_small_bmp);
     TFT_SetBackGroundColor(0);
 
-    TFT_ShowImage(33, 	12, 	integrated_only_small_bmp);
-    TFT_ShowImage(7, 	72, 	smartcard_bmp);
-    TFT_ShowImage(113, 	72, 	magstripe_bmp);
-    TFT_ShowImage(219, 	72, 	keypad_bmp);
-    TFT_ShowImage(7, 	155, 	nfc_bmp);
-    TFT_ShowImage(113, 	155, 	slideshow_bmp);
-    TFT_ShowImage(219, 	155, 	information_bmp);
+    TFT_ShowImage(33, 12, integrated_only_small_bmp);
+    TFT_ShowImage(7, 72, smartcard_bmp);
+    TFT_ShowImage(113, 72, magstripe_bmp);
+    TFT_ShowImage(219, 72, keypad_bmp);
+    TFT_ShowImage(7, 155, nfc_bmp);
+    TFT_ShowImage(113, 155, slideshow_bmp);
+    TFT_ShowImage(219, 155, information_bmp);
 
     TFT_PrintFont(50, 12, urw_gothic_12_white_bg_grey, &text_msg[0], NULL); //MAX32572
     TFT_PrintFont(89, 40, urw_gothic_12_white_bg_grey, &text_msg[1], NULL); //Select an activity
 
-	MXC_TS_RemoveAllButton();
-	MXC_TS_AddButton(7, 	72, 	(  7 + 93), ( 72 + 70), 		'1');
-	MXC_TS_AddButton(113,	72, 	(113 + 93), ( 72 + 70), 		'2');
-	MXC_TS_AddButton(219,	72, 	(219 + 93), ( 72 + 70), 		'3');
-	MXC_TS_AddButton(6,		155, 	(  6 + 94), (155 + 70), 		'4');
-	MXC_TS_AddButton(113,	155, 	(113 + 93), (155 + 70), 		'5');
-	MXC_TS_AddButton(219,	155, 	(219 + 93), (155 + 70), 		'6');
+    MXC_TS_RemoveAllButton();
+    MXC_TS_AddButton(7, 72, (7 + 93), (72 + 70), '1');
+    MXC_TS_AddButton(113, 72, (113 + 93), (72 + 70), '2');
+    MXC_TS_AddButton(219, 72, (219 + 93), (72 + 70), '3');
+    MXC_TS_AddButton(6, 155, (6 + 94), (155 + 70), '4');
+    MXC_TS_AddButton(113, 155, (113 + 93), (155 + 70), '5');
+    MXC_TS_AddButton(219, 155, (219 + 93), (155 + 70), '6');
 
-	logo_animation_start();
+    logo_animation_start();
 
-	return 0;
+    return 0;
 }
 
 static int key_process(unsigned int key)
 {
-	switch(key) {
-		case KEY_0:
-			break;
-		case KEY_1:
-			state_set_current( get_smartcard_state() );
-			break;
-		case KEY_2:
-			state_set_current( get_msr_state() );
-			break;
-		case KEY_3:
-			state_set_current( get_keypad_state() );
-			break;
-		case KEY_4:
-			state_set_current( get_nfc_state() );
-			break;
-		case KEY_5:
-			state_set_current( get_slide_state() );
-			break;
-		case KEY_6:
-			state_set_current( get_info_state() );
-			break;
-		case KEY_7:
-			break;
-		case KEY_8:
-			break;
-		case KEY_9:
-			break;
-		case KEY_A:
-			break;
-		case KEY_B:
-			break;
-		case KEY_C:
-			break;
-		case KEY_D:
-			break;
-		case KEY_E:
-			break;
-		case KEY_F:
-			break;
-		default:
-			break;
-	}
-	return 0;
+    switch (key) {
+        case KEY_0:
+            break;
+        case KEY_1:
+            state_set_current(get_smartcard_state());
+            break;
+        case KEY_2:
+            state_set_current(get_msr_state());
+            break;
+        case KEY_3:
+            state_set_current(get_keypad_state());
+            break;
+        case KEY_4:
+            state_set_current(get_nfc_state());
+            break;
+        case KEY_5:
+            state_set_current(get_slide_state());
+            break;
+        case KEY_6:
+            state_set_current(get_info_state());
+            break;
+        case KEY_7:
+            break;
+        case KEY_8:
+            break;
+        case KEY_9:
+            break;
+        case KEY_A:
+            break;
+        case KEY_B:
+            break;
+        case KEY_C:
+            break;
+        case KEY_D:
+            break;
+        case KEY_E:
+            break;
+        case KEY_F:
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
-static State g_state = {"home", init, key_process, NULL, 0, NULL, NULL };
+static State g_state = {"home", init, key_process, NULL, 0, NULL, NULL};
 
 /********************************* Public Functions **************************/
-State *get_home_state(void)
+State* get_home_state(void)
 {
-	return &g_state;
+    return &g_state;
 }
-

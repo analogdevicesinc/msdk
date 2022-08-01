@@ -58,13 +58,13 @@ int main(void)
     int count = 0;
     printf("\n***********Hello World!***********\n");
     printf("\nLED1 on P1.6 toggles every 500 ms\n");
-    
+
     while (1) {
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
-        
+
         printf("\nCount = %d", count++);
     }
 }

@@ -38,32 +38,31 @@
 #include "state.h"
 #include "utils.h"
 
-
 /********************************* 		VARIABLES	 *************************/
-static State *g_state = NULL;
+static State* g_state = NULL;
 
 /********************************* Public Functions **************************/
 void state_init(void)
 {
-	MXC_TFT_SetBackGroundColor(0);
+    MXC_TFT_SetBackGroundColor(0);
     MXC_TFT_ShowImage(52, 87, maxim_integrated_large_bmp);
 
-    utils_delay_ms( 1000 ); // 1 second
+    utils_delay_ms(1000); // 1 second
 
-	state_set_current( get_home_state() );
+    state_set_current(get_home_state());
 }
 
-int state_set_current(State *state)
+int state_set_current(State* state)
 {
-	if (state != g_state) {
-		g_state = state;
-		g_state->init();
-	}
+    if (state != g_state) {
+        g_state = state;
+        g_state->init();
+    }
 
-	return 0;
+    return 0;
 }
 
-State *state_get_current(void)
+State* state_get_current(void)
 {
-	return g_state;
+    return g_state;
 }

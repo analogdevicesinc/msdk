@@ -43,12 +43,13 @@
 #include "lpcmp_regs.h"
 #include "lpcmp_reva.h"
 
-static int init = 0;
-static const mxc_lpcmp_ctrl_reg_t lpcmp_ctrl_regs[] = {&MXC_MCR->cmp_ctrl, &MXC_LPCMP->ctrl[0], &MXC_LPCMP->ctrl[1], &MXC_LPCMP->ctrl[2]};
+static int init                                     = 0;
+static const mxc_lpcmp_ctrl_reg_t lpcmp_ctrl_regs[] = {&MXC_MCR->cmp_ctrl, &MXC_LPCMP->ctrl[0],
+                                                       &MXC_LPCMP->ctrl[1], &MXC_LPCMP->ctrl[2]};
 
-static void initGPIOForComp(mxc_lpcmp_cmpsel_t cmp) 
+static void initGPIOForComp(mxc_lpcmp_cmpsel_t cmp)
 {
-    switch(cmp) {
+    switch (cmp) {
         case MXC_LPCMP_CMP0:
             MXC_GPIO_Config(&gpio_cfg_cmp0);
             break;
@@ -72,75 +73,75 @@ int MXC_LPCMP_Init(mxc_lpcmp_cmpsel_t cmp)
 
     initGPIOForComp(cmp);
 
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
-    
+
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_LPCOMP);
 
-    if((ret = MXC_LPCMP_RevA_Init(lpcmp_ctrl_regs[cmp])) == E_NO_ERROR) {
+    if ((ret = MXC_LPCMP_RevA_Init(lpcmp_ctrl_regs[cmp])) == E_NO_ERROR) {
         init++;
     }
-    
+
     return ret;
 }
 
 int MXC_LPCMP_Shutdown(mxc_lpcmp_cmpsel_t cmp)
 {
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
     init--;
-    if(init == 0) {
+    if (init == 0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_LPCOMP);
     }
-        
+
     return MXC_LPCMP_RevA_Shutdown(lpcmp_ctrl_regs[cmp]);
 }
 
 int MXC_LPCMP_EnableInt(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol)
 {
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 
     MXC_LPCMP_ClearFlags(cmp);
     MXC_LPCMP_SelectPolarity(cmp, pol);
-        
+
     return MXC_LPCMP_RevA_EnableInt(lpcmp_ctrl_regs[cmp]);
 }
 
 int MXC_LPCMP_DisableInt(mxc_lpcmp_cmpsel_t cmp)
 {
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
-    
+
     return MXC_LPCMP_RevA_DisableInt(lpcmp_ctrl_regs[cmp]);
 }
 
 int MXC_LPCMP_GetFlags(mxc_lpcmp_cmpsel_t cmp)
 {
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
-        
+
     return MXC_LPCMP_RevA_GetFlags(lpcmp_ctrl_regs[cmp]);
 }
 
 int MXC_LPCMP_ClearFlags(mxc_lpcmp_cmpsel_t cmp)
 {
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
-        
+
     return MXC_LPCMP_RevA_ClearFlags(lpcmp_ctrl_regs[cmp]);
 }
 
 int MXC_LPCMP_SelectPolarity(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol)
 {
-    if(cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
+    if (cmp < MXC_LPCMP_CMP0 || cmp > MXC_LPCMP_CMP3) {
         return E_BAD_PARAM;
     }
 

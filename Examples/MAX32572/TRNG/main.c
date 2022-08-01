@@ -43,13 +43,11 @@
 
 #include <MAX32xxx.h>
 
-
 volatile int wait;
 volatile int callback_result;
 
 /***** Globals *****/
 uint8_t var_rnd_no[16] = {0};
-
 
 void TRNG_IRQHandler(void)
 {
@@ -58,59 +56,56 @@ void TRNG_IRQHandler(void)
 
 void Test_Callback(void* req, int result)
 {
-    wait = 0;
+    wait            = 0;
     callback_result = result;
 }
 
 void print(char* stuff)
 {
     int i, j, size = 4;
-    
+
     for (i = 0; i < 4; ++i) {
         for (j = 0; j < 4; ++j) {
             printf("0x%02x ", stuff[i * size + j]);
         }
-        
+
         printf("\n");
     }
-    
+
     return;
 }
-
 
 void Test_TRNG(int asynchronous)
 {
     printf(asynchronous ? "\nTest TRNG Async\n" : "\nTest TRNG Sync\n");
-    
+
     int num_bytes = 16;
-    
+
     memset(var_rnd_no, 0, sizeof(var_rnd_no));
-    
+
     MXC_CTB_Init(MXC_CTB_FEATURE_TRNG);
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_TRNG_RandomAsync(var_rnd_no, num_bytes, &Test_Callback);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_TRNG_Random(var_rnd_no, num_bytes);
     }
-    
-    print((char*) var_rnd_no);
-    
+
+    print((char*)var_rnd_no);
+
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_TRNG);
 }
-
 
 int main(void)
 {
     printf("\n\n********** TRNG Example **********\n");
-    
+
     Test_TRNG(0);
     Test_TRNG(1);
-    
+
     return 0;
 }
-

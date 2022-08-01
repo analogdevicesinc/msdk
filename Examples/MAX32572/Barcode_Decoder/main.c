@@ -44,7 +44,7 @@
 int main(void)
 {
     int ret = 0;
-    
+
     printf("\n************** Barcode Decoder on MAX32572 !*************\n");
 #ifdef BRCD_RDR_IMG_TO_PC
     // To send image to PC
@@ -54,16 +54,16 @@ int main(void)
     MXC_ICC_Enable();
     // initialize timer
     ret = MXC_RTC_Init(0, 0);
-    
+
     if (ret == 0) {
         ret = MXC_RTC_Start();
     }
-    
+
     if (ret == 0) {
         // initialize loop
         app_loop_init();
         app_loop_endless();
     }
-    
+
     return ret;
 }

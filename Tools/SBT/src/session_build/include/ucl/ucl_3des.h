@@ -49,7 +49,6 @@
 extern "C" {
 #endif /* __cplusplus  */
 
-
 /** @file ucl_3des.h
  * @defgroup UCL_3DES 3DES
  * The Triple DES, see FIPS 46-3 and NIST SP 800-67.
@@ -72,7 +71,6 @@ extern "C" {
  * @ingroup UCL_BLOCK_CIPHER
  */
 
-
 /*============================================================================*/
 /** <b> 3DES Block Size</b>.
  * The byte length of the DES core data block.
@@ -87,8 +85,7 @@ extern "C" {
 /** <b> 3DES Key length</b>.
  * The byte length of the DES key.
  */
-#define UCL_3DES_KEYSIZE (8*UCL_3DES_KEYNUMBER)
-
+#define UCL_3DES_KEYSIZE (8 * UCL_3DES_KEYNUMBER)
 
 /** <b>3DES Context</b>.
  * This structure is involved in the operation modes.
@@ -96,13 +93,11 @@ extern "C" {
  *
  * @ingroup UCL_3DES
  */
-struct ucl_3des_ctx
-{
-
-    int mode;       /**< Ciphering Mode.*/
-    u8 memory[8];   /**< Intermediate state.*/
-    u32 index;      /**< index.*/
-    u32 subKeys[UCL_3DES_KEYNUMBER*UCL_DES_NB_SUBKEYS*2]; /**< 3DES Sub-keys.
+struct ucl_3des_ctx {
+    int mode;                                                 /**< Ciphering Mode.*/
+    u8 memory[8];                                             /**< Intermediate state.*/
+    u32 index;                                                /**< index.*/
+    u32 subKeys[UCL_3DES_KEYNUMBER * UCL_DES_NB_SUBKEYS * 2]; /**< 3DES Sub-keys.
                                                             * @see UCL_3DES_KEYNUMBER
                                                             * @see UCL_DES_NB_SUBKEYS
                                                             */
@@ -112,7 +107,6 @@ struct ucl_3des_ctx
  * @ingroup UCL_3DES
  */
 typedef struct ucl_3des_ctx ucl_3des_ctx_t;
-
 
 /*============================================================================*/
 /** <b>3DES for Single Block</b>.
@@ -135,9 +129,9 @@ typedef struct ucl_3des_ctx ucl_3des_ctx_t;
  *
  * @ingroup UCL_3DES
  */
-int ucl_3des(u8 *dst, u8 *src, u8 *key, int mode);
+int ucl_3des(u8* dst, u8* src, u8* key, int mode);
 
-void tdes_eee_ks(u32 *subKeys, u8 *key, int mode);
+void tdes_eee_ks(u32* subKeys, u8* key, int mode);
 
 #ifdef __cplusplus
 }

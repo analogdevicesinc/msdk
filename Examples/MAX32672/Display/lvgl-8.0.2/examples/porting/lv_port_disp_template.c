@@ -3,7 +3,7 @@
  *
  */
 
- /*Copy this file as "lv_port_disp.c" and set this value to "1" to enable content*/
+/*Copy this file as "lv_port_disp.c" and set this value to "1" to enable content*/
 #if 0
 
 /*********************
@@ -170,7 +170,6 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 //        dest_buf+=dest_width;    /*Go to the next line*/
 //    }
 //}
-
 
 #else /*Enable this file at the top*/
 

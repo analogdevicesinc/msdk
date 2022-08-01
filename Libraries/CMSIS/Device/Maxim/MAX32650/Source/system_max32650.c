@@ -34,7 +34,6 @@
  *
  **************************************************************************** */
 
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,9 +43,9 @@
 #include "usbhs_regs.h"
 #include "flc_regs.h"
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = 0;
-uint8_t ChipRevision = 0;
+uint8_t ChipRevision     = 0;
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -54,29 +53,29 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSOSC_SEL);
-    if(clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HFXIN) {
+    if (clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HFXIN) {
         base_freq = HFX_FREQ;
-    } else if(clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_NANORING) {
+    } else if (clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_NANORING) {
         base_freq = NANORING_FREQ;
-    } else if(clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC96) {
+    } else if (clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC96) {
         base_freq = HIRC96_FREQ;
-    } else if(clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC8) {
+    } else if (clk_src == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC8) {
         base_freq = HIRC8_FREQ;
     } else {
-        #ifndef CRYPTO_FREQ
-            if(ChipRevision > 0xA1){
-                base_freq = CRYPTO_FREQ_A3;
-            }
-            else{
-                base_freq = CRYPTO_FREQ_A1;
-            }
-        #else
-            base_freq= CRYPTO_FREQ;
-        #endif
+#ifndef CRYPTO_FREQ
+        if (ChipRevision > 0xA1) {
+            base_freq = CRYPTO_FREQ_A3;
+        } else {
+            base_freq = CRYPTO_FREQ_A1;
+        }
+#else
+        base_freq = CRYPTO_FREQ;
+#endif
     }
 
     // Get the clock divider
-    div = (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE) >> MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE_POS;
+    div = (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE) >>
+          MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE_POS;
 
     SystemCoreClock = base_freq >> div;
 }
@@ -131,14 +130,16 @@ __weak void SystemInit(void)
 
     /* Erratum #?: Adjust register timing for VCORE == 1.1v, prevents USB failure. 2017-10-04 ZNM/HTN */
     MXC_GCR->scon |= MXC_S_GCR_SCON_OVR_1V1;
-    
+
     // Flush and enable instruction cache
     MXC_ICC->invalidate = 1;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY));
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
+        ;
     MXC_ICC->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_ENABLE;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY));
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
+        ;
 
-    /* Shutdown all peripheral clocks initially.  They will be re-enabled by each periph's init function. */ 
+    /* Shutdown all peripheral clocks initially.  They will be re-enabled by each periph's init function. */
     /* GPIO Clocks are left enabled */
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TFT);
@@ -175,11 +176,11 @@ __weak void SystemInit(void)
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI3);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2S);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIPR);
-   
+
     Board_Init();
 }
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 /* Function called post memory initialization (post scatter load) in the Keil Toolchain, which
  * we are using to call the system core clock update and board initialization
  * to prevent data corruption if they are called from SystemInit. */

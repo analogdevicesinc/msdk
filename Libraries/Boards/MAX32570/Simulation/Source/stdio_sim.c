@@ -40,12 +40,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 #include <unistd.h>
 #include <sys/stat.h>
 #endif /* __GNUC__ */
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 #include <rt_misc.h>
 #pragma import(__use_no_semihosting_swi)
 
@@ -58,11 +58,11 @@ FILE __stdin;
 #endif /* __CC_ARM */
 
 /* Defines - Compiler Specific */
-#if defined ( __ICCARM__ )
-#define STDIN_FILENO    0   // Defines that are not included in the DLIB.
-#define STDOUT_FILENO   1
-#define STDERR_FILENO   2
-#define EBADF          -1
+#if defined(__ICCARM__)
+#define STDIN_FILENO  0 // Defines that are not included in the DLIB.
+#define STDOUT_FILENO 1
+#define STDERR_FILENO 2
+#define EBADF         -1
 #endif /* __ICCARM__ */
 
 #include "mxc_device.h"
@@ -72,7 +72,7 @@ FILE __stdin;
  * These can be tailored for a complete stdio implementation.
  * GNUC requires all functions below. IAR & KEIL only use read and write.
  */
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 int _open(const char* name, int flags, int mode)
 {
     return -1;
@@ -97,106 +97,110 @@ int _fstat(int file, struct stat* st)
 
 /* Handle IAR and ARM/Keil Compilers for _read/_write. Keil uses fputc and
    fgetc for stdio */
-#if defined (__ICCARM__) || defined ( __GNUC__ )
+#if defined(__ICCARM__) || defined(__GNUC__)
 
-#if defined ( __GNUC__ )                        // GNUC _read function prototype
+#if defined(__GNUC__) // GNUC _read function prototype
 int _read(int file, char* ptr, int len)
-#elif defined ( __ICCARM__ )                    // IAR Compiler _read function prototype
+#elif defined(__ICCARM__) // IAR Compiler _read function prototype
 int __read(int file, unsigned char* ptr, size_t len)
-#endif /* __GNUC__ */
+#endif                    /* __GNUC__ */
 {
     unsigned int n;
     int num = 0;
-    
+
     switch (file) {
-    case STDIN_FILENO:
-        for (n = 0; n < len; n++) {
-            //*ptr = UART_GetChar();
-            //UART_PutChar(*ptr);
-            ptr++;
-            num++;
-        }
-        
-        break;
-        
-    default:
-        errno = EBADF;
-        return -1;
+        case STDIN_FILENO:
+            for (n = 0; n < len; n++) {
+                //*ptr = UART_GetChar();
+                //UART_PutChar(*ptr);
+                ptr++;
+                num++;
+            }
+
+            break;
+
+        default:
+            errno = EBADF;
+            return -1;
     }
-    
+
     return num;
 }
 
 /* newlib/libc printf() will eventually call write() to get the data to the stdout */
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 // GNUC _write function prototype
 int _write(int file, char* ptr, int len)
 {
     int n;
-#elif defined ( __ICCARM__ )                // IAR Compiler _read function prototype
+#elif defined(__ICCARM__) // IAR Compiler _read function prototype
 // IAR EW _write function prototype
-int __write(int file, const unsigned char* ptr, size_t len) {
+int __write(int file, const unsigned char* ptr, size_t len)
+{
     size_t n;
-#endif /* __GNUC__ */
-    
-    
+#endif                    /* __GNUC__ */
+
     switch (file) {
-    case STDOUT_FILENO:
-    case STDERR_FILENO:
-        for (n = 0; n < len; n++) {
-            if (*ptr == '\n') {
-                //UART_PutChar('\r');
+        case STDOUT_FILENO:
+        case STDERR_FILENO:
+            for (n = 0; n < len; n++) {
+                if (*ptr == '\n') {
+                    //UART_PutChar('\r');
+                }
+
+                //UART_PutChar(*ptr++);
             }
-            
-            //UART_PutChar(*ptr++);
-        }
-        
-        break;
-        
-    default:
-        errno = EBADF;
-        return -1;
+
+            break;
+
+        default:
+            errno = EBADF;
+            return -1;
     }
-    
+
     return len;
 }
 
 #endif /* ( __ICCARM__ ) || ( __GNUC__ ) */
 
 /* Handle Keil/ARM Compiler which uses fputc and fgetc for stdio */
-#if defined ( __CC_ARM )
-int fputc(int c, FILE * f) {
+#if defined(__CC_ARM)
+int fputc(int c, FILE* f)
+{
     if (c != '\n') {
         //UART_PutChar(c);
-    }
-    else {
+    } else {
         //UART_PutChar('\r');
         //UART_PutChar('\n');
     }
-    
+
     return 0;
 }
 
-int fgetc(FILE * f) {
+int fgetc(FILE* f)
+{
     return (UART_GetChar());
 }
 
-int ferror(FILE * f) {
+int ferror(FILE* f)
+{
     return EOF;
 }
 
-void _ttywrch(int c) {
+void _ttywrch(int c)
+{
     if (c != '\n') {
         //UART_PutChar(c);
-    }
-    else {
+    } else {
         //UART_PutChar('\r');
         //UART_PutChar('\n');
     }
 }
 
-void _sys_exit(int return_code) {
-    while (1) {}
+void _sys_exit(int return_code)
+{
+    while (1) {
+    }
 }
 
 #endif /* __CC_ARM  */

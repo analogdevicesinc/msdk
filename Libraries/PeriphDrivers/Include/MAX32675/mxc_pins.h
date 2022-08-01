@@ -36,7 +36,6 @@
  *
  **************************************************************************** */
 
-
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -51,7 +50,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
 
-
 extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
@@ -63,7 +61,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;
-
 
 // extern const mxc_gpio_cfg_t gpio_cfg_spi0;
 // NOTE: SPI1 definied here with SS1 only, SS0 is on port0 by itself.
@@ -97,4 +94,3 @@ extern const mxc_gpio_cfg_t gpio_cfg_cmd_rs_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_chrg_lc2;
 
 #endif /* _MXC_PINS_H_ */
-

@@ -45,40 +45,34 @@
 
 #include <MAX32xxx.h>
 
-
 /***** Definitions *****/
 
 /***** Globals *****/
-mxc_skbd_keys_t keys = { 0, 0, 0, 0 };
+mxc_skbd_keys_t keys = {0, 0, 0, 0};
 
-volatile int  key_pressed = 0;
+volatile int key_pressed = 0;
 
 /* keys mapping on the keyboard */
-const char keyboard_map[16] = {
-    'F', 'E', 'D', 'C',
-    '3', '6', '9', 'B',
-    '2', '5', '8', '0',
-    '1', '4', '7', 'A'
-};
+const char keyboard_map[16] = {'F', 'E', 'D', 'C', '3', '6', '9', 'B',
+                               '2', '5', '8', '0', '1', '4', '7', 'A'};
 /***** Functions *****/
 
 void keypadHandler()
 {
     unsigned int status;
-    
+
     /* Do what has to be done */
     MXC_SKBD_InterruptStatus(&status);
-    
+
     if (MXC_F_SKBD_ISR_PUSHIS & status) {
         MXC_SKBD_ReadKeys(&keys);
         key_pressed = 1;
         /* Clear interruption */
         MXC_SKBD_ClearInterruptStatus(MXC_F_SKBD_ISR_PUSHIS);
     }
-    
+
     return;
 }
-
 
 int main(void)
 {
@@ -86,47 +80,47 @@ int main(void)
     unsigned short* key;
     uint8_t i, in, out;
     int result;
-    
+
     printf("\n********** Secure Keyboard Example **********\n");
-    
+
     skb_cfg.inputs      = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
     skb_cfg.outputs     = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
     skb_cfg.debounce    = MXC_V_SKBD_CR1_DBTM_TIME10MS;
     skb_cfg.ioselect    = 0;
-    skb_cfg.irq_handler = (irq_handler_t) keypadHandler;
+    skb_cfg.irq_handler = (irq_handler_t)keypadHandler;
     skb_cfg.reg_erase   = 1;
-    
+
     MXC_SKBD_PreInit();
-    
+
     if ((result = MXC_SKBD_Init(skb_cfg)) != E_NO_ERROR) {
         printf("Error in Initializing Secure Keyboard: %d", result);
         return E_UNINITIALIZED;
     }
-    
+
     if ((result = MXC_SKBD_EnableInterruptEvents(MXC_SKBD_INTERRUPT_STATUS_PUSHIS)) != E_NO_ERROR) {
         printf("Error in Enabling Interrupt: %d", result);
         return E_UNINITIALIZED;
     }
-    
+
     while (1) {
         if (key_pressed == 1) {
             key = &keys.key0;
-            
+
             for (i = 0; i < 4; i++) {
-                in = 0x0f & *key;
+                in  = 0x0f & *key;
                 out = (0xf0 & *key) >> 4;
-                
+
                 if (*key) {
                     printf("\n-Key Pressed: %c\n", keyboard_map[(in - 4) * 4 + out]);
                 }
-                
+
                 *key = 0;
                 key++;
             }
-            
+
             key_pressed = 0;
         }
     }
-    
+
     return 0;
 }

@@ -49,31 +49,33 @@
 
 /***** Definitions *****/
 
-#define SPIXF_DISK      1
-#define RAM_DISK        0
+#define SPIXF_DISK 1
+#define RAM_DISK   0
 
-#define LBA_SIZE                    512         /* Size of "logical blocks" in bytes */
-#define LBA_SIZE_SHIFT              9           /* The shift value used to convert between addresses and block numbers */
+#define LBA_SIZE       512 /* Size of "logical blocks" in bytes */
+#define LBA_SIZE_SHIFT 9   /* The shift value used to convert between addresses and block numbers */
 
 /***** Global Data *****/
 
 /***** File Scope Variables *****/
 
 static int initialized = 0;
-static int running = 0;
+static int running     = 0;
 
 #if SPIXF_DISK
 
-#define EXT_FLASH_BAUD                   5000000     /* SPI clock rate to communicate with the external flash */
+#define EXT_FLASH_BAUD 5000000 /* SPI clock rate to communicate with the external flash */
 
-#define EXT_FLASH_SECTOR_SIZE            4096        /* Number of bytes in one sector of the external flash */
-#define EXT_FLASH_SECTOR_SIZE_SHIFT      12          /* The shift value used to convert between addresses and block numbers */
-#define EXT_FLASH_NUM_SECTORS            2048        /* Total number of sectors in the external flash */
+#define EXT_FLASH_SECTOR_SIZE 4096 /* Number of bytes in one sector of the external flash */
+#define EXT_FLASH_SECTOR_SIZE_SHIFT \
+    12 /* The shift value used to convert between addresses and block numbers */
+#define EXT_FLASH_NUM_SECTORS 2048 /* Total number of sectors in the external flash */
 
-#define MXC_SPIXF_WIDTH             Ext_Flash_DataLine_Single      /*Number of data lines*/
+#define MXC_SPIXF_WIDTH Ext_Flash_DataLine_Single /*Number of data lines*/
 
-#define LBA_PER_SECTOR              (EXT_FLASH_SECTOR_SIZE >> LBA_SIZE_SHIFT)
-#define INVALID_SECTOR              EXT_FLASH_NUM_SECTORS    /* Use a sector number past the end of memory to indicate invalid */
+#define LBA_PER_SECTOR (EXT_FLASH_SECTOR_SIZE >> LBA_SIZE_SHIFT)
+#define INVALID_SECTOR \
+    EXT_FLASH_NUM_SECTORS /* Use a sector number past the end of memory to indicate invalid */
 
 /***** File Scope Variables *****/
 static uint32_t sectorNum = INVALID_SECTOR;
@@ -113,20 +115,22 @@ static uint32_t getSector(uint32_t num)
                 /* Erase the old data. */
                 Ext_Flash_Erase(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, Ext_Flash_Erase_4K);
                 /* Write the new */
-                Ext_Flash_Program_Page(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH);
+                Ext_Flash_Program_Page(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, sector,
+                                       EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH);
                 /* Mark data as clean */
                 sectorDirty = 0;
             }
         }
-        
+
         /* Requesting a new valid sector? */
         if (num != INVALID_SECTOR) {
-            Ext_Flash_Read(num << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH);
+            Ext_Flash_Read(num << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE,
+                           MXC_SPIXF_WIDTH);
             sectorDirty = 0;
-            sectorNum = num;
+            sectorNum   = num;
         }
     }
-    
+
     return 0;
 }
 
@@ -137,17 +141,16 @@ int mscmem_Init()
         MXC_SPIXF_SetSPIFrequency(EXT_FLASH_BAUD);
         Ext_Flash_Init();
         Ext_Flash_Reset();
-        
+
         if (MXC_SPIXF_WIDTH == Ext_Flash_DataLine_Quad) {
             Ext_Flash_Quad(1);
-        }
-        else {
+        } else {
             Ext_Flash_Quad(0);
         }
-        
+
         initialized = 1;
     }
-    
+
     return 0;
 }
 
@@ -162,20 +165,20 @@ uint32_t mscmem_Size(void)
 int mscmem_Read(uint32_t lba, uint8_t* buffer)
 {
     uint32_t addr;
-    
+
     /* Convert to external flash sector number. */
     uint32_t sNum = getSectorNum(lba);
-    
+
     if (getSector(sNum)) {
         /* Failed to write/read from external flash */
         return 1;
     }
-    
+
     /* Get the offset into the current sector */
     addr = getSectorAddr(lba);
-    
+
     memcpy(buffer, sector + addr, LBA_SIZE);
-    
+
     return 0;
 }
 
@@ -183,21 +186,21 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer)
 int mscmem_Write(uint32_t lba, uint8_t* buffer)
 {
     uint32_t addr;
-    
+
     /* Convert to external flash sector number. */
     uint32_t sNum = getSectorNum(lba);
-    
+
     if (getSector(sNum)) {
         /* Failed to write/read from external flash */
         return 1;
     }
-    
+
     /* Get the offset into the current sector */
     addr = getSectorAddr(lba);
-    
+
     memcpy(sector + addr, buffer, LBA_SIZE);
     sectorDirty = 1;
-    
+
     return 0;
 }
 
@@ -208,12 +211,12 @@ int mscmem_Start()
     if (!initialized) {
         mscmem_Init();
     }
-    
+
     /* Check if the initialization succeeded. If it has, start running. */
     if (initialized) {
         running = 1;
     }
-    
+
     /* Start should return fail (non-zero) if the memory cannot be initialized. */
     return !initialized;
 }
@@ -222,12 +225,12 @@ int mscmem_Start()
 int mscmem_Stop()
 {
     /* TODO - could shut down XIPF interface here. */
-    
+
     /* Flush the currently cached sector if necessary. */
     if (getSector(INVALID_SECTOR)) {
         return 1;
     }
-    
+
     running = 0;
     return 0;
 }
@@ -240,7 +243,7 @@ int mscmem_Ready()
 
 #elif RAM_DISK
 
-#define NUM_PAGES               0x100
+#define NUM_PAGES 0x100
 static uint8_t mem[NUM_PAGES][LBA_SIZE];
 
 /******************************************************************************/
@@ -252,7 +255,7 @@ int mscmem_Init()
         memset(mem, 0, sizeof(mem));
 #endif
     }
-    
+
     return 0;
 }
 
@@ -268,7 +271,7 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer)
     if (lba >= NUM_PAGES) {
         return 1;
     }
-    
+
     memcpy(buffer, mem[lba], LBA_SIZE);
     return 0;
 }
@@ -279,7 +282,7 @@ int mscmem_Write(uint32_t lba, uint8_t* buffer)
     if (lba >= NUM_PAGES) {
         return 1;
     }
-    
+
     memcpy(mem[lba], buffer, LBA_SIZE);
     return 0;
 }
@@ -291,12 +294,12 @@ int mscmem_Start()
     if (!initialized) {
         mscmem_Init();
     }
-    
+
     /* Check if the RAM has been initialized. If it has, start running. */
     if (initialized) {
         running = 1;
     }
-    
+
     /* Start should return fail (non-zero) if the memory cannot be initialized. */
     return !initialized;
 }

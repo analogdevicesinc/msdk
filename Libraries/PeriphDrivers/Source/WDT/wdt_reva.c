@@ -48,7 +48,9 @@ void MXC_WDT_RevA_SetIntPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period
 
 void MXC_WDT_RevA_SetResetPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period)
 {
-    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVA_CTRL_RST_PERIOD, (period << (MXC_F_WDT_REVA_CTRL_RST_PERIOD_POS - MXC_F_WDT_REVA_CTRL_INT_PERIOD_POS)));
+    MXC_SETFIELD(
+        wdt->ctrl, MXC_F_WDT_REVA_CTRL_RST_PERIOD,
+        (period << (MXC_F_WDT_REVA_CTRL_RST_PERIOD_POS - MXC_F_WDT_REVA_CTRL_INT_PERIOD_POS)));
 }
 
 void MXC_WDT_RevA_Enable(mxc_wdt_reva_regs_t* wdt)
@@ -59,25 +61,22 @@ void MXC_WDT_RevA_Enable(mxc_wdt_reva_regs_t* wdt)
 void MXC_WDT_RevA_Disable(mxc_wdt_reva_regs_t* wdt)
 {
     wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_WDT_EN);
-    
 }
 
 void MXC_WDT_RevA_EnableInt(mxc_wdt_reva_regs_t* wdt, mxc_wdt_reva_en_t enable)
 {
-    if(enable) {
+    if (enable) {
         wdt->ctrl |= MXC_F_WDT_REVA_CTRL_INT_EN;
-    }
-    else {
+    } else {
         wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_INT_EN);
     }
 }
 
 void MXC_WDT_RevA_EnableReset(mxc_wdt_reva_regs_t* wdt, mxc_wdt_reva_en_t enable)
 {
-    if(enable) {
+    if (enable) {
         wdt->ctrl |= MXC_F_WDT_REVA_CTRL_RST_EN;
-    }
-    else {
+    } else {
         wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_RST_EN);
     }
 }

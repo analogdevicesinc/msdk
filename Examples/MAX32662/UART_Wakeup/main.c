@@ -53,41 +53,42 @@
 #include "uart.h"
 
 /***** Definitions *****/
-#define RXBUF_SIZE		100
+#define RXBUF_SIZE 100
 
 /***** Globals *****/
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 char rxBuf[RXBUF_SIZE];
-volatile int cnt = 0;
+volatile int cnt     = 0;
 volatile bool crRecv = false;
 
 /***** Functions *****/
-void UART0_Handler(void) {
-	// To measure wake up time, probe P0.13 (LED Pin).
-	LED_On(0);
+void UART0_Handler(void)
+{
+    // To measure wake up time, probe P0.13 (LED Pin).
+    LED_On(0);
 
-	if(ConsoleUART->intfl & MXC_F_UART_INTFL_RX_THD) {
-		ConsoleUART->intfl |= MXC_F_UART_INTFL_RX_THD;
+    if (ConsoleUART->intfl & MXC_F_UART_INTFL_RX_THD) {
+        ConsoleUART->intfl |= MXC_F_UART_INTFL_RX_THD;
 
-		while((ConsoleUART->status & MXC_F_UART_STATUS_RX_LVL)) {		    //Continue to read characters until receive buffer empty
-			if(cnt >= RXBUF_SIZE) {											//Prevent buffer overflow
-				cnt = 0;
-			}
-			else {
-				rxBuf[cnt] = (char)MXC_UART_ReadCharacter(ConsoleUART);		//Read character
-				if(rxBuf[cnt] == '\r') {									//Last character received?
-					crRecv = true;
-				}
-				cnt++;
-			}
-		}
-	}
+        while (
+            (ConsoleUART->status &
+             MXC_F_UART_STATUS_RX_LVL)) { //Continue to read characters until receive buffer empty
+            if (cnt >= RXBUF_SIZE) {      //Prevent buffer overflow
+                cnt = 0;
+            } else {
+                rxBuf[cnt] = (char)MXC_UART_ReadCharacter(ConsoleUART); //Read character
+                if (rxBuf[cnt] == '\r') {                               //Last character received?
+                    crRecv = true;
+                }
+                cnt++;
+            }
+        }
+    }
 }
 
 int main(void)
 {
-	memset(rxBuf, 0x0, RXBUF_SIZE*sizeof(char));
-
+    memset(rxBuf, 0x0, RXBUF_SIZE * sizeof(char));
 
     printf("\n\n******************** LP Serial Character Wake Up Example *******************\n\n");
     printf("This example demonstrates how to send a serial character to wake up the device.\n");
@@ -98,9 +99,10 @@ int main(void)
     printf("\nTo measure wake-up latency, probe pins P0.14 (LED) and P0.11 (UART RX Pin).\n");
     printf("\n**NOTE**: Each string sent to the device must end in a \"\\r\" character for the\n");
     printf("strings to be processed correctly.\n");
-    
+
     printf("\nPress PB1 to begin the demo.\n");
-    while(!PB_Get(0));
+    while (!PB_Get(0))
+        ;
 
     /* Configure serial character interrupts */
     NVIC_ClearPendingIRQ(UART0_IRQn);
@@ -115,35 +117,38 @@ int main(void)
 
     /* Put device in Sleep operating mode */
     printf("Now entering sleep mode. Send any character string to wake up the device.\n\n");
-	while(MXC_UART_GetActive(ConsoleUART));
-	MXC_LP_ClearWakeStatus();
-	MXC_LP_EnterSleepMode();
-    
-    while(1) {
-		if(crRecv) {
-			printf("String Received: %s\n", rxBuf);			//Print character string received from the console
+    while (MXC_UART_GetActive(ConsoleUART))
+        ;
+    MXC_LP_ClearWakeStatus();
+    MXC_LP_EnterSleepMode();
 
-			if(!strcmp(rxBuf, "sleep\r")) {					//If "sleep\r" received, go back to sleep
-				printf("Going back to deep sleep.\n");
-				while(MXC_UART_GetActive(ConsoleUART));
-				LED_Off(0);
-				MXC_LP_ClearWakeStatus();
-				MXC_LP_EnterSleepMode();
-			}
-			else if(!strcmp(rxBuf, "quit\r")) {				//If "quit\r" received, end example.
-				printf("Stopping example...\n");
-				break;
-			}
+    while (1) {
+        if (crRecv) {
+            printf("String Received: %s\n",
+                   rxBuf); //Print character string received from the console
 
-			crRecv = false;
-			cnt = 0;
-			memset(rxBuf, 0x0, RXBUF_SIZE*sizeof(char));
-		}
+            if (!strcmp(rxBuf, "sleep\r")) { //If "sleep\r" received, go back to sleep
+                printf("Going back to deep sleep.\n");
+                while (MXC_UART_GetActive(ConsoleUART))
+                    ;
+                LED_Off(0);
+                MXC_LP_ClearWakeStatus();
+                MXC_LP_EnterSleepMode();
+            } else if (!strcmp(rxBuf, "quit\r")) { //If "quit\r" received, end example.
+                printf("Stopping example...\n");
+                break;
+            }
+
+            crRecv = false;
+            cnt    = 0;
+            memset(rxBuf, 0x0, RXBUF_SIZE * sizeof(char));
+        }
     }
 
     LED_On(0);
     printf("Example complete!");
-	while(MXC_UART_GetActive(ConsoleUART));
+    while (MXC_UART_GetActive(ConsoleUART))
+        ;
 
-	return 0;
+    return 0;
 }

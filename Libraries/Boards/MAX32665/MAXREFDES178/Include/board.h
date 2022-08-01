@@ -39,7 +39,6 @@
  * @brief   Board support package API.
  */
 
-
 #include <stdio.h>
 #include "spixf.h"
 
@@ -51,21 +50,20 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART    2       /// UART instance to use for console
+#define CONSOLE_UART 2 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD    115200  /// Console baud rate
+#define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
 #ifndef CONSOLE_MAP
-#define CONSOLE_MAP     MAP_B   /// Console map
+#define CONSOLE_MAP MAP_B /// Console map
 #endif
 
 #ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD       4000000
+#define EXT_FLASH_BAUD 4000000
 #endif
-
 
 /**
  * \brief   Initialize the BSP and board interfaces.

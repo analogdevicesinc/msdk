@@ -48,24 +48,23 @@
 
 /* **** Functions **** */
 
-
 /* ******************************************************************************
 Maxim Internal Use
  * ****************************************************************************** */
 
 int MXC_SFCC_ID(mxc_icc_info_t cid)
 {
-    return MXC_ICC_RevA_ID ((mxc_icc_reva_regs_t*) MXC_SFCC, cid);
+    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t*)MXC_SFCC, cid);
 }
 
 void MXC_SFCC_Enable(void)
 {
-    MXC_ICC_RevA_Enable ((mxc_icc_reva_regs_t*) MXC_SFCC);
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t*)MXC_SFCC);
 }
 
 void MXC_SFCC_Disable(void)
 {
-    MXC_ICC_RevA_Disable ((mxc_icc_reva_regs_t*) MXC_SFCC);
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t*)MXC_SFCC);
 }
 
 void MXC_SFCC_Flush(void)

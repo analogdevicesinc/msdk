@@ -26,7 +26,7 @@ extern "C" {
 
 extern int PreInit(void);
 
-#pragma language=extended
+#pragma language = extended
 
 __interwork int __low_level_init(void);
 
@@ -43,7 +43,7 @@ __interwork int __low_level_init(void)
     return !PreInit(); // See system_max32670.c
 }
 
-#pragma language=default
+#pragma language = default
 
 #ifdef __cplusplus
 }

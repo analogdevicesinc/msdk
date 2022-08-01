@@ -56,7 +56,7 @@
 #include "led.h"
 #include "lp.h"
 
-#define S_MODULE_NAME   "state_faceid"
+#define S_MODULE_NAME "state_faceid"
 
 extern uint32_t ticks_1;
 extern uint32_t ticks_2;
@@ -78,23 +78,23 @@ static void ARM_low_power(int lp_mode);
 #ifdef TFT_ENABLE
 static text_t screen_msg[] = {
     // info
-    { (char*) "FACEID DEMO", strlen("FACEID DEMO")},
-    { (char*) "Process Time:",  strlen("Process Time:")},
+    {(char*)"FACEID DEMO", strlen("FACEID DEMO")},
+    {(char*)"Process Time:", strlen("Process Time:")},
 };
 #ifdef BOARD_EVKIT_V1
 static int bitmap = logo_white_bg_darkgrey_bmp;
-static int font = urw_gothic_12_grey_bg_white;
+static int font   = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
-static int bitmap = (int)& logo_rgb565[0];
-static int font = (int)& SansSerif16x16[0];
+static int bitmap = (int)&logo_rgb565[0];
+static int font   = (int)&SansSerif16x16[0];
 #endif
 #endif //#ifdef TFT_ENABLE
 
 static int8_t prev_decision = -2;
-static int8_t decision = -2;
+static int8_t decision      = -2;
 
-static State g_state = {"faceID", init, key_process, NULL, 0 };
+static State g_state = {"faceID", init, key_process, NULL, 0};
 
 /********************************* Static Functions **************************/
 #ifdef TFT_ENABLE
@@ -102,12 +102,12 @@ static void screen_faceID(void)
 {
     MXC_TFT_SetPalette(bitmap);
     MXC_TFT_SetBackGroundColor(4);
-   // MXC_TFT_ShowImage(3, 5, bitmap);
+    // MXC_TFT_ShowImage(3, 5, bitmap);
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_ShowImage(BACK_X, BACK_Y, left_arrow_bmp); // back button icon
 #endif
-    MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL);  // FACEID DEMO
-    MXC_TFT_PrintFont(12, 240, font, &screen_msg[1], NULL);  // Process Time:
+    MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL);   // FACEID DEMO
+    MXC_TFT_PrintFont(12, 240, font, &screen_msg[1], NULL); // Process Time:
     // texts
 #ifdef TS_ENABLE
     MXC_TS_RemoveAllButton();
@@ -126,10 +126,10 @@ static int init(void)
     camera_start_capture_image();
 
 #define PRINT_TIME 1
-#if (PRINT_TIME==1)
+#if (PRINT_TIME == 1)
     /* Get current time */
     uint32_t process_time = utils_get_time_ms();
-    uint32_t total_time = utils_get_time_ms();
+    uint32_t total_time   = utils_get_time_ms();
 #endif
 
     while (1) { //Capture image and run CNN
@@ -139,7 +139,6 @@ static int init(void)
 
         if (key > 0) {
             key_process(key);
-
         }
 
         if (state_get_current() != &g_state) {
@@ -150,9 +149,7 @@ static int init(void)
 
         /* Check for received image */
         if (camera_is_image_rcv()) {
-
-
-#if (PRINT_TIME==1)
+#if (PRINT_TIME == 1)
             process_time = utils_get_time_ms();
 #endif
 #ifdef TS_ENABLE
@@ -161,7 +158,7 @@ static int init(void)
 #endif
             process_img();
 
-#ifdef  IMAGE_TO_UART
+#ifdef IMAGE_TO_UART
             break;
 #endif
 
@@ -170,10 +167,10 @@ static int init(void)
 #ifdef LP_MODE_ENABLE
             /* Reinit CNN and reload weigths after UPM or Standby because CNN is powered off */
             if (LP_MODE > 2) {
-                cnn_init(); // Bring state machine into consistent state
+                cnn_init();         // Bring state machine into consistent state
                 cnn_load_weights(); // Reload CNN kernels
-                cnn_load_bias(); // Reload CNN bias
-                cnn_configure(); // Configure state machine
+                cnn_load_bias();    // Reload CNN bias
+                cnn_configure();    // Configure state machine
             }
 #endif
             /* Run CNN three times on original and shifted images */
@@ -182,8 +179,7 @@ static int init(void)
             if ((run_count % 2) == 0) {
                 run_cnn(-10, -10);
                 run_cnn(10, 10);
-            }
-            else {
+            } else {
                 run_cnn(-10, 10);
                 run_cnn(10, -10);
             }
@@ -194,7 +190,7 @@ static int init(void)
 #endif
             run_count++;
 
-#if (PRINT_TIME==1)
+#if (PRINT_TIME == 1)
 
             printf("\n\n\n");
             PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
@@ -225,7 +221,7 @@ static int init(void)
 
 #endif
 
-#if (PRINT_TIME==1)
+#if (PRINT_TIME == 1)
             PR_INFO("Capture Time : %dms", process_time - total_time);
             PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
             total_time = utils_get_time_ms();
@@ -243,12 +239,12 @@ static int init(void)
 static int key_process(int key)
 {
     switch (key) {
-    case KEY_1:
-        state_set_current(get_home_state());
-        break;
+        case KEY_1:
+            state_set_current(get_home_state());
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return 0;
@@ -260,12 +256,12 @@ static void process_img(void)
     uint32_t imgLen;
     uint32_t w, h;
     uint16_t* image;
-    uint8_t*  raw;
+    uint8_t* raw;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
-#ifdef  IMAGE_TO_UART
+#ifdef IMAGE_TO_UART
     // Send the image through the UART to the console.
     // "grab_image" python program will read from the console and write to an image file.
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
@@ -289,7 +285,8 @@ static void process_img(void)
     }
 
     //right line
-    image = ((uint16_t*)raw) + (((IMAGE_H - (WIDTH + 2 * THICKNESS)) / 2) + WIDTH + THICKNESS) * IMAGE_W;
+    image = ((uint16_t*)raw) +
+            (((IMAGE_H - (WIDTH + 2 * THICKNESS)) / 2) + WIDTH + THICKNESS) * IMAGE_W;
 
     for (int i = 0; i < THICKNESS; i++) {
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
@@ -340,18 +337,17 @@ static void process_img(void)
 
     if (ret != STATUS_OK) {
         PR_ERR("Camera Error %d", ret);
-    }
-    else {
+    } else {
         PR_DEBUG("Lum = %d", lum);
 
         // Warn if luminance level is low
         if (lum < LOW_LIGHT_THRESHOLD) {
             PR_WARN("Low Light!");
             printResult.data = " LOW LIGHT ";
-            printResult.len = strlen(printResult.data);
-            area_t area = {50, 290, 180, 30};
+            printResult.len  = strlen(printResult.data);
+            area_t area      = {50, 290, 180, 30};
             MXC_TFT_ClearArea(&area, 4);
-            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult,  NULL);
+            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult, NULL);
         }
     }
 
@@ -362,12 +358,12 @@ static void process_img(void)
 
 static void run_cnn(int x_offset, int y_offset)
 {
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint32_t imgLen;
+    uint32_t w, h;
     static uint32_t noface_count = 0;
     /* Get current time */
     uint32_t pass_time = 0;
-    uint8_t*   raw;
+    uint8_t* raw;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -387,7 +383,7 @@ static void run_cnn(int x_offset, int y_offset)
 
     //LED_On(1); // red LED
     for (int i = y_offset; i < HEIGHT + y_offset; i++) {
-        data =  raw + ((IMAGE_H - (WIDTH)) / 2) * IMAGE_W * BYTE_PER_PIXEL;
+        data = raw + ((IMAGE_H - (WIDTH)) / 2) * IMAGE_W * BYTE_PER_PIXEL;
         data += (((IMAGE_W - (HEIGHT)) / 2) + i) * BYTE_PER_PIXEL;
 
         for (int j = x_offset; j < WIDTH + x_offset; j++) {
@@ -396,7 +392,8 @@ static void run_cnn(int x_offset, int y_offset)
             uint32_t number;
 
             ub = (uint8_t)(data[j * BYTE_PER_PIXEL * IMAGE_W + 1] << 3);
-            ug = (uint8_t)((data[j * BYTE_PER_PIXEL * IMAGE_W] << 5) | ((data[j * BYTE_PER_PIXEL * IMAGE_W + 1] & 0xE0) >> 3));
+            ug = (uint8_t)((data[j * BYTE_PER_PIXEL * IMAGE_W] << 5) |
+                           ((data[j * BYTE_PER_PIXEL * IMAGE_W + 1] & 0xE0) >> 3));
             ur = (uint8_t)(data[j * BYTE_PER_PIXEL * IMAGE_W] & 0xF8);
 
             b = ub - 128;
@@ -404,17 +401,18 @@ static void run_cnn(int x_offset, int y_offset)
             r = ur - 128;
 
             // Loading data into the CNN fifo
-            while (((*((volatile uint32_t*) 0x50000004) & 1)) != 0);  // Wait for FIFO 0
+            while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
+                ; // Wait for FIFO 0
 
             number = 0x00FFFFFF & ((((uint8_t)b) << 16) | (((uint8_t)g) << 8) | ((uint8_t)r));
 
-            *((volatile uint32_t*) 0x50000008) = number;  // Write FIFO 0
+            *((volatile uint32_t*)0x50000008) = number; // Write FIFO 0
         }
     }
 
     //LED_Off(1);
 
-    int  cnn_load_time = utils_get_time_ms() - pass_time;
+    int cnn_load_time = utils_get_time_ms() - pass_time;
 
     PR_DEBUG("CNN load data time : %d", cnn_load_time);
 
@@ -425,10 +423,10 @@ static void run_cnn(int x_offset, int y_offset)
 
     sprintf(string_time, "%dms", cnn_load_time);
     cnn_load_time_string.data = string_time;
-    cnn_load_time_string.len = strlen(string_time);
-    area_t area = {150, 240, 50, 30};
+    cnn_load_time_string.len  = strlen(string_time);
+    area_t area               = {150, 240, 50, 30};
     MXC_TFT_ClearArea(&area, 4);
-    MXC_TFT_PrintFont(150, 240, font, &cnn_load_time_string,  NULL);  // RunCNN
+    MXC_TFT_PrintFont(150, 240, font, &cnn_load_time_string, NULL); // RunCNN
 #endif
 
     pass_time = utils_get_time_ms();
@@ -467,52 +465,48 @@ static void run_cnn(int x_offset, int y_offset)
         uint8_t counter_len;
         get_min_dist_counter(&counter, &counter_len);
 
-        name = "";
+        name          = "";
         prev_decision = decision;
-        decision = -5;
+        decision      = -5;
 
         PR_INFO("counter_len: %d,  %d,%d,%d\n", counter_len, counter[0], counter[1], counter[2]);
 #if 1
 
         for (uint8_t id = 0; id < counter_len; ++id) {
             if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.8)) { // >80%  detection
-                name = get_subject(id);
-                decision = id;
+                name         = get_subject(id);
+                decision     = id;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
                 break;
-            }
-            else if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.4)) { // >%40 adjust
-                name = "Adjust Face";
-                decision = -2;
+            } else if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.4)) { // >%40 adjust
+                name         = "Adjust Face";
+                decision     = -2;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
                 break;
-            }
-            else if (counter[id] > closest_sub_buffer_size * 0.2) {  //>>20% unknown
-                name = "Unknown";
-                decision = -1;
+            } else if (counter[id] > closest_sub_buffer_size * 0.2) { //>>20% unknown
+                name         = "Unknown";
+                decision     = -1;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
                 break;
-            }
-            else if (counter[id] > closest_sub_buffer_size * 0.1) { //>> 10% transition
-                name = "";
-                decision = -3;
+            } else if (counter[id] > closest_sub_buffer_size * 0.1) { //>> 10% transition
+                name         = "";
+                decision     = -3;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
-            }
-            else {
-                noface_count ++;
+            } else {
+                noface_count++;
 
                 if (noface_count > 10) {
-                    name = "No face";
+                    name     = "No face";
                     decision = -4;
-                    noface_count --;
+                    noface_count--;
                     PR_INFO("Detection: %s: %d", name, counter[id]);
                 }
             }
@@ -522,17 +516,15 @@ static void run_cnn(int x_offset, int y_offset)
 
         for (uint8_t id = 0; id < counter_len; ++id) {
             if (counter[id] >= (closest_sub_buffer_size - 4)) {
-                name = get_subject(id);
+                name     = get_subject(id);
                 decision = id;
                 break;
-            }
-            else if (counter[id] >= (closest_sub_buffer_size / 2 + 1)) {
-                name = "Adjust Face";
+            } else if (counter[id] >= (closest_sub_buffer_size / 2 + 1)) {
+                name     = "Adjust Face";
                 decision = -2;
                 break;
-            }
-            else if (counter[id] > 4) {
-                name = "Unknown";
+            } else if (counter[id] > 4) {
+                name     = "Unknown";
                 decision = -1;
                 break;
             }
@@ -545,11 +537,11 @@ static void run_cnn(int x_offset, int y_offset)
 #ifdef TFT_ENABLE
 
         if (decision != prev_decision) {
-            area_t area = {50, 290, 180, 30};
+            area_t area      = {50, 290, 180, 30};
             printResult.data = name;
-            printResult.len = strlen(name);
+            printResult.len  = strlen(name);
             MXC_TFT_ClearArea(&area, 4);
-            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult,  NULL);
+            MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult, NULL);
         }
 
 #endif
@@ -560,53 +552,53 @@ static void run_cnn(int x_offset, int y_offset)
 static void ARM_low_power(int lp_mode)
 {
     switch (lp_mode) {
-    case 0:
-        PR_DEBUG("Active\n");
-        break;
+        case 0:
+            PR_DEBUG("Active\n");
+            break;
 
-    case 1:
-        PR_DEBUG("Enter SLEEP\n");
-        MXC_LP_EnterSleepMode();
-        PR_DEBUG("Exit SLEEP\n");
-        break;
+        case 1:
+            PR_DEBUG("Enter SLEEP\n");
+            MXC_LP_EnterSleepMode();
+            PR_DEBUG("Exit SLEEP\n");
+            break;
 
-    case 2:
-        PR_DEBUG("Enter LPM\n");
-        MXC_LP_EnterLowPowerMode();
-        PR_DEBUG("Exit LPM\n");
-        break;
+        case 2:
+            PR_DEBUG("Enter LPM\n");
+            MXC_LP_EnterLowPowerMode();
+            PR_DEBUG("Exit LPM\n");
+            break;
 
-    case 3:
-        PR_DEBUG("Enter UPM\n");
-        MXC_LP_EnterMicroPowerMode();
-        PR_DEBUG("Exit UPM\n");
-        break;
+        case 3:
+            PR_DEBUG("Enter UPM\n");
+            MXC_LP_EnterMicroPowerMode();
+            PR_DEBUG("Exit UPM\n");
+            break;
 
-    case 4:
-        PR_DEBUG("Enter STANDBY\n");
-        MXC_LP_EnterStandbyMode();
-        PR_DEBUG("Exit STANDBY\n");
-        break;
+        case 4:
+            PR_DEBUG("Enter STANDBY\n");
+            MXC_LP_EnterStandbyMode();
+            PR_DEBUG("Exit STANDBY\n");
+            break;
 
-    case 5:
-        PR_DEBUG("Enter BACKUP\n");
-        MXC_LP_EnterBackupMode();
-        PR_DEBUG("Exit BACKUP\n");
-        break;
+        case 5:
+            PR_DEBUG("Enter BACKUP\n");
+            MXC_LP_EnterBackupMode();
+            PR_DEBUG("Exit BACKUP\n");
+            break;
 
-    case 6:
-        PR_DEBUG("Enter POWERDOWN, disable WUT\n");
-        MXC_WUT_Disable();
-        MXC_Delay(SEC(2));
-        MXC_LP_EnterPowerDownMode();
-        PR_DEBUG("Exit SHUTDOWN\n");
-        break;
+        case 6:
+            PR_DEBUG("Enter POWERDOWN, disable WUT\n");
+            MXC_WUT_Disable();
+            MXC_Delay(SEC(2));
+            MXC_LP_EnterPowerDownMode();
+            PR_DEBUG("Exit SHUTDOWN\n");
+            break;
 
-    default:
-        PR_DEBUG("Enter SLEEP\n");
-        MXC_LP_EnterSleepMode();
-        PR_DEBUG("Exit SLEEP\n");
-        break;
+        default:
+            PR_DEBUG("Enter SLEEP\n");
+            MXC_LP_EnterSleepMode();
+            PR_DEBUG("Exit SLEEP\n");
+            break;
     }
 }
 #endif

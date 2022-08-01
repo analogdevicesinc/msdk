@@ -50,9 +50,9 @@ int MXC_AES_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_AES);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
-    
+
     MXC_AES_RevB_Init();
-    
+
     return E_NO_ERROR;
 }
 
@@ -74,9 +74,9 @@ int MXC_AES_IsBusy(void)
 int MXC_AES_Shutdown(void)
 {
     int error = MXC_AES_RevB_Shutdown();
-    
+
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_AES);
-    
+
     return error;
 }
 
@@ -169,4 +169,3 @@ void MXC_AES_SetExtKey(const void* key, mxc_aes_keys_t len)
 {
     return MXC_AES_RevB_SetExtKey(key, len);
 }
-

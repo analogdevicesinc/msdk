@@ -55,15 +55,14 @@
 #include "pal_uart.h"
 #include "pal_bb.h"
 
-
-#define MAX_WUT_TICKS       (configRTC_TICK_RATE_HZ)          /* Maximum deep sleep time, units of 32 kHz ticks */
-#define MIN_WUT_TICKS       100     /* Minimum deep sleep time, units of 32 kHz ticks */
-#define WAKEUP_US           1500    /* Deep sleep recovery time, units of us */
+#define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
+#define MIN_WUT_TICKS 100                      /* Minimum deep sleep time, units of 32 kHz ticks */
+#define WAKEUP_US     1500                     /* Deep sleep recovery time, units of us */
 
 /* Minimum ticks before SysTick interrupt, units of system clock ticks.
  * Convert CPU_CLOCK_HZ to units of ticks per us 
  */
-#define MIN_SYSTICK         (configCPU_CLOCK_HZ/1000000 /* ticks / us */ * 10 /* us */) 
+#define MIN_SYSTICK (configCPU_CLOCK_HZ / 1000000 /* ticks / us */ * 10 /* us */)
 
 /*
  * Sleep-check function
@@ -75,18 +74,18 @@
 int freertos_permit_tickless(void)
 {
     /* Can not disable BLE DBB and 32 MHz clock while trim procedure is ongoing */
-    if(MXC_WUT_TrimPending() != E_NO_ERROR) {
+    if (MXC_WUT_TrimPending() != E_NO_ERROR) {
         return E_BUSY;
     }
 
     /* Figure out if the UART is active */
-    if(PalUartGetState(PAL_UART_ID_TERMINAL) == PAL_UART_STATE_BUSY) {
+    if (PalUartGetState(PAL_UART_ID_TERMINAL) == PAL_UART_STATE_BUSY) {
         return E_BUSY;
     }
 
     /* Prevent characters from being corrupted if still transmitting,
       UART will shutdown in deep sleep  */
-    if(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {
+    if (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {
         return E_BUSY;
     }
 
@@ -104,7 +103,8 @@ void switchToHIRCD4(void)
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC);
     /* Disable unused clocks */
-    while(!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)); /* Wait for the switch to occur */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY))
+        ; /* Wait for the switch to occur */
     MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC96M_EN);
     SystemCoreClockUpdate();
 }
@@ -120,7 +120,8 @@ void switchToHIRC(void)
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC96M_EN;
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC96);
     /* Disable unused clocks */
-    while(!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)); /* Wait for the switch to occur */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY))
+        ; /* Wait for the switch to occur */
     MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC_EN);
     SystemCoreClockUpdate();
 }
@@ -156,19 +157,21 @@ static void deepSleep(void)
     (set VDDCSW=2’b01). Configure VCOREB=1.1V wait for VCOREB ready. */
 
     /* Check to see if VCOREA is ready on  */
-    if(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-
+    if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
         /* Wait for VCOREB to be ready */
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
 
         /* Move VCORE switch back to VCOREB */
-        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | 
-            (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
+        MXC_MCR->ctrl =
+            (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
         /* Raise the VCORE_B voltage */
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
         MXC_SIMO_SetVregO_B(1000);
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
     }
 
     MXC_LP_ICache0PowerUp();
@@ -186,8 +189,8 @@ static void deepSleep(void)
  * interrupt the WFI and continue execution.
  *
  */
-void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
-{   
+void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
+{
     uint32_t preCapture, postCapture, schUsec, dsTicks, dsWutTicks;
     uint64_t bleSleepTicks, idleTicks, dsSysTickPeriods, schUsecElapsed;
     bool_t schTimerActive;
@@ -201,9 +204,10 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
     }
 
     /* Calculate the number of WUT ticks, but we need one to synchronize */
-    idleTicks = (uint64_t)(xExpectedIdleTime - 1) * (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)configTICK_RATE_HZ;
+    idleTicks = (uint64_t)(xExpectedIdleTime - 1) * (uint64_t)configRTC_TICK_RATE_HZ /
+                (uint64_t)configTICK_RATE_HZ;
 
-    if(idleTicks > MAX_WUT_TICKS) {
+    if (idleTicks > MAX_WUT_TICKS) {
         idleTicks = MAX_WUT_TICKS;
     }
 
@@ -214,38 +218,38 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
 
     /* Enter a critical section but don't use the taskENTER_CRITICAL()
        method as that will mask interrupts that should exit sleep mode. */
-    __asm volatile( "cpsid i" );
+    __asm volatile("cpsid i");
 
     /* If a context switch is pending or a task is waiting for the scheduler
        to be unsuspended then abandon the low power entry. */
     /* Also check the MXC drivers for any in-progress activity */
     if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
-            (freertos_permit_tickless() != E_NO_ERROR)) {
+        (freertos_permit_tickless() != E_NO_ERROR)) {
         /* Re-enable interrupts - see comments above the cpsid instruction()
            above. */
-        __asm volatile( "cpsie i" );
+        __asm volatile("cpsie i");
 
         return;
     }
 
     /* Determine if the Bluetooth scheduler is running */
-    if(PalTimerGetState() == PAL_TIMER_STATE_BUSY) {
+    if (PalTimerGetState() == PAL_TIMER_STATE_BUSY) {
         schTimerActive = TRUE;
     } else {
         schTimerActive = FALSE;
     }
 
-    if(!schTimerActive) {
+    if (!schTimerActive) {
         uint32_t ts;
-        if(PalBbGetTimestamp(&ts)) {
-             /*Determine if PalBb is active, return if we get a valid time stamp indicating 
+        if (PalBbGetTimestamp(&ts)) {
+            /*Determine if PalBb is active, return if we get a valid time stamp indicating 
              * that the scheduler is waiting for a PalBb event */
 
             /* Re-enable interrupts - see comments above the cpsid instruction()
                above. */
-            __asm volatile( "cpsie i" );
+            __asm volatile("cpsie i");
 
-            return; 
+            return;
         }
     }
 
@@ -257,50 +261,48 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
     MXC_LP_EnableWUTAlarmWakeup();
 
     /* Determine if we need to snapshot the PalBb clock */
-    if(schTimerActive) {
-
+    if (schTimerActive) {
         /* Snapshot the current WUT value with the PalBb clock */
         MXC_WUT_Store();
         preCapture = MXC_WUT_GetCount();
-        schUsec = PalTimerGetExpTime();
+        schUsec    = PalTimerGetExpTime();
 
         /* Adjust idleTicks for the time it takes to restart the BLE hardware */
-        idleTicks -= ((WAKEUP_US) * configRTC_TICK_RATE_HZ / 1000000);
+        idleTicks -= ((WAKEUP_US)*configRTC_TICK_RATE_HZ / 1000000);
 
         /* Calculate the time to the next BLE scheduler event */
-        if(schUsec < WAKEUP_US) {
+        if (schUsec < WAKEUP_US) {
             bleSleepTicks = 0;
         } else {
-            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US)* 
-                (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)BB_CLK_RATE_HZ;
+            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US) *
+                            (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)BB_CLK_RATE_HZ;
         }
     } else {
         /* Snapshot the current WUT value */
         MXC_WUT_Edge();
-        preCapture = MXC_WUT_GetCount();
+        preCapture    = MXC_WUT_GetCount();
         bleSleepTicks = 0;
-        schUsec = 0;
+        schUsec       = 0;
     }
 
     /* Sleep for the shortest tick duration */
-    if((schTimerActive) && (bleSleepTicks < idleTicks)) {
+    if ((schTimerActive) && (bleSleepTicks < idleTicks)) {
         dsTicks = bleSleepTicks;
     } else {
         dsTicks = idleTicks;
     }
 
     /* Bound the deep sleep time */
-    if(dsTicks > MAX_WUT_TICKS) {
+    if (dsTicks > MAX_WUT_TICKS) {
         dsTicks = MAX_WUT_TICKS;
     }
 
     /* Don't deep sleep if we don't have time */
     if (dsTicks >= MIN_WUT_TICKS) {
-
         /* Arm the WUT interrupt */
         MXC_WUT->cmp = preCapture + dsTicks;
 
-        if(schTimerActive) {
+        if (schTimerActive) {
             /* Stop the BLE scheduler timer */
             PalTimerStop();
 
@@ -316,7 +318,7 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
         LED_On(DEEPSLEEP_LED);
         LED_On(SLEEP_LED);
 
-        if(schTimerActive) {
+        if (schTimerActive) {
             /* Enable and restore the BB hardware */
             PalBbEnable();
 
@@ -327,11 +329,11 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
 
             /* Restart the BLE scheduler timer */
             dsWutTicks = MXC_WUT->cnt - preCapture;
-            schUsecElapsed = (uint64_t)dsWutTicks * (uint64_t)1000000 / 
-                (uint64_t)configRTC_TICK_RATE_HZ;
+            schUsecElapsed =
+                (uint64_t)dsWutTicks * (uint64_t)1000000 / (uint64_t)configRTC_TICK_RATE_HZ;
 
             int palTimerStartTicks = schUsec - schUsecElapsed;
-            if(palTimerStartTicks < 1) {
+            if (palTimerStartTicks < 1) {
                 palTimerStartTicks = 1;
             }
             PalTimerStart(palTimerStartTicks);
@@ -341,12 +343,13 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
     /* Recalculate dsWutTicks for the FreeRTOS tick counter update */
     MXC_WUT_Edge();
     postCapture = MXC_WUT_GetCount();
-    dsWutTicks = postCapture - preCapture;
+    dsWutTicks  = postCapture - preCapture;
 
     /*
      * Advance ticks by # actually elapsed
      */
-    dsSysTickPeriods = (uint64_t)dsWutTicks * (uint64_t)configTICK_RATE_HZ / (uint64_t)configRTC_TICK_RATE_HZ;
+    dsSysTickPeriods =
+        (uint64_t)dsWutTicks * (uint64_t)configTICK_RATE_HZ / (uint64_t)configRTC_TICK_RATE_HZ;
     vTaskStepTick(dsSysTickPeriods);
 
     /* Re-enable SysTick */
@@ -354,5 +357,5 @@ void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
 
     /* Re-enable interrupts - see comments above the cpsid instruction()
        above. */
-    __asm volatile( "cpsie i" );
+    __asm volatile("cpsie i");
 }

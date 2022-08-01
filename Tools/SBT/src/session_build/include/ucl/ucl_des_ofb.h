@@ -46,7 +46,6 @@ extern "C" {
  * @ingroup UCL_OFB
  */
 
-
 /*============================================================================*/
 /** <b>DES-OFB</b>.
  * Complete Process.
@@ -76,9 +75,7 @@ extern "C" {
  *
  * @ingroup UCL_DES_OFB
  */
-int ucl_des_ofb(u8 *dataOut, u8 *dataIn, u8 *key, u8 *IV,
-                u32 data_byteLen, int mode);
-
+int ucl_des_ofb(u8* dataOut, u8* dataIn, u8* key, u8* IV, u32 data_byteLen, int mode);
 
 /*============================================================================*/
 /** <b>DES-OFB Init</b>.
@@ -102,9 +99,7 @@ int ucl_des_ofb(u8 *dataOut, u8 *dataIn, u8 *key, u8 *IV,
  *
  * @ingroup UCL_DES_OFB
  */
-int ucl_des_ofb_init(ucl_des_ctx_t *ctx, u8 *key, u8 *IV,
-                     int mode);
-
+int ucl_des_ofb_init(ucl_des_ctx_t* ctx, u8* key, u8* IV, int mode);
 
 /*============================================================================*/
 /** <b>DES-OFB Core</b>.
@@ -127,9 +122,7 @@ int ucl_des_ofb_init(ucl_des_ctx_t *ctx, u8 *key, u8 *IV,
  *
  * @ingroup UCL_DES_OFB
  */
-int ucl_des_ofb_core(u8 *dataOut, ucl_des_ctx_t *ctx,
-                     u8 *dataIn, u32 data_byteLen);
-
+int ucl_des_ofb_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>DES-OFB Finish</b>.
@@ -144,7 +137,7 @@ int ucl_des_ofb_core(u8 *dataOut, ucl_des_ctx_t *ctx,
  *
  * @ingroup UCL_DES_OFB
  */
-int ucl_des_ofb_finish(ucl_des_ctx_t *ctx);
+int ucl_des_ofb_finish(ucl_des_ctx_t* ctx);
 
 #ifdef __cplusplus
 }
