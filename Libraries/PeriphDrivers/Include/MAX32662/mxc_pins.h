@@ -36,17 +36,12 @@
  *
  ******************************************************************************/
 
-
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
 #include "gpio.h"
 
-typedef enum {
-    MAP_A,
-    MAP_B,
-    MAP_C
-} sys_map_t;
+typedef enum { MAP_A, MAP_B, MAP_C } sys_map_t;
 
 /***** Global Variables *****/
 // Predefined GPIO Configurations

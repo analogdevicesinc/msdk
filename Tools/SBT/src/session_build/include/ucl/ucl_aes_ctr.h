@@ -45,7 +45,6 @@ extern "C" {
  * @ingroup UCL_CTR
  */
 
-
 /*============================================================================*/
 /** <b>AES-CTR</b>.
  * Complete process.
@@ -73,8 +72,7 @@ extern "C" {
  *
  * @ingroup UCL_CTR_AES
  */
-  int ucl_aes_ctr(u8 *dst, u8 *src, u32 len, u8 *counter, u8 *key, u32 keylen, int mode);
-
+int ucl_aes_ctr(u8* dst, u8* src, u32 len, u8* counter, u8* key, u32 keylen, int mode);
 
 /*============================================================================*/
 /** <b>AES-CTR Init</b>.
@@ -103,8 +101,7 @@ extern "C" {
  *
  * @ingroup UCL_CTR_AES
  */
-int ucl_aes_ctr_init(ucl_aes_ctx_t *ctx, u8 *key, u32 keylen, int mode);
-
+int ucl_aes_ctr_init(ucl_aes_ctx_t* ctx, u8* key, u32 keylen, int mode);
 
 /*============================================================================*/
 /** <b>AES-CTR Core</b>.
@@ -128,8 +125,7 @@ int ucl_aes_ctr_init(ucl_aes_ctx_t *ctx, u8 *key, u32 keylen, int mode);
  *
  * @ingroup UCL_CTR_AES
  */
-  int ucl_aes_ctr_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len,u8 *counter);
-
+int ucl_aes_ctr_core(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len, u8* counter);
 
 /*============================================================================*/
 /** <b>AES-CTR Finish</b>.
@@ -144,7 +140,7 @@ int ucl_aes_ctr_init(ucl_aes_ctx_t *ctx, u8 *key, u32 keylen, int mode);
  *
  * @ingroup UCL_CTR_AES
  */
-int ucl_aes_ctr_finish(ucl_aes_ctx_t *ctx);
+int ucl_aes_ctr_finish(ucl_aes_ctx_t* ctx);
 
 /** <b>AES-CTR Core</b>.
  * Process the Data.
@@ -165,8 +161,7 @@ int ucl_aes_ctr_finish(ucl_aes_ctx_t *ctx);
  *          #UCL_AES_BLOCKSIZE
  *
  * @ingroup UCL_CTR_AES */
-  int ucl_aes_ctr_core_context(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len,u8 *counter);
-
+int ucl_aes_ctr_core_context(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len, u8* counter);
 
 #ifdef __cplusplus
 }

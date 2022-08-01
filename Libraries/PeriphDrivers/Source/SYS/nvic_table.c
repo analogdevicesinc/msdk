@@ -36,12 +36,12 @@
 #include <string.h>
 #include "nvic_table.h"
 
-#if !defined (NVIC_USER_IRQ_OFFSET)
-#define NVIC_USER_IRQ_OFFSET 16     /**! Offset for device specific IRQs */
+#if !defined(NVIC_USER_IRQ_OFFSET)
+#define NVIC_USER_IRQ_OFFSET 16 /**! Offset for device specific IRQs */
 #endif
 
 /* RAM vector_table needs to be aligned with the size of the vector table */
-#if defined ( __ICCARM__ )
+#if defined(__ICCARM__)
 #pragma data_alignment = 512
 #else
 __attribute__((aligned(512)))
@@ -50,34 +50,33 @@ static void (*ramVectorTable[MXC_IRQ_COUNT])(void);
 
 void NVIC_SetRAM(void)
 {
-#if defined (__ICCARM__)
-    extern void (* const __isr_vector[])(void);
+#if defined(__ICCARM__)
+    extern void (*const __isr_vector[])(void);
 #else
     /* should be defined in starup_<device>.S */
     extern uint32_t __isr_vector[MXC_IRQ_COUNT];
 #endif
-    
+
     memcpy(&ramVectorTable, &__isr_vector, sizeof(ramVectorTable));
-    SCB->VTOR = (uint32_t) &ramVectorTable;
+    SCB->VTOR = (uint32_t)&ramVectorTable;
 }
 
 void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_handler)(void))
 {
-    int index = irqn + 16;  /* offset for externals */
-    
+    int index = irqn + 16; /* offset for externals */
+
     /* If not copied, do copy */
-    if (SCB->VTOR != (uint32_t) &ramVectorTable) {
+    if (SCB->VTOR != (uint32_t)&ramVectorTable) {
         NVIC_SetRAM();
     }
-    
+
     ramVectorTable[index] = irq_handler;
     NVIC_EnableIRQ(irqn);
 }
 
 uint32_t MXC_NVIC_GetVector(IRQn_Type irqn)
 {
-    uint32_t* vectors = (uint32_t*) SCB->VTOR;
-    return vectors[(int32_t) irqn + NVIC_USER_IRQ_OFFSET];
+    uint32_t* vectors = (uint32_t*)SCB->VTOR;
+    return vectors[(int32_t)irqn + NVIC_USER_IRQ_OFFSET];
 }
 #endif // !__riscv
-

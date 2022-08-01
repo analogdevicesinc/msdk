@@ -65,23 +65,23 @@
 #include "simo.h"
 
 /* Shadow register definitions */
-#define MXC_R_SIR_SHR17         *((uint32_t*)(0x40005444))
+#define MXC_R_SIR_SHR17 *((uint32_t*)(0x40005444))
 
-#define DELAY_IN_SEC    2
-#define USE_CONSOLE     1
+#define DELAY_IN_SEC 2
+#define USE_CONSOLE  1
 
-#define USE_BUTTON      1
-#define USE_ALARM       0
+#define USE_BUTTON 1
+#define USE_ALARM  0
 
-#define DO_SLEEP        1
-#define DO_DEEPSLEEP    1
-#define DO_BACKUP       0
+#define DO_SLEEP     1
+#define DO_DEEPSLEEP 1
+#define DO_BACKUP    0
 
 #if (!(USE_BUTTON || USE_ALARM))
-    #error "You must set either USE_BUTTON or USE_ALARM to 1."
+#error "You must set either USE_BUTTON or USE_ALARM to 1."
 #endif
 #if (USE_BUTTON && USE_ALARM)
-    #error "You must select either USE_BUTTON or USE_ALARM, not both."
+#error "You must select either USE_BUTTON or USE_ALARM, not both."
 #endif
 
 // *****************************************************************************
@@ -91,15 +91,13 @@ volatile int alarmed;
 void alarmHandler(void)
 {
     int flags = MXC_RTC->ctrl;
-    alarmed = 1;
+    alarmed   = 1;
 
-    if((flags & MXC_F_RTC_CTRL_ALSF) >> MXC_F_RTC_CTRL_ALSF_POS)
-    {
+    if ((flags & MXC_F_RTC_CTRL_ALSF) >> MXC_F_RTC_CTRL_ALSF_POS) {
         MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALSF);
     }
 
-    if((flags & MXC_F_RTC_CTRL_ALDF) >> MXC_F_RTC_CTRL_ALDF_POS)
-    {
+    if ((flags & MXC_F_RTC_CTRL_ALDF) >> MXC_F_RTC_CTRL_ALDF_POS) {
         MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALDF);
     }
 }
@@ -107,30 +105,36 @@ void alarmHandler(void)
 void setTrigger(int waitForTrigger)
 {
     alarmed = 0;
-    while(MXC_RTC_Init(0, 0) == E_BUSY);
+    while (MXC_RTC_Init(0, 0) == E_BUSY)
+        ;
 
-    while(MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY);
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY)
+        ;
 
-    while(MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY);
-    
-    while(MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY);
-   
-    while(MXC_RTC_Start() == E_BUSY);
-   
-    if(waitForTrigger)
-    {
-        while(!alarmed);
+    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY)
+        ;
+
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY)
+        ;
+
+    while (MXC_RTC_Start() == E_BUSY)
+        ;
+
+    if (waitForTrigger) {
+        while (!alarmed)
+            ;
     }
-    
-    // Wait for serial transactions to complete.
-    #if USE_CONSOLE
-    while(MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
-    #endif // USE_CONSOLE
+
+// Wait for serial transactions to complete.
+#if USE_CONSOLE
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
+#endif // USE_CONSOLE
 }
 #endif // USE_ALARM
 
 #if USE_BUTTON
-volatile int buttonPressed=0;
+volatile int buttonPressed = 0;
 void buttonHandler(void* pb)
 {
     buttonPressed = 1;
@@ -141,24 +145,23 @@ void setTrigger(int waitForTrigger)
     int tmp;
 
     buttonPressed = 0;
-    if(waitForTrigger)
-    {
-        while(!buttonPressed);
+    if (waitForTrigger) {
+        while (!buttonPressed)
+            ;
     }
 
     // Debounce the button press.
-    for(tmp = 0; tmp < 0x800000; tmp++)
-    {
+    for (tmp = 0; tmp < 0x800000; tmp++) {
         __NOP();
     }
 
-    // Wait for serial transactions to complete.
-    #if USE_CONSOLE
-    while(MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
-    #endif // USE_CONSOLE
+// Wait for serial transactions to complete.
+#if USE_CONSOLE
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
+#endif // USE_CONSOLE
 }
 #endif // USE_BUTTON
-
 
 /*
  *  Switch the system clock to the HIRC / 4
@@ -171,7 +174,8 @@ void switchToHIRCD4(void)
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC);
     /* Disable unused clocks */
-    while(!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)); /* Wait for the switch to occur */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY))
+        ; /* Wait for the switch to occur */
     MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC96M_EN);
     SystemCoreClockUpdate();
 }
@@ -187,7 +191,8 @@ void switchToHIRC96(void)
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC96M_EN;
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC96);
     /* Disable unused clocks */
-    while(!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)); /* Wait for the switch to occur */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY))
+        ; /* Wait for the switch to occur */
     MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC_EN);
     SystemCoreClockUpdate();
 }
@@ -213,19 +218,21 @@ void prepForDeepSleep(void)
 void recoverFromDeepSleep(void)
 {
     /* Check to see if VCOREA is ready on  */
-    if(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-
+    if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
         /* Wait for VCOREB to be ready */
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
 
         /* Move VCORE switch back to VCOREB */
-        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | 
-        (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
+        MXC_MCR->ctrl =
+            (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
         /* Raise the VCORE_B voltage */
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
         MXC_SIMO_SetVregO_B(1000);
-        while(!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+        }
     }
 
     MXC_LP_ICache0PowerUp();
@@ -236,36 +243,39 @@ void recoverFromDeepSleep(void)
 
 int main(void)
 {
-    #if USE_CONSOLE
+#if USE_CONSOLE
     printf("\n\n****Low Power Mode Example****\n\n");
-    #endif // USE_CONSOLE
-    
-    #if USE_ALARM
-    #if USE_CONSOLE
-    printf("This code cycles through the MAX32665 power modes, using the RTC alarm to exit from each mode.  The modes will change every %d seconds.\n\n", DELAY_IN_SEC);
-    #endif // USE_CONSOLE
-    MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
-    #endif // USE_ALARM
+#endif // USE_CONSOLE
 
-    #if USE_BUTTON
-    #if USE_CONSOLE
-    printf("This code cycles through the MAX32665 power modes, using a push button 0 to exit from each mode and enter the next.\n\n");
-    #endif // USE_CONSOLE
+#if USE_ALARM
+#if USE_CONSOLE
+    printf("This code cycles through the MAX32665 power modes, using the RTC alarm to exit from "
+           "each mode.  The modes will change every %d seconds.\n\n",
+           DELAY_IN_SEC);
+#endif // USE_CONSOLE
+    MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
+#endif // USE_ALARM
+
+#if USE_BUTTON
+#if USE_CONSOLE
+    printf("This code cycles through the MAX32665 power modes, using a push button 0 to exit from "
+           "each mode and enter the next.\n\n");
+#endif // USE_CONSOLE
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
-    #endif // USE_BUTTON
-    
-    #if USE_CONSOLE
+#endif // USE_BUTTON
+
+#if USE_CONSOLE
     printf("Running in ACTIVE mode.\n");
-    #else
+#else
     SYS_ClockDisable(SYS_PERIPH_CLOCK_UART0);
-    #endif // USE_CONSOLE
+#endif // USE_CONSOLE
     setTrigger(1);
 
     /* Prevent SIMO leakage in DS by reducing the SIMO buck clock */
     MXC_R_SIR_SHR17 &= ~(0xC0);
 
     MXC_LP_USBSWLPDisable();
-    
+
     MXC_LP_ROM0LightSleepEnable();
     MXC_LP_USBFIFOLightSleepEnable();
     MXC_LP_CryptoLightSleepEnable();
@@ -276,14 +286,14 @@ int main(void)
     MXC_LP_SysRam4LightSleepEnable();
     MXC_LP_SysRam3LightSleepEnable();
     MXC_LP_SysRam2LightSleepEnable();
-    MXC_LP_SysRam1LightSleepDisable();    
+    MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
-    
-    #if USE_CONSOLE
+
+#if USE_CONSOLE
     printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
-    #endif // USE_CONSOLE
+#endif // USE_CONSOLE
     setTrigger(1);
-    
+
     MXC_LP_ROM0Shutdown();
     MXC_LP_USBFIFOShutdown();
     MXC_LP_CryptoShutdown();
@@ -294,52 +304,50 @@ int main(void)
     MXC_LP_SysRam4Shutdown();
     MXC_LP_SysRam3Shutdown();
     MXC_LP_SysRam2Shutdown();
-    MXC_LP_SysRam1PowerUp();    
+    MXC_LP_SysRam1PowerUp();
     MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
-  
-    #if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-    #endif // USE_CONSOLE
-    setTrigger(1);
-    
-    #if USE_BUTTON
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
-    #endif // USE_BUTTON
-    #if USE_ALARM
-    MXC_LP_EnableRTCAlarmWakeup();
-    #endif // USE_ALARM
 
-    while(1)
-    {
-        #if DO_SLEEP
-        #if USE_CONSOLE
+#if USE_CONSOLE
+    printf("All unused RAMs shutdown.\n");
+#endif // USE_CONSOLE
+    setTrigger(1);
+
+#if USE_BUTTON
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
+#endif // USE_BUTTON
+#if USE_ALARM
+    MXC_LP_EnableRTCAlarmWakeup();
+#endif // USE_ALARM
+
+    while (1) {
+#if DO_SLEEP
+#if USE_CONSOLE
         printf("Entering SLEEP mode.\n");
-        #endif // USE_CONSOLE
+#endif // USE_CONSOLE
         setTrigger(0);
         MXC_LP_EnterSleepMode();
         printf("Waking up from SLEEP mode.\n");
 
-        #endif // DO_SLEEP
-        #if DO_DEEPSLEEP
-        #if USE_CONSOLE
+#endif // DO_SLEEP
+#if DO_DEEPSLEEP
+#if USE_CONSOLE
         printf("Entering DEEPSLEEP mode.\n");
-        #endif // USE_CONSOLE
+#endif // USE_CONSOLE
         setTrigger(0);
         prepForDeepSleep();
         MXC_LP_EnterDeepSleepMode();
         recoverFromDeepSleep();
         printf("Waking up from DEEPSLEEP mode.\n");
-        #endif // DO_DEEPSLEEP
+#endif // DO_DEEPSLEEP
 
-        #if DO_BACKUP
-        #if USE_CONSOLE
+#if DO_BACKUP
+#if USE_CONSOLE
         printf("Entering BACKUP mode.\n");
-        #endif // USE_CONSOLE
+#endif // USE_CONSOLE
         setTrigger(0);
         prepForDeepSleep();
         MXC_LP_EnterBackupMode(NULL);
         recoverFromDeepSleep();
-        #endif // DO_BACKUP
+#endif // DO_BACKUP
     }
 }
-

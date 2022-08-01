@@ -50,9 +50,7 @@ void PendSV_Handler(void);
 void SysTick_Handler(void);
 
 /* Create a vector table to locate at zero in the ROM for handling reset and startup */
-__attribute__ ((section(".rom_vector")))
-void (* const rom_vector[])(void) =
-{
+__attribute__((section(".rom_vector"))) void (*const rom_vector[])(void) = {
     __StackTop,            /* Top of Stack */
     Reset_Handler,         /* Reset Handler */
     NMI_Handler_ROM,       /* NMI Handler */
@@ -72,15 +70,13 @@ void (* const rom_vector[])(void) =
 };
 
 /* This is needed to handle the NMI at POR */
-__attribute__ ((section(".rom_handlers")))
-void NMI_Handler_ROM(void)
+__attribute__((section(".rom_handlers"))) void NMI_Handler_ROM(void)
 {
     __NOP();
 }
 
 /* This is needed to handle the fault after initial programming */
-__attribute__ ((section(".rom_handlers")))
-void HardFault_Handler_ROM(void)
+__attribute__((section(".rom_handlers"))) void HardFault_Handler_ROM(void)
 {
     NVIC_SystemReset();
 }

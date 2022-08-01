@@ -78,7 +78,6 @@ uint16_t S26K_GetStatus(void);
  */
 void S26K_ClearStatus(void);
 
-
 /**
  * @brief   Erase the entire chip.
  * @note    Will take a long time to complete.
@@ -133,7 +132,6 @@ void S26K_GetID(uint32_t offset, uint16_t* data, unsigned len);
  */
 void S26K_GetCFI(uint32_t offset, uint16_t* data, unsigned len);
 
-
 uint16_t S26K_GetSectorProtection(uint32_t addr);
 uint16_t S26K_GetSectorPPB(uint32_t addr);
 void S26K_PPBErase(void);
@@ -145,8 +143,6 @@ void S26K_ClearDYB(uint32_t addr);
 void S26K_SetSectorPPB(uint32_t addr);
 uint16_t S26K_GetASPStatus(void);
 void S26K_WriteBufferAbortReset(void);
-
-
 
 /**@} end of group S26K */
 

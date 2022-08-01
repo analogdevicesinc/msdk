@@ -42,22 +42,22 @@
 
 int main(void)
 {
-  int cnt = 0;
+    int cnt = 0;
 
-  Debug_Init(); // Set up RISCV JTAG
-  MXC_ICC_Enable(MXC_ICC1); // Enable cache
+    Debug_Init();             // Set up RISCV JTAG
+    MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
-  printf("Hello World!\n");
-  while(1) {
-      LED_On(0);
-      MXC_Delay(500000);
-      LED_Off(0);
-      MXC_Delay(500000);
-      printf("count = %d\n", cnt++);
-  }
+    printf("Hello World!\n");
+    while (1) {
+        LED_On(0);
+        MXC_Delay(500000);
+        LED_Off(0);
+        MXC_Delay(500000);
+        printf("count = %d\n", cnt++);
+    }
 
-  // Signal the Cortex-M4
-  MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN | MXC_F_SEMA_IRQ0_CM4_IRQ;
+    // Signal the Cortex-M4
+    MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN | MXC_F_SEMA_IRQ0_CM4_IRQ;
 
-  return 0;
+    return 0;
 }

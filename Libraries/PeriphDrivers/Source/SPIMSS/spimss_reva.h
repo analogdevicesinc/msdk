@@ -44,13 +44,13 @@
 #include "spimss_reva_regs.h"
 #include "spimss.h"
 
- /** 
+/** 
  * @brief Enumeration type for setting the number data lines to use for communication.
  */
-typedef enum {  // ONLY FOR COMPATIBILITY FOR CONSOLIDATION WITH SPY17, NOT USED OR NEEDED
-    DUMMY_1_RevA,    /**< NOT USED                */
-    DUMMY_2_RevA,    /**< NOT USED                */
-    DUMMY_3_RevA,    /**< NOT USED                */
+typedef enum {    // ONLY FOR COMPATIBILITY FOR CONSOLIDATION WITH SPY17, NOT USED OR NEEDED
+    DUMMY_1_RevA, /**< NOT USED                */
+    DUMMY_2_RevA, /**< NOT USED                */
+    DUMMY_3_RevA, /**< NOT USED                */
 } spimss_reva_width_t;
 
 /**
@@ -71,7 +71,7 @@ typedef struct spimss_reva_req spimss_reva_req_t;
  * @note Callback will execute in interrupt context
  * @addtogroup spi_async
  */
-typedef void (*spimss_reva_callback_fn)(spimss_reva_req_t * req, int error_code);
+typedef void (*spimss_reva_callback_fn)(spimss_reva_req_t* req, int error_code);
 
 /**
  * @brief      Structure definition for an SPI Master Transaction request.
@@ -80,24 +80,23 @@ typedef void (*spimss_reva_callback_fn)(spimss_reva_req_t * req, int error_code)
  * @addtogroup spi_async
  */
 struct spimss_reva_req {
-    uint8_t            ssel;       /**< Not Used*/
-    uint8_t            deass;      /**< Not Used*/
-    const void         *tx_data;   /**< Pointer to a buffer to transmit data from. NULL if undesired. */
-    void               *rx_data;   /**< Pointer to a buffer to store data received. NULL if undesired.*/
-    spimss_reva_width_t     width;      /**< Not Used */
-    unsigned           len;        /**< Number of transfer units to send from the \p tx_data buffer. */
-    unsigned           bits;       /**< Number of bits in transfer unit (e.g. 8 for byte, 16 for short) */
-    unsigned           rx_num;     /**< Number of bytes actually read into the \p rx_data buffer. */
-    unsigned           tx_num;     /**< Number of bytes actually sent from the \p tx_data buffer */
-    spimss_reva_callback_fn callback;   /**< Callback function if desired, NULL otherwise */
+    uint8_t ssel;              /**< Not Used*/
+    uint8_t deass;             /**< Not Used*/
+    const void* tx_data;       /**< Pointer to a buffer to transmit data from. NULL if undesired. */
+    void* rx_data;             /**< Pointer to a buffer to store data received. NULL if undesired.*/
+    spimss_reva_width_t width; /**< Not Used */
+    unsigned len;              /**< Number of transfer units to send from the \p tx_data buffer. */
+    unsigned bits;   /**< Number of bits in transfer unit (e.g. 8 for byte, 16 for short) */
+    unsigned rx_num; /**< Number of bytes actually read into the \p rx_data buffer. */
+    unsigned tx_num; /**< Number of bytes actually sent from the \p tx_data buffer */
+    spimss_reva_callback_fn callback; /**< Callback function if desired, NULL otherwise */
 };
 
-
-int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t *spi, unsigned mode, unsigned freq);
-int MXC_SPIMSS_RevA_Shutdown(mxc_spimss_reva_regs_t *spi);
-void MXC_SPIMSS_RevA_Handler(mxc_spimss_reva_regs_t *spi);
-int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
-int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
-int MXC_SPIMSS_RevA_MasterTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
-int MXC_SPIMSS_RevA_SlaveTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
-int MXC_SPIMSS_RevA_AbortAsync(spimss_reva_req_t *req);
+int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t* spi, unsigned mode, unsigned freq);
+int MXC_SPIMSS_RevA_Shutdown(mxc_spimss_reva_regs_t* spi);
+void MXC_SPIMSS_RevA_Handler(mxc_spimss_reva_regs_t* spi);
+int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
+int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
+int MXC_SPIMSS_RevA_MasterTransAsync(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
+int MXC_SPIMSS_RevA_SlaveTransAsync(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
+int MXC_SPIMSS_RevA_AbortAsync(spimss_reva_req_t* req);

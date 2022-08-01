@@ -75,7 +75,6 @@ uint16_t S26K_GetStatus(void);
  */
 void S26K_ClearStatus(void);
 
-
 /**
  * @brief   Erase the entire chip.
  * @note    Will take a long time to complete.
@@ -112,7 +111,7 @@ int S26K_Write16(uint32_t addr, uint16_t data);
  * @param   len     Number of bytes to write.
  * @returns #E_NO_ERROR if erase succeeded. #E_UNKNOWN otherwise.
  */
-int S26K_Write(uint32_t addr, uint16_t *data, unsigned len);
+int S26K_Write(uint32_t addr, uint16_t* data, unsigned len);
 
 /**
  * @brief   Read the s26k ID.
@@ -120,7 +119,7 @@ int S26K_Write(uint32_t addr, uint16_t *data, unsigned len);
  * @param   data    Pointer to store the ID.
  * @param   len     Number of ID bytes to read.
  */
-void S26K_GetID(uint32_t offset, uint16_t *data, unsigned len);
+void S26K_GetID(uint32_t offset, uint16_t* data, unsigned len);
 
 /**
  * @brief   Read the s26k CFI.
@@ -128,8 +127,7 @@ void S26K_GetID(uint32_t offset, uint16_t *data, unsigned len);
  * @param   data    Pointer to store the CFI.
  * @param   len     Number of CFI bytes to read.
  */
-void S26K_GetCFI(uint32_t offset, uint16_t *data, unsigned len);
-
+void S26K_GetCFI(uint32_t offset, uint16_t* data, unsigned len);
 
 uint16_t S26K_GetSectorProtection(uint32_t addr);
 uint16_t S26K_GetSectorPPB(uint32_t addr);
@@ -142,8 +140,6 @@ void S26K_ClearDYB(uint32_t addr);
 void S26K_SetSectorPPB(uint32_t addr);
 uint16_t S26K_GetASPStatus(void);
 void S26K_WriteBufferAbortReset(void);
-
-
 
 /**@} end of group S26K */
 

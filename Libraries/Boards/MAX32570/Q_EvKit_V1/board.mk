@@ -44,8 +44,8 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += rom_stub.c
-SRCS += touchscreen.c
-SRCS += tft.c
+SRCS += tft_ssd2119.c
+SRCS += tsc2046.c
 SRCS += w25.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_W25
@@ -56,8 +56,12 @@ MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 VPATH += $(BOARD_DIR)/Source
 VPATH += $(BOARD_DIR)/../Source
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
+VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
 IPATH += $(BOARD_DIR)/../Include
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
+IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/Touchscreen

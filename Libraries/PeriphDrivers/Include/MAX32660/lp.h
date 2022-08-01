@@ -3,7 +3,6 @@
  * @brief   Low power function prototypes and data types.
  */
 
-
 /* ****************************************************************************
  * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -60,9 +59,9 @@ extern "C" {
 
 /** @brief System reset0 enumeration. Used in SYS_PeriphReset0 function */
 typedef enum {
-    MXC_LP_OVR_0_9       = MXC_S_PWRSEQ_LP_CTRL_OVR_0_9V,         /**< Reset DMA */
-    MXC_LP_OVR_1_0       = MXC_S_PWRSEQ_LP_CTRL_OVR_1_0V,         /**< Reset DMA */
-    MXC_LP_OVR_1_1       = MXC_S_PWRSEQ_LP_CTRL_OVR_1_1V,         /**< Reset DMA */
+    MXC_LP_OVR_0_9 = MXC_S_PWRSEQ_LP_CTRL_OVR_0_9V, /**< Reset DMA */
+    MXC_LP_OVR_1_0 = MXC_S_PWRSEQ_LP_CTRL_OVR_1_0V, /**< Reset DMA */
+    MXC_LP_OVR_1_1 = MXC_S_PWRSEQ_LP_CTRL_OVR_1_1V, /**< Reset DMA */
 } mxc_lp_ovr_t;
 
 /**
@@ -167,7 +166,7 @@ void MXC_LP_DisableSysRAM0LightSleep(void);
  * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins);
+void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
@@ -175,7 +174,7 @@ void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins);
+void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.
@@ -327,7 +326,6 @@ void MXC_LP_EnableVCoreSVM(void);
  * @brief     Disables V CORE Supply Voltage Monitor
  */
 void MXC_LP_DisableVCoreSVM(void);
-
 
 /**
  * @brief     Enables VDDIO Power-On-Reset Monitor

@@ -60,21 +60,23 @@ int main(void)
 {
     mxc_wut_cfg_t cfg;
     uint32_t ticks;
-    
+
     printf("/************** Wakeup timer example ********************/\n");
     printf("This example is to show how the Wakeup timer is used and configured\n");
-    printf("Press PB1 to put the chip into sleep and then the wakeup timer will wake up in %d Miliseconds \n", MILLISECONDS_WUT);
+    printf("Press PB1 to put the chip into sleep and then the wakeup timer will wake up in %d "
+           "Miliseconds \n",
+           MILLISECONDS_WUT);
 
     // Get ticks based off of milliseconds
     MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
-    
+
     // config structure for one shot timer to trigger in a number of ticks
-    cfg.mode = MXC_WUT_MODE_ONESHOT;
+    cfg.mode    = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
-    
+
     // Init WUT
     MXC_WUT_Init(MXC_WUT_PRES_1);
-    
+
     //Config WUT
     MXC_WUT_Config(&cfg);
     MXC_LP_EnableWUTAlarmWakeup();
@@ -82,17 +84,18 @@ int main(void)
     NVIC_EnableIRQ(WUT_IRQn);
 
     while (1) {
-    	if(PB_Get(0) == TRUE) {
-			printf("Entering SLEEP mode.\n");
+        if (PB_Get(0) == TRUE) {
+            printf("Entering SLEEP mode.\n");
 
-			MXC_WUT_Enable();
+            MXC_WUT_Enable();
 
             // wait until UART transmit
-            while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR);
+            while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+                ;
 
-			MXC_LP_EnterSleepMode();
+            MXC_LP_EnterSleepMode();
 
-			printf("Waking up from SLEEP mode.\n");
-    	}
+            printf("Waking up from SLEEP mode.\n");
+        }
     }
 }

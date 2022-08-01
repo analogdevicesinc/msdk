@@ -41,42 +41,43 @@
 void MXC_LP_EnterSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
-    
+
     /* Clear SLEEPDEEP bit */
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
-    
+
     /* Go into Sleep mode and wait for an interrupt to wake the processor */
     __WFI();
 }
 
 void MXC_LP_EnterDeepSleepMode(void)
-{    
-    // Set SLEEPDEEP bit 
+{
+    // Set SLEEPDEEP bit
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
-    // // Auto-powerdown 96 MHz oscillator when in deep sleep 
+    // // Auto-powerdown 96 MHz oscillator when in deep sleep
     // MXC_GCR->pm |= MXC_F_GCR_PM_HFIOPD; // Not supported on ME12
-    // Go into Deepsleep mode and wait for an interrupt to wake the processor 
+    // Go into Deepsleep mode and wait for an interrupt to wake the processor
     __WFI();
 }
 
 void MXC_LP_EnterBackupMode(void)
 {
     MXC_LP_ClearWakeStatus();
-    
+
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
-    
-    while (1); // Should never reach this line - device will jump to backup vector on exit from background mode.
-    
+
+    while (1)
+        ; // Should never reach this line - device will jump to backup vector on exit from background mode.
 }
 
 void MXC_LP_EnterPowerDownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
-    
-    while (1); // Should never reach this line - device will reset on exit from shutdown mode.
+
+    while (1)
+        ; // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
 void MXC_LP_EnableSRAM3(void)
@@ -119,42 +120,34 @@ void MXC_LP_DisableSRAM0(void)
     MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM0;
 }
 
-int MXC_LP_EnableSRAM(int instance) 
+int MXC_LP_EnableSRAM(int instance)
 {
     if (instance == 0) {
         MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM0;
-    }
-    else if (instance == 1) {
+    } else if (instance == 1) {
         MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM1;
-    }
-    else if (instance == 2) {
+    } else if (instance == 2) {
         MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM2;
-    }
-    else if (instance == 3) {
+    } else if (instance == 3) {
         MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM3;
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
 
     return E_SUCCESS;
 }
 
-int MXC_LP_DisableSRAM(int instance) 
+int MXC_LP_DisableSRAM(int instance)
 {
     if (instance == 0) {
         MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM0;
-    }
-    else if (instance == 1) {
+    } else if (instance == 1) {
         MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM1;
-    }
-    else if (instance == 2) {
+    } else if (instance == 2) {
         MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM2;
-    }
-    else if (instance == 3) {
+    } else if (instance == 3) {
         MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM3;
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
 
@@ -181,7 +174,6 @@ int MXC_LP_BandgapIsOn(void)
     return ~(MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_BG_DIS); // Logic on Bandgap bit is inverted
 }
 
-
 void MXC_LP_ClearWakeStatus(void)
 {
     /* Write 1 to clear */
@@ -193,22 +185,22 @@ void MXC_LP_ClearWakeStatus(void)
 void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIO_WE;
-    
+
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-    case MXC_GPIO_PORT_0:
-        MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
-        break;
+        case MXC_GPIO_PORT_0:
+            MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
+            break;
     }
 }
 
 void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
 {
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-    case MXC_GPIO_PORT_0:
-        MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
-        break;
+        case MXC_GPIO_PORT_0:
+            MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
+            break;
     }
-    
+
     if (MXC_PWRSEQ->lpwken1 == 0 && MXC_PWRSEQ->lpwken0 == 0) {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_GPIO_WE;
     }
@@ -224,7 +216,7 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_RTC_WE;
 }
 
-void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr) 
+void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr)
 {
     if (tmr == MXC_TMR3) {
         // MXC_TMR3 (LPTIMER0) is the only timer that supports WE
@@ -232,7 +224,7 @@ void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr)
     }
 }
 
-void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr) 
+void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr)
 {
     if (tmr == MXC_TMR3) {
         // MXC_TMR3 (LPTIMER0) is the only timer that supports WE
@@ -250,7 +242,7 @@ void MXC_LP_DisableICacheLightSleep(void)
     MXC_GCR->memctrl &= ~(MXC_F_GCR_MEMCTRL_ICC0LS_EN);
 }
 
-void MXC_LP_ROMLightSleepEnable(void) 
+void MXC_LP_ROMLightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
 }
@@ -260,45 +252,36 @@ void MXC_LP_RomLightSleepDisable(void)
     MXC_GCR->memctrl &= ~(MXC_F_GCR_MEMCTRL_ROMLS_EN);
 }
 
-int MXC_LP_EnableSysRAMLightSleep(int instance) 
+int MXC_LP_EnableSysRAMLightSleep(int instance)
 {
     if (instance == 0) {
         MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM0LS_EN;
-    }
-    else if (instance == 1) {
+    } else if (instance == 1) {
         MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM1LS_EN;
-    }
-    else if (instance == 2) {
+    } else if (instance == 2) {
         MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM2LS_EN;
-    }
-    else if (instance == 3) {
+    } else if (instance == 3) {
         MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM3LS_EN;
-    }
-    else {
+    } else {
         return E_BAD_PARAM;
     }
 
     return E_SUCCESS;
 }
 
-int MXC_LP_DisableSysRAMLightSleep(int instance) 
+int MXC_LP_DisableSysRAMLightSleep(int instance)
 {
     if (instance == 0) {
         MXC_GCR->memctrl &= ~(MXC_F_GCR_MEMCTRL_RAM0LS_EN);
-    }
-    else if (instance == 1) {
+    } else if (instance == 1) {
         MXC_GCR->memctrl &= ~(MXC_F_GCR_MEMCTRL_RAM1LS_EN);
-    }
-    else if (instance == 2) {
+    } else if (instance == 2) {
         MXC_GCR->memctrl &= ~(MXC_F_GCR_MEMCTRL_RAM2LS_EN);
-    }
-    else if (instance == 3) {
+    } else if (instance == 3) {
         MXC_GCR->memctrl &= ~(MXC_F_GCR_MEMCTRL_RAM1LS_EN);
-    } 
-    else {
+    } else {
         return E_BAD_PARAM;
     }
 
     return E_SUCCESS;
 }
-

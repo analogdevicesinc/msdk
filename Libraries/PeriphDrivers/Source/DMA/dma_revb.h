@@ -38,25 +38,26 @@
 /******* Globals *******/
 
 /****** Functions ******/
-int MXC_DMA_RevB_Init (void);
-int MXC_DMA_RevB_AcquireChannel (void);
-int MXC_DMA_RevB_ReleaseChannel (int ch);
-int MXC_DMA_RevB_ConfigChannel (mxc_dma_config_t config, mxc_dma_srcdst_t srcdst);
-int MXC_DMA_RevB_AdvConfigChannel (mxc_dma_adv_config_t advConfig);
-int MXC_DMA_RevB_SetSrcDst (mxc_dma_srcdst_t srcdst);
-int MXC_DMA_RevB_GetSrcDst (mxc_dma_srcdst_t* srcdst);
-int MXC_DMA_RevB_SetSrcReload (mxc_dma_srcdst_t srcdst);
-int MXC_DMA_RevB_GetSrcReload (mxc_dma_srcdst_t* srcdst);
-int MXC_DMA_RevB_SetCallback (int ch, void (*callback) (int, int));
-int MXC_DMA_RevB_ChannelEnableInt (int ch, int flags);
-int MXC_DMA_RevB_ChannelDisableInt (int ch, int flags);
-int MXC_DMA_RevB_ChannelGetFlags (int ch);
-int MXC_DMA_RevB_ChannelClearFlags (int ch, int flags);
-int MXC_DMA_RevB_EnableInt (int ch);
-int MXC_DMA_RevB_DisableInt (int ch);
-int MXC_DMA_RevB_Start (int ch);
-int MXC_DMA_RevB_Stop (int ch);
-mxc_dma_ch_regs_t* MXC_DMA_RevB_GetCHRegs (int ch);
+int MXC_DMA_RevB_Init(void);
+int MXC_DMA_RevB_AcquireChannel(void);
+int MXC_DMA_RevB_ReleaseChannel(int ch);
+int MXC_DMA_RevB_ConfigChannel(mxc_dma_config_t config, mxc_dma_srcdst_t srcdst);
+int MXC_DMA_RevB_AdvConfigChannel(mxc_dma_adv_config_t advConfig);
+int MXC_DMA_RevB_SetSrcDst(mxc_dma_srcdst_t srcdst);
+int MXC_DMA_RevB_GetSrcDst(mxc_dma_srcdst_t* srcdst);
+int MXC_DMA_RevB_SetSrcReload(mxc_dma_srcdst_t srcdst);
+int MXC_DMA_RevB_GetSrcReload(mxc_dma_srcdst_t* srcdst);
+int MXC_DMA_RevB_SetCallback(int ch, void (*callback)(int, int));
+int MXC_DMA_RevB_ChannelEnableInt(int ch, int flags);
+int MXC_DMA_RevB_ChannelDisableInt(int ch, int flags);
+int MXC_DMA_RevB_ChannelGetFlags(int ch);
+int MXC_DMA_RevB_ChannelClearFlags(int ch, int flags);
+int MXC_DMA_RevB_EnableInt(int ch);
+int MXC_DMA_RevB_DisableInt(int ch);
+int MXC_DMA_RevB_Start(int ch);
+int MXC_DMA_RevB_Stop(int ch);
+mxc_dma_ch_regs_t* MXC_DMA_RevB_GetCHRegs(int ch);
 void MXC_DMA_RevB_Handler();
-int MXC_DMA_RevB_MemCpy (void* dest, void* src, int len, mxc_dma_complete_cb_t callback);
-int MXC_DMA_RevB_DoTransfer (mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);
+int MXC_DMA_RevB_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback);
+int MXC_DMA_RevB_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
+                            mxc_dma_trans_chain_t callback);

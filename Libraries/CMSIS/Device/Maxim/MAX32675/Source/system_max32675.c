@@ -42,9 +42,9 @@
 #include "mxc_sys.h"
 #include "afe.h"
 
-extern void (* const __vector_table[])(void);
+extern void (*const __vector_table[])(void);
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 
 uint32_t SystemCoreClock = HIRC_FREQ;
 
@@ -54,8 +54,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
             base_freq = EXTCLK_FREQ;
             break;
@@ -66,10 +65,10 @@ __weak void SystemCoreClockUpdate(void)
             base_freq = INRO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-        base_freq = IPO_FREQ;
+            base_freq = IPO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-        base_freq = IBRO_FREQ;
+            base_freq = IBRO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
             base_freq = ERTCO_FREQ;
@@ -81,9 +80,9 @@ __weak void SystemCoreClockUpdate(void)
             break;
     }
     // Get the clock divider
-    if (clk_src == MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO)
-    {
-        base_freq = base_freq >> ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_DIV)>> MXC_F_GCR_CLKCTRL_IPO_DIV_POS);
+    if (clk_src == MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO) {
+        base_freq = base_freq >> ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_DIV) >>
+                                  MXC_F_GCR_CLKCTRL_IPO_DIV_POS);
     }
     div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;
 
@@ -121,13 +120,13 @@ __weak void SystemInit(void)
 {
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-#if defined ( __CC_ARM) || defined ( __GNUC__)
+#if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (unsigned long)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
 
-#if defined __ICCARM__  
-     SCB->VTOR = (unsigned long)__vector_table;
+#if defined __ICCARM__
+    SCB->VTOR = (unsigned long)__vector_table;
 #endif
 
     /* Make sure interrupts are enabled. */
@@ -144,15 +143,15 @@ __weak void SystemInit(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0); 
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1); 
- 
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
+
     Board_Init();
 
     afe_load_trims();
 }
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 /* Global variable initialization does not occur until post scatterload in Keil tools.*/
 
 /* External function called after our post scatterload function implementation. */
@@ -170,8 +169,7 @@ void $Sub$$__main_after_scatterload(void)
 {
     SystemInit();
     $Super$$__main_after_scatterload();
-    while(1);
+    while (1)
+        ;
 }
 #endif /* __CC_ARM */
-
-

@@ -48,21 +48,14 @@
 static int font = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
-static int font = (int)& SansSerif16x16[0];
+static int font = (int)&SansSerif16x16[0];
 #endif
 
 static text_t label_text[] = {
     // info
-    { (char*) "One", 3},
-    { (char*) "Two", 3},
-    { (char*) "Three", 5},
-    { (char*) "Four", 4},
-    { (char*) "Five", 4},
-    { (char*) "Six", 3},
-    { (char*) "Seven", 5},
-    { (char*) "Eight", 5},
-    { (char*) "Nine", 4},
-    { (char*) "Zero", 4},
+    {(char*)"One", 3},  {(char*)"Two", 3},  {(char*)"Three", 5}, {(char*)"Four", 4},
+    {(char*)"Five", 4}, {(char*)"Six", 3},  {(char*)"Seven", 5}, {(char*)"Eight", 5},
+    {(char*)"Nine", 4}, {(char*)"Zero", 4},
 };
 #endif
 
@@ -79,7 +72,8 @@ uint8_t signed_to_unsigned(int8_t val)
 }
 
 #ifdef TFT_ENABLE
-void show_image(uint32_t* image, uint32_t xcord, uint32_t ycord, uint32_t scale, uint32_t w, uint32_t h)
+void show_image(uint32_t* image, uint32_t xcord, uint32_t ycord, uint32_t scale, uint32_t w,
+                uint32_t h)
 {
     int r, g, b;
     uint32_t i, x, y;
@@ -88,7 +82,7 @@ void show_image(uint32_t* image, uint32_t xcord, uint32_t ycord, uint32_t scale,
     x = xcord;
     y = ycord;
 
-    for (i = 0; i < (w * h) ; i++) {
+    for (i = 0; i < (w * h); i++) {
         b = signed_to_unsigned(((image[i] >> 16) & 0xFF));
         g = signed_to_unsigned(((image[i] >> 8) & 0xFF));
         r = signed_to_unsigned(((image[i] >> 0) & 0xFF));
@@ -96,7 +90,8 @@ void show_image(uint32_t* image, uint32_t xcord, uint32_t ycord, uint32_t scale,
         // g = (image[i] >>  8) & 0xFF;
         // r = (image[i] >>  0) & 0xFF;
 #ifdef BOARD_EVKIT_V1
-        color  = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+        color =
+            (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
 #endif
 #ifdef BOARD_FTHR_REVA
         // Convert to RGB565
@@ -120,7 +115,7 @@ void TFT_Print(char* str, int x, int y, int font, int length)
     // fonts id
     text_t text;
     text.data = str;
-    text.len = length;
+    text.len  = length;
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
@@ -129,54 +124,45 @@ void draw_obj_rect(float* xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
 {
 #ifdef TFT_ENABLE
     int r = 0, g = 0, b = 0;
-    uint32_t  color;
+    uint32_t color;
 
     if (class_idx == 0) {
         r = 253;
         g = 172;
         b = 83;
-    }
-    else if (class_idx == 1) {
+    } else if (class_idx == 1) {
         r = 155;
         g = 183;
         b = 212;
-    }
-    else if (class_idx == 2) {
+    } else if (class_idx == 2) {
         r = 181;
         g = 90;
         b = 48;
-    }
-    else if (class_idx == 3) {
+    } else if (class_idx == 3) {
         r = 245;
         g = 223;
         b = 77;
-    }
-    else if (class_idx == 4) {
+    } else if (class_idx == 4) {
         r = 48;
         g = 120;
         b = 180;
-    }
-    else if (class_idx == 5) {
+    } else if (class_idx == 5) {
         r = 160;
         g = 218;
         b = 169;
-    }
-    else if (class_idx == 6) {
+    } else if (class_idx == 6) {
         r = 233;
         g = 137;
         b = 126;
-    }
-    else if (class_idx == 7) {
+    } else if (class_idx == 7) {
         r = 0;
         g = 182;
         b = 148;
-    }
-    else if (class_idx == 8) {
+    } else if (class_idx == 8) {
         r = 147;
         g = 105;
         b = 168;
-    }
-    else if (class_idx == 9) {
+    } else if (class_idx == 9) {
         r = 210;
         g = 56;
         b = 108;
@@ -189,7 +175,7 @@ void draw_obj_rect(float* xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
     int x, y;
 
 #ifdef BOARD_EVKIT_V1
-    color  = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+    color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
 #endif
 #ifdef BOARD_FTHR_REVA
     // Convert to RGB565
@@ -206,6 +192,7 @@ void draw_obj_rect(float* xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
         MXC_TFT_WritePixel(x2 * scale, y * scale, scale, scale, color);
     }
 
-    MXC_TFT_PrintFont(x1 * scale + THICKNESS, y1 * scale + THICKNESS, font, &label_text[class_idx],  NULL);
+    MXC_TFT_PrintFont(x1 * scale + THICKNESS, y1 * scale + THICKNESS, font, &label_text[class_idx],
+                      NULL);
 #endif
 }

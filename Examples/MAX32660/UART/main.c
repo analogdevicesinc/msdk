@@ -52,10 +52,10 @@
 /***** Definitions *****/
 // #define DMA
 
-#define UART_BAUD           115200
-#define BUFF_SIZE           1024
-#define UART0               MXC_UART0
-#define UART1               MXC_UART1
+#define UART_BAUD 115200
+#define BUFF_SIZE 1024
+#define UART0     MXC_UART0
+#define UART1     MXC_UART1
 
 /***** Globals *****/
 volatile int READ_FLAG;
@@ -71,7 +71,7 @@ void DMA_Handler(void)
 #else
 void UART1_Handler(void)
 {
-    MXC_UART_AsyncHandler(UART1);                  
+    MXC_UART_AsyncHandler(UART1);
 }
 #endif
 
@@ -89,13 +89,15 @@ int main(void)
     printf("\n\n**************** UART Example ******************\n");
     printf("This example shows a loopback test between the 2 UARTs on the MAX32660.\n");
     printf("\nConnect UART0 to UART1 (P0.4 -> P0.11) for this example.\n");
-    printf("The LEDs are used to indicate the success of the test.\nBlinking->Success, Solid->Failure\n");
+    printf("The LEDs are used to indicate the success of the test.\nBlinking->Success, "
+           "Solid->Failure\n");
 
     printf("\n-->UART Baud \t: %d Hz\n", UART_BAUD);
     printf("\n-->Test Length \t: %d bytes\n\n", BUFF_SIZE);
-    
+
     // Print everything out
-    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {}
+    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {
+    }
 
     // Initialize the data buffers
     for (i = 0; i < BUFF_SIZE; i++) {
@@ -114,38 +116,41 @@ int main(void)
     NVIC_EnableIRQ(UART1_IRQn);
 #endif
 
-    // Initialize the UART     
+    // Initialize the UART
     if ((error = MXC_UART_Init(UART0, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        while (1) {
+        }
     }
 
     if ((error = MXC_UART_Init(UART1, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        while (1) {
+        }
     }
 
     printf("-->UART Initialized\n\n");
-    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {}
+    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {
+    }
 
     mxc_uart_req_t read_req;
-    read_req.uart = UART1;
-    read_req.rxData = RxData;
-    read_req.rxLen = BUFF_SIZE;
-    read_req.txLen = 0;
+    read_req.uart     = UART1;
+    read_req.rxData   = RxData;
+    read_req.rxLen    = BUFF_SIZE;
+    read_req.txLen    = 0;
     read_req.callback = readCallback;
 
     mxc_uart_req_t write_req;
-    write_req.uart = UART0;
-    write_req.txData = TxData;
-    write_req.txLen = BUFF_SIZE;
-    write_req.rxLen = 0;
+    write_req.uart     = UART0;
+    write_req.txData   = TxData;
+    write_req.txLen    = BUFF_SIZE;
+    write_req.rxLen    = 0;
     write_req.callback = NULL;
 
     READ_FLAG = 1;
-    DMA_FLAG = 1;
+    DMA_FLAG  = 1;
 
 #ifdef DMA
     error = MXC_UART_TransactionDMA(&read_req);
@@ -156,7 +161,8 @@ int main(void)
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while(1) {}
+        while (1) {
+        }
     }
 
 #ifdef DMA
@@ -168,13 +174,16 @@ int main(void)
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while(1) {}
+        while (1) {
+        }
     }
 
 #ifdef DMA
-    while (DMA_FLAG) {}
+    while (DMA_FLAG) {
+    }
 #else
-    while (READ_FLAG) {}
+    while (READ_FLAG) {
+    }
     if (READ_FLAG != E_NO_ERROR) {
         printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
         fail++;
@@ -189,19 +198,18 @@ int main(void)
     }
 
     printf("\n");
-    
-    if(fail != 0) {
+
+    if (fail != 0) {
         LED_On(0);
         printf("-->EXAMPLE FAILED\n");
-    }
-    else {
+    } else {
         printf("-->EXAMPLE SUCCEEDED\n");
     }
-    
-    while(1) {
+
+    while (1) {
         LED_On(0);
-        MXC_Delay(500000);  // 500ms
+        MXC_Delay(500000); // 500ms
         LED_Off(0);
-        MXC_Delay(500000);  // 500ms
+        MXC_Delay(500000); // 500ms
     }
 }

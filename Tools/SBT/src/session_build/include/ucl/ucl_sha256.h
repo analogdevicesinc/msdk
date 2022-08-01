@@ -62,15 +62,13 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
-
 /** <b>The SHA256 context</b>.
  * This structure is associated to the 'step by step' process.
  *
  * @ingroup UCL_SHA256
  */
 
-struct ucl_sha256_ctx
-{
+struct ucl_sha256_ctx {
     /** Intermediate and then final hash. */
     u32 state[8];
     /** Counter in bits. */
@@ -85,7 +83,6 @@ struct ucl_sha256_ctx
 
 typedef struct ucl_sha256_ctx ucl_sha256_ctx_t;
 
-
 /** <b>Core block size</b>.
  * Byte size of a SHA256 core block.
  *
@@ -97,7 +94,7 @@ typedef struct ucl_sha256_ctx ucl_sha256_ctx_t;
  *
  * @ingroup UCL_SHA256
  */
-#define UCL_SHA256 1
+#define UCL_SHA256          1
 #define UCL_SHA256_HASHSIZE 32
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA256.
@@ -105,7 +102,6 @@ typedef struct ucl_sha256_ctx ucl_sha256_ctx_t;
  * @ingroup UCL_SHA256
  */
 #define UCL_SHA256_HASHW32SIZE 8
-
 
 /*============================================================================*/
 /** <b>SHA256</b>.
@@ -124,8 +120,7 @@ typedef struct ucl_sha256_ctx ucl_sha256_ctx_t;
  *
  * @ingroup UCL_SHA256
  */
-int ucl_sha256(u8 *hash, u8 *data, u32 data_byteLen);
-
+int ucl_sha256(u8* hash, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA256 Init</b>.
@@ -140,8 +135,7 @@ int ucl_sha256(u8 *hash, u8 *data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA256
  */
-int ucl_sha256_init(ucl_sha256_ctx_t *context);
-
+int ucl_sha256_init(ucl_sha256_ctx_t* context);
 
 /*============================================================================*/
 /** <b>SHA256 Core</b>.
@@ -161,9 +155,7 @@ int ucl_sha256_init(ucl_sha256_ctx_t *context);
  *
  * @ingroup UCL_SHA256
  */
-int ucl_sha256_core(ucl_sha256_ctx_t *context, u8 *data,
-                    u32 data_byteLen);
-
+int ucl_sha256_core(ucl_sha256_ctx_t* context, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA256 Finish</b>.
@@ -184,8 +176,7 @@ int ucl_sha256_core(ucl_sha256_ctx_t *context, u8 *data,
  *
  * @ingroup UCL_SHA256
  */
-int ucl_sha256_finish(u8 *hash, ucl_sha256_ctx_t *context);
-
+int ucl_sha256_finish(u8* hash, ucl_sha256_ctx_t* context);
 
 #ifdef __cplusplus
 }

@@ -8,5 +8,4 @@
 # available config variables.
 
 
-
-include $(MAXIM_PATH)/Libraries/littlefs/littlefs.mk
+LIB_LITTLEFS = 1

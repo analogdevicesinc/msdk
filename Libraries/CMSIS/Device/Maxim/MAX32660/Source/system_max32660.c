@@ -49,33 +49,33 @@
 #include "wdt_regs.h"
 #include "mxc_sys.h"
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = HIRC96_FREQ;
 
 __weak void SystemCoreClockUpdate(void)
 {
-    uint32_t base_freq, div, clk_src,ovr;
+    uint32_t base_freq, div, clk_src, ovr;
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_CLKSEL);
-    
+
     if (clk_src == MXC_S_GCR_CLK_CTRL_CLKSEL_HFXIN) {
         base_freq = HFX_FREQ;
     } else {
-	if (clk_src == MXC_S_GCR_CLK_CTRL_CLKSEL_NANORING) {
-	    base_freq = NANORING_FREQ;
-	} else {
-	    ovr = (MXC_PWRSEQ->lp_ctrl & MXC_F_PWRSEQ_LP_CTRL_OVR);
-	    if (ovr == MXC_S_PWRSEQ_LP_CTRL_OVR_0_9V) {
-		base_freq = HIRC96_FREQ/4;
-	    } else {
-		if (ovr == MXC_S_PWRSEQ_LP_CTRL_OVR_1_0V) {
-		    base_freq = HIRC96_FREQ/2;
-		} else {
-		    base_freq = HIRC96_FREQ;
-		}
-	    }
-	}
+        if (clk_src == MXC_S_GCR_CLK_CTRL_CLKSEL_NANORING) {
+            base_freq = NANORING_FREQ;
+        } else {
+            ovr = (MXC_PWRSEQ->lp_ctrl & MXC_F_PWRSEQ_LP_CTRL_OVR);
+            if (ovr == MXC_S_PWRSEQ_LP_CTRL_OVR_0_9V) {
+                base_freq = HIRC96_FREQ / 4;
+            } else {
+                if (ovr == MXC_S_PWRSEQ_LP_CTRL_OVR_1_0V) {
+                    base_freq = HIRC96_FREQ / 2;
+                } else {
+                    base_freq = HIRC96_FREQ;
+                }
+            }
+        }
     }
 
     // Get the clock divider
@@ -118,7 +118,8 @@ __weak void SystemInit(void)
     /* IAR & Keil must set vector table after all memory initialization. */
     SCB->VTOR = (unsigned long)__isr_vector;
 
-    MXC_WDT0->ctrl &= ~MXC_F_WDT_CTRL_WDT_EN;  /* Turn off watchdog. Application can re-enable as needed. */
+    MXC_WDT0->ctrl &=
+        ~MXC_F_WDT_CTRL_WDT_EN; /* Turn off watchdog. Application can re-enable as needed. */
 
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11 */
     /* Grant full access, per "Table B3-24 CPACR bit assignments". */
@@ -141,11 +142,11 @@ __weak void SystemInit(void)
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C1);
-    
+
     Board_Init();
 }
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 /* Global variable initialization does not occur until post scatterload in Keil tools.*/
 
 /* External function called after our post scatterload function implementation. */

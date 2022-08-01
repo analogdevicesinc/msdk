@@ -38,22 +38,21 @@
 #include "sema.h"
 #include "sema_reva_regs.h"
 
-typedef void (*mxc_sema_complete_cb_t) (int result);
+typedef void (*mxc_sema_complete_cb_t)(int result);
 
+int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t* sema_regs);
+int MXC_SEMA_RevA_InitBoxes(mxc_sema_reva_regs_t* sema_regs);
+int MXC_SEMA_RevA_GetSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema);
+int MXC_SEMA_RevA_CheckSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema);
+uint32_t MXC_SEMA_RevA_Status(mxc_sema_reva_regs_t* sema_regs);
+void MXC_SEMA_RevA_FreeSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema);
 
-int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t *sema_regs);
-int MXC_SEMA_RevA_InitBoxes(mxc_sema_reva_regs_t *sema_regs);
-int MXC_SEMA_RevA_GetSema (mxc_sema_reva_regs_t *sema_regs, unsigned sema);
-int MXC_SEMA_RevA_CheckSema (mxc_sema_reva_regs_t *sema_regs, unsigned sema);
-uint32_t MXC_SEMA_RevA_Status (mxc_sema_reva_regs_t *sema_regs);
-void MXC_SEMA_RevA_FreeSema (mxc_sema_reva_regs_t *sema_regs, unsigned sema);
+int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t* sema_regs, uint8_t* data, unsigned len);
+int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t* sema_regs, const uint8_t* data, unsigned len);
 
-int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t *sema_regs, uint8_t* data, unsigned len);
-int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t *sema_regs, const uint8_t* data, unsigned len);
+int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb,
+                                const uint8_t* data, unsigned len);
+int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb,
+                               uint8_t* data, unsigned len);
 
-int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_complete_cb_t cb, 
-    const uint8_t* data, unsigned len);
-int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_complete_cb_t cb, 
-    uint8_t* data, unsigned len);
-
-int MXC_SEMA_RevA_Handler(mxc_sema_reva_regs_t *sema_regs);
+int MXC_SEMA_RevA_Handler(mxc_sema_reva_regs_t* sema_regs);
