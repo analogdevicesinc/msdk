@@ -34,8 +34,17 @@ jobs:
           set +e
           git submodule deinit --force --all
           set -e
+
+          # Check source files
           CFILES=$(find . -iname "*.c")
           for cFile in ${CFILES}
           do
             clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${cFile}
+          done
+
+          # Check header files
+          HFILES=$(find . -iname "*.h" -not -name "*regs*")
+          for hFile in ${HFILES}
+          do
+            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${hFile}
           done
