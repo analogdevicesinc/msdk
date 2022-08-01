@@ -1,5 +1,8 @@
 #include "console.h"
 #include <string.h>
+#include <stdlib.h>
+#include "mxc_delay.h"
+#include "led.h"
 
 char g_serial_buffer[SERIAL_BUFFER_SIZE];
 int g_buffer_index = 0;
@@ -31,6 +34,8 @@ int starts_with(char* a, char* b) {
     return 1;
 }
 
+// Initialize the serial console and transmits the "*SYNC*" string out of the UART port.
+// This function will block until the host sends the "*SYNC*" string back in response.
 int console_init(void) {
     g_num_commands = sizeof(cmd_table) / sizeof(char*);
     clear_serial_buffer();
@@ -40,9 +45,36 @@ int console_init(void) {
         return ret;
     }
 
+    printf("Establishing communication with host...\n");
+    char* sync = "*SYNC*";
+
+    // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
+    while(1) {
+        // Transmit sync string
+        send_msg(sync);
+        LED_Toggle(LED1);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+
+        int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
+        if (available > 0) {
+            char* buffer = (char*)malloc(available);
+            MXC_UART_Read(Con_Uart, (uint8_t*)buffer, &available);
+            if (strcmp(buffer, sync) == 0) {
+                // Received sync string back, break the loop.
+                LED_On(LED1);
+                break;
+            }
+            free(buffer);
+        }
+    }
+
+    printf("Established communications with host!\n");
+    print_help();
+
     return ret;
 }
 
+// Transmit a message over the console's UART with a newline appended.
 int send_msg(const char* msg) {
     int ret = 0;
     int len = strlen(msg);
@@ -60,6 +92,8 @@ int send_msg(const char* msg) {
     return E_NO_ERROR;
 }
 
+// Recieve a message into the global serial buffer.  Returns 1 if a full message
+// has been received, otherwise returns 0.
 int recv_msg(char* buffer) {
     int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
     while (available > 0) {
@@ -89,6 +123,10 @@ int recv_msg(char* buffer) {
     return 0;
 }
 
+// Attempts to receive a full command over the console UART.
+// Writes the received command to the 'out_cmd' pointer and returns
+// 1 if a valid command has been received.  Otherwise, returns 0 and 
+// sets 'out_cmd' to CMD_UNKNOWN.
 int recv_cmd(cmd_t* out_cmd) {
     if (recv_msg(g_serial_buffer)) {
         cmd_t cmd = CMD_UNKNOWN;
@@ -118,6 +156,7 @@ void clear_serial_buffer(void) {
     g_buffer_index = 0;
 }
 
+// Print out all of the entries in the console's command table.
 void print_help(void) {
     int g_num_commands = sizeof(cmd_table) / sizeof(char*);
     printf("Registered %i total commands:\n", g_num_commands);
