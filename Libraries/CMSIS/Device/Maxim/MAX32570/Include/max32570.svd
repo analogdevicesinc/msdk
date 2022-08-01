@@ -10003,15 +10003,9 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>ext_pullup_pol</name>
-       <description>External Pullup.</description>
-       <bitRange>[5:5]</bitRange>
-       <access>read-only</access>
-      </field>
-      <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -10391,7 +10385,7 @@
     <register>
      <name>SAFE_EN</name>
      <description>Pulse Train Global Safe Enable.</description>
-     <addressOffset>0x10</addressOffset>
+     <addressOffset>0x0010</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
@@ -10447,7 +10441,7 @@
     <register>
      <name>SAFE_DIS</name>
      <description>Pulse Train Global Safe Disable.</description>
-     <addressOffset>0x14</addressOffset>
+     <addressOffset>0x0014</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
@@ -11981,22 +11975,6 @@
        <name>SC</name>
        <description>SC function.</description>
        <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>no</name>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>yes</name>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>NFC</name>
-       <description>NFC function.</description>
-       <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -18246,6 +18224,11 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>AUTHOFFSET</name>
+     <description>Auth Offset</description>
+     <addressOffset>0x28</addressOffset>
+    </register>
    </registers>
   </peripheral>
 <!--SPIXFM SPIXF Master-->
@@ -19793,46 +19776,16 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AESKG</name>
-       <description>256-Bit AES NVSRAM Key Generate Register. Setting this field to 1 to generate the 256-Bit AES NVSRAM key and automatically transfer it to the AES_KEU_NVSRAM registers without user intervention. THis field is cleared by hardware when the key has been generated and transferred to the key registers.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>normal</name>
-         <description>Normal Operation.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>generate</name>
-         <description>Generate Key.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>AESKG_MEMPROTE</name>
-       <description>128-Bit AES SPIXR Key Generate Register. Set this field to 1 to generate the 128-bit AES SPIXRkey and automatically transfer it to the AES_KEY_SPIXR registers without user intervention. This field is cleared by hardware when the key has been generated and transferred to the key registers.</description>
+       <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>normal</name>
-         <description>Normal Operation.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>generate</name>
-         <description>Generate Key.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
     <register>
      <name>ST</name>
-     <description>TRNG Status Register.</description>
+     <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
      <addressOffset>0x04</addressOffset>
      <access>read-only</access>
      <fields>
@@ -19864,7 +19817,7 @@
     </register>
     <register>
      <name>DATA</name>
-     <description>TRNG Data Register.</description>
+     <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-only</access>
      <fields>
