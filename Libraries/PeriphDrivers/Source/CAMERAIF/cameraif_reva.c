@@ -41,8 +41,8 @@
 #include "mxc_sys.h"
 
 /* **** Definitions **** */
-#define PCIF_REVA_IE_MASK                                                        \
-   (MXC_F_CAMERAIF_REVA_INT_EN_IMG_DONE | MXC_F_CAMERAIF_REVA_INT_EN_FIFO_FULL | \
+#define PCIF_REVA_IE_MASK                                                               \
+   (MXC_F_CAMERAIF_REVA_INT_EN_IMG_DONE | MXC_F_CAMERAIF_REVA_INT_EN_FIFO_FULL |        \
     MXC_F_CAMERAIF_REVA_INT_EN_FIFO_THRESH | MXC_F_CAMERAIF_REVA_INT_EN_FIFO_NOT_EMPTY)
 
 
