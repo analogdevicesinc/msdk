@@ -31,9 +31,16 @@ int starts_with(char* a, char* b) {
     return 1;
 }
 
-void console_init(void) {
+int console_init(void) {
     g_num_commands = sizeof(cmd_table) / sizeof(char*);
     clear_serial_buffer();
+
+    int ret = E_NO_ERROR;
+    if ((ret = MXC_UART_Init(Con_Uart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+        return ret;
+    }
+
+    return ret;
 }
 
 int send_msg(const char* msg) {

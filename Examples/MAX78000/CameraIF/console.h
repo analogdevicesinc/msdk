@@ -2,6 +2,7 @@
 #define H_CONSOLE
 #include "uart.h"
 #include "board.h"
+#include "example_config.h"
 
 #define SERIAL_BUFFER_SIZE 256
 #define CON_BAUD 921600   //UART baudrate used for sending data to PC, use max 921600 for serial stream
@@ -23,7 +24,7 @@ extern char g_serial_buffer[SERIAL_BUFFER_SIZE];
 extern int g_buffer_index;
 extern int g_num_commands;
 
-void console_init();
+int console_init();
 int send_msg(const char* msg);
 int recv_msg(char* buffer);
 int recv_cmd(cmd_t* out_cmd);
