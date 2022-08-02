@@ -146,6 +146,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
             if (init_pins) {
                 if (cfg->bitMode != TMR_BIT_MODE_16B) {
                     MXC_GPIO_Config(&gpio_cfg_tmr4);
+                    MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR0_I | MXC_F_MCR_LPPIOCTRL_LPTMR0_O;
                 } else {
                     return E_NOT_SUPPORTED;
                 }
@@ -160,6 +161,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
             if (init_pins) {
                 if (cfg->bitMode != TMR_BIT_MODE_16B) {
                     MXC_GPIO_Config(&gpio_cfg_tmr5);
+                    MXC_MCR->lppioctrl |= MXC_F_MCR_LPPIOCTRL_LPTMR1_I | MXC_F_MCR_LPPIOCTRL_LPTMR1_O;
                 } else {
                     return E_NOT_SUPPORTED;
                 }
@@ -200,10 +202,14 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
 
         case 4:
             MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR4);
+            MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR0_I | 
+                                    MXC_F_MCR_LPPIOCTRL_LPTMR0_O);
             break;
 
         case 5:
             MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
+            MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR1_I | 
+                                    MXC_F_MCR_LPPIOCTRL_LPTMR1_O);
             break;
     }
 }
