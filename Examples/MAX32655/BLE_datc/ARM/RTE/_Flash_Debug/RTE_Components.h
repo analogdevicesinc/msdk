@@ -10,7 +10,6 @@
 #ifndef RTE_COMPONENTS_H
 #define RTE_COMPONENTS_H
 
-
 /*
  * Define the Device Header File: 
  */
@@ -18,6 +17,5 @@
 
 /* Maxim.MAX32655 BSP::BSP:EvKit V1:1.0.0 */
 #define BOARD EvKit_V1 /* Target Board */
-
 
 #endif /* RTE_COMPONENTS_H */
