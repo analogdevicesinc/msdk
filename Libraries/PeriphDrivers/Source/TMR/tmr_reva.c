@@ -33,6 +33,7 @@
 
 /* **** Includes **** */
 #include <stddef.h>
+#include <string.h>
 #include "mxc_assert.h"
 #include "tmr.h"
 #include "tmr_reva.h"
@@ -216,6 +217,7 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t* tmr, unsigned long us)
 {
     uint64_t ticks;
     int clk_shift = 0;
+    mxc_tmr_cfg_t cfg;
 
     ticks = (uint64_t)us * (uint64_t)PeripheralClock / (uint64_t)1000000;
 
@@ -226,11 +228,7 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t* tmr, unsigned long us)
 
     mxc_tmr_pres_t prescale = (mxc_tmr_pres_t)clk_shift << MXC_F_TMR_REVA_CN_PRES_POS;
 
-#if TARGET_NUM == 32570
-    mxc_tmr_cfg_t cfg = {0, 0, 0, 0, NULL};
-#else
-    mxc_tmr_cfg_t cfg = {0, 0, 0, 0};
-#endif
+    memset(&cfg, 0, sizeof(mxc_tmr_cfg_t));
 
     // Initialize the timer in one-shot mode
     cfg.pres    = prescale;
