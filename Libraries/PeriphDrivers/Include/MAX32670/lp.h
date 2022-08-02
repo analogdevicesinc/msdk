@@ -243,12 +243,12 @@ void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr);
 /**
  * @brief      Enables LPUART0 to wake up the device from any low power mode.
  */
-void MXC_LP_EnableUARTWakeup (void);
+void MXC_LP_EnableUARTWakeup(void);
 
 /**
  * @brief      Disables LPUART0 from waking up the device.
  */
-void MXC_LP_DisableUARTWakeup (void);
+void MXC_LP_DisableUARTWakeup(void);
 
 /**
  * @brief      Enables the USB to wake up the device from any low power mode.
