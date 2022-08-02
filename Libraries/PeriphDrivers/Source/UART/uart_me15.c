@@ -141,8 +141,9 @@ int MXC_UART_Shutdown(mxc_uart_regs_t* uart)
         case 3:
             MXC_SYS_Reset_Periph(MXC_SYS_RESET_UART3);
             MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART3);
-            MXC_MCR->lppioctrl |= ~(MXC_F_MCR_LPPIOCTRL_LPUART0_RX | MXC_F_MCR_LPPIOCTRL_LPUART0_TX |
-                                    MXC_F_MCR_LPPIOCTRL_LPUART0_RTS | MXC_F_MCR_LPPIOCTRL_LPUART0_CTS);
+            MXC_MCR->lppioctrl |=
+                ~(MXC_F_MCR_LPPIOCTRL_LPUART0_RX | MXC_F_MCR_LPPIOCTRL_LPUART0_TX |
+                  MXC_F_MCR_LPPIOCTRL_LPUART0_RTS | MXC_F_MCR_LPPIOCTRL_LPUART0_CTS);
             break;
 
         default:
