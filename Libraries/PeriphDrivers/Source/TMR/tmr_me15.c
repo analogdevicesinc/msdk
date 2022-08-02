@@ -202,13 +202,13 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
 
         case 4:
             MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR4);
-            MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR0_I | 
+            MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR0_I |
                                     MXC_F_MCR_LPPIOCTRL_LPTMR0_O);
             break;
 
         case 5:
             MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
-            MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR1_I | 
+            MXC_MCR->lppioctrl &= ~(MXC_F_MCR_LPPIOCTRL_LPTMR1_I |
                                     MXC_F_MCR_LPPIOCTRL_LPTMR1_O);
             break;
     }
