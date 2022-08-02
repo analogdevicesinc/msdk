@@ -48,21 +48,25 @@ The project folders in this repo have the following dependencies:
 
     ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
 
-10. Add the following entries _inside_ of the curly braces {}...
+10. Add the entries below into your user settings.json file.
+
+    Note:  **If you installed the MaximSDK to a non-default location change the value of `"MAXIM_PATH"`.  Only use forward slashes `/` when setting `"MAXIM_PATH"`.**
 
     ```json
     {
-        ...
-        "MAXIM_PATH":"<MaximSDK root directory>", //Change this to the installation location of the MaximSDK from step 1.
-        "update.mode": "manual", // Disable auto updates of VS Code (Optional but strongly recommended)
-        "extensions.autoUpdate": false, // Disable auto updates of extensions (Optional but strongly recommended)
-        ...
+        // There may be other settings up here...
+        
+        "MAXIM_PATH":"C:/MaximSDK", // Only use forward slahes '/' when setting this path!
+        "update.mode": "manual",
+        "extensions.autoUpdate": false,
+        
+        // and/or other settings down here...
     }
     ```
 
-11. Save your changes to the file with `CTRL + S`.  VS Code will prompt for a restart.  Restart for the changes to take effect.
+11. Save your changes to the file with `CTRL + S` and restart VS Code.
 
-12. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  The MaximSDK example projects come pre-populated with .vscode project folders, and the "Tools/VSCode-Maxim" folder of the SDK contains documentation and new project templates.  See [Usage](#usage) below for more details on using the projects.
+12. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  The MaximSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the SDK contains documentation and templates.  See [Usage](#usage) below for more details.
 
 ## Usage
 
@@ -138,17 +142,25 @@ The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Man
 
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations are provided by the `.vscode/launch.json` file.
 
-**Flashing does not happen automatically when launching the debugger.**  Run the "Flash" [build task](#build-tasks) for your program before debugging.
+* Note: **Flashing does not happen automatically when launching the debugger.**  Run the "Flash" [build task](#build-tasks) for your program before debugging.
 
 ![Debug Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger.JPG)
 
+#### Debugger Limitations
+
+In general, Maxim's microcontrollers have the following debugger limitations at the hardware level:
+
+* The debugger can not be connected _while_ the device is in reset.
+
+* The device can not be debugged while the device is in Sleep, Low Power Mode, Micro Power Mode, Standby, Backup, or Shutdown mode.  These modes shut down the SWD clock.
+
 #### Launching the Debugger
 
-1. Ensure that a debugger is attached to the target microcontroller on the correct port.  (Refer to the datasheet of your evaluation board for instructions on connecting a debugger)
+1. Attach your debugger to the SWD port on the target microcontroller.  (Refer to the datasheet of your evaluation board for instructions on connecting a debugger)
 
-2. Flash the program to the microcontroller with the "Flash" Build Task (CTRL+SHIFT+B).  **Flashing does not happen automatically when launching the debugger.**
+2. Flash the program to the microcontroller with the "Flash" [Build Task](#Build-Tasks).  **Flashing does not happen automatically when launching the debugger.**
 
-3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.
+3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.  
 
     ![Debug Tab](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_window.JPG)
 
@@ -158,17 +170,56 @@ Debugging is enabled by Visual Studio Code's integrated debugger.  Launch config
 
 #### Using the Debugger
 
-The main interface for the debugger is the debugger control bar.
+* For full usage details, please refer to the [official VS Code debugger documentation](https://code.visualstudio.com/docs/editor/debugging).
+
+The main interface for the debugger is the debugger control bar:
 
 ![Debugger Control Bar Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_bar.JPG)
 
-Continue | Step Over | Step Into | Step Out | Restart | Stop
+`Continue | Step Over | Step Into | Step Out | Restart | Stop`
 
 Breakpoints can be set by clicking in the space next to the line number in a source code file.  A red dot indicates a line to break on.  Breakpoints can be removed by clicking on them again.  Ex:
 
 ![Breakpoint](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/breakpoint.JPG)
 
-For full usage details, please refer to the [official VS Code debugger documentation](https://code.visualstudio.com/docs/editor/debugging).  Documentation related to launch configurations can be ignored, as that's what's provided by this project.
+#### RISC-V Debugging
+
+For microcontrollers with both an Arm M4 and a RISC-V core, the "GDB (RISC-V)" launch profile is provided to enable RISC-V debugging.  The RISC-V core requires setup and handoff from the Arm M4 core.  As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings.  Such projects are appended with the `"-riscv"` suffix in the project's folder name.
+
+To debug a RISC-V project:
+
+1. Connect your Arm (SWD) and RISC-V (JTAG) debuggers.  The RISC-V projects come pre-configured for the [ARM-USB-OCD-H](https://www.olimex.com/Products/ARM/JTAG/ARM-USB-OCD-H/) + [ARM-JTAG-20-10](https://www.olimex.com/Products/ARM/JTAG/ARM-JTAG-20-10/) adapter.
+
+2. Make sure your Olimex debugger drivers are installed correctly.  Sometimes they need to be updated using the "zadig" tool.  See [this](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf) Olimex User Manual for more details.
+
+3. Run the "Flash" task.  Ex:
+
+    ![image](https://user-images.githubusercontent.com/38844790/168398354-2ac2961b-6d45-4f84-8805-0ab5339a4b98.png)
+
+4. Launch the debugger using the GDB (Arm M4) profile first:
+
+    ![image](https://user-images.githubusercontent.com/38844790/168398415-147a3a96-1a7d-4057-8a32-0dfaf2d378c1.png)
+
+    ... which should hit the breakpoint in `main.c`...
+    ![image](https://user-images.githubusercontent.com/38844790/168398503-0f2ae9c1-f535-4d41-aed9-9d9e19b16303.png)
+
+5. Continue the debugger.  The code in `main.c` will boot up the RISC-V core.  You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
+
+    ![image](https://user-images.githubusercontent.com/38844790/168398665-9486e1b6-73bd-481e-a4b5-15dd44c7d7b9.png)
+
+6. Now, launch another debugger window with the GDB (RISC-V) profile.
+
+    ![image](https://user-images.githubusercontent.com/38844790/168398707-b6771bf3-b6bf-47a2-b963-b0b9fc003ca4.png)
+
+    ... which should hit the breakpoint on main.  
+
+    Notice the "Signal 0" exception below...  This is a known issue caused by a reset hardware bug on the RISC-V core that can be safely ignored.  The exception message is harmless, but annoying...  It will present itself every time the debugger is paused.
+
+    ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
+
+7. From here, the debugger should be fully functional.  Ex, stepping through loading CNN weights on the MAX78000 RISC-V core:
+
+    ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
 
 ## Configuration
 

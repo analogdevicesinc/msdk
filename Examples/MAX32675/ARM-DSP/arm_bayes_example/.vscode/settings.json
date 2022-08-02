@@ -23,7 +23,7 @@
     "symbol_file":"${config:program_file}",
 
     "M4_OCD_interface_file":"cmsis-dap.cfg",
-    "M4_OCD_target_file":"${config:target}.cfg",
+    "M4_OCD_target_file":"max32675.cfg",
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 

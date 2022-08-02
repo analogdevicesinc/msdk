@@ -58,9 +58,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/CMSIS/5.9.0/Core/Include",
-        "${config:MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -83,9 +81,6 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "ARM_MATH_CM4",
-        "__FPU_PRESENT",
-        "SEMIHOSTING",
         "${config:board}"
     ]
 }
