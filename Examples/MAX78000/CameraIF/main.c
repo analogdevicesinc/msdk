@@ -166,6 +166,12 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     // datasets, for example.
 
     cnn_img_data_t img_data;
+
+    if ((w * h) % 32 != 0) {
+        img_data.raw = NULL;
+        printf("Failed to stream!  Image resolutions must be multiples of 32.\n");
+        return img_data;
+    }
     
     // 1. Configure the camera.  This is the same as the standard blocking capture, except
     // the DMA mode is set to "STREAMING_DMA".
@@ -286,33 +292,35 @@ void service_console() {
                     g_app_settings.dma_channel
                 );
 
-                // 7. Transmit the received image.
-                printf("Transmitting image data over UART...\n");
-                MXC_TMR_SW_Start(MXC_TMR0);
-                // Tell the host console we're about to send an image.
-                clear_serial_buffer();
-                snprintf(
-                    g_serial_buffer,
-                    SERIAL_BUFFER_SIZE, 
-                    "*IMG* %s %i %i %i", // Format img info into a string
-                    img_data.pixel_format,
-                    img_data.imglen,
-                    img_data.w,
-                    img_data.h
-                );
-                send_msg(g_serial_buffer); // Send the img info to the host
+                if (img_data.raw != NULL) {
+                    // 7. Transmit the received image.
+                    printf("Transmitting image data over UART...\n");
+                    MXC_TMR_SW_Start(MXC_TMR0);
+                    // Tell the host console we're about to send an image.
+                    clear_serial_buffer();
+                    snprintf(
+                        g_serial_buffer,
+                        SERIAL_BUFFER_SIZE, 
+                        "*IMG* %s %i %i %i", // Format img info into a string
+                        img_data.pixel_format,
+                        img_data.imglen,
+                        img_data.w,
+                        img_data.h
+                    );
+                    send_msg(g_serial_buffer); // Send the img info to the host
 
-                // Transmit image data over UART.
-                int transfer_len = SERIAL_BUFFER_SIZE;
-                uint8_t* bytes = (uint8_t*)malloc(transfer_len);
-                uint32_t* cnn_addr = img_data.raw;
-                for (int i = 0; i < img_data.imglen; i += transfer_len) {
-                    cnn_addr = read_bytes_from_cnn_sram(bytes, transfer_len, cnn_addr);
-                    MXC_UART_Write(Con_Uart, bytes, &transfer_len);
+                    // Transmit image data over UART.
+                    int transfer_len = SERIAL_BUFFER_SIZE;
+                    uint8_t* bytes = (uint8_t*)malloc(transfer_len);
+                    uint32_t* cnn_addr = img_data.raw;
+                    for (int i = 0; i < img_data.imglen; i += transfer_len) {
+                        cnn_addr = read_bytes_from_cnn_sram(bytes, transfer_len, cnn_addr);
+                        MXC_UART_Write(Con_Uart, bytes, &transfer_len);
+                    }
+
+                    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+                    printf("Done! (serial transmission took %i us)\n", elapsed);
                 }
-
-                int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-                printf("Done! (serial transmission took %i us)\n", elapsed);
             }
 
             else if (cmd == CMD_SETREG) {
