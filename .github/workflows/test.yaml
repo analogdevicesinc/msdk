@@ -1,0 +1,33 @@
+on:
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check
+        with:
+          trigger: '@deploy'
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - run: 'echo Found it!'
+        if: steps.check.outputs.triggered == 'true'
+    
+  #    - uses: actions/checkout@v3
+  #     with:
+  #       submodules: false
+
+      # Runs a set of commands using the runners shell
+  #    - name: clang-format-run
+  #      run: |
+  #        bash -ex .github/workflows/clang-format-run.sh
+  #    - name: Push reformatted files
+  #      uses: EndBug/add-and-commit@v9.0.1
+  #      with:
+  #        add: '*'
+  #        message: 'clang-format bot reformatting.'
+  #        push: true
