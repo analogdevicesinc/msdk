@@ -75,6 +75,7 @@ typedef struct {
     dmamode_t dma_mode;
     unsigned int imgres_w;
     unsigned int imgres_h;
+    pixformat_t pixel_format;
 } app_settings_t;
 
 app_settings_t g_app_settings;
@@ -228,7 +229,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     return img_data;
 }
 
-#ifndef TFT_ENABLE
+#ifndef ENABLE_TFT
 // Service serial console commands
 void service_console() {
     // Check for any incoming serial commands
@@ -252,7 +253,6 @@ void service_console() {
 
             else if (cmd == CMD_CAPTURE) {
                 // Perform a blocking image capture with the current camera settings.
-                // See the 'capture_img' function and 'img_data_t' struct for more details.
                 img_data_t img_data = capture_img(
                     g_app_settings.imgres_w,
                     g_app_settings.imgres_h,
@@ -359,6 +359,7 @@ int main(void)
     g_app_settings.dma_mode = USE_DMA;
     g_app_settings.imgres_w = 64;
     g_app_settings.imgres_h = 64;
+    g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
 
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
@@ -373,13 +374,12 @@ int main(void)
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
     cnn_init();
 
-#ifndef TFT_ENABLE
+#ifndef ENABLE_TFT
     console_init();
 #endif
 
+    // Initialize DMA and acquire a channel for the camera interface to use
     printf("Initializing DMA\n");
-
-    // Initialize DMA for camera interface
     MXC_DMA_Init();
     g_app_settings.dma_channel = MXC_DMA_AcquireChannel();
 
@@ -390,14 +390,11 @@ int main(void)
     slaveAddress = camera_get_slave_address();
     printf("Camera I2C slave address: %02x\n", slaveAddress);
 
-    // Obtain the manufacturer ID of the camera.
     ret = camera_get_manufacture_id(&id);
-
     if (ret != STATUS_OK) {
         printf("Error returned from reading camera id. Error %d\n", ret);
         return -1;
     }
-
     printf("Camera ID detected: %04x\n", id);
 
 #if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_OV5642)
@@ -407,54 +404,39 @@ int main(void)
 
 // TODO: Clean up the section below...
 // ********************************* BEGIN CLEANME*************************************
+// TFT initialization
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
-    /* Initialize TFT display */
-#ifdef BOARD_EVKIT_V1
     MXC_TFT_Init();
-#endif
+    /* Initialize TFT display */
+    #ifdef BOARD_EVKIT_V1
+        MXC_TFT_SetRotation(SCREEN_NORMAL);
+    #endif
 
-#ifdef BOARD_FTHR_REVA
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-#endif
+    #ifdef BOARD_FTHR_REVA
+        MXC_TFT_SetRotation(ROTATE_270);
+    #endif
+
+    #ifndef STREAM_ENABLE
+        /* Set the screen rotation */
+        MXC_TFT_SetRotation(SCREEN_ROTATE);
+        /* Change entry mode settings */
+        MXC_TFT_WriteReg(0x0011, 0x6858);
+    #endif
+
     MXC_TFT_SetBackGroundColor(4);
-#endif
-    // Setup the camera image dimensions, pixel format and data acquiring details.
-#ifndef STREAM_ENABLE
-#ifndef CAMERA_MONO
-    ret = camera_setup(g_app_settings.imgres_w, g_app_settings.imgres_h, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       g_app_settings.dma_channel); // RGB565
-#else
-    ret = camera_setup(g_app_settings.imgres_w, g_app_settings.imgres_h, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
-                       g_app_settings.dma_channel); // Mono
+
+#ifdef STREAM_ENABLE
+    g_app_settings.dma_mode = STREAMING_DMA;
 #endif
 
-#ifdef ENABLE_TFT
-    /* Set the screen rotation */
-    MXC_TFT_SetRotation(SCREEN_ROTATE);
-    /* Change entry mode settings */
-    MXC_TFT_WriteReg(0x0011, 0x6858);
-#endif
+#ifdef CAMERA_MONO
+    g_app_settings.pixel_format = PIXFORMAT_RGB565;
 #else
-#ifndef CAMERA_MONO
-    ret = camera_setup(g_app_settings.imgres_w, g_app_settings.imgres_h, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
-                       g_app_settings.dma_channel); // RGB565 stream
-#else
-    ret = camera_setup(g_app_settings.imgres_w, g_app_settings.imgres_h, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
-                       g_app_settings.dma_channel); // Mono stream
+    g_app_settings.pixel_format = PIXFORMAT_BAYER;
 #endif
 
-#ifdef ENABLE_TFT
-    /* Set the screen rotation */
-#ifdef BOARD_EVKIT_V1
-    MXC_TFT_SetRotation(SCREEN_NORMAL);
-#endif
-#ifdef BOARD_FTHR_REVA
-    MXC_TFT_SetRotation(ROTATE_270);
-#endif
-
-#endif
-#endif //#ifndef STREAM_ENABLE
+    ret = camera_setup(g_app_settings.imgres_w, g_app_settings.imgres_h, g_app_settings.pixel_format, FIFO_FOUR_BYTE, g_app_settings.dma_mode, g_app_settings.dma_channel); // RGB565
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
@@ -473,24 +455,49 @@ int main(void)
 #endif
 #endif
 
+#endif
+
 // *********************************END CLEANME*************************************
 
-    // Start capturing a first camera image frame.
-    printf("Starting\n");
-#ifdef BUTTON
-    while (!PB_Get(0))
-        ;
-#endif
-    camera_start_capture_image();
     printf("Ready!\n");
 
     // Main processing loop.
     while (1) {
 
-#ifndef TFT_ENABLE
+#ifndef ENABLE_TFT
         service_console();
 #else
         // TODO : New TFT processing loop using new 'capture' or 'stream' functions.
+        // Start capturing a first camera image frame.
+    #ifdef BUTTON
+        while (!PB_Get(0))
+            ;
+    #endif
+
+    #ifdef STREAM_ENABLE
+        cnn_img_data_t img_data = stream_img(
+                    g_app_settings.imgres_w,
+                    g_app_settings.imgres_h,
+                    PIXFORMAT_RGB565,
+                    g_app_settings.dma_channel
+                );
+
+        printf("Streamed image!\n");
+
+        // MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, img_data.raw, img_data.h, img_data.w);
+        
+    #else
+        img_data_t img_data = capture_img(
+                    g_app_settings.imgres_w,
+                    g_app_settings.imgres_h,
+                    PIXFORMAT_RGB565,
+                    g_app_settings.dma_mode,
+                    g_app_settings.dma_channel
+                );
+
+        MXC_TFT_ShowImageCameraRGB565(0, 0, img_data.raw, img_data.h, img_data.w);
+    #endif
+
 #endif
         
     }
