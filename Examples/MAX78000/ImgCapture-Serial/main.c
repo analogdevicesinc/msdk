@@ -30,6 +30,14 @@
 * ownership rights.
 *
 ******************************************************************************/
+/**
+ * @file    main.c
+ * @brief   Example and utility for capturing an image using the PCIF interface and Camera drivers
+ *          then streaming image data over a serial port.  Should be paired with the 
+ *          "pc_utility/console.py" program.
+ *
+ */
+
 
 /***** Includes *****/
 #include <stdio.h>
@@ -83,22 +91,22 @@ typedef struct {
 
 app_settings_t g_app_settings;
 
-#ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
-#endif
-
-#ifdef BOARD_FTHR_REVA
-#include "tft_ili9341.h"
-#endif
+/**
+* @brief Capture an image using a standard blocking PCIF capture.
+* @param[in] w Set the width of the image (in pixels)
+* @param[in] h Set the height of the image (in pixels)
+* @param[in] pixel_format Set the pixel format.  See 'pixformat_t' in 'camera.h'
+* @param[in] dma_mode Set the dma mode format.  Should be either "USE_DMA" or "NO_DMA" for standard captures.
+* @param[in] dma_channel DMA channel to use if DMA mode is "USE_DMA".  Must be acquired by the application first.
+* @return "img_data_t" struct describing the captured image.  If the "raw" struct member is NULL, the image capture
+* failed.
+* @details 
+    An SRAM buffer is allocated to hold the entire image, limiting the max resolution to the available memory on the device.
+    This function contains the full setup sequence for capturing an image.  
+    In practice, step 1 can be broken out into a separate initialization 
+    sequence if you're not reconfiguring the camera settings on the fly.
+****************************************************************************/
 img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode_t dma_mode, int dma_channel) {
-    // This demonstrates a basic blocking capture of a single image.
-    // The raw data for the entire image will be saved into a general purpose SRAM buffer.
-
-    // For the purposes of demonstration this function contains the full setup
-    // sequence for capturing an image.  In practice, step 1 can be 
-    // broken out into a separate initialization sequence if you're not
-    // reconfiguring the camera settings on the fly.
-
     img_data_t img_data;
 
     // 1. Configure the camera with the 'camera_setup' function.  
@@ -150,27 +158,37 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
 
     // 5. At this point, "img_data.raw" is pointing to the fully captured
     // image data, and all the info needed to decode it has been collected.
-
     return img_data;
 }
 
-cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel) {
-    // This demonstrates a more advanced streaming-based image capture.
-    // This method has a much lower memory footprint, but dramatically increased 
-    // timing requirements for higher resolutions.  Image data must be streamed to
-    // a destination.  You should ensure that the "sink" datarate of the destination
-    // has enough bandwidth to deal with the massive "source" datarate of the PCIF.
+/**
+* @brief Capture an image using DMA streaming mode.  This method only requires two
+* rows worth of SRAM, allowing for high image resolutions.
+* @param[in] w Set the width of the image (in pixels)
+* @param[in] h Set the height of the image (in pixels)
+* @param[in] pixel_format Set the pixel format.  See 'pixformat_t' in 'camera.h'
+* @param[in] dma_channel DMA channel to use if DMA mode is "USE_DMA".  Must be acquired by the application first.
+* @return "img_data_t" struct describing the captured image.  If the "raw" struct member is NULL, the image capture
+* failed.
+* @details 
+    This method has a much lower memory footprint, but dramatically increased 
+    timing requirements for higher resolutions.  Image data must be streamed to
+    a destination with a high enough "sink" datarate to deal with the massive "source" 
+    datarate coming from the PCIF.
 
-    // For the sake of this example, image data is streamed directly into the CNN
-    // accelerator's data SRAM.  **This is not the correct way to load data for inferences**
-    // The CNN accelerator is the only device with enough memory to store high resolution
-    // images, so this example essentially turns it into a giant SRAM buffer.
-    // That way, lower bandwidth destinations such as UART, TFT displays, etc. can be
-    // made to work with high resolution images.  This method is fine for collecting
-    // datasets, for example.
+    For the sake of this example, image data is streamed directly into the CNN
+    accelerator's data SRAM.  **This is not the correct way to load data for inferences**
+    The CNN accelerator is the only device with enough memory to store high resolution
+    images, so this example essentially turns it into a giant SRAM buffer.
+    This method allows for collecting high resolution images at full speed to send
+    to any arbitrary lower bandwidth output destination.  In this case, it's UART.
+****************************************************************************/
+cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel) {
 
     cnn_img_data_t img_data;
 
+    // Resolution check.  This method only supports resolutions that are multiples of 32.
+    // Additionally, resolutions beyond 352x352 may result in image artifacts.
     if ((w * h) % 32 != 0) {
         img_data.raw = NULL;
         printf("Failed to stream!  Image resolutions must be multiples of 32.\n");
@@ -232,8 +250,16 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     return img_data;
 }
 
-#ifndef ENABLE_TFT
-// Service serial console commands
+/**
+* @brief Receive and service any received console commands.
+* @param[in] w Set the width of the image (in pixels)
+* @param[in] h Set the height of the image (in pixels)
+* @param[in] pixel_format Set the pixel format.  See 'pixformat_t' in 'camera.h'
+* @param[in] dma_mode Set the dma mode format.  Should be either "USE_DMA" or "NO_DMA" for standard captures.
+* @param[in] dma_channel DMA channel to use if DMA mode is "USE_DMA".  Must be acquired by the application first.
+* @return "img_data_t" struct describing the captured image.  If the "raw" struct member is NULL, the image capture
+* failed.
+****************************************************************************/
 void service_console() {
     // Check for any incoming serial commands
         cmd_t cmd = CMD_UNKNOWN;
@@ -296,9 +322,10 @@ void service_console() {
                 );
 
                 if (img_data.raw != NULL) {
-                    // 7. Transmit the received image.
+                    // Transmit the received image.
                     printf("Transmitting image data over UART...\n");
                     MXC_TMR_SW_Start(MXC_TMR0);
+
                     // Tell the host console we're about to send an image.
                     clear_serial_buffer();
                     snprintf(
@@ -312,7 +339,9 @@ void service_console() {
                     );
                     send_msg(g_serial_buffer); // Send the img info to the host
 
-                    // Transmit image data over UART.
+                    // Transmit the raw image data over UART.
+                    // We'll need to do some unpacking from the CNN
+                    // data SRAM in this case.
                     int transfer_len = SERIAL_BUFFER_SIZE;
                     uint8_t* bytes = (uint8_t*)malloc(transfer_len);
                     uint32_t* cnn_addr = img_data.raw;
@@ -327,6 +356,7 @@ void service_console() {
             }
 
             else if (cmd == CMD_SETREG) {
+                // Set a camera register
                 unsigned int reg;
                 unsigned int val;
                 // ^ Declaring these as unsigned ints instead of uintX_t 
@@ -338,6 +368,7 @@ void service_console() {
             }
 
             else if (cmd == CMD_GETREG) {
+                // Read a camera register
                 unsigned int reg;
                 uint8_t val;
                 sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
@@ -350,7 +381,6 @@ void service_console() {
             clear_serial_buffer();
         }
 }
-#endif
 
 // *****************************************************************************
 int main(void)
@@ -363,6 +393,10 @@ int main(void)
     g_app_settings.imgres_w = 64;
     g_app_settings.imgres_h = 64;
     g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
+
+#ifdef CAMERA_MONO
+    g_app_settings.pixel_format = PIXFORMAT_BAYER;
+#endif
 
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
@@ -377,9 +411,7 @@ int main(void)
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
     cnn_init();
 
-#ifndef ENABLE_TFT
     console_init();
-#endif
 
     // Initialize DMA and acquire a channel for the camera interface to use
     printf("Initializing DMA\n");
@@ -405,109 +437,12 @@ int main(void)
     camera_set_vflip(0);
 #endif
 
-// TODO: Clean up the section below...
-// ********************************* BEGIN CLEANME*************************************
-// TFT initialization
-#ifdef ENABLE_TFT
-    printf("Init TFT\n");
-    MXC_TFT_Init();
-    /* Initialize TFT display */
-    #ifdef BOARD_EVKIT_V1
-        MXC_TFT_SetRotation(SCREEN_NORMAL);
-    #endif
-
-    #ifdef BOARD_FTHR_REVA
-        MXC_TFT_SetRotation(ROTATE_270);
-    #endif
-
-    #ifndef STREAM_ENABLE
-        /* Set the screen rotation */
-        MXC_TFT_SetRotation(SCREEN_ROTATE);
-        /* Change entry mode settings */
-        MXC_TFT_WriteReg(0x0011, 0x6858);
-    #endif
-
-    MXC_TFT_SetBackGroundColor(4);
-
-#ifdef STREAM_ENABLE
-    g_app_settings.dma_mode = STREAMING_DMA;
-#endif
-
-#ifdef CAMERA_MONO
-    g_app_settings.pixel_format = PIXFORMAT_RGB565;
-#else
-    g_app_settings.pixel_format = PIXFORMAT_BAYER;
-#endif
-
-    ret = camera_setup(g_app_settings.imgres_w, g_app_settings.imgres_h, g_app_settings.pixel_format, FIFO_FOUR_BYTE, g_app_settings.dma_mode, g_app_settings.dma_channel); // RGB565
-
-    if (ret != STATUS_OK) {
-        printf("Error returned from setting up camera. Error %d\n", ret);
-        return -1;
-    }
-
-    MXC_Delay(SEC(1));
-
-#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-    // set camera clock prescaller to prevent streaming overflow for QVGA
-#ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x8); // can be set to 0x6 in release mode ( -o2 )
-#endif
-#ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xE); // can be set to 0xB in release mode ( -o2 )
-#endif
-#endif
-
-#endif
-
 // *********************************END CLEANME*************************************
 
     printf("Ready!\n");
 
     // Main processing loop.
     while (1) {
-
-#ifndef ENABLE_TFT
         service_console();
-#else
-        // TODO : New TFT processing loop using new 'capture' or 'stream' functions.
-        // Start capturing a first camera image frame.
-    #ifdef BUTTON
-        while (!PB_Get(0))
-            ;
-    #endif
-
-    #ifdef STREAM_ENABLE
-        cnn_img_data_t img_data = stream_img(
-                    g_app_settings.imgres_w,
-                    g_app_settings.imgres_h,
-                    g_app_settings.pixel_format,
-                    g_app_settings.dma_channel
-                );
-
-        // TODO: Modify TFT drivers to be able to support "line by line"
-        // input of image data.
-        
-    #else
-        img_data_t img_data = capture_img(
-                    g_app_settings.imgres_w,
-                    g_app_settings.imgres_h,
-                    g_app_settings.pixel_format,
-                    g_app_settings.dma_mode,
-                    g_app_settings.dma_channel
-                );
-
-        if (strcmp((char*)img_data.pixel_format, "RGB565") == 0) {
-            MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, img_data.raw, img_data.h, img_data.w);
-        }
-        else if (strcmp((char*)img_data.pixel_format, "BAYER") == 0) {
-            MXC_TFT_ShowImageCameraMono(X_START, Y_START, img_data.raw, img_data.h, img_data.w);
-        }
-    #endif
-
-        LED_Toggle(0);
-
-#endif
-        
     }
 }

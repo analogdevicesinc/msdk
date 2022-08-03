@@ -1,3 +1,41 @@
+/*******************************************************************************
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
+/**
+* @file cnn_memutils.h
+* @brief Utility functions for accessing CNN data SRAM as a "continuous" block
+        of memory.
+*****************************************************************************/
+
 #ifndef CNN_H
 #define CNN_h
 #include <stdint.h>
@@ -42,8 +80,8 @@ int cnn_init(void)
 }
 
 // Utility function for incrementing a pointer in CNN data SRAM.
-// There are 4 quadrants, so the memory address must be "stitched"
-// together.
+// There are 4 quadrants, so when memory addresses are "stitched"
+// together the boundaries must be checked.
 // Returns a new address pointer, or NULL if the address overflowed.
 static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
     int val = (int)ptr;
@@ -69,7 +107,8 @@ static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
 
 // Union for doing "in-place" type-casting of 4 bytes
 // into a 32-bit word.  Using a union for this increasing
-// the speed of the conversion by almost 50%.
+// the speed of the conversion in "write_bytes_to_cnn_sram" 
+// by almost 50%.
 union bytes_to_word {
     uint8_t* b;
     uint32_t* word;
@@ -83,7 +122,10 @@ static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_
 
     while (i < len) {
       u.b = &bytes[i];
-      *addr = *u.word;
+      *addr = *u.word; 
+      // ^ De-reference using the typecast through the union.
+      // Bytes do not need to be reversed in this case, but if
+      // necessary the built-in "__REV" instruction can be used
       i += 4;
       addr = increment_cnn_sram_ptr(addr);
     }
