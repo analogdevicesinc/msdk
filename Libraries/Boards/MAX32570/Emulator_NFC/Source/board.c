@@ -65,23 +65,23 @@ const mxc_gpio_cfg_t led_pin[] = {
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /***** File Scope Variables *****/
-static const uart_cfg_t uart_cfg = {
-    .parity = UART_PARITY_DISABLE,
-    .size   = UART_DATA_SIZE_8_BITS,
-    .stop   = UART_STOP_1,
-    .flow   = UART_FLOW_CTRL_DIS,
-    .pol    = UART_FLOW_POL_DIS,
-    .baud   = CONSOLE_BAUD,
-    .clksel = UART_CLKSEL_SYSTEM
-};
+static const uart_cfg_t uart_cfg = {.parity = UART_PARITY_DISABLE,
+                                    .size   = UART_DATA_SIZE_8_BITS,
+                                    .stop   = UART_STOP_1,
+                                    .flow   = UART_FLOW_CTRL_DIS,
+                                    .pol    = UART_FLOW_POL_DIS,
+                                    .baud   = CONSOLE_BAUD,
+                                    .clksel = UART_CLKSEL_SYSTEM};
 
-const sys_cfg_uart_t uart_sys_cfg = {MAP_A, Disable};   // There is no special system configuration parameters for UART on MAX32650
+const sys_cfg_uart_t uart_sys_cfg = {
+    MAP_A, Disable}; // There is no special system configuration parameters for UART on MAX32650
 
-const sys_cfg_spixc_t spixc_sys_cfg = NULL;   // There is no special system configuration parameters for SPIXC on MAX32650
+const sys_cfg_spixc_t spixc_sys_cfg =
+    NULL; // There is no special system configuration parameters for SPIXC on MAX32650
 
 const spixc_cfg_t mx25_spixc_cfg = {
-    0, //mode
-    0, //ssel_pol
+    0,      //mode
+    0,      //ssel_pol
     1000000 //baud
 };
 
@@ -89,8 +89,9 @@ const spixc_cfg_t mx25_spixc_cfg = {
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -103,9 +104,9 @@ void SystemCoreClockUpdate(void)
 int Board_Init(void)
 {
     int err;
-    
+
     SYS_Clock_Select(SYS_CLOCK_HIRC96, MXC_TMR0);
-    
+
     /*
         if ((err = MX25_BoardInit()) != E_NO_ERROR) {
             MXC_ASSERT_FAIL();
@@ -116,7 +117,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     /*
         if ((err = PB_Init()) != E_NO_ERROR) {
             MXC_ASSERT_FAIL();
@@ -128,8 +129,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-    
-    
+
     return E_NO_ERROR;
 }
 
@@ -137,11 +137,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = UART_Init(ConsoleUart, &uart_cfg, &uart_sys_cfg)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -151,29 +151,25 @@ void NMI_Handler(void)
     __NOP();
 }
 
-
 /******************************************************************************/
 int MX25_BoardInit(void)
 {
     return SPIXC_Init(MX25_SPI, &mx25_spixc_cfg, &spixc_sys_cfg);
-    
 }
 
 /******************************************************************************/
 int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, spixc_width_t width)
 {
-
     spixc_req_t req = {MX25_SSEL, deassert, 0, NULL, read, width, len, 0, 0, NULL};
-    
+
     return SPIXC_Trans(MX25_SPI, &req);
 }
 
 /******************************************************************************/
 int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, spixc_width_t width)
 {
-
     spixc_req_t req = {MX25_SSEL, deassert, 0, write, NULL, width, len, 0, 0, NULL};
-    
+
     return SPIXC_Trans(MX25_SPI, &req);
 }
 

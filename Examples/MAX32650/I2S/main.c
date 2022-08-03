@@ -1,4 +1,4 @@
- /**
+/**
  * @file        main.c
  * @brief       I2S Example
  * @note        I2S is configured to send Audio Data on P2.4
@@ -48,33 +48,27 @@
 #include "dma.h"
 #include "tmr.h"
 
-
-uint16_t tone[64] = {
-    0x8000, 0x8c8b, 0x98f8, 0xa527, 0xb0fb, 0xbc56, 0xc71c, 0xd133,
-    0xda82, 0xe2f1, 0xea6d, 0xf0e2, 0xf641, 0xfa7c, 0xfd89, 0xff61,
-    0xffff, 0xff61, 0xfd89, 0xfa7c, 0xf641, 0xf0e2, 0xea6d, 0xe2f1,
-    0xda82, 0xd133, 0xc71c, 0xbc56, 0xb0fb, 0xa527, 0x98f8, 0x8c8b,
-    0x8000, 0x7374, 0x6707, 0x5ad8, 0x4f04, 0x43a9, 0x38e3, 0x2ecc,
-    0x257d, 0x1d0e, 0x1592, 0x0f1d, 0x09be, 0x0583, 0x0276, 0x009e,
-    0x0000, 0x009e, 0x0276, 0x0583, 0x09be, 0x0f1d, 0x1592, 0x1d0e,
-    0x257d, 0x2ecc, 0x38e3, 0x43a9, 0x4f04, 0x5ad8, 0x6707, 0x7374
-};
-
+uint16_t tone[64] = {0x8000, 0x8c8b, 0x98f8, 0xa527, 0xb0fb, 0xbc56, 0xc71c, 0xd133, 0xda82, 0xe2f1,
+                     0xea6d, 0xf0e2, 0xf641, 0xfa7c, 0xfd89, 0xff61, 0xffff, 0xff61, 0xfd89, 0xfa7c,
+                     0xf641, 0xf0e2, 0xea6d, 0xe2f1, 0xda82, 0xd133, 0xc71c, 0xbc56, 0xb0fb, 0xa527,
+                     0x98f8, 0x8c8b, 0x8000, 0x7374, 0x6707, 0x5ad8, 0x4f04, 0x43a9, 0x38e3, 0x2ecc,
+                     0x257d, 0x1d0e, 0x1592, 0x0f1d, 0x09be, 0x0583, 0x0276, 0x009e, 0x0000, 0x009e,
+                     0x0276, 0x0583, 0x09be, 0x0f1d, 0x1592, 0x1d0e, 0x257d, 0x2ecc, 0x38e3, 0x43a9,
+                     0x4f04, 0x5ad8, 0x6707, 0x7374};
 
 /* **** Definitions **** */
-
-
 
 /* **** Global Data **** */
 mxc_i2s_config_t cfg;
 
-
-void DMA0_IRQHandler(void) {
+void DMA0_IRQHandler(void)
+{
     MXC_DMA_Handler();
 }
 
 /* Reset DMA Reload so we loop the audio sample forever */
-void dma_ctz_cb(int ch, int err){
+void dma_ctz_cb(int ch, int err)
+{
     MXC_I2S_DMA_SetReload(cfg.src_addr, cfg.dst_addr, cfg.length);
     MXC_I2S_DMA_ClearFlags();
 }
@@ -88,19 +82,20 @@ int main()
 
     printf("*********** I2S Example **********\n");
 
-    cfg.justify = LEFT_JUSTIFIED;
-    cfg.audio_mode = MONO_MODE;
-    cfg.audio_direction = AUDIO_OUT;
-    cfg.sample_rate = 16000;
+    cfg.justify           = LEFT_JUSTIFIED;
+    cfg.audio_mode        = MONO_MODE;
+    cfg.audio_direction   = AUDIO_OUT;
+    cfg.sample_rate       = 16000;
     cfg.start_immediately = 0;
-    cfg.src_addr = tone;
-    cfg.dst_addr = NULL;
-    cfg.length = 128;
-    cfg.dma_reload_en = 1;
+    cfg.src_addr          = tone;
+    cfg.dst_addr          = NULL;
+    cfg.length            = 128;
+    cfg.dma_reload_en     = 1;
 
-    if((err = MXC_I2S_Init(&cfg, dma_ctz_cb)) != E_NO_ERROR) {
+    if ((err = MXC_I2S_Init(&cfg, dma_ctz_cb)) != E_NO_ERROR) {
         printf("Error in I2S_Init: %d\n", err);
-        while(1){}
+        while (1) {
+        }
     }
 
     printf("I2S Configured\n");
@@ -130,10 +125,12 @@ int main()
     printf("Stopping I2S Output. Example Complete.\n");
     MXC_I2S_Stop();
 
-    if((err = MXC_I2S_Shutdown()) != E_NO_ERROR) {
+    if ((err = MXC_I2S_Shutdown()) != E_NO_ERROR) {
         printf("Could not shut down I2S driver: %d\n", err);
-        while(1){}
+        while (1) {
+        }
     }
 
-    while(1);
+    while (1)
+        ;
 }

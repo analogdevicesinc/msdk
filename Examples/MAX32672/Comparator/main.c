@@ -73,9 +73,9 @@ int main(void)
     printf("\nThe device will be placed in Deep Sleep and requires an edge transition of\n");
     printf("the comparator output to wakeup.\n\n");
 
-
     printf("Press SW3 to begin.\n");
-    while(!PB_Get(0));
+    while (!PB_Get(0))
+        ;
 
     MXC_LP_EnableComparatorWakeup(MXC_ADC_COMP_1);
     MXC_ADC_EnableComparator(MXC_ADC_COMP_1, MXC_ADC_CH_3, MXC_ADC_CH_7);
@@ -84,9 +84,10 @@ int main(void)
     NVIC_EnableIRQ(GPIOWAKE_IRQn);
     __enable_irq();
 
-    while(1) {
+    while (1) {
         printf("\nEntering sleep mode.\n");
-        while(MXC_UART_GetActive(CONSOLE_UART));
+        while (MXC_UART_GetActive(CONSOLE_UART))
+            ;
         MXC_LP_EnterDeepSleepMode();
         printf("Waking up.\n");
     }

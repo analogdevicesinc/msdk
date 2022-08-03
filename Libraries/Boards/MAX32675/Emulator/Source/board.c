@@ -56,8 +56,7 @@ const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
     {MXC_GPIO0, MXC_GPIO_PIN_22, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_23, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO}
-};
+    {MXC_GPIO0, MXC_GPIO_PIN_23, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO}};
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /***** File Scope Variables *****/
@@ -66,8 +65,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 /******************************************************************************/
 /* This function overrides the one in system_max32670.c                       */
@@ -82,14 +82,14 @@ void SystemCoreClockUpdate(void)
 int Board_Init(void)
 {
     int err;
-    
+
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-    
+
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     /*
         if ((err = PB_Init()) != E_NO_ERROR) {
             MXC_ASSERT_FAIL();
@@ -101,8 +101,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-    
-    
+
     return E_NO_ERROR;
 }
 
@@ -110,11 +109,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if (MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK) < 0) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -123,4 +122,3 @@ void NMI_Handler(void)
 {
     __NOP();
 }
-

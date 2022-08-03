@@ -41,32 +41,28 @@
 #include <queue.h>
 #include <semphr.h>
 
-
 /*************************************** DEFINES *****************************/
 
-
 /************************************* VARIABLES *****************************/
-extern xQueueHandle	xQueueMain;
-
+extern xQueueHandle xQueueMain;
 
 /********************************** STATIC FUNCTIONS *************************/
 
-
 /********************************** PUBLIC FUNCTIONS *************************/
-void vGetTSTask( void *pvParameters )
+void vGetTSTask(void* pvParameters)
 {
-	(void) pvParameters;
+    (void)pvParameters;
 
-    int 	  key;
+    int key;
     message_t msgTS;
 
     while (1) {
-		key = MXC_TS_GetKey();
-		if (key > 0) {
-			msgTS.pcType 		= 'T';
-			msgTS.pcMessage[0] = key;
-			xQueueSendToFront( xQueueMain, &msgTS, 0 );
-		}
-		vTaskDelay( 20 );
-	}
+        key = MXC_TS_GetKey();
+        if (key > 0) {
+            msgTS.pcType       = 'T';
+            msgTS.pcMessage[0] = key;
+            xQueueSendToFront(xQueueMain, &msgTS, 0);
+        }
+        vTaskDelay(20);
+    }
 }

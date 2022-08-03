@@ -63,26 +63,26 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define OVERFLOW         //Test Windowed timer 
-                            //OVERFLOW
-                            //UNDERFLOW
+#define OVERFLOW //Test Windowed timer \
+                 //OVERFLOW            \
+                 //UNDERFLOW
 
-#define RESET_PERIOD    MXC_WDT_PERIOD_2_28
-#define INT_PERIOD      MXC_WDT_PERIOD_2_27
+#define RESET_PERIOD MXC_WDT_PERIOD_2_28
+#define INT_PERIOD   MXC_WDT_PERIOD_2_27
 
 // refers to array, do not change constants
-#define SW2             0
-#define LED             0
+#define SW2 0
+#define LED 0
 
 /***** Globals *****/
 volatile uint32_t intCnt = 0;
 
 /***** Functions *****/
 void watchdogHandler()
-{    
+{
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nTIMEOUT!\n");
-    if(intCnt == 0) {
+    if (intCnt == 0) {
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
     intCnt++;
@@ -90,7 +90,7 @@ void watchdogHandler()
 
 void WDT0_IRQHandler(void)
 {
-	watchdogHandler();
+    watchdogHandler();
 }
 
 void WDT_Setup()
@@ -100,28 +100,27 @@ void WDT_Setup()
     MXC_WDT_SetIntPeriod(MXC_WDT0, INT_PERIOD);
     MXC_WDT_ResetTimer(MXC_WDT0);
     MXC_WDT_EnableReset(MXC_WDT0);
-    MXC_WDT_EnableInt(MXC_WDT0);  
-    MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);     
+    MXC_WDT_EnableInt(MXC_WDT0);
+    MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
     NVIC_EnableIRQ(WDT0_IRQn);
-    MXC_WDT_Enable(MXC_WDT0);  
+    MXC_WDT_Enable(MXC_WDT0);
 
     printf("\nWatchdog configured.\n");
     printf("Press (and hold) SW2 to allow Watchdog to expire.\n\n");
 }
 
-
 int main(void)
 {
     MXC_WDT_Init(MXC_WDT0);
 
-	if(MXC_WDT_GetResetFlag(MXC_WDT0)) {
+    if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
-        if(resetFlags == MXC_F_WDT_CTRL_RST_FLAG){
+        if (resetFlags == MXC_F_WDT_CTRL_RST_FLAG) {
             printf("\nWatchdog reset occurred.\n");
         }
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_ClearIntFlag(MXC_WDT0);
-	}
+    }
 
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("Watchdog timer is configured in Windowed mode. Until the\n");
@@ -134,7 +133,7 @@ int main(void)
     LED_Off(LED);
     int numBlinks = 5;
 
-    while(numBlinks) {
+    while (numBlinks) {
         LED_On(LED);
         MXC_Delay(MXC_DELAY_MSEC(100));
         LED_Off(LED);
@@ -146,13 +145,16 @@ int main(void)
     WDT_Setup();
 
     while (1) {
-        //Push SW1 to see interrupt and reset handlers    
-        if(PB_Get(SW2) != 0) {
-            while(intCnt == 0);
+        //Push SW1 to see interrupt and reset handlers
+        if (PB_Get(SW2) != 0) {
+            while (intCnt == 0)
+                ;
             printf("WDT Timer restored in interrupt handler before reset.\n");
-            while(intCnt == 1);
+            while (intCnt == 1)
+                ;
             printf("WDT Timer not restored in interrupt handler. Device will reset shortly.\n");
-            while(1);
+            while (1)
+                ;
         }
 
         //blink LED0

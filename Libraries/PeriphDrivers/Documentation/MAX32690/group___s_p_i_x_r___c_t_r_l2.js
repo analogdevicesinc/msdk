@@ -1,0 +1,25 @@
+var group___s_p_i_x_r___c_t_r_l2 =
+[
+    [ "MXC_F_SPIXR_CTRL2_CPHA", "group___s_p_i_x_r___c_t_r_l2.html#ga0294ca73b894afcccbfe38362407235a", null ],
+    [ "MXC_F_SPIXR_CTRL2_CPHA_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga2e16ad5e359b08107b3102b2791b676e", null ],
+    [ "MXC_F_SPIXR_CTRL2_CPOL", "group___s_p_i_x_r___c_t_r_l2.html#ga3f738001e1ce002d7120ae38c67945c3", null ],
+    [ "MXC_F_SPIXR_CTRL2_CPOL_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga1bf9423fc02b6d60628e7df4a236c6ce", null ],
+    [ "MXC_F_SPIXR_CTRL2_DATA_WIDTH", "group___s_p_i_x_r___c_t_r_l2.html#ga8e5989fca5c5bd5831a241bc14c43009", null ],
+    [ "MXC_F_SPIXR_CTRL2_DATA_WIDTH_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga30c07e8be66b8db17ff4fcb79216c591", null ],
+    [ "MXC_F_SPIXR_CTRL2_NUMBITS", "group___s_p_i_x_r___c_t_r_l2.html#ga51178c9b293255aca86e03bc53cd7684", null ],
+    [ "MXC_F_SPIXR_CTRL2_NUMBITS_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga870d5e1cffb30af8d8e7274a62fbb46b", null ],
+    [ "MXC_F_SPIXR_CTRL2_SCLK_FB_INV", "group___s_p_i_x_r___c_t_r_l2.html#ga5fb42a9c284e703716c7930282345dc2", null ],
+    [ "MXC_F_SPIXR_CTRL2_SCLK_FB_INV_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga8415eee56d2eb1f3f18599f4b5c19c85", null ],
+    [ "MXC_F_SPIXR_CTRL2_SSPOL", "group___s_p_i_x_r___c_t_r_l2.html#ga8bdbd744f74b6493fc2705b538123d9f", null ],
+    [ "MXC_F_SPIXR_CTRL2_SSPOL_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga4e9ec8b5deeb9aadf94137b80ad17c3a", null ],
+    [ "MXC_F_SPIXR_CTRL2_THREE_WIRE", "group___s_p_i_x_r___c_t_r_l2.html#gac345c0768590732d94708459e94fadcc", null ],
+    [ "MXC_F_SPIXR_CTRL2_THREE_WIRE_POS", "group___s_p_i_x_r___c_t_r_l2.html#ga523c25065ca1a3396762d002e47a47ad", null ],
+    [ "MXC_S_SPIXR_CTRL2_DATA_WIDTH_DUAL", "group___s_p_i_x_r___c_t_r_l2.html#ga3c1f9c9096942b297cc6157b93df6ead", null ],
+    [ "MXC_S_SPIXR_CTRL2_DATA_WIDTH_MONO", "group___s_p_i_x_r___c_t_r_l2.html#gac62f653797ab1f450613521def324cfd", null ],
+    [ "MXC_S_SPIXR_CTRL2_DATA_WIDTH_QUAD", "group___s_p_i_x_r___c_t_r_l2.html#ga46c6664ca35618af393948f8ad162871", null ],
+    [ "MXC_S_SPIXR_CTRL2_NUMBITS_0", "group___s_p_i_x_r___c_t_r_l2.html#ga5112ef7198ac7f7c3e7948b6a21cba7e", null ],
+    [ "MXC_V_SPIXR_CTRL2_DATA_WIDTH_DUAL", "group___s_p_i_x_r___c_t_r_l2.html#ga2114a5e7c74bec24079e57e72b7bcde8", null ],
+    [ "MXC_V_SPIXR_CTRL2_DATA_WIDTH_MONO", "group___s_p_i_x_r___c_t_r_l2.html#ga012f8b73732e3829e1f066db490f205c", null ],
+    [ "MXC_V_SPIXR_CTRL2_DATA_WIDTH_QUAD", "group___s_p_i_x_r___c_t_r_l2.html#ga1ec441a826945e6ebff466d8877fba1c", null ],
+    [ "MXC_V_SPIXR_CTRL2_NUMBITS_0", "group___s_p_i_x_r___c_t_r_l2.html#ga8d7cc292b1447cbcb461bd15e607202c", null ]
+];

@@ -39,7 +39,6 @@
 #include <string.h>
 #include "state.h"
 
-
 static State* g_state = NULL;
 
 /********************************* Public Functions **************************/
@@ -52,7 +51,7 @@ int state_set_current(State* state)
 {
     g_state = state;
     g_state->init();
-    
+
     return 0;
 }
 
@@ -60,4 +59,3 @@ State* state_get_current(void)
 {
     return g_state;
 }
-

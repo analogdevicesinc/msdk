@@ -1,0 +1,27 @@
+var group___g_c_r___r_s_t1 =
+[
+    [ "MXC_F_GCR_RST1_AES", "group___g_c_r___r_s_t1.html#ga590b710aa2eee8c566df45cfd1d36c86", null ],
+    [ "MXC_F_GCR_RST1_AES_POS", "group___g_c_r___r_s_t1.html#ga7467dc33f13afaacee6aea8ac5e8cacc", null ],
+    [ "MXC_F_GCR_RST1_CPU1", "group___g_c_r___r_s_t1.html#ga00589efd04e9a55e74231dce2ef7b8fb", null ],
+    [ "MXC_F_GCR_RST1_CPU1_POS", "group___g_c_r___r_s_t1.html#gaf4dce8b6e89a7ba8d573f056aaa6ea88", null ],
+    [ "MXC_F_GCR_RST1_CRC", "group___g_c_r___r_s_t1.html#ga94845e5a6c93b2752d5d9c825da3d1d7", null ],
+    [ "MXC_F_GCR_RST1_CRC_POS", "group___g_c_r___r_s_t1.html#ga60a5887d51b7ce01912a3e61237d13c3", null ],
+    [ "MXC_F_GCR_RST1_DVS", "group___g_c_r___r_s_t1.html#ga44e2af8a782926fc607ebc8685fa96c0", null ],
+    [ "MXC_F_GCR_RST1_DVS_POS", "group___g_c_r___r_s_t1.html#ga7dfd724ef526fe603f726b4f412c926a", null ],
+    [ "MXC_F_GCR_RST1_I2C1", "group___g_c_r___r_s_t1.html#gafaa6b353e6b1ba5ce1536b5d46be89bb", null ],
+    [ "MXC_F_GCR_RST1_I2C1_POS", "group___g_c_r___r_s_t1.html#gafcbe7213d21acfc851d75e94ea135524", null ],
+    [ "MXC_F_GCR_RST1_I2C2", "group___g_c_r___r_s_t1.html#gaec55b7f7f6ae487270e3a8fd3e97468f", null ],
+    [ "MXC_F_GCR_RST1_I2C2_POS", "group___g_c_r___r_s_t1.html#ga3c953a067ebc92ae9ad79d06a35536b0", null ],
+    [ "MXC_F_GCR_RST1_I2S", "group___g_c_r___r_s_t1.html#ga7783123ea2de597257ea75bb11a250d5", null ],
+    [ "MXC_F_GCR_RST1_I2S_POS", "group___g_c_r___r_s_t1.html#gaa02dad84759768f98d2051ea97e874bd", null ],
+    [ "MXC_F_GCR_RST1_OWM", "group___g_c_r___r_s_t1.html#gaf96a071ec12d050d79f041cc6e3e0bb9", null ],
+    [ "MXC_F_GCR_RST1_OWM_POS", "group___g_c_r___r_s_t1.html#gaaf47d456f68b9d1c9d1d843218aba466", null ],
+    [ "MXC_F_GCR_RST1_PT", "group___g_c_r___r_s_t1.html#ga1b1c70244fba5c3c8f67e71323afbfac", null ],
+    [ "MXC_F_GCR_RST1_PT_POS", "group___g_c_r___r_s_t1.html#gaa45bae7fc09e21bfd36ee7fb382d2ce3", null ],
+    [ "MXC_F_GCR_RST1_SIMO", "group___g_c_r___r_s_t1.html#gabd76890b01f76e4595a616ee15c2c19c", null ],
+    [ "MXC_F_GCR_RST1_SIMO_POS", "group___g_c_r___r_s_t1.html#ga27c823dae014fb70a69c1d85fc0137e5", null ],
+    [ "MXC_F_GCR_RST1_SMPHR", "group___g_c_r___r_s_t1.html#ga6f192f72817088d17a3f457c23f5f409", null ],
+    [ "MXC_F_GCR_RST1_SMPHR_POS", "group___g_c_r___r_s_t1.html#ga971a09a5ebd57bc925f7a3cb113e85f2", null ],
+    [ "MXC_F_GCR_RST1_SPI0", "group___g_c_r___r_s_t1.html#gae18a429adc6228661aa441c22fdfd5ac", null ],
+    [ "MXC_F_GCR_RST1_SPI0_POS", "group___g_c_r___r_s_t1.html#ga9ebf2a3c52cf6e6ad2aef72b452249c2", null ]
+];

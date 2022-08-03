@@ -31,7 +31,6 @@
  *
  *************************************************************************** */
 
-
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -44,7 +43,6 @@
 #include "dma_regs.h"
 #include "i2c.h"
 #include "i2c_reva.h"
-
 
 /* **** Definitions **** */
 #define MXC_I2C_FASTPLUS_SPEED 1000000
@@ -62,25 +60,22 @@ int MXC_I2C_Init(mxc_i2c_regs_t* i2c, int masterMode, unsigned int slaveAddr)
     if (i2c == NULL) {
         return E_NULL_PTR;
     }
-    
-    MXC_I2C_Shutdown(i2c);  // Clear everything out
-    
+
+    MXC_I2C_Shutdown(i2c); // Clear everything out
+
     if (i2c == MXC_I2C0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
         MXC_GPIO_Config(&gpio_cfg_i2c0);
-    }
-    else if (i2c == MXC_I2C1) {
+    } else if (i2c == MXC_I2C1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C1);
         MXC_GPIO_Config(&gpio_cfg_i2c1);
-    }
-    else if (i2c == MXC_I2C2) {
+    } else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C2);
         MXC_GPIO_Config(&gpio_cfg_i2c2);
-    }
-    else {
+    } else {
         return E_NO_DEVICE;
     }
-    
+
     return MXC_I2C_RevA_Init(i2c, masterMode, slaveAddr);
 }
 
@@ -95,39 +90,33 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c)
     if (i2c == MXC_I2C0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C0);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I2C0);
-    }
-    else if (i2c == MXC_I2C1) {
+    } else if (i2c == MXC_I2C1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C1);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C1);
-    }
-    else if (i2c == MXC_I2C2) {
+    } else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C2);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C2);
-    }
-    else {
+    } else {
         return E_NO_DEVICE;
     }
-    
+
     return E_NO_ERROR;
 }
 
-int MXC_I2C_Reset (mxc_i2c_regs_t* i2c)
+int MXC_I2C_Reset(mxc_i2c_regs_t* i2c)
 {
     // Configure GPIO for I2C
-    if(i2c == MXC_I2C0) {
+    if (i2c == MXC_I2C0) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I2C0);
-    }
-    else if(i2c == MXC_I2C1) {
+    } else if (i2c == MXC_I2C1) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C1);
-    }
-    else if(i2c == MXC_I2C2) {
+    } else if (i2c == MXC_I2C2) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C2);
-    }
-    else {
+    } else {
         return E_NO_DEVICE;
     }
-    
-    return E_NO_ERROR;    
+
+    return E_NO_ERROR;
 }
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t* i2c, unsigned int hz)
@@ -136,7 +125,7 @@ int MXC_I2C_SetFrequency(mxc_i2c_regs_t* i2c, unsigned int hz)
     if (hz > MXC_I2C_FASTPLUS_SPEED) {
         return E_NOT_SUPPORTED;
     }
-    
+
     return MXC_I2C_RevA_SetFrequency(i2c, hz);
 }
 
@@ -203,23 +192,24 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsig
     return MXC_I2C_RevA_ReadRXFIFO(i2c, bytes, len);
 }
 
-int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
+                          mxc_i2c_dma_complete_cb_t callback)
 {
     uint8_t i2cNum;
     mxc_dma_config_t config;
-    
+
     i2cNum = MXC_I2C_GET_IDX(i2c);
-    
+
     switch (i2cNum) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0RX;
-        break;
-        
-    case 1:
-        config.reqsel = MXC_DMA_REQUEST_I2C1RX;
-        break;
+        case 0:
+            config.reqsel = MXC_DMA_REQUEST_I2C0RX;
+            break;
+
+        case 1:
+            config.reqsel = MXC_DMA_REQUEST_I2C1RX;
+            break;
     }
-    
+
     return MXC_I2C_RevA_ReadRXFIFODMA(i2c, bytes, len, callback, config);
 }
 
@@ -233,23 +223,24 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsi
     return MXC_I2C_RevA_WriteTXFIFO(i2c, bytes, len);
 }
 
-int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
+                           mxc_i2c_dma_complete_cb_t callback)
 {
     uint8_t i2cNum;
     mxc_dma_config_t config;
-    
+
     i2cNum = MXC_I2C_GET_IDX(i2c);
-    
+
     switch (i2cNum) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0TX;
-        break;
-        
-    case 1:
-        config.reqsel = MXC_DMA_REQUEST_I2C1TX;
-        break;
+        case 0:
+            config.reqsel = MXC_DMA_REQUEST_I2C0TX;
+            break;
+
+        case 1:
+            config.reqsel = MXC_DMA_REQUEST_I2C1TX;
+            break;
     }
-    
+
     return MXC_I2C_RevA_WriteTXFIFODMA(i2c, bytes, len, callback, config);
 }
 
@@ -288,35 +279,34 @@ void MXC_I2C_DisableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int f
     MXC_I2C_DisableInt(i2c, flags0, flags1);
 }
 
-
-void MXC_I2C_EnablePreload (mxc_i2c_regs_t* i2c)
+void MXC_I2C_EnablePreload(mxc_i2c_regs_t* i2c)
 {
-    MXC_I2C_RevA_EnablePreload((mxc_i2c_reva_regs_t*) i2c);
+    MXC_I2C_RevA_EnablePreload((mxc_i2c_reva_regs_t*)i2c);
 }
 
-void MXC_I2C_DisablePreload (mxc_i2c_regs_t* i2c)
+void MXC_I2C_DisablePreload(mxc_i2c_regs_t* i2c)
 {
-    MXC_I2C_RevA_DisablePreload((mxc_i2c_reva_regs_t*) i2c);
+    MXC_I2C_RevA_DisablePreload((mxc_i2c_reva_regs_t*)i2c);
 }
 
-void MXC_I2C_EnableGeneralCall (mxc_i2c_regs_t* i2c)
+void MXC_I2C_EnableGeneralCall(mxc_i2c_regs_t* i2c)
 {
-    MXC_I2C_RevA_EnableGeneralCall ((mxc_i2c_reva_regs_t*) i2c);
+    MXC_I2C_RevA_EnableGeneralCall((mxc_i2c_reva_regs_t*)i2c);
 }
 
-void MXC_I2C_DisableGeneralCall (mxc_i2c_regs_t* i2c)
+void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t* i2c)
 {
-    MXC_I2C_RevA_DisableGeneralCall ((mxc_i2c_reva_regs_t*) i2c);
+    MXC_I2C_RevA_DisableGeneralCall((mxc_i2c_reva_regs_t*)i2c);
 }
 
-void MXC_I2C_SetTimeout (mxc_i2c_regs_t* i2c, unsigned int timeout)
+void MXC_I2C_SetTimeout(mxc_i2c_regs_t* i2c, unsigned int timeout)
 {
-    MXC_I2C_RevA_SetTimeout ((mxc_i2c_reva_regs_t*) i2c, timeout);
+    MXC_I2C_RevA_SetTimeout((mxc_i2c_reva_regs_t*)i2c, timeout);
 }
 
-unsigned int MXC_I2C_GetTimeout (mxc_i2c_regs_t* i2c)
+unsigned int MXC_I2C_GetTimeout(mxc_i2c_regs_t* i2c)
 {
-    return MXC_I2C_RevA_GetTimeout ((mxc_i2c_reva_regs_t*) i2c);
+    return MXC_I2C_RevA_GetTimeout((mxc_i2c_reva_regs_t*)i2c);
 }
 
 int MXC_I2C_Recover(mxc_i2c_regs_t* i2c, unsigned int retries)

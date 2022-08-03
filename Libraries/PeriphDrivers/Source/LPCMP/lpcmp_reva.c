@@ -41,7 +41,6 @@
 #include "mcr_regs.h"
 #include "mxc_lock.h"
 
-
 int MXC_LPCMP_RevA_Init(mxc_lpcmp_ctrl_reg_t ctrl_reg)
 {
     *ctrl_reg |= MXC_F_LPCMP_REVA_CTRL_EN;
@@ -51,7 +50,7 @@ int MXC_LPCMP_RevA_Init(mxc_lpcmp_ctrl_reg_t ctrl_reg)
 int MXC_LPCMP_RevA_Shutdown(mxc_lpcmp_ctrl_reg_t ctrl_reg)
 {
     *ctrl_reg &= ~MXC_F_LPCMP_REVA_CTRL_EN;
-    return E_NO_ERROR;    
+    return E_NO_ERROR;
 }
 
 int MXC_LPCMP_RevA_EnableInt(mxc_lpcmp_ctrl_reg_t ctrl_reg)
@@ -79,7 +78,7 @@ int MXC_LPCMP_RevA_ClearFlags(mxc_lpcmp_ctrl_reg_t ctrl_reg)
 
 int MXC_LPCMP_RevA_SelectPolarity(mxc_lpcmp_ctrl_reg_t ctrl_reg, mxc_lpcmp_polarity_t pol)
 {
-    *ctrl_reg &= ~MXC_F_LPCMP_REVA_CTRL_POL;    
+    *ctrl_reg &= ~MXC_F_LPCMP_REVA_CTRL_POL;
     *ctrl_reg |= (pol << MXC_F_LPCMP_REVA_CTRL_POL_POS);
     return E_NO_ERROR;
 }

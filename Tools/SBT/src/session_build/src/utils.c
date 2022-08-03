@@ -54,82 +54,72 @@
  * Get the number of occurrences of `needle` in `haystack`
  */
 
-size_t occurrences(const char *needle, const char *haystack){
+size_t occurrences(const char* needle, const char* haystack)
+{
+    if (NULL == needle || NULL == haystack) {
+        return -1;
+    }
 
-	if (NULL == needle || NULL == haystack){
-		return -1;
-	}
+    char* pos = (char*)haystack;
+    size_t i  = 0;
+    size_t l  = strlen(needle);
 
-	char *pos = (char *)haystack;
-	size_t i = 0;
-	size_t l = strlen(needle);
+    if (l == 0) {
+        return 0;
+    }
 
-	if (l == 0){
-		return 0;
-	}
+    while ((pos = strstr(pos, needle))) {
+        pos += l;
+        i++;
+    }
 
-	while ((pos = strstr(pos, needle))) {
-		pos += l;
-		i++;
-	}
-
-	return i;
+    return i;
 }
 
+char* str_replace(const char* str, const char* sub, const char* replace)
+{
+    char* pos = (char*)str;
+    int count = occurrences(sub, str);
 
-char * str_replace(const char *str, const char *sub, const char *replace) {
+    if (0 >= count) {
+        return strdup(str);
+    }
 
-	char *pos = (char *) str;
-	int count = occurrences(sub, str);
+    int size = (strlen(str) - (strlen(sub) * count) + strlen(replace) * count) + 1;
 
-	if (0 >= count){
-		return strdup(str);
-	}
+    char* result = (char*)malloc(size);
+    if (NULL == result) {
+        return NULL;
+    }
+    memset(result, '\0', size);
+    char* current;
 
-	int size = (strlen(str) - (strlen(sub) * count)	+ strlen(replace) * count) + 1;
+    while ((current = strstr(pos, sub))) {
+        int len = current - pos;
+        strncat(result, pos, len);
+        strncat(result, replace, size);
+        pos = current + strlen(sub);
+    }
 
-	char *result = (char *) malloc(size);
-	if (NULL == result){
-		return NULL;
-	}
-	memset(result, '\0', size);
-	char *current;
+    if (pos != (str + strlen(str))) {
+        strncat(result, pos, (str - pos));
+    }
 
-	while ((current = strstr(pos, sub))) {
-		int len = current - pos;
-		strncat(result, pos, len);
-		strncat(result, replace, size);
-		pos = current + strlen(sub);
-	}
-
-	if (pos != (str + strlen(str))) {
-		strncat(result, pos, (str - pos));
-	}
-
-	return result;
+    return result;
 }
 
+int make_dir(char* dirname)
+{
+    print_debug("Make directory %s\n", dirname);
 
-int make_dir(char * dirname){
-
-	print_debug("Make directory %s\n", dirname);
-
-	#ifdef __WIN
-		return CreateDirectoryA(dirname, NULL);
-	#else
-		return mkdir(dirname, S_IRWXU | S_IXGRP | S_IRGRP);
-	#endif
+#ifdef __WIN
+    return CreateDirectoryA(dirname, NULL);
+#else
+    return mkdir(dirname, S_IRWXU | S_IXGRP | S_IRGRP);
+#endif
 }
 
-int file_exist(char * filename){
-
-	return (access(filename, F_OK) == 0);
+int file_exist(char* filename)
+{
+    return (access(filename, F_OK) == 0);
 }
-
-
-
-
-
-
-
-

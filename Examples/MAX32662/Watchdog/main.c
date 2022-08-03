@@ -75,8 +75,8 @@ static mxc_wdt_cfg_t cfg;
 volatile int pb_int;
 
 // refers to array, do not change constants
-#define SW2         0
-#define LED         0
+#define SW2 0
+#define LED 0
 /***** Functions *****/
 
 // *****************************************************************************
@@ -103,36 +103,35 @@ int main(void)
 {
     cfg.mode = MXC_WDT_WINDOWED;
     MXC_WDT_Init(MXC_WDT0, &cfg);
-    
+
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
-        
+
         printf("\nRecovering from watchdog reset...\n");
         if (resetFlags == MXC_F_WDT_CTRL_RST_LATE) {
             printf("Watchdog Reset occured too late (OVERFLOW)\n");
-        }
-        else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
+        } else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
             printf("Watchdog Reset occured too soon (UNDERFLOW)\n");
         }
-        
+
         MXC_WDT_Disable(MXC_WDT0);
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_ClearIntFlag(MXC_WDT0);
         MXC_WDT_EnableReset(MXC_WDT0);
     } else {
-    	MXC_WDT_Disable(MXC_WDT0);
-		cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-		cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
-		cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-		cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
-		MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
-		MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
-		MXC_WDT_EnableReset(MXC_WDT0);
-		MXC_WDT_EnableInt(MXC_WDT0);
-		MXC_WDT_Enable(MXC_WDT0);
+        MXC_WDT_Disable(MXC_WDT0);
+        cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
+        cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
+        cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
+        cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
+        MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
+        MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
+        MXC_WDT_EnableReset(MXC_WDT0);
+        MXC_WDT_EnableInt(MXC_WDT0);
+        MXC_WDT_Enable(MXC_WDT0);
     }
     NVIC_EnableIRQ(WDT_IRQn);
-    
+
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("Watchdog timer is configured in Windowed mode. This example can be compiled\n");
     printf("for two tests: Timer Overflow and Underflow. ");
@@ -146,13 +145,12 @@ int main(void)
     printf("example runs better without a debugger attached.\n");
     printf("\nPress SW2 (PB0) to create watchdog interrupt and reset.\n\n");
 
-    
     //Blink LED
     MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-    
+
     //Blink LED three times at startup
     int numBlinks = 3;
-    
+
     while (numBlinks) {
         MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
         MXC_Delay(MXC_DELAY_MSEC(100));
@@ -164,36 +162,37 @@ int main(void)
     // Link timeout ISR to SW2.  This enables triggering the timeout.
     pb_int = 0;
     PB_RegisterCallback(SW2, SW1_Callback);
-    
+
     // Enable Watchdog
     MXC_WDT_Enable(MXC_WDT0);
-    
+
     while (1) {
-    	//blink LED0
-		MXC_Delay(MXC_DELAY_MSEC(500));
-		MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
-		MXC_Delay(MXC_DELAY_MSEC(500));
-		MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
+        //blink LED0
+        MXC_Delay(MXC_DELAY_MSEC(500));
+        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
 
-    	if(pb_int) {
-    		// Trigger the compiled timeout condition...
+        if (pb_int) {
+            // Trigger the compiled timeout condition...
 
-    		pb_int = 0;
-			#ifdef OVERFLOW
-    			printf("\nHolding to trigger overflow condition...\n");
-				while (1);			// Let the WDT expire.  "Overflow"
-			#endif
-			#ifdef UNDERFLOW
-				// Issue a reset before the WDT window.  "Underflow"
-				printf("\nFeeding watchdog early to trigger underflow condition...\n");
-				MXC_Delay(MXC_DELAY_MSEC(50));
-				MXC_WDT_ResetTimer(MXC_WDT0);
-				MXC_WDT_ResetTimer(MXC_WDT0); // Double reset sequence guarantees underflow.
-			#endif
-    	} else {
-			//Feed watchdog
-			printf("Feeding watchdog...\n");
-			MXC_WDT_ResetTimer(MXC_WDT0);
-    	}
+            pb_int = 0;
+#ifdef OVERFLOW
+            printf("\nHolding to trigger overflow condition...\n");
+            while (1)
+                ; // Let the WDT expire.  "Overflow"
+#endif
+#ifdef UNDERFLOW
+            // Issue a reset before the WDT window.  "Underflow"
+            printf("\nFeeding watchdog early to trigger underflow condition...\n");
+            MXC_Delay(MXC_DELAY_MSEC(50));
+            MXC_WDT_ResetTimer(MXC_WDT0);
+            MXC_WDT_ResetTimer(MXC_WDT0); // Double reset sequence guarantees underflow.
+#endif
+        } else {
+            //Feed watchdog
+            printf("Feeding watchdog...\n");
+            MXC_WDT_ResetTimer(MXC_WDT0);
+        }
     }
 }

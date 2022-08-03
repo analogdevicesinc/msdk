@@ -31,7 +31,6 @@
  *
  *************************************************************************** */
 
-
 /***** Includes *****/
 #include <stdio.h>
 #include "lp.h"
@@ -63,10 +62,10 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_RTCWKEN;
 }
 
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIOWKEN;
-    switch (1 << MXC_GPIO_GET_IDX (wu_pins->port)) {
+    switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
         case MXC_GPIO_PORT_0:
             MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
             break;
@@ -75,27 +74,27 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
     }
 }
 
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
-    switch (1 << MXC_GPIO_GET_IDX (wu_pins->port)) {
+    switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
         case MXC_GPIO_PORT_0:
             MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
             break;
         case MXC_GPIO_PORT_1:
             MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
     }
-    
+
     if (MXC_PWRSEQ->lpwken1 == 0 && MXC_PWRSEQ->lpwken0 == 0) {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_GPIOWKEN;
     }
 }
 
-void MXC_LP_EnableWUTAlarmWakeup (void)
+void MXC_LP_EnableWUTAlarmWakeup(void)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_WUTWKEN;
 }
 
-void MXC_LP_DisableWUTAlarmWakeup (void)
+void MXC_LP_DisableWUTAlarmWakeup(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_WUTWKEN;
 }
@@ -347,18 +346,18 @@ void MXC_LP_SetRAMRetention(mxc_ram_retained_t ramRetained)
 
 void MXC_LP_EnterSleepMode(void)
 {
-	MXC_LP_ClearWakeStatus();
-    
+    MXC_LP_ClearWakeStatus();
+
     /* Clear SLEEPDEEP bit */
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
-    
+
     /* Go into Sleep mode and wait for an interrupt to wake the processor */
     __WFI();
 }
 
 void MXC_LP_EnterDeepSleepMode(void)
 {
-	MXC_LP_ClearWakeStatus();
+    MXC_LP_ClearWakeStatus();
 
     /* Set SLEEPDEEP bit */
     MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_BCKGRND;
@@ -370,7 +369,7 @@ void MXC_LP_EnterDeepSleepMode(void)
 
 void MXC_LP_EnterBackgroundMode(void)
 {
-	MXC_LP_ClearWakeStatus();
+    MXC_LP_ClearWakeStatus();
 
     /* Set BACKGROUND bit and SLEEPDEEP bit */
     MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BCKGRND;
@@ -385,7 +384,7 @@ void MXC_LP_EnterBackupMode(void* func(void))
     MXC_LP_ClearWakeStatus();
 
     MXC_PWRSEQ->buretvec = (uint32_t)(&Backup_Handler) | 1;
-    if(func == NULL) {
+    if (func == NULL) {
         MXC_PWRSEQ->buaod = (uint32_t)(&Reset_Handler) | 1;
     } else {
         MXC_PWRSEQ->buaod = (uint32_t)(&func) | 1;
@@ -397,42 +396,44 @@ void MXC_LP_EnterBackupMode(void* func(void))
     // Enable backup mode
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
-    while(1); // Should never reach this line - device will jump to backup vector on exit from background mode.
+    while (1)
+        ; // Should never reach this line - device will jump to backup vector on exit from background mode.
 }
 
 void MXC_LP_EnterShutdownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
-    while (1); // Should never reach this line - device will reset on exit from shutdown mode.
+    while (1)
+        ; // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-void MXC_LP_BandgapOn (void)
+void MXC_LP_BandgapOn(void)
 {
     MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_BGOFF;
 }
 
-void MXC_LP_BandgapOff (void)
+void MXC_LP_BandgapOff(void)
 {
     MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
 }
 
-int MXC_LP_BandgapIsOn (void)
+int MXC_LP_BandgapIsOn(void)
 {
     return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_BGOFF);
 }
 
-int  MXC_LP_FastWakeupIsEnabled (void)
+int MXC_LP_FastWakeupIsEnabled(void)
 {
     return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_FWKM);
 }
 
-int MXC_LP_ConfigDeepSleepClocks (uint32_t mask)
+int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {
-    if (! (mask & (MXC_F_GCR_PM_HIRCPD | MXC_F_GCR_PM_HIRC96MPD | MXC_F_GCR_PM_HIRC8MPD |
-    		MXC_F_GCR_PM_XTALPB))) {
+    if (!(mask & (MXC_F_GCR_PM_HIRCPD | MXC_F_GCR_PM_HIRC96MPD | MXC_F_GCR_PM_HIRC8MPD |
+                  MXC_F_GCR_PM_XTALPB))) {
         return E_BAD_PARAM;
     }
 
@@ -440,122 +441,122 @@ int MXC_LP_ConfigDeepSleepClocks (uint32_t mask)
     return E_NO_ERROR;
 }
 
-void MXC_LP_ICache0LightSleepDisable (void)
+void MXC_LP_ICache0LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_ICACHELS;
 }
 
-void MXC_LP_ICache1LightSleepDisable (void)
+void MXC_LP_ICache1LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_ICACHE1LS;
 }
 
-void MXC_LP_ICacheXIPLightSleepDisable (void)
+void MXC_LP_ICacheXIPLightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_ICACHEXIPLS;
 }
 
-void MXC_LP_SRCCLightSleepEnable (void)
+void MXC_LP_SRCCLightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_SCACHELS;
 }
 
-void MXC_LP_CryptoLightSleepEnable (void)
+void MXC_LP_CryptoLightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_CRYPTOLS;
 }
 
-void MXC_LP_USBFIFOLightSleepEnable (void)
+void MXC_LP_USBFIFOLightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_USBLS;
 }
 
-void MXC_LP_ROM0LightSleepEnable (void)
+void MXC_LP_ROM0LightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_ROM0LS;
 }
 
-void MXC_LP_ROM1LightSleepEnable (void)
+void MXC_LP_ROM1LightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_ROM1LS;
 }
 
-void MXC_LP_SysRam0LightSleepDisable (void)
+void MXC_LP_SysRam0LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SYSRAM0LS;
 }
 
-void MXC_LP_SysRam1LightSleepDisable (void)
+void MXC_LP_SysRam1LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SYSRAM1LS;
 }
 
-void MXC_LP_SysRam2LightSleepDisable (void)
+void MXC_LP_SysRam2LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SYSRAM2LS;
 }
 
-void MXC_LP_SysRam3LightSleepDisable (void)
+void MXC_LP_SysRam3LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SYSRAM3LS;
 }
 
-void MXC_LP_SysRam4LightSleepDisable (void)
+void MXC_LP_SysRam4LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SYSRAM4LS;
 }
 
-void MXC_LP_SysRam5LightSleepDisable (void)
+void MXC_LP_SysRam5LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SYSRAM5LS;
 }
 
-void MXC_LP_SRCCLightSleepDisable (void)
+void MXC_LP_SRCCLightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_SCACHELS;
 }
 
-void MXC_LP_CryptoLightSleepDisable (void)
+void MXC_LP_CryptoLightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_CRYPTOLS;
 }
 
-void MXC_LP_USBFIFOLightSleepDisable (void)
+void MXC_LP_USBFIFOLightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_USBLS;
 }
 
-void MXC_LP_ROM0LightSleepDisable (void)
+void MXC_LP_ROM0LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_ROM0LS;
 }
 
-void MXC_LP_ROM1LightSleepDisable (void)
+void MXC_LP_ROM1LightSleepDisable(void)
 {
     MXC_GCR->memckcn &= ~MXC_F_GCR_MEMCKCN_ROM1LS;
 }
 
-void MXC_LP_SRCCShutdown (void)
+void MXC_LP_SRCCShutdown(void)
 {
     MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRCCSD;
 }
 
-void MXC_LP_SRCCPowerUp (void)
+void MXC_LP_SRCCPowerUp(void)
 {
     MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRCCSD;
 }
 
-void MXC_LP_ICache0LightSleepEnable (void)
+void MXC_LP_ICache0LightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_ICACHELS;
 }
 
-void MXC_LP_ICache1LightSleepEnable (void)
+void MXC_LP_ICache1LightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_ICACHE1LS;
 }
 
-void MXC_LP_ICacheXIPLightSleepEnable (void)
+void MXC_LP_ICacheXIPLightSleepEnable(void)
 {
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_ICACHEXIPLS;
 }

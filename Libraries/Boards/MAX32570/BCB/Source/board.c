@@ -86,8 +86,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -101,22 +102,22 @@ void SystemCoreClockUpdate(void)
 int Board_Init(void)
 {
     int err;
-    
+
     if ((err = Console_Init()) < E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = PB_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -124,11 +125,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -137,4 +138,3 @@ void NMI_Handler(void)
 {
     __NOP();
 }
-

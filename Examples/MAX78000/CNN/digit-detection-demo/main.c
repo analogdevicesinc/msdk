@@ -70,53 +70,54 @@
 // Comment this if using camera
 //#define USE_SAMPLEDATA        // shows the sample data
 
-
 #define CAMERA_FREQ   (10 * 1000 * 1000)
-#define MIRROR 0
-#define TFT_BUFF_SIZE   50    // TFT buffer size
+#define MIRROR        0
+#define TFT_BUFF_SIZE 50 // TFT buffer size
 
 #ifdef BOARD_EVKIT_V1
 int font = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
-int font = (int)& SansSerif16x16[0];
+int font = (int)&SansSerif16x16[0];
 #endif
 volatile uint32_t cnn_time; // Stopwatch
 
 // 3-channel 74x74 data input (16428 bytes total / 5476 bytes per channel):
 // HWC 74x74, channels 0 to 2
-#ifdef USE_SAMPLEDATA  //Sample DATA
+#ifdef USE_SAMPLEDATA //Sample DATA
 static uint32_t input_buffer[] = SAMPLE_INPUT_0;
-uint32_t* input = input_buffer;
+uint32_t* input                = input_buffer;
 #else // Camera
 static uint32_t input_buffer[IMAGE_SIZE_X * IMAGE_SIZE_Y];
-uint32_t* input = input_buffer;
-uint8_t* rx_data = (uint8_t*)input_buffer;  //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
+uint32_t* input  = input_buffer;
+uint8_t* rx_data = (uint8_t*)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
 #endif
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1);
+    while (1)
+        ;
 }
 
 void load_input(void)
 {
 #ifdef USE_SAMPLEDATA
     // This function loads the sample data input -- replace with actual data
-    memcpy32((uint32_t*) 0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
+    memcpy32((uint32_t*)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
 #else // Camera
     uint8_t* frame_buffer;
     uint8_t* buffer;
-    uint32_t  imgLen;
-    uint32_t  w, h, x, y;
+    uint32_t imgLen;
+    uint32_t w, h, x, y;
     uint8_t r, g, b;
     int i = 0;
 
     camera_start_capture_image();
 
-    while (!camera_is_image_rcv());
+    while (!camera_is_image_rcv())
+        ;
 
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
     buffer = frame_buffer;
@@ -138,14 +139,15 @@ void load_input(void)
     }
 
     //printf("r:%d g:%d b:%d  input:%x\r\n",r,g,b, input[i-1]);
-    memcpy32((uint32_t*) 0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
+    memcpy32((uint32_t*)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
 
 #endif
 }
 
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*) 0x50100000) & (1 << 12)) != 1 << 12) ;
+    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
+        ;
 
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -156,7 +158,7 @@ int main(void)
 #ifdef TFT_ENABLE
     char buff[TFT_BUFF_SIZE];
 #endif
-#if defined (BOARD_FTHR_REVA)
+#if defined(BOARD_FTHR_REVA)
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
     MXC_Delay(200000);
     /* Enable camera power */
@@ -181,7 +183,7 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = MXC_GPIO2;
     gpio_out.mask = MXC_GPIO_PIN_5;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -190,14 +192,15 @@ int main(void)
     // Initialize TFT display.
     printf("Init LCD...");
 #ifdef BOARD_EVKIT_V1
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
+                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
     MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
 #endif
 #ifdef BOARD_FTHR_REVA
     /* Initialize TFT display */
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_270);
-    MXC_TFT_SetForeGroundColor(WHITE);   // set chars to white
+    MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
 #endif
     MXC_TFT_ClearScreen();
     memset(buff, 32, TFT_BUFF_SIZE);
@@ -222,7 +225,8 @@ int main(void)
 
     camera_init(CAMERA_FREQ);
 
-    int ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel);
+    int ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA,
+                           dma_channel);
 
     if (ret != STATUS_OK) {
         printf("\tError returned from setting up camera. Error %d\n", ret);
@@ -236,7 +240,7 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init(); // Bring state machine into consistent state
+    cnn_init();         // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
 
     while (1) {
@@ -247,7 +251,7 @@ int main(void)
         cnn_init(); // Bring state machine into consistent state
         cnn_load_bias();
         cnn_configure(); // Configure state machine
-        load_input(); // Load data input
+        load_input();    // Load data input
 
 #ifdef TFT_ENABLE
         // Show original image
@@ -258,7 +262,7 @@ int main(void)
         cnn_start(); // Start CNN processing
 
         while (cnn_time == 0) {
-            __WFI();    // Wait for CNN
+            __WFI(); // Wait for CNN
         }
 
         LED_Off(LED1);
@@ -267,7 +271,7 @@ int main(void)
 
         printf("CNN time: %d us\n\n", cnn_time);
 #ifdef TFT_ENABLE
-        TFT_Print(buff, 10, 210, font, sprintf(buff, "CNN Time: %.3f ms", (float) cnn_time / 1000));
+        TFT_Print(buff, 10, 210, font, sprintf(buff, "CNN Time: %.3f ms", (float)cnn_time / 1000));
 #endif
         MXC_Delay(SEC(1));
     }

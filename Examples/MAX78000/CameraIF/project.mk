@@ -7,5 +7,5 @@
 # description of the default behavior and the full list of
 # available config variables.
 
-
-
+#MAKECMDGOALS=release
+#BOARD=FTHR_RevA
