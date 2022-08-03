@@ -26,6 +26,8 @@ pip install -r requirements.txt
     python console.py <COM port>
     ```
 
+    "<COM port>" should match the port presented by the host MCU.  On the MAX78000FTHR, that will be a single port presented by the integrated CMSIS-DAP debugger.  On the MAX78000EVKIT, that will match the port presented by CN1 (USB/PWR).
+
     Alternatively, use `python console.py -h` to see a list of console start-up options.
 
 4. Verify a successful connection, which should look similar to the following:
