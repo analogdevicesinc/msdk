@@ -1,6 +1,6 @@
 ## Description
 
-Python scripts designed for use with the "CameraIF" firmware that can be used to grab images and convert it to .png on the host PC.
+Python scripts designed for use with the "ImgCapture-Serial" firmware that can be used to grab images and convert it to a .png on the host PC.
 
 ## Requirements
 
@@ -14,15 +14,11 @@ Ex:
 pip install -r requirements.txt
 ```
 
-To grab camera output run:  python grab_image.py <your_comport> <baudrate>
-default baudrate is 921600, if you would like to change it do not forget 
-to update the board side too.
-
 ## Usage
 
-1. Ensure the latest CameraIF is flashed to the host MCU with `TFT_ENABLE` **un**-defined in `example_config.h`.
+1. Ensure the latest ImgCapture-Serial is flashed to the host MCU and running.
 
-2. Ensure the firmware is running, and that the LED on the host MCU is flashing.  This is the firmware searching for the host.
+2. Verify that the LED on the host MCU is flashing.  This is the signal that the firmware is searching for the host.
 
 3. Connect the Python console to the host MCU firmware using `console.py`.  Ex:
 
