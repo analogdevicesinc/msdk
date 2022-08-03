@@ -10,10 +10,10 @@ jobs:
   run-not-pr: 
     # Do not run on Analog-Devices-MSDK/msdk:main or PR branches
     if: |
-      !(github.ref == 'refs/heads/main' &&
-      github.repository == 'Analog-Devices-MSDK/msdk') &&
+      ${{ (github.ref != 'refs/heads/main' ||
+      github.repository != 'Analog-Devices-MSDK/msdk') &&
       !startsWith(github.ref, 'refs/pull') &&
-      contains(github.event.comment.body, '/clang-format-run')
+      contains(github.event.comment.body, '/clang-format-run') }}
 
     runs-on:
       - self-hosted
@@ -41,8 +41,8 @@ jobs:
   run-pr: 
     # Running on PR branches
     if: |
-      startsWith(github.ref, 'refs/pull') &&
-      contains(github.event.comment.body, '/clang-format-run')
+      ${{ startsWith(github.ref, 'refs/pull') &&
+      contains(github.event.comment.body, '/clang-format-run') }}
 
     runs-on:
       - self-hosted
