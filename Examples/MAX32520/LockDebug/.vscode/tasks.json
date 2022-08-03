@@ -55,6 +55,21 @@
             "dependsOn":["build"]
         },
         {
+            "label": "erase flash",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-s", "${config:OCD_path}/scripts",
+                "-f", "interface/${config:M4_OCD_interface_file}",
+                "-f", "target/${config:M4_OCD_target_file}",
+                "-c", "\"init; reset halt; max32xxx mass_erase 0;\"",
+                "-c", "exit"
+            ],
+            "group":"build",
+            "problemMatcher": [],
+            "dependsOn":[]
+        },
+        {
             "label": "openocd (m4)",
             "type": "shell",
             "command": "openocd",
