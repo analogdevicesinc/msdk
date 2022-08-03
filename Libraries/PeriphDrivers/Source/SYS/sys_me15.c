@@ -64,7 +64,7 @@
 #define MXC_SYS_ERFO_TIMEOUT  MSEC(100)
 
 // MAX32670 RevB updates may conflict with other parts dependent on RevA version (e.g. MAX32675)
-#ifndef MXC_SYS_RESET_RTC
+#if TARGET_NUM != 32670
 #define MXC_SYS_RESET_RTC MXC_SYS_RESET0_RTC
 #endif
 
