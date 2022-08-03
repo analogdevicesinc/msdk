@@ -41,24 +41,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 
     MXC_ASSERT(tmr_id >= 0);
 
-    switch (cfg->clock) {
-        case MXC_TMR_EXT_CLK:
-            MXC_GPIO_Config(&gpio_cfg_32kcal);
-            break;
-
-        case MXC_TMR_HFIO_CLK:
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_HIRC);
-            break;
-
-        case MXC_TMR_NANORING_CLK:
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_NANORING);
-            break;
-
-        default:
-            return E_BAD_PARAM;
-            break;
-    }
-
     //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
         case 0:
@@ -81,6 +63,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
             MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
             break;
     }
+
     MXC_TMR_RevA_Init((mxc_tmr_reva_regs_t*)tmr, cfg);
     return E_NO_ERROR;
 }
@@ -134,28 +117,14 @@ uint32_t MXC_TMR_GetCapture(mxc_tmr_regs_t* tmr)
     return MXC_TMR_RevA_GetCapture((mxc_tmr_reva_regs_t*)tmr);
 }
 
-uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
-                           uint32_t frequency)
+uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t* tmr, uint32_t prescalar, uint32_t frequency)
 {
-    uint32_t retVal, clkFreq;
-    switch (clock) {
-        case MXC_TMR_HFIO_CLK:
-            clkFreq = PeripheralClock;
-            break;
-        case MXC_TMR_NANORING_CLK:
-            clkFreq = 80000;
-            break;
-        case MXC_TMR_EXT_CLK:
-            clkFreq = HFX_FREQ;
-            break;
-        default:
-            clkFreq = PeripheralClock;
-            break;
-    }
+    uint32_t retVal;
+
     if (frequency == 0) {
         return 0;
     } else {
-        retVal = clkFreq / (prescalar * frequency);
+        retVal = PeripheralClock / (prescalar * frequency);
         return retVal;
     }
     return retVal;
