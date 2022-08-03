@@ -46,9 +46,12 @@
 #include "camera.h"
 #include "cameraif.h"
 #include "dma.h"
-#include "console.h"
 #include "example_config.h"
 #include "cnn_memutils.h"
+
+#ifndef ENABLE_TFT
+#include "console.h"
+#endif
 
 // This describes a complete image for a standard blocking capture
 typedef struct {
@@ -478,25 +481,31 @@ int main(void)
         cnn_img_data_t img_data = stream_img(
                     g_app_settings.imgres_w,
                     g_app_settings.imgres_h,
-                    PIXFORMAT_RGB565,
+                    g_app_settings.pixel_format,
                     g_app_settings.dma_channel
                 );
 
-        printf("Streamed image!\n");
-
-        // MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, img_data.raw, img_data.h, img_data.w);
+        // TODO: Modify TFT drivers to be able to support "line by line"
+        // input of image data.
         
     #else
         img_data_t img_data = capture_img(
                     g_app_settings.imgres_w,
                     g_app_settings.imgres_h,
-                    PIXFORMAT_RGB565,
+                    g_app_settings.pixel_format,
                     g_app_settings.dma_mode,
                     g_app_settings.dma_channel
                 );
 
-        MXC_TFT_ShowImageCameraRGB565(0, 0, img_data.raw, img_data.h, img_data.w);
+        if (strcmp((char*)img_data.pixel_format, "RGB565") == 0) {
+            MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, img_data.raw, img_data.h, img_data.w);
+        }
+        else if (strcmp((char*)img_data.pixel_format, "BAYER") == 0) {
+            MXC_TFT_ShowImageCameraMono(X_START, Y_START, img_data.raw, img_data.h, img_data.w);
+        }
     #endif
+
+        LED_Toggle(0);
 
 #endif
         
