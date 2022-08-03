@@ -162,7 +162,7 @@ __isr_vector:
     .long RSV60_IRQHandler          /* 0x4C  0x0130  76: Reserved */
     .long RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     .long RSV62_IRQHandler          /* 0x4E  0x0138  78: Reserved */
-    .long RSV63_IRQHandler          /* 0x4F  0x013C  79: Reserved */
+    .long RISCV_IRQHandler          /* 0x4F  0x013C  79: RISCV */
     .long RSV64_IRQHandler          /* 0x50  0x0140  80: Reserved */
     .long RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     .long RSV66_IRQHandler          /* 0x52  0x0148  82: Reserved */
@@ -184,7 +184,7 @@ __isr_vector:
     .long ECC_IRQHandler            /* 0x62  0x0188  98: Error Correction */
     .long RSV83_IRQHandler          /* 0x63  0x018C  99: Reserved */
     .long RSV84_IRQHandler          /* 0x64  0x0190  100: Reserved */
-    .long RSV85_IRQHandler          /* 0x65  0x0194  101: Reserved */
+    .long SCA_IRQHandler            /* 0x65  0x0194  101: SCA Crypto Accelerator */
     .long RSV86_IRQHandler          /* 0x66  0x0198  102: Reserved */
     .long RSV87_IRQHandler          /* 0x67  0x019C  103: Reserved */
     .long UART3_IRQHandler          /* 0x68  0x01A0  104: UART 3 */
@@ -416,7 +416,7 @@ Reset_Handler:
     def_irq_handler    RSV60_IRQHandler          /* 0x4C  0x0130  76: Reserved */
     def_irq_handler    RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     def_irq_handler    RSV62_IRQHandler          /* 0x4E  0x0138  78: Reserved */
-    def_irq_handler    RSV63_IRQHandler          /* 0x4F  0x013C  79: Reserved */
+    def_irq_handler    RISCV_IRQHandler          /* 0x4F  0x013C  79: RISCV */
     def_irq_handler    RSV64_IRQHandler          /* 0x50  0x0140  80: Reserved */
     def_irq_handler    RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     def_irq_handler    RSV66_IRQHandler          /* 0x52  0x0148  82: Reserved */
@@ -438,7 +438,7 @@ Reset_Handler:
     def_irq_handler    ECC_IRQHandler            /* 0x62  0x0188  98: Error Correction */
     def_irq_handler    RSV83_IRQHandler          /* 0x63  0x018C  99: Reserved */
     def_irq_handler    RSV84_IRQHandler          /* 0x64  0x0190  100: Reserved */
-    def_irq_handler    RSV85_IRQHandler          /* 0x65  0x0194  101: Reserved */
+    def_irq_handler    SCA_IRQHandler            /* 0x65  0x0194  101: SCA Crypto Accelerator */
     def_irq_handler    RSV86_IRQHandler          /* 0x66  0x0198  102: Reserved */
     def_irq_handler    RSV87_IRQHandler          /* 0x67  0x019C  103: Reserved */
     def_irq_handler    UART3_IRQHandler          /* 0x68  0x01A0  104: UART 3 */
