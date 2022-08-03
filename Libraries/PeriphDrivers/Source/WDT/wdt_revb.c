@@ -81,12 +81,16 @@ void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* c
 
 void MXC_WDT_RevB_Enable(mxc_wdt_revb_regs_t* wdt)
 {
-    wdt->ctrl |= MXC_F_WDT_REVB_CTRL_EN;
+    wdt->rst = 0xFE; // Feed seuqence chips
+    wdt->rst = 0xED;
+    wdt->ctrl |= MXC_F_WDT_REVB_CTRL_EN; // Direct write chips
 }
 
 void MXC_WDT_RevB_Disable(mxc_wdt_revb_regs_t* wdt)
 {
-    wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_EN);
+    wdt->rst = 0xDE; // Feed sequence chips
+    wdt->rst = 0xAD;
+    wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_EN); // Direct write chips
 }
 
 void MXC_WDT_RevB_EnableInt(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable)
