@@ -63,7 +63,6 @@ typedef enum {
     MXC_SYS_RESET0_SPI1  = MXC_F_GCR_RST0_SPI1_POS,   /**< Reset SPI1 */
     MXC_SYS_RESET0_SPI2  = MXC_F_GCR_RST0_SPI2_POS,   /**< Reset SPI2 */
     MXC_SYS_RESET0_I2C0  = MXC_F_GCR_RST0_I2C0_POS,   /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC   = MXC_F_GCR_RST0_RTC_POS,    /**< Reset RTC */
     MXC_SYS_RESET0_TRNG  = MXC_F_GCR_RST0_TRNG_POS,   /**< Reset TRNG */
     MXC_SYS_RESET0_UART2 = MXC_F_GCR_RST0_UART2_POS,  /**< Reset UART2 */
     MXC_SYS_RESET0_SRST  = MXC_F_GCR_RST0_SOFT_POS,   /**< Soft reset */
@@ -72,14 +71,15 @@ typedef enum {
     /* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */
     MXC_SYS_RESET1_I2C1 = (MXC_F_GCR_RST1_I2C1_POS + 32), /**< Reset I2C1 */
     MXC_SYS_RESET1_WDT1 = (MXC_F_GCR_RST1_WDT1_POS + 32), /**< Reset WDT1 */
-    MXC_SYS_RESET1_AES  = (MXC_F_GCR_RST1_AES_POS + 32),  /**< Reset WDT1 */
-    MXC_SYS_RESET1_CRC  = (MXC_F_GCR_RST1_CRC_POS + 32),  /**< Reset WDT1 */
-    MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset */
-    MXC_SYS_RESET1_I2S  = (MXC_F_GCR_RST1_I2S_POS + 32),  /**< Reset */
+    MXC_SYS_RESET1_AES  = (MXC_F_GCR_RST1_AES_POS + 32),  /**< Reset AES */
+    MXC_SYS_RESET1_CRC  = (MXC_F_GCR_RST1_CRC_POS + 32),  /**< Reset CRC */
+    MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset I2C2*/
+    MXC_SYS_RESET1_I2S  = (MXC_F_GCR_RST1_I2S_POS + 32),  /**< Reset I2S*/
     /* LPGCR RESET Below this line we add 64 to separate LPGCR and GCR */
     MXC_SYS_RESET_TMR4  = (MXC_F_MCR_RST_LPTMR0_POS + 64),  /**< Reset TMR4 */
     MXC_SYS_RESET_TMR5  = (MXC_F_MCR_RST_LPTMR1_POS + 64),  /**< Reset TMR5 */
     MXC_SYS_RESET_UART3 = (MXC_F_MCR_RST_LPUART0_POS + 64), /**< Reset UART3 */
+    MXC_SYS_RESET_RTC   = (MXC_F_MCR_RST_RTC_POS + 64),     /**< Reset RTC */
 } mxc_sys_reset_t;
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
