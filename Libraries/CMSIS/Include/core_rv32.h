@@ -427,8 +427,11 @@ __STATIC_INLINE void NVIC_ClearPendingEVENT(IRQn_Type EVENT)
         MXC_EVENT->event1_clear_pending |= (1 << (EVENT - 32));
 }
 
-// Implemented in system_riscv_*.c
-void __enable_irq(void);
+__STATIC_INLINE void __enable_irq(void)
+{
+    // Atomic enable
+    __asm volatile("csrw mstatus, 0x08");
+}
 
 __STATIC_INLINE void __disable_irq(void)
 {
