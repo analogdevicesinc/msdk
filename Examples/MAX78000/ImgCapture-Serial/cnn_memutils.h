@@ -69,6 +69,21 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
   return 1;
 }
 
+int cnn_disable(void)
+{
+    // Disable CNN clock
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
+
+    // Disable power to CNN
+    MXC_GCFR->reg3 = 0xf; // Reset
+    MXC_GCFR->reg2 = 0xf; // Iso
+    MXC_GCFR->reg0 = 0x0; // Power
+    MXC_GCFR->reg1 = 0x0; // Mask memory
+    MXC_GCFR->reg3 = 0x0; // Reset
+
+    return 1;
+}
+
 // Initializes all 4 CNN quadrants with max speed SRAM
 int cnn_init(void)
 {

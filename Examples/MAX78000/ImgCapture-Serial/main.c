@@ -313,6 +313,12 @@ void service_console() {
             }
 
             else if (cmd == CMD_STREAM) {
+                // Enable CNN acelerator.  In this example, it's used alongside streaming mode
+                // to allow the capture of high-res images.
+                // CNN clock: APB (50 MHz) div 1
+                cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+                cnn_init();
+
                 // Perform a streaming image capture with the current camera settings.
                 cnn_img_data_t img_data = stream_img(
                     g_app_settings.imgres_w,
@@ -353,6 +359,9 @@ void service_console() {
                     int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
                     printf("Done! (serial transmission took %i us)\n", elapsed);
                 }
+
+                // Disable the CNN when unused to preserve power.
+                cnn_disable();
             }
 
             else if (cmd == CMD_SETREG) {
@@ -404,12 +413,6 @@ int main(void)
     /* Set system clock to 100 MHz */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
-
-    // Enable CNN acelerator.  In this example, it's used alongside streaming mode
-    // to allow the capture of high-res images.  See 'stream_img' for more details.
-    // CNN clock: APB (50 MHz) div 1
-    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init();
 
     console_init();
 
