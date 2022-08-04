@@ -217,7 +217,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     // 2. Retrieve image format and info.
     img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
     camera_get_image(NULL, &img_data.imglen, &img_data.w, &img_data.h); // Retrieve info using driver function.
-    img_data.raw = (uint32_t*)0x50400000; // Manually save the destination address at the first quadrant of CNN data SRAM
+    img_data.raw = (uint32_t*)CNN_QUAD0_DSRAM_START; // Manually save the destination address at the first quadrant of CNN data SRAM
 
     printf("Starting streaming capture...\n");
     MXC_TMR_SW_Start(MXC_TMR0);

@@ -41,6 +41,16 @@
 #include <stdint.h>
 #include "mxc.h"
 #include "gcfr_regs.h"
+#include "max78000.h"
+
+#define CNN_QUAD0_DSRAM_START 0x50400000
+#define CNN_QUAD0_DSRAM_END 0x5041FFFC
+#define CNN_QUAD1_DSRAM_START 0x50800000
+#define CNN_QUAD1_DSRAM_END 0x5081FFFC
+#define CNN_QUAD2_DSRAM_START 0x50C00000
+#define CNN_QUAD2_DSRAM_END 0x50C1FFFC
+#define CNN_QUAD3_DSRAM_START 0x51000000
+#define CNN_QUAD3_DSRAM_END 0x5101FFFC
 
 // Enables all 4 CNN quadrants and their memories.
 int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
@@ -85,19 +95,19 @@ int cnn_init(void)
 // Returns a new address pointer, or NULL if the address overflowed.
 static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr) {
     int val = (int)ptr;
-    if (val != 0x5041FFFC && val != 0x5081FFFC && val != 0x50C1FFFC && val != 0x5101FFFC ) {
+    if (val != CNN_QUAD0_DSRAM_END && val != CNN_QUAD1_DSRAM_END && val != CNN_QUAD2_DSRAM_END && val != CNN_QUAD3_DSRAM_END ) {
         return ptr + 1;
     }
-    else if (val == 0x5041FFFC) { // Quadrant 0 end
-        return (uint32_t*)0x50800000; // Quadrant 1 start
+    else if (val == CNN_QUAD0_DSRAM_END) { // Quadrant 0 end
+        return (uint32_t*)CNN_QUAD1_DSRAM_START; // Quadrant 1 start
     }
-    else if (val == 0x5081FFFC) { // Quadrant 1 end
-        return (uint32_t*)0x50C00000; // Quadrant 2 start
+    else if (val == CNN_QUAD1_DSRAM_END) { // Quadrant 1 end
+        return (uint32_t*)CNN_QUAD2_DSRAM_START; // Quadrant 2 start
     }
-    else if (val == 0x50C1FFFC) { // Quadrant 2 end
-        return (uint32_t*)0x51000000; // Quadrant 3 start
+    else if (val == CNN_QUAD2_DSRAM_END) { // Quadrant 2 end
+        return (uint32_t*)CNN_QUAD3_DSRAM_START; // Quadrant 3 start
     }
-    else if (val >= 0x5101FFFC) { // Quadrant 3 end
+    else if (val >= CNN_QUAD3_DSRAM_END) { // Quadrant 3 end
         return NULL; // End of CNN SRAM, return NULL
     }
     else {
