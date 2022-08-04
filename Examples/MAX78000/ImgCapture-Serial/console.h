@@ -42,11 +42,11 @@
 #include "example_config.h"
 
 #define SERIAL_BUFFER_SIZE 256
-#define CON_BAUD           921600 // UART baudrate used for sending data to PC
+#define CON_BAUD 921600   // UART baudrate used for sending data to PC
 
 typedef enum {
     CMD_UNKNOWN = -1,
-    CMD_RESET   = 0,
+    CMD_RESET = 0,
     CMD_CAPTURE,
     CMD_IMGRES,
     CMD_STREAM,

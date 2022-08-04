@@ -46,17 +46,23 @@ int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'main' as part of initialization
-char* cmd_table[] = {"reset", "capture", "imgres", "stream", "set-reg", "get-reg"};
+char* cmd_table[] = {
+    "reset",
+    "capture",
+    "imgres",
+    "stream",
+    "set-reg",
+    "get-reg"
+};
 
-int starts_with(char* a, char* b)
-{
+int starts_with(char* a, char* b) {
     // Utility function for checking whether 'a' starts with 'b'
     char* ptr_a = a;
     char* ptr_b = b;
 
-    while (*ptr_a && *ptr_b) {
+    while(*ptr_a && *ptr_b) {
         if (*ptr_a != *ptr_b) {
-            return 0;
+            return 0;            
         }
         ptr_a++;
         ptr_b++;
@@ -67,8 +73,7 @@ int starts_with(char* a, char* b)
 
 // Initialize the serial console and transmits the "*SYNC*" string out of the UART port.
 // This function will block until the host sends the "*SYNC*" string back in response.
-int console_init(void)
-{
+int console_init(void) {
     g_num_commands = sizeof(cmd_table) / sizeof(char*);
     clear_serial_buffer();
 
@@ -81,7 +86,7 @@ int console_init(void)
     char* sync = "*SYNC*";
 
     // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
-    while (1) {
+    while(1) {
         // Transmit sync string
         send_msg(sync);
         LED_Toggle(LED1);
@@ -107,8 +112,7 @@ int console_init(void)
 }
 
 // Transmit a message over the console's UART with a newline appended.
-int send_msg(const char* msg)
-{
+int send_msg(const char* msg) {
     int ret = 0;
     int len = strlen(msg);
 
@@ -127,8 +131,7 @@ int send_msg(const char* msg)
 
 // Recieve a message into the global serial buffer.  Returns 1 if a full message
 // has been received, otherwise returns 0.
-int recv_msg(char* buffer)
-{
+int recv_msg(char* buffer) {
     int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
     while (available > 0) {
         char c = MXC_UART_ReadCharacter(Con_Uart);
@@ -137,7 +140,8 @@ int recv_msg(char* buffer)
             // Received newline character, terminate the string and return
             g_serial_buffer[g_buffer_index] = '\0';
             return 1;
-        } else {
+        }
+        else {
             // Received a character, add to buffer and continue
             g_serial_buffer[g_buffer_index] = c;
         }
@@ -150,7 +154,7 @@ int recv_msg(char* buffer)
         available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
     }
 
-    // If we reach here, we've received all available characters but
+    // If we reach here, we've received all available characters but 
     // no newline.  Return 0 - a full command hasn't been received
     // yet.
     return 0;
@@ -158,13 +162,12 @@ int recv_msg(char* buffer)
 
 // Attempts to receive a full command over the console UART.
 // Writes the received command to the 'out_cmd' pointer and returns
-// 1 if a valid command has been received.  Otherwise, returns 0 and
+// 1 if a valid command has been received.  Otherwise, returns 0 and 
 // sets 'out_cmd' to CMD_UNKNOWN.
-int recv_cmd(cmd_t* out_cmd)
-{
+int recv_cmd(cmd_t* out_cmd) {
     if (recv_msg(g_serial_buffer)) {
         cmd_t cmd = CMD_UNKNOWN;
-        for (int i = 0; i < g_num_commands; i++) {
+        for (int i = 0;i < g_num_commands;i++) {
             if (starts_with(g_serial_buffer, cmd_table[i])) {
                 // If the received command in g_serial_buffer matches
                 // a commmand at index i in the cmd_table, then
@@ -172,7 +175,7 @@ int recv_cmd(cmd_t* out_cmd)
                 // will now match the received command and is more
                 // convenient to process from here since we don't
                 // have to do string comparisons anymore.
-                cmd      = (cmd_t)i;
+                cmd = (cmd_t)i;
                 *out_cmd = cmd;
                 return 1;
             }
@@ -185,15 +188,13 @@ int recv_cmd(cmd_t* out_cmd)
     return 0;
 }
 
-void clear_serial_buffer(void)
-{
+void clear_serial_buffer(void) {
     memset(g_serial_buffer, '\0', SERIAL_BUFFER_SIZE);
     g_buffer_index = 0;
 }
 
 // Print out all of the entries in the console's command table.
-void print_help(void)
-{
+void print_help(void) {
     int g_num_commands = sizeof(cmd_table) / sizeof(char*);
     printf("Registered %i total commands:\n", g_num_commands);
     for (int i = 0; i < g_num_commands; i++) {
