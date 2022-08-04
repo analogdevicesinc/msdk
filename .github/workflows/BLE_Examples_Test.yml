@@ -34,11 +34,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build all BLE examples
         run: |
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
-          
           cd Examples
           SUBDIRS=$(find . -type d -name "BLE*")
           for dir in ${SUBDIRS}
