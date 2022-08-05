@@ -38,34 +38,31 @@
 #define __SCP_UTILS_H__
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 /**
  * Display an SCP packet
  * @param frame packet
  * @param frame_size packet size
  */
-void display_frame(uint8_t * frame, size_t frame_size);
+void display_frame(uint8_t* frame, size_t frame_size);
 
 /**
  * Change current side to HOST
  */
-void host (void);
+void host(void);
 
 /**
  * Return current side  value
  * @return
  */
-int whoami (void);
+int whoami(void);
 
 /**
  * Change current side to TARGET
  */
-void target (void);
-
+void target(void);
 
 /**
  * Open the packet list file for writing
@@ -73,13 +70,11 @@ void target (void);
  */
 int open_packetlist_file(void);
 
-
 /**
  * Close the packet list file for writing
  * @return ERR_OK if success, error code otherwise
  */
 int close_packetlist_file(void);
-
 
 /**
  * Write an SCP packet to a file
@@ -88,7 +83,7 @@ int close_packetlist_file(void);
  * @param name_file file name to write of the packet file
  * @return
  */
-int write_packet(uint8_t * frame, size_t frame_size, const char * name_file);
+int write_packet(uint8_t* frame, size_t frame_size, const char* name_file);
 
 /**
  * Generate an SCP packet ( write to file and display )
@@ -98,27 +93,24 @@ int write_packet(uint8_t * frame, size_t frame_size, const char * name_file);
  * @param name_file file name to write of the packet file
  * @return
  */
-int packet_send (uint8_t * frame, size_t frame_size, const char * message, const char * name_file);
-
+int packet_send(uint8_t* frame, size_t frame_size, const char* message, const char* name_file);
 
 /**
  * Replace EXTRA_PARAM tag in the provided parameter
  * @param param line to replace extra param tag
  * @return
  */
-int replace_extra_params(char * param);
-
+int replace_extra_params(char* param);
 
 /**
  * DEPRECATED Process script line
  * @param line line to process
  * @return
  */
-int process_command (char *line);
-
+int process_command(char* line);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif	/* __SCP_UTILS_H__ */
+#endif /* __SCP_UTILS_H__ */

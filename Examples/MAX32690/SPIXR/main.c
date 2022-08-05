@@ -52,35 +52,36 @@
 
 /***** Definitions *****/
 // RAM Vendor Specific Commands
-#define A1024_READ      0x03
-#define A1024_WRITE     0x02
-#define A1024_EQIO      0x38
+#define A1024_READ  0x03
+#define A1024_WRITE 0x02
+#define A1024_EQIO  0x38
 
 // RAM Vendor Specific Values
-#define BUFFER_SIZE     16
-#define A1024_ADDRESS   0x80000000
+#define BUFFER_SIZE   16
+#define A1024_ADDRESS 0x80000000
 
 /***** Globals *****/
 mxc_spixr_cfg_t init_cfg = {
-    0x08,                           /* Number of bits per character     */
-	MXC_SPIXR_QUAD_SDIO,          	/* SPI Data Width                   */
-    0x04,                           /* num of system clocks between SS active & first serial clock edge     */
-    0x08,                           /* num of system clocks between last serial clock edge and ss inactive  */
-    0x10,                           /* num of system clocks between transactions (read / write)             */
-    50000                       	/* Baud freq                        */
+    0x08,                /* Number of bits per character     */
+    MXC_SPIXR_QUAD_SDIO, /* SPI Data Width                   */
+    0x04,                /* num of system clocks between SS active & first serial clock edge     */
+    0x08,                /* num of system clocks between last serial clock edge and ss inactive  */
+    0x10,                /* num of system clocks between transactions (read / write)             */
+    50000                /* Baud freq                        */
 };
 
 /***** Functions *****/
 /******************************************************************************/
 void setup(void)
 {
-    uint8_t quad_cmd =  A1024_EQIO; /* pre-defined command to use quad mode         */
+    uint8_t quad_cmd = A1024_EQIO; /* pre-defined command to use quad mode         */
 
     // // Initialize the desired configuration
-    if(MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
+    if (MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
         printf("\nSPIXR was not initialized properly.\n");
         printf("\nExample Failed\n");
-        while(1);
+        while (1)
+            ;
     }
 
     MXC_SPIXR->dma &= ~MXC_F_SPIXR_DMA_DMA_RX_EN;
@@ -88,10 +89,11 @@ void setup(void)
     MXC_SPIXR->ctrl3 &= ~MXC_F_SPIXR_CTRL2_DATA_WIDTH;
 
     // Setup to communicate in quad mode
-    MXC_SPIXR_SendCommand (&quad_cmd, 1, 1);
+    MXC_SPIXR_SendCommand(&quad_cmd, 1, 1);
 
     // Wait until quad cmd is sent
-    while(MXC_SPIXR_Busy());
+    while (MXC_SPIXR_Busy())
+        ;
 
     MXC_SPIXR_SetWidth(MXC_SPIXR_QUAD_SDIO);
     MXC_SPIXR_ThreeWireModeDisable();
@@ -112,9 +114,10 @@ int main(void)
 {
     // Defining Variable(s) to write & store data to RAM
     uint8_t write_buffer[BUFFER_SIZE], read_buffer[BUFFER_SIZE];
-    uint8_t *address = (uint8_t*) A1024_ADDRESS;;                            /* Variable to store address of RAM */
+    uint8_t* address = (uint8_t*)A1024_ADDRESS;
+    ; /* Variable to store address of RAM */
     int temp, i;
-	int fail = 0;
+    int fail = 0;
 
     printf("\n****************** SPIXR Example ******************\n\n");
     printf("This example communicates with an MX25 SPI RAM on the\n");
@@ -130,38 +133,39 @@ int main(void)
     // printf("Initializing & Writing pseudo-random data to RAM \n");
     srand(0);
     printf("\nTX BUFFER:\t ");
-    for(i = 0; i < BUFFER_SIZE; i++) {
-    	read_buffer[i] = 0;
-    	temp = rand();
+    for (i = 0; i < BUFFER_SIZE; i++) {
+        read_buffer[i]  = 0;
+        temp            = rand();
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = write_buffer[i];
-        printf("%x  ",write_buffer[i]);
+        printf("%x  ", write_buffer[i]);
     }
 
     // Read data from RAM
     printf("\n\nRX BUFFER:\t ");
-    for(i = 0; i < BUFFER_SIZE; i++) {
+    for (i = 0; i < BUFFER_SIZE; i++) {
         read_buffer[i] = *(address + i);
-        printf("%x  ",read_buffer[i]);
+        printf("%x  ", read_buffer[i]);
     }
 
     // Disable the SPIXR
     MXC_SPIXR_Disable();
 
     // Verify data being read from RAM
-    if(memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
+    if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
         printf("\n\nDATA IS NOT VERIFIED.\n\n");
         fail++;
     } else {
         printf("\n\nDATA IS VERIFIED.\n\n");
     }
 
-    if(fail == 0) {
+    if (fail == 0) {
         printf("EXAMPLE SUCCEEDED\n");
     } else {
         printf("EXAMPLE FAILED\n");
     }
 
-    while(1);
+    while (1)
+        ;
 }

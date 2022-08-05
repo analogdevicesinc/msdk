@@ -46,8 +46,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
             base_freq = EXTCLK_FREQ;
             break;
@@ -105,7 +104,6 @@ __weak int Board_Init(void)
 /* Cordio library init function */
 __weak void PalSysInit(void)
 {
-
 }
 
 void __enable_irq(void)

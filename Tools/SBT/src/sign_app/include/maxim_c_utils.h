@@ -37,31 +37,27 @@
 #ifndef __MAXIM_C_UTILS_H__
 #define __MAXIM_C_UTILS_H__
 
-
 #ifndef TRUE
-#define TRUE							1
+#define TRUE 1
 #endif
 
 #ifndef FALSE
-#define FALSE							0
+#define FALSE 0
 #endif
 
 #ifdef __WIN
 
-#define SSIZET_FMT "%Id"
+#define SSIZET_FMT  "%Id"
 #define SSIZET_XFMT "%Ix"
 #else
-#define SSIZET_FMT "%zd"
+#define SSIZET_FMT  "%zd"
 #define SSIZET_XFMT "%zx"
 #endif
 
+#define UNUSED_PARAMETER(x) (void)(x) /* optimized away by compiler */
 
-#define UNUSED_PARAMETER(x) (void)(x)	/* optimized away by compiler */
-
-#define ASSERT_OK(expr) \
+#define ASSERT_OK(expr)              \
     if ((result = (expr)) != ERR_OK) \
         return result;
 
-
 #endif /* __MAXIM_C_UTILS_H__ */
-

@@ -56,10 +56,10 @@
 #include "gpio.h"
 
 /***** Definitions *****/
-#define LED_FLASH   0
-#define LED_ALARM   1
+#define LED_FLASH 0
+#define LED_ALARM 1
 
-#define LONG_ALARM_COUNT	2500
+#define LONG_ALARM_COUNT 2500
 
 /***** Globals *****/
 volatile int buttonPressed = 0;
@@ -67,11 +67,11 @@ volatile int buttonPressed = 0;
 /***** Functions *****/
 void HTMR0_IRQHandler(void)
 {
-    if(MXC_HTMR_GetFlags(MXC_HTMR0) & MXC_F_HTMR_CTRL_ALDF) {
+    if (MXC_HTMR_GetFlags(MXC_HTMR0) & MXC_F_HTMR_CTRL_ALDF) {
         LED_Toggle(LED_ALARM);
         MXC_HTMR_ClearFlags(MXC_HTMR0, MXC_F_HTMR_CTRL_ALDF);
     }
-    if(MXC_HTMR_GetFlags(MXC_HTMR0) & MXC_F_HTMR_CTRL_ALSF) {
+    if (MXC_HTMR_GetFlags(MXC_HTMR0) & MXC_F_HTMR_CTRL_ALSF) {
         LED_Toggle(LED_FLASH);
         MXC_HTMR_ClearFlags(MXC_HTMR0, MXC_F_HTMR_CTRL_ALSF);
     }
@@ -86,9 +86,10 @@ void buttonHandler()
 
 void alarmSetHandler()
 {
-	MXC_HTMR_Stop(MXC_HTMR0);
+    MXC_HTMR_Stop(MXC_HTMR0);
 
-    if (MXC_HTMR_SetLongAlarm(MXC_HTMR0, MXC_HTMR_GetLongCount(MXC_HTMR0) + LONG_ALARM_COUNT) != E_NO_ERROR) {
+    if (MXC_HTMR_SetLongAlarm(MXC_HTMR0, MXC_HTMR_GetLongCount(MXC_HTMR0) + LONG_ALARM_COUNT) !=
+        E_NO_ERROR) {
         printf("Failed to set Long Interval Alarm.\n");
     }
 
@@ -104,7 +105,7 @@ static void printTime(void)
      * so we need to take short count mod 4096 and add long count to
      * get a float representing the total number of long counts
      */
-    count = (MXC_HTMR_GetShortCount(MXC_HTMR0)%4096) / 4096.0;
+    count = (MXC_HTMR_GetShortCount(MXC_HTMR0) % 4096) / 4096.0;
     count += MXC_HTMR_GetLongCount(MXC_HTMR0);
 
     printf("Current Count %f\n", count);
@@ -117,39 +118,42 @@ int main(void)
     printf("This example enables the HTMR and sets the short interval\n");
     printf("alarm to trigger every ~2^22 short interval counts (0.5sec)\n");
     printf("Pressing PB0 will print the current count to the console\n");
-    printf("Pressing PB1 will set the Long Interval alarm to light LED1 in %d counts\n\n", LONG_ALARM_COUNT);
+    printf("Pressing PB1 will set the Long Interval alarm to light LED1 in %d counts\n\n",
+           LONG_ALARM_COUNT);
 #if !defined(BOARD_FTHR)
-    printf("Pressing PB1 will set the Long Interval alarm to light LED1 in %d counts\n\n", LONG_ALARM_COUNT);
+    printf("Pressing PB1 will set the Long Interval alarm to light LED1 in %d counts\n\n",
+           LONG_ALARM_COUNT);
 #else
     printf("The board has only one push button\n");
 #endif
-    
+
     MXC_NVIC_SetVector(HTMR0_IRQn, HTMR0_IRQHandler);
     NVIC_EnableIRQ(HTMR0_IRQn);
-    
+
     /* Setup callback to receive notification of when button is pressed. */
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
 #if !defined(BOARD_FTHR)
     PB_RegisterCallback(1, (pb_callback)alarmSetHandler);
 #endif
-    
+
     /* Turn LED off initially */
     LED_Off(LED_ALARM);
     LED_Off(LED_FLASH);
-    
+
     if (MXC_HTMR_Init(MXC_HTMR0, 0, 0) != E_NO_ERROR) {
         printf("Failed HTMR Initialization.\n");
-        while(1);
+        while (1)
+            ;
     }
 
     if (MXC_HTMR_SetShortAlarm(MXC_HTMR0, 0xFFC7BFFF) != E_NO_ERROR) {
         printf("Failed to set short interval alarm\n");
     }
-    
+
     MXC_HTMR_Start(MXC_HTMR0);
     printf("\nTimer started.\n\n");
     printTime();
-    
+
     while (1) {
         if (buttonPressed) {
             /* Show the time elapsed. */

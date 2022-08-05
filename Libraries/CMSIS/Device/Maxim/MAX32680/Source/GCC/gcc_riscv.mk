@@ -149,6 +149,7 @@ CFLAGS+= \
 	     -MD                                                                     \
 	     -Wall                                                                   \
 	     -Wno-format                                                             \
+	     $(MXC_OPTIMIZE_CFLAGS)                                                  \
 	     -c
 
 # On GCC version > 4.8.0 use the -fno-isolate-erroneous-paths-dereference flag
@@ -194,7 +195,7 @@ LDFLAGS+=$(PROJ_LDFLAGS)
 STD_LIBS=-lc_nano -lm
 
 # Determine if any C++ files are in the project sources, and add libraries as appropriate
-ifneq "$(findstring cpp, ${SRCS})" ""
+ifneq "$(findstring .cpp, ${SRCS})" ""
 STD_LIBS+=-lsupc++ -lstdc++
 endif
 

@@ -39,7 +39,7 @@
  *
  */
 
-#define S_MODULE_NAME   "MAIN-RISCV"
+#define S_MODULE_NAME "MAIN-RISCV"
 
 /***** Includes *****/
 #include <stdio.h>
@@ -59,10 +59,10 @@
 #include "embedding_process.h"
 #include "sema_regs.h"
 
-__attribute__((section(".shared__at__mailbox")))
-volatile uint32_t mail_box[ARM_MAILBOX_SIZE + RISCV_MAILBOX_SIZE];
-volatile uint32_t *arm_mail_box = &mail_box[0];
-volatile uint32_t *riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
+__attribute__((section(
+    ".shared__at__mailbox"))) volatile uint32_t mail_box[ARM_MAILBOX_SIZE + RISCV_MAILBOX_SIZE];
+volatile uint32_t* arm_mail_box   = &mail_box[0];
+volatile uint32_t* riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
 
 extern int start_faceid(void);
 
@@ -151,7 +151,8 @@ int main(void)
     PR_DEBUG("Camera Manufacture ID is %04x\n", id);
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel);
 
     if (ret != STATUS_OK) {
         PR_ERR("Error returned from setting up camera. Error %d\n", ret);

@@ -59,27 +59,26 @@
 /***** Globals *****/
 static mxc_wdt_cfg_t cfg;
 
-volatile int sw1_pressed = 0;
-volatile int sw2_pressed = 0;
+volatile int sw1_pressed     = 0;
+volatile int sw2_pressed     = 0;
 volatile int interrupt_count = 0;
 
 // refers to array, do not change constants
-#define SW1         0
-#define LED         LED1
+#define SW1 0
+#define LED LED1
 /***** Functions *****/
 
 // *****************************************************************************
 void watchdogHandler()
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
-    
+
     if (interrupt_count == 0) {
         printf("\nWatchdog has tripped!\n");
         printf("This is the first time, so we'll go ahead and reset it\n");
         printf("once it is within the proper window.\n");
         interrupt_count++;
-    }
-    else {
+    } else {
         printf("\nWatchdog has tripped!\n");
         printf("This is the not the first time.  What happens if we\n");
         printf("do not reset it?\n");
@@ -131,37 +130,36 @@ int main(void)
 {
     cfg.mode = MXC_WDT_WINDOWED;
     MXC_WDT_Init(MXC_WDT0, &cfg);
-    
+
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
         uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
-        
+
         if (resetFlags == MXC_F_WDT_CTRL_RST_LATE) {
             printf("\nWatchdog Reset occured too late (OVERFLOW)\n");
-        }
-        else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
+        } else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
             printf("\nWatchdog Reset occured too soon (UNDERFLOW)\n");
         }
-        
+
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_ClearIntFlag(MXC_WDT0);
         MXC_WDT_EnableReset(MXC_WDT0);
         MXC_WDT_Enable(MXC_WDT0);
     }
-    
+
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("SW2: Push SW2 to trigger a \"too-late\" watchdog reset. This will stop resetting\n");
     printf("     the watchdog timer until it generates the \"too-late\" interrupt.  After that\n");
     printf("     it will reset the watchdog timer only once, allowing it to pass the reset\n");
     printf("     timeout period.\n\n");
     printf("SW3: Push SW3 to reset the watchdog timer in the \"too-early\" period.\n");
-    
+
     //Blink LED
     // MXC_GPIO_OutClr(led_pin[0].port,led_pin[0].mask);
     LED_Off(0);
-    
+
     //Blink LED three times at startup
     int numBlinks = 3;
-    
+
     while (numBlinks) {
         LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(100));
@@ -169,38 +167,38 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(100));
         numBlinks--;
     }
-    
+
     //Setup and start watchdog
     MXC_WDT_Setup();
-    
+
     // Configure push buttons
     PB_RegisterCallback(0, SW1_Callback);
     PB_IntEnable(0);
     PB_RegisterCallback(1, SW2_Callback);
     PB_IntEnable(1);
-    
+
     //Push SW1 to start longer delay - shows Interrupt before the reset happens
-    
+
     while (1) {
         if (sw1_pressed) {
             if (interrupt_count == 0) {
-                while (interrupt_count == 0) {};
-                
+                while (interrupt_count == 0) {
+                };
+
                 MXC_Delay(MXC_DELAY_MSEC(1500));
+            } else {
+                while (1)
+                    ;
             }
-            else {
-                while (1);
-            }
-            
         }
-        
+
         if (sw2_pressed) {
             // Reset the WDT too early.
             MXC_Delay(MXC_DELAY_MSEC(200));
             MXC_WDT_ResetTimer(MXC_WDT0);
             sw2_pressed = 0;
         }
-        
+
         //blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_On(0);

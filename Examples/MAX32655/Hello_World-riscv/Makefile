@@ -60,7 +60,7 @@ riscv: buildrv/common_riscv.ld arm build/$(PROJECT).elf
 
 buildrv/$(PROJECT)-riscv.elf: riscv arm build/$(PROJECT).elf buildrv/common_riscv.ld
 
-clean distclean:
+clean libclean distclean:
 	@$(MAKE) -f Makefile.ARM $@
 	@$(MAKE) -f Makefile.RISCV $@
 

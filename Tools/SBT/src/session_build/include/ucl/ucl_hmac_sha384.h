@@ -46,7 +46,6 @@ extern "C" {
  * @ingroup UCL_HMAC
  */
 
-
 /*============================================================================*/
 /** <b>The complete process of HMAC-SHA384</b>.
  *
@@ -65,9 +64,8 @@ extern "C" {
  *
  * @ingroup UCL_HMAC_SHA384
  */
-int ucl_hmac_sha384(u8 *mac, u32 mac_byteLen, u8 *message,
-                    u32 message_byteLen, u8 *key, u32 key_byteLen);
-
+int ucl_hmac_sha384(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+                    u32 key_byteLen);
 
 /** <b>The initialisation of HMAC-SHA384</b>.
  *
@@ -82,9 +80,7 @@ int ucl_hmac_sha384(u8 *mac, u32 mac_byteLen, u8 *message,
  *
  * @ingroup UCL_HMAC_SHA384
  */
-int ucl_hmac_sha384_init(ucl_sha384_ctx_t *context, u8 *key,
-                         u32 key_byteLen);
-
+int ucl_hmac_sha384_init(ucl_sha384_ctx_t* context, u8* key, u32 key_byteLen);
 
 /** <b>The core of SHA384 </b>.
  *
@@ -102,9 +98,7 @@ int ucl_hmac_sha384_init(ucl_sha384_ctx_t *context, u8 *key,
  *
  * @ingroup UCL_HMAC_SHA384
  */
-int ucl_hmac_sha384_core(ucl_sha384_ctx_t *context,
-                         u8 *data, u32 byteLen);
-
+int ucl_hmac_sha384_core(ucl_sha384_ctx_t* context, u8* data, u32 byteLen);
 
 /** <b>Finish the process of SHA384</b>.
  *
@@ -125,9 +119,8 @@ int ucl_hmac_sha384_core(ucl_sha384_ctx_t *context,
  *
  * @ingroup UCL_HMAC_SHA384
  */
-int ucl_hmac_sha384_finish(u8 *mac, u32 mac_byteLen,
-                           ucl_sha384_ctx_t *context, u8 *key, u32 key_byteLen);
-
+int ucl_hmac_sha384_finish(u8* mac, u32 mac_byteLen, ucl_sha384_ctx_t* context, u8* key,
+                           u32 key_byteLen);
 
 #ifdef __cplusplus
 }

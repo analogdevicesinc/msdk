@@ -48,8 +48,8 @@
 #include "dma.h"
 
 /***** Definitions *****/
-#define POLY    0xEDB88320
-#define CHECK   0xDEBB20E3
+#define POLY  0xEDB88320
+#define CHECK 0xDEBB20E3
 
 /***** Globals *****/
 volatile int wait;
@@ -70,8 +70,7 @@ void Test_Result(int result)
     if (result) {
         printf(" \n**Test Failed**\n\n");
         fail++;
-    }
-    else {
+    } else {
         printf(" \n**Test Passed**\n\n");
     }
 }
@@ -80,55 +79,51 @@ void Test_CRC(int asynchronous)
 {
     uint32_t array[101];
     int i;
-    
+
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
-    
+
     for (i = 0; i < 100; i++) {
         array[i] = i;
     }
-    
-    mxc_crc_req_t crc_req = {
-        array,
-        100,
-        0
-    };
-    
+
+    mxc_crc_req_t crc_req = {array, 100, 0};
+
     MXC_CRC_Init();
     // Load CRC polynomial into crc polynomial register
     MXC_CRC_SetPoly(POLY);
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CRC_Compute(&crc_req);
     }
-    
+
     printf("\nCRC Poly Result: %x", crc_req.resultCRC);
-    
+
     array[100] = ~(crc_req.resultCRC);
-    
+
     crc_req.dataLen = 101;
-    
+
     MXC_CRC_Init();
     // Load CRC polynomial into crc polynomial register
     MXC_CRC_SetPoly(POLY);
-    
+
     if (asynchronous) {
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CRC_Compute(&crc_req);
     }
-    
+
     printf("\nCRC Check Result: %x", crc_req.resultCRC);
-    
+
     Test_Result(CHECK != crc_req.resultCRC);
     MXC_CRC_Shutdown();
 }
@@ -137,22 +132,21 @@ void Test_CRC(int asynchronous)
 int main(void)
 {
     printf("\nCRC Sync and Async Example\n\n");
-    
+
     Test_CRC(0);
-    
+
     MXC_DMA_ReleaseChannel(0);
     MXC_NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler);
     NVIC_EnableIRQ(DMA0_IRQn);
     Test_CRC(1);
-    
+
     if (fail) {
         printf("\Example Failed");
-    }
-    else {
+    } else {
         printf("\nExample Succeeded");
     }
-    
+
     printf("\n\n");
-    
-    while (1) {}
+
+    return 0;
 }

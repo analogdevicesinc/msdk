@@ -65,7 +65,7 @@ else
 ifeq ($(OS),Windows_NT)
 LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 else
-LIBS_DIR=$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
+LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
 endif
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS

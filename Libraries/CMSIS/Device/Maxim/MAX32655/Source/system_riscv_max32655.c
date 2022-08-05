@@ -38,7 +38,7 @@
 #include "gcr_regs.h"
 #include "icc.h"
 
-#define MXC_NBBFC_REG4      *((volatile uint32_t*)(0x40000810))
+#define MXC_NBBFC_REG4 *((volatile uint32_t*)(0x40000810))
 
 uint32_t SystemCoreClock = HIRC_FREQ;
 static volatile int intContext;
@@ -47,62 +47,174 @@ extern uint32_t* __isr_vector;
 
 void illegal_ISNHandler(void);
 
-void __attribute__((weak)) PF_IRQHandler(void) {}
-void __attribute__((weak)) WDT0_IRQHandler(void) {}
-void __attribute__((weak)) GPIOWAKE_IRQHandler(void) {}
-void __attribute__((weak)) RTC_IRQHandler(void) {}
-void __attribute__((weak)) TMR0_IRQHandler(void) {}
-void __attribute__((weak)) TMR1_IRQHandler(void) {}
-void __attribute__((weak)) TMR2_IRQHandler(void) {}
-void __attribute__((weak)) TMR3_IRQHandler(void) {}
-void __attribute__((weak)) TMR4_IRQHandler(void) {}
-void __attribute__((weak)) TMR5_IRQHandler(void) {}
-void __attribute__((weak)) I2C0_IRQHandler(void) {}
-void __attribute__((weak)) UART0_IRQHandler(void) {}
-void __attribute__((weak)) RSV16_IRQHandler(void) {}
-void __attribute__((weak)) I2C1_IRQHandler(void) {}
-void __attribute__((weak)) UART1_IRQHandler(void) {}
-void __attribute__((weak)) UART2_IRQHandler(void) {}
-void __attribute__((weak)) I2C2_IRQHandler(void) {}
-void __attribute__((weak)) UART3_IRQHandler(void) {}
-void __attribute__((weak)) SPI1_IRQHandler(void) {}
-void __attribute__((weak)) WUT_IRQHandler(void) {}
-void __attribute__((weak)) FLC0_IRQHandler(void) {}
-void __attribute__((weak)) GPIO0_IRQHandler(void) {}
-void __attribute__((weak)) GPIO1_IRQHandler(void) {}
-void __attribute__((weak)) GPIO2_IRQHandler(void) {}
-void __attribute__((weak)) DMA0_IRQHandler(void) {}
-void __attribute__((weak)) DMA1_IRQHandler(void) {}
-void __attribute__((weak)) DMA2_IRQHandler(void) {}
-void __attribute__((weak)) DMA3_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_TX_DONE_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_RX_RCVD_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_RX_ENG_DET_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_SFD_DET_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_SFD_TO_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_GP_EVENT_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_CFO_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_SIG_DET_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_AGC_EVENT_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_RFFE_SPIM_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_TX_AES_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_RX_AES_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_INV_APB_ADDR_IRQHandler(void) {}
-void __attribute__((weak)) BTLE_IQ_DATA_VALID_IRQHandler(void) {}
-void __attribute__((weak)) AES_IRQHandler(void) {}
-void __attribute__((weak)) TRNG_IRQHandler(void) {}
-void __attribute__((weak)) WDT1_IRQHandler(void) {}
-void __attribute__((weak)) DVS_IRQHandler(void) {}
-void __attribute__((weak)) SIMO_IRQHandler(void) {}
-void __attribute__((weak)) RSV51_IRQHandler(void) {}
-void __attribute__((weak)) PT_IRQHandler(void) {}
-void __attribute__((weak)) ADC_IRQHandler(void) {}
-void __attribute__((weak)) OWM_IRQHandler(void) {}
-void __attribute__((weak)) I2S_IRQHandler(void) {}
-void __attribute__((weak)) CNN_FIFO_IRQHandler(void) {}
-void __attribute__((weak)) CNN_IRQHandler(void) {}
-void __attribute__((weak)) RSV58_IRQHandler(void) {}
-void __attribute__((weak)) PCIF_IRQHandler(void) {}
+void __attribute__((weak)) PF_IRQHandler(void)
+{
+}
+void __attribute__((weak)) WDT0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) GPIOWAKE_IRQHandler(void)
+{
+}
+void __attribute__((weak)) RTC_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TMR0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TMR1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TMR2_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TMR3_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TMR4_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TMR5_IRQHandler(void)
+{
+}
+void __attribute__((weak)) I2C0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) UART0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) RSV16_IRQHandler(void)
+{
+}
+void __attribute__((weak)) I2C1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) UART1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) UART2_IRQHandler(void)
+{
+}
+void __attribute__((weak)) I2C2_IRQHandler(void)
+{
+}
+void __attribute__((weak)) UART3_IRQHandler(void)
+{
+}
+void __attribute__((weak)) SPI1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) WUT_IRQHandler(void)
+{
+}
+void __attribute__((weak)) FLC0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) GPIO0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) GPIO1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) GPIO2_IRQHandler(void)
+{
+}
+void __attribute__((weak)) DMA0_IRQHandler(void)
+{
+}
+void __attribute__((weak)) DMA1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) DMA2_IRQHandler(void)
+{
+}
+void __attribute__((weak)) DMA3_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_TX_DONE_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_RX_RCVD_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_RX_ENG_DET_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_SFD_DET_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_SFD_TO_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_GP_EVENT_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_CFO_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_SIG_DET_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_AGC_EVENT_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_RFFE_SPIM_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_TX_AES_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_RX_AES_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_INV_APB_ADDR_IRQHandler(void)
+{
+}
+void __attribute__((weak)) BTLE_IQ_DATA_VALID_IRQHandler(void)
+{
+}
+void __attribute__((weak)) AES_IRQHandler(void)
+{
+}
+void __attribute__((weak)) TRNG_IRQHandler(void)
+{
+}
+void __attribute__((weak)) WDT1_IRQHandler(void)
+{
+}
+void __attribute__((weak)) DVS_IRQHandler(void)
+{
+}
+void __attribute__((weak)) SIMO_IRQHandler(void)
+{
+}
+void __attribute__((weak)) RSV51_IRQHandler(void)
+{
+}
+void __attribute__((weak)) PT_IRQHandler(void)
+{
+}
+void __attribute__((weak)) ADC_IRQHandler(void)
+{
+}
+void __attribute__((weak)) OWM_IRQHandler(void)
+{
+}
+void __attribute__((weak)) I2S_IRQHandler(void)
+{
+}
+void __attribute__((weak)) CNN_FIFO_IRQHandler(void)
+{
+}
+void __attribute__((weak)) CNN_IRQHandler(void)
+{
+}
+void __attribute__((weak)) RSV58_IRQHandler(void)
+{
+}
+void __attribute__((weak)) PCIF_IRQHandler(void)
+{
+}
 
 void __attribute__((interrupt("machine"))) PF_IRQHandlerWrap(void)
 {
@@ -668,10 +780,10 @@ void __attribute__((interrupt("machine"))) PCIF_IRQHandlerWrap(void)
 void __attribute__((interrupt("machine"))) illegal_insn_handler(void)
 {
     volatile uint32_t mstatus = get_mstatus();
-    volatile uint32_t mtvec = get_mtvec();
-    volatile uint32_t mcause = get_mcause();
-    volatile uint32_t mepc = get_mepc();
-    volatile uint32_t uepc = get_uepc();
+    volatile uint32_t mtvec   = get_mtvec();
+    volatile uint32_t mcause  = get_mcause();
+    volatile uint32_t mepc    = get_mepc();
+    volatile uint32_t uepc    = get_uepc();
 
     /* Use debugger to read the status register values */
     (void)mstatus;
@@ -679,13 +791,14 @@ void __attribute__((interrupt("machine"))) illegal_insn_handler(void)
     (void)mcause;
     (void)mepc;
     (void)uepc;
-    while(1) {}
+    while (1) {
+    }
 }
 
 void __enable_irq(void)
 {
     // Interrupts will be automatically re-enabled when leaving interrupt context
-    if(!intContext) {
+    if (!intContext) {
         // Set the MIE bit if we're outside the interrupt context
         __asm volatile("csrw mstatus, 0x8");
     }
@@ -697,8 +810,7 @@ void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
             base_freq = EXTCLK_FREQ;
             break;
@@ -709,10 +821,10 @@ void SystemCoreClockUpdate(void)
             base_freq = INRO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-        base_freq = IPO_FREQ;
+            base_freq = IPO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-        base_freq = IBRO_FREQ;
+            base_freq = IBRO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
             base_freq = ERTCO_FREQ;
@@ -751,7 +863,6 @@ __weak int Board_Init(void)
 
 __weak void PalSysInit(void)
 {
-
 }
 
 /* This function is called just before control is transferred to main().

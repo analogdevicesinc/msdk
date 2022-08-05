@@ -39,7 +39,6 @@
  *
  **************************************************************************** */
 
-
 #ifndef _MXC_PINS_H_
 #define _MXC_PINS_H_
 
@@ -47,11 +46,7 @@
 
 /***** Global Variables *****/
 
-typedef enum {
-    MAP_A,
-    MAP_B,
-    MAP_C
-} sys_map_t;
+typedef enum { MAP_A, MAP_B, MAP_C } sys_map_t;
 
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;
@@ -135,4 +130,3 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc7;
 extern const mxc_gpio_cfg_t gpio_cfg_sdma;
 
 #endif /* _MXC_PINS_H_ */
-

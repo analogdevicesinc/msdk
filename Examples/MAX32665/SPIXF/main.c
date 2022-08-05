@@ -54,28 +54,28 @@
 
 /***** Definitions *****/
 
-#define EXT_FLASH_ADDR               0
-#define EXT_FLASH_SPIXFC_WIDTH		Ext_Flash_DataLine_Quad
+#define EXT_FLASH_ADDR         0
+#define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
 
 int fail = 0;
 
 /***** Functions *****/
 
 // These are set in the linkerfile and give the starting and ending address of xip_section
-#if defined ( __GNUC__)
+#if defined(__GNUC__)
 extern uint8_t __load_start_xip, __load_length_xip;
 #endif
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 // Note: This demo has not been tested under IAR and should be considered non-functional
 extern int Image$$RW_IRAM2$$Length;
 extern char Image$$RW_IRAM2$$Base[];
-uint8_t * __xip_addr;
+uint8_t* __xip_addr;
 #endif
 
 /******************************************************************************/
-void spixf_cfg_setup () {
-
+void spixf_cfg_setup()
+{
     // Disable the SPIXFC before setting the SPIXF
     MXC_SPIXF_Disable();
     MXC_SPIXF_SetSPIFrequency(EXT_FLASH_BAUD);
@@ -84,23 +84,19 @@ void spixf_cfg_setup () {
     MXC_SPIXF_SetSSActiveTime(MXC_SPIXF_SYS_CLOCKS_2);
     MXC_SPIXF_SetSSInactiveTime(MXC_SPIXF_SYS_CLOCKS_3);
 
-    if(EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Single)
-    {
+    if (EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Single) {
         MXC_SPIXF_SetCmdValue(EXT_FLASH_CMD_READ);
         MXC_SPIXF_SetCmdWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetAddrWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetDataWidth(MXC_SPIXF_WIDTH_1);
         MXC_SPIXF_SetModeClk(EXT_FLASH_Read_DUMMY);
-    }
-    else
-    {
+    } else {
         MXC_SPIXF_SetCmdValue(EXT_FLASH_CMD_QREAD);
         MXC_SPIXF_SetCmdWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetAddrWidth(MXC_SPIXF_QUAD_SDIO);
         MXC_SPIXF_SetDataWidth(MXC_SPIXF_WIDTH_4);
         MXC_SPIXF_SetModeClk(EXT_FLASH_QREAD_DUMMY);
     }
-    
 
     MXC_SPIXF_Set3ByteAddr();
     MXC_SPIXF_SCKFeedbackEnable();
@@ -111,7 +107,7 @@ void spixf_cfg_setup () {
 int main(void)
 {
     uint32_t id;
-    void(*func)(void);
+    void (*func)(void);
     uint8_t rx_buf[(uint32_t)(&__load_length_xip)];
     int rx_len = sizeof(rx_buf);
 
@@ -126,7 +122,8 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-        while(1);
+        while (1)
+            ;
     }
     printf("External flash Initialized.\n\n");
 
@@ -134,11 +131,12 @@ int main(void)
 
     // Get the ID of the external flash
     if ((id = Ext_Flash_ID()) == EXT_FLASH_EXP_ID) {
-	   printf("External flash ID verified\n\n");
+        printf("External flash ID verified\n\n");
     } else {
-	   printf("Error verifying external flash ID: 0x%x\n", id);
-       printf("Example Failed\n");
-	   while (1);
+        printf("Error verifying external flash ID: 0x%x\n", id);
+        printf("Example Failed\n");
+        while (1)
+            ;
     }
 
     int err;
@@ -150,26 +148,27 @@ int main(void)
 
     // Enable Quad mode if we are using quad
     if (EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Quad) {
-    	if(Ext_Flash_Quad(1) != E_NO_ERROR) {
-	       printf("Error enabling quad mode\n\n");
+        if (Ext_Flash_Quad(1) != E_NO_ERROR) {
+            printf("Error enabling quad mode\n\n");
             fail++;
-    	}
-        else{
+        } else {
             printf("Quad mode enabled\n\n");
         }
     } else {
-        if(Ext_Flash_Quad(0) != E_NO_ERROR) {
+        if (Ext_Flash_Quad(0) != E_NO_ERROR) {
             printf("Error disabling quad mode\n\n");
             fail++;
-        }
-        else{
+        } else {
             printf("Quad mode disabled\n\n");
         }
     }
 
     // Program the external flash
-    printf("Programming function (%d bytes @ 0x%08x) into external flash\n", (uint32_t)(&__load_length_xip), &__load_start_xip);
-    if((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, &__load_start_xip, (uint32_t)(&__load_length_xip), EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
+    printf("Programming function (%d bytes @ 0x%08x) into external flash\n",
+           (uint32_t)(&__load_length_xip), &__load_start_xip);
+    if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, &__load_start_xip,
+                                      (uint32_t)(&__load_length_xip), EXT_FLASH_SPIXFC_WIDTH)) !=
+        E_NO_ERROR) {
         printf("Error Programming: %d\n", err);
         fail++;
     } else {
@@ -177,11 +176,12 @@ int main(void)
     }
 
     printf("Verifying external flash\n");
-    if((err = Ext_Flash_Read(EXT_FLASH_ADDR, rx_buf, rx_len, EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
+    if ((err = Ext_Flash_Read(EXT_FLASH_ADDR, rx_buf, rx_len, EXT_FLASH_SPIXFC_WIDTH)) !=
+        E_NO_ERROR) {
         printf("Error verifying data %d\n", err);
         fail++;
     } else {
-        if(memcmp(rx_buf, &__load_start_xip, rx_len) != E_NO_ERROR) {
+        if (memcmp(rx_buf, &__load_start_xip, rx_len) != E_NO_ERROR) {
             printf("Error invalid data\n");
             fail++;
         } else {
@@ -192,13 +192,13 @@ int main(void)
     // Setup SPIX
     spixf_cfg_setup();
 
-
-    printf("Jumping to external flash (@ 0x%08x), watch for blinking LED.\n\n", (MXC_XIP_MEM_BASE | 0x1));
-    func = (void(*)(void))(MXC_XIP_MEM_BASE | 0x1);
+    printf("Jumping to external flash (@ 0x%08x), watch for blinking LED.\n\n",
+           (MXC_XIP_MEM_BASE | 0x1));
+    func = (void (*)(void))(MXC_XIP_MEM_BASE | 0x1);
     func();
     printf("Returned from external flash\n\n");
 
-    if(fail == 0) {
+    if (fail == 0) {
         printf("Example Succeeded\n\n");
     } else {
         printf("Example Failed\n\n");

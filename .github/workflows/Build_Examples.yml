@@ -1,0 +1,64 @@
+name: Build_Examples
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on:
+      - self-hosted
+      - software
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          # Update the submodules below, doing so here will convert ssh to https
+          submodules: false
+
+      # Runs a set of commands using the runners shell
+      - name: Build_Examples
+        run: |
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
+          
+          cd Examples
+          # Rebuild all of the peripheral drivers and build all of the Hello_World examples
+          SUBDIRS=$(find . -type d -name "Hello_World")
+          for dir in ${SUBDIRS}
+          do
+            make -C ${dir} clean
+            make -C ${dir} libclean
+            make -C ${dir} -j8
+          done
+          
+          # Find all of the examples, exclude the MAX32752, currently in development
+          SUBDIRS=$(find . -mindepth 3 -not -path "./MAX32572*"  -name "?akefile" -printf '%h\n')
+
+          # Exclude some examples
+          SUBDIRS=${SUBDIRS//"./MAX32570/MAX32570_Demo_BareMetal"/}
+          SUBDIRS=${SUBDIRS//"./MAX32570/MAX32570_Demo_FreeRTOS"/}
+          SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}
+          SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_FreeRTOS"/}
+          SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_BareMetal"/}
+          SUBDIRS=${SUBDIRS//"./MAX78000/CNN/mnist-streaming"/}
+
+          for dir in ${SUBDIRS}
+          do
+              make -C ${dir} clean
+              make -C ${dir} -j8
+          done

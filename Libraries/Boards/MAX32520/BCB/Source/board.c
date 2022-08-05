@@ -86,8 +86,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -101,7 +102,7 @@ void SystemCoreClockUpdate(void)
 int Board_Init(void)
 {
     int err;
-    
+
     /*
     
         if ((err = MX25_BoardInit()) != E_NO_ERROR) {
@@ -109,22 +110,22 @@ int Board_Init(void)
             return err;
         }
     */
-    
+
     if ((err = Console_Init()) < E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = PB_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -132,11 +133,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -146,43 +147,40 @@ void NMI_Handler(void)
     __NOP();
 }
 
-
 /******************************************************************************/
 int MX25_Board_Init(void)
 {
     int err;
     err = MXC_SPIXF_Init(0x0B, MX25_BAUD);
-    
+
     if (err == E_NO_ERROR) {
         MXC_SPIXF_Enable();
     }
-    
+
     return err;
 }
 
 /******************************************************************************/
 int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_width_t width)
 {
-
     mxc_spixf_req_t req = {deassert, 0, NULL, read, width, len, 0, 0, NULL};
-    
+
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;
     }
-    
+
     return E_NO_ERROR;
 }
 
 /******************************************************************************/
 int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, mxc_spixf_width_t width)
 {
-
     mxc_spixf_req_t req = {deassert, 0, write, NULL, width, len, 0, 0, NULL};
-    
+
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;
     }
-    
+
     return E_NO_ERROR;
 }
 

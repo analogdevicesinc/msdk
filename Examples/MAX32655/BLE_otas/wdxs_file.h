@@ -24,6 +24,11 @@
 extern "C" {
 #endif
 
+typedef struct {
+    uint32_t fileLen;
+    uint32_t fileCRC;
+} fileHeader_t;
+
 /*! \addtogroup WIRELESS_DATA_EXCHANGE_PROFILE
  *  \{ */
 
@@ -62,11 +67,18 @@ uint32_t WdxsFileGetBaseAddr(void);
 /*************************************************************************************************/
 uint32_t WdxsFileGetVerifiedLength(void);
 
-/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
+/*************************************************************************************************/
+/*!
+ *  \brief  set the length of the expected file
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void initHeader(fileHeader_t* header);
+/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* WDXS_FILE_H */
-

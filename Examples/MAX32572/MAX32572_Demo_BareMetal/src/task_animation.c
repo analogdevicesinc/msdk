@@ -44,79 +44,56 @@
 #include "task_logo_animation.h"
 
 /********************************* 		DEFINES		 *************************/
-#define NB_SPRITE	(32)
+#define NB_SPRITE (32)
 
-#define ANIMATION_PERIOD  30 //as ms
+#define ANIMATION_PERIOD 30 //as ms
 
 /********************************* 		TYPE DEF	 ************************/
 
 /********************************* 		VARIABLES	 *************************/
 static const int logo_maxim_data[] = {
-	maxim_logo_only_small_000_bmp,
-	maxim_logo_only_small_001_bmp,
-	maxim_logo_only_small_002_bmp,
-	maxim_logo_only_small_003_bmp,
-	maxim_logo_only_small_004_bmp,
-	maxim_logo_only_small_005_bmp,
-	maxim_logo_only_small_006_bmp,
-	maxim_logo_only_small_007_bmp,
-	maxim_logo_only_small_008_bmp,
-	maxim_logo_only_small_009_bmp,
-	maxim_logo_only_small_010_bmp,
-	maxim_logo_only_small_011_bmp,
-	maxim_logo_only_small_012_bmp,
-	maxim_logo_only_small_013_bmp,
-	maxim_logo_only_small_014_bmp,
-	maxim_logo_only_small_015_bmp,
-	maxim_logo_only_small_016_bmp,
-	maxim_logo_only_small_017_bmp,
-	maxim_logo_only_small_018_bmp,
-	maxim_logo_only_small_019_bmp,
-	maxim_logo_only_small_020_bmp,
-	maxim_logo_only_small_021_bmp,
-	maxim_logo_only_small_022_bmp,
-	maxim_logo_only_small_023_bmp,
-	maxim_logo_only_small_024_bmp,
-	maxim_logo_only_small_025_bmp,
-	maxim_logo_only_small_026_bmp,
-	maxim_logo_only_small_027_bmp,
-	maxim_logo_only_small_028_bmp,
-	maxim_logo_only_small_029_bmp,
-	maxim_logo_only_small_030_bmp,
-	maxim_logo_only_small_031_bmp
-};
+    maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp, maxim_logo_only_small_002_bmp,
+    maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp, maxim_logo_only_small_005_bmp,
+    maxim_logo_only_small_006_bmp, maxim_logo_only_small_007_bmp, maxim_logo_only_small_008_bmp,
+    maxim_logo_only_small_009_bmp, maxim_logo_only_small_010_bmp, maxim_logo_only_small_011_bmp,
+    maxim_logo_only_small_012_bmp, maxim_logo_only_small_013_bmp, maxim_logo_only_small_014_bmp,
+    maxim_logo_only_small_015_bmp, maxim_logo_only_small_016_bmp, maxim_logo_only_small_017_bmp,
+    maxim_logo_only_small_018_bmp, maxim_logo_only_small_019_bmp, maxim_logo_only_small_020_bmp,
+    maxim_logo_only_small_021_bmp, maxim_logo_only_small_022_bmp, maxim_logo_only_small_023_bmp,
+    maxim_logo_only_small_024_bmp, maxim_logo_only_small_025_bmp, maxim_logo_only_small_026_bmp,
+    maxim_logo_only_small_027_bmp, maxim_logo_only_small_028_bmp, maxim_logo_only_small_029_bmp,
+    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp};
 
-static int  g_index   = 0;
-static volatile int g_animation_status= 0;
+static int g_index                     = 0;
+static volatile int g_animation_status = 0;
 
 /******************************   STATIC FUNCTIONS  **************************/
-
 
 /******************************   PUBLIC FUNCTIONS  **************************/
 void logo_animation_start(void)
 {
-	g_animation_status = 1;
+    g_animation_status = 1;
 }
 
 void logo_animation_stop(void)
 {
-	g_animation_status = 0;
+    g_animation_status = 0;
 }
 
 void logo_animation_tick(void)
 {
-	static unsigned int last_time = 0;
-	unsigned int crr_time;
+    static unsigned int last_time = 0;
+    unsigned int crr_time;
 
-	if (g_animation_status)  {
-		crr_time = utils_get_time_ms();
-		if (crr_time >= (last_time + ANIMATION_PERIOD) ) {
-			// update display
-			MXC_TFT_ShowImage(4, 10, logo_maxim_data[g_index]);
-			g_index = (g_index+1) % NB_SPRITE;
+    if (g_animation_status) {
+        crr_time = utils_get_time_ms();
+        if (crr_time >= (last_time + ANIMATION_PERIOD)) {
+            // update display
+            MXC_TFT_ShowImage(4, 10, logo_maxim_data[g_index]);
+            g_index = (g_index + 1) % NB_SPRITE;
 
-			// update last time
-			last_time = (crr_time + ANIMATION_PERIOD);
-		}
-	}
+            // update last time
+            last_time = (crr_time + ANIMATION_PERIOD);
+        }
+    }
 }

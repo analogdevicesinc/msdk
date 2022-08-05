@@ -38,8 +38,7 @@
 
 /*******   Definitions   *******/
 /* **** Definitions **** */
-#define CONFIG_EMAC_SEARCH_PHY                              /**! Enable EMAC PHY ID Search */
-
+#define CONFIG_EMAC_SEARCH_PHY /**! Enable EMAC PHY ID Search */
 
 /*******   Functions     *******/
 /* ************************************************************************* */
@@ -51,17 +50,17 @@ int MXC_EMAC_Init(mxc_emac_config_t* config)
     if (!config) {
         return E_NULL_PTR;
     }
-    
+
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_EMAC);
     MXC_GPIO_Config(&gpio_cfg_emac_P2a);
     MXC_GPIO_Config(&gpio_cfg_emac_P2b);
-    
-    return MXC_EMAC_RevA_Init ((mxc_emac_reva_config_t*) config);
+
+    return MXC_EMAC_RevA_Init((mxc_emac_reva_config_t*)config);
 }
 
 int MXC_EMAC_SetConfiguration(mxc_emac_config_t* config)
 {
-    return MXC_EMAC_RevA_SetConfiguration ((mxc_emac_reva_config_t*) config);
+    return MXC_EMAC_RevA_SetConfiguration((mxc_emac_reva_config_t*)config);
 }
 
 int MXC_EMAC_SetHwAddr(unsigned char* enetaddr)

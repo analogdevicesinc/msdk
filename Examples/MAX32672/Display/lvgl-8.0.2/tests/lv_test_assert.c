@@ -41,15 +41,15 @@ typedef struct {
     png_structp png_ptr;
     png_infop info_ptr;
     int number_of_passes;
-    png_bytep * row_pointers;
-}png_img_t;
+    png_bytep* row_pointers;
+} png_img_t;
 
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void read_png_file(png_img_t * p, const char* file_name);
+static void read_png_file(png_img_t* p, const char* file_name);
 //static void write_png_file(png_img_t * p, const char* file_name);
-static void png_release(png_img_t * p);
+static void png_release(png_img_t* p);
 //static void process_file(png_img_t * p);
 
 /**********************
@@ -64,7 +64,7 @@ static void png_release(png_img_t * p);
  *   GLOBAL FUNCTIONS
  **********************/
 
-void lv_test_print(const char * s, ...)
+void lv_test_print(const char* s, ...)
 {
     va_list args;
     va_start(args, s);
@@ -73,7 +73,7 @@ void lv_test_print(const char * s, ...)
     va_end(args);
 }
 
-void lv_test_exit(const char * s, ...)
+void lv_test_exit(const char* s, ...)
 {
     va_list args;
     va_start(args, s);
@@ -84,7 +84,7 @@ void lv_test_exit(const char * s, ...)
     exit(1);
 }
 
-void lv_test_error(const char * s, ...)
+void lv_test_error(const char* s, ...)
 {
     va_list args;
     va_start(args, s);
@@ -94,79 +94,81 @@ void lv_test_error(const char * s, ...)
     exit(1);
 }
 
-void lv_test_assert_true(int32_t expression, const char * s)
+void lv_test_assert_true(int32_t expression, const char* s)
 {
-    if(!expression) {
+    if (!expression) {
         lv_test_error("   FAIL: %s. (Expected: not zero)", s, expression);
     } else {
         lv_test_print("   PASS: %s. (Expected: not zero)", s, expression);
     }
 }
 
-void lv_test_assert_int_eq(int32_t n_ref, int32_t n_act, const char * s)
+void lv_test_assert_int_eq(int32_t n_ref, int32_t n_act, const char* s)
 {
-    if(n_ref != n_act) {
+    if (n_ref != n_act) {
         lv_test_error("   FAIL: %s. (Expected:  %d, Actual: %d)", s, n_ref, n_act);
     } else {
         lv_test_print("   PASS: %s. (Expected: %d)", s, n_ref);
     }
 }
 
-void lv_test_assert_int_gt(int32_t n_ref, int32_t n_act, const char * s)
+void lv_test_assert_int_gt(int32_t n_ref, int32_t n_act, const char* s)
 {
-    if(n_act <= n_ref) {
+    if (n_act <= n_ref) {
         lv_test_error("   FAIL: %s. (Expected:  > %d, Actual: %d)", s, n_ref, n_act);
     } else {
         lv_test_print("   PASS: %s. (Expected: > %d, , Actual: %d)", s, n_ref, n_act);
     }
 }
 
-void lv_test_assert_int_lt(int32_t n_ref, int32_t n_act, const char * s)
+void lv_test_assert_int_lt(int32_t n_ref, int32_t n_act, const char* s)
 {
-    if(n_act >= n_ref) {
+    if (n_act >= n_ref) {
         lv_test_error("   FAIL: %s. (Expected:  < %d, Actual: %d)", s, n_ref, n_act);
     } else {
         lv_test_print("   PASS: %s. (Expected: < %d, , Actual: %d)", s, n_ref, n_act);
     }
 }
 
-void lv_test_assert_str_eq(const char * s_ref, const char * s_act, const char * s)
+void lv_test_assert_str_eq(const char* s_ref, const char* s_act, const char* s)
 {
-    if(strcmp(s_ref, s_act) != 0) {
+    if (strcmp(s_ref, s_act) != 0) {
         lv_test_error("   FAIL: %s. (Expected:  %s, Actual: %s)", s, s_ref, s_act);
     } else {
         lv_test_print("   PASS: %s. (Expected: %s)", s, s_ref);
     }
 }
 
-void lv_test_assert_array_eq(const uint8_t *p_ref, const uint8_t *p_act, int32_t size, const char * s)
+void lv_test_assert_array_eq(const uint8_t* p_ref, const uint8_t* p_act, int32_t size,
+                             const char* s)
 {
-    if(memcmp(p_ref, p_act, size) != 0) {
+    if (memcmp(p_ref, p_act, size) != 0) {
         lv_test_error("   FAIL: %s. (Expected: all %d bytes should be equal)", s, size);
     } else {
         lv_test_print("   PASS: %s. (Expected: all %d bytes should be equal)", s, size);
     }
 }
 
-void lv_test_assert_ptr_eq(const void * p_ref, const void * p_act, const char * s)
+void lv_test_assert_ptr_eq(const void* p_ref, const void* p_act, const char* s)
 {
-    if(p_ref != p_act) {
+    if (p_ref != p_act) {
         lv_test_error("   FAIL: %s. (Expected:  0x%lx, Actual: 0x%lx)", s, p_ref, p_act);
     } else {
         lv_test_print("   PASS: %s. (Expected: 0x%lx)", s, p_ref);
     }
 }
 
-void lv_test_assert_color_eq(lv_color_t c_ref, lv_color_t c_act, const char * s)
+void lv_test_assert_color_eq(lv_color_t c_ref, lv_color_t c_act, const char* s)
 {
 #if LV_COLOR_16_SWAP == 0
-    if(c_ref.full != c_act.full) {
-        lv_test_error("   FAIL: %s. (Expected:  R:%02x, G:%02x, B:%02x, Actual: R:%02x, G:%02x, B:%02x)",  s,
-                c_ref.ch.red, c_ref.ch.green, c_ref.ch.blue,
-                c_act.ch.red, c_act.ch.green, c_act.ch.blue);
+    if (c_ref.full != c_act.full) {
+        lv_test_error(
+            "   FAIL: %s. (Expected:  R:%02x, G:%02x, B:%02x, Actual: R:%02x, G:%02x, B:%02x)", s,
+            c_ref.ch.red, c_ref.ch.green, c_ref.ch.blue, c_act.ch.red, c_act.ch.green,
+            c_act.ch.blue);
     } else {
-        lv_test_print("   PASS: %s. (Expected: R:%02x, G:%02x, B:%02x)", s,
-                c_ref.ch.red, c_ref.ch.green, c_ref.ch.blue);
+        lv_test_print("   PASS: %s. (Expected: R:%02x, G:%02x, B:%02x)", s, c_ref.ch.red,
+                      c_ref.ch.green, c_ref.ch.blue);
     }
 #else
     LV_UNUSED(c_ref);
@@ -176,64 +178,67 @@ void lv_test_assert_color_eq(lv_color_t c_ref, lv_color_t c_act, const char * s)
 #endif
 }
 
-void lv_test_assert_img_eq(const char * fn_ref, const char * s)
+void lv_test_assert_img_eq(const char* fn_ref, const char* s)
 {
 #if LV_COLOR_DEPTH != 32
     lv_test_print("   SKIP: Can't compare '%s' because LV_COLOR_DEPTH != 32", fn_ref);
     return;
 #endif
 
-if (LV_HOR_RES != 800 || LV_VER_RES != 480) {
-    lv_test_print("   SKIP: Can't compare '%s' because the resolution needs to be 800x480", fn_ref);
-    return;
-}
+    if (LV_HOR_RES != 800 || LV_VER_RES != 480) {
+        lv_test_print("   SKIP: Can't compare '%s' because the resolution needs to be 800x480",
+                      fn_ref);
+        return;
+    }
 
     char fn_ref_full[512];
     sprintf(fn_ref_full, "%s%s", REF_IMGS_PATH, fn_ref);
 
     png_img_t p;
     read_png_file(&p, fn_ref_full);
-    uint8_t * screen_buf;
+    uint8_t* screen_buf;
 
-    lv_disp_t * disp = lv_disp_get_default();
+    lv_disp_t* disp = lv_disp_get_default();
     lv_obj_invalidate(lv_disp_get_scr_act(disp));
     lv_refr_now(disp);
 
     extern lv_color_t test_fb[];
 
-    screen_buf = (uint8_t *)test_fb;
+    screen_buf = (uint8_t*)test_fb;
 
-    uint8_t * ptr_act = NULL;
+    uint8_t* ptr_act        = NULL;
     const png_byte* ptr_ref = NULL;
 
     bool err = false;
     int x, y, i_buf = 0;
-    for (y=0; y<p.height; y++) {
+    for (y = 0; y < p.height; y++) {
         png_byte* row = p.row_pointers[y];
-        for (x=0; x<p.width; x++) {
-            ptr_ref = &(row[x*3]);
-            ptr_act = &(screen_buf[i_buf*4]);
+        for (x = 0; x < p.width; x++) {
+            ptr_ref     = &(row[x * 3]);
+            ptr_act     = &(screen_buf[i_buf * 4]);
             uint8_t tmp = ptr_act[0];
-            ptr_act[0] = ptr_act[2];
-            ptr_act[2] = tmp;
+            ptr_act[0]  = ptr_act[2];
+            ptr_act[2]  = tmp;
 
-            if(memcmp(ptr_act, ptr_ref, 3) != 0) {
+            if (memcmp(ptr_act, ptr_ref, 3) != 0) {
                 err = true;
                 break;
             }
             i_buf++;
         }
-        if(err) break;
+        if (err)
+            break;
     }
 
     png_release(&p);
 
-    if(err) {
+    if (err) {
         uint32_t ref_px = 0;
         uint32_t act_px = 0;
         memcpy(&ref_px, ptr_ref, 3);
         memcpy(&act_px, ptr_act, 3);
-        lv_test_error("   FAIL: %s. (Expected:  %s, diff. at (%d;%d), %08x instead of %08x)", s, fn_ref, x, y, act_px, ref_px);
+        lv_test_error("   FAIL: %s. (Expected:  %s, diff. at (%d;%d), %08x instead of %08x)", s,
+                      fn_ref, x, y, act_px, ref_px);
     } else {
         lv_test_print("   PASS: %s. (Expected: %s)", s, fn_ref);
     }
@@ -243,12 +248,12 @@ if (LV_HOR_RES != 800 || LV_VER_RES != 480) {
  *   STATIC FUNCTIONS
  **********************/
 
-static void read_png_file(png_img_t * p, const char* file_name)
+static void read_png_file(png_img_t* p, const char* file_name)
 {
-    char header[8];    // 8 is the maximum size that can be checked
+    char header[8]; // 8 is the maximum size that can be checked
 
     /*open file and test for it being a png*/
-    FILE *fp = fopen(file_name, "rb");
+    FILE* fp = fopen(file_name, "rb");
     if (!fp)
         lv_test_exit("[read_png_file] File %s could not be opened for reading", file_name);
     size_t rcnt = fread(header, 1, 8, fp);
@@ -273,10 +278,10 @@ static void read_png_file(png_img_t * p, const char* file_name)
 
     png_read_info(p->png_ptr, p->info_ptr);
 
-    p->width = png_get_image_width(p->png_ptr, p->info_ptr);
-    p->height = png_get_image_height(p->png_ptr, p->info_ptr);
+    p->width      = png_get_image_width(p->png_ptr, p->info_ptr);
+    p->height     = png_get_image_height(p->png_ptr, p->info_ptr);
     p->color_type = png_get_color_type(p->png_ptr, p->info_ptr);
-    p->bit_depth = png_get_bit_depth(p->png_ptr, p->info_ptr);
+    p->bit_depth  = png_get_bit_depth(p->png_ptr, p->info_ptr);
 
     p->number_of_passes = png_set_interlace_handling(p->png_ptr);
     png_read_update_info(p->png_ptr, p->info_ptr);
@@ -285,11 +290,11 @@ static void read_png_file(png_img_t * p, const char* file_name)
     if (setjmp(png_jmpbuf(p->png_ptr)))
         lv_test_exit("[read_png_file] Error during read_image");
 
-    p->row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * p->height);
+    p->row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * p->height);
 
     int y;
-    for (y=0; y<p->height; y++)
-        p->row_pointers[y] = (png_byte*) malloc(png_get_rowbytes(p->png_ptr,p->info_ptr));
+    for (y = 0; y < p->height; y++)
+        p->row_pointers[y] = (png_byte*)malloc(png_get_rowbytes(p->png_ptr, p->info_ptr));
 
     png_read_image(p->png_ptr, p->row_pointers);
 
@@ -348,12 +353,12 @@ static void read_png_file(png_img_t * p, const char* file_name)
 //    fclose(fp);
 //}
 //
-static void png_release(png_img_t * p)
+static void png_release(png_img_t* p)
 {
     int y;
-      for (y=0; y<p->height; y++)
-          free(p->row_pointers[y]);
-      free(p->row_pointers);
+    for (y = 0; y < p->height; y++)
+        free(p->row_pointers[y]);
+    free(p->row_pointers);
 }
 
 //static void process_file(png_img_t * p)

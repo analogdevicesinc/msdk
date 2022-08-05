@@ -48,14 +48,14 @@
 
 /***** Definitions *****/
 
-
 volatile int wait;
 volatile int callback_result;
 
-#define MXC_DES_DATA_LEN    (64 / 8)   /**< Number of bytes in an DES plaintext or cyphertext block, which are always 64-bits long. */
-#define MXC_DES_KEY_LEN     (64 / 8)   /**< Number of bytes in a TDES key. */
-#define MXC_TDES_KEY_LEN    (192 / 8)  /**< Number of bytes in a TDES key. */
-
+#define MXC_DES_DATA_LEN \
+    (64 /                \
+     8) /**< Number of bytes in an DES plaintext or cyphertext block, which are always 64-bits long. */
+#define MXC_DES_KEY_LEN  (64 / 8)  /**< Number of bytes in a TDES key. */
+#define MXC_TDES_KEY_LEN (192 / 8) /**< Number of bytes in a TDES key. */
 
 /***** Globals *****/
 unsigned int rnd_no[4] = {0};
@@ -78,16 +78,15 @@ void CRYPTO_IRQHandler(void)
 
 void Test_Callback(void* req, int result)
 {
-    wait = 0;
+    wait            = 0;
     callback_result = result;
 }
-
 
 //Convert ascii to byte
 void ascii_to_byte(const char* src, char* dst, int len)
 {
     int i;
-    
+
     for (i = 0; i < len; ++i) {
         int val;
         temp[0] = *src;
@@ -97,7 +96,7 @@ void ascii_to_byte(const char* src, char* dst, int len)
         sscanf(temp, "%0x", &val);
         dst[i] = val;
     }
-    
+
     return;
 }
 
@@ -105,24 +104,22 @@ void ascii_to_byte(const char* src, char* dst, int len)
 int DES_check(char* calculated, char* expected, int len)
 {
     int i, fail = 0;
-    
+
     for (i = 0; i < len; ++i) {
         if (calculated[i] != expected[i]) {
             ++fail;
         }
     }
-    
+
     if (fail > 0) {
         printf("Fail.\n");
-    }
-    else {
+    } else {
         printf("Pass.\n");
         return 0;
     }
-    
+
     return -1;
 }
-
 
 void DES_ECB_enc(int asynchronous)
 {
@@ -134,48 +131,42 @@ void DES_ECB_enc(int asynchronous)
     char msg[MXC_DES_DATA_LEN];
     char* xexpected = "20597b6decaf7166";
     char expected[MXC_DES_DATA_LEN];
-    
+
     ascii_to_byte(xkey, key, MXC_DES_KEY_LEN);
     ascii_to_byte(iv_src, iv_dst, MXC_DES_DATA_LEN);
     ascii_to_byte(xmsg, msg, MXC_DES_DATA_LEN);
-    
-    mxc_ctb_cipher_req_t cipher_req = {
-        (uint8_t*) msg,
-        MXC_DES_DATA_LEN,
-        (uint8_t*) iv_src,
-        (uint8_t*) result,
-        &Test_Callback
-    };
-    
+
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)msg, MXC_DES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
+
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
     MXC_CTB_EnableInt();
-    
+
     MXC_CTB_Cipher_SetMode(MXC_CTB_MODE_ECB);
     MXC_CTB_Cipher_SetCipher(MXC_CTB_CIPHER_DES);
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
-    
+
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*) key, MXC_DES_KEY_LEN);
-    
+    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_DES_KEY_LEN);
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
-    
+
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
-    
+
     DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
 void DES_ECB_dec(int asynchronous)
 {
-
     char* xkey = "00c3de5446614d35";
     char key[MXC_DES_KEY_LEN];
     char* iv_src = "";
@@ -184,48 +175,42 @@ void DES_ECB_dec(int asynchronous)
     char ct[MXC_DES_DATA_LEN];
     char* xexpected = "0000000000000000";
     char expected[MXC_DES_DATA_LEN];
-    
+
     ascii_to_byte(xkey, key, MXC_DES_KEY_LEN);
     ascii_to_byte(iv_src, iv_dst, MXC_DES_DATA_LEN);
     ascii_to_byte(xct, ct, MXC_DES_DATA_LEN);
-    
-    mxc_ctb_cipher_req_t cipher_req = {
-        (uint8_t*) ct,
-        MXC_DES_DATA_LEN,
-        (uint8_t*) iv_src,
-        (uint8_t*) result,
-        &Test_Callback
-    };
-    
+
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)ct, MXC_DES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
+
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
     MXC_CTB_EnableInt();
-    
+
     MXC_CTB_Cipher_SetMode(MXC_CTB_MODE_ECB);
     MXC_CTB_Cipher_SetCipher(MXC_CTB_CIPHER_DES);
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
-    
+
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*) key, MXC_DES_KEY_LEN);
-    
+    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_DES_KEY_LEN);
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
-    
+
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
-    
+
     DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
 void TDES_ECB_enc(int asynchronous)
 {
-
     char* xkey = "2f5d4b8c12a4a9c1";
     char key[MXC_DES_KEY_LEN];
     char* iv_src = "";
@@ -234,48 +219,42 @@ void TDES_ECB_enc(int asynchronous)
     char msg[MXC_DES_DATA_LEN];
     char* xexpected = "20597b6decaf7166";
     char expected[MXC_DES_DATA_LEN];
-    
+
     ascii_to_byte(xkey, key, MXC_DES_KEY_LEN);
     ascii_to_byte(iv_src, iv_dst, MXC_DES_DATA_LEN);
     ascii_to_byte(xmsg, msg, MXC_DES_DATA_LEN);
-    
-    mxc_ctb_cipher_req_t cipher_req = {
-        (uint8_t*) msg,
-        MXC_DES_DATA_LEN,
-        (uint8_t*) iv_src,
-        (uint8_t*) result,
-        &Test_Callback
-    };
-    
+
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)msg, MXC_DES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
+
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
     MXC_CTB_EnableInt();
-    
+
     MXC_CTB_Cipher_SetMode(MXC_CTB_MODE_ECB);
     MXC_CTB_Cipher_SetCipher(MXC_CTB_CIPHER_TDES);
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
-    
+
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*) key, MXC_DES_KEY_LEN);
-    
+    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_DES_KEY_LEN);
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
-    
+
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
-    
+
     DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
 void TDES_ECB_dec(int asynchronous)
 {
-
     char* xkey = "00c3de5446614d35";
     char key[MXC_DES_KEY_LEN];
     char* iv_src = "";
@@ -284,51 +263,45 @@ void TDES_ECB_dec(int asynchronous)
     char ct[MXC_DES_DATA_LEN];
     char* xexpected = "0000000000000000";
     char expected[MXC_DES_DATA_LEN];
-    
+
     ascii_to_byte(xkey, key, MXC_DES_KEY_LEN);
     ascii_to_byte(iv_src, iv_dst, MXC_DES_DATA_LEN);
     ascii_to_byte(xct, ct, MXC_DES_DATA_LEN);
-    
-    mxc_ctb_cipher_req_t cipher_req = {
-        (uint8_t*) ct,
-        MXC_DES_DATA_LEN,
-        (uint8_t*) iv_src,
-        (uint8_t*) result,
-        &Test_Callback
-    };
-    
+
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)ct, MXC_DES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
+
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
     MXC_CTB_EnableInt();
-    
+
     MXC_CTB_Cipher_SetMode(MXC_CTB_MODE_ECB);
     MXC_CTB_Cipher_SetCipher(MXC_CTB_CIPHER_TDES);
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
-    
+
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*) key, MXC_DES_DATA_LEN);
-    
+    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_DES_DATA_LEN);
+
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
-        
-        while (wait);
-    }
-    else {
+
+        while (wait)
+            ;
+    } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
-    
+
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
-    
+
     DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
 // *****************************************************************************
 int main(void)
 {
-
     printf("\n***** DES Example *****\n");
-    
+
     printf("DES ECB Encryption ... ");
     DES_ECB_enc(0);
     DES_ECB_enc(1);
@@ -341,6 +314,6 @@ int main(void)
     printf("Triple DES ECB Decryption ... ");
     TDES_ECB_dec(0);
     TDES_ECB_dec(1);
-    
+
     printf("\nExample complete.\n");
 }

@@ -68,12 +68,14 @@ extern "C" {
  * @note       Do not use for square wave
  */
 typedef struct {
-    unsigned channel;       ///< PT Channel to use 
-    uint32_t bps;           ///< pulse train bit rate 
-    uint32_t pattern;       ///< Output pattern to shift out, starts at LSB 
-    uint8_t  ptLength;      ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ... 
-    uint16_t loop;          ///< Number of times to repeat the train, 0 = continuous 
-    uint16_t loopDelay;     ///< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits 
+    unsigned channel; ///< PT Channel to use
+    uint32_t bps;     ///< pulse train bit rate
+    uint32_t pattern; ///< Output pattern to shift out, starts at LSB
+    uint8_t
+        ptLength;  ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ...
+    uint16_t loop; ///< Number of times to repeat the train, 0 = continuous
+    uint16_t
+        loopDelay; ///< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits
 } mxc_pt_cfg_t;
 
 /**
@@ -97,7 +99,7 @@ typedef enum {
  * @param      ptg        pointer to pulse train global bus to use.
  * @param      clk_scale  Scale the system clock for the global PT clock.
  */
-void MXC_PT_Init (mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale);
+void MXC_PT_Init(mxc_ptg_regs_t* ptg, mxc_clk_scale_t clk_scale);
 
 /**
  * @brief      Shutdown the pulse train channel/channels.
@@ -110,7 +112,7 @@ void MXC_PT_Init (mxc_ptg_regs_t *ptg, mxc_clk_scale_t clk_scale);
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes
  *             "error" if unsuccessful.
  */
-void MXC_PT_Shutdown (mxc_ptg_regs_t *ptg, uint32_t pts);
+void MXC_PT_Shutdown(mxc_ptg_regs_t* ptg, uint32_t pts);
 
 /**
  * @brief      Configures the pulse train in the specified mode.
@@ -125,7 +127,7 @@ void MXC_PT_Shutdown (mxc_ptg_regs_t *ptg, uint32_t pts);
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes
  *             "error" if unsuccessful.
  */
-int MXC_PT_Config (mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg);
+int MXC_PT_Config(mxc_ptg_regs_t* ptg, mxc_pt_cfg_t* cfg);
 
 /**
  * @brief      Configures the pulse train in the square wave mode.
@@ -138,7 +140,7 @@ int MXC_PT_Config (mxc_ptg_regs_t *ptg, mxc_pt_cfg_t *cfg);
  *
  * @returns    #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_PT_SqrWaveConfig (mxc_ptg_regs_t *ptg, unsigned channel, uint32_t freq);
+int MXC_PT_SqrWaveConfig(mxc_ptg_regs_t* ptg, unsigned channel, uint32_t freq);
 
 /**
  * @brief      Starts the pulse trains specified.
@@ -146,7 +148,7 @@ int MXC_PT_SqrWaveConfig (mxc_ptg_regs_t *ptg, unsigned channel, uint32_t freq);
  * @param      ptg   Pointer to pulse train global bus to use.
  * @param      pts   Pulse train pts to operate on.
  */
-void MXC_PT_Start (mxc_ptg_regs_t *ptg, unsigned pts);
+void MXC_PT_Start(mxc_ptg_regs_t* ptg, unsigned pts);
 
 /**
  * @brief      Stops pulse trains.
@@ -154,7 +156,7 @@ void MXC_PT_Start (mxc_ptg_regs_t *ptg, unsigned pts);
  * @param      ptg   Pointer to pulse train global bus to use.
  * @param      pts   Pulse train pts to stop.
  */
-void MXC_PT_Stop (mxc_ptg_regs_t *ptg, unsigned pts);
+void MXC_PT_Stop(mxc_ptg_regs_t* ptg, unsigned pts);
 
 /**
  * @brief      Determines if the pulse trains selected are running
@@ -166,7 +168,7 @@ void MXC_PT_Stop (mxc_ptg_regs_t *ptg, unsigned pts);
  * @return     0            All pulse trains are off.
  * @return     \>0          At least one pulse train is on.
  */
-uint32_t MXC_PT_IsActive (mxc_ptg_regs_t *ptg, uint32_t pts);
+uint32_t MXC_PT_IsActive(mxc_ptg_regs_t* ptg, uint32_t pts);
 
 /**
  * @brief      Sets the pattern of the pulse train
@@ -175,7 +177,7 @@ uint32_t MXC_PT_IsActive (mxc_ptg_regs_t *ptg, uint32_t pts);
  * @param      pattern Output pattern.
  *
  */
-void MXC_PT_SetPattern (unsigned pts, uint32_t pattern);
+void MXC_PT_SetPattern(unsigned pts, uint32_t pattern);
 
 /**
  * @brief      Enable interrupts for the pulse trains selected.
@@ -186,7 +188,7 @@ void MXC_PT_SetPattern (unsigned pts, uint32_t pattern);
  *                   Bit1-\>pt1... etc, 1 will enable the interrupt, 0 to leave
  *                   a PT channel in its current state.
  */
-void MXC_PT_EnableInt (mxc_ptg_regs_t *ptg, uint32_t pts);
+void MXC_PT_EnableInt(mxc_ptg_regs_t* ptg, uint32_t pts);
 
 /**
  * @brief      Disable interrupts for the pulse trains selected.
@@ -197,7 +199,7 @@ void MXC_PT_EnableInt (mxc_ptg_regs_t *ptg, uint32_t pts);
  *                   Bit1-\>pt1... etc, 1 will disable the interrupt, 0 to leave
  *                   a PT channel in its current state.
  */
-void MXC_PT_DisableInt (mxc_ptg_regs_t *ptg, uint32_t pts);
+void MXC_PT_DisableInt(mxc_ptg_regs_t* ptg, uint32_t pts);
 
 /**
  * @brief      Gets the pulse trains's interrupt flags.
@@ -207,7 +209,7 @@ void MXC_PT_DisableInt (mxc_ptg_regs_t *ptg, uint32_t pts);
  * @return     The Pulse Train Interrupt Flags, \ref PTG_INTFL Register
  *             for details.
  */
-uint32_t MXC_PT_GetFlags (mxc_ptg_regs_t *ptg);
+uint32_t MXC_PT_GetFlags(mxc_ptg_regs_t* ptg);
 
 /**
  * @brief      Clears the pulse train's interrupt flag.
@@ -215,7 +217,7 @@ uint32_t MXC_PT_GetFlags (mxc_ptg_regs_t *ptg);
  * @param      ptg	  pointer to pulse train global bus to use.
  * @param      flags  bits to clear, see \ref PTG_INTFL Register for details.
  */
-void MXC_PT_ClearFlags (mxc_ptg_regs_t *ptg, uint32_t flags);
+void MXC_PT_ClearFlags(mxc_ptg_regs_t* ptg, uint32_t flags);
 
 /**
  * @brief      Setup and enables a pulse train to restart after another pulse
@@ -226,7 +228,7 @@ void MXC_PT_ClearFlags (mxc_ptg_regs_t *ptg, uint32_t flags);
  * @param      stop          Pulse train channel to stop.
  * @param      restartIndex  selects which restart trigger to set (0 or 1).
  */
-void MXC_PT_EnableRestart (unsigned start, unsigned stop, uint8_t restartIndex);
+void MXC_PT_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex);
 
 /**
  * @brief      Disable the restart for the specified pulse train
@@ -234,7 +236,7 @@ void MXC_PT_EnableRestart (unsigned start, unsigned stop, uint8_t restartIndex);
  * @param      channel       Pulse train channel to restart
  * @param      restartIndex  selects which restart trigger to disable (0 or 1)
  */
-void MXC_PT_DisableRestart (unsigned channel, uint8_t restartIndex);
+void MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex);
 
 /**
  * @brief      Resynchronize individual pulse trains together. Resync will stop
@@ -244,7 +246,7 @@ void MXC_PT_DisableRestart (unsigned channel, uint8_t restartIndex);
  * @param      pts  pulse train modules that need to be re-synced by bit
  *                        number. Bit0-\>pt0, Bit1-\>pt1... etc.
  */
-void MXC_PT_Resync (mxc_ptg_regs_t *ptg, uint32_t pts);
+void MXC_PT_Resync(mxc_ptg_regs_t* ptg, uint32_t pts);
 /**@} end of group pt*/
 
 #ifdef __cplusplus

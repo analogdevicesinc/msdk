@@ -36,36 +36,34 @@
 
 #include <stdint.h>
 
-
 /*****************************     MACROS    *********************************/
 
 #define thresh_for_unknown_subject 9993
 //#define thresh_for_unknown_subject 313600
-#define closest_sub_buffer_size 3*7
+#define closest_sub_buffer_size 3 * 7
 
 /*****************************     VARIABLES *********************************/
 
-typedef	struct  __attribute__((packed)) sMeanDistance {
-		uint8_t subID;
-		uint8_t number;
-		int32_t distance;
-}tsMeanDistance;
+typedef struct __attribute__((packed)) sMeanDistance {
+    uint8_t subID;
+    uint8_t number;
+    int32_t distance;
+} tsMeanDistance;
 
-typedef	struct  __attribute__((packed)) sMinDistance {
-		uint8_t subID;
-		int32_t distance;
-}tsMinDistance;
-
+typedef struct __attribute__((packed)) sMinDistance {
+    uint8_t subID;
+    int32_t distance;
+} tsMinDistance;
 
 /*****************************     FUNCTIONS *********************************/
 
 int init_database(void);
 
-char *get_subject(int ID);
+char* get_subject(int ID);
 
-int calculate_minDistance(const uint8_t *embedding);
+int calculate_minDistance(const uint8_t* embedding);
 
-void get_min_dist_counter(uint8_t **counter, uint8_t *counter_len);
-tsMinDistance *get_min_distance();
+void get_min_dist_counter(uint8_t** counter, uint8_t* counter_len);
+tsMinDistance* get_min_distance();
 
 #endif // _EMBEDDINGS_PROCESS_H_

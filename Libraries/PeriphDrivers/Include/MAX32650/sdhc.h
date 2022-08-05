@@ -58,23 +58,23 @@ extern "C" {
  */
 
 /* **** Definitions **** */
-#define MXC_SDHC_Bus_Voltage_1_8       5
-#define MXC_SDHC_Bus_Voltage_3_0       6
-#define MXC_SDHC_Bus_Voltage_3_3       7
+#define MXC_SDHC_Bus_Voltage_1_8 5
+#define MXC_SDHC_Bus_Voltage_3_0 6
+#define MXC_SDHC_Bus_Voltage_3_3 7
 
-#define MXC_SDHC_DIRECTION_CFG         0
-#define MXC_SDHC_DIRECTION_READ        1
-#define MXC_SDHC_DIRECTION_WRITE       2
+#define MXC_SDHC_DIRECTION_CFG   0
+#define MXC_SDHC_DIRECTION_READ  1
+#define MXC_SDHC_DIRECTION_WRITE 2
 
 /**
  * @brief   Used to configure voltage and clock for sdhc interface
  *
  */
 typedef struct {
-    unsigned int bus_voltage;   /**< Use constants above for 1.8V, 3.0V, 3.3V. */
-    unsigned int block_gap;     /**< Set block gap register default is 0       */
-    unsigned int clk_div;       /**< Divider for SD clock                      */
-} mxc_sdhc_cfg_t ;
+    unsigned int bus_voltage; /**< Use constants above for 1.8V, 3.0V, 3.3V. */
+    unsigned int block_gap;   /**< Set block gap register default is 0       */
+    unsigned int clk_div;     /**< Divider for SD clock                      */
+} mxc_sdhc_cfg_t;
 
 /**
  * @brief   Callback function type used in asynchromous SDHC communications requests.
@@ -86,22 +86,31 @@ typedef struct {
  * | -----: | :----------------------------------------- |
  * | \p error_code | An error code if the active transaction had a failure or #E_NO_ERROR if successful. |
  */
-typedef void (*mxc_sdhc_callback_fn)( int error_code);
+typedef void (*mxc_sdhc_callback_fn)(int error_code);
 
 /**
  * @brief   Used to configure sdhc interface
  *
  */
 typedef struct {
-    uint32_t                sdma;           /**< SDMA register for read or write transaction                                                            */
-    uint32_t                block_size;     /**< Size of transfer block in bytes                                                                        */
-    uint32_t                block_count;    /**< Number of blocks to transfer                                                                           */
-    uint32_t                arg_1;          /**< Argument 1 holds the arguments for the commands sent to the card                                       */
-    unsigned int            dma;            /**< DMA enable bit                                                                                         */
-    unsigned int            direction;      /**< Direction of transfer                                                                                  */
-    uint32_t                command;        /**< Command to be issued on bus (CMD0, CMD1, ...)                                                          */
-    uint32_t                host_control_1; /**< Host control register 1 to be assigned before command is issued                                        */
-    mxc_sdhc_callback_fn    callback;       /**< Function pointer to completion callback function, NULL if not desired                                  */
+    uint32_t
+        sdma; /**< SDMA register for read or write transaction                                                            */
+    uint32_t
+        block_size; /**< Size of transfer block in bytes                                                                        */
+    uint32_t
+        block_count; /**< Number of blocks to transfer                                                                           */
+    uint32_t
+        arg_1; /**< Argument 1 holds the arguments for the commands sent to the card                                       */
+    unsigned int
+        dma; /**< DMA enable bit                                                                                         */
+    unsigned int
+        direction; /**< Direction of transfer                                                                                  */
+    uint32_t
+        command; /**< Command to be issued on bus (CMD0, CMD1, ...)                                                          */
+    uint32_t
+        host_control_1; /**< Host control register 1 to be assigned before command is issued                                        */
+    mxc_sdhc_callback_fn
+        callback; /**< Function pointer to completion callback function, NULL if not desired                                  */
 } mxc_sdhc_cmd_cfg_t;
 
 /* **** Function Prototypes **** */
@@ -113,7 +122,7 @@ typedef struct {
  * @returns #E_NO_ERROR SDHC initialized successfully, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg);
+int MXC_SDHC_Init(const mxc_sdhc_cfg_t* cfg);
 
 /**
  * @brief      Enable SDHC Bus Power
@@ -150,7 +159,7 @@ void MXC_SDHC_Set_Clock_Config(unsigned int clk_div);
  *             unsuccessful.
  */
 unsigned int MXC_SDHC_Get_Clock_Config(void);
-  
+
 /**
  * @brief      Send Command, <em>blocking</em>.
  *
@@ -230,7 +239,7 @@ int MXC_SDHC_Card_Busy(void);
  * @return     host control register
  */
 unsigned int MXC_SDHC_Get_Host_Cn_1(void);
-  
+
 /**
  * @brief      Read a 32-bit command response
  * @details    This function may be used to read response 
@@ -253,7 +262,7 @@ uint32_t MXC_SDHC_Get_Response32_Auto(void);
  * @details    This function may be used to read response 
  *             type R2 (CID or CSD)
  */
-void MXC_SDHC_Get_Response128(unsigned char *response);
+void MXC_SDHC_Get_Response128(unsigned char* response);
 
 /**@} end of group sdhc */
 

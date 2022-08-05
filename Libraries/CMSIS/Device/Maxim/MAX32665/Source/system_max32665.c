@@ -43,11 +43,12 @@
 #include "icc_regs.h"
 #include "pwrseq_regs.h"
 #include "simo_regs.h"
+#include "mcr_regs.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 
 // Part defaults to HIRC/2 out of reset
 uint32_t SystemCoreClock = HIRC_FREQ >> 1;
@@ -58,8 +59,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Determine the clock source and frequency
     clk_src = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CLKSEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCN_CLKSEL_HIRC:
             base_freq = HIRC_FREQ;
             break;
@@ -79,8 +79,8 @@ __weak void SystemCoreClockUpdate(void)
             base_freq = XTAL32K_FREQ;
             break;
         default:
-	    // Values 001 and 111 are reserved, and should never be encountered.
-	    base_freq = HIRC_FREQ;
+            // Values 001 and 111 are reserved, and should never be encountered.
+            base_freq = HIRC_FREQ;
             break;
     }
     // Clock divider is retrieved to compute system clock
@@ -99,7 +99,27 @@ __weak void SystemCoreClockUpdate(void)
  */
 __weak int PreInit(void)
 {
-    // Do nothing
+    uint32_t psc = MXC_GCR->clkcn & MXC_F_GCR_CLKCN_PSC;
+
+    /* Disable USB switch to minimize current consumption */
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_USBSWEN_N;
+
+    /* Divide down system clock until SIMO is ready */
+    MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (MXC_S_GCR_CLKCN_PSC_DIV128);
+
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
+    }
+
+    /* Restore system clock divider */
+    MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (psc);
+
+    /* Set the proper OVR setting */
+    MXC_GCR->scon = (MXC_GCR->scon & ~(MXC_F_GCR_SCON_OVR)) | (MXC_S_GCR_SCON_OVR_1_1V);
+
     return 0;
 }
 
@@ -112,7 +132,6 @@ __weak int Board_Init(void)
 
 __weak void PalSysInit(void)
 {
-
 }
 
 /* This function is called just before control is transferred to main().
@@ -123,7 +142,6 @@ __weak void PalSysInit(void)
  */
 __weak void SystemInit(void)
 {
-
     /* Configure the interrupt controller to use the application vector 
      * table in flash. Initially, VTOR points to the ROM's table.
      */
@@ -133,7 +151,7 @@ __weak void SystemInit(void)
      * core's operating voltage (VregO_B) is high enough to support it
      * Otherwise, we need to remain on the slow clock
      */
-    if((MXC_SIMO->vrego_b > 48) && (MXC_SIMO->buck_out_ready & 0x2)) {
+    if ((MXC_SIMO->vrego_b > 48) && (MXC_SIMO->buck_out_ready & 0x2)) {
         // Switch to fast clock on startup
         MXC_GCR->clkcn &= ~(MXC_S_GCR_CLKCN_PSC_DIV128);
         MXC_SYS_Clock_Select(MXC_SYS_CLOCK_HIRC96);
@@ -151,15 +169,17 @@ __weak void SystemInit(void)
     MXC_PWRSEQ->buretvec = (uint32_t)(Reset_Handler) | 1;
 
     // FIXME Pre-production parts: Enable TME, disable ICache Read Buffer, disable TME
-    *(uint32_t *)0x40000c00 = 1;
-    *(uint32_t *)0x4000040c = (1<<6);
-    *(uint32_t *)0x40000c00 = 0;
+    *(uint32_t*)0x40000c00 = 1;
+    *(uint32_t*)0x4000040c = (1 << 6);
+    *(uint32_t*)0x40000c00 = 0;
 
     // Flush and enable instruction cache
     MXC_ICC0->invalidate = 1;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY));
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
+    }
     MXC_ICC0->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY));
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
+    }
 
     SystemCoreClockUpdate();
 
@@ -176,11 +196,11 @@ __weak void SystemInit(void)
     MXC_GPIO1->pad_cfg2 &= ~(0xFFFFFFFF);
 
     Board_Init();
-	
-	PalSysInit();
+
+    PalSysInit();
 }
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 /* Global variable initialization does not occur until post scatterload in Keil tools.*/
 
 /* External function called after our post scatterload function implementation. */
@@ -198,6 +218,7 @@ void $Sub$$__main_after_scatterload(void)
 {
     SystemInit();
     $Super$$__main_after_scatterload();
-    while(1);
+    while (1)
+        ;
 }
 #endif /* __CC_ARM */

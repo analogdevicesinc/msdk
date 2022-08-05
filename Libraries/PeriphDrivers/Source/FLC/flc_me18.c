@@ -78,86 +78,80 @@ void MXC_FLC_ME18_Flash_Operation(void)
     MXC_ICC_Flush(MXC_ICC1);
 
     // Clear the line fill buffer by reading 2 pages from flash
-    volatile uint32_t *line_addr;
+    volatile uint32_t* line_addr;
     volatile uint32_t __unused line; // __unused attribute removes warning
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
-    line = *line_addr;
+    line      = *line_addr;
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
-    line = *line_addr;
+    line      = *line_addr;
 }
 
 //******************************************************************************
-int MXC_FLC_ME18_GetByAddress(mxc_flc_regs_t **flc, uint32_t addr)
+int MXC_FLC_ME18_GetByAddress(mxc_flc_regs_t** flc, uint32_t addr)
 {
-
     if ((addr >= MXC_FLASH0_MEM_BASE) && (addr < (MXC_FLASH0_MEM_BASE + MXC_FLASH0_MEM_SIZE))) {
-        *flc =  MXC_FLC0;
-    }
-    else if ((addr >= MXC_FLASH1_MEM_BASE) && (addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE))) {
-        *flc =  MXC_FLC1;
-    }
-    else if ((addr >= MXC_INFO0_MEM_BASE) && (addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE))) {
         *flc = MXC_FLC0;
-    }
-    else if ((addr >= MXC_INFO1_MEM_BASE) && (addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+    } else if ((addr >= MXC_FLASH1_MEM_BASE) &&
+               (addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE))) {
         *flc = MXC_FLC1;
-    }
-    else {
+    } else if ((addr >= MXC_INFO0_MEM_BASE) && (addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+        *flc = MXC_FLC0;
+    } else if ((addr >= MXC_INFO1_MEM_BASE) && (addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+        *flc = MXC_FLC1;
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 
 //******************************************************************************
-int MXC_FLC_ME18_GetPhysicalAddress(uint32_t addr, uint32_t *result)
+int MXC_FLC_ME18_GetPhysicalAddress(uint32_t addr, uint32_t* result)
 {
     if ((addr >= MXC_FLASH0_MEM_BASE) && (addr < (MXC_FLASH0_MEM_BASE + MXC_FLASH0_MEM_SIZE))) {
         *result = addr - MXC_FLASH_MEM_BASE;
-    }
-    else if ((addr >= MXC_FLASH1_MEM_BASE) && (addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE))) {
+    } else if ((addr >= MXC_FLASH1_MEM_BASE) &&
+               (addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE))) {
         *result = addr - MXC_FLASH_MEM_BASE;
-    }
-    else if ((addr >= MXC_INFO0_MEM_BASE) && (addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+    } else if ((addr >= MXC_INFO0_MEM_BASE) && (addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE))) {
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH0_MEM_BASE + MXC_FLASH1_MEM_BASE;
-    }
-    else if ((addr >= MXC_INFO1_MEM_BASE) && (addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE))) {
-        *result = ((addr - MXC_INFO_MEM_SIZE) & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH0_MEM_BASE + MXC_FLASH1_MEM_SIZE;
-    }
-    else {
+    } else if ((addr >= MXC_INFO1_MEM_BASE) && (addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE))) {
+        *result = ((addr - MXC_INFO_MEM_SIZE) & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH0_MEM_BASE +
+                  MXC_FLASH1_MEM_SIZE;
+    } else {
         return E_BAD_PARAM;
     }
-    
+
     return E_NO_ERROR;
 }
 
 // *****************************************************************************
-int MXC_FLC_Init (void)
+int MXC_FLC_Init(void)
 {
     return E_NO_ERROR;
 }
 
 // *****************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
-__attribute__ ( (section (".flashprog")))
+__attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_Busy (void)
+int MXC_FLC_Busy(void)
 {
     return MXC_FLC_RevA_Busy();
 }
 
 // *****************************************************************************
-int MXC_FLC_MassErase (void)
+int MXC_FLC_MassErase(void)
 {
     int err;
 
-    if((err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*) MXC_FLC0)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*)MXC_FLC0)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*) MXC_FLC1)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*)MXC_FLC1)) != E_NO_ERROR) {
         return err;
     }
 
@@ -169,25 +163,25 @@ int MXC_FLC_MassErase (void)
 
 // *****************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
-__attribute__ ( (section (".flashprog")))
+__attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_PageErase (uint32_t address)
+int MXC_FLC_PageErase(uint32_t address)
 {
     int err;
     uint32_t physicalAddress;
-    mxc_flc_regs_t *flc;
+    mxc_flc_regs_t* flc;
 
-    if((err = MXC_FLC_ME18_GetPhysicalAddress(address, &physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME18_GetPhysicalAddress(address, &physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*) flc, physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)flc, physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
@@ -198,37 +192,38 @@ int MXC_FLC_PageErase (uint32_t address)
 }
 
 // *****************************************************************************
-void MXC_FLC_Read (int address, void* buffer, int len)
+void MXC_FLC_Read(int address, void* buffer, int len)
 {
-    if(address < MXC_FLASH_MEM_BASE || address >= (MXC_FLASH_MEM_BASE + MXC_FLASH0_MEM_SIZE + MXC_FLASH1_MEM_SIZE)) {
+    if (address < MXC_FLASH_MEM_BASE ||
+        address >= (MXC_FLASH_MEM_BASE + MXC_FLASH0_MEM_SIZE + MXC_FLASH1_MEM_SIZE)) {
         return;
     }
     MXC_FLC_Com_Read(address, buffer, len);
 }
 
 // *****************************************************************************
-int MXC_FLC_Write (uint32_t address, uint32_t length, uint32_t *buffer)
+int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer)
 {
     return MXC_FLC_Com_Write(address, length, buffer);
 }
 
 // *****************************************************************************
-int MXC_FLC_Write32 (uint32_t address, uint32_t data)
+int MXC_FLC_Write32(uint32_t address, uint32_t data)
 {
     int err;
     uint32_t physicalAddress, aligned;
-    mxc_flc_regs_t *flc;
+    mxc_flc_regs_t* flc;
 
     aligned = address & ~0xf;
-    if((err = MXC_FLC_ME18_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME18_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
 
-    err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t*) flc, address, data, physicalAddress);
+    err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t*)flc, address, data, physicalAddress);
 
     // Flush the cache
     MXC_FLC_ME18_Flash_Operation();
@@ -238,26 +233,27 @@ int MXC_FLC_Write32 (uint32_t address, uint32_t data)
 
 // *****************************************************************************
 #if IAR_PRAGMAS
-#pragma section=".flashprog"
+#pragma section = ".flashprog"
 #else
-__attribute__ ( (section (".flashprog")))
+__attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_Write128 (uint32_t address, uint32_t *data)
+int MXC_FLC_Write128(uint32_t address, uint32_t* data)
 {
     int err;
     uint32_t physicalAddress, aligned;
-    mxc_flc_regs_t *flc;
+    mxc_flc_regs_t* flc;
 
     aligned = address & ~0xf;
-    if((err = MXC_FLC_ME18_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME18_GetPhysicalAddress(aligned, &physicalAddress)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*) flc, physicalAddress, data)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)flc, physicalAddress, data)) !=
+        E_NO_ERROR) {
         return err;
     }
 
@@ -268,39 +264,39 @@ int MXC_FLC_Write128 (uint32_t address, uint32_t *data)
 }
 
 // *****************************************************************************
-int MXC_FLC_EnableInt (uint32_t mask)
+int MXC_FLC_EnableInt(uint32_t mask)
 {
     return MXC_FLC_RevA_EnableInt(mask);
 }
 
 // *****************************************************************************
-int MXC_FLC_DisableInt (uint32_t mask)
+int MXC_FLC_DisableInt(uint32_t mask)
 {
     return MXC_FLC_RevA_DisableInt(mask);
 }
 
 // *****************************************************************************
-int MXC_FLC_GetFlags (void)
+int MXC_FLC_GetFlags(void)
 {
     return MXC_FLC_RevA_GetFlags();
 }
 
 // *****************************************************************************
-int MXC_FLC_ClearFlags (uint32_t mask)
+int MXC_FLC_ClearFlags(uint32_t mask)
 {
     return MXC_FLC_RevA_ClearFlags(mask);
 }
 
 // *****************************************************************************
-int MXC_FLC_UnlockInfoBlock (uint32_t address)
+int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
-    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*) MXC_FLC, address);
+    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*)MXC_FLC, address);
 }
 
 // *****************************************************************************
-int MXC_FLC_LockInfoBlock (uint32_t address)
+int MXC_FLC_LockInfoBlock(uint32_t address)
 {
-    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*) MXC_FLC, address);
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)MXC_FLC, address);
 }
 
 //******************************************************************************
@@ -308,16 +304,18 @@ int MXC_FLC_BlockPageWrite(uint32_t address)
 {
     int err;
 
-    if(address < MXC_FLASH0_MEM_BASE || address > (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE)) {     // Check address valid
+    if (address < MXC_FLASH0_MEM_BASE ||
+        address > (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE)) { // Check address valid
         return E_INVALID;
     }
 
     mxc_flc_regs_t* flc;
-    if((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {        // Get FLC to be able to pass correct base address
+    if ((err = MXC_FLC_ME18_GetByAddress(&flc, address)) !=
+        E_NO_ERROR) { // Get FLC to be able to pass correct base address
         return err;
     }
 
-    switch(MXC_FLC_GET_IDX(flc)) {
+    switch (MXC_FLC_GET_IDX(flc)) {
         case 0:
             err = MXC_FLC_RevA_BlockPageWrite(address, MXC_FLASH0_MEM_BASE);
             break;
@@ -337,15 +335,17 @@ int MXC_FLC_BlockPageRead(uint32_t address)
     int err;
     mxc_flc_regs_t* flc;
 
-    if(address < MXC_FLASH0_MEM_BASE || address > (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE)) {     // Check address valid
+    if (address < MXC_FLASH0_MEM_BASE ||
+        address > (MXC_FLASH1_MEM_BASE + MXC_FLASH1_MEM_SIZE)) { // Check address valid
         return E_INVALID;
     }
 
-    if((err = MXC_FLC_ME18_GetByAddress(&flc, address)) != E_NO_ERROR) {        // Get FLC to be able to pass correct base address
+    if ((err = MXC_FLC_ME18_GetByAddress(&flc, address)) !=
+        E_NO_ERROR) { // Get FLC to be able to pass correct base address
         return err;
     }
 
-    switch(MXC_FLC_GET_IDX(flc)) {
+    switch (MXC_FLC_GET_IDX(flc)) {
         case 0:
             err = MXC_FLC_RevA_BlockPageRead(address, MXC_FLASH0_MEM_BASE);
             break;
@@ -363,14 +363,15 @@ int MXC_FLC_BlockPageRead(uint32_t address)
 volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
 {
     uint32_t reg_num;
-    reg_num = page_num >> 5;    // Divide by 32 to get WELR register number containing the page lock bit
+    reg_num =
+        page_num >> 5; // Divide by 32 to get WELR register number containing the page lock bit
 
     mxc_flc_regs_t* flc;
-    if(MXC_FLC_ME18_GetByAddress(&flc, address) != E_NO_ERROR) {    // Check address valid
+    if (MXC_FLC_ME18_GetByAddress(&flc, address) != E_NO_ERROR) { // Check address valid
         return NULL;
     }
 
-    switch(reg_num) {
+    switch (reg_num) {
         case 0:
             return &(flc->welr0);
         case 1:
@@ -383,7 +384,7 @@ volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
             return &(flc->welr4);
         case 5:
             return &(flc->welr5);
-    }   
+    }
 
     return NULL;
 }
@@ -392,14 +393,14 @@ volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
 volatile uint32_t* MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
 {
     uint32_t reg_num;
-    reg_num = page_num >> 5;    // Divide by 32 to get RLR register number containing the page lock bit
+    reg_num = page_num >> 5; // Divide by 32 to get RLR register number containing the page lock bit
 
     mxc_flc_regs_t* flc;
-    if(MXC_FLC_ME18_GetByAddress(&flc, address) != E_NO_ERROR) {    // Check address valid
+    if (MXC_FLC_ME18_GetByAddress(&flc, address) != E_NO_ERROR) { // Check address valid
         return NULL;
     }
 
-    switch(reg_num) {
+    switch (reg_num) {
         case 0:
             return &(flc->rlr0);
         case 1:
@@ -412,7 +413,7 @@ volatile uint32_t* MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
             return &(flc->rlr4);
         case 5:
             return &(flc->rlr5);
-    }   
+    }
 
     return NULL;
 }

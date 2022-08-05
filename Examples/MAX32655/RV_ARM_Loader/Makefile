@@ -120,7 +120,7 @@ RISCV_LOAD=1
 RISCV_APP_DIR=../Hello_World
 
 # Binary name for RISCV code
-RISCV_APP_BIN=buildrv/max32655.bin
+RISCV_APP_BIN=buildrv/$(PROJECT).bin
 
 # Firmware update files, do not rename
 RISCV_LOCAL_BIN=riscv.bin

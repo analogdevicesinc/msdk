@@ -49,24 +49,26 @@ volatile uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
-  printf("\n*** FAIL ***\n\n");
-  while (1);
+    printf("\n*** FAIL ***\n\n");
+    while (1)
+        ;
 }
 
 // Data input: HWC 3x160x120 (57600 bytes total / 19200 bytes per channel):
 static const uint32_t input_0[] = SAMPLE_INPUT_0;
 void load_input(void)
 {
-  // This function loads the sample data input -- replace with actual data
+    // This function loads the sample data input -- replace with actual data
 
-  int i;
-  const uint32_t *in0 = input_0;
+    int i;
+    const uint32_t* in0 = input_0;
 
-  for (i = 0; i < 19200; i++) {
-    // Remove the following line if there is no risk that the source would overrun the FIFO:
-    while (((*((volatile uint32_t *) 0x50000004) & 1)) != 0); // Wait for FIFO 0
-    *((volatile uint32_t *) 0x50000008) = *in0++; // Write FIFO 0
-  }
+    for (i = 0; i < 19200; i++) {
+        // Remove the following line if there is no risk that the source would overrun the FIFO:
+        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
+            ;                                       // Wait for FIFO 0
+        *((volatile uint32_t*)0x50000008) = *in0++; // Write FIFO 0
+    }
 }
 
 // Expected output of layer 8 for faceid given the sample input (known-answer test)
@@ -74,80 +76,82 @@ void load_input(void)
 static const uint32_t sample_output[] = SAMPLE_OUTPUT;
 int check_output(void)
 {
-  int i;
-  uint32_t mask, len;
-  volatile uint32_t *addr;
-  const uint32_t *ptr = sample_output;
+    int i;
+    uint32_t mask, len;
+    volatile uint32_t* addr;
+    const uint32_t* ptr = sample_output;
 
-  while ((addr = (volatile uint32_t *) *ptr++) != 0) {
-    mask = *ptr++;
-    len = *ptr++;
-    for (i = 0; i < len; i++)
-      if ((*addr++ & mask) != *ptr++) {
-        printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
-               i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
-        return CNN_FAIL;
-      }
-  }
+    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+        mask = *ptr++;
+        len  = *ptr++;
+        for (i = 0; i < len; i++)
+            if ((*addr++ & mask) != *ptr++) {
+                printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
+                       i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
+                return CNN_FAIL;
+            }
+    }
 
-  return CNN_OK;
+    return CNN_OK;
 }
 
 static int32_t ml_data32[(CNN_NUM_OUTPUTS + 3) / 4];
 
 int main(void)
 {
-  MXC_ICC_Enable(MXC_ICC0); // Enable cache
+    MXC_ICC_Enable(MXC_ICC0); // Enable cache
 
-  // Switch to 120 MHz clock
-  MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-  MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
-  SystemCoreClockUpdate();
+    // Switch to 120 MHz clock
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
+    SystemCoreClockUpdate();
 
-  printf("Waiting...\n");
+    printf("Waiting...\n");
 
-  // DO NOT DELETE THIS LINE:
-  MXC_Delay(SEC(2)); // Let debugger interrupt if needed
+    // DO NOT DELETE THIS LINE:
+    MXC_Delay(SEC(2)); // Let debugger interrupt if needed
 
-  // Enable peripheral, enable CNN interrupt, turn on CNN clock
-  // CNN clock: PLL (200 MHz) div 4
-  cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
+    // Enable peripheral, enable CNN interrupt, turn on CNN clock
+    // CNN clock: PLL (200 MHz) div 4
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
 
-  printf("\n*** CNN Inference Test ***\n");
+    printf("\n*** CNN Inference Test ***\n");
 
-  cnn_init(); // Bring state machine into consistent state
-  cnn_load_weights(); // Load kernels
-  cnn_load_bias(); // Not used in this network
-  cnn_configure(); // Configure state machine
-  // CNN clock: PLL (200 MHz) div 1
-  MXC_GCR->pclkdiv = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-                     | MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
-  cnn_start(); // Start CNN processing
-  load_input(); // Load data input via FIFO
+    cnn_init();         // Bring state machine into consistent state
+    cnn_load_weights(); // Load kernels
+    cnn_load_bias();    // Not used in this network
+    cnn_configure();    // Configure state machine
+    // CNN clock: PLL (200 MHz) div 1
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
+    cnn_start();  // Start CNN processing
+    load_input(); // Load data input via FIFO
 
-  SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-  while (cnn_time == 0)
-    __WFI(); // Wait for CNN
+    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
+    while (cnn_time == 0)
+        __WFI(); // Wait for CNN
 
-  // Switch CNN clock to PLL (200 MHz) div 4
+    // Switch CNN clock to PLL (200 MHz) div 4
 
-  MXC_GCR->pclkdiv = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-                     | MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
-  if (check_output() != CNN_OK) fail();
-  cnn_unload((uint32_t *) ml_data32);
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
+    if (check_output() != CNN_OK)
+        fail();
+    cnn_unload((uint32_t*)ml_data32);
 
-  printf("\n*** PASS ***\n\n");
+    printf("\n*** PASS ***\n\n");
 
 #ifdef CNN_INFERENCE_TIMER
-  printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
+    printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
 #endif
 
-  cnn_disable(); // Shut down CNN clock, disable peripheral
+    cnn_disable(); // Shut down CNN clock, disable peripheral
 
-  MXC_GCR->ipll_ctrl &= ~MXC_F_GCR_IPLL_CTRL_EN; // Disable IPLL
+    MXC_GCR->ipll_ctrl &= ~MXC_F_GCR_IPLL_CTRL_EN; // Disable IPLL
 
-
-  return 0;
+    return 0;
 }
 
 /*
@@ -167,4 +171,3 @@ int main(void)
   Weight memory: 176,048 bytes out of 2,396,160 bytes total (7%)
   Bias memory:   0 bytes out of 8,192 bytes total (0%)
 */
-

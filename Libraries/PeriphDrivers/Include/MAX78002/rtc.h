@@ -60,36 +60,37 @@ extern "C" {
  * @{
  */
 
-#define MXC_RTC_MAX_SSEC        (MXC_F_RTC_SSEC_SSEC+1)
-#define MXC_RTC_TRIM_TMR_IRQ    MXC_F_TMR_INTFL_IRQ_A
+#define MXC_RTC_MAX_SSEC     (MXC_F_RTC_SSEC_SSEC + 1)
+#define MXC_RTC_TRIM_TMR_IRQ MXC_F_TMR_INTFL_IRQ_A
 
 /* **** Definitions **** */
 /**
  * Bitmasks for each of the RTC's Frequency.
  */
 typedef enum {
-    MXC_RTC_F_1HZ   = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ,     /**< 1Hz (Compensated)   */
-    MXC_RTC_F_512HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ,   /**< 512Hz (Compensated) */
-    MXC_RTC_F_4KHZ  = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ,    /**< 4Khz                */
-    MXC_RTC_F_32KHZ = 32,                            /**< 32Khz               */
+    MXC_RTC_F_1HZ   = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ,   /**< 1Hz (Compensated)   */
+    MXC_RTC_F_512HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ, /**< 512Hz (Compensated) */
+    MXC_RTC_F_4KHZ  = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ,  /**< 4Khz                */
+    MXC_RTC_F_32KHZ = 32,                               /**< 32Khz               */
 } mxc_rtc_freq_sel_t;
 
 /**
  * @brief     Bitmasks for each of the RTC's interrupt enables.
  */
 typedef enum {
-    MXC_RTC_INT_EN_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IE,      /**< Long-interval alarm interrupt enable */
-    MXC_RTC_INT_EN_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM_IE,    /**< Short-interval alarm interrupt enable */
-    MXC_RTC_INT_EN_READY = MXC_F_RTC_CTRL_RDY_IE,           /**< Timer ready interrupt enable */
+    MXC_RTC_INT_EN_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IE, /**< Long-interval alarm interrupt enable */
+    MXC_RTC_INT_EN_SHORT =
+        MXC_F_RTC_CTRL_SSEC_ALARM_IE,             /**< Short-interval alarm interrupt enable */
+    MXC_RTC_INT_EN_READY = MXC_F_RTC_CTRL_RDY_IE, /**< Timer ready interrupt enable */
 } mxc_rtc_int_en_t;
 
 /**
  * @brief     Bitmasks for each of the RTC's interrupt flags.
  */
 typedef enum {
-    MXC_RTC_INT_FL_LONG = MXC_F_RTC_CTRL_TOD_ALARM,         /**< Long-interval alarm interrupt flag */
-    MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM,       /**< Short-interval alarm interrupt flag */
-    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY,              /**< Timer ready interrupt flag */
+    MXC_RTC_INT_FL_LONG  = MXC_F_RTC_CTRL_TOD_ALARM,  /**< Long-interval alarm interrupt flag */
+    MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM, /**< Short-interval alarm interrupt flag */
+    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY,        /**< Timer ready interrupt flag */
 } mxc_rtc_int_fl_t;
 
 /**
@@ -97,7 +98,7 @@ typedef enum {
  * @param     ras    20-bit value 0-0xFFFFF
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_SetTimeofdayAlarm (uint32_t ras);
+int MXC_RTC_SetTimeofdayAlarm(uint32_t ras);
 
 /**
  * @brief     Set Sub-Second alarm value and enable interrupt,
@@ -105,46 +106,46 @@ int MXC_RTC_SetTimeofdayAlarm (uint32_t ras);
  * @param     rssa   32-bit value 0-0xFFFFFFFF
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_SetSubsecondAlarm (uint32_t rssa);
+int MXC_RTC_SetSubsecondAlarm(uint32_t rssa);
 
 /**
  * @brief     Start the Real Time Clock (Blocking function)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_Start (void);
+int MXC_RTC_Start(void);
 /**
  * @brief     Stop the Real Time Clock (Blocking function)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_Stop (void);
+int MXC_RTC_Stop(void);
 
 /**
  * @brief     Initialize the sec and ssec registers and enable RTC (Blocking function)
  * @param     sec    set the RTC Sec counter (32-bit)
- * @param     ssec   set the RTC Sub-second counter (8-bit)
+ * @param     ssec   set the RTC Sub-second counter (12-bit)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_Init (uint32_t sec, uint8_t ssec);
+int MXC_RTC_Init(uint32_t sec, uint16_t ssec);
 
 /**
  * @brief     Allow generation of Square Wave on the SQW pin (Blocking function)
  * @param     fq     Frequency output selection
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_SquareWaveStart (mxc_rtc_freq_sel_t fq);
-                             
+int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t fq);
+
 /**
  * @brief     Stop the generation of square wave (Blocking function)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_SquareWaveStop (void);
+int MXC_RTC_SquareWaveStop(void);
 
 /**
  * @brief     Set Trim register value (Blocking function)
  * @param     trm    set the RTC Trim (8-bit, +/- 127)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_Trim (int8_t trm);
+int MXC_RTC_Trim(int8_t trm);
 
 /**
  * @brief     Enable Interurpts (Blocking function)
@@ -152,7 +153,7 @@ int MXC_RTC_Trim (int8_t trm);
  *                   See #mxc_rtc_int_en_t for available choices.
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_EnableInt (uint32_t mask);
+int MXC_RTC_EnableInt(uint32_t mask);
 
 /**
  * @brief     Disable Interurpts (Blocking function)
@@ -160,7 +161,7 @@ int MXC_RTC_EnableInt (uint32_t mask);
  *                   See #mxc_rtc_int_en_t for available choices.
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_DisableInt (uint32_t mask);
+int MXC_RTC_DisableInt(uint32_t mask);
 
 /**
  * @brief     Gets interrupt flags.
@@ -168,7 +169,7 @@ int MXC_RTC_DisableInt (uint32_t mask);
  *            currently set. See #mxc_rtc_int_fl_t for the list
  *            of possible flags.
  */
-int MXC_RTC_GetFlags (void);
+int MXC_RTC_GetFlags(void);
 
 /**
  * @brief     Clear interrupt flags.
@@ -176,19 +177,19 @@ int MXC_RTC_GetFlags (void);
  *            See #mxc_rtc_int_fl_t for the list of possible flags.
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_RTC_ClearFlags (int flags);
+int MXC_RTC_ClearFlags(int flags);
 
 /**
  * @brief     Get SubSecond
  * @retval    Returns subsecond value or E_BUSY, see /ref MXC_ERROR_CODES
  */
-int MXC_RTC_GetSubSecond (void);
+int MXC_RTC_GetSubSecond(void);
 
 /**
  * @brief     Get Second
  * @retval    returns second value or E_BUSY, see /ref MXC_ERROR_CODES
  */
-int MXC_RTC_GetSecond (void);
+int MXC_RTC_GetSecond(void);
 
 /**
  * @brief     Get the time using nuclear fusion. Or atomically. Something like that.
@@ -196,7 +197,7 @@ int MXC_RTC_GetSecond (void);
  * @param     subsec pointer to store subseconds value
  * @retval    returns Success or Fail, see /ref MXC_ERROR_CODES
  */
-int MXC_RTC_GetTime (uint32_t* sec, uint32_t* subsec);
+int MXC_RTC_GetTime(uint32_t* sec, uint32_t* subsec);
 
 /**
  * @brief     Get RTC busy flag.

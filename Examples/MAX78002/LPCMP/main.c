@@ -75,7 +75,8 @@ int main(void)
     printf("comparator output to wakeup.\n\n");
 
     printf("Press SW2 to begin.\n");
-    while(!PB_Get(0));
+    while (!PB_Get(0))
+        ;
 
     // Enable comparator 0
     MXC_LP_EnableLPCMPWakeup(MXC_LPCMP_CMP0);
@@ -83,12 +84,13 @@ int main(void)
 
     // Enable comparator interrupts
     MXC_LPCMP_EnableInt(MXC_LPCMP_CMP0, MXC_LPCMP_POL_RISE);
-	MXC_NVIC_SetVector(LPCMP_IRQn, CMP_Handler);
-	NVIC_EnableIRQ(LPCMP_IRQn);
+    MXC_NVIC_SetVector(LPCMP_IRQn, CMP_Handler);
+    NVIC_EnableIRQ(LPCMP_IRQn);
 
-    while(1) {
+    while (1) {
         printf("\nEntering sleep mode.\n");
-        while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)));
+        while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)))
+            ;
         MXC_LP_EnterSleepMode();
         printf("Waking up.\n");
     }

@@ -220,22 +220,19 @@ extern "C" {
  * #endif
  */
 
-
 /* All the various Cryptoki types and #define'd values are in the
  * file pkcs11t.h. */
 #include "pkcs11t.h"
 
-#define __PASTE(x,y)      x##y
-
+#define __PASTE(x, y) x##y
 
 /* ==============================================================
  * Define the "extern" form of all the entry points.
  * ==============================================================
  */
 
-#define CK_NEED_ARG_LIST  1
-#define CK_PKCS11_FUNCTION_INFO(name) \
-  extern CK_DECLARE_FUNCTION(CK_RV, name)
+#define CK_NEED_ARG_LIST              1
+#define CK_PKCS11_FUNCTION_INFO(name) extern CK_DECLARE_FUNCTION(CK_RV, name)
 
 /* pkcs11f.h has all the information about the Cryptoki
  * function prototypes. */
@@ -243,7 +240,6 @@ extern "C" {
 
 #undef CK_NEED_ARG_LIST
 #undef CK_PKCS11_FUNCTION_INFO
-
 
 /* ==============================================================
  * Define the typedef form of all the entry points.  That is, for
@@ -252,9 +248,8 @@ extern "C" {
  * ==============================================================
  */
 
-#define CK_NEED_ARG_LIST  1
-#define CK_PKCS11_FUNCTION_INFO(name) \
-  typedef CK_DECLARE_FUNCTION_POINTER(CK_RV, __PASTE(CK_,name))
+#define CK_NEED_ARG_LIST              1
+#define CK_PKCS11_FUNCTION_INFO(name) typedef CK_DECLARE_FUNCTION_POINTER(CK_RV, __PASTE(CK_, name))
 
 /* pkcs11f.h has all the information about the Cryptoki
  * function prototypes. */
@@ -262,7 +257,6 @@ extern "C" {
 
 #undef CK_NEED_ARG_LIST
 #undef CK_PKCS11_FUNCTION_INFO
-
 
 /* ==============================================================
  * Define structed vector of entry points.  A CK_FUNCTION_LIST
@@ -273,22 +267,18 @@ extern "C" {
  * ==============================================================
  */
 
-#define CK_PKCS11_FUNCTION_INFO(name) \
-  __PASTE(CK_,name) name;
-  
-struct CK_FUNCTION_LIST {
+#define CK_PKCS11_FUNCTION_INFO(name) __PASTE(CK_, name) name;
 
-  CK_VERSION    version;  /* Cryptoki version */
+struct CK_FUNCTION_LIST {
+    CK_VERSION version; /* Cryptoki version */
 
 /* Pile all the function pointers into the CK_FUNCTION_LIST. */
 /* pkcs11f.h has all the information about the Cryptoki
  * function prototypes. */
 #include "pkcs11f.h"
-
 };
 
 #undef CK_PKCS11_FUNCTION_INFO
-
 
 #undef __PASTE
 

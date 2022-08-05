@@ -38,8 +38,7 @@
 #define __READ_FILE_H__
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -50,7 +49,7 @@ extern "C"
  * @param addr buffer to store storing address of data
  * @return ERR_OK if success, else return error code
  */
-int read_hex_file (const char * filename, uint8_t * data, size_t * data_len, size_t * addr);
+int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t* addr);
 
 /**
  * Read and parse an S19 file, only S3 record type are considered
@@ -61,7 +60,8 @@ int read_hex_file (const char * filename, uint8_t * data, size_t * data_len, siz
  * @param addr buffer to store storing address of data
  * @return ERR_OK if success, else return error code
  */
-int read_s19_file (const char * filename, size_t address_offset, uint8_t * data, size_t * data_len, size_t * addr);
+int read_s19_file(const char* filename, size_t address_offset, uint8_t* data, size_t* data_len,
+                  size_t* addr);
 
 /**
  * Read a S19 file and extract the start address and the end address of the data
@@ -70,8 +70,7 @@ int read_s19_file (const char * filename, size_t address_offset, uint8_t * data,
  * @param end_addr output end address of the data
  * @return ERR_OK if success, else return error code
  */
-int get_start_addr_and_length_s19 (const char * filename, size_t * start_addr, size_t * end_addr);
-
+int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size_t* end_addr);
 
 /**
  * Check if the filename have the selected extension
@@ -79,7 +78,7 @@ int get_start_addr_and_length_s19 (const char * filename, size_t * start_addr, s
  * @param name filename to test
  * @return TRUE or FALSE
  */
-int extension(const char * ext, const char * name);
+int extension(const char* ext, const char* name);
 
 /**
  * Determine size of a binary file
@@ -87,8 +86,7 @@ int extension(const char * ext, const char * name);
  * @param filename file to determine the size
  * @return ERR_OK if success otherwise error code
  */
-int read_file_size (size_t * size, char *filename);
-
+int read_file_size(size_t* size, char* filename);
 
 /**
  * Read Data from a binary file
@@ -97,7 +95,7 @@ int read_file_size (size_t * size, char *filename);
  * @param filename file to read
  * @return ERR_OK if success otherwise error code
  */
-int read_binary_file(char * filename, u8 * p_pucData, size_t * file_size);
+int read_binary_file(char* filename, u8* p_pucData, size_t* file_size);
 
 /**
  * Read Hexadecimal ASCII encoded data on one line in a file
@@ -106,7 +104,7 @@ int read_binary_file(char * filename, u8 * p_pucData, size_t * file_size);
  * @param data_buffer output buffer for the data read
  * @return ERR_OK if success, else return error code
  */
-int read_line_ascii_data (FILE * file_ptr, size_t * data_length, unsigned char * data_buffer);
+int read_line_ascii_data(FILE* file_ptr, size_t* data_length, unsigned char* data_buffer);
 
 #ifdef __cplusplus
 }

@@ -7,7 +7,9 @@
 # description of the default behavior and the full list of
 # available config variables.
 
-# Include the CMSIS-DSP library
+# Set hardware floating-point acceleration
 MFLOAT_ABI = hard
-include $(CMSIS_ROOT)/5.9.0/DSP/CMSIS-DSP.mk 
+
+# Include the CMSIS-DSP library
+LIB_CMSIS_DSP = 1
 

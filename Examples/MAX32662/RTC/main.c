@@ -54,15 +54,17 @@
 #include "mxc_delay.h"
 
 /***** Definitions *****/
-#define TIME_OF_DAY_SEC     5
-#define SUBSECOND_MSEC_0    250
-#define SUBSECOND_MSEC_1    750
+#define TIME_OF_DAY_SEC  5
+#define SUBSECOND_MSEC_0 250
+#define SUBSECOND_MSEC_1 750
 
-#define MSEC_TO_RSSA(x) (0 - ((x * 4096) / 1000)) /* Converts a time in milleseconds to the equivalent RSSA register value. */
+#define MSEC_TO_RSSA(x) \
+    (0 - ((x * 4096) /  \
+          1000)) /* Converts a time in milleseconds to the equivalent RSSA register value. */
 
-#define SECS_PER_MIN        60
-#define SECS_PER_HR         (60 * SECS_PER_MIN)
-#define SECS_PER_DAY        (24 * SECS_PER_HR)
+#define SECS_PER_MIN 60
+#define SECS_PER_HR  (60 * SECS_PER_MIN)
+#define SECS_PER_DAY (24 * SECS_PER_HR)
 
 /***** Globals *****/
 int ss_interval = SUBSECOND_MSEC_0;
@@ -77,18 +79,20 @@ void RTC_IRQHandler(void)
         LED_Toggle(0);
         MXC_RTC_ClearFlags(MXC_RTC_INT_FL_SHORT);
     }
-    
+
     /* Check time-of-day alarm flag. */
     if (flags & MXC_RTC_INT_FL_LONG) {
         MXC_RTC_ClearFlags(MXC_RTC_INT_FL_LONG);
         /* Set a new alarm 10 seconds from current time. */
         time = MXC_RTC_GetSecond();
-        
-        while(MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY);        
-        if (MXC_RTC_SetTimeofdayAlarm( time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
+
+        while (MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY)
+            ;
+        if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
             /* Handle Error */
         }
-        while(MXC_RTC_EnableInt(MXC_RTC_INT_EN_LONG) == E_BUSY);    
+        while (MXC_RTC_EnableInt(MXC_RTC_INT_EN_LONG) == E_BUSY)
+            ;
 
         // Toggle the sub-second alarm interval.
         if (ss_interval == SUBSECOND_MSEC_0) {
@@ -97,13 +101,15 @@ void RTC_IRQHandler(void)
             ss_interval = SUBSECOND_MSEC_0;
         }
 
-        while(MXC_RTC_DisableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY);
-        if (MXC_RTC_SetSubsecondAlarm( MSEC_TO_RSSA(ss_interval)) != E_NO_ERROR) {
+        while (MXC_RTC_DisableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY)
+            ;
+        if (MXC_RTC_SetSubsecondAlarm(MSEC_TO_RSSA(ss_interval)) != E_NO_ERROR) {
             /* Handle Error */
         }
-        while(MXC_RTC_EnableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY); 
+        while (MXC_RTC_EnableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY)
+            ;
     }
-    
+
     return;
 }
 
@@ -117,87 +123,90 @@ void printTime()
 {
     int day, hr, min, sec;
     double subsec;
-    
+
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
-    
+    sec    = MXC_RTC_GetSecond();
+
     day = sec / SECS_PER_DAY;
     sec -= day * SECS_PER_DAY;
-    
+
     hr = sec / SECS_PER_HR;
     sec -= hr * SECS_PER_HR;
-    
+
     min = sec / SECS_PER_MIN;
     sec -= min * SECS_PER_MIN;
-    
+
     subsec += sec;
-    
+
     printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n\n", day, hr, min, subsec);
 }
 
 // *****************************************************************************
 int main(void)
 {
-
     printf("\n*************************** RTC Example ****************************\n\n");
     printf("In this example the RTC is set up to demonstrate the functionality of the\n");
     printf("   RTC second and sub-second alarms. When the sub-second alarm expires,\n");
     printf("   the LED is toggled. When the second alarm expires, the rate at which\n");
-    printf("   the LED is toggled is switched between %dms and %dms. Additionally,\n", SUBSECOND_MSEC_0, SUBSECOND_MSEC_1);
+    printf("   the LED is toggled is switched between %dms and %dms. Additionally,\n",
+           SUBSECOND_MSEC_0, SUBSECOND_MSEC_1);
     printf("   when SW2 is pressed the current time will be printed to the console.\n\n");
-    
+
     NVIC_EnableIRQ(RTC_IRQn);
 
-    
     /* Setup callback to receive notification of when button is pressed. */
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
 
     /* Turn LED off initially */
     LED_Off(0);
-    
+
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) {
         printf("Failed RTC Initialization\n");
         printf("Example Failed\n");
-        while(1);
+        while (1)
+            ;
     }
-    
+
     printf("RTC started\n");
     printTime();
-    
-    if(MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
+
+    if (MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
         return E_BUSY;
     }
 
     if (MXC_RTC_SetTimeofdayAlarm(TIME_OF_DAY_SEC) != E_NO_ERROR) {
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
-        while(1);
+        while (1)
+            ;
     }
 
-    if(MXC_RTC_EnableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
+    if (MXC_RTC_EnableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
         return E_BUSY;
     }
 
-    if(MXC_RTC_DisableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY) {
+    if (MXC_RTC_DisableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY) {
         return E_BUSY;
     }
 
     if (MXC_RTC_SetSubsecondAlarm(MSEC_TO_RSSA(SUBSECOND_MSEC_0)) != E_NO_ERROR) {
         printf("Failed RTC_SetSubsecondAlarm\n");
         printf("Example Failed\n");
-        while(1);
+        while (1)
+            ;
     }
-    
-    if(MXC_RTC_EnableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY) {
+
+    if (MXC_RTC_EnableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY) {
         return E_BUSY;
     }
 
     if (MXC_RTC_Start() != E_NO_ERROR) {
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
-        while(1);
+        while (1)
+            ;
     }
-    
+
     while (1) {
         if (buttonPressed) {
             /* Show the time elapsed. */
