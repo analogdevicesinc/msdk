@@ -85,7 +85,7 @@ void NVIC_SetRAM(void);
  * @param[in]  IRQn  Interrupt number.
  * @return     Address of interrupt handler function
  */
-uint32_t NVIC_GetVector(IRQn_Type IRQn);
+uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 
 #if defined (__GNUC__)
 #if __CM4_CMSIS_VERSION_MAIN==0x03
