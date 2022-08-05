@@ -174,9 +174,13 @@ class CameraIFConsole():
                                     filename = "Image.png"
                                     convert(img_raw, filename, w, h, pixel_format)
                                     _print(f"Saved image to '{filename}'")
-                                    image = cv2.imread(filename)
-                                    cv2.imshow(" ", image)
-                                    cv2.waitKey(1)
+
+                                    # The code below will display the image in an OpenCV
+                                    # window.  It's disabled by default because it won't
+                                    # work on headless systems.  Uncomment to enable.
+                                    # image = cv2.imread(filename)
+                                    # cv2.imshow(" ", image)
+                                    # cv2.waitKey(1)
 
         except Exception as e:
             print(f"[red]{traceback.format_exc()}[/red]")
