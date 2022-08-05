@@ -131,8 +131,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SRCC_DIS</name>
-            <description>Data Cache Disable.</description>
+            <name>CCHK1</name>
+            <description>Compute CPU1 ROM1 Checksum</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -143,8 +143,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>CCHK</name>
-            <description>Compute ROM Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+            <name>CCHK0</name>
+            <description>Compute ROM0 Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
             <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -161,13 +161,13 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SWD_DIS</name>
-            <description>Disable SWD.</description>
+            <name>CHKRES1</name>
+            <description>Result of CPU1 ROM1 Checksum.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>CHKRES</name>
+            <name>CHKRES0</name>
             <description>ROM Checksum Result. This bit is only valid when CHKRD=1.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1461,6 +1461,12 @@
             <bitOffset>29</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field derivedFrom="I2C1">
+            <name>CPU1</name>
+            <description>CPU1 Reset.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
@@ -1490,6 +1496,12 @@
             <name>TRNG</name>
             <description>TRNG Clock Disable.</description>
             <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>OTP</name>
+            <description>OTP Clock Disable.</description>
+            <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
@@ -1790,10 +1802,40 @@
         <addressOffset>0x70</addressOffset>
         <fields>
           <field>
-            <name>ERRADDR</name>
-            <description>Error Address.</description>
+            <name>DADDR</name>
+            <description>Address of Error in Data RAM.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
+            <bitWidth>14</bitWidth>
+          </field>
+          <field>
+            <name>DB</name>
+            <description>Data Bank,</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DE</name>
+            <description>Data Error Flag.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TADDR</name>
+            <description>Address of Error in Tag RAM.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+          <field>
+            <name>TB</name>
+            <description>Tag Bank.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TE</name>
+            <description>Tag Error Flag.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>

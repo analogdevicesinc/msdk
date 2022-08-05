@@ -243,6 +243,12 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
+          <field>
+            <name>INCOMPLETE</name>
+            <description>ADC Incomplete.</description>
+            <bitRange>[12:12]</bitRange>
+            <access>read-only</access>
+          </field>
         </fields>
       </register>
       <!-- INTFL: ADC Interrupt Enable Register -->
