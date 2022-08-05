@@ -17,7 +17,11 @@ import re
 from imgConverter import convert
 import argparse
 import cv2
-from rich import print
+
+# Utility printer for printing a tracking console prompt "$"
+# after the message.  Is there a better way to do this?  Probably...
+def _print(msg: str):
+    print(f"\r{msg}", end="\n\r$ ")
 
 class CameraIFConsole():
     def __init__(self, port, baudrate=921600, timeout=5):
@@ -31,10 +35,10 @@ class CameraIFConsole():
 
         self.s = Serial(port=port, baudrate=baudrate, timeout=timeout)
 
-        self.thr_get_input.start()
-        self.thr_serial.start()
-        print("Started CameraIF console.  Type 'help' for help, 'quit' to quit.")
+        print("Started CameraIF console.")
         self.help()
+        self.thr_serial.start()
+        self.thr_get_input.start()
         
 
     """
@@ -66,7 +70,7 @@ class CameraIFConsole():
                         val = int(values[1], 0)
                         _input = f"set-reg {reg} {val}"
                     else:
-                        print(f"Failed to parse set-reg command: '{_input}'")
+                        _print(f"Failed to parse set-reg command: '{_input}'")
                         _input = ""
 
                 elif "get-reg" in _input:
@@ -78,7 +82,7 @@ class CameraIFConsole():
                         reg = int(match[0], 0)
                         _input = f"get-reg {reg}"
                     else:
-                        print(f"Failed to parse get-reg command: '{_input}'")
+                        _print(f"Failed to parse get-reg command: '{_input}'")
                         _input = ""
 
                 self.lock_input.acquire()
@@ -132,7 +136,7 @@ class CameraIFConsole():
                         pass
                     # ---
 
-                    print(f"MCU: {recvd}") # Echo the received message
+                    _print(f"MCU: {recvd}") # Echo the received message
                     
                     if command:
                         # Process received command
@@ -160,15 +164,17 @@ class CameraIFConsole():
 
                                 # Enter "receive" mode, where we'll wait for the expected
                                 # number of bytes.
-                                print(f"Waiting for {expected} bytes...")
+                                _print(f"Waiting for {expected} bytes...")
                                 img_raw = self.s.read(expected)
                                 
                                 if (len(img_raw) != expected):
                                     # Failed to receive expected number of bytes.
-                                    print(f"Image receive failed!  Only received {len(img_raw)}/{expected} bytes")
+                                    _print(f"Image receive failed!  Only received {len(img_raw)}/{expected} bytes")
                                 else:
-                                    convert(img_raw, "Image.png", w, h, pixel_format)
-                                    image = cv2.imread("image.png")
+                                    filename = "Image.png"
+                                    convert(img_raw, filename, w, h, pixel_format)
+                                    _print(f"Saved image to '{filename}'")
+                                    image = cv2.imread(filename)
                                     cv2.imshow(" ", image)
                                     cv2.waitKey(1)
 
@@ -182,6 +188,7 @@ class CameraIFConsole():
         exit()
 
     def help(self):
+        print("Type 'help' for help, 'quit' to quit.")
         print("Available commands:")
         print("\t'quit' : Quits this console")
         print("\t'help' : Prints this help string")
@@ -191,6 +198,7 @@ class CameraIFConsole():
         print("\t'stream' : Performs a line-by-line streaming DMA capture of a single image.")
         print("\t'set-reg' <register> <value> : Write a value to a camera register.\n\t\tAuto-converts all integer types (hex, binary, etc.)\n\t\tEx: set-reg 0x11 0b1")
         print("\t'get-reg' <register> : Prints the value in a camera register.\n\t\tAuto-converts all integer types (hex, binary, etc.)\n\t\tEx: get-reg 0x11")
+        _print("")
 
 # Set up command-line arguments
 parser = argparse.ArgumentParser()

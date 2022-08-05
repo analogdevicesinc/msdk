@@ -202,7 +202,7 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 			line.append(imagepixels[j + offset])
 		image.append(line)
 
-	print("Output image to file xres {}, yres {}".format(xres,yres), flush=True)
+	# print("Output image to file xres {}, yres {}".format(xres,yres), flush=True)
 
 	g_pil_image = generate_img(outputfile, (0, 0, 0), (xres, yres))
 	x = 0

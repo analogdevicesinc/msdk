@@ -293,6 +293,8 @@ void service_console()
 
             if (img_data.raw != NULL) {
                 // Send the image data over the serial port...
+                MXC_TMR_SW_Start(MXC_TMR0);
+
                 // First, tell the host that we're about to send the image.
                 clear_serial_buffer();
                 snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
@@ -305,6 +307,9 @@ void service_console()
                 clear_serial_buffer();
                 MXC_UART_Write(Con_Uart, img_data.raw,
                                (int*)&img_data.imglen); // Send the raw data over the serial port.
+
+                int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+                printf("Done! (serial transmission took %i us)\n", elapsed);
             }
         }
 
