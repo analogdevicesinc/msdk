@@ -234,6 +234,40 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>URVBOOTADDR</name>
+        <description>Register 2.</description>
+        <addressOffset>0x10</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>BOOTADDR</name>
+            <description>RISCV Boot Address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>URVCTRL</name>
+        <description>Register 2.</description>
+        <addressOffset>0x10</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>SLEEP_REQ</name>
+            <description>Sleep Request to RISCV.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SLEEP_ACK</name>
+            <description>Acknowledgement of Sleep Request for RISCV.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
   <!-- NBBFC: Non Battery-Backed Function Control -->

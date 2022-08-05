@@ -600,6 +600,12 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>INCOMPLETE</name>
+       <description>ADC Incomplete.</description>
+       <bitRange>[12:12]</bitRange>
+       <access>read-only</access>
+      </field>
      </fields>
     </register>
     <register>
@@ -993,6 +999,40 @@
        <description>Automatic Calibration Run Time.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>URVBOOTADDR</name>
+     <description>Register 2.</description>
+     <addressOffset>0x10</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>BOOTADDR</name>
+       <description>RISCV Boot Address.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>URVCTRL</name>
+     <description>Register 2.</description>
+     <addressOffset>0x10</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>SLEEP_REQ</name>
+       <description>Sleep Request to RISCV.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SLEEP_ACK</name>
+       <description>Acknowledgement of Sleep Request for RISCV.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>
@@ -3566,8 +3606,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SRCC_DIS</name>
-       <description>Data Cache Disable.</description>
+       <name>CCHK1</name>
+       <description>Compute CPU1 ROM1 Checksum</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -3578,8 +3618,8 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>CCHK</name>
-       <description>Compute ROM Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+       <name>CCHK0</name>
+       <description>Compute ROM0 Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -3596,13 +3636,13 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SWD_DIS</name>
-       <description>Disable SWD.</description>
+       <name>CHKRES1</name>
+       <description>Result of CPU1 ROM1 Checksum.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>CHKRES</name>
+       <name>CHKRES0</name>
        <description>ROM Checksum Result. This bit is only valid when CHKRD=1.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -4896,6 +4936,12 @@
        <bitOffset>29</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field derivedFrom="I2C1">
+       <name>CPU1</name>
+       <description>CPU1 Reset.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
@@ -4925,6 +4971,12 @@
        <name>TRNG</name>
        <description>TRNG Clock Disable.</description>
        <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="UART2">
+       <name>OTP</name>
+       <description>OTP Clock Disable.</description>
+       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
@@ -5225,10 +5277,40 @@
      <addressOffset>0x70</addressOffset>
      <fields>
       <field>
-       <name>ERRADDR</name>
-       <description>Error Address.</description>
+       <name>DADDR</name>
+       <description>Address of Error in Data RAM.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
+       <bitWidth>14</bitWidth>
+      </field>
+      <field>
+       <name>DB</name>
+       <description>Data Bank,</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DE</name>
+       <description>Data Error Flag.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TADDR</name>
+       <description>Address of Error in Tag RAM.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>14</bitWidth>
+      </field>
+      <field>
+       <name>TB</name>
+       <description>Tag Bank.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TE</name>
+       <description>Tag Error Flag.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>
@@ -16362,6 +16444,26 @@
      </fields>
     </register>
     <register>
+     <name>MXM_USB_REG_00</name>
+     <description>MXM_USB_REG_00</description>
+     <addressOffset>0x400</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_UTMI_RESET</name>
+     <description>M31_PHY_UTMI_RESET</description>
+     <addressOffset>0x404</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_UTMI_VCONTROL</name>
+     <description>M31_PHY_UTMI_VCONTROL</description>
+     <addressOffset>0x408</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_CLK_EN</name>
+     <description>M31_PHY_CLK_EN</description>
+     <addressOffset>0x40C</addressOffset>
+    </register>
+    <register>
      <name>M31_PHY_PONRST</name>
      <description>M31_PHY_PONRST</description>
      <addressOffset>0x410</addressOffset>
@@ -16377,14 +16479,54 @@
      <addressOffset>0x418</addressOffset>
     </register>
     <register>
+     <name>M31_PHY_U2_COMPLIANCE_EN</name>
+     <description>M31_PHY_U2_COMPLIANCE_EN</description>
+     <addressOffset>0x420</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_U2_COMPLIANCE_DAC_ADJ</name>
+     <description>M31_PHY_U2_COMPLIANCE_DAC_ADJ</description>
+     <addressOffset>0x424</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_U2_COMPLIANCE_DAC_ADJ_EN</name>
+     <description>M31_PHY_U2_COMPLIANCE_DAC_ADJ_EN</description>
+     <addressOffset>0x428</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_CLK_RDY</name>
+     <description>M31_PHY_CLK_RDY</description>
+     <addressOffset>0x42C</addressOffset>
+    </register>
+    <register>
      <name>M31_PHY_PLL_EN</name>
      <description>M31_PHY_PLL_EN</description>
      <addressOffset>0x430</addressOffset>
     </register>
     <register>
+     <name>M31_PHY_BIST_OK</name>
+     <description>M31_PHY_BIST_OK</description>
+     <addressOffset>0x434</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_DATA_OE</name>
+     <description>M31_PHY_DATA_OE</description>
+     <addressOffset>0x438</addressOffset>
+    </register>
+    <register>
      <name>M31_PHY_OSCOUTEN</name>
      <description>M31_PHY_OSCOUTEN</description>
      <addressOffset>0x43C</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_LPM_ALIVE</name>
+     <description>M31_PHY_LPM_ALIVE</description>
+     <addressOffset>0x440</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_HS_BIST_MODE</name>
+     <description>M31_PHY_HS_BIST_MODE</description>
+     <addressOffset>0x444</addressOffset>
     </register>
     <register>
      <name>M31_PHY_CORECLKIN</name>
@@ -16397,9 +16539,94 @@
      <addressOffset>0x44C</addressOffset>
     </register>
     <register>
+     <name>M31_PHY_LS_EN</name>
+     <description>M31_PHY_LS_EN</description>
+     <addressOffset>0x450</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_DEBUG_SEL</name>
+     <description>M31_PHY_DEBUG_SEL</description>
+     <addressOffset>0x454</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_DEBUG_OUT</name>
+     <description>M31_PHY_DEBUG_OUT</description>
+     <addressOffset>0x458</addressOffset>
+    </register>
+    <register>
      <name>M31_PHY_OUTCLKSEL</name>
      <description>M31_PHY_OUTCLKSEL</description>
      <addressOffset>0x45C</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_31_0</name>
+     <description>M31_PHY_XCFGI_31_0</description>
+     <addressOffset>0x460</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_63_32</name>
+     <description>M31_PHY_XCFGI_63_32</description>
+     <addressOffset>0x464</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_95_64</name>
+     <description>M31_PHY_XCFGI_95_64</description>
+     <addressOffset>0x468</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_127_96</name>
+     <description>M31_PHY_XCFGI_127_96</description>
+     <addressOffset>0x46C</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_137_128</name>
+     <description>M31_PHY_XCFGI_137_128</description>
+     <addressOffset>0x470</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</description>
+     <addressOffset>0x474</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</description>
+     <addressOffset>0x478</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</description>
+     <addressOffset>0x47C</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</description>
+     <addressOffset>0x480</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_LOCK_RANGE_MAX</name>
+     <description>M31_PHY_XCFGI_LOCK_RANGE_MAX</description>
+     <addressOffset>0x484</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_LOCK_RANGE_MIN</name>
+     <description>M31_PHY_XCFGI_LOCK_RANGE_MIN</description>
+     <addressOffset>0x488</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_OB_RSEL</name>
+     <description>M31_PHY_XCFGI_OB_RSEL</description>
+     <addressOffset>0x48C</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGI_OC_RSEL</name>
+     <description>M31_PHY_XCFGI_OC_RSEL</description>
+     <addressOffset>0x490</addressOffset>
+    </register>
+    <register>
+     <name>M31_PHY_XCFGO</name>
+     <description>M31_PHY_XCFGO</description>
+     <addressOffset>0x494</addressOffset>
     </register>
     <register>
      <name>MXM_INT</name>
