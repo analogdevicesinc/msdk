@@ -64,11 +64,11 @@ extern "C" {
  */
 void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 
-#if defined (__GNUC__)
-#if __CM4_CMSIS_VERSION_MAIN==0x03
+#if defined(__GNUC__)
+#if __CM4_CMSIS_VERSION_MAIN == 0x03
 // NVIC_SetVector was custom-implemented in the PeriphDrivers library for
-// CMSIS version 3.  Newer versions of CMSIS provide an implementation of 
-// NVIC_SetVector with different functionality, so the Maxim implementation 
+// CMSIS version 3.  Newer versions of CMSIS provide an implementation of
+// NVIC_SetVector with different functionality, so the Maxim implementation
 // has been moved to MXC_NVIC_SetVector (above).
 
 // The MSDK will move to CMSIS version 5 in the future.
@@ -76,7 +76,10 @@ void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 // For CMSIS version 3, use MXC_NVIC_SetVector instead.
 // For CMSIS version 5, you have the choice of using either.  However, only
 // MXC_NVIC_SetVector will work with legacy code.
-inline __attribute__((deprecated("Use MXC_NVIC_SetVector instead.  See nvic_table.h for more details."))) void NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void)) {
+inline __attribute__((
+    deprecated("Use MXC_NVIC_SetVector instead.  See nvic_table.h for more details."))) void
+    NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void))
+{
     MXC_NVIC_SetVector(irqn, irq_callback);
 }
 #endif
@@ -98,11 +101,11 @@ void NVIC_SetRAM(void);
  */
 uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 
-#if defined (__GNUC__)
-#if __CM4_CMSIS_VERSION_MAIN==0x03
+#if defined(__GNUC__)
+#if __CM4_CMSIS_VERSION_MAIN == 0x03
 // NVIC_GetVector was custom-implemented in the PeriphDrivers library for
-// CMSIS version 3.  Newer versions of CMSIS provide an implementation of 
-// NVIC_GetVector with different functionality, so the Maxim implementation 
+// CMSIS version 3.  Newer versions of CMSIS provide an implementation of
+// NVIC_GetVector with different functionality, so the Maxim implementation
 // has been moved to MXC_NVIC_GetVector (above).
 
 // The MSDK will move to CMSIS version 5 in the future.
@@ -110,7 +113,10 @@ uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 // For CMSIS version 3, use MXC_NVIC_SetVector instead.
 // For CMSIS version 5, you have the choice of using either.  However, only
 // MXC_NVIC_GetVector will work with legacy code.
-inline __attribute__((deprecated("Use MXC_NVIC_GetVector instead.  See nvic_table.h for more details."))) void NVIC_GetVector(IRQn_Type irqn) {
+inline __attribute__((
+    deprecated("Use MXC_NVIC_GetVector instead.  See nvic_table.h for more details."))) void
+    NVIC_GetVector(IRQn_Type irqn)
+{
     MXC_NVIC_GetVector(irqn);
 }
 #endif
