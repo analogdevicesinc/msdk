@@ -287,9 +287,9 @@ void service_console()
 
         else if (cmd == CMD_CAPTURE) {
             // Perform a blocking image capture with the current camera settings.
-            img_data_t img_data =
-                capture_img(g_app_settings.imgres_w, g_app_settings.imgres_h, PIXFORMAT_RGB565,
-                            g_app_settings.dma_mode, g_app_settings.dma_channel);
+            img_data_t img_data = capture_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                                              g_app_settings.pixel_format, g_app_settings.dma_mode,
+                                              g_app_settings.dma_channel);
 
             if (img_data.raw != NULL) {
                 // Send the image data over the serial port...
@@ -321,8 +321,9 @@ void service_console()
             cnn_init();
 
             // Perform a streaming image capture with the current camera settings.
-            cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
-                                                 PIXFORMAT_RGB565, g_app_settings.dma_channel);
+            cnn_img_data_t img_data =
+                stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                           g_app_settings.pixel_format, g_app_settings.dma_channel);
 
             if (img_data.raw != NULL) {
                 // Transmit the received image.
@@ -426,7 +427,8 @@ int main(void)
     }
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_OV5642)
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_HM0360_MONO) || \
+    defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
 #endif
