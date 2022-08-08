@@ -108,7 +108,7 @@ typedef enum {
     RSV23_IRQn,    /* 0x27  0x009C  39: Reserved */
     GPIO0_IRQn,    /* 0x28  0x00A0  40: GPIO0 */
     GPIO1_IRQn,    /* 0x29  0x00A4  41: GPIO1 */
-    GPIO2_IRQn,    /* 0x2A  0x00A8  42: GPIO2 */
+    RSV26_IRQn,    /* 0x2A  0x00A8  42: Reserved */
     CRYPTO_IRQn,   /* 0x2B  0x00AC  43: Crypto */
     DMA0_IRQn,     /* 0x2C  0x00B0  44: DMA0 */
     DMA1_IRQn,     /* 0x2D  0x00B4  45: DMA1 */
@@ -140,7 +140,7 @@ typedef enum {
     RSV55_IRQn,    /* 0x47  0x011C  71: Reserved */
     SPI2_IRQn,     /* 0x48  0x0120  72: SPI2 */
     WDT1_IRQn,     /* 0x49  0x0124  73: Watchdog 1 */
-    GPIO3_IRQn,    /* 0x4A  0x0128  74: GPIO3 */
+    RSV58_IRQn,    /* 0x4A  0x0128  74: Reserved */
     PT_IRQn,       /* 0x4B  0x012C  75: Pulse train */
     RSV60_IRQn,    /* 0x4C  0x0130  76: Reserved */
     RSV61_IRQn,    /* 0x4D  0x0134  77: Reserved */
@@ -370,20 +370,16 @@ typedef enum {
 #define MXC_GPIO0      ((mxc_gpio_regs_t*)MXC_BASE_GPIO0)
 #define MXC_BASE_GPIO1 ((uint32_t)0x40009000UL)
 #define MXC_GPIO1      ((mxc_gpio_regs_t*)MXC_BASE_GPIO1)
-#define MXC_BASE_GPIO2 ((uint32_t)0x4000A000UL)
-#define MXC_GPIO2      ((mxc_gpio_regs_t*)MXC_BASE_GPIO2)
-#define MXC_BASE_GPIO3 ((uint32_t)0x4000B000UL)
-#define MXC_GPIO3      ((mxc_gpio_regs_t*)MXC_BASE_GPIO3)
 
 #define MXC_GPIO_GET_IDX(p) \
-    ((p) == MXC_GPIO0 ? 0 : (p) == MXC_GPIO1 ? 1 : (p) == MXC_GPIO2 ? 2 : (p) == MXC_GPIO3 ? 3 : -1)
+    ((p) == MXC_GPIO0 ? 0 : (p) == MXC_GPIO1 ? 1 : -1)
 
 #define MXC_GPIO_GET_GPIO(i) \
-    ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
+    ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : 0)
 
 #define MXC_GPIO_GET_IRQ(i)  \
     ((i) == 0 ? GPIO0_IRQn : \
-                (i) == 1 ? GPIO1_IRQn : (i) == 2 ? GPIO2_IRQn : (i) == 3 ? GPIO3_IRQn : 0)
+                (i) == 1 ? GPIO1_IRQn : 0)
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
