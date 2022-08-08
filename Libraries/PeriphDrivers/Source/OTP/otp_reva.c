@@ -98,7 +98,6 @@ int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t data)
         ;
 
     if (otp->status & MXC_F_OTP_REVA_STATUS_FAIL) {
-        MXC_OTP_Lock();
         return E_BAD_STATE;
     }
 
@@ -156,7 +155,6 @@ int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data)
         ;
 
     if (otp->status & MXC_F_OTP_REVA_STATUS_FAIL) {
-        MXC_OTP_Lock();
         return E_BAD_STATE;
     }
 
