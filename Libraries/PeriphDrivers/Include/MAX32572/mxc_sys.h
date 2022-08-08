@@ -3,8 +3,8 @@
  * @brief   System level header file.
  */
 
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -67,6 +67,7 @@ typedef enum {
     MXC_SYS_RESET0_I2C0  = MXC_F_GCR_RST0_I2C0_POS,   /**< Reset I2C0 */
     MXC_SYS_RESET0_RTC   = MXC_F_GCR_RST0_RTC_POS,    /**< Reset RTC */
     MXC_SYS_RESET0_CTB   = MXC_F_GCR_RST0_CRYPTO_POS, /**< Reset CRYPTO */
+    MXC_SYS_RESET0_TFT   = MXC_F_GCR_RST0_TFT_POS,    /**< Reset TFT */
     MXC_SYS_RESET0_USB   = MXC_F_GCR_RST0_USB_POS,    /**< Reset USB */
     MXC_SYS_RESET0_TRNG  = MXC_F_GCR_RST0_TRNG_POS,   /**< Reset TRNG */
     MXC_SYS_RESET0_ADC   = MXC_F_GCR_RST0_ADC_POS,    /**< Reset ADC */
@@ -82,6 +83,7 @@ typedef enum {
     MXC_SYS_RESET1_SDHC    = (MXC_F_GCR_RST1_SDHC_POS + 32),    /**< Reset SDHC */
     MXC_SYS_RESET1_WDT1    = (MXC_F_GCR_RST1_WDT1_POS + 32),    /**< Reset WDT1 */
     MXC_SYS_RESET1_SPI2    = (MXC_F_GCR_RST1_SPI2_POS + 32),    /**< Reset SPI2 */
+    MXC_SYS_RESET1_AC      = (MXC_F_GCR_RST1_AC_POS + 32),      /**< Reset AC */
     MXC_SYS_RESET1_I2C2    = (MXC_F_GCR_RST1_I2C2_POS + 32),    /**< Reset I2C2 */
     MXC_SYS_RESET1_UART3   = (MXC_F_GCR_RST1_UART3_POS + 32),   /**< Reset UART3 */
     MXC_SYS_RESET1_UART4   = (MXC_F_GCR_RST1_UART4_POS + 32),   /**< Reset USRT4 */
@@ -90,10 +92,11 @@ typedef enum {
     MXC_SYS_RESET1_MSRADC  = (MXC_F_GCR_RST1_MSRADC_POS + 32),  /**< Reset MSRADC */
     MXC_SYS_RESET1_SC0     = (MXC_F_GCR_RST1_SC0_POS + 32),     /**< Reset SC0 */
     MXC_SYS_RESET1_SC1     = (MXC_F_GCR_RST1_SC1_POS + 32),     /**< Reset SC1 */
+    MXC_SYS_RESET1_NFC     = (MXC_F_GCR_RST1_NFC_POS + 32),     /**< Reset NFC */
     MXC_SYS_RESET1_EMAC    = (MXC_F_GCR_RST1_EMAC_POS + 32),    /**< Reset EMAC */
     MXC_SYS_RESET1_HTMR0   = (MXC_F_GCR_RST1_HTMR0_POS + 32),   /**< Reset HTMR0 */
     MXC_SYS_RESET1_HTMR1   = (MXC_F_GCR_RST1_HTMR1_POS + 32),   /**< Reset HTMR1 */
-    MXC_SYS_RESET1_AC      = (MXC_F_GCR_RST1_AC_POS + 32),      /**< Reset AC */
+    MXC_SYS_RESET1_CPU1    = (MXC_F_GCR_RST1_CPU1_POS + 32),    /**< Reset CPU1 */
 } mxc_sys_reset_t;
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
@@ -156,6 +159,8 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_UART2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART2 clock */
     MXC_SYS_PERIPH_CLOCK_TRNG =
         (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_TRNG clock */
+    MXC_SYS_PERIPH_CLOCK_OTP =
+        (MXC_F_GCR_PCLKDIS1_OTP_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_OTP clock */
     MXC_SYS_PERIPH_CLOCK_WDT0 =
         (MXC_F_GCR_PCLKDIS1_WDT0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_WDT0 clock */
     MXC_SYS_PERIPH_CLOCK_WDT1 =
@@ -182,6 +187,8 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_SC1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SC1 clock */
     MXC_SYS_PERIPH_CLOCK_EMAC =
         (MXC_F_GCR_PCLKDIS1_EMAC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_EMAC clock */
+    MXC_SYS_PERIPH_CLOCK_CPU1 =
+        (MXC_F_GCR_PCLKDIS1_CPU1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_CPU1 clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
