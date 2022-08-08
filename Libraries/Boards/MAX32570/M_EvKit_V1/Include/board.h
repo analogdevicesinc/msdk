@@ -48,6 +48,8 @@
 extern "C" {
 #endif
 
+#define BOARD_M_EVKIT_V1 1
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
 #endif
