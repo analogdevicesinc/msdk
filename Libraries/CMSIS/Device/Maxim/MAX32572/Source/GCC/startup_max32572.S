@@ -125,7 +125,7 @@ __isr_vector:
     .long RSV23_IRQHandler          /* 0x27  0x009C  39: Reserved */
     .long GPIO0_IRQHandler          /* 0x28  0x00A0  40: GPIO0 */
     .long GPIO1_IRQHandler          /* 0x29  0x00A4  41: GPIO1 */
-    .long GPIO2_IRQHandler          /* 0x2A  0x00A8  42: GPIO2 */
+    .long RSV26_IRQHandler          /* 0x2A  0x00A8  42: Reserved */
     .long CRYPTO_IRQHandler         /* 0x2B  0x00AC  43: Crypto */
     .long DMA0_IRQHandler           /* 0x2C  0x00B0  44: DMA0 */
     .long DMA1_IRQHandler           /* 0x2D  0x00B4  45: DMA1 */
@@ -157,7 +157,7 @@ __isr_vector:
     .long RSV55_IRQHandler          /* 0x47  0x011C  71: Reserved */
     .long SPI2_IRQHandler           /* 0x48  0x0120  72: SPI2 */
     .long WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
-    .long GPIO3_IRQHandler          /* 0x4A  0x0128  74: GPIO 3 */
+    .long RSV58_IRQHandler          /* 0x4A  0x0128  74: Reserved */
     .long PT_IRQHandler             /* 0x4B  0x012C  75: Pulse train */
     .long RSV60_IRQHandler          /* 0x4C  0x0130  76: Reserved */
     .long RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
@@ -379,7 +379,7 @@ Reset_Handler:
     def_irq_handler    RSV23_IRQHandler          /* 0x27  0x009C  39: Reserved */
     def_irq_handler    GPIO0_IRQHandler          /* 0x28  0x00A0  40: GPIO0 */
     def_irq_handler    GPIO1_IRQHandler          /* 0x29  0x00A4  41: GPIO1 */
-    def_irq_handler    GPIO2_IRQHandler          /* 0x2A  0x00A8  42: GPIO2 */
+    def_irq_handler    RSV26_IRQHandler          /* 0x2A  0x00A8  42: Reserved */
     def_irq_handler    CRYPTO_IRQHandler         /* 0x2B  0x00AC  43: Crypto */
     def_irq_handler    DMA0_IRQHandler           /* 0x2C  0x00B0  44: DMA0 */
     def_irq_handler    DMA1_IRQHandler           /* 0x2D  0x00B4  45: DMA1 */
@@ -411,7 +411,7 @@ Reset_Handler:
     def_irq_handler    RSV55_IRQHandler          /* 0x47  0x011C  71: Reserved */
     def_irq_handler    SPI2_IRQHandler           /* 0x48  0x0120  72: SPI2 */
     def_irq_handler    WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
-    def_irq_handler    GPIO3_IRQHandler          /* 0x4A  0x0128  74: GPIO3 */
+    def_irq_handler    RSV58_IRQHandler          /* 0x4A  0x0128  74: Reserved */
     def_irq_handler    PT_IRQHandler             /* 0x4B  0x012C  75: Pulse train */
     def_irq_handler    RSV60_IRQHandler          /* 0x4C  0x0130  76: Reserved */
     def_irq_handler    RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
