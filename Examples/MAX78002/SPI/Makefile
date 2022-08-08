@@ -268,7 +268,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # - LIB_FCL : Include the Free Cryptographic Library (FCL)
 # - LIB_FREERTOS : Include the FreeRTOS and FreeRTOS-Plus-CLI libraries
 # - LIB_LC3 : Include the Low Complexity Communication Codec (LC3) library
-# - LIB_LTTLEFS : Include the "little file system" (littleFS) library
+# - LIB_LITTLEFS : Include the "little file system" (littleFS) library
 # - LIB_LWIP : Include the lwIP library
 # - LIB_MAXUSB : Include the MAXUSB library
 # - LIB_SDHC : Include the SDHC library
