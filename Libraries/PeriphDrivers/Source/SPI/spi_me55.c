@@ -69,13 +69,11 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_GPIO_Config(&gpio_cfg_spi1);
-    }
-    else if (spi == MXC_SPI2) {
+    } else if (spi == MXC_SPI2) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI2);
         MXC_GPIO_Config(&gpio_cfg_spi2);
-    }
-    else {
+    } else {
         return E_NO_DEVICE;
     }
 
