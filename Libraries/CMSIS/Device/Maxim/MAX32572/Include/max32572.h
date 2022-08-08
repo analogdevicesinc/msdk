@@ -33,6 +33,7 @@
  * $Revision: 22537 $
  *
  ******************************************************************************/
+
 #ifndef _MAX32572_REGS_H_
 #define _MAX32572_REGS_H_
 
@@ -40,7 +41,7 @@
 #define TARGET_NUM 32572
 #endif
 
-#define MXC_NUMCORES 1
+#define MXC_NUMCORES 2
 
 #include <stdint.h>
 
@@ -290,19 +291,10 @@ typedef enum {
 #define MXC_ROM_MEM_SIZE      0x00010000UL
 #define MXC_XIP_MEM_BASE      0x08000000UL
 #define MXC_XIP_MEM_SIZE      0x08000000UL
-#define MXC_FLASH0_MEM_BASE   0x10000000UL
-#define MXC_FLASH1_MEM_BASE   0x10080000UL
-#define MXC_FLASH_MEM_BASE    MXC_FLASH0_MEM_BASE
-#define MXC_FLASH_PAGE_SIZE   0x00002000UL
-#define MXC_FLASH_MEM_SIZE    0x00080000UL
-#define MXC_INFO0_MEM_BASE    0x10800000UL
-#define MXC_INFO1_MEM_BASE    0x10804000UL
-#define MXC_INFO_MEM_BASE     MXC_INFO0_MEM_BASE
-#define MXC_INFO_MEM_SIZE     0x00004000UL
 #define MXC_SRAM_MEM_BASE     0x20000000UL
-#define MXC_SRAM_MEM_SIZE     0x00050000UL
-#define MXC_XIP_DATA_MEM_BASE 0x80000000UL
-#define MXC_XIP_DATA_MEM_SIZE 0x20000000UL
+#define MXC_SRAM_MEM_SIZE     0x0006C000UL
+#define MXC_OTP_MEM_BASE      0x400C0000UL
+#define MXC_OTP_MEM_SIZE      0x00000800UL
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */
@@ -586,18 +578,10 @@ typedef enum {
          3 :              \
          (p) == MXC_PT4 ? 4 : (p) == MXC_PT5 ? 5 : (p) == MXC_PT6 ? 6 : (p) == MXC_PT7 ? 7 : -1)
 
-//FIXME: Difference between OTP controller and OTP? Their respective addresses
-//          are assigned below according to Fanily Resource Map document.
 /******************************************************************************/
 /*                                                             OTP Controller */
-//FIXME: Uncomment when OTP registers are included
-// #define MXC_BASE_OTP                    ((uint32_t)0x40041000UL)
-// #define MXC_OTP                         ((mxc_otp_regs_t*)MXC_BASE_OTP)
-/******************************************************************************/
-/*                                                                        OTP */
-//FIXME: Uncomment when OTP registers are included
-// #define MXC_BASE_OTP                    ((uint32_t)0x400C0000UL)
-// #define MXC_OTP                         ((mxc_otp_regs_t*)MXC_BASE_OTP)
+#define MXC_BASE_OTP                    ((uint32_t)0x40041000UL)
+#define MXC_OTP                         ((mxc_otp_regs_t*)MXC_BASE_OTP)
 
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
