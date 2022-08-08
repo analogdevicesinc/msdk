@@ -42,7 +42,7 @@ endif
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
-SRCS += mx25.c
+# SRCS += mx25.c
 SRCS += pb.c
 # SRCS += tft.c
 
