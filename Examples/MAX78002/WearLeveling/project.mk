@@ -7,5 +7,5 @@
 # description of the default behavior and the full list of
 # available options.
 
-
+LIB_LITTLEFS = 1
 
