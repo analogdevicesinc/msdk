@@ -211,9 +211,6 @@ typedef struct {
  #define MXC_F_GCR_RST0_GPIO1_POS                       3 /**< RST0_GPIO1 Position */
  #define MXC_F_GCR_RST0_GPIO1                           ((uint32_t)(0x1UL << MXC_F_GCR_RST0_GPIO1_POS)) /**< RST0_GPIO1 Mask */
 
- #define MXC_F_GCR_RST0_GPIO2_POS                       4 /**< RST0_GPIO2 Position */
- #define MXC_F_GCR_RST0_GPIO2                           ((uint32_t)(0x1UL << MXC_F_GCR_RST0_GPIO2_POS)) /**< RST0_GPIO2 Mask */
-
  #define MXC_F_GCR_RST0_TMR0_POS                        5 /**< RST0_TMR0 Position */
  #define MXC_F_GCR_RST0_TMR0                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_TMR0_POS)) /**< RST0_TMR0 Mask */
 
@@ -491,9 +488,6 @@ typedef struct {
  #define MXC_F_GCR_PCLKDIS0_GPIO1_POS                   1 /**< PCLKDIS0_GPIO1 Position */
  #define MXC_F_GCR_PCLKDIS0_GPIO1                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS0_GPIO1_POS)) /**< PCLKDIS0_GPIO1 Mask */
 
- #define MXC_F_GCR_PCLKDIS0_GPIO2_POS                   2 /**< PCLKDIS0_GPIO2 Position */
- #define MXC_F_GCR_PCLKDIS0_GPIO2                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS0_GPIO2_POS)) /**< PCLKDIS0_GPIO2 Mask */
-
  #define MXC_F_GCR_PCLKDIS0_USB_POS                     3 /**< PCLKDIS0_USB Position */
  #define MXC_F_GCR_PCLKDIS0_USB                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS0_USB_POS)) /**< PCLKDIS0_USB Mask */
 
@@ -696,9 +690,6 @@ typedef struct {
  #define MXC_F_GCR_RST1_SPIXIPM_POS                     4 /**< RST1_SPIXIPM Position */
  #define MXC_F_GCR_RST1_SPIXIPM                         ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SPIXIPM_POS)) /**< RST1_SPIXIPM Mask */
 
- #define MXC_F_GCR_RST1_GPIO3_POS                       5 /**< RST1_GPIO3 Position */
- #define MXC_F_GCR_RST1_GPIO3                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_GPIO3_POS)) /**< RST1_GPIO3 Mask */
-
  #define MXC_F_GCR_RST1_SDHC_POS                        6 /**< RST1_SDHC Position */
  #define MXC_F_GCR_RST1_SDHC                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SDHC_POS)) /**< RST1_SDHC Mask */
 
@@ -772,9 +763,6 @@ typedef struct {
 
  #define MXC_F_GCR_PCLKDIS1_WDT1_POS                    5 /**< PCLKDIS1_WDT1 Position */
  #define MXC_F_GCR_PCLKDIS1_WDT1                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_WDT1_POS)) /**< PCLKDIS1_WDT1 Mask */
-
- #define MXC_F_GCR_PCLKDIS1_GPIO3_POS                   6 /**< PCLKDIS1_GPIO3 Position */
- #define MXC_F_GCR_PCLKDIS1_GPIO3                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_GPIO3_POS)) /**< PCLKDIS1_GPIO3 Mask */
 
  #define MXC_F_GCR_PCLKDIS1_SDHC_POS                    10 /**< PCLKDIS1_SDHC Position */
  #define MXC_F_GCR_PCLKDIS1_SDHC                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SDHC_POS)) /**< PCLKDIS1_SDHC Mask */

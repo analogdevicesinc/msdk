@@ -230,12 +230,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA">
-            <name>GPIO2</name>
-            <description>GPIO2 Reset. Setting this bit to 1 resets GPIO2 pins to their default states.</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="DMA">
             <name>TMR0</name>
             <description>Timer 0 Reset. Setting this bit to 1 resets Timer 0 blocks.</description>
             <bitOffset>5</bitOffset>
@@ -920,12 +914,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="GPIO0">
-            <name>GPIO2</name>
-            <description>GPIO2 Clock Disable.</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="GPIO0">
             <name>USB</name>
             <description>USB Clock Disable.</description>
             <bitOffset>3</bitOffset>
@@ -1360,12 +1348,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>GPIO3</name>
-            <description>GPIO3 Reset.</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="I2C1">
             <name>SDHC</name>
             <description>SDHC Reset.</description>
             <bitOffset>6</bitOffset>
@@ -1514,12 +1496,6 @@
             <name>WDT1</name>
             <description>Watchdog 1 Clock Disable.</description>
             <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
-            <name>GPIO3</name>
-            <description>GPIO3 Clock Disable.</description>
-            <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
