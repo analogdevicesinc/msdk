@@ -375,7 +375,9 @@ typedef enum {
 
 #define MXC_GPIO_GET_GPIO(i) ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : 0)
 
+#ifndef __riscv
 #define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : 0)
+#endif
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
@@ -402,6 +404,7 @@ typedef enum {
 #define MXC_BASE_TMR5 ((uint32_t)0x40115000UL)
 #define MXC_TMR5      ((mxc_tmr_regs_t*)MXC_BASE_TMR5)
 
+#ifndef __riscv
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
                            (i) == 1 ?  \
@@ -409,6 +412,9 @@ typedef enum {
                            (i) == 2 ?  \
                            TMR2_IRQn : \
                            (i) == 3 ? TMR3_IRQn : (i) == 4 ? TMR4_IRQn : (i) == 5 ? TMR5_IRQn : 0)
+#else
+#define MXC_TMR_GET_IRQ(i) ((i) == 5 ? TMR5_IRQn : 0)    
+#endif
 
 #define MXC_TMR_GET_BASE(i)                               \
     ((i) == 0 ?                                           \
@@ -450,7 +456,9 @@ typedef enum {
 #define MXC_BASE_I2C1 ((uint32_t)0x4001E000UL)
 #define MXC_I2C1      ((mxc_i2c_regs_t*)MXC_BASE_I2C1)
 
+#ifndef __riscv
 #define MXC_I2C_GET_IRQ(i) (IRQn_Type)((i) == 0 ? I2C0_IRQn : (i) == 1 ? I2C1_IRQn : 0)
+#endif
 
 #define MXC_I2C_GET_BASE(i) ((i) == 0 ? MXC_BASE_I2C0 : (i) == 1 ? MXC_BASE_I2C1 : 0)
 
@@ -491,7 +499,9 @@ typedef enum {
 #define MXC_BASE_SC1 ((uint32_t)0x4002D000UL)
 #define MXC_SC1      ((mxc_scn_regs_t*)MXC_BASE_SC1)
 
+#ifndef __riscv
 #define MXC_SC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SC0_IRQn : (i) == 1 ? SC1_IRQn : 0)
+#endif
 
 #define MXC_SC_GET_BASE(i) ((i) == 0 ? MXC_BASE_SC0 : (i) == 1 ? MXC_BASE_SC1 : 0)
 
@@ -589,10 +599,12 @@ typedef enum {
 #define MXC_BASE_UART3 ((uint32_t)0x40045000UL)
 #define MXC_UART3      ((mxc_uart_regs_t*)MXC_BASE_UART3)
 
+#ifndef __riscv
 #define MXC_UART_GET_IRQ(i)      \
     (IRQn_Type)((i) == 0 ?       \
                     UART0_IRQn : \
                     (i) == 1 ? UART1_IRQn : (i) == 2 ? UART2_IRQn : (i) == 3 ? UART3_IRQn : 0)
+#endif
 
 #define MXC_UART_GET_BASE(i) \
     ((i) == 0 ?              \
@@ -628,8 +640,6 @@ typedef enum {
 #ifndef __riscv
 #define MXC_SPI_GET_IRQ(i) \
     (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 2 ? SPI2_IRQn : 0)
-#else // __riscv
-#define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : 0)
 #endif // __riscv
 
 /******************************************************************************/
