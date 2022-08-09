@@ -607,11 +607,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        SPI */
-#ifndef __riscv
-#define MXC_SPI_INSTANCES (3) // TODO: Update
-#else
-#define MXC_SPI_INSTANCES (2)
-#endif // __riscv
+#define MXC_SPI_INSTANCES (3)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH   (32)
 
@@ -619,8 +615,6 @@ typedef enum {
 #define MXC_SPI0      ((mxc_spi_regs_t*)MXC_BASE_SPI0)
 #define MXC_BASE_SPI1 ((uint32_t)0x40047000UL)
 #define MXC_SPI1      ((mxc_spi_regs_t*)MXC_BASE_SPI1)
-
-#ifndef __riscv
 #define MXC_BASE_SPI2 ((uint32_t)0x400BE000UL)
 #define MXC_SPI2      ((mxc_spi_regs_t*)MXC_BASE_SPI2)
 
@@ -631,19 +625,11 @@ typedef enum {
 
 #define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : (i) == 2 ? MXC_SPI2 : 0)
 
+#ifndef __riscv
 #define MXC_SPI_GET_IRQ(i) \
     (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 2 ? SPI2_IRQn : 0)
-
 #else // __riscv
-
-#define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI0 ? 0 : (p) == MXC_SPI1 ? 1 : -1)
-
-#define MXC_SPI_GET_BASE(i) ((i) == 0 ? MXC_BASE_SPI0 : (i) == 1 ? MXC_BASE_SPI1 : 0)
-
-#define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : 0)
-
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : 0)
-
 #endif // __riscv
 
 /******************************************************************************/
