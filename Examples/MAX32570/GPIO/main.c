@@ -44,19 +44,9 @@
 #include <string.h>
 
 #include <MAX32xxx.h>
+#include "example_config.h"
 
 /***** Definitions *****/
-#define MXC_GPIO_PORT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_16
-
-#define MXC_GPIO_PORT_OUT MXC_GPIO0
-#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_17
-
-#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_18
-
-#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_19
 
 /***** Globals *****/
 
@@ -75,9 +65,16 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt_status;
 
     printf("\n\n************************* GPIO Example ***********************\n\n");
+
+#if defined(BOARD_M_EVKIT_V1)
+    printf("1. This example reads P0.18 and outputs the same state onto P2.17(LED1).\n");
+    printf("2. An interrupt is set up on P0.16 pin. P1.20(LED2) toggles when that\n");
+    printf("   interrupt occurs.\n\n");
+#else
     printf("1. This example reads P0.16 and outputs the same state onto P0.17.\n");
     printf("2. An interrupt is set up on P0.18 . P0.19 toggles when that\n");
     printf("   interrupt occurs.\n\n");
+#endif
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
     gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
