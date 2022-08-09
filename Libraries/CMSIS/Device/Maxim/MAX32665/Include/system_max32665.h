@@ -55,41 +55,40 @@ extern "C" {
 
 /* NOTE: HIRC was previously named CRYPTO */
 #ifndef HIRC_FREQ
-#define HIRC_FREQ               60000000
+#define HIRC_FREQ 60000000
 #endif
 
 /* NOTE: This is the nominal value for LIRC8. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: LIRC8 was previously named NANORING */
 #ifndef LIRC8_FREQ
-#define LIRC8_FREQ              8000
+#define LIRC8_FREQ 8000
 #endif
 
 #ifndef HIRC96_FREQ
-#define HIRC96_FREQ             96000000
+#define HIRC96_FREQ 96000000
 #endif
 
 #ifndef HIRC8_FREQ
-#define HIRC8_FREQ              7372800
+#define HIRC8_FREQ 7372800
 #endif
 
 /* NOTE: ERFO_FREQ (32MHz) needs to be defined by user based on the clock they supply */
 #ifndef ERFO_FREQ
-#define ERFO_FREQ               32000000
+#define ERFO_FREQ 32000000
 #endif
 
 #ifndef XTAL32M_FREQ
-#define XTAL32M_FREQ            32000000
+#define XTAL32M_FREQ 32000000
 #endif
 
 #ifndef XTAL32K_FREQ
-#define XTAL32K_FREQ            32768
+#define XTAL32K_FREQ 32768
 #endif
 
-
-extern uint32_t SystemCoreClock;                            /*!< System Clock Frequency (Core Clock)  */
+extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
-#define         PeripheralClock     (SystemCoreClock /2)    /*!< Peripheral Clock Frequency */
+#define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
 #endif
 
 /*

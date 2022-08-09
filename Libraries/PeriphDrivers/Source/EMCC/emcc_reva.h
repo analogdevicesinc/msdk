@@ -41,24 +41,23 @@
  * @brief   Enumeration type for the EMCC Cache ID Register
  */
 typedef enum {
-    EMCC_REVA_CACHE_ID_RELNUM,    ///< Release Number
-    EMCC_REVA_CACHE_ID_PARTNUM,   ///< Part Number
-    EMCC_REVA_CACHE_ID_CCHID      ///< Cache ID
-}
-mxc_emcc_reva_info_t;
+    EMCC_REVA_CACHE_ID_RELNUM,  ///< Release Number
+    EMCC_REVA_CACHE_ID_PARTNUM, ///< Part Number
+    EMCC_REVA_CACHE_ID_CCHID    ///< Cache ID
+} mxc_emcc_reva_info_t;
 
 /***** Function Prototypes *****/
 #if TARGET_NUM != 32650
 #include "emcc.h"
-uint32_t MXC_EMCC_RevA_ID (mxc_emcc_reva_regs_t *emcc, mxc_emcc_info_t id);
+uint32_t MXC_EMCC_RevA_ID(mxc_emcc_reva_regs_t* emcc, mxc_emcc_info_t id);
 #endif
 
-uint32_t MXC_EMCC_RevA_CacheSize(mxc_emcc_reva_regs_t *emcc);
-uint32_t MXC_EMCC_RevA_MemSize(mxc_emcc_reva_regs_t *emcc);
-void MXC_EMCC_RevA_Enable(mxc_emcc_reva_regs_t *emcc);
-void MXC_EMCC_RevA_Disable(mxc_emcc_reva_regs_t *emcc);
-void MXC_EMCC_RevA_WriteAllocateEnable(mxc_emcc_reva_regs_t *emcc);
-void MXC_EMCC_RevA_WriteAllocateDisable(mxc_emcc_reva_regs_t *emcc);
-void MXC_EMCC_RevA_CriticalWordFirstEnable(mxc_emcc_reva_regs_t *emcc);
-void MXC_EMCC_RevA_CriticalWordFirstDisable(mxc_emcc_reva_regs_t *emcc);
-uint32_t MXC_EMCC_RevA_Ready(mxc_emcc_reva_regs_t *emcc);
+uint32_t MXC_EMCC_RevA_CacheSize(mxc_emcc_reva_regs_t* emcc);
+uint32_t MXC_EMCC_RevA_MemSize(mxc_emcc_reva_regs_t* emcc);
+void MXC_EMCC_RevA_Enable(mxc_emcc_reva_regs_t* emcc);
+void MXC_EMCC_RevA_Disable(mxc_emcc_reva_regs_t* emcc);
+void MXC_EMCC_RevA_WriteAllocateEnable(mxc_emcc_reva_regs_t* emcc);
+void MXC_EMCC_RevA_WriteAllocateDisable(mxc_emcc_reva_regs_t* emcc);
+void MXC_EMCC_RevA_CriticalWordFirstEnable(mxc_emcc_reva_regs_t* emcc);
+void MXC_EMCC_RevA_CriticalWordFirstDisable(mxc_emcc_reva_regs_t* emcc);
+uint32_t MXC_EMCC_RevA_Ready(mxc_emcc_reva_regs_t* emcc);

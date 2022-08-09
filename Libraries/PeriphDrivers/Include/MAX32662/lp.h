@@ -62,11 +62,7 @@ extern "C" {
  * @brief   Enumeration type for voltage selection
  *
  */
-typedef enum {
-    MXC_LP_V0_9 = 0,
-    MXC_LP_V1_0,
-    MXC_LP_V1_1
-} mxc_lp_ovr_t;
+typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
 
 /**
  * @brief      Places the device into SLEEP mode.  This function returns once any interrupt occurs.
@@ -158,29 +154,29 @@ int MXC_LP_DisableSRAM(int block);
  *
  * @return     E_NOT_SUPPORTED.
  */
-int MXC_LP_SetOVR (mxc_lp_ovr_t ovr);
+int MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
 
 /**
  * @brief      Turn bandgap on
  */
-void MXC_LP_BandgapOn (void);
+void MXC_LP_BandgapOn(void);
 
 /**
  * @brief      Turn bandgap off
  */
-void MXC_LP_BandgapOff (void);
+void MXC_LP_BandgapOff(void);
 
 /**
  * @brief      Is the bandgap on or off
  *
  * @return     1 = bandgap on , 0 = bandgap off
  */
-int MXC_LP_BandgapIsOn (void);
+int MXC_LP_BandgapIsOn(void);
 
 /**
  * @brief      clear all wake up status
  */
-void MXC_LP_ClearWakeStatus (void);
+void MXC_LP_ClearWakeStatus(void);
 
 /**
  * @brief      Enables the selected GPIO port and its selected pins to wake up the device from any low power mode.
@@ -190,7 +186,7 @@ void MXC_LP_ClearWakeStatus (void);
  *                          structure are used.  The func and pad fields are ignored.
  */
 
-void MXC_LP_EnableGPIOWakeup (const mxc_gpio_cfg_t *wu_pins);
+void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
@@ -198,17 +194,17 @@ void MXC_LP_EnableGPIOWakeup (const mxc_gpio_cfg_t *wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_DisableGPIOWakeup (const mxc_gpio_cfg_t *wu_pins);
+void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.
  */
-void MXC_LP_EnableRTCAlarmWakeup (void);
+void MXC_LP_EnableRTCAlarmWakeup(void);
 
 /**
  * @brief      Disables the RTC alarm from waking up the device.
  */
-void MXC_LP_DisableRTCAlarmWakeup (void);
+void MXC_LP_DisableRTCAlarmWakeup(void);
 
 /**
  * @brief      Enables Timer to wakeup from any low power mode.  Only TMR3 is supported.
@@ -227,12 +223,12 @@ void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr);
 /**
  * @brief      Enables the WUT alarm to wake up the device from any low power mode.
  */
-void MXC_LP_EnableWUTAlarmWakeup (void);
+void MXC_LP_EnableWUTAlarmWakeup(void);
 
 /**
  * @brief      Disables the WUT alarm from waking up the device.
  */
-void MXC_LP_DisableWUTAlarmWakeup (void);
+void MXC_LP_DisableWUTAlarmWakeup(void);
 
 /**
  * @brief      Configure which clocks are powered down at deep sleep and which are not affected.
@@ -244,7 +240,7 @@ void MXC_LP_DisableWUTAlarmWakeup (void);
  *
  * @return     #E_NO_ERROR or error based on /ref MXC_Error_Codes
  */
-int MXC_LP_ConfigDeepSleepClocks (uint32_t mask);
+int MXC_LP_ConfigDeepSleepClocks(uint32_t mask);
 
 /**@} end of group pwrseq */
 

@@ -3,7 +3,7 @@
  * @brief   Board support package API.
  */
 
- /* *****************************************************************************
+/* *****************************************************************************
  * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -50,18 +50,18 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART    0      /// UART instance to use for console
+#define CONSOLE_UART 0 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD    115200  /// Console baud rate
+#define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define LED_OFF         1       /// Inactive state of LEDs
-#define LED_ON          0       /// Active state of LEDs
+#define LED_OFF 1 /// Inactive state of LEDs
+#define LED_ON  0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD       1000000
+#define EXT_FLASH_BAUD 1000000
 #endif
 
 /**

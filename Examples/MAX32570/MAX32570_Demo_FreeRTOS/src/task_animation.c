@@ -38,8 +38,7 @@
 #include <string.h>
 
 #include "bitmap.h"
-#include "tft.h"
-#include "touchscreen.h"
+#include "tft_ssd2119.h"
 
 #include <FreeRTOS.h>
 #include <task.h>

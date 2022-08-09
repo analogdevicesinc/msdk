@@ -39,7 +39,6 @@
  * @brief   Board support package API.
  */
 
-
 #include <stdio.h>
 #include "spixf.h"
 
@@ -51,53 +50,53 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART        0      /// UART instance to use for console
+#define CONSOLE_UART 0 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD        115200  /// Console baud rate
+#define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define LED_OFF             1       /// Inactive state of LEDs
-#define LED_ON              0       /// Active state of LEDs
+#define LED_OFF 1 /// Inactive state of LEDs
+#define LED_ON  0 /// Active state of LEDs
 
 #ifndef HCI_UART
-#define HCI_UART            0
+#define HCI_UART 0
 #endif
 
 #ifndef TERMINAL_UART
-#define TERMINAL_UART       CONSOLE_UART
+#define TERMINAL_UART CONSOLE_UART
 #endif
 
 #ifndef USER_UART
-#define USER_UART           2
+#define USER_UART 2
 #endif
 
 #ifndef HCI_UART_MAP
-#define HCI_UART_MAP        MAP_A
+#define HCI_UART_MAP MAP_A
 #endif
 
 #ifndef TERMINAL_UART_MAP
-#define TERMINAL_UART_MAP   MAP_A
+#define TERMINAL_UART_MAP MAP_A
 #endif
 
 #ifndef USER_UART_MAP
-#define USER_UART_MAP       MAP_A
+#define USER_UART_MAP MAP_A
 #endif
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1                0
-#define LED_RED             LED1
+#define LED1    0
+#define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2                1
-#define LED_GREEN           LED2
+#define LED2      1
+#define LED_GREEN LED2
 
 /**
  * \brief   Initialize the BSP and board interfaces.

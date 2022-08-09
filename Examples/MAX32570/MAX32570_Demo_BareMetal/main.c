@@ -51,6 +51,7 @@
 
 #include "state.h"
 #include "utils.h"
+#include "tft_ssd2119.h"
 
 /********************************* 		VARIABLES	 *************************/
 static volatile unsigned int timeout_status = 0;

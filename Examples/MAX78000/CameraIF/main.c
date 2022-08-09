@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360 camera sensors as defined in the makefile.
+ * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360/PAG7920 camera sensors as defined in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
  *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
@@ -111,7 +111,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#if defined(CAMERA_HM0360)
+#if defined(CAMERA_HM0360) || defined(CAMERA_PAG7920)
 #define CAMERA_MONO
 
 #ifdef STREAM_ENABLE
@@ -119,8 +119,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #define IMAGE_YRES 240
 
 #else
-#define IMAGE_XRES 80
-#define IMAGE_YRES 80
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
 #endif
 #endif
@@ -279,7 +279,13 @@ int main(void)
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
+#ifdef BOARD_EVKIT_V1
+    MXC_TFT_Init();
+#endif
+
+#ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+#endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.

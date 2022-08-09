@@ -51,6 +51,7 @@
 #include <MAX32xxx.h>
 
 #include "bitmap.h"
+#include "tft_ssd2119.h"
 
 /***** Definitions *****/
 #define LED_FLASH 0

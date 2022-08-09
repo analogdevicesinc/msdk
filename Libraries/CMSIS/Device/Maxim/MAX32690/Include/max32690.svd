@@ -10833,15 +10833,9 @@ memory.
        <access>read-only</access>
       </field>
       <field>
-       <name>ext_pullup_pol</name>
-       <description>External Pullup.</description>
-       <bitRange>[5:5]</bitRange>
-       <access>read-only</access>
-      </field>
-      <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -11246,7 +11240,7 @@ memory.
     <register>
      <name>SAFE_EN</name>
      <description>Pulse Train Global Safe Enable.</description>
-     <addressOffset>0x10</addressOffset>
+     <addressOffset>0x0010</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
@@ -11278,7 +11272,7 @@ memory.
     <register>
      <name>SAFE_DIS</name>
      <description>Pulse Train Global Safe Disable.</description>
-     <addressOffset>0x14</addressOffset>
+     <addressOffset>0x0014</addressOffset>
      <access>write-only</access>
      <fields>
       <field>

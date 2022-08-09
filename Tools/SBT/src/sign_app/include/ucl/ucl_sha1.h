@@ -64,15 +64,13 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
-
 /** <b>The SHA1 context</b>.
  * This structure is associated to the 'step by step' process.
  *
  * @ingroup UCL_SHA1
  */
 
-struct ucl_sha1_ctx
-{
+struct ucl_sha1_ctx {
     /** Intermediate and then final hash. */
     u32 state[5];
     /** Counter in bits. */
@@ -98,7 +96,7 @@ typedef struct ucl_sha1_ctx ucl_sha1_ctx_t;
  *
  * @ingroup UCL_SHA1
  */
-#define UCL_SHA1 0
+#define UCL_SHA1          0
 #define UCL_SHA1_HASHSIZE 20
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA1.
@@ -106,7 +104,6 @@ typedef struct ucl_sha1_ctx ucl_sha1_ctx_t;
  * @ingroup UCL_SHA1
  */
 #define UCL_SHA1_HASHW32SIZE 5
-
 
 /*============================================================================*/
 /** <b>SHA1</b>.
@@ -125,8 +122,7 @@ typedef struct ucl_sha1_ctx ucl_sha1_ctx_t;
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1(u8 *hash, u8 *data, u32 data_byteLen);
-
+int ucl_sha1(u8* hash, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA1 Init</b>.
@@ -141,8 +137,7 @@ int ucl_sha1(u8 *hash, u8 *data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1_init(ucl_sha1_ctx_t *context);
-
+int ucl_sha1_init(ucl_sha1_ctx_t* context);
 
 /*============================================================================*/
 /** <b>SHA1 Core</b>.
@@ -162,9 +157,7 @@ int ucl_sha1_init(ucl_sha1_ctx_t *context);
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1_core(ucl_sha1_ctx_t *context, u8 *data,
-                  u32 data_byteLen);
-
+int ucl_sha1_core(ucl_sha1_ctx_t* context, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA1 Finish</b>.
@@ -185,12 +178,11 @@ int ucl_sha1_core(ucl_sha1_ctx_t *context, u8 *data,
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1_finish(u8 *hash, ucl_sha1_ctx_t *context);
-
+int ucl_sha1_finish(u8* hash, ucl_sha1_ctx_t* context);
 
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif//HASH_SHA1
+#endif //HASH_SHA1
 #endif /* _UCL_SHA1_H_ */
-#endif//PROFILE2
+#endif //PROFILE2

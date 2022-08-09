@@ -38,7 +38,6 @@
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "pb.h"
-#include "touchscreen.h"
 
 /******************************************************************************/
 int PB_Init(void)

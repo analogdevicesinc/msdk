@@ -79,10 +79,10 @@ extern "C" {
  *
  */
 typedef enum {
-    SPI_WIDTH_3WIRE,                ///< 1 Data line, half duplex
-    SPI_WIDTH_STANDARD,             ///< MISO/MOSI, full duplex
-    SPI_WIDTH_DUAL,                 ///< 2 Data lines, half duplex
-    SPI_WIDTH_QUAD,                 ///< 4 Data lines, half duplex
+    SPI_WIDTH_3WIRE,    ///< 1 Data line, half duplex
+    SPI_WIDTH_STANDARD, ///< MISO/MOSI, full duplex
+    SPI_WIDTH_DUAL,     ///< 2 Data lines, half duplex
+    SPI_WIDTH_QUAD,     ///< 4 Data lines, half duplex
 } mxc_spi_width_t;
 
 /**
@@ -97,10 +97,10 @@ typedef enum {
  *  
  */
 typedef enum {
-    SPI_MODE_0,                     ///< clock phase = 0, clock polarity = 0 
-    SPI_MODE_1,                     ///< clock phase = 0, clock polarity = 1
-    SPI_MODE_2,                     ///< clock phase = 1, clock polarity = 0
-    SPI_MODE_3,                     ///< clock phase = 1, clock polarity = 1
+    SPI_MODE_0, ///< clock phase = 0, clock polarity = 0
+    SPI_MODE_1, ///< clock phase = 0, clock polarity = 1
+    SPI_MODE_2, ///< clock phase = 1, clock polarity = 0
+    SPI_MODE_3, ///< clock phase = 1, clock polarity = 1
 } mxc_spi_mode_t;
 
 typedef struct _mxc_spi_req_t mxc_spi_req_t;
@@ -111,7 +111,7 @@ typedef struct _mxc_spi_req_t mxc_spi_req_t;
  * @param   req         The details of the transaction.
  * @param   result      See \ref MXC_Error_Codes for the list of error codes.
  */
-typedef void (*spi_complete_cb_t) (void * req, int result);
+typedef void (*spi_complete_cb_t)(void* req, int result);
 
 /**
  * @brief   The information required to perform a complete SPI transaction
@@ -119,23 +119,23 @@ typedef void (*spi_complete_cb_t) (void * req, int result);
  * This structure is used by blocking, async, and DMA based transactions.
  */
 struct _mxc_spi_req_t {
-    mxc_spi_regs_t*     spi;            ///<Point to SPI registers
-    int                 ssIdx;          ///< Slave select line to use (Master only, ignored in slave mode)
-    int                 ssDeassert;     ///< 1 - Deassert SS at end of transaction, 0 - leave SS asserted
-    uint8_t            *txData;         ///< Buffer containing transmit data. For character sizes
+    mxc_spi_regs_t* spi; ///<Point to SPI registers
+    int ssIdx;           ///< Slave select line to use (Master only, ignored in slave mode)
+    int ssDeassert;      ///< 1 - Deassert SS at end of transaction, 0 - leave SS asserted
+    uint8_t* txData;     ///< Buffer containing transmit data. For character sizes
     ///< < 8 bits, pad the MSB of each byte with zeros. For
     ///< character sizes > 8 bits, use two bytes per character
     ///< and pad the MSB of the upper byte with zeros
-    uint8_t            *rxData;         ///< Buffer to store received data For character sizes
+    uint8_t* rxData; ///< Buffer to store received data For character sizes
     ///< < 8 bits, pad the MSB of each byte with zeros. For
     ///< character sizes > 8 bits, use two bytes per character
     ///< and pad the MSB of the upper byte with zeros
-    uint32_t            txLen;          ///< Number of bytes to be sent from txData
-    uint32_t            rxLen;          ///< Number of bytes to be stored in rxData
-    uint32_t            txCnt;          ///< Number of bytes actually transmitted from txData
-    uint32_t            rxCnt;          ///< Number of bytes stored in rxData
-    
-    spi_complete_cb_t   completeCB;     ///< Pointer to function called when transaction is complete
+    uint32_t txLen; ///< Number of bytes to be sent from txData
+    uint32_t rxLen; ///< Number of bytes to be stored in rxData
+    uint32_t txCnt; ///< Number of bytes actually transmitted from txData
+    uint32_t rxCnt; ///< Number of bytes stored in rxData
+
+    spi_complete_cb_t completeCB; ///< Pointer to function called when transaction is complete
 };
 
 /* ************************************************************************* */
@@ -171,8 +171,8 @@ struct _mxc_spi_req_t {
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_Init (mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-                  unsigned ssPolarity, unsigned int hz);
+int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
+                 unsigned ssPolarity, unsigned int hz);
 
 /**
  * @brief   Disable and shutdown SPI peripheral.
@@ -181,7 +181,7 @@ int MXC_SPI_Init (mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int num
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_Shutdown (mxc_spi_regs_t* spi);
+int MXC_SPI_Shutdown(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Checks if the given SPI bus can be placed in sleep mode.
@@ -195,7 +195,7 @@ int MXC_SPI_Shutdown (mxc_spi_regs_t* spi);
  * @return  #E_NO_ERROR if ready, and non-zero if busy or error. See \ref
  *          MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_ReadyForSleep (mxc_spi_regs_t* spi);
+int MXC_SPI_ReadyForSleep(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Returns the frequency of the clock used as the bit rate generator for a given SPI instance.
@@ -217,7 +217,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t* spi);
  * @return  Negative if error, otherwise actual speed set. See \ref
  *          MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_SetFrequency (mxc_spi_regs_t* spi, unsigned int hz);
+int MXC_SPI_SetFrequency(mxc_spi_regs_t* spi, unsigned int hz);
 
 /**
  * @brief   Get the frequency of the SPI interface.
@@ -228,7 +228,7 @@ int MXC_SPI_SetFrequency (mxc_spi_regs_t* spi, unsigned int hz);
  *
  * @return  The SPI bus frequency in Hertz
  */
-unsigned int MXC_SPI_GetFrequency (mxc_spi_regs_t* spi);
+unsigned int MXC_SPI_GetFrequency(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Sets the number of bits per character
@@ -238,7 +238,7 @@ unsigned int MXC_SPI_GetFrequency (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetDataSize (mxc_spi_regs_t* spi, int dataSize);
+int MXC_SPI_SetDataSize(mxc_spi_regs_t* spi, int dataSize);
 
 /**
  * @brief   Gets the number of bits per character
@@ -247,8 +247,7 @@ int MXC_SPI_SetDataSize (mxc_spi_regs_t* spi, int dataSize);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_GetDataSize (mxc_spi_regs_t* spi);
-
+int MXC_SPI_GetDataSize(mxc_spi_regs_t* spi);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */
@@ -264,7 +263,7 @@ int MXC_SPI_GetDataSize (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetSlave (mxc_spi_regs_t* spi, int ssIdx);
+int MXC_SPI_SetSlave(mxc_spi_regs_t* spi, int ssIdx);
 
 /**
  * @brief   Gets the slave select (SS) line used for transmissions
@@ -275,7 +274,7 @@ int MXC_SPI_SetSlave (mxc_spi_regs_t* spi, int ssIdx);
  *
  * @return  slave slect
  */
-int MXC_SPI_GetSlave (mxc_spi_regs_t* spi);
+int MXC_SPI_GetSlave(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Sets the SPI width used for transmissions
@@ -285,7 +284,7 @@ int MXC_SPI_GetSlave (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetWidth (mxc_spi_regs_t* spi, mxc_spi_width_t spiWidth);
+int MXC_SPI_SetWidth(mxc_spi_regs_t* spi, mxc_spi_width_t spiWidth);
 
 /**
  * @brief   Gets the SPI width used for transmissions
@@ -294,7 +293,7 @@ int MXC_SPI_SetWidth (mxc_spi_regs_t* spi, mxc_spi_width_t spiWidth);
  *
  * @return  Spi Width   \ref mxc_spi_width_t
  */
-mxc_spi_width_t MXC_SPI_GetWidth (mxc_spi_regs_t* spi);
+mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Sets the spi mode using clock polarity and clock phase
@@ -304,7 +303,7 @@ mxc_spi_width_t MXC_SPI_GetWidth (mxc_spi_regs_t* spi);
  *  
  * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
-int MXC_SPI_SetMode (mxc_spi_regs_t* spi, mxc_spi_mode_t spiMode);
+int MXC_SPI_SetMode(mxc_spi_regs_t* spi, mxc_spi_mode_t spiMode);
 
 /**
  * @brief   Gets the spi mode
@@ -313,7 +312,7 @@ int MXC_SPI_SetMode (mxc_spi_regs_t* spi, mxc_spi_mode_t spiMode);
  * 
  * @return mxc_spi_mode_t   \ref mxc_spi_mode_t
  */
-mxc_spi_mode_t MXC_SPI_GetMode (mxc_spi_regs_t* spi);
+mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Starts a SPI Transmission
@@ -327,7 +326,7 @@ mxc_spi_mode_t MXC_SPI_GetMode (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_StartTransmission (mxc_spi_regs_t* spi);
+int MXC_SPI_StartTransmission(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Checks the SPI Peripheral for an ongoing transmission
@@ -338,7 +337,7 @@ int MXC_SPI_StartTransmission (mxc_spi_regs_t* spi);
  *
  * @return  Active/Inactive, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_GetActive (mxc_spi_regs_t* spi);
+int MXC_SPI_GetActive(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Aborts an ongoing SPI Transmission
@@ -349,7 +348,7 @@ int MXC_SPI_GetActive (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_AbortTransmission (mxc_spi_regs_t* spi);
+int MXC_SPI_AbortTransmission(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Unloads bytes from the receive FIFO.
@@ -360,8 +359,7 @@ int MXC_SPI_AbortTransmission (mxc_spi_regs_t* spi);
  *
  * @return  The number of bytes actually read.
  */
-unsigned int MXC_SPI_ReadRXFIFO (mxc_spi_regs_t* spi, unsigned char* bytes,
-                                 unsigned int len);
+unsigned int MXC_SPI_ReadRXFIFO(mxc_spi_regs_t* spi, unsigned char* bytes, unsigned int len);
 
 /**
  * @brief   Get the number of bytes currently available in the receive FIFO.
@@ -370,7 +368,7 @@ unsigned int MXC_SPI_ReadRXFIFO (mxc_spi_regs_t* spi, unsigned char* bytes,
  *
  * @return  The number of bytes available.
  */
-unsigned int MXC_SPI_GetRXFIFOAvailable (mxc_spi_regs_t* spi);
+unsigned int MXC_SPI_GetRXFIFOAvailable(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Loads bytes into the transmit FIFO.
@@ -381,8 +379,7 @@ unsigned int MXC_SPI_GetRXFIFOAvailable (mxc_spi_regs_t* spi);
  *
  * @return  The number of bytes actually written.
  */
-unsigned int MXC_SPI_WriteTXFIFO (mxc_spi_regs_t* spi, unsigned char* bytes,
-                                  unsigned int len);
+unsigned int MXC_SPI_WriteTXFIFO(mxc_spi_regs_t* spi, unsigned char* bytes, unsigned int len);
 
 /**
  * @brief   Get the amount of free space available in the transmit FIFO.
@@ -391,21 +388,21 @@ unsigned int MXC_SPI_WriteTXFIFO (mxc_spi_regs_t* spi, unsigned char* bytes,
  *
  * @return  The number of bytes available.
  */
-unsigned int MXC_SPI_GetTXFIFOAvailable (mxc_spi_regs_t* spi);
+unsigned int MXC_SPI_GetTXFIFOAvailable(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Removes and discards all bytes currently in the receive FIFO.
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  */
-void MXC_SPI_ClearRXFIFO (mxc_spi_regs_t* spi);
+void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Removes and discards all bytes currently in the transmit FIFO.
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  */
-void MXC_SPI_ClearTXFIFO (mxc_spi_regs_t* spi);
+void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Set the receive threshold level.
@@ -424,7 +421,7 @@ void MXC_SPI_ClearTXFIFO (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetRXThreshold (mxc_spi_regs_t* spi, unsigned int numBytes);
+int MXC_SPI_SetRXThreshold(mxc_spi_regs_t* spi, unsigned int numBytes);
 
 /**
  * @brief   Get the current receive threshold level.
@@ -433,7 +430,7 @@ int MXC_SPI_SetRXThreshold (mxc_spi_regs_t* spi, unsigned int numBytes);
  *
  * @return  The receive threshold value (in bytes).
  */
-unsigned int MXC_SPI_GetRXThreshold (mxc_spi_regs_t* spi);
+unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Set the transmit threshold level.
@@ -452,7 +449,7 @@ unsigned int MXC_SPI_GetRXThreshold (mxc_spi_regs_t* spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetTXThreshold (mxc_spi_regs_t* spi, unsigned int numBytes);
+int MXC_SPI_SetTXThreshold(mxc_spi_regs_t* spi, unsigned int numBytes);
 
 /**
  * @brief   Get the current transmit threshold level.
@@ -461,7 +458,7 @@ int MXC_SPI_SetTXThreshold (mxc_spi_regs_t* spi, unsigned int numBytes);
  *
  * @return  The transmit threshold value (in bytes).
  */
-unsigned int MXC_SPI_GetTXThreshold (mxc_spi_regs_t* spi);
+unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Gets the interrupt flags that are currently set
@@ -473,7 +470,7 @@ unsigned int MXC_SPI_GetTXThreshold (mxc_spi_regs_t* spi);
  *
  * @return The interrupt flags
  */
-unsigned int MXC_SPI_GetFlags (mxc_spi_regs_t* spi);
+unsigned int MXC_SPI_GetFlags(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Clears the interrupt flags that are currently set
@@ -483,7 +480,7 @@ unsigned int MXC_SPI_GetFlags (mxc_spi_regs_t* spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  */
-void MXC_SPI_ClearFlags (mxc_spi_regs_t* spi);
+void MXC_SPI_ClearFlags(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Enables specific interrupts
@@ -494,7 +491,7 @@ void MXC_SPI_ClearFlags (mxc_spi_regs_t* spi);
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   mask        The interrupts to be enabled
  */
-void MXC_SPI_EnableInt (mxc_spi_regs_t* spi, unsigned int mask);
+void MXC_SPI_EnableInt(mxc_spi_regs_t* spi, unsigned int mask);
 
 /**
  * @brief   Disables specific interrupts
@@ -505,7 +502,7 @@ void MXC_SPI_EnableInt (mxc_spi_regs_t* spi, unsigned int mask);
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   mask        The interrupts to be disabled
  */
-void MXC_SPI_DisableInt (mxc_spi_regs_t* spi, unsigned int mask);
+void MXC_SPI_DisableInt(mxc_spi_regs_t* spi, unsigned int mask);
 
 /* ************************************************************************* */
 /* Transaction level functions                                               */
@@ -534,7 +531,7 @@ void MXC_SPI_DisableInt (mxc_spi_regs_t* spi, unsigned int mask);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_MasterTransaction (mxc_spi_req_t* req);
+int MXC_SPI_MasterTransaction(mxc_spi_req_t* req);
 
 /**
  * @brief   Setup an interrupt-driven SPI transaction
@@ -546,7 +543,7 @@ int MXC_SPI_MasterTransaction (mxc_spi_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_MasterTransactionAsync (mxc_spi_req_t* req);
+int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t* req);
 
 /**
  * @brief   Setup a DMA driven SPI transaction
@@ -563,7 +560,7 @@ int MXC_SPI_MasterTransactionAsync (mxc_spi_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_MasterTransactionDMA (mxc_spi_req_t* req);
+int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req);
 
 /**
  * @brief   Performs a blocking SPI transaction.
@@ -580,7 +577,7 @@ int MXC_SPI_MasterTransactionDMA (mxc_spi_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_SlaveTransaction (mxc_spi_req_t* req);
+int MXC_SPI_SlaveTransaction(mxc_spi_req_t* req);
 
 /**
  * @brief   Setup an interrupt-driven SPI transaction
@@ -592,7 +589,7 @@ int MXC_SPI_SlaveTransaction (mxc_spi_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_SlaveTransactionAsync (mxc_spi_req_t* req);
+int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t* req);
 
 /**
  * @brief   Setup a DMA driven SPI transaction
@@ -609,7 +606,7 @@ int MXC_SPI_SlaveTransactionAsync (mxc_spi_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_SlaveTransactionDMA (mxc_spi_req_t* req);
+int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req);
 
 /**
  * @brief   Sets the TX data to transmit as a 'dummy' byte
@@ -622,7 +619,7 @@ int MXC_SPI_SlaveTransactionDMA (mxc_spi_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetDefaultTXData (mxc_spi_regs_t* spi, unsigned int defaultTXData);
+int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t* spi, unsigned int defaultTXData);
 
 /**
  * @brief   Abort any asynchronous requests in progress.
@@ -633,7 +630,7 @@ int MXC_SPI_SetDefaultTXData (mxc_spi_regs_t* spi, unsigned int defaultTXData);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  */
-void MXC_SPI_AbortAsync (mxc_spi_regs_t* spi);
+void MXC_SPI_AbortAsync(mxc_spi_regs_t* spi);
 
 /**
  * @brief   The processing function for asynchronous transactions.
@@ -644,7 +641,7 @@ void MXC_SPI_AbortAsync (mxc_spi_regs_t* spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  */
-void MXC_SPI_AsyncHandler (mxc_spi_regs_t* spi);
+void MXC_SPI_AsyncHandler(mxc_spi_regs_t* spi);
 
 /**@} end of group spi */
 

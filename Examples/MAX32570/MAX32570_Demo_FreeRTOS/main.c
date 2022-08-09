@@ -50,6 +50,7 @@
 
 #include "state.h"
 #include "message.h"
+#include "tft_ssd2119.h"
 
 //
 #define mainQUEUE_SIZE (4)

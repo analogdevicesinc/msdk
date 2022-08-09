@@ -38,7 +38,6 @@ extern "C" {
 #ifdef HASH_SHA512
 #include <ucl/ucl_sha512.h>
 
-
 /** @file ucl_sha512.h
  * @defgroup UCL_SHA512 SHA512
  * Secure Hash Algorithm 512, from FIPS 180-2.
@@ -65,15 +64,13 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
-
 /** <b>The SHA512 context</b>.
  * This structure is associated to the 'step by step' process.
  *
  * @ingroup UCL_SHA512
  */
 
-struct ucl_sha512_ctx
-{
+struct ucl_sha512_ctx {
     // Intermediate and then final hash.
     u64 state[8];
     // Counter in bits.
@@ -88,7 +85,6 @@ struct ucl_sha512_ctx
 
 typedef struct ucl_sha512_ctx ucl_sha512_ctx_t;
 
-
 /** <b>Core block size</b>.
  * Byte size of a SHA512 core block.
  *
@@ -100,7 +96,7 @@ typedef struct ucl_sha512_ctx ucl_sha512_ctx_t;
  *
  * @ingroup UCL_SHA512
  */
-#define UCL_SHA512 4
+#define UCL_SHA512          4
 #define UCL_SHA512_HASHSIZE 64
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA512.
@@ -108,7 +104,6 @@ typedef struct ucl_sha512_ctx ucl_sha512_ctx_t;
  * @ingroup UCL_SHA512
  */
 #define UCL_SHA512_HASHW32SIZE 16
-
 
 /*============================================================================*/
 /** <b>SHA512</b>.
@@ -127,8 +122,7 @@ typedef struct ucl_sha512_ctx ucl_sha512_ctx_t;
  *
  * @ingroup UCL_SHA512
  */
-int ucl_sha512(u8 *hash, u8 *data, u32 data_byteLen);
-
+int ucl_sha512(u8* hash, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA512 Init</b>.
@@ -143,8 +137,7 @@ int ucl_sha512(u8 *hash, u8 *data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA512
  */
-int  ucl_sha512_init(ucl_sha512_ctx_t *context);
-
+int ucl_sha512_init(ucl_sha512_ctx_t* context);
 
 /*============================================================================*/
 /** <b>SHA512 Core</b>.
@@ -164,9 +157,7 @@ int  ucl_sha512_init(ucl_sha512_ctx_t *context);
  *
  * @ingroup UCL_SHA512
  */
-int  ucl_sha512_core(ucl_sha512_ctx_t *context, u8 *data,
-                    u32 data_byteLen);
-
+int ucl_sha512_core(ucl_sha512_ctx_t* context, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA512 Finish</b>.
@@ -187,22 +178,20 @@ int  ucl_sha512_core(ucl_sha512_ctx_t *context, u8 *data,
  *
  * @ingroup UCL_SHA512
  */
-int  ucl_sha512_finish(u8 *hash, ucl_sha512_ctx_t *context);
-
+int ucl_sha512_finish(u8* hash, ucl_sha512_ctx_t* context);
 
 void sha512_stone(u64 hash[8], u64 stone[16]);
 
-int ucl_hmac_sha512(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen,
-		    u8 *key, u32 key_byteLen);
-int ucl_hmac_sha512_init(ucl_sha512_ctx_t *context , u8 *key, u32 key_byteLen);
-int ucl_hmac_sha512_core(ucl_sha512_ctx_t *context, u8 *data, u32 byteLen);
-int ucl_hmac_sha512_finish(u8 *mac, u32 mac_byteLen, ucl_sha512_ctx_t *context,
-                           u8 *key, u32 key_byteLen);
+int ucl_hmac_sha512(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+                    u32 key_byteLen);
+int ucl_hmac_sha512_init(ucl_sha512_ctx_t* context, u8* key, u32 key_byteLen);
+int ucl_hmac_sha512_core(ucl_sha512_ctx_t* context, u8* data, u32 byteLen);
+int ucl_hmac_sha512_finish(u8* mac, u32 mac_byteLen, ucl_sha512_ctx_t* context, u8* key,
+                           u32 key_byteLen);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */
 
-#endif//HASH_SHA512
+#endif //HASH_SHA512
 #endif
-#endif//PROFILE_2
-
+#endif //PROFILE_2

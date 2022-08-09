@@ -158,22 +158,13 @@ int main(void)
     MXC_RTC_Start();
 
 #ifdef ENABLE_TFT
-    /* TFT reset signal */
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
-                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+    MXC_TFT_Init();
 #endif
 
 #ifdef ENABLE_TS
-    /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                              MXC_GPIO_VSSEL_VDDIOH};
-    /* Touch screen controller busy signal */
-    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                               MXC_GPIO_VSSEL_VDDIOH};
     /* Initialize Touch Screen controller */
-    MXC_TS_Init(MXC_SPI0, 2, &int_pin, &busy_pin);
+    MXC_TS_Init();
     MXC_TS_Start();
 #endif
 

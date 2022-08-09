@@ -47,14 +47,14 @@
 /************************************************************************************/
 
 typedef struct {
-    uint16_t    x;
-    uint16_t    y;
-    uint16_t    w;
-    uint16_t    h;
+    uint16_t x;
+    uint16_t y;
+    uint16_t w;
+    uint16_t h;
 } area_t;
 
 typedef struct {
-    char*    data;
+    char* data;
     int len;
 } text_t;
 
@@ -170,4 +170,3 @@ void MXC_TFT_Print(int x0, int y0, text_t* str, area_t* area);
 void MXC_TFT_ClearArea(area_t* area, int color);
 
 #endif /* _TFT_H_ */
-

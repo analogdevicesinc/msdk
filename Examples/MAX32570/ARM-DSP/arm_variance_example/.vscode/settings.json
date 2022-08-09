@@ -15,7 +15,7 @@
     },
     
     "target":"MAX32570",
-    "board":"Q_EvKit_V1",
+    "board":"MN_EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 
