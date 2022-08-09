@@ -4,8 +4,8 @@
  *          See the @ref msc_mem_t structure in msc.h for function details.
  */
 
-/* ***************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,10 +35,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: $
- * $Revision: $
- *
- ************************************************************************** */
+ ******************************************************************************/
 #ifndef __MSC_MEM_H__
 #define __MSC_MEM_H__
 
@@ -46,8 +43,9 @@
 #include <stdint.h>
 
 /* **** Definitions **** */
-#define ERASE_MEMORY_ON_INIT        1   /* Configuration option to clear the memory (to 0s) on initialization. */
-                                        /* Use 1 to clear or 0 to leave untouched. */
+#define ERASE_MEMORY_ON_INIT \
+    1 /* Configuration option to clear the memory (to 0s) on initialization. */
+      /* Use 1 to clear or 0 to leave untouched. */
 /**
  * @brief   Perform any initialization necessary to prepare the memory for reading/writing data.
  * @returns 0 if initialization is successful, non-zero if an error occurred.
@@ -96,4 +94,4 @@ int mscmem_Write(uint32_t lba, uint8_t* buffer);
  */
 int mscmem_Ready(void);
 
-#endif  /* __MSC_MEM_H__ */
+#endif /* __MSC_MEM_H__ */
