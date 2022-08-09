@@ -4535,6 +4535,17 @@
    </interrupt>
   </peripheral>
 <!--GPIO1 Individual I/O for each GPIO 1-->
+  <peripheral derivedFrom="GPIO0">
+   <name>GPIO2</name>
+   <description>Individual I/O for each GPIO 2</description>
+   <baseAddress>0x4000A000</baseAddress>
+   <interrupt>
+    <name>GPIO2</name>
+    <description>GPIO2 IRQ</description>
+    <value>26</value>
+   </interrupt>
+  </peripheral>
+<!--GPIO2 Individual I/O for each GPIO 2-->
   <peripheral>
    <name>I2C0</name>
    <description>Inter-Integrated Circuit.</description>
