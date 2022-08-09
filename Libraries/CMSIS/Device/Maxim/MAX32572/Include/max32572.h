@@ -413,7 +413,7 @@ typedef enum {
                            TMR2_IRQn : \
                            (i) == 3 ? TMR3_IRQn : (i) == 4 ? TMR4_IRQn : (i) == 5 ? TMR5_IRQn : 0)
 #else
-#define MXC_TMR_GET_IRQ(i) ((i) == 5 ? TMR5_IRQn : 0)    
+#define MXC_TMR_GET_IRQ(i) ((i) == 5 ? TMR5_IRQn : 0)
 #endif
 
 #define MXC_TMR_GET_BASE(i)                               \
@@ -619,7 +619,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        SPI */
-#define MXC_SPI_INSTANCES (3)
+#define MXC_SPI_INSTANCES    (3)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH   (32)
 
