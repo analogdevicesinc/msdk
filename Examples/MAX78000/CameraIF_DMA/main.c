@@ -330,7 +330,8 @@ int main(void)
 #ifndef FEATHER_FAST_STREAM
       ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
 #else
-      MXC_TFT_WriteReg(0x2c, 0x0); // for fast DMA, the 0x2c has to be sent before start the camera
+      //MXC_TFT_WriteReg(0x2c, 0x0); // for fast DMA, the 0x2c has to be sent before start the camera
+      MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
       ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
 #endif
 
