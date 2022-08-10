@@ -22,31 +22,18 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on:
-      - self-hosted
+    runs-on: [self-hosted, btm-ci-github-runner-max32655]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          submodules: recursive 
+          submodules: false 
 
       # Runs a set of commands using the runners shell
-      - name: Build all Hello_World examples
+      - name: Build all BLE examples
         run: |
-          cd Examples
-          SUBDIRS=$(find . -type d -name "BLE")
-          for dir in ${SUBDIRS}
-          do
-            echo "---------------------------------------"
-            echo " Validation build for ${dir}"
-            echo "---------------------------------------"
-            make -C ${dir} clean
-            make -C ${dir} libclean
-            make -C ${dir} -j8
-          done
-          cd ../
           cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
           chmod +x Examples_tests/local_testLauncher.sh
           cd Examples_tests/

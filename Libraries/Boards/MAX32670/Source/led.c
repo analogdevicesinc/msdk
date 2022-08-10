@@ -42,16 +42,16 @@ int LED_Init(void)
 {
     int retval = E_NO_ERROR;
     unsigned int i;
-    
+
     /* setup GPIO for the LED */
     for (i = 0; i < num_leds; i++) {
-        LED_Off(i);                 // Set the output value
-        
+        LED_Off(i); // Set the output value
+
         if (MXC_GPIO_Config(&led_pin[i]) != E_NO_ERROR) {
             retval = E_UNKNOWN;
         }
     }
-    
+
     return retval;
 }
 

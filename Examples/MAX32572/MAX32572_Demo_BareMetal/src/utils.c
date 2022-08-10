@@ -51,37 +51,35 @@ unsigned int utils_get_time_ms(void)
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
     sec    = MXC_RTC_GetSecond();
 
-    ms = (sec*1000) +  (int)(subsec*1000);
+    ms = (sec * 1000) + (int)(subsec * 1000);
 
     return ms;
 }
 
 void utils_delay_ms(unsigned int ms)
 {
-	MXC_Delay(ms * 1000UL);
+    MXC_Delay(ms * 1000UL);
 }
 
-void utils_hex2char(char chr, char *msg)
+void utils_hex2char(char chr, char* msg)
 {
-    int  i;
+    int i;
     char c;
 
     c = chr >> 4;
-    for (i=0;i<2;i++) {
-		if (c < 10) {
-			*msg = '0'+ c;
-		} else {
-			*msg = 'A' + c - 10;
-		}
-		c = chr & 0x0F;
-		msg++;
+    for (i = 0; i < 2; i++) {
+        if (c < 10) {
+            *msg = '0' + c;
+        } else {
+            *msg = 'A' + c - 10;
+        }
+        c = chr & 0x0F;
+        msg++;
     }
 }
 
-
-
 /**************************      Timer Functions     *************************/
-#define TICK_TIMER 	MXC_TMR0
+#define TICK_TIMER MXC_TMR0
 static TimerCb timer_cb = NULL;
 
 // Toggles GPIO when continuous timer repeats
@@ -89,14 +87,15 @@ static void timer0_irq_handler(void)
 {
     TICK_TIMER->intr = MXC_F_TMR_INTR_IRQ;
     if (timer_cb) {
-    	timer_cb();
+        timer_cb();
     }
 }
 
-void timer_init( TimerCb cb )
+void timer_init(TimerCb cb)
 {
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-    while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR0);
+    while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR0)
+        ;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
     NVIC_SetVector(TMR0_IRQn, timer0_irq_handler);
@@ -112,17 +111,17 @@ void timer_stop(void)
 
 void timer_start(unsigned int timeout)
 {
-	timer_stop();
+    timer_stop();
 
     TICK_TIMER->intr = MXC_F_TMR_INTR_IRQ;
-    TICK_TIMER->cn  |= (MXC_S_TMR_CN_PRES_DIV4);
+    TICK_TIMER->cn |= (MXC_S_TMR_CN_PRES_DIV4);
 
-    TICK_TIMER->cn  |= TMR_MODE_ONESHOT << MXC_F_TMR_CN_TMODE_POS;
-    TICK_TIMER->cn  |= (0) << MXC_F_TMR_CN_TPOL_POS;
+    TICK_TIMER->cn |= TMR_MODE_ONESHOT << MXC_F_TMR_CN_TMODE_POS;
+    TICK_TIMER->cn |= (0) << MXC_F_TMR_CN_TPOL_POS;
     //enable timer interrupt if needed
-    TICK_TIMER->cnt  = 0x1;
-	// set timeout
-    TICK_TIMER->cmp = (PeripheralClock/4000)*timeout;
+    TICK_TIMER->cnt = 0x1;
+    // set timeout
+    TICK_TIMER->cmp = (PeripheralClock / 4000) * timeout;
 
     // start
     TICK_TIMER->cn |= MXC_F_TMR_CN_TEN;

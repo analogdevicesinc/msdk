@@ -39,7 +39,6 @@
 #include "crc.h"
 #include "crc_reva.h"
 
-
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
@@ -47,18 +46,18 @@
 int MXC_CRC_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CRC);
-    
+
     MXC_CRC_RevA_Init();
-    
+
     return E_NO_ERROR;
 }
 
 int MXC_CRC_Shutdown(void)
 {
     int error = MXC_CRC_RevA_Shutdown();
-    
+
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CRC);
-    
+
     return error;
 }
 

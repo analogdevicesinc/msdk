@@ -44,113 +44,110 @@
 #include <FreeRTOS.h>
 #include <semphr.h>
 
-
 /*************************************** DEFINES *****************************/
-#define TFT_LOCK_WITH_MUTEX 0   // Do not forget to enable mutex in FreeRTOSConfig.h file
+#define TFT_LOCK_WITH_MUTEX 0 // Do not forget to enable mutex in FreeRTOSConfig.h file
 
 /************************************** TYPE DEF *****************************/
 
 /************************************* VARIABLES *****************************/
 #if TFT_LOCK_WITH_MUTEX
-	static xSemaphoreHandle xLockFB = NULL;
+static xSemaphoreHandle xLockFB = NULL;
 #endif
 
 /********************************** STATIC FUNCTIONS *************************/
-
 
 /********************************** PUBLIC FUNCTIONS *************************/
 void TFT_Init(void)
 {
 #if TFT_LOCK_WITH_MUTEX
-	xLockFB = xSemaphoreCreateMutex();
+    xLockFB = xSemaphoreCreateMutex();
 
-	if( xSemaphoreTake( xLockFB, 0xFFFF ) ) {
-		MXC_TFT_Init();
-		xSemaphoreGive( xLockFB );
-	}
+    if (xSemaphoreTake(xLockFB, 0xFFFF)) {
+        MXC_TFT_Init();
+        xSemaphoreGive(xLockFB);
+    }
 #else
-	MXC_TFT_Init();
+    MXC_TFT_Init();
 #endif
 }
 
 void TFT_SetBackGroundColor(unsigned char index_color)
 {
 #if TFT_LOCK_WITH_MUTEX
-	__disable_irq();
-   if( xSemaphoreTake( xLockFB, 0xFFFF ) ) {
-	   MXC_TFT_SetBackGroundColor(index_color);
-	   xSemaphoreGive( xLockFB );
-   }
-  __enable_irq();
+    __disable_irq();
+    if (xSemaphoreTake(xLockFB, 0xFFFF)) {
+        MXC_TFT_SetBackGroundColor(index_color);
+        xSemaphoreGive(xLockFB);
+    }
+    __enable_irq();
 #else
-  __disable_irq();
-  MXC_TFT_SetBackGroundColor(index_color);
-  __enable_irq();
+    __disable_irq();
+    MXC_TFT_SetBackGroundColor(index_color);
+    __enable_irq();
 #endif
 }
 
 void TFT_ShowImage(int x0, int y0, int id)
 {
 #if TFT_LOCK_WITH_MUTEX
-	__disable_irq();
-	if( xSemaphoreTake( xLockFB, 0xFFFF ) ) {
-		MXC_TFT_ShowImage(x0, y0, id);
-		xSemaphoreGive( xLockFB );
-	}
-   __enable_irq();
+    __disable_irq();
+    if (xSemaphoreTake(xLockFB, 0xFFFF)) {
+        MXC_TFT_ShowImage(x0, y0, id);
+        xSemaphoreGive(xLockFB);
+    }
+    __enable_irq();
 #else
-   __disable_irq();
-   MXC_TFT_ShowImage(x0, y0, id);
-   __enable_irq();
+    __disable_irq();
+    MXC_TFT_ShowImage(x0, y0, id);
+    __enable_irq();
 #endif
 }
 
-void TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
+void TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
 {
 #if TFT_LOCK_WITH_MUTEX
-	__disable_irq();
-   if( xSemaphoreTake( xLockFB, 0xFFFF ) ) {
-	   MXC_TFT_PrintFont(x0, y0, id, str, area);
-	   xSemaphoreGive( xLockFB );
-   }
-  __enable_irq();
+    __disable_irq();
+    if (xSemaphoreTake(xLockFB, 0xFFFF)) {
+        MXC_TFT_PrintFont(x0, y0, id, str, area);
+        xSemaphoreGive(xLockFB);
+    }
+    __enable_irq();
 #else
-  __disable_irq();
-  MXC_TFT_PrintFont(x0, y0, id, str, area);
-  __enable_irq();
+    __disable_irq();
+    MXC_TFT_PrintFont(x0, y0, id, str, area);
+    __enable_irq();
 #endif
 }
 
-void TFT_ClearArea( area_t *area, int color)
+void TFT_ClearArea(area_t* area, int color)
 {
 #if TFT_LOCK_WITH_MUTEX
-	__disable_irq();
-   if( xSemaphoreTake( xLockFB, 0xFFFF ) ) {
-	   MXC_TFT_ClearArea(area, color);
-	   xSemaphoreGive( xLockFB );
-   }
-  __enable_irq();
+    __disable_irq();
+    if (xSemaphoreTake(xLockFB, 0xFFFF)) {
+        MXC_TFT_ClearArea(area, color);
+        xSemaphoreGive(xLockFB);
+    }
+    __enable_irq();
 #else
-  __disable_irq();
-  MXC_TFT_ClearArea(area, color);
-  __enable_irq();
+    __disable_irq();
+    MXC_TFT_ClearArea(area, color);
+    __enable_irq();
 #endif
 }
 
-void TFT_SetPalette( int img_id )
+void TFT_SetPalette(int img_id)
 {
 #if TFT_LOCK_WITH_MUTEX
-	__disable_irq();
-   if( xSemaphoreTake( xLockFB, 0xFFFF ) ) {
-	   MXC_TFT_SetPalette(img_id);
-	   xSemaphoreGive( xLockFB );
-   }
-  __enable_irq();
+    __disable_irq();
+    if (xSemaphoreTake(xLockFB, 0xFFFF)) {
+        MXC_TFT_SetPalette(img_id);
+        xSemaphoreGive(xLockFB);
+    }
+    __enable_irq();
 
 #else
-  __disable_irq();
-  MXC_TFT_SetPalette(img_id);
-  __enable_irq();
+    __disable_irq();
+    MXC_TFT_SetPalette(img_id);
+    __enable_irq();
 #endif
 }
-

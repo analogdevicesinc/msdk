@@ -41,32 +41,32 @@
 
 int MXC_SEMA_Init(void)
 {
-	MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR);
-	return E_NO_ERROR;
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR);
+    return E_NO_ERROR;
 }
 
 int MXC_SEMA_GetSema(unsigned sema)
 {
-    return MXC_SEMA_RevA_GetSema((mxc_sema_reva_regs_t*) MXC_SEMA, sema);
+    return MXC_SEMA_RevA_GetSema((mxc_sema_reva_regs_t*)MXC_SEMA, sema);
 }
 
 int MXC_SEMA_CheckSema(unsigned sema)
 {
-    return MXC_SEMA_RevA_CheckSema((mxc_sema_reva_regs_t*) MXC_SEMA, sema);
+    return MXC_SEMA_RevA_CheckSema((mxc_sema_reva_regs_t*)MXC_SEMA, sema);
 }
 
 uint32_t MXC_SEMA_Status(void)
 {
-    return MXC_SEMA_RevA_Status((mxc_sema_reva_regs_t*) MXC_SEMA);
+    return MXC_SEMA_RevA_Status((mxc_sema_reva_regs_t*)MXC_SEMA);
 }
 
 void MXC_SEMA_FreeSema(unsigned sema)
 {
-    MXC_SEMA_RevA_FreeSema((mxc_sema_reva_regs_t*) MXC_SEMA, sema);
+    MXC_SEMA_RevA_FreeSema((mxc_sema_reva_regs_t*)MXC_SEMA, sema);
 }
 
 int MXC_SEMA_Shutdown(void)
 {
-	MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SMPHR);
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SMPHR);
     return E_NO_ERROR;
 }

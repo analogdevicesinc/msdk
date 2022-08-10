@@ -52,14 +52,12 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
-
 /** <b>The HDES context</b>.
  * This structure is associated to the 'step by step' process.
  *
  * @ingroup UCL_HDES
  */
-struct ucl_hdes_ctx_t
-{
+struct ucl_hdes_ctx_t {
     u32 state[4]; /**< Intermediate and then final hash */
     u32 count[2]; /**< Counter in bits                  */
     u8 buffer[8]; /**< Buffer                           */
@@ -83,7 +81,6 @@ typedef struct ucl_hdes_ctx_t ucl_hdes_ctx_t;
  */
 #define UCL_HDES_HASHSIZE 16
 
-
 /*============================================================================*/
 /** <b>HDES</b>.
  * The complete process of HDES.
@@ -100,8 +97,7 @@ typedef struct ucl_hdes_ctx_t ucl_hdes_ctx_t;
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes(u8 *hash, u8 *data, u32 data_byteLen);
-
+int ucl_hdes(u8* hash, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>HDES Init</b>.
@@ -116,8 +112,7 @@ int ucl_hdes(u8 *hash, u8 *data, u32 data_byteLen);
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes_init(ucl_hdes_ctx_t *context);
-
+int ucl_hdes_init(ucl_hdes_ctx_t* context);
 
 /*============================================================================*/
 /** <b>HDES Core</b>.
@@ -138,9 +133,7 @@ int ucl_hdes_init(ucl_hdes_ctx_t *context);
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes_core(ucl_hdes_ctx_t *context, u8 *data,
-                  u32 data_byteLen);
-
+int ucl_hdes_core(ucl_hdes_ctx_t* context, u8* data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>HDES Finish</b>.
@@ -159,8 +152,7 @@ int ucl_hdes_core(ucl_hdes_ctx_t *context, u8 *data,
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes_finish(u8 *hash, ucl_hdes_ctx_t *context);
-
+int ucl_hdes_finish(u8* hash, ucl_hdes_ctx_t* context);
 
 #ifdef __cplusplus
 }

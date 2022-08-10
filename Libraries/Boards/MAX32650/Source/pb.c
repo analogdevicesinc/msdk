@@ -34,7 +34,6 @@
  *
  **************************************************************************** */
 
-
 #include <stddef.h>
 #include "mxc_errors.h"
 #include "mxc_assert.h"

@@ -51,8 +51,8 @@
 
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
-    PERIPH_GATT_SC_CCC_IDX,           /*! GATT service, service changed characteristic */
-    PERIPH_WP_DAT_CCC_IDX,            /*! Arm Ltd. proprietary service, data transfer characteristic */
+    PERIPH_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
+    PERIPH_WP_DAT_CCC_IDX,  /*! Arm Ltd. proprietary service, data transfer characteristic */
     PERIPH_NUM_CCC_IDX
 };
 
@@ -62,21 +62,21 @@ enum {
 
 /*! configurable parameters for advertising */
 static const appAdvCfg_t periphAdvCfg = {
-    {30000,     0,     0},                  /*! Advertising durations in ms, 0 corresponds to infinite */
-    {   96,  1600,     0}                   /*! Advertising intervals in 0.625 ms units */
+    {30000, 0, 0}, /*! Advertising durations in ms, 0 corresponds to infinite */
+    {96, 1600, 0}  /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
 static const appSlaveCfg_t periphSlaveCfg = {
-    1,                                      /*! Maximum connections */
+    1, /*! Maximum connections */
 };
 
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t periphAttCfg = {
-    15,                               /* ATT server service discovery connection idle timeout in seconds */
-    241,                              /* desired ATT MTU */
-    ATT_MAX_TRANS_TIMEOUT,            /* transcation timeout in seconds */
-    4                                 /* number of queued prepare writes supported by server */
+    15,                    /* ATT server service discovery connection idle timeout in seconds */
+    241,                   /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4                      /* number of queued prepare writes supported by server */
 };
 
 /**************************************************************************************************
@@ -86,20 +86,14 @@ static const attCfg_t periphAttCfg = {
 /*! advertising data, discoverable mode */
 static const uint8_t periphAdvDataDisc[] = {
     /*! flags */
-    2,                                      /*! length */
-    DM_ADV_TYPE_FLAGS,                      /*! AD type */
-    DM_FLAG_LE_GENERAL_DISC |               /*! flags */
-    DM_FLAG_LE_BREDR_NOT_SUP,
+    2,                        /*! length */
+    DM_ADV_TYPE_FLAGS,        /*! AD type */
+    DM_FLAG_LE_GENERAL_DISC | /*! flags */
+        DM_FLAG_LE_BREDR_NOT_SUP,
     /*! device name */
-    7,                                      /*! length */
-    DM_ADV_TYPE_LOCAL_NAME,                 /*! AD type */
-    'P',
-    'e',
-    'r',
-    'i',
-    'p',
-    'h'
-};
+    7,                      /*! length */
+    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
+    'P', 'e', 'r', 'i', 'p', 'h'};
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
@@ -108,8 +102,8 @@ static const uint8_t periphAdvDataDisc[] = {
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
 static const attsCccSet_t periphCccSet[PERIPH_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
-    {GATT_SC_CH_CCC_HDL,    ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_NONE},   /* PERIPH_GATT_SC_CCC_IDX */
-    {WP_DAT_CH_CCC_HDL,     ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE}    /* DATS_WP_DAT_CCC_IDX */
+    {GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE}, /* PERIPH_GATT_SC_CCC_IDX */
+    {WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE}     /* DATS_WP_DAT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -118,10 +112,10 @@ static const attsCccSet_t periphCccSet[PERIPH_NUM_CCC_IDX] = {
 
 /*! application control block */
 static struct {
-    wsfHandlerId_t    handlerId;          /* WSF handler ID */
-    periphRxCb_t      rxCb;               /* RX Callback function */
-    dmConnId_t        connId;             /* Connection ID */
-    bool_t            connected;          /* Connection state */
+    wsfHandlerId_t handlerId; /* WSF handler ID */
+    periphRxCb_t rxCb;        /* RX Callback function */
+    dmConnId_t connId;        /* Connection ID */
+    bool_t connected;         /* Connection state */
 } periphCb;
 
 /*************************************************************************************************/
@@ -133,10 +127,10 @@ static struct {
  *  \return None.
  */
 /*************************************************************************************************/
-static void periphDmCback(dmEvt_t *pDmEvt)
+static void periphDmCback(dmEvt_t* pDmEvt)
 {
-    dmEvt_t   *pMsg;
-    uint16_t  len;
+    dmEvt_t* pMsg;
+    uint16_t len;
 
     len = DmSizeOfEvt(pDmEvt);
 
@@ -155,13 +149,13 @@ static void periphDmCback(dmEvt_t *pDmEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void periphAttCback(attEvt_t *pEvt)
+static void periphAttCback(attEvt_t* pEvt)
 {
-    attEvt_t  *pMsg;
+    attEvt_t* pMsg;
 
     if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
         memcpy(pMsg, pEvt, sizeof(attEvt_t));
-        pMsg->pValue = (uint8_t *)(pMsg + 1);
+        pMsg->pValue = (uint8_t*)(pMsg + 1);
         memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
         WsfMsgSend(periphCb.handlerId, pMsg);
     }
@@ -176,9 +170,8 @@ static void periphAttCback(attEvt_t *pEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void periphCccCback(attsCccEvt_t *pEvt)
+static void periphCccCback(attsCccEvt_t* pEvt)
 {
-
 }
 
 /*************************************************************************************************/
@@ -188,11 +181,11 @@ static void periphCccCback(attsCccEvt_t *pEvt)
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t periphWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                           uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+uint8_t periphWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                           uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
 {
     /* Call callback with data */
-    if(periphCb.rxCb != NULL)  {
+    if (periphCb.rxCb != NULL) {
         periphCb.rxCb(pValue, len);
     }
 
@@ -209,13 +202,14 @@ uint8_t periphWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation
  *  \return None.
  */
 /*************************************************************************************************/
-static void periphSetup(dmEvt_t *pMsg)
+static void periphSetup(dmEvt_t* pMsg)
 {
     /* set advertising data for discoverable mode */
-    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(periphAdvDataDisc), (uint8_t *) periphAdvDataDisc);
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(periphAdvDataDisc),
+                  (uint8_t*)periphAdvDataDisc);
 
     /* set advertising data or connectable mode */
-    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(periphAdvDataDisc), (uint8_t *) periphAdvDataDisc);
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(periphAdvDataDisc), (uint8_t*)periphAdvDataDisc);
 
     /* start advertising; automatically set connectable/discoverable mode and bondable mode */
     AppAdvStart(APP_MODE_AUTO_INIT);
@@ -230,11 +224,11 @@ static void periphSetup(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void periphProcMsg(dmEvt_t *pMsg)
+static void periphProcMsg(dmEvt_t* pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
 
-    switch(pMsg->hdr.event) {
+    switch (pMsg->hdr.event) {
         case DM_RESET_CMPL_IND:
             periphSetup(pMsg);
             uiEvent = APP_UI_RESET_CMPL;
@@ -250,14 +244,14 @@ static void periphProcMsg(dmEvt_t *pMsg)
 
         case DM_CONN_OPEN_IND:
             /* Save connId  */
-            periphCb.connId = (dmConnId_t) pMsg->hdr.param;
+            periphCb.connId    = (dmConnId_t)pMsg->hdr.param;
             periphCb.connected = TRUE;
-            uiEvent = APP_UI_CONN_OPEN;
+            uiEvent            = APP_UI_CONN_OPEN;
             break;
 
         case DM_CONN_CLOSE_IND:
             periphCb.connected = FALSE;
-            uiEvent = APP_UI_CONN_CLOSE;
+            uiEvent            = APP_UI_CONN_CLOSE;
             break;
 
         default:
@@ -282,7 +276,7 @@ static void periphProcMsg(dmEvt_t *pMsg)
 bool_t PeriphTXData(uint8_t* data, uint16_t len)
 {
     /* Make sure we're connected */
-    if(!periphCb.connected) {
+    if (!periphCb.connected) {
         return FALSE;
     }
 
@@ -332,9 +326,9 @@ void PeriphHandlerInit(wsfHandlerId_t handlerId)
     periphCb.rxCb = NULL;
 
     /* Set configuration pointers */
-    pAppSlaveCfg = (appSlaveCfg_t *) &periphSlaveCfg;
-    pAppAdvCfg = (appAdvCfg_t *) &periphAdvCfg;
-    pAttCfg = (attCfg_t *) &periphAttCfg;
+    pAppSlaveCfg = (appSlaveCfg_t*)&periphSlaveCfg;
+    pAppAdvCfg   = (appAdvCfg_t*)&periphAdvCfg;
+    pAttCfg      = (attCfg_t*)&periphAttCfg;
 
     /* Initialize application framework */
     AppSlaveInit();
@@ -351,7 +345,7 @@ void PeriphHandlerInit(wsfHandlerId_t handlerId)
  *  \return None.
  */
 /*************************************************************************************************/
-void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
 {
     if (pMsg != NULL) {
         APP_TRACE_INFO1("Periph got evt %d", pMsg->event);
@@ -364,11 +358,11 @@ void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         /* process DM messages */
         else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
             /* process advertising and connection-related messages */
-            AppSlaveProcDmMsg((dmEvt_t *) pMsg);
+            AppSlaveProcDmMsg((dmEvt_t*)pMsg);
         }
 
         /* perform profile and user interface-related operations */
-        periphProcMsg((dmEvt_t *) pMsg);
+        periphProcMsg((dmEvt_t*)pMsg);
     }
 }
 
@@ -386,7 +380,7 @@ void PeriphStart(void)
     DmConnRegister(DM_CLIENT_ID_APP, periphDmCback);
     AttRegister(periphAttCback);
     AttConnRegister(AppServerConnCback);
-    AttsCccRegister(PERIPH_NUM_CCC_IDX, (attsCccSet_t *) periphCccSet, periphCccCback);
+    AttsCccRegister(PERIPH_NUM_CCC_IDX, (attsCccSet_t*)periphCccSet, periphCccCback);
 
     /* Initialize attribute server database */
     SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);

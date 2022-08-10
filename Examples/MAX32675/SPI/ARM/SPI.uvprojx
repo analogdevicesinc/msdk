@@ -10,20 +10,21 @@
       <TargetName>Flash Debug</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pArmCC>6160000::V6.16::ARMCLANG</pArmCC>
+      <pCCUsed>6160000::V6.16::ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>MAX32670:Cortex-M4</Device>
+          <Device>MAX32675:Cortex-M4</Device>
           <Vendor>Maxim</Vendor>
-          <PackID>Maxim.MAX32670.1.0.0</PackID>
+          <PackID>Maxim.MAX32675.1.0.3</PackID>
           <PackURL>http://www.mxim.net/microcontroller/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x00080000) IROM(0x10000000,0x00100000) CPUTYPE("Cortex-M4") FPU2 CLOCK(96000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000)</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:MAX32670$Libraries\Device\Maxim\MAX32670\Include\max32670.h</RegisterFile>
+          <RegisterFile>$$Device:MAX32675$Libraries\Device\Maxim\MAX32675\Include\max32675.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -33,7 +34,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:MAX32670$SVD\MAX32670\max32670.svd</SFDFile>
+          <SFDFile>$$Device:MAX32675$SVD\MAX32675\max32675.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -185,6 +186,7 @@
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
+            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -312,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -321,22 +323,22 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--diag_suppress 1295 --diag_suppress 111</MiscControls>
-              <Define></Define>
+              <MiscControls></MiscControls>
+              <Define>TARGET=32675 TARGET_REV=0x4131</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
@@ -351,7 +353,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <uClangAs>0</uClangAs>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -403,9 +405,6 @@
         <Group>
           <GroupName>::Device</GroupName>
         </Group>
-        <Group>
-          <GroupName>::Target Rev</GroupName>
-        </Group>
       </Groups>
     </Target>
   </Targets>
@@ -420,7 +419,7 @@
           <targetInfo name="Flash Debug" versionMatchMode="fixed"/>
         </targetInfos>
       </package>
-      <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0">
+      <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32675" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3">
         <targetInfos>
           <targetInfo name="Flash Debug" versionMatchMode="fixed"/>
         </targetInfos>
@@ -434,94 +433,106 @@
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="MAX32670 BSP" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 BSP DEP">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="MAX32675 BSP" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 BSP DEP">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="Maxim API" Cclass="Device" Cgroup="DMA" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 CMSIS DMA">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="AFE" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS AFE">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="Maxim API" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 CMSIS GPIO">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="DMA" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS DMA">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="Maxim API" Cclass="Device" Cgroup="SPI" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 CMSIS SPI">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="FLC" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS FLC">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS GPIO">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="Maxim API" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 CMSIS UART">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="SPI" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS SPI">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cclass="Target Rev" Cvariant="A1" Cvendor="Maxim" Cversion="1.0.0" versionMatchMode="fixed">
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="SYS" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS SYS">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 CMSIS UART">
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
     </components>
     <files>
-      <file attr="config" category="header" name="Libraries\Device\Maxim\MAX32670\Include\max32670.h" version="1.0.0">
-        <instance index="0" removed="1">RTE\Device\MAX32670\max32670.h</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="header" name="Libraries\Device\Maxim\MAX32675\Include\max32675.h" version="1.0.3">
+        <instance index="0" removed="1">RTE\Device\MAX32675\max32675.h</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32675" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="sourceAsm" condition="Startup ARM" name="Libraries\Device\Maxim\MAX32670\Source\ARM\startup_max32670.s" version="1.0.0">
-        <instance index="0" removed="1">RTE\Device\MAX32670\startup_max32670.s</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="sourceAsm" condition="Startup ARM" name="Libraries\Device\Maxim\MAX32675\Source\ARM\startup_max32675.s" version="1.0.3">
+        <instance index="0" removed="1">RTE\Device\MAX32675\startup_max32675.s</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32675" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="sourceC" condition="Startup ARM" name="Libraries\Device\Maxim\MAX32670\Source\ARM\sub_main.c" version="1.0.0">
-        <instance index="0" removed="1">RTE\Device\MAX32670\sub_main.c</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="sourceC" condition="Startup ARM" name="Libraries\Device\Maxim\MAX32675\Source\ARM\sub_main.c" version="1.0.3">
+        <instance index="0" removed="1">RTE\Device\MAX32675\sub_main.c</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32675" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="sourceC" name="Libraries\Device\Maxim\MAX32670\Source\system_max32670.c" version="1.0.0">
-        <instance index="0" removed="1">RTE\Device\MAX32670\system_max32670.c</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="sourceC" name="Libraries\Device\Maxim\MAX32675\Source\system_max32675.c" version="1.0.3">
+        <instance index="0" removed="1">RTE\Device\MAX32675\system_max32675.c</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32675" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="header" name="Libraries\CMSIS\Device\Maxim\MAX32670\Include\max32670.h" version="1.0.0">
-        <instance index="0">RTE\Device\MAX32670_Cortex-M4\max32670.h</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="header" name="Libraries\CMSIS\Device\Maxim\MAX32675\Include\max32675.h" version="1.0.3">
+        <instance index="0">RTE\Device\MAX32675_Cortex-M4\max32675.h</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </file>
-      <file attr="config" category="sourceAsm" condition="Startup ARM" name="Libraries\CMSIS\Device\Maxim\MAX32670\Source\ARM\startup_max32670.s" version="1.0.0">
-        <instance index="0">RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="sourceAsm" condition="Startup ARM" name="Libraries\CMSIS\Device\Maxim\MAX32675\Source\ARM\startup_max32675.s" version="1.0.3">
+        <instance index="0">RTE\Device\MAX32675_Cortex-M4\startup_max32675.s</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </file>
-      <file attr="config" category="sourceC" name="Libraries\CMSIS\Device\Maxim\MAX32670\Source\system_max32670.c" version="1.0.0">
-        <instance index="0">RTE\Device\MAX32670_Cortex-M4\system_max32670.c</instance>
-        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32670 Family"/>
-        <package license="License/END_USER_LICENSE_AGREEMENT.rtf" name="MAX32670" schemaVersion="1.3" supportContact="support@maximintegrated.com" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+      <file attr="config" category="sourceC" name="Libraries\CMSIS\Device\Maxim\MAX32675\Source\system_max32675.c" version="1.0.3">
+        <instance index="0">RTE\Device\MAX32675_Cortex-M4\system_max32675.c</instance>
+        <component Cbundle="Maxim API" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" condition="MAX32675 Family"/>
+        <package name="MAX32675" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
         </targetInfos>

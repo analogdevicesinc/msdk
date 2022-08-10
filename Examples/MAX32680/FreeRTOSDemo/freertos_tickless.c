@@ -51,10 +51,10 @@
 #include "pb.h"
 #include "led.h"
 
-#define WUT_RATIO           (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
-#define MAX_WUT_SNOOZE      (5*configRTC_TICK_RATE_HZ)
-#define MIN_SYSTICK         2
-#define MIN_WUT_TICKS       50
+#define WUT_RATIO      (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
+#define MAX_WUT_SNOOZE (5 * configRTC_TICK_RATE_HZ)
+#define MIN_SYSTICK    2
+#define MIN_WUT_TICKS  50
 
 static uint32_t wutSnooze = 0;
 static int wutSnoozeValid = 0;
@@ -71,7 +71,7 @@ extern mxc_gpio_cfg_t uart_rts;
  */
 __attribute__((weak)) int freertos_permit_tickless(void)
 {
-  return E_NO_ERROR;
+    return E_NO_ERROR;
 }
 
 /*
@@ -81,8 +81,8 @@ __attribute__((weak)) int freertos_permit_tickless(void)
  */
 void wutHitSnooze(void)
 {
-  wutSnooze = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
-  wutSnoozeValid = 1;
+    wutSnooze      = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
+    wutSnoozeValid = 1;
 }
 
 /*
@@ -93,93 +93,93 @@ void wutHitSnooze(void)
  * interrupt the WFI and continue execution.
  *
  */
-void vPortSuppressTicksAndSleep( TickType_t xExpectedIdleTime )
+void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 {
-  uint32_t wut_ticks;
-  uint32_t actual_ticks;
-  uint32_t pre_capture, post_capture;
+    uint32_t wut_ticks;
+    uint32_t actual_ticks;
+    uint32_t pre_capture, post_capture;
 
-  /* We do not currently handle to case where the WUT is slower than the RTOS tick */
-  MXC_ASSERT(configRTC_TICK_RATE_HZ >= configTICK_RATE_HZ);
+    /* We do not currently handle to case where the WUT is slower than the RTOS tick */
+    MXC_ASSERT(configRTC_TICK_RATE_HZ >= configTICK_RATE_HZ);
 
-  if (SysTick->VAL < MIN_SYSTICK) {
-    /* Avoid sleeping too close to a systick interrupt */
-    return;
-  }
+    if (SysTick->VAL < MIN_SYSTICK) {
+        /* Avoid sleeping too close to a systick interrupt */
+        return;
+    }
 
-  /* Calculate the number of WUT ticks, but we need one to synchronize */
-  wut_ticks = (xExpectedIdleTime - 1) * WUT_RATIO;
+    /* Calculate the number of WUT ticks, but we need one to synchronize */
+    wut_ticks = (xExpectedIdleTime - 1) * WUT_RATIO;
 
-  if(wut_ticks > MAX_WUT_SNOOZE) {
-    wut_ticks = MAX_WUT_SNOOZE;
-  }
+    if (wut_ticks > MAX_WUT_SNOOZE) {
+        wut_ticks = MAX_WUT_SNOOZE;
+    }
 
-  /* Check to see if we meet the minimum requirements for deep sleep */
-  if (wut_ticks < MIN_WUT_TICKS) {
-    /* Finish out the rest of this tick with normal sleep */
-    MXC_LP_EnterSleepMode();
-    return;
-  }
+    /* Check to see if we meet the minimum requirements for deep sleep */
+    if (wut_ticks < MIN_WUT_TICKS) {
+        /* Finish out the rest of this tick with normal sleep */
+        MXC_LP_EnterSleepMode();
+        return;
+    }
 
-  /* Check the WUT snooze */
-  if(wutSnoozeValid && (MXC_WUT_GetCount() < wutSnooze)) {
-    /* Finish out the rest of this tick with normal sleep */
-    MXC_LP_EnterSleepMode();
-    return;
-  }
-  wutSnoozeValid = 0;
+    /* Check the WUT snooze */
+    if (wutSnoozeValid && (MXC_WUT_GetCount() < wutSnooze)) {
+        /* Finish out the rest of this tick with normal sleep */
+        MXC_LP_EnterSleepMode();
+        return;
+    }
+    wutSnoozeValid = 0;
 
-  /* Enter a critical section but don't use the taskENTER_CRITICAL()
+    /* Enter a critical section but don't use the taskENTER_CRITICAL()
      method as that will mask interrupts that should exit sleep mode. */
-  __asm volatile( "cpsid i" );
+    __asm volatile("cpsid i");
 
-  /* If a context switch is pending or a task is waiting for the scheduler
+    /* If a context switch is pending or a task is waiting for the scheduler
      to be unsuspended then abandon the low power entry. */
-  /* Also check the MXC drivers for any in-progress activity */
-  if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
-      (freertos_permit_tickless() != E_NO_ERROR)) {
-    /* Re-enable interrupts - see comments above the cpsid instruction()
+    /* Also check the MXC drivers for any in-progress activity */
+    if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
+        (freertos_permit_tickless() != E_NO_ERROR)) {
+        /* Re-enable interrupts - see comments above the cpsid instruction()
        above. */
-    __asm volatile( "cpsie i" );
-    return;
-  }
+        __asm volatile("cpsie i");
+        return;
+    }
 
-  /* Set RTS to prevent the console UART from transmitting */
-  MXC_GPIO_OutSet(uart_rts.port, uart_rts.mask);
+    /* Set RTS to prevent the console UART from transmitting */
+    MXC_GPIO_OutSet(uart_rts.port, uart_rts.mask);
 
-  /* Snapshot the current WUT value */
-  MXC_WUT_Edge();
-  pre_capture = MXC_WUT_GetCount();
-  MXC_WUT_SetCompare(pre_capture+wut_ticks);
-  MXC_WUT_Edge();
+    /* Snapshot the current WUT value */
+    MXC_WUT_Edge();
+    pre_capture = MXC_WUT_GetCount();
+    MXC_WUT_SetCompare(pre_capture + wut_ticks);
+    MXC_WUT_Edge();
 
-  LED_Off(1);
+    LED_Off(1);
 
-  MXC_LP_EnterStandbyMode();
+    MXC_LP_EnterStandbyMode();
 
-  post_capture = MXC_WUT_GetCount();
-  actual_ticks = post_capture - pre_capture;
+    post_capture = MXC_WUT_GetCount();
+    actual_ticks = post_capture - pre_capture;
 
-  LED_On(1);
+    LED_On(1);
 
-  /*  Snooze the deep sleep if we woke up on the UART CTS GPIO */
-  if((uart_cts.port == MXC_GPIO0) && (MXC_PWRSEQ->lpwkst0 & uart_cts.mask)) {
-    wutHitSnooze();
-  } else if ((uart_cts.port == MXC_GPIO1) && (MXC_PWRSEQ->lpwkst1 & uart_cts.mask)) {
-    wutHitSnooze();
-  }
+    /*  Snooze the deep sleep if we woke up on the UART CTS GPIO */
+    if ((uart_cts.port == MXC_GPIO0) && (MXC_PWRSEQ->lpwkst0 & uart_cts.mask)) {
+        wutHitSnooze();
+    } else if ((uart_cts.port == MXC_GPIO1) && (MXC_PWRSEQ->lpwkst1 & uart_cts.mask)) {
+        wutHitSnooze();
+    }
 
-  /* Clear RTS */
-  MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
+    /* Clear RTS */
+    MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
 
-  /* Re-enable interrupts - see comments above the cpsid instruction()
+    /* Re-enable interrupts - see comments above the cpsid instruction()
      above. */
-  __asm volatile( "cpsie i" );
+    __asm volatile("cpsie i");
 
-  /*
+    /*
    * Advance ticks by # actually elapsed
    */
-  portENTER_CRITICAL();
-  vTaskStepTick( (actual_ticks / WUT_RATIO) );
-  portEXIT_CRITICAL();
+    portENTER_CRITICAL();
+    vTaskStepTick((actual_ticks / WUT_RATIO));
+    portEXIT_CRITICAL();
 }

@@ -39,7 +39,6 @@
  * @brief   Board support package API.
  */
 
-
 #include <stdio.h>
 #include "spi.h"
 
@@ -50,48 +49,53 @@
 extern "C" {
 #endif
 
+/* 
+    Define board name:
+    Use as #if defined(BOARD_EVKIT_V1)
+    Not as #if BOARD_EVKIT_V1
+*/
+#define BOARD_EVKIT_V1 1 /// Used in examples to control program flow.
+
 #ifndef CONSOLE_UART
-#define CONSOLE_UART        0      /// UART instance to use for console
+#define CONSOLE_UART 0 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD        115200  /// Console baud rate
+#define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
 #ifndef HCI_UART
-#define HCI_UART            3   /// LP UART
+#define HCI_UART 3 /// LP UART
 #endif
 
 #ifndef TERMINAL_UART
-#define TERMINAL_UART       CONSOLE_UART
+#define TERMINAL_UART CONSOLE_UART
 #endif
 
 #ifndef USER_UART
-#define USER_UART           1
+#define USER_UART 1
 #endif
 
-#define LED_OFF             1       /// Inactive state of LEDs
-#define LED_ON              0       /// Active state of LEDs
+#define LED_OFF 1 /// Inactive state of LEDs
+#define LED_ON  0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD       5000000
+#define EXT_FLASH_BAUD 5000000
 #endif
-
-#define EvKit_V1				    /// Used in examples to control program flow
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1                0
-#define LED_RED             LED1
+#define LED1    0
+#define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2                1
-#define LED_GREEN           LED2
+#define LED2      1
+#define LED_GREEN LED2
 
 /**
  * \brief   Initialize the BSP and board interfaces.

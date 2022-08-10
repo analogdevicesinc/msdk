@@ -52,11 +52,11 @@ extern "C" {
  */
 /* **** Definitions **** */
 #ifndef LED_OFF
-#define LED_OFF     0   /**< Define to turn off the LED. */
+#define LED_OFF 0 /**< Define to turn off the LED. */
 #endif
 
 #ifndef LED_ON
-#define LED_ON      1   /**< Define to turn on the LED. */
+#define LED_ON 1 /**< Define to turn on the LED. */
 #endif
 
 /* **** Global Variables **** */
@@ -76,7 +76,8 @@ int LED_Init(void);
  * @brief      Turn the specified LED on.
  * @param      idx   LED index
  */
-void LED_On(unsigned int idx);;
+void LED_On(unsigned int idx);
+;
 
 /**
  * @brief      Turn the specified LED off.

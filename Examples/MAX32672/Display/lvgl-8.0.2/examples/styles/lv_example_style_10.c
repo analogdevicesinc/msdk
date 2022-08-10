@@ -6,7 +6,8 @@
  */
 void lv_example_style_10(void)
 {
-    static const lv_style_prop_t props[] = {LV_STYLE_BG_COLOR, LV_STYLE_BORDER_COLOR, LV_STYLE_BORDER_WIDTH, 0};
+    static const lv_style_prop_t props[] = {LV_STYLE_BG_COLOR, LV_STYLE_BORDER_COLOR,
+                                            LV_STYLE_BORDER_WIDTH, 0};
 
     /* A default transition
      * Make it fast (100ms) and start with some delay (200 ms)*/
@@ -30,7 +31,7 @@ void lv_example_style_10(void)
     lv_style_set_transition(&style_pr, &trans_pr);
 
     /*Create an object with the new style_pr*/
-    lv_obj_t * obj = lv_obj_create(lv_scr_act());
+    lv_obj_t* obj = lv_obj_create(lv_scr_act());
     lv_obj_add_style(obj, &style_def, 0);
     lv_obj_add_style(obj, &style_pr, LV_STATE_PRESSED);
 

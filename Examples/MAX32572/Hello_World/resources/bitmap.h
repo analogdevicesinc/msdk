@@ -34,16 +34,14 @@
 *******************************************************************************
 */
 
-
 #ifndef _BITMAP_H_
 #define _BITMAP_H_
 
 // bitmaps id
-#define    logo_white_bg_white_bmp                            0
-#define    maxim_big_logo_bmp                                 1
+#define logo_white_bg_white_bmp 0
+#define maxim_big_logo_bmp      1
 
 // fonts id
-#define    urw_gothic_13_grey_bg_white                        0
-
+#define urw_gothic_13_grey_bg_white 0
 
 #endif //_BITMAP_H_

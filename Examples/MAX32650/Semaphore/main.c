@@ -73,14 +73,12 @@ static void PB_AWrites(void* idx)
                 printf("var = %d\n", shared_variable);
                 A_active = 1;
             }
-        }
-        else if (retval == E_BUSY) {
+        } else if (retval == E_BUSY) {
             printf("A can't write right now.\n\n");
             printf("var = %d\n", shared_variable);
             return;
         }
-    }
-    else {
+    } else {
         A_active = !A_active;
         //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
@@ -88,7 +86,7 @@ static void PB_AWrites(void* idx)
             printf("A stopped writing.\n");
             MXC_SEMA_FreeSema(0);
             printf("A dropped the semaphore...\n");
-        }else {
+        } else {
             printf("Something went wrong.\n");
             return;
         }
@@ -99,7 +97,8 @@ static void PB_AWrites(void* idx)
     return;
 }
 
-static void PB_BWrites(void* idx) {
+static void PB_BWrites(void* idx)
+{
     int retval;
     //First check if B is already writing
     if (!B_active) {
@@ -113,14 +112,12 @@ static void PB_BWrites(void* idx) {
                 printf("var = %d\n", shared_variable);
                 B_active = 1;
             }
-        }
-        else if (retval == E_BUSY) {
+        } else if (retval == E_BUSY) {
             printf("B can't write right now.\n\n");
             printf("var = %d\n", shared_variable);
             return;
         }
-    }
-    else {
+    } else {
         B_active = !B_active;
         //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
@@ -128,8 +125,7 @@ static void PB_BWrites(void* idx) {
             printf("B stopped writing.\n");
             MXC_SEMA_FreeSema(0);
             printf("B dropped the semaphore...\n");
-        }
-        else {
+        } else {
             printf("Something went wrong.\n");
             return;
         }
@@ -138,7 +134,6 @@ static void PB_BWrites(void* idx) {
     printf("\n");
 
     return;
-
 }
 // *****************************************************************************
 int main(void)
@@ -157,8 +152,7 @@ int main(void)
 
     if ((MXC_SEMA_CheckSema(0)) == E_NO_ERROR) {
         printf("Semaphore free.\n");
-    }
-    else {
+    } else {
         printf("Semaphore locked.\n");
     }
 
@@ -166,15 +160,14 @@ int main(void)
 
     if ((MXC_SEMA_CheckSema(0)) == E_NO_ERROR) {
         printf("Semaphore free.\n");
-    }
-    else {
+    } else {
         printf("Semaphore locked.\n");
     }
 
     PB_RegisterCallback(SW1, PB_AWrites);
     PB_RegisterCallback(SW2, PB_BWrites);
 
-
     printf("\nExample running.\n");
-    while(1);
+    while (1)
+        ;
 }

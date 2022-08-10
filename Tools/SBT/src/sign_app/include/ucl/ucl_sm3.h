@@ -39,26 +39,22 @@
  * @ingroup UCL_HASH
  */
 
-
 /** <b>Hash size</b>.
  * Byte size of the output of SM3.
  *
  * @ingroup UCL_SM3
  */
-#define UCL_SM3 7
+#define UCL_SM3          7
 #define UCL_SM3_HASHSIZE 32
 
+typedef struct {
+    u32 total[2];  /*!< number of bytes processed  */
+    u32 state[8];  /*!< intermediate digest state  */
+    u8 buffer[64]; /*!< data block being processed */
 
-typedef struct
-{
-    u32 total[2];     /*!< number of bytes processed  */
-    u32 state[8];     /*!< intermediate digest state  */
-    u8 buffer[64];   /*!< data block being processed */
-
-    u8 ipad[64];     /*!< HMAC: inner padding        */
-    u8 opad[64];     /*!< HMAC: outer padding        */
-}
-ucl_sm3_ctx_t;
+    u8 ipad[64]; /*!< HMAC: inner padding        */
+    u8 opad[64]; /*!< HMAC: outer padding        */
+} ucl_sm3_ctx_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -76,7 +72,7 @@ extern "C" {
  *
  * @ingroup UCL_SM3
  */
-void ucl_sm3_init( ucl_sm3_ctx_t *ctx );
+void ucl_sm3_init(ucl_sm3_ctx_t* ctx);
 
 /** <b>SM3 update</b>.
  * The core of SM3.
@@ -95,7 +91,7 @@ void ucl_sm3_init( ucl_sm3_ctx_t *ctx );
  *
  * @ingroup UCL_SM3
  */
-void ucl_sm3_update( ucl_sm3_ctx_t *ctx, u8 *input, int ilen );
+void ucl_sm3_update(ucl_sm3_ctx_t* ctx, u8* input, int ilen);
 
 /** <b>SM3 Finish</b>.
  * Finish the process of SM3.
@@ -115,7 +111,7 @@ void ucl_sm3_update( ucl_sm3_ctx_t *ctx, u8 *input, int ilen );
  *
  * @ingroup UCL_SM3
  */
-  void ucl_sm3_finish( u8 *output,ucl_sm3_ctx_t *ctx );
+void ucl_sm3_finish(u8* output, ucl_sm3_ctx_t* ctx);
 
 /** <b>SM3</b>.
  * The complete process of SM3.
@@ -133,7 +129,7 @@ void ucl_sm3_update( ucl_sm3_ctx_t *ctx, u8 *input, int ilen );
  *
  * @ingroup UCL_SM3
  */
-  void ucl_sm3(u8 *output, u8 *input, int ilen);
+void ucl_sm3(u8* output, u8* input, int ilen);
 
 /* @defgroup UCL_HMAC_SM3 HMAC SM3
  *
@@ -155,7 +151,7 @@ void ucl_sm3_update( ucl_sm3_ctx_t *ctx, u8 *input, int ilen );
  *
  * @ingroup UCL_HMAC_SM3
  */
-void ucl_sm3_hmac_start( ucl_sm3_ctx_t *ctx, u8 *key, int keylen);
+void ucl_sm3_hmac_start(ucl_sm3_ctx_t* ctx, u8* key, int keylen);
 
 /** <b>The core of SM3 </b>.
  *
@@ -174,7 +170,7 @@ void ucl_sm3_hmac_start( ucl_sm3_ctx_t *ctx, u8 *key, int keylen);
  * @ingroup UCL_HMAC_SM3
  */
 
-void ucl_sm3_hmac_update(ucl_sm3_ctx_t *ctx, u8 *input, int ilen );
+void ucl_sm3_hmac_update(ucl_sm3_ctx_t* ctx, u8* input, int ilen);
 
 /** <b>Finish the process of SM3</b>.
  *
@@ -192,7 +188,7 @@ void ucl_sm3_hmac_update(ucl_sm3_ctx_t *ctx, u8 *input, int ilen );
  *
  * @ingroup UCL_HMAC_SM3
  */
-void ucl_sm3_hmac_finish(ucl_sm3_ctx_t *ctx, u8 *output);
+void ucl_sm3_hmac_finish(ucl_sm3_ctx_t* ctx, u8* output);
 
 /** <b>The complete process of HMAC-SM3</b>.
  *
@@ -210,8 +206,7 @@ void ucl_sm3_hmac_finish(ucl_sm3_ctx_t *ctx, u8 *output);
  *
  * @ingroup UCL_HMAC_SM3
  */
-void ucl_sm3_hmac( u8 *key, int keylen, u8 *input, int ilen, u8 *output );
-
+void ucl_sm3_hmac(u8* key, int keylen, u8* input, int ilen, u8* output);
 
 /** <b>SM3 KDF</b>.
  * the KDF based on SM3 as defined in the draft-shen-ecdsa-01 sections 6 and 7.
@@ -231,12 +226,11 @@ void ucl_sm3_hmac( u8 *key, int keylen, u8 *input, int ilen, u8 *output );
  *
  * @ingroup UCL_SM3
  */
-  int kdf_sm2_sm3(u8 *secret_key,u8 *z,int zlen,int klen);
-
+int kdf_sm2_sm3(u8* secret_key, u8* z, int zlen, int klen);
 
 #ifdef __cplusplus
 }
 //#endif//HASH_SM3
-#endif//UCL_SM3.h
+#endif //UCL_SM3.h
 
 #endif /* ucl_sm3.h */

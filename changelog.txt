@@ -1,3 +1,103 @@
+##########################
+# August 7, 2022 Release #
+##########################
+
+
+--------------------------------
+-- Peripheral Library Changes --
+--------------------------------
+* Deprecated NVIC_SetVector (CMSIS 3 version) in favor 
+  of MXC_NVIC_SetVector
+* Changed presence pulse register flag location in the
+  1-wire registers 
+* Modified ADC asynchronous conversion function to accept the 
+  configuration parameter by reference
+* Fixed bug when using an ADC external scale setting of 3
+* Added correct cache flushing code after all flash writes
+* Added generic transmit functions for I2S
+* Added functions to allow separate clock settings for SPIXF
+  reads and writes
+* Fixed crypto toolbox error where encrypyion and decryption
+  were swapped
+* Fixed error that caused I2C underflows to no be reported correctly
+* Improved asynchronous I2C master transactions 
+* Fixed I2C slave bug that would attempt to call the callback functions
+  even when one had not been provided
+* Fixed the proper wakeup enable/disable for low power timers
+* Changed the RTC get time funtion to no block when the RTC was busy
+* Added new sequences for watchdog timer access
+
+-------------------------
+-- MiscDrivers Changes --
+-------------------------
+* Abstracted external memory interfaces into a common set of functions
+* Added support for PAG7920, color HM0360, monochrome HM0360 cameras
+
+----------------------
+-- MAX32520 Changes --
+----------------------
+* Added ARM DSP examples
+* Added flash_cli example
+
+----------------------
+-- MAX32655 Changes --
+----------------------
+* Added missing SIR register definitions
+* Changed startup code to wait for SIMO to be ready before continuing
+* Added I2S playback example
+
+----------------------
+-- MAX32660 Changes --
+----------------------
+* Changed timer functions to no longer accept the clock source
+
+----------------------
+-- MAX32662 Changes --
+----------------------
+* Removed unsportted CAN flexible data rate
+
+----------------------
+-- MAX32665 Changes --
+----------------------
+* Added missing DVS register definitions
+* Changed startup code to wait for SIMO to be ready before continuing
+* Added support for uisng both flash banks
+* the ability to select the 1-wire master pin mappings
+
+----------------------
+-- MAX32670 Changes --
+----------------------
+* Added new revision B lppioctrl register definitions
+* Added new revision B RTC reset register bit
+* Added missing gp0/1 register definitions
+* Added functions to enable/disable wakeup from low power UART
+
+----------------------
+-- MAX32675 Changes --
+----------------------
+* Added board support package for the FTHR_Apps_B board
+
+----------------------
+-- MAX32690 Changes --
+----------------------
+* Added instruction cache enable to startup code
+* Removed unsportted CAN flexible data rate
+
+----------------------
+-- MAX78000 Changes --
+----------------------
+* Improved the makefile system
+* Added function to get/set the system clock divider
+* Added aisegment_unet, camvid_unet, cifar-100-mixed, cifar-100-residual, cifar-100-simplewide2x-mixed, digit-detection-demo, svhn_tinierssd, UNet-highres-demo, and ImgCapture-Serial examples
+
+----------------------
+-- MAX78002 Changes --
+----------------------
+* Added ability to seperately enable/disable the instruction caches
+* Added cifar-100-effnet2, cifar-200-mobilenet-v2-0.75, and imagenet examples
+
+
+
 ########################
 # June 6, 2022 Release #
 ########################

@@ -45,14 +45,14 @@ int PB_Init(void)
 {
     int retval = E_NO_ERROR;
     unsigned int i;
-    
+
     // Enable pushbutton inputs
     for (i = 0; i < num_pbs; i++) {
         if (MXC_GPIO_Config(&pb_pin[i]) != E_NO_ERROR) {
             retval = E_UNKNOWN;
         }
     }
-    
+
     return retval;
 }
 
@@ -60,24 +60,21 @@ int PB_Init(void)
 int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 {
     MXC_ASSERT(pb < num_pbs);
-    
+
     if (callback) {
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*) pb);
-        
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)pb);
+
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_FALLING);
         MXC_GPIO_EnableInt(pb_pin[pb].port, pb_pin[pb].mask);
         NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
-        
-    }
-    else {
-    
+
+    } else {
         MXC_GPIO_DisableInt(pb_pin[pb].port, pb_pin[pb].mask);
         MXC_GPIO_RegisterCallback(&pb_pin[pb], NULL, NULL);
-        
     }
-    
+
     return E_NO_ERROR;
 }
 

@@ -67,7 +67,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1);
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -140,7 +141,7 @@ int Debug_Init(void)
 {
     // Set up RISCV JTAG pins (P1[0..3] AF2)
     MXC_GPIO_Config(&gpio_cfg_rv_jtag);
-    
+
     return E_NO_ERROR;
 }
 #endif // __riscv

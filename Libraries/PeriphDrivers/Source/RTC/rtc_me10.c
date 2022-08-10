@@ -40,65 +40,67 @@
 #include "mxc_errors.h"
 
 // *****************************************************************************
-int MXC_RTC_SetTimeofdayAlarm (uint32_t ras)
+int MXC_RTC_SetTimeofdayAlarm(uint32_t ras)
 {
-    return MXC_RTC_RevA_SetTimeofdayAlarm((mxc_rtc_reva_regs_t*) MXC_RTC, ras);
+    return MXC_RTC_RevA_SetTimeofdayAlarm((mxc_rtc_reva_regs_t*)MXC_RTC, ras);
 }
 
 // *****************************************************************************
-int MXC_RTC_SetSubsecondAlarm (uint32_t rssa)
+int MXC_RTC_SetSubsecondAlarm(uint32_t rssa)
 {
-    return MXC_RTC_RevA_SetSubsecondAlarm((mxc_rtc_reva_regs_t*) MXC_RTC, rssa);
+    return MXC_RTC_RevA_SetSubsecondAlarm((mxc_rtc_reva_regs_t*)MXC_RTC, rssa);
 }
 
 // *****************************************************************************
-int MXC_RTC_Start (void)
+int MXC_RTC_Start(void)
 {
-    return MXC_RTC_RevA_Start((mxc_rtc_reva_regs_t*) MXC_RTC);
+    return MXC_RTC_RevA_Start((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
 
 // *****************************************************************************
-int MXC_RTC_Stop (void)
+int MXC_RTC_Stop(void)
 {
-    return MXC_RTC_RevA_Stop((mxc_rtc_reva_regs_t*) MXC_RTC);
+    return MXC_RTC_RevA_Stop((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
 
 // *****************************************************************************
-int MXC_RTC_Init (uint32_t sec, uint8_t ssec)
+int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
 {
     MXC_SYS_RTCClockEnable();
     MXC_SYS_Reset_Periph(MXC_SYS_RESET_RTC);
 
-    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*)MXC_RTC, sec, (ssec & MXC_F_RTC_SSEC_SSEC));
 }
 
 // *****************************************************************************
-int MXC_RTC_SquareWaveStart (mxc_rtc_freq_sel_t fq)
+int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t fq)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*) MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED, fq);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
+                                   fq);
 }
 
 // *****************************************************************************
-int MXC_RTC_SquareWaveStop (void)
+int MXC_RTC_SquareWaveStop(void)
 {
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*) MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED, 0);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED,
+                                   0);
 }
 
 // *****************************************************************************
-int MXC_RTC_EnableInt (uint32_t mask)
+int MXC_RTC_EnableInt(uint32_t mask)
 {
-    return MXC_RTC_RevA_EnableInt((mxc_rtc_reva_regs_t*) MXC_RTC, mask);
+    return MXC_RTC_RevA_EnableInt((mxc_rtc_reva_regs_t*)MXC_RTC, mask);
 }
 
 // *****************************************************************************
-int MXC_RTC_DisableInt (uint32_t mask)
+int MXC_RTC_DisableInt(uint32_t mask)
 {
-    return MXC_RTC_RevA_DisableInt((mxc_rtc_reva_regs_t*) MXC_RTC, mask);
+    return MXC_RTC_RevA_DisableInt((mxc_rtc_reva_regs_t*)MXC_RTC, mask);
 }
 
 // *****************************************************************************
-int MXC_RTC_Trim (int8_t trm)
+int MXC_RTC_Trim(int8_t trm)
 {
     /* MAX32650 does not have RTC_TRIM register */
     return E_NOT_SUPPORTED;
@@ -107,41 +109,42 @@ int MXC_RTC_Trim (int8_t trm)
 // *****************************************************************************
 int MXC_RTC_GetFlags(void)
 {
-    return MXC_RTC_RevA_GetFlags((mxc_rtc_reva_regs_t*) MXC_RTC);
+    return MXC_RTC_RevA_GetFlags((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
 
 // *****************************************************************************
 int MXC_RTC_ClearFlags(int flags)
 {
-    return MXC_RTC_RevA_ClearFlags((mxc_rtc_reva_regs_t*) MXC_RTC, flags);
+    return MXC_RTC_RevA_ClearFlags((mxc_rtc_reva_regs_t*)MXC_RTC, flags);
 }
 
 // *****************************************************************************
 int MXC_RTC_GetSubSecond(void)
 {
-    return MXC_RTC_RevA_GetSubSecond((mxc_rtc_reva_regs_t*) MXC_RTC);
+    return MXC_RTC_RevA_GetSubSecond((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
 
 // *****************************************************************************
 int MXC_RTC_GetSecond(void)
 {
-    return MXC_RTC_RevA_GetSecond((mxc_rtc_reva_regs_t*) MXC_RTC);
+    return MXC_RTC_RevA_GetSecond((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
 
 // *****************************************************************************
 int MXC_RTC_GetTime(uint32_t* sec, uint32_t* subsec)
 {
-    return MXC_RTC_RevA_GetTime((mxc_rtc_reva_regs_t*) MXC_RTC, sec, subsec);
+    return MXC_RTC_RevA_GetTime((mxc_rtc_reva_regs_t*)MXC_RTC, sec, subsec);
 }
 
 // *****************************************************************************
 int MXC_RTC_GetBusyFlag(void)
 {
-    return MXC_RTC_RevA_GetBusyFlag((mxc_rtc_reva_regs_t*) MXC_RTC);
+    return MXC_RTC_RevA_GetBusyFlag((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
 
 // *****************************************************************************
-int MXC_RTC_TrimCrystal(mxc_tmr_regs_t* tmr) {
+int MXC_RTC_TrimCrystal(mxc_tmr_regs_t* tmr)
+{
     /* MAX32650 does not have RTC_TRIM register */
     return E_NOT_SUPPORTED;
 }

@@ -1344,6 +1344,451 @@
   </peripheral>
 <!--DMA DMA Controller Fully programmable, chaining capable DMA channels.-->
   <peripheral>
+   <name>DVS</name>
+   <description>Dynamic Voltage Scaling</description>
+   <prependToName>DVS_</prependToName>
+   <baseAddress>0x40004800</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x0030</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>DVS</name>
+    <description>Dynamic Voltage Scaling Interrupt</description>
+    <value>83</value>
+   </interrupt>
+   <registers>
+    <register>
+     <name>CTL</name>
+     <description>Control Register</description>
+     <addressOffset>0x00</addressOffset>
+     <fields>
+      <field>
+       <name>MON_ENA</name>
+       <description>Enable the DVS monitoring circuit</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_ENA</name>
+       <description>Enable the power supply adjustment based on measurements</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PS_FB_DIS</name>
+       <description>Power Supply Feedback Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTRL_TAP_ENA</name>
+       <description>Use the TAP Select for automatic adjustment or monitoring</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PROP_DLY</name>
+       <description>Additional delay to monitor lines</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>MON_ONESHOT</name>
+       <description>Measure delay once</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>GO_DIRECT</name>
+       <description>Operate in automatic mode or move directly</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DIRECT_REG</name>
+       <description>Step incrementally to target voltage</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PRIME_ENA</name>
+       <description>Include a delay line priming signal before monitoring</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LIMIT_IE</name>
+       <description>Enable Limit Error Interrupt</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RANGE_IE</name>
+       <description>Enable Range Error Interrupt</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_IE</name>
+       <description>Enable Adjustment Error Interrupt</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>REF_SEL</name>
+       <description>Select TAP used for voltage adjustment</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>INC_VAL</name>
+       <description>Step size to increment voltage when in automatic mode</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>3</bitWidth>
+      </field>
+      <field>
+       <name>DVS_PS_APB_DIS</name>
+       <description>Prevent the application code from adjusting Vcore</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DVS_HI_RANGE_ANY</name>
+       <description>Any high range signal from a delay line will cause a voltage adjustment</description>
+       <bitOffset>21</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FB_TO_IE</name>
+       <description>Enable Voltage Adjustment Timeout Interrupt</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FC_LV_IE</name>
+       <description>Enable Low Voltage Interrupt</description>
+       <bitOffset>23</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PD_ACK_ENA</name>
+       <description>Prevent DVS from ack'ing a request to enter a low power mode until in the idle state</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_ABORT</name>
+       <description>Causes the DVS to enter the idle state immediately on a request to enter a low power mode</description>
+       <bitOffset>25</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STAT</name>
+     <description>Status Fields</description>
+     <addressOffset>0x04</addressOffset>
+     <resetValue>0x00000000</resetValue>
+     <fields>
+      <field>
+       <name>DVS_STATE</name>
+       <description>State machine state</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_UP_ENA</name>
+       <description>DVS Raising voltage</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_DWN_ENA</name>
+       <description>DVS Lowering voltage</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_ACTIVE</name>
+       <description>Adjustment to a Direct Voltage</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTR_TAP_OK</name>
+       <description>Tap Enabled and the Tap is withing Hi/Low limits</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTR_TAP_SEL</name>
+       <description>Status of selected center tap delay line detect output</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SLOW_TRIP_DET</name>
+       <description>Provides the current combined status of all selected Low Range delay lines</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FAST_TRIP_DET</name>
+       <description>Provides the current combined status of all selected High Range delay lines</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PS_IN_RANGE</name>
+       <description>Indicates if the power supply is in range</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PS_VCNTR</name>
+       <description>Voltage Count value sent to the power supply</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+      <field>
+       <name>MON_DLY_OK</name>
+       <description>Indicates the monitor delay count is at 0</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_DLY_OK</name>
+       <description>Indicates the adjustment delay count is at 0</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LO_LIMIT_DET</name>
+       <description>Power supply voltage counter is at low limit</description>
+       <bitOffset>21</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HI_LIMIT_DET</name>
+       <description>Power supply voltage counter is at high limit</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>VALID_TAP</name>
+       <description>At least one delay line has been enabled</description>
+       <bitOffset>23</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LIMIT_ERR</name>
+       <description>Interrupt flag that indicates a voltage count is at/beyond manufacturer limits</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RANGE_ERR</name>
+       <description>Interrupt flag that indicates a tap has an invalid value</description>
+       <bitOffset>25</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ADJ_ERR</name>
+       <description>Interrupt flag that indicates up and down adjustment requested simultaneously</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>REF_SEL_ERR</name>
+       <description>Indicates the ref select register  bit is out of range</description>
+       <bitOffset>27</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FB_TO_ERR</name>
+       <description>Interrupt flag that indicates a timeout while adjusting the voltage</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FB_TO_ERR_S</name>
+       <description>Interrupt flag that mirror FB_TO_ERR and is write one clear</description>
+       <bitOffset>29</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FC_LV_DET_INT</name>
+       <description>Interrupt flag that indicates the power supply voltage requested is below the low threshold</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FC_LV_DET_S</name>
+       <description>Interrupt flag that mirrors FC_LV_DET_INT</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>DIRECT</name>
+     <description>Direct control of target voltage</description>
+     <addressOffset>0x08</addressOffset>
+     <fields>
+      <field>
+       <name>VOLTAGE</name>
+       <description>Sets the target power supply value</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>MON</name>
+     <description>Monitor Delay</description>
+     <addressOffset>0x00C</addressOffset>
+     <fields>
+      <field>
+       <name>DLY</name>
+       <description>Number of prescaled clocks between delay line samples</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>24</bitWidth>
+      </field>
+      <field>
+       <name>PRE</name>
+       <description>Number of clocks before DVS_MON_DLY is decremented</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ADJ_UP</name>
+     <description>Up Delay Register</description>
+     <addressOffset>0x010</addressOffset>
+     <fields>
+      <field>
+       <name>DLY</name>
+       <description>Number of prescaled clocks between updates of the adjustment delay counter</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+      <field>
+       <name>PRE</name>
+       <description>Number of clocks before DVS_ADJ_UP_DLY is decremented</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ADJ_DWN</name>
+     <description>Down Delay Register</description>
+     <addressOffset>0x014</addressOffset>
+     <fields>
+      <field>
+       <name>DLY</name>
+       <description>Number of prescaled clocks between updates of the adjustment delay counter</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+      <field>
+       <name>PRE</name>
+       <description>Number of clocks before DVS_ADJ_DWN_DLY is decremented</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>THRES_CMP</name>
+     <description>Up Delay Register</description>
+     <addressOffset>0x018</addressOffset>
+     <fields>
+      <field>
+       <name>VCNTR_THRES_CNT</name>
+       <description>Value used to determine 'low voltage' range</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+      <field>
+       <name>VCNTR_THRES_MASK</name>
+       <description>Mask applied to threshold and vcount to determine if the device is in a low voltage range</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <dim>5</dim>
+     <dimIncrement>5</dimIncrement>
+     <dimIndex>0,1,2,3,4</dimIndex>
+     <name>TAP_SEL</name>
+     <description>DVS Tap Select Register</description>
+     <addressOffset>0x1C</addressOffset>
+     <fields>
+      <field>
+       <name>LO</name>
+       <description>Select delay line tap for lower bound of auto adjustment</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+      <field>
+       <name>LO_TAP_STAT</name>
+       <description>Returns last delay line tap value</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTR_TAP_STAT</name>
+       <description>Returns last delay line tap value</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HI_TAP_STAT</name>
+       <description>Returns last delay line tap value</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HI</name>
+       <description>Selects delay line tap for high point of auto adjustment</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+      <field>
+       <name>CTR</name>
+       <description>Selects delay line tap for center point of auto adjustment</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+      <field>
+       <name>COARSE</name>
+       <description>Selects delay line tap for coarse or fixed delay portion of the line</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>3</bitWidth>
+      </field>
+      <field>
+       <name>DET_DLY</name>
+       <description>Number of HCLK between delay line launch and sampling</description>
+       <bitOffset>29</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>DELAY_ACT</name>
+       <description>Set if the delay is active</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--DVS Dynamic Voltage Scaling-->
+  <peripheral>
    <name>FCR</name>
    <description>Function Control.</description>
    <baseAddress>0x40000800</baseAddress>
@@ -7067,15 +7512,9 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>ext_pullup_pol</name>
-       <description>External Pullup.</description>
-       <bitRange>[5:5]</bitRange>
-       <access>read-only</access>
-      </field>
-      <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>

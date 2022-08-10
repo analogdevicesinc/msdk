@@ -60,25 +60,19 @@
 #include "periph_api.h"
 #include "app_ui.h"
 
-
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      2048U
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = {
-    { 16,              8 },
-    { 32,              4 },
-    { 192,             8 },
-    { 256,             8 }
-};
+static wsfBufPoolDesc_t mainPoolDesc[] = {{16, 8}, {32, 4}, {192, 8}, {256, 8}};
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -106,13 +100,13 @@ static void appRxCallback(uint8_t* data, uint16_t len)
     /* Print the received data */
     printf("App received: ");
 
-    for(i = 0; i < len; i++) {
+    for (i = 0; i < len; i++) {
         printf("0x%02X ", data[i]);
     }
     printf("\n");
 
     /* Echo the data back to the central */
-    if(!PeriphTXData(data, len))   {
+    if (!PeriphTXData(data, len)) {
         printf("Error sending data to peer\n");
     }
 }
@@ -130,7 +124,7 @@ static void mainWsfInit(void)
     /* Configurations must be persistent. */
     static BbRtCfg_t mainBbRtCfg;
 
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
 #endif
@@ -167,22 +161,20 @@ static void mainWsfInit(void)
     AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg     = &mainBbRtCfg,
-        .wlSizeCfg    = 4,
-        .rlSizeCfg    = 4,
-        .plSizeCfg    = 4,
-        .pLlRtCfg     = &mainLlRtCfg,
-        .pFreeMem     = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable()
-    };
+    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
+                           .wlSizeCfg    = 4,
+                           .rlSizeCfg    = 4,
+                           .plSizeCfg    = 4,
+                           .pLlRtCfg     = &mainLlRtCfg,
+                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
+                           .freeMemAvail = WsfHeapCountAvailable()};
 
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
-    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlSetBdAddr((uint8_t*)&bdAddr);
 #endif
 
     StackInitPeriph();
@@ -206,11 +198,11 @@ int main(void)
 {
     mainWsfInit();
 
-    while(1) {
+    while (1) {
         /* Run the WSF OS */
         wsfOsDispatcher();
 
-        if(!WsfOsActive()) {
+        if (!WsfOsActive()) {
             /* No WSF tasks are active, optionally sleep */
         }
     }

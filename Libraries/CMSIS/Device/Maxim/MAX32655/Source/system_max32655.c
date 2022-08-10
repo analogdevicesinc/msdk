@@ -44,7 +44,7 @@
 #include "icc.h"
 #include "simo.h"
 
-extern void (* const __isr_vector[])(void);
+extern void (*const __isr_vector[])(void);
 
 uint32_t SystemCoreClock = HIRC_FREQ;
 
@@ -54,8 +54,7 @@ __weak void SystemCoreClockUpdate(void)
 
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
-    switch (clk_src)
-    {
+    switch (clk_src) {
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
             base_freq = EXTCLK_FREQ;
             break;
@@ -66,13 +65,13 @@ __weak void SystemCoreClockUpdate(void)
             base_freq = INRO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-        base_freq = IPO_FREQ;
+            base_freq = IPO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
-        base_freq = ISO_FREQ;
+            base_freq = ISO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-        base_freq = IBRO_FREQ;
+            base_freq = IBRO_FREQ;
             break;
         case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
             base_freq = ERTCO_FREQ;
@@ -100,7 +99,22 @@ __weak void SystemCoreClockUpdate(void)
  */
 __weak int PreInit(void)
 {
-    /* Do nothing */
+    uint32_t psc = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV;
+
+    /* Divide down system clock until SIMO is ready */
+    MXC_GCR->clkctrl = (MXC_GCR->clkctrl & ~(MXC_F_GCR_CLKCTRL_SYSCLK_DIV)) |
+                       (MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128);
+
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
+    }
+
+    /* Restore system clock divider */
+    MXC_GCR->clkctrl = (MXC_GCR->clkctrl & ~(MXC_F_GCR_CLKCTRL_SYSCLK_DIV)) | (psc);
+
     return 0;
 }
 
@@ -113,7 +127,6 @@ __weak int Board_Init(void)
 
 __weak void PalSysInit(void)
 {
-
 }
 
 /* This function is called just before control is transferred to main().
@@ -126,7 +139,7 @@ __weak void SystemInit(void)
 {
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-#if defined ( __CC_ARM) || defined ( __GNUC__)
+#if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (unsigned long)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
@@ -146,11 +159,14 @@ __weak void SystemInit(void)
 
     /* Setup the SIMO voltages */
     MXC_SIMO_SetVregO_A(1750);
-    while(MXC_SIMO_GetOutReadyA() != E_NO_ERROR){}
+    while (MXC_SIMO_GetOutReadyA() != E_NO_ERROR) {
+    }
     MXC_SIMO_SetVregO_B(1100);
-    while(MXC_SIMO_GetOutReadyB() != E_NO_ERROR){}
+    while (MXC_SIMO_GetOutReadyB() != E_NO_ERROR) {
+    }
     MXC_SIMO_SetVregO_C(1100);
-    while(MXC_SIMO_GetOutReadyC() != E_NO_ERROR){}
+    while (MXC_SIMO_GetOutReadyC() != E_NO_ERROR) {
+    }
 
     /* Change system clock source to the main high-speed clock */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
@@ -162,7 +178,7 @@ __weak void SystemInit(void)
     PalSysInit();
 }
 
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 /* Global variable initialization does not occur until post scatterload in Keil tools.*/
 
 /* External function called after our post scatterload function implementation. */
@@ -180,6 +196,7 @@ void $Sub$$__main_after_scatterload(void)
 {
     SystemInit();
     $Super$$__main_after_scatterload();
-    while(1);
+    while (1)
+        ;
 }
 #endif /* __CC_ARM */

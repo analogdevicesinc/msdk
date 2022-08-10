@@ -54,8 +54,6 @@
 #include "board.h"
 #include "led.h"
 #include "pb.h"
-#include "tft.h"
-#include "touchscreen.h"
 
 /*
  *  Peripheral Driver Includes
@@ -74,6 +72,5 @@
 #include "uart.h"
 #include "wdt.h"
 #include "wut.h"
-
 
 #endif /* __MAX32xxx_H_ */

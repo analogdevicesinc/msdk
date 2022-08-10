@@ -15,7 +15,7 @@
     },
     
     "target":"MAX32570",
-    "board":"Q_EvKit_V1",
+    "board":"MN_EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -51,7 +51,13 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/include",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/include/core",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/include/dgb_log",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/include/devclass",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/include/enumerate",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/include/core/musbhsfc"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -64,7 +70,11 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/src/core",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/src/dbg_log",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/src/devclass",
+        "${config:MAXIM_PATH}/Libraries/MAXUSB/src/enumerate"
     ],
     "C_Cpp.default.defines": [
         "${config:board}"

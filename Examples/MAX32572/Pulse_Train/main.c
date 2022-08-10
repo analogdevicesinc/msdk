@@ -48,7 +48,7 @@
 #include <MAX32xxx.h>
 
 /***** Definitions *****/
-#define    ALL_PT    0x7F
+#define ALL_PT 0x7F
 /***** Globals *****/
 
 /***** Functions *****/
@@ -57,7 +57,7 @@
 void PT_IRQHandler(void)
 {
     printf("flags = 0x%08x\n", MXC_PT_GetFlags());
-    
+
     MXC_PT_ClearFlags(ALL_PT);
 }
 
@@ -66,18 +66,18 @@ void ContinuousPulseTrain(void)
 {
     //Setup GPIO to PT output function
     //GPIO P0.13 uses PT4
-    
+
     //setup PT configuration
     mxc_pt_cfg_t ptConfig;
-    ptConfig.channel = 4;                           //PT4
-    ptConfig.bps = 2;                               //bit rate
-    ptConfig.ptLength = 5;                          //bits
-    ptConfig.pattern = 0x16;
-    ptConfig.loop = 0;                              //continuous loop
+    ptConfig.channel   = 4; //PT4
+    ptConfig.bps       = 2; //bit rate
+    ptConfig.ptLength  = 5; //bits
+    ptConfig.pattern   = 0x16;
+    ptConfig.loop      = 0; //continuous loop
     ptConfig.loopDelay = 0;
-    
+
     MXC_PT_Config(&ptConfig);
-    
+
     //start PT4
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT4);
 }
@@ -87,10 +87,10 @@ void SquareWave(void)
 {
     //Setup GPIO to PT output function
     //GPIO P0.12 uses PT3
-    
-    uint32_t freq = 10;//Hz
-    MXC_PT_SqrWaveConfig(3, freq);                  //PT3
-    
+
+    uint32_t freq = 10;            //Hz
+    MXC_PT_SqrWaveConfig(3, freq); //PT3
+
     //start PT3
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT3);
 }
@@ -101,17 +101,18 @@ int main(void)
     printf("\n*************** Pulse Train Demo ****************\n");
     printf("LED0 = Outputs continuous pattern of 10110b at 2bps\n");
     printf("LED1 = Outputs 10Hz continuous square wave\n");
-    
+
     printf("\nConnect external LEDS to see the demo.\n");
     printf("LED0 to P0.13 and LED1 to P0.12");
-    
-    NVIC_EnableIRQ(PT_IRQn);         //enabled default interrupt handler
-    MXC_PT_EnableInt(ALL_PT);        //enabled interrupts for all PT
-    MXC_PT_Init(MXC_PT_CLK_DIV1);    //initialize pulse trains
-    
+
+    NVIC_EnableIRQ(PT_IRQn);      //enabled default interrupt handler
+    MXC_PT_EnableInt(ALL_PT);     //enabled interrupts for all PT
+    MXC_PT_Init(MXC_PT_CLK_DIV1); //initialize pulse trains
+
     //configure and start pulse trains
     ContinuousPulseTrain();
     SquareWave();
-    
-    while(1) {}
+
+    while (1) {
+    }
 }

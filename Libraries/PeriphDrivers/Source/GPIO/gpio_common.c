@@ -47,34 +47,35 @@ int MXC_GPIO_Common_Init(uint32_t portmask)
 {
     if (!initialized) {
         int i, j;
-        
+
         for (i = 0; i < MXC_CFG_GPIO_INSTANCES; i++) {
             // Initialize call back arrays
             for (j = 0; j < MXC_CFG_GPIO_PINS_PORT; j++) {
                 callback[i][j] = NULL;
             }
         }
-        
+
         initialized = 1;
     }
-    
+
     return E_NO_ERROR;
 }
 
-void MXC_GPIO_Common_RegisterCallback(const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn func, void* cbdata)
+void MXC_GPIO_Common_RegisterCallback(const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn func,
+                                      void* cbdata)
 {
     uint32_t mask;
     unsigned int pin;
-    
+
     mask = cfg->mask;
-    pin = 0;
-    
+    pin  = 0;
+
     while (mask) {
         if (mask & 1) {
             callback[MXC_GPIO_GET_IDX(cfg->port)][pin] = func;
-            cbparam[MXC_GPIO_GET_IDX(cfg->port)][pin] = cbdata;
+            cbparam[MXC_GPIO_GET_IDX(cfg->port)][pin]  = cbdata;
         }
-        
+
         pin++;
         mask >>= 1;
     }
@@ -84,23 +85,23 @@ void MXC_GPIO_Common_Handler(unsigned int port)
 {
     uint32_t stat;
     unsigned int pin;
-    
+
     MXC_ASSERT(port < MXC_CFG_GPIO_INSTANCES);
-    
+
     mxc_gpio_regs_t* gpio = MXC_GPIO_GET_GPIO(port);
-    
+
     stat = MXC_GPIO_GetFlags(gpio);
     MXC_GPIO_ClearFlags(gpio, stat);
-    
+
     pin = 0;
-    
+
     while (stat) {
         if (stat & 1) {
             if (callback[port][pin]) {
                 callback[port][pin](cbparam[port][pin]);
             }
         }
-        
+
         pin++;
         stat >>= 1;
     }

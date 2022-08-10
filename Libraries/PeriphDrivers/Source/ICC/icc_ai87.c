@@ -49,14 +49,13 @@
 
 /* **** Functions **** */
 
-
 /* ******************************************************************************
 Maxim Internal Use
  * ****************************************************************************** */
 
 int MXC_ICC_ID(mxc_icc_regs_t* icc, mxc_icc_info_t cid)
 {
-    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t*) MXC_ICC, cid);
+    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t*)MXC_ICC, cid);
 }
 
 void MXC_ICC_Enable(mxc_icc_regs_t* icc)

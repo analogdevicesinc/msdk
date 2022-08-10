@@ -11,9 +11,13 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>31</version>
+                <version>33</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
+                <option>
+                    <name>BrowseInfoPath</name>
+                    <state>Debug\BrowseInfo</state>
+                </option>
                 <option>
                     <name>ExePath</name>
                     <state>Debug\Exe</state>
@@ -66,15 +70,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>8.50.4.26131</state>
-                </option>
-                <option>
-                    <name>GeneralEnableMisra</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>GeneralMisraVerbose</name>
-                    <state>0</state>
+                    <state>9.10.2.39304</state>
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
@@ -97,26 +93,12 @@
                     <state>0</state>
                 </option>
                 <option>
-                    <name>GeneralMisraRules98</name>
-                    <version>0</version>
-                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                </option>
-                <option>
-                    <name>GeneralMisraVer</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>GeneralMisraRules04</name>
-                    <version>0</version>
-                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                </option>
-                <option>
                     <name>RTConfigPath2</name>
                     <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>28</version>
+                    <version>30</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -133,7 +115,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>28</version>
+                    <version>30</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -156,7 +138,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>28</version>
+                    <version>30</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -209,17 +191,27 @@
                     <version>0</version>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>OGAarch64Abi</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>OG_32_64Device</name>
+                    <state>0</state>
+                </option>
             </data>
         </settings>
         <settings>
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>36</version>
+                <version>37</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
+                    <state>TARGET_REV=0x4131</state>
+                    <state>TARGET=32675</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>
                 </option>
@@ -341,10 +333,6 @@
                     <state></state>
                 </option>
                 <option>
-                    <name>CompilerMisraOverride</name>
-                    <state>0</state>
-                </option>
-                <option>
                     <name>CCIncludePath2</name>
                     <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
                     <state>$CMSIS_PACK_INCLUDES$</state>
@@ -375,16 +363,6 @@
                 <option>
                     <name>CCOptLevelSlave</name>
                     <state>1</state>
-                </option>
-                <option>
-                    <name>CompilerMisraRules98</name>
-                    <version>0</version>
-                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                </option>
-                <option>
-                    <name>CompilerMisraRules04</name>
-                    <version>0</version>
-                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -481,7 +459,7 @@
             <name>AARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>10</version>
+                <version>11</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -641,6 +619,10 @@
                     <name>AsmNoLiteralPool</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>PreInclude</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -680,12 +662,8 @@
                 <extensions></extensions>
                 <cmdline></cmdline>
                 <hasPrio>0</hasPrio>
+                <buildSequence>inputOutputBased</buildSequence>
             </data>
-        </settings>
-        <settings>
-            <name>BICOMP</name>
-            <archiveVersion>0</archiveVersion>
-            <data />
         </settings>
         <settings>
             <name>BUILDACTION</name>
@@ -699,16 +677,12 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>23</version>
+                <version>25</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
                     <name>IlinkLibIOConfig</name>
                     <state>1</state>
-                </option>
-                <option>
-                    <name>XLinkMisraHandler</name>
-                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkInputFileSlave</name>
@@ -780,7 +754,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$.iar\config\linker\MAX32670_IAR.icf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$.iar\config\linker\MAX32675_IAR.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1035,6 +1009,26 @@
                     <name>IlinkRawBinaryAlign2</name>
                     <state></state>
                 </option>
+                <option>
+                    <name>IlinkLogCrtRoutineSelection</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkLogFragmentInfo</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkLogInlining</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkLogMerging</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkDemangle</name>
+                    <state>0</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -1058,11 +1052,6 @@
                 </option>
             </data>
         </settings>
-        <settings>
-            <name>BILINK</name>
-            <archiveVersion>0</archiveVersion>
-            <data />
-        </settings>
     </configuration>
     <configuration>
         <name>Release</name>
@@ -1074,9 +1063,13 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>31</version>
+                <version>33</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
+                <option>
+                    <name>BrowseInfoPath</name>
+                    <state>Release\BrowseInfo</state>
+                </option>
                 <option>
                     <name>ExePath</name>
                     <state>Release\Exe</state>
@@ -1132,14 +1125,6 @@
                     <state>8.32.3.20186</state>
                 </option>
                 <option>
-                    <name>GeneralEnableMisra</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>GeneralMisraVerbose</name>
-                    <state>0</state>
-                </option>
-                <option>
                     <name>OGChipSelectEditMenu</name>
                     <state></state>
                 </option>
@@ -1160,26 +1145,12 @@
                     <state>0</state>
                 </option>
                 <option>
-                    <name>GeneralMisraRules98</name>
-                    <version>0</version>
-                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                </option>
-                <option>
-                    <name>GeneralMisraVer</name>
-                    <state>0</state>
-                </option>
-                <option>
-                    <name>GeneralMisraRules04</name>
-                    <version>0</version>
-                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                </option>
-                <option>
                     <name>RTConfigPath2</name>
                     <state></state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>28</version>
+                    <version>30</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1196,7 +1167,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>28</version>
+                    <version>30</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -1219,7 +1190,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>28</version>
+                    <version>30</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1272,13 +1243,21 @@
                     <version>0</version>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>OGAarch64Abi</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>OG_32_64Device</name>
+                    <state>0</state>
+                </option>
             </data>
         </settings>
         <settings>
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>36</version>
+                <version>37</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -1405,10 +1384,6 @@
                     <state></state>
                 </option>
                 <option>
-                    <name>CompilerMisraOverride</name>
-                    <state>0</state>
-                </option>
-                <option>
                     <name>CCIncludePath2</name>
                     <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
                     <state>$CMSIS_PACK_INCLUDES$</state>
@@ -1439,16 +1414,6 @@
                 <option>
                     <name>CCOptLevelSlave</name>
                     <state>1</state>
-                </option>
-                <option>
-                    <name>CompilerMisraRules98</name>
-                    <version>0</version>
-                    <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                </option>
-                <option>
-                    <name>CompilerMisraRules04</name>
-                    <version>0</version>
-                    <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
                 </option>
                 <option>
                     <name>CCPosIndRopi</name>
@@ -1545,7 +1510,7 @@
             <name>AARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>10</version>
+                <version>11</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -1705,6 +1670,10 @@
                     <name>AsmNoLiteralPool</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>PreInclude</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -1744,12 +1713,8 @@
                 <extensions></extensions>
                 <cmdline></cmdline>
                 <hasPrio>0</hasPrio>
+                <buildSequence>inputOutputBased</buildSequence>
             </data>
-        </settings>
-        <settings>
-            <name>BICOMP</name>
-            <archiveVersion>0</archiveVersion>
-            <data />
         </settings>
         <settings>
             <name>BUILDACTION</name>
@@ -1763,16 +1728,12 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>23</version>
+                <version>25</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
                     <name>IlinkLibIOConfig</name>
                     <state>1</state>
-                </option>
-                <option>
-                    <name>XLinkMisraHandler</name>
-                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkInputFileSlave</name>
@@ -2099,6 +2060,26 @@
                     <name>IlinkRawBinaryAlign2</name>
                     <state></state>
                 </option>
+                <option>
+                    <name>IlinkLogCrtRoutineSelection</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkLogFragmentInfo</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkLogInlining</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkLogMerging</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkDemangle</name>
+                    <state>0</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -2122,11 +2103,6 @@
                 </option>
             </data>
         </settings>
-        <settings>
-            <name>BILINK</name>
-            <archiveVersion>0</archiveVersion>
-            <data />
-        </settings>
     </configuration>
     <file>
         <name>$PROJ_DIR$\..\main.c</name>
@@ -2134,1479 +2110,230 @@
     <group>
         <name>CMSIS-Pack</name>
         <tag>CMSISPack.Component</tag>
-        <group>
-            <name>Maxim MAX32670 BSP _BSP.EvKit V1_1.0.0</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Boards/Maxim/MAX32670_EVKIT/Common/EvKit_V1/Source/board.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Boards/Maxim/MAX32670_EVKIT/Common/Source/led.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Boards/Maxim/MAX32670_EVKIT/Common/Source/pb.c</name>
-                <configuration>
-                    <name>Debug</name>
-                    <settings>
-                        <name>ICCARM</name>
-                        <data>
-                            <version>36</version>
-                            <wantNonLocal>0</wantNonLocal>
-                            <debug>1</debug>
-                            <option>
-                                <name>CCDefines</name>
-                                <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
-                                <state>_RTE_</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocFile</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocComments</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocLine</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMnemonics</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMessages</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssSource</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEnableRemarks</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagSuppress</name>
-                                <state>Pe188</state>
-                            </option>
-                            <option>
-                                <name>CCDiagRemark</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarning</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagError</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCObjPrefix</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCAllowList</name>
-                                <version>1</version>
-                                <state>00000000</state>
-                            </option>
-                            <option>
-                                <name>CCDebugInfo</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IEndianMode</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptionsCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptions</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCLangConformance</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCSignedPlainChar</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCRequirePrototypes</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarnAreErr</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCompilerRuntimeInfo</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IFpuProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>OutputFile</name>
-                                <state>$FILE_BNAME$.o</state>
-                            </option>
-                            <option>
-                                <name>CCLibConfigHeader</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>PreInclude</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraOverride</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCIncludePath2</name>
-                                <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
-                                <state>$CMSIS_PACK_INCLUDES$</state>
-                                <state>$PROJ_DIR$\..</state>
-                                <state>$PROJ_DIR$\..\RTE</state>
-                            </option>
-                            <option>
-                                <name>CCStdIncCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCodeSection</name>
-                                <state>.text</state>
-                            </option>
-                            <option>
-                                <name>IProcessorMode2</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevel</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategy</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevelSlave</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules98</name>
-                                <version>0</version>
-                                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules04</name>
-                                <version>0</version>
-                                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRopi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRwpi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndNoDynInit</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccLang</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCDialect</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccAllowVLA</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccStaticDestr</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccCppInlineSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCmsis</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccFloatSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCNoLiteralPool</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategySlave</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncSource</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutputBom</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEncInput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccExceptions2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccRTTI2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCStackProtection</name>
-                                <state>0</state>
-                            </option>
-                        </data>
-                    </settings>
-                </configuration>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Boards/Maxim/MAX32670_EVKIT/Common/Source/stdio.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.GPIO_1.0.0</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.Startup_1.0.0</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\cmain.s</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\low_level_init.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\max32670.h</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
-                <configuration>
-                    <name>Debug</name>
-                    <settings>
-                        <name>ICCARM</name>
-                        <data>
-                            <version>36</version>
-                            <wantNonLocal>0</wantNonLocal>
-                            <debug>1</debug>
-                            <option>
-                                <name>CCDefines</name>
-                                <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
-                                <state>_RTE_</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocFile</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocComments</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocLine</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMnemonics</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMessages</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssSource</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEnableRemarks</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagSuppress</name>
-                                <state>Pe167</state>
-                            </option>
-                            <option>
-                                <name>CCDiagRemark</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarning</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagError</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCObjPrefix</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCAllowList</name>
-                                <version>1</version>
-                                <state>00000000</state>
-                            </option>
-                            <option>
-                                <name>CCDebugInfo</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IEndianMode</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptionsCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptions</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCLangConformance</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCSignedPlainChar</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCRequirePrototypes</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarnAreErr</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCompilerRuntimeInfo</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IFpuProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>OutputFile</name>
-                                <state>$FILE_BNAME$.o</state>
-                            </option>
-                            <option>
-                                <name>CCLibConfigHeader</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>PreInclude</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraOverride</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCIncludePath2</name>
-                                <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
-                                <state>$CMSIS_PACK_INCLUDES$</state>
-                                <state>$PROJ_DIR$\..</state>
-                                <state>$PROJ_DIR$\..\RTE</state>
-                            </option>
-                            <option>
-                                <name>CCStdIncCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCodeSection</name>
-                                <state>.text</state>
-                            </option>
-                            <option>
-                                <name>IProcessorMode2</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevel</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategy</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevelSlave</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules98</name>
-                                <version>0</version>
-                                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules04</name>
-                                <version>0</version>
-                                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRopi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRwpi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndNoDynInit</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccLang</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCDialect</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccAllowVLA</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccStaticDestr</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccCppInlineSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCmsis</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccFloatSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCNoLiteralPool</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategySlave</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncSource</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutputBom</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEncInput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccExceptions2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccRTTI2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCStackProtection</name>
-                                <state>0</state>
-                            </option>
-                        </data>
-                    </settings>
-                </configuration>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/pins_me15.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/sys_me15.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\system_max32670.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.Timers_1.0.0</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_common.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_me15.c</name>
-                <configuration>
-                    <name>Debug</name>
-                    <settings>
-                        <name>ICCARM</name>
-                        <data>
-                            <version>36</version>
-                            <wantNonLocal>0</wantNonLocal>
-                            <debug>1</debug>
-                            <option>
-                                <name>CCDefines</name>
-                                <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
-                                <state>_RTE_</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocFile</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocComments</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocLine</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMnemonics</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMessages</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssSource</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEnableRemarks</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagSuppress</name>
-                                <state>Pe549</state>
-                            </option>
-                            <option>
-                                <name>CCDiagRemark</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarning</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagError</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCObjPrefix</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCAllowList</name>
-                                <version>1</version>
-                                <state>00000000</state>
-                            </option>
-                            <option>
-                                <name>CCDebugInfo</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IEndianMode</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptionsCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptions</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCLangConformance</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCSignedPlainChar</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCRequirePrototypes</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarnAreErr</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCompilerRuntimeInfo</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IFpuProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>OutputFile</name>
-                                <state>$FILE_BNAME$.o</state>
-                            </option>
-                            <option>
-                                <name>CCLibConfigHeader</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>PreInclude</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraOverride</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCIncludePath2</name>
-                                <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
-                                <state>$CMSIS_PACK_INCLUDES$</state>
-                                <state>$PROJ_DIR$\..</state>
-                                <state>$PROJ_DIR$\..\RTE</state>
-                            </option>
-                            <option>
-                                <name>CCStdIncCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCodeSection</name>
-                                <state>.text</state>
-                            </option>
-                            <option>
-                                <name>IProcessorMode2</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevel</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategy</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevelSlave</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules98</name>
-                                <version>0</version>
-                                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules04</name>
-                                <version>0</version>
-                                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRopi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRwpi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndNoDynInit</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccLang</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCDialect</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccAllowVLA</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccStaticDestr</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccCppInlineSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCmsis</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccFloatSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCNoLiteralPool</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategySlave</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncSource</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutputBom</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEncInput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccExceptions2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccRTTI2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCStackProtection</name>
-                                <state>0</state>
-                            </option>
-                        </data>
-                    </settings>
-                </configuration>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_revb.c</name>
-                <configuration>
-                    <name>Debug</name>
-                    <settings>
-                        <name>ICCARM</name>
-                        <data>
-                            <version>36</version>
-                            <wantNonLocal>0</wantNonLocal>
-                            <debug>1</debug>
-                            <option>
-                                <name>CCDefines</name>
-                                <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
-                                <state>_RTE_</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocFile</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocComments</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocLine</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMnemonics</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMessages</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssSource</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEnableRemarks</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagSuppress</name>
-                                <state>Pe068, Pe188</state>
-                            </option>
-                            <option>
-                                <name>CCDiagRemark</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarning</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagError</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCObjPrefix</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCAllowList</name>
-                                <version>1</version>
-                                <state>00000000</state>
-                            </option>
-                            <option>
-                                <name>CCDebugInfo</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IEndianMode</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptionsCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptions</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCLangConformance</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCSignedPlainChar</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCRequirePrototypes</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarnAreErr</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCompilerRuntimeInfo</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IFpuProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>OutputFile</name>
-                                <state>$FILE_BNAME$.o</state>
-                            </option>
-                            <option>
-                                <name>CCLibConfigHeader</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>PreInclude</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraOverride</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCIncludePath2</name>
-                                <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
-                                <state>$CMSIS_PACK_INCLUDES$</state>
-                                <state>$PROJ_DIR$\..</state>
-                                <state>$PROJ_DIR$\..\RTE</state>
-                            </option>
-                            <option>
-                                <name>CCStdIncCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCodeSection</name>
-                                <state>.text</state>
-                            </option>
-                            <option>
-                                <name>IProcessorMode2</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevel</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategy</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevelSlave</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules98</name>
-                                <version>0</version>
-                                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules04</name>
-                                <version>0</version>
-                                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRopi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRwpi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndNoDynInit</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccLang</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCDialect</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccAllowVLA</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccStaticDestr</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccCppInlineSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCmsis</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccFloatSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCNoLiteralPool</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategySlave</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncSource</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutputBom</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEncInput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccExceptions2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccRTTI2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCStackProtection</name>
-                                <state>0</state>
-                            </option>
-                        </data>
-                    </settings>
-                </configuration>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.UART_1.0.0</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/UART/uart_me15.c</name>
-                <configuration>
-                    <name>Debug</name>
-                    <settings>
-                        <name>ICCARM</name>
-                        <data>
-                            <version>36</version>
-                            <wantNonLocal>0</wantNonLocal>
-                            <debug>1</debug>
-                            <option>
-                                <name>CCDefines</name>
-                                <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
-                                <state>_RTE_</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocFile</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocComments</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPreprocLine</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMnemonics</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListCMessages</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssFile</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCListAssSource</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEnableRemarks</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagSuppress</name>
-                                <state>Pe068</state>
-                            </option>
-                            <option>
-                                <name>CCDiagRemark</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarning</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCDiagError</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCObjPrefix</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCAllowList</name>
-                                <version>1</version>
-                                <state>00000000</state>
-                            </option>
-                            <option>
-                                <name>CCDebugInfo</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IEndianMode</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptionsCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IExtraOptions</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CCLangConformance</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCSignedPlainChar</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCRequirePrototypes</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCDiagWarnAreErr</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCompilerRuntimeInfo</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IFpuProcessor</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>OutputFile</name>
-                                <state>$FILE_BNAME$.o</state>
-                            </option>
-                            <option>
-                                <name>CCLibConfigHeader</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>PreInclude</name>
-                                <state></state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraOverride</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCIncludePath2</name>
-                                <state>$CMSIS_PACK_DEVICE_INCLUDES$</state>
-                                <state>$CMSIS_PACK_INCLUDES$</state>
-                                <state>$PROJ_DIR$\..</state>
-                                <state>$PROJ_DIR$\..\RTE</state>
-                            </option>
-                            <option>
-                                <name>CCStdIncCheck</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCCodeSection</name>
-                                <state>.text</state>
-                            </option>
-                            <option>
-                                <name>IProcessorMode2</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevel</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategy</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptLevelSlave</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules98</name>
-                                <version>0</version>
-                                <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CompilerMisraRules04</name>
-                                <version>0</version>
-                                <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRopi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndRwpi</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCPosIndNoDynInit</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccLang</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCDialect</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccAllowVLA</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccStaticDestr</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccCppInlineSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccCmsis</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>IccFloatSemantics</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptimizationNoSizeConstraints</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCNoLiteralPool</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCOptStrategySlave</name>
-                                <version>0</version>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncSource</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCEncOutputBom</name>
-                                <state>1</state>
-                            </option>
-                            <option>
-                                <name>CCEncInput</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccExceptions2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>IccRTTI2</name>
-                                <state>0</state>
-                            </option>
-                            <option>
-                                <name>CCStackProtection</name>
-                                <state>0</state>
-                            </option>
-                        </data>
-                    </settings>
-                </configuration>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.0}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
-            </file>
-        </group>
         <file>
             <name>$PROJ_DIR$\..\RTE\RTE_Components.h</name>
         </file>
+        <group>
+            <name>Maxim MAX32675 BSP _BSP.EvKit V1_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/Boards/MAX32675/EvKit_V1/Source/board.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/Boards/MAX32675/Source/led.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/Boards/MAX32675/Source/pb.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/Boards/MAX32675/Source/stdio.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.GPIO_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me16.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.Startup_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32675_Cortex-M4\cmain.s</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32675_Cortex-M4\low_level_init.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32675_Cortex-M4\max32675.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32675_Cortex-M4\startup_max32675.s</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32675_Cortex-M4\system_max32675.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.UART_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/UART/uart_me16.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.SYS_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/pins_me16.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/sys_me15.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.SPI_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SPI/spi_me15.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/SPI/spi_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.FLC_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_me15.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.AFE_1.0.3</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/AFE/afe.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/AFE/afe_gpio.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/AFE/hart_uart.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/AFE/infoblock.c</name>
+            </file>
+        </group>
     </group>
     <cmsisPackSettings>
         <rte>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;configuration xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"&gt;
   &lt;packages/&gt;
-  &lt;device Dclock="96000000" Dcore="Cortex-M4" DcoreVersion="r0p1" Dendian="Little-endian" Dfamily="MAX32670-66" Dfpu="SP_FPU" Dmpu="NO_MPU" Dname="MAX32670" Dvendor="Maxim:23" Pname="Cortex-M4" Punits="2" info="ARM Cortex-M4 96 MHz, 512 kB RAM, 1 MB ROM" url="http://www.keil.com/dd2/maxim/max32670"&gt;
-    &lt;package info="Maxim Integrated MAX32670 Series Device Support, Board Support Package and Examples" name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
+  &lt;device Dclock="96000000" Dcore="Cortex-M4" DcoreVersion="r0p1" Dendian="Little-endian" Dfamily="MAX32675-66" Dfpu="SP_FPU" Dmpu="NO_MPU" Dname="MAX32675" Dvendor="Maxim:23" Pname="Cortex-M4" Punits="2" info="ARM Cortex-M4 96 MHz, 512 kB RAM, 1 MB ROM" url="http://www.keil.com/dd2/maxim/max32675"&gt;
+    &lt;package info="Maxim Integrated MAX32675 Series Device Support, Board Support Package and Examples" name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
   &lt;/device&gt;
   &lt;toolchain Tcompiler="IAR" Toutput="exe"/&gt;
   &lt;components&gt;
-    &lt;component Cbundle="MAX32670 BSP" Cbundleversion="1.0.0" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.0"&gt;
-      &lt;package name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="include" name="Boards/Maxim/MAX32670_EVKIT/Common/EvKit_V1/Include/"/&gt;
-      &lt;file category="sourceC" name="Boards/Maxim/MAX32670_EVKIT/Common/EvKit_V1/Source/board.c" version="1.0.0"/&gt;
-      &lt;file category="include" name="Boards/Maxim/MAX32670_EVKIT/Common/Include/"/&gt;
-      &lt;file category="sourceC" name="Boards/Maxim/MAX32670_EVKIT/Common/Source/led.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" name="Boards/Maxim/MAX32670_EVKIT/Common/Source/pb.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" name="Boards/Maxim/MAX32670_EVKIT/Common/Source/stdio.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="MAX32675 BSP" Cbundleversion="1.0.3" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32675/EvKit_V1/Include/" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32675/EvKit_V1/Source/board.c" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32675/Include/" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32675/Source/led.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32675/Source/pb.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32675/Source/stdio.c" version="1.0.3"/&gt;
     &lt;/component&gt;
     &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0"&gt;
       &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/&gt;
       &lt;file category="doc" name="CMSIS/Documentation/Core/html/index.html"/&gt;
       &lt;file category="include" name="CMSIS/Core/Include/"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1" versionMatchMode="fixed"&gt;
-      &lt;package name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_me15.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_common.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="AFE" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AFE/afe.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AFE/afe_gpio.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AFE/infoblock.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AFE/hart_uart.c" version="1.0.3"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1" versionMatchMode="fixed"&gt;
-      &lt;package name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Include/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Include/MAX32670/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/low_level_init.c" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/startup_max32670.s" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/low_level_init.c" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/IAR/cmain.s" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceC" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Source/system_max32670.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.0"/&gt;
-      &lt;file attr="config" category="header" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32670/Include/max32670.h" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_assert.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_delay.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_lock.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me15.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/sys_me15.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="FLC" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_me15.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_common.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_reva.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_revb.c" version="1.0.3"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="Timers" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1" versionMatchMode="fixed"&gt;
-      &lt;package name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_me15.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_revb.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_common.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_me16.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_common.c" version="1.0.3"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1" versionMatchMode="fixed"&gt;
-      &lt;package name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_me15.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_revb.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_common.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="SPI" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/spi_me15.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/spi_reva.c" version="1.0.3"/&gt;
     &lt;/component&gt;
-    &lt;component Cclass="Target Rev" Cvariant="A1" Cvendor="Maxim" Cversion="1.0.0" versionMatchMode="fixed"&gt;
-      &lt;package name="MAX32670" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Include/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Include/MAX32675/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AFE/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.0.3"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.0.3"/&gt;
+      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Source/IAR/low_level_init.c" version="1.0.3"/&gt;
+      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Source/IAR/startup_max32675.s" version="1.0.3"/&gt;
+      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Source/IAR/low_level_init.c" version="1.0.3"/&gt;
+      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Source/IAR/cmain.s" version="1.0.3"/&gt;
+      &lt;file attr="config" category="sourceC" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Source/system_max32675.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.3"/&gt;
+      &lt;file attr="config" category="header" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32675/Include/max32675.h" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_assert.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_delay.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_lock.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me16.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.3"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="SYS" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/sys_me15.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me16.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_lock.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_delay.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_assert.c" version="1.0.3"/&gt;
+    &lt;/component&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.3" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.0.3" deviceDependent="1" versionMatchMode="fixed"&gt;
+      &lt;package name="MAX32675" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_me16.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_revb.c" version="1.0.3"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_common.c" version="1.0.3"/&gt;
     &lt;/component&gt;
   &lt;/components&gt;
   &lt;apis/&gt;

@@ -60,20 +60,20 @@ extern "C" {
   *
   * @{
   */
-#define ISO_14443_3A_CMD_WUPA   0x52    /**< WUPA - Wake A command */
-#define ISO_14443_3A_CMD_SEQA   0x26    /**< SEQA - SEQ A command */
+#define ISO_14443_3A_CMD_WUPA 0x52 /**< WUPA - Wake A command */
+#define ISO_14443_3A_CMD_SEQA 0x26 /**< SEQA - SEQ A command */
 
-#define ISO_14443_3A_CMD_ANTICOLL_SEL_L1    0x93    /**< ANTI-collision Level 1 */
-#define ISO_14443_3A_CMD_ANTICOLL_SEL_L2    0x95    /**< ANTI-collision Level 2 */
-#define ISO_14443_3A_CMD_ANTICOLL_SEL_L3    0x97    /**< ANTI-collision Level 3 */
+#define ISO_14443_3A_CMD_ANTICOLL_SEL_L1 0x93 /**< ANTI-collision Level 1 */
+#define ISO_14443_3A_CMD_ANTICOLL_SEL_L2 0x95 /**< ANTI-collision Level 2 */
+#define ISO_14443_3A_CMD_ANTICOLL_SEL_L3 0x97 /**< ANTI-collision Level 3 */
 
-#define ISO_14443_3A_CMD_SELECT_SEL_L1  0x93    /**< ANTI-collision Select Level 1 */
-#define ISO_14443_3A_CMD_SELECT_SEL_L2  0x95    /**< ANTI-collision Select Level 2 */
-#define ISO_14443_3A_CMD_SELECT_SEL_L3  0x97    /**< ANTI-collision Select Level 3 */
+#define ISO_14443_3A_CMD_SELECT_SEL_L1 0x93 /**< ANTI-collision Select Level 1 */
+#define ISO_14443_3A_CMD_SELECT_SEL_L2 0x95 /**< ANTI-collision Select Level 2 */
+#define ISO_14443_3A_CMD_SELECT_SEL_L3 0x97 /**< ANTI-collision Select Level 3 */
 
-#define ATQA_LEN        2   /**< Length of ATQA command */
-#define UID_EACH_LEN    5   /**< UID Length, includes bcc and ct value */
-/** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEA_ENUM_DEFINES */
+#define ATQA_LEN     2 /**< Length of ATQA command */
+#define UID_EACH_LEN 5 /**< UID Length, includes bcc and ct value */
+/** @} */              /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEA_ENUM_DEFINES */
 
 /**
  * @brief Send WUPA
@@ -89,7 +89,7 @@ extern "C" {
  * @retval #ISO14443_3_ERR_PROTOCOL
  * @retval #ISO14443_3_ERR_TIMEOUT No proper response seen within the timeout
  */
-int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t *atq, uint8_t doretry);
+int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t* atq, uint8_t doretry);
 
 /**
  * @brief Send 1 step of the anti-collision
@@ -106,7 +106,7 @@ int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t *atq, uint8_t doretry);
  * @retval #ISO14443_3_ERR_PROTOCOL
  * @retval #ISO14443_3_ERR_TIMEOUT No proper response seen within the timeout
  */
-int32_t iso_14443_3a_cmd_anticoll(uint8_t sel,uint8_t *uid);
+int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t* uid);
 
 /**
  * @brief Attempt to Select the PICC
@@ -124,7 +124,7 @@ int32_t iso_14443_3a_cmd_anticoll(uint8_t sel,uint8_t *uid);
  * @retval #ISO14443_3_ERR_PROTOCOL
  * @retval #ISO14443_3_ERR_TIMEOUT No proper response seen within the timeout
  */
-int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t *uid, uint8_t *sak);
+int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t* uid, uint8_t* sak);
 
 /**
  * @brief Send Request for ATS
@@ -144,7 +144,7 @@ int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t *uid, uint8_t *sak);
  * @retval #ISO14443_3_ERR_EARLY_RESPONSE Response received too soon after tranmission by the PCD
  * @retval #ISO14443_3_ERR_TIMEOUT No proper response seen within the timeout
  */
-int32_t iso_14443_3a_cmd_rats(uint8_t fsdi, uint8_t cid, uint8_t *ats,  uint32_t *ats_len);
+int32_t iso_14443_3a_cmd_rats(uint8_t fsdi, uint8_t cid, uint8_t* ats, uint32_t* ats_len);
 
 /**
  * @brief Halt PICC

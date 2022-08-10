@@ -6,8 +6,8 @@ This application demonstrates I2C communication between the MAX78000FTHR Applica
 
 #### Prepare Hardware:
 
--   Connect INT2 and GPIO6 on the Adafruit ADXL343 + ADT7410 Sensor FeatherWing
--   Connect MAX78000FTH and Sensor FeatherWing using appropriate connectors.
+-   Connect INT2 on the ADXL343 to header J4.9, labeled "3".
+-   Connect ADXL343 I2C pins to the header pins J4.11 and J4.12, labeled "SDA" and "SCL" respectively.
 
 ##### Required Connections:
 

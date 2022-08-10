@@ -42,18 +42,15 @@
 #include "tft_ssd2119.h"
 
 /*********************************      DEFINES      *************************/
-#define BUTTON_SIZE_X   42 + 4  // 6 for free space
-#define BUTTON_SIZE_Y   41 + 6  // 6 for free space
+#define BUTTON_SIZE_X 42 + 4 // 6 for free space
+#define BUTTON_SIZE_Y 41 + 6 // 6 for free space
 
-#define MAX_CHAR_ON_SCREEN  8
+#define MAX_CHAR_ON_SCREEN 8
 
 /*********************************      VARIABLES    *************************/
 static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = {0};
 
-static text_t text_msg[] = {
-    { (char*) "Pressed",        7   },
-    { (char*) input_buf,        0   }
-};
+static text_t text_msg[] = {{(char*)"Pressed", 7}, {(char*)input_buf, 0}};
 
 static text_t* input_text = &text_msg[1];
 
@@ -75,76 +72,76 @@ static int init(void)
     y = y0;
     MXC_TFT_ShowImage(x, y, key_1_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_1);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_1);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_2_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_2);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_2);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_3_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_3);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_3);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_clear_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_F);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_F);
 #endif
     //
     x = x0;
-    y += BUTTON_SIZE_Y ;
+    y += BUTTON_SIZE_Y;
     MXC_TFT_ShowImage(x, y, key_4_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_4);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_4);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_5_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_5);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_5);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_6_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_6);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_6);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_cancel_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_E);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_E);
 #endif
     //
     x = x0;
-    y += BUTTON_SIZE_Y ;
+    y += BUTTON_SIZE_Y;
     MXC_TFT_ShowImage(x, y, key_7_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_7);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_7);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_8_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_8);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_8);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_9_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_9);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_9);
 #endif
-    x += BUTTON_SIZE_X ;
+    x += BUTTON_SIZE_X;
     MXC_TFT_ShowImage(x, y, key_enter_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_D);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_D);
 #endif
     //
     x = x0;
-    x += BUTTON_SIZE_X ;
-    y += BUTTON_SIZE_Y ;
+    x += BUTTON_SIZE_X;
+    y += BUTTON_SIZE_Y;
     MXC_TFT_ShowImage(x, y, key_0_bg_white_bmp);
 #ifdef ENABLE_TS
-    MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_0);
+    MXC_TS_AddButton(x, y, x + 42, y + 41, KEY_0);
 #endif
-    MXC_TFT_PrintFont(11,   80, urw_gothic_13_grey_bg_white,  &text_msg[0],  NULL);
+    MXC_TFT_PrintFont(11, 80, urw_gothic_13_grey_bg_white, &text_msg[0], NULL);
     input_text->len = 0;
 
     return 0;
@@ -157,63 +154,60 @@ static void print_inputs(int key)
     if (key == 0) { // means clear screen
         MXC_TFT_ClearArea(&area, 0);
         input_text->len = 0;
-    }
-    else if (key == -1) {       // means clear last key
+    } else if (key == -1) { // means clear last key
         if (input_text->len > 0) {
             input_text->len--;
             MXC_TFT_ClearArea(&area, 0);
-            MXC_TFT_PrintFont(11, 120, urw_gothic_13_grey_bg_white, input_text,  &area);
+            MXC_TFT_PrintFont(11, 120, urw_gothic_13_grey_bg_white, input_text, &area);
         }
-    }
-    else if (input_text->len < MAX_CHAR_ON_SCREEN) {
+    } else if (input_text->len < MAX_CHAR_ON_SCREEN) {
         input_text->data[input_text->len++] = key;
-        MXC_TFT_PrintFont(11, 120, urw_gothic_13_grey_bg_white, input_text,  &area);
+        MXC_TFT_PrintFont(11, 120, urw_gothic_13_grey_bg_white, input_text, &area);
     }
 }
 
 static int key_process(int key)
 {
-
     switch (key) {
-    case KEY_0:
-    case KEY_1:
-    case KEY_2:
-    case KEY_3:
-    case KEY_4:
-    case KEY_5:
-    case KEY_6:
-    case KEY_7:
-    case KEY_8:
-    case KEY_9:
-    case KEY_A:
-    case KEY_B:
-        print_inputs(key);
-        break;
+        case KEY_0:
+        case KEY_1:
+        case KEY_2:
+        case KEY_3:
+        case KEY_4:
+        case KEY_5:
+        case KEY_6:
+        case KEY_7:
+        case KEY_8:
+        case KEY_9:
+        case KEY_A:
+        case KEY_B:
+            print_inputs(key);
+            break;
 
-    case KEY_C: // exit
-        state_set_current(get_home_state());
-        break;
+        case KEY_C: // exit
+            state_set_current(get_home_state());
+            break;
 
-    case KEY_D: // enter
-        state_set_current(get_home_state());
-        break;
+        case KEY_D: // enter
+            state_set_current(get_home_state());
+            break;
 
-    case KEY_E: // cancel
-        print_inputs(-1);
-        break;
+        case KEY_E: // cancel
+            print_inputs(-1);
+            break;
 
-    case KEY_F: // clear
-        print_inputs(0);
-        break;
+        case KEY_F: // clear
+            print_inputs(0);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return 0;
 }
 
-static State g_state = {"keypad", init, key_process, NULL, 0 };
+static State g_state = {"keypad", init, key_process, NULL, 0};
 
 /********************************* Public Functions **************************/
 State* get_keypad_state(void)

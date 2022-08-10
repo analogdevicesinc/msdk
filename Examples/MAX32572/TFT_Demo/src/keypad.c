@@ -43,39 +43,34 @@
 #include "skbd.h"
 #include "max32572.h"
 
-
 /*********************************      Variables    **************************/
 static volatile int is_pressed = 0;
 
 /* keys mapping on the keyboard */
-static unsigned char keyboard_map[16] = {
-    KEY_F, KEY_E, KEY_D, KEY_C,
-    KEY_3, KEY_6, KEY_9, KEY_B,
-    KEY_2, KEY_5, KEY_8, KEY_0,
-    KEY_1, KEY_4, KEY_7, KEY_A
-};
+static unsigned char keyboard_map[16] = {KEY_F, KEY_E, KEY_D, KEY_C, KEY_3, KEY_6, KEY_9, KEY_B,
+                                         KEY_2, KEY_5, KEY_8, KEY_0, KEY_1, KEY_4, KEY_7, KEY_A};
 
 /********************************* Static Functions **************************/
 static void keypadHandler(void)
 {
     unsigned int status;
-    
+
     MXC_SKBD_InterruptStatus(&status);
-    
+
     if (MXC_F_SKBD_ISR_OVERIS & status) {
         MXC_SKBD_ClearInterruptStatus(MXC_F_SKBD_ISR_OVERIS);
     }
-    
+
     if (MXC_F_SKBD_ISR_PUSHIS & status) {
         is_pressed = 1;
         /* Clear interruption */
         MXC_SKBD_ClearInterruptStatus(MXC_F_SKBD_ISR_PUSHIS);
     }
-    
+
     if (MXC_F_SKBD_ISR_RELEASEIS & status) {
         MXC_SKBD_ClearInterruptStatus(MXC_F_SKBD_ISR_RELEASEIS);
     }
-    
+
     return;
 }
 
@@ -84,28 +79,28 @@ int keypad_init(void)
 {
     int rv = 0;
     mxc_skbd_config_t skb_cfg;
-    
+
     skb_cfg.inputs      = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
     skb_cfg.outputs     = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
     skb_cfg.debounce    = MXC_V_SKBD_CR1_DBTM_TIME10MS;
     skb_cfg.ioselect    = 0;
-    skb_cfg.irq_handler = (irq_handler_t) keypadHandler;
+    skb_cfg.irq_handler = (irq_handler_t)keypadHandler;
     skb_cfg.reg_erase   = 1;
-    
+
     MXC_SKBD_PreInit();
-    
+
     rv = MXC_SKBD_Init(skb_cfg);
-    
+
     if (rv) {
         return E_UNINITIALIZED;
     }
-    
+
     rv = MXC_SKBD_EnableInterruptEvents(MXC_SKBD_INTERRUPT_STATUS_PUSHIS);
-    
+
     if (rv) {
         return E_UNINITIALIZED;
     }
-    
+
     return 0;
 }
 
@@ -115,27 +110,27 @@ int keypad_getkey(void)
     volatile unsigned int out;
     volatile unsigned int i;
     unsigned short* key;
-    mxc_skbd_keys_t keys = { 0, 0, 0, 0 };
-    int pressed_key = 0;
-    
+    mxc_skbd_keys_t keys = {0, 0, 0, 0};
+    int pressed_key      = 0;
+
     if (is_pressed == 1) {
         MXC_SKBD_ReadKeys(&keys);
         key = &keys.key0;
-        
+
         for (i = 0; i < 4; i++) {
-            in = 0x0f & *key;
+            in  = 0x0f & *key;
             out = (0xf0 & *key) >> 4;
-            
+
             if (*key) {
                 pressed_key = keyboard_map[(in - 4) * 4 + out];
             }
-            
+
             *key = 0;
             key++;
         }
-        
+
         is_pressed = 0;
     }
-    
+
     return pressed_key;
 }

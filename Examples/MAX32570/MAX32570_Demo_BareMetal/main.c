@@ -51,7 +51,7 @@
 
 #include "state.h"
 #include "utils.h"
-
+#include "tft_ssd2119.h"
 
 /********************************* 		VARIABLES	 *************************/
 static volatile unsigned int timeout_status = 0;
@@ -70,19 +70,19 @@ static int system_init(void)
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
     keypad_init();
 
-	nfc_init();
+    nfc_init();
 
- 	msr_init();
+    msr_init();
 #endif
 
- 	sc_init();
+    sc_init();
 
- 	MXC_TFT_Init();
+    MXC_TFT_Init();
 
- 	MXC_TS_Init();
- 	MXC_TS_Start();
+    MXC_TS_Init();
+    MXC_TS_Start();
 
- 	timer_init( timeout_cb );
+    timer_init(timeout_cb);
 
     return 0;
 }
@@ -90,98 +90,95 @@ static int system_init(void)
 /*****************************************************************************/
 int main(void)
 {
-	int 		 ret = 0;
-	State 		 *state = NULL;
-	int 		 key;
-	unsigned int timeout = 0;
-	// cumulative time in idle condition, no any event.
-	unsigned int total_idle_time = 0;
-	// In idle after this time state will go to screen saver mode
-	unsigned int max_idle_time   = 15000;
-
+    int ret      = 0;
+    State* state = NULL;
+    int key;
+    unsigned int timeout = 0;
+    // cumulative time in idle condition, no any event.
+    unsigned int total_idle_time = 0;
+    // In idle after this time state will go to screen saver mode
+    unsigned int max_idle_time = 15000;
 
     printf("\n************************** MAX32570 Demo Example **************************\n\n");
     printf("This example interact with user\n");
-    printf("Depend on the user selection on TFT display, some functionality of EvKit can be tested\n");
+    printf(
+        "Depend on the user selection on TFT display, some functionality of EvKit can be tested\n");
     printf("Please follow instruction on TFT Display\n");
     printf("Note:\n"
-    		"\tMSR: VBAT_SEL need to be connected to 3.3V, VDD_MSR need to be connected\n"
-    		"\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B),\n"
-    		"\t		To configure 5V mode:\n"
-    		"\t			1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
-    		"\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
-    		"\t			3- Rebuild project and load it\n"
-    		"\t		To configure 3V mode:\n"
-    		"\t			1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
-    		"\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
-    		"\t			3- Rebuild project and load it\n");
+           "\tMSR: VBAT_SEL need to be connected to 3.3V, VDD_MSR need to be connected\n"
+           "\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B),\n"
+           "\t		To configure 5V mode:\n"
+           "\t			1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
+           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
+           "\t			3- Rebuild project and load it\n"
+           "\t		To configure 3V mode:\n"
+           "\t			1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
+           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
+           "\t			3- Rebuild project and load it\n");
 
-
-	system_init();
+    system_init();
     state_init();
 
     /* Infinite loop */
-	while (1) {
+    while (1) {
+        if (state != state_get_current()) {
+            state = state_get_current();
 
-		if (state != state_get_current()) {
-			state = state_get_current();
+            timeout = state->timeout;
+            if (timeout == 0) {
+                timeout = 1000; // 1 sec default timeout
+            }
 
-			timeout = state->timeout;
-			if (timeout == 0) {
-				timeout = 1000; // 1 sec default timeout
-			}
-
-			timeout_status = 0;
-			timer_start(timeout);
-		}
+            timeout_status = 0;
+            timer_start(timeout);
+        }
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-		// check keyboard key
-		key = keypad_getkey();
-		if (key > 0) {
-			state->prcss_key(key);
-			total_idle_time = 0;
-			continue;
-		}
+        // check keyboard key
+        key = keypad_getkey();
+        if (key > 0) {
+            state->prcss_key(key);
+            total_idle_time = 0;
+            continue;
+        }
 #endif
 
-		// check touch screen key
-		key = MXC_TS_GetKey();
-		if (key > 0) {
-			state->prcss_key(key);
-			total_idle_time = 0;
-			continue;
-		}
+        // check touch screen key
+        key = MXC_TS_GetKey();
+        if (key > 0) {
+            state->prcss_key(key);
+            total_idle_time = 0;
+            continue;
+        }
 
-		/*
+        /*
 		 *  check state timeout status
 		 */
-		if (timeout_status) {
+        if (timeout_status) {
+            if (state->tick) {
+                ret = state->tick();
+                if (ret == 0) { // means tick function is used, do not switch idle state
+                    total_idle_time = 0;
+                }
+            }
 
-			if (state->tick) {
-				ret = state->tick();
-				if ( ret == 0 ) { // means tick function is used, do not switch idle state
-					total_idle_time = 0;
-				}
-			}
+            // check total idle time
+            total_idle_time += timeout;
+            if (total_idle_time >= max_idle_time) {
+                state_set_current(get_idle_state());
+                total_idle_time = 0;
+            }
 
-			// check total idle time
-			total_idle_time += timeout;
-			if (total_idle_time >= max_idle_time) {
-				state_set_current( get_idle_state() );
-				total_idle_time = 0;
-			}
+            // restart timeout
+            timeout_status = 0;
+            timer_start(timeout);
+        }
 
-			// restart timeout
-			timeout_status = 0;
-			timer_start(timeout);
-		}
-
-		/*
+        /*
 		 *  logo animation
 		 */
-		logo_animation_tick();
-	}
+        logo_animation_tick();
+    }
 
-	return ret;
+    return ret;
 }
