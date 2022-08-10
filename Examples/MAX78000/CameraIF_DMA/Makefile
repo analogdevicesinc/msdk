@@ -203,7 +203,7 @@ ifeq "$(MAKECMDGOALS)" "release"
 MXC_OPTIMIZE_CFLAGS := -O2
 else
 # Optimization level for default builds
-MXC_OPTIMIZE_CFLAGS := -Og
+MXC_OPTIMIZE_CFLAGS := -O2
 endif
 
 # Set compiler flags
