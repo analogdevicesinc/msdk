@@ -102,9 +102,12 @@ int main(void)
     printf("\n************** SPI Loopback Demo ****************\n");
     printf("This example configures the SPI to send data between the MISO (AIN2/P0.18) and\n");
     printf("MOSI (AIN1/P0.17) pins.  Connect these two pins together.  This demo shows SPI\n");
-    printf("sending different bit sizes each run through. If successful, the LED1(green or blue) "
+    printf("sending different bit sizes each run through.  If successful, the LED1(green or blue) "
            "will\n");
-    printf("illuminate. If fails, the LED0(red) will illuminate.\n");
+    printf("illuminate.  If fails, the LED0(red) will illuminate.\n");
+    printf("\nNote: some board versions of the MAX32665 won't print out the transaction\n");
+    printf("status because the SPI and Console UART pins are shared.  Check the LEDs, as\n");
+    printf("stated above, for the example status.\n");
 
     printf("\nThis demo shows Asynchronous, Synchronous and DMA transaction for SPI1\n");
 
