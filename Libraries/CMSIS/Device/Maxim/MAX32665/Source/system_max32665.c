@@ -43,6 +43,7 @@
 #include "icc_regs.h"
 #include "pwrseq_regs.h"
 #include "simo_regs.h"
+#include "mcr_regs.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
@@ -98,7 +99,27 @@ __weak void SystemCoreClockUpdate(void)
  */
 __weak int PreInit(void)
 {
-    // Do nothing
+    uint32_t psc = MXC_GCR->clkcn & MXC_F_GCR_CLKCN_PSC;
+
+    /* Disable USB switch to minimize current consumption */
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_USBSWEN_N;
+
+    /* Divide down system clock until SIMO is ready */
+    MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (MXC_S_GCR_CLKCN_PSC_DIV128);
+
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
+    }
+
+    /* Restore system clock divider */
+    MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (psc);
+
+    /* Set the proper OVR setting */
+    MXC_GCR->scon = (MXC_GCR->scon & ~(MXC_F_GCR_SCON_OVR)) | (MXC_S_GCR_SCON_OVR_1_1V);
+
     return 0;
 }
 
@@ -154,11 +175,11 @@ __weak void SystemInit(void)
 
     // Flush and enable instruction cache
     MXC_ICC0->invalidate = 1;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
-        ;
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
+    }
     MXC_ICC0->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
-        ;
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
+    }
 
     SystemCoreClockUpdate();
 

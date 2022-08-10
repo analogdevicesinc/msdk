@@ -51,8 +51,7 @@
 #include "led.h"
 
 /***** Definitions *****/
-#define CLOCK_SOURCE MXC_TMR_HFIO_CLK // must be MXC_TMR_HFIO_CLK
-#define MAX_TICKS    pow(2, 32)
+#define MAX_TICKS pow(2, 32)
 
 // Parameters for PWM output
 #define FREQ       1000 // (Hz)
@@ -90,7 +89,7 @@ void PWMTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
-    unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, CLOCK_SOURCE, 1, FREQ);
+    unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, 1, FREQ);
     unsigned int dutyTicks   = periodTicks / 100 * 50;
 
     //Configure PWM GPIO Pin
@@ -115,7 +114,6 @@ void PWMTimer()
 
     tmr.pres    = TMR_PRES_1;
     tmr.mode    = TMR_MODE_PWM;
-    tmr.clock   = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;
     tmr.pol     = 1;
 
@@ -142,7 +140,7 @@ void ContinuousTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
-    uint32_t periodTicks = MXC_TMR_GetPeriod(CONT_TIMER, CLOCK_SOURCE, 1, CONT_FREQ);
+    uint32_t periodTicks = MXC_TMR_GetPeriod(CONT_TIMER, 1, CONT_FREQ);
 
     /*    
     Steps for configuring a timer for PWM mode:
@@ -157,7 +155,6 @@ void ContinuousTimer()
 
     tmr.pres    = TMR_PRES_1;
     tmr.mode    = TMR_MODE_CONTINUOUS;
-    tmr.clock   = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
     tmr.pol     = 0;
 
@@ -178,7 +175,7 @@ void OneshotTimer()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
-    uint32_t periodTicks = MXC_TMR_GetPeriod(OST_TIMER, CLOCK_SOURCE, 1, OST_FREQ);
+    uint32_t periodTicks = MXC_TMR_GetPeriod(OST_TIMER, 1, OST_FREQ);
 
     /*    
     Steps for configuring a timer for PWM mode:
@@ -193,7 +190,6 @@ void OneshotTimer()
 
     tmr.pres    = TMR_PRES_1;
     tmr.mode    = TMR_MODE_ONESHOT;
-    tmr.clock   = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
     tmr.pol     = 0;
 

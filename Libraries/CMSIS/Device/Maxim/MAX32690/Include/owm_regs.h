@@ -33,7 +33,8 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
 #ifndef _OWM_REGS_H_
 #define _OWM_REGS_H_
@@ -171,10 +172,7 @@ typedef struct {
  #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS           4 /**< CTRL_STAT_OD_SPEC_MODE Position */
  #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE               ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS)) /**< CTRL_STAT_OD_SPEC_MODE Mask */
 
- #define MXC_F_OWM_CTRL_STAT_EXT_PULLUP_POL_POS         5 /**< CTRL_STAT_EXT_PULLUP_POL Position */
- #define MXC_F_OWM_CTRL_STAT_EXT_PULLUP_POL             ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_EXT_PULLUP_POL_POS)) /**< CTRL_STAT_EXT_PULLUP_POL Mask */
-
- #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        7 /**< CTRL_STAT_PRESENCE_DETECT Position */
+ #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        5 /**< CTRL_STAT_PRESENCE_DETECT Position */
  #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS)) /**< CTRL_STAT_PRESENCE_DETECT Mask */
 
 /**@} end of group OWM_CTRL_STAT_Register */

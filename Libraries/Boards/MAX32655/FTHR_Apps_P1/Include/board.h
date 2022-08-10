@@ -75,6 +75,10 @@ extern "C" {
 #define USER_UART 3
 #endif
 
+#ifndef EXT_FLASH_BAUD
+#define EXT_FLASH_BAUD 5000000
+#endif
+
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON  0 /// Active state of LEDs
 

@@ -63,6 +63,11 @@
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(1)
 #define MXC_SYS_ERFO_TIMEOUT  MSEC(100)
 
+// MAX32670 RevB updates may conflict with other parts dependent on RevA version (e.g. MAX32675)
+#if TARGET_NUM != 32670
+#define MXC_SYS_RESET_RTC MXC_SYS_RESET0_RTC
+#endif
+
 /* **** Globals **** */
 
 /* **** Functions **** */
@@ -398,6 +403,14 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
+    // RTC reset bit is different for RevA and RevB
+    if (reset == MXC_SYS_RESET_RTC) {
+        // If RevA, switch to reset bit in RST0
+        if ((MXC_GCR->revision & 0x00F0) == 0xA0) {
+            reset = MXC_F_GCR_RST0_RTC_POS;
+        }
+    }
+
     /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 and 64 for the rst register. */
     if (reset > 63) {
         reset -= 64;

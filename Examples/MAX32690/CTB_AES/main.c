@@ -45,6 +45,8 @@
 #include "ctb.h"
 #include "trng.h"
 
+#include "mxc_delay.h"
+
 /***** Definitions *****/
 
 #define MXC_AES_DATA_LENGTH 32 //4 words
@@ -97,6 +99,7 @@ int AES_Test(mxc_ctb_cipher_t aesKey)
     MXC_CTB_Cipher_Encrypt(&aesReq);
     do {
         stat = MXC_CTB->ctrl;
+        MXC_Delay(5);
     } while (!(stat & MXC_F_CTB_CTRL_CPH_DONE) && !(stat & MXC_F_CTB_CTRL_DMA_DONE) &&
              !(stat & MXC_F_CTB_CTRL_DONE));
 
@@ -106,6 +109,7 @@ int AES_Test(mxc_ctb_cipher_t aesKey)
     MXC_CTB_Cipher_Decrypt(&aesReq);
     do {
         stat = MXC_CTB->ctrl;
+        MXC_Delay(5);
     } while (!(stat & MXC_F_CTB_CTRL_CPH_DONE) && !(stat & MXC_F_CTB_CTRL_DMA_DONE) &&
              !(stat & MXC_F_CTB_CTRL_DONE));
 
