@@ -3612,6 +3612,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>CHKRES1</name>
+       <description>Result of CPU1 ROM1 Checksum.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>ROMDONE</name>
        <description>ROM Done.</description>
        <bitOffset>12</bitOffset>
@@ -3636,8 +3642,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CHKRES1</name>
-       <description>Result of CPU1 ROM1 Checksum.</description>
+       <name>SWD_DIS</name>
+       <description> Serial Wire Debug Disable.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -6081,28 +6087,6 @@
    </interrupt>
   </peripheral>
 <!--GPIO1 Individual I/O for each GPIO 1-->
-  <peripheral derivedFrom="GPIO0">
-   <name>GPIO2</name>
-   <description>Individual I/O for each GPIO 2</description>
-   <baseAddress>0x4000A000</baseAddress>
-   <interrupt>
-    <name>GPIO2</name>
-    <description>GPIO2 IRQ</description>
-    <value>26</value>
-   </interrupt>
-  </peripheral>
-<!--GPIO2 Individual I/O for each GPIO 2-->
-  <peripheral derivedFrom="GPIO0">
-   <name>GPIO3</name>
-   <description>Individual I/O for each GPIO 3</description>
-   <baseAddress>0x4000B000</baseAddress>
-   <interrupt>
-    <name>GPIO3</name>
-    <description>GPIO3 IRQ</description>
-    <value>58</value>
-   </interrupt>
-  </peripheral>
-<!--GPIO3 Individual I/O for each GPIO 3-->
   <peripheral>
    <name>HTMR</name>
    <description>High Speed Timer Module.</description>

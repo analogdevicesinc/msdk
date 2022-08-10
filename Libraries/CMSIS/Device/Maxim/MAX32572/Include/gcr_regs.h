@@ -179,14 +179,17 @@ typedef struct {
  #define MXC_F_GCR_SYSCTRL_CCHK1_POS                    9 /**< SYSCTRL_CCHK1 Position */
  #define MXC_F_GCR_SYSCTRL_CCHK1                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK1_POS)) /**< SYSCTRL_CCHK1 Mask */
 
+ #define MXC_F_GCR_SYSCTRL_CHKRES1_POS                  11 /**< SYSCTRL_CHKRES1 Position */
+ #define MXC_F_GCR_SYSCTRL_CHKRES1                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES1_POS)) /**< SYSCTRL_CHKRES1 Mask */
+
  #define MXC_F_GCR_SYSCTRL_ROMDONE_POS                  12 /**< SYSCTRL_ROMDONE Position */
  #define MXC_F_GCR_SYSCTRL_ROMDONE                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_ROMDONE_POS)) /**< SYSCTRL_ROMDONE Mask */
 
  #define MXC_F_GCR_SYSCTRL_CCHK0_POS                    13 /**< SYSCTRL_CCHK0 Position */
  #define MXC_F_GCR_SYSCTRL_CCHK0                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK0_POS)) /**< SYSCTRL_CCHK0 Mask */
 
- #define MXC_F_GCR_SYSCTRL_CHKRES1_POS                  14 /**< SYSCTRL_CHKRES1 Position */
- #define MXC_F_GCR_SYSCTRL_CHKRES1                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES1_POS)) /**< SYSCTRL_CHKRES1 Mask */
+ #define MXC_F_GCR_SYSCTRL_SWD_DIS_POS                  14 /**< SYSCTRL_SWD_DIS Position */
+ #define MXC_F_GCR_SYSCTRL_SWD_DIS                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_SWD_DIS_POS)) /**< SYSCTRL_SWD_DIS Mask */
 
  #define MXC_F_GCR_SYSCTRL_CHKRES0_POS                  15 /**< SYSCTRL_CHKRES0 Position */
  #define MXC_F_GCR_SYSCTRL_CHKRES0                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES0_POS)) /**< SYSCTRL_CHKRES0 Mask */

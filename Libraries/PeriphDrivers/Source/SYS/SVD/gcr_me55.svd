@@ -137,6 +137,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>CHKRES1</name>
+            <description>Result of CPU1 ROM1 Checksum.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>ROMDONE</name>
             <description>ROM Done.</description>
             <bitOffset>12</bitOffset>
@@ -161,8 +167,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CHKRES1</name>
-            <description>Result of CPU1 ROM1 Checksum.</description>
+            <name>SWD_DIS</name>
+            <description> Serial Wire Debug Disable.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
