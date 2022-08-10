@@ -363,7 +363,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                       GPIO */
-#define MXC_CFG_GPIO_INSTANCES (4)
+#define MXC_CFG_GPIO_INSTANCES (2)
 #define MXC_CFG_GPIO_PINS_PORT (32)
 
 #define MXC_BASE_GPIO0 ((uint32_t)0x40008000UL)
