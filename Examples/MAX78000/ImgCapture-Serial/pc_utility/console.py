@@ -34,6 +34,7 @@ class CameraIFConsole():
         self.lock_input = Lock()
 
         self.s = Serial(port=port, baudrate=baudrate, timeout=timeout)
+        self.s.reset_input_buffer()
 
         print("Started CameraIF console.")
         self.help()
@@ -88,6 +89,8 @@ class CameraIFConsole():
                 self.lock_input.acquire()
                 self.input = _input
                 self.lock_input.release()
+
+                _print("")
 
         except Exception as e:
             print(f"[red]{traceback.format_exc()}[/red]")
