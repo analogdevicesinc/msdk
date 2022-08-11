@@ -95,7 +95,6 @@ BOARD ?= EvKit_V1
 # Configuration Variables:
 # - MAXIM_PATH : Tell this Makefile where to find the MaximSDK.  Ex:  MAXIM_PATH=C:/MaximSDK
 
-MAXIM_PATH=
 DEPTH=../../../
 ifeq "$(MAXIM_PATH)" ""
 $(warning Warning: MAXIM_PATH is not set!)
