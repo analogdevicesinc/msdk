@@ -181,7 +181,7 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     The CNN accelerator is the only device with enough memory to store high resolution
     images, so this example essentially turns it into a giant SRAM buffer.
     This method allows for collecting high resolution images at full speed to send
-    to any arbitrary lower bandwidth output destination.  In this case, it's UART.
+    to any arbitrary lower bandwidth output destination.
 ****************************************************************************/
 cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int dma_channel)
 {
@@ -254,13 +254,6 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
 
 /**
 * @brief Receive and service any received console commands.
-* @param[in] w Set the width of the image (in pixels)
-* @param[in] h Set the height of the image (in pixels)
-* @param[in] pixel_format Set the pixel format.  See 'pixformat_t' in 'camera.h'
-* @param[in] dma_mode Set the dma mode format.  Should be either "USE_DMA" or "NO_DMA" for standard captures.
-* @param[in] dma_channel DMA channel to use if DMA mode is "USE_DMA".  Must be acquired by the application first.
-* @return "img_data_t" struct describing the captured image.  If the "raw" struct member is NULL, the image capture
-* failed.
 ****************************************************************************/
 void service_console()
 {
@@ -325,8 +318,8 @@ void service_console()
                 stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
                            g_app_settings.pixel_format, g_app_settings.dma_channel);
 
+            // Transmit the received image over UART.
             if (img_data.raw != NULL) {
-                // Transmit the received image.
                 printf("Transmitting image data over UART...\n");
                 MXC_TMR_SW_Start(MXC_TMR0);
 
@@ -337,15 +330,15 @@ void service_console()
                          img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
                 send_msg(g_serial_buffer); // Send the img info to the host
 
-                // Transmit the raw image data over UART.
+                // Send the raw image data
                 // We'll need to do some unpacking from the CNN
                 // data SRAM in this case.
-                int transfer_len   = SERIAL_BUFFER_SIZE;
-                uint8_t* bytes     = (uint8_t*)malloc(transfer_len);
+                clear_serial_buffer();
+                int transfer_len   = SERIAL_BUFFER_SIZE;                
                 uint32_t* cnn_addr = img_data.raw;
                 for (int i = 0; i < img_data.imglen; i += transfer_len) {
-                    cnn_addr = read_bytes_from_cnn_sram(bytes, transfer_len, cnn_addr);
-                    MXC_UART_Write(Con_Uart, bytes, &transfer_len);
+                    cnn_addr = read_bytes_from_cnn_sram((uint8_t*)g_serial_buffer, transfer_len, cnn_addr);
+                    MXC_UART_Write(Con_Uart, (uint8_t*)g_serial_buffer, &transfer_len);
                 }
 
                 int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -377,6 +370,197 @@ void service_console()
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Register 0x%x=0x%x", reg, val);
             send_msg(g_serial_buffer);
         }
+
+#ifdef FF_DEFINED
+        else if (cmd == CMD_SD_MOUNT) {
+            // Mount the SD card
+            sd_err = sd_mount();
+            if (sd_err == FR_OK) {
+                sd_get_size();
+
+                printf("Disk Size: %u bytes\n", sd_sectors_total / 2);
+                printf("Available: %u bytes\n", sd_sectors_free / 2);
+            }
+        }
+
+        else if (cmd == CMD_SD_UNMOUNT) {
+            sd_err = f_unmount("");
+            if (sd_err != FR_OK) {
+                printf("Error unmounting SD card: %s\n", FR_ERRORS[sd_err]);
+            }
+            printf("SD card unmounted.\n");
+        }
+
+        else if (cmd == CMD_SD_CWD) {
+            // Get the current working directory
+            sd_err = f_getcwd(sd_cwd, MAXLEN);
+            if (sd_err != FR_OK) {
+                printf("Error getting cwd: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("%s\n", sd_cwd);
+            }
+        }
+
+        else if (cmd == CMD_SD_CD) {
+            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            sscanf(g_serial_buffer, "cd %s", b);
+            sd_err = f_chdir((const TCHAR*)b);
+            if (sd_err != FR_OK) {
+                printf("Error changing directory: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("\n");
+            }
+            free(b);
+
+            // Refresh CWD
+            sd_err = f_getcwd(sd_cwd, MAXLEN);
+            if (sd_err != FR_OK) {
+                printf("Error getting cwd: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("%s\n", sd_cwd);
+            }
+        }
+
+        else if (cmd == CMD_SD_LS) {
+            // List the contents of the current directory
+            sd_err = f_opendir(&sd_dir, sd_cwd);
+            if (sd_err != FR_OK) {
+                printf("Error opening directory: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("\n");
+                for (;;) {
+                    sd_err = f_readdir(&sd_dir, &sd_fno);
+                    if (sd_err != FR_OK || sd_fno.fname[0] == 0) break;
+                    if (sd_fno.fattrib & AM_DIR) {
+                        printf("%s/\n", sd_fno.fname);
+                    } else {
+                        printf("%s\n", sd_fno.fname);
+                    }
+                }
+                f_closedir(&sd_dir);
+            }
+        }
+
+        else if (cmd == CMD_SD_MKDIR) {
+            // Make a directory
+            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            sscanf(g_serial_buffer, "mkdir %s", b);
+            sd_err = f_mkdir((const TCHAR*)b);
+            if (sd_err != FR_OK) {
+                printf("Error creating directory: %i\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("\n");
+            }
+            free(b);
+        }
+
+        else if (cmd == CMD_SD_RM) {
+            // Remove an item
+            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            sscanf(g_serial_buffer, "rm %s", b);
+            sd_err = f_unlink((const TCHAR*)b);
+            if (sd_err != FR_OK) {
+                printf("Error while deleting: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("\n");
+            }
+            free(b);
+        }
+
+        else if (cmd == CMD_SD_TOUCH) {
+            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            sscanf(g_serial_buffer, "touch %s", b);
+            sd_err = f_open(&sd_file, (const TCHAR*)b, FA_CREATE_NEW);
+            if (sd_err != FR_OK) {
+                printf("Error creating file: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                printf("\n");
+            }
+            f_close(&sd_file);
+
+            free(b);
+        }
+
+        else if (cmd == CMD_SD_WRITE) {
+            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            memset(b, '\0', SERIAL_BUFFER_SIZE);
+            sscanf(g_serial_buffer, "write %s \"%[^\"]", sd_filename, b); // \"$[^\"] captures everything between two quotes ""
+            printf("Writing %s\n", b);
+            int len = strlen(b);
+            UINT wrote = 0;
+            sd_err = f_open(&sd_file, sd_filename, FA_CREATE_NEW | FA_WRITE);
+            if (sd_err != FR_OK) {
+                printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                sd_err = f_write(&sd_file, b, len, &wrote);
+                if (sd_err != FR_OK || wrote != len) {
+                    printf("Failed to write to file: %s\n", FR_ERRORS[sd_err]);
+                }
+            }
+            f_close(&sd_file);
+            printf("\n");
+            free(b);
+        }
+
+        else if (cmd == CMD_SD_CAT) {
+            sscanf(g_serial_buffer, "cat %s", (char*)sd_filename);
+            sd_err = f_open(&sd_file, sd_filename, FA_READ);
+            if (sd_err != FR_OK) {
+                printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
+            } else {
+                while(sd_err == FR_OK && !f_eof(&sd_file)) {
+                    sd_err = f_forward(&sd_file, out_stream, SERIAL_BUFFER_SIZE, NULL);
+                }
+                printf("\n");
+            }
+            f_close(&sd_file);
+        }
+
+        else if (cmd == CMD_SD_SNAP) {
+            // Snap and save an image to the SD card
+            sscanf(g_serial_buffer, "snap %s", (char*)sd_filename);
+
+            // Enable CNN accelerator
+            cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+            cnn_init();
+
+            cnn_img_data_t img_data =
+                stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                           g_app_settings.pixel_format, g_app_settings.dma_channel);
+            
+            if (img_data.raw != NULL) {
+                MXC_TMR_SW_Start(MXC_TMR0);
+
+                uint32_t* cnn_addr = img_data.raw;
+                printf("Saving image to %s\n", sd_filename);
+                sd_err = f_open(&sd_file, sd_filename, FA_WRITE | FA_CREATE_ALWAYS);
+
+                uint8_t* buffer = (uint8_t*)malloc(img_data.w);
+                if (sd_err != FR_OK) {
+                    printf("Failed to open file: %s\n", FR_ERRORS[sd_err]);
+                } else {
+                    for (int i = 0; i < img_data.imglen; i += img_data.w) {
+                        cnn_addr = read_bytes_from_cnn_sram(buffer, img_data.w, cnn_addr);
+                        sd_err = f_write(&sd_file, buffer, img_data.w, NULL);
+                        if (sd_err != FR_OK) {
+                            printf("Failed to write bytes to file: %s\n", FR_ERRORS[sd_err]);
+                            break;
+                        }
+                        if (i % (img_data.w * 32) == 0) {
+                            printf("%.1f%%\n", ((float)i/img_data.imglen) * 100.0f);
+                        }
+                    }
+                }
+                free(buffer);
+
+                f_close(&sd_file);
+                int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+                printf("Finished (took %ius)\n", elapsed);
+            }
+
+            cnn_disable();
+        }
+#endif
 
         // Clear the serial buffer for the next command
         clear_serial_buffer();

@@ -44,6 +44,10 @@
 #define SERIAL_BUFFER_SIZE 256
 #define CON_BAUD           921600 // UART baudrate used for sending data to PC
 
+#ifdef SD
+#include "sd.h"
+#endif
+
 typedef enum {
     CMD_UNKNOWN = -1,
     CMD_RESET   = 0,
@@ -51,7 +55,20 @@ typedef enum {
     CMD_IMGRES,
     CMD_STREAM,
     CMD_SETREG,
-    CMD_GETREG
+    CMD_GETREG,
+#ifdef SD
+    CMD_SD_MOUNT,
+    CMD_SD_UNMOUNT,
+    CMD_SD_CWD,
+    CMD_SD_CD,
+    CMD_SD_LS,
+    CMD_SD_MKDIR,
+    CMD_SD_RM,
+    CMD_SD_TOUCH,
+    CMD_SD_WRITE,
+    CMD_SD_CAT,
+    CMD_SD_SNAP
+#endif
 } cmd_t;
 
 extern char* cmd_table[];
@@ -67,5 +84,9 @@ int recv_msg(char* buffer);
 int recv_cmd(cmd_t* out_cmd);
 void clear_serial_buffer(void);
 void print_help(void);
+
+#ifdef SD
+UINT out_stream (const BYTE *p, UINT btf);
+#endif
 
 #endif

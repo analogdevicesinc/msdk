@@ -45,8 +45,28 @@ char g_serial_buffer[SERIAL_BUFFER_SIZE];
 int g_buffer_index = 0;
 int g_num_commands = 0;
 
-int g_num_commands; // Calculated in 'main' as part of initialization
-char* cmd_table[] = {"reset", "capture", "imgres", "stream", "set-reg", "get-reg"};
+int g_num_commands; // Calculated in 'console_init' as part of initialization
+char* cmd_table[] = {
+    "reset", 
+    "capture", 
+    "imgres", 
+    "stream", 
+    "set-reg", 
+    "get-reg",
+#ifdef SD
+    "mount",
+    "unmount",
+    "cwd",
+    "cd",
+    "ls",
+    "mkdir",
+    "rm",
+    "touch",
+    "write",
+    "cat",
+    "snap"
+#endif
+    };
 
 int starts_with(char* a, char* b)
 {
@@ -198,5 +218,16 @@ void print_help(void)
     printf("Registered %i total commands:\n", g_num_commands);
     for (int i = 0; i < g_num_commands; i++) {
         printf("Command %i: '%s'\n", i, cmd_table[i]);
+    }
+}
+
+UINT out_stream (const BYTE *p, UINT btf) {
+    // If btf > 0, btf is the number of bytes to send.
+    // If btf == 0, sense call querying if the stream is available.
+
+    if (btf == 0) { // Sense call, this function should return the stream status.
+        return MXC_UART_GetTXFIFOAvailable(Con_Uart);
+    } else {
+        return MXC_UART_WriteTXFIFO(Con_Uart, (const unsigned char*)p, (unsigned int)btf);
     }
 }
