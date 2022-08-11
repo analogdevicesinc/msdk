@@ -35,7 +35,14 @@ TCHAR* FR_ERRORS[20] = {
     "FR_INVALID_PARAMETER"
 };
 
+/**
+* @brief Mount the SD card.  If the SD card is blank (no volume name), format the card
+* with FAT32 and give it the name "MAXIM-SD"
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+* @details
+****************************************************************************/
 FRESULT sd_mount() {
+    // Set the sd_fs pointer to the private fatfs object.  This "initializes" fatfs.
     sd_fs = &fatfs;
 
     printf("Mounting SD card...\n");
@@ -79,29 +86,189 @@ FRESULT sd_mount() {
     return FR_OK;
 }
 
+/**
+* @brief Unmount the SD card.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_unmount() {
+    sd_err = f_unmount("");
+    if (sd_err != FR_OK) {
+        printf("Error unmounting SD card: %s\n", FR_ERRORS[sd_err]);
+    }
+    printf("SD card unmounted.\n");
+    return sd_err;
+}
+
+/**
+* @brief Get the size and free space available on the SD card.  Sets them to the 
+global "sd_sectors_total" and "sd_sectors_free" variables, respectively.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
 FRESULT sd_get_size() {
     if ((sd_err = f_getfree(&sd_volume, &sd_clusters_free, &sd_fs)) != FR_OK) {
         printf("Error finding free size of card: %s\n", FR_ERRORS[sd_err]);
     }
 
-    sd_sectors_total = (sd_fs->n_fatent - 2) * sd_fs->csize;
-    sd_sectors_free  = sd_clusters_free * sd_fs->csize;
+    sd_sectors_total = (sd_fs->n_fatent - 2) * sd_fs->csize; // Calculate total size (in bytes)
+    sd_sectors_free  = sd_clusters_free * sd_fs->csize; // Calculate free space (in byte)
 
     return sd_err;
 }
 
+/**
+* @brief Get the current working directory and saves it to the "sd_cwd" global variable.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
 FRESULT sd_get_cwd() {
-    if ((sd_err = f_getcwd(sd_cwd, MAXLEN)) != FR_OK) {
-        printf("Error retrieving cwd: %s\n", FR_ERRORS[sd_err]);
+    sd_err = f_getcwd(sd_cwd, MAXLEN);
+    if (sd_err != FR_OK) {
+        printf("Error getting cwd: %s\n", FR_ERRORS[sd_err]);
     }
 
     return sd_err;
 }
 
+/**
+* @brief Change directory.
+* @param[in] dir Target directory.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
 FRESULT sd_cd(const char* dir) {
-    if ((sd_err = f_chdir((const TCHAR*)dir)) != FR_OK) {
+    sd_err = f_chdir((const TCHAR*)dir);
+    if (sd_err != FR_OK) {
         printf("Error changing directory: %s\n", FR_ERRORS[sd_err]);
     }
 
+    // Refresh sd_cwd variable.
+    sd_get_cwd();
+
+    return sd_err;
+}
+
+/**
+* @brief List the contents of the current directory with printf.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_ls() {
+    // List the contents of the current directory
+    sd_err = f_opendir(&sd_dir, sd_cwd);
+    if (sd_err != FR_OK) {
+        printf("Error opening directory: %s\n", FR_ERRORS[sd_err]);
+    } else {
+        for (;;) {
+            sd_err = f_readdir(&sd_dir, &sd_fno);
+            if (sd_err != FR_OK || sd_fno.fname[0] == 0) break;
+            if (sd_fno.fattrib & AM_DIR) {
+                printf("%s/\n", sd_fno.fname);
+            } else {
+                printf("%s\n", sd_fno.fname);
+            }
+        }
+        f_closedir(&sd_dir);
+    }
+    return sd_err;
+}
+
+/**
+* @brief Make a directory.  Similar to "mkdir" on linux.
+* @param[in] dir Directory path.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_mkdir(const char* dir) {
+    // Make a directory
+    sd_err = f_mkdir((const TCHAR*)dir);
+    if (sd_err != FR_OK) {
+        printf("Error creating directory: %i\n", FR_ERRORS[sd_err]);
+    }
+    return sd_err;
+}
+
+/**
+* @brief Remove a file or empty directory.  Similar to "rm" on linux.
+* @param[in] item Item to remove.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_rm(const char* item) {
+    sd_err = f_unlink((const TCHAR*)item);
+    if (sd_err != FR_OK) {
+        printf("Error while deleting: %s\n", FR_ERRORS[sd_err]);
+    }
+    return sd_err;
+}
+
+/**
+* @brief Create an empty file.  Similar to the "touch" command on linux.
+* @param[in] filepath Target file path (must not already exist).
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_touch(const char* filepath) {
+    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_CREATE_NEW);
+    if (sd_err != FR_OK) {
+        printf("Error creating file: %s\n", FR_ERRORS[sd_err]);
+    }
+    f_close(&sd_file);
+    return sd_err;
+}
+
+/**
+* @brief Write a string to a file.
+* @param[in] filepath Target file path (must already exist).
+* @param[in] string String to write to the file.  Must be null terminated '\0'
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_write_string(const char* filepath, const char* string) {
+    int len = strlen(string);
+    UINT wrote = 0;
+    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE);
+    if (sd_err != FR_OK) {
+        printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
+    } else {
+        sd_err = f_write(&sd_file, string, len, &wrote);
+        if (sd_err != FR_OK || wrote != len) {
+            printf("Failed to write to file: %s\n", FR_ERRORS[sd_err]);
+        }
+    }
+    f_close(&sd_file);
+    return sd_err;
+}
+
+/**
+* @brief Write bytes to a file.
+* @param[in] filepath Target file path (must already exist).
+* @param[in] data Bytes to write to the file.
+* @param[in] len Number of bytes to write.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_write(const char* filepath, const uint8_t* data, int len) {
+    UINT wrote = 0;
+    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE);
+    if (sd_err != FR_OK) {
+        printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
+    } else {
+        sd_err = f_write(&sd_file, data, len, &wrote);
+        if (sd_err != FR_OK || wrote != len) {
+            printf("Failed to write to file: %s\n", FR_ERRORS[sd_err]);
+        }
+    }
+    f_close(&sd_file);
+    return sd_err;
+}
+
+/**
+* @brief Print the contents of a file.  Similar to the "cat" command on linux.
+* @param[in] filename Directory path.
+* @return FR_OK if successful, FR_xxx error code if unsucessful.
+****************************************************************************/
+FRESULT sd_cat(const char* filepath) {
+    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_READ);
+    if (sd_err != FR_OK) {
+        printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
+    } else {
+        while(sd_err == FR_OK && !f_eof(&sd_file)) {
+            sd_err = f_forward(&sd_file, out_stream, 1, NULL); // Stream to UART 1 byte at a time
+        }
+        printf("\n"); // Cap the message with a newline for the host console
+    }
+    f_close(&sd_file);
     return sd_err;
 }

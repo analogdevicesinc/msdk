@@ -371,7 +371,7 @@ void service_console()
             send_msg(g_serial_buffer);
         }
 
-#ifdef FF_DEFINED
+#ifdef SD
         else if (cmd == CMD_SD_MOUNT) {
             // Mount the SD card
             sd_err = sd_mount();
@@ -384,136 +384,61 @@ void service_console()
         }
 
         else if (cmd == CMD_SD_UNMOUNT) {
-            sd_err = f_unmount("");
-            if (sd_err != FR_OK) {
-                printf("Error unmounting SD card: %s\n", FR_ERRORS[sd_err]);
-            }
-            printf("SD card unmounted.\n");
+            sd_unmount();
         }
 
         else if (cmd == CMD_SD_CWD) {
             // Get the current working directory
-            sd_err = f_getcwd(sd_cwd, MAXLEN);
-            if (sd_err != FR_OK) {
-                printf("Error getting cwd: %s\n", FR_ERRORS[sd_err]);
-            } else {
+            sd_err = sd_get_cwd();
+            if (sd_err == FR_OK) {
                 printf("%s\n", sd_cwd);
             }
         }
 
         else if (cmd == CMD_SD_CD) {
             char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
-            sscanf(g_serial_buffer, "cd %s", b);
-            sd_err = f_chdir((const TCHAR*)b);
-            if (sd_err != FR_OK) {
-                printf("Error changing directory: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                printf("\n");
-            }
+            sscanf(g_serial_buffer, "cd %s", b); // Parse the directory string
+            sd_cd(b);
             free(b);
-
-            // Refresh CWD
-            sd_err = f_getcwd(sd_cwd, MAXLEN);
-            if (sd_err != FR_OK) {
-                printf("Error getting cwd: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                printf("%s\n", sd_cwd);
-            }
         }
 
         else if (cmd == CMD_SD_LS) {
-            // List the contents of the current directory
-            sd_err = f_opendir(&sd_dir, sd_cwd);
-            if (sd_err != FR_OK) {
-                printf("Error opening directory: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                printf("\n");
-                for (;;) {
-                    sd_err = f_readdir(&sd_dir, &sd_fno);
-                    if (sd_err != FR_OK || sd_fno.fname[0] == 0) break;
-                    if (sd_fno.fattrib & AM_DIR) {
-                        printf("%s/\n", sd_fno.fname);
-                    } else {
-                        printf("%s\n", sd_fno.fname);
-                    }
-                }
-                f_closedir(&sd_dir);
-            }
+            sd_ls();
         }
 
         else if (cmd == CMD_SD_MKDIR) {
             // Make a directory
             char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
-            sscanf(g_serial_buffer, "mkdir %s", b);
-            sd_err = f_mkdir((const TCHAR*)b);
-            if (sd_err != FR_OK) {
-                printf("Error creating directory: %i\n", FR_ERRORS[sd_err]);
-            } else {
-                printf("\n");
-            }
+            sscanf(g_serial_buffer, "mkdir %s", b); // Parse the directory name
+            sd_mkdir(b);
             free(b);
         }
 
         else if (cmd == CMD_SD_RM) {
             // Remove an item
             char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
-            sscanf(g_serial_buffer, "rm %s", b);
-            sd_err = f_unlink((const TCHAR*)b);
-            if (sd_err != FR_OK) {
-                printf("Error while deleting: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                printf("\n");
-            }
+            sscanf(g_serial_buffer, "rm %s", b); // Parse the item name
+            sd_rm(b);
             free(b);
         }
 
         else if (cmd == CMD_SD_TOUCH) {
             char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
-            sscanf(g_serial_buffer, "touch %s", b);
-            sd_err = f_open(&sd_file, (const TCHAR*)b, FA_CREATE_NEW);
-            if (sd_err != FR_OK) {
-                printf("Error creating file: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                printf("\n");
-            }
-            f_close(&sd_file);
-
+            sscanf(g_serial_buffer, "touch %s", b); // Parse the filepath
+            sd_touch(b);
             free(b);
         }
 
         else if (cmd == CMD_SD_WRITE) {
             char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
-            memset(b, '\0', SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "write %s \"%[^\"]", sd_filename, b); // \"$[^\"] captures everything between two quotes ""
-            printf("Writing %s\n", b);
-            int len = strlen(b);
-            UINT wrote = 0;
-            sd_err = f_open(&sd_file, sd_filename, FA_CREATE_NEW | FA_WRITE);
-            if (sd_err != FR_OK) {
-                printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                sd_err = f_write(&sd_file, b, len, &wrote);
-                if (sd_err != FR_OK || wrote != len) {
-                    printf("Failed to write to file: %s\n", FR_ERRORS[sd_err]);
-                }
-            }
-            f_close(&sd_file);
-            printf("\n");
+            sd_write_string(sd_filename, b);
             free(b);
         }
 
         else if (cmd == CMD_SD_CAT) {
             sscanf(g_serial_buffer, "cat %s", (char*)sd_filename);
-            sd_err = f_open(&sd_file, sd_filename, FA_READ);
-            if (sd_err != FR_OK) {
-                printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
-            } else {
-                while(sd_err == FR_OK && !f_eof(&sd_file)) {
-                    sd_err = f_forward(&sd_file, out_stream, SERIAL_BUFFER_SIZE, NULL);
-                }
-                printf("\n");
-            }
-            f_close(&sd_file);
+            sd_cat(sd_filename);
         }
 
         else if (cmd == CMD_SD_SNAP) {
@@ -529,31 +454,22 @@ void service_console()
                            g_app_settings.pixel_format, g_app_settings.dma_channel);
             
             if (img_data.raw != NULL) {
+                uint32_t* cnn_addr = img_data.raw;
+                sd_touch(sd_filename);
+                printf("Saving image to %s\n", sd_filename);
+
                 MXC_TMR_SW_Start(MXC_TMR0);
 
-                uint32_t* cnn_addr = img_data.raw;
-                printf("Saving image to %s\n", sd_filename);
-                sd_err = f_open(&sd_file, sd_filename, FA_WRITE | FA_CREATE_ALWAYS);
-
                 uint8_t* buffer = (uint8_t*)malloc(img_data.w);
-                if (sd_err != FR_OK) {
-                    printf("Failed to open file: %s\n", FR_ERRORS[sd_err]);
-                } else {
-                    for (int i = 0; i < img_data.imglen; i += img_data.w) {
+                for (int i = 0; i < img_data.imglen; i += img_data.w) {
                         cnn_addr = read_bytes_from_cnn_sram(buffer, img_data.w, cnn_addr);
-                        sd_err = f_write(&sd_file, buffer, img_data.w, NULL);
-                        if (sd_err != FR_OK) {
-                            printf("Failed to write bytes to file: %s\n", FR_ERRORS[sd_err]);
-                            break;
-                        }
+                        sd_write(sd_filename, buffer, img_data.w);
                         if (i % (img_data.w * 32) == 0) {
                             printf("%.1f%%\n", ((float)i/img_data.imglen) * 100.0f);
                         }
                     }
-                }
                 free(buffer);
 
-                f_close(&sd_file);
                 int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
                 printf("Finished (took %ius)\n", elapsed);
             }
