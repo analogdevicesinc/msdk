@@ -47,7 +47,7 @@
 /* **** Includes **** */
 #include <stdio.h>
 #include <stddef.h>
-#include "mxc_errors.h"    //#include "mxc_config.h" //SJ
+#include "mxc_errors.h"
 #include "mcr_regs.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
