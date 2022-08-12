@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360 camera sensors as defined in the makefile.
+ * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360/PAG7920 camera sensors as defined in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
  *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
@@ -61,7 +61,6 @@
 #include "utils.h"
 #include "dma.h"
 
-
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
@@ -78,10 +77,11 @@ if stream mode is disabled, or 320x240 if enabled
 If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
 will be captured continuously.
 */
-
+#if defined(STREAM_ENABLE) && defined(ENABLE_TFT) && defined(BOARD_FTHR_REVA)
 #define FEATHER_FAST_STREAM
+#endif
 /* If enabled, can stream up to 16fps when the TFT is available
- * Note that this option has not tested with EVkit
+ * This option only works if Feather board is selected
  */
 
 // ------------------------
@@ -91,13 +91,13 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 */
 #ifdef ENABLE_TFT
 
-    #ifdef BOARD_EVKIT_V1
-    #include "tft_ssd2119.h"
-    #endif
+#ifdef BOARD_EVKIT_V1
+#include "tft_ssd2119.h"
+#endif
 
-    #ifdef BOARD_FTHR_REVA
-    #include "tft_ili9341.h"
-    #endif
+#ifdef BOARD_FTHR_REVA
+#include "tft_ili9341.h"
+#endif
 
 #endif
 #ifndef FEATHER_FAST_STREAM
@@ -107,55 +107,55 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 
 #if defined(CAMERA_HM01B0)
-    #define CAMERA_MONO
+#define CAMERA_MONO
 
-    #ifdef STREAM_ENABLE
-    #define IMAGE_XRES  324/2
-    #define IMAGE_YRES  244/2
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES  324/2
+#define IMAGE_YRES  244/2
 
-    #else
-    #define IMAGE_XRES 80
-    #define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 80
+#define IMAGE_YRES 80
 
-    #endif
+#endif
 #endif
 
-#if defined(CAMERA_HM0360)
-    #define CAMERA_MONO
+#if defined(CAMERA_HM0360) || defined(CAMERA_PAG7920)
+#define CAMERA_MONO
 
-    #ifdef STREAM_ENABLE
-    #define IMAGE_XRES  320
-    #define IMAGE_YRES  240
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES  320
+#define IMAGE_YRES  240
 
-    #else
-    #define IMAGE_XRES 80
-    #define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
-    #endif
+#endif
 #endif
 
 #if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
 
-    #ifdef ENABLE_TFT
-        #ifdef STREAM_ENABLE
-        #define IMAGE_XRES  320
-        #define IMAGE_YRES  240
-        
-        #else
-        #define IMAGE_XRES  176
-        #define IMAGE_YRES  144
-        #endif
+#ifdef ENABLE_TFT
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES  320
+#define IMAGE_YRES  240
 
-    #else
-        #ifdef STREAM_ENABLE
-            #define IMAGE_XRES 80
-            #define IMAGE_YRES 80
-        #else
-            #define IMAGE_XRES 176
-            #define IMAGE_YRES 144
-        #endif
+#else
+#define IMAGE_XRES  176
+#define IMAGE_YRES  144
+#endif
 
-    #endif
+#else
+#ifdef STREAM_ENABLE
+#define IMAGE_XRES 80
+#define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 176
+#define IMAGE_YRES 144
+#endif
+
+#endif
 #endif
 
 #define CON_BAUD 115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
@@ -165,8 +165,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 void process_img(void)
 {
     uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint32_t   imgLen;
+    uint32_t   w, h;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -198,7 +198,6 @@ void process_img(void)
 
     // Get image line by line
     for (int i = 0; i < h; i++) {
-
         // Wait until camera streaming buffer is full
         while ((data = get_camera_stream_buffer()) == NULL) {
             if (camera_is_image_rcv()) {
@@ -231,7 +230,8 @@ void process_img(void)
     if (stat->overflow_count > 0) {
         LED_On(LED_RED); // Turn on red LED if overflow detected
 
-        while (1);
+        while (1)
+        	;
     }
 
 #endif //#ifndef STREAM_ENABLE
@@ -287,15 +287,18 @@ int main(void)
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-    MXC_TFT_SetBackGroundColor(4);
-    /* Set the screen rotation */
+
 #ifdef BOARD_EVKIT_V1
+    MXC_TFT_Init();
+    /* Set the screen rotation */
     MXC_TFT_SetRotation(SCREEN_NORMAL);
 #endif
 #ifdef BOARD_FTHR_REVA
+    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    /* Set the screen rotation */
     MXC_TFT_SetRotation(ROTATE_270);
 #endif
+    MXC_TFT_SetBackGroundColor(4);
 #endif
 
 #if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
@@ -330,7 +333,6 @@ int main(void)
 #ifndef FEATHER_FAST_STREAM
       ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
 #else
-      //MXC_TFT_WriteReg(0x2c, 0x0); // for fast DMA, the 0x2c has to be sent before start the camera
       MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
       ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
 #endif
@@ -351,7 +353,8 @@ int main(void)
     // Start capturing a first camera image frame.
     printf("Starting\n");
 #ifdef BUTTON
-    while(!PB_Get(0));
+    while(!PB_Get(0))
+    	;
 #endif
 #ifndef FEATHER_FAST_STREAM
     camera_start_capture_image();
@@ -367,15 +370,17 @@ int main(void)
 
             // Prepare for another frame capture.
             LED_Toggle(LED_GREEN);
-        #ifdef BUTTON
-            while(!PB_Get(0));
-        #endif            
+#ifdef BUTTON
+            while(!PB_Get(0))
+            	;
+#endif
             camera_start_capture_image();
         }
     }
 #else
     camera_start_capture_image_tft();
-    while(1);
+    while(1)
+    	;
 #endif
 
     return ret;

@@ -8,4 +8,5 @@
 # available config variables.
 
 #MAKECMDGOALS=release
-BOARD=FTHR_RevA
+#BOARD=FTHR_RevA
+
