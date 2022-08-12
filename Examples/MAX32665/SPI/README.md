@@ -1,6 +1,6 @@
 ## Description
 
-This example configures the SPI to send data between the MISO (P0.11) and MOSI (P0.10) pins.  Connect these two pins together.
+This example configures the SPI to send data between the MISO (P0.17) and MOSI (P0.18) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
@@ -20,8 +20,12 @@ The Console UART of the device will output these messages:
 ************** SPI Loopback Demo ****************
 This example configures the SPI to send data between the MISO (AIN2/P0.18) and
 MOSI (AIN1/P0.17) pins.  Connect these two pins together.  This demo shows SPI
-sending different bit sizes each run through. If successful, the LED1(green or blue) will
-illuminate. If fails, the LED0(red) will illuminate.
+sending different bit sizes each run through.  If successful, the LED1(green or blue) will
+illuminate.  If fails, the LED0(red) will illuminate.
+
+Note: some board versions of the MAX32665 won't print out the transaction
+status because the SPI and Console UART pins are shared.  Check the LEDs, as
+stated above, for the example status.
 
 This demo shows Asynchronous, Synchronous and DMA transaction for SPI1
 
@@ -56,4 +60,4 @@ This demo shows Asynchronous, Synchronous and DMA transaction for SPI1
 -->16 Bits Transaction Successful
 ```
 
-The green LED turns on after a successful DMA transaction, but the transaction status won't be printed on the terminal because the SPI and UART pins are shared.
+The green/blue LED turns on after a successful transaction and the red LED turns on after a failed transaction.  On some MAX32665 board versions, the transaction status won't be printed on the terminal because the SPI and UART pins are shared.
