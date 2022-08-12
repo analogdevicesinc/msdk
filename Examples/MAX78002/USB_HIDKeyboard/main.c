@@ -44,7 +44,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
-#include "mxc_errors.h"    //#include "mxc_config.h" //SJ
+#include "mxc_errors.h"
 #include "led.h"
 #include "mxc_sys.h"
 #include "mcr_regs.h"
