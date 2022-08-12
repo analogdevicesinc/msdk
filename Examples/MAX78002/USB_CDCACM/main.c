@@ -59,7 +59,6 @@
 #include "cdc_acm.h"
 #include "descriptors.h"
 
-
 /* **** Definitions **** */
 #define EVENT_ENUM_COMP     MAXUSB_NUM_EVENTS
 #define EVENT_REMOTE_WAKE   (EVENT_ENUM_COMP + 1)
