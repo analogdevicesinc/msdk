@@ -48,7 +48,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include "mxc_errors.h"
-#include "mcr_regs.h" 
+#include "mcr_regs.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
 #include "board.h"
