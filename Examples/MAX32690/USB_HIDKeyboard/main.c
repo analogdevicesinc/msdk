@@ -80,6 +80,48 @@ void usDelay(unsigned int usec);
 int usbStartupCallback();
 int usbShutdownCallback();
 
+const mxc_gpio_cfg_t hid_sw[] = {
+// Even though SW2 in EVK defined at Port 4.0 but this goes not have GPIO interrupt
+// Using P0.7 for SW2. Connect Port 4.0 to Port 0.7.
+    {MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+};
+
+/******************************************************************************/
+int Hid_SW_Init(void)
+{
+    int retval = E_NO_ERROR;
+
+    if (MXC_GPIO_Config(&hid_sw[0]) != E_NO_ERROR) {
+            retval = E_UNKNOWN;
+        }
+
+    return retval;
+}
+
+/******************************************************************************/
+int Hid_SW_RegisterCallback(unsigned int pb, pb_callback callback)
+{
+
+    if (callback) {
+        // Register callback
+        MXC_GPIO_RegisterCallback(&hid_sw[pb], callback, (void*)pb);
+
+        // Configure and enable interrupt
+        MXC_GPIO_IntConfig(&hid_sw[pb], MXC_GPIO_INT_FALLING);
+        MXC_GPIO_EnableInt(hid_sw[pb].port, hid_sw[pb].mask);
+        NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(hid_sw[pb].port)));
+    } else {   // Disable interrupt and clear callback
+        MXC_GPIO_DisableInt(hid_sw[pb].port, hid_sw[pb].mask);
+        MXC_GPIO_RegisterCallback(&hid_sw[pb], NULL, NULL);
+    }
+
+    return E_NO_ERROR;
+}
+
+int HID_SW_Get(unsigned int pb)
+{
+    return !MXC_GPIO_InGet(hid_sw[pb].port, hid_sw[pb].mask);
+}
 
 /******************************************************************************/
 void USB_IRQHandler(void)
@@ -91,10 +133,14 @@ void USB_IRQHandler(void)
 int main(void)
 {
     maxusb_cfg_options_t usb_opts;
+    Hid_SW_Init();
     
+    printf("\n Connect Port 0.7 to Port 4.0");
     printf("\n\n***** " TOSTRING(TARGET) " USB HID Keyboard Example *****\n");
     printf("Waiting for VBUS...\n");
     
+
+
     /* Initialize state */
     configured = 0;
     suspended = 0;
@@ -148,8 +194,8 @@ int main(void)
     MXC_USB_EventEnable(MAXUSB_EVENT_VBUS, eventCallback, NULL);
     
     /* Register callback for keyboard events */
-    if (PB_RegisterCallback(0, buttonCallback) != E_NO_ERROR) {
-        printf("PB_RegisterCallback() failed\n");
+    if (Hid_SW_RegisterCallback(0, buttonCallback) != E_NO_ERROR) {
+        printf("HID_SW_RegisterCallback() failed\n");
         
         while (1);
     }
@@ -253,7 +299,7 @@ static void buttonCallback(void* pb)
     int button_pressed = 0;
     
     //determine if interrupt triggered by bounce or a true button press
-    while (PB_Get(0) && !button_pressed) {
+    while (HID_SW_Get(0) && !button_pressed) {
         count++;
         
         if (count > 1000) {
