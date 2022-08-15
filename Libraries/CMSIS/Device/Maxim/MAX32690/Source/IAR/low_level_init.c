@@ -40,7 +40,7 @@ __interwork int __low_level_init(void)
     /* Return: 0 to omit seg_init         */
     /*         1 to run seg_init          */
     /*====================================*/
-    return !PreInit(); // See system_max32675.c
+    return !PreInit(); // See system_max32655.c
 }
 
 #pragma language=default

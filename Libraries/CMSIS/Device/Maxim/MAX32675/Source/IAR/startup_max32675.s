@@ -29,7 +29,7 @@
 ;* property whatsoever. Maxim Integrated Products, Inc. retains all
 ;* ownership rights.
 ;*
-;* Description        : MAX32670 device vector table for IAR EWARM toolchain.
+;* Description        : MAX32675 device vector table for IAR EWARM toolchain.
 ;*                      - Sets the initial SP
 ;*                      - Sets the initial PC == _iar_program_start,
 ;*                      - Set the vector table entries with the exceptions ISR

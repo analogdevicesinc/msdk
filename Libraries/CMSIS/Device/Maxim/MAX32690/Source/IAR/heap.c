@@ -33,16 +33,53 @@
  * $Revision: 21838 $
  *
  ******************************************************************************/
+#if defined __ICCARM__ 
+#pragma diag_suppress=Pe513,Pe042
+#endif
 
-extern void SystemInit(void);
-extern void $Super$$main(void);
+#include <stdlib.h>
+#pragma section="CSTACK"
+#pragma section="HEAP"
 
-// This will be executed after the RAM initialization
-void $Sub$$main(void)
+
+//#include <sys/types.h>
+#include <errno.h>
+#include <stddef.h>
+
+/* ------------------------------------------------------------------------- */
+/*!Increase program data space
+   This is a minimal implementation.  Assuming the heap is growing upwards
+   from __HeapBase towards __HeapLimit.
+   See linker file for definition.
+   @param[in] incr  The number of bytes to increment the stack by.
+   @return  A pointer to the start of the new block of memory                */
+/* ------------------------------------------------------------------------- */
+
+//extern char __HeapBase;//set by linker
+//extern char __HeapLimit;//set by linker
+
+    unsigned char *HeapBase   = __section_begin("HEAP");
+    unsigned char *HeapLimit  = __section_end("HEAP"); 
+
+void * _sbrk (int  incr)
 {
 
-    SystemInit();
+	static char *heap_end=0;	  	/* Previous end of heap or 0 if none */
+	char        *prev_heap_end;
 
-    // Call to main function
-    $Super$$main();
-}
+	if (0 == heap_end) {
+		heap_end = HeapBase; //&__HeapBase;			/* Initialize first time round */
+	}
+
+	prev_heap_end  = heap_end;
+	heap_end      += incr;
+	//check
+	if( heap_end < HeapLimit /*(&__HeapLimit)*/) {
+
+	} else {
+		errno = 132; //ENOMEM;
+		return (char*)-1;
+	}
+	return (void *) prev_heap_end;
+
+}	/* _sbrk () */

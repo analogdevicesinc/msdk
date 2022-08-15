@@ -76,7 +76,11 @@ void MXC_FLC_ME21_Flash_Operation(void)
 
     // Clear the line fill buffer by reading 2 pages from flash
     volatile uint32_t* line_addr;
+#if defined ( __GNUC__ ) && !defined ( __ARMCC_VERSION )  
     volatile uint32_t __unused line; // __unused attribute removes warning
+#else
+    volatile uint32_t line; // __unused attribute removes warning   
+#endif
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
     line      = *line_addr;
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
