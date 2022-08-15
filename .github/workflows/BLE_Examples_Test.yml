@@ -55,6 +55,6 @@ jobs:
     needs: [ lock ]
     steps:
       - name: Unlock Resources
-      - run: |
+        run: |
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
