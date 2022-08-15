@@ -32,6 +32,8 @@
  #
  ###############################################################################
 
+MAKECMDGOALS=scpa
+
 # This is the name of the build output file
 ifeq "$(PROJECT)" ""
 PROJECT=max32690
@@ -111,30 +113,11 @@ PROJ_CFLAGS+=-DMAX32690_A1
 #MXC_OPTIMIZE_CFLAGS=-O1
 
 # Point this variable to a linker file to override the default file
-LINKER=$(TARGET_LC).ld
-
-ifeq ($(MAKECMDGOALS),sla)
-PROJ_CFLAGS+=-D__SLA_FWK__
-LINKER=$(TARGET_LC)_sla.ld
-endif
-
-ifeq ($(MAKECMDGOALS),ram)
-PROJ_CFLAGS+=-D__RAM_FWK__
-LINKER=$(TARGET_LC)_ram.ld
-endif
-
-ifeq ($(MAKECMDGOALS),scpa)
 PROJ_CFLAGS+=-D__SCPA_FWK__
 PROJ_CFLAGS+=-DSCPA_MEM_BASE_ADDR=0xC0000000 -DSCPA_MEM_SIZE=1024
+
 LINKER=$(TARGET_LC)_scpa.ld
-endif
-
-# if not exist use default one
-ifeq ("$(wildcard $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER) )","")
-LINKER=$(TARGET_LC).ld
-endif
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
-
 
 ################################################################################
 # Include external library makefiles here
@@ -156,6 +139,15 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).
 all:
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 	@echo " "
+	arm-none-eabi-objcopy -O srec -j .text -j .data -j.scpa_header -j.scpa_init -j.scpa_ops --srec-forceS3 --srec-len=128 $(BUILD_DIR)/$(PROJECT).elf  $(BUILD_DIR)/$(PROJECT).srec
+	@echo " "
+	@echo "Updating scp_script file (Rename output file name with project name)"
+	$(shell sed -e 's/SCPA_OTP_Dump/$(PROJECT)/g' -i scp_script.txt)
+	@echo "Generating SCP Package"
+	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) script_file=scp_script.txt ${SCP_PACKETS}
+
+scpa: all
+	@echo " "
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
@@ -165,23 +157,3 @@ slaclean:
 
 # The rule to clean out all the build products.
 distclean: clean libclean slaclean
-
-sla: all
-	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
-	@echo " "
-	$(CA_SIGN_BUILD) -c $(TARGET_UC) key_file=$(TEST_KEY) algo=ecdsa header=no ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
-	@echo " "
-	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
-	@echo " "
-	#$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
-
-ram: all
-	@echo " "
-	
-scpa: all
-	arm-none-eabi-objcopy -O srec -j .text -j .data -j.scpa_header -j.scpa_init -j.scpa_ops --srec-forceS3 --srec-len=128 $(BUILD_DIR)/$(PROJECT).elf  $(BUILD_DIR)/$(PROJECT).srec
-	@echo " "
-	@echo "Updating scp_script file (Rename output file name with project name)"
-	$(shell sed -e 's/SCPA_OTP_Dump/$(PROJECT)/g' -i scp_script.txt)
-	@echo "Generating SCP Package"
-	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) script_file=scp_script.txt ${SCP_PACKETS}
