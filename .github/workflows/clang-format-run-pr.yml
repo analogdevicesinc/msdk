@@ -10,7 +10,7 @@ jobs:
   run-not-pr: 
     # Run on branchs, not forked PR branches
     if: |
-      contains(github.event.comment.body, '/clang-format-run') }}
+      contains(github.event.comment.body, '/clang-format-run')
 
     runs-on:
       - self-hosted
@@ -38,7 +38,7 @@ jobs:
   run-pr: 
     # Running on PR branches from fork
     if: |
-      contains(github.event.comment.body, '/clang-format-run-pr') }}
+      contains(github.event.comment.body, '/clang-format-run-pr')
 
     runs-on:
       - self-hosted
