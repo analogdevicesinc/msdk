@@ -1,6 +1,6 @@
 ## Description
 
-Python scripts designed for use with the "ImgCapture" firmware.  These include a full-featured console application and image conversion utilites.
+This folder contains Python scripts designed for use with the "ImgCapture" firmware.  These include a full-featured console application and image conversion utilites.
 
 ## Requirements
 
