@@ -176,7 +176,8 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     So the console cannot rely on the same 'readline()' polling as it does for standard
     commands.
 ****************************************************************************/
-void transmit_capture_uart(img_data_t img_data) {
+void transmit_capture_uart(img_data_t img_data)
+{
     if (img_data.raw != NULL) {
         // Send the image data over the serial port...
         MXC_TMR_SW_Start(MXC_TMR0);
@@ -184,8 +185,8 @@ void transmit_capture_uart(img_data_t img_data) {
         // First, tell the host that we're about to send the image.
         clear_serial_buffer();
         snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-                    "*IMG* %s %i %i %i", // Format img info into a string
-                    img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
+                 "*IMG* %s %i %i %i", // Format img info into a string
+                 img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
         send_msg(g_serial_buffer);
 
         // The console should now be expecting to receive 'imglen' bytes.
@@ -313,22 +314,24 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     So the console cannot rely on the same 'readline()' polling as it does for standard
     commands.
 ****************************************************************************/
-void transmit_stream_uart(cnn_img_data_t img_data) {
-    if (img_data.raw != NULL) { // If img_data.raw is NULL, then there was an error collecting the image.
+void transmit_stream_uart(cnn_img_data_t img_data)
+{
+    if (img_data.raw !=
+        NULL) { // If img_data.raw is NULL, then there was an error collecting the image.
         printf("Transmitting image data over UART...\n");
         MXC_TMR_SW_Start(MXC_TMR0);
 
         // Tell the host console we're about to send an image.
         clear_serial_buffer();
         snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-                "*IMG* %s %i %i %i", // Format img info into a string
-                img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
+                 "*IMG* %s %i %i %i", // Format img info into a string
+                 img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
         send_msg(g_serial_buffer);
 
         // Console should be ready to receive raw bytes now.
 
         clear_serial_buffer();
-        int transfer_len   = SERIAL_BUFFER_SIZE;          
+        int transfer_len   = SERIAL_BUFFER_SIZE;
         uint32_t* cnn_addr = img_data.raw;
 
         // Transfer the bytes out of CNN memory and into the serial buffer, then write.
@@ -362,7 +365,8 @@ void transmit_stream_uart(cnn_img_data_t img_data) {
     'transmit_stream_uart'.  As a result, this can be used to read an image file off
     the SD card and the console will save it as a .png on the host PC.
 ****************************************************************************/
-void save_stream_sd(cnn_img_data_t img_data, char* file) {
+void save_stream_sd(cnn_img_data_t img_data, char* file)
+{
     if (img_data.raw != NULL) { // Image data will be NULL if something went wrong during streaming
 
         // If file is NULL, find the next available file to save to.
@@ -379,7 +383,8 @@ void save_stream_sd(cnn_img_data_t img_data, char* file) {
                     file = sd_filename; // Point 'file' to the available path string
                     break;
                 } else if (sd_err != FR_OK) {
-                    printf("Error while searching for next available file: %s\n", FR_ERRORS[sd_err]);
+                    printf("Error while searching for next available file: %s\n",
+                           FR_ERRORS[sd_err]);
                     break;
                 }
             }
@@ -397,8 +402,8 @@ void save_stream_sd(cnn_img_data_t img_data, char* file) {
             // Write image info as the first line of the file.
             clear_serial_buffer();
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-                "*IMG* %s %i %i %i\n", // Format img info into a new-line terminated string
-                img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
+                     "*IMG* %s %i %i %i\n", // Format img info into a new-line terminated string
+                     img_data.pixel_format, img_data.imglen, img_data.w, img_data.h);
 
             unsigned int wrote = 0;
             sd_err = f_write(&sd_file, g_serial_buffer, strlen(g_serial_buffer), &wrote);
@@ -411,10 +416,10 @@ void save_stream_sd(cnn_img_data_t img_data, char* file) {
             // save the raw data to the SD card since the CNN data SRAM is non-contiguous.
             // Raw image data is written row by row.
             uint32_t* cnn_addr = img_data.raw;
-            uint8_t* buffer = (uint8_t*)malloc(img_data.w);
+            uint8_t* buffer    = (uint8_t*)malloc(img_data.w);
             for (int i = 0; i < img_data.imglen; i += img_data.w) {
                 cnn_addr = read_bytes_from_cnn_sram(buffer, img_data.w, cnn_addr);
-                sd_err = f_write(&sd_file, buffer, img_data.w, &wrote);
+                sd_err   = f_write(&sd_file, buffer, img_data.w, &wrote);
 
                 if (sd_err != FR_OK || wrote != img_data.w) {
                     printf("Failed to image data to file: %s\n", FR_ERRORS[sd_err]);
@@ -422,7 +427,7 @@ void save_stream_sd(cnn_img_data_t img_data, char* file) {
 
                 // Print progress %
                 if (i % (img_data.w * 32) == 0) {
-                    printf("%.1f%%\n", ((float)i/img_data.imglen) * 100.0f);
+                    printf("%.1f%%\n", ((float)i / img_data.imglen) * 100.0f);
                 }
             }
             free(buffer);
@@ -507,7 +512,6 @@ void service_console()
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
             send_msg(g_serial_buffer);
         }
-
 #ifdef SD
         else if (cmd == CMD_SD_MOUNT) {
             // Mount the SD card
@@ -571,7 +575,8 @@ void service_console()
         else if (cmd == CMD_SD_WRITE) {
             // Write a string to a file
             char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
-            sscanf(g_serial_buffer, "write %s \"%[^\"]", sd_filename, b); // \"$[^\"] captures everything between two quotes ""
+            sscanf(g_serial_buffer, "write %s \"%[^\"]", sd_filename,
+                   b); // \"$[^\"] captures everything between two quotes ""
             sd_write_string(sd_filename, b);
             free(b);
         }
@@ -668,7 +673,6 @@ int main(void)
 
     // Main processing loop.
     while (1) {
-
 #ifdef CONSOLE
         // Serial console is enabled, service commands
         service_console();
@@ -677,7 +681,9 @@ int main(void)
 #ifdef SD
         // SD card is enabled.
         if (PB_Get(0)) { // Enable image capture by pushing pushbutton 0
-            cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h, g_app_settings.pixel_format, g_app_settings.dma_channel);
+            cnn_img_data_t img_data =
+                stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                           g_app_settings.pixel_format, g_app_settings.dma_channel);
             save_stream_sd(img_data, NULL);
         }
 #endif

@@ -50,7 +50,7 @@
 
 typedef enum {
     CMD_UNKNOWN = -1,
-    CMD_HELP = 0,
+    CMD_HELP    = 0,
     CMD_RESET,
     CMD_CAPTURE,
     CMD_IMGRES,
@@ -90,7 +90,7 @@ void print_help(void);
 #ifdef SD
 // Supporting function for use with f_forward (http://elm-chan.org/fsw/ff/doc/forward.html)
 // Streams fatFS bytes to the UART TX FIFO
-UINT out_stream (const BYTE *p, UINT btf);
+UINT out_stream(const BYTE* p, UINT btf);
 #endif
 
 #endif

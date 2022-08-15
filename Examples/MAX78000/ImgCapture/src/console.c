@@ -46,38 +46,24 @@ int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char* cmd_table[] = {
-    "help",
-    "reset", 
-    "capture", 
-    "imgres", 
-    "stream", 
-    "set-reg", 
-    "get-reg",
+char* cmd_table[] = {"help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
 #ifdef SD
-    "mount",
-    "unmount",
-    "cwd",
-    "cd",
-    "ls",
-    "mkdir",
-    "rm",
-    "touch",
-    "write",
-    "cat",
-    "snap"
+                     "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
+                     "touch", "write",   "cat",     "snap"
 #endif
-    };
+};
 
 char* help_table[] = {
     ": Print this help string",
     ": Issue a soft reset to the host MCU.",
     ": Perform a standard blocking capture of a single image",
     "<width> <height> : Set the image resolution of the camera to <width> x <height>",
-    ": Performs a line-by-line streaming DMA capture of a single image, capable of higher resolutions",
+    ": Performs a line-by-line streaming DMA capture of a single image, capable of higher "
+    "resolutions",
     "<register> <value> : Write a value to a camera register.",
     "<register> : Prints the value in a camera register.",
-    ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU detects it's blank.",
+    ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU "
+    "detects it's blank.",
     ": Unmount the SD card.",
     ": Print the current working directory (cwd).",
     "<dir> : Change the current working directory to <dir>.",
@@ -87,8 +73,8 @@ char* help_table[] = {
     "<filename> : Create an empty file.",
     "<filename> <string> : Write a string to a file.",
     "<filename> : Print the contents of a file.",
-    "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is optional.  If none is specified, images will be saved to /raw."
-};
+    "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is "
+    "optional.  If none is specified, images will be saved to /raw."};
 
 int starts_with(char* a, char* b)
 {
@@ -247,7 +233,8 @@ void print_help(void)
 
 #ifdef SD
 // Utility function for streaming data out of a file into the UART TX FIFO
-UINT out_stream (const BYTE *p, UINT btf) {
+UINT out_stream(const BYTE* p, UINT btf)
+{
     // If btf > 0, btf is the number of bytes to send.
     // If btf == 0, sense call querying if the stream is available.
 
