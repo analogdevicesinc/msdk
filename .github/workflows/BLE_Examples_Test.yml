@@ -21,6 +21,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Lock Resources
+        if: ${{ always() }}
         run: |
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
@@ -45,6 +46,7 @@ jobs:
             path: Examples_tests/results/
             
       - name: Unlock Resources
+        if: ${{ always() }}
         run: |
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
