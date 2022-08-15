@@ -79,7 +79,7 @@ void MXC_FLC_ME21_Flash_Operation(void)
 #if defined ( __GNUC__ ) && !defined ( __ARMCC_VERSION )  
     volatile uint32_t __unused line; // __unused attribute removes warning
 #else
-    volatile uint32_t line; // __unused attribute removes warning   
+    volatile uint32_t line;   
 #endif
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
     line      = *line_addr;
