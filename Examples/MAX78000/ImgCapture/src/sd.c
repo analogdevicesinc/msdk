@@ -35,12 +35,6 @@ TCHAR* FR_ERRORS[20] = {
     "FR_INVALID_PARAMETER"
 };
 
-/**
-* @brief Mount the SD card.  If the SD card is blank (no volume name), format the card
-* with FAT32 and give it the name "MAXIM-SD"
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-* @details
-****************************************************************************/
 FRESULT sd_mount() {
     // Set the sd_fs pointer to the private fatfs object.  This "initializes" fatfs.
     sd_fs = &fatfs;
@@ -86,10 +80,6 @@ FRESULT sd_mount() {
     return FR_OK;
 }
 
-/**
-* @brief Unmount the SD card.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_unmount() {
     sd_err = f_unmount("");
     if (sd_err != FR_OK) {
@@ -99,11 +89,6 @@ FRESULT sd_unmount() {
     return sd_err;
 }
 
-/**
-* @brief Get the size and free space available on the SD card.  Sets them to the 
-global "sd_sectors_total" and "sd_sectors_free" variables, respectively.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_get_size() {
     if ((sd_err = f_getfree(&sd_volume, &sd_clusters_free, &sd_fs)) != FR_OK) {
         printf("Error finding free size of card: %s\n", FR_ERRORS[sd_err]);
@@ -115,10 +100,6 @@ FRESULT sd_get_size() {
     return sd_err;
 }
 
-/**
-* @brief Get the current working directory and saves it to the "sd_cwd" global variable.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_get_cwd() {
     sd_err = f_getcwd(sd_cwd, MAXLEN);
     if (sd_err != FR_OK) {
@@ -128,11 +109,6 @@ FRESULT sd_get_cwd() {
     return sd_err;
 }
 
-/**
-* @brief Change directory.
-* @param[in] dir Target directory.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_cd(const char* dir) {
     sd_err = f_chdir((const TCHAR*)dir);
     if (sd_err != FR_OK) {
@@ -145,10 +121,6 @@ FRESULT sd_cd(const char* dir) {
     return sd_err;
 }
 
-/**
-* @brief List the contents of the current directory with printf.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_ls() {
     // List the contents of the current directory
     sd_err = f_opendir(&sd_dir, sd_cwd);
@@ -170,11 +142,7 @@ FRESULT sd_ls() {
     return sd_err;
 }
 
-/**
-* @brief Make a directory.  Similar to "mkdir" on linux.
-* @param[in] dir Directory path.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
+
 FRESULT sd_mkdir(const char* dir) {
     // Make a directory
     sd_err = f_mkdir((const TCHAR*)dir);
@@ -184,11 +152,6 @@ FRESULT sd_mkdir(const char* dir) {
     return sd_err;
 }
 
-/**
-* @brief Remove a file or empty directory.  Similar to "rm" on linux.
-* @param[in] item Item to remove.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_rm(const char* item) {
     sd_err = f_unlink((const TCHAR*)item);
     if (sd_err != FR_OK) {
@@ -197,11 +160,6 @@ FRESULT sd_rm(const char* item) {
     return sd_err;
 }
 
-/**
-* @brief Create an empty file.  Similar to the "touch" command on linux.
-* @param[in] filepath Target file path (must not already exist).
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_touch(const char* filepath) {
     sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_CREATE_NEW);
     if (sd_err != FR_OK) {
@@ -211,12 +169,6 @@ FRESULT sd_touch(const char* filepath) {
     return sd_err;
 }
 
-/**
-* @brief Write a string to a file.
-* @param[in] filepath Target file path (must already exist).
-* @param[in] string String to write to the file.  Must be null terminated '\0'
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_write_string(const char* filepath, const char* string) {
     int len = strlen(string);
     UINT wrote = 0;
@@ -233,13 +185,6 @@ FRESULT sd_write_string(const char* filepath, const char* string) {
     return sd_err;
 }
 
-/**
-* @brief Write bytes to a file.
-* @param[in] filepath Target file path (must already exist).
-* @param[in] data Bytes to write to the file.
-* @param[in] len Number of bytes to write.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_write(const char* filepath, const uint8_t* data, int len) {
     UINT wrote = 0;
     sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE | FA_OPEN_APPEND | FA_CREATE_NEW);
@@ -255,11 +200,6 @@ FRESULT sd_write(const char* filepath, const uint8_t* data, int len) {
     return sd_err;
 }
 
-/**
-* @brief Print the contents of a file.  Similar to the "cat" command on linux.
-* @param[in] filename Directory path.
-* @return FR_OK if successful, FR_xxx error code if unsucessful.
-****************************************************************************/
 FRESULT sd_cat(const char* filepath) {
     sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_READ);
     if (sd_err != FR_OK) {

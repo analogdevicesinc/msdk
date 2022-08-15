@@ -1,6 +1,6 @@
 # ImgCapture
 
-![Example Image Capture in VSCode](img/Example-Capture.png)
+![Example Image Capture in VSCode](res/Example-Capture.png)
 (Above:  352x352 capture of a test pattern using the MAX78000FTHR's OV7692 camera)
 
 ## Description
@@ -35,7 +35,7 @@ Firmware features can be toggled in [src/example_config.h](src/example_config.h)
 
 * The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.
 
-* SD card functionality is also enabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.
+* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.
 
 After making any changes, fully clean the project and then rebuild.
 
