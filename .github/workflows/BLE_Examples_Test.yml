@@ -11,12 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
-# allow a single workflow to run at any given time given that these tests 
-# require the use of hardware devices
-# second instance of a workflow will wait on the frist to finish
-# third instance cancels the second instance and waits on the first to finish
-concurrency:
-  group: ble_examples_testing
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
