@@ -27,7 +27,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: [ self-hosted, btm-ci ]
-    needs: [ lock ]
+    needs: [ lock ] # Only run if the lock was successful
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -48,13 +48,10 @@ jobs:
         with:
             name: failure-report
             path: Examples_tests/results/
-            
-  unlock:
-    # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
-    needs: [ lock ]
-    steps:
-      - name: Unlock Resources
+      
+      # Unlock even when cancelled or failed
+      - name: unlock
+        if: always()
         run: |
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
