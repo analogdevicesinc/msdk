@@ -2218,9 +2218,6 @@
             <file>
                 <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
             </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32675#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_revb.c</name>
-            </file>
         </group>
         <group>
             <name>Maxim Maxim API _Device.AFE_1.0.3</name>

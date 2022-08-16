@@ -33,7 +33,7 @@
  * $Revision: 30883 $
  *
  ******************************************************************************/
-#if defined(__ICCARM__) || (__CC_ARM)
+#if defined (__ICCARM__) || defined (__CC_ARM )|| defined (__ARMCC_VERSION)
 #include <errno.h>
 #else
 #include <sys/errno.h>
@@ -43,18 +43,24 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if defined(__GNUC__)
+#if defined ( __GNUC__ ) && !defined ( __ARMCC_VERSION )
 #include <unistd.h>
 #include <sys/stat.h>
-#endif /* __GNUC__ */
+#endif /* __GNUC__ && !__ARMCC_VERSION */
 
-#if defined(__CC_ARM)
+#if defined ( __CC_ARM ) || defined( __ARMCC_VERSION )
 #include <rt_misc.h>
-#pragma import(__use_no_semihosting_swi)
 
+#if ( __ARMCC_VERSION < 6000000 )
+#pragma import(__use_no_semihosting_swi)
+#endif  /* __ARMCC_VERSION < 6000000 */
+
+#if ( __ARMCC_VERSION < 6000000 )
 struct __FILE {
     int handle;
 };
+#endif  /* __ARMCC_VERSION < 6000000 */
+
 FILE __stdout;
 FILE __stdin;
 /**
@@ -68,7 +74,7 @@ int g_lastChar = 0;
  */
 int g_readChar = 0;
 
-#endif /* __CC_ARM */
+#endif /* __CC_ARM || __ARMCC_VERSION */
 
 /* Defines - Compiler Specific */
 #if defined(__ICCARM__)
@@ -89,7 +95,7 @@ int g_readChar = 0;
  * These can be tailored for a complete stdio implementation.
  * GNUC requires all functions below. IAR & KEIL only use read and write.
  */
-#if defined(__GNUC__)
+#if defined ( __GNUC__ ) && !defined( __ARMCC_VERSION )
 int _open(const char* name, int flags, int mode)
 {
     return -1;
@@ -110,13 +116,13 @@ int _fstat(int file, struct stat* st)
 {
     return -1;
 }
-#endif /* __GNUC__ */
+#endif /* __GNUC__ && ! __ARMCC_VERSION */
 
 /* Handle IAR and ARM/Keil Compilers for _read/_write. Keil uses fputc and
    fgetc for stdio */
-#if defined(__ICCARM__) || defined(__GNUC__)
+#if defined (__ICCARM__) || (defined ( __GNUC__ ) && !defined ( __ARMCC_VERSION ))
 
-#if defined(__GNUC__) // GNUC _read function prototype
+#if defined ( __GNUC__ ) && !defined ( __ARMCC_VERSION ) // GNUC _read function prototype
 int _read(int file, char* ptr, int len)
 {
     int n;
@@ -157,7 +163,7 @@ int __read(int file, unsigned char* ptr, size_t len)
 }
 
 /* newlib/libc printf() will eventually call write() to get the data to the stdout */
-#if defined(__GNUC__)
+#if defined ( __GNUC__ ) && !defined ( __ARMCC_VERSION )
 // GNUC _write function prototype
 int _write(int file, char* ptr, int len)
 {
@@ -201,10 +207,10 @@ int __write(int file, const unsigned char* ptr, size_t len)
     return len;
 }
 
-#endif /* ( __ICCARM__ ) || ( __GNUC__ ) */
+#endif /* ( __ICCARM__ ) || (( __GNUC__ ) && !(__ARMCC_VERSION)) */
 
 /* Handle Keil/ARM Compiler which uses fputc and fgetc for stdio */
-#if defined(__CC_ARM)
+#if defined ( __CC_ARM ) || defined( __ARMCC_VERSION )
 int fputc(int c, FILE* f)
 {
     if (c != '\n') {
@@ -256,4 +262,4 @@ void _sys_exit(int return_code)
     }
 }
 
-#endif /* __CC_ARM  */
+#endif /* __CC_ARM || __ARMCC_VERSION */
