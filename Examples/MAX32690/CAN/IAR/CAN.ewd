@@ -44,7 +44,7 @@
                 </option>
                 <option>
                     <name>MemFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\.iar\config\debugger\MAX32690.ddf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\.iar\config\debugger\MAX32690.ddf</state>
                 </option>
                 <option>
                     <name>RunToEnable</name>
@@ -80,7 +80,7 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>8.31.0.07146</state>
+                    <state>8.31.0.17146</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
@@ -1570,7 +1570,7 @@
                 </option>
                 <option>
                     <name>MemFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\.iar\config\debugger\MAX32690.ddf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\.iar\config\debugger\MAX32690.ddf</state>
                 </option>
                 <option>
                     <name>RunToEnable</name>
@@ -1606,7 +1606,7 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>8.31.0.07146</state>
+                    <state>8.31.0.17146</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
@@ -1638,7 +1638,7 @@
                 </option>
                 <option>
                     <name>FlashLoadersV3</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\.iar\config\flashloader\MAX32690.board</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\.iar\config\flashloader\MAX32690.board</state>
                 </option>
                 <option>
                     <name>OCImagesSuppressCheck1</name>

@@ -785,7 +785,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$.iar\config\linker\MAX32690_IAR_BLE.icf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$.iar\config\linker\MAX32690_IAR_BLE.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -2151,33 +2151,33 @@
             <name>$PROJ_DIR$\RTE\RTE_Components.h</name>
         </file>
         <group>
-            <name>Maxim Maxim API _Device.UART_1.0.0</name>
+            <name>Maxim Maxim API _Device.UART_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/UART/uart_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/UART/uart_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.Timers_1.0.0</name>
+            <name>Maxim Maxim API _Device.Timers_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/TMR/tmr_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/TMR/tmr_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/TMR/tmr_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/TMR/tmr_revb.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.Startup_1.0.0</name>
+            <name>Maxim Maxim API _Device.Startup_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
                 <name>$PROJ_DIR$\RTE\Device\MAX32690_Cortex-M4\cmain.s</name>
@@ -2192,1561 +2192,1561 @@
                 <name>$PROJ_DIR$\RTE\Device\MAX32690_Cortex-M4\max32690.h</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/pins_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/SYS/pins_me18.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\RTE\Device\MAX32690_Cortex-M4\startup_max32690.s</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/SYS/sys_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/SYS/sys_me18.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\RTE\Device\MAX32690_Cortex-M4\system_max32690.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.GPIO_1.0.0</name>
+            <name>Maxim Maxim API _Device.GPIO_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.FLC_1.0.0</name>
+            <name>Maxim Maxim API _Device.FLC_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/FLC/flc_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/FLC/flc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/FLC/flc_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/FLC/flc_revb.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.DMA_1.0.0</name>
+            <name>Maxim Maxim API _Device.DMA_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/DMA/dma_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/DMA/dma_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/DMA/dma_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/DMA/dma_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim MAX32690 BSP _BSP.EvKit V1_1.0.0</name>
+            <name>Maxim MAX32690 BSP _BSP.EvKit V1_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Boards/MAX32690/EvKit_V1/Source/board.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Boards/MAX32690/EvKit_V1/Source/board.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Boards/MAX32690/Source/led.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Boards/MAX32690/Source/led.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Boards/MAX32690/Source/pb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Boards/MAX32690/Source/pb.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Boards/MAX32690/Source/stdio.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Boards/MAX32690/Source/stdio.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim BTLE _Bluetooth.Bluetooth LE_1.0.0</name>
+            <name>Maxim Maxim BTLE _Bluetooth.Bluetooth LE_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/anpc/anpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/anpc/anpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/app_db.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/app_db.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_disc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_disc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/app_hw.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/app_hw.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_master_leg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_master_leg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_server.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_server.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_slave_leg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_slave_leg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/app_terminal.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/app_terminal.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/app_ui.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/app_ui.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/atpc/atpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/atpc/atpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/atps/atps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/atps/atps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/att_eatt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/att_eatt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/att_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/att_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/att_uuid.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/att_uuid.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_disc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_disc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_eatt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_eatt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_proc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_proc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_read.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_read.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_sign.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_sign.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/attc_write.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/attc_write.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_ccc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_ccc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_csf.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_csf.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_dyn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_dyn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_eatt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_eatt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_ind.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_ind.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_proc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_proc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_read.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_read.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_sign.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_sign.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/att/atts_write.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/att/atts_write.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/bas/bas_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/bas/bas_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_dtm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_dtm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_pdufilt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_pdufilt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_periodiclist.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_periodiclist.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_reslist.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_reslist.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_sniffer.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_sniffer.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_whitelist.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/bb/bb_ble_whitelist.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/common/bb/bb_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/common/bb/bb_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/bda.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/bda.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/blpc/blpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/blpc/blpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/blps/blps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/blps/blps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/bstream.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/bstream.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/calc128.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/calc128.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/cfg/cfg_stack.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/cfg/cfg_stack.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/common/chci/chci_tr.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/common/chci/chci_tr.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/cpp/cpps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/cpp/cpps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/crc32.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/crc32.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/cscp/cscps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/cscp/cscps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/dis/dis_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/dis/dis_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_adv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_adv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_adv_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_adv_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_adv_leg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_adv_leg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_sm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_sm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_cte.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_cte.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master_leg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master_leg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave_leg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave_leg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_sm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_sm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_dev.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_dev.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_dev_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_dev_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_scan.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_scan.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_scan_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_scan_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_scan_leg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_scan_leg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_lesc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_lesc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sync_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/dm/dm_sync_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/fcs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/fcs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/fmpl/fmpl_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/fmpl/fmpl_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/gap/gap_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/gap/gap_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/gatt/gatt_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/gatt/gatt_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/glpc/glpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/glpc/glpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/glps/glps_db.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/glps/glps_db.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/glps/glps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/glps/glps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/sensor/gyro_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/sensor/gyro_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_bis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_bis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_cte.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_cte.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_enc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_enc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/common/hci_core.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/common/hci_core.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_core_ps.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_core_ps.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_evt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_evt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/hci/hci_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/hci/hci_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/common/hci_tr.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/common/hci_tr.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_vs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_vs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_vs_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/hci/exactle/hci_vs_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/hid/hid_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/hid/hid_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-apps/sources/hidapp/hidapp_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-apps/sources/hidapp/hidapp_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/hrpc/hrpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/hrpc/hrpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/hrps/hrps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/hrps/hrps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/htpc/htpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/htpc/htpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/htps/htps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/htps/htps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/init/init.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/init/init.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/init/init_ctr.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/init/init_ctr.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_coc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_coc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/l2c/l2c_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_enc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_enc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_init_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_init_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_init_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_init_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_act_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_init_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_init_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_init_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_init_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_bis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_bis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_cs2.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_cs2.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_data.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_data.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_init_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_init_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_init_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_init_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_iso_data.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_iso_data.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_master_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_master_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_slave_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_main_slave_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_bis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_bis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_enc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_enc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_init_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_init_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_init_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_init_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_cis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_cis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_master_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_master_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_slave_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_slave_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_cs2.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_cs2.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_vs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_vs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_cs2.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_cs2.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_init_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_main_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lhci/lhci_main_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/BlePhy/MAX32690/IAR/libphy_iar.a</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/BlePhy/MAX32690/IAR/libphy_iar.a</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_cs2.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_cs2.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_init_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_init_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_init_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_init_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_master_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_master_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_slave_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_init_slave_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_bis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_bis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_bis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_bis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_cis_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_cis_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_diag.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_diag.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_dtm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_dtm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_enc_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_enc_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_enc_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_enc_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_past.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_past.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_pc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_pc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_main_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/ll/ll_math.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/ll/ll_math.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_events.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_events.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_adv_master_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_adv_master_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_adv_slave_ae.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_adv_slave_ae.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_cis_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_cis_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_conn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_conn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_iso.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_iso.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_master.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_master.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_priv.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_priv.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_sc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_sc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_slave.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_slave.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_btn.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_btn.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_cfg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_cfg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_codec.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_codec.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_crypto.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_crypto.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_flash.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_flash.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_i2s.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_i2s.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_led.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_led.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_rtc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_rtc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_sys.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_sys.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_timer.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_timer.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_twi.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_twi.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_uart.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_uart.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/paspc/paspc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/paspc/paspc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/plxpc/plxpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/plxpc/plxpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/plxps/plxps_db.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/plxps/plxps_db.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/plxps/plxps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/plxps/plxps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/prand.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/prand.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/print.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/print.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/rscp/rscps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/rscp/rscps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/sch/sch_ble.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/sch/sch_ble.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/common/sch/sch_list.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/common/sch/sch_list.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/common/sch/sch_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/common/sch/sch_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/sch/sch_rm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/sch/sch_rm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/controller/sources/ble/sch/sch_tm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/controller/sources/ble/sch/sch_tm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/scpps/scpps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/scpps/scpps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/sec/common/sec_aes.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/sec/common/sec_aes.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/sec/common/sec_aes_rev.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/sec/common/sec_aes_rev.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/sec/common/sec_ccm_hci.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/sec/common/sec_ccm_hci.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/sec/common/sec_cmac_hci.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/sec/common/sec_cmac_hci.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/sec/common/sec_ecc_hci.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/sec/common/sec_ecc_hci.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/sec/common/sec_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/sec/common/sec_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_act.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_act.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_db.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_db.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_non.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_non.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_sc_act.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_sc_act.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_sc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smp_sc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_act.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_act.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_sc_act.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_sc_act.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_sc_sm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_sc_sm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_sm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpi_sm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_act.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_act.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_sc_act.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_sc_act.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_sc_sm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_sc_sm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_sm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-host/sources/stack/smp/smpr_sm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_alert.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_alert.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_batt.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_batt.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_bps.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_bps.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_core.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_core.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_cps.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_cps.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_cscs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_cscs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_cte.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_cte.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_dis.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_dis.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_gls.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_gls.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_gyro.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_gyro.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_hid.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_hid.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_hrs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_hrs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_hts.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_hts.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_ipss.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_ipss.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_plxs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_plxs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_px.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_px.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_rscs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_rscs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_scpss.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_scpss.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_temp.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_temp.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_time.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_time.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_uricfg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_uricfg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_wdxs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_wdxs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_wp.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_wp.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/services/svc_wss.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/services/svc_wss.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/sensor/temp_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/sensor/temp_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/terminal.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/terminal.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/tipc/tipc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/tipc/tipc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/udsc/udsc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/udsc/udsc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/thirdparty/uecc/uECC.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/thirdparty/uecc/uECC.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/thirdparty/uecc/uECC_ll.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/thirdparty/uecc/uECC_ll.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_console.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_console.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_lcd.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_lcd.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_platform.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_platform.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_timer.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/af/common/ui_timer.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/uribeacon/uricfg_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/uribeacon/uricfg_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_ft.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_ft.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_stream.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_stream.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_au.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_au.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_dc.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_dc.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_ft.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_ft.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_phy.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_phy.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_stream.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_stream.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wpc/wpc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wpc/wpc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_assert.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_assert.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_buf.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_buf.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_bufio.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_bufio.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_cs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_cs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_detoken.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_detoken.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_efs.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_efs.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_heap_sbrk.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_heap_sbrk.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_msg.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_msg.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_nvm.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_nvm.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_os.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_os.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_queue.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_queue.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_timer.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_timer.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_trace.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/targets/baremetal/wsf_trace.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wspc/wspc_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wspc/wspc_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/ble-profiles/sources/profiles/wsps/wsps_main.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/ble-profiles/sources/profiles/wsps/wsps_main.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/Cordio/wsf/sources/util/wstr.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/Cordio/wsf/sources/util/wstr.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.WUT_1.0.0</name>
+            <name>Maxim Maxim API _Device.WUT_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/WUT/wut_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/WUT/wut_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/WUT/wut_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/WUT/wut_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.TRNG_1.0.0</name>
+            <name>Maxim Maxim API _Device.TRNG_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/TRNG/trng_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/TRNG/trng_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/TRNG/trng_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/TRNG/trng_revb.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.Low Power_1.0.0</name>
+            <name>Maxim Maxim API _Device.Low Power_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/LP/lp_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/LP/lp_me18.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.ICC_1.0.0</name>
+            <name>Maxim Maxim API _Device.ICC_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/ICC/icc_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/ICC/icc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/ICC/icc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/ICC/icc_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.CTB_1.0.0</name>
+            <name>Maxim Maxim API _Device.CTB_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/CTB/ctb_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/CTB/ctb_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/CTB/ctb_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/CTB/ctb_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/CTB/ctb_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/CTB/ctb_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.RTC_1.0.0</name>
+            <name>Maxim Maxim API _Device.RTC_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/RTC/rtc_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/RTC/rtc_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/RTC/rtc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/RTC/rtc_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.I2C_1.0.0</name>
+            <name>Maxim Maxim API _Device.I2C_1.0.1</name>
             <tag>CMSISPack.Component</tag>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/I2C/i2c_me18.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/I2C/i2c_me18.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.0}$\Libraries/PeriphDrivers/Source/I2C/i2c_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32690#1.0.1}$\Libraries/PeriphDrivers/Source/I2C/i2c_reva.c</name>
             </file>
         </group>
     </group>
@@ -3755,12 +3755,12 @@
 &lt;configuration xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"&gt;
   &lt;packages/&gt;
   &lt;device Dclock="96000000" Dcore="Cortex-M4" DcoreVersion="r0p1" Dendian="Little-endian" Dfamily="MAX32690-66" Dfpu="SP_FPU" Dmpu="NO_MPU" Dname="MAX32690" Dvendor="Maxim:23" Pname="Cortex-M4" Punits="2" info="ARM Cortex-M4 96 MHz, 512 kB RAM, 1 MB ROM" url="http://www.keil.com/dd2/maxim/max32690"&gt;
-    &lt;package info="Maxim Integrated MAX32690 Series Device Support, Board Support Package and Examples" name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
+    &lt;package info="Maxim Integrated MAX32690 Series Device Support, Board Support Package and Examples" name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
   &lt;/device&gt;
   &lt;toolchain Tcompiler="IAR" Toutput="exe"/&gt;
   &lt;components&gt;
-    &lt;component Cbundle="Maxim BTLE" Cbundleversion="1.0.0" Cclass="Bluetooth" Cgroup="Bluetooth LE" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim BTLE" Cbundleversion="1.0.1" Cclass="Bluetooth" Cgroup="Bluetooth LE" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/Cordio/ble-apps/sources/"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/Cordio/ble-apps/sources/assettag/"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/Cordio/ble-apps/sources/cycling/"/&gt;
@@ -4277,126 +4277,126 @@
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/Cordio/wsf/sources/util/wstr.c"/&gt;
       &lt;file category="library" condition="Startup IAR" deviceDependent="1" name="Libraries/BlePhy/MAX32690/IAR/libphy_iar.a"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.0.0" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32690/EvKit_V1/Include/" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/EvKit_V1/Source/board.c" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32690/Include/" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/Source/led.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/Source/pb.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/Source/stdio.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="MAX32690 BSP" Cbundleversion="1.0.1" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32690/EvKit_V1/Include/" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/EvKit_V1/Source/board.c" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/Boards/MAX32690/Include/" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/Source/led.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/Source/pb.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32690/Source/stdio.c" version="1.0.1"/&gt;
     &lt;/component&gt;
     &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0"&gt;
       &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/&gt;
       &lt;file category="doc" name="CMSIS/Documentation/Core/html/index.html"/&gt;
       &lt;file category="include" name="CMSIS/Core/Include/"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="CTB" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_common.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_reva.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="CTB" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_common.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/ctb_reva.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="DMA" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_reva.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="DMA" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/dma_reva.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="FLC" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_common.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_reva.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_revb.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="FLC" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_common.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_reva.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/flc_revb.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_common.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="GPIO" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/gpio_common.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="I2C" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_reva.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="I2C" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/i2c_reva.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="ICC" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_reva.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="ICC" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/icc_reva.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="Low Power" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/lp_me18.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="Low Power" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/lp_me18.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="RTC" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_reva.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="RTC" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/rtc_reva.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Include/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Include/MAX32690/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ADC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXF/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXR/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/PT/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CAN/" version="1.0.0"/&gt;
-      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LPCMP/" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/startup_max32690.s" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/low_level_init.c" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/cmain.s" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/heap.c" version="1.0.0"/&gt;
-      &lt;file attr="config" category="sourceC" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/system_max32690.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.0"/&gt;
-      &lt;file attr="config" category="header" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Include/max32690.h" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_assert.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_delay.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_lock.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/sys_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="Startup" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Include/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Include/MAX32690/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ADC/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/AES/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CRC/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/DMA/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/FLC/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/GPIO/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2C/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/I2S/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/ICC/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LP/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/RTC/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPI/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXF/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SPIXR/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/PT/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CAN/" version="1.0.1"/&gt;
+      &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/LPCMP/" version="1.0.1"/&gt;
+      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/startup_max32690.s" version="1.0.1"/&gt;
+      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/low_level_init.c" version="1.0.1"/&gt;
+      &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/cmain.s" version="1.0.1"/&gt;
+      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/IAR/heap.c" version="1.0.1"/&gt;
+      &lt;file attr="config" category="sourceC" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Source/system_max32690.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.1"/&gt;
+      &lt;file attr="config" category="header" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32690/Include/max32690.h" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_assert.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_delay.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/mxc_lock.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/pins_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/sys_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/SYS/nvic_table.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="Timers" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_revb.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_common.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="Timers" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_revb.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TMR/tmr_common.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="TRNG" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_revb.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="TRNG" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/TRNG/trng_revb.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_revb.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_common.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="UART" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_revb.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/uart_common.c" version="1.0.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.0" Cclass="Device" Cgroup="WUT" Cvendor="Maxim" Cversion="1.0.0" deviceDependent="1"&gt;
-      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/wut_me18.c" version="1.0.0"/&gt;
-      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/wut_reva.c" version="1.0.0"/&gt;
+    &lt;component Cbundle="Maxim API" Cbundleversion="1.0.1" Cclass="Device" Cgroup="WUT" Cvendor="Maxim" Cversion="1.0.1" deviceDependent="1"&gt;
+      &lt;package name="MAX32690" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/wut_me18.c" version="1.0.1"/&gt;
+      &lt;file category="sourceC" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WUT/wut_reva.c" version="1.0.1"/&gt;
     &lt;/component&gt;
   &lt;/components&gt;
   &lt;apis/&gt;
