@@ -1,1 +1,1 @@
-write-file %PARAM_1% %PARAM_2%
+write-file %PARAM_1% 1000C000
