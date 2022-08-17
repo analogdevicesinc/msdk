@@ -150,20 +150,13 @@ static palCryptoEcbData_t palCryptoEcb;
 
 static void palCryptoAesEcb(const uint8_t* key, const uint8_t* pt, uint8_t* ct)
 {
-  uint8_t temp[PAL_CRYPTO_AES_BLOCK_SIZE];
-  uint8_t ctTemp[PAL_CRYPTO_AES_BLOCK_SIZE];
-  int i;
-
-  for(i = 0; i < PAL_CRYPTO_AES_BLOCK_SIZE; i++) {
-    temp[i] = pt[PAL_CRYPTO_AES_BLOCK_SIZE-i-1];
-  }
   /* Setup the encryption parameters */
   MXC_AES_Init();
 
   mxc_aes_req_t aesReq;
   aesReq.length = PAL_CRYPTO_AES_BLOCK_SIZE/4;
-  aesReq.inputData = (uint32_t*)temp;
-  aesReq.resultData = (uint32_t*)ctTemp;
+  aesReq.inputData = (uint32_t*)pt;
+  aesReq.resultData = (uint32_t*)ct;
   aesReq.keySize = MXC_AES_128BITS;
   aesReq.encryption = MXC_AES_ENCRYPT_EXT_KEY;
 
@@ -171,9 +164,6 @@ static void palCryptoAesEcb(const uint8_t* key, const uint8_t* pt, uint8_t* ct)
   MXC_AES_Encrypt(&aesReq);
   MXC_AES_Shutdown();
 
-  for(i = 0; i < PAL_CRYPTO_AES_BLOCK_SIZE; i++) {
-    ct[i] = ctTemp[PAL_CRYPTO_AES_BLOCK_SIZE-i-1];
-  }
 }
 
 /*************************************************************************************************/
