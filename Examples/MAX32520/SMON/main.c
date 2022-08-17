@@ -93,6 +93,5 @@ int main(void)
 
     printf("Example Successful\n");
 
-    while (1)
-        ;
+    return 0;
 }

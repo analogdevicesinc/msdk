@@ -35,8 +35,8 @@
  * @file    main.c
  * @brief   Demonstrates the various low power modes.
  *
- * @details Iterates through the various low power modes, using either the RTC
- *          alarm or a GPIO to wake from each.  #defines determine which wakeup
+ * @details Iterates through the various low power modes, using
+ * 			GPIO to wake from each.  #defines determine which wakeup
  *          source to use.  Once the code is running, you can measure the
  *          current used on the VCORE rail.
  *
@@ -62,22 +62,12 @@
 #include "uart.h"
 #include "nvic_table.h"
 
-#define DELAY_IN_SEC 2
-#define USE_CONSOLE  1
 
-#define USE_BUTTON 1
-#define USE_ALARM  0
+#define USE_CONSOLE  1
 
 #define DO_SLEEP     1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP    0
-
-#if (!(USE_BUTTON || USE_ALARM))
-#error "You must set either USE_BUTTON or USE_ALARM to 1."
-#endif
-#if (USE_BUTTON && USE_ALARM)
-#error "You must select either USE_BUTTON or USE_ALARM, not both."
-#endif
 
 // *****************************************************************************
 volatile int buttonPressed;
@@ -118,8 +108,8 @@ int main(void)
 #endif // USE_CONSOLE
 
 #if USE_CONSOLE
-    printf("This code cycles through the MAX32520 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
+    printf("This code cycles through the MAX32520 power modes, "
+    		"using a push button (SW2) to exit from each mode and enter the next.\n\n");
 #endif // USE_CONSOLE
     PB_RegisterCallback(0, buttonHandler);
 
@@ -161,6 +151,9 @@ int main(void)
 #endif // USE_CONSOLE
         setTrigger(0);
         MXC_LP_EnterSleepMode();
+#if USE_CONSOLE
+        printf("Wakeup from SLEEP mode.\n\n");
+#endif
 #endif // DO_SLEEP
 #if DO_DEEPSLEEP
 #if USE_CONSOLE
@@ -168,6 +161,9 @@ int main(void)
 #endif // USE_CONSOLE
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
+#if USE_CONSOLE
+        printf("Wakeup from DEEPSLEEP mode.\n\n");
+#endif
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
@@ -178,4 +174,6 @@ int main(void)
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
     }
+
+    return 0;
 }
