@@ -11,19 +11,23 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
-# allow a single workflow to run at any given time given that these tests 
-# require the use of hardware devices
-# second instance of a workflow will wait on the frist to finish
-# third instance cancels the second instance and waits on the first to finish
-concurrency:
-  group: ble_examples_testing
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  lock:
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted, btm-ci ]
+     # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Lock Resources
+        if: ${{ always() }}
+        run: |
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
+          
   build:
     # The type of runner that the job will run on
-    runs-on: [self-hosted, btm-ci-github-runner-max32655]
-
+    runs-on: [ self-hosted, btm-ci ]
+    needs: [ lock ] # Only run if the lock was successful
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -38,9 +42,16 @@ jobs:
           chmod +x Examples_tests/local_testLauncher.sh
           cd Examples_tests/
           ./local_testLauncher.sh
+          
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
             name: failure-report
             path: Examples_tests/results/
-
+      
+      # Unlock even when cancelled or failed
+      - name: unlock
+        if: always()
+        run: |
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
