@@ -336,7 +336,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress 1295 --diag_suppress 111</MiscControls>
               <Define>TARGET=32670 TARGET_REV=0x4131</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
