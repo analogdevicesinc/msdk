@@ -38,6 +38,46 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build all BLE examples
         run: |
+          BLE_FILES_CHANGED=0
+          
+          # Check for changes made to these files
+          WATCH_FILES="\
+          Examples/MAX32655/BLE \
+          Libraries/libs.mk \
+          Libraries/CMSIS/Device/Maxim/MAX32655 \
+          Libraries/PeriphDrivers/libPeriphDriver.mk \
+          Libraries/PeriphDrivers/periphdriver.mk \
+          Libraries/PeriphDrivers/max32655_files.mk \
+          Libraries/PeriphDrivers/Source \
+          Libraries/PeriphDrivers/Include/MAX32655 \
+          Libraries/BlePhy/MAX32655 \
+          Libraries/Boards/MAX32655"
+          
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+          
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+          
+          # Assume we want to actually run the workflow if no files changed
+          if [[ "$CHANGE_FILES" != "" ]]; then
+            for watch_file in $WATCH_FILES; do 
+              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                BLE_FILES_CHANGED=1
+              fi
+            done
+            if [[ $BLE_FILES_CHANGED -eq 0 ]]
+            then
+              echo "Skipping Test"
+              exit 0
+            fi
+          fi
+          
+          echo "Running Test"
+          
           cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
           chmod +x Examples_tests/local_testLauncher.sh
           cd Examples_tests/
