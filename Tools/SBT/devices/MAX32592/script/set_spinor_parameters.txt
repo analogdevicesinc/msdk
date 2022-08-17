@@ -1,0 +1,49 @@
+#
+#  # Means comment line
+#   
+#   There are three OTP line to configure SPI, below all them explained and default values are provided
+#   If you do not update SPI configuration lines the defaul value will be uesd by ROM Code.
+#
+#
+#      LINE 1 (Offset: E803)
+#           Byte 3-0: Page size          (Default: 4096)
+#           Byte 5  : SPI Number         (Default: SPI3)
+#
+#      LINE 2 (Offset: F003)
+#           Byte 4: Word Size            (Default: 08)
+#           Byte 2: Read command         (Default: 03)
+#           Byte 1: Address length       (Default: 03)
+#           Byte 0: Dummy cycles         (Default: 00)
+#           Byte 3: 
+#                Bit0- (Mode)            0: Slave                               1: Master                             (Default: 1 )
+#                Bit1- (WOR)             0: Disable                             1: Enable                             (Default: 0 )
+#                Bit2- (Clock Polarity)  0: SCLK idle Low                       1: SCLK idle High                     (Default: 0 )
+#                Bit3- (Phase Select)    0: Phase Low                           1: Phase High                         (Default: 0 )
+#                Bit4- (BIRQ)            0: Disable                             1: Enable                             (Default: 0 )
+#                Bit5- (SSV)             0: The SSEL pin will be driven low     1: The SSEL pin will be driven high   (Default: 0 )
+#                Bit6- (SSIO)            0: Configure SSEL pin as input         1: Configure SSEL pin as output       (Default: 1 )
+#                Bit7- (TLJ)             0: Disable                             1: Enable                             (Default: 0 )
+#
+#      LINE 3 (Offset: F803)
+#           Byte 3-0 : Baudrate (Default 8MHz)
+#
+#
+#
+# SET SPI LINE 1  (Set page size to 256 bytes and use SPI2)
+write-otp E803 000100000002
+#
+# Explanation of 000100000002
+# ------------------------------------------------------------------
+# Hex	    | 	Swap Hex	|	Decimal		|	Meaning
+# ------------------------------------------------------------------
+# 00010000 	|	00000100	|	256		    |	SPI Flash Page Size
+# 00	    |	00			|	0			|	Reserverd for future use, pass it
+# 02	    |	02			|	2			|	Use SPI2
+#
+#
+#
+# SET SPI LINE 2 (if needed)
+#write-otp F003 XXXXXXXXXXXX
+# SET SPI LINE 3 (if needed)
+#write-otp F803 XXXXXXXXXXXX
+#
