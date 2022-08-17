@@ -30,7 +30,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: clang-format-check
         run: |
-          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h')
           for change_file in ${CHANGE_FILES}
           do
             clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${change_file}
