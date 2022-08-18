@@ -76,7 +76,7 @@ volatile unsigned int dma_done = 0;
 
 /* Temperature Sensor firmware average*/
 #define SAMPLE_AVG 16
-float TEMP_SAMPLES[SAMPLE_AVG] = {};
+float TEMP_SAMPLES[SAMPLE_AVG] = {0};
 float sum                      = 0;
 unsigned int temp_samples      = 0;
 

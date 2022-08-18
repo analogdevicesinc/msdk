@@ -377,7 +377,7 @@ unsigned int MXC_TMR_TO_Remaining(mxc_tmr_regs_t* tmr)
 
 void MXC_TMR_SW_Start(mxc_tmr_regs_t* tmr)
 {
-    return MXC_TMR_Common_SW_Start(tmr);
+    MXC_TMR_Common_SW_Start(tmr);
 }
 
 unsigned int MXC_TMR_SW_Stop(mxc_tmr_regs_t* tmr)

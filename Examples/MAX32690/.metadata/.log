@@ -1,0 +1,91 @@
+!SESSION 2022-08-17 14:32:23.061 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data C:\IAR_Playground\MAX32690
+
+!ENTRY com.iar.cdt.arm.toolchain.cmsis.adapter 1 0 2022-08-17 14:32:32.267
+!MESSAGE Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/
+
+!ENTRY com.iar.cmsismanager.product 1 0 2022-08-17 14:32:39.700
+!MESSAGE CMSIS Agent interface registered with service registry at ServiceLocation(host:\\.\pipe\iar-cspy-cpp-binary-com.iar.thrift.service.registry-c1ace53f-4999-413e-b9d3-792a4b55dd51-1, port:0, protocol:Binary, transport:Pipe)
+!SESSION 2022-08-17 15:39:38.334 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data C:\IAR_Playground\MAX32690
+
+!ENTRY com.iar.cdt.arm.toolchain.cmsis.adapter 1 0 2022-08-17 15:39:44.480
+!MESSAGE Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/
+
+!ENTRY com.iar.cmsismanager.product 1 0 2022-08-17 15:40:13.709
+!MESSAGE CMSIS Agent interface registered with service registry at ServiceLocation(host:\\.\pipe\iar-cspy-cpp-binary-com.iar.thrift.service.registry-c1ace53f-4999-413e-b9d3-792a4b55dd51-1, port:0, protocol:Binary, transport:Pipe)
+!SESSION 2022-08-17 16:05:15.508 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data C:\IAR_Playground\MAX32690
+
+!ENTRY com.iar.cdt.arm.toolchain.cmsis.adapter 1 0 2022-08-17 16:05:21.347
+!MESSAGE Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/
+
+!ENTRY com.iar.cmsismanager.product 1 0 2022-08-17 16:05:40.033
+!MESSAGE CMSIS Agent interface registered with service registry at ServiceLocation(host:\\.\pipe\iar-cspy-cpp-binary-com.iar.thrift.service.registry-c1ace53f-4999-413e-b9d3-792a4b55dd51-1, port:0, protocol:Binary, transport:Pipe)
+
+!ENTRY com.iar.cdt.arm.toolchain.cmsis.adapter 4 0 2022-08-17 16:18:44.917
+!MESSAGE Failed to create link to ewp file: PROJECT_LOC/IAR/UART.ewp
+!STACK 1
+org.eclipse.core.internal.resources.ResourceException: Resource '/UART/UART.ewp' already exists.
+	at org.eclipse.core.internal.resources.Resource.checkDoesNotExist(Resource.java:314)
+	at org.eclipse.core.internal.resources.Resource.assertLinkRequirements(Resource.java:170)
+	at org.eclipse.core.internal.resources.Resource.createLink(Resource.java:640)
+	at org.eclipse.core.internal.resources.Resource.createLink(Resource.java:616)
+	at com.iar.cdt.arm.toolchain.cmsis.adapter.IarPackInstaller.createEwpfileLink(IarPackInstaller.java:298)
+	at com.iar.cdt.arm.toolchain.cmsis.adapter.IarPackInstaller.lambda$1(IarPackInstaller.java:238)
+	at com.iar.cdt.arm.toolchain.cmsis.adapter.IarRteProjectGenerator.lambda$0(IarRteProjectGenerator.java:257)
+	at java.util.Optional.ifPresent(Unknown Source)
+	at com.iar.cdt.arm.toolchain.cmsis.adapter.IarRteProjectGenerator.createRteProject(IarRteProjectGenerator.java:257)
+	at com.iar.cdt.arm.toolchain.cmsis.adapter.IarPackInstaller.copyExample(IarPackInstaller.java:218)
+	at com.iar.cdt.arm.toolchain.cmsis.adapter.IarPackInstaller.copyExample(IarPackInstaller.java:1)
+	at com.arm.cmsis.pack.installer.ui.PackInstallerViewController.copyExample(PackInstallerViewController.java:173)
+	at com.arm.cmsis.pack.installer.ui.views.ExamplesView.copyExample(ExamplesView.java:263)
+	at com.arm.cmsis.pack.installer.ui.views.ExamplesView$ExamplesViewColumnAdvisor.handleMouseUp(ExamplesView.java:225)
+	at com.arm.cmsis.pack.ui.tree.ColumnAdvisor$3.mouseUp(ColumnAdvisor.java:92)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:221)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:86)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4428)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1079)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4238)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3817)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1150)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:336)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1039)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:153)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:680)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:336)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:594)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:148)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:151)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:388)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:243)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:653)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:590)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1499)
+!SUBENTRY 1 org.eclipse.core.resources 4 367 2022-08-17 16:18:44.920
+!MESSAGE Resource '/UART/UART.ewp' already exists.
+
+!ENTRY com.iar.cmsismanager.product 1 0 2022-08-18 15:26:05.875
+!MESSAGE CMSIS Agent interface deregistered with service registry at ServiceLocation(host:\\.\pipe\iar-cspy-cpp-binary-com.iar.thrift.service.registry-c1ace53f-4999-413e-b9d3-792a4b55dd51-1, port:0, protocol:Binary, transport:Pipe)
+
+!ENTRY com.iar.cmsismanager.product 1 0 2022-08-18 15:26:05.879
+!MESSAGE Exiting workbench is response to shutdown() command.

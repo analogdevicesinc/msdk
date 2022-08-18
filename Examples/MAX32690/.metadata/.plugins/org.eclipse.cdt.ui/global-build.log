@@ -1,0 +1,477 @@
+14:37:32 **** Updating project ADC: project created
+Project updated successfully
+
+14:37:33 **** Updating project ADC: project refresh
+Project updated successfully
+
+14:37:34 **** Updating project ADC: project created
+Project updated successfully
+
+14:37:34 **** Updating project ADC: project refresh
+Project updated successfully
+
+15:40:13 **** Updating project ADC: initial project load
+Project updated successfully
+
+15:41:41 **** Updating project ADC: Configuration file [ADC.rteconfig] is saved
+Project updated successfully
+
+16:02:19 **** Updating project ADC: Configuration file [ADC.rteconfig] is saved
+Project updated successfully
+
+16:05:39 **** Updating project ADC: initial project load
+Project updated successfully
+
+16:06:22 **** Updating project ADC: Configuration file [ADC.rteconfig] is saved
+Project updated successfully
+
+16:06:36 **** Updating project ADC: Configuration file [ADC.rteconfig] is saved
+Project updated successfully
+
+16:07:30 **** Updating project ADC: Configuration file [ADC.rteconfig] is saved
+Project updated successfully
+
+16:12:45 **** Updating project BTLE Datc: project created
+Project updated successfully
+
+16:12:54 **** Updating project BTLE Datc: project refresh
+Project updated successfully
+
+16:13:00 **** Updating project BLE_datc: project created
+Project updated successfully
+
+16:13:17 **** Updating project BLE_datc: project refresh
+Project updated successfully
+
+16:14:02 **** Updating project CAN: project created
+Project updated successfully
+
+16:14:02 **** Updating project CAN: project refresh
+Project updated successfully
+
+16:14:03 **** Updating project CAN: project created
+Project updated successfully
+
+16:14:03 **** Updating project CAN: project refresh
+Project updated successfully
+
+16:14:10 **** Updating project CRC: project created
+Project updated successfully
+
+16:14:11 **** Updating project CRC: project refresh
+Project updated successfully
+
+16:14:12 **** Updating project CRC: project created
+Project updated successfully
+
+16:14:12 **** Updating project CRC: project refresh
+Project updated successfully
+
+16:14:33 **** Updating project CTB_AES: project created
+Project updated successfully
+
+16:14:33 **** Updating project CTB_AES: project refresh
+Project updated successfully
+
+16:14:34 **** Updating project CTB_AES: project created
+Project updated successfully
+
+16:14:34 **** Updating project CTB_AES: project refresh
+Project updated successfully
+
+16:14:42 **** Updating project DMA: project created
+Project updated successfully
+
+16:14:43 **** Updating project DMA: project refresh
+Project updated successfully
+
+16:14:43 **** Updating project DMA: project created
+Project updated successfully
+
+16:14:43 **** Updating project DMA: project refresh
+Project updated successfully
+
+16:14:53 **** Updating project Flash: project created
+Project updated successfully
+
+16:14:53 **** Updating project Flash: project refresh
+Project updated successfully
+
+16:14:53 **** Updating project Flash: project created
+Project updated successfully
+
+16:14:54 **** Updating project Flash: project refresh
+Project updated successfully
+
+16:15:14 **** Updating project GPIO: project created
+Project updated successfully
+
+16:15:15 **** Updating project GPIO: project refresh
+Project updated successfully
+
+16:15:15 **** Updating project GPIO: project created
+Project updated successfully
+
+16:15:15 **** Updating project GPIO: project refresh
+Project updated successfully
+
+16:15:25 **** Updating project Hello_World: project created
+Project updated successfully
+
+16:15:25 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+16:15:25 **** Updating project Hello_World: project created
+Project updated successfully
+
+16:15:26 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+16:15:35 **** Updating project I2C: project created
+Project updated successfully
+
+16:15:35 **** Updating project I2C: project refresh
+Project updated successfully
+
+16:15:36 **** Updating project I2C: project created
+Project updated successfully
+
+16:15:36 **** Updating project I2C: project refresh
+Project updated successfully
+
+16:15:46 **** Updating project I2S: project created
+Project updated successfully
+
+16:15:46 **** Updating project I2S: project refresh
+Project updated successfully
+
+16:15:46 **** Updating project I2S: project created
+Project updated successfully
+
+16:15:47 **** Updating project I2S: project refresh
+Project updated successfully
+
+16:16:23 **** Updating project ICC: project created
+Project updated successfully
+
+16:16:24 **** Updating project ICC: project refresh
+Project updated successfully
+
+16:16:24 **** Updating project ICC: project created
+Project updated successfully
+
+16:16:24 **** Updating project ICC: project refresh
+Project updated successfully
+
+16:16:35 **** Updating project LP: project created
+Project updated successfully
+
+16:16:35 **** Updating project LP: project refresh
+Project updated successfully
+
+16:16:35 **** Updating project LP: project created
+Project updated successfully
+
+16:16:36 **** Updating project LP: project refresh
+Project updated successfully
+
+16:16:50 **** Updating project LPCMP: project created
+Project updated successfully
+
+16:16:51 **** Updating project LPCMP: project refresh
+Project updated successfully
+
+16:16:51 **** Updating project LPCMP: project created
+Project updated successfully
+
+16:16:51 **** Updating project LPCMP: project refresh
+Project updated successfully
+
+16:17:03 **** Updating project Pulse_Train: project created
+Project updated successfully
+
+16:17:03 **** Updating project Pulse_Train: project refresh
+Project updated successfully
+
+16:17:04 **** Updating project Pulse_Train: project created
+Project updated successfully
+
+16:17:04 **** Updating project Pulse_Train: project refresh
+Project updated successfully
+
+16:17:24 **** Updating project RTC: project created
+Project updated successfully
+
+16:17:25 **** Updating project RTC: project refresh
+Project updated successfully
+
+16:17:25 **** Updating project RTC: project created
+Project updated successfully
+
+16:17:25 **** Updating project RTC: project refresh
+Project updated successfully
+
+16:17:37 **** Updating project SPI: project created
+Project updated successfully
+
+16:17:37 **** Updating project SPI: project refresh
+Project updated successfully
+
+16:17:38 **** Updating project SPI: project created
+Project updated successfully
+
+16:17:38 **** Updating project SPI: project refresh
+Project updated successfully
+
+16:17:48 **** Updating project TMR: project created
+Project updated successfully
+
+16:17:48 **** Updating project TMR: project refresh
+Project updated successfully
+
+16:17:48 **** Updating project TMR: project created
+Project updated successfully
+
+16:17:49 **** Updating project TMR: project refresh
+Project updated successfully
+
+16:18:01 **** Updating project TRNG: project created
+Project updated successfully
+
+16:18:02 **** Updating project TRNG: project refresh
+Project updated successfully
+
+16:18:09 **** Updating project UART: project created
+Project updated successfully
+
+16:18:10 **** Updating project UART: project refresh
+Project updated successfully
+
+16:18:22 **** Updating project TRNG: project created
+Project updated successfully
+
+16:18:22 **** Updating project TRNG: project refresh
+Project updated successfully
+
+16:18:31 **** Updating project UART: project created
+Project updated successfully
+
+16:18:32 **** Updating project UART: project refresh
+Project updated successfully
+
+16:18:44 **** Updating project UART: project created
+Project updated successfully
+
+16:18:45 **** Updating project UART: project refresh
+Project updated successfully
+
+16:18:52 **** Updating project Watchdog: project created
+Project updated successfully
+
+16:18:52 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+16:18:52 **** Updating project Watchdog: project created
+Project updated successfully
+
+16:18:52 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+16:19:21 **** Updating project WUT: project created
+Project updated successfully
+
+16:19:22 **** Updating project WUT: project refresh
+Project updated successfully
+
+16:19:22 **** Updating project WUT: project created
+Project updated successfully
+
+16:19:23 **** Updating project WUT: project refresh
+Project updated successfully
+
+16:19:42 **** Updating project BTLE Dats: project created
+Project updated successfully
+
+16:19:59 **** Updating project BTLE Dats: project refresh
+Project updated successfully
+
+16:20:05 **** Updating project BLE_dats: project created
+Project updated successfully
+
+16:20:27 **** Updating project BLE_dats: project refresh
+Project updated successfully
+
+16:20:36 **** Updating project BTLE Fit: project created
+Project updated successfully
+
+16:20:50 **** Updating project BTLE Fit: project refresh
+Project updated successfully
+
+16:20:56 **** Updating project BLE_fit: project created
+Project updated successfully
+
+16:21:14 **** Updating project BLE_fit: project refresh
+Project updated successfully
+
+16:21:23 **** Updating project BTLE Periph: project created
+Project updated successfully
+
+16:21:36 **** Updating project BTLE Periph: project refresh
+Project updated successfully
+
+16:21:41 **** Updating project BLE_periph: project created
+Project updated successfully
+
+16:22:04 **** Updating project BLE_periph: project refresh
+Project updated successfully
+
+16:22:13 **** Updating project BTLE4 CTR: project created
+Project updated successfully
+
+16:22:23 **** Updating project BTLE4 CTR: project refresh
+Project updated successfully
+
+16:22:29 **** Updating project BLE4_ctr: project created
+Project updated successfully
+
+16:22:47 **** Updating project BLE4_ctr: project refresh
+Project updated successfully
+
+16:23:02 **** Updating project BTLE5 CTR: project created
+Project updated successfully
+
+16:23:18 **** Updating project BTLE5 CTR: project refresh
+Project updated successfully
+
+16:23:24 **** Updating project BLE5_ctr: project created
+Project updated successfully
+
+16:23:45 **** Updating project BLE5_ctr: project refresh
+Project updated successfully
+
+16:38:34 **** Updating project CAN: Configuration file [CAN.rteconfig] is saved
+Project updated successfully
+
+16:39:52 **** Updating project CAN: Configuration file [CAN.rteconfig] is saved
+Project updated successfully
+
+16:40:52 **** Updating project CAN: Configuration file [CAN.rteconfig] is saved
+Project updated successfully
+
+16:42:32 **** Updating project CRC: Configuration file [CRC.rteconfig] is saved
+Project updated successfully
+
+16:44:02 **** Updating project CRC: Configuration file [CRC.rteconfig] is saved
+Project updated successfully
+
+16:46:51 **** Updating project CTB_AES: Configuration file [CTB_AES.rteconfig] is saved
+Project updated successfully
+
+16:47:11 **** Updating project CTB_AES: Configuration file [CTB_AES.rteconfig] is saved
+Project updated successfully
+
+16:48:13 **** Updating project DMA: Configuration file [DMA.rteconfig] is saved
+Project updated successfully
+
+16:51:45 **** Updating project Flash: Configuration file [Flash.rteconfig] is saved
+Project updated successfully
+
+09:16:42 **** Updating project Flash: Configuration file [Flash.rteconfig] is saved
+Project updated successfully
+
+09:18:49 **** Updating project GPIO: Configuration file [GPIO.rteconfig] is saved
+Project updated successfully
+
+09:19:48 **** Updating project GPIO: Configuration file [GPIO.rteconfig] is saved
+Project updated successfully
+
+09:20:44 **** Updating project GPIO: Configuration file [GPIO.rteconfig] is saved
+Project updated successfully
+
+09:21:14 **** Updating project GPIO: Configuration file [GPIO.rteconfig] is saved
+Project updated successfully
+
+09:23:40 **** Updating project Hello_World: Configuration file [Hello_World.rteconfig] is saved
+Project updated successfully
+
+09:24:01 **** Updating project Hello_World: Configuration file [Hello_World.rteconfig] is saved
+Project updated successfully
+
+09:27:08 **** Updating project I2C: Configuration file [I2C.rteconfig] is saved
+Project updated successfully
+
+09:30:44 **** Updating project I2S: Configuration file [I2S.rteconfig] is saved
+Project updated successfully
+
+09:40:44 **** Updating project ICC: Configuration file [ICC.rteconfig] is saved
+Project updated successfully
+
+09:42:59 **** Updating project LP: Configuration file [LP.rteconfig] is saved
+Project updated successfully
+
+09:51:49 **** Updating project LPCMP: Configuration file [LPCMP.rteconfig] is saved
+Project updated successfully
+
+09:54:43 **** Updating project Pulse_Train: Configuration file [Pulse_Train.rteconfig] is saved
+Project updated successfully
+
+09:57:00 **** Updating project RTC: Configuration file [RTC.rteconfig] is saved
+Project updated successfully
+
+09:58:16 **** Updating project SPI: Configuration file [SPI.rteconfig] is saved
+Project updated successfully
+
+10:01:10 **** Updating project TMR: Configuration file [TMR.rteconfig] is saved
+Project updated successfully
+
+10:02:46 **** Updating project TRNG: Configuration file [TRNG.rteconfig] is saved
+Project updated successfully
+
+10:06:18 **** Updating project UART: Configuration file [UART.rteconfig] is saved
+Project updated successfully
+
+10:08:27 **** Updating project Watchdog: Configuration file [Watchdog.rteconfig] is saved
+Project updated successfully
+
+10:11:18 **** Updating project WUT: Configuration file [WUT.rteconfig] is saved
+Project updated successfully
+
+11:06:36 **** Updating project BLE4_ctr: Configuration file [BLE4_ctr.rteconfig] is saved
+Project updated successfully
+
+11:39:41 **** Updating project BLE4_ctr: Configuration file [BLE4_ctr.rteconfig] is saved
+Project updated successfully
+
+11:39:50 **** Updating project BLE4_ctr: Configuration file [BLE4_ctr.rteconfig] is saved
+Project updated successfully
+
+13:43:14 **** Updating project BLE5_ctr: Configuration file [BLE5_ctr.rteconfig] is saved
+Project updated successfully
+
+13:44:23 **** Updating project BLE5_ctr: Configuration file [BLE5_ctr.rteconfig] is saved
+Project updated successfully
+
+13:44:30 **** Updating project BLE5_ctr: Configuration file [BLE5_ctr.rteconfig] is saved
+Project updated successfully
+
+14:00:07 **** Updating project BLE_dats: Configuration file [BLE_dats.rteconfig] is saved
+Project updated successfully
+
+14:00:53 **** Updating project BLE_datc: Configuration file [BLE_datc.rteconfig] is saved
+Project updated successfully
+
+14:13:11 **** Updating project BLE_dats: Configuration file [BLE_dats.rteconfig] is saved
+Project updated successfully
+
+14:24:43 **** Updating project BLE_dats: Configuration file [BLE_dats.rteconfig] is saved
+Project updated successfully
+
+14:24:52 **** Updating project BLE_dats: Configuration file [BLE_dats.rteconfig] is saved
+Project updated successfully
+
+14:58:38 **** Updating project BLE_fit: Configuration file [BLE_fit.rteconfig] is saved
+Project updated successfully
+
+15:14:27 **** Updating project BLE_periph: Configuration file [BLE_periph.rteconfig] is saved
+Project updated successfully
+
