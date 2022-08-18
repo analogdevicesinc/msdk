@@ -212,4 +212,6 @@ int main(void)
         LED_Off(0);
         MXC_Delay(500000); // 500ms
     }
+
+    return 0;
 }
