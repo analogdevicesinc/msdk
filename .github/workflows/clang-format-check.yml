@@ -33,5 +33,8 @@ jobs:
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h')
           for change_file in ${CHANGE_FILES}
           do
+            if [ -f ${change_file} ];
+            then
             clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${change_file}
+            fi
           done
