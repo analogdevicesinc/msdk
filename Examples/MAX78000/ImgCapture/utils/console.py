@@ -1,12 +1,47 @@
 """
+/*******************************************************************************
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
+"""
+
+"""
 This file implements a simple console program for communicating
-with the 'CameraIF' firmware.
+with the 'ImgCapture' firmware.
 
 Installation:
 1. Install Python 3
 2. pip install -r requirements.txt
 
-Run "python console.py -h" for help.
+Run "python console.py -h" for help, or see the readme.
 
 """
 
@@ -34,9 +69,11 @@ class CameraIFConsole():
         self.lock_input = Lock()
 
         self.s = Serial(port=port, baudrate=baudrate, timeout=timeout)
+        self.s.reset_input_buffer()
+        self.s.reset_output_buffer()
 
-        print("Started CameraIF console.")
-        self.help()
+        print(f"Started ImgCapture console and opened {port}")
+        self.input = "help" # Queue up a help command in case we're connecting to firmware that's already initialized
         self.thr_serial.start()
         self.thr_get_input.start()
         
@@ -55,9 +92,9 @@ class CameraIFConsole():
 
                 if _input == "quit" or _input == "q":
                     self.quit()
-                elif _input == "help" or _input == "h":
-                    self.help()
-                    _input = ""
+                # elif _input == "help" or _input == "h":
+                #     self.help()
+                #     _input = ""
                 elif "set-reg" in _input:
                     expr = re.compile("set-reg (\w+) (\w+)")
                     match = expr.findall(_input)
@@ -89,8 +126,10 @@ class CameraIFConsole():
                 self.input = _input
                 self.lock_input.release()
 
+                _print("")
+
         except Exception as e:
-            print(f"[red]{traceback.format_exc()}[/red]")
+            print(traceback.format_exc())
             self.quit()
 
     """
@@ -164,7 +203,7 @@ class CameraIFConsole():
 
                                 # Enter "receive" mode, where we'll wait for the expected
                                 # number of bytes.
-                                _print(f"Waiting for {expected} bytes...")
+                                _print(f"Collecting {expected} bytes...")
                                 img_raw = self.s.read(expected)
                                 
                                 if (len(img_raw) != expected):
@@ -183,26 +222,13 @@ class CameraIFConsole():
                                     # cv2.waitKey(1)
 
         except Exception as e:
-            print(f"[red]{traceback.format_exc()}[/red]")
+            print(traceback.format_exc())
             self.quit()
 
     def quit(self):
         self.kill_get_input = True
         self.kill_serial = True
         exit()
-
-    def help(self):
-        print("Type 'help' for help, 'quit' to quit.")
-        print("Available commands:")
-        print("\t'quit' : Quits this console")
-        print("\t'help' : Prints this help string")
-        print("\t'reset' : Issue a soft reset to the host MCU.")
-        print("\t'capture' : This command will perform a blocking capture of a single image.")
-        print("\t'imgres' <width> <height> : Set the image resolution of the camera to <width> x <height>")
-        print("\t'stream' : Performs a line-by-line streaming DMA capture of a single image.")
-        print("\t'set-reg' <register> <value> : Write a value to a camera register.\n\t\tAuto-converts all integer types (hex, binary, etc.)\n\t\tEx: set-reg 0x11 0b1")
-        print("\t'get-reg' <register> : Prints the value in a camera register.\n\t\tAuto-converts all integer types (hex, binary, etc.)\n\t\tEx: get-reg 0x11")
-        _print("")
 
 # Set up command-line arguments
 parser = argparse.ArgumentParser()
