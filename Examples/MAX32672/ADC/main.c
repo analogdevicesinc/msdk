@@ -442,6 +442,8 @@ int main(void)
         MXC_TMR_Delay(MXC_TMR0, MSEC(1000));
         run_examples();
     }
+
+    return 0;
 }
 
 //End

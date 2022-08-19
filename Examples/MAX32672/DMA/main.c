@@ -239,19 +239,11 @@ int main(void)
     example1();
     example2();
 
-    printf("\n");
-
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
-
-        while (1)
-            ;
+        printf("\nExample Failed\n");
     }
-
-    while (1)
-        ;
 
     return 0;
 }

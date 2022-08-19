@@ -51,7 +51,6 @@
 #include "definitions.h"
 #include "dma.h"
 #include "flc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "icc.h"
 #include "mxc_assert.h"
@@ -387,6 +386,7 @@ int main(void)
 	printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n");
 	printf("\nSince ECC is open by default, to make this example work properly");
 	printf("\nMXC_FLC_Write128 function is used.\n\n");
+
 	NVIC_SetRAM();
 	// Initialize the Flash
 	flash_init();
@@ -402,8 +402,6 @@ int main(void)
 		printf("Starting FreeRTOS scheduler.\n");
 		vTaskStartScheduler();
 	}
-
-	while (1);
 
 	return 0;
 }
