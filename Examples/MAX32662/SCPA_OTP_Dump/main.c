@@ -51,48 +51,47 @@
 #include "utils.h"
 
 /********************************  DEFINITIONS  ******************************/
-#define UART_PORT				MXC_UART_GET_UART(CONSOLE_UART)
+#define UART_PORT MXC_UART_GET_UART(CONSOLE_UART)
 
-#define OTP_MAXIM_AREA          MXC_INFO0_MEM_BASE
+#define OTP_MAXIM_AREA MXC_INFO0_MEM_BASE
 
-#define OTP_USER_AREA           (OTP_MAXIM_AREA + 0x400)
-
+#define OTP_USER_AREA (OTP_MAXIM_AREA + 0x400)
 
 /****************************  Static Functions  *****************************/
 static int otp_dump(unsigned int address, unsigned int length)
 {
-	int 				ret = 0;
-	unsigned int		i;
-	unsigned char		buffer[512];
-	unsigned char		str[32];
-	unsigned int		tmp;
+    int ret = 0;
+    unsigned int i;
+    unsigned char buffer[512];
+    unsigned char str[32];
+    unsigned int tmp;
 
-	MXC_FLC_UnlockInfoBlock(address);
+    MXC_FLC_UnlockInfoBlock(address);
 
-	while( length )	{
-		unsigned int size = (length > sizeof(buffer)) ? sizeof(buffer): length;
+    while (length) {
+        unsigned int size = (length > sizeof(buffer)) ? sizeof(buffer) : length;
 
-		memset(buffer, 0x00, sizeof(buffer));
+        memset(buffer, 0x00, sizeof(buffer));
 
-		memcpy(buffer, (unsigned int *)address, size);
+        memcpy(buffer, (unsigned int*)address, size);
 
-		for( i = 0; i < size; i++ ) {
-			if ( !( i % 8 ) ) {
-				tmp = (address+i);
-				utils_byteArr2str(str, (unsigned char *)&tmp, 1, sizeof(int), "\n0x", ":");
-				print_str((char *)str);
-			}
-			utils_byteArr2str(str, (unsigned char *)&buffer[i], 1, sizeof(char), " ", NULL);
-			print_str((char *)str);
-		}
-		length   -= size;
-		address  += size;
-	}
-	print_str("\n");
+        for (i = 0; i < size; i++) {
+            if (!(i % 8)) {
+                tmp = (address + i);
+                utils_byteArr2str(str, (unsigned char*)&tmp, 1, sizeof(int), "\n0x", ":");
+                print_str((char*)str);
+            }
+            utils_byteArr2str(str, (unsigned char*)&buffer[i], 1, sizeof(char), " ", NULL);
+            print_str((char*)str);
+        }
+        length -= size;
+        address += size;
+    }
+    print_str("\n");
 
-	MXC_FLC_LockInfoBlock(address);
+    MXC_FLC_LockInfoBlock(address);
 
-	return ret;
+    return ret;
 }
 
 /****************************  Public Functions  *****************************/
@@ -106,26 +105,26 @@ static int otp_dump(unsigned int address, unsigned int length)
  */
 int scpa_erase(unsigned int dest, unsigned int length)
 {
-	(void)dest;
+    (void)dest;
 
-	switch (length) {
-	case 0x10:
-		print_str((char *)"\n****  MAXIM AREA OTP DUMP  ****");
-		otp_dump(OTP_MAXIM_AREA , 1024);
-		print_str((char *)"\n****  END ****\n");
+    switch (length) {
+        case 0x10:
+            print_str((char*)"\n****  MAXIM AREA OTP DUMP  ****");
+            otp_dump(OTP_MAXIM_AREA, 1024);
+            print_str((char*)"\n****  END ****\n");
 
-		/* Character ASCII for end transmission */
-		MXC_UART_WriteCharacter(UART_PORT, 0x04);
-		break;
+            /* Character ASCII for end transmission */
+            MXC_UART_WriteCharacter(UART_PORT, 0x04);
+            break;
 
-	case 0x20:
-		print_str((char *)"\n****  USER AREA OTP DUMP  ****");
-		otp_dump(OTP_USER_AREA , 256);
-		print_str((char *)"\n****  END ****\n");
+        case 0x20:
+            print_str((char*)"\n****  USER AREA OTP DUMP  ****");
+            otp_dump(OTP_USER_AREA, 256);
+            print_str((char*)"\n****  END ****\n");
 
-		/* Character ASCII for end transmission */
-		MXC_UART_WriteCharacter(UART_PORT, 0x04);
-		break;
-	}
-	return 0;
+            /* Character ASCII for end transmission */
+            MXC_UART_WriteCharacter(UART_PORT, 0x04);
+            break;
+    }
+    return 0;
 }
