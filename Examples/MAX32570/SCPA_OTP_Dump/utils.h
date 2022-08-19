@@ -33,20 +33,15 @@
  * ownership rights.
  ******************************************************************************
  */
- 
+
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-void print_str(const char *str);
+void print_str(const char* str);
 void print_hex(int value);
 void print_decimal(int value);
 //
-void utils_byteArr2str( unsigned char *dst,
-						unsigned char *arr,
-						int numberOfItem,
-						int itemsize,
-						const char *prefix,
-						const char *postfix);
+void utils_byteArr2str(unsigned char* dst, unsigned char* arr, int numberOfItem, int itemsize,
+                       const char* prefix, const char* postfix);
 
 #endif /* _UTILS_H_ */
-
