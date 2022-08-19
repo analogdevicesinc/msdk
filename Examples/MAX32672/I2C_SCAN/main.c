@@ -51,7 +51,7 @@
 #include "board.h"
 
 /***** Definitions *****/
-#if defined(FTHR)
+#if defined(BOARD_FTHR)
 	#define I2C_MASTER  MXC_I2C2   	// SCL P0_19; SDA P0_18
 #else
 	#define I2C_MASTER  MXC_I2C0   	// SCL P0_6; SDA P0_7
@@ -69,7 +69,7 @@ int main()
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
 
-#if defined(FTHR)
+#if defined(BOARD_FTHR)
     printf("\nsame bus as I2C2 (SCL - P0.18, SDA - P0.19).\n\n");
 #else
     printf("\nsame bus as I2C0 (SCL - P0.6, SDA - P0.7). Enable I2C0 pullup resistors");

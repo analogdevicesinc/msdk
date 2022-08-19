@@ -48,6 +48,14 @@
 extern "C" {
 #endif
 
+/* 
+    Define board name:
+    Use as #if defined(BOARD_EVKIT_V1)
+    Not as #if BOARD_EVKIT_V1
+*/
+#define BOARD_EVKIT_V1 1
+
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
 #endif
@@ -59,7 +67,6 @@ extern "C" {
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON  0 /// Active state of LEDs
 
-#define EvKit_V1			/// Used in examples to control program flow.
 
 /**
  * \brief   Initialize the BSP and board interfaces.
