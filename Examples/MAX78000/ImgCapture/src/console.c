@@ -31,8 +31,8 @@
 *
 ******************************************************************************/
 /**
-* @file console.h
-* @brief Serial console header file
+* @file console.c
+* @brief Serial console implementation file
 *****************************************************************************/
 
 #include "console.h"
@@ -45,8 +45,36 @@ char g_serial_buffer[SERIAL_BUFFER_SIZE];
 int g_buffer_index = 0;
 int g_num_commands = 0;
 
-int g_num_commands; // Calculated in 'main' as part of initialization
-char* cmd_table[] = {"reset", "capture", "imgres", "stream", "set-reg", "get-reg"};
+int g_num_commands; // Calculated in 'console_init' as part of initialization
+char* cmd_table[] = {"help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
+#ifdef SD
+                     "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
+                     "touch", "write",   "cat",     "snap"
+#endif
+};
+
+char* help_table[] = {
+    ": Print this help string",
+    ": Issue a soft reset to the host MCU.",
+    ": Perform a standard blocking capture of a single image",
+    "<width> <height> : Set the image resolution of the camera to <width> x <height>",
+    ": Performs a line-by-line streaming DMA capture of a single image, capable of higher "
+    "resolutions",
+    "<register> <value> : Write a value to a camera register.",
+    "<register> : Prints the value in a camera register.",
+    ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU "
+    "detects it's blank.",
+    ": Unmount the SD card.",
+    ": Print the current working directory (cwd).",
+    "<dir> : Change the current working directory to <dir>.",
+    ": List the contents of the current working directory.",
+    "<dir> : Create a directory",
+    "<item> : Remove a file or (empty) directory.",
+    "<filename> : Create an empty file.",
+    "<filename> <string> : Write a string to a file.",
+    "<filename> : Print the contents of a file.",
+    "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is "
+    "optional.  If none is specified, images will be saved to /raw."};
 
 int starts_with(char* a, char* b)
 {
@@ -196,7 +224,24 @@ void print_help(void)
 {
     int g_num_commands = sizeof(cmd_table) / sizeof(char*);
     printf("Registered %i total commands:\n", g_num_commands);
+    printf("-----\n");
     for (int i = 0; i < g_num_commands; i++) {
-        printf("Command %i: '%s'\n", i, cmd_table[i]);
+        printf("\t'%s' %s\n", cmd_table[i], help_table[i]);
+    }
+    printf("-----\n");
+}
+
+#ifdef SD
+// Utility function for streaming data out of a file into the UART TX FIFO
+UINT out_stream(const BYTE* p, UINT btf)
+{
+    // If btf > 0, btf is the number of bytes to send.
+    // If btf == 0, sense call querying if the stream is available.
+
+    if (btf == 0) { // Sense call, this function should return the stream status.
+        return MXC_UART_GetTXFIFOAvailable(Con_Uart);
+    } else {
+        return MXC_UART_WriteTXFIFO(Con_Uart, (const unsigned char*)p, (unsigned int)btf);
     }
 }
+#endif

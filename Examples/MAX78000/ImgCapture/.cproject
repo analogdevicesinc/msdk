@@ -68,12 +68,12 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="ImgCapture-Serial.null.923778415" name="ImgCapture-Serial"/>
+		<project id="ImgCapture.null.923778415" name="ImgCapture"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/ImgCapture-Serial"/>
+			<resource resourceType="PROJECT" workspacePath="/ImgCapture"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>

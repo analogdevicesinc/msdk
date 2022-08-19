@@ -32,7 +32,7 @@
 ******************************************************************************/
 /**
 * @file cnn_memutils.h
-* @brief Utility functions for accessing CNN data SRAM as a "continuous" block
+* @brief Utility functions for accessing CNN data SRAM as a virtually contiguous block
         of memory.
 *****************************************************************************/
 
