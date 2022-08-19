@@ -47,7 +47,7 @@
 #include "gpio.h"
 
 /***** Definitions *****/
-#if defined(FTHR)
+#if defined(BOARD_FTHR)
 	#define MXC_GPIO_PORT_OUT               MXC_GPIO0
 	#define MXC_GPIO_PIN_OUT                MXC_GPIO_PIN_2
 
@@ -83,7 +83,7 @@ int main(void)
     
     printf("\n\n****** GPIO Example ******\n");
     printf("Demonstrates GPIO get/set and interrupt usage\n");
-#if defined(FTHR)
+#if defined(BOARD_FTHR)
     printf("1.This example both reads and sets interrupt for P0.10 (SW2) \n");
     printf("  When state changes, set P0.2 (LED0) accordingly. When interrupt occurs, P0.3 (LED1) toggles.\n\n");
 #else
