@@ -36,6 +36,10 @@ jobs:
           git submodule sync
           git submodule update --init --recursive
           
+          # This environment variable is required for the SBTs.
+          # It must be set to the absolute path inside the Github repo.
+          export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
+
           cd Examples
           # Rebuild all of the peripheral drivers and build all of the Hello_World examples
           SUBDIRS=$(find . -type d -name "Hello_World")
