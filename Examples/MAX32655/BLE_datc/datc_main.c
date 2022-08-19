@@ -48,7 +48,7 @@
 #include "util/calc128.h"
 #include "pal_btn.h"
 #include "tmr.h"
-
+#include "sdsc_api.h"
 /**************************************************************************************************
 Macros
 **************************************************************************************************/
@@ -130,7 +130,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
     FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    FALSE                                /*! TRUE to initiate security upon connection */
+    TRUE                                /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -139,7 +139,7 @@ static const bool_t datcSendOobData = FALSE;
 /*! SMP security parameter configuration */
 static const smpCfg_t datcSmpCfg = {
     500,                 /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    SMP_IO_KEY_ONLY, /*! I/O Capability */
     7,                   /*! Minimum encryption key length */
     16,                  /*! Maximum encryption key length */
     1,                   /*! Attempts to trigger 'repeated attempts' timeout */
@@ -191,6 +191,7 @@ enum {
     DATC_DISC_GATT_SVC, /*! GATT service */
     DATC_DISC_GAP_SVC,  /*! GAP service */
     DATC_DISC_WP_SVC,   /*! Arm Ltd. proprietary service */
+    DATC_DISC_SDS_SVC,   /*! Secured Data Service */
     DATC_DISC_SVC_MAX   /*! Discovery complete */
 };
 
@@ -214,12 +215,14 @@ enum {
 #define DATC_DISC_GATT_START   0
 #define DATC_DISC_GAP_START    (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
 #define DATC_DISC_WP_START     (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
-#define DATC_DISC_HDL_LIST_LEN (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
+#define DATC_DISC_SDS_START   (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN) 
+#define DATC_DISC_HDL_LIST_LEN (DATC_DISC_SDS_START + SEC_HDL_LIST_LEN)
 
 /*! Pointers into handle list for each service's handles */
 static uint16_t* pDatcGattHdlList[DM_CONN_MAX];
 static uint16_t* pDatcGapHdlList[DM_CONN_MAX];
 static uint16_t* pDatcWpHdlList[DM_CONN_MAX];
+static uint16_t* pSecDatHdlList[DM_CONN_MAX];
 
 /* LESC OOB configuration */
 static dmSecLescOobCfg_t* datcOobCfg;
@@ -251,6 +254,9 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
 
     /* Write:  Proprietary data service changed ccc descriptor */
     {datcCccNtfVal, sizeof(datcCccNtfVal), (WPC_P1_NA_CCC_HDL_IDX + DATC_DISC_WP_START)},
+
+    /* Write:  Secured data service changed ccc descriptor */
+    {datcCccNtfVal, sizeof(datcCccNtfVal), (SEC_DAT_CCC_HDL_IDX + DATC_DISC_SDS_START)},
 
 };
 
@@ -500,7 +506,7 @@ static void datcScanReport(dmEvt_t* pMsg)
                                            pMsg->scanReport.pData)) != NULL)) {
         /* check length and device name */
         if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'D') &&
-            (pData[DM_AD_DATA_IDX + 1] == 'A') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
+            (pData[DM_AD_DATA_IDX + 1] == 'O') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
             (pData[DM_AD_DATA_IDX + 3] == 'S')) {
             connect = TRUE;
         }
@@ -556,7 +562,9 @@ static void datcOpen(dmEvt_t* pMsg)
 /*************************************************************************************************/
 static void datcValueNtf(attEvt_t* pMsg)
 {
+    APP_TRACE_INFO1("\r\nRecevied att  message from %d\r\n", pMsg->handle);
     /* print the received data */
+    
     if (datcCb.speedTestCounter == 0) {
         APP_TRACE_INFO0((const char*)pMsg->pValue);
     }
@@ -641,6 +649,24 @@ static void datcSendData(dmConnId_t connId)
 
     if (pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
         AttcWriteCmd(connId, pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX], sizeof(str), str);
+    }
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Send example data to secured charactersitic.
+ *
+ *  \param  connId    Connection identifier.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void secDatSendData(dmConnId_t connId)
+{
+    uint8_t str[] = "hello secured data";
+
+    if (pSecDatHdlList[connId - 1][SEC_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
+        AttcWriteCmd(connId, pSecDatHdlList[connId - 1][SEC_DAT_HDL_IDX], sizeof(str), str);
     }
 }
 
@@ -812,7 +838,9 @@ static void datcBtnCback(uint8_t btn)
                 break;
             }
 #endif /* BT_VER */
-
+            case APP_UI_BTN_2_MED:
+                secDatSendData(connId);
+                break;
             case APP_UI_BTN_2_LONG:
                 /* send data */
                 datcSendData(connId);
@@ -918,7 +946,7 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         case APP_DISC_FAILED:
             if (pAppCfg->abortDisc) {
                 /* if discovery failed for proprietary data service then disconnect */
-                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
+                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC || (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
                     AppConnClose(connId);
                     break;
                 }
@@ -935,6 +963,9 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
             } else if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
                 /* discover proprietary data service */
                 WpcP1Discover(connId, pDatcWpHdlList[connId - 1]);
+            } else if(datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC){
+                /* discover secured data service */
+                SecDatSvcDiscover(connId, pSecDatHdlList[connId - 1]);
             } else {
                 /* discovery complete */
                 AppDiscComplete(connId, APP_DISC_CMPL);
@@ -1275,6 +1306,8 @@ static void datcInitSvcHdlList()
         pDatcGattHdlList[i] = &datcCb.hdlList[i][DATC_DISC_GATT_START];
         pDatcGapHdlList[i]  = &datcCb.hdlList[i][DATC_DISC_GAP_START];
         pDatcWpHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_WP_START];
+        pSecDatHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_SDS_START];
+   
     }
 }
 /*************************************************************************************************/

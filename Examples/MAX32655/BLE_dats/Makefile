@@ -74,15 +74,16 @@ export CMSIS_ROOT
 SRCS  = main.c
 SRCS += dats_main.c
 SRCS += stack_dats.c
+SRCS += svc_msds.c
 #SRCS += sla_header.c
 
 # Where to find source files for this test
 VPATH=.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
-
+VPATH += ./services
 # Where to find header files for this test
 IPATH = .
-
+IPATH+= ./services
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
 

@@ -49,7 +49,7 @@
 #include "trimsir_regs.h"
 #include "pal_btn.h"
 #include "tmr.h"
-
+#include "svc_msds.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -78,6 +78,7 @@
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
     DATS_WP_DAT_CCC_IDX,  /*! Arm Ltd. proprietary service, data transfer characteristic */
+    DATS_SEC_DAT_CCC_IDX,
     DATS_NUM_CCC_IDX
 };
 
@@ -98,11 +99,11 @@ static const appSlaveCfg_t datsSlaveCfg = {
 
 /*! configurable parameters for security */
 static const appSecCfg_t datsSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
     DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
     FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    FALSE                                /*! TRUE to initiate security upon connection */
+    TRUE                                /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -111,7 +112,7 @@ static const bool_t datsSendOobData = FALSE;
 /*! SMP security parameter configuration */
 static const smpCfg_t datsSmpCfg = {
     500,                 /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    SMP_IO_DISP_ONLY, /*! I/O Capability */
     7,                   /*! Minimum encryption key length */
     16,                  /*! Maximum encryption key length */
     1,                   /*! Attempts to trigger 'repeated attempts' timeout */
@@ -182,7 +183,7 @@ static const uint8_t datsScanDataDisc[] = {
     5,                      /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
     'D',
-    'A',
+    'O',
     'T',
     'S'};
 
@@ -194,7 +195,8 @@ static const uint8_t datsScanDataDisc[] = {
 static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
     {GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE}, /* DATS_GATT_SC_CCC_IDX */
-    {WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE}     /* DATS_WP_DAT_CCC_IDX */
+    {WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE},     /* DATS_WP_DAT_CCC_IDX */
+    {SEC_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE}     /* DATS_SEC_DAT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -361,6 +363,30 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
         /* send back some data */
         datsSendData(connId);
     }
+    return ATT_SUCCESS;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  ATTS write callback for secured data service.
+ *
+ *  \return ATT status.
+ */
+/*************************************************************************************************/
+uint8_t secDatWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                         uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
+{
+    uint8_t str[] = "1234567890";
+
+    APP_TRACE_INFO0((const char*)pValue);    
+
+    /* Write data recevied into characteristic */
+   // AttsSetAttr(SEC_DAT_HDL, sizeof(*pValue), (uint8_t*)pValue);
+    /* if notifications are enabled send one */
+    if (AttsCccEnabled(connId, DATS_SEC_DAT_CCC_IDX)) {
+        /* send notification */
+        AttsHandleValueNtf(connId, SEC_DAT_HDL, sizeof(str), str);
+    }    
     return ATT_SUCCESS;
 }
 
@@ -898,6 +924,11 @@ void DatsStart(void)
     SvcWpCbackRegister(NULL, datsWpWriteCback);
     SvcWpAddGroup();
 
+    /*register secure data write callback */
+    SvcSecDataCbackRegister(NULL,secDatWriteCback);
+    /* Register secure data service */
+    SvcSecDataAddGroup();
+    
     /* Set Service Changed CCCD index. */
     GattSetSvcChangedIdx(DATS_GATT_SC_CCC_IDX);
 
