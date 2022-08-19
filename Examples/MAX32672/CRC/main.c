@@ -132,6 +132,5 @@ int main(void)
     NVIC_EnableIRQ(CRYPTO_IRQn);
     Test_CRC(1);
 
-    while (1) {
-    }
+    return 0;
 }

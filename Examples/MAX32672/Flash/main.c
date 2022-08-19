@@ -47,7 +47,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "ecc_regs.h"
 /***** Definitions *****/
@@ -362,9 +361,9 @@ int main(void)
     int error_status;
 
     /* Note: This example must execute out of RAM, due to MXC_FLC_MassErase() call, below */
-    printf("\n\n***** Flash Control Example (ECC disabled) *****");
-    printf("\nPlease check FLASH_CLI example to learn");
-    printf("\nECC enabled write/read/erase operations\n\n");
+    printf("\n\n***** Flash Control Example (ECC disabled) *****\n");
+    printf("This example demonstrates the basic functions of the Flash Controller: \n");
+    printf("mass erase, page erase, and write.\n");
 
     NVIC_SetRAM();
     // Initialize the Flash
@@ -430,13 +429,10 @@ int main(void)
 
     MXC_ICC_Enable();
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
+        printf("\nExample Failed\n");
     }
-
-    while (1)
-        ;
 
     return 0;
 }
