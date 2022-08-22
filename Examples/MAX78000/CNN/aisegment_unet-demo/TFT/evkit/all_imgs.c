@@ -1,4 +1,3 @@
-
 /*******************************************************************************
 * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
 *
@@ -31,10 +30,7 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************
-*/
-
-
+********************************************************************************/
 
 __attribute__((section(".bin_storage_img"))) __attribute__((__used__))
 const unsigned char imgs_arr[ ] = {
