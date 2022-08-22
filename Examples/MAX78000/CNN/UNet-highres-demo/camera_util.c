@@ -442,12 +442,17 @@ void display_camera(void)
 
         // convert RGB888 to RGB565
         if (row < TFT_H) {
+#ifdef BOARD_FTHR_REVA
             for (int k = 0; k < 4 * w; k += 4) {
+#endif
+#ifdef BOARD_EVKIT_V1
+            for (int k = 4 * w - 1; k > 0; k -= 4) {    // reverse order to display
+#endif
                 r = data[k];
                 g = data[k + 1];
                 b = data[k + 2];
                 //skip k+3
-                rgb          = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+                rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
                 data565[j++] = (rgb >> 8) & 0xFF;
                 data565[j++] = rgb & 0xFF;
             }
@@ -468,8 +473,7 @@ void display_camera(void)
         printf("OVERFLOW DISP = %d\n", stat->overflow_count);
         LED_On(LED2); // Turn on red LED if overflow detected
 
-        while (1)
-            ;
+        while (1);
     }
 }
 
