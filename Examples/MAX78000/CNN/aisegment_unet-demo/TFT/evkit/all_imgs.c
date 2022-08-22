@@ -31,7 +31,7 @@
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
 ********************************************************************************/
-
+// clang-format off
 __attribute__((section(".bin_storage_img"))) __attribute__((__used__))
 const unsigned char imgs_arr[] = {
     /*
@@ -2070,3 +2070,4 @@ const unsigned char imgs_arr[] = {
     0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x3B, 0x00, 0x00,
     
 };
+// clang-format on
