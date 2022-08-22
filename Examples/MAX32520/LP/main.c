@@ -62,17 +62,16 @@
 #include "uart.h"
 #include "nvic_table.h"
 
-
-#define USE_CONSOLE  1
+#define USE_CONSOLE 1
 
 #define DO_SLEEP     1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP    0
 
 #if USE_CONSOLE
-    #define PRINTF(...) printf(__VA_ARGS__)
+#define PRINTF(...) printf(__VA_ARGS__)
 #else
-	#define PRINTF(...)
+#define PRINTF(...)
 #endif
 
 // *****************************************************************************
@@ -107,10 +106,10 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-	PRINTF("****Low Power Mode Example****\n\n");
+    PRINTF("****Low Power Mode Example****\n\n");
 
-	PRINTF("This code cycles through the MAX32520 power modes, "
-    		"using a push button (SW2) to exit from each mode and enter the next.\n\n");
+    PRINTF("This code cycles through the MAX32520 power modes, "
+           "using a push button (SW2) to exit from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 
     PRINTF("Running in ACTIVE mode.\n");
@@ -141,7 +140,7 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-    	PRINTF("Entering SLEEP mode.\n");
+        PRINTF("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
         PRINTF("Wakeup from SLEEP mode.\n\n");

@@ -51,7 +51,6 @@
 #define I2C_MASTER MXC_I2C0 // SCL P0_10; SDA P0_9
 #define I2C_FREQ   100000   // 100kHZ
 
-
 /***** Globals *****/
 uint8_t counter = 0;
 
