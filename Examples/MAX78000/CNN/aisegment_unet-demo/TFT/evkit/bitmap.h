@@ -1,4 +1,4 @@
-/*******************************************************************************
+/******************************************************************************
 * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
 *
 * This software is protected by copyright laws of the United States and
@@ -30,17 +30,15 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-********************************************************************************/
-
+******************************************************************************/
 
 #ifndef _BITMAP_H_
 #define _BITMAP_H_
 
 // bitmaps id
-#define    ADI_Logo_RGB_Solid_small_256_bmp                   0
+#define ADI_Logo_RGB_Solid_small_256_bmp 0
 
 // fonts id
-#define    urw_gothic_12_grey_bg_white                        0
-
+#define urw_gothic_12_grey_bg_white 0
 
 #endif //_BITMAP_H_
