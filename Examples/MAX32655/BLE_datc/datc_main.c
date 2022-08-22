@@ -130,7 +130,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
     FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    TRUE                                /*! TRUE to initiate security upon connection */
+    TRUE                                 /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -138,15 +138,15 @@ static const bool_t datcSendOobData = FALSE;
 
 /*! SMP security parameter configuration */
 static const smpCfg_t datcSmpCfg = {
-    500,                 /*! 'Repeated attempts' timeout in msec */
+    500,             /*! 'Repeated attempts' timeout in msec */
     SMP_IO_KEY_ONLY, /*! I/O Capability */
-    7,                   /*! Minimum encryption key length */
-    16,                  /*! Maximum encryption key length */
-    1,                   /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                   /*! Device authentication requirements */
-    64000,               /*! Maximum repeated attempts timeout in msec */
-    64000,               /*! Time msec before attemptExp decreases */
-    2                    /*! Repeated attempts multiplier exponent */
+    7,               /*! Minimum encryption key length */
+    16,              /*! Maximum encryption key length */
+    1,               /*! Attempts to trigger 'repeated attempts' timeout */
+    0,               /*! Device authentication requirements */
+    64000,           /*! Maximum repeated attempts timeout in msec */
+    64000,           /*! Time msec before attemptExp decreases */
+    2                /*! Repeated attempts multiplier exponent */
 };
 
 /*! Connection parameters */
@@ -191,7 +191,7 @@ enum {
     DATC_DISC_GATT_SVC, /*! GATT service */
     DATC_DISC_GAP_SVC,  /*! GAP service */
     DATC_DISC_WP_SVC,   /*! Arm Ltd. proprietary service */
-    DATC_DISC_SDS_SVC,   /*! Secured Data Service */
+    DATC_DISC_SDS_SVC,  /*! Secured Data Service */
     DATC_DISC_SVC_MAX   /*! Discovery complete */
 };
 
@@ -215,7 +215,7 @@ enum {
 #define DATC_DISC_GATT_START   0
 #define DATC_DISC_GAP_START    (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
 #define DATC_DISC_WP_START     (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
-#define DATC_DISC_SDS_START   (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN) 
+#define DATC_DISC_SDS_START    (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
 #define DATC_DISC_HDL_LIST_LEN (DATC_DISC_SDS_START + SEC_HDL_LIST_LEN)
 
 /*! Pointers into handle list for each service's handles */
@@ -562,9 +562,9 @@ static void datcOpen(dmEvt_t* pMsg)
 /*************************************************************************************************/
 static void datcValueNtf(attEvt_t* pMsg)
 {
-    APP_TRACE_INFO1("\r\nRecevied att  message from %d\r\n", pMsg->handle);
+    if (pMsg->handle == pSecDatHdlList[pMsg->hdr.param - 1][SEC_DAT_HDL_IDX])
+        APP_TRACE_INFO0(">> Notification from secure data service <<<");
     /* print the received data */
-    
     if (datcCb.speedTestCounter == 0) {
         APP_TRACE_INFO0((const char*)pMsg->pValue);
     }
@@ -663,7 +663,7 @@ static void datcSendData(dmConnId_t connId)
 /*************************************************************************************************/
 static void secDatSendData(dmConnId_t connId)
 {
-    uint8_t str[] = "hello secured data";
+    uint8_t str[] = "Secret number is 0x42";
 
     if (pSecDatHdlList[connId - 1][SEC_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
         AttcWriteCmd(connId, pSecDatHdlList[connId - 1][SEC_DAT_HDL_IDX], sizeof(str), str);
@@ -946,7 +946,8 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         case APP_DISC_FAILED:
             if (pAppCfg->abortDisc) {
                 /* if discovery failed for proprietary data service then disconnect */
-                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC || (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
+                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC ||
+                    (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
                     AppConnClose(connId);
                     break;
                 }
@@ -963,7 +964,7 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
             } else if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
                 /* discover proprietary data service */
                 WpcP1Discover(connId, pDatcWpHdlList[connId - 1]);
-            } else if(datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC){
+            } else if (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC) {
                 /* discover secured data service */
                 SecDatSvcDiscover(connId, pSecDatHdlList[connId - 1]);
             } else {
@@ -1307,7 +1308,6 @@ static void datcInitSvcHdlList()
         pDatcGapHdlList[i]  = &datcCb.hdlList[i][DATC_DISC_GAP_START];
         pDatcWpHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_WP_START];
         pSecDatHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_SDS_START];
-   
     }
 }
 /*************************************************************************************************/

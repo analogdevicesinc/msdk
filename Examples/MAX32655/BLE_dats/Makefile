@@ -74,7 +74,7 @@ export CMSIS_ROOT
 SRCS  = main.c
 SRCS += dats_main.c
 SRCS += stack_dats.c
-SRCS += svc_msds.c
+SRCS += svc_sds.c
 #SRCS += sla_header.c
 
 # Where to find source files for this test

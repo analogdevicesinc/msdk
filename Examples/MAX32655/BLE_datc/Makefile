@@ -80,10 +80,10 @@ SRCS += sdsc_main.c
 # Where to find source files for this test
 VPATH=.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
-VPATH += ./sdsc
+
 # Where to find header files for this test
 IPATH = .
-IPATH += ./sdsc
+
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
