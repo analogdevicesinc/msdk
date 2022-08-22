@@ -506,7 +506,7 @@ static void datcScanReport(dmEvt_t* pMsg)
                                            pMsg->scanReport.pData)) != NULL)) {
         /* check length and device name */
         if (pData[DM_AD_LEN_IDX] >= 4 && (pData[DM_AD_DATA_IDX] == 'D') &&
-            (pData[DM_AD_DATA_IDX + 1] == 'O') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
+            (pData[DM_AD_DATA_IDX + 1] == 'A') && (pData[DM_AD_DATA_IDX + 2] == 'T') &&
             (pData[DM_AD_DATA_IDX + 3] == 'S')) {
             connect = TRUE;
         }

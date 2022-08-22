@@ -111,15 +111,15 @@ static const bool_t datsSendOobData = FALSE;
 
 /*! SMP security parameter configuration */
 static const smpCfg_t datsSmpCfg = {
-    500,              /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_DISP_ONLY, /*! I/O Capability */
-    7,                /*! Minimum encryption key length */
-    16,               /*! Maximum encryption key length */
-    1,                /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                /*! Device authentication requirements */
-    64000,            /*! Maximum repeated attempts timeout in msec */
-    64000,            /*! Time msec before attemptExp decreases */
-    2                 /*! Repeated attempts multiplier exponent */
+    500,             /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_KEY_ONLY, /*! I/O Capability */
+    7,               /*! Minimum encryption key length */
+    16,              /*! Maximum encryption key length */
+    1,               /*! Attempts to trigger 'repeated attempts' timeout */
+    0,               /*! Device authentication requirements */
+    64000,           /*! Maximum repeated attempts timeout in msec */
+    64000,           /*! Time msec before attemptExp decreases */
+    2                /*! Repeated attempts multiplier exponent */
 };
 
 /* iOS connection parameter update requirements
@@ -183,7 +183,7 @@ static const uint8_t datsScanDataDisc[] = {
     5,                      /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
     'D',
-    'O',
+    'A',
     'T',
     'S'};
 
