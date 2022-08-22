@@ -50,7 +50,7 @@
  *  Due to limited push button on EvKit
  *  please select one of below use case
  */
-#define GPIO_INT_USECASE 1
+#define GPIO_INT_USECASE  1
 #define GPIO_POOL_USECASE 0
 
 #if (!(GPIO_INT_USECASE || GPIO_POOL_USECASE))
@@ -106,7 +106,7 @@ int main(void)
     gpio_interrupt_status.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_interrupt_status);
 
-	/*
+    /*
 	 *   Set up interrupt the gpio.
 	 *   Switch on EV kit is open when non-pressed, and grounded when pressed.
 	 *   Use an internal pull-up so pin reads high when button is not pressed.
@@ -123,7 +123,7 @@ int main(void)
     NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(BUTTON_PORT)));
 
     while (1) {
-    	;// waiting GPIO interrupt
+        ; // waiting GPIO interrupt
     }
 #endif
 
