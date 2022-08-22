@@ -30,8 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
-__attribute__((section(".bin_storage_img"))) __attribute__((__used__))
-__attribute__((aligned(2)))
+__attribute__((section(".bin_storage_img"))) __attribute__((__used__)) __attribute__((aligned(2)))
 const   unsigned char logo_rgb565[4036] = { // 85x24x2 + 4(header)
     0x54, 0x00, 0x18, 0x00, // size: (84, 24),
     0x49, 0x42, 0x66, 0x21, 0x87, 0x29, 0x87, 0x29, 0x87, 0x29, 0x87, 0x29, 0x87, 0x29, 0x87, 0x29,
