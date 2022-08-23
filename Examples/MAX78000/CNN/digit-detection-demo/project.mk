@@ -9,9 +9,11 @@
 
 ifeq "$(BOARD)" "EvKit_V1"
 VPATH += TFT/evkit/resources
+PROJ_CFLAGS+=-DTFT_ENABLE
 endif
 ifeq "$(BOARD)" "FTHR_RevA"
 VPATH += TFT/fthr
+#PROJ_CFLAGS+=-DTFT_ENABLE    
 endif
 
 IPATH += TFT/evkit/resources
