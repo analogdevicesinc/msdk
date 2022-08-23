@@ -349,7 +349,7 @@ void reset_nms(void)
     for (int cl = 0; cl < NUM_CLASSES - 2; ++cl) {
         num_nms_priors[cl] = 0;
 
-        for (int p_idx=0; p_idx < MAX_PRIORS; ++p_idx) {
+        for (int p_idx = 0; p_idx < MAX_PRIORS; ++p_idx) {
             nms_scores[cl][p_idx]  = 0;
             nms_indices[cl][p_idx] = 0;
             nms_removed[cl][p_idx] = 0;
