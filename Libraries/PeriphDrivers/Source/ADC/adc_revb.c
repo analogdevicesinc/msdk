@@ -265,11 +265,11 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc)
             MXC_ADC_RevB_ClearFlags(adc, flags);
 
             // Disable interrupts only when in single conversion mode
-            if(!(adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
+            if (!(adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
                 MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
-                                          MXC_F_ADC_REVB_INTFL_CONV_DONE |
-                                          MXC_F_ADC_REVB_INTEN_FIFO_LVL));
-            
+                                              MXC_F_ADC_REVB_INTFL_CONV_DONE |
+                                              MXC_F_ADC_REVB_INTEN_FIFO_LVL));
+
                 MXC_FreeLock((uint32_t*)&async_callback);
             }
         }
