@@ -35,8 +35,8 @@
  * @file    main.c
  * @brief   Demonstrates the various low power modes.
  *
- * @details Iterates through the various low power modes, using either the RTC
- *          alarm or a GPIO to wake from each.  #defines determine which wakeup
+ * @details Iterates through the various low power modes, using
+ * 			GPIO to wake from each.  #defines determine which wakeup
  *          source to use.  Once the code is running, you can measure the
  *          current used on the VCORE rail.
  *
@@ -62,21 +62,16 @@
 #include "uart.h"
 #include "nvic_table.h"
 
-#define DELAY_IN_SEC 2
-#define USE_CONSOLE  1
-
-#define USE_BUTTON 1
-#define USE_ALARM  0
+#define USE_CONSOLE 1
 
 #define DO_SLEEP     1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP    0
 
-#if (!(USE_BUTTON || USE_ALARM))
-#error "You must set either USE_BUTTON or USE_ALARM to 1."
-#endif
-#if (USE_BUTTON && USE_ALARM)
-#error "You must select either USE_BUTTON or USE_ALARM, not both."
+#if USE_CONSOLE
+#define PRINTF(...) printf(__VA_ARGS__)
+#else
+#define PRINTF(...)
 #endif
 
 // *****************************************************************************
@@ -104,28 +99,21 @@ void setTrigger(int waitForTrigger)
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
-
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
         ;
-
 #endif // USE_CONSOLE
 }
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINTF("****Low Power Mode Example****\n\n");
 
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32520 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINTF("This code cycles through the MAX32520 power modes, "
+           "using a push button (SW2) to exit from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINTF("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     SYS_ClockDisable(SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
     setTrigger(1);
@@ -139,43 +127,37 @@ int main(void)
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
-#endif // USE_CONSOLE
+    PRINTF("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     MXC_LP_ROMShutdown();
     MXC_LP_ICache0Shutdown();
 
-#if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-#endif // USE_CONSOLE
+    PRINTF("All unused RAMs shutdown.\n");
     setTrigger(1);
 
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINTF("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
+        PRINTF("Wakeup from SLEEP mode.\n\n");
 #endif // DO_SLEEP
 #if DO_DEEPSLEEP
-#if USE_CONSOLE
-        printf("Entering DEEPSLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINTF("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
+        PRINTF("Wakeup from DEEPSLEEP mode.\n\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINTF("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
     }
+
+    return 0;
 }
