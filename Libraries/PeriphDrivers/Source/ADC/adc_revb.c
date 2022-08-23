@@ -263,10 +263,15 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc)
 
         if (flags & MXC_F_ADC_REVB_INTEN_SEQ_DONE) {
             MXC_ADC_RevB_ClearFlags(adc, flags);
-            MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
+
+            // Disable interrupts only when in single conversion mode
+            if(!(adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
+                MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
                                           MXC_F_ADC_REVB_INTFL_CONV_DONE |
                                           MXC_F_ADC_REVB_INTEN_FIFO_LVL));
-            MXC_FreeLock((uint32_t*)&async_callback);
+            
+                MXC_FreeLock((uint32_t*)&async_callback);
+            }
         }
 
         if (flags & MXC_F_ADC_REVB_INTEN_CONV_DONE) {
@@ -364,6 +369,27 @@ void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req
         MXC_SETFIELD(adc->ctrl1, MXC_F_ADC_REVB_CTRL1_TRIG_SEL,
                      (req->hwTrig << MXC_F_ADC_REVB_CTRL1_TRIG_SEL_POS));
     }
+}
+
+void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req)
+{
+    if (req->mode == MXC_ADC_ATOMIC_CONV) {
+        adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+    } else {
+        adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+    }
+}
+
+int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t* adc, int delay)
+{
+    if (delay > 0x0FFFF) {
+        return E_BAD_PARAM;
+    }
+
+    adc->restart &= ~MXC_F_ADC_REVB_RESTART_CNT;
+    adc->restart |= delay << MXC_F_ADC_REVB_RESTART_CNT_POS;
+
+    return E_NO_ERROR;
 }
 
 int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req)
