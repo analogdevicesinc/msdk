@@ -230,6 +230,8 @@ mxc_ctb_reva_crc_bitorder_t MXC_CTB_RevA_CRC_GetDirection(mxc_ctb_reva_regs_t* c
 void MXC_CTB_RevA_CRC_SetPoly(mxc_ctb_reva_regs_t* ctb_regs, uint32_t poly);
 uint32_t MXC_CTB_RevA_CRC_GetPoly(mxc_ctb_reva_regs_t* ctb_regs);
 uint32_t MXC_CTB_RevA_CRC_GetResult(mxc_ctb_reva_regs_t* ctb_regs);
+void MXC_CTB_RevA_CRC_SetInitialValue(uint32_t seed);
+void MXC_CTB_RevA_CRC_SetFinalXORValue(uint32_t xor);
 
 /*******************************/
 /* High Level Functions        */

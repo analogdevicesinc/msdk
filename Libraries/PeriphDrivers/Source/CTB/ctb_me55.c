@@ -290,6 +290,16 @@ uint32_t MXC_CTB_CRC_GetResult(void)
     return MXC_CTB_RevA_CRC_GetResult((mxc_ctb_reva_regs_t*)MXC_CTB);
 }
 
+void MXC_CTB_CRC_SetInitialValue(uint32_t seed)
+{
+    MXC_CTB_RevA_CRC_SetInitialValue(seed);
+}
+
+void MXC_CTB_CRC_SetFinalXORValue(uint32_t xor)
+{
+    MXC_CTB_RevA_CRC_SetFinalXORValue(xor);
+}
+
 /*******************************/
 /* High Level Functions        */
 /*******************************/
