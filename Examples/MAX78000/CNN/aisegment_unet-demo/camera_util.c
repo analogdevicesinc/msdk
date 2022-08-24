@@ -57,11 +57,11 @@ int slaveAddress;
 int id;
 int dma_channel;
 
-static uint32_t* data_addr0 = (uint32_t*) 0x50400700;
-static uint32_t* data_addr3 = (uint32_t*) 0x50418700;
-static uint32_t* data_addr6 = (uint32_t*) 0x50810700;
-static uint32_t* data_addr9 = (uint32_t*) 0x50c08700;
-static uint32_t*  addr, offset0, offset1, subtract;
+static uint32_t* data_addr0 = (uint32_t*)0x50400700;
+static uint32_t* data_addr3 = (uint32_t*)0x50418700;
+static uint32_t* data_addr6 = (uint32_t*)0x50810700;
+static uint32_t* data_addr9 = (uint32_t*)0x50c08700;
+static uint32_t *addr, offset0, offset1, subtract;
 
 uint8_t data565[IMAGE_XRES * 2];
 // *****************************************************************************
@@ -99,7 +99,8 @@ int initialize_camera(void)
     printf("Init Camera\n");
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA, dma_channel); // RGB888 with 0 at MSB stream
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA,
+                       dma_channel); // RGB888 with 0 at MSB stream
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
@@ -129,11 +130,11 @@ int initialize_camera(void)
 
 void load_row_cnn_init(void)
 {
-    data_addr0 = (uint32_t*) 0x50400700;
-    data_addr3 = (uint32_t*) 0x50418700;
-    data_addr6 = (uint32_t*) 0x50810700;
-    data_addr9 = (uint32_t*) 0x50c08700;
-    addr = data_addr9;
+    data_addr0 = (uint32_t*)0x50400700;
+    data_addr3 = (uint32_t*)0x50418700;
+    data_addr6 = (uint32_t*)0x50810700;
+    data_addr9 = (uint32_t*)0x50c08700;
+    addr       = data_addr9;
 }
 
 void load_row_cnn(uint8_t* data, int row)
@@ -149,60 +150,60 @@ void load_row_cnn(uint8_t* data, int row)
     uint8_t* dataptr = data;
 #endif
 
-    offset0 = 0x00002000;
-    offset1 = 0x00002000;
+    offset0  = 0x00002000;
+    offset1  = 0x00002000;
     subtract = 0x00004000 - 1;
 
     switch (row & 3) {
-    case 0:
-        data_addr9 = addr;
-        addr = data_addr0;
-        break;
+        case 0:
+            data_addr9 = addr;
+            addr       = data_addr0;
+            break;
 
-    case 1:
-        data_addr0 = addr;
-        addr = data_addr3;
-        offset0 += 0x000FA000 - 0x00002000;
-        subtract += 0x000FC000 - 0x00004000;
-        break;
+        case 1:
+            data_addr0 = addr;
+            addr       = data_addr3;
+            offset0 += 0x000FA000 - 0x00002000;
+            subtract += 0x000FC000 - 0x00004000;
+            break;
 
-    case 2:
-        data_addr3 = addr;
-        addr = data_addr6;
-        offset1 += 0x000FA000 - 0x00002000;
-        subtract += 0x000FC000 - 0x00004000;
-        break;
+        case 2:
+            data_addr3 = addr;
+            addr       = data_addr6;
+            offset1 += 0x000FA000 - 0x00002000;
+            subtract += 0x000FC000 - 0x00004000;
+            break;
 
-    default:
-        data_addr6 = addr;
-        addr = data_addr9;
-        break;
+        default:
+            data_addr6 = addr;
+            addr       = data_addr9;
+            break;
     }
 
     // indexes of 352x352 image (row,j)
     for (int j = 0; j < IMAGE_XRES; j += 4) {
 #if defined(PATTERN_GEN)
         // static test pattern
-        m.b[0] = 133;           // r0
-        m.b[1] = j >> 1;        // g0
-        m.b[2] = row >> 1;      // b0
-        m.b[3] = 133;           // r1
+        m.b[0] = 133;      // r0
+        m.b[1] = j >> 1;   // g0
+        m.b[2] = row >> 1; // b0
+        m.b[3] = 133;      // r1
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
-        m.b[0] = (j + 1) >> 1;  // g1
-        m.b[1] = row >> 1;      // b1
-        m.b[2] = 133;           // r2
-        m.b[3] = (j + 2) >> 1;  // g2
+        m.b[0] = (j + 1) >> 1; // g1
+        m.b[1] = row >> 1;     // b1
+        m.b[2] = 133;          // r2
+        m.b[3] = (j + 2) >> 1; // g2
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = row >> 1;      // b2
-        m.b[1] = 133;           // r3
-        m.b[2] = (j + 3) >> 1;  // g3
-        m.b[3] = row >> 1;      // b3
+        m.b[0] = row >> 1;     // b2
+        m.b[1] = 133;          // r3
+        m.b[2] = (j + 3) >> 1; // g3
+        m.b[3] = row >> 1;     // b3
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
@@ -266,9 +267,7 @@ void load_row_cnn(uint8_t* data, int row)
         addr -= subtract;
 #endif
     }
-
 }
-
 
 /*
   Data Order:
@@ -335,7 +334,6 @@ void load_row_cnn(uint8_t* data, int row)
 
    */
 
-
 // This function loads the sample data input -- replace with actual data
 
 /*
@@ -358,9 +356,9 @@ uint8_t* data = NULL;
 stream_stat_t* stat;
 void load_input_camera(void)
 {
-    uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint8_t* raw;
+    uint32_t imgLen;
+    uint32_t w, h;
 
     // Initialize loading rows to CNN
     load_row_cnn_init();
@@ -370,7 +368,6 @@ void load_input_camera(void)
 
     // Get image line by line
     for (int row = 0; row < h; row++) {
-
         // Wait until camera streaming buffer is full
         while ((data = get_camera_stream_buffer()) == NULL) {
             if (camera_is_image_rcv()) {
@@ -396,17 +393,17 @@ void load_input_camera(void)
         printf("OVERFLOW = %d\n", stat->overflow_count);
         LED_On(LED2); // Turn on red LED if overflow detected
 
-        while (1);
+        while (1)
+            ;
     }
-
 }
 
 void display_camera(void)
 {
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint32_t imgLen;
+    uint32_t w, h;
     int j = 0;
-    uint8_t*   raw;
+    uint8_t* raw;
     uint16_t rgb;
     uint8_t r, g, b;
 
@@ -440,13 +437,13 @@ void display_camera(void)
 #endif
 #ifdef BOARD_EVKIT_V1
 
-                for (int k = 4 * w - 1; k > 0; k -= 4) {    // reverse order to display
+                for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
                     r = data[k];
                     g = data[k + 1];
                     b = data[k + 2];
                     //skip k+3
-                    rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+                    rgb          = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
                 }
@@ -467,22 +464,24 @@ void display_camera(void)
             printf("OVERFLOW DISP = %d\n", stat->overflow_count);
             LED_On(LED2); // Turn on red LED if overflow detected
 
-            while (1);
+            while (1)
+                ;
         }
     }
 
     static uint32_t sum = 0;
-    void dump_cnn(void) {
-
-        uint32_t* data_addr[12] = {(uint32_t*) 0x50400700, (uint32_t*) 0x50408700, (uint32_t*) 0x50410700, (uint32_t*) 0x50418700,
-                                   (uint32_t*) 0x50800700, (uint32_t*) 0x50808700, (uint32_t*) 0x50810700, (uint32_t*) 0x50818700, (uint32_t*) 0x50c00700,
-                                   (uint32_t*) 0x50c08700, (uint32_t*) 0x50c10700, (uint32_t*) 0x50c18700
-                                  };
-
+    void dump_cnn(void)
+    {
+        uint32_t* data_addr[12] = {
+            (uint32_t*)0x50400700, (uint32_t*)0x50408700, (uint32_t*)0x50410700,
+            (uint32_t*)0x50418700, (uint32_t*)0x50800700, (uint32_t*)0x50808700,
+            (uint32_t*)0x50810700, (uint32_t*)0x50818700, (uint32_t*)0x50c00700,
+            (uint32_t*)0x50c08700, (uint32_t*)0x50c10700, (uint32_t*)0x50c18700};
 
         printf("\nDUMPING CNN, press PB0 \n");
 
-        while (!PB_Get(0));
+        while (!PB_Get(0))
+            ;
 
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 7744; j += 16) {
@@ -500,23 +499,25 @@ void display_camera(void)
 
         printf("SUM: %08X \n", sum);
 
-        while (1);
-
+        while (1)
+            ;
     }
 
-
-    void dump_inference(void) {
-
-        uint32_t* data_addr[16] = {(uint32_t*) 0x50400000, (uint32_t*) 0x50408000, (uint32_t*) 0x50410000, (uint32_t*) 0x50418000,
-                                   (uint32_t*) 0x50800000, (uint32_t*) 0x50808000, (uint32_t*) 0x50810000, (uint32_t*) 0x50818000,
-                                   (uint32_t*) 0x50c00000, (uint32_t*) 0x50c08000, (uint32_t*) 0x50c10000, (uint32_t*) 0x50c18000,
-                                   (uint32_t*) 0x51000000, (uint32_t*) 0x51008000, (uint32_t*) 0x51010000, (uint32_t*) 0x51018000,
-                                  };
-
+    void dump_inference(void)
+    {
+        uint32_t* data_addr[16] = {
+            (uint32_t*)0x50400000, (uint32_t*)0x50408000, (uint32_t*)0x50410000,
+            (uint32_t*)0x50418000, (uint32_t*)0x50800000, (uint32_t*)0x50808000,
+            (uint32_t*)0x50810000, (uint32_t*)0x50818000, (uint32_t*)0x50c00000,
+            (uint32_t*)0x50c08000, (uint32_t*)0x50c10000, (uint32_t*)0x50c18000,
+            (uint32_t*)0x51000000, (uint32_t*)0x51008000, (uint32_t*)0x51010000,
+            (uint32_t*)0x51018000,
+        };
 
         printf("\nDUMPING INFERENCE, press PB0 \n");
 
-        while (!PB_Get(0));
+        while (!PB_Get(0))
+            ;
 
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 7744; j += 16) {
@@ -534,11 +535,12 @@ void display_camera(void)
 
         printf("SUM: %08X \n", sum);
 
-        while (1);
-
+        while (1)
+            ;
     }
 
-    void run_camera(void) {
+    void run_camera(void)
+    {
         // Start capturing a first camera image frame.
         printf("Starting\n");
         camera_start_capture_image();
