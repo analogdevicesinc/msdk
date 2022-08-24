@@ -55,7 +55,6 @@ extern "C" {
 */
 #define BOARD_EVKIT_V1 1
 
-
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
 #endif
@@ -66,7 +65,6 @@ extern "C" {
 
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON  0 /// Active state of LEDs
-
 
 /**
  * \brief   Initialize the BSP and board interfaces.

@@ -47,23 +47,23 @@
 
 /***** Definitions *****/
 #if defined(BOARD_FTHR)
-	#define MXC_GPIO_PORT_OUT               MXC_GPIO0
-	#define MXC_GPIO_PIN_OUT                MXC_GPIO_PIN_2
+#define MXC_GPIO_PORT_OUT MXC_GPIO0
+#define MXC_GPIO_PIN_OUT  MXC_GPIO_PIN_2
 
-	#define MXC_GPIO_PORT_INTERRUPT_IN      MXC_GPIO0
-	#define MXC_GPIO_PIN_INTERRUPT_IN       MXC_GPIO_PIN_10
+#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_IN  MXC_GPIO_PIN_10
 
-	#define MXC_GPIO_PORT_INTERRUPT_STATUS  MXC_GPIO0
-	#define MXC_GPIO_PIN_INTERRUPT_STATUS   MXC_GPIO_PIN_3
+#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_STATUS  MXC_GPIO_PIN_3
 #else
-	#define MXC_GPIO_PORT_OUT               MXC_GPIO0
-	#define MXC_GPIO_PIN_OUT                MXC_GPIO_PIN_22
+#define MXC_GPIO_PORT_OUT MXC_GPIO0
+#define MXC_GPIO_PIN_OUT  MXC_GPIO_PIN_22
 
-	#define MXC_GPIO_PORT_INTERRUPT_IN      MXC_GPIO0
-	#define MXC_GPIO_PIN_INTERRUPT_IN       MXC_GPIO_PIN_18
+#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_IN  MXC_GPIO_PIN_18
 
-	#define MXC_GPIO_PORT_INTERRUPT_STATUS  MXC_GPIO0
-	#define MXC_GPIO_PIN_INTERRUPT_STATUS   MXC_GPIO_PIN_23
+#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_STATUS  MXC_GPIO_PIN_23
 #endif
 /***** Globals *****/
 
@@ -79,15 +79,17 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     mxc_gpio_cfg_t gpio_interrupt;
     mxc_gpio_cfg_t gpio_interrupt_status;
-    
+
     printf("\n\n****** GPIO Example ******\n");
     printf("Demonstrates GPIO get/set and interrupt usage\n");
 #if defined(BOARD_FTHR)
     printf("1.This example both reads and sets interrupt for P0.10 (SW2) \n");
-    printf("  When state changes, set P0.2 (LED0) accordingly. When interrupt occurs, P0.3 (LED1) toggles.\n\n");
+    printf("  When state changes, set P0.2 (LED0) accordingly. When interrupt occurs, P0.3 (LED1) "
+           "toggles.\n\n");
 #else
     printf("1.This example both reads and sets interrupt for P0.18 (SW3) \n");
-    printf("  When state changes, set P0.22 (LED0) accordingly. When interrupt occurs, P0.23 (LED1) toggles.\n\n");
+    printf("  When state changes, set P0.22 (LED0) accordingly. When interrupt occurs, P0.23 "
+           "(LED1) toggles.\n\n");
 #endif
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */

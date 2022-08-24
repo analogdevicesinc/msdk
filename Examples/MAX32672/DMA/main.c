@@ -222,10 +222,11 @@ void example2(void)
     return;
 }
 
-void disableECCforRAM(void) {
+void disableECCforRAM(void)
+{
     MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
 }
 
 // *****************************************************************************

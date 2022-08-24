@@ -80,9 +80,8 @@
 #endif
 
 // led pins are defined in board.c file
-#define LED0	0 // P0.22 on EvKit, P0.2 on FTHR board
-#define LED1	1 // P0.23 on EvKit, P0.3 on FTHR board
-
+#define LED0 0 // P0.22 on EvKit, P0.2 on FTHR board
+#define LED1 1 // P0.23 on EvKit, P0.3 on FTHR board
 
 /***** Globals *****/
 
@@ -129,7 +128,6 @@ void ContinuousTimerHandler()
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
     LED_Toggle(LED0);
-
 }
 
 void ContinuousTimer()

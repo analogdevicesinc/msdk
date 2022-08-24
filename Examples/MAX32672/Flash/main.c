@@ -155,12 +155,12 @@ void FLC1_IRQHandler(void)
 //******************************************************************************
 void flash_init(void)
 {
-	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_ICC0;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_FL0;
-	MXC_ECC->en &= ~MXC_F_ECC_EN_FL1;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_ICC0;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_FL0;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_FL1;
 
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
