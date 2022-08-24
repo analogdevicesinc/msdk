@@ -69,8 +69,9 @@ static uint32_t TRNG_count, TRNG_maxLength;
 static uint8_t* TRNG_data;
 
 static uint32_t enabled_features = 0;
+
 static uint32_t crc_seed = 0xFFFFFFFF;
-static uint32_t crc_xor = 0;
+static uint32_t crc_xor  = 0;
 
 /***** Function Prototypes *****/
 
