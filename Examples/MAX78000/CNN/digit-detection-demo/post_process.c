@@ -115,22 +115,10 @@ void softmax(void)
         }
 
         for (ch = 0; ch < (NUM_CLASSES); ++ch) {
-            //prior_cls[i*NUM_CLASSES+ch] = (int8_t)(256. * exp(prior_cls[i*NUM_CLASSES+ch] / 128.) / sum - 128.);
             prior_cls_softmax[i * NUM_CLASSES + ch] =
                 (uint16_t)(65536. * exp(prior_cls[i * NUM_CLASSES + ch] / 128.) / sum);
         }
-
-        //prior_cls_softmax[i*NUM_CLASSES+11] = 0;
     }
-
-    // for(i=0; i<NUM_PRIORS; ++i){
-    //   for(ch=1; ch<(NUM_CLASSES-1); ++ch){
-    //     if (prior_cls_softmax[i*NUM_CLASSES+ch] >= prior_cls_softmax[i*NUM_CLASSES]){
-    //       printf("Valid Index: %d\n", i);
-    //       break;
-    //     }
-    //   }
-    // }
 }
 
 void get_prior_locs(void)
@@ -154,15 +142,6 @@ void get_prior_locs(void)
 
         loc_addr += 0x8000;
     }
-
-    //Check for read data
-    // printf("\nCheck Loc Samples\n");
-    // for(prior_idx=0; prior_idx<NUM_PRIORS; ++prior_idx){
-    //   if((prior_idx % 10) == 0){
-    //   //if((prior_idx < 10)){
-    //     printf("Loc Prior %d: %d, %d, %d, %d\n", prior_idx, prior_locs[LOC_DIM*prior_idx], prior_locs[LOC_DIM*prior_idx+1], prior_locs[LOC_DIM*prior_idx+2], prior_locs[LOC_DIM*prior_idx+3]);
-    //   }
-    // }
 }
 
 void get_prior_cls(void)
@@ -194,37 +173,12 @@ void get_prior_cls(void)
     }
 
     softmax();
-
-    // //Check for read data
-    // printf("\nCheck Class Samples\n");
-    // for(prior_idx=0; prior_idx<NUM_PRIORS; ++prior_idx){
-    //   if((prior_idx % 10) == 0){
-    //     printf("Class Prior %d: ", prior_idx);
-    //     for(int cl=0; cl<NUM_CLASSES; ++cl){
-    //       printf("%d, ", prior_cls[NUM_CLASSES*prior_idx + cl]);
-    //     }
-    //     printf("\n");
-
-    //   }
-    // }
 }
 
 void get_priors(void)
 {
     get_prior_locs();
     get_prior_cls();
-
-    //int scale_idx, ar_idx, spat_idx;
-
-    // //Test for index conversions
-    // for(int p=0; p<NUM_PRIORS; ++p){
-    //   get_indices(&ar_idx, &scale_idx, &spat_idx, p);
-    //   int p_new = get_prior_idx(ar_idx, scale_idx, spat_idx);
-
-    //   if(p_new != p){
-    //     printf("FALSE\t%d -> %d, %d, %d -> %d\n", p, scale_idx, ar_idx, spat_idx, p_new);
-    //   }
-    // }
 }
 
 float calculate_IOU(float* box1, float* box2)
@@ -288,15 +242,6 @@ void cxcy_to_xy(float* xy, float* cxcy)
     xy[1] = cxcy[1] - cxcy[3] / 2;
     xy[2] = cxcy[0] + cxcy[2] / 2;
     xy[3] = cxcy[1] + cxcy[3] / 2;
-
-    //int i;
-    // for(i=0; i<4; ++i){
-    //   if (xy[i] < 0.0){
-    //     xy[i] = 0.0;
-    //   } else if(xy[i] > 1.0){
-    //     xy[i] = 1.0;
-    //   }
-    // }
 }
 
 void insert_val(uint16_t val, uint16_t* arr, int arr_len, int idx)
@@ -341,7 +286,6 @@ void insert_nms_prior(uint16_t val, int idx, uint16_t* val_arr, uint16_t* idx_ar
     }
 
     *arr_len = MIN((*arr_len + 1), MAX_PRIORS);
-    //return MIN(arr_len + 1, MAX_PRIORS);
 }
 
 void reset_nms(void)

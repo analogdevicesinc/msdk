@@ -41,8 +41,6 @@
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
-#define IMAGE_SIZE_X 74
-#define IMAGE_SIZE_Y 74
 #define IMG_SCALE    3
 
 #define NUM_ARS     4

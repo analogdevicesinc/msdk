@@ -39,6 +39,8 @@
 #include "tft_ili9341.h"
 #endif
 
+#include "example_config.h"
+
 #define THICKNESS 4
 
 uint8_t signed_to_unsigned(int8_t val);

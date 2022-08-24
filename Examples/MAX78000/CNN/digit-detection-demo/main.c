@@ -66,13 +66,7 @@
 #include "tft_ili9341.h"
 #endif
 
-// SELECT THE FOLLOWING BUILD OPTION
-// Comment this if using camera
-//#define USE_SAMPLEDATA        // shows the sample data
-
-#define CAMERA_FREQ   (10 * 1000 * 1000)
-#define MIRROR        0
-#define TFT_BUFF_SIZE 50 // TFT buffer size
+#include "example_config.h"
 
 #ifdef BOARD_EVKIT_V1
 int font = urw_gothic_12_grey_bg_white;
