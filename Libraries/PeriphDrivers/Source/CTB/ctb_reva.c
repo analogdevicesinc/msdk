@@ -827,9 +827,6 @@ int MXC_CTB_RevA_Hash_Compute(mxc_ctb_reva_hash_req_t* req)
     numBlocks     = ((int)req->len - 1) / blockSize + 1;
     lastBlockSize = req->len % blockSize;
 
-
-//printf("LBS=%d\n", lastBlockSize);    
-
     if (lastBlockSize == 0) {
         lastBlockSize = blockSize;
     }
