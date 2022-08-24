@@ -1,11 +1,11 @@
-# AI-segmentation Demo
+# AI-Segmentation Demo
 
 
 
 Description
 -----------
 
-This demo shows a UNet network with 352x352 input, trained to segment image into two categories:
+This demo shows a UNet network with 352x352 resolution input, trained to segment image into two categories:
 
 - Portrait
 - Background
@@ -31,25 +31,13 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make -r distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+By default, the code is compiled for MAX78000 EVKIT.  To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
 
 ```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
+$ make -r BOARD=FTHR_RevA
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile (requires TFT display for Feather https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Feather):
-
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
+The MAX78000 Feather board requires TFT display https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Feather.
 
 **Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
 
@@ -86,6 +74,8 @@ If using Linux, perform this step:
 ### Running Demo
 
 If camera mode is selected (#define USE_CAMERA), a captured camera image and calculated mask are both displayed on TFT. 
+
+<img src="Resources/Portrait.jpg" style="zoom:20%;" />
 
 If the project is built without `#define USE_CAMERA`, offline sample data image is transferred over serial port from PC and calculated mask is sent back to PC. 
 
