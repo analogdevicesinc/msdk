@@ -51,17 +51,16 @@
 
 /***** Definitions *****/
 #if defined(BOARD_FTHR)
-	#define I2C_MASTER  MXC_I2C2   	// SCL P0_19; SDA P0_18
+#define I2C_MASTER MXC_I2C2 // SCL P0_19; SDA P0_18
 #else
-	#define I2C_MASTER  MXC_I2C0   	// SCL P0_6; SDA P0_7
+#define I2C_MASTER MXC_I2C0 // SCL P0_6; SDA P0_7
 #endif
-#define I2C_FREQ    100000    	// 100kHZ
-
+#define I2C_FREQ 100000 // 100kHZ
 
 // *****************************************************************************
 int main()
 {
-	uint8_t counter = 0;
+    uint8_t counter = 0;
 
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");

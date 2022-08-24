@@ -66,8 +66,10 @@ void my_isr(void)
 int main(void)
 {
     printf("********** Comparator Example **********\n");
-    printf("\nConnect the analog signal used as the positive comparator input to analog pin 7 (P0.15)).\n");
-    printf("Connect the analog signal used as the negative comparator input to analog pin 3 (P0.11).\n");
+    printf("\nConnect the analog signal used as the positive comparator input to analog pin 7 "
+           "(P0.15)).\n");
+    printf("Connect the analog signal used as the negative comparator input to analog pin 3 "
+           "(P0.11).\n");
     printf("\nThe device will be placed in Deep Sleep and requires an edge transition of\n");
     printf("the comparator output to wakeup.\n\n");
 
