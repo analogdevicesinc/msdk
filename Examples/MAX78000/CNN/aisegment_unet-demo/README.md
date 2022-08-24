@@ -1,18 +1,16 @@
-# UNet Hi-Resolution Demo
+# AI-Segmentation Demo
 
 
 
 Description
 -----------
 
-This demo shows a UNet network with 352x352 resolution input, trained to segment images into four categories and color them as follows:
+This demo shows a UNet network with 352x352 resolution input, trained to segment image into two categories:
 
-- Building: Red
-- Tree: Green
-- Sky: Blue
-- Unknown: Black
+- Portrait
+- Background
 
-Before building the firmware, please make sure to enable your intended mode of operation by enabling/disabling the following define in `main.c`:
+Before building the firmware, please make sure to enable your intended mode of operation by enabling/disabling the following defines in `main.c`:
 
 ```c
 #define USE_CAMERA   // if enabled, it uses the camera specified in the make file, otherwise it uses serial loader
@@ -20,10 +18,10 @@ Before building the firmware, please make sure to enable your intended mode of o
 
 ### Building Firmware:
 
-Navigate directory where UNet-highres-demo software is located and build the project:
+Navigate directory where aisegment_unet-demo software is located and build the project:
 
 ```bash
-$ cd /Examples/MAX78000/CNN/UNet-highres-demo
+$ cd /Examples/MAX78000/CNN/aisegment_unet-demo
 $ make -r
 ```
 
@@ -77,7 +75,9 @@ If using Linux, perform this step:
 
 If camera mode is selected (#define USE_CAMERA), a captured camera image and calculated mask are both displayed on TFT. 
 
-If the project is built without `#define USE_CAMERA`, offline sample data image is transfered over serial port from PC and calculated mask is sent back to PC. 
+<img src="Resources/Portrait.jpg" style="zoom:20%;" />
+
+If the project is built without `#define USE_CAMERA`, offline sample data image is transferred over serial port from PC and calculated mask is sent back to PC. 
 
 Check the [README](Utility/README.md)  in the `Utility` folder for instructions on how to send serial images.
 

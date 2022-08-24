@@ -58,20 +58,9 @@ int id;
 int dma_channel;
 
 static uint32_t* data_addr0 = (uint32_t*)0x50400700;
-//static uint32_t * data_addr1 = (uint32_t *) 0x50408700;
-//static uint32_t * data_addr2 = (uint32_t *) 0x50410700;
 static uint32_t* data_addr3 = (uint32_t*)0x50418700;
-
-//static uint32_t * data_addr4 = (uint32_t *) 0x50800700;
-//static uint32_t * data_addr5 = (uint32_t *) 0x50808700;
 static uint32_t* data_addr6 = (uint32_t*)0x50810700;
-//static uint32_t * data_addr7 = (uint32_t *) 0x50818700;
-
-//static uint32_t * data_addr8 = (uint32_t *) 0x50c00700;
 static uint32_t* data_addr9 = (uint32_t*)0x50c08700;
-//static uint32_t * data_addr10 = (uint32_t *) 0x50c10700;
-//static uint32_t * data_addr11 = (uint32_t *) 0x50c18700;
-
 static uint32_t *addr, offset0, offset1, subtract;
 
 uint8_t data565[IMAGE_XRES * 2];
@@ -121,12 +110,12 @@ int initialize_camera(void)
     MXC_Delay(SEC(1));
 
 #if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-// set camera clock prescaller to prevent streaming overflow due to TFT display latency
+    // set camera clock prescaller to prevent streaming overflow due to TFT display latency
 #ifdef BOARD_EVKIT_V1
     camera_write_reg(0x11, 0x8);
 #endif
 #ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xB);
+    camera_write_reg(0x11, 0xF);
 #endif
 #endif
 
@@ -443,9 +432,11 @@ void display_camera(void)
         // convert RGB888 to RGB565
         if (row < TFT_H) {
 #ifdef BOARD_FTHR_REVA
+
             for (int k = 0; k < 4 * w; k += 4) {
 #endif
 #ifdef BOARD_EVKIT_V1
+
                 for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
                     r = data[k];
