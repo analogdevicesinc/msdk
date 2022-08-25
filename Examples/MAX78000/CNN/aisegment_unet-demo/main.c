@@ -50,23 +50,23 @@
 #endif
 #include "sampledata.h"
 
-#define USE_CAMERA   // if enabled, it uses the camera specified in the make file, otherwise it uses serial loader
+#define USE_CAMERA // if enabled, it uses the camera specified in the make file, otherwise it uses serial loader
 
 #ifdef BOARD_EVKIT_V1
 int font = urw_gothic_12_grey_bg_white;
 #endif
 #ifdef BOARD_FTHR_REVA
-int font = (int)& SansSerif16x16[0];
+int font = (int)&SansSerif16x16[0];
 #endif
 
 volatile uint32_t cnn_time; // Stopwatch
 
-#define CON_BAUD 115200
-#define NUM_PIXELS 7744 // 88x88
-#define NUM_IN_CHANNLES 48
+#define CON_BAUD         115200
+#define NUM_PIXELS       7744 // 88x88
+#define NUM_IN_CHANNLES  48
 #define NUM_OUT_CHANNLES 32
-#define INFER_SIZE 30976      // size of inference 32x88x88/8
-#define TFT_BUFF_SIZE   50    // TFT buffer size
+#define INFER_SIZE       30976 // size of inference 32x88x88/8
+#define TFT_BUFF_SIZE    50    // TFT buffer size
 
 uint32_t cnn_out_packed[INFER_SIZE / 8];
 uint8_t cnn_out_unfolded[INFER_SIZE / 2];
@@ -75,9 +75,9 @@ void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1);
+    while (1)
+        ;
 }
-
 
 // 48-channel 88x88 data input (371712 bytes total / 7744 bytes per channel):
 // HWC 88x88, channels 0 to 3
@@ -135,7 +135,7 @@ int console_UART_init(uint32_t baud)
 uint8_t gen_crc(const void* vptr, int len)
 {
     const uint8_t* data = vptr;
-    unsigned crc = 0;
+    unsigned crc        = 0;
     int i, j;
 
     for (j = len; j; j--, data++) {
@@ -155,7 +155,8 @@ uint8_t gen_crc(const void* vptr, int len)
 
 static void console_uart_send_byte(uint8_t value)
 {
-    while (MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), value) == E_OVERFLOW) { }
+    while (MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), value) == E_OVERFLOW) {
+    }
 }
 
 static void console_uart_send_bytes(uint8_t* ptr, int length)
@@ -179,7 +180,7 @@ void load_input_serial(void)
 
     printf("READY\n");
 
-    uint32_t* data_addr = (uint32_t*) 0x50400700;
+    uint32_t* data_addr = (uint32_t*)0x50400700;
 
     for (int ch = 0; ch < NUM_IN_CHANNLES; ch += 4) {
         LED_Toggle(LED1);
@@ -190,18 +191,19 @@ void load_input_serial(void)
 
             for (int j = 0; j < 4; j++) {
                 rxdata[j] = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
-                tmp = tmp | (rxdata[j] << 8 * (3 - j));
+                tmp       = tmp | (rxdata[j] << 8 * (3 - j));
             }
 
             //read crc
-            crc = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
+            crc        = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
             crc_result = gen_crc(rxdata, 4);
 
             if (crc != crc_result) {
                 printf("E %d", index);
                 LED_On(LED2);
 
-                while (1);
+                while (1)
+                    ;
             }
 
             //fill input buffer
@@ -213,10 +215,10 @@ void load_input_serial(void)
         // printf("%d- %08X \n",ch,data_addr);
         data_addr += 0x2000;
 
-        if ((data_addr == (uint32_t*)0x50420700) || (data_addr == (uint32_t*)0x50820700) || (data_addr == (uint32_t*)0x50c20700)) {
+        if ((data_addr == (uint32_t*)0x50420700) || (data_addr == (uint32_t*)0x50820700) ||
+            (data_addr == (uint32_t*)0x50c20700)) {
             data_addr += 0x000f8000;
         }
-
     }
 
     /*
@@ -284,7 +286,6 @@ void load_input_serial(void)
 
       */
 
-
     // This function loads the sample data input -- replace with actual data
 
     /*
@@ -303,7 +304,6 @@ void load_input_serial(void)
     */
 }
 
-
 // Expected output of layer 18 for unet_v7_binary given the sample input (known-answer test)
 // Delete this function for production code
 //static const uint32_t sample_output[] = SAMPLE_OUTPUT;
@@ -312,11 +312,11 @@ int check_output(void)
     int i;
     uint32_t mask, len;
     volatile uint32_t* addr;
-    const uint32_t* ptr = 0;//sample_output;
+    const uint32_t* ptr = 0; //sample_output;
 
-    while ((addr = (volatile uint32_t*) *ptr++) != 0) {
+    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
         mask = *ptr++;
-        len = *ptr++;
+        len  = *ptr++;
 
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
@@ -329,7 +329,7 @@ int check_output(void)
 
 void send_output(void)
 {
-    uint8_t* data_addr = (uint8_t*) 0x50400000;
+    uint8_t* data_addr = (uint8_t*)0x50400000;
 
     printf("SENDING_OUTPUT\n");
 
@@ -337,7 +337,8 @@ void send_output(void)
         console_uart_send_bytes(data_addr, 4 * NUM_PIXELS);
         data_addr += 0x8000;
 
-        if ((data_addr == (uint8_t*)0x50420000) || (data_addr == (uint8_t*)0x50820000) || (data_addr == (uint8_t*)0x50c20000)) {
+        if ((data_addr == (uint8_t*)0x50420000) || (data_addr == (uint8_t*)0x50820000) ||
+            (data_addr == (uint8_t*)0x50c20000)) {
             data_addr += 0x003e0000;
         }
     }
@@ -346,19 +347,19 @@ void send_output(void)
 void cnn_unload_packed(uint32_t* p_out)
 {
     uint32_t buf;
-    uint8_t* data_addr = (uint8_t*) 0x50400000;
+    uint8_t* data_addr = (uint8_t*)0x50400000;
     uint8_t temp, a, b;
 
-    for (int j = 0; j < 8; j++) { // 8 data blocks
+    for (int j = 0; j < 8; j++) {           // 8 data blocks
         for (int i = 0; i < 1936; i += 4) { //packing bits into one byte  352x88/16=30976/16=1936
             buf = 0;
 
             for (int n = 0; n < 4; n++) {
                 //0
                 int val = (i + n) * 16;
-                temp = 0;
-                a = ((*(data_addr + 0 + val)) ^ 0x80);
-                b = ((*(data_addr + 1 + val)) ^ 0x80);
+                temp    = 0;
+                a       = ((*(data_addr + 0 + val)) ^ 0x80);
+                b       = ((*(data_addr + 1 + val)) ^ 0x80);
                 // Compare CNN outputs and set bit
                 temp += ((a > b) ? 0 : 1) << 7;
 
@@ -407,9 +408,8 @@ void cnn_unload_packed(uint32_t* p_out)
 
         data_addr += 0x8000;
 
-        if ((data_addr == (uint8_t*)0x50420000) ||
-                (data_addr == (uint8_t*)0x50820000) ||
-                (data_addr == (uint8_t*)0x50c20000)) {
+        if ((data_addr == (uint8_t*)0x50420000) || (data_addr == (uint8_t*)0x50820000) ||
+            (data_addr == (uint8_t*)0x50c20000)) {
             data_addr += 0x003e0000;
         }
     }
@@ -439,7 +439,8 @@ void write_TFT_pixel(int row, int col, unsigned char value)
         b = 255;
 #endif
 #ifdef BOARD_EVKIT_V1
-        color  = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+        color =
+            (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
 #endif
 #ifdef BOARD_FTHR_REVA
         color = RGB(r, g, b); // convert to RGB565
@@ -467,7 +468,6 @@ void unfold_display_packed(unsigned char* in_buff, unsigned char* out_buff)
 
     for (int s1 = 0; s1 < 352; s1++) {
         for (int s2 = 0; s2 < 22; s2++) {
-
             temp[0] = out_buff[s1 * 44 + s2 + 00];
             temp[1] = out_buff[s1 * 44 + s2 + 22];
 
@@ -500,7 +500,7 @@ void TFT_Print(char* str, int x, int y, int font, int length)
     // fonts id
     text_t text;
     text.data = str;
-    text.len = length;
+    text.len  = length;
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
@@ -509,7 +509,7 @@ int main(void)
 {
     char buff[TFT_BUFF_SIZE];
 
-#if defined (BOARD_FTHR_REVA)
+#if defined(BOARD_FTHR_REVA)
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
     MXC_Delay(200000);
     /* Enable camera power */
@@ -542,7 +542,7 @@ int main(void)
 #ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_270);
-    MXC_TFT_SetForeGroundColor(WHITE);   // set chars to white
+    MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
     MXC_TFT_SetBackGroundColor(BLACK);
 
 #endif
@@ -552,15 +552,15 @@ int main(void)
     TFT_Print(buff, 120, 90, font, sprintf(buff, "Ver. 1.0.0                   "));
     MXC_Delay(SEC(2));
     MXC_TFT_ClearScreen();
-#ifdef BOARD_EVKIT_V1   
+#ifdef BOARD_EVKIT_V1
     MXC_TFT_SetBackGroundColor(255);
 #endif
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
     cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5); // Turn on the boost circuit
-    cnn_init(); // Bring state machine into consistent state
-    cnn_load_weights(); // Load kernels
+    cnn_init();                                  // Bring state machine into consistent state
+    cnn_load_weights();                          // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
 
@@ -598,7 +598,7 @@ int main(void)
         SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
 
         while (cnn_time == 0) {
-            __WFI();    // Wait for CNN
+            __WFI(); // Wait for CNN
         }
 
         // unload
