@@ -102,7 +102,7 @@ void load_input(void)
     uint32_t imgLen;
     uint32_t w, h, x, y;
     uint8_t r, g, b;
-    uint32_t *cnn_mem = (uint32_t*)0x50402000 ;
+    uint32_t* cnn_mem = (uint32_t*)0x50402000;
     uint32_t color;
 
     camera_start_capture_image();
