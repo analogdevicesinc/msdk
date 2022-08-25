@@ -72,6 +72,11 @@
 #define configUSE_TRACE_FACILITY             1
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
+#define configUSE_TIMERS             1
+#define configTIMER_TASK_PRIORITY    (configMAX_PRIORITIES - 3)
+#define configTIMER_QUEUE_LENGTH     8
+#define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
+
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 #define INCLUDE_vTaskPrioritySet  0

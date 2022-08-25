@@ -21,31 +21,7 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-
-#include <stdio.h>
-#include <string.h>
-#include "ll_init_api.h"
-#include "chci_tr.h"
-#include "lhci_api.h"
-#include "hci_defs.h"
-#include "wsf_assert.h"
-#include "wsf_buf.h"
-#include "wsf_heap.h"
-#include "wsf_timer.h"
-#include "wsf_trace.h"
-#include "wsf_bufio.h"
-#include "bb_ble_sniffer_api.h"
-#include "pal_bb.h"
-#include "pal_cfg.h"
-#include "tmr.h"
-//*****************************************
-#include "FreeRTOS.h"
-#include "FreeRTOSConfig.h"
-#include "portmacro.h"
-#include "task.h"
-#include "semphr.h"
-#include "FreeRTOS_CLI.h"
-#include "uart.h"
+#include "main.h"
 /**************************************************************************************************
   Definitions
 **************************************************************************************************/
@@ -62,6 +38,11 @@
 #define CONSOLE_UART      0 //EvKit/FTHR
 /* Task IDs */
 TaskHandle_t cmd_task_id;
+TaskHandle_t tx_task_id;
+TaskHandle_t wfs_task_id;
+
+volatile int longTestActive = 0;
+bool pausePrompt            = false;
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
 #define UARTx_IRQHandler UART0_IRQHandler
@@ -504,7 +485,14 @@ static bool_t mainCheckServiceTokens(void)
     return eventPending;
 }
 //*********************|  Freertos |***********************************
+void prompt(void)
+{
+    if (pausePrompt)
+        return;
 
+    printf("\r\ncmd> ");
+    fflush(stdout);
+}
 void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
 {
     BaseType_t xHigherPriorityTaskWoken;
@@ -547,8 +535,7 @@ void vCmdLineTask(void* pvParameters)
     async_read_req.callback = vCmdLineTask_cb;
 
     printf("\nEnter 'help' to view a list of available commands.\n");
-    printf("cmd> ");
-    fflush(stdout);
+    prompt();
     while (1) {
         /* Register async read request */
         if (MXC_UART_TransactionAsync(&async_read_req) != E_NO_ERROR) {
@@ -557,6 +544,10 @@ void vCmdLineTask(void* pvParameters)
         }
         /* Hang here until ISR wakes us for a character */
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        // while (testActive) {
+        //     volatile int x = 0;
+        // }
+
         /* Check that we have a valid character */
         if (async_read_req.rxCnt > 0) {
             /* Process character */
@@ -572,8 +563,7 @@ void vCmdLineTask(void* pvParameters)
                     /* ^C abort */
                     index = 0;
                     printf("^C");
-                    printf("\ncmd> ");
-                    fflush(stdout);
+                    prompt();
                 } else if ((tmp == '\r') || (tmp == '\n')) {
                     printf("\r\n");
                     /* Null terminate for safety */
@@ -590,8 +580,7 @@ void vCmdLineTask(void* pvParameters)
                     } while (xMore != pdFALSE);
                     /* New prompt */
                     index = 0;
-                    printf("\ncmd> ");
-                    fflush(stdout);
+                    prompt();
                 } else if (index < CMD_LINE_BUF_SIZE) {
                     putchar(tmp);
                     buffer[index++] = tmp;
@@ -608,6 +597,63 @@ void vCmdLineTask(void* pvParameters)
         }
     }
 }
+
+void txTestTask(void* pvParameters)
+{
+    static int res    = 0xff;
+    uint32_t notifVal = 0;
+    tx_task_command_t notifyCommand;
+    uint32_t delayCounter = 0;
+    while (1) {
+        xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
+        notifyCommand.allData = notifVal;
+        //  printf("TX Test Ch: %d @ %d ms\r\n", notifyCommand.channel, notifyCommand.duration);
+
+        switch (notifyCommand.duration) {
+            case 0:
+                // perform timed test
+                res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+                vTaskDelay(100);
+                LlEndTest(NULL);
+                pausePrompt = false;
+                printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
+                fflush(stdout);
+                prompt();
+
+            default:
+                // If max duration is recevied then assume test will be manually stopped
+                printf("press \"e + enter \" to end test early: ");
+                fflush(stdout);
+                delayCounter = notifyCommand.duration;
+                //    while (longTestActive) {
+                while (delayCounter && longTestActive) {
+                    res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+                    vTaskDelay(1);
+                    delayCounter--;
+                }
+
+                //    }
+                LlEndTest(NULL);
+                printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
+                pausePrompt = false;
+                prompt();
+                fflush(stdout);
+                break;
+
+                break;
+        }
+    }
+}
+void wfsLoop(void* pvParameters)
+{
+    int res           = 0;
+    uint32_t notifVal = 0;
+
+    while (1) {
+        WsfOsEnterMainLoop();
+    }
+}
+
 /*************************************************************************************************/
 /*!
  *  \brief  Main entry point.
@@ -620,10 +666,7 @@ int main(void)
     mainLoadConfiguration();
     mainWsfInit();
 
-    // #if (WSF_TRACE_ENABLED == TRUE)
-    //     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    //     WsfHeapAlloc(memUsed);
-    // #endif
+    // WsfHeapAlloc(memUsed);
 
     LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
                            .wlSizeCfg    = 4,
@@ -644,33 +687,23 @@ int main(void)
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
     WsfOsRegisterSleepCheckFunc(ChciTrService);
 
-    /* Register the UART RX request */
-    // WsfBufIoUartRegister(processConsoleRX);
-
-    //************************
     /* Enable incoming characters */
     /* Setup manual CTS/RTS to lockout console and wake from deep sleep */
     MXC_GPIO_Config(&uart_cts);
     MXC_GPIO_Config(&uart_rts);
 
     MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
-    /* Configure task */
-    if ((xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
-                     configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                     tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
-        printf("xTaskCreate() failed to create a task.\n");
-    } else {
-        /* Start scheduler */
-        printf("Starting scheduler.\n");
-        vTaskStartScheduler();
-    }
+    // command line task
+    xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
+                configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
+                tskIDLE_PRIORITY + 1, &cmd_task_id);
+    // TX tranismit test task
+    xTaskCreate(txTestTask, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &tx_task_id);
+    //wsfLoop task
+    xTaskCreate(wfsLoop, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
 
-    //***********************
+    /* Start scheduler */
+    printf("Starting scheduler.\n");
 
-    printUsage();
-
-    WsfOsEnterMainLoop();
-
-    /* Does not return. */
-    return 0;
+    vTaskStartScheduler();
 }
