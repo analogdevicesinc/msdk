@@ -310,8 +310,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\arm_tft.c</PathWithFileName>
-      <FilenameWithoutPath>arm_tft.c</FilenameWithoutPath>
+      <PathWithFileName>..\LinkerAddr.c</PathWithFileName>
+      <FilenameWithoutPath>LinkerAddr.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

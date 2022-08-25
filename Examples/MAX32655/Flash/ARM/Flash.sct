@@ -32,24 +32,8 @@
 
 #define memory mem with size = 4G;
 
-;#define block CSTACK    with alignment = 8, size = size_cstack__   { };
-;#define block HEAP      with alignment = 8, size = size_heap__     { };
-
-;#define block TESTDATA { section ".testdata_space" };
-
-;#define block FLASHINRAM { section ".flashprog" };
 
 LR_IROM1 IRAM1_start__ IRAM_size__  {    ; load region size_region
-;  FLASH_region FLASH_start__ FLASH_size__  {  ; load address = execution address
-  ; *.o (RESET, +First)
-  ; *(InRoot$$Sections)
-  ; .ANY (+RO)
-  ; .ANY (+XO)
-;  }
-
-;  SPIX_region SPIX_start__  SPIX_size__ {
-;  *.o (.application_specific_ro)
-;  }
 
   IRAM1_region IRAM1_start__  IRAM1_size__ {
    *.o (RESET, +First)  
@@ -57,7 +41,7 @@ LR_IROM1 IRAM1_start__ IRAM_size__  {    ; load region size_region
    *(InRoot$$Sections)
    .ANY (+RO)
    .ANY (+XO)
-;   .ANY (+RW +ZI)
+   
   }
   IRAM2_region IRAM2_start__  IRAM2_size__ {
    .ANY (+RW +ZI)  

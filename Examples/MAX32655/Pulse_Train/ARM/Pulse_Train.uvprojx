@@ -336,8 +336,8 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--diag_suppress 1295 --diag_suppress 111</MiscControls>
-              <Define>TARGET=32655 TARGET_REV=0x4131</Define>
+              <MiscControls></MiscControls>
+              <Define>TARGET=32655 TARGET_REV=0x4131 EXT_FLASH_MX25</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\Pulse_Train</IncludePath>
             </VariousControls>
@@ -393,6 +393,11 @@
               <FileType>5</FileType>
               <FilePath>.\Abstract.txt</FilePath>
             </File>
+            <File>
+              <FileName>LinkerAddr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\LinkerAddr.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -432,7 +437,37 @@
           <targetInfo name="Flash Debug"/>
         </targetInfos>
       </component>
-      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="EvKit V1" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 BSP DEP">
+      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="Board Type" Cvariant="EvKit" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 Family" versionMatchMode="fixed">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="Display" Cvariant="TFT_SSD2119" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 Family">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="ExtMemory" Cvariant="MX25" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 Family" versionMatchMode="fixed">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="LED" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 BSP DEP">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="Push Btn" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 BSP DEP">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="MAX32655 BSP" Cclass="BSP" Cgroup="Touch Screen" Cvariant="TSC2046" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 BSP DEP">
         <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>
@@ -469,6 +504,18 @@
         </targetInfos>
       </component>
       <component Cbundle="Maxim API" Cclass="Device" Cgroup="PT" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 CMSIS PT">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="SIMO" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 CMSIS SIMO">
+        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="Flash Debug"/>
+        </targetInfos>
+      </component>
+      <component Cbundle="Maxim API" Cclass="Device" Cgroup="SPI" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 CMSIS SPI">
         <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>

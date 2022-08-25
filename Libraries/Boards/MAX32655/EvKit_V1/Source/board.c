@@ -403,6 +403,7 @@ int Debug_Init(void)
 #endif // __riscv
 
 /******************************************************************************/
+#if defined (__GNUC__)
 __weak void NMI_Handler(void)
 {
 #ifdef DEBUG
@@ -421,3 +422,4 @@ __weak void HardFault_Handler(void)
     while (1) {
     }
 }
+#endif
