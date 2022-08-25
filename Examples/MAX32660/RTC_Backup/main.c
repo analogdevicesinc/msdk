@@ -183,4 +183,6 @@ int main(void)
 
     MXC_LP_EnableRTCAlarmWakeup();
     MXC_LP_EnterBackupMode(); // Enter a backup mode
+
+    return 0;
 }

@@ -61,18 +61,18 @@ LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
 
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS
-# SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
-# CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app
-# BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/bin/build_scp_session
-# TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/devices/$(TARGET_UC)/keys/maximtestcrk.key
-# SCP_PACKETS=scp_packets
+SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
+CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app
+BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/bin/build_scp_session
+TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/devices/$(TARGET_UC)/keys/maximtestcrk.key
+SCP_PACKETS=scp_packets
 
 #Use this for other library make files so they are all based off the same as root as the project
 export CMSIS_ROOT
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
-#SRCS += sla_header.c
+SRCS += sla_header.c
 
 # Where to find source files for this test
 VPATH=.
@@ -103,7 +103,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Set MXC_OPTIMIZE to override the default optimization level 
-MXC_OPTIMIZE_CFLAGS=-O1
+#MXC_OPTIMIZE_CFLAGS=-O1
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld
@@ -127,15 +127,24 @@ export PERIPH_DRIVER_DIR
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
-# 	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
-# 	$(CA_SIGN_BUILD) $(BUILD_DIR)/$(PROJECT).bin $(TEST_KEY)
-# 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).bin.sig
+ifneq "$(LINKER)" "$(TARGET_LC)_ram.ld"	
+	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
+	@echo " "
+	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+	@echo " "
+	$(CA_SIGN_BUILD) -c $(TARGET_UC) key_file=$(TEST_KEY) algo=ecdsa header=no ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
+	@echo " "
+	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
+endif
 
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
+	
+slaclean: 
+	rm -r ${SCP_PACKETS}/
 
 # The rule to clean out all the build products.
-distclean: clean libclean
+distclean: clean libclean slaclean
 
 sla: all
-#	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
+	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin

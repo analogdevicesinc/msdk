@@ -115,7 +115,7 @@ void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
-    MXC_GPIO_OutToggle(led_pin[0].port, led_pin[0].mask);
+    MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
 }
 
 void ContinuousTimer()
@@ -155,7 +155,8 @@ int main(void)
     printf("\n************************** Timer Example **************************\n\n");
     printf("1. A continuous mode timer is used to create an interrupt every %d sec.\n",
            INTERVAL_TIME_CONT);
-    printf("   LED0 (Port 1.06) will toggle each time the interrupt occurs.\n\n");
+    // LED pins are defined in board.c file
+    printf("   LED1 will toggle each time the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 1.0.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
 
