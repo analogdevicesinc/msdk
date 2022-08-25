@@ -112,7 +112,7 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  ));
 
     // bad channel param
-    //  TODO : currently if a letter character is input it is equal to 0
+    //  TODO : currently if an alpha character is input it is equal to 0
     //because of atoi() behavior
 
     if (channel > 39 || channel < 0)
@@ -121,8 +121,9 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     notifyCommand.channel  = channel;
     notifyCommand.duration = testLen;
 
-    if (notifyCommand.duration > 0) {
-        longTestActive = 1;
+    if (notifyCommand.duration == 0) {
+        notifyCommand.duration = 0xFFFF;
+        longTestActive         = 1;
     }
 
     xTaskNotify(tx_task_id, notifyCommand.allData, eSetBits);

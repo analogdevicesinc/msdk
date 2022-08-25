@@ -603,42 +603,35 @@ void txTestTask(void* pvParameters)
     static int res    = 0xff;
     uint32_t notifVal = 0;
     tx_task_command_t notifyCommand;
-    uint32_t delayCounter = 0;
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         notifyCommand.allData = notifVal;
         //  printf("TX Test Ch: %d @ %d ms\r\n", notifyCommand.channel, notifyCommand.duration);
 
         switch (notifyCommand.duration) {
-            case 0:
-                // perform timed test
-                res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-                vTaskDelay(100);
-                LlEndTest(NULL);
-                pausePrompt = false;
-                printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
-                fflush(stdout);
-                prompt();
-
-            default:
+            case 0xFFFF:
                 // If max duration is recevied then assume test will be manually stopped
-                printf("press \"e + enter \" to end test early: ");
+                printf("press \"e + enter \" to end test: ");
                 fflush(stdout);
-                delayCounter = notifyCommand.duration;
-                //    while (longTestActive) {
-                while (delayCounter && longTestActive) {
+                while (longTestActive) {
                     res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-                    vTaskDelay(1);
-                    delayCounter--;
+                    vTaskDelay(10);
                 }
-
-                //    }
                 LlEndTest(NULL);
                 printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
                 pausePrompt = false;
                 prompt();
                 fflush(stdout);
                 break;
+            default:
+                // perform timed test
+                res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+                vTaskDelay(notifyCommand.duration);
+                LlEndTest(NULL);
+                pausePrompt = false;
+                printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
+                fflush(stdout);
+                prompt();
 
                 break;
         }
