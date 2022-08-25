@@ -60,7 +60,6 @@ static text_t label_text[] = {
 };
 #endif
 
-
 void TFT_Print(char* str, int x, int y, int font, int length)
 {
     // fonts id
