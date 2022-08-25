@@ -127,7 +127,8 @@ void load_input(void)
             // display on TFT
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
-            color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+            color = (0x01000100 | ((b & 0xF8) << 13) |
+            		((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
 #endif
 #ifdef BOARD_FTHR_REVA
             // Convert to RGB565
