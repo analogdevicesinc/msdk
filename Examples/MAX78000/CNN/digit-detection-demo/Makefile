@@ -247,7 +247,12 @@ export MFLOAT_ABI
 # The result is that overriding LINKERFILE with the filename of one of Maxim's alternate linkerfiles
 # (ex: LINKERFILE=max78000_arm.ld) will work just the same as LINKERFILE=mycustom.ld 
 # even if mycustom.ld lives locally to this project.
+
+ifeq "$(RISCV_CORE)" ""
+# Default linkerfile is only specified for standard Arm-core projects.
+# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
 LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
+endif
 
 # This path contains system-level intialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
@@ -259,7 +264,8 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # are available in the MaximSDK.  Set a configuration variable to 1 to include the
 # library in the build, or 0 to exclude.
 
-# Each library may also have its own library specific configuration variables.
+# Each library may also have its own library specific configuration variables.  See
+# Libraries/libs.mk for more details.
 
 # Configuration variables:
 # - LIB_BOARD : Include the Board-Support Package (BSP) library. (Enabled by default)
@@ -269,7 +275,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # - LIB_FCL : Include the Free Cryptographic Library (FCL)
 # - LIB_FREERTOS : Include the FreeRTOS and FreeRTOS-Plus-CLI libraries
 # - LIB_LC3 : Include the Low Complexity Communication Codec (LC3) library
-# - LIB_LTTLEFS : Include the "little file system" (littleFS) library
+# - LIB_LITTLEFS : Include the "little file system" (littleFS) library
 # - LIB_LWIP : Include the lwIP library
 # - LIB_MAXUSB : Include the MAXUSB library
 # - LIB_SDHC : Include the SDHC library
