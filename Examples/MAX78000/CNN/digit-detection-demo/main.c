@@ -81,10 +81,6 @@ volatile uint32_t cnn_time; // Stopwatch
 #ifdef USE_SAMPLEDATA //Sample DATA
 static uint32_t input_buffer[] = SAMPLE_INPUT_0;
 uint32_t* input                = input_buffer;
-#else // Camera
-static uint32_t input_buffer[IMAGE_SIZE_X * IMAGE_SIZE_Y];
-uint32_t* input  = input_buffer;
-uint8_t* rx_data = (uint8_t*)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
 #endif
 
 void fail(void)
@@ -106,7 +102,8 @@ void load_input(void)
     uint32_t imgLen;
     uint32_t w, h, x, y;
     uint8_t r, g, b;
-    int i = 0;
+    uint32_t *cnn_mem = (uint32_t*)0x50402000 ;
+    uint32_t color;
 
     camera_start_capture_image();
 
@@ -125,15 +122,22 @@ void load_input(void)
             b = *buffer++;
             buffer++; // skip msb=0x00
             // change the range from [0,255] to [-128,127] and store in buffer for CNN
-            input[i] = ((b << 16) | (g << 8) | r) ^ 0x00808080;
-            //printf("r:%d g:%d b:%d  input:%x\r\n",r,g,b, input[i]);
+            *cnn_mem++ = ((b << 16) | (g << 8) | r) ^ 0x00808080;
 
-            i++;
+            // display on TFT
+#ifdef TFT_ENABLE
+#ifdef BOARD_EVKIT_V1
+            color =
+            		(0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+#endif
+#ifdef BOARD_FTHR_REVA
+            // Convert to RGB565
+            color = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+#endif
+            MXC_TFT_WritePixel(x * IMG_SCALE, y * IMG_SCALE, IMG_SCALE, IMG_SCALE, color);
+#endif
         }
     }
-
-    //printf("r:%d g:%d b:%d  input:%x\r\n",r,g,b, input[i-1]);
-    memcpy32((uint32_t*)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
 
 #endif
 }
@@ -244,11 +248,6 @@ int main(void)
         cnn_load_bias();
         cnn_configure(); // Configure state machine
         load_input();    // Load data input
-
-#ifdef TFT_ENABLE
-        // Show original image
-        show_image(input, 0, 0, IMG_SCALE, IMAGE_SIZE_X, IMAGE_SIZE_Y);
-#endif
 
         LED_On(LED1);
         cnn_start(); // Start CNN processing

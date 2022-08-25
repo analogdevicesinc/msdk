@@ -10,7 +10,7 @@ This demo shows a tiny SSD network, trained to localize and recognize digits in 
 The image input size is 74x74 pixels RGB which is 74x74x3 in HWC format.
 
 
-Before building the firmware, please make sure to enable intended mode of operation by comment/uncomment the following in `main.c`:
+Before building the firmware, please make sure to enable intended mode of operation by comment/uncomment the following in `example_config.h`:
 
 ```c
 //#define USE_SAMPLEDATA        // shows the sample data
@@ -86,13 +86,13 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use the following setting in project.mk:
+To compile code with enabled TFT feature use the following setting in `example_config.h`:
 
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-VPATH += TFT/fthr
-PROJ_CFLAGS += -DENABLE_TFT
-endif
+```c
+#ifdef BOARD_FTHR_REVA
+// Disable TFT by default on FTHR
+#define TFT_ENABLE
+#endif
 ```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
