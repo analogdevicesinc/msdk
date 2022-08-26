@@ -167,5 +167,5 @@ int main(void)
         printf("EXAMPLE FAILED\n");
     }
 
-    while (1) {}
+    return 0;
 }

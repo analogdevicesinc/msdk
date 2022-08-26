@@ -1,7 +1,8 @@
 /**
  * @file        main.c
  * @brief       DES Example
- * @details     Encryption and decryption of DES on different modes (ECB) with different bit sizes (128, 192, and 256)
+ * @details     Encryption and decryption of DES on different modes (ECB)
+ * 				with different bit sizes (128, 192, and 256)
  */
 
 /******************************************************************************
@@ -312,4 +313,6 @@ int main(void)
     TDES_ECB_dec(1);
 
     printf("\nExample complete.\n");
+
+    return 0;
 }
