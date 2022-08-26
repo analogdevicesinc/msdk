@@ -63,7 +63,7 @@ typedef enum {
     MXC_SYS_RESET0_I2C0   = MXC_F_GCR_RST0_I2C0_POS,   /**< Reset I2C0 */
     MXC_SYS_RESET0_RTC    = MXC_F_GCR_RST0_RTC_POS,    /**< Reset RTC */
     MXC_SYS_RESET0_SMPHR  = MXC_F_GCR_RST0_SMPHR_POS,  /**< Reset SMPHR */
-    MXC_SYS_RESET0_USB    = MXC_F_GCR_RST0_USB,        /**< Reset USB */		
+    MXC_SYS_RESET0_USB    = MXC_F_GCR_RST0_USB,        /**< Reset USB */
     MXC_SYS_RESET0_TRNG   = MXC_F_GCR_RST0_TRNG_POS,   /**< Reset TRNG */
     MXC_SYS_RESET0_CNN    = MXC_F_GCR_RST0_CNN_POS,    /**< Reset CNN */
     MXC_SYS_RESET0_ADC    = MXC_F_GCR_RST0_ADC_POS,    /**< Reset ADC */
@@ -101,8 +101,8 @@ typedef enum {
         MXC_F_GCR_PCLKDIS0_GPIO0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO0 clock */
     MXC_SYS_PERIPH_CLOCK_GPIO1 =
         MXC_F_GCR_PCLKDIS0_GPIO1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO1 clock */
-    MXC_SYS_PERIPH_CLOCK_USB = 
-        MXC_F_GCR_PCLKDIS0_USB_POS, /**< Disable MXC_F_GCR_PCLKDIS0_USB clock */			
+    MXC_SYS_PERIPH_CLOCK_USB =
+        MXC_F_GCR_PCLKDIS0_USB_POS, /**< Disable MXC_F_GCR_PCLKDIS0_USB clock */
     MXC_SYS_PERIPH_CLOCK_DMA =
         MXC_F_GCR_PCLKDIS0_DMA_POS, /**< Disable MXC_F_GCR_PCLKDIS0_DMA clock */
     MXC_SYS_PERIPH_CLOCK_SPI1 =

@@ -42,8 +42,9 @@
 #include <stdint.h>
 
 /* **** Definitions **** */
-#define ERASE_MEMORY_ON_INIT        1   /* Configuration option to clear the memory (to 0s) on initialization. */
-                                        /* Use 1 to clear or 0 to leave untouched. */
+#define ERASE_MEMORY_ON_INIT \
+    1 /* Configuration option to clear the memory (to 0s) on initialization. */
+      /* Use 1 to clear or 0 to leave untouched. */
 /**
  * @brief   Perform any initialization necessary to prepare the memory for reading/writing data.
  * @returns 0 if initialization is successful, non-zero if an error occurred.
@@ -92,4 +93,4 @@ int mscmem_Write(uint32_t lba, uint8_t* buffer);
  */
 int mscmem_Ready(void);
 
-#endif  /* __MSC_MEM_H__ */
+#endif /* __MSC_MEM_H__ */

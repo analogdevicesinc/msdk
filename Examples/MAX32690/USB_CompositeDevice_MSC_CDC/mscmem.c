@@ -53,31 +53,33 @@
 
 /***** Definitions *****/
 
-#define SPIXF_DISK      0
-#define RAM_DISK        1
+#define SPIXF_DISK 0
+#define RAM_DISK   1
 
-#define LBA_SIZE                    512         /* Size of "logical blocks" in bytes */
-#define LBA_SIZE_SHIFT              9           /* The shift value used to convert between addresses and block numbers */
+#define LBA_SIZE       512 /* Size of "logical blocks" in bytes */
+#define LBA_SIZE_SHIFT 9   /* The shift value used to convert between addresses and block numbers */
 
 /***** Global Data *****/
 
 /***** File Scope Variables *****/
 
 static int initialized = 0;
-static int running = 0;
+static int running     = 0;
 
 #if SPIXF_DISK
 
-#define MX25_BAUD                   5000000     /* SPI clock rate to communicate with the MX25 */
+#define MX25_BAUD 5000000 /* SPI clock rate to communicate with the MX25 */
 
-#define MX25_SECTOR_SIZE            4096        /* Number of bytes in one sector of the MX25 */
-#define MX25_SECTOR_SIZE_SHIFT      12          /* The shift value used to convert between addresses and block numbers */
-#define MX25_NUM_SECTORS            2048        /* Total number of sectors in the MX25 */
+#define MX25_SECTOR_SIZE 4096 /* Number of bytes in one sector of the MX25 */
+#define MX25_SECTOR_SIZE_SHIFT \
+    12 /* The shift value used to convert between addresses and block numbers */
+#define MX25_NUM_SECTORS 2048 /* Total number of sectors in the MX25 */
 
-#define MXC_SPIXF_WIDTH             MXC_SPIXF_WIDTH_1      /*Number of data lines*/
+#define MXC_SPIXF_WIDTH MXC_SPIXF_WIDTH_1 /*Number of data lines*/
 
-#define LBA_PER_SECTOR              (MX25_SECTOR_SIZE >> LBA_SIZE_SHIFT)
-#define INVALID_SECTOR              MX25_NUM_SECTORS    /* Use a sector number past the end of memory to indicate invalid */
+#define LBA_PER_SECTOR (MX25_SECTOR_SIZE >> LBA_SIZE_SHIFT)
+#define INVALID_SECTOR \
+    MX25_NUM_SECTORS /* Use a sector number past the end of memory to indicate invalid */
 
 /***** File Scope Variables *****/
 static uint32_t sectorNum = INVALID_SECTOR;
@@ -117,20 +119,21 @@ static uint32_t getSector(uint32_t num)
                 /* Erase the old data. */
                 MX25_Erase(sectorNum << MX25_SECTOR_SIZE_SHIFT, MX25_Erase_4K);
                 /* Write the new */
-                MX25_Program_Page(sectorNum << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE, MXC_SPIXF_WIDTH);
+                MX25_Program_Page(sectorNum << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE,
+                                  MXC_SPIXF_WIDTH);
                 /* Mark data as clean */
                 sectorDirty = 0;
             }
         }
-        
+
         /* Requesting a new valid sector? */
         if (num != INVALID_SECTOR) {
             MX25_Read(num << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE, MXC_SPIXF_WIDTH);
             sectorDirty = 0;
-            sectorNum = num;
+            sectorNum   = num;
         }
     }
-    
+
     return 0;
 }
 
@@ -141,14 +144,13 @@ int mscmem_Init()
         MXC_SPIXF_SetSPIFrequency(MX25_BAUD);
         MX25_Init();
         MX25_Reset();
-        
+
         if (MXC_SPIXF_WIDTH == MXC_SPIXF_WIDTH_4) {
             MX25_Quad(1);
-        }
-        else {
+        } else {
             MX25_Quad(0);
         }
-        
+
         initialized = 1;
     }
 
@@ -166,18 +168,18 @@ uint32_t mscmem_Size(void)
 int mscmem_Read(uint32_t lba, uint8_t* buffer)
 {
     uint32_t addr;
-    
+
     /* Convert to MX25 sector number. */
     uint32_t sNum = getSectorNum(lba);
-    
+
     if (getSector(sNum)) {
         /* Failed to write/read from MX25 */
         return 1;
     }
-    
+
     /* Get the offset into the current sector */
     addr = getSectorAddr(lba);
-    
+
     memcpy(buffer, sector + addr, LBA_SIZE);
 
     return 0;
@@ -187,18 +189,18 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer)
 int mscmem_Write(uint32_t lba, uint8_t* buffer)
 {
     uint32_t addr;
-    
+
     /* Convert to MX25 sector number. */
     uint32_t sNum = getSectorNum(lba);
-    
+
     if (getSector(sNum)) {
         /* Failed to write/read from MX25 */
         return 1;
     }
-    
+
     /* Get the offset into the current sector */
     addr = getSectorAddr(lba);
-    
+
     memcpy(sector + addr, buffer, LBA_SIZE);
     sectorDirty = 1;
 
@@ -212,7 +214,7 @@ int mscmem_Start()
     if (!initialized) {
         mscmem_Init();
     }
-    
+
     /* Check if the initialization succeeded. If it has, start running. */
     if (initialized) {
         running = 1;
@@ -226,12 +228,12 @@ int mscmem_Start()
 int mscmem_Stop()
 {
     /* TODO - could shut down XIPF interface here. */
-    
+
     /* Flush the currently cached sector if necessary. */
     if (getSector(INVALID_SECTOR)) {
         return 1;
     }
-    
+
     running = 0;
     return 0;
 }
@@ -244,7 +246,7 @@ int mscmem_Ready()
 
 #elif RAM_DISK
 
-#define NUM_PAGES               0x100
+#define NUM_PAGES 0x100
 static uint8_t mem[NUM_PAGES][LBA_SIZE];
 
 /******************************************************************************/
@@ -256,7 +258,7 @@ int mscmem_Init()
         memset(mem, 0, sizeof(mem));
 #endif
     }
-    
+
     return 0;
 }
 
@@ -272,7 +274,7 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer)
     if (lba >= NUM_PAGES) {
         return 1;
     }
-    
+
     memcpy(buffer, mem[lba], LBA_SIZE);
     return 0;
 }
@@ -283,7 +285,7 @@ int mscmem_Write(uint32_t lba, uint8_t* buffer)
     if (lba >= NUM_PAGES) {
         return 1;
     }
-    
+
     memcpy(mem[lba], buffer, LBA_SIZE);
     return 0;
 }
@@ -295,12 +297,12 @@ int mscmem_Start()
     if (!initialized) {
         mscmem_Init();
     }
-    
+
     /* Check if the RAM has been initialized. If it has, start running. */
     if (initialized) {
         running = 1;
     }
-    
+
     /* Start should return fail (non-zero) if the memory cannot be initialized. */
     return !initialized;
 }

@@ -66,7 +66,6 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
-
 /******************************************************************************/
 void mxc_assert(const char* expr, const char* file, int line)
 {
