@@ -70,6 +70,9 @@ static uint8_t* TRNG_data;
 
 static uint32_t enabled_features = 0;
 
+static uint32_t crc_seed = 0xFFFFFFFF;
+static uint32_t crc_xor  = 0;
+
 /***** Function Prototypes *****/
 
 static int MXC_CTB_ECC_Compare(mxc_ctb_ecc_req_t* req);
@@ -657,7 +660,17 @@ uint32_t MXC_CTB_RevA_CRC_GetPoly(mxc_ctb_reva_regs_t* ctb_regs)
 
 uint32_t MXC_CTB_RevA_CRC_GetResult(mxc_ctb_reva_regs_t* ctb_regs)
 {
-    return ctb_regs->crc_val;
+    return ctb_regs->crc_val ^ crc_xor;
+}
+
+void MXC_CTB_RevA_CRC_SetInitialValue(uint32_t seed)
+{
+    crc_seed = seed;
+}
+
+void MXC_CTB_RevA_CRC_SetFinalXORValue(uint32_t xor)
+{
+    crc_xor = xor;
 }
 
 /*******************************/
@@ -676,7 +689,7 @@ int MXC_CTB_RevA_CRC_Compute(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_crc_req
     enabled = MXC_CTB_CheckInterrupts();
     MXC_CTB_DisableInt();
 
-    ctb_regs->crc_val = 0xFFFFFFFF; // Preset CRC value to all 1's
+    ctb_regs->crc_val = crc_seed; // Preset CRC value to all 1's
 
     dma_req.sourceBuffer = req->dataBuffer;
     dma_req.destBuffer   = NULL;
@@ -710,7 +723,7 @@ void MXC_CTB_RevA_CRC_ComputeAsync(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_c
     saved_requests[DMA_ID]    = req;
     dma_cb_func               = DMA_CALLBACK_CRC;
 
-    ctb_regs->crc_val = 0xFFFFFFFF; // Preset CRC value to all 1's
+    ctb_regs->crc_val = crc_seed; // Preset CRC value to all 1's
 
     dma_req.sourceBuffer = req->dataBuffer;
     dma_req.destBuffer   = NULL;
