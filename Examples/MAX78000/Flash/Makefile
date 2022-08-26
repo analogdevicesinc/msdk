@@ -31,23 +31,18 @@
 # *******************************************************************************
 
 # ** Readme! **
-# Don't edit this file!  Override settings in "project.mk" instead...
+# Don't edit this file! This is the core Makefile for a MaximSDK 
+# project. The available configuration options can be overridden 
+# in "project.mk", on the command-line, or with system environment 
+# variables.
 
-# This is the core Makefile for a MaximSDK project.
-# You normally shouldn't need to edit this file.  
-# Instead, we offer various configuration variables that
-# can be overridden in "project.mk", on the command-line
-# or in your system's environment variables.
-
-# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
 # for more detailed instructions on how to use this system.
 
-# The instructions above are a lot easier to read than this file, but
-# the comments below also outline the available configuration variables
-# if you're' familiar with Make.  This file is organized into sub-sections,
-# some of which expose config variables.
-
-# For a more comprehensive overview of Make itself, see https://www.gnu.org/software/make/manual/
+# The detailed instructions mentioned above are easier to read than 
+# this file, but the comments found in this file also outline the 
+# available configuration variables. This file is organized into 
+# sub-sections, some of which expose config variables.
 
 
 # *******************************************************************************
