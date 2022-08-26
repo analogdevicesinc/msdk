@@ -33,7 +33,7 @@
 
 /* FreeRTOS*************************************************************/
 /* Array sizes */
-#define CMD_LINE_BUF_SIZE 80
+#define CMD_LINE_BUF_SIZE 100
 #define OUTPUT_BUF_SIZE   512
 #define CONSOLE_UART      0 //EvKit/FTHR
 /* Task IDs */
@@ -490,7 +490,7 @@ void prompt(void)
     if (pausePrompt)
         return;
 
-    printf("\r\ncmd> ");
+    printf((longTestActive) ? "\r\n(active test) cmd> " : "\r\ncmd> ");
     fflush(stdout);
 }
 void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
@@ -606,22 +606,23 @@ void txTestTask(void* pvParameters)
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         notifyCommand.allData = notifVal;
-        //  printf("TX Test Ch: %d @ %d ms\r\n", notifyCommand.channel, notifyCommand.duration);
-
+        uint8_t str[100]      = "Transmit RF channel : 0 :255 bytes/pkt : 0xAA : ";
+        strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY\n" :
+                    (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY\n" :
+                    (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY\n" :
+                    (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY\n" :
+                                                       "");
+        printf("%s", str);
+        fflush(stdout);
         switch (notifyCommand.duration) {
-            case 0xFFFF:
-                // If max duration is recevied then assume test will be manually stopped
-                printf("press \"e + enter \" to end test: ");
+            case 0:
+                // // If max duration is recevied then assume test will be manually stopped
                 fflush(stdout);
-                while (longTestActive) {
-                    res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-                    vTaskDelay(10);
-                }
-                LlEndTest(NULL);
+                res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
                 printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
+                fflush(stdout);
                 pausePrompt = false;
                 prompt();
-                fflush(stdout);
                 break;
             default:
                 // perform timed test

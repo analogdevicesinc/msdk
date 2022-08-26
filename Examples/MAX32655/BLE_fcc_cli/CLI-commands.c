@@ -122,8 +122,7 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     notifyCommand.duration = testLen;
 
     if (notifyCommand.duration == 0) {
-        notifyCommand.duration = 0xFFFF;
-        longTestActive         = 1;
+        longTestActive = 1;
     }
 
     xTaskNotify(tx_task_id, notifyCommand.allData, eSetBits);
@@ -141,9 +140,10 @@ static BaseType_t cmd_StopTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
-    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+
+    LlEndTest(NULL);
     longTestActive = 0;
-    pausePrompt    = true;
+    pausePrompt    = false;
     return pdFALSE;
 }
 
