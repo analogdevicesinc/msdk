@@ -342,7 +342,15 @@ A project's build system is managed by two files found in the project's root dir
 
 ![Files are located in the root directory](img/projectmk.JPG)
 
-`Makefile` is the "core" file for the project.  It should not be edited directly.  Instead, it offers a number of configuration variables that can be overridden in the `project.mk` file, on the command-line, in your system's environment, or via your IDE.  It also comes with a default configuration that is suitable for most projects.
+When the command...
+
+```shell
+$ make
+```
+
+... is run, the program `make` will load settings from these two files.  Then, it will use them to build the project's source code.  VSCode-Maxim is a "wrapper" around this Makefile system.
+
+The file named `Makefile` is the "core" file for the project.  It should not be edited directly.  Instead, it offers a number of configuration variables that can be overridden in the `project.mk` file, on the command-line, in your system's environment, or via your IDE.  It also comes with a default configuration that is suitable for most projects.
 
 ### Default Build Behavior
 
