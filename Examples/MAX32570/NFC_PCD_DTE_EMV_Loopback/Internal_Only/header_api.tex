@@ -1,0 +1,224 @@
+% Latex header for doxygen 1.8.12 cw
+%\documentclass[oneside]{book}
+\documentclass{report}
+
+% Packages required by doxygen
+\usepackage{calc}
+\usepackage{doxygen}
+\usepackage[export]{adjustbox} % also loads graphicx
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{makeidx}
+\usepackage{multicol}
+\usepackage{multirow}
+\PassOptionsToPackage{warn}{textcomp}
+\usepackage{textcomp}
+\usepackage[nointegrals]{wasysym}
+\usepackage[table]{xcolor}
+%\usepackage{tabu}
+\usepackage[UKenglish]{datetime}
+
+% Self-defined color
+\usepackage{transparent}
+\usepackage{xcolor}
+%\usepackage{amsmath}
+\usepackage{lipsum}
+\definecolor{maximemerald}{RGB}{0,178,169}
+\definecolor{maximgray}{RGB}{99,99,99}
+
+% Font selection
+\usepackage[T1]{fontenc}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage{amssymb}
+\usepackage{sectsty}
+\renewcommand{\familydefault}{\sfdefault}
+
+\allsectionsfont{%
+  \fontseries{bc}\selectfont%
+  \color{maximblue}%
+}
+\renewcommand{\DoxyLabelFont}{%
+  \fontseries{bc}\selectfont%
+  \color{maximemerald}%
+}
+
+\newcommand{\+}{\discretionary{\mbox{}}{}{}}
+
+% Page & text layout
+\usepackage{geometry}
+\geometry{%
+  letterpaper,%
+  top=2.5cm,%
+  bottom=2.5cm,%
+  left=2.0cm,%
+  right=2.0cm%
+}
+\tolerance=750
+\hfuzz=17pt
+\hbadness=1500
+\setlength{\emergencystretch}{20pt}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{3ex plus 2ex minus 2ex}
+\makeatletter
+\let\latexl@section\l@section
+%\def\l@section#1#2{\begingroup\let\numberline\@gobble\latexl@section{#1}{#2}\endgroup}
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}{0ex}{-1.0ex}{1.0ex}{%
+    \normalfont\normalsize\bfseries\SS@parafont%
+  }%
+}
+\renewcommand{\subparagraph}{%
+  \@startsection{subparagraph}{5}{0ex}{-1.0ex}{1.0ex}{%
+    \normalfont\normalsize\bfseries\SS@subparafont%
+  }%
+}
+\makeatother
+
+% Headers & footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyhead[L]{\color{maximgray}$projectname}
+  \fancyhead[C]{\textit{ \nouppercase{\leftmark}}}
+  \fancyhead[R]{\textit{ \nouppercase{\rightmark}}}
+  \fancyfoot[L]{\color{maximgray}Rev.$projectnumber \today}
+  \fancyfoot[R]{\color{maximgray}Page \thepage}
+  \fancyfoot[C]{\color{maximgray}Maxim Integrated}
+  \setlength{\headheight}{17pt}
+  \renewcommand{\headrulewidth}{1.25pt}
+  \newcommand{\headrulecolor}{maximgray}
+}
+
+% For regular pages
+\fancyhf{}
+\setlength{\headheight}{17pt}
+\fancyhead[L]{\color{maximgray}$projectname}
+\fancyhead[C]{\textit{ \nouppercase{\leftmark}}}
+\fancyhead[R]{\textit{ \nouppercase{\rightmark}}}
+\fancyfoot[L]{\color{maximgray}Rev.$projectnumber \today}
+\fancyfoot[C]{\color{maximgray}Maxim Integrated}
+\fancyfoot[R]{\color{maximgray}Page \thepage}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+\renewcommand{\chaptermark}[1]{%
+  \markboth{#1}{}%
+}
+\renewcommand{\sectionmark}[1]{%
+  \markright{\thesection\ #1}%
+}
+
+% Indices & bibliography
+\usepackage{natbib}
+\usepackage[titles]{tocloft}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+\addtolength{\cftsecnumwidth}{3mm}
+\addtolength{\cftsubsecnumwidth}{3mm}
+\addtolength{\cftsubsubsecnumwidth}{3mm}
+\setcounter{section}{1}
+\makeindex
+
+% \usepackage{titlesec}
+
+% Hyperlinks (required, but should be loaded last)
+%\usepackage{ifpdf}
+%\ifpdf
+%\usepackage[pdftex,pagebackref=true]{hyperref}
+%\else
+%  \usepackage[ps2pdf,pagebackref=true]{hyperref}
+%\fi
+% \hypersetup{%
+%   bookmarks=true,         % Show bookmarks bar
+%   bookmarksnumbered=false,
+%   pdfencoding=unicode,
+%   colorlinks=true,        % links are in color, not boxed 
+%   linkcolor=maximemerald, % color of internal links
+%   urlcolor=blue,          % color for url links
+%   citecolor=red,          % citation link color for bibliography
+%   pdftoolbar=true,
+%   pdfmenubar=true,
+%   pdffitwindow=false,
+%   pdfstartview={FitH}
+% }
+\usepackage[pdftex]{hyperref}
+
+\hypersetup{%
+  pagebackref=true,
+  bookmarks=true,         % Show bookmarks bar
+  bookmarksnumbered=false,
+  pdfencoding=unicode,
+  colorlinks=true,        % links are in color, not boxed 
+  linkcolor=maximemerald, % color of internal links
+  urlcolor=blue,          % color for url links
+  citecolor=red,          % citation link color for bibliography
+  pdftoolbar=true,
+  pdfmenubar=true,
+  pdffitwindow=false,
+  pdfstartview={FitH}
+}
+
+\urlstyle{same} % URLs are shown with the same font as the rest of the document.
+% Custom commands
+\newcommand{\clearemptydoublepage}{%
+  \newpage{\pagestyle{empty}\cleardoublepage}%
+}
+\newcommand{\backmatter}{}%
+
+\usepackage{caption}
+\captionsetup{labelsep=space,justification=centering,font={bf},singlelinecheck=off,skip=4pt,position=top}
+% packages for watermark/image on title page. 
+\usepackage{eso-pic}
+\usepackage{wallpaper}
+\usepackage{float}
+
+%===== C O N T E N T S =====
+
+\begin{document}
+% Background picture for title page. 
+\ThisLRCornerWallPaper{0.4}{./user_guide_background.png}
+
+% Titlepage & ToC
+\hypersetup{pageanchor=false}
+%\hypersetup{pageanchor=false,
+%             bookmarksnumbered=false,
+%             pdfencoding=unicode
+%            }
+\pagenumbering{alph}
+
+\newdateformat{UKvardate}{%
+\THEDAY\ \monthname[\THEMONTH], \THEYEAR}
+\UKvardate
+\renewcommand{\headrulewidth}{0.2pt}
+\begin{titlepage}
+\begin{flushleft}
+\vspace*{6cm}
+{\fontsize{56}{60}\color{maximemerald}\selectfont MAX3263X}\\
+\vspace*{0.5cm}
+\noindent\textcolor{maximgray}{\rule{\textwidth}{3pt}}\\
+\vspace*{1cm}
+{\fontsize{20}{30}\color{maximgray}\selectfont SDK API Documentation}\\
+\vspace*{0.5cm}
+{\fontsize{20}{30}\color{maximgray}\selectfont \today}
+\end{flushleft}
+\end{titlepage}
+%\clearemptydoublepage
+\pagenumbering{roman}
+\tableofcontents
+%\clearemptydoublepage
+\listoffigures
+%\clearemptydoublepage
+\listoftables
+%\clearemptydoublepage
+\pagenumbering{arabic}
+
+%\usepackage[pdftex,pagebackref=true]{hyperref}
+%\else
+%  \usepackage[ps2pdf,pagebackref=true]{hyperref}
+%\fi
+
+\hypersetup{pageanchor=true}
+
+%--- Begin generated contents ---
