@@ -66,36 +66,6 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
-/* ************************************************************************** */
-static int ext_flash_board_init(void)
-{
-    return MXC_SPIXF_Init(0, EXT_FLASH_BAUD);
-}
-
-/* ************************************************************************** */
-static int ext_flash_board_read(uint8_t* read, unsigned len, unsigned deassert,
-                                Ext_Flash_DataLine_t width)
-{
-    mxc_spixf_req_t req = {deassert, 0, NULL, read, width, len, 0, 0, NULL};
-
-    return MXC_SPIXF_Transaction(&req);
-}
-
-/* ************************************************************************** */
-static int ext_flash_board_write(const uint8_t* write, unsigned len, unsigned deassert,
-                                 Ext_Flash_DataLine_t width)
-{
-    mxc_spixf_req_t req = {deassert, 0, write, NULL, width, len, 0, 0, NULL};
-
-    return MXC_SPIXF_Transaction(&req);
-}
-
-/* ************************************************************************** */
-static int ext_flash_clock(unsigned len, unsigned deassert)
-{
-    return MXC_SPIXF_Clocks(len, deassert);
-}
-
 /******************************************************************************/
 void mxc_assert(const char* expr, const char* file, int line)
 {
@@ -111,20 +81,12 @@ void mxc_assert(const char* expr, const char* file, int line)
 int Board_Init(void)
 {
     int err;
-    Ext_Flash_Config_t exf_cfg = {.init  = ext_flash_board_init,
-                                  .read  = ext_flash_board_read,
-                                  .write = ext_flash_board_write,
-                                  .clock = ext_flash_clock};
 
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO3);
-
-    if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
-        return err;
-    }
 
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
