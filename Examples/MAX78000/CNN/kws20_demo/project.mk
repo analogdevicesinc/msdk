@@ -9,18 +9,17 @@
 
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
+PROJ_CFLAGS+=-DENABLE_TFT
 IPATH += TFT/evkit/
 VPATH += TFT/evkit/
-SRCS += all_imgs.c
 endif
 
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
+# Only Enable if 2.4" TFT is connected to Feather
+#PROJ_CFLAGS+=-DENABLE_TFT
 IPATH += TFT/fthr
 VPATH += TFT/fthr
-SRCS += img_1_rgb565.c
-SRCS += logo_rgb565.c
-SRCS += SansSerif16x16.c
 endif
 
 
