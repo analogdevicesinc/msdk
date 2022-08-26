@@ -614,10 +614,11 @@ void txTestTask(void* pvParameters)
                                                        "");
         printf("%s", str);
         fflush(stdout);
+
         switch (notifyCommand.duration) {
             case 0:
                 // // If max duration is recevied then assume test will be manually stopped
-                fflush(stdout);
+
                 res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
                 printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
                 fflush(stdout);
@@ -633,7 +634,6 @@ void txTestTask(void* pvParameters)
                 printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
                 fflush(stdout);
                 prompt();
-
                 break;
         }
     }
@@ -647,7 +647,18 @@ void wfsLoop(void* pvParameters)
         WsfOsEnterMainLoop();
     }
 }
-
+void setPhy(uint8_t newPhy)
+{
+    phy          = newPhy;
+    char str[20] = "Phy now set to ";
+    strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
+                (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
+                (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
+                (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
+                                                   "");
+    printf("%s\r\n", str);
+    fflush(stdout);
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Main entry point.
@@ -693,6 +704,7 @@ int main(void)
                 tskIDLE_PRIORITY + 1, &cmd_task_id);
     // TX tranismit test task
     xTaskCreate(txTestTask, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &tx_task_id);
+
     //wsfLoop task
     xTaskCreate(wfsLoop, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
 

@@ -19,6 +19,15 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 static BaseType_t cmd_StopTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString);
 
+static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
+                             const char* pcCommandString);
+
+static BaseType_t cmd_StartRxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString);
+
+static BaseType_t cmd_StopRxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char* pcCommandString);
+
 /***************************| Command structures |******************************/
 /* Structure that defines the "ps" command line command. */
 static const CLI_Command_Definition_t xTaskStats = {
@@ -35,7 +44,7 @@ static const CLI_Command_Definition_t xPrintUsage = {
     0                                                            /* No parameters are expected. */
 };
 static const CLI_Command_Definition_t xStartTxTest = {
-    "tx", "\r\ntx <param1> <param2>:\r\n Expects two parameters [channel] [length of test]",
+    "tx", "\r\ntx <channel> <optional: duration>:\r\n Performs TX test",
     cmd_StartTxTest, /* The function to run. */
     -1               /* Three parameters are expected, which can take any value. */
 };
@@ -43,7 +52,11 @@ static const CLI_Command_Definition_t xStopTxTest = {
     "e", "\r\ne :\r\n Stops any active TX test", cmd_StopTxTest, /* The function to run. */
     -1 /* Three parameters are expected, which can take any value. */
 };
-
+static const CLI_Command_Definition_t xSetPhy = {
+    "phy", "\r\nphy <param> :\r\n Sets Phy. Param: 1M 2M S8 S2 ",
+    cmd_SetPhy, /* The function to run. */
+    1           /* Three parameters are expected, which can take any value. */
+};
 /***************************| Command handlers |******************************/
 static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
                                       const char* pcCommandString)
@@ -88,16 +101,16 @@ static BaseType_t cmd_PrintUsage(char* pcWriteBuffer, size_t xWriteBufferLen,
 static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString)
 {
-    uint8_t channel;
-    uint16_t testLen;
-    tx_task_command_t notifyCommand;
-    BaseType_t lParameterStringLength;
-    uint8_t str[50];
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
+    uint8_t channel;
+    uint16_t testLen;
+    tx_task_command_t notifyCommand;
+    BaseType_t lParameterStringLength;
+    uint8_t str[50];
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     channel = atoi(
@@ -120,7 +133,7 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     notifyCommand.channel  = channel;
     notifyCommand.duration = testLen;
-
+    notifyCommand.testType = TX_TEST;
     if (notifyCommand.duration == 0) {
         longTestActive = 1;
     }
@@ -130,7 +143,6 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-
 static BaseType_t cmd_StopTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString)
 {
@@ -146,11 +158,38 @@ static BaseType_t cmd_StopTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     pausePrompt    = false;
     return pdFALSE;
 }
-
 /*-----------------------------------------------------------*/
+static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
+                             const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    BaseType_t lParameterStringLength;
 
+    const char* newPhy =
+        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                 1,                      /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+        );
+
+    (memcmp(newPhy, "1M", 2) == 0) ? setPhy(LL_TEST_PHY_LE_1M) :
+    (memcmp(newPhy, "1m", 2) == 0) ? setPhy(LL_TEST_PHY_LE_1M) :
+    (memcmp(newPhy, "2M", 2) == 0) ? setPhy(LL_TEST_PHY_LE_2M) :
+    (memcmp(newPhy, "2m", 2) == 0) ? setPhy(LL_TEST_PHY_LE_2M) :
+    (memcmp(newPhy, "S2", 2) == 0) ? setPhy(LL_TEST_PHY_LE_CODED_S2) :
+    (memcmp(newPhy, "s2", 2) == 0) ? setPhy(LL_TEST_PHY_LE_CODED_S2) :
+    (memcmp(newPhy, "S8", 2) == 0) ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
+    (memcmp(newPhy, "s8", 2) == 0) ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
+                                     sprintf(pcWriteBuffer, "Bad param\r\n");
+
+    return pdFALSE;
+}
 /*-----------------------------------------------------------*/
-
 void vRegisterCLICommands(void)
 {
     /* Register all the command line commands defined immediately above. */
@@ -158,5 +197,6 @@ void vRegisterCLICommands(void)
     FreeRTOS_CLIRegisterCommand(&xPrintUsage);
     FreeRTOS_CLIRegisterCommand(&xStartTxTest);
     FreeRTOS_CLIRegisterCommand(&xStopTxTest);
+    FreeRTOS_CLIRegisterCommand(&xSetPhy);
 }
 /*-----------------------------------------------------------*/

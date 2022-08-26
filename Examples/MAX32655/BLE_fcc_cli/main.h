@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ll_init_api.h"
+#include "ll_api.h"
 #include "chci_tr.h"
 #include "lhci_api.h"
 #include "hci_defs.h"
@@ -27,13 +28,18 @@
 #include "FreeRTOS_CLI.h"
 #include "uart.h"
 #include "mxc_delay.h"
+
+typedef enum { RX_TEST, TX_TEST } test_t;
+//used to post messages to a task via its notification parameter
 typedef union {
     struct {
         uint8_t channel;
         uint16_t duration;
-        uint8_t unused;
+        test_t testType;
     };
     uint32_t allData;
 } tx_task_command_t;
+
+void setPhy(uint8_t newPhy);
 
 #endif
