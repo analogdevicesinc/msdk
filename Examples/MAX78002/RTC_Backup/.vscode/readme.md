@@ -397,15 +397,18 @@ For example, if I wanted to enable hardware floating-point acceleration for my p
 
 (_Inside project.mk_)
 ```Makefile
-# This file can be used for project configuration.
+# This file can be used to set build configuration
+# variables.  These variables are defined in a file called 
+# "Makefile" that is located next to this one.
 
-# To see what options are available open the file
-# called "Makefile", which should live next to this one.
-# It has a full list of options you can set.
+# For instructions on how to use this system, see
+# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
 #BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the
+# ^ For example, you can uncomment this line to make the 
 # project build for the "FTHR_RevA" board.
+
+# **********************************************************
 
 MFLOAT_ABI=hard # Enable hardware floating point acceleration
 ```
@@ -413,7 +416,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 It should also be noted that configuration variables can be set on the **command-line** as well.  For example...
 
 ```shell
-$ make MFlOAT_ABI=hard
+$ make MFLOAT_ABI=hard
 ```
 
 ... will have the same effect.
