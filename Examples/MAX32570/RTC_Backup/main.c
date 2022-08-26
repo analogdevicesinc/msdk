@@ -47,14 +47,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "board.h"
-#include "led.h"
-#include "lp.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "nvic_table.h"
-#include "rtc.h"
-#include "uart.h"
+#include <MAX32xxx.h>
 
 /***** Definitions *****/
 #define LED_TODA 0
@@ -190,4 +183,6 @@ int main(void)
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
     MXC_LP_EnterBackupMode(); // Enter a backup mode
+
+    return 0;
 }

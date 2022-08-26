@@ -44,10 +44,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "flc.h"
-#include "led.h"
+
+#include <MAX32xxx.h>
 
 #include "flash.h"
 #include "lfs.h"
@@ -187,8 +185,6 @@ int main(void)
     } else {
         printf("\nExample Succeeded\n");
     }
-
-    while (1) {}
 
     return 0;
 }

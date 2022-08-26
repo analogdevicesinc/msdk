@@ -49,7 +49,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 
 /***** Definitions *****/
@@ -424,8 +423,6 @@ int main(void)
     } else {
         printf("Example Failed\n");
     }
-
-    while (1) {}
 
     return 0;
 }

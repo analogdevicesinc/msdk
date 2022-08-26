@@ -180,5 +180,5 @@ int main(void)
 
     printf("Example complete.\n");
 
-    while (1) {}
+    return 0;
 }

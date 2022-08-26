@@ -116,4 +116,6 @@ int main(void)
     SquareWave();
 
     while (1) {}
+
+    return 0;
 }
