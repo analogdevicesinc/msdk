@@ -46,6 +46,7 @@
                 { "text":"symbol-file build/${config:symbol_file}" },
                 { "text":"target remote localhost:3333" },
                 { "text":"monitor reset halt" },
+                { "text":"set $pc=Reset_Handler"},
                 { "text":"b main" }
             ]
         },
