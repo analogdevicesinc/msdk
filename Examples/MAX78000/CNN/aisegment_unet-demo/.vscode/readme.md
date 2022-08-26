@@ -401,7 +401,7 @@ If you want to start from scratch, take this option.
 
 5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
 
-6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#editing-the-makefile).
+6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
 
 ## Issue Tracker
 

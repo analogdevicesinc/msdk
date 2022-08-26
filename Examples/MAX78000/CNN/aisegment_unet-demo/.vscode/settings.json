@@ -23,10 +23,9 @@
     "symbol_file":"${config:program_file}",
 
     "M4_OCD_interface_file":"cmsis-dap.cfg",
-    "M4_OCD_target_file":"max78000.cfg",
+    "M4_OCD_target_file":"${config:target}.cfg",
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
-    "debug_server":"172.21.16.1",
 
     "v_Arm_GCC":"10.3",
     "v_xPack_GCC":"10.2.0-1.2",

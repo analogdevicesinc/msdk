@@ -94,7 +94,7 @@
                 "--ex=\"cd ${workspaceFolder}\"",
                 "--se=\"build/${config:program_file}\"",
                 "--symbols=build/${config:symbol_file}",                
-                "--ex=\"target remote ${config:debug_server}:3333\"",
+                "--ex=\"target remote localhost:3333\"",
                 "--ex=\"monitor reset halt\"",
                 "--ex=\"b main\"",
                 "--ex=\"c\""
