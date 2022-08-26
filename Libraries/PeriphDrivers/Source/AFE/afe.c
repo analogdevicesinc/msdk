@@ -76,8 +76,8 @@
 #define AFE_TRIM_DAC_MASK      0x0FFFF
 #define AFE_TRIM_DAC_BIT_WIDTH 16
 
-#define AFE_TRIM_ANA_ADC0_MASK		0x7FFF
-#define AFE_TRIM_ANA_ADC0_BIT_WIDTH	15
+#define AFE_TRIM_ANA_ADC0_MASK      0x7FFF
+#define AFE_TRIM_ANA_ADC0_BIT_WIDTH 15
 
 #define AFE_TRIM0_ADC1_MASK      0x7FFFF
 #define AFE_TRIM0_ADC1_BIT_WIDTH 19
@@ -91,8 +91,8 @@
 // NOTE: These two bits are embedded inside the HART trim
 #define AFE_TRIM_ANA_ADC1_MASK      0x060
 #define AFE_TRIM_ANA_ADC1_BIT_WIDTH 2
-#define AFE_TRIM_ANA_ADC1_OFFSET_1  5       // bit position in HART trim
-#define AFE_TRIM_ANA_ADC1_OFFSET_2  10      // bit position in ANA TRIM ADC1
+#define AFE_TRIM_ANA_ADC1_OFFSET_1  5  // bit position in HART trim
+#define AFE_TRIM_ANA_ADC1_OFFSET_2  10 // bit position in ANA TRIM ADC1
 
 #define AFE_TRIM_VREF_MASK      0x7FF
 #define AFE_TRIM_VREF_BIT_WIDTH 11
@@ -106,15 +106,15 @@ mxc_spi_regs_t* pSPIm = AFE_SPI_PORT;
 int check_done        = 0;
 
 typedef struct {
-	uint32_t adc_trim0_adc0;
-	uint32_t adc_trim0_adc1;
-	uint32_t adc_trim1_adc0;
-	uint32_t adc_trim1_adc1;
-	uint32_t ana_trim_adc0;
-	uint32_t vref_trim;
-	uint32_t hart_trim;
+    uint32_t adc_trim0_adc0;
+    uint32_t adc_trim0_adc1;
+    uint32_t adc_trim1_adc0;
+    uint32_t adc_trim1_adc1;
+    uint32_t ana_trim_adc0;
+    uint32_t vref_trim;
+    uint32_t hart_trim;
     uint32_t ana_trim_adc1;
-	uint32_t dac_trim;
+    uint32_t dac_trim;
 } trim_data_t;
 
 trim_data_t trim_data;
