@@ -14,7 +14,7 @@ output in the near future.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ** Other **
--	Ensure variable "BOARD" is appropriately selected for the EV Kit you are using (EvKit\_V1 or FTHR\_RevA) in *Makefile*.
+-	Ensure variable "BOARD" is appropriately selected for the EV Kit you are using (EvKit\_V1 or FTHR\_RevA) in *project.mk*.
 
 ## Expected Output
 

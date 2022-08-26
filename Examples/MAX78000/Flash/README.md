@@ -2,20 +2,18 @@
 
 This example showcases the main functions of the MAX78000's flash controller.
 
-The MAX78000's entire flash, including all application code, is initially cleared by performing a mass erase.  As such, the entire example is set to execute out of SRAM by using the special "_ram" linkerfile (see the Makefile and code comments for more details).  Then, a test pattern is written into flash one 32-bit word at a time and verified.  By default the entire flash bank is excercised, but this can be controlled with the `NUM_TEST_PAGES` compiler definition in `main.c`
+The MAX78000's entire flash, including all application code, is initially cleared by performing a mass erase.  As such, the entire example is set to execute out of SRAM by using the special "_ram" linkerfile (see the project.mk and code comments for more details).  Then, a test pattern is written into flash one 32-bit word at a time and verified.  By default the entire flash bank is excercised, but this can be controlled with the `NUM_TEST_PAGES` compiler definition in `main.c`
 
 ## Building Firmware
 
 ### Command-line
 
-1. This example comes pre-configured for the MAX78000EVKIT by default.  Select the correct value for _BOARD_, either `EvKit_V1` (for the MAX78000EVKIT) or `FTHR_RevA` (for the MAX78000FTHR) by editing the project `Makefile`:
+1. This example comes pre-configured for the MAX78000EVKIT by default.  Select the correct value for _BOARD_, either `EvKit_V1` (for the MAX78000EVKIT) or `FTHR_RevA` (for the MAX78000FTHR) by editing the project `project.mk`:
 
     ```Makefile
     # Specify the board used
-    ifeq "$(BOARD)" ""
     BOARD=EvKit_V1
     #BOARD=FTHR_RevA
-    endif
     ```
 
 2. Build the project with the command:
