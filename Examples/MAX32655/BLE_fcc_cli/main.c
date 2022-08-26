@@ -40,7 +40,7 @@
 TaskHandle_t cmd_task_id;
 TaskHandle_t tx_task_id;
 TaskHandle_t wfs_task_id;
-
+char receivedChar;
 volatile int longTestActive = 0;
 bool pausePrompt            = false;
 /* FreeRTOS+CLI */
@@ -156,19 +156,19 @@ void TMR2_IRQHandler(void)
 /*************************************************************************************************/
 void printUsage(void)
 {
-    printf("Usage: \r\n");
-    printf(" (0) Transmit on RF channel 0 (2402 MHz)\r\n");
-    printf(" (1) Transmit on RF channel 19 (2440 MHz)\r\n");
-    printf(" (2) Transmit on RF channel 39 (2480 MHz)\r\n");
-    printf(" (3) Receive  on RF channel 39 (2480 MHz)\r\n");
-    printf(" (4) Set Transmit power\r\n");
-    printf(" (5) Enable constant TX\r\n");
-    printf(" (6) Disable constant TX -- MUST be called after (5)\r\n");
-    /* APP_TRACE_INFO0(" (7) Set PA value"); */
-    printf(" (8) Set PHY\r\n");
-    printf(" (9) TX Frequency Hop\r\n");
-    printf(" (e) End transmission -- MUST be used after each (0-3, 9)\r\n");
-    printf(" (u) Print usage\r\n");
+    // printf("Usage: \r\n");
+    // printf(" (0) Transmit on RF channel 0 (2402 MHz)\r\n");
+    // printf(" (1) Transmit on RF channel 19 (2440 MHz)\r\n");
+    // printf(" (2) Transmit on RF channel 39 (2480 MHz)\r\n");
+    // printf(" (3) Receive  on RF channel 39 (2480 MHz)\r\n");
+    // printf(" (4) Set Transmit power\r\n");
+    // printf(" (5) Enable constant TX\r\n");
+    // printf(" (6) Disable constant TX -- MUST be called after (5)\r\n");
+    // /* APP_TRACE_INFO0(" (7) Set PA value"); */
+    // printf(" (8) Set PHY\r\n");
+    // printf(" (9) TX Frequency Hop\r\n");
+    // printf(" (e) End transmission -- MUST be used after each (0-3, 9)\r\n");
+    // printf(" (u) Print usage\r\n");
 }
 
 /*************************************************************************************************/
@@ -184,205 +184,13 @@ void printUsage(void)
 /*************************************************************************************************/
 static void processConsoleRX(uint8_t rxByte)
 {
-    int res;
+    BaseType_t xHigherPriorityTaskWoken;
 
-    /* Holds the state of the command and the parameter */
-    static uint8_t cmd   = 0;
-    static uint8_t param = 0;
-
-    /* Determines if the incoming character is a command or a parameter */
-    if (cmd == 0)
-        cmd = rxByte;
-    else
-        param = rxByte;
-
-    switch (cmd) {
-        case '0':
-
-            APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
-                            getPhyStr(phy));
-            res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
-            break;
-
-        case '1':
-
-            APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
-                            getPhyStr(phy));
-            res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
-            break;
-
-        case '2':
-
-            APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
-                            getPhyStr(phy));
-            res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
-            break;
-
-        case '3':
-
-            APP_TRACE_INFO1("Receive RF channel 39, %s, forever ..", getPhyStr(phy));
-            res = LlEnhancedRxTest(39, phy, 0, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
-            break;
-
-        case '4':
-
-            if (param == 0) {
-                APP_TRACE_INFO0("Select transmit power");
-                APP_TRACE_INFO0(" 0: -10 dBm");
-                APP_TRACE_INFO0(" 1:   0 dBm");
-                APP_TRACE_INFO0(" 2: 4.5 dBm");
-                break;
-            }
-
-            switch (param) {
-                case '0':
-                    llc_api_set_txpower(-10);
-                    LlSetAdvTxPower(-10);
-                    APP_TRACE_INFO0("Power set to -10 dBm");
-                    break;
-                case '1':
-                    llc_api_set_txpower(0);
-                    LlSetAdvTxPower(0);
-                    APP_TRACE_INFO0("Power set to 0 dBm");
-                    break;
-                case '2':
-                    llc_api_set_txpower(4);
-                    LlSetAdvTxPower(4);
-                    APP_TRACE_INFO0("Power set to 4.5 dBm");
-                    break;
-                default:
-                    APP_TRACE_INFO0("Invalid selection");
-                    break;
-            }
-            cmd   = 0;
-            param = 0;
-            break;
-
-        case '5':
-            if (param == 0) {
-                APP_TRACE_INFO0("Select transmit channel");
-                APP_TRACE_INFO0(" 0: 0");
-                APP_TRACE_INFO0(" 1: 19");
-                APP_TRACE_INFO0(" 2: 39");
-                break;
-            }
-
-            switch (param) {
-                case '0':
-                    dbb_seq_select_rf_channel(0);
-                    APP_TRACE_INFO0("Channel set to 0");
-                    break;
-                case '1':
-                    dbb_seq_select_rf_channel(19);
-                    APP_TRACE_INFO0("Channel set to 19");
-                    break;
-                case '2':
-                    dbb_seq_select_rf_channel(39);
-                    APP_TRACE_INFO0("Channel set to 39");
-                    break;
-                default:
-                    APP_TRACE_INFO0("Invalid selection");
-                    break;
-            }
-
-            APP_TRACE_INFO0("Starting TX");
-
-            PalBbEnable();
-
-            llc_api_tx_ldo_setup();
-
-            /* Enable constant TX */
-            dbb_seq_tx_enable();
-
-            cmd   = 0;
-            param = 0;
-            break;
-
-        case '6':
-            APP_TRACE_INFO0("Disabling TX");
-
-            /* Disable constant TX */
-            dbb_seq_tx_disable();
-
-            PalBbDisable();
-
-            cmd = 0;
-            break;
-
-        case '8':
-            if (param == 0) {
-                /* Set the PHY */
-                APP_TRACE_INFO0("Select PHY");
-                APP_TRACE_INFO0("1: 1M");
-                APP_TRACE_INFO0("2: 2M");
-                APP_TRACE_INFO0("3: S8");
-                APP_TRACE_INFO0("4: S2");
-                break;
-            }
-
-            switch (param) {
-                case '1':
-                    phy = LL_TEST_PHY_LE_1M;
-                    APP_TRACE_INFO0("PHY set to 1M");
-                    break;
-                case '2':
-                    phy = LL_TEST_PHY_LE_2M;
-                    APP_TRACE_INFO0("PHY set to 2M");
-                    break;
-                case '3':
-                    phy = LL_TEST_PHY_LE_CODED_S8;
-                    APP_TRACE_INFO0("PHY set to S8");
-                    break;
-                case '4':
-                    phy = LL_TEST_PHY_LE_CODED_S2;
-                    APP_TRACE_INFO0("PHY set to S2");
-                    break;
-                default:
-                    APP_TRACE_INFO0("Invalid selection");
-                    break;
-            }
-
-            cmd   = 0;
-            param = 0;
-            break;
-        case '9':
-            /* Frequency hopping TX */
-            APP_TRACE_INFO0("Starting frequency hopping");
-            NVIC_EnableIRQ(TMR2_IRQn);
-            MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
-            MXC_TMR_EnableInt(MXC_TMR2);
-            cmd = 0;
-            break;
-
-        case 'E':
-        case 'e':
-
-            APP_TRACE_INFO0("End test");
-            MXC_TMR_Stop(MXC_TMR2);
-            LlEndTest(NULL);
-            cmd = 0;
-            break;
-
-        case 'U':
-        case 'u':
-            printUsage();
-            cmd = 0;
-            break;
-
-        default:
-            APP_TRACE_INFO0("Invalid selection");
-            cmd   = 0;
-            param = 0;
-            break;
-    }
+    receivedChar = rxByte;
+    /* Wake the task */
+    xHigherPriorityTaskWoken = pdFALSE;
+    vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 /*************************************************************************************************/
@@ -489,10 +297,20 @@ void prompt(void)
 {
     if (pausePrompt)
         return;
-
-    printf((longTestActive) ? "\r\n(active test) cmd> " : "\r\ncmd> ");
-    fflush(stdout);
+    char str[30];
+    uint8_t len = 0;
+    mxc_uart_req_t write_req;
+    if (longTestActive) {
+        sprintf(str, "(active test) cmd: ");
+        len = 20;
+    } else {
+        sprintf(str, "cmd: ");
+        len = 6;
+    }
+    //using app_trace would add newline after prompt which does not look right
+    WsfBufIoWrite(str, len);
 }
+
 void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
 {
     BaseType_t xHigherPriorityTaskWoken;
@@ -519,35 +337,11 @@ void vCmdLineTask(void* pvParameters)
 
     /* Register available CLI commands */
     vRegisterCLICommands();
-
-    /* Enable UARTx interrupt */
-    NVIC_ClearPendingIRQ(UARTx_IRQn);
-    NVIC_DisableIRQ(UARTx_IRQn);
-    NVIC_SetPriority(UARTx_IRQn, 1);
-    NVIC_EnableIRQ(UARTx_IRQn);
-
-    /* Async read will be used to wake process */
-    async_read_req.uart     = ConsoleUART;
-    async_read_req.rxData   = &tmp;
-    async_read_req.rxLen    = 1;
-    async_read_req.txData   = NULL;
-    async_read_req.txLen    = 0;
-    async_read_req.callback = vCmdLineTask_cb;
-
-    printf("\nEnter 'help' to view a list of available commands.\n");
     prompt();
     while (1) {
-        /* Register async read request */
-        if (MXC_UART_TransactionAsync(&async_read_req) != E_NO_ERROR) {
-            printf("Error registering async request. Command line unavailable.\n");
-            vTaskDelay(portMAX_DELAY);
-        }
-        /* Hang here until ISR wakes us for a character */
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        // while (testActive) {
-        //     volatile int x = 0;
-        // }
 
+        tmp = receivedChar;
         /* Check that we have a valid character */
         if (async_read_req.rxCnt > 0) {
             /* Process character */
@@ -556,24 +350,21 @@ void vCmdLineTask(void* pvParameters)
                     /* Backspace */
                     if (index > 0) {
                         index--;
-                        printf("\x08 \x08");
+                        APP_TRACE_INFO0("\x08 \x08");
                     }
                     fflush(stdout);
                 } else if (tmp == 0x03) {
                     /* ^C abort */
                     index = 0;
-                    printf("^C");
+                    APP_TRACE_INFO0("^C");
                     prompt();
                 } else if ((tmp == '\r') || (tmp == '\n')) {
-                    printf("\r\n");
+                    APP_TRACE_INFO0("\r\n");
                     /* Null terminate for safety */
                     buffer[index] = 0x00;
                     /* Evaluate */
                     do {
                         xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
-                        /* If xMore == pdTRUE, then output buffer contains no null termination, so
-             *  we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can use strlen.
-             */
                         for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
                             putchar(*(output + x));
                         }
@@ -607,21 +398,20 @@ void txTestTask(void* pvParameters)
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         notifyCommand.allData = notifVal;
         uint8_t str[100]      = "Transmit RF channel : 0 :255 bytes/pkt : 0xAA : ";
-        strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY\n" :
-                    (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY\n" :
-                    (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY\n" :
-                    (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY\n" :
+        strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
+                    (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
+                    (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
+                    (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
                                                        "");
-        printf("%s", str);
-        fflush(stdout);
+        APP_TRACE_INFO1("%s", str);
 
         switch (notifyCommand.duration) {
             case 0:
                 // // If max duration is recevied then assume test will be manually stopped
 
                 res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-                printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
-                fflush(stdout);
+                APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+
                 pausePrompt = false;
                 prompt();
                 break;
@@ -631,8 +421,8 @@ void txTestTask(void* pvParameters)
                 vTaskDelay(notifyCommand.duration);
                 LlEndTest(NULL);
                 pausePrompt = false;
-                printf("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)\r\n" : "(FAIL)\r\n");
-                fflush(stdout);
+                APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+
                 prompt();
                 break;
         }
@@ -656,8 +446,7 @@ void setPhy(uint8_t newPhy)
                 (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
                 (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
                                                    "");
-    printf("%s\r\n", str);
-    fflush(stdout);
+    APP_TRACE_INFO1("%s", str);
 }
 /*************************************************************************************************/
 /*!
@@ -671,7 +460,10 @@ int main(void)
     mainLoadConfiguration();
     mainWsfInit();
 
-    // WsfHeapAlloc(memUsed);
+#if (WSF_TRACE_ENABLED == TRUE)
+    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfHeapAlloc(memUsed);
+#endif
 
     LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
                            .wlSizeCfg    = 4,
@@ -691,14 +483,9 @@ int main(void)
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
     WsfOsRegisterSleepCheckFunc(ChciTrService);
+    /* Register the UART RX request */
+    WsfBufIoUartRegister(processConsoleRX);
 
-    /* Enable incoming characters */
-    /* Setup manual CTS/RTS to lockout console and wake from deep sleep */
-    MXC_GPIO_Config(&uart_cts);
-    MXC_GPIO_Config(&uart_rts);
-
-    MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
-    // command line task
     xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
                 configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
                 tskIDLE_PRIORITY + 1, &cmd_task_id);
@@ -709,7 +496,9 @@ int main(void)
     xTaskCreate(wfsLoop, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
 
     /* Start scheduler */
-    printf("Starting scheduler.\n");
+    APP_TRACE_INFO0("Starting scheduler.");
 
     vTaskStartScheduler();
+
+    return 0;
 }

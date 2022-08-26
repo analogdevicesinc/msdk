@@ -120,7 +120,7 @@ PROJ_CFLAGS+=-Wall
 # Cordio Library Options
 
 DEBUG           := 1
-TRACE           := 0
+TRACE           := 1
 TOKEN           := 0
 INIT_BROADCASTER:= 1
 INIT_PERIPHERAL := 1
