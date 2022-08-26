@@ -9,7 +9,7 @@ Examples/MAX78000/PowerTest
 __pycache__
 msdk-internal
 Libraries/PeriphDrivers/bin/MAX32520/softfp/libPeriphDriver_softfp.a
-Libraries/PeriphDrivers/bin/MAX32655/softfp/libPeriphDriver_softfp.a
+Libraries/PeriphDrivers/bin/
 Tools/GNUTools
 Tools/xPack
 *.o
