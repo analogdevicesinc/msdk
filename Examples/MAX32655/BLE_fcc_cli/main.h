@@ -33,9 +33,9 @@ typedef enum { RX_TEST, TX_TEST } test_t;
 //used to post messages to a task via its notification parameter
 typedef union {
     struct {
-        uint8_t channel;
         uint16_t duration;
-        test_t testType;
+        uint8_t channel;
+        uint8_t testType;
     };
     uint32_t allData;
 } tx_task_command_t;

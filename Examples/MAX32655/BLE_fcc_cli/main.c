@@ -397,7 +397,14 @@ void txTestTask(void* pvParameters)
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         notifyCommand.allData = notifVal;
-        uint8_t str[100]      = "Transmit RF channel : 0 :255 bytes/pkt : 0xAA : ";
+        uint8_t str[100];
+        if (notifyCommand.testType == TX_TEST) {
+            sprintf(str,
+                    "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", notifyCommand.channel);
+        } else {
+            sprintf(str, "Receive RF channel : %d : ", notifyCommand.channel);
+        }
+
         strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
                     (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
                     (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
@@ -405,27 +412,19 @@ void txTestTask(void* pvParameters)
                                                        "");
         APP_TRACE_INFO1("%s", str);
 
-        switch (notifyCommand.duration) {
-            case 0:
-                // // If max duration is recevied then assume test will be manually stopped
-
-                res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-                APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-
-                pausePrompt = false;
-                prompt();
-                break;
-            default:
-                // perform timed test
-                res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-                vTaskDelay(notifyCommand.duration);
-                LlEndTest(NULL);
-                pausePrompt = false;
-                APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-
-                prompt();
-                break;
+        if (notifyCommand.testType == TX_TEST) {
+            res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        } else {
+            res = LlEnhancedRxTest(notifyCommand.channel, phy, 0, 0);
         }
+        APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+        if (notifyCommand.duration) {
+            vTaskDelay(notifyCommand.duration);
+            LlEndTest(NULL);
+        }
+        pausePrompt = false;
+
+        prompt();
     }
 }
 void wfsLoop(void* pvParameters)

@@ -13,10 +13,10 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 static BaseType_t cmd_PrintUsage(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString);
 
-static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
 
-static BaseType_t cmd_StopTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString);
 
 static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
@@ -45,11 +45,16 @@ static const CLI_Command_Definition_t xPrintUsage = {
 };
 static const CLI_Command_Definition_t xStartTxTest = {
     "tx", "\r\ntx <channel> <optional: duration>:\r\n Performs TX test",
-    cmd_StartTxTest, /* The function to run. */
+    cmd_StartRFTest, /* The function to run. */
     -1               /* Three parameters are expected, which can take any value. */
 };
-static const CLI_Command_Definition_t xStopTxTest = {
-    "e", "\r\ne :\r\n Stops any active TX test", cmd_StopTxTest, /* The function to run. */
+static const CLI_Command_Definition_t xStartRxTest = {
+    "rx", "\r\nrx <channel> <optional: duration>:\r\n Performs RX test",
+    cmd_StartRFTest, /* The function to run. */
+    -1               /* Three parameters are expected, which can take any value. */
+};
+static const CLI_Command_Definition_t xStopRFTest = {
+    "e", "\r\ne :\r\n Stops any active TX test", cmd_StopRFTest, /* The function to run. */
     -1 /* Three parameters are expected, which can take any value. */
 };
 static const CLI_Command_Definition_t xSetPhy = {
@@ -98,7 +103,7 @@ static BaseType_t cmd_PrintUsage(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
@@ -113,6 +118,8 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     uint8_t str[50];
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+
+    //  TODO : validate  channel ignore letters
     channel = atoi(
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  1,                      /* Return the next parameter. */
@@ -124,16 +131,13 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  &lParameterStringLength /* Store the parameter string length. */
                                  ));
 
-    // bad channel param
-    //  TODO : currently if an alpha character is input it is equal to 0
-    //because of atoi() behavior
-
     if (channel > 39 || channel < 0)
         return pdFALSE;
 
     notifyCommand.channel  = channel;
     notifyCommand.duration = testLen;
-    notifyCommand.testType = TX_TEST;
+    notifyCommand.testType = (memcmp(pcCommandString, "tx", 2) == 0) ? TX_TEST : RX_TEST;
+
     if (notifyCommand.duration == 0) {
         longTestActive = 1;
     }
@@ -143,7 +147,7 @@ static BaseType_t cmd_StartTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_StopTxTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
@@ -196,7 +200,8 @@ void vRegisterCLICommands(void)
     FreeRTOS_CLIRegisterCommand(&xTaskStats);
     FreeRTOS_CLIRegisterCommand(&xPrintUsage);
     FreeRTOS_CLIRegisterCommand(&xStartTxTest);
-    FreeRTOS_CLIRegisterCommand(&xStopTxTest);
+    FreeRTOS_CLIRegisterCommand(&xStartRxTest);
+    FreeRTOS_CLIRegisterCommand(&xStopRFTest);
     FreeRTOS_CLIRegisterCommand(&xSetPhy);
 }
 /*-----------------------------------------------------------*/
