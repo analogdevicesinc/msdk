@@ -171,7 +171,7 @@ Breakpoints can be set by clicking in the space next to the line number in a sou
 
 ![Breakpoint](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/breakpoint.JPG)
 
-## Configuration
+## Project Configuration
 
 ### Project Settings
 
@@ -191,6 +191,7 @@ The following configuration options are available:
 
 * `"target"`
   * This sets the target microcontroller for the project.
+  * It sets the `TARGET` [Build Configuration](#build-configuration) variable.
   * Supported values:
     * `"MAX32520"`
     * `"MAX32570"`
@@ -332,34 +333,138 @@ To add additional search paths :
 
 3. Add the path(s) to any relevant implementation files to the `C_Cpp.default.browse.path` list.  This list contains the paths that will be searched when using "Go to Definition".
 
-### Editing the Makefile
+## Build Configuration
 
-At the heart of every project is its `Makefile`.  Build Tasks are essentially a wrapper around the Makefile.  Adding source code files to the build, setting compiler flags, linking libraries, etc. must be done by directly editing this file.
+A project's build system is managed by two files found in the project's root directory.  These files are used alongside the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MaximSDK toolchain) to locate and build a project's source code for the correct microcontroller.
 
-The usage guidelines below are specific to Maxim's Makefiles.  The [GNU Make Manual](https://www.gnu.org/software/make/manual/html_node/index.html) is a good one to have on hand for documentation regarding Makefiles in general.
+* `Makefile`
+* `project.mk`
 
-#### Adding Source Code Files
+![Files are located in the root directory](img/projectmk.JPG)
 
-* VS Code's editor can create and add new files to a project, but they won't be added to the build automatically.  The Makefile must be told which source code files to build, and where to find them.
-* Add a source file to the build with `SRCS += yourfile.c`
-* The Makefile looks for project source files in the `/src` directory by default.  Add additional directories to search with `VPATH += yoursourcedirectory`
-* The Makefile looks for project header files in the `/src` directory by default.  Add additional directories to search with `IPATH += yourincludedirectory`
+`Makefile` is the "core" file for the project.  It should not be edited directly.  Instead, it offers a number of configuration variables that can be overridden in the `project.mk` file, on the command-line, in your system's environment, or via your IDE.  It also comes with a default configuration that is suitable for most projects.
 
-#### Compiler Flags
+### Default Build Behavior
 
-* Compiler flags can be added/changed via the `PROJ_CFLAGS` variable.
-* Add a new flag to be passed to the compiler with `PROJ_CFLAGS += -yourflag`.  Flags are passed in the order that they are added to the `PROJ_CFLAGS` variable.
+By default, the build system will auto-search the root project directory source code (`*.c`) and header files (`*.h`).  The optional "include" and "src" directories are also searched if they exist.
 
-#### Linking Libraries
+```shell
+Root Project Directory
+├─ project.mk
+├─ Makefile
+├─ *.h
+├─ *.c
+├─include  # <-- Optional
+  └─ *.h
+├─src      # <-- Optional
+  └─ *.c
+```
 
-* Additional libraries can be linked via the `PROJ_LIBS` variable.  Add a new library to the build with `PROJ_LIBS += yourlibraryname`.
-  * Note : Do not include the 'lib' part of the library name, or the file extension.  For example, to link `libarm_cortexM4lf_math.a` set `PROJ_LIBS += arm_cortexM4lf_math`.
-* Tell the linker where to find the library with the '-L' linker flag.  Set `PROJ_LDFLAGS += -Lpathtoyourlibrary`.  For example, set `PROJ_LDFLAGS += -L./lib` to search a 'lib' directory inside of the project for libraries.
+Additionally, the "core" `Makefile` will come pre-configured for a specific target microcontroller and Board Support Package (BSP).  The default BSP will match the main EVKIT for the device.  In VSCode-Maxim, the two [Basic Config Options](#basic-config-options) can be used to easily override the target microcontroller and BSP.  These options are passed to `make` on the command-line when the ["Build" task](#build-tasks) is run.
 
-#### Optimization Level
+For more advanced build configuration, configuration variables should be used.
 
-* The optimization level that the compiler uses can be set by changing the `MXC_OPTIMIZE_CFLAGS` variable.  
-* See [GCC Optimization Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details on available optimization levels.  For example, disable optimization with `MXC_OPTIMIZE_CFLAGS = -O0`
+### How to Set a Configuration Variable
+
+A configuration variable is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables), and therefore follows the same rules.  However, they have been streamlined to be made much easier to use, so most of the official GNU Make documentation is only needed for advanced use-cases.
+
+To set a configuration variable, use the syntax...
+
+```Makefile
+VARIABLE=VALUE
+```
+
+The `=` operater is used for _most_ configuration variables with a few exceptions (that are clearly documented) when a variable should contain a _list_ of values.  In such cases, use the syntax...
+
+```Makefile
+VARIABLE+=VALUE1
+VARIABLE+=VALUE2
+```
+
+... to _add_ values to the list.
+
+In most cases, you should do this from inside of **project.mk**.  
+
+For example, if I wanted to enable hardware floating-point acceleration for my project, I would use the `MFLOAT_ABI` configuration variable to set its value to `hard`.  The contents of **project.mk** might then look as follows:
+
+(_Inside project.mk_)
+```Makefile
+# This file can be used for project configuration.
+
+# To see what options are available open the file
+# called "Makefile", which should live next to this one.
+# It has a full list of options you can set.
+
+#BOARD=FTHR_RevA
+# ^ For example, you can uncomment this line to make the
+# project build for the "FTHR_RevA" board.
+
+MFLOAT_ABI=hard # Enable hardware floating point acceleration
+```
+
+It should also be noted that configuration variables can be set on the **command-line** as well.  For example...
+
+```shell
+$ make MFlOAT_ABI=hard
+```
+
+... will have the same effect.
+
+Additionally, **environment variables** can be used.  For example (on linux)...
+
+```shell
+$ export TARGET=MAX78000
+```
+
+... will set all projects to build for the MAX78000.
+
+However, there is a precedence hierarchy that should be taken into consideration.
+
+### Precedence Hierarchy
+
+The precedence hierarchy for the value of a configuration variable is:
+
+* **command-line > project.mk > environment variable > default value**
+
+...meaning if a value is set on the command-line _and_ project.mk, the command-line value will take precedence.  However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
+
+### Configuration Variables Reference
+
+The project's `Makefile` can be opened to see a full list of available config options, but they are nested among the implementation details of the Makefile itself.  This might be fine for those familiar with reading Makefiles, but a clean reference table is also available below.
+
+| Variable | Description | Example | Details |
+|--- | --- | --- | ---|
+**Target**
+| `TARGET` | Set the target microcontroller | `TARGET=MAX78000` |
+| `BOARD` | Set the Board Support Package (BSP) | `BOARD=FTHR_RevA` | Every microcontroller has a number of BSPs available for it that can be found in the `Libraries/Boards/TARGET` folder of the MaximSDK.  When you change this option, it's usually a good idea to fully clean your project, then re-build.
+**SDK**
+| `MAXIM_PATH` | (Optional) Specify the location of the MaximSDK | `MAXIM_PATH=/path/to/MSDK` | This optional variable can be used to change where the Makefile looks for the MaximSDK.  By default, the Makefile will attempt to locate the MaximSDK with a relative path moving "up" from its original location.  This option is most useful when a project is moved _outside_ of the SDK and you're developing on the command-line, since VS Code and Eclipse will set this via an environment variable.  It's also useful for re-targeting a project to point to the development repository.
+| `CAMERA` | (Optional) Set the Camera drivers to use | `CAMERA=HM0360_MONO` | This option is only useful for the MAX78000 and MAX78002, and sets the camera drivers to use for the project.  Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`.  Camera drivers can be found in the `Libraries/MiscDrivers/Camera` folder of the MaximSDK.  Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` Makefile in the active BSP for more details.
+**Source Code**
+| `VPATH` | Where to search for source (.c) files | `VPATH+=your/source/path` | **Use the `+=` operator with this option**.  This controls where the Makefile will look for **source code** files.  If `AUTOSEARCH` is enabled (which it is by default) this controls which paths will be searched.  If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`.
+| `IPATH` | Where to search for header (.h) files | `IPATH+=your/include/path` | **Use the `+=` operator with this option**.  This controls where the Makefile will look for **header** files.  _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`.  Individual header files are _not_ ever manually added into the build.  Instead, you only need to specify the _location_ of your header files.
+| `AUTOSEARCH` | Automatically search for source (.c) files | `AUTOSEARCH=0` | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default).  Set to `0` to disable, or `1` to enable.  If autosearch is disabled, source files must be manually added to `SRCS`.
+| `SRCS` | List of source (.c) files to add to the build | `SRCS+=./my/other/source.c` | **Use the `+=` operator with this option**.  All of the files in this list will be added to the build.  If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build.  If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`.  Otherwise, a full path relative to the Makefile must be used.
+| `PROJECT` | Set the output filename | `PROJECT=MyProject` | This controls the output filename of the build.  File extensions should _not_ be set here since the output file format may vary depending on the build recipe.  For VSCode-Maxim, you should use the [project_name](#projectname) advanced config option instead, which sets `PROJECT` on the command-line [Build Tasks](#build-tasks).
+**Compiler**
+| `MXC_OPTIMIZE_CFLAGS` | Set the optimization level | `MXC_OPTIMIZE_CFLAGS=-O2` | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`.
+| `PROJ_CFLAGS` | Add a compiler flag to the build | `PROJ_CFLAGS+=-Wextra`, `PROJ_CFLAGS+=-DMYDEFINE` | Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options.
+| `MFLOAT_ABI` | Set the floating point acceleration level | `MFLOAT_ABI=hard` | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, `softfp` (default).  To enable full hardware acceleration instructions use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`.  If there is any conflict, you'll get a linker error.  For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).
+**Linker**
+| `LINKERFILE` | Set the linkerfile to use | `LINKERFILE=newlinker.ld` | You can use a different linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MaximSDK, or it should be placed inside the root directory of the project.
+**Libraries**
+| `LIB_BOARD` | Include the BSP library (enabled by default) | `LIB_BOARD=0` | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable.  This library contains important startup code specific to a microcontroller's evaluation platform, such as serial port initialization, power sequencing, external peripheral initalization, etc.  Set to `0` to disable, or `1` to enable.
+| `LIB_PERIPHDRIVERS` | Include the peripheral driver library (enabled by default) | `LIB_PERIPHDRIVERS=0` | The peripheral driver library can be toggled with this option.  If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files.  Set to `0` to disable, or `1` to enable.
+| `LIB_CMSIS_DSP` | Include the CMSIS-DSP library | `LIB_CMSIS_DSP=1` | The [CMSIS-DSP library](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) can be enabled with this option.  Set to `0` to disable, or `1` to enable.
+| `LIB_CORDIO` | Include the Cordio library | `LIB_CORDIO=1` | The Cordio BLE library can be included with this option.  This is only applicable towards microcontrollers with an integrated BLE controller.
+| `LIB_FCL` | Include the Free Cryptographic Library (FCL) | `LIB_FCL=1` | This option toggles the Free Cryptographic Library (FCL), which is a collection of software-implemented common cryptographic functions can be included with this option.  Set to `0` to disable, or `1` to enable.
+| `LIB_FREERTOS` | Include the FreeRTOS library | `LIB_FREERTOS=1` | The [FreeRTOS](https://freertos.org/) library can be enabled with this option, which is an open-source Real-Time Operating System (RTOS).  Set to `0` to disable, or `1` to enable.
+| `LIB_LC3` | Include the LC3 codec library | `LIB_LC3=1` | This option enables the inclusion of the Low Complexity Communication Codec (LC3), which is an efficient low latency audio codec.  Set to `0` to disable, or `1` to enable.
+| `LIB_LITTLEFS` | Include the littleFS library | `LIB_LITTLEFS=1` | This option toggles the ["Little File System"](https://github.com/littlefs-project/littlefs) library - a small filesystem library designed for microcontrollers.  Set to `0` to disable, or `1` to enable.
+| `LIB_LWIP` | Include the lwIP library | `LIB_LWIP=1` | |
+| `LIB_MAXUSB` | Include the MaxUSB library | `LIB_MAXUSB=1` | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers.  Set to `0` to disable, or `1` to enable.
+| `LIB_SDHC` | Include the SDHC library | `LIB_SDHC=1` | This options toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards.  Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem.
+
 
 ## Project Creation
 
@@ -401,7 +506,7 @@ If you want to start from scratch, take this option.
 
 5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
 
-6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.  However, you'll probably want to add some source code.  See [Configuring the Makefile](#configuring-the-makefile).
+6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.
 
 ## Issue Tracker
 
