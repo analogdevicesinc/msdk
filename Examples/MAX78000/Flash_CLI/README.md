@@ -12,12 +12,12 @@ If using the Standard EvKit (EvKit_V1):
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
--	Select "EvKit\_V1" for _BOARD_ in "Makefile"
+-	Select "EvKit\_V1" for _BOARD_ in "project.mk"
 
 If using the Featherboard (FTHR_RevA):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -	Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--	Select "FTHR\_RevA" for _BOARD_ in "Makefile"
+-	Select "FTHR\_RevA" for _BOARD_ in "project.mk"
 
 ## Expected Output
 
