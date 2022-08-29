@@ -272,27 +272,7 @@ int MXC_FLC_MassErase(void)
 //******************************************************************************
 int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
-    int err;
-    mxc_flc_regs_t* flc;
-
-    if ((err = MXC_FLC_ME21_GetByAddress(&flc, address)) != E_NO_ERROR) {
-        return err;
-    }
-
-    if ((address < MXC_INFO_MEM_BASE) ||
-        (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
-        return E_BAD_PARAM;
-    }
-
-    /* Make sure the info block is locked */
-    flc->actrl = 0x1234;
-
-    /* Write the unlock sequence */
-    flc->actrl = 0xaeefd679;
-    flc->actrl = 0x5f92525a;
-    flc->actrl = 0x65fbc805;
-
-    return E_NO_ERROR;
+    return E_NOT_SUPPORTED;
 }
 
 //******************************************************************************
