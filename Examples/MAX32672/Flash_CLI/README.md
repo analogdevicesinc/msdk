@@ -1,6 +1,14 @@
 ## Description
 
-This example demonstates the CLI commands feature of FreeRTOS, various features of the Flash Controller (page erase and write), and how to use the CTB to compute a CRC value. In the terminal window, type the command that you wish to execute. The available commands are "write" (writes a text string to flash), "read" (reads text from flash), "erase" (erases the flash page being operated on) and "crc" (computes the CRC value of the entire flash page.) For more details on how to input these commands, enter "help" in the terminal window.
+This example demonstates the CLI commands feature of FreeRTOS, various features of the Flash Controller (page erase and write), 
+and how to use the CTB to compute a CRC value. In the terminal window, type the command that you wish to execute. 
+The available commands are:
+- "write" (writes a text string to flash), 
+- "read" (reads text from flash), 
+- "erase" (erases the flash page being operated on) and 
+- "crc" (computes the CRC value of the entire flash page.) 
+
+For more details on how to input these commands, enter "help" in the terminal window.
 
 *** NOTE ***: Attempting to overwrite flash will return error. If you want to overwrite an address you must first erase.
 
@@ -16,10 +24,14 @@ The Console UART of the device will output these messages:
 
 ```
 *************** Flash Control CLI Example ***************
-
 This example demonstrates the CLI commands feature of FreeRTOS, various features
 of the Flash Controller (page erase and write), and how to use the CTB to
 compute the CRC value of an array. Enter commands in the terminal window.
+Note:
+The flash ECC operates on 128-bit words. If ECC is enabled (on default enabled),
+flash writes must be completed 128 bits at a time.
+This example uses MXC_FLC_Write128 so it will operate correctly when ECC is enabled.
+
 
 Starting FreeRTOS scheduler.
 
