@@ -10,7 +10,7 @@ This demo shows a tiny SSD network, trained to localize and recognize digits in 
 The image input size is 74x74 pixels RGB which is 74x74x3 in HWC format.
 
 
-Before building the firmware, please make sure to enable intended mode of operation by comment/uncomment the following in `main.c`:
+Before building the firmware, please make sure to enable intended mode of operation by comment/uncomment the following in `example_config.h`:
 
 ```c
 //#define USE_SAMPLEDATA        // shows the sample data
@@ -31,24 +31,10 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make -r distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+By default, the code is compiled for MAX78000 EVKIT.  To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
 
 ```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
-
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
-
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
+$ make -r BOARD=FTHR_RevA
 ```
 
 **Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
@@ -100,12 +86,13 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in Makefile:
+To compile code with enabled TFT feature use the following setting in `example_config.h`:
 
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
-endif
+```c
+#ifdef BOARD_FTHR_REVA
+// Disable TFT by default on FTHR
+#define TFT_ENABLE
+#endif
 ```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.

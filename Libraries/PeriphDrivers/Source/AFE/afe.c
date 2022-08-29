@@ -76,8 +76,8 @@
 #define AFE_TRIM_DAC_MASK      0x0FFFF
 #define AFE_TRIM_DAC_BIT_WIDTH 16
 
-#define AFE_TRIM_ANA_MASK      0x7FFF
-#define AFE_TRIM_ANA_BIT_WIDTH 15
+#define AFE_TRIM_ANA_ADC0_MASK      0x7FFF
+#define AFE_TRIM_ANA_ADC0_BIT_WIDTH 15
 
 #define AFE_TRIM0_ADC1_MASK      0x7FFFF
 #define AFE_TRIM0_ADC1_BIT_WIDTH 19
@@ -87,6 +87,12 @@
 
 #define AFE_TRIM_HART_MASK      0x0FFFFF
 #define AFE_TRIM_HART_BIT_WIDTH 20
+
+// NOTE: These two bits are embedded inside the HART trim
+#define AFE_TRIM_ANA_ADC1_MASK      0x060
+#define AFE_TRIM_ANA_ADC1_BIT_WIDTH 2
+#define AFE_TRIM_ANA_ADC1_OFFSET_1  5  // bit position in HART trim
+#define AFE_TRIM_ANA_ADC1_OFFSET_2  10 // bit position in ANA TRIM ADC1
 
 #define AFE_TRIM_VREF_MASK      0x7FF
 #define AFE_TRIM_VREF_BIT_WIDTH 11
@@ -104,9 +110,10 @@ typedef struct {
     uint32_t adc_trim0_adc1;
     uint32_t adc_trim1_adc0;
     uint32_t adc_trim1_adc1;
-    uint32_t ana_trim;
+    uint32_t ana_trim_adc0;
     uint32_t vref_trim;
     uint32_t hart_trim;
+    uint32_t ana_trim_adc1;
     uint32_t dac_trim;
 } trim_data_t;
 
@@ -501,7 +508,7 @@ int afe_load_trims(void)
     trim_data.dac_trim = afe_trim_low & AFE_TRIM_DAC_MASK;
     afe_trim_low >>= AFE_TRIM_DAC_BIT_WIDTH;
 
-    trim_data.ana_trim = afe_trim_low & AFE_TRIM_ANA_MASK;
+    trim_data.ana_trim_adc0 = afe_trim_low & AFE_TRIM_ANA_ADC0_MASK;
 
     // afe_trim_high
     trim_data.adc_trim0_adc1 = afe_trim_high & AFE_TRIM0_ADC1_MASK;
@@ -510,7 +517,14 @@ int afe_load_trims(void)
     trim_data.adc_trim1_adc1 = afe_trim_high & AFE_TRIM1_ADC1_MASK;
     afe_trim_high >>= AFE_TRIM1_ADC1_BIT_WIDTH;
 
+    // Now got to take care of the ANA_TRIM_ADC1 which is embedded inside the HART trim
+    trim_data.ana_trim_adc1 = afe_trim_high & AFE_TRIM_ANA_ADC1_MASK;
+    trim_data.ana_trim_adc1 >>= AFE_TRIM_ANA_ADC1_OFFSET_1;
+    trim_data.ana_trim_adc1 <<= AFE_TRIM_ANA_ADC1_OFFSET_2;
+
     trim_data.hart_trim = afe_trim_high & AFE_TRIM_HART_MASK;
+    // Force the embedded ANA trim to zeros.
+    trim_data.hart_trim &= ~AFE_TRIM_ANA_ADC1_MASK;
     afe_trim_high >>= AFE_TRIM_HART_BIT_WIDTH;
 
     trim_data.vref_trim = afe_trim_high & AFE_TRIM_VREF_MASK;
@@ -526,11 +540,12 @@ int afe_load_trims(void)
     printf("ADC0 adc trim 0: %08X\n", trim_data.adc_trim0_adc0);
     printf("ADC0 adc trim 1: %08X\n", trim_data.adc_trim1_adc0);
     printf("DAC trim: %08X\n", trim_data.dac_trim);
-    printf("ANA trim: %08X\n", trim_data.ana_trim);
+    printf("ANA ADC0 trim: %08X\n", trim_data.ana_trim_adc0);
 
     printf("ADC1 adc trim 0: %08X\n", trim_data.adc_trim0_adc1);
     printf("ADC1 adc trim 1: %08X\n", trim_data.adc_trim1_adc1);
     printf("HART trim: %08X\n", trim_data.hart_trim);
+    printf("ANA ADC1 trim: %08X\n", trim_data.ana_trim_adc1);
     printf("VREF trim: %08X\n", trim_data.vref_trim);
 #endif
 
@@ -599,7 +614,7 @@ int afe_load_trims(void)
     printf("DAC trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, &read_val);
-    printf("ANA trim: %08X\n", read_val);
+    printf("ANA ADC0 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ONE_ADC_TRIM0, &read_val);
     printf("ADC1 adc trim 0: %08X\n", read_val);
@@ -609,6 +624,9 @@ int afe_load_trims(void)
 
     afe_read_register(MXC_R_AFE_HART_TRIM, &read_val);
     printf("HART trim: %08X\n", read_val);
+
+    afe_read_register(MXC_R_AFE_ADC_ONE_ANA_TRIM, &read_val);
+    printf("ANA ADC1 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_DAC_VREF_TRIM, &read_val);
     printf("VREF trim: %08X\n", read_val);
@@ -630,7 +648,7 @@ int afe_load_trims(void)
     if (retval != E_NO_ERROR) {
         return retval;
     }
-    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, trim_data.ana_trim);
+    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, trim_data.ana_trim_adc0);
     if (retval != E_NO_ERROR) {
         return retval;
     }
@@ -643,6 +661,10 @@ int afe_load_trims(void)
         return retval;
     }
     retval = afe_write_register(MXC_R_AFE_HART_TRIM, trim_data.hart_trim);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+    retval = afe_write_register(MXC_R_AFE_ADC_ONE_ANA_TRIM, trim_data.ana_trim_adc1);
     if (retval != E_NO_ERROR) {
         return retval;
     }
@@ -666,7 +688,7 @@ int afe_load_trims(void)
     printf("DAC trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, &read_val);
-    printf("ANA trim: %08X\n", read_val);
+    printf("ANA ADC0 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ONE_ADC_TRIM0, &read_val);
     printf("ADC1 adc trim 0: %08X\n", read_val);
@@ -676,6 +698,9 @@ int afe_load_trims(void)
 
     afe_read_register(MXC_R_AFE_HART_TRIM, &read_val);
     printf("HART trim: %08X\n", read_val);
+
+    afe_read_register(MXC_R_AFE_ADC_ONE_ANA_TRIM, &read_val);
+    printf("ANA ADC1 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_DAC_VREF_TRIM, &read_val);
     printf("VREF trim: %08X\n", read_val);

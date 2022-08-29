@@ -442,122 +442,130 @@ void display_camera(void)
 
         // convert RGB888 to RGB565
         if (row < TFT_H) {
+#ifdef BOARD_FTHR_REVA
             for (int k = 0; k < 4 * w; k += 4) {
-                r = data[k];
-                g = data[k + 1];
-                b = data[k + 2];
-                //skip k+3
-                rgb          = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
-                data565[j++] = (rgb >> 8) & 0xFF;
-                data565[j++] = rgb & 0xFF;
+#endif
+#ifdef BOARD_EVKIT_V1
+                for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
+#endif
+                    r = data[k];
+                    g = data[k + 1];
+                    b = data[k + 2];
+                    //skip k+3
+                    rgb          = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+                    data565[j++] = (rgb >> 8) & 0xFF;
+                    data565[j++] = rgb & 0xFF;
+                }
+
+                MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
             }
 
-            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+            LED_Toggle(LED2);
+            // Release stream buffer
+            release_camera_stream_buffer();
         }
 
-        LED_Toggle(LED2);
-        // Release stream buffer
-        release_camera_stream_buffer();
+        stat = get_camera_stream_statistic();
+
+        //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
+        //printf("OVERFLOW = %d\n", stat->overflow_count);
+        if (stat->overflow_count > 0) {
+            printf("OVERFLOW DISP = %d\n", stat->overflow_count);
+            LED_On(LED2); // Turn on red LED if overflow detected
+
+            while (1)
+                ;
+        }
     }
 
-    stat = get_camera_stream_statistic();
+    static uint32_t sum = 0;
+    void dump_cnn(void)
+    {
+        uint32_t* data_addr[12] = {
+            (uint32_t*)0x50400700, (uint32_t*)0x50408700, (uint32_t*)0x50410700,
+            (uint32_t*)0x50418700, (uint32_t*)0x50800700, (uint32_t*)0x50808700,
+            (uint32_t*)0x50810700, (uint32_t*)0x50818700, (uint32_t*)0x50c00700,
+            (uint32_t*)0x50c08700, (uint32_t*)0x50c10700, (uint32_t*)0x50c18700};
 
-    //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    //printf("OVERFLOW = %d\n", stat->overflow_count);
-    if (stat->overflow_count > 0) {
-        printf("OVERFLOW DISP = %d\n", stat->overflow_count);
-        LED_On(LED2); // Turn on red LED if overflow detected
+        printf("\nDUMPING CNN, press PB0 \n");
+
+        while (!PB_Get(0))
+            ;
+
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 7744; j += 16) {
+                printf("\n%08X: ", data_addr[i]);
+
+                for (int k = 0; k < 16; k++) {
+                    printf("%08X ", *data_addr[i]);
+                    sum += *data_addr[i];
+                    data_addr[i]++;
+                }
+            }
+
+            printf("\n");
+        }
+
+        printf("SUM: %08X \n", sum);
 
         while (1)
             ;
     }
-}
 
-static uint32_t sum = 0;
-void dump_cnn(void)
-{
-    uint32_t* data_addr[12] = {(uint32_t*)0x50400700, (uint32_t*)0x50408700, (uint32_t*)0x50410700,
-                               (uint32_t*)0x50418700, (uint32_t*)0x50800700, (uint32_t*)0x50808700,
-                               (uint32_t*)0x50810700, (uint32_t*)0x50818700, (uint32_t*)0x50c00700,
-                               (uint32_t*)0x50c08700, (uint32_t*)0x50c10700, (uint32_t*)0x50c18700};
+    void dump_inference(void)
+    {
+        uint32_t* data_addr[16] = {
+            (uint32_t*)0x50400000, (uint32_t*)0x50408000, (uint32_t*)0x50410000,
+            (uint32_t*)0x50418000, (uint32_t*)0x50800000, (uint32_t*)0x50808000,
+            (uint32_t*)0x50810000, (uint32_t*)0x50818000, (uint32_t*)0x50c00000,
+            (uint32_t*)0x50c08000, (uint32_t*)0x50c10000, (uint32_t*)0x50c18000,
+            (uint32_t*)0x51000000, (uint32_t*)0x51008000, (uint32_t*)0x51010000,
+            (uint32_t*)0x51018000,
+        };
 
-    printf("\nDUMPING CNN, press PB0 \n");
+        printf("\nDUMPING INFERENCE, press PB0 \n");
 
-    while (!PB_Get(0))
-        ;
+        while (!PB_Get(0))
+            ;
 
-    for (int i = 0; i < 12; i++) {
-        for (int j = 0; j < 7744; j += 16) {
-            printf("\n%08X: ", data_addr[i]);
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 7744; j += 16) {
+                printf("\n%08X: ", data_addr[i]);
 
-            for (int k = 0; k < 16; k++) {
-                printf("%08X ", *data_addr[i]);
-                sum += *data_addr[i];
-                data_addr[i]++;
+                for (int k = 0; k < 16; k++) {
+                    printf("%08X ", *data_addr[i]);
+                    sum += *data_addr[i];
+                    data_addr[i]++;
+                }
             }
+
+            printf("\n");
         }
 
-        printf("\n");
+        printf("SUM: %08X \n", sum);
+
+        while (1)
+            ;
     }
 
-    printf("SUM: %08X \n", sum);
+    void run_camera(void)
+    {
+        // Start capturing a first camera image frame.
+        printf("Starting\n");
+        camera_start_capture_image();
 
-    while (1)
-        ;
-}
-
-void dump_inference(void)
-{
-    uint32_t* data_addr[16] = {
-        (uint32_t*)0x50400000, (uint32_t*)0x50408000, (uint32_t*)0x50410000, (uint32_t*)0x50418000,
-        (uint32_t*)0x50800000, (uint32_t*)0x50808000, (uint32_t*)0x50810000, (uint32_t*)0x50818000,
-        (uint32_t*)0x50c00000, (uint32_t*)0x50c08000, (uint32_t*)0x50c10000, (uint32_t*)0x50c18000,
-        (uint32_t*)0x51000000, (uint32_t*)0x51008000, (uint32_t*)0x51010000, (uint32_t*)0x51018000,
-    };
-
-    printf("\nDUMPING INFERENCE, press PB0 \n");
-
-    while (!PB_Get(0))
-        ;
-
-    for (int i = 0; i < 16; i++) {
-        for (int j = 0; j < 7744; j += 16) {
-            printf("\n%08X: ", data_addr[i]);
-
-            for (int k = 0; k < 16; k++) {
-                printf("%08X ", *data_addr[i]);
-                sum += *data_addr[i];
-                data_addr[i]++;
-            }
-        }
-
-        printf("\n");
-    }
-
-    printf("SUM: %08X \n", sum);
-
-    while (1)
-        ;
-}
-
-void run_camera(void)
-{
-    // Start capturing a first camera image frame.
-    printf("Starting\n");
-    camera_start_capture_image();
-
-    while (1) {
-        // Check if image is acquired
+        while (1) {
+            // Check if image is acquired
 #ifndef STREAM_ENABLE
-        if (camera_is_image_rcv())
+            if (camera_is_image_rcv())
 #endif
-        {
-            // Process the image, send it through the UART console.
-            process_img();
+            {
+                // Process the image, send it through the UART console.
+                process_img();
 
-            // Prepare for another frame capture.
-            LED_Toggle(LED1);
-            camera_start_capture_image();
+                // Prepare for another frame capture.
+                LED_Toggle(LED1);
+                camera_start_capture_image();
+            }
         }
     }
-}

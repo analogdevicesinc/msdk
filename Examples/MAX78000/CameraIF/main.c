@@ -97,8 +97,10 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
+// Match image dimensions to the selected camera and capture mode.
+// These definitions, including "CAMERA_MONO", come from board.mk
+
 #if defined(CAMERA_HM01B0)
-#define CAMERA_MONO
 
 #ifdef STREAM_ENABLE
 #define IMAGE_XRES 324 / 2
@@ -111,8 +113,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#if defined(CAMERA_HM0360) || defined(CAMERA_PAG7920)
-#define CAMERA_MONO
+#if defined(CAMERA_HM0360_MONO) || defined(DCAMERA_HM0360_COLOR) || defined(CAMERA_PAG7920)
 
 #ifdef STREAM_ENABLE
 #define IMAGE_XRES 320
