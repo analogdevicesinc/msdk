@@ -40,9 +40,8 @@
 TaskHandle_t cmd_task_id;
 TaskHandle_t tx_task_id;
 TaskHandle_t wfs_task_id;
-char receivedChar;
-volatile int longTestActive = 0;
-bool pausePrompt            = false;
+TaskHandle_t sweep_task_id;
+
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
@@ -63,6 +62,10 @@ static uint8_t phy = LL_PHY_LE_1M;
 static uint8_t phy_str[16];
 static uint8_t txFreqHopCh;
 
+char receivedChar;
+bool longTestActive = false;
+bool clearScreen    = false;
+bool pausePrompt    = false;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
@@ -149,15 +152,7 @@ void TMR2_IRQHandler(void)
 /*************************************************************************************************/
 void printUsage(void)
 {
-    // printf("Usage: \r\n");
-
-    // printf(" (4) Set Transmit power\r\n");
-    // printf(" (5) Enable constant TX\r\n");
-    // printf(" (6) Disable constant TX -- MUST be called after (5)\r\n");
-    // /* APP_TRACE_INFO0(" (7) Set PA value"); */
-    // printf(" (9) TX Frequency Hop\r\n");
-
-    // printf(" (u) Print usage\r\n");
+    // TODO
 }
 
 /*************************************************************************************************/
@@ -288,11 +283,19 @@ void prompt(void)
     char str[25];
     uint8_t len = 0;
     if (longTestActive) {
-        sprintf(str, "\n(active test) cmd: ");
-        len = 22;
+        sprintf(str, "\n(active test) cmd:");
+        len = 20;
     } else {
-        sprintf(str, "\ncmd: ");
-        len = 8;
+        sprintf(str, "\ncmd:");
+        len = 6;
+    }
+
+    if (clearScreen) {
+        char str[7];
+        // TODO check clear on putty
+        sprintf(str, "\033[2J");
+        WsfBufIoWrite((const uint8_t*)str, 5);
+        clearScreen = false;
     }
     //using app_trace would add newline after prompt which does not look right
     WsfBufIoWrite((const uint8_t*)str, len);
@@ -308,7 +311,7 @@ void vCmdLineTask(void* pvParameters)
     char output[OUTPUT_BUF_SIZE];   /* Buffer for output */
     BaseType_t xMore;
     mxc_uart_req_t async_read_req;
-
+    uint8_t backspace[] = "\x08 \x08";
     memset(buffer, 0, CMD_LINE_BUF_SIZE);
     index = 0;
 
@@ -327,7 +330,7 @@ void vCmdLineTask(void* pvParameters)
                     /* Backspace */
                     if (index > 0) {
                         index--;
-                        APP_TRACE_INFO0("\x08 \x08");
+                        WsfBufIoWrite((const uint8_t*)backspace, sizeof(backspace));
                     }
                     fflush(stdout);
                 } else if (tmp == 0x03) {
@@ -353,6 +356,7 @@ void vCmdLineTask(void* pvParameters)
                     putchar(tmp);
                     buffer[index++] = tmp;
                     fflush(stdout);
+
                 } else {
                     /* Throw away data and beep terminal */
                     putchar(0x07);
@@ -370,11 +374,13 @@ void txTestTask(void* pvParameters)
 {
     static int res    = 0xff;
     uint32_t notifVal = 0;
-    tx_task_command_t notifyCommand;
+    tx_config_t notifyCommand;
+    char str[80];
     while (1) {
+        /* Wait for notification to initiate TX/RX */
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
+        /* Get settings from the notification value */
         notifyCommand.allData = notifVal;
-        char str[100];
         if (notifyCommand.testType == TX_TEST) {
             sprintf(str,
                     "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", notifyCommand.channel);
@@ -395,12 +401,59 @@ void txTestTask(void* pvParameters)
             res = LlEnhancedRxTest(notifyCommand.channel, phy, 0, 0);
         }
         APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-        if (notifyCommand.duration) {
-            vTaskDelay(notifyCommand.duration);
+        if (notifyCommand.duration_ms) {
+            vTaskDelay(notifyCommand.duration_ms);
             LlEndTest(NULL);
         }
         pausePrompt = false;
 
+        prompt();
+    }
+}
+void sweepTestTask(void* pvParameters)
+{
+    static int res    = 0xff;
+    uint32_t notifVal = 0;
+    sweep_config_t sweepConfig;
+    tx_config_t txCommand;
+    /* channles in order of appreance in the spectrum */
+    uint8_t ble_channels_spectrum[40] = {37, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 38, 11,
+                                         12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+                                         26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39};
+    // remap to find channel location in above list
+    uint8_t ble_channels_remap[40] = {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 13, 14, 15,
+                                      16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                                      30, 31, 32, 33, 34, 35, 36, 37, 38, 0,  12, 39};
+    while (1) {
+        /* Wait for notification to initiate sweep */
+        xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
+        sweepConfig.allData = notifVal;
+        APP_TRACE_INFO3("\r\nStarting TX sweep from CH[%d] to CH[%d] @ %d ms per channel",
+                        sweepConfig.start_channel, sweepConfig.end_channel,
+                        sweepConfig.duration_per_ch_ms);
+
+        /* get index  */
+        uint8_t start_ch = ble_channels_remap[sweepConfig.start_channel];
+        uint8_t end_ch   = ble_channels_remap[sweepConfig.end_channel];
+        APP_TRACE_INFO2("%d : %d", start_ch, end_ch);
+        char str[6] = "";
+        /* config txCommand to RF Task */
+        txCommand.duration_ms = sweepConfig.duration_per_ch_ms;
+        txCommand.testType    = TX_TEST;
+        strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
+                    (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
+                    (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
+                    (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
+                                                       "");
+        for (int i = start_ch; i <= end_ch; i++) {
+            txCommand.channel = ble_channels_spectrum[i];
+            res = LlEnhancedTxTest(ble_channels_spectrum[i], 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+            APP_TRACE_INFO2("Tx Transmit Ch[ %d ] : %s", i, str);
+            vTaskDelay(sweepConfig.duration_per_ch_ms);
+            LlEndTest(NULL);
+        }
+        longTestActive = false;
+        pausePrompt    = false;
         prompt();
     }
 }
@@ -471,8 +524,12 @@ int main(void)
     // TX tranismit test task
     xTaskCreate(txTestTask, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &tx_task_id);
 
+    // Sweep test task
+    xTaskCreate(sweepTestTask, (const char*)"Sweep Task", 1024, NULL, tskIDLE_PRIORITY + 1,
+                &sweep_task_id);
+
     //wsfLoop task
-    xTaskCreate(wfsLoop, (const char*)"WSF Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
+    xTaskCreate(wfsLoop, (const char*)"WFS Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
 
     /* Start scheduler */
     APP_TRACE_INFO0("Starting scheduler.");

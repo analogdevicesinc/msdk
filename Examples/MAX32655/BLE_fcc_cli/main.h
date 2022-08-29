@@ -33,12 +33,22 @@ typedef enum { RX_TEST, TX_TEST } test_t;
 //used to post messages to a task via its notification parameter
 typedef union {
     struct {
-        uint16_t duration;
+        uint16_t duration_ms;
         uint8_t channel;
         uint8_t testType;
     };
     uint32_t allData;
-} tx_task_command_t;
+} tx_config_t;
+
+typedef union {
+    struct {
+        uint8_t start_channel;
+        uint8_t end_channel;
+        uint8_t duration_per_ch_ms;
+        uint8_t itteraton; /* how many times to sweep */
+    };
+    uint32_t allData;
+} sweep_config_t;
 
 void setPhy(uint8_t newPhy);
 void startFreqHopping(void);

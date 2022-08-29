@@ -1,13 +1,14 @@
 
 #include "main.h"
 
-#define NUM_OF_COMMANDS 6
+#define NUM_OF_COMMANDS 12
 extern int disable_tickless;
 extern TaskHandle_t tx_task_id;
 extern TaskHandle_t cmd_task_id;
-extern int longTestActive;
+extern TaskHandle_t sweep_task_id;
+extern bool longTestActive;
 extern bool pausePrompt;
-
+extern bool clearScreen;
 /*! \brief Physical layer functions. */
 extern void llc_api_set_txpower(int8_t power);
 extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
@@ -18,6 +19,8 @@ extern void dbb_seq_tx_disable(void);
 CLI_Command_Definition_t registeredCommandList[10];
 
 /***************************| Command handler protoypes |******************************/
+static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString);
 static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
                                       const char* pcCommandString);
 
@@ -45,9 +48,18 @@ static BaseType_t cmd_DisableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen
 static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
                                     const char* pcCommandString);
 
+static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
+                            const char* pcCommandString);
+
 /***************************| Command structures |******************************/
 /* Structure that defines the "ps" command line command. */
 static const CLI_Command_Definition_t xCommandList[] = {
+    {
+        .pcCommand                   = "cls", /* The command string to type. */
+        .pcHelpString                = "Clears screen",
+        .pxCommandInterpreter        = cmd_clearScreen, /* The function to run. */
+        .cExpectedNumberOfParameters = 0                /* No parameters are expected. */
+    },
     {
         .pcCommand                   = "ps", /* The command string to type. */
         .pcHelpString                = "Displays a table showing the state of each FreeRTOS task",
@@ -125,10 +137,35 @@ static const CLI_Command_Definition_t xCommandList[] = {
         .pxCommandInterpreter        = cmd_EnableFreqHop, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
+    },
+    {
+
+        .pcCommand                   = "sweep", /* The command string to type. */
+        .pcHelpString                = "<param> <param> <param> sweeps channels at given intervals",
+        .pxCommandInterpreter        = cmd_Sweep, /* The function to run. */
+        .cExpectedNumberOfParameters = -1
+
     }
 
 };
 /***************************| Command handlers |******************************/
+static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char* pcCommandString)
+{
+    const char* const pcHeader = "Task          State  Priority  Stack	"
+                                 "#\r\n************************************************\r\n";
+
+    /* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+    clearScreen = true;
+    /* There is no more data to return after this single string, so return
+	pdFALSE. */
+    return pdFALSE;
+}
 static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
                                       const char* pcCommandString)
 {
@@ -179,7 +216,7 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     uint8_t channel;
     uint16_t testLen;
-    tx_task_command_t notifyCommand;
+    tx_config_t txCommand;
     BaseType_t lParameterStringLength;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
@@ -200,15 +237,15 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     if (channel > 39 || channel < 0)
         return pdFALSE;
 
-    notifyCommand.channel  = channel;
-    notifyCommand.duration = testLen;
-    notifyCommand.testType = (memcmp(pcCommandString, "tx", 2) == 0) ? TX_TEST : RX_TEST;
+    txCommand.channel     = channel;
+    txCommand.duration_ms = testLen;
+    txCommand.testType    = (memcmp(pcCommandString, "tx", 2) == 0) ? TX_TEST : RX_TEST;
 
-    if (notifyCommand.duration == 0) {
-        longTestActive = 1;
+    if (txCommand.duration_ms == 0) {
+        longTestActive = true;
     }
 
-    xTaskNotify(tx_task_id, notifyCommand.allData, eSetBits);
+    xTaskNotify(tx_task_id, txCommand.allData, eSetBits);
     pausePrompt = true;
     return pdFALSE;
 }
@@ -226,7 +263,7 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
     LlEndTest(NULL);
     MXC_TMR_Stop(MXC_TMR2);
-    longTestActive = 0;
+    longTestActive = false;
     pausePrompt    = false;
     return pdFALSE;
 }
@@ -313,7 +350,7 @@ static BaseType_t cmd_EnableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     /* Enable constant TX */
     dbb_seq_tx_enable();
 
-    longTestActive = 1;
+    longTestActive = true;
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -333,7 +370,7 @@ static BaseType_t cmd_DisableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen
     /* Disable constant TX */
     dbb_seq_tx_disable();
     PalBbDisable();
-    longTestActive = 0;
+    longTestActive = false;
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -351,7 +388,45 @@ static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
     // TODO : validate value
     sprintf(pcWriteBuffer, "Starting frequency hopping\n");
     startFreqHopping();
-    longTestActive = 1;
+    longTestActive = true;
+    return pdFALSE;
+}
+/*-----------------------------------------------------------*/
+static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
+                            const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+    (void)pcCommandString;
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    sweep_config_t sweepConfig;
+    BaseType_t lParameterStringLength;
+
+    uint8_t start, end, duration;
+    sweepConfig.start_channel = atoi(
+        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                 1,                      /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+                                 ));
+    sweepConfig.end_channel = atoi(
+        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                 2,                      /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+                                 ));
+
+    sweepConfig.duration_per_ch_ms = atoi(
+        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                 3,                      /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+                                 ));
+
+    //start sweep task
+    xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
+    longTestActive = true;
+    pausePrompt    = true;
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
