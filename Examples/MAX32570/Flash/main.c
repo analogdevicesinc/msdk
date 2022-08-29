@@ -157,6 +157,8 @@ void FLC1_IRQHandler(void)
 //******************************************************************************
 void flash_init(void)
 {
+    MXC_FLC_Init();
+
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
     MXC_FLC0->clkdiv = 24;
