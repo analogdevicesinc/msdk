@@ -384,8 +384,11 @@ int main(void)
     printf("\nThis example demonstrates the CLI commands feature of FreeRTOS, various features");
     printf("\nof the Flash Controller (page erase and write), and how to use the CTB to");
     printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n");
-    printf("\nSince ECC is open by default, to make this example work properly");
-    printf("\nMXC_FLC_Write128 function is used.\n\n");
+    printf("\nNote:");
+    printf("\nThe flash ECC operates on 128-bit words. If ECC is enabled (on default enabled),");
+    printf("\nflash writes must be completed 128 bits at a time.");
+    printf("\nThis example uses MXC_FLC_Write128 so it will operate correctly when ECC is enabled.\n\n");
+
 
     NVIC_SetRAM();
     // Initialize the Flash
