@@ -41,5 +41,6 @@ typedef union {
 } tx_task_command_t;
 
 void setPhy(uint8_t newPhy);
+void startFreqHopping(void);
 
 #endif

@@ -285,9 +285,8 @@ void prompt(void)
 {
     if (pausePrompt)
         return;
-    char str[30];
+    char str[25];
     uint8_t len = 0;
-    mxc_uart_req_t write_req;
     if (longTestActive) {
         sprintf(str, "\n(active test) cmd: ");
         len = 22;
@@ -296,7 +295,7 @@ void prompt(void)
         len = 8;
     }
     //using app_trace would add newline after prompt which does not look right
-    WsfBufIoWrite(str, len);
+    WsfBufIoWrite((const uint8_t*)str, len);
 }
 
 void vCmdLineTask(void* pvParameters)
@@ -375,7 +374,7 @@ void txTestTask(void* pvParameters)
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         notifyCommand.allData = notifVal;
-        uint8_t str[100];
+        char str[100];
         if (notifyCommand.testType == TX_TEST) {
             sprintf(str,
                     "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", notifyCommand.channel);
@@ -407,9 +406,6 @@ void txTestTask(void* pvParameters)
 }
 void wfsLoop(void* pvParameters)
 {
-    int res           = 0;
-    uint32_t notifVal = 0;
-
     while (1) {
         WsfOsEnterMainLoop();
     }
@@ -424,6 +420,12 @@ void setPhy(uint8_t newPhy)
                 (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
                                                    "");
     APP_TRACE_INFO1("%s", str);
+}
+void startFreqHopping(void)
+{
+    NVIC_EnableIRQ(TMR2_IRQn);
+    MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
+    MXC_TMR_EnableInt(MXC_TMR2);
 }
 /*************************************************************************************************/
 /*!
@@ -470,7 +472,7 @@ int main(void)
     xTaskCreate(txTestTask, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &tx_task_id);
 
     //wsfLoop task
-    xTaskCreate(wfsLoop, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
+    xTaskCreate(wfsLoop, (const char*)"WSF Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
 
     /* Start scheduler */
     APP_TRACE_INFO0("Starting scheduler.");
