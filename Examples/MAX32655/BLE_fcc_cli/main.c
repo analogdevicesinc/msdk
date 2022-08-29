@@ -45,15 +45,8 @@ volatile int longTestActive = 0;
 bool pausePrompt            = false;
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
-#define UARTx_IRQHandler UART0_IRQHandler
-#define UARTx_IRQn       UART0_IRQn
-mxc_gpio_cfg_t uart_cts = {MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP,
-                           MXC_GPIO_VSSEL_VDDIOH};
-mxc_gpio_cfg_t uart_rts = {MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                           MXC_GPIO_VSSEL_VDDIOH};
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 
-mxc_gpio_cfg_t uart_cts_isr;
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
 /**************************************************************************************************
@@ -157,17 +150,13 @@ void TMR2_IRQHandler(void)
 void printUsage(void)
 {
     // printf("Usage: \r\n");
-    // printf(" (0) Transmit on RF channel 0 (2402 MHz)\r\n");
-    // printf(" (1) Transmit on RF channel 19 (2440 MHz)\r\n");
-    // printf(" (2) Transmit on RF channel 39 (2480 MHz)\r\n");
-    // printf(" (3) Receive  on RF channel 39 (2480 MHz)\r\n");
+
     // printf(" (4) Set Transmit power\r\n");
     // printf(" (5) Enable constant TX\r\n");
     // printf(" (6) Disable constant TX -- MUST be called after (5)\r\n");
     // /* APP_TRACE_INFO0(" (7) Set PA value"); */
-    // printf(" (8) Set PHY\r\n");
     // printf(" (9) TX Frequency Hop\r\n");
-    // printf(" (e) End transmission -- MUST be used after each (0-3, 9)\r\n");
+
     // printf(" (u) Print usage\r\n");
 }
 
@@ -185,7 +174,6 @@ void printUsage(void)
 static void processConsoleRX(uint8_t rxByte)
 {
     BaseType_t xHigherPriorityTaskWoken;
-
     receivedChar = rxByte;
     /* Wake the task */
     xHigherPriorityTaskWoken = pdFALSE;
@@ -301,24 +289,14 @@ void prompt(void)
     uint8_t len = 0;
     mxc_uart_req_t write_req;
     if (longTestActive) {
-        sprintf(str, "(active test) cmd: ");
-        len = 20;
+        sprintf(str, "\n(active test) cmd: ");
+        len = 22;
     } else {
-        sprintf(str, "cmd: ");
-        len = 6;
+        sprintf(str, "\ncmd: ");
+        len = 8;
     }
     //using app_trace would add newline after prompt which does not look right
     WsfBufIoWrite(str, len);
-}
-
-void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
-{
-    BaseType_t xHigherPriorityTaskWoken;
-
-    /* Wake the task */
-    xHigherPriorityTaskWoken = pdFALSE;
-    vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 void vCmdLineTask(void* pvParameters)
