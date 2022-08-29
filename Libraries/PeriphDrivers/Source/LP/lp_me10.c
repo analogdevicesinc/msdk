@@ -667,7 +667,6 @@ void MXC_LP_EnterDeepSleepMode(void)
     MXC_PWRSEQ->ctrl = lpcn;
     /* Enable fast wakeup */
     lpcn |= 0x400;
-    lpcn |= 1 << 26;
     MXC_PWRSEQ->ctrl = lpcn;
 
     /* Set SLEEPDEEP bit */
