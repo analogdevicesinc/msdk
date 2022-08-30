@@ -6,7 +6,6 @@
 #define MXC_R_PATTERN_GEN *((volatile uint16_t*)(0x4005203C))
 #define MXC_R_TX_CTRL     *((volatile uint16_t*)(0x4005101C))
 
-#define NUM_OF_COMMANDS 11
 extern int disable_tickless;
 extern TaskHandle_t tx_task_id;
 extern TaskHandle_t cmd_task_id;
@@ -31,8 +30,8 @@ static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
 static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
                                       const char* pcCommandString);
 
-static BaseType_t cmd_PrintUsage(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString);
+static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen,
+                           const char* pcCommandString);
 
 static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
@@ -63,14 +62,14 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
 static const CLI_Command_Definition_t xCommandList[] = {
     {
         .pcCommand                   = "cls", /* The command string to type. */
-        .pcHelpString                = "\r\ncls :\r\n\tClears screen",
+        .pcHelpString                = "Clears screen",
         .pxCommandInterpreter        = cmd_clearScreen, /* The function to run. */
         .cExpectedNumberOfParameters = 0                /* No parameters are expected. */
     },
     {
 
         .pcCommand                   = "constTx", /* The command string to type. */
-        .pcHelpString                = "\r\nconstTx :\r\n\t<param> : Enable constant TX.",
+        .pcHelpString                = "Enable constant TX.",
         .pxCommandInterpreter        = cmd_ConstTx, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
@@ -78,7 +77,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "e", /* The command string to type. */
-        .pcHelpString                = "\r\ne :\r\n\tStops any active TX test",
+        .pcHelpString                = "Stops any active TX test",
         .pxCommandInterpreter        = cmd_StopRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
@@ -86,7 +85,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "fhop", /* The command string to type. */
-        .pcHelpString                = "\r\nfhop :\r\n\tStarts frequency hopping",
+        .pcHelpString                = "Starts frequency hopping",
         .pxCommandInterpreter        = cmd_EnableFreqHop, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
@@ -94,38 +93,38 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "phy", /* The command string to type. */
-        .pcHelpString                = "\r\nphy :\r\n\t<param> : Sets Phy. Param: 1M 2M S8 S2 ",
+        .pcHelpString                = "Sets Phy. Param: 1M 2M S8 S2 ",
         .pxCommandInterpreter        = cmd_SetPhy, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
     {
-        .pcCommand    = "ps", /* The command string to type. */
-        .pcHelpString = "\r\nps :\r\n\tDisplays a table showing the state of each FreeRTOS task",
+        .pcCommand                   = "ps", /* The command string to type. */
+        .pcHelpString                = "Displays a table showing the state of each FreeRTOS task",
         .pxCommandInterpreter        = prvTaskStatsCommand, /* The function to run. */
         .cExpectedNumberOfParameters = 0                    /* No parameters are expected. */
     },
     {
 
-        .pcCommand            = "rx", /* The command string to type. */
-        .pcHelpString         = "\r\nrx :\r\n\t<channel> <optional: duration>:Performs RX test",
-        .pxCommandInterpreter = cmd_StartRFTest, /* The function to run. */
+        .pcCommand                   = "rx", /* The command string to type. */
+        .pcHelpString                = "Performs RX test on given channel",
+        .pxCommandInterpreter        = cmd_StartRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     },
     {
 
-        .pcCommand            = "sweep", /* The command string to type. */
-        .pcHelpString         = "\r\nsweep :\r\n\t<param> <param> <param> sweeps channels at given "
-                                "intervals\r\n", /* last command should have newline at end of help string*/
-        .pxCommandInterpreter = cmd_Sweep, /* The function to run. */
+        .pcCommand                   = "sweep", /* The command string to type. */
+        .pcHelpString                = "Sweeps channels at given interval "
+                                       "intervals\r\n", /* last command should have newline at end of help string*/
+        .pxCommandInterpreter        = cmd_Sweep, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     },
     {
 
-        .pcCommand    = "tx", /* The command string to type. */
-        .pcHelpString = "\r\ntx :\r\n\ttx tx <channel> <optional: duration>: Performs TX test",
+        .pcCommand                   = "tx", /* The command string to type. */
+        .pcHelpString                = "Performs TX test",
         .pxCommandInterpreter        = cmd_StartRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
@@ -133,28 +132,27 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "txdbm", /* The command string to type. */
-        .pcHelpString                = "\r\ntxdbm :\r\n\t<param> : Sets transmit power.",
+        .pcHelpString                = "Sets transmit power",
         .pxCommandInterpreter        = cmd_SetTxdBm, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
     {
 
-        .pcCommand                   = "u", /* The command string to type. */
-        .pcHelpString                = "\r\nu :\r\n\tDisplays FCC app usage",
-        .pxCommandInterpreter        = cmd_PrintUsage, /* The function to run. */
+        .pcCommand                   = "help", /* The command string to type. */
+        .pcHelpString                = "Displays FCC app usage",
+        .pxCommandInterpreter        = cmd_Help, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
-    }
+    },
+    {
 
-};
+        .pcCommand = NULL /* simply used as delimeter for end of array*/
+    }};
 /***************************| Command handlers |******************************/
 static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString)
 {
-    const char* const pcHeader = "Task          State  Priority  Stack	"
-                                 "#\r\n************************************************\r\n";
-
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
@@ -188,8 +186,7 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_PrintUsage(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString)
+static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const char* pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -213,7 +210,6 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
-    (void)pcCommandString;
     (void)xWriteBufferLen;
     uint8_t channel;
     uint16_t testLen;
@@ -258,7 +254,6 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
-    (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
 
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
@@ -286,7 +281,6 @@ static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
-    (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
@@ -444,9 +438,10 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
 /*-----------------------------------------------------------*/
 void vRegisterCLICommands(void)
 {
+    int i = 0;
     /* Register all the command line commands defined immediately above. */
-    for (int i = 0; i < NUM_OF_COMMANDS; i++) {
-        FreeRTOS_CLIRegisterCommand(&xCommandList[i]);
-    }
+    do {
+        FreeRTOS_CLIRegisterCommand(&xCommandList[i++]);
+    } while (xCommandList[i].pcCommand != NULL);
 }
 /*-----------------------------------------------------------*/

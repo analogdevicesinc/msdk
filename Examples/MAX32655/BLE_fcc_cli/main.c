@@ -45,7 +45,6 @@ TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
-bool freqHopisActive         = false;
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
 /**************************************************************************************************
@@ -63,9 +62,11 @@ static uint8_t phy_str[16];
 static uint8_t txFreqHopCh;
 
 char receivedChar;
-bool longTestActive = false;
-bool clearScreen    = false;
-bool pausePrompt    = false;
+/* helper flags */
+bool longTestActive  = false;
+bool freqHopisActive = false;
+bool clearScreen     = false;
+bool pausePrompt     = false;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
@@ -137,22 +138,6 @@ void TMR2_IRQHandler(void)
     /* Restart the timeout */
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
     MXC_TMR_EnableInt(MXC_TMR2);
-}
-
-/*************************************************************************************************/
-/*!
- *  \fn     Usage statement
- *
- *  \brief  Prints the usage statement.
- *
- *  \param  None.
- *
- *  \return None.
- */
-/*************************************************************************************************/
-void printUsage(void)
-{
-    // TODO
 }
 
 /*************************************************************************************************/
@@ -475,11 +460,13 @@ void helpTask(void* pvParameters)
     const CLI_Command_Definition_t(*commandList)[];
     while (1) {
         /* using the notify value as a pointer to the command list */
+        int i = 0;
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         commandList = (const CLI_Command_Definition_t**)notifVal;
-        for (int i = 0; i < 11; i++) {
-            APP_TRACE_INFO1("Command : %s", (*commandList)[i].pcCommand);
-        }
+        do {
+            APP_TRACE_INFO1("Command : %s", (*commandList)[i++].pcCommand);
+        } while ((*commandList)[i].pcCommand != NULL);
+
         pausePrompt = false;
         prompt();
     }
