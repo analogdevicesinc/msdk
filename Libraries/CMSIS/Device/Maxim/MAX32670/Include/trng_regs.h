@@ -117,8 +117,11 @@ typedef struct {
  #define MXC_F_TRNG_CTRL_HEALTH_EN_POS                  2 /**< CTRL_HEALTH_EN Position */
  #define MXC_F_TRNG_CTRL_HEALTH_EN                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_EN_POS)) /**< CTRL_HEALTH_EN Mask */
 
- #define MXC_F_TRNG_CTRL_KEYGEN_POS                     3 /**< CTRL_KEYGEN Position */
- #define MXC_F_TRNG_CTRL_KEYGEN                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_KEYGEN_POS)) /**< CTRL_KEYGEN Mask */
+ #define MXC_F_TRNG_CTRL_AESKG_USR_POS                  3 /**< CTRL_AESKG_USR Position */
+ #define MXC_F_TRNG_CTRL_AESKG_USR                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_USR_POS)) /**< CTRL_AESKG_USR Mask */
+
+ #define MXC_F_TRNG_CTRL_AESKG_SYS_POS                  4 /**< CTRL_AESKG_SYS Position */
+ #define MXC_F_TRNG_CTRL_AESKG_SYS                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_SYS_POS)) /**< CTRL_AESKG_SYS Mask */
 
  #define MXC_F_TRNG_CTRL_KEYWIPE_POS                    15 /**< CTRL_KEYWIPE Position */
  #define MXC_F_TRNG_CTRL_KEYWIPE                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_KEYWIPE_POS)) /**< CTRL_KEYWIPE Mask */
