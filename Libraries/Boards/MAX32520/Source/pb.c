@@ -39,7 +39,6 @@
 #include "mxc_assert.h"
 #include "pb.h"
 
-int virtualButtons[2];
 /******************************************************************************/
 int PB_Init(void)
 {

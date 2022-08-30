@@ -48,7 +48,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 
 /***** Definitions *****/
@@ -394,13 +393,11 @@ int main(void)
     }
     MXC_ICC_Enable();
 
-    printf("\n");
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
+        printf("\nExample Failed\n");
     }
-    while (1)
-        ;
+
     return 0;
 }

@@ -5,14 +5,14 @@
 Description
 -----------
 
-This demo shows a UNet network with 352x352 input, trained to segment images into four categories and color them as follows:
+This demo shows a UNet network with 352x352 resolution input, trained to segment images into four categories and color them as follows:
 
 - Building: Red
 - Tree: Green
 - Sky: Blue
 - Unknown: Black
 
-Before building the firmware, please make sure to enable your intended mode of operation by enabling/disabling the following defines in `main.c`:
+Before building the firmware, please make sure to enable your intended mode of operation by enabling/disabling the following define in `main.c`:
 
 ```c
 #define USE_CAMERA   // if enabled, it uses the camera specified in the make file, otherwise it uses serial loader
@@ -33,25 +33,13 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make -r distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+By default, the code is compiled for MAX78000 EVKIT.  To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
 
 ```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
+$ make -r BOARD=FTHR_RevA
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile (requires TFT display for Feather https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Feather):
-
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
+The MAX78000 Feather board requires TFT display https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Feather.
 
 **Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
 
