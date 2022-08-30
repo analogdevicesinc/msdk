@@ -44,8 +44,7 @@ typedef union {
     struct {
         uint8_t start_channel;
         uint8_t end_channel;
-        uint8_t duration_per_ch_ms;
-        uint8_t itteraton; /* how many times to sweep */
+        uint16_t duration_per_ch_ms;
     };
     uint32_t allData;
 } sweep_config_t;

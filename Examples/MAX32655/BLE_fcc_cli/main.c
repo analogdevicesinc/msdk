@@ -283,9 +283,11 @@ void prompt(void)
     char str[25];
     uint8_t len = 0;
     if (longTestActive) {
+        fflush(stdout);
         sprintf(str, "\n(active test) cmd:");
         len = 20;
     } else {
+        fflush(stdout);
         sprintf(str, "\ncmd:");
         len = 6;
     }
@@ -381,6 +383,7 @@ void txTestTask(void* pvParameters)
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         /* Get settings from the notification value */
         notifyCommand.allData = notifVal;
+
         if (notifyCommand.testType == TX_TEST) {
             sprintf(str,
                     "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", notifyCommand.channel);
@@ -395,6 +398,7 @@ void txTestTask(void* pvParameters)
                                                        "");
         APP_TRACE_INFO1("%s", str);
 
+        /* stat test */
         if (notifyCommand.testType == TX_TEST) {
             res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
         } else {
@@ -428,7 +432,7 @@ void sweepTestTask(void* pvParameters)
         /* Wait for notification to initiate sweep */
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
         sweepConfig.allData = notifVal;
-        APP_TRACE_INFO3("\r\nStarting TX sweep from CH[%d] to CH[%d] @ %d ms per channel",
+        APP_TRACE_INFO3("\r\nStarting TX sweep from Ch %d to Ch %d @ %d ms per channel",
                         sweepConfig.start_channel, sweepConfig.end_channel,
                         sweepConfig.duration_per_ch_ms);
 
@@ -446,11 +450,13 @@ void sweepTestTask(void* pvParameters)
                     (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
                                                        "");
         for (int i = start_ch; i <= end_ch; i++) {
+            APP_TRACE_INFO0("\r\n---------------------------------------\r\n");
             txCommand.channel = ble_channels_spectrum[i];
             res = LlEnhancedTxTest(ble_channels_spectrum[i], 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("Tx Transmit Ch[ %d ] : %s", i, str);
+            APP_TRACE_INFO2("Tx Transmit Ch[ %d ] : %s", ble_channels_spectrum[i], str);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
             LlEndTest(NULL);
+            vTaskDelay(100); /* give console time to print end of  test reuslts */
         }
         longTestActive = false;
         pausePrompt    = false;

@@ -1,7 +1,7 @@
 
 #include "main.h"
 
-#define NUM_OF_COMMANDS 12
+#define NUM_OF_COMMANDS 11
 extern int disable_tickless;
 extern TaskHandle_t tx_task_id;
 extern TaskHandle_t cmd_task_id;
@@ -16,6 +16,7 @@ extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
 
+bool constTxisActive = false;
 CLI_Command_Definition_t registeredCommandList[10];
 
 /***************************| Command handler protoypes |******************************/
@@ -39,8 +40,8 @@ static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
 static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
                                const char* pcCommandString);
 
-static BaseType_t cmd_EnableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                    const char* pcCommandString);
+static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
+                              const char* pcCommandString);
 
 static BaseType_t cmd_DisableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
                                      const char* pcCommandString);
@@ -56,44 +57,44 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
 static const CLI_Command_Definition_t xCommandList[] = {
     {
         .pcCommand                   = "cls", /* The command string to type. */
-        .pcHelpString                = "Clears screen",
+        .pcHelpString                = "\r\ncls :\r\n\tClears screen",
         .pxCommandInterpreter        = cmd_clearScreen, /* The function to run. */
         .cExpectedNumberOfParameters = 0                /* No parameters are expected. */
     },
     {
-        .pcCommand                   = "ps", /* The command string to type. */
-        .pcHelpString                = "Displays a table showing the state of each FreeRTOS task",
+        .pcCommand    = "ps", /* The command string to type. */
+        .pcHelpString = "\r\nps :\r\n\tDisplays a table showing the state of each FreeRTOS task",
         .pxCommandInterpreter        = prvTaskStatsCommand, /* The function to run. */
         .cExpectedNumberOfParameters = 0                    /* No parameters are expected. */
     },
     {
 
         .pcCommand                   = "u", /* The command string to type. */
-        .pcHelpString                = "Displays FCC app usage",
+        .pcHelpString                = "\r\nu :\r\n\tDisplays FCC app usage",
         .pxCommandInterpreter        = cmd_PrintUsage, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
     },
     {
 
-        .pcCommand                   = "tx", /* The command string to type. */
-        .pcHelpString                = "tx tx <channel> <optional: duration>: Performs TX test",
+        .pcCommand    = "tx", /* The command string to type. */
+        .pcHelpString = "\r\ntx :\r\n\ttx tx <channel> <optional: duration>: Performs TX test",
         .pxCommandInterpreter        = cmd_StartRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     },
     {
 
-        .pcCommand                   = "rx", /* The command string to type. */
-        .pcHelpString                = "<channel> <optional: duration>:Performs RX test",
-        .pxCommandInterpreter        = cmd_StartRFTest, /* The function to run. */
+        .pcCommand            = "rx", /* The command string to type. */
+        .pcHelpString         = "\r\nrx :\r\n\t<channel> <optional: duration>:Performs RX test",
+        .pxCommandInterpreter = cmd_StartRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     },
     {
 
         .pcCommand                   = "e", /* The command string to type. */
-        .pcHelpString                = "Stops any active TX test",
+        .pcHelpString                = "\r\ne :\r\n\tStops any active TX test",
         .pxCommandInterpreter        = cmd_StopRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
@@ -101,7 +102,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "phy", /* The command string to type. */
-        .pcHelpString                = "<param> : Sets Phy. Param: 1M 2M S8 S2 ",
+        .pcHelpString                = "\r\nphy :\r\n\t<param> : Sets Phy. Param: 1M 2M S8 S2 ",
         .pxCommandInterpreter        = cmd_SetPhy, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
@@ -109,40 +110,34 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "txdbm", /* The command string to type. */
-        .pcHelpString                = "<param> : Sets transmit power.",
+        .pcHelpString                = "\r\ntxdbm :\r\n\t<param> : Sets transmit power.",
         .pxCommandInterpreter        = cmd_SetTxdBm, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
     {
 
-        .pcCommand                   = "constTx on", /* The command string to type. */
-        .pcHelpString                = "<param> : Enable constant TX.",
-        .pxCommandInterpreter        = cmd_EnableConstTx, /* The function to run. */
-        .cExpectedNumberOfParameters = 1
+        .pcCommand                   = "constTx", /* The command string to type. */
+        .pcHelpString                = "\r\nconstTx :\r\n\t<param> : Enable constant TX.",
+        .pxCommandInterpreter        = cmd_ConstTx, /* The function to run. */
+        .cExpectedNumberOfParameters = -1
 
     },
-    {
 
-        .pcCommand                   = "constTx off", /* The command string to type. */
-        .pcHelpString                = "Disable constant TX.",
-        .pxCommandInterpreter        = cmd_DisableConstTx, /* The function to run. */
-        .cExpectedNumberOfParameters = 0
-
-    },
     {
 
         .pcCommand                   = "fhop", /* The command string to type. */
-        .pcHelpString                = "Starts frequency hopping",
+        .pcHelpString                = "\r\nfhop :\r\n\tStarts frequency hopping",
         .pxCommandInterpreter        = cmd_EnableFreqHop, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
     },
     {
 
-        .pcCommand                   = "sweep", /* The command string to type. */
-        .pcHelpString                = "<param> <param> <param> sweeps channels at given intervals",
-        .pxCommandInterpreter        = cmd_Sweep, /* The function to run. */
+        .pcCommand            = "sweep", /* The command string to type. */
+        .pcHelpString         = "\r\nsweep :\r\n\t<param> <param> <param> sweeps channels at given "
+                                "intervals\r\n", /* last command should have newline at end of help string*/
+        .pxCommandInterpreter = cmd_Sweep, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     }
@@ -261,8 +256,19 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     configASSERT(pcWriteBuffer);
 
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
-    LlEndTest(NULL);
-    MXC_TMR_Stop(MXC_TMR2);
+    if (constTxisActive) {
+        sprintf(pcWriteBuffer, "Disabling active test\n");
+        /* Disable constant TX */
+        dbb_seq_tx_disable();
+        PalBbDisable();
+        constTxisActive = false;
+    } else if (longTestActive) {
+        LlEndTest(NULL);
+        MXC_TMR_Stop(MXC_TMR2);
+    } else {
+        sprintf(pcWriteBuffer, "No active test to disable\n");
+    }
+    longTestActive = false;
     longTestActive = false;
     pausePrompt    = false;
     return pdFALSE;
@@ -324,8 +330,8 @@ static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_EnableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                    const char* pcCommandString)
+static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
+                              const char* pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -334,43 +340,36 @@ static BaseType_t cmd_EnableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    static uint32_t channelNum = 0xFF;
     BaseType_t lParameterStringLength;
 
-    uint32_t channel = (uint32_t)atoi(
+    char* channelStr =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  1,                      /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
-                                 ));
-    // TODO : validate value
-    dbb_seq_select_rf_channel(channel);
-    sprintf(pcWriteBuffer, "Constant TX channel set to %d\n", channel);
-    sprintf(pcWriteBuffer, "Starting TX\n");
+        );
+
+    if (channelStr != NULL) {
+        channelNum = atoi(channelStr);
+    } else {
+        if (channelNum == 0xFF) {
+            sprintf(pcWriteBuffer, "Set a TX channel first ex:\r\n\tconstTx 1\r\n");
+            return pdFALSE;
+        }
+    }
+
+    dbb_seq_select_rf_channel(channelNum);
+    sprintf(pcWriteBuffer, "Constant TX channel set to %d\r\n", channelNum);
+    strcat(pcWriteBuffer, "Starting TX\r\n");
     PalBbEnable();
     llc_api_tx_ldo_setup();
     /* Enable constant TX */
     dbb_seq_tx_enable();
+    dbb_seq_tx_enable();
 
-    longTestActive = true;
-    return pdFALSE;
-}
-/*-----------------------------------------------------------*/
-static BaseType_t cmd_DisableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                     const char* pcCommandString)
-{
-    /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
-    (void)pcCommandString;
-    (void)xWriteBufferLen;
-    configASSERT(pcWriteBuffer);
-    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    longTestActive  = true;
+    constTxisActive = true;
 
-    // TODO : validate value
-    sprintf(pcWriteBuffer, "Disabling TX\n");
-    /* Disable constant TX */
-    dbb_seq_tx_disable();
-    PalBbDisable();
-    longTestActive = false;
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
