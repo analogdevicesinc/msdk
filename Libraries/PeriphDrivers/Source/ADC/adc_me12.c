@@ -235,6 +235,16 @@ void MXC_ADC_TriggerConfig(mxc_adc_conversion_req_t* req)
     MXC_ADC_RevB_TriggerConfig((mxc_adc_revb_regs_t*)MXC_ADC, req);
 }
 
+void MXC_ADC_ConversionModeConfig(mxc_adc_conversion_req_t* req)
+{
+    MXC_ADC_RevB_ConversionModeConfig((mxc_adc_revb_regs_t*)MXC_ADC, req);
+}
+
+void MXC_ADC_SetConversionDelay(int delay)
+{
+    MXC_ADC_RevB_SetConversionDelay((mxc_adc_revb_regs_t*)MXC_ADC, delay);
+}
+
 int MXC_ADC_SlotsConfig(mxc_adc_conversion_req_t* req)
 {
     return MXC_ADC_RevB_SlotsConfig((mxc_adc_revb_regs_t*)MXC_ADC, req);
@@ -247,6 +257,8 @@ int MXC_ADC_ChSelectConfig(mxc_adc_chsel_t ch, uint32_t slot_num)
 
 int MXC_ADC_Configuration(mxc_adc_conversion_req_t* req)
 {
+    MXC_ADC_ConversionModeConfig(req);
+    
     MXC_ADC_TriggerConfig(req);
 
     MXC_ADC_FIFO_Threshold_Config(req->fifo_threshold);
