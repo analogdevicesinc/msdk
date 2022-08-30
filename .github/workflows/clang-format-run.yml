@@ -23,10 +23,6 @@ jobs:
         with:
           submodules: false
           # Only works on branches, not PRs.
-    
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
 
       # Runs a set of commands using the runners shell
       - name: clang-format-run

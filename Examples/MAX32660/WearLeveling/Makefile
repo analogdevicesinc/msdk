@@ -61,11 +61,6 @@ LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
 
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS
-# SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
-# CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app
-# BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/bin/build_scp_session
-# TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/devices/$(TARGET_UC)/keys/maximtestcrk.key
-# SCP_PACKETS=scp_packets
 
 #Use this for other library make files so they are all based off the same as root as the project
 export CMSIS_ROOT
@@ -131,10 +126,10 @@ export PERIPH_DRIVER_DIR
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
-ifneq "$(LINKER)" "$(TARGET_LC)_ram.ld"	  #This is in for the future when signing is needed.
-# 	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
-# 	$(CA_SIGN_BUILD) $(BUILD_DIR)/$(PROJECT).bin $(TEST_KEY)
-# 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).bin.sig
+ifneq "$(LINKER)" "$(TARGET_LC)_ram.ld"
+	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -O binary $(BUILD_DIR)/$(PROJECT).bin
+	@echo " "
+	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 endif
 
 libclean: 
@@ -143,5 +138,3 @@ libclean:
 # The rule to clean out all the build products.
 distclean: clean libclean
 
-sla: all
-#	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin

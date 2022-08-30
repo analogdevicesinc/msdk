@@ -66,7 +66,10 @@ endif
 
 # Add target specific CMSIS source files
 ifneq (${MAKECMDGOALS},lib)
+
+ifneq (${MAKECMDGOALS},scpa)
 SRCS += ${STARTUPFILE}
+endif
 SRCS += heap.c
 SRCS += system_$(TARGET_LC).c
 endif

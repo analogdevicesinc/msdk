@@ -5,7 +5,7 @@
 Description
 -----------
 
-The model trained in this demo is used to classify images of cats and dogs. 25000 images dataset is used to train the model. The dataset can be downloaded using [https://www.kaggle.com/c/dogs-vs-cats/data](https://www.kaggle.com/c/dogs-vs-cats/data) link. The input size is 64x64 pixels RGB which is 3x64x64 in CHW format.
+The model trained in this demo is used to classify images of cats and dogs. 25000 images dataset is used to train the model. The dataset can be downloaded usingï¿½[https://www.kaggle.com/c/dogs-vs-cats/data](https://www.kaggle.com/c/dogs-vs-cats/data)ï¿½link. The input size is 64x64 pixels RGB which is 3x64x64 in CHW format.
 
 The code uses a sampledata header (sampledata.h) file to test a pre-defined input sample. The example also supports live capture from camera module and displays the image on the TFT LCD.
 
@@ -24,7 +24,7 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
 
 ```bash
 # Specify the board used
@@ -34,7 +34,7 @@ BOARD=EvKit_V1
 endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
 
 ```bash
 # Specify the board used
@@ -108,7 +108,7 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in Makefile:
+To compile code with enabled TFT feature use following setting in project.mk:
 
 ```bash
 ifeq "$(BOARD)" "FTHR_RevA"
@@ -127,7 +127,7 @@ The PB1 (SW1) button is located as shown in picture bellow:
 
 
 
-### Camera Mode 
+### Camera Modeï¿½
 
 To operate in this mode, comment out "#define USE\_SAMPLEDATA", defined in main.c.
 
@@ -137,9 +137,9 @@ The data received from camera interface is an unsigned data and should be conver
 
 ### Offline Mode
 
-To operate in this mode, uncomment "#define USE\_SAMPLEDATA", defined in main.c. 
+To operate in this mode, uncomment "#define USE\_SAMPLEDATA", defined in main.c.ï¿½
 
-This mode uses a header file "sampledata.h" containing RGB image data and it should be included in the project to use it as an input to the cnn network. 
+This mode uses a header file "sampledata.h" containing RGB image data and it should be included in the project to use it as an input to the cnn network.ï¿½
 
 To create your own header file follow these steps:
 

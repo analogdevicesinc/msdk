@@ -18,6 +18,7 @@ MAA
 OWM
 Pulse_Train
 RTC
+SCPA_OTP_Dump
 SDHC_FAT
 SDHC_Raw
 Semaphore

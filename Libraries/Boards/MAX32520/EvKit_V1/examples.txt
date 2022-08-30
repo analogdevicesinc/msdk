@@ -3,12 +3,15 @@ CRC
 DMA
 ECDSA
 Flash
+Flash_CLI
 FreeRTOSDemo
 GPIO
 Hello_World
+I2C_SCAN
 ICC
 LockDebug
 LP
+SCPA_OTP_Dump
 SFE
 SFE_Host
 SMON
