@@ -48,6 +48,7 @@
 #include "wut.h"
 #include "trimsir_regs.h"
 #include "pal_btn.h"
+#include "pal_uart.h"
 #include "tmr.h"
 #include "svc_sds.h"
 /**************************************************************************************************
@@ -120,8 +121,15 @@ static const appSecCfg_t datsSecCfg = {
     TRUE   /*! TRUE to initiate security upon connection */
 };
 
+/* OOB UART parameters */
+#define OOB_BAUD 115200
+#define OOB_FLOW FALSE
+
 /*! TRUE if Out-of-band pairing data is to be sent */
 static const bool_t datsSendOobData = FALSE;
+
+/* OOB Connection identifier */
+dmConnId_t oobConnId;
 
 /*! SMP security parameter configuration 
 *
@@ -244,6 +252,22 @@ extern void setAdvTxPower(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief  OOB RX callback.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void oobRxCback(void)
+{
+    if (datsOobCfg != NULL) {
+        DmSecSetOob(oobConnId, datsOobCfg);
+    }
+
+    DmSecAuthRsp(oobConnId, 0, NULL);
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  Send notification containing data.
  *
  *  \param  connId      DM connection ID.
@@ -283,15 +307,31 @@ static void datsDmCback(dmEvt_t* pDmEvt)
             uint8_t oobLocalRandom[SMP_RAND_LEN];
             SecRand(oobLocalRandom, SMP_RAND_LEN);
             DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
+
+            /* Setup HCI UART for OOB */
+            PalUartConfig_t hciUartCfg;
+            hciUartCfg.rdCback = oobRxCback;
+            hciUartCfg.wrCback = NULL;
+            hciUartCfg.baud    = OOB_BAUD;
+            hciUartCfg.hwFlow  = OOB_FLOW;
+
+            PalUartInit(PAL_UART_ID_CHCI, &hciUartCfg);
         }
     } else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
         if (datsOobCfg == NULL) {
             datsOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
+            memset(datsOobCfg, 0, sizeof(dmSecLescOobCfg_t));
         }
 
         if (datsOobCfg) {
             Calc128Cpy(datsOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
             Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
+
+            /* Start the RX for the peer OOB data */
+            PalUartReadData(PAL_UART_ID_CHCI, datsOobCfg->peerRandom,
+                            (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+        } else {
+            APP_TRACE_ERR0("Error allocating OOB data");
         }
     } else {
         len = DmSizeOfEvt(pDmEvt);
@@ -636,15 +676,13 @@ static void datsProcMsg(dmEvt_t* pMsg)
             if (pMsg->authReq.oob) {
                 dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-                /* TODO: Perform OOB Exchange with the peer. */
+                APP_TRACE_INFO0("Sending OOB data");
+                oobConnId = connId;
 
-                /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
+                /* Start the TX to send the local OOB data */
+                PalUartWriteData(PAL_UART_ID_CHCI, datsOobCfg->localRandom,
+                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
 
-                if (datsOobCfg != NULL) {
-                    DmSecSetOob(connId, datsOobCfg);
-                }
-
-                DmSecAuthRsp(connId, 0, NULL);
             } else {
                 AppHandlePasskey(&pMsg->authReq);
             }
