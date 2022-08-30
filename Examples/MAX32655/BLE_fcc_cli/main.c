@@ -41,11 +41,11 @@ TaskHandle_t cmd_task_id;
 TaskHandle_t tx_task_id;
 TaskHandle_t wfs_task_id;
 TaskHandle_t sweep_task_id;
-
+TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
-
+bool freqHopisActive         = false;
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
 /**************************************************************************************************
@@ -170,6 +170,7 @@ static void processConsoleRX(uint8_t rxByte)
 {
     BaseType_t xHigherPriorityTaskWoken;
     receivedChar = rxByte;
+
     /* Wake the task */
     xHigherPriorityTaskWoken = pdFALSE;
     vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
@@ -335,6 +336,12 @@ void vCmdLineTask(void* pvParameters)
                         WsfBufIoWrite((const uint8_t*)backspace, sizeof(backspace));
                     }
                     fflush(stdout);
+                } else if ((char)tmp == 'e' && freqHopisActive) {
+                    LlEndTest(NULL);
+                    MXC_TMR_Stop(MXC_TMR2);
+                    longTestActive  = false;
+                    freqHopisActive = false;
+                    prompt();
                 } else if (tmp == 0x03) {
                     /* ^C abort */
                     index = 0;
@@ -371,7 +378,6 @@ void vCmdLineTask(void* pvParameters)
         }
     }
 }
-
 void txTestTask(void* pvParameters)
 {
     static int res    = 0xff;
@@ -463,6 +469,21 @@ void sweepTestTask(void* pvParameters)
         prompt();
     }
 }
+void helpTask(void* pvParameters)
+{
+    uint32_t notifVal = 0;
+    const CLI_Command_Definition_t(*commandList)[];
+    while (1) {
+        /* using the notify value as a pointer to the command list */
+        xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
+        commandList = (const CLI_Command_Definition_t**)notifVal;
+        for (int i = 0; i < 11; i++) {
+            APP_TRACE_INFO1("Command : %s", (*commandList)[i].pcCommand);
+        }
+        pausePrompt = false;
+        prompt();
+    }
+}
 void wfsLoop(void* pvParameters)
 {
     while (1) {
@@ -533,6 +554,9 @@ int main(void)
     // Sweep test task
     xTaskCreate(sweepTestTask, (const char*)"Sweep Task", 1024, NULL, tskIDLE_PRIORITY + 1,
                 &sweep_task_id);
+
+    // help task
+    xTaskCreate(helpTask, (const char*)"Help Task", 512, NULL, tskIDLE_PRIORITY + 1, &help_task_id);
 
     //wsfLoop task
     xTaskCreate(wfsLoop, (const char*)"WFS Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
