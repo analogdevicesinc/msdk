@@ -124,7 +124,21 @@ static const appMasterCfg_t datcMasterCfg = {
     DM_SCAN_TYPE_ACTIVE /*! The scan type (active or passive) */
 };
 
-/*! configurable parameters for security */
+/*! Configurable security parameters to set
+*   pairing and authentication requirements.
+*
+*   Authentication and bonding flags
+*       -DM_AUTH_BOND_FLAG  : Bonding requested 
+*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested 
+*       -DM_AUTH_KP_FLAG    : Keypress notifications requested 
+*       -DM_AUTH_MITM_FLAG  : MITM (authenticated pairing) requested
+                              pairing method is determined by IO capabilities below
+*
+*   Initiator key distribution flags
+*       -DM_KEY_DIST_LTK   : Distribute LTK used for encryption
+*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy 
+*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
+*/
 static const appSecCfg_t datcSecCfg = {
     DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
     DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
@@ -136,7 +150,17 @@ static const appSecCfg_t datcSecCfg = {
 /*! TRUE if Out-of-band pairing data is to be sent */
 static const bool_t datcSendOobData = FALSE;
 
-/*! SMP security parameter configuration */
+/*! SMP security parameter configuration 
+*
+*   I/O Capability Codes to be set for 
+*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
+*   when the MITM flag is set in Configurable security parameters above.
+*       -SMP_IO_DISP_ONLY         : Display only. 
+*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
+*       -SMP_IO_KEY_ONLY          : Keyboard only.
+*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
+*       -SMP_IO_KEY_DISP          : Keyboard display. 
+*/
 static const smpCfg_t datcSmpCfg = {
     500,             /*! 'Repeated attempts' timeout in msec */
     SMP_IO_KEY_ONLY, /*! I/O Capability */
