@@ -56,6 +56,8 @@
 
 /***** Globals *****/
 
+extern mxc_uart_regs_t* ConsoleUart;
+
 /***** Functions *****/
 
 void my_isr(void)
@@ -86,7 +88,7 @@ int main(void)
 
     while (1) {
         printf("\nEntering sleep mode.\n");
-        while (MXC_UART_GetActive(CONSOLE_UART))
+        while (MXC_UART_GetActive(ConsoleUart))
             ;
         MXC_LP_EnterDeepSleepMode();
         printf("Waking up.\n");
