@@ -22,4 +22,6 @@ SRCS+=header_MAX32650.c
 # Define die revision for SBT files
 PROJ_CFLAGS+=-DMAX32651_A4
 
+# Set default goal to scpa.  This means that running just 'make'
+# is equivalent to 'make scpa'
 .DEFAULT_GOAL:=scpa
