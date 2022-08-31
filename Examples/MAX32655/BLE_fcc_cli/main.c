@@ -392,11 +392,7 @@ void txTestTask(void* pvParameters)
             sprintf(str, "Receive RF channel : %d : ", notifyCommand.channel);
         }
 
-        strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
-                    (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
-                    (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
-                    (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
-                                                       "");
+        strcat(str, (const char*)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
@@ -417,7 +413,8 @@ void txTestTask(void* pvParameters)
 }
 void sweepTestTask(void* pvParameters)
 {
-    static int res    = 0xff;
+    int res = 0xff;
+
     uint32_t notifVal = 0;
     sweep_config_t sweepConfig;
     tx_config_t txCommand;
@@ -444,11 +441,7 @@ void sweepTestTask(void* pvParameters)
         /* config txCommand to RF Task */
         txCommand.duration_ms = sweepConfig.duration_per_ch_ms;
         txCommand.testType    = TX_TEST;
-        strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
-                    (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
-                    (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
-                    (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
-                                                       "");
+        strcat(str, (const char*)getPhyStr(phy));
         for (int i = start_ch; i <= end_ch; i++) {
             APP_TRACE_INFO2("\r\n-----------------| channel %d %s |----------------------\r\n",
 
@@ -468,10 +461,7 @@ void sweepTestTask(void* pvParameters)
 void helpTask(void* pvParameters)
 {
     uint32_t notifVal = 0;
-    const CLI_Command_Definition_t(*commandList)[];
-    int i = 0;
     while (1) {
-        /* using the notify value as a pointer to the command list */
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
 
         // clang-format off

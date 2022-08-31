@@ -25,9 +25,9 @@ bool constTxisActive = false;
 CLI_Command_Definition_t registeredCommandList[10];
 
 /* helpers */
-static bool isDigit(char* symbol, uint8_t len);
-static bool paramsValid(char* commandstring, uint8_t numOfParams);
-static bool commandOnly(char* commandstring);
+static bool isDigit(const char* symbol, uint8_t len);
+static bool paramsValid(const char* commandstring, uint8_t numOfParams);
+static bool commandOnly(const char* commandstring);
 static bool testIsActive(void);
 /***************************| Command handler protoypes |******************************/
 static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
@@ -52,9 +52,6 @@ static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
 
 static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
                               const char* pcCommandString);
-
-static BaseType_t cmd_DisableConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                     const char* pcCommandString);
 
 static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
                                     const char* pcCommandString);
@@ -200,7 +197,7 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const ch
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     pausePrompt = true;
-    xTaskNotify(help_task_id, &xCommandList, eSetBits);
+    xTaskNotify(help_task_id, 0xFF, eSetBits);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -211,7 +208,7 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
     (void)xWriteBufferLen;
-    char* temp;
+    const char* temp;
     BaseType_t lParameterStringLength;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
@@ -372,7 +369,7 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
         return pdFALSE;
     }
 
-    char* channelStr =
+    const char* channelStr =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  1,                      /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
@@ -451,8 +448,6 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     BaseType_t lParameterStringLength;
-    uint8_t start, end;
-    uint16_t duration;
     static sweep_config_t sweepConfig = {.duration_per_ch_ms = 0};
 
     if (testIsActive()) {
@@ -509,7 +504,7 @@ void vRegisterCLICommands(void)
     } while (xCommandList[i].pcCommand != NULL);
 }
 /*-----------------------------------------------------------*/
-static bool isDigit(char* symbol, uint8_t len)
+static bool isDigit(const char* symbol, uint8_t len)
 {
     for (int i = 0; i < len; i++) {
         if (!(symbol[i] >= 48 && symbol[i] <= 57)) {
@@ -520,9 +515,9 @@ static bool isDigit(char* symbol, uint8_t len)
     return true;
 }
 
-static bool paramsValid(char* commandstring, uint8_t numOfParams)
+static bool paramsValid(const char* commandstring, uint8_t numOfParams)
 {
-    char* str;
+    const char* str;
     BaseType_t lParameterStringLength;
     /*params start at index 1*/
     for (int i = 1; i <= numOfParams; i++) {
@@ -544,10 +539,10 @@ static bool paramsValid(char* commandstring, uint8_t numOfParams)
     return true;
 }
 
-static bool commandOnly(char* commandstring)
+static bool commandOnly(const char* commandstring)
 {
     BaseType_t lParameterStringLength;
-    char* str;
+    const char* str;
     str = FreeRTOS_CLIGetParameter(commandstring,          /* The command string itself. */
                                    1,                      /* Return the next parameter. */
                                    &lParameterStringLength /* Store the parameter string length. */
