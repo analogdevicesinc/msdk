@@ -360,7 +360,12 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
         );
 
     if (channelStr != NULL) {
-        channelNum = atoi(channelStr);
+        if (paramsValid(pcCommandString, 1))
+            channelNum = atoi(channelStr);
+        else {
+            sprintf(pcWriteBuffer, "Bad parameters given\r\n");
+            return pdFALSE;
+        }
     } else {
         if (channelNum == 0xFF) {
             sprintf(pcWriteBuffer,
