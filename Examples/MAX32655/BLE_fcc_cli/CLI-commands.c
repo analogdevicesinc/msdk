@@ -353,7 +353,8 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
         channelNum = atoi(channelStr);
     } else {
         if (channelNum == 0xFF) {
-            sprintf(pcWriteBuffer, "Set a TX channel first ex:\r\n\tconstTx 1\r\n");
+            sprintf(pcWriteBuffer,
+                    "You have to call the command at least once with parameters\r\n");
             return pdFALSE;
         }
     }
@@ -408,26 +409,34 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sweep_config_t sweepConfig;
+    static sweep_config_t sweepConfig;
     BaseType_t lParameterStringLength;
+    char *start, *end, *duration;
 
-    uint8_t start, end, duration;
-    sweepConfig.start_channel = atoi(
+    start =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  1,                      /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
-                                 ));
-    sweepConfig.end_channel = atoi(
-        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
-                                 2,                      /* Return the next parameter. */
-                                 &lParameterStringLength /* Store the parameter string length. */
-                                 ));
+        );
+    end = FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                   2,                      /* Return the next parameter. */
+                                   &lParameterStringLength /* Store the parameter string length. */
+    );
 
-    sweepConfig.duration_per_ch_ms = atoi(
+    duration =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  3,                      /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
-                                 ));
+        );
+
+    if ((duration == NULL) && sweepConfig.duration_per_ch_ms == 0) {
+        sprintf(pcWriteBuffer, "You have to call the command at least once with parameters\r\n");
+        return pdFALSE;
+    }
+
+    sweepConfig.start_channel      = atoi(start);
+    sweepConfig.end_channel        = atoi(end);
+    sweepConfig.duration_per_ch_ms = atoi(duration);
 
     //start sweep task
     xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
