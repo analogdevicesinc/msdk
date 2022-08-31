@@ -120,8 +120,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "sweep", /* The command string to type. */
-        .pcHelpString                = "Sweeps channels at given interval "
-                                       "intervals\r\n", /* last command should have newline at end of help string*/
+        .pcHelpString                = "Sweeps channels at given interval ",
         .pxCommandInterpreter        = cmd_Sweep, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
