@@ -167,7 +167,7 @@ void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t* trng)
 int MXC_TRNG_RevB_HealthTest(mxc_trng_revb_regs_t* trng)
 {
     /* Clear on-going test if necessary */
-    if(trng->ctrl & MXC_F_TRNG_REVB_CTRL_ODHT) {
+    if (trng->ctrl & MXC_F_TRNG_REVB_CTRL_ODHT) {
         trng->ctrl &= ~MXC_F_TRNG_REVB_CTRL_ODHT;
         while (trng->status & MXC_F_TRNG_REVB_STATUS_ODHT)
             ;
@@ -181,7 +181,7 @@ int MXC_TRNG_RevB_HealthTest(mxc_trng_revb_regs_t* trng)
         ;
 
     /* Check results of test */
-    if(trng->status & MXC_F_TRNG_REVB_STATUS_HT) {
+    if (trng->status & MXC_F_TRNG_REVB_STATUS_HT) {
         return E_BAD_STATE;
     }
     return E_NO_ERROR;
