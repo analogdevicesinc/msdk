@@ -440,8 +440,7 @@ void sweepTestTask(void* pvParameters)
         /* get index  */
         uint8_t start_ch = ble_channels_remap[sweepConfig.start_channel];
         uint8_t end_ch   = ble_channels_remap[sweepConfig.end_channel];
-        APP_TRACE_INFO2("%d : %d", start_ch, end_ch);
-        char str[6] = "";
+        char str[6]      = "";
         /* config txCommand to RF Task */
         txCommand.duration_ms = sweepConfig.duration_per_ch_ms;
         txCommand.testType    = TX_TEST;
@@ -451,10 +450,12 @@ void sweepTestTask(void* pvParameters)
                     (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
                                                        "");
         for (int i = start_ch; i <= end_ch; i++) {
-            APP_TRACE_INFO0("\r\n---------------------------------------\r\n");
+            APP_TRACE_INFO2("\r\n-----------------| channel %d %s |----------------------\r\n",
+
+                            ble_channels_spectrum[i], str);
             txCommand.channel = ble_channels_spectrum[i];
             res = LlEnhancedTxTest(ble_channels_spectrum[i], 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("Tx Transmit Ch[ %d ] : %s", ble_channels_spectrum[i], str);
+            // APP_TRACE_INFO2("Tx Transmit Ch[ %d ] : %s", ble_channels_spectrum[i], str);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
             LlEndTest(NULL);
             vTaskDelay(100); /* give console time to print end of  test reuslts */

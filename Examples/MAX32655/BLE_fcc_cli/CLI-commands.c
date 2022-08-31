@@ -24,6 +24,7 @@ extern void dbb_seq_tx_disable(void);
 bool constTxisActive = false;
 CLI_Command_Definition_t registeredCommandList[10];
 
+bool isDigit(char* symbol, uint8_t len);
 /***************************| Command handler protoypes |******************************/
 static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
@@ -360,7 +361,7 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     }
 
     dbb_seq_select_rf_channel(channelNum);
-    sprintf(pcWriteBuffer, "Constant TX channel set to %d\r\n", channelNum);
+    //  sprintf(pcWriteBuffer, "Constant TX channel set to %d\r\n", channelNum);
     strcat(pcWriteBuffer, "Starting TX\r\n");
     PalBbEnable();
     llc_api_tx_ldo_setup();
@@ -409,34 +410,64 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    static sweep_config_t sweepConfig;
     BaseType_t lParameterStringLength;
     char *start, *end, *duration;
+    static sweep_config_t sweepConfig = {.duration_per_ch_ms = 0};
 
+    /* get first param and verify */
     start =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  1,                      /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
         );
+    if (start != NULL) {
+        if (isDigit(start, lParameterStringLength)) {
+            sweepConfig.start_channel = atoi(start);
+        } else {
+            sprintf(pcWriteBuffer, "Bad parameter:  Start not a digit\r\n");
+            return pdFALSE;
+        }
+    }
+
+    /* get second param and verify */
     end = FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                    2,                      /* Return the next parameter. */
                                    &lParameterStringLength /* Store the parameter string length. */
     );
 
+    if (end != NULL) {
+        if (isDigit(end, lParameterStringLength)) {
+            sweepConfig.end_channel = atoi(end);
+        } else {
+            sprintf(pcWriteBuffer, "Bad parameter:  End not a digit\r\n");
+            return pdFALSE;
+        }
+    }
+
+    /* get third param and verify */
     duration =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  3,                      /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
         );
 
+    if (duration != NULL) {
+        if (isDigit(duration, lParameterStringLength)) {
+            sweepConfig.duration_per_ch_ms = atoi(duration);
+        } else {
+            sprintf(pcWriteBuffer, "Bad parameter:  Duration not a digit\r\n");
+            return pdFALSE;
+        }
+    }
+
     if ((duration == NULL) && sweepConfig.duration_per_ch_ms == 0) {
         sprintf(pcWriteBuffer, "You have to call the command at least once with parameters\r\n");
         return pdFALSE;
     }
 
-    sweepConfig.start_channel      = atoi(start);
-    sweepConfig.end_channel        = atoi(end);
-    sweepConfig.duration_per_ch_ms = atoi(duration);
+    // sweepConfig.start_channel      = atoi(start);
+    // sweepConfig.end_channel        = atoi(end);
+    // sweepConfig.duration_per_ch_ms = atoi(duration);
 
     //start sweep task
     xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
@@ -454,3 +485,13 @@ void vRegisterCLICommands(void)
     } while (xCommandList[i].pcCommand != NULL);
 }
 /*-----------------------------------------------------------*/
+bool isDigit(char* symbol, uint8_t len)
+{
+    for (int i = 0; i < len; i++) {
+        if (!(symbol[i] >= 48 && symbol[i] <= 57)) {
+            return false;
+        }
+    }
+
+    return true;
+}
