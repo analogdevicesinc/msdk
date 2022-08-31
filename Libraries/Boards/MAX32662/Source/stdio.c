@@ -31,15 +31,15 @@
  *
  ******************************************************************************/
 
-#include <sys/errno.h>
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/errno.h>
 
 #if defined(__GNUC__)
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #endif /* __GNUC__ */
 
 #if defined(__CC_ARM)
@@ -56,15 +56,15 @@ FILE __stdin;
 
 /* Defines - Compiler Specific */
 #if defined(__ICCARM__)
-#define STDIN_FILENO  0 // Defines that are not included in the DLIB.
+#define STDIN_FILENO 0 // Defines that are not included in the DLIB.
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
-#define EBADF         -1
+#define EBADF -1
 #endif /* __ICCARM__ */
 
+#include "board.h"
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "board.h"
 #include "uart.h"
 
 #define MXC_UARTn MXC_UART_GET_UART(CONSOLE_UART)
@@ -104,7 +104,7 @@ int _fstat(int file, struct stat* st)
 int _read(int file, char* ptr, int len)
 #elif defined(__ICCARM__) // IAR Compiler _read function prototype
 int __read(int file, unsigned char* ptr, size_t len)
-#endif                    /* __GNUC__ */
+#endif /* __GNUC__ */
 {
     return -1;
 }
@@ -120,7 +120,7 @@ int _write(int file, char* ptr, int len)
 int __write(int file, const unsigned char* ptr, size_t len)
 {
     size_t n;
-#endif                    /* __GNUC__ */
+#endif /* __GNUC__ */
     return -1;
 }
 
@@ -150,7 +150,6 @@ void _ttywrch(int c)
 
 void _sys_exit(int return_code)
 {
-    while (1) {
-    }
+    while (1) { }
 }
 #endif

@@ -31,16 +31,16 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "mxc_lock.h"
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_reva.h"
 #include "mcr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include <stdio.h>
 
 int MXC_ADC_Init(void)
 {
@@ -48,7 +48,7 @@ int MXC_ADC_Init(void)
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ADC);
 
-    //turn on charge pump enable (chip specific)
+    // turn on charge pump enable (chip specific)
     MXC_ADC->ctrl |= MXC_F_ADC_CTRL_CHGPUMP_PWR;
 
     return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t*)MXC_ADC);
@@ -61,7 +61,7 @@ int MXC_ADC_Shutdown(void)
 
     MXC_ADC_RevA_Shutdown((mxc_adc_reva_regs_t*)MXC_ADC);
 
-    //Disable ADC peripheral clock
+    // Disable ADC peripheral clock
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ADC);
 
     return E_NO_ERROR;
@@ -94,7 +94,7 @@ void MXC_ADC_ClearFlags(uint32_t flags)
 
 int MXC_ADC_SetConversionSpeed(uint32_t hz)
 {
-    //check for overflow
+    // check for overflow
     MXC_ASSERT(hz < ((uint32_t)((1U << 31) - 1) / 1024));
     uint32_t adc_clock_freq = 1024 * hz;
 
@@ -108,14 +108,14 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
         return E_BAD_PARAM;
     }
 
-    //disable clock
+    // disable clock
     MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CLK_EN;
-    //clear clock divisor
+    // clear clock divisor
     MXC_GCR->pclkdiv &= (~MXC_F_GCR_PCLKDIV_ADCFRQ);
-    //load in new clock divisor
+    // load in new clock divisor
     MXC_GCR->pclkdiv |= (divider << MXC_F_GCR_PCLKDIV_ADCFRQ_POS);
 
-    //enable clock
+    // enable clock
     MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t*)MXC_ADC, hz);
 
     return E_NO_ERROR;
@@ -200,8 +200,8 @@ int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t 
 
 int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*callback)(int, int))
 {
-    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data,
-                                           callback);
+    return MXC_ADC_RevA_StartConversionDMA(
+        (mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data, callback);
 }
 
 int MXC_ADC_Handler(void)

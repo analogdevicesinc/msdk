@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -48,17 +48,17 @@
 
 /********************************* 		VARIABLES	 *************************/
 static text_t text_msg[] = {
-    {(char*)"NFC", 3},
+    { (char*)"NFC", 3 },
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-    {(char*)"Place card near target", 22},
+    { (char*)"Place card near target", 22 },
 #else
-    {(char*)"This EvKit does not support NFC", 31}
+    { (char*)"This EvKit does not support NFC", 31 }
 #endif
 };
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-static area_t area_clean              = {0, 0, 0, 0};
-static area_t area_clean_1            = {0, 0, 0, 0};
+static area_t area_clean = { 0, 0, 0, 0 };
+static area_t area_clean_1 = { 0, 0, 0, 0 };
 static int after_timeout_clear_screen = 0;
 #endif
 
@@ -70,7 +70,7 @@ static int init(void)
     TFT_PrintFont(140, 12, urw_gothic_16_bleu_bg_grey, &text_msg[0], NULL); //"NFC"
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
     MXC_TFT_PrintFont(58, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
-                      NULL); //"Place card near target"
+        NULL); //"Place card near target"
 #else
     MXC_TFT_PrintFont(23, 40, urw_gothic_12_white_bg_grey, &text_msg[1], NULL); //
 #endif
@@ -80,7 +80,7 @@ static int init(void)
     TFT_ShowImage(135, 191, home_bmp);
 
     MXC_TS_RemoveAllButton();
-    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); //Home
+    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); // Home
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
     nfc_enable_polling();
@@ -111,7 +111,7 @@ static int nfc_process(unsigned char* msg, unsigned int msg_len)
         if (k == msg_len) {
             // Single line to show
             msg_var.data = (char*)msg;
-            msg_var.len  = msg_len;
+            msg_var.len = msg_len;
 
             if (msg_var.len > 24) {
                 msg_var.len = 24;
@@ -121,11 +121,11 @@ static int nfc_process(unsigned char* msg, unsigned int msg_len)
         } else {
             // Show 2 lines, MAX
             msg_var.data = (char*)msg;
-            msg_var.len  = k;
+            msg_var.len = k;
 
             k++; // skip past \n
             msg_var_1.data = (char*)(msg + k);
-            msg_var_1.len  = msg_len - k;
+            msg_var_1.len = msg_len - k;
 
             if (msg_var.len > 24) {
                 msg_var.len = 24;
@@ -163,23 +163,23 @@ static int time_tick(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_C: // exit
+    case KEY_C: // exit
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-            nfc_disable_polling();
+        nfc_disable_polling();
 #endif
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
 
     return 0;
 }
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-static State g_state = {"nfc", init, key_process, time_tick, TICK_TIMEOUT, NULL, nfc_process};
+static State g_state = { "nfc", init, key_process, time_tick, TICK_TIMEOUT, NULL, nfc_process };
 #else
-static State g_state = {"nfc", init, key_process, NULL, 0, NULL, NULL};
+static State g_state = { "nfc", init, key_process, NULL, 0, NULL, NULL };
 #endif
 
 /********************************* Public Functions **************************/

@@ -36,18 +36,18 @@
  *
  *************************************************************************** */
 
+#include "aes_revb.h"
+#include "flc.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "aes_revb.h"
-#include "trng.h"
-#include "flc.h"
 #include "string.h"
+#include "trng.h"
 
 #define KEY_ADDR 0x10802008
 #define FMV_ADDR 0x10802000
-static const uint32_t fmv[2] = {0x2B86D479, 0x2B86D479};
+static const uint32_t fmv[2] = { 0x2B86D479, 0x2B86D479 };
 
 static void reverse_key(const void* key, uint8_t* keyr, int len)
 {
@@ -55,8 +55,8 @@ static void reverse_key(const void* key, uint8_t* keyr, int len)
     uint8_t tmp;
     uint8_t* k = (uint8_t*)key;
     for (i = 0; i < len; i++) {
-        tmp               = k[i];
-        k[i]              = keyr[len - i - 1];
+        tmp = k[i];
+        k[i] = keyr[len - i - 1];
         keyr[len - i - 1] = tmp;
     }
 }
@@ -204,18 +204,18 @@ int MXC_AES_SetPORKey(const void* key, mxc_aes_keys_t len)
 
     // Write the key
     switch (len) {
-        case MXC_AES_128BITS:
-            reverse_key(key, keyr, 16);
-            err = MXC_FLC_Write(KEY_ADDR, 16, (uint32_t*)keyr);
-            break;
-        case MXC_AES_192BITS:
-            reverse_key(key, keyr, 24);
-            err = MXC_FLC_Write(KEY_ADDR, 24, (uint32_t*)keyr);
-            break;
-        case MXC_AES_256BITS:
-            reverse_key(key, keyr, 32);
-            err = MXC_FLC_Write(KEY_ADDR, 32, (uint32_t*)keyr);
-            break;
+    case MXC_AES_128BITS:
+        reverse_key(key, keyr, 16);
+        err = MXC_FLC_Write(KEY_ADDR, 16, (uint32_t*)keyr);
+        break;
+    case MXC_AES_192BITS:
+        reverse_key(key, keyr, 24);
+        err = MXC_FLC_Write(KEY_ADDR, 24, (uint32_t*)keyr);
+        break;
+    case MXC_AES_256BITS:
+        reverse_key(key, keyr, 32);
+        err = MXC_FLC_Write(KEY_ADDR, 32, (uint32_t*)keyr);
+        break;
     }
 
     if (err == E_NO_ERROR) {
@@ -270,15 +270,15 @@ void MXC_AES_CopyPORKeyToKeyRegisters(mxc_aes_keys_t len)
 
     // Copy the values to the key register
     switch (len) {
-        case MXC_AES_128BITS:
-            memcpy(MXC_AESKEY, (uint8_t*)KEY_ADDR, 16);
-            break;
-        case MXC_AES_192BITS:
-            memcpy(MXC_AESKEY, (uint8_t*)KEY_ADDR, 24);
-            break;
-        case MXC_AES_256BITS:
-            memcpy(MXC_AESKEY, (uint8_t*)KEY_ADDR, 32);
-            break;
+    case MXC_AES_128BITS:
+        memcpy(MXC_AESKEY, (uint8_t*)KEY_ADDR, 16);
+        break;
+    case MXC_AES_192BITS:
+        memcpy(MXC_AESKEY, (uint8_t*)KEY_ADDR, 24);
+        break;
+    case MXC_AES_256BITS:
+        memcpy(MXC_AESKEY, (uint8_t*)KEY_ADDR, 32);
+        break;
     }
 
     // Lock the key region from reads/writes

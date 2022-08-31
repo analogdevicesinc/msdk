@@ -38,10 +38,10 @@
 #ifndef _TFT_H_
 #define _TFT_H_
 
-#include <stdio.h>
-#include <stdint.h>
-#include <spi.h>
 #include <gpio.h>
+#include <spi.h>
+#include <stdint.h>
+#include <stdio.h>
 
 #include "touchscreen.h"
 
@@ -74,13 +74,13 @@ typedef enum {
  * @param      ss_idx           The SSEL index to use when communicating with the attached TFT
  * @param      reset_ctrl       The GPIO pin configuration for the TFT's reset pin.  Use NULL if
  *                              the reset pin of the TFT is not connected to the microcontroller.
- * @param      bl_ctrl          The GPIO pin configuration for the backlight enable pin.  Use NULL if
- *                              the microcontroller does not have control of the backlight enable.
+ * @param      bl_ctrl          The GPIO pin configuration for the backlight enable pin.  Use NULL
+ * if the microcontroller does not have control of the backlight enable.
  *
  * @return     See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl,
-                 mxc_gpio_cfg_t* bl_ctrl);
+int MXC_TFT_Init(
+    mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl, mxc_gpio_cfg_t* bl_ctrl);
 
 /**
  * @brief      Turns backlight on or off

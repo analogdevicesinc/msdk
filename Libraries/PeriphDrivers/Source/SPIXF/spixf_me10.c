@@ -35,13 +35,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <stddef.h>
-#include <stdio.h>
-#include "mxc_errors.h"
 #include "mxc_assert.h"
+#include "mxc_errors.h"
 #include "mxc_lock.h"
 #include "spixf.h"
 #include "spixf_reva.h"
+#include <stddef.h>
+#include <stdio.h>
 
 /* **** Definitions **** */
 
@@ -55,8 +55,8 @@ int MXC_SPIXF_Init(uint32_t cmdval, uint32_t frequency)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP);
     MXC_GPIO_Config(&gpio_cfg_spixfc);
 
-    MXC_SPIXF_RevA_Init((mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF,
-                        cmdval, frequency);
+    MXC_SPIXF_RevA_Init(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF, cmdval, frequency);
 
     MXC_SPIXFC->gen_ctrl |= MXC_F_SPIXFC_GEN_CTRL_ENABLE;
     return E_NO_ERROR;
@@ -73,8 +73,8 @@ void MXC_SPIXF_Shutdown(void)
 }
 
 /* ************************************************************************** */
-void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
-                      mxc_spixf_pup_t pupdctrl)
+void MXC_SPIXF_IOCtrl(
+    mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl)
 {
     MXC_SPIXF_RevA_IOCtrl((mxc_spixfm_reva_regs_t*)MXC_SPIXF, sclk_ds, ss_ds, sdio_ds, pupdctrl);
 }
@@ -83,22 +83,22 @@ void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds
 int MXC_SPIXF_Clocks(uint32_t len, uint8_t deass)
 {
     return MXC_SPIXF_RevA_Clocks((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                 (mxc_spixfm_reva_regs_t*)MXC_SPIXF,
-                                 (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO, len, deass);
+        (mxc_spixfm_reva_regs_t*)MXC_SPIXF, (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO, len,
+        deass);
 }
 
 /* ************************************************************************** */
 int MXC_SPIXF_Transaction(mxc_spixf_req_t* req)
 {
-    return MXC_SPIXF_RevA_Transaction((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                      (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO, req);
+    return MXC_SPIXF_RevA_Transaction(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO, req);
 }
 
 /* ************************************************************************** */
 int MXC_SPIXF_TransactionAsync(mxc_spixf_req_t* req)
 {
-    return MXC_SPIXF_RevA_TransactionAsync((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                           (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO, req);
+    return MXC_SPIXF_RevA_TransactionAsync(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO, req);
 }
 
 /* ************************************************************************** */
@@ -110,8 +110,8 @@ int MXC_SPIXF_AbortAsync(mxc_spixf_req_t* req)
 /* ************************************************************************** */
 void MXC_SPIXF_Handler(void)
 {
-    MXC_SPIXF_RevA_Handler((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                           (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO);
+    MXC_SPIXF_RevA_Handler(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfc_fifo_reva_regs_t*)MXC_SPIXFC_FIFO);
 }
 
 /* ************************************************************************** */
@@ -147,8 +147,8 @@ int MXC_SPIXF_GetFlags(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetMode(mxc_spixf_mode_t mode)
 {
-    return MXC_SPIXF_RevA_SetMode((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                  (mxc_spixfm_reva_regs_t*)MXC_SPIXF, mode);
+    return MXC_SPIXF_RevA_SetMode(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF, mode);
 }
 
 /* ************************************************************************** */
@@ -160,15 +160,15 @@ mxc_spixf_mode_t MXC_SPIXF_GetMode(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetSSPolActiveHigh(void)
 {
-    return MXC_SPIXF_RevA_SetSSPolActiveHigh((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                             (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+    return MXC_SPIXF_RevA_SetSSPolActiveHigh(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
 }
 
 /* ************************************************************************** */
 int MXC_SPIXF_SetSSPolActiveLow(void)
 {
-    return MXC_SPIXF_RevA_SetSSPolActiveLow((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                            (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+    return MXC_SPIXF_RevA_SetSSPolActiveLow(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
 }
 
 /* ************************************************************************** */
@@ -180,8 +180,8 @@ int MXC_SPIXF_GetSSPolarity(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetSPIFrequency(unsigned int hz)
 {
-    return MXC_SPIXF_RevA_SetSPIFrequency((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                          (mxc_spixfm_reva_regs_t*)MXC_SPIXF, hz);
+    return MXC_SPIXF_RevA_SetSPIFrequency(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF, hz);
 }
 
 /* ************************************************************************** */
@@ -217,8 +217,8 @@ uint32_t MXC_SPIXF_GetSPIFrequencyWrite(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetSSActiveTime(mxc_spixf_ssact_t ssact)
 {
-    return MXC_SPIXF_RevA_SetSSActiveTime((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                          (mxc_spixfm_reva_regs_t*)MXC_SPIXF, ssact);
+    return MXC_SPIXF_RevA_SetSSActiveTime(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF, ssact);
 }
 
 /* ************************************************************************** */
@@ -230,8 +230,8 @@ mxc_spixf_ssact_t MXC_SPIXF_GetSSActiveTime(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetSSInactiveTime(mxc_spixf_ssiact_t ssiact)
 {
-    return MXC_SPIXF_RevA_SetSSInactiveTime((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                            (mxc_spixfm_reva_regs_t*)MXC_SPIXF, ssiact);
+    return MXC_SPIXF_RevA_SetSSInactiveTime(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF, ssiact);
 }
 
 /* ************************************************************************** */
@@ -373,8 +373,8 @@ uint8_t MXC_SPIXF_GetBBDataInputValue(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetModeData(uint16_t data)
 {
-    return MXC_SPIXF_RevA_SetModeData((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                      (mxc_spixfm_reva_regs_t*)MXC_SPIXF, data);
+    return MXC_SPIXF_RevA_SetModeData(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF, data);
 }
 
 /* ************************************************************************** */
@@ -386,15 +386,15 @@ uint16_t MXC_SPIXF_GetModeData(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SetSCKInverted(void)
 {
-    return MXC_SPIXF_RevA_SetSCKInverted((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                         (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+    return MXC_SPIXF_RevA_SetSCKInverted(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
 }
 
 /* ************************************************************************** */
 int MXC_SPIXF_SetSCKNonInverted(void)
 {
-    return MXC_SPIXF_RevA_SetSCKNonInverted((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                            (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+    return MXC_SPIXF_RevA_SetSCKNonInverted(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
 }
 
 /* ************************************************************************** */
@@ -406,15 +406,15 @@ int MXC_SPIXF_GetSCKInverted(void)
 /* ************************************************************************** */
 int MXC_SPIXF_SCKFeedbackEnable(void)
 {
-    return MXC_SPIXF_RevA_SCKFeedbackEnable((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                            (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+    return MXC_SPIXF_RevA_SCKFeedbackEnable(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
 }
 
 /* ************************************************************************** */
 int MXC_SPIXF_SCKFeedbackDisable(void)
 {
-    return MXC_SPIXF_RevA_SCKFeedbackDisable((mxc_spixfc_reva_regs_t*)MXC_SPIXFC,
-                                             (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
+    return MXC_SPIXF_RevA_SCKFeedbackDisable(
+        (mxc_spixfc_reva_regs_t*)MXC_SPIXFC, (mxc_spixfm_reva_regs_t*)MXC_SPIXF);
 }
 
 /* ************************************************************************** */
@@ -672,7 +672,7 @@ uint8_t MXC_SPIXF_GetIoctrlSSDrive(void)
 /* ************************************************************************** */
 void MXC_SPIXF_SetPuPdCtrl(mxc_spixf_pup_t pupd)
 {
-    MXC_SPIXF->io_ctrl &= ~MXC_F_SPIXF_IO_CTRL_PUPDCTRL; //Clear PUPD field before setting
+    MXC_SPIXF->io_ctrl &= ~MXC_F_SPIXF_IO_CTRL_PUPDCTRL; // Clear PUPD field before setting
     MXC_SPIXF_RevA_SetPuPdCtrl((mxc_spixfm_reva_regs_t*)MXC_SPIXF, pupd);
 }
 

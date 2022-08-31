@@ -38,40 +38,40 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <inttypes.h>
-#include <string.h>
+#include "board.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "spixr.h"
-#include "board.h"
-#include "uart.h"
-#include "srcc.h"
 #include "rtc.h"
+#include "spixr.h"
+#include "srcc.h"
+#include "uart.h"
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /***** Definitions *****/
 // RAM Vendor Specific Commands
-#define A1024_READ  0x03
+#define A1024_READ 0x03
 #define A1024_WRITE 0x02
-#define A1024_EQIO  0x38
+#define A1024_EQIO 0x38
 
 // RAM Vendor Specific Values
-#define BUFFER_SIZE   512
+#define BUFFER_SIZE 512
 #define A1024_ADDRESS 0x80000000
-#define ITERATIONS    5000
+#define ITERATIONS 5000
 
 /***** Globals *****/
 int s, ss;
 
 mxc_spixr_cfg_t init_cfg = {
-    0x08,                /* Number of bits per character     */
+    0x08, /* Number of bits per character     */
     MXC_SPIXR_QUAD_SDIO, /* SPI Data Width                   */
-    0x04,                /* num of system clocks between SS active & first serial clock edge     */
-    0x08,                /* num of system clocks between last serial clock edge and ss inactive  */
-    0x10,                /* num of system clocks between transactions (read / write)             */
-    500000,              /* Baud freq                        */
+    0x04, /* num of system clocks between SS active & first serial clock edge     */
+    0x08, /* num of system clocks between last serial clock edge and ss inactive  */
+    0x10, /* num of system clocks between transactions (read / write)             */
+    500000, /* Baud freq                        */
 };
 
 /***** Functions *****/
@@ -94,8 +94,7 @@ void setup(void)
     // Setup to communicate in quad mode
     MXC_SPIXR_SendCommand(&quad_cmd, 1, 1);
     // Wait until quad cmd is sent
-    while (MXC_SPIXR_Busy())
-        ;
+    while (MXC_SPIXR_Busy()) { }
 
     MXC_SPIXR_SetWidth(MXC_SPIXR_QUAD_SDIO);
     MXC_SPIXR_ThreeWireModeDisable();
@@ -130,7 +129,9 @@ void test_function(void)
     // Defining Variable(s) to write & store data to RAM
     uint8_t write_buffer[BUFFER_SIZE], read_buffer[BUFFER_SIZE];
     uint8_t* address = (uint8_t*)A1024_ADDRESS;
-    ; /* Variable to store address of RAM */
+    {
+    }
+    /* Variable to store address of RAM */
     int temp, i;
 
     // Configure the SPIXR
@@ -139,7 +140,7 @@ void test_function(void)
     // Initialize & write pseudo-random data to be written to the RAM
     srand(0);
     for (i = 0; i < BUFFER_SIZE; i++) {
-        temp            = rand();
+        temp = rand();
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = temp;
@@ -148,9 +149,7 @@ void test_function(void)
     start_timer();
     for (temp = 0; temp < ITERATIONS; temp++) {
         // Read data from RAM
-        for (i = 0; i < BUFFER_SIZE; i++) {
-            read_buffer[i] = *(address + i);
-        }
+        for (i = 0; i < BUFFER_SIZE; i++) { read_buffer[i] = *(address + i); }
 
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
@@ -170,17 +169,16 @@ int main(void)
     printf("***** SRCC Example *****\n");
     printf("Connect the jumper (JP7) to SPIRAM.\n\n");
 
-    //Instruction cache enabled
+    // Instruction cache enabled
     printf("Running test reads with data cache enabled.   ");
     MXC_SRCC_Enable();
     test_function();
 
-    //Instruction cache disabled
+    // Instruction cache disabled
     printf("Running test reads with data cache disabled.  ");
     MXC_SRCC_Disable();
     test_function();
 
     printf("Example complete.\n");
-    while (1) {
-    }
+    while (1) { }
 }

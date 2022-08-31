@@ -40,8 +40,8 @@
 #define _EMAC_H_
 
 /* **** Includes **** */
-#include "mxc_device.h"
 #include "emac_regs.h"
+#include "mxc_device.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,32 +56,20 @@ extern "C" {
 /* **** Definitions **** */
 /** @brief   Enumeration for the EMAC interrupt events */
 typedef enum {
-    MXC_EMAC_EVENT_MPS =
-        MXC_F_EMAC_INT_EN_MPS, /**! Management Packet Sent Interrupt                   */
-    MXC_EMAC_EVENT_RXCMPL =
-        MXC_F_EMAC_INT_EN_RXCMPL, /**! Receive Complete Interrupt                         */
-    MXC_EMAC_EVENT_RXUBR =
-        MXC_F_EMAC_INT_EN_RXUBR, /**! RX Used Bit Read Interrupt                         */
-    MXC_EMAC_EVENT_TXUBR =
-        MXC_F_EMAC_INT_EN_TXUBR, /**! TX Used Bit Read Interrupt                         */
-    MXC_EMAC_EVENT_TXUR =
-        MXC_F_EMAC_INT_EN_TXUR, /**! Ethernet Transmit Underrun Interrupt               */
-    MXC_EMAC_EVENT_RLE =
-        MXC_F_EMAC_INT_EN_RLE, /**! Retry Limit Exceeded Interrupt                     */
-    MXC_EMAC_EVENT_TXERR =
-        MXC_F_EMAC_INT_EN_TXERR, /**! Transmit Buffers Exhausted In Mid-Frame Interrupt  */
-    MXC_EMAC_EVENT_TXCMPL =
-        MXC_F_EMAC_INT_EN_TXCMPL, /**! Transmit Complete Interrupt                        */
-    MXC_EMAC_EVENT_LC =
-        MXC_F_EMAC_INT_EN_LC, /**! Link Change Interrupt                              */
-    MXC_EMAC_EVENT_RXOR =
-        MXC_F_EMAC_INT_EN_RXOR, /**! Receive Overrun Interrupt                          */
-    MXC_EMAC_EVENT_HRESPNO =
-        MXC_F_EMAC_INT_EN_HRESPNO, /**! HRESP Not OK Interrupt                             */
-    MXC_EMAC_EVENT_PPR =
-        MXC_F_EMAC_INT_EN_PPR, /**! Pause Packet Received Interrupt                    */
-    MXC_EMAC_EVENT_PTZ =
-        MXC_F_EMAC_INT_EN_PTZ /**! Pause Time Zero Interrupt                          */
+    MXC_EMAC_EVENT_MPS = MXC_F_EMAC_INT_EN_MPS, /**! Management Packet Sent Interrupt */
+    MXC_EMAC_EVENT_RXCMPL = MXC_F_EMAC_INT_EN_RXCMPL, /**! Receive Complete Interrupt */
+    MXC_EMAC_EVENT_RXUBR = MXC_F_EMAC_INT_EN_RXUBR, /**! RX Used Bit Read Interrupt */
+    MXC_EMAC_EVENT_TXUBR = MXC_F_EMAC_INT_EN_TXUBR, /**! TX Used Bit Read Interrupt */
+    MXC_EMAC_EVENT_TXUR = MXC_F_EMAC_INT_EN_TXUR, /**! Ethernet Transmit Underrun Interrupt */
+    MXC_EMAC_EVENT_RLE = MXC_F_EMAC_INT_EN_RLE, /**! Retry Limit Exceeded Interrupt */
+    MXC_EMAC_EVENT_TXERR
+    = MXC_F_EMAC_INT_EN_TXERR, /**! Transmit Buffers Exhausted In Mid-Frame Interrupt  */
+    MXC_EMAC_EVENT_TXCMPL = MXC_F_EMAC_INT_EN_TXCMPL, /**! Transmit Complete Interrupt */
+    MXC_EMAC_EVENT_LC = MXC_F_EMAC_INT_EN_LC, /**! Link Change Interrupt */
+    MXC_EMAC_EVENT_RXOR = MXC_F_EMAC_INT_EN_RXOR, /**! Receive Overrun Interrupt */
+    MXC_EMAC_EVENT_HRESPNO = MXC_F_EMAC_INT_EN_HRESPNO, /**! HRESP Not OK Interrupt */
+    MXC_EMAC_EVENT_PPR = MXC_F_EMAC_INT_EN_PPR, /**! Pause Packet Received Interrupt */
+    MXC_EMAC_EVENT_PTZ = MXC_F_EMAC_INT_EN_PTZ /**! Pause Time Zero Interrupt */
 } mxc_emac_events_t;
 
 /* **** Structures **** */

@@ -40,8 +40,8 @@
 #ifndef _ADXL343_H_
 #define _ADXL343_H_
 
-#include <stdint.h>
 #include "mxc.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +57,7 @@ extern "C" {
   Power mode
 */
 #define ADXL343_PWRMOD_NORMAL 0x00
-#define ADXL343_PWRMOD_LP     0x10
+#define ADXL343_PWRMOD_LP 0x10
 
 /*
   Interrupt enable, map and source fields
@@ -65,18 +65,18 @@ extern "C" {
 #define ADXL343_INT_DATA_READY 0x80
 #define ADXL343_INT_SINGLE_TAP 0x40
 #define ADXL343_INT_DOUBLE_TAP 0x20
-#define ADXL343_INT_ACTIVITY   0x10
+#define ADXL343_INT_ACTIVITY 0x10
 #define ADXL343_INT_INACTIVITY 0x08
-#define ADXL343_INT_FREE_FALL  0x04
-#define ADXL343_INT_WATERMARK  0x02
-#define ADXL343_INT_OVERRUN    0x01
+#define ADXL343_INT_FREE_FALL 0x04
+#define ADXL343_INT_WATERMARK 0x02
+#define ADXL343_INT_OVERRUN 0x01
 
 /*
   Data ranges
 */
-#define ADXL343_RANGE_2G  0x00
-#define ADXL343_RANGE_4G  0x01
-#define ADXL343_RANGE_8G  0x02
+#define ADXL343_RANGE_2G 0x00
+#define ADXL343_RANGE_4G 0x01
+#define ADXL343_RANGE_8G 0x02
 #define ADXL343_RANGE_16G 0x03
 
 /*
@@ -84,37 +84,37 @@ extern "C" {
 */
 #define ADXL343_DR_3200HZ 0x0F
 #define ADXL343_DR_1600HZ 0x0E
-#define ADXL343_DR_800HZ  0x0D
-#define ADXL343_DR_400HZ  0x0C
-#define ADXL343_DR_200HZ  0x0B
-#define ADXL343_DR_100HZ  0x0A
-#define ADXL343_DR_50HZ   0x09
-#define ADXL343_DR_25HZ   0x08
-#define ADXL343_DR_12HZ5  0x07
-#define ADXL343_DR_6HZ25  0x06
-#define ADXL343_DR_3HZ13  0x05
-#define ADXL343_DR_1HZ56  0x04
-#define ADXL343_DR_HZ78   0x03
-#define ADXL343_DR_HZ39   0x02
-#define ADXL343_DR_HZ20   0x01
-#define ADXL343_DR_HZ10   0x00
+#define ADXL343_DR_800HZ 0x0D
+#define ADXL343_DR_400HZ 0x0C
+#define ADXL343_DR_200HZ 0x0B
+#define ADXL343_DR_100HZ 0x0A
+#define ADXL343_DR_50HZ 0x09
+#define ADXL343_DR_25HZ 0x08
+#define ADXL343_DR_12HZ5 0x07
+#define ADXL343_DR_6HZ25 0x06
+#define ADXL343_DR_3HZ13 0x05
+#define ADXL343_DR_1HZ56 0x04
+#define ADXL343_DR_HZ78 0x03
+#define ADXL343_DR_HZ39 0x02
+#define ADXL343_DR_HZ20 0x01
+#define ADXL343_DR_HZ10 0x00
 
 /*
   FIFO modes
 */
-#define ADXL343_FIFO_BYPASS  0x00
-#define ADXL343_FIFO_FIFO    0x40
-#define ADXL343_FIFO_STREAM  0x80
+#define ADXL343_FIFO_BYPASS 0x00
+#define ADXL343_FIFO_FIFO 0x40
+#define ADXL343_FIFO_STREAM 0x80
 #define ADXL343_FIFO_TRIGGER 0xC0
 
 /*
   Scale factor -- micro g / LSB
 */
 #define ADXL343_SF_FULLRES 0.0039f
-#define ADXL343_SF_2G      0.0039f
-#define ADXL343_SF_4G      0.0078f
-#define ADXL343_SF_8G      0.0156f
-#define ADXL343_SF_16G     0.0312f
+#define ADXL343_SF_2G 0.0039f
+#define ADXL343_SF_4G 0.0078f
+#define ADXL343_SF_8G 0.0156f
+#define ADXL343_SF_16G 0.0312f
 
 /*
   Read X, Y and Z axis data.
@@ -185,7 +185,8 @@ int adxl343_set_int_enable(uint8_t srcs);
   Set interrupt pin mapping.
 
   MAP parameter is the bitwise OR of one or more of the ADXL343_INT_x constants.
-  Specified interrupt sources are mapped to INT2 pin; unspecified interrupt sources are mapped to INT1 pin.
+  Specified interrupt sources are mapped to INT2 pin; unspecified interrupt sources are mapped to
+  INT1 pin.
 
   Returns 0 on success, negative if error.
 */

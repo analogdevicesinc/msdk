@@ -53,7 +53,7 @@ extern "C" {
 #define ISO_FREQ CRYPTO_FREQ
 #endif
 
-/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
+/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip.
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: INO was previosly LIRC8  */
 #ifndef INRO_FREQ

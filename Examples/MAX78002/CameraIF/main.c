@@ -33,33 +33,32 @@
 
 /**
  * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360 camera sensors as defined in the makefile.
+ * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360 camera sensors as defined
+ * in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
- *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
- *          The image is prepended with a header that is interpreted by the grab_image.py
- *          python script.  The data from this example through the UART is in a binary format.
- *          Instructions: 1) Load and execute this example. The example will initialize the camera
- *                        and start the repeating binary output of camera frame data.
- *                        2) Run 'sudo grab_image.py /dev/ttyUSB0 921600'
- *                           Substitute the /dev/ttyUSB0 string for the serial port on your system.
- *                           The python program will read in the binary data from this example and
- *                           output a png image.
+ *          Alternatively, it can display the captured image on TFT is it is enabled in the make
+ * file. The image is prepended with a header that is interpreted by the grab_image.py python
+ * script.  The data from this example through the UART is in a binary format. Instructions: 1) Load
+ * and execute this example. The example will initialize the camera and start the repeating binary
+ * output of camera frame data. 2) Run 'sudo grab_image.py /dev/ttyUSB0 921600' Substitute the
+ * /dev/ttyUSB0 string for the serial port on your system. The python program will read in the
+ * binary data from this example and output a png image.
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_sys.h"
-#include "mxc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "uart.h"
-#include "led.h"
 #include "board.h"
 #include "camera.h"
-#include "utils.h"
 #include "dma.h"
+#include "led.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "uart.h"
+#include "utils.h"
+#include <stdint.h>
+#include <stdio.h>
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
@@ -84,8 +83,8 @@
 
 #endif
 
-#define CON_BAUD \
-    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define CON_BAUD                                                                                   \
+    115200 * 8 // UART baudrate used for sending data to PC, use max 921600 for serial stream
 #define X_START 0
 #define Y_START 0
 
@@ -175,10 +174,10 @@ int main(void)
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel); // RGB565
+        dma_channel); // RGB565
 #else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel); // Mono
+        dma_channel); // Mono
 #endif
 
     if (ret != STATUS_OK) {

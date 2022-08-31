@@ -1,10 +1,10 @@
 /* ----------------------------------------------------------------------
  * Copyright (C) 2010-2012 ARM Limited. All rights reserved.
  *
-* $Date:         17. January 2013
-* $Revision:     V1.4.0
-*
-* Project:       CMSIS DSP Library
+ * $Date:         17. January 2013
+ * $Revision:     V1.4.0
+ *
+ * Project:       CMSIS DSP Library
  * Title:        arm_fir_example_f32.c
  *
  * Description:  Example code demonstrating how an FIR filter can be used
@@ -12,31 +12,31 @@
  *
  * Target Processor: Cortex-M4/Cortex-M3
  *
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*   - Redistributions of source code must retain the above copyright
-*     notice, this list of conditions and the following disclaimer.
-*   - Redistributions in binary form must reproduce the above copyright
-*     notice, this list of conditions and the following disclaimer in
-*     the documentation and/or other materials provided with the
-*     distribution.
-*   - Neither the name of ARM LIMITED nor the names of its contributors
-*     may be used to endorse or promote products derived from this
-*     software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *   - Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *   - Neither the name of ARM LIMITED nor the names of its contributors
+ *     may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * -------------------------------------------------------------------- */
 
 /**
@@ -66,11 +66,10 @@
  *     h = fir1(28, 6/24);
  * </pre>
  * The first argument is the "order" of the filter and is always one less than the desired length.
- * The second argument is the normalized cutoff frequency.  This is in the range 0 (DC) to 1.0 (Nyquist).
- * A 6 kHz cutoff with a Nyquist frequency of 24 kHz lies at a normalized frequency of 6/24 = 0.25.
- * The CMSIS FIR filter function requires the coefficients to be in time reversed order.
- * <pre>
- *     fliplr(h)
+ * The second argument is the normalized cutoff frequency.  This is in the range 0 (DC) to 1.0
+ * (Nyquist). A 6 kHz cutoff with a Nyquist frequency of 24 kHz lies at a normalized frequency of
+ * 6/24 = 0.25. The CMSIS FIR filter function requires the coefficients to be in time reversed
+ * order. <pre> fliplr(h)
  * </pre>
  * The resulting filter coefficients and are shown below.
  * Note that the filter is symmetric (a property of linear phase FIR filters)
@@ -85,14 +84,10 @@
  * \image html FIRLPF_response.gif
  * \par
  * The input signal is shown below.
- * The left hand side shows the signal in the time domain while the right hand side is a frequency domain representation.
- * The two sine wave components can be clearly seen.
- * \par
- * \image html FIRLPF_input.gif
- * \par
- * The output of the filter is shown below.  The 15 kHz component has been eliminated.
- * \par
- * \image html FIRLPF_output.gif
+ * The left hand side shows the signal in the time domain while the right hand side is a frequency
+ * domain representation. The two sine wave components can be clearly seen. \par \image html
+ * FIRLPF_input.gif \par The output of the filter is shown below.  The 15 kHz component has been
+ * eliminated. \par \image html FIRLPF_output.gif
  *
  * \par Variables Description:
  * \par
@@ -140,7 +135,7 @@ this example is not giving better SNR ...
 
 */
 #define SNR_THRESHOLD_F32 75.0f
-#define BLOCK_SIZE        32
+#define BLOCK_SIZE 32
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 /* Must be a multiple of 16 */
@@ -179,22 +174,19 @@ static float32_t firStateF32[BLOCK_SIZE + NUM_TAPS - 1];
 ** fir1(28, 6/24)
 ** ------------------------------------------------------------------- */
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
-const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = {
-    -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f,
-    +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f,
-    -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f,
-    +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f,
-    +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f,
-    -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
-    +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f,
-    -0.0018225230f, 0.0f,           0.0f,           0.0f};
+const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = { -0.0018225230f, -0.0015879294f, +0.0000000000f,
+    +0.0036977508f, +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f, -0.0341458607f,
+    -0.0333591565f, +0.0000000000f, +0.0676308395f, +0.1522061835f, +0.2229246956f, +0.2504960933f,
+    +0.2229246956f, +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f, -0.0341458607f,
+    -0.0173976984f, -0.0000000000f, +0.0085302217f, +0.0080754303f, +0.0036977508f, +0.0000000000f,
+    -0.0015879294f, -0.0018225230f, 0.0f, 0.0f, 0.0f };
 #else
-const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = {
-    -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f, +0.0080754303f, +0.0085302217f,
-    -0.0000000000f, -0.0173976984f, -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f,
-    +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f, +0.1522061835f, +0.0676308395f,
-    +0.0000000000f, -0.0333591565f, -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
-    +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f, -0.0018225230f};
+const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = { -0.0018225230f, -0.0015879294f, +0.0000000000f,
+    +0.0036977508f, +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f, -0.0341458607f,
+    -0.0333591565f, +0.0000000000f, +0.0676308395f, +0.1522061835f, +0.2229246956f, +0.2504960933f,
+    +0.2229246956f, +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f, -0.0341458607f,
+    -0.0173976984f, -0.0000000000f, +0.0085302217f, +0.0080754303f, +0.0036977508f, +0.0000000000f,
+    -0.0015879294f, -0.0018225230f };
 #endif
 
 /* ------------------------------------------------------------------
@@ -218,24 +210,24 @@ int main(void)
     float32_t *inputF32, *outputF32;
 
     /* Initialize input and output buffer pointers */
-    inputF32  = &testInput_f32_1kHz_15kHz[0];
+    inputF32 = &testInput_f32_1kHz_15kHz[0];
     outputF32 = &testOutput[0];
 
     /* Call FIR init function to initialize the instance structure. */
     arm_fir_init_f32(&S, NUM_TAPS, (float32_t*)&firCoeffs32[0], &firStateF32[0], blockSize);
 
     /* ----------------------------------------------------------------------
-  ** Call the FIR process function for every blockSize samples
-  ** ------------------------------------------------------------------- */
+     ** Call the FIR process function for every blockSize samples
+     ** ------------------------------------------------------------------- */
 
     for (i = 0; i < numBlocks; i++) {
         arm_fir_f32(&S, inputF32 + (i * blockSize), outputF32 + (i * blockSize), blockSize);
     }
 
     /* ----------------------------------------------------------------------
-  ** Compare the generated output against the reference output computed
-  ** in MATLAB.
-  ** ------------------------------------------------------------------- */
+     ** Compare the generated output against the reference output computed
+     ** in MATLAB.
+     ** ------------------------------------------------------------------- */
 
     snr = arm_snr_f32(&refOutput[0], &testOutput[0], TEST_LENGTH_SAMPLES);
 
@@ -245,16 +237,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) { }
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) { }
+/* main function does not return */
 #endif
         return 0;
     }

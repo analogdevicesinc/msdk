@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -40,25 +40,25 @@
 #include "MAX32xxx.h"
 #include "utils.h"
 
-#include "mml_nfc_pcd_port.h"
-#include "mml_nfc_pcd_rf_driver.h"
-#include "iso14443_3a_flow.h"
-#include "iso14443_3a_cmd.h"
-#include "iso14443_3b_flow.h"
-#include "iso14443_3b_cmd.h"
+#include "EMV_polling_and_loopback.h"
 #include "iso14443_3_common.h"
+#include "iso14443_3a_cmd.h"
+#include "iso14443_3a_flow.h"
+#include "iso14443_3b_cmd.h"
+#include "iso14443_3b_flow.h"
 #include "iso14443_4_transitive.h"
 #include "logging.h"
-#include "EMV_polling_and_loopback.h"
+#include "mml_nfc_pcd_port.h"
+#include "mml_nfc_pcd_rf_driver.h"
 
 /******************************   		DEFINES	    **************************/
-#define BEEPER_PORT       MXC_GPIO3
-#define BEEPER_PIN        MXC_GPIO_PIN_3
+#define BEEPER_PORT MXC_GPIO3
+#define BEEPER_PIN MXC_GPIO_PIN_3
 #define BEEP_PASS_TIME_MS 150
 #define BEEP_FAIL_TIME_MS 150
 
-#define BEEP_PASS_TONE 250 //847
-#define BEEP_PASS_VOL  25  //84
+#define BEEP_PASS_TONE 250 // 847
+#define BEEP_PASS_VOL 25 // 84
 
 /******************************   	TYPE DEFINES	**************************/
 typedef struct {
@@ -76,11 +76,11 @@ extern mml_nfc_pcd_analog_params_t current_analog_parameters;
 /******************************   STATIC FUNCTIONS  **************************/
 static void beep_for_success(void)
 {
-    uint32_t beep_time     = 0;
+    uint32_t beep_time = 0;
     uint32_t beep_loop_cnt = 0;
 
-    uint32_t tone        = BEEP_PASS_TONE;
-    uint32_t vol         = BEEP_PASS_VOL;
+    uint32_t tone = BEEP_PASS_TONE;
+    uint32_t vol = BEEP_PASS_VOL;
     uint32_t duration_ms = BEEP_PASS_TIME_MS;
 
     // No timer or pulse train on the buzzer gpio, got to bit bang it
@@ -111,7 +111,7 @@ static void setup_beeper(void)
 
     buzzer_out.port = BEEPER_PORT;
     buzzer_out.mask = BEEPER_PIN;
-    buzzer_out.pad  = MXC_GPIO_PAD_NONE;
+    buzzer_out.pad = MXC_GPIO_PAD_NONE;
     buzzer_out.func = MXC_GPIO_FUNC_OUT;
     // Use 3.3V for louder Buzz
     buzzer_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
@@ -123,9 +123,9 @@ static void setup_beeper(void)
 static int32_t do_ppse(ppse_response_t* resp)
 {
     int32_t ret;
-    uint8_t capdu[261] = {0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
-                          'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00};
-    int32_t capdulen   = 20;
+    uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.', 'S', 'Y', 'S',
+        '.', 'D', 'D', 'F', '0', '1', 0x00 };
+    int32_t capdulen = 20;
 
     logging("CAPDU ");
     hexdump(DBG_LVL_LOG, capdu, capdulen, 1);
@@ -134,10 +134,10 @@ static int32_t do_ppse(ppse_response_t* resp)
 
     if (ret) {
         switch (ret) {
-            case ISO14443_3_ERR_PROTOCOL:
-            case ISO14443_3_ERR_TIMEOUT:
-            case ISO14443_3_ERR_TRANSMISSION:
-                return RESETPROCEDURE;
+        case ISO14443_3_ERR_PROTOCOL:
+        case ISO14443_3_ERR_TIMEOUT:
+        case ISO14443_3_ERR_TRANSMISSION:
+            return RESETPROCEDURE;
         }
     }
 
@@ -157,205 +157,205 @@ static int32_t do_ppse(ppse_response_t* resp)
 static int32_t aid_lookup(ppse_response_t* resp)
 {
     // VISA
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x03}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x03 }, 5) == 0) {
         strncpy(resp->application_label, "VISA", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x03, 0x10, 0x10}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x03, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "VISA", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x98, 0x08, 0x48}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x98, 0x08, 0x48 }, 7) == 0) {
         strncpy(resp->application_label, "VISA", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Master card
-    if (memcmp(resp->aid_bin, (uint8_t[]){0xA0, 0x00, 0x00, 0x00, 0x04}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (uint8_t[]) { 0xA0, 0x00, 0x00, 0x00, 0x04 }, 5) == 0) {
         strncpy(resp->application_label, "Master Card", 50);
         resp->application_label_len = 11;
         return ISO14443_3_ERR_SUCCESS;
     }
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x05}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x05 }, 5) == 0) {
         strncpy(resp->application_label, "Master Card", 50);
         resp->application_label_len = 11;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // American express
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x25}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x25 }, 5) == 0) {
         strncpy(resp->application_label, "American Express", 50);
         resp->application_label_len = 16;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // CB
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x42}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x42 }, 5) == 0) {
         strncpy(resp->application_label, "CB", 50);
         resp->application_label_len = 3;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // LINK
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x29}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x29 }, 5) == 0) {
         strncpy(resp->application_label, "LINK", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // JCB
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x65}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x65 }, 5) == 0) {
         strncpy(resp->application_label, "JCB", 50);
         resp->application_label_len = 4;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Dankort
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Dankort", 50);
         resp->application_label_len = 8;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // CoGeBan
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x41, 0x00, 0x01}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x01, 0x41, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "Banrisul", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Discover
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x52, 0x30, 0x10}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x01, 0x52, 0x30, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Discover", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Banrisul
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x54}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x01, 0x54 }, 5) == 0) {
         strncpy(resp->application_label, "Banrisul", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Saudi Payments Network
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x02, 0x28}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x02, 0x28 }, 5) == 0) {
         strncpy(resp->application_label, "Saudi Payments Network", 50);
         resp->application_label_len = 22;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Interac
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x02, 0x77}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x02, 0x77 }, 5) == 0) {
         strncpy(resp->application_label, "Interac", 50);
         resp->application_label_len = 8;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Discover Card
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x24}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x03, 0x24 }, 5) == 0) {
         strncpy(resp->application_label, "Discover Card", 50);
         resp->application_label_len = 14;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // UnionPay
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x33}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x03, 0x33 }, 5) == 0) {
         strncpy(resp->application_label, "UnionPay", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Euro Alliance of Payment Schemes
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x59}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x03, 0x59 }, 5) == 0) {
         strncpy(resp->application_label, "Euro Alliance", 50);
         resp->application_label_len = 13;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Verve
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x71}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x03, 0x71 }, 5) == 0) {
         strncpy(resp->application_label, "Verve", 50);
         resp->application_label_len = 6;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // The Exchange Network ATM Network
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x39}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x04, 0x39 }, 5) == 0) {
         strncpy(resp->application_label, "Exchange Network ATM", 50);
         resp->application_label_len = 20;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Rupay
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x05, 0x24, 0x10, 0x10}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x05, 0x24, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Rupay", 50);
         resp->application_label_len = 6;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // ???100
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x32, 0x00, 0x01}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x04, 0x32, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "???100", 50);
         resp->application_label_len = 7;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // ZKA
-    if (memcmp(resp->aid_bin, (char[]){0xD2, 0x76, 0x00, 0x00, 0x25, 0x45, 0x50, 0x01, 0x00}, 9) ==
-        0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xD2, 0x76, 0x00, 0x00, 0x25, 0x45, 0x50, 0x01, 0x00 }, 9)
+        == 0) {
         strncpy(resp->application_label, "ZKA", 50);
         resp->application_label_len = 4;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Bankaxept
-    if (memcmp(resp->aid_bin, (char[]){0xD5, 0x78, 0x00, 0x00, 0x02, 0x10, 0x10}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xD5, 0x78, 0x00, 0x00, 0x02, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Bankaxept", 50);
         resp->application_label_len = 10;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // BRADESCO
-    if (memcmp(resp->aid_bin, (char[]){0xF0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x01}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xF0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "BRADESCO", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Midland
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x24, 0x01}, 6) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x00, 0x24, 0x01 }, 6) == 0) {
         strncpy(resp->application_label, "Midland", 50);
         resp->application_label_len = 8;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // PBS
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "PBS", 50);
         resp->application_label_len = 4;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // eTranzact
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x54}, 5) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x04, 0x54 }, 5) == 0) {
         strncpy(resp->application_label, "eTranzact", 50);
         resp->application_label_len = 10;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Google
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x76, 0x6C}, 6) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x04, 0x76, 0x6C }, 6) == 0) {
         strncpy(resp->application_label, "Google", 50);
         resp->application_label_len = 7;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // InterSwitch
-    if (memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x71, 0x00, 0x01}, 7) == 0) {
+    if (memcmp(resp->aid_bin, (char[]) { 0xA0, 0x00, 0x00, 0x03, 0x71, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "InterSwitch", 50);
         resp->application_label_len = 12;
         return ISO14443_3_ERR_SUCCESS;
@@ -364,20 +364,20 @@ static int32_t aid_lookup(ppse_response_t* resp)
     return -1;
 }
 
-#define FCI_TEMPLATE                0x6F
-#define DEDICATED_FILE_TEMPLATE     0x84
-#define FCI_PROPRIETARY_TEMPLATE    0xA5
+#define FCI_TEMPLATE 0x6F
+#define DEDICATED_FILE_TEMPLATE 0x84
+#define FCI_PROPRIETARY_TEMPLATE 0xA5
 #define FCI_ISSUER_DISCRETIONARY_B0 0xBF
 #define FCI_ISSUER_DISCRETIONARY_B1 0x0C
-#define APPLICATION_TEMPLATE        0x61
-#define APPLICATION_IDENTIFIER      0x4F
-#define APPLICATION_LABEL           0x50
+#define APPLICATION_TEMPLATE 0x61
+#define APPLICATION_IDENTIFIER 0x4F
+#define APPLICATION_LABEL 0x50
 
 // Inspect ppse response, if valid, lookup Application ID
 static int32_t parse_ppse_response(ppse_response_t* resp)
 {
-    int32_t index        = 0;
-    int32_t i            = 0;
+    int32_t index = 0;
+    int32_t i = 0;
     int32_t fci_prop_len = 0;
 
     if (resp->rapdu_len < 2) {
@@ -605,10 +605,10 @@ int nfc_init(void)
 
 int nfc_tick(char* msg, int* msg_len)
 {
-    int status           = 0;
-    int i                = 0;
-    int k                = 0;
-    char mifare_strn[50] = {0x00};
+    int status = 0;
+    int i = 0;
+    int k = 0;
+    char mifare_strn[50] = { 0x00 };
     ppse_response_t card_response;
 
     // no message yet.
@@ -630,7 +630,7 @@ int nfc_tick(char* msg, int* msg_len)
                 debug("parse ppse success\n");
 
                 // pcMessage buffer is only 50 bytes.
-                i        = 0;
+                i = 0;
                 msg[i++] = 'A';
                 msg[i++] = 'I';
                 msg[i++] = 'D';

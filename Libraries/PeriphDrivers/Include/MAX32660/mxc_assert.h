@@ -64,9 +64,9 @@ extern "C" {
  * @note       To use debug assertions, the symbol @c MXC_ASSERT_ENABLE must be
  *             defined.
  */
-#define MXC_ASSERT(expr)                       \
-    if (!(expr)) {                             \
-        mxc_assert(#expr, __FILE__, __LINE__); \
+#define MXC_ASSERT(expr)                                                                           \
+    if (!(expr)) {                                                                                 \
+        mxc_assert(#expr, __FILE__, __LINE__);                                                     \
     }
 /**
  * Macro that generates an assertion with the message "FAIL".

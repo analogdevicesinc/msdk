@@ -1,39 +1,39 @@
 /*******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
-* 
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ *
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************
+ */
 
-#define SWAP(x) \
+#define SWAP(x)                                                                                    \
     (((x) >> 24) | (((x)&0x00FF0000) >> 8) | (((x)&0x0000FF00) << 8) | (((x)&0x000000FF) << 24))
 
 typedef enum {
@@ -42,8 +42,8 @@ typedef enum {
 } enum_rom_version_t;
 
 #ifdef __SLA_FWK__
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 extern unsigned int _start_SWAP;
 extern unsigned int _SLA_Size_SWAP;
@@ -51,25 +51,25 @@ extern unsigned int _SLA_Size_SWAP;
 typedef enum {
     MagicH = 0x46495357,
     /* NOTE: The 0xF nibble means something called stack_method=1.
- * If set to 0xF, the ROM fetches SP and PC immediately after the header at offset 0x20.
- * If set to 0x4, the ROM uses the PC in the header at offset 0x14.
- */
+     * If set to 0xF, the ROM fetches SP and PC immediately after the header at offset 0x20.
+     * If set to 0x4, the ROM uses the PC in the header at offset 0x14.
+     */
     /*	MagicH = 0xF6495357,*/
     MagicL = 0x45444744,
 } enum_magic_t;
 
 typedef struct {
     enum_magic_t MagicHigh; //> SLA Header magic
-    enum_magic_t MagicLow;  //> SLA Header magic
+    enum_magic_t MagicLow; //> SLA Header magic
 } magic_t;
 
 typedef struct {
     magic_t Magic;
     enum_rom_version_t RomVersion; //> ROM version
-    unsigned int LoadAddr;         //> Relocation address.
-    unsigned int SLA_CodeSize;     //> SLA code size in bytes
-    unsigned int* JumpAddr;        //> Rom code will jump at this address
-    unsigned int ArgSize;          //> Size of the Argument
+    unsigned int LoadAddr; //> Relocation address.
+    unsigned int SLA_CodeSize; //> SLA code size in bytes
+    unsigned int* JumpAddr; //> Rom code will jump at this address
+    unsigned int ArgSize; //> Size of the Argument
     unsigned int AppVersionNumber; //> Version of this application
 } flash_app_header_t;
 
@@ -109,7 +109,7 @@ typedef enum {
 
 typedef struct {
     enum_magic_t MagicHigh; //> SLA Header magic
-    enum_magic_t MagicLow;  //> SLA Header magic
+    enum_magic_t MagicLow; //> SLA Header magic
 } magic_t;
 
 typedef int (*__scpa_write_t)(unsigned int dest, unsigned int length, unsigned char* p_src);
@@ -117,17 +117,17 @@ typedef int (*__scpa_erase_t)(unsigned int dest, unsigned int length);
 
 /** Generic Plugin Operations */
 typedef struct {
-    __scpa_write_t write;   //> Write to memory
+    __scpa_write_t write; //> Write to memory
     __scpa_write_t compare; //> Compare memory data
-    __scpa_erase_t erase;   //> Erase memory
+    __scpa_erase_t erase; //> Erase memory
 } scpa_ops_t;
 
 typedef struct {
     magic_t Magic;
     enum_rom_version_t RomVersion; //> ROM version
-    unsigned int mem_base_addr;    //> Base address of memory targetted by applet
-    unsigned int mem_size;         //> Size of this memory
-    scpa_ops_t ops;                //> Operations of the SCP Applet
+    unsigned int mem_base_addr; //> Base address of memory targetted by applet
+    unsigned int mem_size; //> Size of this memory
+    scpa_ops_t ops; //> Operations of the SCP Applet
 } scpa_header_t;
 
 int start_scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src);
@@ -182,9 +182,9 @@ const scpa_header_t scpa_header = {
 int __attribute__((section(".scpa_ops")))
 start_scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src)
 {
-    volatile unsigned int bss_size =
-        (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
-    volatile unsigned char* p_bss  = (volatile unsigned char*)&__bss_start__;
+    volatile unsigned int bss_size
+        = (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
+    volatile unsigned char* p_bss = (volatile unsigned char*)&__bss_start__;
     volatile unsigned int* p_magic = (volatile unsigned int*)&__bss_magic__;
 
     // Automatic Code for bss init
@@ -198,9 +198,9 @@ start_scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src)
 int __attribute__((section(".scpa_ops")))
 start_scpa_compare(unsigned int dest, unsigned int length, unsigned char* p_src)
 {
-    volatile unsigned int bss_size =
-        (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
-    volatile unsigned char* p_bss  = (volatile unsigned char*)&__bss_start__;
+    volatile unsigned int bss_size
+        = (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
+    volatile unsigned char* p_bss = (volatile unsigned char*)&__bss_start__;
     volatile unsigned int* p_magic = (volatile unsigned int*)&__bss_magic__;
 
     // Automatic Code for bss init
@@ -213,9 +213,9 @@ start_scpa_compare(unsigned int dest, unsigned int length, unsigned char* p_src)
 
 int __attribute__((section(".scpa_ops"))) start_scpa_erase(unsigned int dest, unsigned int length)
 {
-    volatile unsigned int bss_size =
-        (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
-    volatile unsigned char* p_bss  = (volatile unsigned char*)&__bss_start__;
+    volatile unsigned int bss_size
+        = (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
+    volatile unsigned char* p_bss = (volatile unsigned char*)&__bss_start__;
     volatile unsigned int* p_magic = (volatile unsigned int*)&__bss_magic__;
 
     // Automatic Code for bss init
@@ -251,8 +251,6 @@ int __attribute__((section(".scpa_ops"))) scpa_erase(unsigned int dest, unsigned
     return 0;
 }
 
-void Reset_Handler(void)
-{
-}
+void Reset_Handler(void) { }
 
 #endif //__SCPA_FWK__

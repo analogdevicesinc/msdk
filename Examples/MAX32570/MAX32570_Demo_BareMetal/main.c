@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -37,21 +37,21 @@
  * @file    main.c
  * @brief   MAX32570 Bare-metal Demo Example!
  *
- * @details 
+ * @details
  */
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "MAX32xxx.h"
-#include "task_smartcard.h"
-#include "task_nfc.h"
-#include "task_msr.h"
 #include "task_logo_animation.h"
+#include "task_msr.h"
+#include "task_nfc.h"
+#include "task_smartcard.h"
 
 #include "state.h"
-#include "utils.h"
 #include "tft_ssd2119.h"
+#include "utils.h"
 
 /********************************* 		VARIABLES	 *************************/
 static volatile unsigned int timeout_status = 0;
@@ -90,7 +90,7 @@ static int system_init(void)
 /*****************************************************************************/
 int main(void)
 {
-    int ret      = 0;
+    int ret = 0;
     State* state = NULL;
     int key;
     unsigned int timeout = 0;
@@ -152,8 +152,8 @@ int main(void)
         }
 
         /*
-		 *  check state timeout status
-		 */
+         *  check state timeout status
+         */
         if (timeout_status) {
             if (state->tick) {
                 ret = state->tick();
@@ -175,8 +175,8 @@ int main(void)
         }
 
         /*
-		 *  logo animation
-		 */
+         *  logo animation
+         */
         logo_animation_tick();
     }
 

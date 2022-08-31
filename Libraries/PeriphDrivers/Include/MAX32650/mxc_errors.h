@@ -1,7 +1,7 @@
 /**
  * @file
- * @brief    List of common error return codes for Maxim Integrated libraries. 
-*/
+ * @brief    List of common error return codes for Maxim Integrated libraries.
+ */
 /* ****************************************************************************
  * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -33,7 +33,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-09 18:45:02 -0500 (Thu, 09 Aug 2018) $ 
+ * $Date: 2018-08-09 18:45:02 -0500 (Thu, 09 Aug 2018) $
  * $Revision: 36818 $
  *
  *************************************************************************** */
@@ -47,7 +47,7 @@
  * @defgroup MXC_Error_Codes Error Codes
  * @brief      A list of common error codes used by the API.
  * @note       A Negative Error Convention is used to avoid conflict with
- *             positive, Non-Error, returns. 
+ *             positive, Non-Error, returns.
  * @{
  */
 

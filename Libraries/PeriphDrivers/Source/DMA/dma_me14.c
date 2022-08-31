@@ -32,16 +32,16 @@
  *************************************************************************** */
 
 /****** Includes *******/
-#include <stddef.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include "mxc_device.h"
+#include "dma.h"
+#include "dma_regs.h"
+#include "dma_reva.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
-#include "dma.h"
-#include "dma_reva.h"
-#include "dma_regs.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
 /***** Definitions *****/
 
@@ -63,20 +63,20 @@ static mxc_dma_regs_t* getDMAInstance(int ch)
 int MXC_DMA_Init(mxc_dma_regs_t* dma)
 {
     switch (MXC_DMA_GET_IDX(dma)) {
-        case 0:
-            if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
-                MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
-                MXC_SYS_Reset_Periph(MXC_SYS_RESET_DMA0);
-            }
-            break;
-        case 1:
-            if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA1)) {
-                MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA1);
-                MXC_SYS_Reset_Periph(MXC_SYS_RESET_DMA1);
-            }
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_DMA0);
+        }
+        break;
+    case 1:
+        if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA1)) {
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA1);
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_DMA1);
+        }
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t*)dma);
@@ -190,14 +190,14 @@ void MXC_DMA_Handler(mxc_dma_regs_t* dma)
     }
 }
 
-int MXC_DMA_MemCpy(mxc_dma_regs_t* dma, void* dest, void* src, int len,
-                   mxc_dma_complete_cb_t callback)
+int MXC_DMA_MemCpy(
+    mxc_dma_regs_t* dma, void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
 {
     return MXC_DMA_RevA_MemCpy((mxc_dma_reva_regs_t*)dma, dest, src, len, callback);
 }
 
 int MXC_DMA_DoTransfer(mxc_dma_regs_t* dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
-                       mxc_dma_trans_chain_t callback)
+    mxc_dma_trans_chain_t callback)
 {
     return MXC_DMA_RevA_DoTransfer((mxc_dma_reva_regs_t*)dma, config, firstSrcDst, callback);
 }

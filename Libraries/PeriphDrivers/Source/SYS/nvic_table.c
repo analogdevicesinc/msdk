@@ -32,9 +32,9 @@
  **************************************************************************** */
 
 #ifndef __riscv
+#include "nvic_table.h"
 #include "mxc_device.h"
 #include <string.h>
-#include "nvic_table.h"
 
 #if !defined(NVIC_USER_IRQ_OFFSET)
 #define NVIC_USER_IRQ_OFFSET 16 /**! Offset for device specific IRQs */

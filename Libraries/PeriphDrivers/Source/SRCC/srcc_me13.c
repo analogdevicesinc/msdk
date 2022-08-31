@@ -31,10 +31,10 @@
  *
  *************************************************************************** */
 
-#include "srcc.h"
-#include "srcc_reva.h"
 #include "gcr_regs.h"
 #include "mxc_device.h"
+#include "srcc.h"
+#include "srcc_reva.h"
 
 uint32_t MXC_SRCC_ID(mxc_srcc_cache_id_t id)
 {
@@ -77,12 +77,12 @@ void MXC_SRCC_WriteAllocateDisable(void)
     MXC_SRCC_RevA_WriteAllocateDisable((mxc_srcc_reva_regs_t*)MXC_SRCC);
 }
 
-void MXC_SRCC_CriticalWordFirstEnable(void) //cwfst_dis
+void MXC_SRCC_CriticalWordFirstEnable(void) // cwfst_dis
 {
     MXC_SRCC_RevA_CriticalWordFirstEnable((mxc_srcc_reva_regs_t*)MXC_SRCC);
 }
 
-void MXC_SRCC_CriticalWordFirstDisable(void) //cwfst_dis
+void MXC_SRCC_CriticalWordFirstDisable(void) // cwfst_dis
 {
     MXC_SRCC_RevA_CriticalWordFirstDisable((mxc_srcc_reva_regs_t*)MXC_SRCC);
 }

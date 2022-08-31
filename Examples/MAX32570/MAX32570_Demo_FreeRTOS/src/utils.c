@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -49,7 +49,7 @@ unsigned int utils_get_time_ms(void)
     unsigned int ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec    = MXC_RTC_GetSecond();
+    sec = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 

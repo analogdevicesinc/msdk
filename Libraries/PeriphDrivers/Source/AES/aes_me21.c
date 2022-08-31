@@ -36,11 +36,11 @@
  *
  *************************************************************************** */
 
+#include "aes_revb.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "aes_revb.h"
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
@@ -147,8 +147,8 @@ int MXC_AES_RXDMAConfig(void* dest_addr, int len)
 
 int MXC_AES_GenericAsync(mxc_aes_req_t* req, uint8_t enc)
 {
-    return MXC_AES_RevB_GenericAsync((mxc_aes_revb_regs_t*)MXC_SYS_AES, (mxc_aes_revb_req_t*)req,
-                                     enc);
+    return MXC_AES_RevB_GenericAsync(
+        (mxc_aes_revb_regs_t*)MXC_SYS_AES, (mxc_aes_revb_req_t*)req, enc);
 }
 
 int MXC_AES_EncryptAsync(mxc_aes_req_t* req)

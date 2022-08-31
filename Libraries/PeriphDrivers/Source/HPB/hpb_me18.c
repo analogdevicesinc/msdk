@@ -35,14 +35,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "mxc_pins.h"
+#include "gcfr_regs.h"
 #include "hpb.h"
 #include "hpb_reva.h"
-#include "gcfr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_errors.h"
+#include "mxc_pins.h"
+#include "mxc_sys.h"
+#include <string.h>
 
 /* **** Definitions **** */
 
@@ -85,8 +85,8 @@ int MXC_HPB_Init(mxc_hpb_mem_config_t* mem0, mxc_hpb_mem_config_t* mem1)
     MXC_GCFR->reg0 = (2 << MXC_F_GCFR_REG0_CKPDRV_POS) | (MXC_F_GCFR_REG0_RDSDLL_EN);
 
     /* If Hyperbus, also select drive strength on NCK pin and enable RDS DLL */
-    if ((mem0 && (mem0->device_type != MXC_HPB_DEV_XCCELA_PSRAM)) ||
-        (mem1 && (mem1->device_type != MXC_HPB_DEV_XCCELA_PSRAM))) {
+    if ((mem0 && (mem0->device_type != MXC_HPB_DEV_XCCELA_PSRAM))
+        || (mem1 && (mem1->device_type != MXC_HPB_DEV_XCCELA_PSRAM))) {
         MXC_GCFR->reg0 |= (2 << MXC_F_GCFR_REG0_CKNDRV_POS);
     }
 

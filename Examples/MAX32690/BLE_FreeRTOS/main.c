@@ -37,20 +37,20 @@
  * @details This example demonstrates FreeRTOS with BLE capabilities.
  */
 
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
 #include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "mxc_device.h"
-#include "wut.h"
-#include "lp.h"
-#include "led.h"
 #include "board.h"
+#include "led.h"
+#include "lp.h"
+#include "mxc_device.h"
+#include "semphr.h"
+#include "task.h"
+#include "wut.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /* Stringification macros */
-#define STRING(x)  STRING_(x)
+#define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
 extern void bleStartup(void);
@@ -59,7 +59,7 @@ extern void bleStartup(void);
 
 /* =| vAssertCalled |==============================
  *
- *  Called when an assertion is detected. Use debugger to backtrace and 
+ *  Called when an assertion is detected. Use debugger to backtrace and
  *  continue.
  *
  * =======================================================
@@ -77,8 +77,7 @@ void vAssertCalled(const char* const pcFileName, unsigned long ulLine)
         /* You can step out of this function to debug the assertion by using
         the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
         value. */
-        while (ulSetToNonZeroInDebuggerToContinue == 0) {
-        }
+        while (ulSetToNonZeroInDebuggerToContinue == 0) { }
     }
     __asm volatile("cpsie i");
 }
@@ -123,8 +122,7 @@ int main(void)
 
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFFF; i++) {
-    }
+    for (i = 0; i < 0x3FFFFF; i++) { }
 
     /* Start the BLE application */
     bleStartup();
@@ -134,9 +132,7 @@ int main(void)
 
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
-    while (1) {
-        __NOP();
-    }
+    while (1) { __NOP(); }
 
     /* Quiet GCC warnings */
     return -1;
@@ -169,6 +165,5 @@ void HardFault_Handler(void)
 __attribute__((optimize("O0"))) void HardFault_Decoder(sContextStateFrame* frame)
 {
     /* Hang here */
-    while (1) {
-    }
+    while (1) { }
 }

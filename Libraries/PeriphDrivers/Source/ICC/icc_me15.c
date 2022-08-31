@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include "icc.h"
+#include "icc_common.h"
+#include "icc_reva.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "icc.h"
-#include "icc_reva.h"
-#include "icc_common.h"
 
 /* **** Functions **** */
 

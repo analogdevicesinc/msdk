@@ -41,9 +41,9 @@
 #define _ADC_H_
 
 /* **** Includes **** */
-#include <stdint.h>
 #include "adc_regs.h"
 #include "mcr_regs.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,8 +56,8 @@ extern "C" {
  */
 
 /* MAX32662 Specific */
-#define MAX_ADC_SLOT_NUM   29
-#define MAX_ADC_FIFO_LEN   16
+#define MAX_ADC_SLOT_NUM 29
+#define MAX_ADC_FIFO_LEN 16
 #define MAX_ADC_RES_DIV_CH 12
 
 /***************************************************************************************************************
@@ -65,28 +65,28 @@ extern "C" {
 ***************************************************************************************************************/
 
 /**
-  * @brief  Enumeration type for the ADC Input Channels
-  *
-  */
+ * @brief  Enumeration type for the ADC Input Channels
+ *
+ */
 typedef enum {
-    MXC_ADC_CH_0,              ///< Select Channel 0
-    MXC_ADC_CH_1,              ///< Select Channel 1
-    MXC_ADC_CH_2,              ///< Select Channel 2
-    MXC_ADC_CH_3,              ///< Select Channel 3
+    MXC_ADC_CH_0, ///< Select Channel 0
+    MXC_ADC_CH_1, ///< Select Channel 1
+    MXC_ADC_CH_2, ///< Select Channel 2
+    MXC_ADC_CH_3, ///< Select Channel 3
     MXC_ADC_CH_VDDA_DIV2 = 12, ///< Select Channel 12
-    MXC_ADC_CH_VCOREA    = 14, ///< Select Channel 14
-    MXC_ADC_CH_VSS       = 15, ///< Select Channel 15
+    MXC_ADC_CH_VCOREA = 14, ///< Select Channel 14
+    MXC_ADC_CH_VSS = 15, ///< Select Channel 15
 } mxc_adc_chsel_t;
 
 /**
-  * @brief  Enumeration type for the number of samples to average
-  *
-  */
+ * @brief  Enumeration type for the number of samples to average
+ *
+ */
 typedef enum {
-    MXC_ADC_AVG_1  = MXC_S_ADC_CTRL1_AVG_AVG1,  ///< Select Channel 0
-    MXC_ADC_AVG_2  = MXC_S_ADC_CTRL1_AVG_AVG2,  ///< Select Channel 1
-    MXC_ADC_AVG_4  = MXC_S_ADC_CTRL1_AVG_AVG4,  ///< Select Channel 2
-    MXC_ADC_AVG_8  = MXC_S_ADC_CTRL1_AVG_AVG8,  ///< Select Channel 3
+    MXC_ADC_AVG_1 = MXC_S_ADC_CTRL1_AVG_AVG1, ///< Select Channel 0
+    MXC_ADC_AVG_2 = MXC_S_ADC_CTRL1_AVG_AVG2, ///< Select Channel 1
+    MXC_ADC_AVG_4 = MXC_S_ADC_CTRL1_AVG_AVG4, ///< Select Channel 2
+    MXC_ADC_AVG_8 = MXC_S_ADC_CTRL1_AVG_AVG8, ///< Select Channel 3
     MXC_ADC_AVG_16 = MXC_S_ADC_CTRL1_AVG_AVG16, ///< Select Channel 4
     MXC_ADC_AVG_32 = MXC_S_ADC_CTRL1_AVG_AVG32, ///< Select Channel 5
 } mxc_adc_avg_t;
@@ -95,33 +95,33 @@ typedef enum {
  * @brief       Enumeration type for ADC clock divider
  */
 typedef enum {
-    MXC_ADC_CLKDIV_2,  ///< ADC Scale by 1/2
-    MXC_ADC_CLKDIV_4,  ///< ADC Scale by 1/4
-    MXC_ADC_CLKDIV_8,  ///< ADC Scale by 1/8
+    MXC_ADC_CLKDIV_2, ///< ADC Scale by 1/2
+    MXC_ADC_CLKDIV_4, ///< ADC Scale by 1/4
+    MXC_ADC_CLKDIV_8, ///< ADC Scale by 1/8
     MXC_ADC_CLKDIV_16, ///< ADC Scale by 1/16
-    MXC_ADC_CLKDIV_1,  ///< ADC Scale by 1x (no scaling)
+    MXC_ADC_CLKDIV_1, ///< ADC Scale by 1x (no scaling)
 } mxc_adc_clkdiv_t;
 
 /**
  * @brief       Clock settings
  */
 typedef enum {
-    MXC_ADC_HCLK,     ///< HCLK CLock
+    MXC_ADC_HCLK, ///< HCLK CLock
     MXC_ADC_CLK_ADC0, ///< HF EXT Clock
     MXC_ADC_CLK_ADC1, ///< IBRO Clock
     MXC_ADC_CLK_ADC2, ///< ERFO Clock
 } mxc_adc_clock_t;
 
 /**
- * @brief       Calibration settings 
+ * @brief       Calibration settings
  */
 typedef enum {
     MXC_ADC_SKIP_CAL, ///< HCLK CLock
-    MXC_ADC_EN_CAL,   ///< ADC0 Clock
+    MXC_ADC_EN_CAL, ///< ADC0 Clock
 } mxc_adc_calibration_t;
 
 /**
- * @brief       trigger mode settings 
+ * @brief       trigger mode settings
  */
 typedef enum {
     MXC_ADC_TRIG_SOFTWARE, ///< Software Trigger
@@ -141,10 +141,10 @@ typedef enum {
 } mxc_adc_trig_sel_t;
 
 /**
- * @brief       trigger mode settings 
+ * @brief       trigger mode settings
  */
 typedef enum {
-    MXC_ADC_ATOMIC_CONV,     ///< Software Trigger
+    MXC_ADC_ATOMIC_CONV, ///< Software Trigger
     MXC_ADC_CONTINUOUS_CONV, ///< Hardware Trigger
 } mxc_adc_conversion_mode_t;
 
@@ -152,8 +152,8 @@ typedef enum {
  * @brief  Reference voltage select type.
  */
 typedef enum {
-    MXC_ADC_REF_EXT,       ///< Use external reference voltage source
-    MXC_ADC_REF_INT_1V25,  ///< Use internal 1.25V source
+    MXC_ADC_REF_EXT, ///< Use external reference voltage source
+    MXC_ADC_REF_INT_1V25, ///< Use internal 1.25V source
     MXC_ADC_REF_INT_2V048, ///< Use internal 2.048V souce
 } mxc_adc_refsel_t;
 
@@ -162,9 +162,9 @@ typedef enum {
  */
 
 typedef enum {
-    MXC_ADC_DIV_2_5K_50K_ENABLE,  ///< 2.5K and 50K divide by 2 enable in lpmode
-    MXC_ADC_DIV_2_5K_DISABLE,     ///< 2.5K disable and 50K divide  by 2 enable in lpmode
-    MXC_ADC_DIV_50K_DISABLE,      ///< 2.5K enable and 50K divide  by 2 disable in lpmode
+    MXC_ADC_DIV_2_5K_50K_ENABLE, ///< 2.5K and 50K divide by 2 enable in lpmode
+    MXC_ADC_DIV_2_5K_DISABLE, ///< 2.5K disable and 50K divide  by 2 enable in lpmode
+    MXC_ADC_DIV_50K_DISABLE, ///< 2.5K enable and 50K divide  by 2 disable in lpmode
     MXC_ADC_DIV_2_5K_50K_DISABLE, ///< 2.5K and 50K divide by 2 disable in lpmode
 } mxc_adc_div_lpmode_t;
 
@@ -173,20 +173,20 @@ typedef enum {
  */
 typedef enum {
     MXC_ADC_DATA_STATUS, ///< Data(12-bit) plus Status
-    MXC_ADC_DATA,        ///< Data(12-bit) only
-    MXC_ADC_RAW_DATA,    ///< 18-bit raw data
+    MXC_ADC_DATA, ///< Data(12-bit) only
+    MXC_ADC_RAW_DATA, ///< 18-bit raw data
 } mxc_adc_fifodataformat_t;
 
 ///< Callback used when a conversion event is complete
 typedef void (*mxc_adc_complete_cb_t)(void* req, int error);
 
 typedef struct {
-    mxc_adc_clock_t clock;     ///< clock to use
-    mxc_adc_clkdiv_t clkdiv;   ///< clock divider
+    mxc_adc_clock_t clock; ///< clock to use
+    mxc_adc_clkdiv_t clkdiv; ///< clock divider
     mxc_adc_calibration_t cal; ///< skip calibration
-    mxc_adc_refsel_t ref;      ///< ADC reference voltage
-    uint32_t trackCount;       ///< Sample Clock High time
-    uint32_t idleCount;        ///< Sample Clock Low time
+    mxc_adc_refsel_t ref; ///< ADC reference voltage
+    uint32_t trackCount; ///< Sample Clock High time
+    uint32_t idleCount; ///< Sample Clock Low time
 } mxc_adc_req_t;
 
 typedef struct {
@@ -194,14 +194,14 @@ typedef struct {
 } mxc_adc_slot_req_t;
 
 typedef struct {
-    mxc_adc_conversion_mode_t mode;       ///< conversion mode
-    mxc_adc_trig_mode_t trig;             ///< trigger mode
-    mxc_adc_trig_sel_t hwTrig;            ///< HW Trigger Source
+    mxc_adc_conversion_mode_t mode; ///< conversion mode
+    mxc_adc_trig_mode_t trig; ///< trigger mode
+    mxc_adc_trig_sel_t hwTrig; ///< HW Trigger Source
     mxc_adc_fifodataformat_t fifo_format; ///< FIFO Data Format
-    uint8_t fifo_threshold;               ///< FIFO Threshold Configuration
-    mxc_adc_avg_t avg_number;             ///< no of samples to average
-    mxc_adc_div_lpmode_t lpmode_divder;   ///< Divide by 2 control in lpmode
-    uint8_t num_slots;                    ///< num of slots in the sequence
+    uint8_t fifo_threshold; ///< FIFO Threshold Configuration
+    mxc_adc_avg_t avg_number; ///< no of samples to average
+    mxc_adc_div_lpmode_t lpmode_divder; ///< Divide by 2 control in lpmode
+    uint8_t num_slots; ///< num of slots in the sequence
 } mxc_adc_conversion_req_t;
 
 /**
@@ -275,8 +275,8 @@ int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_ADC_StartConversionDMA(mxc_adc_conversion_req_t* req, int* data,
-                               void (*callback)(int, int));
+int MXC_ADC_StartConversionDMA(
+    mxc_adc_conversion_req_t* req, int* data, void (*callback)(int, int));
 
 /**
  * @brief      Call this function from the ADC ISR when using Async API
@@ -433,8 +433,8 @@ int MXC_ADC_SlotsConfig(mxc_adc_conversion_req_t* req);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_ConvertTemperature_ToK(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref,
-                               float* temp_k);
+int MXC_ConvertTemperature_ToK(
+    uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref, float* temp_k);
 
 /**
  * @brief   Calculates temperature (in C) from ADC readout.
@@ -446,8 +446,8 @@ int MXC_ConvertTemperature_ToK(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_ConvertTemperature_ToC(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref,
-                               float* temp);
+int MXC_ConvertTemperature_ToC(
+    uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref, float* temp);
 
 /**
  * @brief   Calculates temperature (in F) from ADC readout.
@@ -459,8 +459,8 @@ int MXC_ConvertTemperature_ToC(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_ConvertTemperature_ToF(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref,
-                               float* temp);
+int MXC_ConvertTemperature_ToF(
+    uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref, float* temp);
 
 /**@} end of group adc */
 

@@ -40,15 +40,15 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "flc.h"
-#include "flc_reva.h"
-#include "flc_common.h"
 #include "ecc_regs.h" // For ECCEN registers.
+#include "flc.h"
+#include "flc_common.h"
+#include "flc_reva.h"
 #include "mcr_regs.h" // For ECCEN registers.
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include <string.h>
 
 //******************************************************************************
 void MXC_FLC_ME15_Flash_Operation(void)
@@ -57,8 +57,7 @@ void MXC_FLC_ME15_Flash_Operation(void)
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
 
     /* Wait for flush to complete */
-    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {
-    }
+    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) { }
 }
 
 //******************************************************************************
@@ -81,8 +80,8 @@ int MXC_FLC_ME15_GetPhysicalAddress(uint32_t addr, uint32_t* result)
     if ((addr >= MXC_FLASH_MEM_BASE) && (addr < (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE))) {
         *result = addr - MXC_FLASH_MEM_BASE;
     } else if ((addr >= MXC_INFO_MEM_BASE) && (addr < (MXC_INFO_MEM_BASE + MXC_INFO_MEM_SIZE))) {
-        /* For ME15, the info block base was located at the next power of 2 address beyond the main flash.
-           The ME15 ends at 0x5FFFF, so the info block starts at 0x80000. */
+        /* For ME15, the info block base was located at the next power of 2 address beyond the main
+           flash. The ME15 ends at 0x5FFFF, so the info block starts at 0x80000. */
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + 0x80000;
     } else {
         return E_BAD_PARAM;
@@ -314,18 +313,18 @@ int MXC_FLC_BlockPageRead(uint32_t address)
 volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
 {
     uint32_t reg_num;
-    reg_num =
-        page_num >> 5; // Divide by 32 to get WELR register number containing the page lock bit
+    reg_num
+        = page_num >> 5; // Divide by 32 to get WELR register number containing the page lock bit
 
     if (address < MXC_FLASH_MEM_BASE || address > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         return NULL;
     }
 
     switch (reg_num) {
-        case 0:
-            return &(MXC_FLC0->welr0);
-        case 1:
-            return &(MXC_FLC0->welr1);
+    case 0:
+        return &(MXC_FLC0->welr0);
+    case 1:
+        return &(MXC_FLC0->welr1);
     }
 
     return NULL;
@@ -342,10 +341,10 @@ volatile uint32_t* MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
     }
 
     switch (reg_num) {
-        case 0:
-            return &(MXC_FLC0->rlr0);
-        case 1:
-            return &(MXC_FLC0->rlr1);
+    case 0:
+        return &(MXC_FLC0->rlr0);
+    case 1:
+        return &(MXC_FLC0->rlr1);
     }
 
     return NULL;

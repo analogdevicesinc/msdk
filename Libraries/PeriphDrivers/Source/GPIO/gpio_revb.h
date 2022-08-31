@@ -42,7 +42,7 @@ extern "C" {
  * @brief   Enumeration type for the pullup strength on a given pin.
  */
 typedef enum {
-    MXC_GPIO_PS_NONE,        /**< No pull-up or pull-down strength required*/
+    MXC_GPIO_PS_NONE, /**< No pull-up or pull-down strength required*/
     MXC_GPIO_PS_PULL_SELECT, /**< Selct pull-up or pull-down strength*/
 } mxc_gpio_ps_t;
 

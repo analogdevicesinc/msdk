@@ -5,37 +5,37 @@
  */
 
 /* ****************************************************************************
-* Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-**************************************************************************** */
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
 #ifndef _OWM_H_
@@ -43,9 +43,9 @@
 
 /* **** Includes **** */
 #include "mxc_device.h"
+#include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "owm_regs.h"
-#include "mxc_pins.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,27 +64,27 @@ extern "C" {
  */
 typedef enum {
     MXC_OWM_EXT_PU_ACT_HIGH = 0, /**< Pullup pin is active high when enabled.        */
-    MXC_OWM_EXT_PU_ACT_LOW  = 1, /**< Pullup pin is active low when enabled.         */
-    MXC_OWM_EXT_PU_UNUSED   = 2, /**< Pullup pin is not used for an external pullup. */
+    MXC_OWM_EXT_PU_ACT_LOW = 1, /**< Pullup pin is active low when enabled.         */
+    MXC_OWM_EXT_PU_UNUSED = 2, /**< Pullup pin is not used for an external pullup. */
 } mxc_owm_ext_pu_t;
 
 /**
  * @brief   Structure type for 1-Wire Master configuration.
  */
 typedef struct {
-    uint8_t int_pu_en;            /**< 1 = internal pullup on.   */
+    uint8_t int_pu_en; /**< 1 = internal pullup on.   */
     mxc_owm_ext_pu_t ext_pu_mode; /**< See #mxc_owm_ext_pu_t.   */
-    uint8_t long_line_mode;       /**< 1 = long line mode enable.    */
+    uint8_t long_line_mode; /**< 1 = long line mode enable.    */
     // mxc_owm_overdrive_t overdrive_spec; /**< 0 = timeslot is 12us, 1 = timeslot is 10us.   */
 } mxc_owm_cfg_t;
 
-#define READ_ROM_COMMAND     0x33 /**< Read ROM Command */
-#define MATCH_ROM_COMMAND    0x55 /**< Match ROM Command */
-#define SEARCH_ROM_COMMAND   0xF0 /**< Search ROM Command */
-#define SKIP_ROM_COMMAND     0xCC /**< Skip ROM Command */
-#define OD_SKIP_ROM_COMMAND  0x3C /**< Overdrive Skip ROM Command */
+#define READ_ROM_COMMAND 0x33 /**< Read ROM Command */
+#define MATCH_ROM_COMMAND 0x55 /**< Match ROM Command */
+#define SEARCH_ROM_COMMAND 0xF0 /**< Search ROM Command */
+#define SKIP_ROM_COMMAND 0xCC /**< Skip ROM Command */
+#define OD_SKIP_ROM_COMMAND 0x3C /**< Overdrive Skip ROM Command */
 #define OD_MATCH_ROM_COMMAND 0x69 /**< Overdrive Match ROM Command */
-#define RESUME_COMMAND       0xA5 /**< Resume Command */
+#define RESUME_COMMAND 0xA5 /**< Resume Command */
 
 /* **** Globals **** */
 
@@ -119,7 +119,7 @@ int MXC_OWM_Reset(void);
 
 /**
  * @brief   Get the presence pulse detect status.
- * 
+ *
  * @return  0 if no 1-wire devices reponded during the presence pulse, 1 otherwise
  */
 int MXC_OWM_GetPresenceDetect(void);

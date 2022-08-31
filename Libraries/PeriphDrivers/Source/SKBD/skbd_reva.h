@@ -31,29 +31,28 @@
  *
  **************************************************************************** */
 
-#include <stddef.h>
-#include "mxc_device.h"
 #include "mxc_assert.h"
-#include "mxc_pins.h"
-#include "mxc_lock.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
 #include "nvic_table.h"
 #include "skbd.h"
 #include "skbd_reva_regs.h"
+#include <stddef.h>
 
-#define xstr(s)                  str(s)
-#define str(s)                   #s
+#define xstr(s) str(s)
+#define str(s) #s
 #define MXC_SKBD_REVA_VERS_MAJOR <VERSMAJ>
 #define MXC_SKBD_REVA_VERS_MINOR <VERSMIN>
 #define MXC_SKBD_REVA_VERS_PATCH <VERSPAT>
-#define MXC_SKBD_REVA_VERSION_STRING                                                \
-    "v" xstr(MXC_SKBD_REVA_VERS_MAJOR) "." xstr(MXC_SKBD_REVA_VERS_MINOR) "." xstr( \
+#define MXC_SKBD_REVA_VERSION_STRING                                                               \
+    "v" xstr(MXC_SKBD_REVA_VERS_MAJOR) "." xstr(MXC_SKBD_REVA_VERS_MINOR) "." xstr(                \
         MXC_SKBD_REVA_VERS_PATCH)
 
 /* COBRA adaptation */
-#define MXC_KEYPAD_REVA_BASE_ERR 0 //COBRA_KEYPAD_BASE_ERR
+#define MXC_KEYPAD_REVA_BASE_ERR 0 // COBRA_KEYPAD_BASE_ERR
 /* Number of key registers present in the keypad interface */
 #define MXC_SKBD_REVA_TOTAL_KEY_REGS 4
 
@@ -63,16 +62,18 @@
  */
 typedef enum {
     MXC_SKBD_REVA_ERR_MIN = MXC_KEYPAD_REVA_BASE_ERR,
-    MXC_SKBD_REVA_ERR_NOT_INITIALIZED,           ///< Error Code: Keypad not initialized
-    MXC_SKBD_REVA_ERR_ALREAD_INITIALIZED,        ///< Error Code: Keypad already initialized
-    MXC_SKBD_REVA_ERR_INVALID_OPERATION,         ///< Error Code: Invalid keypad operation
-    MXC_SKBD_REVA_ERR_OUT_OF_RANGE,              ///< Error Code: Invalid parameter or value
-    MXC_SKBD_REVA_ERR_OVERRUN,                   ///< Error Code: Keypad Over run error
-    MXC_SKBD_REVA_ERR_IRQ,                       ///< Error Code: IRQ setup error
-    MXC_SKBD_REVA_ERR_IRQ_NULL,                  ///< Error Code: NULL IRQ handler
-    MXC_SKBD_REVA_ERR_INVALID_PIN_CONFIGURATION, ///< Error Code: One or more keypad I/O pins are overlapped or  input/output pin configurations are invalid
-    MXC_SKBD_REVA_ERR_BUSY,                      ///< Error Code: Keypad is busy
-    MXC_SKBD_REVA_ERR_UNKNOWN,                   ///< Error Code: Generic error for unknown behavior
+    MXC_SKBD_REVA_ERR_NOT_INITIALIZED, ///< Error Code: Keypad not initialized
+    MXC_SKBD_REVA_ERR_ALREAD_INITIALIZED, ///< Error Code: Keypad already initialized
+    MXC_SKBD_REVA_ERR_INVALID_OPERATION, ///< Error Code: Invalid keypad operation
+    MXC_SKBD_REVA_ERR_OUT_OF_RANGE, ///< Error Code: Invalid parameter or value
+    MXC_SKBD_REVA_ERR_OVERRUN, ///< Error Code: Keypad Over run error
+    MXC_SKBD_REVA_ERR_IRQ, ///< Error Code: IRQ setup error
+    MXC_SKBD_REVA_ERR_IRQ_NULL, ///< Error Code: NULL IRQ handler
+    MXC_SKBD_REVA_ERR_INVALID_PIN_CONFIGURATION, ///< Error Code: One or more keypad I/O pins are
+                                                 ///< overlapped or  input/output pin configurations
+                                                 ///< are invalid
+    MXC_SKBD_REVA_ERR_BUSY, ///< Error Code: Keypad is busy
+    MXC_SKBD_REVA_ERR_UNKNOWN, ///< Error Code: Generic error for unknown behavior
     MXC_SKBD_REVA_ERR_MAX = MXC_SKBD_REVA_ERR_UNKNOWN
 } mxc_skbd_reva_errors_t;
 
@@ -81,10 +82,10 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_REVA_STATE_MIN             = 0,
+    MXC_SKBD_REVA_STATE_MIN = 0,
     MXC_SKBD_REVA_STATE_NOT_INITIALIZED = MXC_SKBD_REVA_STATE_MIN, ///< State not initialized
-    MXC_SKBD_REVA_STATE_INITIALIZED,                               ///< State initialized
-    MXC_SKBD_REVA_STATE_CLOSED,                                    ///< State closed
+    MXC_SKBD_REVA_STATE_INITIALIZED, ///< State initialized
+    MXC_SKBD_REVA_STATE_CLOSED, ///< State closed
     MXC_SKBD_REVA_STATE_MAX = MXC_SKBD_REVA_STATE_CLOSED,
     MXC_SKBD_REVA_STATE_COUNT
 } mxc_skbd_reva_state_t;
@@ -94,9 +95,9 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_REVA_EVENT_PUSH    = MXC_F_SKBD_REVA_IER_PUSHIE,    ///< Push Event
+    MXC_SKBD_REVA_EVENT_PUSH = MXC_F_SKBD_REVA_IER_PUSHIE, ///< Push Event
     MXC_SKBD_REVA_EVENT_RELEASE = MXC_F_SKBD_REVA_IER_RELEASEIE, ///< Release Event
-    MXC_SKBD_REVA_EVENT_OVERRUN = MXC_F_SKBD_REVA_IER_OVERIE     ///< Overrun Event
+    MXC_SKBD_REVA_EVENT_OVERRUN = MXC_F_SKBD_REVA_IER_OVERIE ///< Overrun Event
 } mxc_skbd_reva_events_t;
 
 /**
@@ -105,8 +106,8 @@ typedef enum {
  */
 typedef enum {
     MXC_SKBD_REVA_INTERRUPT_STATUS_PUSHIS = MXC_F_SKBD_REVA_ISR_PUSHIS, ///< Push Interupt flag
-    MXC_SKBD_REVA_INTERRUPT_STATUS_RELEASEIS =
-        MXC_F_SKBD_REVA_ISR_RELEASEIS,                                 ///< Release Interupt flag
+    MXC_SKBD_REVA_INTERRUPT_STATUS_RELEASEIS
+    = MXC_F_SKBD_REVA_ISR_RELEASEIS, ///< Release Interupt flag
     MXC_SKBD_REVA_INTERRUPT_STATUS_OVERIS = MXC_F_SKBD_REVA_ISR_OVERIS ///< Overrun Interupt flag
 } mxc_skbd_reva_interrupt_status_t;
 
@@ -132,11 +133,11 @@ typedef enum {
  *
  */
 typedef struct {
-    unsigned short ioselect;   ///< I/O pin direction selection for the corresponding keypad pins
-    unsigned int reg_erase;    ///< key register erase flag on key is released
-    int outputs;               ///< Specifies the keypad pins to be configured as output
-    int inputs;                ///< Specifies the keypad pins to be configured as input
-    uint32_t debounce;         ///< Keypad Debouncing Time
+    unsigned short ioselect; ///< I/O pin direction selection for the corresponding keypad pins
+    unsigned int reg_erase; ///< key register erase flag on key is released
+    int outputs; ///< Specifies the keypad pins to be configured as output
+    int inputs; ///< Specifies the keypad pins to be configured as input
+    uint32_t debounce; ///< Keypad Debouncing Time
     irq_handler_t irq_handler; ///< IRQ handler
 } mxc_skbd_reva_config_t;
 
@@ -145,9 +146,9 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned int first_init;     ///< 1 - initialize
-    unsigned int irq;            ///< Interrupt request(IRQ) number
-    irq_handler_t irq_handler;   ///< IRQ handler
+    unsigned int first_init; ///< 1 - initialize
+    unsigned int irq; ///< Interrupt request(IRQ) number
+    irq_handler_t irq_handler; ///< IRQ handler
     mxc_skbd_reva_state_t state; ///< keypad initialization state
 } mxc_skbd_reva_req_t;
 

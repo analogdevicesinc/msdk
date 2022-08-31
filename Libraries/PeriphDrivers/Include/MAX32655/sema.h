@@ -107,7 +107,7 @@ int MXC_SEMA_InitBoxes(void);
 /**
  * @brief     Read from the mailbox
  * @details   Will only read data currently available.
- * @param     data  Buffer to store the data from the mailbox.  
+ * @param     data  Buffer to store the data from the mailbox.
  * @param     len   Number of bytes to read from the mailbox.
  * @return    #E_NO_ERROR if data read properly.
  */
@@ -116,7 +116,7 @@ int MXC_SEMA_ReadBox(uint8_t* data, unsigned len);
 /**
  * @brief     Write to the mailbox
  * @details   Will only write in the space currently available.
- * @param     data  Data to write to the mailbox.  
+ * @param     data  Data to write to the mailbox.
  * @param     len   Number of bytes to write to the mailbox.
  * @return    #E_NO_ERROR if data written properly.
  */
@@ -132,7 +132,7 @@ int MXC_SEMA_Handler(void);
  * @brief     Read asynchronously from the mailbox
  * @details   Non-blocking read. Will only read data currently available.
  * @param     cb    Callback function, called once the read is complete.
- * @param     data  Buffer to store the data from the mailbox.  
+ * @param     data  Buffer to store the data from the mailbox.
  * @param     len   Number of bytes to read from the mailbox.
  * @return    #E_NO_ERROR if data read properly.
  */
@@ -141,7 +141,7 @@ int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t* data, unsigned len
 /**
  * @brief     Write asynchronously to the mailbox
  * @param     cb    Callback function, called once the write is complete.
- * @param     data  Data to write to the mailbox.  
+ * @param     data  Data to write to the mailbox.
  * @param     len   Number of bytes to write to the mailbox.
  * @return    #E_NO_ERROR if data written properly.
  */

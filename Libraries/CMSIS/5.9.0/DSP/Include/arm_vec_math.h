@@ -26,9 +26,9 @@
 #ifndef _ARM_VEC_MATH_H
 #define _ARM_VEC_MATH_H
 
-#include "arm_math_types.h"
 #include "arm_common_tables.h"
 #include "arm_helium_utils.h"
+#include "arm_math_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,18 +49,18 @@ __STATIC_INLINE f32x4_t vrecip_medprec_f32(f32x4_t x)
     f32x4_t ax = vabsq(x);
 
     xinv.f = ax;
-    m      = 0x3F800000 - (xinv.i & 0x7F800000);
+    m = 0x3F800000 - (xinv.i & 0x7F800000);
     xinv.i = xinv.i + m;
     xinv.f = 1.41176471f - 0.47058824f * xinv.f;
     xinv.i = xinv.i + m;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
     xinv.f = vdupq_m(xinv.f, INFINITY, vcmpeqq(x, 0.0f));
@@ -82,21 +82,21 @@ __STATIC_INLINE f32x4_t vrecip_hiprec_f32(f32x4_t x)
 
     xinv.f = ax;
 
-    m      = 0x3F800000 - (xinv.i & 0x7F800000);
+    m = 0x3F800000 - (xinv.i & 0x7F800000);
     xinv.i = xinv.i + m;
     xinv.f = 1.41176471f - 0.47058824f * xinv.f;
     xinv.i = xinv.i + m;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
-    b      = 2.0f - xinv.f * ax;
+    b = 2.0f - xinv.f * ax;
     xinv.f = xinv.f * b;
 
     xinv.f = vdupq_m(xinv.f, INFINITY, vcmpeqq(x, 0.0f));
@@ -122,12 +122,12 @@ __STATIC_INLINE f32x4_t vdiv_f32(f32x4_t num, f32x4_t den)
 
 __STATIC_INLINE f32x4_t vtaylor_polyq_f32(f32x4_t x, const float32_t* coeffs)
 {
-    f32x4_t A   = vfmasq(vdupq_n_f32(coeffs[4]), x, coeffs[0]);
-    f32x4_t B   = vfmasq(vdupq_n_f32(coeffs[6]), x, coeffs[2]);
-    f32x4_t C   = vfmasq(vdupq_n_f32(coeffs[5]), x, coeffs[1]);
-    f32x4_t D   = vfmasq(vdupq_n_f32(coeffs[7]), x, coeffs[3]);
-    f32x4_t x2  = vmulq(x, x);
-    f32x4_t x4  = vmulq(x2, x2);
+    f32x4_t A = vfmasq(vdupq_n_f32(coeffs[4]), x, coeffs[0]);
+    f32x4_t B = vfmasq(vdupq_n_f32(coeffs[6]), x, coeffs[2]);
+    f32x4_t C = vfmasq(vdupq_n_f32(coeffs[5]), x, coeffs[1]);
+    f32x4_t D = vfmasq(vdupq_n_f32(coeffs[7]), x, coeffs[3]);
+    f32x4_t x2 = vmulq(x, x);
+    f32x4_t x4 = vmulq(x2, x2);
     f32x4_t res = vfmaq(vfmaq_f32(A, B, x2), vfmaq_f32(C, D, x2), x4);
 
     return res;
@@ -139,8 +139,8 @@ __STATIC_INLINE f32x4_t vmant_exp_f32(f32x4_t x, int32x4_t* e)
     int32x4_t n;
 
     r.f = x;
-    n   = r.i >> 23;
-    n   = n - 127;
+    n = r.i >> 23;
+    n = n - 127;
     r.i = r.i - (n << 23);
 
     *e = n;
@@ -191,7 +191,7 @@ __STATIC_INLINE f32x4_t vlogq_f32(f32x4_t vecIn)
     /*
      * xx = xx * xx;
      */
-    vecTmpFlt0        = vecTmpFlt0 * vecTmpFlt0;
+    vecTmpFlt0 = vecTmpFlt0 * vecTmpFlt0;
     vecExpUnBiasedFlt = vcvtq_f32_s32(vecExpUnBiased);
     /*
      * r.f = a + c * xx;
@@ -254,7 +254,7 @@ __STATIC_INLINE f32x4_t vrecip_f32(f32x4_t vecIn)
     vecTmp = vfmasq(vecW, vecTmp, 56.0f);
     vecTmp = vfmasq(vecW, vecTmp, -28.0f);
     vecTmp = vfmasq(vecW, vecTmp, 8.0f);
-    v.f    = vmulq(v.f, vecTmp);
+    v.f = vmulq(v.f, vecTmp);
 
     v.f = vdupq_m(v.f, INFINITY, vcmpeqq(vecIn, 0.0f));
     /*
@@ -266,11 +266,11 @@ __STATIC_INLINE f32x4_t vrecip_f32(f32x4_t vecIn)
 
 __STATIC_INLINE f32x4_t vtanhq_f32(f32x4_t val)
 {
-    f32x4_t x     = vminnmq_f32(vmaxnmq_f32(val, vdupq_n_f32(-10.f)), vdupq_n_f32(10.0f));
+    f32x4_t x = vminnmq_f32(vmaxnmq_f32(val, vdupq_n_f32(-10.f)), vdupq_n_f32(10.0f));
     f32x4_t exp2x = vexpq_f32(vmulq_n_f32(x, 2.f));
-    f32x4_t num   = vsubq_n_f32(exp2x, 1.f);
-    f32x4_t den   = vaddq_n_f32(exp2x, 1.f);
-    f32x4_t tanh  = vmulq_f32(num, vrecip_f32(den));
+    f32x4_t num = vsubq_n_f32(exp2x, 1.f);
+    f32x4_t den = vaddq_n_f32(exp2x, 1.f);
+    f32x4_t tanh = vmulq_f32(num, vrecip_f32(den));
     return tanh;
 }
 
@@ -279,13 +279,14 @@ __STATIC_INLINE f32x4_t vpowq_f32(f32x4_t val, f32x4_t n)
     return vexpq_f32(vmulq_f32(n, vlogq_f32(val)));
 }
 
-#endif /* (defined(ARM_MATH_MVEF) || defined(ARM_MATH_HELIUM)) && !defined(ARM_MATH_AUTOVECTORIZE)*/
+#endif /* (defined(ARM_MATH_MVEF) || defined(ARM_MATH_HELIUM)) &&                                  \
+          !defined(ARM_MATH_AUTOVECTORIZE)*/
 
 #if (defined(ARM_MATH_MVEI) || defined(ARM_MATH_HELIUM)) && !defined(ARM_MATH_AUTOVECTORIZE)
 #endif /* (defined(ARM_MATH_MVEI) || defined(ARM_MATH_HELIUM)) */
 
-#if (defined(ARM_MATH_NEON) || defined(ARM_MATH_NEON_EXPERIMENTAL)) && \
-    !defined(ARM_MATH_AUTOVECTORIZE)
+#if (defined(ARM_MATH_NEON) || defined(ARM_MATH_NEON_EXPERIMENTAL))                                \
+    && !defined(ARM_MATH_AUTOVECTORIZE)
 
 #include "NEMath.h"
 /**
@@ -309,9 +310,9 @@ __STATIC_INLINE float32x4_t arm_vec_exponent_f32(float32x4_t x, int32_t nb)
 __STATIC_INLINE float32x4_t __arm_vec_sqrt_f32_neon(float32x4_t x)
 {
     float32x4_t x1 = vmaxq_f32(x, vdupq_n_f32(FLT_MIN));
-    float32x4_t e  = vrsqrteq_f32(x1);
-    e              = vmulq_f32(vrsqrtsq_f32(vmulq_f32(x1, e), e), e);
-    e              = vmulq_f32(vrsqrtsq_f32(vmulq_f32(x1, e), e), e);
+    float32x4_t e = vrsqrteq_f32(x1);
+    e = vmulq_f32(vrsqrtsq_f32(vmulq_f32(x1, e), e), e);
+    e = vmulq_f32(vrsqrtsq_f32(vmulq_f32(x1, e), e), e);
     return vmulq_f32(x, e);
 }
 
@@ -321,13 +322,13 @@ __STATIC_INLINE int16x8_t __arm_vec_sqrt_q15_neon(int16x8_t vec)
     int32x4_t tempHI, tempLO;
 
     tempLO = vmovl_s16(vget_low_s16(vec));
-    tempF  = vcvtq_n_f32_s32(tempLO, 15);
-    tempF  = __arm_vec_sqrt_f32_neon(tempF);
+    tempF = vcvtq_n_f32_s32(tempLO, 15);
+    tempF = __arm_vec_sqrt_f32_neon(tempF);
     tempLO = vcvtq_n_s32_f32(tempF, 15);
 
     tempHI = vmovl_s16(vget_high_s16(vec));
-    tempF  = vcvtq_n_f32_s32(tempHI, 15);
-    tempF  = __arm_vec_sqrt_f32_neon(tempF);
+    tempF = vcvtq_n_f32_s32(tempHI, 15);
+    tempF = __arm_vec_sqrt_f32_neon(tempF);
     tempHI = vcvtq_n_s32_f32(tempF, 15);
 
     return (vcombine_s16(vqmovn_s32(tempLO), vqmovn_s32(tempHI)));
@@ -342,7 +343,8 @@ __STATIC_INLINE int32x4_t __arm_vec_sqrt_q31_neon(int32x4_t vec)
     return (vcvtq_n_s32_f32(temp, 31));
 }
 
-#endif /*  (defined(ARM_MATH_NEON) || defined(ARM_MATH_NEON_EXPERIMENTAL)) && !defined(ARM_MATH_AUTOVECTORIZE) */
+#endif /*  (defined(ARM_MATH_NEON) || defined(ARM_MATH_NEON_EXPERIMENTAL)) &&                      \
+          !defined(ARM_MATH_AUTOVECTORIZE) */
 
 #ifdef __cplusplus
 }

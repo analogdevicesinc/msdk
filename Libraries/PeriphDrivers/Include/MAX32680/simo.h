@@ -55,7 +55,7 @@ extern "C" {
  */
 
 /* **** Definitions **** */
-#define VREGO_LOW_RANGE_BASE  500
+#define VREGO_LOW_RANGE_BASE 500
 #define VREGO_HIGH_RANGE_BASE 600
 
 /* **** Function Prototypes **** */

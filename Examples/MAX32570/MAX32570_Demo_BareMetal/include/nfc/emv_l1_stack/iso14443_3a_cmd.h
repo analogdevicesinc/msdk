@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -54,12 +54,12 @@ extern "C" {
 #include <stdint.h>
 
 /**
-  * @defgroup NFC_PCD_EMV_LVL1_TYPEA_INIT_DEFINES Type A Initialization Defines
-  *
-  * EMV Level 1 Type A defines for initialization and anticollision
-  *
-  * @{
-  */
+ * @defgroup NFC_PCD_EMV_LVL1_TYPEA_INIT_DEFINES Type A Initialization Defines
+ *
+ * EMV Level 1 Type A defines for initialization and anticollision
+ *
+ * @{
+ */
 #define ISO_14443_3A_CMD_WUPA 0x52 /**< WUPA - Wake A command */
 #define ISO_14443_3A_CMD_SEQA 0x26 /**< SEQA - SEQ A command */
 
@@ -71,9 +71,9 @@ extern "C" {
 #define ISO_14443_3A_CMD_SELECT_SEL_L2 0x95 /**< ANTI-collision Select Level 2 */
 #define ISO_14443_3A_CMD_SELECT_SEL_L3 0x97 /**< ANTI-collision Select Level 3 */
 
-#define ATQA_LEN     2 /**< Length of ATQA command */
+#define ATQA_LEN 2 /**< Length of ATQA command */
 #define UID_EACH_LEN 5 /**< UID Length, includes bcc and ct value */
-/** @} */              /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEA_ENUM_DEFINES */
+/** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEA_ENUM_DEFINES */
 
 /**
  * @brief Send WUPA
@@ -98,7 +98,8 @@ int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t* atq, uint8_t doretry);
  *
  * Retry a max of 3 times if response timesout
  *
- * @param[in] sel   The first byte of the anti-collision step (typically 0x93 for first step, 0x95 for second, or 0x97 for third)
+ * @param[in] sel   The first byte of the anti-collision step (typically 0x93 for first step, 0x95
+ * for second, or 0x97 for third)
  *      @note 0x20 is appended to sel by this routine
  * @param[in, out] uid   The UID response received from the PICC if successful
  * @return The following @ref NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES
@@ -115,9 +116,12 @@ int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t* uid);
  *
  * Retry a max of 3 times if response timesout
  *
- * @param[in] sel   The first byte of the anti-collision step (typically 0x93 for first step, 0x95 for second, or 0x97 for third)
- *      @note 0x70 and the UID received in previous anti-collision steps are appended to sel by this routine
- * @param[in] uid   This is appended to the select command, use the UID parameter returned by @ref iso_14443_3a_cmd_anticoll
+ * @param[in] sel   The first byte of the anti-collision step (typically 0x93 for first step, 0x95
+ * for second, or 0x97 for third)
+ *      @note 0x70 and the UID received in previous anti-collision steps are appended to sel by this
+ * routine
+ * @param[in] uid   This is appended to the select command, use the UID parameter returned by @ref
+ * iso_14443_3a_cmd_anticoll
  * @param[in, out] sak   Response from the PICC if successful (should be a SAK response)
  * @return The following @ref NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES
  * @retval #ISO14443_3_ERR_SUCCESS Received SAK

@@ -1,7 +1,7 @@
 /**
  * @file    st7735s_drv.c
  * @brief   Sitronix ST7735S LCD controller driver
- *          
+ *
  */
 
 /******************************************************************************
@@ -38,14 +38,14 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "mxc_errors.h"
 
-#include "st7735s_regs.h"
 #include "st7735s_drv.h"
+#include "st7735s_regs.h"
 
 static st7735s_cfg_t panel_cfg;
 
@@ -111,7 +111,7 @@ int st7735s_init(st7735s_cfg_t* cfg)
     cfg->delayfn(500);
 
     /* Step through the register configuration */
-    i  = cfg->ncfgs;
+    i = cfg->ncfgs;
     rc = cfg->regcfg;
 
     while (i != 0) {

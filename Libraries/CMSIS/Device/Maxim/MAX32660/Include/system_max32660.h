@@ -56,7 +56,7 @@ extern "C" {
 #define HFX_FREQ 32768
 #endif
 
-/* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip. 
+/* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip.
          Update if use of this oscillator requires precise timing.*/
 #ifndef NANORING_FREQ
 #define NANORING_FREQ 8000

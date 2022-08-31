@@ -42,26 +42,26 @@
 #define S_MODULE_NAME "MAIN-RISCV"
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc.h"
-#include "mxc_sys.h"
-#include "mxc_delay.h"
-#include "board.h"
-#include "fcr_regs.h"
-#include "camera.h"
-#include "faceID.h"
-#include "icc.h"
-#include "dma.h"
-#include "cnn.h"
 #include "MAXCAM_Debug.h"
-#include "weights.h"
+#include "board.h"
+#include "camera.h"
+#include "cnn.h"
+#include "dma.h"
 #include "embedding_process.h"
+#include "faceID.h"
+#include "fcr_regs.h"
+#include "icc.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_sys.h"
 #include "sema_regs.h"
+#include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
 
 __attribute__((section(
     ".shared__at__mailbox"))) volatile uint32_t mail_box[ARM_MAILBOX_SIZE + RISCV_MAILBOX_SIZE];
-volatile uint32_t* arm_mail_box   = &mail_box[0];
+volatile uint32_t* arm_mail_box = &mail_box[0];
 volatile uint32_t* riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
 
 extern int start_faceid(void);
@@ -151,8 +151,8 @@ int main(void)
     PR_DEBUG("Camera Manufacture ID is %04x\n", id);
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel);
+    ret = camera_setup(
+        IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
 
     if (ret != STATUS_OK) {
         PR_ERR("Error returned from setting up camera. Error %d\n", ret);
@@ -160,7 +160,7 @@ int main(void)
     }
 
 #ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x0c, 0x56); //camera vertical flip=0
+    camera_write_reg(0x0c, 0x56); // camera vertical flip=0
 #endif
 
     /* Enable PCIF wakeup event */

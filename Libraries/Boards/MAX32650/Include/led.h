@@ -41,9 +41,9 @@
 #ifndef _LED_H_
 #define _LED_H_
 
-#include "mxc_assert.h"
 #include "board.h"
 #include "gpio.h"
+#include "mxc_assert.h"
 
 #ifdef __cplusplus
 extern "C" {

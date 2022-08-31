@@ -34,14 +34,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mxc_sys.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_lock.h"
+#include "mxc_sys.h"
 
-#include "trng_regs.h"
 #include "trng.h"
+#include "trng_regs.h"
 #include "trng_revb.h"
 
 /***** Global Variables *****/
@@ -107,8 +107,7 @@ void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t* trng)
 
 int MXC_TRNG_RevB_RandomInt(mxc_trng_revb_regs_t* trng)
 {
-    while (!(trng->status & MXC_F_TRNG_REVB_STATUS_RDY))
-        ;
+    while (!(trng->status & MXC_F_TRNG_REVB_STATUS_RDY)) { }
 
     return (int)trng->data;
 }
@@ -134,8 +133,8 @@ int MXC_TRNG_RevB_Random(uint8_t* data, uint32_t len)
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t* trng, uint8_t* data, uint32_t len,
-                               mxc_trng_complete_t callback)
+void MXC_TRNG_RevB_RandomAsync(
+    mxc_trng_revb_regs_t* trng, uint8_t* data, uint32_t len, mxc_trng_complete_t callback)
 {
     MXC_ASSERT(data && callback);
 
@@ -143,9 +142,9 @@ void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t* trng, uint8_t* data, uint32
         return;
     }
 
-    TRNG_data         = data;
-    TRNG_count        = 0;
-    TRNG_maxLength    = len;
+    TRNG_data = data;
+    TRNG_count = 0;
+    TRNG_maxLength = len;
     MXC_TRNG_Callback = callback;
 
     // Enable interrupts
@@ -157,6 +156,5 @@ void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t* trng)
     /*Generate AES Key */
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_KEYGEN;
 
-    while (trng->ctrl & MXC_F_TRNG_REVB_CTRL_KEYGEN)
-        ;
+    while (trng->ctrl & MXC_F_TRNG_REVB_CTRL_KEYGEN) { }
 }

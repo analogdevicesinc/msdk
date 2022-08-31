@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief   Freertos tickless 
+ * @brief   Freertos tickless
  * @details How to use RTC for freeRTOS
  *
  */
@@ -39,9 +39,9 @@
  ******************************************************************************/
 
 /* MXC */
-#include "mxc_errors.h"
 #include "board.h"
 #include "mxc_assert.h"
+#include "mxc_errors.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
@@ -50,12 +50,12 @@
 
 /* Maxim CMSIS */
 #include "lp.h"
-#include "rtc.h"
 #include "pwrseq_regs.h"
+#include "rtc.h"
 
-#define RTC_RATIO     (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
-#define MAX_SNOOZE    0xFF
-#define MIN_SYSTICK   2
+#define RTC_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
+#define MAX_SNOOZE 0xFF
+#define MIN_SYSTICK 2
 #define MIN_RTC_TICKS 5
 
 static uint32_t residual = 0;
@@ -85,16 +85,17 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     volatile uint32_t rtc_ticks, rtc_ss_val;
     volatile uint32_t actual_ticks;
     volatile uint32_t pre_capture, post_capture;
-    mxc_gpio_cfg_t uart_rx_pin = {MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE};
+    mxc_gpio_cfg_t uart_rx_pin
+        = { MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE };
 
     /* Example:
-   *
-   *  configTICK_RATE_HZ      512
-   *  configRTC_TICK_RATE_HZ 4096
-   *
-   *  RTC is 8x more accurate than the normal tick in this case. We can accumulate an error term and
-   *   fix up when called again as the error term equals 1 task tick
-   */
+     *
+     *  configTICK_RATE_HZ      512
+     *  configRTC_TICK_RATE_HZ 4096
+     *
+     *  RTC is 8x more accurate than the normal tick in this case. We can accumulate an error term
+     * and fix up when called again as the error term equals 1 task tick
+     */
 
     /* We do not currently handle to case where the RTC is slower than the RTOS tick */
     MXC_ASSERT(configRTC_TICK_RATE_HZ >= configTICK_RATE_HZ);
@@ -125,8 +126,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* If a context switch is pending or a task is waiting for the scheduler
      to be unsuspended then abandon the low power entry. */
     /* Also check the MXC drivers for any in-progress activity */
-    if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
-        (freertos_permit_tickless() != E_NO_ERROR)) {
+    if ((eTaskConfirmSleepModeStatus() == eAbortSleep)
+        || (freertos_permit_tickless() != E_NO_ERROR)) {
         /* Re-enable interrupts - see comments above the cpsid instruction()
        above. */
         __asm volatile("cpsie i");
@@ -159,8 +160,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     MXC_GPIO_DisableInt(uart_rx_pin.port, uart_rx_pin.mask);
 
     /* Snapshot the current RTC value */
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY))
-        ;
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) { }
     post_capture = MXC_RTC->ssec;
 
     /* Dermine wake cause */
@@ -197,8 +197,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     __asm volatile("cpsie i");
 
     /*
-   * Advance ticks by # actually elapsed
-   */
+     * Advance ticks by # actually elapsed
+     */
     portENTER_CRITICAL();
     /* Future enhancement: Compare time in seconds to RTC and slew to correct */
     vTaskStepTick(actual_ticks / RTC_RATIO);

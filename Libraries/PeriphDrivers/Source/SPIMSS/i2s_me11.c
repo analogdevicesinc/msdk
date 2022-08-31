@@ -39,21 +39,21 @@
  *
  *************************************************************************** */
 
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
-#include "mxc_pins.h"
 #include "dma.h"
 #include "i2s.h"
 #include "i2s_reva.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
+#include "mxc_sys.h"
 #include "spimss.h"
 #include "spimss_regs.h"
+#include <stddef.h>
+#include <stdint.h>
 
 #define I2S_CHANNELS 2
-#define I2S_WIDTH    16
+#define I2S_WIDTH 16
 
 int dma_channel = -1;
 

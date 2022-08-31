@@ -36,8 +36,8 @@
 #include <string.h>
 
 #include "state.h"
-#include "utils.h"
 #include "task_smartcard.h"
+#include "utils.h"
 
 #include "sc_errors.h"
 #include "sc_states.h"
@@ -54,17 +54,21 @@ typedef void (*SmartCard_Test)(void);
 static void read_atr(void);
 
 /********************************* 		VARIABLES	 *************************/
-static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = {0};
+static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = { 0 };
 
 static text_t text_msg[] = {
-    {(char*)input_buf, 0}, {(char*)"Insert a card", 13}, {(char*)"SMARTCARD", 9},
-    {(char*)"Smart", 5},   {(char*)"card", 4},           {(char*)"ATR:", 4},
+    { (char*)input_buf, 0 },
+    { (char*)"Insert a card", 13 },
+    { (char*)"SMARTCARD", 9 },
+    { (char*)"Smart", 5 },
+    { (char*)"card", 4 },
+    { (char*)"ATR:", 4 },
 };
 
 static text_t* text_line = &text_msg[0];
 
-area_t sm_area_clean    = {0, 0, 0, 0};
-area_t sm_area_cleanMSG = {0, 0, 0, 0};
+area_t sm_area_clean = { 0, 0, 0, 0 };
+area_t sm_area_cleanMSG = { 0, 0, 0, 0 };
 
 extern ActivationParams_t ActivationParams;
 
@@ -72,7 +76,7 @@ static SmartCard_Test test_array[] = {
     read_atr,
     //...
 };
-static unsigned int test_max   = ARRAY_SIZE(test_array);
+static unsigned int test_max = ARRAY_SIZE(test_array);
 static unsigned int test_index = 0;
 
 /********************************* Static Functions **************************/
@@ -80,7 +84,7 @@ static int init(void)
 {
     TFT_SetBackGroundColor(0);
     TFT_PrintFont(105, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
-                  &sm_area_clean); //"Insert a card", 13
+        &sm_area_clean); //"Insert a card", 13
 
     if (test_index == 0) {
         // Test ATR
@@ -91,7 +95,7 @@ static int init(void)
 
         // TS keys
         MXC_TS_RemoveAllButton();
-        MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); //Home
+        MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); // Home
     }
 
     sc_set_afe_intterrupt(1);
@@ -110,17 +114,17 @@ static void read_atr(void)
 
     if (!((IccReturn_t)status == ICC_ERR_REMOVED)) {
         /*power up the card */
-        status                        = POWER_UP;
+        status = POWER_UP;
         ActivationParams.IccWarmReset = bFALSE;
-        retval                        = SCAPI_ioctl(SC_SLOT_NUMBER, IOCTL_POWER_CARD, &status);
+        retval = SCAPI_ioctl(SC_SLOT_NUMBER, IOCTL_POWER_CARD, &status);
         if (ICC_OK != retval) {
             goto read_atr_out;
         }
 
         /*
-		 * Read the ATR and save into the atr buffer
-		 * as output, status will contains the exact ATR length
-		 */
+         * Read the ATR and save into the atr buffer
+         * as output, status will contains the exact ATR length
+         */
         status = sizeof(atr);
         retval = SCAPI_read(SC_SLOT_NUMBER, atr, &status);
         if (retval) {
@@ -129,33 +133,33 @@ static void read_atr(void)
         } else {
             memset(text_line->data, ' ', MAX_CHAR_ON_SCREEN);
             switch (status) {
-                case 1:
-                    text_line->len = 2;
-                    utils_hex2char(atr[0], &text_line->data[0]);
-                    break;
-                case 2:
-                    text_line->len = 5;
-                    utils_hex2char(atr[0], &text_line->data[0]);
-                    utils_hex2char(atr[1], &text_line->data[3]);
-                    break;
-                default:
-                    utils_hex2char(atr[0], &text_line->data[0]);
-                    utils_hex2char(atr[1], &text_line->data[3]);
-                    if (status < 6) {
-                        for (i = 2; i < status; i++) {
-                            utils_hex2char(atr[i], &text_line->data[3 * i]);
-                        }
-                        text_line->len = 3 * status - 1;
-                    } else {
-                        utils_hex2char(atr[2], &text_line->data[6]);
-                        text_line->data[9]  = '.';
-                        text_line->data[10] = '.';
-                        text_line->data[11] = '.';
-                        utils_hex2char(atr[status - 2], &text_line->data[13]);
-                        utils_hex2char(atr[status - 1], &text_line->data[16]);
-                        text_line->len = 18;
+            case 1:
+                text_line->len = 2;
+                utils_hex2char(atr[0], &text_line->data[0]);
+                break;
+            case 2:
+                text_line->len = 5;
+                utils_hex2char(atr[0], &text_line->data[0]);
+                utils_hex2char(atr[1], &text_line->data[3]);
+                break;
+            default:
+                utils_hex2char(atr[0], &text_line->data[0]);
+                utils_hex2char(atr[1], &text_line->data[3]);
+                if (status < 6) {
+                    for (i = 2; i < status; i++) {
+                        utils_hex2char(atr[i], &text_line->data[3 * i]);
                     }
-                    break;
+                    text_line->len = 3 * status - 1;
+                } else {
+                    utils_hex2char(atr[2], &text_line->data[6]);
+                    text_line->data[9] = '.';
+                    text_line->data[10] = '.';
+                    text_line->data[11] = '.';
+                    utils_hex2char(atr[status - 2], &text_line->data[13]);
+                    utils_hex2char(atr[status - 1], &text_line->data[16]);
+                    text_line->len = 18;
+                }
+                break;
             }
 
             // Smartcard ATR Display
@@ -163,7 +167,7 @@ static void read_atr(void)
 
             text_line->len = 18;
             TFT_PrintFont(24, 162, urw_gothic_16_bleu_bg_grey, &text_msg[5],
-                          &sm_area_cleanMSG); //"ATR:", 4
+                &sm_area_cleanMSG); //"ATR:", 4
             TFT_PrintFont(77, 162, urw_gothic_16_white_bg_grey, &text_msg[0], &sm_area_clean);
 
             /* Enable AFE interrupt */
@@ -179,40 +183,40 @@ read_atr_out:
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_A:
-            if (test_index > 0) {
-                --test_index;
-                init();
-            }
-            break;
-        case KEY_B:
-            if (test_index < (test_max - 1)) {
-                test_index++;
-                init();
-            }
-            break;
-        case KEY_C: // exit
-            state_set_current(get_home_state());
-            sc_set_afe_intterrupt(0);
-            break;
-        case KEY_CARD_INSERTED:
-            test_array[test_index]();
-            break;
-        case KEY_CARD_REMOVED:
-            //
-            MXC_TFT_ClearArea(&sm_area_clean, 0);
-            MXC_TFT_ClearArea(&sm_area_cleanMSG, 0);
-            MXC_TFT_PrintFont(105, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
-                              &sm_area_clean); //"Insert a card", 13
-            break;
-        default:
-            break;
+    case KEY_A:
+        if (test_index > 0) {
+            --test_index;
+            init();
+        }
+        break;
+    case KEY_B:
+        if (test_index < (test_max - 1)) {
+            test_index++;
+            init();
+        }
+        break;
+    case KEY_C: // exit
+        state_set_current(get_home_state());
+        sc_set_afe_intterrupt(0);
+        break;
+    case KEY_CARD_INSERTED:
+        test_array[test_index]();
+        break;
+    case KEY_CARD_REMOVED:
+        //
+        MXC_TFT_ClearArea(&sm_area_clean, 0);
+        MXC_TFT_ClearArea(&sm_area_cleanMSG, 0);
+        MXC_TFT_PrintFont(105, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
+            &sm_area_clean); //"Insert a card", 13
+        break;
+    default:
+        break;
     }
 
     return 0;
 }
 
-static State g_state = {"smartcard", init, key_process, NULL, 0, NULL, NULL};
+static State g_state = { "smartcard", init, key_process, NULL, 0, NULL, NULL };
 
 /********************************* Public Functions **************************/
 State* get_smartcard_state(void)

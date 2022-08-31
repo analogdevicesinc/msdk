@@ -34,10 +34,10 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
 #include "board.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include <stdio.h>
 
 /***** Global Variables *****/
 extern uint32_t SystemCoreClock;
@@ -49,8 +49,7 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) { }
 }
 
 /******************************************************************************/

@@ -1,7 +1,7 @@
 /*
  * @file state.c
  *
-*/
+ */
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -35,8 +35,8 @@
  *
  ******************************************************************************/
 
-#include <string.h>
 #include "state.h"
+#include <string.h>
 
 static State* g_state = NULL;
 

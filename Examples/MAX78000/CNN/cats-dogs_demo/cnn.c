@@ -32,28 +32,33 @@
  ******************************************************************************/
 
 // cats-dogs
-// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix cats-dogs --checkpoint-file trained/ai85-catsdogs-qat8-q.pth.tar --config-file networks/cats-dogs-hwc.yaml --fifo --softmax --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint --verbose --overwrite
+// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix cats-dogs
+// --checkpoint-file trained/ai85-catsdogs-qat8-q.pth.tar --config-file networks/cats-dogs-hwc.yaml
+// --fifo --softmax --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint
+// --verbose --overwrite
 
 // DO NOT EDIT - regenerate this file instead!
 
 // Configuring 7 layers
 // Input data: HWC
-// Layer 0: 3x128x128streaming , no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 16x128x128 output
-// Layer 1: 16x128x128streaming , max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x64x64 output
-// Layer 2: 32x64x64, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x32x32 output
-// Layer 3: 64x32x32, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x16x16 output
-// Layer 4: 32x16x16, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x8x8 output
-// Layer 5: 32x8x8, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 16x8x8 output
-// Layer 6: 16x8x8 flattened to 1024x1x1, no pooling, linear, no activation, 2x1x1 output
+// Layer 0: 3x128x128streaming , no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
+// 16x128x128 output Layer 1: 16x128x128streaming , max pool 2x2 with stride 2/2, conv2d with kernel
+// size 3x3, stride 1/1, pad 1/1, ReLU, 32x64x64 output Layer 2: 32x64x64, max pool 2x2 with stride
+// 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x32x32 output Layer 3: 64x32x32,
+// max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x16x16
+// output Layer 4: 32x16x16, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1,
+// pad 1/1, ReLU, 32x8x8 output Layer 5: 32x8x8, no pooling, conv2d with kernel size 3x3, stride
+// 1/1, pad 1/1, ReLU, 16x8x8 output Layer 6: 16x8x8 flattened to 1024x1x1, no pooling, linear, no
+// activation, 2x1x1 output
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc.h"
-#include "gcfr_regs.h"
 #include "cnn.h"
+#include "gcfr_regs.h"
+#include "mxc.h"
 #include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void CNN_ISR(void)
 {
@@ -89,22 +94,20 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 // Kernels:
-static const uint32_t kernels_0[]  = KERNELS_0;
-static const uint32_t kernels_1[]  = KERNELS_1;
-static const uint32_t kernels_2[]  = KERNELS_2;
-static const uint32_t kernels_3[]  = KERNELS_3;
-static const uint32_t kernels_4[]  = KERNELS_4;
-static const uint32_t kernels_5[]  = KERNELS_5;
-static const uint32_t kernels_6[]  = KERNELS_6;
-static const uint32_t kernels_7[]  = KERNELS_7;
-static const uint32_t kernels_8[]  = KERNELS_8;
-static const uint32_t kernels_9[]  = KERNELS_9;
+static const uint32_t kernels_0[] = KERNELS_0;
+static const uint32_t kernels_1[] = KERNELS_1;
+static const uint32_t kernels_2[] = KERNELS_2;
+static const uint32_t kernels_3[] = KERNELS_3;
+static const uint32_t kernels_4[] = KERNELS_4;
+static const uint32_t kernels_5[] = KERNELS_5;
+static const uint32_t kernels_6[] = KERNELS_6;
+static const uint32_t kernels_7[] = KERNELS_7;
+static const uint32_t kernels_8[] = KERNELS_8;
+static const uint32_t kernels_9[] = KERNELS_9;
 static const uint32_t kernels_10[] = KERNELS_10;
 static const uint32_t kernels_11[] = KERNELS_11;
 static const uint32_t kernels_12[] = KERNELS_12;
@@ -298,9 +301,7 @@ static const uint8_t bias_0[] = BIAS_0;
 
 static void memcpy_8to32(uint32_t* dst, const uint8_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 int cnn_load_bias(void)
@@ -731,7 +732,7 @@ int cnn_start(void)
     MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-    CNN_START;                                      // Allow capture of processing time
+    CNN_START; // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x0018c809; // Master enable quadrant 0
 
     return CNN_OK;
@@ -742,7 +743,7 @@ int cnn_unload(uint32_t* out_buf)
     volatile uint32_t* addr;
 
     // Custom unload for this network, layer 6: 32-bit data, shape: (2, 1, 1)
-    addr       = (volatile uint32_t*)0x50401000;
+    addr = (volatile uint32_t*)0x50401000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
 
@@ -758,9 +759,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv =
-        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
-        clock_divider | clock_source;
+    MXC_GCR->pclkdiv
+        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
+        | clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -773,7 +774,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -786,7 +787,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);

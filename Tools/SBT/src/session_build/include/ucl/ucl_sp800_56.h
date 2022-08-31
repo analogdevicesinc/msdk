@@ -5,16 +5,16 @@ extern "C" {
 #endif /* __cplusplus  */
 #include <ucl/bignum_ecdsa_generic_api.h>
 #include <ucl/ecdsa_generic_api.h>
-#include <ucl/ucl_retdefs.h>
-#include <ucl/ucl_types.h>
 #include <ucl/ucl_config.h>
 #include <ucl/ucl_defs.h>
-#include <ucl/ucl_sys.h>
+#include <ucl/ucl_retdefs.h>
 #include <ucl/ucl_sha1.h>
 #include <ucl/ucl_sha224.h>
 #include <ucl/ucl_sha256.h>
 #include <ucl/ucl_sha384.h>
 #include <ucl/ucl_sha512.h>
+#include <ucl/ucl_sys.h>
+#include <ucl/ucl_types.h>
 /** @file ucl_sp800_56.h
  * @defgroup UCL_ECC_SP80056 SP800-56 ECDH computation
  *
@@ -39,7 +39,7 @@ extern "C" {
  * @param[in]  *yV: the V ephemeral public key Y coordinate
  * @param[in]  configuration: the configuration variable for transmitting the curve identifier
  * @return Error code
- * 
+ *
  * @retval #UCL_OK              No error occurred
  * @retval #UCL_INVALID_INPUT  if one of the inputs is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
@@ -56,9 +56,10 @@ int ucl_sp800_56_ecc_cdh(u8* z, u8* dU, u8* xV, u8* yV, u32 configuration);
  * @param[in]  zbytelength: the shared secret length in bytes
  * @param[in]  *otherinfo: the OtherInfo field as defined in section 5.8.1.2
  * @param[in] otherinfolength: the OtherInfo field bit length; this number is a multiple of 8
- * @param[in]  configuration: the configuration variable for transmitting the hash function identifier
+ * @param[in]  configuration: the configuration variable for transmitting the hash function
+ * identifier
  * @return Error code
- * 
+ *
  * @retval #UCL_OK              No error occurred
  * @retval #UCL_INVALID_INPUT  if one of the inputs is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
@@ -66,7 +67,7 @@ int ucl_sp800_56_ecc_cdh(u8* z, u8* dU, u8* xV, u8* yV, u32 configuration);
  * limitation: the OtherInfo length is expressed in bits but is a multiple of 8 (so bytes).
  * @ingroup UCL_ECC_SP80056 */
 int ucl_sp800_56_concat_kdf(u8* derivedkeyingmaterial, u32 keydatalen, u8* z, u32 zbytelength,
-                            u8* otherinfo, u32 otherinfobitlength, u32 configuration);
+    u8* otherinfo, u32 otherinfobitlength, u32 configuration);
 
 /** <b>derived key material computation and ephemeral key generation</b>.
  * this function computes the derived key material and generates the U ephemeral key
@@ -75,15 +76,20 @@ int ucl_sp800_56_concat_kdf(u8* derivedkeyingmaterial, u32 keydatalen, u8* z, u3
  * @param[out] *derivedkeyingmaterial: the shared secret Z
  * @param[out] keydatalen: the length of the shared secret
  * @param[out] *dU: the newly generated secret key for the entity U
- * @param[out] *xU: the newly generated U ephemeral key X coordinate using the ucl_type_ecc_u8_affine_point structure
- * @param[out] *yU: the newly generated U ephemeral key Y coordinate using the ucl_type_ecc_u8_affine_point structure
- * @param[in]  *xV: the V ephemeral public key X coordinate using the ucl_type_ecc_u8_affine_point structure
- * @param[in]  *yV: the V ephemeral public key Y coordinate using the ucl_type_ecc_u8_affine_point structure
+ * @param[out] *xU: the newly generated U ephemeral key X coordinate using the
+ * ucl_type_ecc_u8_affine_point structure
+ * @param[out] *yU: the newly generated U ephemeral key Y coordinate using the
+ * ucl_type_ecc_u8_affine_point structure
+ * @param[in]  *xV: the V ephemeral public key X coordinate using the ucl_type_ecc_u8_affine_point
+ * structure
+ * @param[in]  *yV: the V ephemeral public key Y coordinate using the ucl_type_ecc_u8_affine_point
+ * structure
  * @param[in]  *otherinfo: the OtherInfo field as defined in section 5.8.1.2
  * @param[in]  otherinfolength: the OtherInfo field bit length; this number is a multiple of 8
- * @param[in] configuration: the configuration variable for transmitting the curve and hash function identifiers
+ * @param[in] configuration: the configuration variable for transmitting the curve and hash function
+ * identifiers
  * @return Error code
- * 
+ *
  * @retval #UCL_OK              No error occurred
  * @retval #UCL_INVALID_INPUT  if one of the inputs is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
@@ -92,8 +98,7 @@ int ucl_sp800_56_concat_kdf(u8* derivedkeyingmaterial, u32 keydatalen, u8* z, u3
  * limitation: the OtherInfo length is expressed in bits but is a multiple of 8 (so bytes).
  * @ingroup UCL_ECC_SP80056 */
 int ucl_sp800_56_eum_ecc_cdh(u8* derivedkeyingmaterial, u32 keydatalen, u8* dU, u8* xU, u8* yU,
-                             u8* xV, u8* yV, u8* otherinfo, u32 otherinfobitlength,
-                             u32 configuration);
+    u8* xV, u8* yV, u8* otherinfo, u32 otherinfobitlength, u32 configuration);
 
 /** <b>shared secret computation</b>.
  * this function computes the shared secret Z, using the secret key from U and the public key from V
@@ -105,14 +110,14 @@ int ucl_sp800_56_eum_ecc_cdh(u8* derivedkeyingmaterial, u32 keydatalen, u8* dU, 
  * @param[in] V: the V ephemeral public key using the ucl_type_ecc_u8_affine_point structure
  * @param[in] curve_params: a pointer to the curve domain parameters
  * @return Error code
- * 
+ *
  * @retval #UCL_OK              No error occurred
  * @retval #UCL_INVALID_INPUT  if one of the inputs is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_SP80056 */
-int ucl_ecc_sp800_56_ecc_cdh(u8* z, u8* dU, ucl_type_ecc_u8_affine_point V,
-                             ucl_type_curve* curve_params);
+int ucl_ecc_sp800_56_ecc_cdh(
+    u8* z, u8* dU, ucl_type_ecc_u8_affine_point V, ucl_type_curve* curve_params);
 
 /** <b>derived key material computation and ephemeral key generation</b>.
  * this function computes the derived key material and generates the U ephemeral key
@@ -121,14 +126,16 @@ int ucl_ecc_sp800_56_ecc_cdh(u8* z, u8* dU, ucl_type_ecc_u8_affine_point V,
  *
  * @param[out]   *z: the shared secret Z
  * @param[out]   *d: the newly generated secret key for the entity U
- * @param[out] U: the newly generated U ephemeral key using the ucl_type_ecc_u8_affine_point structure
+ * @param[out] U: the newly generated U ephemeral key using the ucl_type_ecc_u8_affine_point
+ * structure
  * @param[in] V: the V ephemeral public key using the ucl_type_ecc_u8_affine_point structure
  * @param[in]  *otherinfo: the OtherInfo field as defined in section 5.8.1.2
  * @param[in]  otherinfolength: the OtherInfo field bit length; this number is a multiple of 8
  * @param[in] curve_params: a pointer to the curve domain parameters
- * @param[in]  configuration: the configuration variable for transmitting the hash function identifier
+ * @param[in]  configuration: the configuration variable for transmitting the hash function
+ * identifier
  * @return Error code
- * 
+ *
  * @retval #UCL_OK              No error occurred
  * @retval #UCL_INVALID_INPUT  if one of the inputs is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
@@ -137,9 +144,8 @@ int ucl_ecc_sp800_56_ecc_cdh(u8* z, u8* dU, ucl_type_ecc_u8_affine_point V,
  * limitation: the OtherInfo length is expressed in bits but is a multiple of 8 (so bytes).
  * @ingroup UCL_ECC_SP80056 */
 int ucl_ecc_sp800_56_eum_ecc_cdh(u8* derivedkeyingmaterial, u32 keydatalen, u8* dU,
-                                 ucl_type_ecc_u8_affine_point U, ucl_type_ecc_u8_affine_point V,
-                                 u8* otherinfo, u32 otherinfobitlength,
-                                 ucl_type_curve* curve_params, u32 configuration);
+    ucl_type_ecc_u8_affine_point U, ucl_type_ecc_u8_affine_point V, u8* otherinfo,
+    u32 otherinfobitlength, ucl_type_curve* curve_params, u32 configuration);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

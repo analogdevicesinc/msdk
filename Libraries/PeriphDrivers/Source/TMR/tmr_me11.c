@@ -2,9 +2,9 @@
  * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"), 
+ * copy of this software and associated documentation files(the "Software"),
  * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
  *
@@ -15,7 +15,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -24,7 +24,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents, 
+ * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -32,8 +32,8 @@
  **************************************************************************** */
 
 #include "tmr.h"
-#include "tmr_reva.h"
 #include "tmr_common.h"
+#include "tmr_reva.h"
 
 int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 {
@@ -41,27 +41,24 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 
     MXC_ASSERT(tmr_id >= 0);
 
-    //enable peripheral clock and configure gpio pins
+    // enable peripheral clock and configure gpio pins
     switch (tmr_id) {
-        case 0:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TIMER0);
-            while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TIMER0)
-                ;
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
-            MXC_GPIO_Config(&gpio_cfg_tmr0);
-            break;
-        case 1:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TIMER1);
-            while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TIMER1)
-                ;
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
-            break;
-        case 2:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TIMER2);
-            while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TIMER2)
-                ;
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
-            break;
+    case 0:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TIMER0);
+        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TIMER0) { }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+        MXC_GPIO_Config(&gpio_cfg_tmr0);
+        break;
+    case 1:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TIMER1);
+        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TIMER1) { }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
+        break;
+    case 2:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TIMER2);
+        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TIMER2) { }
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
+        break;
     }
 
     MXC_TMR_RevA_Init((mxc_tmr_reva_regs_t*)tmr, cfg);
@@ -76,19 +73,19 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     MXC_TMR_RevA_Shutdown((mxc_tmr_reva_regs_t*)tmr);
 
     // System settigns
-    //diasble peripheral clock
+    // diasble peripheral clock
     switch (tmr_id) {
-        case 0:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
-            break;
+    case 0:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
+        break;
 
-        case 1:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
-            break;
+    case 1:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
+        break;
 
-        case 2:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
-            break;
+    case 2:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
+        break;
     }
 }
 

@@ -31,35 +31,34 @@
  *
  *************************************************************************** */
 
-#include "adc.h"
-#include "dma.h"
 #include "adc_revb.h"
+#include "adc.h"
 #include "adc_regs.h"
+#include "dma.h"
 
-#include "mxc_device.h"
-#include "mxc_errors.h"
+#include "mcr_regs.h"
 #include "mxc_assert.h"
 #include "mxc_delay.h"
-#include "mxc_sys.h"
-#include "mcr_regs.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
 #include "mxc_lock.h"
-#include "mxc_delay.h"
+#include "mxc_sys.h"
 #include <stdio.h>
 
 // Mask for all Interrupt Enable Fields
-#define ADC_IE_MASK                                                                             \
-    (MXC_F_ADC_REVB_INTEN_READY | MXC_F_ADC_REVB_INTEN_ABORT | MXC_F_ADC_REVB_INTEN_START_DET | \
-     MXC_F_ADC_REVB_INTEN_SEQ_STARTED | MXC_F_ADC_REVB_INTEN_SEQ_DONE |                         \
-     MXC_F_ADC_REVB_INTEN_CONV_DONE | MXC_F_ADC_REVB_INTEN_CLIPPED |                            \
-     MXC_F_ADC_REVB_INTEN_FIFO_LVL | MXC_F_ADC_REVB_INTEN_FIFO_UFL |                            \
-     MXC_F_ADC_REVB_INTEN_FIFO_OFL)
+#define ADC_IE_MASK                                                                                \
+    (MXC_F_ADC_REVB_INTEN_READY | MXC_F_ADC_REVB_INTEN_ABORT | MXC_F_ADC_REVB_INTEN_START_DET      \
+        | MXC_F_ADC_REVB_INTEN_SEQ_STARTED | MXC_F_ADC_REVB_INTEN_SEQ_DONE                         \
+        | MXC_F_ADC_REVB_INTEN_CONV_DONE | MXC_F_ADC_REVB_INTEN_CLIPPED                            \
+        | MXC_F_ADC_REVB_INTEN_FIFO_LVL | MXC_F_ADC_REVB_INTEN_FIFO_UFL                            \
+        | MXC_F_ADC_REVB_INTEN_FIFO_OFL)
 
-#define ADC_IF_MASK                                                                             \
-    (MXC_F_ADC_REVB_INTFL_READY | MXC_F_ADC_REVB_INTFL_ABORT | MXC_F_ADC_REVB_INTFL_START_DET | \
-     MXC_F_ADC_REVB_INTFL_SEQ_STARTED | MXC_F_ADC_REVB_INTFL_SEQ_DONE |                         \
-     MXC_F_ADC_REVB_INTFL_CONV_DONE | MXC_F_ADC_REVB_INTFL_CLIPPED |                            \
-     MXC_F_ADC_REVB_INTFL_FIFO_LVL | MXC_F_ADC_REVB_INTFL_FIFO_UFL |                            \
-     MXC_F_ADC_REVB_INTFL_FIFO_OFL)
+#define ADC_IF_MASK                                                                                \
+    (MXC_F_ADC_REVB_INTFL_READY | MXC_F_ADC_REVB_INTFL_ABORT | MXC_F_ADC_REVB_INTFL_START_DET      \
+        | MXC_F_ADC_REVB_INTFL_SEQ_STARTED | MXC_F_ADC_REVB_INTFL_SEQ_DONE                         \
+        | MXC_F_ADC_REVB_INTFL_CONV_DONE | MXC_F_ADC_REVB_INTFL_CLIPPED                            \
+        | MXC_F_ADC_REVB_INTFL_FIFO_LVL | MXC_F_ADC_REVB_INTFL_FIFO_UFL                            \
+        | MXC_F_ADC_REVB_INTFL_FIFO_OFL)
 
 static mxc_adc_complete_cb_t async_callback;
 static mxc_adc_conversion_req_t* async_req;
@@ -75,18 +74,18 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req)
         return E_BAD_PARAM;
     }
 
-    //Enter reset mode
+    // Enter reset mode
     adc->ctrl0 &= ~MXC_F_ADC_REVB_CTRL0_RESETB;
 
-    //Power up to Sleep State
+    // Power up to Sleep State
     adc->clkctrl |= (req->clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
 
-    adc->clkctrl |=
-        (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS) & MXC_F_ADC_REVB_CLKCTRL_CLKDIV;
+    adc->clkctrl
+        |= (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS) & MXC_F_ADC_REVB_CLKCTRL_CLKDIV;
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_RESETB;
 
-    //Move to NAP state
+    // Move to NAP state
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_BIAS_EN;
     MXC_Delay(500);
 
@@ -96,19 +95,18 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req)
         adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_SKIP_CAL;
     }
 
-    adc->sampclkctrl |= (req->trackCount << MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT_POS) &
-                        MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT;
-    adc->sampclkctrl |= (req->idleCount << MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT_POS) &
-                        MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT;
+    adc->sampclkctrl |= (req->trackCount << MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT_POS)
+        & MXC_F_ADC_REVB_SAMPCLKCTRL_TRACK_CNT;
+    adc->sampclkctrl |= (req->idleCount << MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT_POS)
+        & MXC_F_ADC_REVB_SAMPCLKCTRL_IDLE_CNT;
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_ADC_EN;
 
-    //Wait for 30us
+    // Wait for 30us
     MXC_Delay(30);
 
-    //wait for calibration to complete
-    while (!(adc->intfl & MXC_F_ADC_REVB_INTFL_READY))
-        ;
+    // wait for calibration to complete
+    while (!(adc->intfl & MXC_F_ADC_REVB_INTFL_READY)) { }
 
     async_callback = NULL;
 
@@ -127,8 +125,8 @@ int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t* adc)
         MXC_FreeLock((uint32_t*)&async_req);
     }
 
-    adc->ctrl0 &=
-        ~(MXC_F_ADC_REVB_CTRL0_ADC_EN | MXC_F_ADC_REVB_CTRL0_RESETB | MXC_F_ADC_REVB_CTRL0_BIAS_EN);
+    adc->ctrl0 &= ~(
+        MXC_F_ADC_REVB_CTRL0_ADC_EN | MXC_F_ADC_REVB_CTRL0_RESETB | MXC_F_ADC_REVB_CTRL0_BIAS_EN);
 
     return E_NO_ERROR;
 }
@@ -161,7 +159,7 @@ void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t* adc, mxc_adc_clock_t clock)
 
 int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t* adc)
 {
-    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; //Flush data FIFO
+    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; // Flush data FIFO
 
     MXC_ADC_RevB_ClearFlags(adc, ADC_IF_MASK);
 
@@ -176,12 +174,11 @@ int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete
         return E_BAD_PARAM;
     }
 
-    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; //Flush data FIFO
+    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; // Flush data FIFO
 
     MXC_ADC_RevB_ClearFlags(adc, ADC_IF_MASK);
 
-    while (MXC_GetLock((uint32_t*)&async_callback, (uint32_t)callback) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((uint32_t*)&async_callback, (uint32_t)callback) != E_NO_ERROR) { }
 
     MXC_ADC_RevB_EnableInt(adc, (MXC_F_ADC_REVB_INTEN_SEQ_DONE | MXC_F_ADC_REVB_INTEN_FIFO_LVL));
 
@@ -190,8 +187,8 @@ int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req,
-                                    int* data, void (*callback)(int, int))
+int MXC_ADC_RevB_StartConversionDMA(
+    mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req, int* data, void (*callback)(int, int))
 {
     if (callback == NULL) {
         return E_BAD_PARAM;
@@ -209,19 +206,19 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion
     // Clear interrupt flags
     MXC_ADC_RevB_ClearFlags(adc, ADC_IF_MASK);
 
-    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; //Flush data FIFO
+    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; // Flush data FIFO
 
-    adc->fifodmactrl |=
-        MXC_S_ADC_REVB_FIFODMACTRL_DATA_FORMAT_DATA_STATUS; //Transfer data and status bits
+    adc->fifodmactrl
+        |= MXC_S_ADC_REVB_FIFODMACTRL_DATA_FORMAT_DATA_STATUS; // Transfer data and status bits
 
-    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_DMA_EN; //Enable ADC DMA
+    adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_DMA_EN; // Enable ADC DMA
 
-    num_bytes = (req->num_slots + 1) * 4; //Support 8 slots (32 bytes) only. (TODO)
+    num_bytes = (req->num_slots + 1) * 4; // Support 8 slots (32 bytes) only. (TODO)
 
     channel = MXC_DMA_AcquireChannel();
 
     config.reqsel = MXC_S_DMA_CTRL_REQUEST_ADC;
-    config.ch     = channel;
+    config.ch = channel;
 
     config.srcwd = MXC_DMA_WIDTH_WORD;
     config.dstwd = MXC_DMA_WIDTH_WORD;
@@ -229,16 +226,17 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion
     config.srcinc_en = 0;
     config.dstinc_en = 1;
 
-    srcdst.ch     = channel;
+    srcdst.ch = channel;
     srcdst.source = NULL;
-    srcdst.dest   = data;
-    srcdst.len    = num_bytes;
+    srcdst.dest = data;
+    srcdst.len = num_bytes;
 
     MXC_DMA_ConfigChannel(config, srcdst);
 
     MXC_DMA_SetCallback(channel, callback);
 
-    //TODO: This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64 bytes may need to read.
+    // TODO: This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64
+    // bytes may need to read.
     MXC_DMA->ch[channel].ctrl |= (num_bytes - 1) << MXC_F_DMA_CTRL_BURST_SIZE_POS;
 
     MXC_DMA_EnableInt(channel);
@@ -263,9 +261,9 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc)
 
         if (flags & MXC_F_ADC_REVB_INTEN_SEQ_DONE) {
             MXC_ADC_RevB_ClearFlags(adc, flags);
-            MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
-                                          MXC_F_ADC_REVB_INTFL_CONV_DONE |
-                                          MXC_F_ADC_REVB_INTEN_FIFO_LVL));
+            MXC_ADC_RevB_DisableInt(adc,
+                (MXC_F_ADC_REVB_INTFL_SEQ_DONE | MXC_F_ADC_REVB_INTFL_CONV_DONE
+                    | MXC_F_ADC_REVB_INTEN_FIFO_LVL));
             MXC_FreeLock((uint32_t*)&async_callback);
         }
 
@@ -317,8 +315,8 @@ void MXC_ADC_RevB_TS_SelectDisable(mxc_adc_revb_regs_t* adc)
 
 uint16_t MXC_ADC_RevB_FIFO_Level(mxc_adc_revb_regs_t* adc)
 {
-    return ((adc->status & MXC_F_ADC_REVB_STATUS_FIFO_LEVEL) >>
-            MXC_F_ADC_REVB_STATUS_FIFO_LEVEL_POS);
+    return (
+        (adc->status & MXC_F_ADC_REVB_STATUS_FIFO_LEVEL) >> MXC_F_ADC_REVB_STATUS_FIFO_LEVEL_POS);
 }
 
 int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t* adc, uint32_t fifo_threshold)
@@ -335,7 +333,7 @@ int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t* adc, uint32_t fifo_t
 
 int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t* adc, mxc_adc_avg_t avg_number)
 {
-    //number of samples to average
+    // number of samples to average
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_AVG;
     adc->ctrl1 |= (avg_number);
 
@@ -344,7 +342,7 @@ int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t* adc, mxc_adc_avg_t avg_numbe
 
 void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t* adc)
 {
-    //Clear channel select registers
+    // Clear channel select registers
     adc->chsel0 = 0;
     adc->chsel1 = 0;
     adc->chsel2 = 0;
@@ -362,7 +360,7 @@ void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req
     } else {
         adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_TRIG_MODE;
         MXC_SETFIELD(adc->ctrl1, MXC_F_ADC_REVB_CTRL1_TRIG_SEL,
-                     (req->hwTrig << MXC_F_ADC_REVB_CTRL1_TRIG_SEL_POS));
+            (req->hwTrig << MXC_F_ADC_REVB_CTRL1_TRIG_SEL_POS));
     }
 }
 
@@ -378,7 +376,7 @@ int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t*
     return E_NO_ERROR;
 }
 
-//TODO: Need to find out better way to handle this.
+// TODO: Need to find out better way to handle this.
 int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t* adc, mxc_adc_chsel_t ch, uint32_t slot_num)
 {
     uint32_t* pointer = (uint32_t*)(MXC_BASE_ADC + MXC_R_ADC_CHSEL0);
@@ -398,4 +396,4 @@ int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t* adc, mxc_adc_chsel_t ch, ui
     return E_NO_ERROR;
 }
 
-//End
+// End

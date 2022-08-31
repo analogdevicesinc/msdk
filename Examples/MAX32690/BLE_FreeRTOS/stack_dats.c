@@ -39,6 +39,7 @@
 #include "ll_init_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
+#include "pal_led.h"
 #include "sec_api.h"
 #include "smp_api.h"
 #include "smp_handler.h"
@@ -56,14 +57,13 @@
 #include "wsf_timer.h"
 #include "wsf_trace.h"
 #include "wsf_types.h"
-#include "pal_led.h"
 
 #include "FreeRTOSConfig.h"
 
-#include "wut.h"
+#include "mxc_device.h"
 #include "rtc.h"
 #include "trimsir_regs.h"
-#include "mxc_device.h"
+#include "wut.h"
 
 /**************************************************************************************************
   Macros
@@ -71,14 +71,14 @@
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
-#define DEFAULT_TX_POWER                   0 /* dBm */
+#define DEFAULT_TX_POWER 0 /* dBm */
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = {{16, 8}, {32, 4}, {192, 8}, {256, 16}};
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 16 } };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -180,12 +180,12 @@ static void mainWsfInit(void)
 
 /*************************************************************************************************/
 /*!
-*  \fn     WUT_IRQHandler
-*
-*  \brief  WUY interrupt handler.
-*
-*  \return None.
-*/
+ *  \fn     WUT_IRQHandler
+ *
+ *  \brief  WUY interrupt handler.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void WUT0_IRQHandler(void)
 {
@@ -196,34 +196,34 @@ void WUT0_IRQHandler(void)
 
 /*************************************************************************************************/
 /*!
-*  \fn     wutTrimCb
-*
-*  \brief  Callback function for the WUT 32 kHz crystal trim.
-*
-*  \param  err    Error code from the WUT driver.
-*
-*  \return None.
-*/
+ *  \fn     wutTrimCb
+ *
+ *  \brief  Callback function for the WUT 32 kHz crystal trim.
+ *
+ *  \param  err    Error code from the WUT driver.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void wutTrimCb(int err)
 {
     if (err != E_NO_ERROR) {
         APP_TRACE_INFO1("32 kHz trim error %d\n", err);
     } else {
-        APP_TRACE_INFO1("32kHz trimmed to 0x%x", (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >>
-                                                     MXC_F_TRIMSIR_RTC_RTCX1_POS);
+        APP_TRACE_INFO1("32kHz trimmed to 0x%x",
+            (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >> MXC_F_TRIMSIR_RTC_RTCX1_POS);
     }
     wutTrimComplete = 1;
 }
 
 /*************************************************************************************************/
 /*!
-*  \fn     setAdvTxPower
-*
-*  \brief  Set the default advertising TX power.
-*
-*  \return None.
-*/
+ *  \fn     setAdvTxPower
+ *
+ *  \brief  Set the default advertising TX power.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void setAdvTxPower(void)
 {
@@ -287,8 +287,7 @@ void trim32k(void)
     if (MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
         APP_TRACE_INFO0("Error with 32k trim");
     } else {
-        while (!wutTrimComplete) {
-        }
+        while (!wutTrimComplete) { }
     }
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
@@ -343,13 +342,13 @@ void bleStartup(void)
     AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
-                           .wlSizeCfg    = 4,
-                           .rlSizeCfg    = 4,
-                           .plSizeCfg    = 4,
-                           .pLlRtCfg     = &mainLlRtCfg,
-                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
-                           .freeMemAvail = WsfHeapCountAvailable()};
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        .freeMemAvail = WsfHeapCountAvailable() };
 
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);

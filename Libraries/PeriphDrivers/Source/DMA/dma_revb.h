@@ -59,5 +59,5 @@ int MXC_DMA_RevB_Stop(int ch);
 mxc_dma_ch_regs_t* MXC_DMA_RevB_GetCHRegs(int ch);
 void MXC_DMA_RevB_Handler();
 int MXC_DMA_RevB_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback);
-int MXC_DMA_RevB_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
-                            mxc_dma_trans_chain_t callback);
+int MXC_DMA_RevB_DoTransfer(
+    mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);

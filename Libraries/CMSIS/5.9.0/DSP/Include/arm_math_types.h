@@ -63,27 +63,27 @@ extern "C" {
 #if defined(_MSC_VER)
 #include <stdint.h>
 #define __STATIC_FORCEINLINE static __forceinline
-#define __STATIC_INLINE      static __inline
-#define __ALIGNED(x)         __declspec(align(x))
+#define __STATIC_INLINE static __inline
+#define __ALIGNED(x) __declspec(align(x))
 #elif defined(__APPLE_CC__)
 #include <stdint.h>
-#define __ALIGNED(x)         __attribute__((aligned(x)))
+#define __ALIGNED(x) __attribute__((aligned(x)))
 #define __STATIC_FORCEINLINE static inline __attribute__((always_inline))
-#define __STATIC_INLINE      static inline
+#define __STATIC_INLINE static inline
 #elif defined(__GNUC_PYTHON__)
 #include <stdint.h>
-#define __ALIGNED(x)         __attribute__((aligned(x)))
+#define __ALIGNED(x) __attribute__((aligned(x)))
 #define __STATIC_FORCEINLINE static inline __attribute__((always_inline))
-#define __STATIC_INLINE      static inline
+#define __STATIC_INLINE static inline
 
 #else
 #include "cmsis_compiler.h"
 #endif
 
-#include <string.h>
-#include <math.h>
 #include <float.h>
 #include <limits.h>
+#include <math.h>
+#include <string.h>
 
 /* evaluate ARM DSP feature */
 #if (defined(__ARM_FEATURE_DSP) && (__ARM_FEATURE_DSP == 1))
@@ -260,143 +260,143 @@ extern "C" {
 #endif
 
 /**
-   * @brief 8-bit fractional data type in 1.7 format.
-   */
+ * @brief 8-bit fractional data type in 1.7 format.
+ */
 typedef int8_t q7_t;
 
 /**
-   * @brief 16-bit fractional data type in 1.15 format.
-   */
+ * @brief 16-bit fractional data type in 1.15 format.
+ */
 typedef int16_t q15_t;
 
 /**
-   * @brief 32-bit fractional data type in 1.31 format.
-   */
+ * @brief 32-bit fractional data type in 1.31 format.
+ */
 typedef int32_t q31_t;
 
 /**
-   * @brief 64-bit fractional data type in 1.63 format.
-   */
+ * @brief 64-bit fractional data type in 1.63 format.
+ */
 typedef int64_t q63_t;
 
 /**
-   * @brief 32-bit floating-point type definition.
-   */
+ * @brief 32-bit floating-point type definition.
+ */
 #if !defined(__ICCARM__) || !(__ARM_FEATURE_MVE & 2)
 typedef float float32_t;
 #endif
 
 /**
-   * @brief 64-bit floating-point type definition.
-   */
+ * @brief 64-bit floating-point type definition.
+ */
 typedef double float64_t;
 
 /**
-   * @brief vector types
-   */
+ * @brief vector types
+ */
 #if defined(ARM_MATH_NEON) || (defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE))
 /**
-   * @brief 64-bit fractional 128-bit vector data type in 1.63 format
-   */
+ * @brief 64-bit fractional 128-bit vector data type in 1.63 format
+ */
 typedef int64x2_t q63x2_t;
 
 /**
-   * @brief 32-bit fractional 128-bit vector data type in 1.31 format.
-   */
+ * @brief 32-bit fractional 128-bit vector data type in 1.31 format.
+ */
 typedef int32x4_t q31x4_t;
 
 /**
-   * @brief 16-bit fractional 128-bit vector data type with 16-bit alignment in 1.15 format.
-   */
+ * @brief 16-bit fractional 128-bit vector data type with 16-bit alignment in 1.15 format.
+ */
 typedef __ALIGNED(2) int16x8_t q15x8_t;
 
 /**
-   * @brief 8-bit fractional 128-bit vector data type with 8-bit alignment in 1.7 format.
-   */
+ * @brief 8-bit fractional 128-bit vector data type with 8-bit alignment in 1.7 format.
+ */
 typedef __ALIGNED(1) int8x16_t q7x16_t;
 
 /**
-   * @brief 32-bit fractional 128-bit vector pair data type in 1.31 format.
-   */
+ * @brief 32-bit fractional 128-bit vector pair data type in 1.31 format.
+ */
 typedef int32x4x2_t q31x4x2_t;
 
 /**
-   * @brief 32-bit fractional 128-bit vector quadruplet data type in 1.31 format.
-   */
+ * @brief 32-bit fractional 128-bit vector quadruplet data type in 1.31 format.
+ */
 typedef int32x4x4_t q31x4x4_t;
 
 /**
-   * @brief 16-bit fractional 128-bit vector pair data type in 1.15 format.
-   */
+ * @brief 16-bit fractional 128-bit vector pair data type in 1.15 format.
+ */
 typedef int16x8x2_t q15x8x2_t;
 
 /**
-   * @brief 16-bit fractional 128-bit vector quadruplet data type in 1.15 format.
-   */
+ * @brief 16-bit fractional 128-bit vector quadruplet data type in 1.15 format.
+ */
 typedef int16x8x4_t q15x8x4_t;
 
 /**
-   * @brief 8-bit fractional 128-bit vector pair data type in 1.7 format.
-   */
+ * @brief 8-bit fractional 128-bit vector pair data type in 1.7 format.
+ */
 typedef int8x16x2_t q7x16x2_t;
 
 /**
-   * @brief 8-bit fractional 128-bit vector quadruplet data type in 1.7 format.
-   */
+ * @brief 8-bit fractional 128-bit vector quadruplet data type in 1.7 format.
+ */
 typedef int8x16x4_t q7x16x4_t;
 
 /**
-   * @brief 32-bit fractional data type in 9.23 format.
-   */
+ * @brief 32-bit fractional data type in 9.23 format.
+ */
 typedef int32_t q23_t;
 
 /**
-   * @brief 32-bit fractional 128-bit vector data type in 9.23 format.
-   */
+ * @brief 32-bit fractional 128-bit vector data type in 9.23 format.
+ */
 typedef int32x4_t q23x4_t;
 
 /**
-   * @brief 64-bit status 128-bit vector data type.
-   */
+ * @brief 64-bit status 128-bit vector data type.
+ */
 typedef int64x2_t status64x2_t;
 
 /**
-   * @brief 32-bit status 128-bit vector data type.
-   */
+ * @brief 32-bit status 128-bit vector data type.
+ */
 typedef int32x4_t status32x4_t;
 
 /**
-   * @brief 16-bit status 128-bit vector data type.
-   */
+ * @brief 16-bit status 128-bit vector data type.
+ */
 typedef int16x8_t status16x8_t;
 
 /**
-   * @brief 8-bit status 128-bit vector data type.
-   */
+ * @brief 8-bit status 128-bit vector data type.
+ */
 typedef int8x16_t status8x16_t;
 
 #endif
 
-#if defined(ARM_MATH_NEON) || \
-    (defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)) /* floating point vector*/
+#if defined(ARM_MATH_NEON)                                                                         \
+    || (defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)) /* floating point vector*/
 /**
-   * @brief 32-bit floating-point 128-bit vector type
-   */
+ * @brief 32-bit floating-point 128-bit vector type
+ */
 typedef float32x4_t f32x4_t;
 
 /**
-   * @brief 32-bit floating-point 128-bit vector pair data type
-   */
+ * @brief 32-bit floating-point 128-bit vector pair data type
+ */
 typedef float32x4x2_t f32x4x2_t;
 
 /**
-   * @brief 32-bit floating-point 128-bit vector quadruplet data type
-   */
+ * @brief 32-bit floating-point 128-bit vector quadruplet data type
+ */
 typedef float32x4x4_t f32x4x4_t;
 
 /**
-   * @brief 32-bit ubiquitous 128-bit vector data type
-   */
+ * @brief 32-bit ubiquitous 128-bit vector data type
+ */
 typedef union _any32x4_t {
     float32x4_t f;
     int32x4_t i;
@@ -406,126 +406,126 @@ typedef union _any32x4_t {
 
 #if defined(ARM_MATH_NEON)
 /**
-   * @brief 32-bit fractional 64-bit vector data type in 1.31 format.
-   */
+ * @brief 32-bit fractional 64-bit vector data type in 1.31 format.
+ */
 typedef int32x2_t q31x2_t;
 
 /**
-   * @brief 16-bit fractional 64-bit vector data type in 1.15 format.
-   */
+ * @brief 16-bit fractional 64-bit vector data type in 1.15 format.
+ */
 typedef __ALIGNED(2) int16x4_t q15x4_t;
 
 /**
-   * @brief 8-bit fractional 64-bit vector data type in 1.7 format.
-   */
+ * @brief 8-bit fractional 64-bit vector data type in 1.7 format.
+ */
 typedef __ALIGNED(1) int8x8_t q7x8_t;
 
 /**
-   * @brief 32-bit float 64-bit vector data type.
-   */
+ * @brief 32-bit float 64-bit vector data type.
+ */
 typedef float32x2_t f32x2_t;
 
 /**
-   * @brief 32-bit floating-point 128-bit vector triplet data type
-   */
+ * @brief 32-bit floating-point 128-bit vector triplet data type
+ */
 typedef float32x4x3_t f32x4x3_t;
 
 /**
-   * @brief 32-bit fractional 128-bit vector triplet data type in 1.31 format
-   */
+ * @brief 32-bit fractional 128-bit vector triplet data type in 1.31 format
+ */
 typedef int32x4x3_t q31x4x3_t;
 
 /**
-   * @brief 16-bit fractional 128-bit vector triplet data type in 1.15 format
-   */
+ * @brief 16-bit fractional 128-bit vector triplet data type in 1.15 format
+ */
 typedef int16x8x3_t q15x8x3_t;
 
 /**
-   * @brief 8-bit fractional 128-bit vector triplet data type in 1.7 format
-   */
+ * @brief 8-bit fractional 128-bit vector triplet data type in 1.7 format
+ */
 typedef int8x16x3_t q7x16x3_t;
 
 /**
-   * @brief 32-bit floating-point 64-bit vector pair data type
-   */
+ * @brief 32-bit floating-point 64-bit vector pair data type
+ */
 typedef float32x2x2_t f32x2x2_t;
 
 /**
-   * @brief 32-bit floating-point 64-bit vector triplet data type
-   */
+ * @brief 32-bit floating-point 64-bit vector triplet data type
+ */
 typedef float32x2x3_t f32x2x3_t;
 
 /**
-   * @brief 32-bit floating-point 64-bit vector quadruplet data type
-   */
+ * @brief 32-bit floating-point 64-bit vector quadruplet data type
+ */
 typedef float32x2x4_t f32x2x4_t;
 
 /**
-   * @brief 32-bit fractional 64-bit vector pair data type in 1.31 format
-   */
+ * @brief 32-bit fractional 64-bit vector pair data type in 1.31 format
+ */
 typedef int32x2x2_t q31x2x2_t;
 
 /**
-   * @brief 32-bit fractional 64-bit vector triplet data type in 1.31 format
-   */
+ * @brief 32-bit fractional 64-bit vector triplet data type in 1.31 format
+ */
 typedef int32x2x3_t q31x2x3_t;
 
 /**
-   * @brief 32-bit fractional 64-bit vector quadruplet data type in 1.31 format
-   */
+ * @brief 32-bit fractional 64-bit vector quadruplet data type in 1.31 format
+ */
 typedef int32x4x3_t q31x2x4_t;
 
 /**
-   * @brief 16-bit fractional 64-bit vector pair data type in 1.15 format
-   */
+ * @brief 16-bit fractional 64-bit vector pair data type in 1.15 format
+ */
 typedef int16x4x2_t q15x4x2_t;
 
 /**
-   * @brief 16-bit fractional 64-bit vector triplet data type in 1.15 format
-   */
+ * @brief 16-bit fractional 64-bit vector triplet data type in 1.15 format
+ */
 typedef int16x4x2_t q15x4x3_t;
 
 /**
-   * @brief 16-bit fractional 64-bit vector quadruplet data type in 1.15 format
-   */
+ * @brief 16-bit fractional 64-bit vector quadruplet data type in 1.15 format
+ */
 typedef int16x4x3_t q15x4x4_t;
 
 /**
-   * @brief 8-bit fractional 64-bit vector pair data type in 1.7 format
-   */
+ * @brief 8-bit fractional 64-bit vector pair data type in 1.7 format
+ */
 typedef int8x8x2_t q7x8x2_t;
 
 /**
-   * @brief 8-bit fractional 64-bit vector triplet data type in 1.7 format
-   */
+ * @brief 8-bit fractional 64-bit vector triplet data type in 1.7 format
+ */
 typedef int8x8x3_t q7x8x3_t;
 
 /**
-   * @brief 8-bit fractional 64-bit vector quadruplet data type in 1.7 format
-   */
+ * @brief 8-bit fractional 64-bit vector quadruplet data type in 1.7 format
+ */
 typedef int8x8x4_t q7x8x4_t;
 
 /**
-   * @brief 32-bit ubiquitous 64-bit vector data type
-   */
+ * @brief 32-bit ubiquitous 64-bit vector data type
+ */
 typedef union _any32x2_t {
     float32x2_t f;
     int32x2_t i;
 } any32x2_t;
 
 /**
-   * @brief 32-bit status 64-bit vector data type.
-   */
+ * @brief 32-bit status 64-bit vector data type.
+ */
 typedef int32x4_t status32x2_t;
 
 /**
-   * @brief 16-bit status 64-bit vector data type.
-   */
+ * @brief 16-bit status 64-bit vector data type.
+ */
 typedef int16x8_t status16x4_t;
 
 /**
-   * @brief 8-bit status 64-bit vector data type.
-   */
+ * @brief 8-bit status 64-bit vector data type.
+ */
 typedef int8x16_t status8x8_t;
 
 #endif
@@ -544,33 +544,33 @@ typedef int8x16_t status8x8_t;
 
 #define Q31_MAX ((q31_t)(0x7FFFFFFFL))
 #define Q15_MAX ((q15_t)(0x7FFF))
-#define Q7_MAX  ((q7_t)(0x7F))
+#define Q7_MAX ((q7_t)(0x7F))
 #define Q31_MIN ((q31_t)(0x80000000L))
 #define Q15_MIN ((q15_t)(0x8000))
-#define Q7_MIN  ((q7_t)(0x80))
+#define Q7_MIN ((q7_t)(0x80))
 
 #define Q31_ABSMAX ((q31_t)(0x7FFFFFFFL))
 #define Q15_ABSMAX ((q15_t)(0x7FFF))
-#define Q7_ABSMAX  ((q7_t)(0x7F))
+#define Q7_ABSMAX ((q7_t)(0x7F))
 #define Q31_ABSMIN ((q31_t)0)
 #define Q15_ABSMIN ((q15_t)0)
-#define Q7_ABSMIN  ((q7_t)0)
+#define Q7_ABSMIN ((q7_t)0)
 
 /* Dimension C vector space */
 #define CMPLX_DIM 2
 
 /**
-   * @brief Error status returned by some functions in the library.
-   */
+ * @brief Error status returned by some functions in the library.
+ */
 
 typedef enum {
-    ARM_MATH_SUCCESS        = 0,  /**< No error */
+    ARM_MATH_SUCCESS = 0, /**< No error */
     ARM_MATH_ARGUMENT_ERROR = -1, /**< One or more arguments are incorrect */
-    ARM_MATH_LENGTH_ERROR   = -2, /**< Length of data buffer is incorrect */
-    ARM_MATH_SIZE_MISMATCH  = -3, /**< Size of matrices is not compatible with the operation */
-    ARM_MATH_NANINF         = -4, /**< Not-a-number (NaN) or infinity is generated */
-    ARM_MATH_SINGULAR       = -5, /**< Input matrix is singular and cannot be inverted */
-    ARM_MATH_TEST_FAILURE   = -6, /**< Test Failed */
+    ARM_MATH_LENGTH_ERROR = -2, /**< Length of data buffer is incorrect */
+    ARM_MATH_SIZE_MISMATCH = -3, /**< Size of matrices is not compatible with the operation */
+    ARM_MATH_NANINF = -4, /**< Not-a-number (NaN) or infinity is generated */
+    ARM_MATH_SINGULAR = -5, /**< Input matrix is singular and cannot be inverted */
+    ARM_MATH_TEST_FAILURE = -6, /**< Test Failed */
     ARM_MATH_DECOMPOSITION_FAILURE = -7 /**< Decomposition Failed */
 } arm_status;
 

@@ -31,14 +31,14 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
 #include "mxc_lock.h"
+#include "mxc_sys.h"
 #include "qdec.h"
 #include "qdec_reva_regs.h"
+#include <stdio.h>
 
 int MXC_QDEC_RevA_Init(mxc_qdec_reva_regs_t* qdec, mxc_qdec_req_t* req);
 int MXC_QDEC_RevA_Shutdown(mxc_qdec_reva_regs_t* qdec);

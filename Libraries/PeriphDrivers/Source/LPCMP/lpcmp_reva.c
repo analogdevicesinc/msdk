@@ -31,15 +31,15 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
 #include "lpcmp_reva.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
+#include "mcr_regs.h"
 #include "mxc_assert.h"
 #include "mxc_delay.h"
-#include "mxc_sys.h"
-#include "mcr_regs.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
 #include "mxc_lock.h"
+#include "mxc_sys.h"
+#include <stdio.h>
 
 int MXC_LPCMP_RevA_Init(mxc_lpcmp_ctrl_reg_t ctrl_reg)
 {

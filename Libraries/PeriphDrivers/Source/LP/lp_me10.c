@@ -35,11 +35,11 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include "lp.h"
-#include "pwrseq_regs.h"
-#include "mxc_errors.h"
 #include "gcr_regs.h"
+#include "lp.h"
+#include "mxc_errors.h"
 #include "mxc_sys.h"
+#include "pwrseq_regs.h"
 
 /* **** Variable Declaration **** */
 void MXC_LP_ClearWakeStatus(void)
@@ -49,7 +49,7 @@ void MXC_LP_ClearWakeStatus(void)
     MXC_PWRSEQ->gpio1_wk_fl = 0xFFFFFFFF;
     MXC_PWRSEQ->gpio2_wk_fl = 0xFFFFFFFF;
     MXC_PWRSEQ->gpio3_wk_fl = 0xFFFFFFFF;
-    MXC_PWRSEQ->usb_wk_fl   = 0xFFFFFFFF;
+    MXC_PWRSEQ->usb_wk_fl = 0xFFFFFFFF;
 }
 
 /* ************************************************************************** */
@@ -215,7 +215,8 @@ void MXC_LP_EnableROMLightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_ROMLS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_ROMLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -226,7 +227,8 @@ void MXC_LP_DisableROMLightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_ROMLS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_ROMLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -237,7 +239,8 @@ void MXC_LP_EnableUSBFIFOLightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_USBLS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_USBLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -248,7 +251,8 @@ void MXC_LP_DisableUSBFIFOLightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_USBLS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_USBLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -259,7 +263,8 @@ void MXC_LP_EnableCryptoRAMLightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_CRYPTOLS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_CRYPTOLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -269,7 +274,8 @@ void MXC_LP_DisableCryptoRAMLightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_CRYPTOLS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_CRYPTOLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -280,7 +286,8 @@ void MXC_LP_EnableSCacheLightSleep(void)
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SCACHELS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SCACHELS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -291,7 +298,8 @@ void MXC_LP_DisableSCacheLightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SCACHELS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SCACHELS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -302,7 +310,8 @@ void MXC_LP_EnableICacheXIPLightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_ICACHEXIPLS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_ICACHEXIPLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -313,7 +322,8 @@ void MXC_LP_DisableICacheXIPLightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_ICACHEXIPLS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_ICACHEXIPLS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -324,7 +334,8 @@ void MXC_LP_EnableICacheLightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_ICACHELS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_ICACHELS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -335,7 +346,8 @@ void MXC_LP_DisableICacheLightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_ICACHELS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_ICACHELS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -346,7 +358,8 @@ void MXC_LP_EnableSysRAM6LightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_SYSRAM6LS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM6LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -357,7 +370,8 @@ void MXC_LP_DisableSysRAM6LightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM6LS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM6LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -368,7 +382,8 @@ void MXC_LP_EnableSysRAM5LightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_SYSRAM5LS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM5LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -379,7 +394,8 @@ void MXC_LP_DisableSysRAM5LightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM5LS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM5LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -391,7 +407,8 @@ void MXC_LP_EnableSysRAM4LightSleep(void)
 
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM4LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -402,7 +419,8 @@ void MXC_LP_DisableSysRAM4LightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM4LS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM4LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -413,7 +431,8 @@ void MXC_LP_EnableSysRAM3LightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_SYSRAM3LS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM3LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -424,7 +443,8 @@ void MXC_LP_DisableSysRAM3LightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM3LS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM3LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -435,7 +455,8 @@ void MXC_LP_EnableSysRAM2LightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_SYSRAM2LS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM2LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -446,7 +467,8 @@ void MXC_LP_DisableSysRAM2LightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM2LS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM2LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -457,7 +479,8 @@ void MXC_LP_EnableSysRAM1LightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_SYSRAM1LS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM1LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -467,7 +490,8 @@ void MXC_LP_DisableSysRAM1LightSleep(void)
     if (ChipRevision > 0xA1) {
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM1LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -478,7 +502,8 @@ void MXC_LP_EnableSysRAM0LightSleep(void)
         MXC_GCR->mem_clk |= MXC_S_GCR_MEM_CLK_SYSRAM0LS_LIGHT_SLEEP;
     } else {
         MXC_GCR->mem_clk |= (MXC_S_GCR_MEM_CLK_SYSRAM0LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -489,7 +514,8 @@ void MXC_LP_DisableSysRAM0LightSleep(void)
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM0LS_LIGHT_SLEEP);
     } else {
         MXC_GCR->mem_clk &= ~(MXC_S_GCR_MEM_CLK_SYSRAM0LS_LIGHT_SLEEP >> 3);
-        /* Writes to the register have a flaw in HW logic.  All writes to this register must be offset by 3 bits. */
+        /* Writes to the register have a flaw in HW logic.  All writes to this register must be
+         * offset by 3 bits. */
     }
 }
 
@@ -504,8 +530,9 @@ void MXC_LP_EnableUSBWakeup(mxc_lp_usb_event_t wu_evt)
 void MXC_LP_DisableUSBWakeup(mxc_lp_usb_event_t wu_evt)
 {
     MXC_PWRSEQ->usb_wk_en &= ~wu_evt;
-    if ((MXC_PWRSEQ->usb_wk_en &
-         (MXC_F_PWRSEQ_USB_WK_EN_USBLSWKEN | MXC_F_PWRSEQ_USB_WK_EN_USBVBUSWKEN)) == 0) {
+    if ((MXC_PWRSEQ->usb_wk_en
+            & (MXC_F_PWRSEQ_USB_WK_EN_USBLSWKEN | MXC_F_PWRSEQ_USB_WK_EN_USBVBUSWKEN))
+        == 0) {
         MXC_GCR->pmr &= ~MXC_F_GCR_PMR_USBWKEN;
     }
 }
@@ -527,18 +554,18 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
     MXC_GCR->pmr |= MXC_F_GCR_PMR_GPIOWKEN;
     switch (MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case 0:
-            MXC_PWRSEQ->gpio0_wk_en |= wu_pins->mask;
-            break;
-        case 1:
-            MXC_PWRSEQ->gpio1_wk_en |= wu_pins->mask;
-            break;
-        case 2:
-            MXC_PWRSEQ->gpio2_wk_en |= wu_pins->mask;
-            break;
-        case 3:
-            MXC_PWRSEQ->gpio3_wk_en |= wu_pins->mask;
-            break;
+    case 0:
+        MXC_PWRSEQ->gpio0_wk_en |= wu_pins->mask;
+        break;
+    case 1:
+        MXC_PWRSEQ->gpio1_wk_en |= wu_pins->mask;
+        break;
+    case 2:
+        MXC_PWRSEQ->gpio2_wk_en |= wu_pins->mask;
+        break;
+    case 3:
+        MXC_PWRSEQ->gpio3_wk_en |= wu_pins->mask;
+        break;
     }
 }
 
@@ -546,22 +573,22 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
     switch (MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case 0:
-            MXC_PWRSEQ->gpio0_wk_en &= ~wu_pins->mask;
-            break;
-        case 1:
-            MXC_PWRSEQ->gpio1_wk_en &= ~wu_pins->mask;
-            break;
-        case 2:
-            MXC_PWRSEQ->gpio2_wk_en &= ~wu_pins->mask;
-            break;
-        case 3:
-            MXC_PWRSEQ->gpio3_wk_en &= ~wu_pins->mask;
-            break;
+    case 0:
+        MXC_PWRSEQ->gpio0_wk_en &= ~wu_pins->mask;
+        break;
+    case 1:
+        MXC_PWRSEQ->gpio1_wk_en &= ~wu_pins->mask;
+        break;
+    case 2:
+        MXC_PWRSEQ->gpio2_wk_en &= ~wu_pins->mask;
+        break;
+    case 3:
+        MXC_PWRSEQ->gpio3_wk_en &= ~wu_pins->mask;
+        break;
     }
 
-    if ((MXC_PWRSEQ->gpio0_wk_en == 0) && (MXC_PWRSEQ->gpio1_wk_en == 0) &&
-        (MXC_PWRSEQ->gpio2_wk_en == 0) && (MXC_PWRSEQ->gpio3_wk_en == 0)) {
+    if ((MXC_PWRSEQ->gpio0_wk_en == 0) && (MXC_PWRSEQ->gpio1_wk_en == 0)
+        && (MXC_PWRSEQ->gpio2_wk_en == 0) && (MXC_PWRSEQ->gpio3_wk_en == 0)) {
         MXC_GCR->pmr &= ~MXC_F_GCR_PMR_GPIOWKEN;
     }
 }
@@ -581,18 +608,18 @@ void MXC_LP_EnterSleepMode(void)
 /* ************************************************************************** */
 void MXC_LP_EnterBackgroundMode(void)
 {
-    int restoreSysClock    = 0;
-    int restoreHBClock     = 0;
+    int restoreSysClock = 0;
+    int restoreHBClock = 0;
     int restoreSCacheClock = 0;
-    int restoreSPIXClock   = 0;
-    uint32_t lpcn          = 0;
+    int restoreSPIXClock = 0;
+    uint32_t lpcn = 0;
     MXC_LP_ClearWakeStatus();
 
-    //make sure power monitors are in reset mode.
-    lpcn = MXC_PWRSEQ->ctrl &
-           ~(MXC_F_PWRSEQ_CTRL_VDDIOHMD | MXC_F_PWRSEQ_CTRL_VCOREMD | MXC_F_PWRSEQ_CTRL_PORVDDIOMD |
-             MXC_F_PWRSEQ_CTRL_VDDBMD | MXC_F_PWRSEQ_CTRL_VRTCMD | MXC_F_PWRSEQ_CTRL_PORVDDIOHMD |
-             MXC_F_PWRSEQ_CTRL_VDDAMD | MXC_F_PWRSEQ_CTRL_VDDIOMD);
+    // make sure power monitors are in reset mode.
+    lpcn = MXC_PWRSEQ->ctrl
+        & ~(MXC_F_PWRSEQ_CTRL_VDDIOHMD | MXC_F_PWRSEQ_CTRL_VCOREMD | MXC_F_PWRSEQ_CTRL_PORVDDIOMD
+            | MXC_F_PWRSEQ_CTRL_VDDBMD | MXC_F_PWRSEQ_CTRL_VRTCMD | MXC_F_PWRSEQ_CTRL_PORVDDIOHMD
+            | MXC_F_PWRSEQ_CTRL_VDDAMD | MXC_F_PWRSEQ_CTRL_VDDIOMD);
 
     /* Set background mode enable. */
     lpcn |= MXC_F_PWRSEQ_CTRL_BKGRND;
@@ -603,13 +630,13 @@ void MXC_LP_EnterBackgroundMode(void)
 
     /* Cannot enter BACKGROUND mode with a system clock faster than 2x of crypto clock. */
     /* Divide down if necessary. */
-    if ((MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSOSC_SEL) ==
-        MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC96) {
-        if ((MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE) ==
-            MXC_S_GCR_CLK_CTRL_SYSCLK_PRESCALE_DIV1) {
+    if ((MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSOSC_SEL)
+        == MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC96) {
+        if ((MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE)
+            == MXC_S_GCR_CLK_CTRL_SYSCLK_PRESCALE_DIV1) {
             restoreSysClock = 1;
             MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE,
-                         MXC_S_GCR_CLK_CTRL_SYSCLK_PRESCALE_DIV2);
+                MXC_S_GCR_CLK_CTRL_SYSCLK_PRESCALE_DIV2);
         }
     }
     /* These clocks need to be on during BACKGROUND mode. */
@@ -632,7 +659,7 @@ void MXC_LP_EnterBackgroundMode(void)
     /* Restore to the original clock settings. */
     if (restoreSysClock) {
         MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE,
-                     MXC_S_GCR_CLK_CTRL_SYSCLK_PRESCALE_DIV1);
+            MXC_S_GCR_CLK_CTRL_SYSCLK_PRESCALE_DIV1);
     }
     if (restoreHBClock) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_HBC);
@@ -648,19 +675,19 @@ void MXC_LP_EnterBackgroundMode(void)
 /* ************************************************************************** */
 void MXC_LP_EnterDeepSleepMode(void)
 {
-    int restoreHIRC        = 0;
-    int restoreHBClock     = 0;
+    int restoreHIRC = 0;
+    int restoreHBClock = 0;
     int restoreSCacheClock = 0;
-    int restoreSPIXClock   = 0;
-    uint32_t lpcn          = 0;
+    int restoreSPIXClock = 0;
+    uint32_t lpcn = 0;
 
     MXC_LP_ClearWakeStatus();
 
-    //make sure power monitors are in reset mode.
-    lpcn = MXC_PWRSEQ->ctrl &
-           ~(MXC_F_PWRSEQ_CTRL_VDDIOHMD | MXC_F_PWRSEQ_CTRL_VCOREMD | MXC_F_PWRSEQ_CTRL_PORVDDIOMD |
-             MXC_F_PWRSEQ_CTRL_VDDBMD | MXC_F_PWRSEQ_CTRL_VRTCMD | MXC_F_PWRSEQ_CTRL_PORVDDIOHMD |
-             MXC_F_PWRSEQ_CTRL_VDDAMD | MXC_F_PWRSEQ_CTRL_VDDIOMD);
+    // make sure power monitors are in reset mode.
+    lpcn = MXC_PWRSEQ->ctrl
+        & ~(MXC_F_PWRSEQ_CTRL_VDDIOHMD | MXC_F_PWRSEQ_CTRL_VCOREMD | MXC_F_PWRSEQ_CTRL_PORVDDIOMD
+            | MXC_F_PWRSEQ_CTRL_VDDBMD | MXC_F_PWRSEQ_CTRL_VRTCMD | MXC_F_PWRSEQ_CTRL_PORVDDIOHMD
+            | MXC_F_PWRSEQ_CTRL_VDDAMD | MXC_F_PWRSEQ_CTRL_VDDIOMD);
 
     /* Clear background mode enable, enable power failure monitor, Bandgap is always on. */
     lpcn &= ~(MXC_F_PWRSEQ_CTRL_BKGRND | MXC_F_PWRSEQ_CTRL_BGOFF | MXC_F_PWRSEQ_CTRL_PORVCOREMD);
@@ -716,6 +743,5 @@ void MXC_LP_EnterBackupMode(void)
 
     MXC_GCR->pmr &= ~MXC_F_GCR_PMR_MODE;
     MXC_GCR->pmr |= MXC_S_GCR_PMR_MODE_BACKUP;
-    while (1)
-        ;
+    while (1) { }
 }

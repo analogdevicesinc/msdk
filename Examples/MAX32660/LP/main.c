@@ -50,28 +50,28 @@
  *            7. BACKUP mode
  */
 
-#include <stdio.h>
-#include <stdint.h>
+#include "board.h"
+#include "icc.h"
+#include "lp.h"
+#include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_delay.h"
+#include "nvic_table.h"
 #include "pb.h"
-#include "board.h"
-#include "lp.h"
-#include "icc.h"
 #include "rtc.h"
 #include "uart.h"
-#include "nvic_table.h"
+#include <stdint.h>
+#include <stdio.h>
 
 #define DELAY_IN_SEC 2
-#define USE_CONSOLE  1
+#define USE_CONSOLE 1
 
 #define USE_BUTTON 1
-#define USE_ALARM  0
+#define USE_ALARM 0
 
-#define DO_SLEEP     1
+#define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
-#define DO_BACKUP    0
+#define DO_BACKUP 0
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -93,7 +93,7 @@ volatile int alarmed;
 void alarmHandler(void)
 {
     int flags = MXC_RTC->ctrl;
-    alarmed   = 1;
+    alarmed = 1;
 
     if ((flags & MXC_F_RTC_CTRL_ALSF) >> MXC_F_RTC_CTRL_ALSF_POS) {
         MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALSF);
@@ -107,30 +107,23 @@ void alarmHandler(void)
 void setTrigger(int waitForTrigger)
 {
     alarmed = 0;
-    while (MXC_RTC_Init(0, 0) == E_BUSY)
-        ;
+    while (MXC_RTC_Init(0, 0) == E_BUSY) { }
 
-    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY)
-        ;
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) { }
 
-    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY)
-        ;
+    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY) { }
 
-    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY)
-        ;
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) { }
 
-    while (MXC_RTC_Start() == E_BUSY)
-        ;
+    while (MXC_RTC_Start() == E_BUSY) { }
 
     if (waitForTrigger) {
-        while (!alarmed)
-            ;
+        while (!alarmed) { }
     }
 
 // Wait for serial transactions to complete.
 #if USE_CONSOLE
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }
 #endif // USE_CONSOLE
 }
 #endif // USE_ALARM
@@ -149,19 +142,15 @@ void setTrigger(int waitForTrigger)
 
     buttonPressed = 0;
     if (waitForTrigger) {
-        while (!buttonPressed)
-            ;
+        while (!buttonPressed) { }
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x80000; tmp++) {
-        __NOP();
-    }
+    for (tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
 
 // Wait for serial transactions to complete.
 #if USE_CONSOLE
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }
 #endif // USE_CONSOLE
 }
 #endif // USE_BUTTON
@@ -173,7 +162,7 @@ int main(void)
 #if USE_ALARM
     PRINTF("This code cycles through the MAX32660 power modes, using the RTC alarm to exit from "
            "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
+        DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
@@ -191,7 +180,7 @@ int main(void)
 #endif // USE_CONSOLE
     setTrigger(1);
 
-    //MXC_LP_ROMLightSleepEnable();
+    // MXC_LP_ROMLightSleepEnable();
 
     MXC_LP_EnableSysRAM2LightSleep();
     MXC_LP_DisableSysRAM1LightSleep();
@@ -200,7 +189,7 @@ int main(void)
     PRINTF("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
-    //MXC_LP_ShutdownSysRAM2();
+    // MXC_LP_ShutdownSysRAM2();
 
     MXC_LP_DisableSysRAM1LightSleep(); // Bring RAM back to active state
     MXC_LP_DisableSysRAM0LightSleep();

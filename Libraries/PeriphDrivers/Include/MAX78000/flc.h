@@ -91,7 +91,8 @@ int MXC_FLC_MassErase(void);
 /**
  * @brief      Erases the page of flash at the specified address.
  * @note       This function must be executed from RAM.
- * @param      address  The address of the page in flash to erase.  If the address falls in the middle of a page, the entire page will be erased.
+ * @param      address  The address of the page in flash to erase.  If the address falls in the
+ * middle of a page, the entire page will be erased.
  * @return     #E_NO_ERROR If function is successful.
  */
 int MXC_FLC_PageErase(uint32_t address);
@@ -101,7 +102,7 @@ int MXC_FLC_PageErase(uint32_t address);
  * @details This function is essentially a wrapper around memcpy.  'buffer' can be a
  * pointer to any type, and the data bytes read from this function will attempt
  * to be typecast to match 'buffer'.
- * 
+ *
  * @param[in]  address  The address to read from
  * @param      buffer   The buffer to read the data into
  * @param[in]  len      The number of bytes to read from 'address' into 'buffer'.
@@ -188,9 +189,10 @@ int MXC_FLC_LockInfoBlock(uint32_t address);
 /**
  * @brief       Blocks write operations to the flash page associated with the 'address' argument
  * @note        Flash pages cannot be unblocked except for on POR and external resets
- * 
- * @param       address     Absolute address located anywhere in the flash page to be locked (does not need to be word-aligned)
- * 
+ *
+ * @param       address     Absolute address located anywhere in the flash page to be locked (does
+ * not need to be word-aligned)
+ *
  * @return      #E_NO_ERROR If function is successful.
  */
 int MXC_FLC_BlockPageWrite(uint32_t address);
@@ -198,9 +200,10 @@ int MXC_FLC_BlockPageWrite(uint32_t address);
 /**
  * @brief       Blocks read operations from the flash page associated with the 'address' argument
  * @note        Flash pages cannot be unblocked except for on POR and external resets
- * 
- * @param       address     Absolute address located anywhere in the flash page to be locked (does not need to be word-aligned)
- * 
+ *
+ * @param       address     Absolute address located anywhere in the flash page to be locked (does
+ * not need to be word-aligned)
+ *
  * @return      #E_NO_ERROR If function is successful.
  */
 int MXC_FLC_BlockPageRead(uint32_t address);

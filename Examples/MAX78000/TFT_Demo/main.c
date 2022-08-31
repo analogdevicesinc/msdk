@@ -39,21 +39,21 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 #include "board.h"
-#include "mxc.h"
+#include "example_config.h"
 #include "icc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "utils.h"
-#include "state.h"
 #include "keypad.h"
 #include "led.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "pb.h"
-#include "example_config.h"
+#include "state.h"
+#include "utils.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef BOARD_FTHR_REVA
 
@@ -64,7 +64,7 @@ void TFT_Print(char* str, int x, int y, int font)
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = 20;
+    text.len = 20;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
@@ -81,7 +81,7 @@ void TFT_Feather_test(void)
 
     MXC_TFT_SetBackGroundColor(RED);
 
-    area    = &_area;
+    area = &_area;
     area->x = 10;
     area->y = 10;
     area->w = 200;
@@ -121,8 +121,8 @@ void TFT_Feather_test(void)
     sprintf(buff, "Maxim Integrated");
     TFT_Print(buff, 0, 200, (int)&SansSerif19x19[0]);
 
-    while (1)
-        ; // stop here
+    while (1) { }
+    // stop here
 }
 #endif // #ifdef BOARD_FTHR_REVA
 

@@ -41,8 +41,8 @@ extern "C" {
 /* **** Function Prototypes **** */
 
 int MXC_GPIO_Common_Init(uint32_t portmask);
-void MXC_GPIO_Common_RegisterCallback(const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn callback,
-                                      void* cbdata);
+void MXC_GPIO_Common_RegisterCallback(
+    const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn callback, void* cbdata);
 void MXC_GPIO_Common_Handler(unsigned int port);
 
 /**@} end of group gpio */

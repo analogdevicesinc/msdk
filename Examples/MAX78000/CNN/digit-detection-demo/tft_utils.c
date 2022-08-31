@@ -31,18 +31,18 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *******************************************************************************/
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc.h"
-#include "mxc_device.h"
+#include "tft_utils.h"
 #include "board.h"
+#include "example_config.h"
+#include "mxc.h"
 #include "mxc_delay.h"
+#include "mxc_device.h"
 #include "rtc.h"
 #include "uart.h"
-#include "tft_utils.h"
-#include "example_config.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
@@ -54,9 +54,16 @@ static int font = (int)&SansSerif16x16[0];
 
 static text_t label_text[] = {
     // info
-    {(char*)"One", 3},  {(char*)"Two", 3},  {(char*)"Three", 5}, {(char*)"Four", 4},
-    {(char*)"Five", 4}, {(char*)"Six", 3},  {(char*)"Seven", 5}, {(char*)"Eight", 5},
-    {(char*)"Nine", 4}, {(char*)"Zero", 4},
+    { (char*)"One", 3 },
+    { (char*)"Two", 3 },
+    { (char*)"Three", 5 },
+    { (char*)"Four", 4 },
+    { (char*)"Five", 4 },
+    { (char*)"Six", 3 },
+    { (char*)"Seven", 5 },
+    { (char*)"Eight", 5 },
+    { (char*)"Nine", 4 },
+    { (char*)"Zero", 4 },
 };
 #endif
 
@@ -65,7 +72,7 @@ void TFT_Print(char* str, int x, int y, int font, int length)
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = length;
+    text.len = length;
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
@@ -142,7 +149,7 @@ void draw_obj_rect(float* xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
         MXC_TFT_WritePixel(x2 * scale, y * scale, scale, scale, color);
     }
 
-    MXC_TFT_PrintFont(x1 * scale + THICKNESS, y1 * scale + THICKNESS, font, &label_text[class_idx],
-                      NULL);
+    MXC_TFT_PrintFont(
+        x1 * scale + THICKNESS, y1 * scale + THICKNESS, font, &label_text[class_idx], NULL);
 #endif
 }

@@ -31,11 +31,11 @@
  *
  *************************************************************************** */
 
-#include "pt.h"
 #include "gcr_regs.h"
+#include "pt.h"
 #include "pt_regs.h"
-#include "ptg_regs.h"
 #include "pt_reva.h"
+#include "ptg_regs.h"
 
 void MXC_PT_Init(mxc_ptg_regs_t* ptg, mxc_clk_scale_t clk_scale)
 {
@@ -44,44 +44,43 @@ void MXC_PT_Init(mxc_ptg_regs_t* ptg, mxc_clk_scale_t clk_scale)
 
     MXC_GCR->rstr1 |= MXC_F_GCR_RSTR1_PT;
 
-    while (MXC_GCR->rstr1 & MXC_F_GCR_RSTR1_PT)
-        ;
+    while (MXC_GCR->rstr1 & MXC_F_GCR_RSTR1_PT) { }
 
-    //set clock scale
+    // set clock scale
     MXC_GCR->clkcn &= ~MXC_S_GCR_CLKCN_PSC_DIV128;
 
     switch (clk_scale) {
-        case MXC_PT_CLK_DIV1:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV1;
-            break;
+    case MXC_PT_CLK_DIV1:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV1;
+        break;
 
-        case MXC_PT_CLK_DIV2:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV2;
-            break;
+    case MXC_PT_CLK_DIV2:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV2;
+        break;
 
-        case MXC_PT_CLK_DIV4:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV4;
-            break;
+    case MXC_PT_CLK_DIV4:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV4;
+        break;
 
-        case MXC_PT_CLK_DIV8:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV8;
-            break;
+    case MXC_PT_CLK_DIV8:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV8;
+        break;
 
-        case MXC_PT_CLK_DIV16:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV16;
-            break;
+    case MXC_PT_CLK_DIV16:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV16;
+        break;
 
-        case MXC_PT_CLK_DIV32:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV32;
-            break;
+    case MXC_PT_CLK_DIV32:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV32;
+        break;
 
-        case MXC_PT_CLK_DIV64:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV64;
-            break;
+    case MXC_PT_CLK_DIV64:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV64;
+        break;
 
-        case MXC_PT_CLK_DIV128:
-            MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV128;
-            break;
+    case MXC_PT_CLK_DIV128:
+        MXC_GCR->clkcn |= MXC_S_GCR_CLKCN_PSC_DIV128;
+        break;
     }
 
     MXC_PT_RevA_Init((mxc_ptg_reva_regs_t*)ptg, clk_scale);
@@ -99,73 +98,73 @@ int MXC_PT_Config(mxc_ptg_regs_t* ptg, mxc_pt_cfg_t* cfg)
     MXC_PT_RevA_Config((mxc_ptg_reva_regs_t*)ptg, cfg);
 
     switch (cfg->channel) {
-        case 0:
-            MXC_GPIO_Config(&gpio_cfg_pt0);
-            break;
+    case 0:
+        MXC_GPIO_Config(&gpio_cfg_pt0);
+        break;
 
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_pt1);
-            break;
+    case 1:
+        MXC_GPIO_Config(&gpio_cfg_pt1);
+        break;
 
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_pt2);
-            break;
+    case 2:
+        MXC_GPIO_Config(&gpio_cfg_pt2);
+        break;
 
-        case 3:
-            MXC_GPIO_Config(&gpio_cfg_pt3);
-            break;
+    case 3:
+        MXC_GPIO_Config(&gpio_cfg_pt3);
+        break;
 
-        case 4:
-            MXC_GPIO_Config(&gpio_cfg_pt4);
-            break;
+    case 4:
+        MXC_GPIO_Config(&gpio_cfg_pt4);
+        break;
 
-        case 5:
-            MXC_GPIO_Config(&gpio_cfg_pt5);
-            break;
+    case 5:
+        MXC_GPIO_Config(&gpio_cfg_pt5);
+        break;
 
-        case 6:
-            MXC_GPIO_Config(&gpio_cfg_pt6);
-            break;
+    case 6:
+        MXC_GPIO_Config(&gpio_cfg_pt6);
+        break;
 
-        case 7:
-            MXC_GPIO_Config(&gpio_cfg_pt7);
-            break;
+    case 7:
+        MXC_GPIO_Config(&gpio_cfg_pt7);
+        break;
 
-        case 8:
-            MXC_GPIO_Config(&gpio_cfg_pt8);
-            break;
+    case 8:
+        MXC_GPIO_Config(&gpio_cfg_pt8);
+        break;
 
-        case 9:
-            MXC_GPIO_Config(&gpio_cfg_pt9);
-            break;
+    case 9:
+        MXC_GPIO_Config(&gpio_cfg_pt9);
+        break;
 
-        case 10:
-            MXC_GPIO_Config(&gpio_cfg_pt10);
-            break;
+    case 10:
+        MXC_GPIO_Config(&gpio_cfg_pt10);
+        break;
 
-        case 11:
-            MXC_GPIO_Config(&gpio_cfg_pt11);
-            break;
+    case 11:
+        MXC_GPIO_Config(&gpio_cfg_pt11);
+        break;
 
-        case 12:
-            MXC_GPIO_Config(&gpio_cfg_pt12);
-            break;
+    case 12:
+        MXC_GPIO_Config(&gpio_cfg_pt12);
+        break;
 
-        case 13:
-            MXC_GPIO_Config(&gpio_cfg_pt13);
-            break;
+    case 13:
+        MXC_GPIO_Config(&gpio_cfg_pt13);
+        break;
 
-        case 14:
-            MXC_GPIO_Config(&gpio_cfg_pt14);
-            break;
+    case 14:
+        MXC_GPIO_Config(&gpio_cfg_pt14);
+        break;
 
-        case 15:
-            MXC_GPIO_Config(&gpio_cfg_pt15);
-            break;
+    case 15:
+        MXC_GPIO_Config(&gpio_cfg_pt15);
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
     return E_NO_ERROR;

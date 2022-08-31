@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -32,48 +32,48 @@
  * ownership rights.
  *
  ******************************************************************************/
-#include <stdlib.h>
-#include <string.h>
 #include "camera.h"
 #include "sccb.h"
+#include <stdlib.h>
+#include <string.h>
 
-#include "mxc_device.h"
 #include "board.h"
+#include "cameraif.h"
+#include "dma.h"
+#include "gpio.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "nvic_table.h"
 #include "pt.h"
-#include "cameraif.h"
-#include "utils.h"
-#include "dma.h"
 #include "uart.h"
-#include "mxc_delay.h"
-#include "gpio.h"
+#include "utils.h"
 
 /*******************************      DEFINES      ***************************/
 #define USE_DMA 0 // set it for dma read mode
 
-#define FIFO_THRES_HOLD        4
+#define FIFO_THRES_HOLD 4
 #define CAMERAIF_DATA_BUS_WITH MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT
 
 /******************************** Static Functions ***************************/
-static unsigned int g_framesize  = (unsigned int)FRAMESIZE_VGA;
+static unsigned int g_framesize = (unsigned int)FRAMESIZE_VGA;
 static pixformat_t g_pixelformat = PIXFORMAT_YUV422;
 
 static uint8_t rx_data[512 * 384 + 2]; // +2 for manage overflow
 static volatile uint32_t rx_data_index = 0;
-static volatile uint32_t g_is_img_rcv  = 0;
-static int g_total_img_size            = 0;
+static volatile uint32_t g_is_img_rcv = 0;
+static int g_total_img_size = 0;
 
 static camera_t camera;
 extern int sensor_register(camera_t* camera);
 
 const int resolution[][2] = {
     /* Special resolutions */
-    {512, 384}, /* SP       */
+    { 512, 384 }, /* SP       */
     // C/SIF Resolutions
-    {352, 288}, /* CIF       */
+    { 352, 288 }, /* CIF       */
     // VGA Resolutions
-    {320, 240}, /* QVGA      */
-    {640, 480}, /* VGA       */
+    { 320, 240 }, /* QVGA      */
+    { 640, 480 }, /* VGA       */
 };
 
 //----------------------------------------
@@ -93,22 +93,22 @@ void camera_irq_handler(void)
 
         if ((rx_data_index + 8) <= g_total_img_size) {
             // 1
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
 
             // 2
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
 
             // 3
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
 
             // 4
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
         }
@@ -125,9 +125,7 @@ void camera_irq_handler(void)
             int i;
             rx_data_index = g_total_img_size / 2;
 
-            for (i = 0; i < rx_data_index; i++) {
-                rx_data[i] = rx_data[i * 2];
-            }
+            for (i = 0; i < rx_data_index; i++) { rx_data[i] = rx_data[i * 2]; }
         } else {
             rx_data_index = g_total_img_size;
         }
@@ -137,7 +135,7 @@ void camera_irq_handler(void)
 
     // clear flags, tmp flag is used to pass coverity check
     unsigned int flags = MXC_PCIF->int_fl;
-    MXC_PCIF->int_fl   = flags; // clear flags
+    MXC_PCIF->int_fl = flags; // clear flags
 }
 
 #if USE_DMA
@@ -152,18 +150,18 @@ static void setup_dma(void)
     if (CAMERAIF_DATA_BUS_WITH == MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT) {
         MXC_DMA->ch[dma_handle].cnt = g_total_img_size;
     } else {
-        MXC_DMA->ch[dma_handle].cnt =
-            g_total_img_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+        MXC_DMA->ch[dma_handle].cnt
+            = g_total_img_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
     }
 
-    MXC_DMA->ch[dma_handle].cfg =
-        ((0x1 << MXC_F_DMA_CFG_CTZIEN_POS) + (0x0 << MXC_F_DMA_CFG_CHDIEN_POS) +
-         (0x3 << MXC_F_DMA_CFG_BRST_POS) + (0x1 << MXC_F_DMA_CFG_DSTINC_POS) +
-         (0x2 << MXC_F_DMA_CFG_DSTWD_POS) + (0x0 << MXC_F_DMA_CFG_SRCINC_POS) +
-         (0x2 << MXC_F_DMA_CFG_SRCWD_POS) + (0x0 << MXC_F_DMA_CFG_PSSEL_POS) +
-         (0x0 << MXC_F_DMA_CFG_PSSEL_POS) + (0x0 << MXC_F_DMA_CFG_REQWAIT_POS) +
-         (0xD << MXC_F_DMA_CFG_REQSEL_POS) + (0x0 << MXC_F_DMA_CFG_PRI_POS) +
-         (0x0 << MXC_F_DMA_CFG_RLDEN_POS) + (0x1 << MXC_F_DMA_CFG_CHEN_POS));
+    MXC_DMA->ch[dma_handle].cfg
+        = ((0x1 << MXC_F_DMA_CFG_CTZIEN_POS) + (0x0 << MXC_F_DMA_CFG_CHDIEN_POS)
+            + (0x3 << MXC_F_DMA_CFG_BRST_POS) + (0x1 << MXC_F_DMA_CFG_DSTINC_POS)
+            + (0x2 << MXC_F_DMA_CFG_DSTWD_POS) + (0x0 << MXC_F_DMA_CFG_SRCINC_POS)
+            + (0x2 << MXC_F_DMA_CFG_SRCWD_POS) + (0x0 << MXC_F_DMA_CFG_PSSEL_POS)
+            + (0x0 << MXC_F_DMA_CFG_PSSEL_POS) + (0x0 << MXC_F_DMA_CFG_REQWAIT_POS)
+            + (0xD << MXC_F_DMA_CFG_REQSEL_POS) + (0x0 << MXC_F_DMA_CFG_PRI_POS)
+            + (0x0 << MXC_F_DMA_CFG_RLDEN_POS) + (0x1 << MXC_F_DMA_CFG_CHEN_POS));
 }
 #endif
 
@@ -233,7 +231,7 @@ int camera_init(void)
         setup_dma();
 
         MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH,
-                     (0x1 << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS));
+            (0x1 << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS));
         MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, MXC_F_CAMERAIF_CTRL_RX_DMA);
 #endif
 
@@ -271,7 +269,7 @@ int camera_start_campture_image(void)
     setup_dma();
 #endif
     // clear flag
-    g_is_img_rcv  = 0;
+    g_is_img_rcv = 0;
     rx_data_index = 0;
     MXC_PCIF_Start(MXC_PCIF_READMODE_SINGLE_MODE);
 
@@ -296,7 +294,7 @@ uint8_t* camera_get_pixel_format(void)
 
 void camera_get_image(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h)
 {
-    *img    = (uint8_t*)rx_data;
+    *img = (uint8_t*)rx_data;
     *imgLen = rx_data_index;
 
     *w = resolution[g_framesize][0];

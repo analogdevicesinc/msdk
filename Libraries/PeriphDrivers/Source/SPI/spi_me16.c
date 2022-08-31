@@ -31,21 +31,21 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_device.h"
+#include "dma.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
-#include "mxc_delay.h"
 #include "spi_reva.h"
-#include "dma.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Functions **** */
 
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz)
+    unsigned ssPolarity, unsigned int hz)
 {
     uint8_t spi_num;
 
@@ -273,41 +273,41 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselTx = MXC_DMA_REQUEST_SPI0TX;
-                break;
+        case 0:
+            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            break;
 
-            case 1:
-                reqselTx = MXC_DMA_REQUEST_SPI1TX;
-                break;
+        case 1:
+            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            break;
 
-            case 2:
-                reqselTx = MXC_DMA_REQUEST_SPI2TX;
-                break;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2TX;
+            break;
 
-            case 3:
-                reqselTx = MXC_DMA_REQUEST_SPI3TX;
-                break;
+        case 3:
+            reqselTx = MXC_DMA_REQUEST_SPI3TX;
+            break;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI0TX;
-                break;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI0TX;
+            break;
 
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI1TX;
-                break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI1TX;
+            break;
 
-            case 2:
-                reqselRx = MXC_DMA_REQUEST_SPI2TX;
-                break;
+        case 2:
+            reqselRx = MXC_DMA_REQUEST_SPI2TX;
+            break;
 
-            case 3:
-                reqselRx = MXC_DMA_REQUEST_SPI3TX;
-                break;
+        case 3:
+            reqselRx = MXC_DMA_REQUEST_SPI3TX;
+            break;
         }
     }
 
@@ -336,41 +336,41 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselTx = MXC_DMA_REQUEST_SPI0TX;
-                break;
+        case 0:
+            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            break;
 
-            case 1:
-                reqselTx = MXC_DMA_REQUEST_SPI1TX;
-                break;
+        case 1:
+            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            break;
 
-            case 2:
-                reqselTx = MXC_DMA_REQUEST_SPI2TX;
-                break;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2TX;
+            break;
 
-            case 3:
-                reqselTx = MXC_DMA_REQUEST_SPI3TX;
-                break;
+        case 3:
+            reqselTx = MXC_DMA_REQUEST_SPI3TX;
+            break;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI0TX;
-                break;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI0TX;
+            break;
 
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI1TX;
-                break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI1TX;
+            break;
 
-            case 2:
-                reqselRx = MXC_DMA_REQUEST_SPI2TX;
-                break;
+        case 2:
+            reqselRx = MXC_DMA_REQUEST_SPI2TX;
+            break;
 
-            case 3:
-                reqselRx = MXC_DMA_REQUEST_SPI3TX;
-                break;
+        case 3:
+            reqselRx = MXC_DMA_REQUEST_SPI3TX;
+            break;
         }
     }
 

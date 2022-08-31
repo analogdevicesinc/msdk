@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -40,8 +40,8 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include <MAX32xxx.h>
 
@@ -100,8 +100,7 @@ int main(void)
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
@@ -130,8 +129,7 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) { };
 
 #endif
 
@@ -140,8 +138,7 @@ int main(void)
 
         MXC_ADC_StartConversionDMA(MXC_ADC_CH_0, &adc_val, DMA_Callback);
 
-        while (!dma_done)
-            ;
+        while (!dma_done) { }
 
         printf("0: 0x%04x\n", adc_val);
 #else
@@ -155,7 +152,7 @@ int main(void)
         /* Determine if programmable limits on AIN0 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
             printf(" %s Limit on AIN0 ",
-                   (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
+                (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
         } else {
             printf("                   ");

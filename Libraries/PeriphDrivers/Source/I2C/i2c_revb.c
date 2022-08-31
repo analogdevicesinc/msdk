@@ -34,16 +34,16 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_errors.h"
-#include "mxc_delay.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
 #include "i2c_revb.h"
 #include "i2c_reva.h"
+#include "mxc_assert.h"
+#include "mxc_delay.h"
+#include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Definitions **** */
 
@@ -52,11 +52,11 @@
 // Saves the state of the non-blocking requests
 typedef struct {
     mxc_i2c_revb_req_t* req;
-    int master;    // 1 for Master, 0 for slave
+    int master; // 1 for Master, 0 for slave
     int channelTx; // DMA channel for TX transaction
     int channelRx; // DMA channel for RX transaction
     int writeDone; // Write done flag
-    int readDone;  // Flag done flag
+    int readDone; // Flag done flag
 } mxc_i2c_revb_req_state_t;
 
 /* ************************************************************************* */
@@ -139,11 +139,11 @@ int MXC_I2C_RevB_ReadByte(mxc_i2c_revb_regs_t* i2c, unsigned char* byte, int ack
     return MXC_I2C_RevA_ReadByte((mxc_i2c_reva_regs_t*)i2c, byte, ack);
 }
 
-int MXC_I2C_RevB_ReadByteInteractive(mxc_i2c_revb_regs_t* i2c, unsigned char* byte,
-                                     mxc_i2c_revb_getAck_t getAck)
+int MXC_I2C_RevB_ReadByteInteractive(
+    mxc_i2c_revb_regs_t* i2c, unsigned char* byte, mxc_i2c_revb_getAck_t getAck)
 {
-    return MXC_I2C_RevA_ReadByteInteractive((mxc_i2c_reva_regs_t*)i2c, byte,
-                                            (mxc_i2c_reva_getAck_t)getAck);
+    return MXC_I2C_RevA_ReadByteInteractive(
+        (mxc_i2c_reva_regs_t*)i2c, byte, (mxc_i2c_reva_getAck_t)getAck);
 }
 
 int MXC_I2C_RevB_Write(mxc_i2c_revb_regs_t* i2c, unsigned char* bytes, unsigned int* len)
@@ -156,15 +156,14 @@ int MXC_I2C_RevB_Read(mxc_i2c_revb_regs_t* i2c, unsigned char* bytes, unsigned i
     return MXC_I2C_RevA_Read((mxc_i2c_reva_regs_t*)i2c, bytes, len, ack);
 }
 
-int MXC_I2C_RevB_ReadRXFIFO(mxc_i2c_revb_regs_t* i2c, volatile unsigned char* bytes,
-                            unsigned int len)
+int MXC_I2C_RevB_ReadRXFIFO(
+    mxc_i2c_revb_regs_t* i2c, volatile unsigned char* bytes, unsigned int len)
 {
     return MXC_I2C_RevA_ReadRXFIFO((mxc_i2c_reva_regs_t*)i2c, bytes, len);
 }
 
 int MXC_I2C_RevB_ReadRXFIFODMA(mxc_i2c_revb_regs_t* i2c, unsigned char* bytes, unsigned int len,
-                               mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config,
-                               mxc_dma_regs_t* dma)
+    mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config, mxc_dma_regs_t* dma)
 {
     return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t*)i2c, bytes, len, callback, config, dma);
 }
@@ -174,18 +173,17 @@ int MXC_I2C_RevB_GetRXFIFOAvailable(mxc_i2c_revb_regs_t* i2c)
     return MXC_I2C_RevA_GetRXFIFOAvailable((mxc_i2c_reva_regs_t*)i2c);
 }
 
-int MXC_I2C_RevB_WriteTXFIFO(mxc_i2c_revb_regs_t* i2c, volatile unsigned char* bytes,
-                             unsigned int len)
+int MXC_I2C_RevB_WriteTXFIFO(
+    mxc_i2c_revb_regs_t* i2c, volatile unsigned char* bytes, unsigned int len)
 {
     return MXC_I2C_RevA_WriteTXFIFO((mxc_i2c_reva_regs_t*)i2c, bytes, len);
 }
 
 int MXC_I2C_RevB_WriteTXFIFODMA(mxc_i2c_revb_regs_t* i2c, unsigned char* bytes, unsigned int len,
-                                mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config,
-                                mxc_dma_regs_t* dma)
+    mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config, mxc_dma_regs_t* dma)
 {
-    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t*)i2c, bytes, len, callback, config,
-                                       dma);
+    return MXC_I2C_RevA_WriteTXFIFODMA(
+        (mxc_i2c_reva_regs_t*)i2c, bytes, len, callback, config, dma);
 }
 
 int MXC_I2C_RevB_GetTXFIFOAvailable(mxc_i2c_revb_regs_t* i2c)
@@ -277,16 +275,15 @@ int MXC_I2C_RevB_MasterTransactionDMA(mxc_i2c_revb_req_t* req, mxc_dma_regs_t* d
     return MXC_I2C_RevA_MasterTransactionDMA((mxc_i2c_reva_req_t*)req, dma);
 }
 
-int MXC_I2C_RevB_SlaveTransaction(mxc_i2c_revb_regs_t* i2c, mxc_i2c_revb_slave_handler_t callback,
-                                  uint32_t interruptCheck)
+int MXC_I2C_RevB_SlaveTransaction(
+    mxc_i2c_revb_regs_t* i2c, mxc_i2c_revb_slave_handler_t callback, uint32_t interruptCheck)
 {
-    return MXC_I2C_RevA_SlaveTransaction((mxc_i2c_reva_regs_t*)i2c,
-                                         (mxc_i2c_reva_slave_handler_t)callback, interruptCheck);
+    return MXC_I2C_RevA_SlaveTransaction(
+        (mxc_i2c_reva_regs_t*)i2c, (mxc_i2c_reva_slave_handler_t)callback, interruptCheck);
 }
 
-int MXC_I2C_RevB_SlaveTransactionAsync(mxc_i2c_revb_regs_t* i2c,
-                                       mxc_i2c_revb_slave_handler_t callback,
-                                       uint32_t interruptCheck)
+int MXC_I2C_RevB_SlaveTransactionAsync(
+    mxc_i2c_revb_regs_t* i2c, mxc_i2c_revb_slave_handler_t callback, uint32_t interruptCheck)
 {
     return MXC_I2C_RevA_SlaveTransactionAsync(
         (mxc_i2c_reva_regs_t*)i2c, (mxc_i2c_reva_slave_handler_t)callback, interruptCheck);
@@ -333,8 +330,7 @@ void MXC_I2C_RevB_MasterAsyncHandler(int i2cNum)
 }
 
 unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t* i2c,
-                                            mxc_i2c_revb_slave_handler_t callback,
-                                            unsigned int interruptEnables, int* retVal)
+    mxc_i2c_revb_slave_handler_t callback, unsigned int interruptEnables, int* retVal)
 {
     *retVal = E_NO_ERROR;
 
@@ -361,10 +357,10 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t* i2c,
             *retVal = E_COMM_ERR;
             callback(i2c, MXC_I2C_REVB_EVT_TRANS_COMP, retVal);
             MXC_I2C_ClearFlags((mxc_i2c_regs_t*)i2c, MXC_I2C_REVB_INTFL0_MASK,
-                               MXC_I2C_REVB_INTFL1_MASK); // Clear all I2C Interrupts
+                MXC_I2C_REVB_INTFL1_MASK); // Clear all I2C Interrupts
             MXC_I2C_ClearTXFIFO((mxc_i2c_regs_t*)i2c);
             MXC_I2C_ClearRXFIFO((mxc_i2c_regs_t*)i2c);
-            interruptEnables                                     = 0;
+            interruptEnables = 0;
             AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t*)i2c)] = NULL;
         }
 
@@ -380,8 +376,9 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t* i2c,
             }
         }
 
-        if (interruptEnables & (MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL1_TXUFI |
-                                MXC_F_I2C_REVB_INT_FL0_TXLOI)) {
+        if (interruptEnables
+            & (MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL1_TXUFI
+                | MXC_F_I2C_REVB_INT_FL0_TXLOI)) {
             if (i2c->int_fl0 & MXC_F_I2C_REVB_INT_FL0_TXTHI) {
                 callback(i2c, MXC_I2C_REVB_EVT_TX_THRESH, NULL);
                 i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_TXTHI;
@@ -395,8 +392,8 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t* i2c,
             if (i2c->int_fl0 & MXC_F_I2C_REVB_INT_FL0_TXLOI) {
                 *retVal = E_NO_ERROR;
                 callback(i2c, MXC_I2C_REVB_EVT_TRANS_COMP, retVal);
-                i2c->int_fl0                                         = MXC_F_I2C_REVB_INT_FL0_TXLOI;
-                interruptEnables                                     = 0;
+                i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_TXLOI;
+                interruptEnables = 0;
                 AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t*)i2c)] = NULL;
             }
         }
@@ -404,8 +401,8 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t* i2c,
         if (i2c->int_fl0 & MXC_F_I2C_REVB_INT_FL0_STOPI) {
             *retVal = E_NO_ERROR;
             callback(i2c, MXC_I2C_REVB_EVT_TRANS_COMP, retVal);
-            i2c->int_fl0                                         = MXC_F_I2C_REVB_INT_FL0_STOPI;
-            interruptEnables                                     = 0;
+            i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_STOPI;
+            interruptEnables = 0;
             AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t*)i2c)] = NULL;
         }
     }
@@ -413,25 +410,25 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t* i2c,
     if (i2c->int_fl0 & MXC_F_I2C_REVB_INT_FL0_AMI) {
         if (i2c->ctrl0 & MXC_F_I2C_REVB_CTRL0_READ) {
             callback(i2c, MXC_I2C_REVB_EVT_MASTER_RD, NULL);
-            i2c->int_fl0     = MXC_F_I2C_REVB_INT_FL0_AMI;
-            i2c->int_fl0     = MXC_F_I2C_REVB_INT_FL0_AMI;
-            interruptEnables = MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL1_TXUFI |
-                               MXC_F_I2C_REVB_INT_FL0_TXLOI | MXC_I2C_REVB_ERROR;
+            i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
+            i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
+            interruptEnables = MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL1_TXUFI
+                | MXC_F_I2C_REVB_INT_FL0_TXLOI | MXC_I2C_REVB_ERROR;
         } else {
             callback(i2c, MXC_I2C_REVB_EVT_MASTER_WR, NULL);
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
-            interruptEnables =
-                MXC_F_I2C_REVB_INT_FL0_RXTHI | MXC_F_I2C_REVB_INT_FL1_RXOFI | MXC_I2C_REVB_ERROR;
+            interruptEnables
+                = MXC_F_I2C_REVB_INT_FL0_RXTHI | MXC_F_I2C_REVB_INT_FL1_RXOFI | MXC_I2C_REVB_ERROR;
         }
     } else if (i2c->int_fl0 & MXC_I2C_REVB_ERROR) {
         *retVal = E_COMM_ERR;
         callback(i2c, MXC_I2C_REVB_EVT_TRANS_COMP, retVal);
         MXC_I2C_RevB_ClearFlags(i2c, MXC_I2C_REVB_INTFL0_MASK,
-                                MXC_I2C_REVB_INTFL1_MASK); // clear all i2c interrupts
+            MXC_I2C_REVB_INTFL1_MASK); // clear all i2c interrupts
         MXC_I2C_RevB_ClearTXFIFO(i2c);
         MXC_I2C_RevB_ClearRXFIFO(i2c);
-        interruptEnables                                     = 0;
+        interruptEnables = 0;
         AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t*)i2c)] = NULL;
     }
 

@@ -40,14 +40,14 @@
  ******************************************************************************/
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Device and Board specific includes */
-#include "mxc_sys.h"
 #include "board.h"
+#include "mxc_sys.h"
 #include "uart.h"
 
 /**
@@ -65,14 +65,14 @@
 
 /* GCC */
 #if defined(__GNUC__)
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #endif /* __GNUC__ */
 
 /* Keil MDK Compiler */
 #if defined(__CC_ARM)
-#include <time.h>
 #include <rt_misc.h>
+#include <time.h>
 #pragma import(__use_no_semihosting_swi)
 
 struct __FILE {
@@ -95,11 +95,11 @@ int g_readChar = 0;
 
 /* Defines - Compiler Specific */
 #if defined(__ICCARM__)
-#define STDIN_FILENO  0  /**> Definition of stdin */
-#define STDOUT_FILENO 1  /**> Definition of stdout */
-#define STDERR_FILENO 2  /**> Definition of stderr */
-#define EBADF         -1 /**> Error code for EBADf */
-#endif                   /* __ICCARM__ */
+#define STDIN_FILENO 0 /**> Definition of stdin */
+#define STDOUT_FILENO 1 /**> Definition of stdout */
+#define STDERR_FILENO 2 /**> Definition of stderr */
+#define EBADF -1 /**> Error code for EBADf */
+#endif /* __ICCARM__ */
 
 /* The following libc stub functions are required for a proper link with printf().
  * These can be tailored for a complete stdio implementation.
@@ -140,31 +140,31 @@ int _read(int file, char* ptr, int len)
 int __read(int file, unsigned char* ptr, size_t len)
 {
     size_t n;
-#endif                    /*  */
+#endif /*  */
 
     int num = 0; // count of number received.
 
     switch (file) {
-        case STDIN_FILENO:
-            for (n = 0; n < len; n++) {
-                *ptr = MXC_UART_ReadCharacter(MXC_UARTn); // read a byte.
-                MXC_UART_WriteCharacter(MXC_UARTn, *ptr); // echo the byte.
-                if (*ptr == '\r') {                       // check for end of line.
-                    *ptr = '\n';
-                    num++;
-                    ptr++;
+    case STDIN_FILENO:
+        for (n = 0; n < len; n++) {
+            *ptr = MXC_UART_ReadCharacter(MXC_UARTn); // read a byte.
+            MXC_UART_WriteCharacter(MXC_UARTn, *ptr); // echo the byte.
+            if (*ptr == '\r') { // check for end of line.
+                *ptr = '\n';
+                num++;
+                ptr++;
 
-                    break;
-                } else {
-                    ptr++;
-                    num++;
-                }
+                break;
+            } else {
+                ptr++;
+                num++;
             }
+        }
 
-            break;
-        default:
-            errno = EBADF;
-            return -1;
+        break;
+    default:
+        errno = EBADF;
+        return -1;
     }
     return num;
 }
@@ -180,21 +180,21 @@ int _write(int file, char* ptr, int len)
 int __write(int file, const unsigned char* ptr, size_t len)
 {
     size_t n;
-#endif                    /* __GNUC__ */
+#endif /* __GNUC__ */
 
     switch (file) {
-        case STDOUT_FILENO:
-        case STDERR_FILENO:
-            for (n = 0; n < len; n++) {
-                if (*ptr == '\n') {
-                    MXC_UART_WriteCharacter(MXC_UARTn, '\r');
-                }
-                MXC_UART_WriteCharacter(MXC_UARTn, *ptr++);
+    case STDOUT_FILENO:
+    case STDERR_FILENO:
+        for (n = 0; n < len; n++) {
+            if (*ptr == '\n') {
+                MXC_UART_WriteCharacter(MXC_UARTn, '\r');
             }
-            break;
-        default:
-            errno = EBADF;
-            return -1;
+            MXC_UART_WriteCharacter(MXC_UARTn, *ptr++);
+        }
+        break;
+    default:
+        errno = EBADF;
+        return -1;
     }
 
     return len;
@@ -250,8 +250,8 @@ void _ttywrch(int c)
 
 void _sys_exit(int return_code)
 {
-    while (1)
-        ; /* endless loop for embedded micro */
+    while (1) { }
+    /* endless loop for embedded micro */
 }
 
 #endif /* __CC_ARM  */

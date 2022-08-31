@@ -32,12 +32,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <stddef.h>
-#include "mxc_device.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
+#include "trimsir_regs.h"
 #include "wut.h"
 #include "wut_reva.h"
-#include "trimsir_regs.h"
+#include <stddef.h>
 
 /* **** Definitions **** */
 
@@ -143,8 +143,8 @@ int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t* ticks)
 /* ************************************************************************* */
 int MXC_WUT_GetTime(uint32_t ticks, uint32_t* time, mxc_wut_unit_t* units)
 {
-    return MXC_WUT_RevA_GetTime((mxc_wut_reva_regs_t*)MXC_WUT, XTAL32K_FREQ, ticks, time,
-                                (mxc_wut_reva_unit_t*)units);
+    return MXC_WUT_RevA_GetTime(
+        (mxc_wut_reva_regs_t*)MXC_WUT, XTAL32K_FREQ, ticks, time, (mxc_wut_reva_unit_t*)units);
 }
 
 /* ************************************************************************** */
@@ -181,17 +181,17 @@ void MXC_WUT_Delay_MS(uint32_t waitMs)
 static void MXC_WUT_GetWUTSync(uint32_t* wutCnt, uint32_t* snapshot)
 {
     MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t*)MXC_WUT);
-    *wutCnt   = MXC_WUT->cnt;
+    *wutCnt = MXC_WUT->cnt;
     *snapshot = MXC_WUT->snapshot;
 }
 
 /* ************************************************************************** */
 static void MXC_WUT_SetTrim(uint32_t trimValue)
 {
-    MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_RTCX1,
-                 (trimValue << MXC_F_TRIMSIR_RTC_RTCX1_POS));
-    MXC_SETFIELD(MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_RTCX2,
-                 (trimValue << MXC_F_TRIMSIR_RTC_RTCX2_POS));
+    MXC_SETFIELD(
+        MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_RTCX1, (trimValue << MXC_F_TRIMSIR_RTC_RTCX1_POS));
+    MXC_SETFIELD(
+        MXC_TRIMSIR->rtc, MXC_F_TRIMSIR_RTC_RTCX2, (trimValue << MXC_F_TRIMSIR_RTC_RTCX2_POS));
 }
 
 /* ************************************************************************** */
@@ -254,13 +254,13 @@ int MXC_WUT_Handler(void)
     /* Store the snapshot */
     MXC_WUT_GetWUTSync(&wutCnt1, &snapshot1);
     snapTicks = snapshot1 - snapshot0_async;
-    wutTicks  = wutCnt1 - wutCnt0_async;
+    wutTicks = wutCnt1 - wutCnt0_async;
 
     /* Calculate the ideal number of DBB ticks in WUT_TRIM_TICKS */
     calcTicks = ((uint64_t)wutTicks * (uint64_t)BB_CLK_RATE_HZ) / (uint64_t)32768;
 
     trimComplete = 0;
-    trimValue    = (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >> MXC_F_TRIMSIR_RTC_RTCX1_POS;
+    trimValue = (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >> MXC_F_TRIMSIR_RTC_RTCX1_POS;
 
     if (snapTicks > calcTicks) {
         /* See if we're closer to the calculated value */
@@ -305,7 +305,7 @@ int MXC_WUT_Handler(void)
     } else {
         /* Just right */
         bestTrim_async = trimValue;
-        trimComplete   = 1;
+        trimComplete = 1;
     }
 
     if (trimComplete) {
@@ -316,7 +316,7 @@ int MXC_WUT_Handler(void)
 
         /* Call the callback */
         if (cb_async != NULL) {
-            cbTemp   = cb_async;
+            cbTemp = cb_async;
             cb_async = NULL;
             cbTemp(E_NO_ERROR);
         }

@@ -34,15 +34,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mxc_sys.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_lock.h"
+#include "mxc_sys.h"
 
 #include "ctb.h"
-#include "ctb_reva.h"
 #include "ctb_common.h"
+#include "ctb_reva.h"
 
 #if (TARGET_NUM != 32572)
 #include "icc_reva.h"
@@ -51,10 +51,10 @@
 enum { DMA_ID, HSH_ID, CPH_ID, MAA_ID, RNG_ID, NUM_IDS };
 
 typedef enum {
-    DMA_CALLBACK_DISABLED    = 0,
+    DMA_CALLBACK_DISABLED = 0,
     DMA_CALLBACK_ECC_Compute = 1,
-    DMA_CALLBACK_ECC_Error   = 2,
-    DMA_CALLBACK_CRC         = 3
+    DMA_CALLBACK_ECC_Error = 2,
+    DMA_CALLBACK_CRC = 3
 } mxc_ctb_reva_dma_callback_t;
 
 /***** Global Variables *****/
@@ -71,7 +71,7 @@ static uint8_t* TRNG_data;
 static uint32_t enabled_features = 0;
 
 static uint32_t crc_seed = 0xFFFFFFFF;
-static uint32_t crc_xor  = 0;
+static uint32_t crc_xor = 0;
 
 /***** Function Prototypes *****/
 
@@ -126,9 +126,8 @@ static int MXC_CTB_CheckInterrupts(void)
 void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t* ctb_regs)
 {
     // Clear pending interrupts
-    MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_DMA | MXC_CTB_REVA_FEATURE_ECC |
-                      MXC_CTB_REVA_FEATURE_HASH | MXC_CTB_REVA_FEATURE_CRC |
-                      MXC_CTB_REVA_FEATURE_CIPHER);
+    MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_DMA | MXC_CTB_REVA_FEATURE_ECC
+        | MXC_CTB_REVA_FEATURE_HASH | MXC_CTB_REVA_FEATURE_CRC | MXC_CTB_REVA_FEATURE_CIPHER);
 
     // Enable device interrupts
     ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_INTR;
@@ -158,8 +157,8 @@ int MXC_CTB_RevA_Ready(mxc_ctb_reva_regs_t* ctb_regs)
 void MXC_CTB_RevA_DoneClear(mxc_ctb_reva_regs_t* ctb_regs, uint32_t features)
 {
     uint32_t mask = 0;
-    uint32_t w1c  = (MXC_F_CTB_REVA_CTRL_HSH_DONE | MXC_F_CTB_REVA_CTRL_CPH_DONE |
-                    MXC_F_CTB_REVA_CTRL_GLS_DONE);
+    uint32_t w1c = (MXC_F_CTB_REVA_CTRL_HSH_DONE | MXC_F_CTB_REVA_CTRL_CPH_DONE
+        | MXC_F_CTB_REVA_CTRL_GLS_DONE);
 
     if (features & MXC_CTB_REVA_FEATURE_DMA) {
         mask |= MXC_F_CTB_REVA_CTRL_DMA_DONE;
@@ -209,8 +208,7 @@ void MXC_CTB_RevA_CacheInvalidate(void)
     ((mxc_icc_reva_regs_t*)MXC_ICC)->invalidate = 1;
 
     // Wait for completion of invalidation
-    while ((((mxc_icc_reva_regs_t*)MXC_ICC)->ctrl & MXC_F_ICC_REVA_CTRL_RDY) == 0)
-        ;
+    while ((((mxc_icc_reva_regs_t*)MXC_ICC)->ctrl & MXC_F_ICC_REVA_CTRL_RDY) == 0) { }
 }
 #endif
 
@@ -280,30 +278,30 @@ void MXC_CTB_RevA_Handler(mxc_trng_reva_regs_t* trng)
         MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_DMA);
 
         switch (dma_cb_func) {
-            case DMA_CALLBACK_ECC_Compute:
-                ((mxc_ctb_reva_ecc_req_t*)req)->checksum = MXC_CTB_ECC_GetResult();
-                cb                                       = MXC_CTB_Callbacks[DMA_ID];
-                MXC_FreeLock((void*)&MXC_CTB_Callbacks[DMA_ID]);
-                cb(req, 0);
-                break;
+        case DMA_CALLBACK_ECC_Compute:
+            ((mxc_ctb_reva_ecc_req_t*)req)->checksum = MXC_CTB_ECC_GetResult();
+            cb = MXC_CTB_Callbacks[DMA_ID];
+            MXC_FreeLock((void*)&MXC_CTB_Callbacks[DMA_ID]);
+            cb(req, 0);
+            break;
 
-            case DMA_CALLBACK_ECC_Error:
-                temp = MXC_CTB_ECC_Compare((mxc_ctb_ecc_req_t*)req);
-                cb   = MXC_CTB_Callbacks[DMA_ID];
-                MXC_FreeLock((void*)&MXC_CTB_Callbacks[DMA_ID]);
-                cb(req, temp);
-                break;
+        case DMA_CALLBACK_ECC_Error:
+            temp = MXC_CTB_ECC_Compare((mxc_ctb_ecc_req_t*)req);
+            cb = MXC_CTB_Callbacks[DMA_ID];
+            MXC_FreeLock((void*)&MXC_CTB_Callbacks[DMA_ID]);
+            cb(req, temp);
+            break;
 
-            case DMA_CALLBACK_CRC:
-                ((mxc_ctb_reva_crc_req_t*)req)->resultCRC = MXC_CTB_CRC_GetResult();
-                cb                                        = MXC_CTB_Callbacks[DMA_ID];
-                MXC_FreeLock((void*)&MXC_CTB_Callbacks[DMA_ID]);
-                cb(req, 0);
-                break;
+        case DMA_CALLBACK_CRC:
+            ((mxc_ctb_reva_crc_req_t*)req)->resultCRC = MXC_CTB_CRC_GetResult();
+            cb = MXC_CTB_Callbacks[DMA_ID];
+            MXC_FreeLock((void*)&MXC_CTB_Callbacks[DMA_ID]);
+            cb(req, 0);
+            break;
 
-            case DMA_CALLBACK_DISABLED:
-                // Another function is in progress, do nothing
-                break;
+        case DMA_CALLBACK_DISABLED:
+            // Another function is in progress, do nothing
+            break;
         }
     }
 
@@ -335,11 +333,11 @@ void MXC_CTB_RevA_Handler(mxc_trng_reva_regs_t* trng)
 /* CTB DMA - Used for all features  */
 /************************************/
 
-void MXC_CTB_RevA_DMA_SetReadSource(mxc_ctb_reva_regs_t* ctb_regs,
-                                    mxc_ctb_reva_dma_read_source_t source)
+void MXC_CTB_RevA_DMA_SetReadSource(
+    mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_dma_read_source_t source)
 {
-    MXC_SETFIELD(ctb_regs->ctrl, MXC_F_CTB_REVA_CTRL_RDSRC,
-                 source << MXC_F_CTB_REVA_CTRL_RDSRC_POS);
+    MXC_SETFIELD(
+        ctb_regs->ctrl, MXC_F_CTB_REVA_CTRL_RDSRC, source << MXC_F_CTB_REVA_CTRL_RDSRC_POS);
 }
 
 mxc_ctb_reva_dma_read_source_t MXC_CTB_RevA_DMA_GetReadSource(mxc_ctb_reva_regs_t* ctb_regs)
@@ -347,11 +345,11 @@ mxc_ctb_reva_dma_read_source_t MXC_CTB_RevA_DMA_GetReadSource(mxc_ctb_reva_regs_
     return (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RDSRC) >> MXC_F_CTB_REVA_CTRL_RDSRC_POS;
 }
 
-void MXC_CTB_RevA_DMA_SetWriteSource(mxc_ctb_reva_regs_t* ctb_regs,
-                                     mxc_ctb_reva_dma_write_source_t source)
+void MXC_CTB_RevA_DMA_SetWriteSource(
+    mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_dma_write_source_t source)
 {
-    MXC_SETFIELD(ctb_regs->ctrl, MXC_F_CTB_REVA_CTRL_WRSRC,
-                 source << MXC_F_CTB_REVA_CTRL_WRSRC_POS);
+    MXC_SETFIELD(
+        ctb_regs->ctrl, MXC_F_CTB_REVA_CTRL_WRSRC, source << MXC_F_CTB_REVA_CTRL_WRSRC_POS);
 }
 
 mxc_ctb_reva_dma_write_source_t MXC_CTB_RevA_DMA_GetWriteSource(mxc_ctb_reva_regs_t* ctb_regs)
@@ -404,8 +402,7 @@ int MXC_CTB_RevA_DMA_DoOperation(mxc_ctb_reva_dma_req_t* req)
 
     MXC_CTB_DMA_StartTransfer(req->length);
 
-    while (!(MXC_CTB_Done() & MXC_CTB_REVA_FEATURE_DMA))
-        ;
+    while (!(MXC_CTB_Done() & MXC_CTB_REVA_FEATURE_DMA)) { }
 
     MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_DMA);
 
@@ -418,8 +415,7 @@ int MXC_CTB_RevA_DMA_DoOperation(mxc_ctb_reva_dma_req_t* req)
 
 int MXC_CTB_RevA_TRNG_RandomInt(mxc_trng_reva_regs_t* trng)
 {
-    while (!(trng->status & MXC_F_TRNG_REVA_STATUS_RDY))
-        ;
+    while (!(trng->status & MXC_F_TRNG_REVA_STATUS_RDY)) { }
 
     return (int)trng->data;
 }
@@ -445,8 +441,8 @@ int MXC_CTB_RevA_TRNG_Random(uint8_t* data, uint32_t len)
     return E_NO_ERROR;
 }
 
-void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t* trng, uint8_t* data, uint32_t len,
-                                   mxc_ctb_reva_complete_cb_t callback)
+void MXC_CTB_RevA_TRNG_RandomAsync(
+    mxc_trng_reva_regs_t* trng, uint8_t* data, uint32_t len, mxc_ctb_reva_complete_cb_t callback)
 {
     MXC_ASSERT(data && callback);
 
@@ -454,14 +450,13 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t* trng, uint8_t* data, ui
         return;
     }
 
-    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[RNG_ID], 1) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[RNG_ID], 1) != E_NO_ERROR) { }
 
     NVIC_DisableIRQ(TRNG_IRQn);
 
-    TRNG_data                 = data;
-    TRNG_count                = 0;
-    TRNG_maxLength            = len;
+    TRNG_data = data;
+    TRNG_count = 0;
+    TRNG_maxLength = len;
     MXC_CTB_Callbacks[RNG_ID] = callback;
 
     // Enable interrupts
@@ -481,8 +476,7 @@ void MXC_CTB_RevA_ECC_Enable(mxc_ctb_reva_regs_t* ctb_regs)
 {
     ctb_regs->crc_ctrl |= MXC_F_CTB_REVA_CRC_CTRL_HRST;
 
-    while (ctb_regs->crc_ctrl & MXC_F_CTB_REVA_CRC_CTRL_HRST)
-        ;
+    while (ctb_regs->crc_ctrl & MXC_F_CTB_REVA_CRC_CTRL_HRST) { }
 
     ctb_regs->crc_ctrl |= MXC_F_CTB_REVA_CRC_CTRL_HAM;
 }
@@ -518,7 +512,7 @@ static int MXC_CTB_ECC_Compare(mxc_ctb_ecc_req_t* req)
         uint16_t failing_bit_location = ~error;
 
         int byte = failing_bit_location >> 3;
-        int bit  = failing_bit_location & 0x7;
+        int bit = failing_bit_location & 0x7;
 
         req->dataBuffer[byte] ^= (1 << bit);
 
@@ -555,7 +549,7 @@ static int MXC_CTB_ECC_Setup(mxc_ctb_ecc_req_t* req)
     MXC_CTB_ECC_Enable();
 
     dma_req.sourceBuffer = req->dataBuffer;
-    dma_req.length       = req->dataLen;
+    dma_req.length = req->dataLen;
 
     MXC_CTB_DMA_DoOperation((mxc_ctb_dma_req_t*)&dma_req);
 
@@ -596,13 +590,12 @@ static void MXC_CTB_ECC_SetupAsync(mxc_ctb_ecc_req_t* req)
     MXC_ASSERT(req);
     MXC_ASSERT(req->callback && req->dataBuffer);
 
-    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[DMA_ID], 1) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[DMA_ID], 1) != E_NO_ERROR) { }
 
     MXC_CTB_DisableInt();
 
     MXC_CTB_Callbacks[DMA_ID] = req->callback;
-    saved_requests[DMA_ID]    = req;
+    saved_requests[DMA_ID] = req;
 
     dma_req.sourceBuffer = req->dataBuffer;
 
@@ -636,11 +629,11 @@ void MXC_CTB_RevA_ECC_ErrorCheckAsync(mxc_ctb_reva_ecc_req_t* req)
 /* Low Level Functions         */
 /*******************************/
 
-void MXC_CTB_RevA_CRC_SetDirection(mxc_ctb_reva_regs_t* ctb_regs,
-                                   mxc_ctb_reva_crc_bitorder_t bitOrder)
+void MXC_CTB_RevA_CRC_SetDirection(
+    mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_crc_bitorder_t bitOrder)
 {
     MXC_SETFIELD(ctb_regs->crc_ctrl, MXC_F_CTB_REVA_CRC_CTRL_MSB,
-                 bitOrder << MXC_F_CTB_REVA_CRC_CTRL_MSB_POS);
+        bitOrder << MXC_F_CTB_REVA_CRC_CTRL_MSB_POS);
 }
 
 mxc_ctb_reva_crc_bitorder_t MXC_CTB_RevA_CRC_GetDirection(mxc_ctb_reva_regs_t* ctb_regs)
@@ -692,8 +685,8 @@ int MXC_CTB_RevA_CRC_Compute(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_crc_req
     ctb_regs->crc_val = crc_seed; // Preset CRC value to all 1's
 
     dma_req.sourceBuffer = req->dataBuffer;
-    dma_req.destBuffer   = NULL;
-    dma_req.length       = req->dataLen;
+    dma_req.destBuffer = NULL;
+    dma_req.length = req->dataLen;
 
     MXC_CTB_DMA_DoOperation((mxc_ctb_dma_req_t*)&dma_req);
 
@@ -714,19 +707,18 @@ void MXC_CTB_RevA_CRC_ComputeAsync(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_c
     MXC_ASSERT(req);
     MXC_ASSERT(req->callback);
 
-    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[DMA_ID], 1) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[DMA_ID], 1) != E_NO_ERROR) { }
 
     MXC_CTB_DisableInt();
 
     MXC_CTB_Callbacks[DMA_ID] = req->callback;
-    saved_requests[DMA_ID]    = req;
-    dma_cb_func               = DMA_CALLBACK_CRC;
+    saved_requests[DMA_ID] = req;
+    dma_cb_func = DMA_CALLBACK_CRC;
 
     ctb_regs->crc_val = crc_seed; // Preset CRC value to all 1's
 
     dma_req.sourceBuffer = req->dataBuffer;
-    dma_req.destBuffer   = NULL;
+    dma_req.destBuffer = NULL;
 
     MXC_CTB_DMA_SetupOperation((mxc_ctb_dma_req_t*)&dma_req);
 
@@ -746,19 +738,19 @@ void MXC_CTB_RevA_CRC_ComputeAsync(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_c
 void MXC_CTB_RevA_Hash_SetFunction(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_hash_func_t function)
 {
     MXC_SETFIELD(ctb_regs->hash_ctrl, MXC_F_CTB_REVA_HASH_CTRL_HASH,
-                 function << MXC_F_CTB_REVA_HASH_CTRL_HASH_POS);
+        function << MXC_F_CTB_REVA_HASH_CTRL_HASH_POS);
 }
 
 mxc_ctb_reva_hash_func_t MXC_CTB_RevA_Hash_GetFunction(mxc_ctb_reva_regs_t* ctb_regs)
 {
-    return (ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_HASH) >>
-           MXC_F_CTB_REVA_HASH_CTRL_HASH_POS;
+    return (ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_HASH)
+        >> MXC_F_CTB_REVA_HASH_CTRL_HASH_POS;
 }
 
 void MXC_CTB_RevA_Hash_SetAutoPad(mxc_ctb_reva_regs_t* ctb_regs, int pad)
 {
     MXC_SETFIELD(ctb_regs->hash_ctrl, MXC_F_CTB_REVA_HASH_CTRL_LAST,
-                 (!!pad) << MXC_F_CTB_REVA_HASH_CTRL_LAST_POS);
+        (!!pad) << MXC_F_CTB_REVA_HASH_CTRL_LAST_POS);
 }
 
 int MXC_CTB_RevA_Hash_GetAutoPad(mxc_ctb_reva_regs_t* ctb_regs)
@@ -779,8 +771,8 @@ void MXC_CTB_RevA_Hash_SetMessageSize(mxc_ctb_reva_regs_t* ctb_regs, uint32_t si
 
 void MXC_CTB_RevA_Hash_SetSource(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_hash_source_t source)
 {
-    MXC_SETFIELD(ctb_regs->ctrl, MXC_F_CTB_REVA_CTRL_SRC,
-                 (!!source) << MXC_F_CTB_REVA_CTRL_SRC_POS);
+    MXC_SETFIELD(
+        ctb_regs->ctrl, MXC_F_CTB_REVA_CTRL_SRC, (!!source) << MXC_F_CTB_REVA_CTRL_SRC_POS);
 }
 
 mxc_ctb_reva_hash_source_t MXC_CTB_RevA_Hash_GetSource(mxc_ctb_reva_regs_t* ctb_regs)
@@ -792,8 +784,7 @@ void MXC_CTB_RevA_Hash_InitializeHash(mxc_ctb_reva_regs_t* ctb_regs)
 {
     ctb_regs->hash_ctrl |= MXC_F_CTB_REVA_HASH_CTRL_INIT;
 
-    while (ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_INIT)
-        ;
+    while (ctb_regs->hash_ctrl & MXC_F_CTB_REVA_HASH_CTRL_INIT) { }
 }
 
 /************************/
@@ -824,8 +815,8 @@ int MXC_CTB_RevA_Hash_Compute(mxc_ctb_reva_hash_req_t* req)
     MXC_CTB_Hash_SetSource(MXC_CTB_REVA_HASH_SOURCE_INFIFO);
     MXC_CTB_Hash_InitializeHash();
 
-    blockSize     = MXC_CTB_Hash_GetBlockSize(MXC_CTB_Hash_GetFunction());
-    numBlocks     = ((int)req->len - 1) / blockSize + 1;
+    blockSize = MXC_CTB_Hash_GetBlockSize(MXC_CTB_Hash_GetFunction());
+    numBlocks = ((int)req->len - 1) / blockSize + 1;
     lastBlockSize = req->len % blockSize;
 
     if (lastBlockSize == 0) {
@@ -849,8 +840,7 @@ int MXC_CTB_RevA_Hash_Compute(mxc_ctb_reva_hash_req_t* req)
         }
 
         // Wait until operation is complete
-        while (!(MXC_CTB_Done() & MXC_CTB_REVA_FEATURE_HASH))
-            ;
+        while (!(MXC_CTB_Done() & MXC_CTB_REVA_FEATURE_HASH)) { }
     }
 
     // Get the msg digest
@@ -887,22 +877,21 @@ void MXC_CTB_RevA_Hash_ComputeAsync(mxc_ctb_reva_hash_req_t* req)
         return;
     }
 
-    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[HSH_ID], 1) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[HSH_ID], 1) != E_NO_ERROR) { }
 
     MXC_CTB_DisableInt();
 
     MXC_CTB_Callbacks[HSH_ID] = req->callback;
-    saved_requests[HSH_ID]    = req;
+    saved_requests[HSH_ID] = req;
 
     MXC_CTB_Hash_SetMessageSize(req->len);
     MXC_CTB_Hash_SetSource(MXC_CTB_REVA_HASH_SOURCE_INFIFO);
     MXC_CTB_Hash_InitializeHash();
 
-    async_blockSize     = MXC_CTB_Hash_GetBlockSize(MXC_CTB_Hash_GetFunction());
-    async_numBlocks     = ((int)req->len - 1) / async_blockSize + 1;
+    async_blockSize = MXC_CTB_Hash_GetBlockSize(MXC_CTB_Hash_GetFunction());
+    async_numBlocks = ((int)req->len - 1) / async_blockSize + 1;
     async_lastBlockSize = req->len % async_blockSize;
-    async_i             = 0;
+    async_i = 0;
 
     if (async_lastBlockSize == 0) {
         async_lastBlockSize = async_blockSize;
@@ -927,61 +916,61 @@ void MXC_CTB_RevA_Hash_ComputeAsync(mxc_ctb_reva_hash_req_t* req)
 void MXC_CTB_RevA_Cipher_SetMode(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_cipher_mode_t mode)
 {
     MXC_SETFIELD(ctb_regs->cipher_ctrl, MXC_F_CTB_REVA_CIPHER_CTRL_MODE,
-                 mode << MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS);
+        mode << MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS);
 }
 
 mxc_ctb_reva_cipher_mode_t MXC_CTB_RevA_Cipher_GetMode(mxc_ctb_reva_regs_t* ctb_regs)
 {
-    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_MODE) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS;
+    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_MODE)
+        >> MXC_F_CTB_REVA_CIPHER_CTRL_MODE_POS;
 }
 
 void MXC_CTB_RevA_Cipher_SetCipher(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_cipher_t cipher)
 {
     MXC_SETFIELD(ctb_regs->cipher_ctrl, MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER,
-                 cipher << MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS);
+        cipher << MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS);
 }
 
 mxc_ctb_reva_cipher_t MXC_CTB_RevA_Cipher_GetCipher(mxc_ctb_reva_regs_t* ctb_regs)
 {
-    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS;
+    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER)
+        >> MXC_F_CTB_REVA_CIPHER_CTRL_CIPHER_POS;
 }
 
-void MXC_CTB_RevA_Cipher_SetKeySource(mxc_ctb_reva_regs_t* ctb_regs,
-                                      mxc_ctb_reva_cipher_key_t source)
+void MXC_CTB_RevA_Cipher_SetKeySource(
+    mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_cipher_key_t source)
 {
     MXC_SETFIELD(ctb_regs->cipher_ctrl, MXC_F_CTB_REVA_CIPHER_CTRL_SRC,
-                 source << MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS);
+        source << MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS);
 }
 
 mxc_ctb_reva_cipher_key_t MXC_CTB_RevA_Cipher_GetKeySource(mxc_ctb_reva_regs_t* ctb_regs)
 {
-    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_SRC) >>
-           MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS;
+    return (ctb_regs->cipher_ctrl & MXC_F_CTB_REVA_CIPHER_CTRL_SRC)
+        >> MXC_F_CTB_REVA_CIPHER_CTRL_SRC_POS;
 }
 
 void MXC_CTB_RevA_Cipher_LoadKey(mxc_ctb_reva_regs_t* ctb_regs)
 {
-    if ((mxc_ctb_reva_cipher_key_t)MXC_CTB_Cipher_GetKeySource() ==
-        MXC_CTB_REVA_CIPHER_KEY_SOFTWARE) {
+    if ((mxc_ctb_reva_cipher_key_t)MXC_CTB_Cipher_GetKeySource()
+        == MXC_CTB_REVA_CIPHER_KEY_SOFTWARE) {
         return;
     }
 
     ctb_regs->cipher_ctrl |= MXC_F_CTB_REVA_CIPHER_CTRL_KEY;
 }
 
-void MXC_CTB_RevA_Cipher_SetOperation(mxc_ctb_reva_regs_t* ctb_regs,
-                                      mxc_ctb_reva_cipher_operation_t operation)
+void MXC_CTB_RevA_Cipher_SetOperation(
+    mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_cipher_operation_t operation)
 {
     MXC_SETFIELD(ctb_regs->cipher_ctrl, MXC_F_CTB_REVA_CIPHER_CTRL_ENC,
-                 operation << MXC_F_CTB_REVA_CIPHER_CTRL_ENC_POS);
+        operation << MXC_F_CTB_REVA_CIPHER_CTRL_ENC_POS);
 }
 
 void MXC_CTB_RevA_Cipher_SetKey(mxc_ctb_reva_regs_t* ctb_regs, uint8_t* key, uint32_t len)
 {
-    if ((mxc_ctb_reva_cipher_key_t)MXC_CTB_Cipher_GetKeySource() !=
-        MXC_CTB_REVA_CIPHER_KEY_SOFTWARE) {
+    if ((mxc_ctb_reva_cipher_key_t)MXC_CTB_Cipher_GetKeySource()
+        != MXC_CTB_REVA_CIPHER_KEY_SOFTWARE) {
         return;
     }
 
@@ -1023,7 +1012,7 @@ static int MXC_CTB_Cipher_Generic(mxc_ctb_cipher_req_t* req, int op)
     MXC_CTB_DisableInt();
 
     int dataLength = MXC_CTB_Cipher_GetBlockSize(MXC_CTB_Cipher_GetCipher());
-    int numBlocks  = ((int)req->ptLen - 1) / dataLength + 1;
+    int numBlocks = ((int)req->ptLen - 1) / dataLength + 1;
 
     // Load Initial Vector if necessary
     if ((mxc_ctb_reva_cipher_mode_t)MXC_CTB_Cipher_GetMode() != MXC_CTB_REVA_MODE_ECB) {
@@ -1038,22 +1027,20 @@ static int MXC_CTB_Cipher_Generic(mxc_ctb_cipher_req_t* req, int op)
     MXC_CTB_Cipher_SetOperation(op);
 
     dma_req.sourceBuffer = req->plaintext;
-    dma_req.destBuffer   = req->ciphertext;
-    dma_req.length       = dataLength;
+    dma_req.destBuffer = req->ciphertext;
+    dma_req.length = dataLength;
 
     MXC_CTB_DMA_SetWriteSource(MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
     MXC_CTB_DMA_SetupOperation((mxc_ctb_dma_req_t*)&dma_req);
 
     for (i = 0; i < numBlocks; i++) {
         // Wait until ready for data
-        while (!MXC_CTB_Ready())
-            ;
+        while (!MXC_CTB_Ready()) { }
 
         MXC_CTB_DMA_StartTransfer(dataLength);
 
         // Wait until operation is complete
-        while (!(MXC_CTB_Done() & MXC_CTB_REVA_FEATURE_CIPHER))
-            ;
+        while (!(MXC_CTB_Done() & MXC_CTB_REVA_FEATURE_CIPHER)) { }
     }
 
     if (enabled) {
@@ -1092,17 +1079,16 @@ static void MXC_CTB_Cipher_GenericAsync(mxc_ctb_cipher_req_t* req, int op)
     MXC_ASSERT(req);
     MXC_ASSERT(req->plaintext && req->ciphertext && req->callback);
 
-    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[CPH_ID], 1) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((void*)&MXC_CTB_Callbacks[CPH_ID], 1) != E_NO_ERROR) { }
 
     MXC_CTB_DisableInt();
 
     MXC_CTB_Callbacks[CPH_ID] = req->callback;
-    saved_requests[CPH_ID]    = req;
+    saved_requests[CPH_ID] = req;
 
     async_dataLength = MXC_CTB_Cipher_GetBlockSize(MXC_CTB_Cipher_GetCipher());
-    async_numBlocks  = ((int)req->ptLen - 1) / async_dataLength + 1;
-    async_i          = 0;
+    async_numBlocks = ((int)req->ptLen - 1) / async_dataLength + 1;
+    async_i = 0;
 
     // Load Initial Vector if necessary
     if ((mxc_ctb_reva_cipher_mode_t)MXC_CTB_Cipher_GetMode() != MXC_CTB_REVA_MODE_ECB) {
@@ -1115,7 +1101,7 @@ static void MXC_CTB_Cipher_GenericAsync(mxc_ctb_cipher_req_t* req, int op)
     MXC_CTB_Cipher_SetOperation(op);
 
     dma_req.sourceBuffer = req->plaintext;
-    dma_req.destBuffer   = req->ciphertext;
+    dma_req.destBuffer = req->ciphertext;
 
     MXC_CTB_DMA_SetWriteSource(MXC_CTB_REVA_DMA_WRITE_FIFO_CIPHER);
     MXC_CTB_DMA_SetupOperation((mxc_ctb_dma_req_t*)&dma_req);
@@ -1123,8 +1109,7 @@ static void MXC_CTB_Cipher_GenericAsync(mxc_ctb_cipher_req_t* req, int op)
     MXC_CTB_EnableInt();
 
     // Wait until ready for data
-    while (!MXC_CTB_Ready())
-        ;
+    while (!MXC_CTB_Ready()) { }
 
     MXC_CTB_DMA_StartTransfer(async_dataLength);
 }

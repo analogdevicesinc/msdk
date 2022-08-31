@@ -35,12 +35,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <stddef.h>
+#include "gpio.h"
 #include "mxc_errors.h"
 #include "mxc_sys.h"
-#include "gpio.h"
 #include "pt.h"
 #include "pt_reva.h"
+#include <stddef.h>
 
 /* ************************************************************************* */
 void MXC_PT_Init(mxc_ptg_regs_t* ptg, mxc_clk_scale_t clk_scale)
@@ -63,109 +63,109 @@ int MXC_PT_Config(mxc_ptg_regs_t* ptg, mxc_pt_cfg_t* cfg)
 {
     if (cfg->outputSelect) {
         switch (cfg->channel) {
-            case 0:
-                MXC_GPIO_Config(&gpio_cfg_pt0_1);
-                break;
-            case 1:
-                MXC_GPIO_Config(&gpio_cfg_pt1_1);
-                break;
-            case 2:
-                MXC_GPIO_Config(&gpio_cfg_pt2_1);
-                break;
-            case 3:
-                MXC_GPIO_Config(&gpio_cfg_pt3_1);
-                break;
-            case 4:
-                MXC_GPIO_Config(&gpio_cfg_pt4_1);
-                break;
-            case 5:
-                MXC_GPIO_Config(&gpio_cfg_pt5_1);
-                break;
-            case 6:
-                MXC_GPIO_Config(&gpio_cfg_pt6_1);
-                break;
-            case 7:
-                MXC_GPIO_Config(&gpio_cfg_pt7_1);
-                break;
-            case 8:
-                MXC_GPIO_Config(&gpio_cfg_pt8_1);
-                break;
-            case 9:
-                MXC_GPIO_Config(&gpio_cfg_pt9_1);
-                break;
-            case 10:
-                MXC_GPIO_Config(&gpio_cfg_pt10_1);
-                break;
-            case 11:
-                MXC_GPIO_Config(&gpio_cfg_pt11_1);
-                break;
-            case 12:
-                MXC_GPIO_Config(&gpio_cfg_pt12_1);
-                break;
-            case 13:
-                MXC_GPIO_Config(&gpio_cfg_pt13_1);
-                break;
-            case 14:
-                MXC_GPIO_Config(&gpio_cfg_pt14_1);
-                break;
-            case 15:
-                MXC_GPIO_Config(&gpio_cfg_pt15_1);
-                break;
-            default:
-                return E_BAD_PARAM;
+        case 0:
+            MXC_GPIO_Config(&gpio_cfg_pt0_1);
+            break;
+        case 1:
+            MXC_GPIO_Config(&gpio_cfg_pt1_1);
+            break;
+        case 2:
+            MXC_GPIO_Config(&gpio_cfg_pt2_1);
+            break;
+        case 3:
+            MXC_GPIO_Config(&gpio_cfg_pt3_1);
+            break;
+        case 4:
+            MXC_GPIO_Config(&gpio_cfg_pt4_1);
+            break;
+        case 5:
+            MXC_GPIO_Config(&gpio_cfg_pt5_1);
+            break;
+        case 6:
+            MXC_GPIO_Config(&gpio_cfg_pt6_1);
+            break;
+        case 7:
+            MXC_GPIO_Config(&gpio_cfg_pt7_1);
+            break;
+        case 8:
+            MXC_GPIO_Config(&gpio_cfg_pt8_1);
+            break;
+        case 9:
+            MXC_GPIO_Config(&gpio_cfg_pt9_1);
+            break;
+        case 10:
+            MXC_GPIO_Config(&gpio_cfg_pt10_1);
+            break;
+        case 11:
+            MXC_GPIO_Config(&gpio_cfg_pt11_1);
+            break;
+        case 12:
+            MXC_GPIO_Config(&gpio_cfg_pt12_1);
+            break;
+        case 13:
+            MXC_GPIO_Config(&gpio_cfg_pt13_1);
+            break;
+        case 14:
+            MXC_GPIO_Config(&gpio_cfg_pt14_1);
+            break;
+        case 15:
+            MXC_GPIO_Config(&gpio_cfg_pt15_1);
+            break;
+        default:
+            return E_BAD_PARAM;
         }
     } else {
         switch (cfg->channel) {
-            case 0:
-                MXC_GPIO_Config(&gpio_cfg_pt0_0);
-                break;
-            case 1:
-                MXC_GPIO_Config(&gpio_cfg_pt1_0);
-                break;
-            case 2:
-                MXC_GPIO_Config(&gpio_cfg_pt2_0);
-                break;
-            case 3:
-                MXC_GPIO_Config(&gpio_cfg_pt3_0);
-                break;
-            case 4:
-                MXC_GPIO_Config(&gpio_cfg_pt4_0);
-                break;
-            case 5:
-                MXC_GPIO_Config(&gpio_cfg_pt5_0);
-                break;
-            case 6:
-                MXC_GPIO_Config(&gpio_cfg_pt6_0);
-                break;
-            case 7:
-                MXC_GPIO_Config(&gpio_cfg_pt7_0);
-                break;
-            case 8:
-                MXC_GPIO_Config(&gpio_cfg_pt8_0);
-                break;
-            case 9:
-                MXC_GPIO_Config(&gpio_cfg_pt9_0);
-                break;
-            case 10:
-                MXC_GPIO_Config(&gpio_cfg_pt10_0);
-                break;
-            case 11:
-                MXC_GPIO_Config(&gpio_cfg_pt11_0);
-                break;
-            case 12:
-                MXC_GPIO_Config(&gpio_cfg_pt12_0);
-                break;
-            case 13:
-                MXC_GPIO_Config(&gpio_cfg_pt13_0);
-                break;
-            case 14:
-                MXC_GPIO_Config(&gpio_cfg_pt14_0);
-                break;
-            case 15:
-                MXC_GPIO_Config(&gpio_cfg_pt15_0);
-                break;
-            default:
-                return E_BAD_PARAM;
+        case 0:
+            MXC_GPIO_Config(&gpio_cfg_pt0_0);
+            break;
+        case 1:
+            MXC_GPIO_Config(&gpio_cfg_pt1_0);
+            break;
+        case 2:
+            MXC_GPIO_Config(&gpio_cfg_pt2_0);
+            break;
+        case 3:
+            MXC_GPIO_Config(&gpio_cfg_pt3_0);
+            break;
+        case 4:
+            MXC_GPIO_Config(&gpio_cfg_pt4_0);
+            break;
+        case 5:
+            MXC_GPIO_Config(&gpio_cfg_pt5_0);
+            break;
+        case 6:
+            MXC_GPIO_Config(&gpio_cfg_pt6_0);
+            break;
+        case 7:
+            MXC_GPIO_Config(&gpio_cfg_pt7_0);
+            break;
+        case 8:
+            MXC_GPIO_Config(&gpio_cfg_pt8_0);
+            break;
+        case 9:
+            MXC_GPIO_Config(&gpio_cfg_pt9_0);
+            break;
+        case 10:
+            MXC_GPIO_Config(&gpio_cfg_pt10_0);
+            break;
+        case 11:
+            MXC_GPIO_Config(&gpio_cfg_pt11_0);
+            break;
+        case 12:
+            MXC_GPIO_Config(&gpio_cfg_pt12_0);
+            break;
+        case 13:
+            MXC_GPIO_Config(&gpio_cfg_pt13_0);
+            break;
+        case 14:
+            MXC_GPIO_Config(&gpio_cfg_pt14_0);
+            break;
+        case 15:
+            MXC_GPIO_Config(&gpio_cfg_pt15_0);
+            break;
+        default:
+            return E_BAD_PARAM;
         }
     }
 

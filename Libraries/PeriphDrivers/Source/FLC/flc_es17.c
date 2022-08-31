@@ -40,15 +40,15 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "flc.h"
-#include "flc_reva.h"
-#include "flc_common.h"
 #include "ctb.h"
+#include "flc.h"
+#include "flc_common.h"
+#include "flc_reva.h"
 #include "mcr_regs.h" // For ECCEN registers.
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include <string.h>
 static void mxc_aes_init(void);
 static int mxc_encrypt_sequence(const uint8_t* pt, uint8_t* ct, uint32_t addr, int len);
 
@@ -64,9 +64,9 @@ void MXC_FLC_Flash_Operation(void)
 
     // Clear the line fill buffer
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
-    line      = *line_addr;
+    line = *line_addr;
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
-    line      = *line_addr;
+    line = *line_addr;
 }
 
 //******************************************************************************
@@ -251,13 +251,12 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
     // write 32-bits
     flc->flsh_cn |= MXC_F_FLC_REVA_CTRL_WDTH;
     // write the data
-    flc->flsh_addr    = addr;
+    flc->flsh_addr = addr;
     flc->flsh_data[0] = data;
     flc->flsh_cn |= MXC_F_FLC_FLSH_CN_WR;
 
     /* Wait until flash operation is complete */
-    while (flc->flsh_cn & (MXC_F_FLC_FLSH_CN_WR | MXC_F_FLC_FLSH_CN_ME | MXC_F_FLC_FLSH_CN_PGE))
-        ;
+    while (flc->flsh_cn & (MXC_F_FLC_FLSH_CN_WR | MXC_F_FLC_FLSH_CN_ME | MXC_F_FLC_FLSH_CN_PGE)) { }
 
     /* Lock flash */
     flc->flsh_cn &= ~MXC_F_FLC_FLSH_CN_UNLOCK;
@@ -367,8 +366,8 @@ int MXC_FLC_Write_Encrypted(uint32_t address, uint32_t length, uint32_t* buffer)
 
     while (length >= 16) {
         // Encrypt 128-bits of buffer, output to encrypted_buffer
-        if ((err = mxc_encrypt_sequence((uint8_t*)buffer, (uint8_t*)encrypted_buffer, address,
-                                        16)) != E_NO_ERROR) {
+        if ((err = mxc_encrypt_sequence((uint8_t*)buffer, (uint8_t*)encrypted_buffer, address, 16))
+            != E_NO_ERROR) {
             return err;
         }
 
@@ -448,20 +447,18 @@ static int mxc_encrypt_sequence(const uint8_t* pt, uint8_t* ct, uint32_t addr, i
         MXC_CTB->crypto_ctrl |= MXC_F_CTB_CRYPTO_CTRL_CPH_DONE;
 
         // ECB, AES-128, encrypt
-        MXC_CTB->cipher_ctrl =
-            ((0x0 << MXC_F_CTB_CIPHER_CTRL_MODE_POS) | (1 << MXC_F_CTB_CIPHER_CTRL_CIPHER_POS) |
-             (0 << MXC_F_CTB_CIPHER_CTRL_ENC_POS));
+        MXC_CTB->cipher_ctrl = ((0x0 << MXC_F_CTB_CIPHER_CTRL_MODE_POS)
+            | (1 << MXC_F_CTB_CIPHER_CTRL_CIPHER_POS) | (0 << MXC_F_CTB_CIPHER_CTRL_ENC_POS));
 
         // Set the key source
-        MXC_CTB->cipher_ctrl = ((MXC_CTB->cipher_ctrl & ~MXC_F_CTB_CIPHER_CTRL_SRC) |
-                                (0x3 << MXC_F_CTB_CIPHER_CTRL_SRC_POS));
+        MXC_CTB->cipher_ctrl = ((MXC_CTB->cipher_ctrl & ~MXC_F_CTB_CIPHER_CTRL_SRC)
+            | (0x3 << MXC_F_CTB_CIPHER_CTRL_SRC_POS));
 
         // Copy data to start the operation
         memcpy((void*)&MXC_CTB->crypto_din[0], (void*)(pt_buf), 16);
 
         // Wait until operation is complete
-        while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) {
-        }
+        while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) { }
 
         // Copy the data out
         memcpy((void*)(ct_buf), (void*)&MXC_CTB->crypto_dout[0], 16);

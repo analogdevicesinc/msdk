@@ -56,7 +56,7 @@ extern "C" {
 #define HFX_FREQ 24000000
 #endif
 
-/* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip. 
+/* NOTE: This is the nominal value for NANORING. The actual value may vary from chip to chip.
          Update if use of this oscillator requires precise timing.*/
 #ifndef NANORING_FREQ
 #define NANORING_FREQ 8000
@@ -79,7 +79,7 @@ extern "C" {
 #endif
 
 extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
-extern uint8_t ChipRevision;     /*!< System Clock Frequency (Core Clock)  */
+extern uint8_t ChipRevision; /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
 #define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
 #endif

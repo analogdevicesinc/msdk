@@ -36,18 +36,18 @@
 
 /***** CRC Definitions *****/
 /**
-  * @brief  Structure used to set up CRC request
-  *
-  */
+ * @brief  Structure used to set up CRC request
+ *
+ */
 typedef struct _mxc_crc_reva_req_t {
     uint32_t* dataBuffer; ///< Pointer to the data
-    uint32_t dataLen;     ///< Length of the data
-    uint32_t resultCRC;   ///< Calculated CRC value
+    uint32_t dataLen; ///< Length of the data
+    uint32_t resultCRC; ///< Calculated CRC value
 } mxc_crc_reva_req_t;
 
-/** 
+/**
  * @brief CRC data bit order
- *  
+ *
  */
 typedef enum { CRC_REVA_LSB_FIRST, CRC_REVA_MSB_FIRST } mxc_crc_reva_bitorder_t;
 

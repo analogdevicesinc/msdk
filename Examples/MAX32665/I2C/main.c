@@ -2,11 +2,11 @@
  * @file        main.c
  * @brief       I2C Loopback Example
  * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
- *              this example you must connect P0.6 to P0.14 (SDA) and P0.7 to P0.15 (SCL). The Master
- *              will use P0.6 and P0.7. The Slave will use P0.14 and P0.15. You must also
- *              connect the pull-up jumpers (either JP1 or JP2).
- * @note        Other devices on the EvKit will be using the same bus. This example cannot be combined with
- *              a PMIC or bluetooth example because the I2C Slave uses GPIO pins for those devices.
+ *              this example you must connect P0.6 to P0.14 (SDA) and P0.7 to P0.15 (SCL). The
+ * Master will use P0.6 and P0.7. The Slave will use P0.14 and P0.15. You must also connect the
+ * pull-up jumpers (either JP1 or JP2).
+ * @note        Other devices on the EvKit will be using the same bus. This example cannot be
+ * combined with a PMIC or bluetooth example because the I2C Slave uses GPIO pins for those devices.
  */
 
 /******************************************************************************
@@ -45,37 +45,37 @@
 /**
  * @file        main.c
  * @brief       I2C Loopback Example
- * @details     This example uses the I2C Master to read/write from/to the I2C Slave. 
- *              For this example, user must connect I2C Master SCL pin to I2C Slave SCL 
+ * @details     This example uses the I2C Master to read/write from/to the I2C Slave.
+ *              For this example, user must connect I2C Master SCL pin to I2C Slave SCL
  *              pin and I2C Master SDA pin to I2C Slave SDA pin. User must also connect
  *              the pull-up jumpers to the proper I/O voltage. Refer UART messages for
  *              more information.
- * @note        Other devices on the EvKit might be using the same I2C bus. While 
+ * @note        Other devices on the EvKit might be using the same I2C bus. While
  *              combining this example with other examples, make sure I2C pins are not
  *              being used in other examples of any other function (like GPIO).
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "nvic_table.h"
-#include "i2c_regs.h"
-#include "i2c.h"
-#include "dma.h"
 #include "board.h"
+#include "dma.h"
+#include "i2c.h"
+#include "i2c_regs.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "nvic_table.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /***** Definitions *****/
 // #define MASTERDMA
 
 #define I2C_MASTER MXC_I2C0_BUS0
 #if defined(BOARD_FTHR2)
-#define I2C_SLAVE      MXC_I2C2_BUS0
+#define I2C_SLAVE MXC_I2C2_BUS0
 #define I2C_SLAVE_IRQn I2C2_IRQn
 #else
-#define I2C_SLAVE      MXC_I2C1_BUS0
+#define I2C_SLAVE MXC_I2C1_BUS0
 #define I2C_SLAVE_IRQn I2C1_IRQn
 #endif
 
@@ -84,7 +84,7 @@
 // This is only an issue in the loopback configuration, where the I2C block is
 // connected to itself.
 #define I2C_SLAVE_ADDR 0x51
-#define I2C_BYTES      255
+#define I2C_BYTES 255
 
 typedef enum { FAILED, PASSED } test_t;
 
@@ -100,7 +100,7 @@ volatile int rxnum = 0;
 
 /***** Functions *****/
 
-//Slave interrupt handler
+// Slave interrupt handler
 void I2C_Slave_IRQHandler(void)
 {
     MXC_I2C_AsyncHandler(I2C_SLAVE);
@@ -121,7 +121,7 @@ void DMA1_IRQHandler(void)
     DMA_FLAG = 1;
 }
 
-//I2C callback function
+// I2C callback function
 void I2C_Callback(mxc_i2c_req_t* req, int error)
 {
     I2C_FLAG = error;
@@ -131,67 +131,63 @@ void I2C_Callback(mxc_i2c_req_t* req, int error)
 int slaveHandler(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event, void* data)
 {
     switch (event) {
-        case MXC_I2C_EVT_MASTER_WR:
-            // If we're being written to
-            // Clear bytes written
-            rxnum = 0;
+    case MXC_I2C_EVT_MASTER_WR:
+        // If we're being written to
+        // Clear bytes written
+        rxnum = 0;
+        break;
+    case MXC_I2C_EVT_MASTER_RD:
+        txnum = I2C_BYTES;
+        txcnt = 0;
+        i2c->int_fl0 = MXC_F_I2C_INT_FL0_TX_LOCK_OUT | MXC_F_I2C_INT_FL0_ADDR_MATCH;
+        break;
+    case MXC_I2C_EVT_RX_THRESH:
+    case MXC_I2C_EVT_OVERFLOW:
+        rxnum += MXC_I2C_ReadRXFIFO(i2c, &Sdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
+        break;
+    case MXC_I2C_EVT_TX_THRESH:
+    case MXC_I2C_EVT_UNDERFLOW:
+        // Write as much data as possible into TX FIFO
+        // Unless we're at the end of the transaction (only write what's needed)
+        if (txcnt >= txnum) {
             break;
-        case MXC_I2C_EVT_MASTER_RD:
-            txnum        = I2C_BYTES;
-            txcnt        = 0;
-            i2c->int_fl0 = MXC_F_I2C_INT_FL0_TX_LOCK_OUT | MXC_F_I2C_INT_FL0_ADDR_MATCH;
-            break;
-        case MXC_I2C_EVT_RX_THRESH:
-        case MXC_I2C_EVT_OVERFLOW:
+        }
+        int num = MXC_I2C_GetTXFIFOAvailable(i2c);
+        num = (num > (txnum - txcnt)) ? (txnum - txcnt) : num;
+        txcnt += MXC_I2C_WriteTXFIFO(i2c, &Sdata[txcnt], num);
+        break;
+    default:
+        if (*((int*)data) == E_COMM_ERR) {
+            printf("I2C Slave Error!\n");
+            printf("i2c->int_fl0 = 0x%08x\n", i2c->int_fl0);
+            printf("i2c->status  = 0x%08x\n", i2c->status);
+            I2C_Callback(NULL, E_COMM_ERR);
+            return 1;
+        } else if (*((int*)data) == E_NO_ERROR) {
             rxnum += MXC_I2C_ReadRXFIFO(i2c, &Sdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
-            break;
-        case MXC_I2C_EVT_TX_THRESH:
-        case MXC_I2C_EVT_UNDERFLOW:
-            // Write as much data as possible into TX FIFO
-            // Unless we're at the end of the transaction (only write what's needed)
-            if (txcnt >= txnum) {
-                break;
-            }
-            int num = MXC_I2C_GetTXFIFOAvailable(i2c);
-            num     = (num > (txnum - txcnt)) ? (txnum - txcnt) : num;
-            txcnt += MXC_I2C_WriteTXFIFO(i2c, &Sdata[txcnt], num);
-            break;
-        default:
-            if (*((int*)data) == E_COMM_ERR) {
-                printf("I2C Slave Error!\n");
-                printf("i2c->int_fl0 = 0x%08x\n", i2c->int_fl0);
-                printf("i2c->status  = 0x%08x\n", i2c->status);
-                I2C_Callback(NULL, E_COMM_ERR);
-                return 1;
-            } else if (*((int*)data) == E_NO_ERROR) {
-                rxnum += MXC_I2C_ReadRXFIFO(i2c, &Sdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
-                I2C_Callback(NULL, E_NO_ERROR);
-                return 1;
-            }
+            I2C_Callback(NULL, E_NO_ERROR);
+            return 1;
+        }
     }
     return 0;
 }
 
-//Prints out human-friendly format to read txdata and rxdata
+// Prints out human-friendly format to read txdata and rxdata
 void printData(void)
 {
     int i;
     printf("\n-->TxData: ");
-    for (i = 0; i < sizeof(txdata); ++i) {
-        printf("%02x ", txdata[i]);
-    }
+    for (i = 0; i < sizeof(txdata); ++i) { printf("%02x ", txdata[i]); }
 
     printf("\n\n-->RxData: ");
-    for (i = 0; i < sizeof(rxdata); ++i) {
-        printf("%02x ", rxdata[i]);
-    }
+    for (i = 0; i < sizeof(rxdata); ++i) { printf("%02x ", rxdata[i]); }
 
     printf("\n");
 
     return;
 }
 
-//Compare data to see if they are the same
+// Compare data to see if they are the same
 int verifyData()
 {
     int i, fails = 0;
@@ -223,14 +219,14 @@ int main()
 
     int error, i = 0;
 
-    //Setup the I2CM
+    // Setup the I2CM
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("Failed to initialize master.\n");
         return FAILED;
     }
 
-    //Setup the I2CS
+    // Setup the I2CS
     error = MXC_I2C_Init(I2C_SLAVE, 0, I2C_SLAVE_ADDR);
     if (error != E_NO_ERROR) {
         printf("Failed to initialize slave.\n");
@@ -254,15 +250,15 @@ int main()
     // This will write data to slave
     // Then read data back from slave
     mxc_i2c_req_t reqMaster;
-    reqMaster.i2c      = I2C_MASTER;
-    reqMaster.addr     = I2C_SLAVE_ADDR;
-    reqMaster.tx_buf   = txdata;
-    reqMaster.tx_len   = I2C_BYTES;
-    reqMaster.rx_buf   = rxdata;
-    reqMaster.rx_len   = I2C_BYTES;
-    reqMaster.restart  = 0;
+    reqMaster.i2c = I2C_MASTER;
+    reqMaster.addr = I2C_SLAVE_ADDR;
+    reqMaster.tx_buf = txdata;
+    reqMaster.tx_len = I2C_BYTES;
+    reqMaster.rx_buf = rxdata;
+    reqMaster.rx_len = I2C_BYTES;
+    reqMaster.restart = 0;
     reqMaster.callback = I2C_Callback;
-    I2C_FLAG           = 1;
+    I2C_FLAG = 1;
 
     printf("\n\n-->Writing data to slave, and reading the data back\n");
 
@@ -283,16 +279,14 @@ int main()
         printf("Error writing: %d\n", error);
         return FAILED;
     }
-    while (DMA_FLAG == 0) {
-    };
+    while (DMA_FLAG == 0) { };
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {
-    };
+    while (I2C_FLAG == 1) { };
 #endif
 
     printf("\n-->Result: \n");

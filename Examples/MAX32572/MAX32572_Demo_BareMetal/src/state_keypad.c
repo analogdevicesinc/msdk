@@ -45,11 +45,11 @@
 #define BUTTON_SIZE_Y 41 + 6 // 6 for free space
 
 /********************************* 		VARIABLES	 *************************/
-static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = {0};
+static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = { 0 };
 
 static text_t text_msg[] = {
-    {(char*)"Pressed", 7},
-    {(char*)input_buf, 0},
+    { (char*)"Pressed", 7 },
+    { (char*)input_buf, 0 },
 
 };
 
@@ -158,40 +158,40 @@ static void print_inputs(int key)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_0:
-        case KEY_1:
-        case KEY_2:
-        case KEY_3:
-        case KEY_4:
-        case KEY_5:
-        case KEY_6:
-        case KEY_7:
-        case KEY_8:
-        case KEY_9:
-        case KEY_A:
-        case KEY_B:
-            print_inputs(key);
-            break;
-        case KEY_C: // exit
-            state_set_current(get_home_state());
-            break;
-        case KEY_D: // enter
-            state_set_current(get_home_state());
-            break;
-        case KEY_E: // cancel
-            print_inputs(-1);
-            break;
-        case KEY_F: // clear
-            print_inputs(0);
-            break;
-        default:
-            break;
+    case KEY_0:
+    case KEY_1:
+    case KEY_2:
+    case KEY_3:
+    case KEY_4:
+    case KEY_5:
+    case KEY_6:
+    case KEY_7:
+    case KEY_8:
+    case KEY_9:
+    case KEY_A:
+    case KEY_B:
+        print_inputs(key);
+        break;
+    case KEY_C: // exit
+        state_set_current(get_home_state());
+        break;
+    case KEY_D: // enter
+        state_set_current(get_home_state());
+        break;
+    case KEY_E: // cancel
+        print_inputs(-1);
+        break;
+    case KEY_F: // clear
+        print_inputs(0);
+        break;
+    default:
+        break;
     }
 
     return 0;
 }
 
-static State g_state = {"keypad", init, key_process, NULL, 0};
+static State g_state = { "keypad", init, key_process, NULL, 0 };
 
 /********************************* Public Functions **************************/
 State* get_keypad_state(void)

@@ -31,11 +31,11 @@
  *
  *************************************************************************** */
 
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
 #include "gcr_regs.h"
 #include "lp.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
 
 void MXC_LP_EnterSleepMode(void)
 {
@@ -75,8 +75,9 @@ void MXC_LP_EnterBackupMode(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
 
-    while (1)
-        ; // Should never reach this line - device will jump to backup vector on exit from background mode.
+    while (1) { }
+    // Should never reach this line - device will jump to backup vector on exit from background
+    // mode.
 }
 
 void MXC_LP_EnterStorageMode(void)
@@ -89,8 +90,9 @@ void MXC_LP_EnterStorageMode(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
 
-    while (1)
-        ; // Should never reach this line - device will jump to backup vector on exit from background mode.
+    while (1) { }
+    // Should never reach this line - device will jump to backup vector on exit from background
+    // mode.
 }
 
 void MXC_LP_EnterShutDownMode(void)
@@ -98,13 +100,13 @@ void MXC_LP_EnterShutDownMode(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
 
-    while (1)
-        ; // Should never reach this line - device will reset on exit from shutdown mode.
+    while (1) { }
+    // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 {
-    //TODO: not supported yet
+    // TODO: not supported yet
 }
 
 void MXC_LP_RetentionRegEnable(void)
@@ -195,24 +197,24 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIO_WE;
 
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case MXC_GPIO_PORT_0:
-            MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
-            break;
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
+        break;
 
-        case MXC_GPIO_PORT_1:
-            MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
     }
 }
 
 void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case MXC_GPIO_PORT_0:
-            MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
-            break;
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
+        break;
 
-        case MXC_GPIO_PORT_1:
-            MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
     }
 
     if (MXC_PWRSEQ->lpwken1 == 0 && MXC_PWRSEQ->lpwken0 == 0) {
@@ -259,16 +261,16 @@ void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr)
 void MXC_LP_EnableComparatorWakeup(mxc_adc_comp_t comp)
 {
     switch (comp) {
-        case MXC_ADC_COMP_0:
-            MXC_PWRSEQ->lppwkst |= MXC_F_PWRSEQ_LPPWKST_AINCOMP0;
-            MXC_PWRSEQ->lppwken |= MXC_F_PWRSEQ_LPPWKEN_AINCOMP0;
-            break;
-        case MXC_ADC_COMP_1:
-            MXC_PWRSEQ->lppwkst |= MXC_F_PWRSEQ_LPPWKST_AINCOMP1;
-            MXC_PWRSEQ->lppwken |= MXC_F_PWRSEQ_LPPWKEN_AINCOMP1;
-            break;
-        default:
-            return;
+    case MXC_ADC_COMP_0:
+        MXC_PWRSEQ->lppwkst |= MXC_F_PWRSEQ_LPPWKST_AINCOMP0;
+        MXC_PWRSEQ->lppwken |= MXC_F_PWRSEQ_LPPWKEN_AINCOMP0;
+        break;
+    case MXC_ADC_COMP_1:
+        MXC_PWRSEQ->lppwkst |= MXC_F_PWRSEQ_LPPWKST_AINCOMP1;
+        MXC_PWRSEQ->lppwken |= MXC_F_PWRSEQ_LPPWKEN_AINCOMP1;
+        break;
+    default:
+        return;
     }
     MXC_GCR->pm |= MXC_F_GCR_PM_AINCOMP_WE;
 }
@@ -276,14 +278,14 @@ void MXC_LP_EnableComparatorWakeup(mxc_adc_comp_t comp)
 void MXC_LP_DisableComparatorWakeup(mxc_adc_comp_t comp)
 {
     switch (comp) {
-        case MXC_ADC_COMP_0:
-            MXC_PWRSEQ->lppwken &= ~MXC_F_PWRSEQ_LPPWKEN_AINCOMP0;
-            break;
-        case MXC_ADC_COMP_1:
-            MXC_PWRSEQ->lppwken &= ~MXC_F_PWRSEQ_LPPWKEN_AINCOMP1;
-            break;
-        default:
-            return;
+    case MXC_ADC_COMP_0:
+        MXC_PWRSEQ->lppwken &= ~MXC_F_PWRSEQ_LPPWKEN_AINCOMP0;
+        break;
+    case MXC_ADC_COMP_1:
+        MXC_PWRSEQ->lppwken &= ~MXC_F_PWRSEQ_LPPWKEN_AINCOMP1;
+        break;
+    default:
+        return;
     }
     MXC_GCR->pm &= ~MXC_F_GCR_PM_AINCOMP_WE;
 }

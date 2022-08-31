@@ -64,27 +64,27 @@ extern "C" {
  */
 typedef enum {
     MXC_OWM_EXT_PU_ACT_HIGH = 0, /**< Pullup pin is active high when enabled.        */
-    MXC_OWM_EXT_PU_ACT_LOW  = 1, /**< Pullup pin is active low when enabled.         */
-    MXC_OWM_EXT_PU_UNUSED   = 2, /**< Pullup pin is not used for an external pullup. */
+    MXC_OWM_EXT_PU_ACT_LOW = 1, /**< Pullup pin is active low when enabled.         */
+    MXC_OWM_EXT_PU_UNUSED = 2, /**< Pullup pin is not used for an external pullup. */
 } mxc_owm_ext_pu_t;
 
 /**
  * Structure type for 1-Wire Master configuration.
  */
 typedef struct {
-    uint8_t int_pu_en;            /**< 1 = internal pullup on.   */
+    uint8_t int_pu_en; /**< 1 = internal pullup on.   */
     mxc_owm_ext_pu_t ext_pu_mode; /**< See #owm_ext_pu_t.   */
-    uint8_t long_line_mode;       /**< 1 = long line mode enable.    */
+    uint8_t long_line_mode; /**< 1 = long line mode enable.    */
     // owm_overdrive_t overdrive_spec; /**< 0 = timeslot is 12us, 1 = timeslot is 10us.   */
 } mxc_owm_cfg_t;
 
-#define READ_ROM_COMMAND     0x33 /**< Read ROM Command */
-#define MATCH_ROM_COMMAND    0x55 /**< Match ROM Command */
-#define SEARCH_ROM_COMMAND   0xF0 /**< Search ROM Command */
-#define SKIP_ROM_COMMAND     0xCC /**< Skip ROM Command */
-#define OD_SKIP_ROM_COMMAND  0x3C /**< Overdrive Skip ROM Command */
+#define READ_ROM_COMMAND 0x33 /**< Read ROM Command */
+#define MATCH_ROM_COMMAND 0x55 /**< Match ROM Command */
+#define SEARCH_ROM_COMMAND 0xF0 /**< Search ROM Command */
+#define SKIP_ROM_COMMAND 0xCC /**< Skip ROM Command */
+#define OD_SKIP_ROM_COMMAND 0x3C /**< Overdrive Skip ROM Command */
 #define OD_MATCH_ROM_COMMAND 0x69 /**< Overdrive Match ROM Command */
-#define RESUME_COMMAND       0xA5 /**< Resume Command */
+#define RESUME_COMMAND 0xA5 /**< Resume Command */
 
 /* **** Globals **** */
 

@@ -31,17 +31,17 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
+#include "mcr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
+#include "mxc_sys.h"
 #include "qdec.h"
 #include "qdec_regs.h"
 #include "qdec_reva.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "mcr_regs.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
+#include <stdio.h>
 
 int MXC_QDEC_Init(mxc_qdec_req_t* req)
 {

@@ -26,8 +26,8 @@
 #ifndef _FAST_MATH_FUNCTIONS_F16_H_
 #define _FAST_MATH_FUNCTIONS_F16_H_
 
-#include "arm_math_types_f16.h"
 #include "arm_math_memory.h"
+#include "arm_math_types_f16.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
@@ -42,9 +42,9 @@ extern "C" {
 #if defined(ARM_FLOAT16_SUPPORTED)
 
 /**
-   * @addtogroup SQRT
-   * @{
-   */
+ * @addtogroup SQRT
+ * @{
+ */
 
 /**
   @brief         Floating-point square root function.
@@ -59,7 +59,7 @@ __STATIC_FORCEINLINE arm_status arm_sqrt_f16(float16_t in, float16_t* pOut)
     float32_t r;
     arm_status status;
     status = arm_sqrt_f32((float32_t)in, &r);
-    *pOut  = (float16_t)r;
+    *pOut = (float16_t)r;
     return (status);
 }
 

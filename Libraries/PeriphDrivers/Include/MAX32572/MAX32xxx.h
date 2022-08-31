@@ -44,8 +44,8 @@
 #include "mxc_device.h"
 
 //
-#include "mxc_delay.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "mxc_lock.h"
 #include "mxc_pins.h"

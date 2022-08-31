@@ -31,23 +31,23 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_errors.h"
-#include "mxc_device.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
-#include "mxc_delay.h"
+#include "spimss.h"
 #include "spimss_regs.h"
 #include "spimss_reva_regs.h"
-#include "spimss.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
-/** 
+/**
  * @brief Enumeration type for setting the number data lines to use for communication.
  */
-typedef enum {    // ONLY FOR COMPATIBILITY FOR CONSOLIDATION WITH SPY17, NOT USED OR NEEDED
+typedef enum { // ONLY FOR COMPATIBILITY FOR CONSOLIDATION WITH SPY17, NOT USED OR NEEDED
     DUMMY_1_RevA, /**< NOT USED                */
     DUMMY_2_RevA, /**< NOT USED                */
     DUMMY_3_RevA, /**< NOT USED                */
@@ -61,13 +61,14 @@ typedef struct spimss_reva_req spimss_reva_req_t;
 /**
  * @brief Callback function type used in asynchronous SPI Master communication requests.
  * @details The function declaration for the SPI Master callback is:
- * @code 
+ * @code
  * void callback(spi_req_t * req, int error_code);
  * @endcode
  * |        |                                            |
  * | -----: | :----------------------------------------- |
  * | \p req |  Pointer to a #spi_req object representing the active SPI Master active transaction. |
- * | \p error_code | An error code if the active transaction had a failure or #E_NO_ERROR if successful. |
+ * | \p error_code | An error code if the active transaction had a failure or #E_NO_ERROR if
+ * successful. |
  * @note Callback will execute in interrupt context
  * @addtogroup spi_async
  */
@@ -80,13 +81,13 @@ typedef void (*spimss_reva_callback_fn)(spimss_reva_req_t* req, int error_code);
  * @addtogroup spi_async
  */
 struct spimss_reva_req {
-    uint8_t ssel;              /**< Not Used*/
-    uint8_t deass;             /**< Not Used*/
-    const void* tx_data;       /**< Pointer to a buffer to transmit data from. NULL if undesired. */
-    void* rx_data;             /**< Pointer to a buffer to store data received. NULL if undesired.*/
+    uint8_t ssel; /**< Not Used*/
+    uint8_t deass; /**< Not Used*/
+    const void* tx_data; /**< Pointer to a buffer to transmit data from. NULL if undesired. */
+    void* rx_data; /**< Pointer to a buffer to store data received. NULL if undesired.*/
     spimss_reva_width_t width; /**< Not Used */
-    unsigned len;              /**< Number of transfer units to send from the \p tx_data buffer. */
-    unsigned bits;   /**< Number of bits in transfer unit (e.g. 8 for byte, 16 for short) */
+    unsigned len; /**< Number of transfer units to send from the \p tx_data buffer. */
+    unsigned bits; /**< Number of bits in transfer unit (e.g. 8 for byte, 16 for short) */
     unsigned rx_num; /**< Number of bytes actually read into the \p rx_data buffer. */
     unsigned tx_num; /**< Number of bytes actually sent from the \p tx_data buffer */
     spimss_reva_callback_fn callback; /**< Callback function if desired, NULL otherwise */

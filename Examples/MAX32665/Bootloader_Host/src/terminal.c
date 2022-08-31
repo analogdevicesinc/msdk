@@ -32,14 +32,13 @@
  ******************************************************************************/
 
 /*******************************      INCLUDES    ****************************/
-#include <string.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdarg.h>
 
-#include "uart.h"
-#include "terminal.h"
 #include "board.h"
+#include "terminal.h"
+#include "uart.h"
 
 /*******************************      DEFINES     ****************************/
 #if defined(BOARD_FTHR)
@@ -85,7 +84,7 @@ int terminal_read_num(unsigned int timeout)
         key = MXC_UART_ReadCharacter(PC_COM_PORT);
 
         if (key > 0) {
-            //echo
+            // echo
             MXC_UART_WriteCharacter(PC_COM_PORT, (unsigned char)key);
 
             if ((key >= '0') && (key <= '9')) {

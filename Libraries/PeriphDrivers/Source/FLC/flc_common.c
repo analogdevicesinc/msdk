@@ -40,12 +40,12 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
 #include "flc.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
 #include "stdlib.h"
+#include <string.h>
 
 //******************************************************************************
 #if IAR_PRAGMAS
@@ -81,7 +81,7 @@ int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer)
 
     uint32_t current_data_32;
     uint8_t* current_data = (uint8_t*)&current_data_32;
-    uint8_t* buffer8      = (uint8_t*)buffer;
+    uint8_t* buffer8 = (uint8_t*)buffer;
 
     // Align the address to a word boundary and read/write if we have to
     if (address & 0x3) {

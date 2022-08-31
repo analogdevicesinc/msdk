@@ -34,9 +34,9 @@
 /****** Includes *******/
 #include "mxc_device.h"
 #include "mxc_sys.h"
+#include "spixfc_fifo_reva_regs.h"
 #include "spixfc_reva_regs.h"
 #include "spixfm_reva_regs.h"
-#include "spixfc_fifo_reva_regs.h"
 
 /* **** Definitions **** */
 /**
@@ -44,13 +44,13 @@
  */
 typedef enum {
     MXC_SPIXF_REVA_SSEL0_HIGH = (0x1 << 0),
-    MXC_SPIXF_REVA_SSEL0_LOW  = 0,
+    MXC_SPIXF_REVA_SSEL0_LOW = 0,
     MXC_SPIXF_REVA_SSEL1_HIGH = (0x1 << 1),
-    MXC_SPIXF_REVA_SSEL1_LOW  = 0,
+    MXC_SPIXF_REVA_SSEL1_LOW = 0,
     MXC_SPIXF_REVA_SSEL2_HIGH = (0x1 << 2),
-    MXC_SPIXF_REVA_SSEL2_LOW  = 0,
+    MXC_SPIXF_REVA_SSEL2_LOW = 0,
     MXC_SPIXF_REVA_SSEL3_HIGH = (0x1 << 3),
-    MXC_SPIXF_REVA_SSEL3_LOW  = 0
+    MXC_SPIXF_REVA_SSEL3_LOW = 0
 } mxc_spixf_reva_ssel_t;
 
 /**
@@ -123,7 +123,7 @@ typedef struct {
     mxc_spixf_reva_mode_t mode; ///< MXC_SPIXF mode to use, 0-3.
     mxc_spixf_reva_sspol_t
         ssel_pol; ///< Mask of active levels for slave select signals, use mxc_spixf_ssel_t.
-    uint32_t hz;  ///< SPI Frequency in Hz.
+    uint32_t hz; ///< SPI Frequency in Hz.
 } mxc_spixf_reva_cfg_t;
 
 /**
@@ -160,14 +160,14 @@ typedef enum {
  * @brief      IO pullup/pulldown Control
  */
 typedef enum {
-    MXC_SPIXF_REVA_TRISTATE  = MXC_S_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL_TRI_STATE,
-    MXC_SPIXF_REVA_PULL_UP   = MXC_S_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL_PULL_UP,
+    MXC_SPIXF_REVA_TRISTATE = MXC_S_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL_TRI_STATE,
+    MXC_SPIXF_REVA_PULL_UP = MXC_S_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL_PULL_UP,
     MXC_SPIXF_REVA_PULL_DOWN = MXC_S_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL_PULL_DOWN,
 } mxc_spixf_reva_pup_t;
 
 /**
  * @brief       SPIXF drive strentgh
- * 
+ *
  */
 typedef enum { MXC_SPIXF_REVA_LOW = 0, MXC_SPIXF_REVA_HIGH } mxc_spixf_reva_ds_t;
 
@@ -177,56 +177,56 @@ typedef enum { MXC_SPIXF_REVA_LOW = 0, MXC_SPIXF_REVA_HIGH } mxc_spixf_reva_ds_t
 typedef struct mxc_spixf_reva_req mxc_spixf_reva_req_t;
 
 struct mxc_spixf_reva_req {
-    uint8_t deass;                ///< De-assert slave select at the end of the transaction.
-    uint8_t wait_tx;              ///< Wait for the TX FIFO to be empty before returning.
-    const uint8_t* tx_data;       ///< TX buffer.
-    uint8_t* rx_data;             ///< RX buffer.
+    uint8_t deass; ///< De-assert slave select at the end of the transaction.
+    uint8_t wait_tx; ///< Wait for the TX FIFO to be empty before returning.
+    const uint8_t* tx_data; ///< TX buffer.
+    uint8_t* rx_data; ///< RX buffer.
     mxc_spixf_reva_width_t width; ///< Number of data lines to use
-    unsigned len;                 ///< Number of bytes to send.
-    unsigned read_num;            ///< Number of bytes read.
-    unsigned write_num;           ///< Number of bytes written.
+    unsigned len; ///< Number of bytes to send.
+    unsigned read_num; ///< Number of bytes read.
+    unsigned write_num; ///< Number of bytes written.
     spixr_complete_cb_t callback; ///< callback function
 };
 
 /***** Function Prototypes *****/
 int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                        uint32_t cmdval, uint32_t frequency);
+    uint32_t cmdval, uint32_t frequency);
 void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t* spixfc);
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl);
+    mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl);
 int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                          mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, uint32_t len, uint8_t deass);
-int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
-                               mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req);
-int MXC_SPIXF_RevA_TransactionAsync(mxc_spixfc_reva_regs_t* spixfc,
-                                    mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req);
+    mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, uint32_t len, uint8_t deass);
+int MXC_SPIXF_RevA_Transaction(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req);
+int MXC_SPIXF_RevA_TransactionAsync(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req);
 int MXC_SPIXF_RevA_AbortAsync(mxc_spixfc_reva_regs_t* spixfc, mxc_spixf_req_t* req);
-void MXC_SPIXF_RevA_Handler(mxc_spixfc_reva_regs_t* spixfc,
-                            mxc_spixfc_fifo_reva_regs_t* spixfc_fifo);
+void MXC_SPIXF_RevA_Handler(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo);
 int MXC_SPIXF_RevA_ReadyForSleep(mxc_spixfc_reva_regs_t* spixfc);
 int MXC_SPIXF_RevA_EnableInt(mxc_spixfc_reva_regs_t* spixfc, uint32_t mask);
 int MXC_SPIXF_RevA_DisableInt(mxc_spixfc_reva_regs_t* spixfc, uint32_t mask);
 int MXC_SPIXF_RevA_ClearFlags(mxc_spixfc_reva_regs_t* spixfc, uint32_t flags);
 int MXC_SPIXF_RevA_GetFlags(mxc_spixfc_reva_regs_t* spixfc);
 
-//Low level
-int MXC_SPIXF_RevA_SetMode(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                           mxc_spixf_mode_t mode);
+// Low level
+int MXC_SPIXF_RevA_SetMode(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_mode_t mode);
 mxc_spixf_mode_t MXC_SPIXF_RevA_GetMode(mxc_spixfc_reva_regs_t* spixfc);
-int MXC_SPIXF_RevA_SetSSPolActiveHigh(mxc_spixfc_reva_regs_t* spixfc,
-                                      mxc_spixfm_reva_regs_t* spixfm);
-int MXC_SPIXF_RevA_SetSSPolActiveLow(mxc_spixfc_reva_regs_t* spixfc,
-                                     mxc_spixfm_reva_regs_t* spixfm);
+int MXC_SPIXF_RevA_SetSSPolActiveHigh(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm);
+int MXC_SPIXF_RevA_SetSSPolActiveLow(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm);
 int MXC_SPIXF_RevA_GetSSPolarity(mxc_spixfc_reva_regs_t* spixfc);
-int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                                   unsigned int hz);
+int MXC_SPIXF_RevA_SetSPIFrequency(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, unsigned int hz);
 uint32_t MXC_SPIXF_RevA_GetSPIFrequency(mxc_spixfm_reva_regs_t* spixfm);
 uint32_t MXC_SPIXF_RevA_GetSPIFrequencyWrite(mxc_spixfc_reva_regs_t* spixfc);
-int MXC_SPIXF_RevA_SetSSActiveTime(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                                   mxc_spixf_ssact_t ssact);
+int MXC_SPIXF_RevA_SetSSActiveTime(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ssact_t ssact);
 mxc_spixf_ssact_t MXC_SPIXF_RevA_GetSSActiveTime(mxc_spixfc_reva_regs_t* spixfc);
-int MXC_SPIXF_RevA_SetSSInactiveTime(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                                     mxc_spixf_ssiact_t ssiact);
+int MXC_SPIXF_RevA_SetSSInactiveTime(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ssiact_t ssiact);
 mxc_spixf_ssiact_t MXC_SPIXF_RevA_GetSSInactiveTime(mxc_spixfc_reva_regs_t* spixfc);
 int MXC_SPIXF_RevA_SetCmdWidth(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_spiwidth_t width);
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetCmdWidth(mxc_spixfm_reva_regs_t* spixfm);
@@ -247,17 +247,17 @@ int MXC_SPIXF_RevA_BBDataOutputDisable(mxc_spixfc_reva_regs_t* spixfc, uint8_t m
 uint8_t MXC_SPIXF_RevA_BBDataOutputIsEnabled(mxc_spixfc_reva_regs_t* spixfc);
 uint8_t MXC_SPIXF_RevA_GetBBDataOutputValue(mxc_spixfc_reva_regs_t* spixfc);
 uint8_t MXC_SPIXF_RevA_GetBBDataInputValue(mxc_spixfc_reva_regs_t* spixfc);
-int MXC_SPIXF_RevA_SetModeData(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                               uint16_t data);
+int MXC_SPIXF_RevA_SetModeData(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, uint16_t data);
 uint16_t MXC_SPIXF_RevA_GetModeData(mxc_spixfm_reva_regs_t* spixfm);
 int MXC_SPIXF_RevA_SetSCKInverted(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm);
-int MXC_SPIXF_RevA_SetSCKNonInverted(mxc_spixfc_reva_regs_t* spixfc,
-                                     mxc_spixfm_reva_regs_t* spixfm);
+int MXC_SPIXF_RevA_SetSCKNonInverted(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm);
 int MXC_SPIXF_RevA_GetSCKInverted(mxc_spixfm_reva_regs_t* spixfm);
-int MXC_SPIXF_RevA_SCKFeedbackEnable(mxc_spixfc_reva_regs_t* spixfc,
-                                     mxc_spixfm_reva_regs_t* spixfm);
-int MXC_SPIXF_RevA_SCKFeedbackDisable(mxc_spixfc_reva_regs_t* spixfc,
-                                      mxc_spixfm_reva_regs_t* spixfm);
+int MXC_SPIXF_RevA_SCKFeedbackEnable(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm);
+int MXC_SPIXF_RevA_SCKFeedbackDisable(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm);
 int MXC_SPIXF_RevA_SCKFeedbackIsEnabled(mxc_spixfm_reva_regs_t* spixfm);
 int MXC_SPIXF_RevA_SetSCKSampleDelay(mxc_spixfc_reva_regs_t* spixfc, uint8_t delay);
 uint8_t MXC_SPIXF_RevA_GetSCKSampleDelay(mxc_spixfc_reva_regs_t* spixfc);

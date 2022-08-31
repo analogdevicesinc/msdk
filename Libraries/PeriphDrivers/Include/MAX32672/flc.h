@@ -182,9 +182,10 @@ int MXC_FLC_LockInfoBlock(uint32_t address);
 /**
  * @brief       Blocks write operations to the flash page associated with the 'address' argument
  * @note        Flash pages cannot be unblocked except for on POR and external resets
- * 
- * @param       address     Absolute address located anywhere in the flash page to be locked (does not need to be word-aligned)
- * 
+ *
+ * @param       address     Absolute address located anywhere in the flash page to be locked (does
+ * not need to be word-aligned)
+ *
  * @return      #E_NO_ERROR If function is successful.
  */
 int MXC_FLC_BlockPageWrite(uint32_t address);
@@ -192,9 +193,10 @@ int MXC_FLC_BlockPageWrite(uint32_t address);
 /**
  * @brief       Blocks read operations from the flash page associated with the 'address' argument
  * @note        Flash pages cannot be unblocked except for on POR and external resets
- * 
- * @param       address     Absolute address located anywhere in the flash page to be locked (does not need to be word-aligned)
- * 
+ *
+ * @param       address     Absolute address located anywhere in the flash page to be locked (does
+ * not need to be word-aligned)
+ *
  * @return      #E_NO_ERROR If function is successful.
  */
 int MXC_FLC_BlockPageRead(uint32_t address);

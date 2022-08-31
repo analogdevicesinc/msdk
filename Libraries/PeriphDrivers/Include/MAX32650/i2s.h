@@ -43,8 +43,8 @@
 #define _I2S_H_
 
 /* **** Includes **** */
-#include "mxc_sys.h"
 #include "dma.h"
+#include "mxc_sys.h"
 #include "spimss_regs.h"
 
 #ifdef __cplusplus
@@ -60,19 +60,19 @@ extern "C" {
 /* **** Definitions **** */
 
 typedef enum {
-    LEFT_JUSTIFIED  = 0,
+    LEFT_JUSTIFIED = 0,
     RIGHT_JUSTIFIED = 1,
 } mxc_i2s_justify_t;
 
 typedef enum {
     STEREO_MODE = 0,
-    MONO_MODE   = 1,
+    MONO_MODE = 1,
 } mxc_i2s_audio_mode_t;
 
 /** @brief I2S audio directions */
 typedef enum {
     AUDIO_OUT = 1,
-    AUDIO_IN  = 2,
+    AUDIO_IN = 2,
 } mxc_i2s_direction_t;
 
 /** @brief I2S Configuration Struct */

@@ -137,7 +137,7 @@ int __API__ ucl_ripemd160_init(ucl_ripemd160_ctx_t* context);
  * @param[in]     data_byteLen Data byte length
  *
  * @warning #ucl_ripemd160_init must be processed before, and
- *          #ucl_ripemd160_finish should be processed to get the 
+ *          #ucl_ripemd160_finish should be processed to get the
  *          final hash.
  *
  * @return Error code
@@ -157,7 +157,7 @@ int __API__ ucl_ripemd160_core(ucl_ripemd160_ctx_t* context, u8* data, u32 data_
  * @param[out]    hash    Pointer to the digest
  * @param[in,out] context Pointer to the context
  *
- * @warning #ucl_ripemd160_init and #ucl_ripemd160_core must be processed 
+ * @warning #ucl_ripemd160_init and #ucl_ripemd160_core must be processed
  *          before.
  *
  * @return Error code
@@ -173,5 +173,5 @@ int __API__ ucl_ripemd160_finish(u8* hash, ucl_ripemd160_ctx_t* context);
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif //HASH_RIPEMD160
+#endif // HASH_RIPEMD160
 #endif /* _UCL_RIMPEMD160_H_ */

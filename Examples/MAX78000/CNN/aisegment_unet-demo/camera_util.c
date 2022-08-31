@@ -1,50 +1,50 @@
 /*******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
-*
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ *
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************/
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "uart.h"
-#include "led.h"
 #include "board.h"
+#include "led.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "uart.h"
+#include <stdint.h>
+#include <stdio.h>
 
 #include "camera.h"
-#include "dma.h"
 #include "camera_util.h"
+#include "dma.h"
 
 #ifdef BOARD_EVKIT_V1
 #include "tft_ssd2119.h"
@@ -100,7 +100,7 @@ int initialize_camera(void)
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA,
-                       dma_channel); // RGB888 with 0 at MSB stream
+        dma_channel); // RGB888 with 0 at MSB stream
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
@@ -134,7 +134,7 @@ void load_row_cnn_init(void)
     data_addr3 = (uint32_t*)0x50418700;
     data_addr6 = (uint32_t*)0x50810700;
     data_addr9 = (uint32_t*)0x50c08700;
-    addr       = data_addr9;
+    addr = data_addr9;
 }
 
 void load_row_cnn(uint8_t* data, int row)
@@ -150,60 +150,60 @@ void load_row_cnn(uint8_t* data, int row)
     uint8_t* dataptr = data;
 #endif
 
-    offset0  = 0x00002000;
-    offset1  = 0x00002000;
+    offset0 = 0x00002000;
+    offset1 = 0x00002000;
     subtract = 0x00004000 - 1;
 
     switch (row & 3) {
-        case 0:
-            data_addr9 = addr;
-            addr       = data_addr0;
-            break;
+    case 0:
+        data_addr9 = addr;
+        addr = data_addr0;
+        break;
 
-        case 1:
-            data_addr0 = addr;
-            addr       = data_addr3;
-            offset0 += 0x000FA000 - 0x00002000;
-            subtract += 0x000FC000 - 0x00004000;
-            break;
+    case 1:
+        data_addr0 = addr;
+        addr = data_addr3;
+        offset0 += 0x000FA000 - 0x00002000;
+        subtract += 0x000FC000 - 0x00004000;
+        break;
 
-        case 2:
-            data_addr3 = addr;
-            addr       = data_addr6;
-            offset1 += 0x000FA000 - 0x00002000;
-            subtract += 0x000FC000 - 0x00004000;
-            break;
+    case 2:
+        data_addr3 = addr;
+        addr = data_addr6;
+        offset1 += 0x000FA000 - 0x00002000;
+        subtract += 0x000FC000 - 0x00004000;
+        break;
 
-        default:
-            data_addr6 = addr;
-            addr       = data_addr9;
-            break;
+    default:
+        data_addr6 = addr;
+        addr = data_addr9;
+        break;
     }
 
     // indexes of 352x352 image (row,j)
     for (int j = 0; j < IMAGE_XRES; j += 4) {
 #if defined(PATTERN_GEN)
         // static test pattern
-        m.b[0] = 133;      // r0
-        m.b[1] = j >> 1;   // g0
+        m.b[0] = 133; // r0
+        m.b[1] = j >> 1; // g0
         m.b[2] = row >> 1; // b0
-        m.b[3] = 133;      // r1
+        m.b[3] = 133; // r1
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
         m.b[0] = (j + 1) >> 1; // g1
-        m.b[1] = row >> 1;     // b1
-        m.b[2] = 133;          // r2
+        m.b[1] = row >> 1; // b1
+        m.b[2] = 133; // r2
         m.b[3] = (j + 2) >> 1; // g2
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = row >> 1;     // b2
-        m.b[1] = 133;          // r3
+        m.b[0] = row >> 1; // b2
+        m.b[1] = 133; // r3
         m.b[2] = (j + 3) >> 1; // g3
-        m.b[3] = row >> 1;     // b3
+        m.b[3] = row >> 1; // b3
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
@@ -241,7 +241,7 @@ void load_row_cnn(uint8_t* data, int row)
         m.b[0] = *dataptr++; // r0
         m.b[1] = *dataptr++; // g0
         m.b[2] = *dataptr++; // b0
-        dataptr++;           // skip MSB
+        dataptr++; // skip MSB
         m.b[3] = *dataptr++; // r1
 
         *addr = m.w ^ 0x80808080U;
@@ -249,7 +249,7 @@ void load_row_cnn(uint8_t* data, int row)
 
         m.b[0] = *dataptr++; // g1
         m.b[1] = *dataptr++; // b1
-        dataptr++;           // skip MSB
+        dataptr++; // skip MSB
         m.b[2] = *dataptr++; // r2
         m.b[3] = *dataptr++; // g2
 
@@ -257,11 +257,11 @@ void load_row_cnn(uint8_t* data, int row)
         addr += offset1;
 
         m.b[0] = *dataptr++; // b2
-        dataptr++;           // skip MSB
+        dataptr++; // skip MSB
         m.b[1] = *dataptr++; // r3
         m.b[2] = *dataptr++; // g3
         m.b[3] = *dataptr++; // b3
-        dataptr++;           // skip MSB
+        dataptr++; // skip MSB
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
@@ -324,8 +324,8 @@ void load_row_cnn(uint8_t* data, int row)
       (348,351,2)|(348,351,1)|(348,351,0)|(348,350,2)      // 7743
 
 
- The same pattern of 3x7744 words repeats another 3 times, with starting row index changed from 0 to 1, then 2 and then 3
- resulting in 4x3x7744 words:
+ The same pattern of 3x7744 words repeats another 3 times, with starting row index changed from 0 to
+ 1, then 2 and then 3 resulting in 4x3x7744 words:
  ....
     0x50c18700: last bank
     ...
@@ -387,14 +387,13 @@ void load_input_camera(void)
 
     stat = get_camera_stream_statistic();
 
-    //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    //printf("OVERFLOW = %d\n", stat->overflow_count);
+    // printf("DMA transfer count = %d\n", stat->dma_transfer_count);
+    // printf("OVERFLOW = %d\n", stat->overflow_count);
     if (stat->overflow_count > 0) {
         printf("OVERFLOW = %d\n", stat->overflow_count);
         LED_On(LED2); // Turn on red LED if overflow detected
 
-        while (1)
-            ;
+        while (1) { }
     }
 }
 
@@ -442,8 +441,8 @@ void display_camera(void)
                     r = data[k];
                     g = data[k + 1];
                     b = data[k + 2];
-                    //skip k+3
-                    rgb          = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+                    // skip k+3
+                    rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
                 }
@@ -458,30 +457,28 @@ void display_camera(void)
 
         stat = get_camera_stream_statistic();
 
-        //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-        //printf("OVERFLOW = %d\n", stat->overflow_count);
+        // printf("DMA transfer count = %d\n", stat->dma_transfer_count);
+        // printf("OVERFLOW = %d\n", stat->overflow_count);
         if (stat->overflow_count > 0) {
             printf("OVERFLOW DISP = %d\n", stat->overflow_count);
             LED_On(LED2); // Turn on red LED if overflow detected
 
-            while (1)
-                ;
+            while (1) { }
         }
     }
 
     static uint32_t sum = 0;
     void dump_cnn(void)
     {
-        uint32_t* data_addr[12] = {
-            (uint32_t*)0x50400700, (uint32_t*)0x50408700, (uint32_t*)0x50410700,
-            (uint32_t*)0x50418700, (uint32_t*)0x50800700, (uint32_t*)0x50808700,
-            (uint32_t*)0x50810700, (uint32_t*)0x50818700, (uint32_t*)0x50c00700,
-            (uint32_t*)0x50c08700, (uint32_t*)0x50c10700, (uint32_t*)0x50c18700};
+        uint32_t* data_addr[12]
+            = { (uint32_t*)0x50400700, (uint32_t*)0x50408700, (uint32_t*)0x50410700,
+                  (uint32_t*)0x50418700, (uint32_t*)0x50800700, (uint32_t*)0x50808700,
+                  (uint32_t*)0x50810700, (uint32_t*)0x50818700, (uint32_t*)0x50c00700,
+                  (uint32_t*)0x50c08700, (uint32_t*)0x50c10700, (uint32_t*)0x50c18700 };
 
         printf("\nDUMPING CNN, press PB0 \n");
 
-        while (!PB_Get(0))
-            ;
+        while (!PB_Get(0)) { }
 
         for (int i = 0; i < 12; i++) {
             for (int j = 0; j < 7744; j += 16) {
@@ -499,25 +496,33 @@ void display_camera(void)
 
         printf("SUM: %08X \n", sum);
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     void dump_inference(void)
     {
         uint32_t* data_addr[16] = {
-            (uint32_t*)0x50400000, (uint32_t*)0x50408000, (uint32_t*)0x50410000,
-            (uint32_t*)0x50418000, (uint32_t*)0x50800000, (uint32_t*)0x50808000,
-            (uint32_t*)0x50810000, (uint32_t*)0x50818000, (uint32_t*)0x50c00000,
-            (uint32_t*)0x50c08000, (uint32_t*)0x50c10000, (uint32_t*)0x50c18000,
-            (uint32_t*)0x51000000, (uint32_t*)0x51008000, (uint32_t*)0x51010000,
+            (uint32_t*)0x50400000,
+            (uint32_t*)0x50408000,
+            (uint32_t*)0x50410000,
+            (uint32_t*)0x50418000,
+            (uint32_t*)0x50800000,
+            (uint32_t*)0x50808000,
+            (uint32_t*)0x50810000,
+            (uint32_t*)0x50818000,
+            (uint32_t*)0x50c00000,
+            (uint32_t*)0x50c08000,
+            (uint32_t*)0x50c10000,
+            (uint32_t*)0x50c18000,
+            (uint32_t*)0x51000000,
+            (uint32_t*)0x51008000,
+            (uint32_t*)0x51010000,
             (uint32_t*)0x51018000,
         };
 
         printf("\nDUMPING INFERENCE, press PB0 \n");
 
-        while (!PB_Get(0))
-            ;
+        while (!PB_Get(0)) { }
 
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 7744; j += 16) {
@@ -535,8 +540,7 @@ void display_camera(void)
 
         printf("SUM: %08X \n", sum);
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     void run_camera(void)

@@ -31,14 +31,14 @@
  *
  **************************************************************************** */
 
-#include <stddef.h>
 #include "mxc_assert.h"
-#include "mxc_pins.h"
-#include "mxc_lock.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
 #include "smon.h"
 #include "smon_reva_regs.h"
+#include <stddef.h>
 
 /**
  * @brief   External Sensor Number
@@ -58,10 +58,10 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_REVA_CLK_DIVIDE_1  = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV1,
-    SMON_REVA_CLK_DIVIDE_2  = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV2,
-    SMON_REVA_CLK_DIVIDE_4  = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV4,
-    SMON_REVA_CLK_DIVIDE_8  = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV8,
+    SMON_REVA_CLK_DIVIDE_1 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV1,
+    SMON_REVA_CLK_DIVIDE_2 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV2,
+    SMON_REVA_CLK_DIVIDE_4 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV4,
+    SMON_REVA_CLK_DIVIDE_8 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV8,
     SMON_REVA_CLK_DIVIDE_16 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV16,
     SMON_REVA_CLK_DIVIDE_32 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV32,
     SMON_REVA_CLK_DIVIDE_64 = MXC_S_SMON_REVA_EXTSCN_DIVCLK_DIV64,
@@ -72,11 +72,11 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_REVA_FREQ_DIVIDE_4   = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ2000HZ,
-    SMON_REVA_FREQ_DIVIDE_8   = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ1000HZ,
-    SMON_REVA_FREQ_DIVIDE_16  = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ500HZ,
-    SMON_REVA_FREQ_DIVIDE_32  = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ250HZ,
-    SMON_REVA_FREQ_DIVIDE_64  = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ125HZ,
+    SMON_REVA_FREQ_DIVIDE_4 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ2000HZ,
+    SMON_REVA_FREQ_DIVIDE_8 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ1000HZ,
+    SMON_REVA_FREQ_DIVIDE_16 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ500HZ,
+    SMON_REVA_FREQ_DIVIDE_32 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ250HZ,
+    SMON_REVA_FREQ_DIVIDE_64 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ125HZ,
     SMON_REVA_FREQ_DIVIDE_128 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ63HZ,
     SMON_REVA_FREQ_DIVIDE_256 = MXC_S_SMON_REVA_EXTSCN_EXTFRQ_FREQ31HZ,
 } mxc_smon_reva_freq_divide_t;
@@ -114,7 +114,7 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_REVA_DFD_LOWPOWER_ENABLE,  ///< DFD enabled during LowPower mode
+    SMON_REVA_DFD_LOWPOWER_ENABLE, ///< DFD enabled during LowPower mode
     SMON_REVA_DFD_LOWPOWER_DISABLE, ///< DFD disabled during LowPower mode
 } mxc_smon_reva_lowpower_mode_t;
 
@@ -125,7 +125,7 @@ typedef enum {
 typedef enum {
     SMON_REVA_EXTSENSOR = MXC_F_SMON_REVA_SECST_EXTSRS,
     SMON_REVA_INTSENSOR = MXC_F_SMON_REVA_SECST_INTSRS,
-    SMON_REVA_SECALARM  = MXC_F_SMON_REVA_SECST_SECALRS,
+    SMON_REVA_SECALARM = MXC_F_SMON_REVA_SECST_SECALRS,
 } mxc_smon_reva_busy_t;
 
 /**
@@ -140,36 +140,35 @@ typedef struct {
     uint8_t data;
 } mxc_smon_reva_ext_cfg_t;
 
-int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg,
-                                  uint32_t delay);
+int MXC_SMON_RevA_ExtSensorEnable(
+    mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg, uint32_t delay);
 
 int MXC_SMON_RevA_SetSensorFrequency(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg);
 
 int MXC_SMON_RevA_SetErrorCount(mxc_smon_reva_regs_t* smon, uint8_t errorCount);
 
-int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold,
-                                   uint32_t delay);
+int MXC_SMON_RevA_TempSensorEnable(
+    mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold, uint32_t delay);
 
 int MXC_SMON_RevA_SetTempThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold);
 
-int MXC_SMON_RevA_VoltageMonitorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold,
-                                       uint32_t delay);
+int MXC_SMON_RevA_VoltageMonitorEnable(
+    mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold, uint32_t delay);
 
 int MXC_SMON_RevA_SetVTMThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold);
 
 int MXC_SMON_RevA_ActiveDieShieldEnable(mxc_smon_reva_regs_t* smon, uint32_t delay);
 
-int MXC_SMON_RevA_SelfDestructByteEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg,
-                                         uint32_t delay);
+int MXC_SMON_RevA_SelfDestructByteEnable(
+    mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg, uint32_t delay);
 
 void MXC_SMON_RevA_EnablePUFTrimErase(mxc_smon_reva_regs_t* smon);
 
 void MXC_SMON_RevA_DisablePUFTrimErase(mxc_smon_reva_regs_t* smon);
 
 int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t* smon,
-                                             mxc_smon_reva_interrupt_mode_t interruptMode,
-                                             mxc_smon_reva_lowpower_mode_t lowPowerMode,
-                                             uint32_t delay);
+    mxc_smon_reva_interrupt_mode_t interruptMode, mxc_smon_reva_lowpower_mode_t lowPowerMode,
+    uint32_t delay);
 
 uint32_t MXC_SMON_RevA_GetFlags(mxc_smon_reva_regs_t* smon);
 

@@ -1,61 +1,58 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 /**
-* @file console.c
-* @brief Serial console implementation file
-*****************************************************************************/
+ * @file console.c
+ * @brief Serial console implementation file
+ *****************************************************************************/
 
 #include "console.h"
-#include <string.h>
-#include <stdlib.h>
-#include "mxc_delay.h"
 #include "led.h"
+#include "mxc_delay.h"
+#include <stdlib.h>
+#include <string.h>
 
 char g_serial_buffer[SERIAL_BUFFER_SIZE];
 int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char* cmd_table[] = {"help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
+char* cmd_table[] = { "help", "reset", "capture", "imgres", "stream", "set-reg", "get-reg",
 #ifdef SD
-                     "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
-                     "touch", "write",   "cat",     "snap"
+    "mount", "unmount", "cwd", "cd", "ls", "mkdir", "rm", "touch", "write", "cat", "snap"
 #endif
 };
 
-char* help_table[] = {
-    ": Print this help string",
-    ": Issue a soft reset to the host MCU.",
+char* help_table[] = { ": Print this help string", ": Issue a soft reset to the host MCU.",
     ": Perform a standard blocking capture of a single image",
     "<width> <height> : Set the image resolution of the camera to <width> x <height>",
     ": Performs a line-by-line streaming DMA capture of a single image, capable of higher "
@@ -64,17 +61,13 @@ char* help_table[] = {
     "<register> : Prints the value in a camera register.",
     ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU "
     "detects it's blank.",
-    ": Unmount the SD card.",
-    ": Print the current working directory (cwd).",
+    ": Unmount the SD card.", ": Print the current working directory (cwd).",
     "<dir> : Change the current working directory to <dir>.",
-    ": List the contents of the current working directory.",
-    "<dir> : Create a directory",
-    "<item> : Remove a file or (empty) directory.",
-    "<filename> : Create an empty file.",
-    "<filename> <string> : Write a string to a file.",
-    "<filename> : Print the contents of a file.",
+    ": List the contents of the current working directory.", "<dir> : Create a directory",
+    "<item> : Remove a file or (empty) directory.", "<filename> : Create an empty file.",
+    "<filename> <string> : Write a string to a file.", "<filename> : Print the contents of a file.",
     "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is "
-    "optional.  If none is specified, images will be saved to /raw."};
+    "optional.  If none is specified, images will be saved to /raw." };
 
 int starts_with(char* a, char* b)
 {
@@ -108,7 +101,8 @@ int console_init(void)
     printf("Establishing communication with host...\n");
     char* sync = "*SYNC*";
 
-    // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
+    // Wait until the string "*SYNC*" is echoed back over the serial port before starting the
+    // example
     while (1) {
         // Transmit sync string
         send_msg(sync);
@@ -200,7 +194,7 @@ int recv_cmd(cmd_t* out_cmd)
                 // will now match the received command and is more
                 // convenient to process from here since we don't
                 // have to do string comparisons anymore.
-                cmd      = (cmd_t)i;
+                cmd = (cmd_t)i;
                 *out_cmd = cmd;
                 return 1;
             }
@@ -225,9 +219,7 @@ void print_help(void)
     int g_num_commands = sizeof(cmd_table) / sizeof(char*);
     printf("Registered %i total commands:\n", g_num_commands);
     printf("-----\n");
-    for (int i = 0; i < g_num_commands; i++) {
-        printf("\t'%s' %s\n", cmd_table[i], help_table[i]);
-    }
+    for (int i = 0; i < g_num_commands; i++) { printf("\t'%s' %s\n", cmd_table[i], help_table[i]); }
     printf("-----\n");
 }
 

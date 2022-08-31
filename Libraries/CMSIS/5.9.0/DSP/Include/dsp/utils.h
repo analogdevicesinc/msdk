@@ -33,8 +33,8 @@ extern "C" {
 #endif
 
 /**
-   * @brief Macros required for reciprocal calculation in Normalized LMS
-   */
+ * @brief Macros required for reciprocal calculation in Normalized LMS
+ */
 
 #define INDEX_MASK 0x0000003F
 
@@ -43,8 +43,8 @@ extern "C" {
 #define ROUND_UP(N, S) ((((N) + (S)-1) / (S)) * (S))
 
 /**
-   * @brief Function to Calculates 1/in (reciprocal) value of Q31 Data type.
-   */
+ * @brief Function to Calculates 1/in (reciprocal) value of Q31 Data type.
+ */
 __STATIC_FORCEINLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, const q31_t* pRecipTable)
 {
     q31_t out;
@@ -86,11 +86,11 @@ __STATIC_FORCEINLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, const q31_t* p
 }
 
 /**
-   * @brief Function to Calculates 1/in (reciprocal) value of Q15 Data type.
-   */
+ * @brief Function to Calculates 1/in (reciprocal) value of Q15 Data type.
+ */
 __STATIC_FORCEINLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, const q15_t* pRecipTable)
 {
-    q15_t out        = 0;
+    q15_t out = 0;
     uint32_t tempVal = 0;
     uint32_t index = 0, i = 0;
     uint32_t signBits = 0;
@@ -150,20 +150,20 @@ __STATIC_INLINE void arm_norm_64_to_32u(uint64_t in, int32_t* normalized, int32_
             /*
              * MSB set, need to scale down by 1
              */
-            *norm       = -1;
+            *norm = -1;
             *normalized = (((uint32_t)lo) >> 1);
         } else {
             if (n1 == 32) {
                 /*
                  * input is zero
                  */
-                *norm       = 0;
+                *norm = 0;
                 *normalized = 0;
             } else {
                 /*
                  * 32-bit normalization
                  */
-                *norm       = n1 - 1;
+                *norm = n1 - 1;
                 *normalized = lo << *norm;
             }
         }
@@ -171,7 +171,7 @@ __STATIC_INLINE void arm_norm_64_to_32u(uint64_t in, int32_t* normalized, int32_
         /*
          * input fits in 64-bit
          */
-        n1    = 1 - n1;
+        n1 = 1 - n1;
         *norm = -n1;
         /*
          * 64 bit normalization

@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -39,20 +39,20 @@
  */
 
 #include "flash.h"
-#include <stdio.h>
-#include "icc.h"
 #include "flc.h"
 #include "flc_regs.h"
 #include "gcr_regs.h"
+#include "icc.h"
+#include <stdio.h>
 
 /***** Functions *****/
 
-int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* buffer,
-               lfs_size_t size)
+int flash_read(
+    const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* buffer, lfs_size_t size)
 {
     uint32_t first_block = *(uint32_t*)c->context;
-    uint32_t startaddr   = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
-    uint8_t* data        = (uint8_t*)buffer;
+    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
+    uint8_t* data = (uint8_t*)buffer;
     for (uint8_t* ptr = (uint8_t*)startaddr; ptr < (uint8_t*)(startaddr + size); ptr++, data++) {
         *data = *ptr;
     }
@@ -61,11 +61,11 @@ int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, voi
 //******************************************************************************
 
 int flash_write(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, const void* buffer,
-                lfs_size_t size)
+    lfs_size_t size)
 {
     uint32_t first_block = *(uint32_t*)c->context;
-    uint32_t startaddr   = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
-    uint32_t* data       = (uint32_t*)buffer;
+    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
+    uint32_t* data = (uint32_t*)buffer;
     return flash_write4(startaddr, size / c->prog_size, data, FALSE);
 }
 
@@ -74,7 +74,7 @@ int flash_write(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, co
 int flash_erase(const struct lfs_config* c, lfs_block_t block)
 {
     uint32_t first_block = *(uint32_t*)c->context;
-    int addr             = MXC_FLASH_PAGE_ADDR((first_block + block));
+    int addr = MXC_FLASH_PAGE_ADDR((first_block + block));
     LOGF("Erasing page at address %08x\n", addr);
     int error_status = MXC_FLC_PageErase(addr);
     if (error_status != E_NO_ERROR) {
@@ -100,7 +100,7 @@ int flash_verify(uint32_t address, uint32_t length, uint8_t* data)
     for (ptr = (uint8_t*)address; ptr < (uint8_t*)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
-                   (unsigned int)*data);
+                (unsigned int)*data);
             return E_UNKNOWN;
         }
     }

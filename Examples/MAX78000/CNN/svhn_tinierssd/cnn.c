@@ -1,73 +1,80 @@
 /*******************************************************************************
-* Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
-*
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************/
+ * Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
+ *
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************/
 
 // svhn_tinierssd
-// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix svhn_tinierssd --checkpoint-file trained/ai85-svhn-tinierssd-qat8-q.pth.tar --config-file networks/svhn-tinierssd.yaml --overlap-data --device MAX78000 --timer 0 --display-checkpoint --verbose
+// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix svhn_tinierssd
+// --checkpoint-file trained/ai85-svhn-tinierssd-qat8-q.pth.tar --config-file
+// networks/svhn-tinierssd.yaml --overlap-data --device MAX78000 --timer 0 --display-checkpoint
+// --verbose
 
 // DO NOT EDIT - regenerate this file instead!
 
 // Configuring 20 layers
 // Input data: HWC
-// Layer 0: 3x74x74, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x74x74 output
-// Layer 1: 32x74x74, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x74x74 output
-// Layer 2: 32x74x74, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x37x37 output
-// Layer 3: 64x37x37, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x37x37 output
-// Layer 4: 64x37x37, max pool 3x3 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x18x18 output
-// Layer 5: 64x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x18x18 output
-// Layer 6: 64x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 128x18x18 output
-// Layer 7: 128x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x18x18 output
-// Layer 8: 32x18x18, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x9x9 output
-// Layer 9: 32x9x9, max pool 3x3 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x4x4 output
-// Layer 10: 32x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 16x4x4 output
-// Layer 11: 16x4x4, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 16x2x2 output
-// Layer 12: 32x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 16x18x18 output
-// Layer 13: 32x9x9, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 16x9x9 output
-// Layer 14: 32x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 16x4x4 output
-// Layer 15: 16x2x2, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 16x2x2 output
-// Layer 16: 32x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x18x18 output
-// Layer 17: 32x9x9, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x9x9 output
-// Layer 18: 32x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x4x4 output
-// Layer 19: 16x2x2, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x2x2 output
+// Layer 0: 3x74x74, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x74x74
+// output Layer 1: 32x74x74, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
+// 32x74x74 output Layer 2: 32x74x74, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3,
+// stride 1/1, pad 1/1, ReLU, 64x37x37 output Layer 3: 64x37x37, no pooling, conv2d with kernel size
+// 3x3, stride 1/1, pad 1/1, ReLU, 64x37x37 output Layer 4: 64x37x37, max pool 3x3 with stride 2/2,
+// conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x18x18 output Layer 5: 64x18x18, no
+// pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x18x18 output Layer 6:
+// 64x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 128x18x18 output
+// Layer 7: 128x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x18x18
+// output Layer 8: 32x18x18, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1,
+// pad 1/1, ReLU, 32x9x9 output Layer 9: 32x9x9, max pool 3x3 with stride 2/2, conv2d with kernel
+// size 3x3, stride 1/1, pad 1/1, ReLU, 32x4x4 output Layer 10: 32x4x4, no pooling, conv2d with
+// kernel size 3x3, stride 1/1, pad 1/1, ReLU, 16x4x4 output Layer 11: 16x4x4, max pool 2x2 with
+// stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 16x2x2 output Layer 12:
+// 32x18x18, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 16x18x18
+// output Layer 13: 32x9x9, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no
+// activation, 16x9x9 output Layer 14: 32x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1,
+// pad 1/1, no activation, 16x4x4 output Layer 15: 16x2x2, no pooling, conv2d with kernel size 3x3,
+// stride 1/1, pad 1/1, no activation, 16x2x2 output Layer 16: 32x18x18, no pooling, conv2d with
+// kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x18x18 output Layer 17: 32x9x9, no
+// pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x9x9 output Layer 18:
+// 32x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no activation, 44x4x4
+// output Layer 19: 16x2x2, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, no
+// activation, 44x2x2 output
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc.h"
-#include "gcfr_regs.h"
 #include "cnn.h"
+#include "gcfr_regs.h"
+#include "mxc.h"
 #include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void CNN_ISR(void)
 {
@@ -103,9 +110,7 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 static const uint32_t kernels[] = KERNELS;
@@ -118,9 +123,8 @@ int cnn_load_weights(void)
 
     while ((addr = (volatile uint32_t*)*ptr++) != 0) {
         *((volatile uint8_t*)((uint32_t)addr | 1)) = 0x01; // Set address
-        len                                        = *ptr++;
-        while (len-- > 0)
-            *addr++ = *ptr++;
+        len = *ptr++;
+        while (len-- > 0) *addr++ = *ptr++;
     }
 
     return CNN_OK;
@@ -133,9 +137,7 @@ static const uint8_t bias_3[] = BIAS_3;
 
 static void memcpy_8to32(uint32_t* dst, const uint8_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 int cnn_load_bias(void)
@@ -1247,7 +1249,7 @@ int cnn_start(void)
     MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-    CNN_START;                                      // Allow capture of processing time
+    CNN_START; // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x00100009; // Master enable quadrant 0
 
     return CNN_OK;
@@ -1265,8 +1267,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x0000;
     addr = (volatile uint32_t*)0x50403000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1275,8 +1277,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x5040b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1285,8 +1287,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x50413000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1295,8 +1297,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x5041b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1307,8 +1309,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x1440;
     addr = (volatile uint32_t*)0x50403510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1317,8 +1319,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x5040b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1327,8 +1329,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x50413510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1337,8 +1339,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x5041b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1349,8 +1351,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x1950;
     addr = (volatile uint32_t*)0x50403654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1359,8 +1361,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x5040b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1369,8 +1371,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x50413654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1379,8 +1381,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x5041b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1391,8 +1393,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x1a50;
     addr = (volatile uint32_t*)0x50403694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1401,8 +1403,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x5040b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1411,8 +1413,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x50413694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1421,8 +1423,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x5041b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1433,8 +1435,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x1a90;
     addr = (volatile uint32_t*)0x5080b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1443,8 +1445,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x50813000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1453,8 +1455,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x5081b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1463,8 +1465,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x50c03000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1473,8 +1475,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x50c0b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1483,8 +1485,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x50c13000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1493,8 +1495,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x50c1b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1503,8 +1505,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x51003000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1513,8 +1515,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x5100b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1523,8 +1525,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x51013000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1533,8 +1535,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x03cc;
     addr = (volatile uint32_t*)0x5101b000;
     for (i = 0; i < 324; i++) {
-        val                   = *addr++;
-        out_buf[offs]         = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x144] = (val >> 8) & 0xff;
         out_buf[offs + 0x288] = (val >> 16) & 0xff;
         out_buf[offs + 0x3cc] = (val >> 24) & 0xff;
@@ -1545,8 +1547,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x5240;
     addr = (volatile uint32_t*)0x5080b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1555,8 +1557,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x50813510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1565,8 +1567,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x5081b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1575,8 +1577,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x50c03510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1585,8 +1587,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x50c0b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1595,8 +1597,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x50c13510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1605,8 +1607,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x50c1b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1615,8 +1617,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x51003510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1625,8 +1627,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x5100b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1635,8 +1637,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x51013510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1645,8 +1647,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x00f3;
     addr = (volatile uint32_t*)0x5101b510;
     for (i = 0; i < 81; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x51] = (val >> 8) & 0xff;
         out_buf[offs + 0xa2] = (val >> 16) & 0xff;
         out_buf[offs + 0xf3] = (val >> 24) & 0xff;
@@ -1657,8 +1659,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x602c;
     addr = (volatile uint32_t*)0x5080b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1667,8 +1669,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x50813654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1677,8 +1679,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x5081b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1687,8 +1689,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x50c03654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1697,8 +1699,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x50c0b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1707,8 +1709,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x50c13654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1717,8 +1719,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x50c1b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1727,8 +1729,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x51003654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1737,8 +1739,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x5100b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1747,8 +1749,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x51013654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1757,8 +1759,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x0030;
     addr = (volatile uint32_t*)0x5101b654;
     for (i = 0; i < 16; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x10] = (val >> 8) & 0xff;
         out_buf[offs + 0x20] = (val >> 16) & 0xff;
         out_buf[offs + 0x30] = (val >> 24) & 0xff;
@@ -1769,8 +1771,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs = 0x62ec;
     addr = (volatile uint32_t*)0x5080b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1779,8 +1781,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x50813694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1789,8 +1791,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x5081b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1799,8 +1801,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x50c03694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1809,8 +1811,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x50c0b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1819,8 +1821,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x50c13694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1829,8 +1831,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x50c1b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1839,8 +1841,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x51003694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1849,8 +1851,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x5100b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1859,8 +1861,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x51013694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1869,8 +1871,8 @@ int cnn_unload(uint32_t* out_buf32)
     offs += 0x000c;
     addr = (volatile uint32_t*)0x5101b694;
     for (i = 0; i < 4; i++) {
-        val                  = *addr++;
-        out_buf[offs]        = val & 0xff;
+        val = *addr++;
+        out_buf[offs] = val & 0xff;
         out_buf[offs + 0x04] = (val >> 8) & 0xff;
         out_buf[offs + 0x08] = (val >> 16) & 0xff;
         out_buf[offs + 0x0c] = (val >> 24) & 0xff;
@@ -1889,9 +1891,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv =
-        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
-        clock_divider | clock_source;
+    MXC_GCR->pclkdiv
+        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
+        | clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -1904,7 +1906,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -1917,7 +1919,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);

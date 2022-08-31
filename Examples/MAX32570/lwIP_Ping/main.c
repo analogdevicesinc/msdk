@@ -7,7 +7,7 @@
 
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -46,15 +46,15 @@
 
 #include <MAX32xxx.h>
 
-#include "mxc_eth.h"
 #include "lwipcfg.h"
+#include "mxc_eth.h"
 #include "ping.h"
 
 /***** Definitions *****/
-#define ETH_RX_BUFFER_SIZE      (4096)
+#define ETH_RX_BUFFER_SIZE (4096)
 #define ETH_RX_RING_BUFFER_SIZE (256)
 #define ETH_TX_RING_BUFFER_SIZE (128)
-#define ETH_TOTAL_BUFFER_SIZE \
+#define ETH_TOTAL_BUFFER_SIZE                                                                      \
     (ETH_RX_BUFFER_SIZE + ETH_RX_RING_BUFFER_SIZE + ETH_TX_RING_BUFFER_SIZE)
 
 /***** Globals *****/
@@ -70,24 +70,24 @@ static int config_emac(void)
 {
     int result = E_UNKNOWN;
     mxc_emac_config_t emac_config;
-    unsigned char hwaddr[MAC_LEN] = {MAC_BYTE1, MAC_BYTE2, MAC_BYTE3,
-                                     MAC_BYTE4, MAC_BYTE5, MAC_BYTE6};
+    unsigned char hwaddr[MAC_LEN]
+        = { MAC_BYTE1, MAC_BYTE2, MAC_BYTE3, MAC_BYTE4, MAC_BYTE5, MAC_BYTE6 };
 
     memset(&emac_config, 0, sizeof(emac_config));
 
-    emac_config.rx_ring_buff      = &eth_buffer[0];
+    emac_config.rx_ring_buff = &eth_buffer[0];
     emac_config.rx_ring_buff_size = ETH_RX_RING_BUFFER_SIZE;
 
-    emac_config.tx_ring_buff      = &eth_buffer[ETH_RX_RING_BUFFER_SIZE];
+    emac_config.tx_ring_buff = &eth_buffer[ETH_RX_RING_BUFFER_SIZE];
     emac_config.tx_ring_buff_size = ETH_TX_RING_BUFFER_SIZE;
 
-    emac_config.rx_buff      = &eth_buffer[ETH_RX_RING_BUFFER_SIZE + ETH_TX_RING_BUFFER_SIZE];
+    emac_config.rx_buff = &eth_buffer[ETH_RX_RING_BUFFER_SIZE + ETH_TX_RING_BUFFER_SIZE];
     emac_config.rx_buff_size = ETH_RX_BUFFER_SIZE;
 
     emac_config.phy_addr = 0;
     emac_config.delay_us = MXC_Delay;
 
-    emac_config.interrupt_mode   = 1;
+    emac_config.interrupt_mode = 1;
     emac_config.interrupt_events = MXC_EMAC_EVENT_RXCMPL;
 
     emac_config.conf_cb_funcs.rxcmpl_handler = rxcmpl_handler_func;
@@ -127,7 +127,7 @@ static unsigned int sys_get_ms(void)
     unsigned int ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec    = MXC_RTC_GetSecond();
+    sec = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 
@@ -161,10 +161,10 @@ int main(void)
         return result;
     }
 
-    lwip_config.name[0]       = 'e';
-    lwip_config.name[1]       = '0';
+    lwip_config.name[0] = 'e';
+    lwip_config.name[1] = '0';
     lwip_config.link_callback = link_callback_func;
-    lwip_config.sys_get_ms    = sys_get_ms;
+    lwip_config.sys_get_ms = sys_get_ms;
 
     result = MXC_ETH_Init(&lwip_config);
 

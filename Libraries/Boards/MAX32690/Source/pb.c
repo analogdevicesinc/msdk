@@ -34,12 +34,12 @@
  *
  ******************************************************************************/
 
-#include <stddef.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
 #include "pb.h"
-#include "pwrseq_regs.h"
 #include "mcr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "pwrseq_regs.h"
+#include <stddef.h>
 
 /* Save the callback state for GPIO4 */
 static pb_callback gpio4_callback;
@@ -63,7 +63,7 @@ int PB_Init(void)
 
     /* Initialize the GPIO4 callback state */
     gpio4_callback = NULL;
-    gpio4_pb       = -1;
+    gpio4_pb = -1;
 
     return retval;
 }
@@ -77,7 +77,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
             /* Save the GPIO4 callback and pb index */
             gpio4_callback = callback;
-            gpio4_pb       = pb;
+            gpio4_pb = pb;
 
             MXC_PWRSEQ->lpwken4 |= pb_pin[pb].mask;
             NVIC_EnableIRQ(GPIOWAKE_IRQn);
@@ -96,7 +96,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
             /* Clear the GPIO4 callback and pb index */
             gpio4_callback = NULL;
-            gpio4_pb       = -1;
+            gpio4_pb = -1;
 
             NVIC_DisableIRQ(GPIOWAKE_IRQn);
             MXC_PWRSEQ->lpwken4 &= ~pb_pin[pb].mask;
@@ -120,7 +120,7 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
             /* Save the GPIO4 callback and pb index */
             gpio4_callback = callback;
-            gpio4_pb       = pb;
+            gpio4_pb = pb;
 
             MXC_PWRSEQ->lpwken4 |= pb_pin[pb].mask;
             NVIC_EnableIRQ(GPIOWAKE_IRQn);
@@ -138,7 +138,7 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
             /* Clear the GPIO4 callback and pb index */
             gpio4_callback = NULL;
-            gpio4_pb       = -1;
+            gpio4_pb = -1;
 
             NVIC_DisableIRQ(GPIOWAKE_IRQn);
             MXC_PWRSEQ->lpwken4 &= ~pb_pin[pb].mask;

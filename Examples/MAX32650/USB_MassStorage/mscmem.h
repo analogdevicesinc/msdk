@@ -43,9 +43,9 @@
 #include <stdint.h>
 
 /* **** Definitions **** */
-#define ERASE_MEMORY_ON_INIT \
+#define ERASE_MEMORY_ON_INIT                                                                       \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
-      /* Use 1 to clear or 0 to leave untouched. */
+/* Use 1 to clear or 0 to leave untouched. */
 /**
  * @brief   Perform any initialization necessary to prepare the memory for reading/writing data.
  * @returns 0 if initialization is successful, non-zero if an error occurred.
@@ -75,7 +75,7 @@ uint32_t mscmem_Size(void);
  * @param   lba     The index of the 512 byte block to read.
  * @param   buffer  A byte array of at least 512 bytes to hold the values read.
  * @returns 0 if reading is successful, non-zero if an error occurred.
- * @returns 
+ * @returns
  */
 int mscmem_Read(uint32_t lba, uint8_t* buffer);
 
@@ -84,7 +84,7 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer);
  * @param   lba     The index of the 512 byte block to write.
  * @param   buffer  A byte array of at least 512 bytes holding the values to write.
  * @returns 0 if writing is successful, non-zero if an error occurred.
- * @returns 
+ * @returns
  */
 int mscmem_Write(uint32_t lba, uint8_t* buffer);
 

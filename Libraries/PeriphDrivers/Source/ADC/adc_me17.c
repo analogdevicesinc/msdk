@@ -36,52 +36,52 @@
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_reva.h"
+#include "mcr_regs.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "mcr_regs.h"
 #include "mxc_lock.h"
 #include "mxc_pins.h"
+#include "mxc_sys.h"
 #include <stdio.h>
 
 static void initGPIOForChannel(mxc_adc_chsel_t channel)
 {
     switch (channel) {
-        case MXC_ADC_CH_0:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain0);
-            break;
+    case MXC_ADC_CH_0:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain0);
+        break;
 
-        case MXC_ADC_CH_1:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain1);
-            break;
+    case MXC_ADC_CH_1:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain1);
+        break;
 
-        case MXC_ADC_CH_2:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain2);
-            break;
+    case MXC_ADC_CH_2:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain2);
+        break;
 
-        case MXC_ADC_CH_3:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain3);
-            break;
+    case MXC_ADC_CH_3:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain3);
+        break;
 
-        case MXC_ADC_CH_4:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain4);
-            break;
+    case MXC_ADC_CH_4:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain4);
+        break;
 
-        case MXC_ADC_CH_5:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain5);
-            break;
+    case MXC_ADC_CH_5:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain5);
+        break;
 
-        case MXC_ADC_CH_6:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain6);
-            break;
+    case MXC_ADC_CH_6:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain6);
+        break;
 
-        case MXC_ADC_CH_7:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain7);
-            break;
+    case MXC_ADC_CH_7:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain7);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -130,7 +130,7 @@ void MXC_ADC_ClearFlags(uint32_t flags)
 
 int MXC_ADC_SetConversionSpeed(uint32_t hz)
 {
-    //check for overflow
+    // check for overflow
     MXC_ASSERT(hz < ((uint32_t)((1U << 31) - 1) / 1024));
     uint32_t adc_clock_freq = 1024 * hz;
 
@@ -144,14 +144,14 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
         return E_BAD_PARAM;
     }
 
-    //disable clock
+    // disable clock
     MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CLK_EN;
-    //clear clock divisor
+    // clear clock divisor
     MXC_GCR->pclkdiv &= (~MXC_F_GCR_PCLKDIV_ADCFRQ);
-    //load in new clock divisor
+    // load in new clock divisor
     MXC_GCR->pclkdiv |= (divider << MXC_F_GCR_PCLKDIV_ADCFRQ_POS);
 
-    //enable clock
+    // enable clock
     MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t*)MXC_ADC, hz);
 
     return MXC_ADC_GetConversionSpeed();
@@ -243,8 +243,8 @@ int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*c
 {
     initGPIOForChannel(channel);
 
-    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data,
-                                           callback);
+    return MXC_ADC_RevA_StartConversionDMA(
+        (mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data, callback);
 }
 
 int MXC_ADC_Handler(void)

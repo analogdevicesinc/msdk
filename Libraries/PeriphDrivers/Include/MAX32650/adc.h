@@ -44,9 +44,9 @@
 #define _ADC_H_
 
 /* **** Includes **** */
-#include <stdint.h>
 #include "adc_regs.h"
 #include "mxc_sys.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,37 +58,37 @@ extern "C" {
  * @{
  */
 // Macros to select ADC channels
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0        ((uint32_t)(0x00000000UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1        ((uint32_t)(0x00000001UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN2        ((uint32_t)(0x00000002UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN3        ((uint32_t)(0x00000003UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0_DIV_5  ((uint32_t)(0x00000004UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1_DIV_5  ((uint32_t)(0x00000005UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDB_DIV_4  ((uint32_t)(0x00000006UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDA        ((uint32_t)(0x00000007UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VCORE       ((uint32_t)(0x00000008UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VRTC_DIV_2  ((uint32_t)(0x00000009UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDIO_DIV4  ((uint32_t)(0x0000000BUL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0 ((uint32_t)(0x00000000UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1 ((uint32_t)(0x00000001UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN2 ((uint32_t)(0x00000002UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN3 ((uint32_t)(0x00000003UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0_DIV_5 ((uint32_t)(0x00000004UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1_DIV_5 ((uint32_t)(0x00000005UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDB_DIV_4 ((uint32_t)(0x00000006UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDA ((uint32_t)(0x00000007UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VCORE ((uint32_t)(0x00000008UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VRTC_DIV_2 ((uint32_t)(0x00000009UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDIO_DIV4 ((uint32_t)(0x0000000BUL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VDDIOH_DIV4 ((uint32_t)(0x0000000CUL))
 
 /***************************************************************************************************************
                                     DATA STRUCTURES FOR ADC INITIALIZATION
 ***************************************************************************************************************/
 /**
-  * Enumeration type for the ADC Input Channels
-  */
+ * Enumeration type for the ADC Input Channels
+ */
 typedef enum {
-    MXC_ADC_CH_0           = MXC_V_ADC_CTRL_CH_SEL_AIN0,        // Select Channel 0
-    MXC_ADC_CH_1           = MXC_V_ADC_CTRL_CH_SEL_AIN1,        // Select Channel 1
-    MXC_ADC_CH_2           = MXC_V_ADC_CTRL_CH_SEL_AIN2,        // Select Channel 2
-    MXC_ADC_CH_3           = MXC_V_ADC_CTRL_CH_SEL_AIN3,        // Select Channel 3
-    MXC_ADC_CH_0_DIV_5     = MXC_V_ADC_CTRL_CH_SEL_AIN0_DIV5,   // Channel 0 divided by 5
-    MXC_ADC_CH_1_DIV_5     = MXC_V_ADC_CTRL_CH_SEL_AIN1_DIV5,   // Channel 1 divided by 5
-    MXC_ADC_CH_VDDB_DIV_4  = MXC_V_ADC_CTRL_CH_SEL_VDDB_DIV4,   // VDDB divided by 4
-    MXC_ADC_CH_VDDA        = MXC_V_ADC_CTRL_CH_SEL_VDDA,        // VDDA input select
-    MXC_ADC_CH_VCORE       = MXC_V_ADC_CTRL_CH_SEL_VCORE,       // VCORE input select
-    MXC_ADC_CH_VRTC_DIV_2  = MXC_V_ADC_CTRL_CH_SEL_VRTC_DIV2,   // VRTC divided by 2
-    MXC_ADC_CH_VDDIO_DIV4  = MXC_V_ADC_CTRL_CH_SEL_VDDIO_DIV4,  // VDDIO divided by 4
+    MXC_ADC_CH_0 = MXC_V_ADC_CTRL_CH_SEL_AIN0, // Select Channel 0
+    MXC_ADC_CH_1 = MXC_V_ADC_CTRL_CH_SEL_AIN1, // Select Channel 1
+    MXC_ADC_CH_2 = MXC_V_ADC_CTRL_CH_SEL_AIN2, // Select Channel 2
+    MXC_ADC_CH_3 = MXC_V_ADC_CTRL_CH_SEL_AIN3, // Select Channel 3
+    MXC_ADC_CH_0_DIV_5 = MXC_V_ADC_CTRL_CH_SEL_AIN0_DIV5, // Channel 0 divided by 5
+    MXC_ADC_CH_1_DIV_5 = MXC_V_ADC_CTRL_CH_SEL_AIN1_DIV5, // Channel 1 divided by 5
+    MXC_ADC_CH_VDDB_DIV_4 = MXC_V_ADC_CTRL_CH_SEL_VDDB_DIV4, // VDDB divided by 4
+    MXC_ADC_CH_VDDA = MXC_V_ADC_CTRL_CH_SEL_VDDA, // VDDA input select
+    MXC_ADC_CH_VCORE = MXC_V_ADC_CTRL_CH_SEL_VCORE, // VCORE input select
+    MXC_ADC_CH_VRTC_DIV_2 = MXC_V_ADC_CTRL_CH_SEL_VRTC_DIV2, // VRTC divided by 2
+    MXC_ADC_CH_VDDIO_DIV4 = MXC_V_ADC_CTRL_CH_SEL_VDDIO_DIV4, // VDDIO divided by 4
     MXC_ADC_CH_VDDIOH_DIV4 = MXC_V_ADC_CTRL_CH_SEL_VDDIOH_DIV4, // VDDIOH divided by 4
 } mxc_adc_chsel_t;
 
@@ -111,8 +111,8 @@ typedef enum {
  */
 typedef enum {
     MXC_ADC_SCALE_2X, ///< ADC Scale by 2x
-    MXC_ADC_SCALE_1,  ///< ADC Scale by 1x (no scaling)
-    MXC_ADC_SCALE_2,  ///< ADC Scale by 1/2
+    MXC_ADC_SCALE_1, ///< ADC Scale by 1x (no scaling)
+    MXC_ADC_SCALE_2, ///< ADC Scale by 1/2
 } mxc_adc_scale_t;
 
 /**
@@ -132,11 +132,11 @@ typedef void (*mxc_adc_monitor_cb_t)(void* req, int error);
  *
  */
 typedef struct {
-    mxc_adc_monitor_t monitor;     ///< Monitor to use
-    mxc_adc_scale_t scale;         ///< Channel scale to use (if external channel)
-    mxc_adc_chsel_t channel;       ///< Channel to use
-    int lowThreshold;              ///< Low Threshold for monitor (RAW ADC counts)
-    int highThreshold;             ///< High Threshold for monitor (RAW ADC counts)
+    mxc_adc_monitor_t monitor; ///< Monitor to use
+    mxc_adc_scale_t scale; ///< Channel scale to use (if external channel)
+    mxc_adc_chsel_t channel; ///< Channel to use
+    int lowThreshold; ///< Low Threshold for monitor (RAW ADC counts)
+    int highThreshold; ///< High Threshold for monitor (RAW ADC counts)
     mxc_adc_monitor_cb_t callback; ///< Function to call when the channel crosses threshold
 } mxc_adc_monitor_req_t;
 
@@ -145,9 +145,9 @@ typedef struct {
  *
  */
 typedef struct {
-    mxc_adc_chsel_t channel;        ///< Channel to use
-    mxc_adc_scale_t scale;          ///< Channel scale to use (if external channel)
-    int rawADCValue;                ///< Result of the conversion
+    mxc_adc_chsel_t channel; ///< Channel to use
+    mxc_adc_scale_t scale; ///< Channel scale to use (if external channel)
+    int rawADCValue; ///< Result of the conversion
     mxc_adc_complete_cb_t callback; ///< Function to call when callback is complete
 } mxc_adc_conversion_req_t;
 
@@ -223,7 +223,7 @@ int MXC_ADC_GetConversionSpeed(void);
 /**
  * @brief   Set the data alignment
  *
- * @param   msbJustify  Setting this to a non-zero number will fill the 
+ * @param   msbJustify  Setting this to a non-zero number will fill the
  *                      12 most significant bits of the data registers.
  *                      Otherwise, the 12 Least significant bits will be filled.
  */

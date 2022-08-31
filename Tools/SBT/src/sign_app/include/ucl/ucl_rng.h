@@ -83,8 +83,8 @@ int ucl_rng_detach(void);
 void* ucl_rng_getpt(void);
 
 /** <b>RNG Read</b>.
-   * Read random octet string using the hardware RNG.
-   *
+ * Read random octet string using the hardware RNG.
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  * @param[in]  option       A value between:
@@ -101,8 +101,8 @@ void* ucl_rng_getpt(void);
 int ucl_lowlevel_rng_read(u8* rand, u32 rand_byteLen, int option);
 
 /** <b>RNG Read</b>.
-   * Read random octet string using the attached RNG.
-   *
+ * Read random octet string using the attached RNG.
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  * @param[in]  option       A value between:
@@ -121,9 +121,9 @@ int ucl_lowlevel_rng_read(u8* rand, u32 rand_byteLen, int option);
 int ucl_rng_read(u8* rand, u32 rand_byteLen, int option);
 
 /** <b>FIPS 140 RNG Read</b>.
-   * Read random octet string using the attached RNG.
-   * in a FIPS 140 compliant way (being sure the entropy is maximum)
-   * it is slower than the ucl_rng_read() function
+ * Read random octet string using the attached RNG.
+ * in a FIPS 140 compliant way (being sure the entropy is maximum)
+ * it is slower than the ucl_rng_read() function
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  * @param[in]  option       A value between:
@@ -139,9 +139,9 @@ int ucl_rng_read(u8* rand, u32 rand_byteLen, int option);
 int ucl_fips_rng_read(u8* rand, u32 rand_byteLen, int option);
 
 /** <b>FIPS 140 TRNG health test</b>.
-   * test the TRNG health by checking the oscillators are not stuck
-   * if the oscillator is stuck, the function shall never return
-   * only available on max32550, max32552, max32555, max32560,  max32565, max32566, max32590
+ * test the TRNG health by checking the oscillators are not stuck
+ * if the oscillator is stuck, the function shall never return
+ * only available on max32550, max32552, max32555, max32560,  max32565, max32566, max32590
  * no parameter
  * @return Error code
  *
@@ -152,9 +152,9 @@ int ucl_fips_rng_read(u8* rand, u32 rand_byteLen, int option);
 int test_fips_trng_health(void);
 
 /** <b>FIPS 140 RNG quality testing</b>.
-  * FIPS 140 TRNG quality testing
-  * testing performed on 20Kbits directly from the TRNG using the FIPS-compliant TRNG access function
-  * testing consisting in FIPS 140 max-run test, runs test, poker test
+ * FIPS 140 TRNG quality testing
+ * testing performed on 20Kbits directly from the TRNG using the FIPS-compliant TRNG access function
+ * testing consisting in FIPS 140 max-run test, runs test, poker test
  * @return Error code
  *
  * @retval #UCL_OK No error occurred
@@ -165,8 +165,8 @@ int test_fips_trng_health(void);
 int ucl_fips_rng_stest(void);
 
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SHA-256
-   *
+ * Read random octet string using the attached RNG postprocessed with SHA-256
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  *
@@ -182,8 +182,8 @@ int ucl_fips_rng_stest(void);
 int ucl_sha256_whitening_rng_read(u8* rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SHA-256
-   *
+ * Read random octet string using the attached RNG postprocessed with SHA-256
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  * @param[in]  option       A value between:
@@ -201,11 +201,11 @@ int ucl_sha256_whitening_rng_read(u8* rand, u32 rand_byteLen);
  */
 int ucl_sha256_whitening_rng_read_generic(u8* rand, u32 rand_byteLen, int option);
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SHA-256
-   * no null byte is produced
-   *
-   * @param[out] rand         Random octet string
-   * @param[in]  rand_byteLen Random byte length
+ * Read random octet string using the attached RNG postprocessed with SHA-256
+ * no null byte is produced
+ *
+ * @param[out] rand         Random octet string
+ * @param[in]  rand_byteLen Random byte length
  *
  * @return Error code
  *
@@ -218,9 +218,9 @@ int ucl_sha256_whitening_rng_read_generic(u8* rand, u32 rand_byteLen, int option
  */
 int ucl_sha256_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SHA-256
-   * the first byte is not null
-   *
+ * Read random octet string using the attached RNG postprocessed with SHA-256
+ * the first byte is not null
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  *
@@ -236,8 +236,8 @@ int ucl_sha256_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
 int ucl_sha256_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SM3
-   *
+ * Read random octet string using the attached RNG postprocessed with SM3
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  *
@@ -253,11 +253,11 @@ int ucl_sha256_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
 int ucl_sm3_whitening_rng_read(u8* rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SM3
-   * no null byte is produced
-   *
-   * @param[out] rand         Random octet string
-   * @param[in]  rand_byteLen Random byte length
+ * Read random octet string using the attached RNG postprocessed with SM3
+ * no null byte is produced
+ *
+ * @param[out] rand         Random octet string
+ * @param[in]  rand_byteLen Random byte length
  *
  * @return Error code
  *
@@ -270,9 +270,9 @@ int ucl_sm3_whitening_rng_read(u8* rand, u32 rand_byteLen);
  */
 int ucl_sm3_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
 /** <b>RNG Read with postprocess</b>.
-   * Read random octet string using the attached RNG postprocessed with SM3
-   * the first byte is not null
-   *
+ * Read random octet string using the attached RNG postprocessed with SM3
+ * the first byte is not null
+ *
  * @param[out] rand         Random octet string
  * @param[in]  rand_byteLen Random byte length
  *
@@ -288,8 +288,8 @@ int ucl_sm3_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
 int ucl_sm3_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
-   * EMV Unpredictable Number generation power down function
-   * see EMV bulletin no144 (june-2014)
+ * EMV Unpredictable Number generation power down function
+ * see EMV bulletin no144 (june-2014)
  * @param[out] q         persistent variant of P, 32 bytes
  * @param[in]  p         pre-image of UN, 32 bytes
  *
@@ -302,26 +302,27 @@ int ucl_sm3_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
  * @ingroup UCL_RNG
  */
 
-//EMV specification bulletin no144, june 2014
+// EMV specification bulletin no144, june 2014
 
-#define EMV_TVP_BYTESIZE   8
-#define EMV_TID_BYTESIZE   8
+#define EMV_TVP_BYTESIZE 8
+#define EMV_TID_BYTESIZE 8
 #define EMV_IFDSN_BYTESIZE 8
-#define EMV_RAND_BYTESIZE  8
-#define EMV_AC_BYTESIZE    8
-#define EMV_P_BYTESIZE     UCL_SHA256_HASHSIZE
-#define EMV_Q_BYTESIZE     UCL_SHA256_HASHSIZE
-#define EMV_UN_BYTESIZE    4
+#define EMV_RAND_BYTESIZE 8
+#define EMV_AC_BYTESIZE 8
+#define EMV_P_BYTESIZE UCL_SHA256_HASHSIZE
+#define EMV_Q_BYTESIZE UCL_SHA256_HASHSIZE
+#define EMV_UN_BYTESIZE 4
 
 int ucl_emv_unpredictable_number_power_down(u8* q, u8* p);
 
 /** <b>RNG Read</b>.
-   * EMV Unpredictable Number generation per transaction P refresh
-   * see EMV bulletin no144 (june-2014)
-   *
+ * EMV Unpredictable Number generation per transaction P refresh
+ * see EMV bulletin no144 (june-2014)
+ *
  * @param[in,out] p         pre-image of UN, 32 bytes
  * @param[in]  tvp          time-varying parameter, 8 bytes
- * @param[in]  rand         value from external RNG, 8 bytes, optional (shall be #NULL if not available)
+ * @param[in]  rand         value from external RNG, 8 bytes, optional (shall be #NULL if not
+ * available)
  * @param[in]  ac           application cryptogram, 8 bytes
  *
  * @return Error code
@@ -336,12 +337,13 @@ int ucl_emv_unpredictable_number_power_down(u8* q, u8* p);
 int ucl_emv_unpredictable_number_transaction_p_refresh(u8* p, u8* tvp, u8* rand, u8* ac);
 
 /** <b>RNG Read</b>.
-   * EMV Unpredictable Number generation
-   * see EMV bulletin no144 (june-2014)
-   *
-   * @param[out] un           unpredictable number, 4 bytes
-   * @param[in] rand        value from external RNG, 8 bytes, optional (shall be #NULL if not available)
-   * @param[in]  p         pre-image of UN, 32 bytes
+ * EMV Unpredictable Number generation
+ * see EMV bulletin no144 (june-2014)
+ *
+ * @param[out] un           unpredictable number, 4 bytes
+ * @param[in] rand        value from external RNG, 8 bytes, optional (shall be #NULL if not
+ * available)
+ * @param[in]  p         pre-image of UN, 32 bytes
  *
  * @return Error code
  *
@@ -354,15 +356,16 @@ int ucl_emv_unpredictable_number_transaction_p_refresh(u8* p, u8* tvp, u8* rand,
 int ucl_emv_unpredictable_number_transaction_un_generation(u8* un, u8* rand, u8* p);
 
 /** <b>RNG Read</b>.
-  * EMV Unpredictable Number generation power down function
-   * see EMV bulletin no144 (june-2014)
-   *
+ * EMV Unpredictable Number generation power down function
+ * see EMV bulletin no144 (june-2014)
+ *
  * @param[in,out] q         persistent variant of P, 32 bytes
-   * @param[in]  tid         Terminal ID, 8 bytes
-   * @param[in]  ifdsn       IFD Serial, 8 bytes
-   * @param[in]  tvp          time-varying parameter, 8 bytes
-   * @param[in]  rand         value from external RNG, 8 bytes, optional (shall be #NULL if not available)
-   * @param[in]  p         pre-image of UN, 32 bytes
+ * @param[in]  tid         Terminal ID, 8 bytes
+ * @param[in]  ifdsn       IFD Serial, 8 bytes
+ * @param[in]  tvp          time-varying parameter, 8 bytes
+ * @param[in]  rand         value from external RNG, 8 bytes, optional (shall be #NULL if not
+ * available)
+ * @param[in]  p         pre-image of UN, 32 bytes
  *
  * @return Error code
  *
@@ -378,9 +381,9 @@ int ucl_emv_unpredictable_number_transaction_un_generation(u8* un, u8* rand, u8*
 int ucl_emv_unpredictable_number_power_up(u8* q, u8* tid, u8* ifdsn, u8* tvp, u8* rand, u8* p);
 
 /** <b>RNG quality testing</b>.
-  * TRNG quality testing
-  * testing performed on 20Kbits directly from the TRNG or indirectly with SHA-256 post-process
-  * testing consisting in FIPS 140 max-run test, runs test, poker test
+ * TRNG quality testing
+ * testing performed on 20Kbits directly from the TRNG or indirectly with SHA-256 post-process
+ * testing consisting in FIPS 140 max-run test, runs test, poker test
  * @return Error code
  *
  * @retval #UCL_OK No error occurred

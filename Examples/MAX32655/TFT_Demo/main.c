@@ -39,22 +39,22 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include "board.h"
-#include "mxc.h"
-#include "icc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "utils.h"
-#include "state.h"
-#include "tft_ssd2119.h"
 #include "bitmap.h"
+#include "board.h"
+#include "icc.h"
 #include "keypad.h"
 #include "led.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "pb.h"
+#include "state.h"
+#include "tft_ssd2119.h"
+#include "utils.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void)
 {

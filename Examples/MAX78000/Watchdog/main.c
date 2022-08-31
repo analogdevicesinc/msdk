@@ -43,24 +43,24 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "nvic_table.h"
 #include "board.h"
-#include "mxc_sys.h"
-#include "wdt.h"
-#include "mxc_delay.h"
 #include "led.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "nvic_table.h"
 #include "pb.h"
+#include "wdt.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 
 #if defined(BOARD_EVKIT_V1)
-#define LATE_SW_NAME  "SW2"
+#define LATE_SW_NAME "SW2"
 #define EARLY_SW_NAME "SW3"
 #elif defined(BOARD_FTHR_REVA)
-#define LATE_SW_NAME  "SW1"
+#define LATE_SW_NAME "SW1"
 #define EARLY_SW_NAME "SW2"
 #else
 #warning "This example has been written to work with the MAX78000 EV Kit and FTHR boards."
@@ -69,8 +69,8 @@
 /***** Globals *****/
 static mxc_wdt_cfg_t cfg;
 
-volatile int sw1_pressed     = 0;
-volatile int sw2_pressed     = 0;
+volatile int sw1_pressed = 0;
+volatile int sw2_pressed = 0;
 volatile int interrupt_count = 0;
 
 // refers to array, do not change constants
@@ -116,9 +116,9 @@ void SW1_Callback()
     printf("\nEnabling Timeout Interrupt...\n");
     MXC_WDT_Disable(MXC_WDT0);
     cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-    cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
+    cfg.upperIntPeriod = MXC_WDT_PERIOD_2_27;
     cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-    cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
+    cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_23;
     MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
     MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
     MXC_WDT_ResetTimer(MXC_WDT0);
@@ -161,17 +161,17 @@ int main(void)
 
     printf("\n************** Watchdog Timer Demo ****************\n");
     printf("%s: Push %s to trigger a \"too-late\" watchdog reset. This will stop resetting\n",
-           LATE_SW_NAME, LATE_SW_NAME);
+        LATE_SW_NAME, LATE_SW_NAME);
     printf("     the watchdog timer until it generates the \"too-late\" interrupt.  After that\n");
     printf("     it will reset the watchdog timer only once, allowing it to pass the reset\n");
     printf("     timeout period.\n\n");
     printf("%s: Push %s to reset the watchdog timer in the \"too-early\" period.\n", EARLY_SW_NAME,
-           EARLY_SW_NAME);
+        EARLY_SW_NAME);
 
-    //Blink LED
+    // Blink LED
     LED_Off(0);
 
-    //Blink LED three times at startup
+    // Blink LED three times at startup
     int numBlinks = 3;
 
     while (numBlinks) {
@@ -182,7 +182,7 @@ int main(void)
         numBlinks--;
     }
 
-    //Setup and start watchdog
+    // Setup and start watchdog
     MXC_WDT_Setup();
 
     // Configure push buttons
@@ -191,18 +191,16 @@ int main(void)
     PB_RegisterCallback(1, SW2_Callback);
     PB_IntEnable(1);
 
-    //Push SW1 to start longer delay - shows Interrupt before the reset happens
+    // Push SW1 to start longer delay - shows Interrupt before the reset happens
 
     while (1) {
         if (sw1_pressed) {
             if (interrupt_count == 0) {
-                while (interrupt_count == 0) {
-                };
+                while (interrupt_count == 0) { };
 
                 MXC_Delay(MXC_DELAY_MSEC(1500));
             } else {
-                while (1)
-                    ;
+                while (1) { }
             }
         }
 
@@ -213,12 +211,12 @@ int main(void)
             sw2_pressed = 0;
         }
 
-        //blink LED0
+        // blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_On(0);
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_Off(0);
-        //Reset watchdog
+        // Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
 }

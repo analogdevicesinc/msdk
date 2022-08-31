@@ -39,14 +39,14 @@
  * @brief   Startup Code for MAX32665 Family CPU1
  * @details These functions are called at the startup of the second ARM core (CPU1/Core1)
  */
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "max32665.h"
-#include "mxc_sys.h"
 #include "gcr_regs.h"
 #include "icc_regs.h"
+#include "max32665.h"
+#include "mxc_sys.h"
 #include "pwrseq_regs.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 extern uint32_t __isr_vector_core1;
 
@@ -64,8 +64,7 @@ void Core1_Stop(void)
 __weak int Core1_Main(void)
 {
     // The user should declare this in application code, so we'll just spin
-    while (1)
-        ;
+    while (1) { }
 }
 __weak void PreInit_Core1(void)
 {
@@ -90,11 +89,9 @@ __weak void SystemInit_Core1(void)
 
     // Invalidate cache and wait until ready
     MXC_ICC1->invalidate = 1;
-    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
-        ;
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) { }
 
     // Enable Cache
     MXC_ICC1->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
-        ;
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) { }
 }

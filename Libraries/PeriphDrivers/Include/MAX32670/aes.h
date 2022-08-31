@@ -40,8 +40,8 @@
 #define _AES_H_
 
 /***** Includes *****/
-#include "aes_regs.h"
 #include "aes_key_regs.h"
+#include "aes_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,9 +63,9 @@ typedef void (*mxc_aes_complete_t)(void* req, int result);
 /* ************************************************************************* */
 
 /**
-  * @brief  Enumeration type to select AES key
-  *
-  */
+ * @brief  Enumeration type to select AES key
+ *
+ */
 typedef enum {
     MXC_AES_128BITS = MXC_S_AES_CTRL_KEY_SIZE_AES128, ///< Select AES-128 bit key
     MXC_AES_192BITS = MXC_S_AES_CTRL_KEY_SIZE_AES192, ///< Select AES-192 bit key
@@ -73,26 +73,26 @@ typedef enum {
 } mxc_aes_keys_t;
 
 /**
-  * @brief  Enumeration type to select AES key source and encryption type
-  *
-  */
+ * @brief  Enumeration type to select AES key source and encryption type
+ *
+ */
 typedef enum {
     MXC_AES_ENCRYPT_EXT_KEY = 0, ///< Encryption using External key
     MXC_AES_DECRYPT_EXT_KEY = 1, ///< Encryption using internal key
-    MXC_AES_DECRYPT_INT_KEY = 2  ///< Decryption using internal key
+    MXC_AES_DECRYPT_INT_KEY = 2 ///< Decryption using internal key
 } mxc_aes_enc_type_t;
 
 /**
-  * @brief  Structure used to set up AES request
-  *
-  */
+ * @brief  Structure used to set up AES request
+ *
+ */
 typedef struct _mxc_aes_cipher_req_t {
-    uint32_t length;               ///< Length of the data
-    uint32_t* inputData;           ///< Pointer to input data
-    uint32_t* resultData;          ///< Pointer to encrypted data
-    mxc_aes_keys_t keySize;        ///< Size of AES key
+    uint32_t length; ///< Length of the data
+    uint32_t* inputData; ///< Pointer to input data
+    uint32_t* resultData; ///< Pointer to encrypted data
+    mxc_aes_keys_t keySize; ///< Size of AES key
     mxc_aes_enc_type_t encryption; ///< Encrytion type or \ref mxc_aes_enc_type_t
-    mxc_aes_complete_t callback;   ///< Callback function
+    mxc_aes_complete_t callback; ///< Callback function
 } mxc_aes_req_t;
 
 /***** Function Prototypes *****/
@@ -110,14 +110,14 @@ int MXC_AES_Init(void);
 
 /**
  * @brief   Enable AES Interrupts
- * 
+ *
  * @param   interrupt interrupt to enable
  */
 void MXC_AES_EnableInt(uint32_t interrupt);
 
 /**
  * @brief   Disable AES Interrupts
- * 
+ *
  * @param   interrupt interrupt to disable
  */
 void MXC_AES_DisableInt(uint32_t interrupt);
@@ -125,7 +125,8 @@ void MXC_AES_DisableInt(uint32_t interrupt);
 /**
  * @brief   Checks the global AES Busy Status
  *
- * @return  E_BUSY if busy and E_NO_ERROR otherwise, see \ref MXC_Error_Codes for a list of return codes.
+ * @return  E_BUSY if busy and E_NO_ERROR otherwise, see \ref MXC_Error_Codes for a list of return
+ * codes.
  */
 int MXC_AES_IsBusy(void);
 
@@ -149,52 +150,52 @@ void MXC_AES_GenerateKey(void);
 
 /**
  * @brief   Set Key size for encryption or decryption
- * 
+ *
  * @param   key Key size, see \ref mxc_aes_keys_t for a list of keys
  */
 void MXC_AES_SetKeySize(mxc_aes_keys_t key);
 
 /**
  * @brief   Get the currently set key size
- * 
+ *
  * @return  mxc_aes_keys_t see \ref mxc_aes_keys_t
  */
 mxc_aes_keys_t MXC_AES_GetKeySize(void);
 
 /**
  * @brief   Flush Input Data FIFO
- * 
+ *
  */
 void MXC_AES_FlushInputFIFO(void);
 
 /**
  * @brief   Flush Output Data FIFO
- * 
+ *
  */
 void MXC_AES_FlushOutputFIFO(void);
 
 /**
  * @brief   Start AES Calculations
- * 
+ *
  */
 void MXC_AES_Start(void);
 
 /**
  * @brief   Get Interrupt flags set
- * 
+ *
  * @return  return the flags set in intfl register
  */
 uint32_t MXC_AES_GetFlags(void);
 
 /**
  * @brief   Clear the interrupts
- * 
+ *
  * @param   flags flags to be cleared
  */
 void MXC_AES_ClearFlags(uint32_t flags);
 
 /**
- * @brief 
+ * @brief
  * @note    The result will be stored in the req structure
  *
  * @param   req  Structure containing data for the encryption
@@ -225,25 +226,25 @@ int MXC_AES_Decrypt(mxc_aes_req_t* req);
 
 /**
  * @brief   Perform AES TX using DMA. Configures DMA request and starts the transmission.
- * 
+ *
  * @param   src_addr  source address
  * @param   len       number of words of data
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_TXDMAConfig(void* src_addr, int len);
 
 /**
  * @brief   Perform AES RX using DMA. Configures DMA request and receives data from AES FIFO.
- * 
+ *
  * @param   dest_addr destination address
  * @param   len       number of words of data
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_RXDMAConfig(void* dest_addr, int len);
 
 /**
- * @brief   Perform encryption or decryption using DMA 
- * 
+ * @brief   Perform encryption or decryption using DMA
+ *
  * @param   req The result will be stored in the req structure. The user needs
  *              to call MXC_AES_Handler() in the ISR
  * @param   enc 0 for encryption and 1 for decryption

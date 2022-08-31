@@ -42,28 +42,28 @@
 #define S_MODULE_NAME "main"
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
 #include "board.h"
-#include "mxc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
 #include "camera.h"
-#include "state.h"
-#include "icc.h"
-#include "rtc.h"
-#include "lp.h"
 #include "cnn.h"
+#include "icc.h"
+#include "lp.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "rtc.h"
+#include "state.h"
+#include <stdint.h>
+#include <stdio.h>
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
 #endif
 #ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
 #include "bitmap.h"
+#include "tft_ssd2119.h"
 #endif
 #include "MAXCAM_Debug.h"
-#include "faceID.h"
 #include "embedding_process.h"
+#include "faceID.h"
 #include "keypad.h"
 
 #if 0 // Custom camera settings
@@ -225,10 +225,10 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init();         // Bring CNN state machine into consistent state
+    cnn_init(); // Bring CNN state machine into consistent state
     cnn_load_weights(); // Load CNN kernels
-    cnn_load_bias();    // Load CNN bias
-    cnn_configure();    // Configure CNN state machine
+    cnn_load_bias(); // Load CNN bias
+    cnn_configure(); // Configure CNN state machine
 
     if (init_database() < 0) {
         PR_ERR("Could not initialize the database");
@@ -289,8 +289,8 @@ int main(void)
 #endif
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel);
+    ret = camera_setup(
+        IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
 
     if (ret != STATUS_OK) {
         PR_ERR("Error returned from setting up camera. Error %d\n", ret);
@@ -307,7 +307,7 @@ int main(void)
     MXC_TFT_WriteReg(0x0011, 0x6858);
 #endif
 #ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x0c, 0x56); //camera vertical flip=0
+    camera_write_reg(0x0c, 0x56); // camera vertical flip=0
     /* Initialize TFT display */
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_180);
@@ -330,7 +330,7 @@ int main(void)
     MXC_WUT_GetTicks(500, MXC_WUT_UNIT_MILLISEC, &ticks_1);
     MXC_WUT_GetTicks(100, MXC_WUT_UNIT_MILLISEC, &ticks_2);
     /* Configure structure for one shot timer to trigger in a number of ticks */
-    cfg.mode    = MXC_WUT_MODE_ONESHOT;
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks_1;
     /* Init WakeUp Timer */
     MXC_WUT_Init(MXC_WUT_PRES_1);
@@ -346,8 +346,8 @@ int main(void)
     key = KEY_1;
 #endif
 
-    while (1) { //TFT Demo
-                /* Get current screen state */
+    while (1) { // TFT Demo
+        /* Get current screen state */
         state = state_get_current();
 #ifdef TS_ENABLE
         /* Check pressed touch screen key */

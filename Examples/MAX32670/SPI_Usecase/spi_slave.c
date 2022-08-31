@@ -45,7 +45,7 @@
 
 /******************************* 	 Variables    ****************************/
 static unsigned char g_rxBuff[256];
-static mxc_spi_req_t g_slave_req = {0};
+static mxc_spi_req_t g_slave_req = { 0 };
 
 static volatile int is_transaction_done = 0;
 
@@ -66,11 +66,11 @@ void spi_transaction_cb(void* req, int error_code)
 /******************************* Public Functions ****************************/
 int spi_slave_init(void)
 {
-    int ret          = 0;
-    int masterMode   = 0;
+    int ret = 0;
+    int masterMode = 0;
     int quadModeUsed = 0;
-    int numSlaves    = 1;
-    int ssPolarity   = 0;
+    int numSlaves = 1;
+    int ssPolarity = 0;
 
     ret = MXC_SPI_Init(SPIx_SLAVE, masterMode, quadModeUsed, numSlaves, ssPolarity, SPI_BAUD_RATE);
     if (ret) {
@@ -89,15 +89,15 @@ int spi_slave_send(unsigned char* src, unsigned int srcLen)
 {
     int ret = 0;
 
-    g_slave_req.spi        = SPIx_SLAVE;
-    g_slave_req.ssIdx      = 0; // not meaning for slave
+    g_slave_req.spi = SPIx_SLAVE;
+    g_slave_req.ssIdx = 0; // not meaning for slave
     g_slave_req.ssDeassert = 1;
-    g_slave_req.txData     = src;
-    g_slave_req.rxData     = g_rxBuff;
-    g_slave_req.txLen      = srcLen;
-    g_slave_req.rxLen      = srcLen;
-    g_slave_req.txCnt      = 0;
-    g_slave_req.rxCnt      = 0;
+    g_slave_req.txData = src;
+    g_slave_req.rxData = g_rxBuff;
+    g_slave_req.txLen = srcLen;
+    g_slave_req.rxLen = srcLen;
+    g_slave_req.txCnt = 0;
+    g_slave_req.rxCnt = 0;
     g_slave_req.completeCB = spi_transaction_cb;
 
     ret = MXC_SPI_SlaveTransactionAsync(&g_slave_req);
@@ -107,7 +107,7 @@ int spi_slave_send(unsigned char* src, unsigned int srcLen)
 
 int spi_slave_rcv(unsigned char* dst, unsigned int maxLen, unsigned int* len)
 {
-    int ret     = 0;
+    int ret = 0;
     int counter = 100;
 
     while (is_transaction_done == 0) {

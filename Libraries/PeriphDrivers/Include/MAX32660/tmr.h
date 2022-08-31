@@ -41,11 +41,11 @@
 #define _TMR_H_
 
 /* **** Includes **** */
+#include "gcr_regs.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "tmr_regs.h"
 #include "mxc_sys.h"
-#include "gcr_regs.h"
+#include "tmr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -61,42 +61,42 @@ extern "C" {
  * @brief Timer prescaler values
  */
 typedef enum {
-    TMR_PRES_1    = MXC_S_TMR_CN_PRES_DIV_BY_1,    ///< Divide input clock by 1
-    TMR_PRES_2    = MXC_S_TMR_CN_PRES_DIV_BY_2,    ///< Divide input clock by 2
-    TMR_PRES_4    = MXC_S_TMR_CN_PRES_DIV_BY_4,    ///< Divide input clock by 4
-    TMR_PRES_8    = MXC_S_TMR_CN_PRES_DIV_BY_8,    ///< Divide input clock by 8
-    TMR_PRES_16   = MXC_S_TMR_CN_PRES_DIV_BY_16,   ///< Divide input clock by 16
-    TMR_PRES_32   = MXC_S_TMR_CN_PRES_DIV_BY_32,   ///< Divide input clock by 32
-    TMR_PRES_64   = MXC_S_TMR_CN_PRES_DIV_BY_64,   ///< Divide input clock by 64
-    TMR_PRES_128  = MXC_S_TMR_CN_PRES_DIV_BY_128,  ///< Divide input clock by 128
-    TMR_PRES_256  = MXC_S_TMR_CN_PRES_DIV_BY_256,  ///< Divide input clock by 256
-    TMR_PRES_512  = MXC_S_TMR_CN_PRES_DIV_BY_512,  ///< Divide input clock by 512
+    TMR_PRES_1 = MXC_S_TMR_CN_PRES_DIV_BY_1, ///< Divide input clock by 1
+    TMR_PRES_2 = MXC_S_TMR_CN_PRES_DIV_BY_2, ///< Divide input clock by 2
+    TMR_PRES_4 = MXC_S_TMR_CN_PRES_DIV_BY_4, ///< Divide input clock by 4
+    TMR_PRES_8 = MXC_S_TMR_CN_PRES_DIV_BY_8, ///< Divide input clock by 8
+    TMR_PRES_16 = MXC_S_TMR_CN_PRES_DIV_BY_16, ///< Divide input clock by 16
+    TMR_PRES_32 = MXC_S_TMR_CN_PRES_DIV_BY_32, ///< Divide input clock by 32
+    TMR_PRES_64 = MXC_S_TMR_CN_PRES_DIV_BY_64, ///< Divide input clock by 64
+    TMR_PRES_128 = MXC_S_TMR_CN_PRES_DIV_BY_128, ///< Divide input clock by 128
+    TMR_PRES_256 = MXC_S_TMR_CN_PRES_DIV_BY_256, ///< Divide input clock by 256
+    TMR_PRES_512 = MXC_S_TMR_CN_PRES_DIV_BY_512, ///< Divide input clock by 512
     TMR_PRES_1024 = MXC_S_TMR_CN_PRES_DIV_BY_1024, ///< Divide input clock by 1024
     TMR_PRES_2048 = MXC_S_TMR_CN_PRES_DIV_BY_2048, ///< Divide input clock by 2048
     TMR_PRES_4096 = MXC_S_TMR_CN_PRES_DIV_BY_4096, ///< Divide input clock by 4096
-    TMR_PRES_8192 = MXC_S_TMR_CN_PRES_DIV_BY_8192  ///< Divide input clock by 8192
+    TMR_PRES_8192 = MXC_S_TMR_CN_PRES_DIV_BY_8192 ///< Divide input clock by 8192
 } mxc_tmr_pres_t;
 
 /**
  * @brief Timer modes
  */
 typedef enum {
-    TMR_MODE_ONESHOT         = MXC_S_TMR_CN_TMODE_ONE_SHOT,   ///< Timer Mode ONESHOT
-    TMR_MODE_CONTINUOUS      = MXC_V_TMR_CN_TMODE_CONTINUOUS, ///< Timer Mode CONTINUOUS
-    TMR_MODE_COUNTER         = MXC_V_TMR_CN_TMODE_COUNTER,    ///< Timer Mode COUNTER
-    TMR_MODE_PWM             = MXC_V_TMR_CN_TMODE_PWM,        ///< Timer Mode PWM
-    TMR_MODE_CAPTURE         = MXC_V_TMR_CN_TMODE_CAPTURE,    ///< Timer Mode CAPTURE
-    TMR_MODE_COMPARE         = MXC_V_TMR_CN_TMODE_COMPARE,    ///< Timer Mode COMPARE
-    TMR_MODE_GATED           = MXC_V_TMR_CN_TMODE_GATED,      ///< Timer Mode GATED
-    TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CN_TMODE_CAPCOMP     ///< Timer Mode CAPTURECOMPARE
+    TMR_MODE_ONESHOT = MXC_S_TMR_CN_TMODE_ONE_SHOT, ///< Timer Mode ONESHOT
+    TMR_MODE_CONTINUOUS = MXC_V_TMR_CN_TMODE_CONTINUOUS, ///< Timer Mode CONTINUOUS
+    TMR_MODE_COUNTER = MXC_V_TMR_CN_TMODE_COUNTER, ///< Timer Mode COUNTER
+    TMR_MODE_PWM = MXC_V_TMR_CN_TMODE_PWM, ///< Timer Mode PWM
+    TMR_MODE_CAPTURE = MXC_V_TMR_CN_TMODE_CAPTURE, ///< Timer Mode CAPTURE
+    TMR_MODE_COMPARE = MXC_V_TMR_CN_TMODE_COMPARE, ///< Timer Mode COMPARE
+    TMR_MODE_GATED = MXC_V_TMR_CN_TMODE_GATED, ///< Timer Mode GATED
+    TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CN_TMODE_CAPCOMP ///< Timer Mode CAPTURECOMPARE
 } mxc_tmr_mode_t;
 
 /**
- * @brief Timer bit mode 
- * 
+ * @brief Timer bit mode
+ *
  */
 typedef enum {
-    TMR_BIT_MODE_32,  ///< Timer Mode 32 bit
+    TMR_BIT_MODE_32, ///< Timer Mode 32 bit
     TMR_BIT_MODE_16A, ///< Timer Mode Lower 16 bit
     TMR_BIT_MODE_16B, ///< Timer Mode Upper 16 bit
 } mxc_tmr_bit_mode_t;
@@ -105,10 +105,10 @@ typedef enum {
  * @brief Timer units of time enumeration
  */
 typedef enum {
-    TMR_UNIT_NANOSEC,  ///< Nanosecond Unit Indicator
+    TMR_UNIT_NANOSEC, ///< Nanosecond Unit Indicator
     TMR_UNIT_MICROSEC, ///< Microsecond Unit Indicator
     TMR_UNIT_MILLISEC, ///< Millisecond Unit Indicator
-    TMR_UNIT_SEC,      ///< Second Unit Indicator
+    TMR_UNIT_SEC, ///< Second Unit Indicator
 } mxc_tmr_unit_t;
 
 /**
@@ -117,8 +117,8 @@ typedef enum {
 typedef struct {
     mxc_tmr_pres_t pres; ///< Desired timer prescaler
     mxc_tmr_mode_t mode; ///< Desired timer mode
-    uint32_t cmp_cnt;    ///< Compare register value in timer ticks
-    unsigned pol;        ///< Polarity (0 or 1)
+    uint32_t cmp_cnt; ///< Compare register value in timer ticks
+    unsigned pol; ///< Polarity (0 or 1)
 } mxc_tmr_cfg_t;
 
 /* **** Definitions **** */
@@ -130,7 +130,7 @@ typedef void (*mxc_tmr_complete_t)(int error);
  * @brief   Initialize timer module clock.
  * @param   tmr        Pointer to timer module to initialize.
  * @param   cfg        System configuration object
- * 
+ *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg);
@@ -245,7 +245,7 @@ void MXC_TMR_Delay(mxc_tmr_regs_t* tmr, unsigned long us);
 /**
  * @brief   Start a timer that will time out after a certain number of microseconds
  * @note    This uses the 32-it Timer
- * 
+ *
  * @param   tmr   The timer
  * @param   us    microseconds to time out after
  */

@@ -83,10 +83,10 @@ extern "C" {
 #define UCL_DES_NB_SUBKEYS 32
 #else
 /** <b>Number of subkeys invovled in DES</b>.
-* The number of subkeys depend on the implementation.
-*
-* @ingroup UCL_DES
-*/
+ * The number of subkeys depend on the implementation.
+ *
+ * @ingroup UCL_DES
+ */
 #define UCL_DES_NB_SUBKEYS 16
 #endif
 
@@ -96,9 +96,9 @@ extern "C" {
  * @ingroup UCL_DES
  */
 struct ucl_des_ctx {
-    int mode;     /**< Ciphering Mode.     */
+    int mode; /**< Ciphering Mode.     */
     u8 memory[8]; /**< Intermediate state. */
-    u32 index;    /**< Index.              */
+    u32 index; /**< Index.              */
     u32 subKeys[UCL_DES_NB_SUBKEYS * 2];
     /**< DES Sub-keys.
      * @see UCL_DES_NB_SUBKEYS

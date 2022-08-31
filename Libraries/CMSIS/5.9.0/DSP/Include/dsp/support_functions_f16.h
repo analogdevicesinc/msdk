@@ -26,8 +26,8 @@
 #ifndef _SUPPORT_FUNCTIONS_F16_H_
 #define _SUPPORT_FUNCTIONS_F16_H_
 
-#include "arm_math_types_f16.h"
 #include "arm_math_memory.h"
+#include "arm_math_types_f16.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
@@ -39,51 +39,51 @@ extern "C" {
 #if defined(ARM_FLOAT16_SUPPORTED)
 
 /**
-   * @brief  Copies the elements of a floating-point vector.
-   * @param[in]  pSrc       input pointer
-   * @param[out] pDst       output pointer
-   * @param[in]  blockSize  number of samples to process
-   */
+ * @brief  Copies the elements of a floating-point vector.
+ * @param[in]  pSrc       input pointer
+ * @param[out] pDst       output pointer
+ * @param[in]  blockSize  number of samples to process
+ */
 void arm_copy_f16(const float16_t* pSrc, float16_t* pDst, uint32_t blockSize);
 
 /**
-   * @brief  Fills a constant value into a floating-point vector.
-   * @param[in]  value      input value to be filled
-   * @param[out] pDst       output pointer
-   * @param[in]  blockSize  number of samples to process
-   */
+ * @brief  Fills a constant value into a floating-point vector.
+ * @param[in]  value      input value to be filled
+ * @param[out] pDst       output pointer
+ * @param[in]  blockSize  number of samples to process
+ */
 void arm_fill_f16(float16_t value, float16_t* pDst, uint32_t blockSize);
 
 /**
-   * @brief Converts the elements of the floating-point vector to Q31 vector.
-   * @param[in]  pSrc       points to the f16 input vector
-   * @param[out] pDst       points to the q15 output vector
-   * @param[in]  blockSize  length of the input vector
-   */
+ * @brief Converts the elements of the floating-point vector to Q31 vector.
+ * @param[in]  pSrc       points to the f16 input vector
+ * @param[out] pDst       points to the q15 output vector
+ * @param[in]  blockSize  length of the input vector
+ */
 void arm_f16_to_q15(const float16_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
-   * @brief Converts the elements of the floating-point vector to Q31 vector.
-   * @param[in]  pSrc       points to the q15 input vector
-   * @param[out] pDst       points to the f16 output vector
-   * @param[in]  blockSize  length of the input vector
-   */
+ * @brief Converts the elements of the floating-point vector to Q31 vector.
+ * @param[in]  pSrc       points to the q15 input vector
+ * @param[out] pDst       points to the f16 output vector
+ * @param[in]  blockSize  length of the input vector
+ */
 void arm_q15_to_f16(const q15_t* pSrc, float16_t* pDst, uint32_t blockSize);
 
 /**
-   * @brief Converts the elements of the floating-point vector to Q31 vector.
-   * @param[in]  pSrc       points to the f32 input vector
-   * @param[out] pDst       points to the f16 output vector
-   * @param[in]  blockSize  length of the input vector
-   */
+ * @brief Converts the elements of the floating-point vector to Q31 vector.
+ * @param[in]  pSrc       points to the f32 input vector
+ * @param[out] pDst       points to the f16 output vector
+ * @param[in]  blockSize  length of the input vector
+ */
 void arm_float_to_f16(const float32_t* pSrc, float16_t* pDst, uint32_t blockSize);
 
 /**
-   * @brief Converts the elements of the floating-point vector to Q31 vector.
-   * @param[in]  pSrc       points to the f16 input vector
-   * @param[out] pDst       points to the f32 output vector
-   * @param[in]  blockSize  length of the input vector
-   */
+ * @brief Converts the elements of the floating-point vector to Q31 vector.
+ * @param[in]  pSrc       points to the f16 input vector
+ * @param[out] pDst       points to the f32 output vector
+ * @param[in]  blockSize  length of the input vector
+ */
 void arm_f16_to_float(const float16_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
@@ -111,7 +111,7 @@ float16_t arm_weighted_sum_f16(const float16_t* in, const float16_t* weigths, ui
  *
  */
 void arm_barycenter_f16(const float16_t* in, const float16_t* weights, float16_t* out,
-                        uint32_t nbVectors, uint32_t vecDim);
+    uint32_t nbVectors, uint32_t vecDim);
 
 /**
   @ingroup groupSupport
@@ -127,17 +127,17 @@ void arm_barycenter_f16(const float16_t* in, const float16_t* weights, float16_t
  */
 
 /**
-   * @brief  Interpret a f16 as an s16 value
-   * @param[in] x  input value.
-   * @return  return value.
-   * 
-   * @par    Description
-   *            It is a typecast. No conversion of the float to int is done.
-   *            The memcpy will be optimized out by the compiler.
-   *            memcpy is used to prevent type punning issues.
-   *            With gcc, -fno-builtins MUST not be used or the
-   *            memcpy will not be optimized out.
-   */
+ * @brief  Interpret a f16 as an s16 value
+ * @param[in] x  input value.
+ * @return  return value.
+ *
+ * @par    Description
+ *            It is a typecast. No conversion of the float to int is done.
+ *            The memcpy will be optimized out by the compiler.
+ *            memcpy is used to prevent type punning issues.
+ *            With gcc, -fno-builtins MUST not be used or the
+ *            memcpy will not be optimized out.
+ */
 __STATIC_INLINE int16_t arm_typecast_s16_f16(float16_t x)
 {
     int16_t res;
@@ -146,17 +146,17 @@ __STATIC_INLINE int16_t arm_typecast_s16_f16(float16_t x)
 }
 
 /**
-   * @brief  Interpret an s16 as an f16 value
-   * @param[in] x  input value.
-   * @return  return value.
-   * 
-   * @par    Description
-   *            It is a typecast. No conversion of the int to float is done.
-   *            The memcpy will be optimized out by the compiler.
-   *            memcpy is used to prevent type punning issues.
-   *            With gcc, -fno-builtins MUST not be used or the
-   *            memcpy will not be optimized out.
-   */
+ * @brief  Interpret an s16 as an f16 value
+ * @param[in] x  input value.
+ * @return  return value.
+ *
+ * @par    Description
+ *            It is a typecast. No conversion of the int to float is done.
+ *            The memcpy will be optimized out by the compiler.
+ *            memcpy is used to prevent type punning issues.
+ *            With gcc, -fno-builtins MUST not be used or the
+ *            memcpy will not be optimized out.
+ */
 __STATIC_INLINE float16_t arm_typecast_f16_s16(int16_t x)
 {
     float16_t res;

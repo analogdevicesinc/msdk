@@ -5,37 +5,37 @@
  */
 
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /***** Includes *****/
 #include <stdio.h>
@@ -45,16 +45,16 @@
 
 /***** Definitions *****/
 #define MXC_GPIO_PORT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_IN  MXC_GPIO_PIN_16
+#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_16
 
 #define MXC_GPIO_PORT_OUT MXC_GPIO0
-#define MXC_GPIO_PIN_OUT  MXC_GPIO_PIN_17
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_17
 
 #define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_IN  MXC_GPIO_PIN_18
+#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_18
 
 #define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_STATUS  MXC_GPIO_PIN_19
+#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_19
 
 /***** Globals *****/
 
@@ -78,22 +78,22 @@ int main(void)
     printf("   interrupt occurs.\n\n");
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
-    gpio_interrupt_status.port  = MXC_GPIO_PORT_INTERRUPT_STATUS;
-    gpio_interrupt_status.mask  = MXC_GPIO_PIN_INTERRUPT_STATUS;
-    gpio_interrupt_status.pad   = MXC_GPIO_PAD_NONE;
-    gpio_interrupt_status.func  = MXC_GPIO_FUNC_OUT;
+    gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
+    gpio_interrupt_status.mask = MXC_GPIO_PIN_INTERRUPT_STATUS;
+    gpio_interrupt_status.pad = MXC_GPIO_PAD_NONE;
+    gpio_interrupt_status.func = MXC_GPIO_FUNC_OUT;
     gpio_interrupt_status.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_interrupt_status);
 
     /*
      *   Set up interrupt on P1.07.
-     *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
-     *     reads high when button is not pressed.
+     *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal
+     * pull-up so pin reads high when button is not pressed.
      */
-    gpio_interrupt.port  = MXC_GPIO_PORT_INTERRUPT_IN;
-    gpio_interrupt.mask  = MXC_GPIO_PIN_INTERRUPT_IN;
-    gpio_interrupt.pad   = MXC_GPIO_PAD_PULL_UP;
-    gpio_interrupt.func  = MXC_GPIO_FUNC_IN;
+    gpio_interrupt.port = MXC_GPIO_PORT_INTERRUPT_IN;
+    gpio_interrupt.mask = MXC_GPIO_PIN_INTERRUPT_IN;
+    gpio_interrupt.pad = MXC_GPIO_PAD_PULL_UP;
+    gpio_interrupt.func = MXC_GPIO_FUNC_IN;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_interrupt);
     MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, &gpio_interrupt_status);
@@ -103,21 +103,21 @@ int main(void)
 
     /*
      *   Setup input pin.
-     *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
-     *     reads high when button is not pressed.
+     *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal
+     * pull-up so pin reads high when button is not pressed.
      */
-    gpio_in.port         = MXC_GPIO_PORT_IN;
-    gpio_in.mask         = MXC_GPIO_PIN_IN;
-    gpio_in.pad          = MXC_GPIO_PAD_PULL_UP;
-    gpio_in.func         = MXC_GPIO_FUNC_IN;
+    gpio_in.port = MXC_GPIO_PORT_IN;
+    gpio_in.mask = MXC_GPIO_PIN_IN;
+    gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
+    gpio_in.func = MXC_GPIO_FUNC_IN;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_in);
 
     /* Setup output pin. */
-    gpio_out.port        = MXC_GPIO_PORT_OUT;
-    gpio_out.mask        = MXC_GPIO_PIN_OUT;
-    gpio_out.pad         = MXC_GPIO_PAD_NONE;
-    gpio_out.func        = MXC_GPIO_FUNC_OUT;
+    gpio_out.port = MXC_GPIO_PORT_OUT;
+    gpio_out.mask = MXC_GPIO_PIN_OUT;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.func = MXC_GPIO_FUNC_OUT;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_out);
 

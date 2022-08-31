@@ -42,19 +42,19 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <string.h>
-#include "mxc_sys.h"
-#include "mxc_errors.h"
-#include "max32690.h"
 #include "Ext_Flash.h"
-#include "spixf.h"
 #include "board.h"
 #include "led.h"
+#include "max32690.h"
+#include "mxc_errors.h"
+#include "mxc_sys.h"
+#include "spixf.h"
+#include <stdio.h>
+#include <string.h>
 
 /***** Definitions *****/
 
-#define EXT_FLASH_ADDR         0
+#define EXT_FLASH_ADDR 0
 #define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
 
 int fail = 0;
@@ -123,8 +123,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
     printf("External flash Initialized.\n\n");
 
@@ -136,8 +135,7 @@ int main(void)
     } else {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
     int err;
@@ -166,10 +164,10 @@ int main(void)
 
     // Program the external flash
     printf("Programming function (%d bytes @ 0x%08x) into external flash\n",
-           (uint32_t)(&__load_length_xip), &__load_start_xip);
+        (uint32_t)(&__load_length_xip), &__load_start_xip);
     if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, &__load_start_xip,
-                                      (uint32_t)(&__load_length_xip), EXT_FLASH_SPIXFC_WIDTH)) !=
-        E_NO_ERROR) {
+             (uint32_t)(&__load_length_xip), EXT_FLASH_SPIXFC_WIDTH))
+        != E_NO_ERROR) {
         printf("Error Programming: %d\n", err);
         fail++;
     } else {
@@ -177,8 +175,8 @@ int main(void)
     }
 
     printf("Verifying external flash\n");
-    if ((err = Ext_Flash_Read(EXT_FLASH_ADDR, rx_buf, rx_len, EXT_FLASH_SPIXFC_WIDTH)) !=
-        E_NO_ERROR) {
+    if ((err = Ext_Flash_Read(EXT_FLASH_ADDR, rx_buf, rx_len, EXT_FLASH_SPIXFC_WIDTH))
+        != E_NO_ERROR) {
         printf("Error verifying data %d\n", err);
         fail++;
     } else {
@@ -194,7 +192,7 @@ int main(void)
     spixf_cfg_setup();
 
     printf("Jumping to external flash (@ 0x%08x), watch for blinking LED.\n\n",
-           (MXC_XIP_MEM_BASE | 0x1));
+        (MXC_XIP_MEM_BASE | 0x1));
     func = (void (*)(void))(MXC_XIP_MEM_BASE | 0x1);
     func();
     printf("Returned from external flash\n\n");

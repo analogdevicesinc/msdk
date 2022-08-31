@@ -32,14 +32,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_errors.h"
 #include "gpio.h"
-#include "gpio_reva.h"
 #include "gpio_common.h"
-#include <stddef.h>
+#include "gpio_reva.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
 #include "mxc_sys.h"
+#include <stddef.h>
 
 /* **** Functions **** */
 
@@ -76,60 +76,60 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 
     // Set the GPIO type
     switch (cfg->func) {
-        case MXC_GPIO_FUNC_IN:
-            gpio->out_en_clr = cfg->mask;
-            gpio->en0_set    = cfg->mask;
-            gpio->en1_clr    = cfg->mask;
-            gpio->en2_clr    = cfg->mask;
-            break;
+    case MXC_GPIO_FUNC_IN:
+        gpio->out_en_clr = cfg->mask;
+        gpio->en0_set = cfg->mask;
+        gpio->en1_clr = cfg->mask;
+        gpio->en2_clr = cfg->mask;
+        break;
 
-        case MXC_GPIO_FUNC_OUT:
-            gpio->out_en_set = cfg->mask;
-            gpio->en0_set    = cfg->mask;
-            gpio->en1_clr    = cfg->mask;
-            gpio->en2_clr    = cfg->mask;
-            break;
+    case MXC_GPIO_FUNC_OUT:
+        gpio->out_en_set = cfg->mask;
+        gpio->en0_set = cfg->mask;
+        gpio->en1_clr = cfg->mask;
+        gpio->en2_clr = cfg->mask;
+        break;
 
-        case MXC_GPIO_FUNC_ALT1:
-            gpio->en0_clr = cfg->mask;
-            gpio->en1_clr = cfg->mask;
-            gpio->en2_clr = cfg->mask;
-            break;
+    case MXC_GPIO_FUNC_ALT1:
+        gpio->en0_clr = cfg->mask;
+        gpio->en1_clr = cfg->mask;
+        gpio->en2_clr = cfg->mask;
+        break;
 
-        case MXC_GPIO_FUNC_ALT2:
-            gpio->en0_clr = cfg->mask;
-            gpio->en1_set = cfg->mask;
-            gpio->en2_clr = cfg->mask;
-            break;
+    case MXC_GPIO_FUNC_ALT2:
+        gpio->en0_clr = cfg->mask;
+        gpio->en1_set = cfg->mask;
+        gpio->en2_clr = cfg->mask;
+        break;
 
-        case MXC_GPIO_FUNC_ALT3:
-            gpio->en0_set = cfg->mask;
-            gpio->en1_set = cfg->mask;
-            // gpio->en2_set    |= cfg->mask;
-            break;
+    case MXC_GPIO_FUNC_ALT3:
+        gpio->en0_set = cfg->mask;
+        gpio->en1_set = cfg->mask;
+        // gpio->en2_set    |= cfg->mask;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Configure the pad
     switch (cfg->pad) {
-        case MXC_GPIO_PAD_NONE:
-            gpio->pad_cfg1 &= ~cfg->mask;
-            break;
+    case MXC_GPIO_PAD_NONE:
+        gpio->pad_cfg1 &= ~cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_PULL_UP:
-            gpio->pad_cfg1 |= cfg->mask;
-            gpio->ps |= cfg->mask;
-            break;
+    case MXC_GPIO_PAD_PULL_UP:
+        gpio->pad_cfg1 |= cfg->mask;
+        gpio->ps |= cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_PULL_DOWN:
-            gpio->pad_cfg1 |= cfg->mask;
-            gpio->ps &= ~cfg->mask;
-            break;
+    case MXC_GPIO_PAD_PULL_DOWN:
+        gpio->pad_cfg1 |= cfg->mask;
+        gpio->ps &= ~cfg->mask;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Configure the vssel

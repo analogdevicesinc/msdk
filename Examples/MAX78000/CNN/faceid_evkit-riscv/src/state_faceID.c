@@ -30,18 +30,17 @@
  * ownership rights.
  *
  ******************************************************************************/
-#include <string.h>
-#include "utils.h"
-#include "camera.h"
-#include "utils.h"
-#include "embedding_process.h"
 #include "MAXCAM_Debug.h"
-#include "faceID.h"
-#include "sema_regs.h"
-#include "led.h"
-#include "tmr.h"
+#include "camera.h"
 #include "cnn.h"
+#include "embedding_process.h"
+#include "faceID.h"
+#include "led.h"
 #include "mxc_delay.h"
+#include "sema_regs.h"
+#include "tmr.h"
+#include "utils.h"
+#include <string.h>
 
 #define S_MODULE_NAME "state_faceid"
 
@@ -59,7 +58,7 @@ static void process_img(void);
 static void run_cnn(int x_offset, int y_offset);
 
 static int8_t prev_decision = -2;
-static int8_t decision      = -2;
+static int8_t decision = -2;
 
 extern volatile uint32_t* arm_mail_box;
 extern volatile uint32_t* riscv_mail_box;
@@ -74,10 +73,10 @@ int start_faceid(void)
 #if (PRINT_TIME == 1)
     /* Get current time */
     uint32_t process_time = utils_get_time_ms();
-    uint32_t total_time   = utils_get_time_ms();
+    uint32_t total_time = utils_get_time_ms();
 #endif
 
-    while (1) { //Capture image and run CNN
+    while (1) { // Capture image and run CNN
 
         /* Check if camera image is ready to process */
         if (camera_is_image_rcv()) {
@@ -94,10 +93,10 @@ int start_faceid(void)
 #ifdef LP_MODE_ENABLE
             /* Reinit CNN and reload weigths after UPM or Standby because CNN is powered off */
             if (LP_MODE > 2) {
-                cnn_init();         // Bring state machine into consistent state
+                cnn_init(); // Bring state machine into consistent state
                 cnn_load_weights(); // Reload CNN kernels
-                cnn_load_bias();    // Reload CNN bias
-                cnn_configure();    // Configure state machine
+                cnn_load_bias(); // Reload CNN bias
+                cnn_configure(); // Configure state machine
             }
 #endif
             /* Run CNN three times on original and shifted images */
@@ -118,13 +117,13 @@ int start_faceid(void)
             MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN | MXC_F_SEMA_IRQ0_CM4_IRQ;
 
 #if (PRINT_TIME == 1)
-            //printf("\n\n\n");
+            // printf("\n\n\n");
             PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
 #endif
 
-            //PR_DEBUG("RISC-V: sleep");
+            // PR_DEBUG("RISC-V: sleep");
             asm volatile("wfi"); // Wait for wakeup timer interrupt
-            //PR_DEBUG("RISC-V: wake up");
+            // PR_DEBUG("RISC-V: wake up");
 
             // Camera startup delay (~100ms) after resuming XVCLK clock generated
             // by Pulse Train which is off during UPM/Standby mode
@@ -140,9 +139,9 @@ int start_faceid(void)
             total_time = utils_get_time_ms();
 #endif
 
-            //PR_DEBUG("RISC-V: sleep");
+            // PR_DEBUG("RISC-V: sleep");
             asm volatile("wfi"); // Wait for camera or semaphore interrupt
-            //PR_DEBUG("RISC-V: wake up");
+            // PR_DEBUG("RISC-V: wake up");
         }
 
         if (arm_mail_box[0]) {
@@ -185,40 +184,40 @@ static void process_img(void)
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
 
         for (int j = 0; j < HEIGHT + 2 * THICKNESS; j++) {
-            *(image++) = FRAME_COLOR; //color
+            *(image++) = FRAME_COLOR; // color
         }
 
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
     }
 
-    //right line
-    image = ((uint16_t*)raw) +
-            (((IMAGE_H - (WIDTH + 2 * THICKNESS)) / 2) + WIDTH + THICKNESS) * IMAGE_W;
+    // right line
+    image = ((uint16_t*)raw)
+        + (((IMAGE_H - (WIDTH + 2 * THICKNESS)) / 2) + WIDTH + THICKNESS) * IMAGE_W;
 
     for (int i = 0; i < THICKNESS; i++) {
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
 
         for (int j = 0; j < HEIGHT + 2 * THICKNESS; j++) {
-            *(image++) = FRAME_COLOR; //color
+            *(image++) = FRAME_COLOR; // color
         }
 
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
     }
 
-    //top + bottom lines
+    // top + bottom lines
     image = ((uint16_t*)raw) + ((IMAGE_H - (WIDTH + 2 * THICKNESS)) / 2) * IMAGE_W;
 
     for (int i = 0; i < WIDTH + 2 * THICKNESS; i++) {
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
 
         for (int j = 0; j < THICKNESS; j++) {
-            *(image++) = FRAME_COLOR; //color
+            *(image++) = FRAME_COLOR; // color
         }
 
         image += HEIGHT;
 
         for (int j = 0; j < THICKNESS; j++) {
-            *(image++) = FRAME_COLOR; //color
+            *(image++) = FRAME_COLOR; // color
         }
 
         image += ((IMAGE_W - (HEIGHT + 2 * THICKNESS)) / 2);
@@ -230,11 +229,11 @@ static void process_img(void)
 
     // Post image info to RISC-V mailbox
     riscv_mail_box[1] = (uint32_t)raw;
-    //PR_DEBUG("Image ptr: %x",riscv_mail_box[1]);
+    // PR_DEBUG("Image ptr: %x",riscv_mail_box[1]);
     riscv_mail_box[2] = h;
-    //PR_DEBUG("Image heigth: %x",riscv_mail_box[2]);
+    // PR_DEBUG("Image heigth: %x",riscv_mail_box[2]);
     riscv_mail_box[3] = w;
-    //PR_DEBUG("Image width: %x\n",riscv_mail_box[3]);
+    // PR_DEBUG("Image width: %x\n",riscv_mail_box[3]);
     riscv_mail_box[0] = IMAGE_READY;
     // Signal the Cortex-M4 to wake up and display on TFT
     MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN | MXC_F_SEMA_IRQ0_CM4_IRQ;
@@ -293,8 +292,8 @@ static void run_cnn(int x_offset, int y_offset)
             uint32_t number;
 
             ub = (uint8_t)(data[j * BYTE_PER_PIXEL * IMAGE_W + 1] << 3);
-            ug = (uint8_t)((data[j * BYTE_PER_PIXEL * IMAGE_W] << 5) |
-                           ((data[j * BYTE_PER_PIXEL * IMAGE_W + 1] & 0xE0) >> 3));
+            ug = (uint8_t)((data[j * BYTE_PER_PIXEL * IMAGE_W] << 5)
+                | ((data[j * BYTE_PER_PIXEL * IMAGE_W + 1] & 0xE0) >> 3));
             ur = (uint8_t)(data[j * BYTE_PER_PIXEL * IMAGE_W] & 0xF8);
 
             b = ub - 128;
@@ -303,16 +302,16 @@ static void run_cnn(int x_offset, int y_offset)
 
 #ifndef FAST_FIFO
             // Loading data into the CNN fifo
-            while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
-                ; // Wait for FIFO 0
+            while (((*((volatile uint32_t*)0x50000004) & 1)) != 0) { }
+            // Wait for FIFO 0
 
             number = 0x00FFFFFF & ((((uint8_t)b) << 16) | (((uint8_t)g) << 8) | ((uint8_t)r));
             *((volatile uint32_t*)0x50000008) = number; // Write FIFO 0
 #else
 
             // Loading data into the CNN fifo
-            while (((*((volatile uint32_t*)0x400c0404) & 2)) != 0)
-                ; // Wait for FIFO 0
+            while (((*((volatile uint32_t*)0x400c0404) & 2)) != 0) { }
+            // Wait for FIFO 0
 
             number = 0x00FFFFFF & ((((uint8_t)b) << 16) | (((uint8_t)g) << 8) | ((uint8_t)r));
             *((volatile uint32_t*)0x400c0410) = number; // Write FIFO 0
@@ -331,7 +330,7 @@ static void run_cnn(int x_offset, int y_offset)
 
     sprintf(string_time, "%dms", cnn_load_time);
     cnn_load_time_string.data = string_time;
-    cnn_load_time_string.len  = strlen(string_time);
+    cnn_load_time_string.len = strlen(string_time);
 
     pass_time = utils_get_time_ms();
 
@@ -368,37 +367,37 @@ static void run_cnn(int x_offset, int y_offset)
         uint8_t counter_len;
         get_min_dist_counter(&counter, &counter_len);
 
-        name          = "";
+        name = "";
         prev_decision = decision;
-        decision      = -5;
+        decision = -5;
 
         PR_INFO("counter_len: %d,  %d,%d,%d\n", counter_len, counter[0], counter[1], counter[2]);
 
         for (uint8_t id = 0; id < counter_len; ++id) {
             if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.8)) { // >80%  detection
-                name         = get_subject(id);
-                decision     = id;
+                name = get_subject(id);
+                decision = id;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
                 break;
             } else if (counter[id] >= (uint8_t)(closest_sub_buffer_size * 0.4)) { // >%40 adjust
-                name         = "Adjust Face";
-                decision     = -2;
+                name = "Adjust Face";
+                decision = -2;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
                 break;
             } else if (counter[id] > closest_sub_buffer_size * 0.2) { //>>20% unknown
-                name         = "Unknown";
-                decision     = -1;
+                name = "Unknown";
+                decision = -1;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
                 break;
             } else if (counter[id] > closest_sub_buffer_size * 0.1) { //>> 10% transition
-                name         = "";
-                decision     = -3;
+                name = "";
+                decision = -3;
                 noface_count = 0;
                 PR_DEBUG("Status: %s \n", name);
                 PR_INFO("Detection: %s: %d", name, counter[id]);
@@ -406,7 +405,7 @@ static void run_cnn(int x_offset, int y_offset)
                 noface_count++;
 
                 if (noface_count > 10) {
-                    name     = "No face";
+                    name = "No face";
                     decision = -4;
                     noface_count--;
                     PR_INFO("Detection: %s: %d", name, counter[id]);
@@ -416,23 +415,23 @@ static void run_cnn(int x_offset, int y_offset)
 
         PR_DEBUG("Decision: %d Name:%s \n", decision, name);
         printResult.data = name;
-        printResult.len  = strlen(name);
+        printResult.len = strlen(name);
 
         PR_DEBUG("%s \n", name);
 
         // Post CNN result to RISC-V mailbox
         riscv_mail_box[1] = (uint32_t)cnn_load_time_string.len;
-        //PR_DEBUG("Time size: %d",cnn_load_time_string.len);
+        // PR_DEBUG("Time size: %d",cnn_load_time_string.len);
 
         ptr = (uint8_t*)&riscv_mail_box[2];
         memcpy(ptr, cnn_load_time_string.data, cnn_load_time_string.len);
-        //PR_DEBUG("Time ptr: %x", ptr );
+        // PR_DEBUG("Time ptr: %x", ptr );
 
         riscv_mail_box[6] = (uint32_t)printResult.len;
-        //PR_DEBUG("Result size: %d",printResult.len);
+        // PR_DEBUG("Result size: %d",printResult.len);
 
         ptr = (uint8_t*)&riscv_mail_box[7];
         memcpy(ptr, printResult.data, printResult.len);
-        //PR_DEBUG("Result ptr: %x", ptr );
+        // PR_DEBUG("Result ptr: %x", ptr );
     }
 }

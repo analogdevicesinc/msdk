@@ -51,13 +51,13 @@
 typedef void (*mxc_tpu_complete_t)(void* req, int result);
 
 typedef enum {
-    MXC_TPU_FEATURE_DMA    = 1 << 0,
-    MXC_TPU_FEATURE_ECC    = 1 << 1,
-    MXC_TPU_FEATURE_CRC    = 1 << 2,
-    MXC_TPU_FEATURE_MAA    = 1 << 3,
-    MXC_TPU_FEATURE_HASH   = 1 << 4,
+    MXC_TPU_FEATURE_DMA = 1 << 0,
+    MXC_TPU_FEATURE_ECC = 1 << 1,
+    MXC_TPU_FEATURE_CRC = 1 << 2,
+    MXC_TPU_FEATURE_MAA = 1 << 3,
+    MXC_TPU_FEATURE_HASH = 1 << 4,
     MXC_TPU_FEATURE_CIPHER = 1 << 5,
-    MXC_TPU_FEATURE_TRNG   = 1 << 6
+    MXC_TPU_FEATURE_TRNG = 1 << 6
 } mxc_tpu_features_t;
 
 /* ************************************************************************* */
@@ -77,9 +77,9 @@ typedef enum {
 } mxc_tpu_dma_read_source_t;
 
 typedef enum {
-    MXC_TPU_DMA_WRITE_FIFO_CIPHER    = MXC_V_TPU_CTRL_WRSRC_CIPHEROUTPUT,
+    MXC_TPU_DMA_WRITE_FIFO_CIPHER = MXC_V_TPU_CTRL_WRSRC_CIPHEROUTPUT,
     MXC_TPU_DMA_WRITE_FIFO_READ_FIFO = MXC_V_TPU_CTRL_WRSRC_READFIFO,
-    MXC_TPU_DMA_WRITE_FIFO_NONE      = MXC_V_TPU_CTRL_WRSRC_NONE
+    MXC_TPU_DMA_WRITE_FIFO_NONE = MXC_V_TPU_CTRL_WRSRC_NONE
 } mxc_tpu_dma_write_source_t;
 
 /* ************************************************************************* */
@@ -106,13 +106,13 @@ struct _mxc_tpu_crc_req_t {
 
 typedef enum {
     MXC_TPU_MAA_EXP = MXC_V_TPU_MAA_CTRL_CLC_EXP, // Select exponentiation operation
-    MXC_TPU_MAA_SQ  = MXC_V_TPU_MAA_CTRL_CLC_SQ,  // Select square operation
+    MXC_TPU_MAA_SQ = MXC_V_TPU_MAA_CTRL_CLC_SQ, // Select square operation
     MXC_TPU_MAA_MUL = MXC_V_TPU_MAA_CTRL_CLC_MUL, // Select multiplication operation
-    MXC_TPU_MAA_SQMUL =
-        MXC_V_TPU_MAA_CTRL_CLC_SQMUL, // Select square followed by multiplication operation
+    MXC_TPU_MAA_SQMUL
+    = MXC_V_TPU_MAA_CTRL_CLC_SQMUL, // Select square followed by multiplication operation
     MXC_TPU_MAA_ADD = MXC_V_TPU_MAA_CTRL_CLC_ADD, // Select add operation
     MXC_TPU_MAA_SUB = MXC_V_TPU_MAA_CTRL_CLC_SUB, // Select subtract operation
-    MXC_TPU_MAA_INV                               // Composite operation, modular exponentiation
+    MXC_TPU_MAA_INV // Composite operation, modular exponentiation
 } mxc_tpu_maa_operation_t;
 
 struct _mxc_tpu_maa_req_t {
@@ -145,16 +145,16 @@ struct _mxc_tpu_hash_req_t {
 } typedef mxc_tpu_hash_req_t;
 
 typedef enum {
-    MXC_TPU_HASH_DIS    = MXC_V_TPU_HASH_CTRL_HASH_DIS,    // Disable
-    MXC_TPU_HASH_SHA1   = MXC_V_TPU_HASH_CTRL_HASH_SHA1,   // Select SHA1
+    MXC_TPU_HASH_DIS = MXC_V_TPU_HASH_CTRL_HASH_DIS, // Disable
+    MXC_TPU_HASH_SHA1 = MXC_V_TPU_HASH_CTRL_HASH_SHA1, // Select SHA1
     MXC_TPU_HASH_SHA224 = MXC_V_TPU_HASH_CTRL_HASH_SHA224, // Select SHA224
     MXC_TPU_HASH_SHA256 = MXC_V_TPU_HASH_CTRL_HASH_SHA256, // Select SHA256
     MXC_TPU_HASH_SHA384 = MXC_V_TPU_HASH_CTRL_HASH_SHA384, // Select SHA384
-    MXC_TPU_HASH_SHA512 = MXC_V_TPU_HASH_CTRL_HASH_SHA512  // Select SHA384
+    MXC_TPU_HASH_SHA512 = MXC_V_TPU_HASH_CTRL_HASH_SHA512 // Select SHA384
 } mxc_tpu_hash_func_t;
 
 typedef enum {
-    MXC_TPU_HASH_SOURCE_INFIFO  = 0,
+    MXC_TPU_HASH_SOURCE_INFIFO = 0,
     MXC_TPU_HASH_SOURCE_OUTFIFO = 1
 } mxc_tpu_hash_source_t;
 
@@ -175,16 +175,16 @@ typedef enum {
     MXC_TPU_MODE_CBC = MXC_V_TPU_CIPHER_CTRL_MODE_CBC, // Cipher Block Chaining
     MXC_TPU_MODE_CFB = MXC_V_TPU_CIPHER_CTRL_MODE_CFB, // Cipher Feedback
     MXC_TPU_MODE_CTR = MXC_V_TPU_CIPHER_CTRL_MODE_CTR, // Counter
-    MXC_TPU_MODE_OFB = /*????*/ 0                      // Output Feedback
+    MXC_TPU_MODE_OFB = /*????*/ 0 // Output Feedback
 } mxc_tpu_cipher_mode_t;
 
 typedef enum {
-    MXC_TPU_CIPHER_DIS    = MXC_V_TPU_CIPHER_CTRL_CIPHER_DIS,    // Disable
+    MXC_TPU_CIPHER_DIS = MXC_V_TPU_CIPHER_CTRL_CIPHER_DIS, // Disable
     MXC_TPU_CIPHER_AES128 = MXC_V_TPU_CIPHER_CTRL_CIPHER_AES128, // Select AES-128
     MXC_TPU_CIPHER_AES192 = MXC_V_TPU_CIPHER_CTRL_CIPHER_AES192, // Select AES-192
     MXC_TPU_CIPHER_AES256 = MXC_V_TPU_CIPHER_CTRL_CIPHER_AES256, // Select AES-256
-    MXC_TPU_CIPHER_DES    = MXC_V_TPU_CIPHER_CTRL_CIPHER_DES,    // Select DES
-    MXC_TPU_CIPHER_TDES   = MXC_V_TPU_CIPHER_CTRL_CIPHER_TDES    // Select TDES
+    MXC_TPU_CIPHER_DES = MXC_V_TPU_CIPHER_CTRL_CIPHER_DES, // Select DES
+    MXC_TPU_CIPHER_TDES = MXC_V_TPU_CIPHER_CTRL_CIPHER_TDES // Select TDES
 } mxc_tpu_cipher_t;
 
 typedef enum {

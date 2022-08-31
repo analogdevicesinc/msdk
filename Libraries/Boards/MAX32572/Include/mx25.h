@@ -3,40 +3,40 @@
  * @brief BSP driver to communicate via SPI/QPI with an MX25 Serial Flash Memory.
  */
 /* ****************************************************************************
-* Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-* $Date: 2018-09-05 16:46:11 -0500 (Wed, 05 Sep 2018) $
-* $Revision: 37695 $
-*
-**************************************************************************** */
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ * $Date: 2018-09-05 16:46:11 -0500 (Wed, 05 Sep 2018) $
+ * $Revision: 37695 $
+ *
+ **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
 #ifndef _MX25_H_
@@ -46,8 +46,8 @@
 #include "mxc_device.h"
 #include "mxc_sys.h"
 // #include "spi.h"
-#include "spixf.h"
 #include "mxc_errors.h"
+#include "spixf.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,52 +59,52 @@ extern "C" {
  * @{
  */
 /* **** Definitions **** */
-#define MX25_Read_DUMMY \
+#define MX25_Read_DUMMY                                                                            \
     8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
-#define MX25_DREAD_DUMMY \
+#define MX25_DREAD_DUMMY                                                                           \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
-#define MX25_QREAD_DUMMY \
+#define MX25_QREAD_DUMMY                                                                           \
     6 /**< Dummy data sent on a fast-read (Quad) read command per the MX25 datasheet. */
 
 #define MX25_WIP_MASK 0x01 /**< Status Register                */
 #define MX25_WEL_MASK 0x02 /**< Write Enable Latch mask        */
-#define MX25_QE_MASK  0x40 /**< Quad-SPI enable mask           */
-#define MX25_WP_MASK  0x80 /**< Write protect enable mask      */
+#define MX25_QE_MASK 0x40 /**< Quad-SPI enable mask           */
+#define MX25_WP_MASK 0x80 /**< Write protect enable mask      */
 
 #define MX25_DEVICE_SIZE 0x8000000
-#define MX25_PAGE_SIZE   256
+#define MX25_PAGE_SIZE 256
 /**
  * @ingroup mx25_driver
  * @defgroup MX25_Commands MX25 SPI Command Definitions
  * @{
  */
-#define MX25_CMD_RST_EN    0x66 /**< Reset Enable                   */
-#define MX25_CMD_RST_MEM   0x99 /**< Reset Memory                   */
-#define MX25_CMD_ID        0x9F /**< ID                             */
-#define MX25_CMD_WRITE_EN  0x06 /**< Write Enable                   */
+#define MX25_CMD_RST_EN 0x66 /**< Reset Enable                   */
+#define MX25_CMD_RST_MEM 0x99 /**< Reset Memory                   */
+#define MX25_CMD_ID 0x9F /**< ID                             */
+#define MX25_CMD_WRITE_EN 0x06 /**< Write Enable                   */
 #define MX25_CMD_WRITE_DIS 0x04 /**< Write Disable                  */
 
-#define MX25_CMD_READ  0x0B /**< Read                           */
+#define MX25_CMD_READ 0x0B /**< Read                           */
 #define MX25_CMD_DREAD 0xBB /**< Dual SPI Read                  */
 #define MX25_CMD_QREAD 0xEB /**< Quad SPI Read                  */
-#define MX25_CMD_HPM   0xA3 /**< Hardware Protection Mode       */
+#define MX25_CMD_HPM 0xA3 /**< Hardware Protection Mode       */
 
-#define MX25_CMD_READ_SR  0x05 /**< Read Status Register           */
+#define MX25_CMD_READ_SR 0x05 /**< Read Status Register           */
 #define MX25_CMD_WRITE_SR 0x01 /**< Write Status Register          */
 
-#define MX25_CMD_PPROG     0x02 /**< Page Program                       */
+#define MX25_CMD_PPROG 0x02 /**< Page Program                       */
 #define MX25_CMD_QUAD_PROG 0X38 /**< Quad (4 x I/O) Page Program        */
 
-#define MX25_CMD_4K_ERASE   0x20 /**< Page Erase                     */
-#define MX25_CMD_32K_ERASE  0x52 /**< Sector Type 2 (32KB) Erase     */
-#define MX25_CMD_64K_ERASE  0xD8 /**< Sector Type 3 (64KB) Erase     */
+#define MX25_CMD_4K_ERASE 0x20 /**< Page Erase                     */
+#define MX25_CMD_32K_ERASE 0x52 /**< Sector Type 2 (32KB) Erase     */
+#define MX25_CMD_64K_ERASE 0xD8 /**< Sector Type 3 (64KB) Erase     */
 #define MX25_CMD_BULK_ERASE 0xC7 /**< Bulk Erase                     */
 /**@} end of group mx25_commands */
 /**
  * Enumeration type to select the size for an Erase command.
  */
 typedef enum {
-    MX25_Erase_4K,  /**< 4KB Sector Erase  */
+    MX25_Erase_4K, /**< 4KB Sector Erase  */
     MX25_Erase_32K, /**< 32KB Block Erase */
     MX25_Erase_64K, /**< 64KB Block Erase */
 } MX25_Erase_t;

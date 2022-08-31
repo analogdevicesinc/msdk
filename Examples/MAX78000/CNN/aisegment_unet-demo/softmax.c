@@ -32,8 +32,8 @@
  *
  * -------------------------------------------------------------------- */
 
-#include "mxc.h"
 #include "cnn.h"
+#include "mxc.h"
 
 /**
  *  @ingroup groupNN
@@ -94,7 +94,7 @@ void softmax_q17p14_q15(const q31_t* vec_in, const uint16_t dim_vec, q15_t* p_ou
     }
 
     /* This is effectively (0x1 << 32) / sum */
-    int64_t div_base    = 0x100000000LL;
+    int64_t div_base = 0x100000000LL;
     int32_t output_base = (int32_t)(div_base / sum);
     int32_t out;
 
@@ -146,9 +146,7 @@ void softmax_shift_q17p14_q15(q31_t* vec_in, const uint16_t dim_vec, uint8_t in_
 {
     int16_t i;
 
-    for (i = 0; i < dim_vec; i++) {
-        vec_in[i] <<= in_shift;
-    }
+    for (i = 0; i < dim_vec; i++) { vec_in[i] <<= in_shift; }
 
     softmax_q17p14_q15(vec_in, dim_vec, p_out);
 }

@@ -31,14 +31,14 @@
  *
  **************************************************************************** */
 
-#include "mxc_device.h"
-#include "rtc_regs.h"
-#include "rtc.h"
-#include "mxc_sys.h"
-#include "mxc_delay.h"
 #include "gpio_regs.h"
-#include "mxc_errors.h"
 #include "mcr_regs.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_sys.h"
+#include "rtc.h"
+#include "rtc_regs.h"
 #include "rtc_reva.h"
 
 /* ***** Functions ***** */

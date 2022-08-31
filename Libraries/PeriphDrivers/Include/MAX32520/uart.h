@@ -41,8 +41,8 @@
 #define _MXC_UART_H_
 
 /***** Definitions *****/
-#include "uart_regs.h"
 #include "mxc_sys.h"
+#include "uart_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,12 +70,12 @@ typedef enum {
  */
 typedef enum {
     MXC_UART_PARITY_DISABLE, ///< UART Parity Disabled
-    MXC_UART_PARITY_EVEN,    ///< UART Parity Even
-    MXC_UART_PARITY_ODD,     ///< UART Parity Odd
-    MXC_UART_PARITY_EVEN_0,  ///< UART Parity Even, 0 based
-    MXC_UART_PARITY_EVEN_1,  ///< UART Parity Even, 1 based
-    MXC_UART_PARITY_ODD_0,   ///< UART Parity Odd, 0 based
-    MXC_UART_PARITY_ODD_1,   ///< UART Parity Odd, 1 based
+    MXC_UART_PARITY_EVEN, ///< UART Parity Even
+    MXC_UART_PARITY_ODD, ///< UART Parity Odd
+    MXC_UART_PARITY_EVEN_0, ///< UART Parity Even, 0 based
+    MXC_UART_PARITY_EVEN_1, ///< UART Parity Even, 1 based
+    MXC_UART_PARITY_ODD_0, ///< UART Parity Odd, 0 based
+    MXC_UART_PARITY_ODD_1, ///< UART Parity Odd, 1 based
 } mxc_uart_parity_t;
 
 /**
@@ -83,8 +83,8 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_UART_FLOW_DIS,     ///< UART Flow Control Disabled
-    MXC_UART_FLOW_EN_LOW,  ///< UART Flow Control Enabled, Active Low
+    MXC_UART_FLOW_DIS, ///< UART Flow Control Disabled
+    MXC_UART_FLOW_EN_LOW, ///< UART Flow Control Enabled, Active Low
     MXC_UART_FLOW_EN_HIGH, ///< UART Flow Control Enabled, Active High
 } mxc_uart_flow_t;
 
@@ -112,8 +112,8 @@ typedef void (*mxc_uart_dma_complete_cb_t)(mxc_uart_req_t* req, int num, int res
  * @note    "callback" only needs to initialized for interrupt driven (Async) and DMA transactions.
  */
 struct _mxc_uart_req_t {
-    mxc_uart_regs_t* uart; ///<Point to UART registers
-    uint8_t* txData;       ///< Buffer containing transmit data. For character sizes
+    mxc_uart_regs_t* uart; ///< Point to UART registers
+    uint8_t* txData; ///< Buffer containing transmit data. For character sizes
     ///< < 8 bits, pad the MSB of each byte with zeros. For
     ///< character sizes > 8 bits, use two bytes per character
     ///< and pad the MSB of the upper byte with zeros
@@ -121,8 +121,8 @@ struct _mxc_uart_req_t {
     ///< < 8 bits, pad the MSB of each byte with zeros. For
     ///< character sizes > 8 bits, use two bytes per character
     ///< and pad the MSB of the upper byte with zeros
-    uint32_t txLen;          ///< Number of bytes to be sent from txData
-    uint32_t rxLen;          ///< Number of bytes to be stored in rxData
+    uint32_t txLen; ///< Number of bytes to be sent from txData
+    uint32_t rxLen; ///< Number of bytes to be stored in rxData
     volatile uint32_t txCnt; ///< Number of bytes actually transmitted from txData
     volatile uint32_t rxCnt; ///< Number of bytes stored in rxData
 
@@ -344,7 +344,7 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, un
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
 int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-                           mxc_uart_dma_complete_cb_t callback);
+    mxc_uart_dma_complete_cb_t callback);
 
 /**
  * @brief   Get the number of bytes currently available in the receive FIFO.
@@ -377,7 +377,7 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, u
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
 int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-                            mxc_uart_dma_complete_cb_t callback);
+    mxc_uart_dma_complete_cb_t callback);
 
 /**
  * @brief   Get the amount of free space available in the transmit FIFO.
@@ -392,7 +392,7 @@ unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t* uart);
  * @brief   Removes and discards all bytes currently in the receive FIFO.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_ClearRXFIFO(mxc_uart_regs_t* uart);
@@ -401,7 +401,7 @@ int MXC_UART_ClearRXFIFO(mxc_uart_regs_t* uart);
  * @brief   Removes and discards all bytes currently in the transmit FIFO.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_ClearTXFIFO(mxc_uart_regs_t* uart);
@@ -467,7 +467,7 @@ int MXC_UART_ClearFlags(mxc_uart_regs_t* uart, unsigned int flags);
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   mask         The interrupts to be enabled
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_EnableInt(mxc_uart_regs_t* uart, unsigned int mask);
@@ -480,7 +480,7 @@ int MXC_UART_EnableInt(mxc_uart_regs_t* uart, unsigned int mask);
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   mask         The interrupts to be disabled
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_DisableInt(mxc_uart_regs_t* uart, unsigned int mask);
@@ -540,7 +540,7 @@ int MXC_UART_TransactionDMA(mxc_uart_req_t* req);
 
 /**
  * @brief   The processing function for DMA transactions.
- * 
+ *
  * When using the DMA functions, the application must call this
  * function periodically. This can be done from within the DMA Interrupt Handler.
  *
@@ -554,7 +554,7 @@ void MXC_UART_DMACallback(int ch, int error);
  *
  * @param      uart    The uart
  * @param[in]  retVal  The ret value
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AsyncCallback(mxc_uart_regs_t* uart, int retVal);
@@ -563,7 +563,7 @@ int MXC_UART_AsyncCallback(mxc_uart_regs_t* uart, int retVal);
  * @brief   stop any async callbacks
  *
  * @param   uart  The uart
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AsyncStop(mxc_uart_regs_t* uart);
@@ -576,7 +576,7 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t* uart);
  *          has been terminated.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AbortAsync(mxc_uart_regs_t* uart);
@@ -589,7 +589,7 @@ int MXC_UART_AbortAsync(mxc_uart_regs_t* uart);
  *          handler or periodically by the application if UART interrupts are disabled.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * 
+ *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AsyncHandler(mxc_uart_regs_t* uart);
@@ -598,7 +598,7 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t* uart);
  * @brief   Provide TXCount for asynchronous transactions..
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * 
+ *
  * @return  Returns transmit bytes (in FIFO).
  */
 uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t* req);
@@ -607,7 +607,7 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t* req);
  * @brief   Provide RXCount for asynchronous transactions..
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * 
+ *
  * @return  Returns receive bytes (in FIFO).
  */
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t* req);

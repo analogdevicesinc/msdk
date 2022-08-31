@@ -32,81 +32,81 @@
  **************************************************************************** */
 
 #include "tmr.h"
-#include "tmr_reva.h"
 #include "tmr_common.h"
+#include "tmr_reva.h"
 
 void MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
-    //enable peripheral clock and configure gpio pins
+    // enable peripheral clock and configure gpio pins
     switch (tmr_id) {
-        case 0:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+    case 0:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
-            if (cfg->pins == NULL) {
-                MXC_GPIO_Config(&gpio_cfg_tmr0);
-            }
-            break;
+        if (cfg->pins == NULL) {
+            MXC_GPIO_Config(&gpio_cfg_tmr0);
+        }
+        break;
 
-        case 1:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
+    case 1:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
-            if (cfg->pins == NULL) {
-                MXC_GPIO_Config(&gpio_cfg_tmr1);
-            }
-            break;
+        if (cfg->pins == NULL) {
+            MXC_GPIO_Config(&gpio_cfg_tmr1);
+        }
+        break;
 
-        case 2:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
+    case 2:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
-            if (cfg->pins == NULL) {
-                MXC_GPIO_Config(&gpio_cfg_tmr2);
-            }
-            break;
+        if (cfg->pins == NULL) {
+            MXC_GPIO_Config(&gpio_cfg_tmr2);
+        }
+        break;
 
-        case 3:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
+    case 3:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
-            if (cfg->pins == NULL) {
-                MXC_GPIO_Config(&gpio_cfg_tmr3);
-            }
-            break;
+        if (cfg->pins == NULL) {
+            MXC_GPIO_Config(&gpio_cfg_tmr3);
+        }
+        break;
 
-        case 4:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR4);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
+    case 4:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR4);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
 
-            if (cfg->pins == NULL) {
-                MXC_GPIO_Config(&gpio_cfg_tmr4);
-            }
-            break;
+        if (cfg->pins == NULL) {
+            MXC_GPIO_Config(&gpio_cfg_tmr4);
+        }
+        break;
 
-        case 5:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR5);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
+    case 5:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR5);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
 
-            if (cfg->pins == NULL) {
-                MXC_GPIO_Config(&gpio_cfg_tmr5);
-            }
-            break;
+        if (cfg->pins == NULL) {
+            MXC_GPIO_Config(&gpio_cfg_tmr5);
+        }
+        break;
 
-        case 6:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR6);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR6);
-            // Timer 6 on MAX32570 has no external pins
-            break;
+    case 6:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR6);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR6);
+        // Timer 6 on MAX32570 has no external pins
+        break;
 
-        case 7:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR7);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR7);
-            // Timer 7 on MAX32570 has no external pins
-            break;
+    case 7:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR7);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR7);
+        // Timer 7 on MAX32570 has no external pins
+        break;
     }
 
     // User changeable pins
@@ -127,37 +127,37 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     // System settigns
     // disable peripheral clock
     switch (tmr_id) {
-        case 0:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
-            break;
+    case 0:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
+        break;
 
-        case 1:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
-            break;
+    case 1:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
+        break;
 
-        case 2:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
-            break;
+    case 2:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
+        break;
 
-        case 3:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR3);
-            break;
+    case 3:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR3);
+        break;
 
-        case 4:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR4);
-            break;
+    case 4:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR4);
+        break;
 
-        case 5:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
-            break;
+    case 5:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
+        break;
 
-        case 6:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR6);
-            break;
+    case 6:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR6);
+        break;
 
-        case 7:
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR7);
-            break;
+    case 7:
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR7);
+        break;
     }
 }
 

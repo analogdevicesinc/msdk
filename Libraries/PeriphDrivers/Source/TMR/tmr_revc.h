@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <stddef.h>
+#include "gpio.h"
 #include "mxc_assert.h"
 #include "mxc_errors.h"
-#include "tmr.h"
-#include "gpio.h"
-#include "mxc_pins.h"
 #include "mxc_lock.h"
+#include "mxc_pins.h"
+#include "tmr.h"
+#include <stddef.h>
 
 /* **** Functions **** */
 int MXC_TMR_RevC_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg);
@@ -50,12 +50,12 @@ int MXC_TMR_RevC_SetPWM(mxc_tmr_regs_t* tmr, uint32_t pwm);
 uint32_t MXC_TMR_RevC_GetCompare(mxc_tmr_regs_t* tmr);
 uint32_t MXC_TMR_RevC_GetCapture(mxc_tmr_regs_t* tmr);
 uint32_t MXC_TMR_RevC_GetCount(mxc_tmr_regs_t* tmr);
-uint32_t MXC_TMR_RevC_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
-                                uint32_t frequency);
+uint32_t MXC_TMR_RevC_GetPeriod(
+    mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar, uint32_t frequency);
 void MXC_TMR_RevC_ClearFlags(mxc_tmr_regs_t* tmr);
 uint32_t MXC_TMR_RevC_GetFlags(mxc_tmr_regs_t* tmr);
 void MXC_TMR_RevC_SetCompare(mxc_tmr_regs_t* tmr, uint32_t cmp_cnt);
 void MXC_TMR_RevC_SetCount(mxc_tmr_regs_t* tmr, uint32_t cnt);
 void MXC_TMR_RevC_TO_Start(mxc_tmr_regs_t* tmr, unsigned long us);
-int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time,
-                         mxc_tmr_unit_t* units);
+int MXC_TMR_RevC_GetTime(
+    mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mxc_tmr_unit_t* units);

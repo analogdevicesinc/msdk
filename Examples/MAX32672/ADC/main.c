@@ -38,13 +38,13 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
-#include "mxc_errors.h"
 #include "adc.h"
 #include "dma.h"
 #include "led.h"
+#include "mxc_errors.h"
 #include "tmr.h"
 
 /***** Definitions *****/
@@ -55,9 +55,9 @@
 #define DMA // Uncomment to perform ADC conversions using DMA driven method.
 
 /* Supported three ADC examples */
-#define SINGLE_CH            1
-#define TEMP_SENSOR          2
-#define MULTI_CHS            3
+#define SINGLE_CH 1
+#define TEMP_SENSOR 2
+#define MULTI_CHS 3
 #define TEMP_SENSOR_READ_OUT 1
 
 /***** Globals *****/
@@ -73,35 +73,36 @@ volatile unsigned int dma_done = 0;
 //#define CH0	    MXC_ADC_CH_0
 //#define CH1	    MXC_ADC_CH_1
 
-#define MXC_ADC_CH_VDDA        MXC_ADC_CH_12 ///< Select Channel 12
+#define MXC_ADC_CH_VDDA MXC_ADC_CH_12 ///< Select Channel 12
 #define MXC_ADC_CH_TEMP_SENSOR MXC_ADC_CH_13 ///< Select Channel 13
-#define MXC_ADC_CH_VCORE       MXC_ADC_CH_14 ///< Select Channel 14
-#define MXC_ADC_CH_VSS         MXC_ADC_CH_15 ///< Select Channel 15
+#define MXC_ADC_CH_VCORE MXC_ADC_CH_14 ///< Select Channel 14
+#define MXC_ADC_CH_VSS MXC_ADC_CH_15 ///< Select Channel 15
 
 /* Temperature Sensor firmware average*/
 #define SAMPLE_AVG 16
 float TEMP_SAMPLES[SAMPLE_AVG] = {};
-float sum                      = 0;
-unsigned int temp_samples      = 0;
+float sum = 0;
+unsigned int temp_samples = 0;
 
-unsigned int which_example = 0; //0 - Single, 1 - Temperature (3 slots) and 2 - Eight slot
+unsigned int which_example = 0; // 0 - Single, 1 - Temperature (3 slots) and 2 - Eight slot
 
 /* Single Channel */
-mxc_adc_slot_req_t single_slot = {MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE};
+mxc_adc_slot_req_t single_slot = { MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE };
 
-/* It is recommended to use below sequence if only user wants to measure only temperature measurement.*/
-mxc_adc_slot_req_t three_slots[3] = {{MXC_ADC_CH_VDDA, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_TEMP_SENSOR, MXC_ADC_DIV1, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_VCORE, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE}};
+/* It is recommended to use below sequence if only user wants to measure only temperature
+ * measurement.*/
+mxc_adc_slot_req_t three_slots[3] = { { MXC_ADC_CH_VDDA, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_TEMP_SENSOR, MXC_ADC_DIV1, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_VCORE, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE } };
 
-mxc_adc_slot_req_t multi_slots[8] = {{MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_4, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_5, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_6, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_7, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_8, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_9, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE},
-                                     {MXC_ADC_CH_10, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE}};
+mxc_adc_slot_req_t multi_slots[8] = { { MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_4, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_5, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_6, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_7, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_8, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_9, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
+    { MXC_ADC_CH_10, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE } };
 
 int adc_val[8];
 uint32_t adc_index = 0;
@@ -157,18 +158,17 @@ void adc_init(void)
 {
     mxc_adc_req_t adc_cfg;
 
-    adc_cfg.clock      = MXC_ADC_CLK_HCLK;
-    adc_cfg.clkdiv     = MXC_ADC_CLKDIV_16;
-    adc_cfg.cal        = MXC_ADC_EN_CAL;
+    adc_cfg.clock = MXC_ADC_CLK_HCLK;
+    adc_cfg.clkdiv = MXC_ADC_CLKDIV_16;
+    adc_cfg.cal = MXC_ADC_EN_CAL;
     adc_cfg.trackCount = 4;
-    adc_cfg.idleCount  = 17;
-    adc_cfg.ref        = MXC_ADC_REF_INT_2V048;
+    adc_cfg.idleCount = 17;
+    adc_cfg.ref = MXC_ADC_REF_INT_2V048;
 
     /* Initialize ADC */
     if (MXC_ADC_Init(&adc_cfg) != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
-        while (1)
-            ;
+        while (1) { }
     }
 }
 
@@ -177,9 +177,9 @@ void adc_example1_configuration(void)
 {
     adc_conv.mode = MXC_ADC_ATOMIC_CONV;
     adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
-    //adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
-    //adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
-    adc_conv.avg_number  = MXC_ADC_AVG_16;
+    // adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
+    // adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
+    adc_conv.avg_number = MXC_ADC_AVG_16;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
     adc_conv.fifo_threshold = 0;
@@ -187,7 +187,7 @@ void adc_example1_configuration(void)
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots     = 0;
+    adc_conv.num_slots = 0;
 
     MXC_ADC_Configuration(&adc_conv);
 
@@ -198,10 +198,10 @@ void adc_example1_configuration(void)
 void adc_example2_configuration(void)
 {
     adc_conv.mode = MXC_ADC_ATOMIC_CONV;
-    //adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
-    adc_conv.trig        = MXC_ADC_TRIG_HARDWARE;
-    adc_conv.hwTrig      = MXC_ADC_TRIG_SEL_TEMP_SENS;
-    adc_conv.avg_number  = MXC_ADC_AVG_8;
+    // adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
+    adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
+    adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
+    adc_conv.avg_number = MXC_ADC_AVG_8;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
     adc_conv.fifo_threshold = 2;
@@ -209,7 +209,7 @@ void adc_example2_configuration(void)
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots     = 2;
+    adc_conv.num_slots = 2;
 
     MXC_ADC_Configuration(&adc_conv);
 
@@ -221,9 +221,9 @@ void adc_example3_configuration(void)
 {
     adc_conv.mode = MXC_ADC_ATOMIC_CONV;
     adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
-    //adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
-    //adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
-    adc_conv.avg_number  = MXC_ADC_AVG_1;
+    // adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
+    // adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
+    adc_conv.avg_number = MXC_ADC_AVG_1;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
 #ifdef DMA
     adc_conv.fifo_threshold = 7;
@@ -232,7 +232,7 @@ void adc_example3_configuration(void)
 #endif
     //    adc_conv.fifo_threshold = 8;
     adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots     = 7;
+    adc_conv.num_slots = 7;
 
     MXC_ADC_Configuration(&adc_conv);
 
@@ -259,7 +259,7 @@ void temperature_average(float temperature)
         printf("\n");
 
         temp_samples = 0;
-        sum          = 0;
+        sum = 0;
         MXC_TMR_Delay(MXC_TMR0, MSEC(3000));
     }
 }
@@ -267,11 +267,11 @@ void temperature_average(float temperature)
 void printTemperature(void)
 {
     float temperature;
-    MXC_ConvertTemperature_ToK((adc_val[TEMP_SENSOR_READ_OUT] & 0x0FFF), MXC_ADC_REF_INT_2V048, 0,
-                               &temperature);
+    MXC_ConvertTemperature_ToK(
+        (adc_val[TEMP_SENSOR_READ_OUT] & 0x0FFF), MXC_ADC_REF_INT_2V048, 0, &temperature);
 
-    MXC_ConvertTemperature_ToC((adc_val[TEMP_SENSOR_READ_OUT] & 0x0FFF), MXC_ADC_REF_INT_2V048, 0,
-                               &temperature);
+    MXC_ConvertTemperature_ToC(
+        (adc_val[TEMP_SENSOR_READ_OUT] & 0x0FFF), MXC_ADC_REF_INT_2V048, 0, &temperature);
     temperature_average(temperature);
 }
 
@@ -283,13 +283,13 @@ void WaitforConversionComplete(void)
 
         if (flags & MXC_F_ADC_INTFL_SEQ_DONE) {
             adc_index += MXC_ADC_GetData(&adc_val[adc_index]);
-            //printf("ADC Count2 = %X\n", adc_index);
+            // printf("ADC Count2 = %X\n", adc_index);
             break;
         }
 
         if (flags & MXC_F_ADC_INTFL_FIFO_LVL) {
             adc_index += MXC_ADC_GetData(&adc_val[adc_index]);
-            //printf("ADC Count1 = %X\n", adc_index);
+            // printf("ADC Count1 = %X\n", adc_index);
         }
     }
 }
@@ -347,25 +347,25 @@ void run_examples(void)
     }
 
     switch (which_example) {
-        case SINGLE_CH:
-            printf("\nRunning Single Channel Example\n");
-            adc_example1_configuration();
-            break;
+    case SINGLE_CH:
+        printf("\nRunning Single Channel Example\n");
+        adc_example1_configuration();
+        break;
 
-        case TEMP_SENSOR:
-            printf("\nRunning Temperature Sensor Example\n");
-            adc_example2_configuration();
-            break;
+    case TEMP_SENSOR:
+        printf("\nRunning Temperature Sensor Example\n");
+        adc_example2_configuration();
+        break;
 
-        case MULTI_CHS:
-            printf("\nRunning Multi Channel Example\n");
-            adc_example3_configuration();
-            break;
+    case MULTI_CHS:
+        printf("\nRunning Multi Channel Example\n");
+        adc_example3_configuration();
+        break;
 
-        default:
-            which_example = SINGLE_CH;
-            adc_example1_configuration();
-            break;
+    default:
+        which_example = SINGLE_CH;
+        adc_example1_configuration();
+        break;
     }
 }
 
@@ -414,8 +414,7 @@ int main(void)
 
         MXC_ADC_StartConversionAsync(adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) { };
 #endif
 
 #ifdef DMA
@@ -431,8 +430,7 @@ int main(void)
         MXC_DMA_ReleaseChannel(0);
         MXC_ADC_StartConversionDMA(&adc_conv, &adc_val[0], adc_dma_callback);
 
-        while (!dma_done) {
-        };
+        while (!dma_done) { };
 #endif
         ShowAdcResult();
 
@@ -444,4 +442,4 @@ int main(void)
     }
 }
 
-//End
+// End

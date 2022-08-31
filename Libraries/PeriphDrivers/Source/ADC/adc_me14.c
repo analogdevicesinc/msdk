@@ -2,9 +2,9 @@
  * Copyright(C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"), 
+ * copy of this software and associated documentation files(the "Software"),
  * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
  *
@@ -15,7 +15,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -24,7 +24,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents, 
+ * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -33,12 +33,12 @@
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_reva.h"
+#include "mcr_regs.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "mcr_regs.h"
 #include "mxc_lock.h"
+#include "mxc_sys.h"
 #include <stdio.h>
 
 int MXC_ADC_Init(void)
@@ -46,8 +46,7 @@ int MXC_ADC_Init(void)
     MXC_GCR->rstr0 |= MXC_F_GCR_RSTR0_ADC;
 
     // Reset ADC block
-    while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_ADC)
-        ;
+    while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_ADC) { }
 
     // Enable ADC peripheral clock
     MXC_GCR->perckcn0 &= ~MXC_F_GCR_PERCKCN0_ADCD;
@@ -59,7 +58,7 @@ int MXC_ADC_Shutdown(void)
 {
     MXC_ADC_RevA_Shutdown((mxc_adc_reva_regs_t*)MXC_ADC);
 
-    //Disable ADC peripheral clock
+    // Disable ADC peripheral clock
     MXC_GCR->perckcn0 |= MXC_F_GCR_PERCKCN0_ADCD;
 
     return E_NO_ERROR;
@@ -91,7 +90,7 @@ void MXC_ADC_ClearFlags(uint32_t flags)
 
 int MXC_ADC_SetConversionSpeed(uint32_t hz)
 {
-    //check for overflow
+    // check for overflow
     MXC_ASSERT(hz < ((uint32_t)((1U << 31) - 1) / 1024));
     uint32_t adc_clock_freq = 1024 * hz;
 
@@ -105,14 +104,14 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
         return E_BAD_PARAM;
     }
 
-    //disable clock
+    // disable clock
     MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CLK_EN;
-    //clear clock divisor
+    // clear clock divisor
     MXC_GCR->pckdiv &= (~MXC_F_GCR_PCKDIV_ADCFRQ);
-    //load in new clock divisor
+    // load in new clock divisor
     MXC_GCR->pckdiv |= (divider << MXC_F_GCR_PCKDIV_ADCFRQ_POS);
 
-    //enable clock
+    // enable clock
     MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t*)MXC_ADC, hz);
 
     return MXC_ADC_GetConversionSpeed();
@@ -193,15 +192,15 @@ int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t 
     return MXC_ADC_RevA_StartConversionAsync((mxc_adc_reva_regs_t*)MXC_ADC, channel, callback);
 }
 
-int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, mxc_dma_regs_t* dma, uint16_t* data,
-                               void (*callback)(int, int))
+int MXC_ADC_StartConversionDMA(
+    mxc_adc_chsel_t channel, mxc_dma_regs_t* dma, uint16_t* data, void (*callback)(int, int))
 {
     if (MXC_DMA_GET_IDX(dma) == -1) {
         return E_BAD_PARAM;
     }
 
-    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*)MXC_ADC, channel, dma, data,
-                                           callback);
+    return MXC_ADC_RevA_StartConversionDMA(
+        (mxc_adc_reva_regs_t*)MXC_ADC, channel, dma, data, callback);
 }
 
 int MXC_ADC_Handler(void)

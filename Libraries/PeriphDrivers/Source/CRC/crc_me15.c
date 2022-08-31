@@ -31,9 +31,9 @@
  *
  *************************************************************************** */
 
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
 
 #include "crc.h"

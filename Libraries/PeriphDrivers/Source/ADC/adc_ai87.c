@@ -31,66 +31,67 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_revb.h"
 #include "gcr_regs.h"
 #include "mcr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
 #include "mxc_lock.h"
 #include "mxc_pins.h"
+#include "mxc_sys.h"
 #include "pwrseq_regs.h"
+#include <stdio.h>
 
 /*TODO-
- * This is work in progress file and has not finalized yet. Expected to change some parameters as well as some function prototypes.
+ * This is work in progress file and has not finalized yet. Expected to change some parameters as
+ * well as some function prototypes.
  */
 
 #define MXC_F_MCR_ADCCFG2_CH 0x3
-#define TEMP_FACTOR          530.582f / 4096.0
-#define TEMP_FACTOR1V25      1.25 * TEMP_FACTOR
-#define TEMP_FACTOR2V048     2.048 * TEMP_FACTOR
+#define TEMP_FACTOR 530.582f / 4096.0
+#define TEMP_FACTOR1V25 1.25 * TEMP_FACTOR
+#define TEMP_FACTOR2V048 2.048 * TEMP_FACTOR
 
 static void initGPIOForChannel(mxc_adc_chsel_t channel)
 {
     switch (channel) {
-        case MXC_ADC_CH_0:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain0);
-            break;
+    case MXC_ADC_CH_0:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain0);
+        break;
 
-        case MXC_ADC_CH_1:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain1);
-            break;
+    case MXC_ADC_CH_1:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain1);
+        break;
 
-        case MXC_ADC_CH_2:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain2);
-            break;
+    case MXC_ADC_CH_2:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain2);
+        break;
 
-        case MXC_ADC_CH_3:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain3);
-            break;
+    case MXC_ADC_CH_3:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain3);
+        break;
 
-        case MXC_ADC_CH_4:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain4);
-            break;
+    case MXC_ADC_CH_4:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain4);
+        break;
 
-        case MXC_ADC_CH_5:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain5);
-            break;
+    case MXC_ADC_CH_5:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain5);
+        break;
 
-        case MXC_ADC_CH_6:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain6);
-            break;
+    case MXC_ADC_CH_6:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain6);
+        break;
 
-        case MXC_ADC_CH_7:
-            MXC_GPIO_Config(&gpio_cfg_adc_ain7);
-            break;
+    case MXC_ADC_CH_7:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain7);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
@@ -98,53 +99,53 @@ static void initGPIOforHWTrig(mxc_adc_trig_sel_t hwTrig)
 {
     mxc_gpio_cfg_t gpioCfg;
     switch (hwTrig) {
-        case MXC_ADC_TRIG_SEL_TMR0:
-        case MXC_ADC_TRIG_SEL_TMR1:
-        case MXC_ADC_TRIG_SEL_TMR2:
-        case MXC_ADC_TRIG_SEL_TMR3:
-        case MXC_ADC_TRIG_SEL_TEMP_SENS:
-            break;
-        case MXC_ADC_TRIG_SEL_P1_12:
-            gpioCfg.port  = MXC_GPIO1;
-            gpioCfg.mask  = MXC_GPIO_PIN_12;
-            gpioCfg.func  = MXC_GPIO_FUNC_ALT2;
-            gpioCfg.pad   = MXC_GPIO_PAD_NONE;
-            gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
-            MXC_GPIO_Config(&gpioCfg);
-            break;
-        case MXC_ADC_TRIG_SEL_P1_13:
-            gpioCfg.port  = MXC_GPIO1;
-            gpioCfg.mask  = MXC_GPIO_PIN_13;
-            gpioCfg.func  = MXC_GPIO_FUNC_ALT2;
-            gpioCfg.pad   = MXC_GPIO_PAD_NONE;
-            gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
-            MXC_GPIO_Config(&gpioCfg);
-            break;
-        case MXC_ADC_TRIG_SEL_P1_14:
-            gpioCfg.port  = MXC_GPIO1;
-            gpioCfg.mask  = MXC_GPIO_PIN_14;
-            gpioCfg.func  = MXC_GPIO_FUNC_ALT2;
-            gpioCfg.pad   = MXC_GPIO_PAD_NONE;
-            gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
-            MXC_GPIO_Config(&gpioCfg);
-            break;
+    case MXC_ADC_TRIG_SEL_TMR0:
+    case MXC_ADC_TRIG_SEL_TMR1:
+    case MXC_ADC_TRIG_SEL_TMR2:
+    case MXC_ADC_TRIG_SEL_TMR3:
+    case MXC_ADC_TRIG_SEL_TEMP_SENS:
+        break;
+    case MXC_ADC_TRIG_SEL_P1_12:
+        gpioCfg.port = MXC_GPIO1;
+        gpioCfg.mask = MXC_GPIO_PIN_12;
+        gpioCfg.func = MXC_GPIO_FUNC_ALT2;
+        gpioCfg.pad = MXC_GPIO_PAD_NONE;
+        gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        MXC_GPIO_Config(&gpioCfg);
+        break;
+    case MXC_ADC_TRIG_SEL_P1_13:
+        gpioCfg.port = MXC_GPIO1;
+        gpioCfg.mask = MXC_GPIO_PIN_13;
+        gpioCfg.func = MXC_GPIO_FUNC_ALT2;
+        gpioCfg.pad = MXC_GPIO_PAD_NONE;
+        gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        MXC_GPIO_Config(&gpioCfg);
+        break;
+    case MXC_ADC_TRIG_SEL_P1_14:
+        gpioCfg.port = MXC_GPIO1;
+        gpioCfg.mask = MXC_GPIO_PIN_14;
+        gpioCfg.func = MXC_GPIO_FUNC_ALT2;
+        gpioCfg.pad = MXC_GPIO_PAD_NONE;
+        gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        MXC_GPIO_Config(&gpioCfg);
+        break;
     }
 }
 
 int MXC_ADC_Init(mxc_adc_req_t* req)
 {
     switch (req->clock) {
-        case MXC_ADC_CLK_HCLK:
-            break;
-        case MXC_ADC_CLK_EXT:
-            MXC_GPIO_Config(&gpio_cfg_extclk);
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-            break;
-        case MXC_ADC_CLK_IBRO:
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case MXC_ADC_CLK_HCLK:
+        break;
+    case MXC_ADC_CLK_EXT:
+        MXC_GPIO_Config(&gpio_cfg_extclk);
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        break;
+    case MXC_ADC_CLK_IBRO:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_ADC);
@@ -217,12 +218,12 @@ int MXC_ADC_GetData(int* outdata)
     return MXC_ADC_RevB_GetData((mxc_adc_revb_regs_t*)MXC_ADC, outdata);
 }
 
-int MXC_ADC_InputDividerSelect(mxc_adc_chsel_t ch, mxc_adc_divsel_t div,
-                               mxc_adc_dynamic_pullup_t lpEn)
+int MXC_ADC_InputDividerSelect(
+    mxc_adc_chsel_t ch, mxc_adc_divsel_t div, mxc_adc_dynamic_pullup_t lpEn)
 {
     uint32_t bitOffset;
 
-    //TODO
+    // TODO
     if (ch > MXC_ADC_CH_7 || div > MXC_ADC_DIV2_50K) {
         return E_BAD_PARAM;
     }
@@ -243,18 +244,18 @@ int MXC_ADC_InputDividerSelect(mxc_adc_chsel_t ch, mxc_adc_divsel_t div,
 int MXC_ADC_ReferenceSelect(mxc_adc_refsel_t ref)
 {
     switch (ref) {
-        case MXC_ADC_REF_EXT:
-            MXC_MCR->adccfg0 |= MXC_F_MCR_ADCCFG0_EXT_REF;
-            break;
-        case MXC_ADC_REF_INT_1V25:
-            MXC_MCR->adccfg0 &= ~(MXC_F_MCR_ADCCFG0_EXT_REF | MXC_F_MCR_ADCCFG0_REF_SEL);
-            break;
-        case MXC_ADC_REF_INT_2V048:
-            MXC_MCR->adccfg0 &= ~MXC_F_MCR_ADCCFG0_EXT_REF;
-            MXC_MCR->adccfg0 |= MXC_F_MCR_ADCCFG0_REF_SEL;
-            break;
-        default:
-            return E_BAD_PARAM;
+    case MXC_ADC_REF_EXT:
+        MXC_MCR->adccfg0 |= MXC_F_MCR_ADCCFG0_EXT_REF;
+        break;
+    case MXC_ADC_REF_INT_1V25:
+        MXC_MCR->adccfg0 &= ~(MXC_F_MCR_ADCCFG0_EXT_REF | MXC_F_MCR_ADCCFG0_REF_SEL);
+        break;
+    case MXC_ADC_REF_INT_2V048:
+        MXC_MCR->adccfg0 &= ~MXC_F_MCR_ADCCFG0_EXT_REF;
+        MXC_MCR->adccfg0 |= MXC_F_MCR_ADCCFG0_REF_SEL;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -334,7 +335,7 @@ int MXC_ADC_Configuration(mxc_adc_conversion_req_t* req)
 
     MXC_ADC_Clear_ChannelSelect();
 
-    //number of samples to average
+    // number of samples to average
     MXC_ADC_AverageConfig(req->avg_number);
 
     MXC_ADC_LowPowerModeDividerSelect(req->lpmode_divder);
@@ -359,30 +360,30 @@ int MXC_ADC_SlotConfiguration(mxc_adc_slot_req_t* req, uint32_t slot_length)
     return E_NO_ERROR;
 }
 
-int MXC_ConvertTemperature_ToK(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref,
-                               float* temp_k)
+int MXC_ConvertTemperature_ToK(
+    uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref, float* temp_k)
 {
     switch (ref) {
-        case MXC_ADC_REF_EXT:
-            *temp_k = tempSensor_Readout * TEMP_FACTOR * ext_ref;
-            break;
+    case MXC_ADC_REF_EXT:
+        *temp_k = tempSensor_Readout * TEMP_FACTOR * ext_ref;
+        break;
 
-        case MXC_ADC_REF_INT_1V25:
-            *temp_k = tempSensor_Readout * TEMP_FACTOR1V25;
-            break;
+    case MXC_ADC_REF_INT_1V25:
+        *temp_k = tempSensor_Readout * TEMP_FACTOR1V25;
+        break;
 
-        case MXC_ADC_REF_INT_2V048:
-            *temp_k = tempSensor_Readout * TEMP_FACTOR2V048;
-            break;
+    case MXC_ADC_REF_INT_2V048:
+        *temp_k = tempSensor_Readout * TEMP_FACTOR2V048;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
     return E_NO_ERROR;
 }
 
-int MXC_ConvertTemperature_ToC(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref,
-                               float* temp)
+int MXC_ConvertTemperature_ToC(
+    uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref, float* temp)
 {
     if (MXC_ConvertTemperature_ToK(tempSensor_Readout, ref, ext_ref, temp) == E_NO_ERROR) {
         *temp = *temp - 273.15f;
@@ -392,8 +393,8 @@ int MXC_ConvertTemperature_ToC(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref
     }
 }
 
-int MXC_ConvertTemperature_ToF(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref,
-                               float* temp)
+int MXC_ConvertTemperature_ToF(
+    uint16_t tempSensor_Readout, mxc_adc_refsel_t ref, float ext_ref, float* temp)
 {
     if (MXC_ConvertTemperature_ToK(tempSensor_Readout, ref, ext_ref, temp) == E_NO_ERROR) {
         *temp = ((*temp * 1.8) - 459.67f);

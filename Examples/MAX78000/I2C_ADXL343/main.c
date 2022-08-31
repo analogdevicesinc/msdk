@@ -41,13 +41,13 @@
   The ADXL343 INT2 output is connected GPIO6, P0_19_GPIO of the MAX78000FTHR.
 */
 
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include "mxc.h"
 #include "adxl343.h"
 #include "board.h"
 #include "led.h"
+#include "mxc.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 
 #ifdef BOARD_EVKIT_V1
 #warning "This example is not supported by the MAX78000EVKIT."
@@ -61,13 +61,13 @@
 
 // The GPIO pin used for ADXL343 interrupt.
 #define ADXL343_IRQ_PORT MXC_GPIO0
-#define ADXL343_IRQ_PIN  MXC_GPIO_PIN_19
+#define ADXL343_IRQ_PIN MXC_GPIO_PIN_19
 
-static mxc_gpio_cfg_t adxl343_irq_cfg = {.port  = ADXL343_IRQ_PORT,
-                                         .mask  = ADXL343_IRQ_PIN,
-                                         .pad   = MXC_GPIO_PAD_NONE,
-                                         .func  = MXC_GPIO_FUNC_IN,
-                                         .vssel = MXC_GPIO_VSSEL_VDDIOH};
+static mxc_gpio_cfg_t adxl343_irq_cfg = { .port = ADXL343_IRQ_PORT,
+    .mask = ADXL343_IRQ_PIN,
+    .pad = MXC_GPIO_PAD_NONE,
+    .func = MXC_GPIO_FUNC_IN,
+    .vssel = MXC_GPIO_VSSEL_VDDIOH };
 
 // Flag shared between interrupt handler and differed work service loop
 static volatile bool axis_data_ready = false;
@@ -107,7 +107,7 @@ int adxl343_config(void)
 {
     int result;
     int16_t tmp[3];
-    int8_t axis_offsets[3] = {-2, -2, 7}; // Device specific offset calibration values
+    int8_t axis_offsets[3] = { -2, -2, 7 }; // Device specific offset calibration values
 
     MXC_GPIO_Config(&adxl343_irq_cfg);
     MXC_GPIO_RegisterCallback(&adxl343_irq_cfg, adxl343_handler, NULL);
@@ -185,7 +185,7 @@ int main(void)
             }
 
             printf("\rx:% -2.2f  y:% -2.2f  z:% -2.2f", axis_data[0] * ADXL343_SF_2G,
-                   axis_data[1] * ADXL343_SF_2G, axis_data[2] * ADXL343_SF_2G);
+                axis_data[1] * ADXL343_SF_2G, axis_data[2] * ADXL343_SF_2G);
         }
 
         MXC_LP_EnterSleepMode();

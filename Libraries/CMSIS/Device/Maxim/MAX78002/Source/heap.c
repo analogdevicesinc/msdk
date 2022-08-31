@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#include <stdint.h>
 #include <errno.h>
+#include <stdint.h>
 #include <unistd.h>
 
 /*

@@ -49,7 +49,7 @@ int ucl_3des_subkey_generation(u8* k1, u8* k2, u8* key, u32 keylen);
  * @retval #UCL_INVALID_INPUT One of the input is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT One of the output is the pointer NULL
  * @retval #UCL_ERROR an error has occured in subkeys generation
- * 
+ *
  * restrictions
  * tlen is expressed in number of bytes
  * len is expressed in number of bytes

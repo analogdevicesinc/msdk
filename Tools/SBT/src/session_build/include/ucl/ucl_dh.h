@@ -79,7 +79,7 @@ extern "C" {
  * @li @a A calculate and send @f$ m_A = g^{s_A} \ mod\ p @f$ to @a B
  * @li @a B calculate and send @f$ m_B = g^{s_B} \ mod\ p @f$ to @a A
  * @li then @f$ K = m_A^{s_B} \ mod\ p = m_B^{s_A} \ mod\ p@f$
- * 
+ *
  * @ingroup UCL_PKC
  */
 
@@ -91,10 +91,10 @@ extern "C" {
  */
 struct ucl_dh_ctx {
     u8* module; /**< The module                             */
-    u8* base;   /**< The base                               */
+    u8* base; /**< The base                               */
     u8* secret; /**< The secret                             */
-    u32 len;    /**< Module (base and secret) byte length   */
-    void* ctx;  /**< The precalculation context             */
+    u32 len; /**< Module (base and secret) byte length   */
+    void* ctx; /**< The precalculation context             */
 };
 
 /** <b>DH Context typedef</b>.
@@ -134,9 +134,9 @@ typedef struct ucl_dh_ctx ucl_dh_ctx_t;
  * @param[in]  dh_ctx  Pointer to a Diffie-Hellman context
  *
  * @note Data length is (s * (4 + s)) + 8
- * 
+ *
  * @warning Only for FBEM method
- * 
+ *
  * @return Error code
  *
  * @ingroup UCL_DH
@@ -150,10 +150,10 @@ int ucl_dh_save_ctx(u8* data, u32 datalen, ucl_dh_ctx_t dh_ctx);
  * @param[in]  datalen Data byte length
  * @param[in]  buffer  Buffer
  * @param[in]  size    Buffer 32-bits words length (See the note)
- * 
+ *
  * @note Data length is (s * (4 + s)) + 8
  * @note Buffer size is (((2 + 2*s) * s) + 6)
- * 
+ *
  * @warning Only for FBEM method
  *
  * @return Error code
@@ -172,11 +172,11 @@ int ucl_dh_restore_ctx(ucl_dh_ctx_t* dh_ctx, u8* data, u32 datalen, u32* buffer,
  * @param[in]  option Define the exponentiation method:
  *                      @li #UCL_MOD_EXP_METHOD_MONTY Montgomery method
  *                      @li #UCL_MOD_EXP_METHOD_FBEM  Fixed-base Euclidian Method
- * 
+ *
  * @note The size of the buffer depends on the computation methods:
  *     @li #UCL_MOD_EXP_METHOD_FBEM (((2 + 2*s) * s) + MFPA_CTX_SIZE)
  *     @li #UCL_MOD_EXP_METHOD_MONTY  ((2*s) + +MFPA_CTX_SIZE)
- * 
+ *
  * @return Error code
  *
  * @ingroup UCL_DH

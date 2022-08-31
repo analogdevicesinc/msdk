@@ -33,7 +33,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  ******************************************************************************
-*/
+ */
 
 #ifndef __MAX32xxx_H_
 #define __MAX32xxx_H_
@@ -42,8 +42,8 @@
 #include "mxc_device.h"
 
 //
-#include "mxc_delay.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "mxc_lock.h"
 #include "mxc_pins.h"

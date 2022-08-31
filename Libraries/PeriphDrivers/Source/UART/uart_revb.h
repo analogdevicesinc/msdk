@@ -31,11 +31,11 @@
  *
  *************************************************************************** */
 
-#include "mxc_device.h"
-#include "mxc_assert.h"
 #include "dma.h"
-#include "uart_revb_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
 #include "uart_regs.h"
+#include "uart_revb_regs.h"
 
 typedef struct _mxc_uart_revb_req_t mxc_uart_revb_req_t;
 
@@ -44,8 +44,8 @@ typedef struct _mxc_uart_revb_req_t mxc_uart_revb_req_t;
 typedef enum {
     MXC_UART_REVB_APB_CLK = 0, // PCLK
     MXC_UART_REVB_EXT_CLK = 1,
-    MXC_UART_REVB_CLK2    = 2,
-    MXC_UART_REVB_CLK3    = 3,
+    MXC_UART_REVB_CLK2 = 2,
+    MXC_UART_REVB_CLK3 = 3,
     // For UART3, ERTCO and INRO clocks
     MXC_UART_REVB_LPCLK2 = 4,
     MXC_UART_REVB_LPCLK3 = 5
@@ -65,14 +65,14 @@ struct _mxc_uart_revb_req_t {
 int MXC_UART_RevB_Init(mxc_uart_revb_regs_t* uart, unsigned int baud, mxc_uart_revb_clock_t clock);
 int MXC_UART_RevB_Shutdown(mxc_uart_revb_regs_t* uart);
 int MXC_UART_RevB_ReadyForSleep(mxc_uart_revb_regs_t* uart);
-int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t* uart, unsigned int baud,
-                               mxc_uart_revb_clock_t clock);
+int MXC_UART_RevB_SetFrequency(
+    mxc_uart_revb_regs_t* uart, unsigned int baud, mxc_uart_revb_clock_t clock);
 int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t* uart);
 int MXC_UART_RevB_SetDataSize(mxc_uart_revb_regs_t* uart, int dataSize);
 int MXC_UART_RevB_SetStopBits(mxc_uart_revb_regs_t* uart, mxc_uart_stop_t stopBits);
 int MXC_UART_RevB_SetParity(mxc_uart_revb_regs_t* uart, mxc_uart_parity_t parity);
-int MXC_UART_RevB_SetFlowCtrl(mxc_uart_revb_regs_t* uart, mxc_uart_flow_t flowCtrl,
-                              int rtsThreshold);
+int MXC_UART_RevB_SetFlowCtrl(
+    mxc_uart_revb_regs_t* uart, mxc_uart_flow_t flowCtrl, int rtsThreshold);
 int MXC_UART_RevB_SetClockSource(mxc_uart_revb_regs_t* uart, mxc_uart_revb_clock_t clock);
 int MXC_UART_RevB_GetActive(mxc_uart_revb_regs_t* uart);
 int MXC_UART_RevB_AbortTransmission(mxc_uart_revb_regs_t* uart);
@@ -82,16 +82,15 @@ int MXC_UART_RevB_ReadCharacter(mxc_uart_revb_regs_t* uart);
 int MXC_UART_RevB_WriteCharacter(mxc_uart_revb_regs_t* uart, uint8_t character);
 int MXC_UART_RevB_Read(mxc_uart_revb_regs_t* uart, uint8_t* buffer, int* len);
 int MXC_UART_RevB_Write(mxc_uart_revb_regs_t* uart, const uint8_t* byte, int* len);
-unsigned int MXC_UART_RevB_ReadRXFIFO(mxc_uart_revb_regs_t* uart, unsigned char* bytes,
-                                      unsigned int len);
+unsigned int MXC_UART_RevB_ReadRXFIFO(
+    mxc_uart_revb_regs_t* uart, unsigned char* bytes, unsigned int len);
 int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_revb_regs_t* uart, unsigned char* bytes, unsigned int len,
-                                mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
+    mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetRXFIFOAvailable(mxc_uart_revb_regs_t* uart);
-unsigned int MXC_UART_RevB_WriteTXFIFO(mxc_uart_revb_regs_t* uart, const unsigned char* bytes,
-                                       unsigned int len);
+unsigned int MXC_UART_RevB_WriteTXFIFO(
+    mxc_uart_revb_regs_t* uart, const unsigned char* bytes, unsigned int len);
 int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_revb_regs_t* uart, const unsigned char* bytes,
-                                 unsigned int len, mxc_uart_dma_complete_cb_t callback,
-                                 mxc_dma_config_t config);
+    unsigned int len, mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetTXFIFOAvailable(mxc_uart_revb_regs_t* uart);
 int MXC_UART_RevB_ClearRXFIFO(mxc_uart_revb_regs_t* uart);
 int MXC_UART_RevB_ClearTXFIFO(mxc_uart_revb_regs_t* uart);

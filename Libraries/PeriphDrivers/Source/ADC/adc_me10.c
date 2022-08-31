@@ -32,16 +32,17 @@
  * $Date: 2019-06-28 14:28:57 -0500 (Fri, 28 Jun 2019) $
  * $Revision: 44348 $
  *
- ********************************************************************************************************** */
+ **********************************************************************************************************
+*/
 
 /* **** Includes **** */
-#include <stdint.h>
-#include <stdio.h>
+#include "adc.h"
+#include "adc_regs.h"
+#include "adc_reva.h"
 #include "mxc_errors.h"
 #include "mxc_sys.h"
-#include "adc_regs.h"
-#include "adc.h"
-#include "adc_reva.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Functions **** */
 // ********************************************************************************
@@ -96,7 +97,7 @@ void MXC_ADC_ClearFlags(uint32_t flags)
 // **************************************************************************
 int MXC_ADC_SetConversionSpeed(uint32_t hz)
 {
-    //check for overflow
+    // check for overflow
     MXC_ASSERT(hz < ((uint32_t)((1U << 31) - 1) / 1024));
     uint32_t adc_clock_freq = 1024 * hz;
 
@@ -110,14 +111,14 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
         return E_BAD_PARAM;
     }
 
-    //disable clock
+    // disable clock
     MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CLK_EN;
-    //clear clock divisor
+    // clear clock divisor
     MXC_GCR->pclk_div &= ~MXC_F_GCR_PCLK_DIV_ADCFRQ;
-    //load in new clock divisor
+    // load in new clock divisor
     MXC_GCR->pclk_div |= (divider << MXC_F_GCR_PCLK_DIV_ADCFRQ_POS);
 
-    //enable clock
+    // enable clock
     MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t*)MXC_ADC, hz);
 
     return MXC_ADC_GetConversionSpeed();
@@ -219,8 +220,8 @@ int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t 
 // **************************************************************************
 int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*callback)(int, int))
 {
-    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data,
-                                           callback);
+    return MXC_ADC_RevA_StartConversionDMA(
+        (mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data, callback);
 }
 
 // **************************************************************************

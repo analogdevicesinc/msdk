@@ -39,12 +39,12 @@
  *
  *************************************************************************** */
 
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "trng_revb.h"
 #include "trng.h"
+#include "trng_revb.h"
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */

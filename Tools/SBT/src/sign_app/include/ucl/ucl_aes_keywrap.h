@@ -49,7 +49,7 @@ extern "C" {
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_AES_KEYWRAP
-*/
+ */
 int ucl_aes_RFC3394_wrap(u8* c, u8* p, int byte_p_size, u8* key);
 /** <b>AES Key unwrap</b>.
  * this function unwraps an encrypted key with AES

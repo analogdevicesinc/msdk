@@ -34,31 +34,30 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include "mxc_device.h"
-#include "mxc_sys.h"
-#include "mxc_assert.h"
 #include "board.h"
-#include "uart.h"
 #include "gpio.h"
-#include "mxc_pins.h"
-#include "led.h"
-#include "pb.h"
 #include "i2c.h"
+#include "led.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_pins.h"
 #include "mxc_sys.h"
+#include "pb.h"
+#include "uart.h"
+#include <stdio.h>
 
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO1, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO1, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
-const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO}};
+const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
@@ -66,8 +65,7 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) { }
 }
 
 /******************************************************************************/

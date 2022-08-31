@@ -3,7 +3,7 @@
  *
  ******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -74,24 +74,24 @@ static int init(void)
 static void time_tick(void)
 {
     switch (slide_mode) {
-        case 1:
-            MXC_TFT_ShowImage(0, 0, img_1_bmp);
-            break;
+    case 1:
+        MXC_TFT_ShowImage(0, 0, img_1_bmp);
+        break;
 
-        case 2:
-            MXC_TFT_ShowImage(0, 0, img_2_bmp);
-            break;
+    case 2:
+        MXC_TFT_ShowImage(0, 0, img_2_bmp);
+        break;
 
-        case 3:
-            MXC_TFT_ShowImage(0, 0, img_3_bmp);
-            break;
+    case 3:
+        MXC_TFT_ShowImage(0, 0, img_3_bmp);
+        break;
 
-        case 4:
-            MXC_TFT_ShowImage(0, 0, img_4_bmp);
-            break;
+    case 4:
+        MXC_TFT_ShowImage(0, 0, img_4_bmp);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (slide_mode > 0) {
@@ -104,76 +104,76 @@ static void time_tick(void)
 static int key_process(int key)
 {
     switch (key) {
-        case KEY_0:
-            state_set_current(get_keypad_state());
-            break;
+    case KEY_0:
+        state_set_current(get_keypad_state());
+        break;
 
-        case KEY_1:
-            break;
+    case KEY_1:
+        break;
 
-        case KEY_2:
-            break;
+    case KEY_2:
+        break;
 
-        case KEY_3:
-            break;
+    case KEY_3:
+        break;
 
-        case KEY_4:
-            break;
+    case KEY_4:
+        break;
 
-        case KEY_5:
-            break;
+    case KEY_5:
+        break;
 
-        case KEY_6:
-            break;
+    case KEY_6:
+        break;
 
-        case KEY_7:
-            break;
+    case KEY_7:
+        break;
 
-        case KEY_8:
-            break;
+    case KEY_8:
+        break;
 
-        case KEY_9:
-            break;
+    case KEY_9:
+        break;
 
-        case KEY_A:
-            if (slide_mode == 0) {
-                MXC_TS_RemoveAllButton();
-                MXC_TS_AddButton(0, 0, 320, 240, KEY_C);
+    case KEY_A:
+        if (slide_mode == 0) {
+            MXC_TS_RemoveAllButton();
+            MXC_TS_AddButton(0, 0, 320, 240, KEY_C);
 
-                slide_mode = 1;
-                time_tick();
-            }
+            slide_mode = 1;
+            time_tick();
+        }
 
-            break;
+        break;
 
-        case KEY_B:
-            state_set_current(get_info_state());
-            break;
+    case KEY_B:
+        state_set_current(get_info_state());
+        break;
 
-        case KEY_C:
-            if (slide_mode != 0) {
-                init(); // go home
-            }
+    case KEY_C:
+        if (slide_mode != 0) {
+            init(); // go home
+        }
 
-            break;
+        break;
 
-        case KEY_D:
-            break;
+    case KEY_D:
+        break;
 
-        case KEY_E:
-            break;
+    case KEY_E:
+        break;
 
-        case KEY_F:
-            break;
+    case KEY_F:
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return 0;
 }
 
-static State g_state = {"home", init, key_process, time_tick, TICK_TIMEOUT};
+static State g_state = { "home", init, key_process, time_tick, TICK_TIMEOUT };
 
 /********************************* Public Functions **************************/
 State* get_home_state(void)

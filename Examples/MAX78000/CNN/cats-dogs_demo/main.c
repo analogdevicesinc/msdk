@@ -31,23 +31,23 @@
  *
  ******************************************************************************/
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc_device.h"
-#include "mxc_sys.h"
+#include "camera.h"
+#include "cnn.h"
+#include "dma.h"
 #include "fcr_regs.h"
 #include "icc.h"
 #include "led.h"
-#include "tmr.h"
-#include "dma.h"
-#include "pb.h"
-#include "cnn.h"
-#include "weights.h"
-#include "sampledata.h"
 #include "mxc_delay.h"
-#include "camera.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "pb.h"
+#include "sampledata.h"
+#include "tmr.h"
+#include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef BOARD_EVKIT_V1
 #include "bitmap.h"
 #include "tft_ssd2119.h"
@@ -74,17 +74,17 @@
 #ifdef BOARD_EVKIT_V1
 int image_bitmap_1 = ADI_256_bmp;
 int image_bitmap_2 = logo_white_bg_darkgrey_bmp;
-int font_1         = urw_gothic_12_white_bg_grey;
-int font_2         = urw_gothic_13_white_bg_grey;
+int font_1 = urw_gothic_12_white_bg_grey;
+int font_2 = urw_gothic_13_white_bg_grey;
 #endif
 #ifdef BOARD_FTHR_REVA
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1         = (int)&SansSerif16x16[0];
-int font_2         = (int)&SansSerif16x16[0];
+int font_1 = (int)&SansSerif16x16[0];
+int font_2 = (int)&SansSerif16x16[0];
 #endif
 
-const char classes[CNN_NUM_OUTPUTS][10] = {"Cat", "Dog"};
+const char classes[CNN_NUM_OUTPUTS][10] = { "Cat", "Dog" };
 
 // Classification layer:
 static int32_t ml_data[CNN_NUM_OUTPUTS];
@@ -105,15 +105,16 @@ static uint32_t input_0[IMAGE_SIZE_X * IMAGE_SIZE_Y]; // buffer for camera image
 /* **************************************************************************** */
 #ifdef ASCII_ART
 
-//char * brightness = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "; // standard
+// char * brightness = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
+// // standard
 char* brightness = "@%#*+=-:. "; // simple
-#define RATIO 2                  // ratio of scaling down the image to display in ascii
+#define RATIO 2 // ratio of scaling down the image to display in ascii
 void asciiart(uint8_t* img)
 {
     int skip_x, skip_y;
     uint8_t r, g, b, Y;
     uint8_t* srcPtr = img;
-    int l           = strlen(brightness) - 1;
+    int l = strlen(brightness) - 1;
 
     skip_x = RATIO;
     skip_y = RATIO;
@@ -124,7 +125,7 @@ void asciiart(uint8_t* img)
             g = *(srcPtr++) ^ 0x80;
             b = *(srcPtr++) ^ 0x80;
 
-            srcPtr++; //skip msb=0x00
+            srcPtr++; // skip msb=0x00
 
             // Y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
             Y = (3 * r + b + 4 * g) >> 3; // simple luminance conversion
@@ -153,7 +154,7 @@ void TFT_Print(char* str, int x, int y, int font, int length)
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = length;
+    text.len = length;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 #endif
 }
@@ -163,8 +164,7 @@ void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) { }
 }
 
 /* **************************************************************************** */
@@ -175,8 +175,8 @@ void cnn_load_input(void)
 
     for (i = 0; i < 16384; i++) {
         // Remove the following line if there is no risk that the source would overrun the FIFO:
-        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
-            ;                                       // Wait for FIFO 0
+        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0) { }
+        // Wait for FIFO 0
         *((volatile uint32_t*)0x50000008) = *in0++; // Write FIFO 0
     }
 }
@@ -194,12 +194,13 @@ void display_sampledata(void)
     uint32_t temp;
 
     int cnt = 0;
-    ;
+    {
+    }
     w = IMAGE_SIZE_X;
 
     // Get image line by line
     for (int row = 0; row < IMAGE_SIZE_Y; row++) {
-        //LED_Toggle(LED2);
+        // LED_Toggle(LED2);
 #ifdef BOARD_EVKIT_V1
         j = IMAGE_SIZE_X * 2 - 2; // mirror on display
 #else
@@ -217,8 +218,8 @@ void display_sampledata(void)
             cnt++;
 
             // convert to RGB656 for display
-            rgb            = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
-            data565[j]     = (rgb >> 8) & 0xFF;
+            rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+            data565[j] = (rgb >> 8) & 0xFF;
             data565[j + 1] = rgb & 0xFF;
 
 #ifdef BOARD_EVKIT_V1
@@ -265,7 +266,7 @@ void capture_process_camera(void)
             }
         }
 
-        //LED_Toggle(LED2);
+        // LED_Toggle(LED2);
 #ifdef BOARD_EVKIT_V1
         j = IMAGE_SIZE_X * 2 - 2; // mirror on display
 #else
@@ -276,14 +277,14 @@ void capture_process_camera(void)
             r = data[k];
             g = data[k + 1];
             b = data[k + 2];
-            //skip k+3
+            // skip k+3
 
             // change the range from [0,255] to [-128,127] and store in buffer for CNN
             input_0[cnt++] = ((b << 16) | (g << 8) | r) ^ 0x00808080;
 
             // convert to RGB656 for display
-            rgb            = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
-            data565[j]     = (rgb >> 8) & 0xFF;
+            rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+            data565[j] = (rgb >> 8) & 0xFF;
             data565[j + 1] = rgb & 0xFF;
 #ifdef BOARD_EVKIT_V1
             j -= 2; // mirror on display
@@ -295,19 +296,18 @@ void capture_process_camera(void)
         MXC_TFT_ShowImageCameraRGB565(TFT_X_START, TFT_Y_START + row, data565, w, 1);
 #endif
 
-        //LED_Toggle(LED2);
+        // LED_Toggle(LED2);
         // Release stream buffer
         release_camera_stream_buffer();
     }
 
-    //camera_sleep(1);
+    // camera_sleep(1);
     stat = get_camera_stream_statistic();
 
     if (stat->overflow_count > 0) {
         printf("OVERFLOW DISP = %d\n", stat->overflow_count);
         LED_On(LED2); // Turn on red LED if overflow detected
-        while (1)
-            ;
+        while (1) { }
     }
 }
 #endif
@@ -328,7 +328,7 @@ int main(void)
     MXC_Delay(200000);
     /* Enable camera power */
     Camera_Power(POWER_ON);
-    //MXC_Delay(300000);
+    // MXC_Delay(300000);
     printf("\n\nCats-vs-Dogs Feather Demo\n");
 #else
     printf("\n\nCats-vs-Dogs Evkit Demo\n");
@@ -384,8 +384,8 @@ int main(void)
     printf("Init Camera.\n");
     camera_init(CAMERA_FREQ);
 
-    ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA,
-                       dma_channel);
+    ret = camera_setup(
+        IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA, dma_channel);
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
@@ -400,7 +400,7 @@ int main(void)
 #ifdef TFT_ENABLE
     MXC_TFT_SetPalette(image_bitmap_2);
     MXC_TFT_SetBackGroundColor(4);
-    //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+    // MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 55, 50, font_2, sprintf(buff, "ANALOG DEVICES"));
     TFT_Print(buff, 55, 90, font_1, sprintf(buff, "Cats-vs-Dogs Demo"));
@@ -408,8 +408,7 @@ int main(void)
 #endif
 
     printf("********** Press PB1(SW1) to capture an image **********\r\n");
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) { }
 
 #ifdef TFT_ENABLE
     MXC_TFT_ClearScreen();
@@ -449,12 +448,12 @@ int main(void)
         printf("Classification results:\n");
 
         for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
-            digs      = (1000 * ml_softmax[i] + 0x4000) >> 15;
-            tens      = digs % 10;
-            digs      = digs / 10;
+            digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
+            tens = digs % 10;
+            digs = digs / 10;
             result[i] = digs;
-            printf("[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i, classes[i], result[i],
-                   tens);
+            printf(
+                "[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i, classes[i], result[i], tens);
         }
 
         printf("\n");
@@ -477,27 +476,26 @@ int main(void)
 
         } else if (ml_data[0] > ml_data[1]) {
             TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
-                      sprintf(buff, "%s (%d%%)", classes[0], result[0]));
+                sprintf(buff, "%s (%d%%)", classes[0], result[0]));
             LED_On(LED1);
             LED_Off(LED2);
         } else {
             TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
-                      sprintf(buff, "%s (%d%%)", classes[1], result[1]));
+                sprintf(buff, "%s (%d%%)", classes[1], result[1]));
             LED_Off(LED1);
             LED_On(LED2);
         }
 
         memset(buff, 32, TFT_BUFF_SIZE);
         TFT_Print(buff, TFT_X_START + 30, TFT_Y_START + IMAGE_SIZE_Y + 10, font_1,
-                  sprintf(buff, "%dms", cnn_time / 1000));
+            sprintf(buff, "%dms", cnn_time / 1000));
         TFT_Print(buff, 20, TFT_Y_START + IMAGE_SIZE_Y + 35, font_2,
-                  sprintf(buff, "PRESS PB1(SW1) TO CAPTURE"));
+            sprintf(buff, "PRESS PB1(SW1) TO CAPTURE"));
 
 #ifdef ASCII_ART
         asciiart((uint8_t*)input_0);
         printf("********** Press PB1(SW1) to capture an image **********\r\n");
-        while (!PB_Get(0))
-            ;
+        while (!PB_Get(0)) { }
 #endif
     }
 

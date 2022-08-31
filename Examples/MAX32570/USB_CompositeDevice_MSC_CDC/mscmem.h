@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -44,7 +44,7 @@
 
 #include <stdint.h>
 
-#define ERASE_MEMORY_ON_INIT \
+#define ERASE_MEMORY_ON_INIT                                                                       \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
 /* Use 1 to clear or 0 to leave untouched. */
 

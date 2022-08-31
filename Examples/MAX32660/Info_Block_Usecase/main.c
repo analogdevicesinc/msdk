@@ -39,11 +39,11 @@
  */
 
 /***** Includes *****/
+#include "flc.h"
+#include "mxc_device.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "flc.h"
 
 /***** Definitions *****/
 /*
@@ -54,10 +54,10 @@
 #define WITH_WRITE_TEST 0 // set it to test write test
 
 // Memory Address
-#define INFO_MEM_MAXIM_AREA      MXC_INFO_MEM_BASE
+#define INFO_MEM_MAXIM_AREA MXC_INFO_MEM_BASE
 #define INFO_MEM_MAXIM_AREA_SIZE 1024
 
-#define INFO_MEM_USER_AREA      (MXC_INFO_MEM_BASE + 1024)
+#define INFO_MEM_USER_AREA (MXC_INFO_MEM_BASE + 1024)
 #define INFO_MEM_USER_AREA_SIZE (MXC_INFO_MEM_SIZE - 1024)
 
 /***** Static Functions *****/
@@ -92,9 +92,9 @@ static void dump_section(unsigned int address, unsigned int length)
 #if WITH_WRITE_TEST
 static int write_test(void)
 {
-    int ret                     = 0;
-    uint32_t test_val[]         = {0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00};
-    volatile uint32_t* addr     = (uint32_t*)INFO_MEM_USER_AREA;
+    int ret = 0;
+    uint32_t test_val[] = { 0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00 };
+    volatile uint32_t* addr = (uint32_t*)INFO_MEM_USER_AREA;
     volatile uint32_t* end_addr = (uint32_t*)(INFO_MEM_USER_AREA + INFO_MEM_USER_AREA_SIZE);
 
     // unlock to access it

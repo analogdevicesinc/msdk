@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -38,9 +38,9 @@
 #include "tsc2046.h"
 
 #include <FreeRTOS.h>
-#include <task.h>
 #include <queue.h>
 #include <semphr.h>
+#include <task.h>
 
 /*************************************** DEFINES *****************************/
 
@@ -60,7 +60,7 @@ void vGetTSTask(void* pvParameters)
     while (1) {
         key = MXC_TS_GetKey();
         if (key > 0) {
-            msgTS.pcType       = 'T';
+            msgTS.pcType = 'T';
             msgTS.pcMessage[0] = key;
             xQueueSendToFront(xQueueMain, &msgTS, 0);
         }

@@ -40,32 +40,34 @@
  */
 
 /* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_sys.h"
-#include "fcr_regs.h"
-#include "icc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "i2s_regs.h"
 #include "board.h"
-#include "i2s.h"
-#include "tmr.h"
-#include "dma.h"
-#include "led.h"
-#include "pb.h"
 #include "cnn.h"
+#include "dma.h"
+#include "fcr_regs.h"
+#include "i2s.h"
+#include "i2s_regs.h"
+#include "icc.h"
+#include "led.h"
 #include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "pb.h"
 #include "sema_regs.h"
+#include "tmr.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /* **** Definitions **** */
 /* Enable/Disable Features */
 //#define ENABLE_PRINT_ENVELOPE            // enables printing average waveform envelope for samples
 #define ENABLE_CLASSIFICATION_DISPLAY // enables printing classification result
-#define ENABLE_SILENCE_DETECTION      // Starts collecting only after avg > THRESHOLD_HIGH, otherwise starts from first sample
+#define ENABLE_SILENCE_DETECTION // Starts collecting only after avg > THRESHOLD_HIGH, otherwise
+                                 // starts from first sample
 #undef EIGHT_BIT_SAMPLES // samples from Mic or Test vectors are eight bit, otherwise 16-bit
-#define ENABLE_MIC_PROCESSING // enables capturing Mic, otherwise a header file Test vector is used as sample data
+#define ENABLE_MIC_PROCESSING // enables capturing Mic, otherwise a header file Test vector is used
+                              // as sample data
 
 #ifndef ENABLE_MIC_PROCESSING
 #include "kws_five.h"
@@ -76,32 +78,34 @@
 /*-----------------------------*/
 /* keep following unchanged */
 #define SAMPLE_SIZE 16384 // size of input vector for CNN, keep it multiple of 128
-#define CHUNK \
+#define CHUNK                                                                                      \
     128 // number of data points to read at a time and average for threshold, keep multiple of 128
-#define TRANSPOSE_WIDTH    128 // width of 2d data model to be used for transpose
-#define NUM_OUTPUTS        21  // number of classes
-#define I2S_RX_BUFFER_SIZE 64  // I2S buffer size
+#define TRANSPOSE_WIDTH 128 // width of 2d data model to be used for transpose
+#define NUM_OUTPUTS 21 // number of classes
+#define I2S_RX_BUFFER_SIZE 64 // I2S buffer size
 /*-----------------------------*/
 
 /* Adjustables */
 #ifdef ENABLE_MIC_PROCESSING
-#define SAMPLE_SCALE_FACTOR \
+#define SAMPLE_SCALE_FACTOR                                                                        \
     4 // multiplies 16-bit samples by this scale factor before converting to 8-bit
 #define THRESHOLD_HIGH 350 // voice detection threshold to find beginning of a keyword
-#define THRESHOLD_LOW  100 // voice detection threshold to find end of a keyword
-#define SILENCE_COUNTER_THRESHOLD \
-    20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
-#define PREAMBLE_SIZE       30 * CHUNK // how many samples before beginning of a keyword to include
-#define INFERENCE_THRESHOLD 49         // min probability (0-100) to accept an inference
+#define THRESHOLD_LOW 100 // voice detection threshold to find end of a keyword
+#define SILENCE_COUNTER_THRESHOLD                                                                  \
+    20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of
+       // a word
+#define PREAMBLE_SIZE 30 * CHUNK // how many samples before beginning of a keyword to include
+#define INFERENCE_THRESHOLD 49 // min probability (0-100) to accept an inference
 #else
-#define SAMPLE_SCALE_FACTOR \
+#define SAMPLE_SCALE_FACTOR                                                                        \
     1 // multiplies 16-bit samples by this scale factor before converting to 8-bit
 #define THRESHOLD_HIGH 130 // voice detection threshold to find beginning of a keyword
-#define THRESHOLD_LOW  70  // voice detection threshold to find end of a keyword
-#define SILENCE_COUNTER_THRESHOLD \
-    20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
-#define PREAMBLE_SIZE       30 * CHUNK // how many samples before beginning of a keyword to include
-#define INFERENCE_THRESHOLD 49         // min probability (0-100) to accept an inference
+#define THRESHOLD_LOW 70 // voice detection threshold to find end of a keyword
+#define SILENCE_COUNTER_THRESHOLD                                                                  \
+    20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of
+       // a word
+#define PREAMBLE_SIZE 30 * CHUNK // how many samples before beginning of a keyword to include
+#define INFERENCE_THRESHOLD 49 // min probability (0-100) to accept an inference
 #endif
 
 /* **** Globals **** */
@@ -114,32 +118,32 @@ static q15_t ml_softmax[NUM_OUTPUTS];
 uint8_t pAI85Buffer[SAMPLE_SIZE];
 uint8_t pPreambleCircBuffer[PREAMBLE_SIZE];
 int16_t Max, Min;
-uint16_t thresholdHigh    = THRESHOLD_HIGH;
-uint16_t thresholdLow     = THRESHOLD_LOW;
+uint16_t thresholdHigh = THRESHOLD_HIGH;
+uint16_t thresholdLow = THRESHOLD_LOW;
 volatile uint8_t i2s_flag = 0;
 int32_t i2s_rx_buffer[I2S_RX_BUFFER_SIZE];
 
 /* **** Constants **** */
 typedef enum _mic_processing_state {
-    STOP    = 0, /* No processing  */
+    STOP = 0, /* No processing  */
     SILENCE = 1, /* Threshold not detected yet  */
-    KEYWORD = 2  /* Threshold has been detected, gathering keyword samples */
+    KEYWORD = 2 /* Threshold has been detected, gathering keyword samples */
 } mic_processing_state;
 
 /* Set of detected words */
-__attribute__((section(".rvflash_section"))) const char keywords[NUM_OUTPUTS][10] = {
-    "UP",  "DOWN",  "LEFT", "RIGHT", "STOP", "GO",    "YES",   "NO",   "ON",   "OFF",    "ONE",
-    "TWO", "THREE", "FOUR", "FIVE",  "SIX",  "SEVEN", "EIGHT", "NINE", "ZERO", "Unknown"};
+__attribute__((section(".rvflash_section"))) const char keywords[NUM_OUTPUTS][10]
+    = { "UP", "DOWN", "LEFT", "RIGHT", "STOP", "GO", "YES", "NO", "ON", "OFF", "ONE", "TWO",
+          "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "ZERO", "Unknown" };
 
 #ifndef ENABLE_MIC_PROCESSING
 
 #ifndef EIGHT_BIT_SAMPLES
 __attribute__((section(".rvflash_section"))) const int16_t voiceVector[] = KWS20_TEST_VECTOR;
-#else  // #ifndef EIGHT_BIT_SAMPLES
+#else // #ifndef EIGHT_BIT_SAMPLES
 __attribute__((section(".rvflash_section"))) const int8_t voiceVector[] = KWS20_TEST_VECTOR;
 #endif // #ifndef EIGHT_BIT_SAMPLES
 int8_t MicReader(int16_t* sample);
-#else  // #ifndef ENABLE_MIC_PROCESSING
+#else // #ifndef ENABLE_MIC_PROCESSING
 void i2s_isr(void)
 {
     i2s_flag = 1;
@@ -152,8 +156,8 @@ void i2s_isr(void)
 void fail(void);
 uint8_t cnn_load_data(uint8_t* pIn);
 uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg);
-uint8_t AddTranspose(uint8_t* pIn, uint8_t* pOut, uint16_t inSize, uint16_t outSize,
-                     uint16_t width);
+uint8_t AddTranspose(
+    uint8_t* pIn, uint8_t* pOut, uint16_t inSize, uint16_t outSize, uint16_t width);
 uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, double* out_prob);
 void I2SInit();
 void HPF_init(void);
@@ -165,10 +169,10 @@ int main(void)
     uint32_t sampleCounter = 0;
     mxc_tmr_unit_t units;
     uint8_t pChunkBuff[CHUNK];
-    uint16_t avg               = 0;
-    uint16_t preambleCounter   = 0;
-    uint16_t ai85Counter       = 0;
-    uint16_t wordCounter       = 0;
+    uint16_t avg = 0;
+    uint16_t preambleCounter = 0;
+    uint16_t ai85Counter = 0;
+    uint16_t wordCounter = 0;
     uint16_t avgSilenceCounter = 0;
 
     mic_processing_state procState = STOP;
@@ -214,7 +218,7 @@ int main(void)
 #endif
 
     printf("\n*** READY ***\n");
-    //printf("mailbox - RISC-V: %x\n",&mail_box[0]);
+    // printf("mailbox - RISC-V: %x\n",&mail_box[0]);
     /* Read samples */
 
     while (1) {
@@ -248,9 +252,7 @@ int main(void)
 #ifdef ENABLE_PRINT_ENVELOPE
         printf("%.6d|", sampleCounter);
 
-        for (int i = 0; i < avg / 10; i++) {
-            printf("=");
-        }
+        for (int i = 0; i < avg / 10; i++) { printf("="); }
 
         if (avg >= thresholdHigh) {
             printf("*");
@@ -266,26 +268,25 @@ int main(void)
                 /* switch to keyword data collection*/
                 procState = KEYWORD;
                 printf("%.6d Word starts from index: %d, avg:%d > %d \n", sampleCounter,
-                       sampleCounter - PREAMBLE_SIZE - CHUNK, avg, thresholdHigh);
+                    sampleCounter - PREAMBLE_SIZE - CHUNK, avg, thresholdHigh);
 
                 /* reorder circular buffer according to time at the beginning of pAI85Buffer */
                 if (preambleCounter == 0) {
                     /* copy latest samples afterwards */
                     if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer, PREAMBLE_SIZE,
-                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                            SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
                         printf("ERROR: Transpose ended early \n");
                     }
                 } else {
                     /* copy oldest samples to the beginning*/
                     if (AddTranspose(&pPreambleCircBuffer[preambleCounter], pAI85Buffer,
-                                     PREAMBLE_SIZE - preambleCounter, SAMPLE_SIZE,
-                                     TRANSPOSE_WIDTH)) {
+                            PREAMBLE_SIZE - preambleCounter, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
                         printf("ERROR: Transpose ended early \n");
                     }
 
                     /* copy latest samples afterwards */
                     if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer, preambleCounter,
-                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                            SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
                         printf("ERROR: Transpose ended early \n");
                     }
                 }
@@ -308,7 +309,8 @@ int main(void)
             /* increment number of stored samples */
             ai85Counter += CHUNK;
 
-            /* if there is silence after at least 1/3 of samples passed, increment number of times back to back silence to find end of keyword */
+            /* if there is silence after at least 1/3 of samples passed, increment number of times
+             * back to back silence to find end of keyword */
             if ((avg < thresholdLow) && (ai85Counter >= SAMPLE_SIZE / 3)) {
                 avgSilenceCounter++;
             } else {
@@ -316,36 +318,37 @@ int main(void)
             }
 
             /* if this is the last sample and there are not enough samples to
-             * feed to CNN, or if it is long silence after keyword,  append with zero (for reading file)
+             * feed to CNN, or if it is long silence after keyword,  append with zero (for reading
+             * file)
              */
 #ifndef ENABLE_MIC_PROCESSING
 
-            if (((ai85Counter < SAMPLE_SIZE) &&
-                 (sampleCounter >= sizeof(voiceVector) / sizeof(voiceVector[0]) - 1)) ||
-                (avgSilenceCounter > SILENCE_COUNTER_THRESHOLD))
+            if (((ai85Counter < SAMPLE_SIZE)
+                    && (sampleCounter >= sizeof(voiceVector) / sizeof(voiceVector[0]) - 1))
+                || (avgSilenceCounter > SILENCE_COUNTER_THRESHOLD))
 #else
             if (avgSilenceCounter > SILENCE_COUNTER_THRESHOLD)
 #endif
             {
                 memset(pChunkBuff, 0, CHUNK);
                 printf("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
-                       SAMPLE_SIZE - ai85Counter);
+                    SAMPLE_SIZE - ai85Counter);
                 ret = 0;
 
                 while (!ret) {
-                    ret =
-                        AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE, TRANSPOSE_WIDTH);
+                    ret = AddTranspose(
+                        pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE, TRANSPOSE_WIDTH);
                     ai85Counter += CHUNK;
                 }
             }
 
             /* if enough samples are collected, start CNN */
             if (ai85Counter >= SAMPLE_SIZE) {
-                int16_t out_class  = -1;
+                int16_t out_class = -1;
                 double probability = 0;
 
                 /* reset counters */
-                ai85Counter       = 0;
+                ai85Counter = 0;
                 avgSilenceCounter = 0;
 
                 /* new word */
@@ -354,7 +357,8 @@ int main(void)
                 /* change state to silence */
                 procState = SILENCE;
 
-                /* sanity check, last transpose should have returned 1, as enough samples should have already been added */
+                /* sanity check, last transpose should have returned 1, as enough samples should
+                 * have already been added */
                 if (ret != 1) {
                     printf("ERROR: Transpose incomplete!\n");
                     fail();
@@ -379,13 +383,11 @@ int main(void)
 
                 printf("Start CNN\n");
 
-                //LED_On(0);
+                // LED_On(0);
                 /* Wait for CNN  to complete */
-                while (cnn_time == 0) {
-                    asm volatile("wfi");
-                }
+                while (cnn_time == 0) { asm volatile("wfi"); }
 
-                //LED_Off(0);
+                // LED_Off(0);
 
                 /* read data */
                 cnn_unload((uint32_t*)ml_data);
@@ -395,20 +397,20 @@ int main(void)
                 printf("%.6d: Completes CNN: %d\n", sampleCounter, wordCounter);
 
                 switch (units) {
-                    case TMR_UNIT_NANOSEC:
-                        cnn_time /= 1000;
-                        break;
+                case TMR_UNIT_NANOSEC:
+                    cnn_time /= 1000;
+                    break;
 
-                    case TMR_UNIT_MILLISEC:
-                        cnn_time *= 1000;
-                        break;
+                case TMR_UNIT_MILLISEC:
+                    cnn_time *= 1000;
+                    break;
 
-                    case TMR_UNIT_SEC:
-                        cnn_time *= 1000000;
-                        break;
+                case TMR_UNIT_SEC:
+                    cnn_time *= 1000000;
+                    break;
 
-                    default:
-                        break;
+                default:
+                    break;
                 }
 
                 printf("CNN Time: %d us\n", cnn_time);
@@ -422,10 +424,10 @@ int main(void)
                 for (int i = 0; i < NUM_OUTPUTS; i++) {
                     int digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
                     int tens = digs % 10;
-                    digs     = digs / 10;
+                    digs = digs / 10;
 
                     printf("[%+.7d] -> Class %.2d %8s: %d.%d%%\n", ml_data[i], i, keywords[i], digs,
-                           tens);
+                        tens);
                 }
 
 #endif
@@ -465,8 +467,7 @@ int main(void)
     LED_Off(LED2);
     printf("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
 
-    while (1)
-        ;
+    while (1) { }
 }
 
 /* **************************************************************************** */
@@ -483,27 +484,26 @@ void I2SInit()
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
     /* Configure I2S interface parameters */
-    req.wordSize    = MXC_I2S_DATASIZE_WORD;
-    req.sampleSize  = MXC_I2S_SAMPLESIZE_THIRTYTWO;
-    req.justify     = MXC_I2S_MSB_JUSTIFY;
-    req.wsPolarity  = MXC_I2S_POL_NORMAL;
+    req.wordSize = MXC_I2S_DATASIZE_WORD;
+    req.sampleSize = MXC_I2S_SAMPLESIZE_THIRTYTWO;
+    req.justify = MXC_I2S_MSB_JUSTIFY;
+    req.wsPolarity = MXC_I2S_POL_NORMAL;
     req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
     /* Get only left channel data from on-board microphone. Right channel samples are zeros */
     req.stereoMode = MXC_I2S_MONO_LEFT_CH;
-    req.bitOrder   = MXC_I2S_MSB_FIRST;
+    req.bitOrder = MXC_I2S_MSB_FIRST;
     /* I2S clock = PT freq / (2*(req.clkdiv + 1)) */
     /* I2S sample rate = I2S clock/64 = 16kHz */
-    req.clkdiv  = 5;
+    req.clkdiv = 5;
     req.rawData = NULL;
-    req.txData  = NULL;
-    req.rxData  = i2s_rx_buffer;
-    req.length  = I2S_RX_BUFFER_SIZE;
+    req.txData = NULL;
+    req.rxData = i2s_rx_buffer;
+    req.length = I2S_RX_BUFFER_SIZE;
 
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         printf("\nError in I2S_Init: %d\n", err);
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Set I2S RX FIFO threshold to generate interrupt */
@@ -518,8 +518,8 @@ void I2SInit()
 
     MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_I2S;
 
-    //printf("lppwen:%x \n",MXC_PWRSEQ->lppwen);
-    //printf("wken:%x \n",MXC_I2S->wken );
+    // printf("lppwen:%x \n",MXC_PWRSEQ->lppwen);
+    // printf("wken:%x \n",MXC_I2S->wken );
 
     /* Enable RX FIFO Threshold Interrupt */
     MXC_I2S_EnableInt(MXC_F_I2S_INTEN_RX_THD_CH0);
@@ -540,8 +540,8 @@ void __attribute__((interrupt("machine"))) I2S_IRQHandler(void)
 uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, double* out_prob)
 {
     int32_t temp[NUM_OUTPUTS];
-    q15_t max         = 0;       // soft_max output is 0->32767
-    int32_t max_ml    = 1 << 31; // ml before going to soft_max
+    q15_t max = 0; // soft_max output is 0->32767
+    int32_t max_ml = 1 << 31; // ml before going to soft_max
     int16_t max_index = -1;
 
     memcpy(temp, ml_data, sizeof(int32_t) * NUM_OUTPUTS);
@@ -553,7 +553,7 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, do
             if ((int32_t)temp[i] > max_ml) {
                 max_ml = (int32_t)temp[i];
 
-                max       = ml_soft[i];
+                max = ml_soft[i];
                 max_index = i;
             }
         }
@@ -565,7 +565,7 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, do
         }
 
         /* populate Top classes */
-        mail_box[top * 2]     = max_index; // index to detected word
+        mail_box[top * 2] = max_index; // index to detected word
         mail_box[top * 2 + 1] = max;
 
         if (top == 4) {
@@ -578,13 +578,13 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, do
         /* print top 1 separately */
         if (top == 0) {
             *out_class = max_index;
-            *out_prob  = 100.0 * max / 32768.0;
+            *out_prob = 100.0 * max / 32768.0;
         }
 
         /* reset for next top */
         temp[max_index] = 1 << 31;
-        max_ml          = 1 << 31;
-        max_index       = -1;
+        max_ml = 1 << 31;
+        max_index = -1;
     }
 
     printf("Min: %d,   Max: %d \n", Min, Max);
@@ -601,8 +601,7 @@ void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) { }
 }
 /* **************************************************************************** */
 uint8_t cnn_load_data(uint8_t* pIn)
@@ -639,12 +638,9 @@ uint8_t cnn_load_data(uint8_t* pIn)
 uint8_t AddTranspose(uint8_t* pIn, uint8_t* pOut, uint16_t inSize, uint16_t outSize, uint16_t width)
 {
     /* Data order in Ai85 memory (transpose is included):
-    input(series of 8 bit samples): (0,0) ...  (0,127)  (1,0) ... (1,127) ...... (127,0)...(127,127)    16384 samples
-    output (32bit word): 16K samples in a buffer. Later, each 1K goes to a seperate CNN memory group
-    0x0000:
-        (0,3)(0,2)(0,1)(0,0)
-        (0,67)(0,66)(0,65)(0,64)
-        (1,3)(1,2)(1,1)(1,0)
+    input(series of 8 bit samples): (0,0) ...  (0,127)  (1,0) ... (1,127) ...... (127,0)...(127,127)
+    16384 samples output (32bit word): 16K samples in a buffer. Later, each 1K goes to a seperate
+    CNN memory group 0x0000: (0,3)(0,2)(0,1)(0,0) (0,67)(0,66)(0,65)(0,64) (1,3)(1,2)(1,1)(1,0)
         (1,67)(1,66)(1,65)(1,64)
         ....
         (127,67)(127,66)(127,65)(127,64)
@@ -705,8 +701,8 @@ uint8_t AddTranspose(uint8_t* pIn, uint8_t* pOut, uint16_t inSize, uint16_t outS
         }
 
         total = 0;
-        row   = 0;
-        col   = 0;
+        row = 0;
+        col = 0;
         return 1;
     } else {
         return 0;
@@ -717,11 +713,11 @@ uint8_t AddTranspose(uint8_t* pIn, uint8_t* pOut, uint16_t inSize, uint16_t outS
 uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
 {
     static uint16_t chunkCount = 0;
-    static uint16_t sum        = 0;
+    static uint16_t sum = 0;
 
     int16_t sample = 0;
-    int16_t temp   = 0;
-    uint8_t ret    = 0;
+    int16_t temp = 0;
+    uint8_t ret = 0;
 
     /* Read one sample from mic emulated by test vector and add to buffer*/
     ret = MicReader(&sample);
@@ -775,7 +771,7 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
     *avg = ((uint16_t)(sum / CHUNK));
 
     chunkCount = 0;
-    sum        = 0;
+    sum = 0;
     return 1;
 }
 /* **************************************************************************** */
@@ -786,7 +782,7 @@ int8_t MicReader(int16_t* sample)
     int16_t temp;
 
     /* reads from Test Vector file and return one sample */
-    temp    = voiceVector[(micSampleCount++) % KWS20_TEST_VECTOR_SIZE];
+    temp = voiceVector[(micSampleCount++) % KWS20_TEST_VECTOR_SIZE];
     *sample = temp;
     return (1);
 }
@@ -795,12 +791,12 @@ int8_t MicReader(int16_t* sample)
 uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
 {
     static uint16_t chunkCount = 0;
-    static uint16_t sum        = 0;
+    static uint16_t sum = 0;
 
     static uint32_t index = 0;
 
-    int32_t sample   = 0;
-    int16_t temp     = 0;
+    int32_t sample = 0;
+    int16_t temp = 0;
     uint32_t rx_size = 0;
 
     /* sample not ready */
@@ -881,7 +877,7 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
     *avg = ((uint16_t)(sum / CHUNK));
 
     chunkCount = 0;
-    sum        = 0;
+    sum = 0;
     return 1;
 }
 
@@ -891,11 +887,11 @@ static int32_t y0, y1;
 /************************************************************************************/
 void HPF_init(void)
 {
-    Coeff = 32604; //0.995
-    x0    = 0;
-    y0    = 0;
-    y1    = y0;
-    x1    = x0;
+    Coeff = 32604; // 0.995
+    x0 = 0;
+    y0 = 0;
+    y1 = y0;
+    x1 = x0;
 }
 
 /************************************************************************************/
@@ -911,7 +907,7 @@ int16_t HPF(int16_t input)
 
     tmp = (Coeff * y1);
     Acc = (int16_t)((tmp + (1 << 14)) >> 15);
-    y0  = x0 - x1 + Acc;
+    y0 = x0 - x1 + Acc;
 
     /* Clipping */
     if (y0 > 32767) {

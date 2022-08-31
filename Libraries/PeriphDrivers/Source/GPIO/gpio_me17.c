@@ -35,15 +35,15 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_device.h"
-#include "mxc_assert.h"
 #include "gpio.h"
-#include "gpio_reva.h"
 #include "gpio_common.h"
-#include <stddef.h>
-#include "mxc_sys.h"
+#include "gpio_reva.h"
 #include "lpgcr_regs.h"
 #include "mcr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include <stddef.h>
 
 /* **** Definitions **** */
 
@@ -99,57 +99,57 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
     if (cfg->port == MXC_GPIO3) {
         if (cfg->mask & MXC_GPIO_PIN_0) {
             switch (cfg->func) {
-                case MXC_GPIO_FUNC_IN:
-                    MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_OE);
-                    break;
+            case MXC_GPIO_FUNC_IN:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_OE);
+                break;
 
-                case MXC_GPIO_FUNC_OUT:
-                    MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_OE;
-                    break;
+            case MXC_GPIO_FUNC_OUT:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_OE;
+                break;
 
-                default:
-                    return E_NOT_SUPPORTED;
+            default:
+                return E_NOT_SUPPORTED;
             }
 
             switch (cfg->pad) {
-                case MXC_GPIO_PAD_NONE:
-                    MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_PE);
-                    break;
+            case MXC_GPIO_PAD_NONE:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_PE);
+                break;
 
-                case MXC_GPIO_PAD_PULL_UP:
-                    MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_PE;
-                    break;
+            case MXC_GPIO_PAD_PULL_UP:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_PE;
+                break;
 
-                default:
-                    return E_NOT_SUPPORTED;
+            default:
+                return E_NOT_SUPPORTED;
             }
         }
 
         if (cfg->mask & MXC_GPIO_PIN_1) {
             switch (cfg->func) {
-                case MXC_GPIO_FUNC_IN:
-                    MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_OE);
-                    break;
+            case MXC_GPIO_FUNC_IN:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_OE);
+                break;
 
-                case MXC_GPIO_FUNC_OUT:
-                    MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_OE;
-                    break;
+            case MXC_GPIO_FUNC_OUT:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_OE;
+                break;
 
-                default:
-                    return E_NOT_SUPPORTED;
+            default:
+                return E_NOT_SUPPORTED;
             }
 
             switch (cfg->pad) {
-                case MXC_GPIO_PAD_NONE:
-                    MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_PE);
-                    break;
+            case MXC_GPIO_PAD_NONE:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_PE);
+                break;
 
-                case MXC_GPIO_PAD_PULL_UP:
-                    MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_PE;
-                    break;
+            case MXC_GPIO_PAD_PULL_UP:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_PE;
+                break;
 
-                default:
-                    return E_NOT_SUPPORTED;
+            default:
+                return E_NOT_SUPPORTED;
             }
         }
 
@@ -167,37 +167,37 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 
     // Configure the pad
     switch (cfg->pad) {
-        case MXC_GPIO_PAD_NONE:
-            gpio->padctrl0 &= ~cfg->mask;
-            gpio->padctrl1 &= ~cfg->mask;
-            break;
+    case MXC_GPIO_PAD_NONE:
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_WEAK_PULL_UP:
-            gpio->padctrl0 |= cfg->mask;
-            gpio->padctrl1 &= ~cfg->mask;
-            gpio->ps &= ~cfg->mask;
-            break;
+    case MXC_GPIO_PAD_WEAK_PULL_UP:
+        gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        gpio->ps &= ~cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_PULL_UP:
-            gpio->padctrl0 |= cfg->mask;
-            gpio->padctrl1 &= ~cfg->mask;
-            gpio->ps |= cfg->mask;
-            break;
+    case MXC_GPIO_PAD_PULL_UP:
+        gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
+        gpio->ps |= cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-            gpio->padctrl0 &= ~cfg->mask;
-            gpio->padctrl1 |= cfg->mask;
-            gpio->ps &= ~cfg->mask;
-            break;
+    case MXC_GPIO_PAD_WEAK_PULL_DOWN:
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
+        gpio->ps &= ~cfg->mask;
+        break;
 
-        case MXC_GPIO_PAD_PULL_DOWN:
-            gpio->padctrl0 &= ~cfg->mask;
-            gpio->padctrl1 |= cfg->mask;
-            gpio->ps |= cfg->mask;
-            break;
+    case MXC_GPIO_PAD_PULL_DOWN:
+        gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
+        gpio->ps |= cfg->mask;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Configure the vssel

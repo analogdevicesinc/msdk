@@ -33,7 +33,7 @@ extern "C" {
  * @retval #UCL_INVALID_OUTPUT One of the output is the pointer NULL
  *
  * @ingroup UCL_CMAC_AES
-*/
+ */
 int ucl_aes_subkey_generation(u8* k1, u8* k2, u8* key, u32 keylen);
 
 /** <b>AES-CMAC</b>.
@@ -54,7 +54,7 @@ int ucl_aes_subkey_generation(u8* k1, u8* k2, u8* key, u32 keylen);
  * @retval #UCL_INVALID_INPUT One of the input is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT One of the output is the pointer NULL
  * @retval #UCL_ERROR an error has occured in subkeys generation
- * 
+ *
  * restrictions
  * tlen is expressed in number of bytes
  * len is expressed in number of bytes
@@ -79,12 +79,12 @@ int ucl_aes_cmac_compute(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen)
  * @retval #UCL_INVALID_INPUT One of the input is the pointer NULL
  * @retval #UCL_INVALID_OUTPUT One of the output is the pointer NULL
  * @retval #UCL_ERROR the tag is not verified or an error occured in tag recomputation
- * 
+ *
  * restrictions
  * tlen is expressed in number of bytes
  * len is expressed in number of bytes
  * @ingroup UCL_CMAC_AES
-*/
+ */
 int ucl_aes_cmac_verify(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen);
 #ifdef __cplusplus
 }

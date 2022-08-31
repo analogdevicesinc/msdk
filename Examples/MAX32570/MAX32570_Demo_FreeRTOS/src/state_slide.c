@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -45,7 +45,7 @@
 /********************************* 		VARIABLES	 *************************/
 static int img_number = 0;
 
-static text_t text_msg[] = {{(char*)"SLIDESHOW", 9}, {(char*)"Press Play to start", 19}};
+static text_t text_msg[] = { { (char*)"SLIDESHOW", 9 }, { (char*)"Press Play to start", 19 } };
 
 /********************************* Static Functions **************************/
 static int init(void)
@@ -62,7 +62,7 @@ static int init(void)
 
     MXC_TS_RemoveAllButton();
     MXC_TS_AddButton(119, 82, (119 + 78), (82 + 78), '1');
-    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), KEY_C); //Home
+    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), KEY_C); // Home
 
     return 0;
 }
@@ -74,21 +74,21 @@ static int time_tick(void)
     }
 
     switch (img_number) {
-        case 1:
-            TFT_SetPalette(mpos_bmp);
-            TFT_ShowImage(0, 0, mpos_bmp);
-            break;
-        case 2:
-            TFT_SetPalette(parrot_bmp);
-            TFT_ShowImage(0, 0, parrot_bmp);
-            break;
-        case 3:
-            TFT_SetPalette(maxim_integrated_large_bmp);
-            TFT_SetBackGroundColor(0);
-            TFT_ShowImage(52, 87, maxim_integrated_large_bmp);
-            break;
-        default:
-            break;
+    case 1:
+        TFT_SetPalette(mpos_bmp);
+        TFT_ShowImage(0, 0, mpos_bmp);
+        break;
+    case 2:
+        TFT_SetPalette(parrot_bmp);
+        TFT_ShowImage(0, 0, parrot_bmp);
+        break;
+    case 3:
+        TFT_SetPalette(maxim_integrated_large_bmp);
+        TFT_SetBackGroundColor(0);
+        TFT_ShowImage(52, 87, maxim_integrated_large_bmp);
+        break;
+    default:
+        break;
     }
 
     if (++img_number > 4) {
@@ -101,27 +101,27 @@ static int time_tick(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_1:
-            // stop animation
-            logo_animation_stop();
+    case KEY_1:
+        // stop animation
+        logo_animation_stop();
 
-            MXC_TS_RemoveAllButton();
-            MXC_TS_AddButton(0, 0, 320, 240, KEY_C); //Home
+        MXC_TS_RemoveAllButton();
+        MXC_TS_AddButton(0, 0, 320, 240, KEY_C); // Home
 
-            // start slide
-            img_number = 1;
-            time_tick();
-            break;
-        case KEY_C:
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+        // start slide
+        img_number = 1;
+        time_tick();
+        break;
+    case KEY_C:
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
     return 0;
 }
 
-static State g_state = {"slide", init, key_process, time_tick, TICK_TIMEOUT, NULL, NULL};
+static State g_state = { "slide", init, key_process, time_tick, TICK_TIMEOUT, NULL, NULL };
 
 /********************************* Public Functions **************************/
 State* get_slide_state(void)

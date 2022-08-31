@@ -41,24 +41,24 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
 #include "board.h"
 #include <mxc.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define ALL_PT 0x0C
 
 // PT Selection
 #if defined(BOARD_FTHR_APPS_P1) // Defined in board.h
-#define ContPulse_PT   0
-#define SquareWave_PT  1
-#define ContPulse_Pin  18
+#define ContPulse_PT 0
+#define SquareWave_PT 1
+#define ContPulse_Pin 18
 #define SquareWave_Pin 19
 #else
-#define ContPulse_PT   2
-#define SquareWave_PT  3
-#define ContPulse_Pin  16
+#define ContPulse_PT 2
+#define SquareWave_PT 3
+#define ContPulse_Pin 16
 #define SquareWave_Pin 17
 #endif
 
@@ -77,33 +77,33 @@ void PT_IRQHandler(void)
 // *****************************************************************************
 void ContinuousPulseTrain(void)
 {
-    //Setup GPIO to PT output function
+    // Setup GPIO to PT output function
 
-    //setup PT configuration
+    // setup PT configuration
     mxc_pt_cfg_t ptConfig;
 
-    ptConfig.channel   = ContPulse_PT; // PT channel
-    ptConfig.bps       = 2;            //bit rate
-    ptConfig.ptLength  = 5;            //bits
-    ptConfig.pattern   = 0x16;
-    ptConfig.loop      = 0; //continuous loop
+    ptConfig.channel = ContPulse_PT; // PT channel
+    ptConfig.bps = 2; // bit rate
+    ptConfig.ptLength = 5; // bits
+    ptConfig.pattern = 0x16;
+    ptConfig.loop = 0; // continuous loop
     ptConfig.loopDelay = 0;
 
     MXC_PT_Config(&ptConfig);
 
-    //start PT
+    // start PT
     MXC_PT_Start(1 << ContPulse_PT);
 }
 
 // *****************************************************************************
 void SquareWave(void)
 {
-    //Setup GPIO to PT output function
+    // Setup GPIO to PT output function
 
-    uint32_t freq = 10;                        //Hz
-    MXC_PT_SqrWaveConfig(SquareWave_PT, freq); //PT Channel
+    uint32_t freq = 10; // Hz
+    MXC_PT_SqrWaveConfig(SquareWave_PT, freq); // PT Channel
 
-    //start PT
+    // start PT
     MXC_PT_Start(1 << SquareWave_PT);
 }
 
@@ -112,14 +112,14 @@ int main(void)
 {
     printf("\n*************** Pulse Train Demo ****************\n");
     printf("PT%d (P0.%d) = Outputs continuous pattern of 10110b at 2bps\n", ContPulse_PT,
-           ContPulse_Pin);
+        ContPulse_Pin);
     printf("PT%d (P0.%d) = Outputs 10Hz continuous square wave\n", SquareWave_PT, SquareWave_Pin);
 
-    NVIC_EnableIRQ(PT_IRQn);      //enabled default interrupt handler
-    MXC_PT_EnableInt(ALL_PT);     //enabled interrupts for all PT
-    MXC_PT_Init(MXC_PT_CLK_DIV1); //initialize pulse trains
+    NVIC_EnableIRQ(PT_IRQn); // enabled default interrupt handler
+    MXC_PT_EnableInt(ALL_PT); // enabled interrupts for all PT
+    MXC_PT_Init(MXC_PT_CLK_DIV1); // initialize pulse trains
 
-    //configure and start pulse trains
+    // configure and start pulse trains
     ContinuousPulseTrain();
     SquareWave();
 

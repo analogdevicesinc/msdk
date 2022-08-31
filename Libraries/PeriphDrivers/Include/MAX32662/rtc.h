@@ -41,11 +41,11 @@
 #define _RTC_H_
 
 /* **** Includes **** */
-#include <stdint.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "rtc_regs.h"
 #include "tmr.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +57,7 @@ extern "C" {
  * @{
  */
 
-#define MXC_RTC_MAX_SSEC     (MXC_F_RTC_SSEC_SSEC + 1)
+#define MXC_RTC_MAX_SSEC (MXC_F_RTC_SSEC_SSEC + 1)
 #define MXC_RTC_TRIM_TMR_IRQ MXC_F_TMR_INTFL_IRQ_A
 
 /* **** Definitions **** */
@@ -65,10 +65,10 @@ extern "C" {
  * Bitmasks for each of the RTC's Frequency.
  */
 typedef enum {
-    MXC_RTC_F_1HZ   = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ,   /**< 1Hz (Compensated)   */
+    MXC_RTC_F_1HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ, /**< 1Hz (Compensated)   */
     MXC_RTC_F_512HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ, /**< 512Hz (Compensated) */
-    MXC_RTC_F_4KHZ  = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ,  /**< 4Khz                */
-    MXC_RTC_F_32KHZ = 32,                               /**< 32Khz               */
+    MXC_RTC_F_4KHZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ, /**< 4Khz                */
+    MXC_RTC_F_32KHZ = 32, /**< 32Khz               */
 } mxc_rtc_freq_sel_t;
 
 /**
@@ -76,8 +76,8 @@ typedef enum {
  */
 typedef enum {
     MXC_RTC_INT_EN_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IE, /**< Long-interval alarm interrupt enable */
-    MXC_RTC_INT_EN_SHORT =
-        MXC_F_RTC_CTRL_SSEC_ALARM_IE,             /**< Short-interval alarm interrupt enable */
+    MXC_RTC_INT_EN_SHORT
+    = MXC_F_RTC_CTRL_SSEC_ALARM_IE, /**< Short-interval alarm interrupt enable */
     MXC_RTC_INT_EN_READY = MXC_F_RTC_CTRL_RDY_IE, /**< Timer ready interrupt enable */
 } mxc_rtc_int_en_t;
 
@@ -85,9 +85,9 @@ typedef enum {
  * @brief     Bitmasks for each of the RTC's interrupt flags.
  */
 typedef enum {
-    MXC_RTC_INT_FL_LONG  = MXC_F_RTC_CTRL_TOD_ALARM,  /**< Long-interval alarm interrupt flag */
+    MXC_RTC_INT_FL_LONG = MXC_F_RTC_CTRL_TOD_ALARM, /**< Long-interval alarm interrupt flag */
     MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM, /**< Short-interval alarm interrupt flag */
-    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY,        /**< Timer ready interrupt flag */
+    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY, /**< Timer ready interrupt flag */
 } mxc_rtc_int_fl_t;
 
 /**
@@ -198,13 +198,16 @@ int MXC_RTC_GetTime(uint32_t* sec, uint32_t* subsec);
 
 /**
  * @brief   Calculate and set the appropriate RTC trim value based on an accurate reference clock
- * 
- * @param   tmr     Timer available to be used to measure known time periods over which the RTC ticks are counted 
- * 
+ *
+ * @param   tmr     Timer available to be used to measure known time periods over which the RTC
+ * ticks are counted
+ *
  * @retval  returns Success or Fail, see \ref MXC_Error_Codes
- * 
- * @note    If RTC running before calling this function and interrupts enabled, accuracy of trimming could be affected
- * @note    External 32MHz must be installed and calibrated properly for this function to be successful
+ *
+ * @note    If RTC running before calling this function and interrupts enabled, accuracy of trimming
+ * could be affected
+ * @note    External 32MHz must be installed and calibrated properly for this function to be
+ * successful
  */
 int MXC_RTC_TrimCrystal(mxc_tmr_regs_t* tmr);
 

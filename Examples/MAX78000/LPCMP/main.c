@@ -38,22 +38,22 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include "mxc_errors.h"
-#include "nvic_table.h"
 #include "board.h"
 #include "led.h"
 #include "lp.h"
 #include "lpcmp.h"
+#include "mxc_errors.h"
+#include "nvic_table.h"
 #include "pb.h"
 #include "uart.h"
+#include <stdio.h>
 
 /***** Definitions *****/
 #if defined(BOARD_EVKIT_V1)
-#define LPCMP      MXC_LPCMP_CMP0
+#define LPCMP MXC_LPCMP_CMP0
 #define BUTTON_NUM 2
 #elif defined(BOARD_FTHR_REVA)
-#define LPCMP      MXC_LPCMP_CMP3
+#define LPCMP MXC_LPCMP_CMP3
 #define BUTTON_NUM 1
 #endif
 
@@ -85,8 +85,7 @@ int main(void)
     printf("edge of the comparator output to wakeup.\n\n");
 
     printf("Press SW%d to begin.\n", BUTTON_NUM);
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) { }
 
     // Enable comparator 0
     MXC_LP_EnableLPCMPWakeup(LPCMP);
@@ -99,8 +98,7 @@ int main(void)
 
     while (1) {
         printf("\nEntering sleep mode.\n");
-        while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)))
-            ;
+        while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) { }
         MXC_LP_EnterSleepMode();
         printf("Waking up.\n");
     }

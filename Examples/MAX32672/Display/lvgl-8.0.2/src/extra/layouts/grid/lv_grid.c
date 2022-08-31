@@ -751,7 +751,7 @@ static uint32_t count_tracks(const lv_coord_t* templ)
 {
     uint32_t i;
     for (i = 0; templ[i] != LV_COORD_MAX; i++)
-        ;
+{}
 
     return i;
 }

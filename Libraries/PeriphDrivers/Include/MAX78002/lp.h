@@ -41,13 +41,13 @@
 #define _LP_H_
 
 /* **** Includes **** */
-#include <stdint.h>
-#include "pwrseq_regs.h"
-#include "mcr_regs.h"
 #include "gcr_regs.h"
-#include "lpcmp.h"
 #include "gpio.h"
+#include "lpcmp.h"
+#include "mcr_regs.h"
+#include "pwrseq_regs.h"
 #include "tmr.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,39 +70,45 @@ typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
  *
  */
 typedef enum {
-    MXC_LP_IPO  = MXC_F_GCR_PM_IPO_PD,
+    MXC_LP_IPO = MXC_F_GCR_PM_IPO_PD,
     MXC_LP_IBRO = MXC_F_GCR_PM_IBRO_PD,
 } mxc_lp_cfg_ds_pd_t;
 
 /**
- * @brief      Places the device into SLEEP mode.  This function returns once an RTC or external interrupt occur.
+ * @brief      Places the device into SLEEP mode.  This function returns once an RTC or external
+ * interrupt occur.
  */
 void MXC_LP_EnterSleepMode(void);
 
 /**
- * @brief      Places the device into Low Power mode.  This function returns once an RTC or external interrupt occur.
+ * @brief      Places the device into Low Power mode.  This function returns once an RTC or external
+ * interrupt occur.
  */
 void MXC_LP_EnterLowPowerMode(void);
 
 /**
- * @brief      Places the device into Micro Power mode.  This function returns once an RTC or external interrupt occur.
+ * @brief      Places the device into Micro Power mode.  This function returns once an RTC or
+ * external interrupt occur.
  */
 void MXC_LP_EnterMicroPowerMode(void);
 
 /**
- * @brief      Places the device into Standby mode.  This function returns once an RTC or external interrupt occur.
+ * @brief      Places the device into Standby mode.  This function returns once an RTC or external
+ * interrupt occur.
  */
 void MXC_LP_EnterStandbyMode(void);
 
 /**
- * @brief      Places the device into BACKUP mode.  CPU state is not maintained in this mode, so this function never returns.
- *             Instead, the device will restart once an RTC or external interrupt occur.
+ * @brief      Places the device into BACKUP mode.  CPU state is not maintained in this mode, so
+ * this function never returns. Instead, the device will restart once an RTC or external interrupt
+ * occur.
  */
 void MXC_LP_EnterBackupMode(void);
 
 /**
- * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so this function never returns.
- *             Instead, the device will restart once an RTC, USB wakeup, or external interrupt occur.
+ * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so
+ * this function never returns. Instead, the device will restart once an RTC, USB wakeup, or
+ * external interrupt occur.
  */
 void MXC_LP_EnterPowerDownMode(void);
 
@@ -204,11 +210,11 @@ int MXC_LP_FastWakeupIsEnabled(void);
 void MXC_LP_ClearWakeStatus(void);
 
 /**
- * @brief      Enables the selected GPIO port and its selected pins to wake up the device from any low power mode.
- *             Call this function multiple times to enable pins on multiple ports.  This function does not configure
- *             the GPIO pins nor does it setup their interrupt functionality.
- * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
- *                          structure are used.  The func and pad fields are ignored.
+ * @brief      Enables the selected GPIO port and its selected pins to wake up the device from any
+ * low power mode. Call this function multiple times to enable pins on multiple ports.  This
+ * function does not configure the GPIO pins nor does it setup their interrupt functionality.
+ * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and
+ * mask fields of the structure are used.  The func and pad fields are ignored.
  */
 
 void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
@@ -216,8 +222,8 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
  *             Call this function multiple times to disable pins on multiple ports.
- * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
- *                          structure are used.  The func and pad fields are ignored.
+ * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask
+ * fields of the structure are used.  The func and pad fields are ignored.
  */
 void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
 
@@ -232,15 +238,15 @@ void MXC_LP_EnableRTCAlarmWakeup(void);
 void MXC_LP_DisableRTCAlarmWakeup(void);
 
 /**
- * @brief      Enables Timer to wakeup from any low power mode. 
- * 
+ * @brief      Enables Timer to wakeup from any low power mode.
+ *
  * @param      tmr  Pointer to timer module.
  */
 void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr);
 
 /**
- * @brief      Disables Timer from waking up device.  
- * 
+ * @brief      Disables Timer from waking up device.
+ *
  * @param      tmr  Pointer to timer module.
  */
 void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr);
@@ -268,8 +274,8 @@ void MXC_LP_DisableLPCMPWakeup(mxc_lpcmp_cmpsel_t cmp);
 /**
  * @brief      Configure which clocks are powered down at deep sleep and which are not affected.
  *
- * @note       Need to configure all clocks at once any clock not passed in the mask will be unaffected by Deepsleep.  This will
- *             always overwrite the previous settings of ALL clocks.
+ * @note       Need to configure all clocks at once any clock not passed in the mask will be
+ * unaffected by Deepsleep.  This will always overwrite the previous settings of ALL clocks.
  *
  * @param[in]  mask  The mask of the clocks to power down when part goes into deepsleep
  *

@@ -45,15 +45,15 @@
 
 /* **** Includes **** */
 
-#include "pt.h"
 #include "gcr_regs.h"
-#include "pt_regs.h"
-#include "ptg_regs.h"
+#include "mcr_regs.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "mcr_regs.h"
+#include "pt.h"
+#include "pt_regs.h"
+#include "ptg_regs.h"
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -73,13 +73,13 @@ extern "C" {
  */
 typedef struct {
     unsigned channel; /**< PT Channel to use */
-    uint32_t bps;     /**< pulse train bit rate */
+    uint32_t bps; /**< pulse train bit rate */
     uint32_t pattern; /**< Output pattern to shift out, starts at LSB */
     uint8_t
         ptLength; /**< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ... */
     uint16_t loop; /**< Number of times to repeat the train, 0 = continuous */
-    uint16_t
-        loopDelay; /**< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits */
+    uint16_t loopDelay; /**< Delay between loops specified in bits Example: loopDelay = 4,  delays
+                           time  = time it takes to shift out 4 bits */
 } mxc_pt_cfg_t;
 /**
  * Enumeration type for the system clock scale types
@@ -104,7 +104,8 @@ void MXC_PT_Init(mxc_clk_scale_t clk_scale);
 
 /**
  * @brief      Shutdown the pulse train channel/channels.
- * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train clock.
+ * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train
+ * clock.
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      pts    Pulse train channel to operate on.

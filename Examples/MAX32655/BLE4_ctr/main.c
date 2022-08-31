@@ -22,18 +22,18 @@
  */
 /*************************************************************************************************/
 
-#include "ll_init_api.h"
+#include "bb_ble_sniffer_api.h"
 #include "chci_tr.h"
 #include "lhci_api.h"
+#include "ll_init_api.h"
+#include "pal_bb.h"
+#include "pal_cfg.h"
 #include "wsf_assert.h"
 #include "wsf_buf.h"
+#include "wsf_bufio.h"
 #include "wsf_heap.h"
 #include "wsf_timer.h"
 #include "wsf_trace.h"
-#include "wsf_bufio.h"
-#include "bb_ble_sniffer_api.h"
-#include "pal_bb.h"
-#include "pal_cfg.h"
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
@@ -94,10 +94,8 @@ static void mainWsfInit(void)
     /* +12 for message headroom, +4 for header. */
     const uint16_t aclBufSize = 12 + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-    wsfBufPoolDesc_t poolDesc[] = {{16, 8},
-                                   {32, 4},
-                                   {128, mainLlRtCfg.maxAdvReports},
-                                   {aclBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs}};
+    wsfBufPoolDesc_t poolDesc[] = { { 16, 8 }, { 32, 4 }, { 128, mainLlRtCfg.maxAdvReports },
+        { aclBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs } };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -164,13 +162,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
-                           .wlSizeCfg    = 4,
-                           .rlSizeCfg    = 4,
-                           .plSizeCfg    = 4,
-                           .pLlRtCfg     = &mainLlRtCfg,
-                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
-                           .freeMemAvail = WsfHeapCountAvailable()};
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        .freeMemAvail = WsfHeapCountAvailable() };
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);

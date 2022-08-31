@@ -59,25 +59,25 @@ extern "C" {
  */
 typedef enum {
     MXC_SC_DEV_MIN = 0,
-    MXC_SC_DEV0    = MXC_SC_DEV_MIN, /**< Smart Card 0 */
-    MXC_SC_DEV1,                     /**< Smart Card 1 */
+    MXC_SC_DEV0 = MXC_SC_DEV_MIN, /**< Smart Card 0 */
+    MXC_SC_DEV1, /**< Smart Card 1 */
     MXC_SC_DEV_MAX = MXC_SC_DEV1,
     MXC_SC_DEV_COUNT /**< Number of Smart Card Devices */
 } mxc_sc_id_t;
 
 /* **** Structures **** */
 /**
-  * @brief      Structure for smart card register
-  *
-  */
+ * @brief      Structure for smart card register
+ *
+ */
 typedef struct {
     mxc_scn_regs_t* reg_sc;
 } mxc_sc_info_t;
 
 /**
-  * @brief      Structure to save smart card state
-  *
-  */
+ * @brief      Structure to save smart card state
+ *
+ */
 typedef struct {
     unsigned char first_init;
     mxc_sc_info_t sc[MXC_SC_DEV_COUNT];

@@ -38,11 +38,11 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
-#include <mxc.h>
 #include "adc.h"
+#include <mxc.h>
 
 /***** Definitions *****/
 
@@ -63,7 +63,7 @@ uint8_t overflow;
 void adc_complete_cb(void* req, int adcRead)
 {
     overflow = (adcRead == E_OVERFLOW ? 1 : 0);
-    adc_val  = adcRead;
+    adc_val = adcRead;
     adc_done = 1;
     return;
 }
@@ -81,8 +81,7 @@ int main(void)
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
@@ -106,10 +105,9 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) { };
 #else
-        adc_val  = MXC_ADC_StartConversion(MXC_ADC_CH_0);
+        adc_val = MXC_ADC_StartConversion(MXC_ADC_CH_0);
         overflow = (adc_val == E_OVERFLOW ? 1 : 0);
 #endif
 
@@ -119,7 +117,7 @@ int main(void)
         /* Determine if programmable limits on AIN0 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
             printf(" %s Limit on AIN0 ",
-                   (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
+                (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
         } else {
             printf("                   ");

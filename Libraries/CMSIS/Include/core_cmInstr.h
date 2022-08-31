@@ -1,12 +1,16 @@
 /**************************************************************************/ /**
- * @file     core_cmInstr.h
- * @brief    CMSIS Cortex-M Core Instruction Access Header File
- * @version  V3.20
- * @date     05. March 2013
- *
- * @note
- *
- ******************************************************************************/
+                                                                              * @file core_cmInstr.h
+                                                                              * @brief    CMSIS
+                                                                              *Cortex-M Core
+                                                                              *Instruction Access
+                                                                              *Header File
+                                                                              * @version  V3.20
+                                                                              * @date     05. March
+                                                                              *2013
+                                                                              *
+                                                                              * @note
+                                                                              *
+                                                                              ******************************************************************************/
 /* Copyright (c) 2009 - 2013 ARM LIMITED
 
    All rights reserved.
@@ -137,7 +141,8 @@ __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(in
 
 /** \brief  Rotate Right in unsigned value (32 bit)
 
-    This function Rotate Right (immediate) provides the value of the contents of a register rotated by a variable number of bits.
+    This function Rotate Right (immediate) provides the value of the contents of a register rotated
+   by a variable number of bits.
 
     \param [in]    value  Value to rotate
     \param [in]    value  Number of Bits to rotate
@@ -148,10 +153,12 @@ __attribute__((section(".revsh_text"))) __STATIC_INLINE __ASM int32_t __REVSH(in
 /** \brief  Breakpoint
 
     This function causes the processor to enter Debug state.
-    Debug tools can use this to investigate system state when the instruction at a particular address is reached.
+    Debug tools can use this to investigate system state when the instruction at a particular
+   address is reached.
 
     \param [in]    value  is ignored by the processor.
-                   If required, a debugger can use it to store additional information about the breakpoint.
+                   If required, a debugger can use it to store additional information about the
+   breakpoint.
  */
 #define __BKPT(value) __breakpoint(value)
 
@@ -412,7 +419,8 @@ __attribute__((always_inline)) __STATIC_INLINE int32_t __REVSH(int32_t value)
 
 /** \brief  Rotate Right in unsigned value (32 bit)
 
-    This function Rotate Right (immediate) provides the value of the contents of a register rotated by a variable number of bits.
+    This function Rotate Right (immediate) provides the value of the contents of a register rotated
+   by a variable number of bits.
 
     \param [in]    value  Value to rotate
     \param [in]    value  Number of Bits to rotate
@@ -426,10 +434,12 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __ROR(uint32_t op1, uint
 /** \brief  Breakpoint
 
     This function causes the processor to enter Debug state.
-    Debug tools can use this to investigate system state when the instruction at a particular address is reached.
+    Debug tools can use this to investigate system state when the instruction at a particular
+   address is reached.
 
     \param [in]    value  is ignored by the processor.
-                   If required, a debugger can use it to store additional information about the breakpoint.
+                   If required, a debugger can use it to store additional information about the
+   breakpoint.
  */
 #define __BKPT(value) __ASM volatile("bkpt " #value)
 
@@ -518,8 +528,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __LDREXW(volatile uint32
     \return          0  Function succeeded
     \return          1  Function failed
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXB(uint8_t value,
-                                                                 volatile uint8_t* addr)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXB(
+    uint8_t value, volatile uint8_t* addr)
 {
     uint32_t result;
 
@@ -536,8 +546,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXB(uint8_t value,
     \return          0  Function succeeded
     \return          1  Function failed
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXH(uint16_t value,
-                                                                 volatile uint16_t* addr)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXH(
+    uint16_t value, volatile uint16_t* addr)
 {
     uint32_t result;
 
@@ -554,8 +564,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXH(uint16_t value,
     \return          0  Function succeeded
     \return          1  Function failed
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXW(uint32_t value,
-                                                                 volatile uint32_t* addr)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXW(
+    uint32_t value, volatile uint32_t* addr)
 {
     uint32_t result;
 
@@ -581,11 +591,11 @@ __attribute__((always_inline)) __STATIC_INLINE void __CLREX(void)
     \param [in]    sat  Bit position to saturate to (1..32)
     \return             Saturated value
  */
-#define __SSAT(ARG1, ARG2)                                               \
-    ({                                                                   \
-        uint32_t __RES, __ARG1 = (ARG1);                                 \
-        __ASM("ssat %0, %1, %2" : "=r"(__RES) : "I"(ARG2), "r"(__ARG1)); \
-        __RES;                                                           \
+#define __SSAT(ARG1, ARG2)                                                                         \
+    ({                                                                                             \
+        uint32_t __RES, __ARG1 = (ARG1);                                                           \
+        __ASM("ssat %0, %1, %2" : "=r"(__RES) : "I"(ARG2), "r"(__ARG1));                           \
+        __RES;                                                                                     \
     })
 
 /** \brief  Unsigned Saturate
@@ -596,11 +606,11 @@ __attribute__((always_inline)) __STATIC_INLINE void __CLREX(void)
     \param [in]    sat  Bit position to saturate to (0..31)
     \return             Saturated value
  */
-#define __USAT(ARG1, ARG2)                                               \
-    ({                                                                   \
-        uint32_t __RES, __ARG1 = (ARG1);                                 \
-        __ASM("usat %0, %1, %2" : "=r"(__RES) : "I"(ARG2), "r"(__ARG1)); \
-        __RES;                                                           \
+#define __USAT(ARG1, ARG2)                                                                         \
+    ({                                                                                             \
+        uint32_t __RES, __ARG1 = (ARG1);                                                           \
+        __ASM("usat %0, %1, %2" : "=r"(__RES) : "I"(ARG2), "r"(__ARG1));                           \
+        __RES;                                                                                     \
     })
 
 /** \brief  Count leading zeros

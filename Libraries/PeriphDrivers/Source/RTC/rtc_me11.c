@@ -31,14 +31,14 @@
  *
  **************************************************************************** */
 
-#include "mxc_device.h"
-#include "rtc_regs.h"
-#include "rtc.h"
-#include "mxc_sys.h"
-#include "mxc_pins.h"
-#include "mxc_delay.h"
 #include "gpio_regs.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_pins.h"
+#include "mxc_sys.h"
+#include "rtc.h"
+#include "rtc_regs.h"
 #include "rtc_reva.h"
 
 /* ***** Functions ***** */
@@ -92,14 +92,14 @@ int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t fq)
 {
     MXC_GPIO_Config(&gpio_cfg_32kcal);
 
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
-                                   fq);
+    return MXC_RTC_RevA_SquareWave(
+        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED, fq);
 }
 
 int MXC_RTC_SquareWaveStop(void)
 {
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED,
-                                   0);
+    return MXC_RTC_RevA_SquareWave(
+        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED, 0);
 }
 
 int MXC_RTC_Trim(int8_t trm)
@@ -120,8 +120,7 @@ int MXC_RTC_ClearFlags(int flags)
 int MXC_RTC_GetSubSecond(void)
 {
     MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_RDY; // Ensure valid data is in SSEC register
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY))
-        ;
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) { }
 
     return MXC_RTC_RevA_GetSubSecond((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
@@ -129,8 +128,7 @@ int MXC_RTC_GetSubSecond(void)
 int MXC_RTC_GetSecond(void)
 {
     MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_RDY; // Ensure valid data is in SEC register
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY))
-        ;
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) { }
 
     return MXC_RTC_RevA_GetSecond((mxc_rtc_reva_regs_t*)MXC_RTC);
 }
@@ -147,7 +145,7 @@ int MXC_RTC_GetBusyFlag(void)
 
 int MXC_RTC_TrimCrystal(mxc_tmr_regs_t* tmr)
 {
-    /* MAX32660 does not have a clock source which can 
+    /* MAX32660 does not have a clock source which can
     be used as the reference clock for the trim function */
     return E_NOT_SUPPORTED;
 }

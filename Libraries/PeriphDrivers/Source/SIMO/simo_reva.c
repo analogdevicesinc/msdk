@@ -30,13 +30,13 @@
  * ownership rights.
  *
  **************************************************************************** */
-#include <string.h>
-#include <stdio.h>
-#include "mxc_device.h"
+#include "simo_reva.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
 #include "mxc_sys.h"
 #include "simo.h"
-#include "simo_reva.h"
+#include <stdio.h>
+#include <string.h>
 
 void MXC_SIMO_RevA_SetVregO_A(mxc_simo_reva_regs_t* simo, uint32_t voltage)
 {
@@ -48,8 +48,8 @@ void MXC_SIMO_RevA_SetVregO_A(mxc_simo_reva_regs_t* simo, uint32_t voltage)
     }
 
     uint32_t setpoint = (voltage - base_voltage) / 10;
-    uint32_t value    = (simo->vrego_a & ~MXC_F_SIMO_REVA_VREGO_A_VSETA) |
-                     (setpoint & MXC_F_SIMO_REVA_VREGO_A_VSETA);
+    uint32_t value = (simo->vrego_a & ~MXC_F_SIMO_REVA_VREGO_A_VSETA)
+        | (setpoint & MXC_F_SIMO_REVA_VREGO_A_VSETA);
 
     // Write the SIMO Registers twice due to clock glitch
     simo->vrego_a = value;
@@ -66,8 +66,8 @@ void MXC_SIMO_RevA_SetVregO_B(mxc_simo_reva_regs_t* simo, uint32_t voltage)
     }
 
     uint32_t setpoint = (voltage - base_voltage) / 10;
-    uint32_t value    = (simo->vrego_b & ~MXC_F_SIMO_REVA_VREGO_B_VSETB) |
-                     (setpoint & MXC_F_SIMO_REVA_VREGO_B_VSETB);
+    uint32_t value = (simo->vrego_b & ~MXC_F_SIMO_REVA_VREGO_B_VSETB)
+        | (setpoint & MXC_F_SIMO_REVA_VREGO_B_VSETB);
 
     // Write the SIMO Registers twice due to clock glitch
     simo->vrego_b = value;
@@ -84,8 +84,8 @@ void MXC_SIMO_RevA_SetVregO_C(mxc_simo_reva_regs_t* simo, uint32_t voltage)
     }
 
     uint32_t setpoint = (voltage - base_voltage) / 10;
-    uint32_t value    = (simo->vrego_c & ~MXC_F_SIMO_REVA_VREGO_C_VSETC) |
-                     (setpoint & MXC_F_SIMO_REVA_VREGO_C_VSETC);
+    uint32_t value = (simo->vrego_c & ~MXC_F_SIMO_REVA_VREGO_C_VSETC)
+        | (setpoint & MXC_F_SIMO_REVA_VREGO_C_VSETC);
 
     // Write the SIMO Registers twice due to clock glitch
     simo->vrego_c = value;
@@ -102,8 +102,8 @@ void MXC_SIMO_RevA_SetVregO_D(mxc_simo_reva_regs_t* simo, uint32_t voltage)
     }
 
     uint32_t setpoint = (voltage - base_voltage) / 10;
-    uint32_t value    = (simo->vrego_d & ~MXC_F_SIMO_REVA_VREGO_D_VSETD) |
-                     (setpoint & MXC_F_SIMO_REVA_VREGO_D_VSETD);
+    uint32_t value = (simo->vrego_d & ~MXC_F_SIMO_REVA_VREGO_D_VSETD)
+        | (setpoint & MXC_F_SIMO_REVA_VREGO_D_VSETD);
 
     // Write the SIMO Registers twice due to clock glitch
     simo->vrego_d = value;
@@ -112,24 +112,24 @@ void MXC_SIMO_RevA_SetVregO_D(mxc_simo_reva_regs_t* simo, uint32_t voltage)
 
 uint32_t MXC_SIMO_RevA_GetOutReadyA(mxc_simo_reva_regs_t* simo)
 {
-    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYA) ? E_NO_ERROR :
-                                                                                 E_BAD_STATE;
+    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYA) ? E_NO_ERROR
+                                                                               : E_BAD_STATE;
 }
 
 uint32_t MXC_SIMO_RevA_GetOutReadyB(mxc_simo_reva_regs_t* simo)
 {
-    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYB) ? E_NO_ERROR :
-                                                                                 E_BAD_STATE;
+    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYB) ? E_NO_ERROR
+                                                                               : E_BAD_STATE;
 }
 
 uint32_t MXC_SIMO_RevA_GetOutReadyC(mxc_simo_reva_regs_t* simo)
 {
-    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYC) ? E_NO_ERROR :
-                                                                                 E_BAD_STATE;
+    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYC) ? E_NO_ERROR
+                                                                               : E_BAD_STATE;
 }
 
 uint32_t MXC_SIMO_RevA_GetOutReadyD(mxc_simo_reva_regs_t* simo)
 {
-    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYD) ? E_NO_ERROR :
-                                                                                 E_BAD_STATE;
+    return (simo->buck_out_ready & MXC_F_SIMO_REVA_BUCK_OUT_READY_BUCKOUTRDYD) ? E_NO_ERROR
+                                                                               : E_BAD_STATE;
 }

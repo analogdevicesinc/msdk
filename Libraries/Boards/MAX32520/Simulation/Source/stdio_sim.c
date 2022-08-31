@@ -35,14 +35,14 @@
  ******************************************************************************/
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #if defined(__GNUC__)
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #endif /* __GNUC__ */
 
 #if defined(__CC_ARM)
@@ -59,14 +59,14 @@ FILE __stdin;
 
 /* Defines - Compiler Specific */
 #if defined(__ICCARM__)
-#define STDIN_FILENO  0 // Defines that are not included in the DLIB.
+#define STDIN_FILENO 0 // Defines that are not included in the DLIB.
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
-#define EBADF         -1
+#define EBADF -1
 #endif /* __ICCARM__ */
 
-#include "mxc_device.h"
 #include "board.h"
+#include "mxc_device.h"
 
 /* The following libc stub functions are required for a proper link with printf().
  * These can be tailored for a complete stdio implementation.
@@ -103,25 +103,25 @@ int _fstat(int file, struct stat* st)
 int _read(int file, char* ptr, int len)
 #elif defined(__ICCARM__) // IAR Compiler _read function prototype
 int __read(int file, unsigned char* ptr, size_t len)
-#endif                    /* __GNUC__ */
+#endif /* __GNUC__ */
 {
     unsigned int n;
     int num = 0;
 
     switch (file) {
-        case STDIN_FILENO:
-            for (n = 0; n < len; n++) {
-                //*ptr = UART_GetChar();
-                //UART_PutChar(*ptr);
-                ptr++;
-                num++;
-            }
+    case STDIN_FILENO:
+        for (n = 0; n < len; n++) {
+            //*ptr = UART_GetChar();
+            // UART_PutChar(*ptr);
+            ptr++;
+            num++;
+        }
 
-            break;
+        break;
 
-        default:
-            errno = EBADF;
-            return -1;
+    default:
+        errno = EBADF;
+        return -1;
     }
 
     return num;
@@ -138,24 +138,24 @@ int _write(int file, char* ptr, int len)
 int __write(int file, const unsigned char* ptr, size_t len)
 {
     size_t n;
-#endif                    /* __GNUC__ */
+#endif /* __GNUC__ */
 
     switch (file) {
-        case STDOUT_FILENO:
-        case STDERR_FILENO:
-            for (n = 0; n < len; n++) {
-                if (*ptr == '\n') {
-                    //UART_PutChar('\r');
-                }
-
-                //UART_PutChar(*ptr++);
+    case STDOUT_FILENO:
+    case STDERR_FILENO:
+        for (n = 0; n < len; n++) {
+            if (*ptr == '\n') {
+                // UART_PutChar('\r');
             }
 
-            break;
+            // UART_PutChar(*ptr++);
+        }
 
-        default:
-            errno = EBADF;
-            return -1;
+        break;
+
+    default:
+        errno = EBADF;
+        return -1;
     }
 
     return len;
@@ -168,10 +168,10 @@ int __write(int file, const unsigned char* ptr, size_t len)
 int fputc(int c, FILE* f)
 {
     if (c != '\n') {
-        //UART_PutChar(c);
+        // UART_PutChar(c);
     } else {
-        //UART_PutChar('\r');
-        //UART_PutChar('\n');
+        // UART_PutChar('\r');
+        // UART_PutChar('\n');
     }
 
     return 0;
@@ -190,17 +190,16 @@ int ferror(FILE* f)
 void _ttywrch(int c)
 {
     if (c != '\n') {
-        //UART_PutChar(c);
+        // UART_PutChar(c);
     } else {
-        //UART_PutChar('\r');
-        //UART_PutChar('\n');
+        // UART_PutChar('\r');
+        // UART_PutChar('\n');
     }
 }
 
 void _sys_exit(int return_code)
 {
-    while (1) {
-    }
+    while (1) { }
 }
 
 #endif /* __CC_ARM  */

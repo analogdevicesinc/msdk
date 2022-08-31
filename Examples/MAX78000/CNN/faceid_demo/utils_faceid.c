@@ -48,14 +48,14 @@ int wait_for_feedback()
 void load_input(int8_t mode)
 {
     uint32_t i;
-    i                   = 0;
+    i = 0;
     const uint32_t* in0 = input_0;
     uint32_t number;
     while (i < 19200 * 3) {
-        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
-            ; // Wait for FIFO 0
-        number = ((uint32_t)rxBuffer[i] << 16) | ((uint32_t)rxBuffer[i + 1] << 8) |
-                 ((uint32_t)rxBuffer[i + 2]);
+        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0) { }
+        // Wait for FIFO 0
+        number = ((uint32_t)rxBuffer[i] << 16) | ((uint32_t)rxBuffer[i + 1] << 8)
+            | ((uint32_t)rxBuffer[i + 2]);
 
         if (mode > 0) {
             uart_write((uint8_t*)&number, 4);

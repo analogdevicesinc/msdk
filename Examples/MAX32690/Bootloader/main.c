@@ -38,15 +38,15 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_device.h"
-#include "led.h"
-#include "pb.h"
 #include "board.h"
-#include "mxc_delay.h"
 #include "flc.h"
+#include "led.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "pb.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /**************************************************************************************************
   Macros
@@ -56,10 +56,10 @@
 extern uint32_t _flash0;
 extern uint32_t _flash1;
 
-#define FLASH0_START      ((uint32_t)&_flash0)
-#define FLASH1_START      ((uint32_t)&_flash1)
+#define FLASH0_START ((uint32_t)&_flash0)
+#define FLASH1_START ((uint32_t)&_flash1)
 #define FLASH_ERASED_WORD 0xFFFFFFFF
-#define CRC32_LEN         4
+#define CRC32_LEN 4
 
 /**************************************************************************************************
   Local Variables
@@ -84,8 +84,7 @@ extern void Boot_Lower(void);
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j)
-        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -100,12 +99,11 @@ uint32_t crc32_for_byte(uint32_t r)
  *  \return None.
  */
 /*************************************************************************************************/
-static uint32_t table[0x100] = {0};
+static uint32_t table[0x100] = { 0 };
 void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 {
     if (!*table)
-        for (size_t i = 0; i < 0x100; ++i)
-            table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
     for (size_t i = 0; i < n_bytes; ++i)
         *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
 }
@@ -117,8 +115,7 @@ void bootError(void)
     volatile int i;
     for (j = 0; j < 10; j++) {
         LED_Toggle(0);
-        for (i = 0; i < 0xFFFFF; i++) {
-        }
+        for (i = 0; i < 0xFFFFF; i++) { }
     }
     NVIC_SystemReset();
 }
@@ -158,8 +155,7 @@ uint32_t findUpperLen(void)
     }
 
     /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {
-    }
+    while (*(flashPagePointer--) == FLASH_ERASED_WORD) { }
     flashPagePointer += 2;
 
     /* return the starting address of the CRC, last address of the image */
@@ -217,8 +213,7 @@ int main(void)
 {
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFFF; i++) {
-    }
+    for (i = 0; i < 0x3FFFFF; i++) { }
 
     LED_Init();
     LED_Off(0);
@@ -253,8 +248,7 @@ int main(void)
                 int j;
                 for (j = 0; j < 10; j++) {
                     LED_Toggle(1);
-                    for (i = 0; i < 0xFFFFF; i++) {
-                    }
+                    for (i = 0; i < 0xFFFFF; i++) { }
                 }
             }
             /* Erase the update pages */
@@ -266,8 +260,7 @@ int main(void)
             int j;
             for (j = 0; j < 10; j++) {
                 LED_Toggle(0);
-                for (i = 0; i < 0xFFFFF; i++) {
-                }
+                for (i = 0; i < 0xFFFFF; i++) { }
             }
         }
     }
@@ -275,6 +268,5 @@ int main(void)
     /* Boot from lower image */
     Boot_Lower();
 
-    while (1) {
-    }
+    while (1) { }
 }

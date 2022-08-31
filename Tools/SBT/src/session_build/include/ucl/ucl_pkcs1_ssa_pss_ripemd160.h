@@ -55,7 +55,7 @@ extern "C" {
  * @param[in] message_length The message byte length
  * @param[in] keyPu          RSA public key
  * @param[in] salt_length    Optional salt byte length
- * 
+ *
  * @note The output length is the modulus length
  *
  * @return Error code
@@ -67,8 +67,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_RIPEMD160
  */
-int __API__ ucl_pkcs1_ssa_pss_ripemd160_verify(u8* signature, u8* message, u32 message_length,
-                                               ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int __API__ ucl_pkcs1_ssa_pss_ripemd160_verify(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_public_key_t* keyPu, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSA-SSA-PSS-RIPEMD160 signature generation</b>.
@@ -79,7 +79,7 @@ int __API__ ucl_pkcs1_ssa_pss_ripemd160_verify(u8* signature, u8* message, u32 m
  * @param[in]  message_length The message byte length
  * @param[in]  keyPr          RSA private key
  * @param[in]  salt_length    Optional salt byte length
- * 
+ *
  * @note The output length is the modulus length
  *
  * @return Error code
@@ -90,8 +90,8 @@ int __API__ ucl_pkcs1_ssa_pss_ripemd160_verify(u8* signature, u8* message, u32 m
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_RIPEMD160
  */
-int __API__ ucl_pkcs1_ssa_pss_ripemd160_sign(u8* signature, u8* message, u32 message_length,
-                                             ucl_rsa_private_key_t* keyPr, u32 salt_length);
+int __API__ ucl_pkcs1_ssa_pss_ripemd160_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_private_key_t* keyPr, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-RIPEMD160 signature generation with CRT</b>.
@@ -102,7 +102,7 @@ int __API__ ucl_pkcs1_ssa_pss_ripemd160_sign(u8* signature, u8* message, u32 mes
  * @param[in]  message_length The message byte length
  * @param[in]  key            RSA CRT private key
  * @param[in]  salt_length    Optional salt byte length
- * 
+ *
  * @note The output length is the modulus length
  *
  * @return Error code
@@ -114,7 +114,7 @@ int __API__ ucl_pkcs1_ssa_pss_ripemd160_sign(u8* signature, u8* message, u32 mes
  * @ingroup UCL_PKCS1V21_RSASSAPSS_RIPEMD160
  */
 int __API__ ucl_pkcs1_ssa_pss_ripemd160_crt_sign(u8* signature, u8* message, u32 message_length,
-                                                 ucl_rsa_crt_private_key_t* key, u32 salt_length);
+    ucl_rsa_crt_private_key_t* key, u32 salt_length);
 
 #ifdef __cplusplus
 }

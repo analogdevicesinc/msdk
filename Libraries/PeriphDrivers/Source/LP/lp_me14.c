@@ -32,13 +32,13 @@
  *************************************************************************** */
 
 /***** Includes *****/
-#include <stdio.h>
 #include "lp.h"
-#include "mxc_errors.h"
+#include "mxc_delay.h"
 #include "mxc_device.h"
+#include "mxc_errors.h"
 #include "mxc_sys.h"
 #include "tmr.h"
-#include "mxc_delay.h"
+#include <stdio.h>
 
 extern void Reset_Handler(void);
 extern void Backup_Handler(void);
@@ -49,7 +49,7 @@ void MXC_LP_ClearWakeStatus(void)
     /* Write 1 to clear */
     MXC_PWRSEQ->lpwkst0 = 0xFFFFFFFF;
     MXC_PWRSEQ->lpwkst1 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lppwst  = 0xFFFFFFFF;
+    MXC_PWRSEQ->lppwst = 0xFFFFFFFF;
 }
 
 void MXC_LP_EnableRTCAlarmWakeup(void)
@@ -66,22 +66,22 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIOWKEN;
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case MXC_GPIO_PORT_0:
-            MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_1:
-            MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
     }
 }
 
 void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
 {
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case MXC_GPIO_PORT_0:
-            MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_1:
-            MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
     }
 
     if (MXC_PWRSEQ->lpwken1 == 0 && MXC_PWRSEQ->lpwken0 == 0) {
@@ -396,16 +396,17 @@ void MXC_LP_EnterBackupMode(void* func(void))
     // Enable backup mode
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
-    while (1)
-        ; // Should never reach this line - device will jump to backup vector on exit from background mode.
+    while (1) { }
+    // Should never reach this line - device will jump to backup vector on exit from background
+    // mode.
 }
 
 void MXC_LP_EnterShutdownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
-    while (1)
-        ; // Should never reach this line - device will reset on exit from shutdown mode.
+    while (1) { }
+    // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -432,8 +433,9 @@ int MXC_LP_FastWakeupIsEnabled(void)
 
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {
-    if (!(mask & (MXC_F_GCR_PM_HIRCPD | MXC_F_GCR_PM_HIRC96MPD | MXC_F_GCR_PM_HIRC8MPD |
-                  MXC_F_GCR_PM_XTALPB))) {
+    if (!(mask
+            & (MXC_F_GCR_PM_HIRCPD | MXC_F_GCR_PM_HIRC96MPD | MXC_F_GCR_PM_HIRC8MPD
+                | MXC_F_GCR_PM_XTALPB))) {
         return E_BAD_PARAM;
     }
 

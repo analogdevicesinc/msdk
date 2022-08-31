@@ -34,18 +34,18 @@
  *
  **************************************************************************** */
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "max32650.h"
+#include "flc_regs.h"
 #include "gcr_regs.h"
+#include "max32650.h"
 #include "mxc_sys.h"
 #include "usbhs_regs.h"
-#include "flc_regs.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = 0;
-uint8_t ChipRevision     = 0;
+uint8_t ChipRevision = 0;
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -74,8 +74,8 @@ __weak void SystemCoreClockUpdate(void)
     }
 
     // Get the clock divider
-    div = (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE) >>
-          MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE_POS;
+    div = (MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE)
+        >> MXC_F_GCR_CLK_CTRL_SYSCLK_PRESCALE_POS;
 
     SystemCoreClock = base_freq >> div;
 }
@@ -128,18 +128,18 @@ __weak void SystemInit(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_HIRC96);
     SystemCoreClockUpdate();
 
-    /* Erratum #?: Adjust register timing for VCORE == 1.1v, prevents USB failure. 2017-10-04 ZNM/HTN */
+    /* Erratum #?: Adjust register timing for VCORE == 1.1v, prevents USB failure. 2017-10-04
+     * ZNM/HTN */
     MXC_GCR->scon |= MXC_S_GCR_SCON_OVR_1V1;
 
     // Flush and enable instruction cache
     MXC_ICC->invalidate = 1;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
-        ;
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY)) { }
     MXC_ICC->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_ENABLE;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
-        ;
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY)) { }
 
-    /* Shutdown all peripheral clocks initially.  They will be re-enabled by each periph's init function. */
+    /* Shutdown all peripheral clocks initially.  They will be re-enabled by each periph's init
+     * function. */
     /* GPIO Clocks are left enabled */
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_USB);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TFT);

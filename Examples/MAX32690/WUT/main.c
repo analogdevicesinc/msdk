@@ -38,16 +38,16 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_delay.h"
-#include "mxc_device.h"
 #include "board.h"
 #include "led.h"
 #include "lp.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "pb.h"
 #include "uart.h"
 #include "wut.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define MILLISECONDS_WUT 5000
@@ -56,19 +56,15 @@
 void setTrigger(int waitForTrigger)
 {
     if (waitForTrigger) {
-        while (!PB_Get(0))
-            ;
+        while (!PB_Get(0)) { }
         MXC_Delay(MXC_DELAY_MSEC(250));
     }
 
     // Debounce the button press.
-    for (int tmp = 0; tmp < 0x80000; tmp++) {
-        __NOP();
-    }
+    for (int tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
 
     // Wait for serial transactions to complete.
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }
 }
 
 void WUT0_IRQHandler()
@@ -93,7 +89,7 @@ int main(void)
     MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
 
     // Config WUT
-    cfg.mode    = MXC_WUT_MODE_ONESHOT;
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
     MXC_WUT_Config(&cfg);
     NVIC_EnableIRQ(WUT0_IRQn);

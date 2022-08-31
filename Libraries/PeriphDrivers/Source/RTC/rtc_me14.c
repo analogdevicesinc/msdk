@@ -37,9 +37,9 @@
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_sys.h"
+#include "rtc.h"
 #include "rtc_regs.h"
 #include "rtc_reva.h"
-#include "rtc.h"
 #include "tmr.h"
 
 /* ***** Functions ***** */
@@ -88,15 +88,15 @@ int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t ft)
 
     MXC_MCR->outen |= (MXC_F_MCR_OUTEN_SQWOUT0EN | MXC_F_MCR_OUTEN_SQWOUT1EN);
 
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
-                                   ft);
+    return MXC_RTC_RevA_SquareWave(
+        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED, ft);
 }
 
 int MXC_RTC_SquareWaveStop(void)
 {
     MXC_MCR->outen &= ~(MXC_F_MCR_OUTEN_SQWOUT0EN | MXC_F_MCR_OUTEN_SQWOUT1EN);
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED,
-                                   MXC_RTC_F_32KHZ);
+    return MXC_RTC_RevA_SquareWave(
+        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED, MXC_RTC_F_32KHZ);
 }
 
 int MXC_RTC_Trim(int8_t trm)
@@ -139,20 +139,20 @@ int MXC_RTC_TrimCrystal(mxc_tmr_regs_t* tmr)
     int err;
     uint32_t sys_clk;
 
-    sys_clk = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CLKSEL) >>
-              MXC_F_GCR_CLKCN_CLKSEL_POS;   // Save current system clock
+    sys_clk = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CLKSEL)
+        >> MXC_F_GCR_CLKCN_CLKSEL_POS; // Save current system clock
     if (sys_clk != MXC_SYS_CLOCK_XTAL32M) { // Change system clock to reference oscillator source
         if ((err = MXC_SYS_Clock_Select(MXC_SYS_CLOCK_XTAL32M)) != E_NO_ERROR) {
             return err;
         }
     }
 
-    mxc_tmr_cfg_t
-        tmr_cfg; // Configure timer to trigger each interrupt NUM_PERIOD number of times within a second
-    tmr_cfg.pres    = TMR_PRES_1;
-    tmr_cfg.mode    = TMR_MODE_CONTINUOUS;
+    mxc_tmr_cfg_t tmr_cfg; // Configure timer to trigger each interrupt NUM_PERIOD number of times
+                           // within a second
+    tmr_cfg.pres = TMR_PRES_1;
+    tmr_cfg.mode = TMR_MODE_CONTINUOUS;
     tmr_cfg.cmp_cnt = PeripheralClock / MXC_RTC_REVA_TRIM_PERIODS;
-    tmr_cfg.pol     = 0;
+    tmr_cfg.pol = 0;
     MXC_TMR_Init(tmr, &tmr_cfg);
 
     err = MXC_RTC_RevA_TrimCrystal((mxc_rtc_reva_regs_t*)MXC_RTC, tmr);

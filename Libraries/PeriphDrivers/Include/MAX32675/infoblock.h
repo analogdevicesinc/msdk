@@ -1,45 +1,45 @@
 /**
  * @file       infoblock.h
  * @brief      Infoblock interface
- * @details    
+ * @details
  *      This driver can be used to interface with the infoblock,
  *      reading and writing select locations.
  */
 
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
-*
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*/
+ * Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
+ *
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************
+ */
 
 #ifndef _INFOBLOCK_H_
 #define _INFOBLOCK_H_
@@ -49,7 +49,7 @@ extern "C" {
 #endif
 
 #if !defined(TRUE) || !defined(FALSE)
-#define TRUE  1
+#define TRUE 1
 #define FALSE 0
 #endif
 /**
@@ -65,55 +65,61 @@ extern "C" {
  * @{
  */
 
-/** 
- * @brief MAX32655 and some other parts have 128-bit wide flash, but hardware treats it as 64-bits/8 bytes for checksum purposes
+/**
+ * @brief MAX32655 and some other parts have 128-bit wide flash, but hardware treats it as 64-bits/8
+ * bytes for checksum purposes
  */
 #define INFOBLOCK_LINE_SIZE 8
 
 /**
- * @brief Checksum overhead (\#bytes) in an infoblock line, reduces amount of data that can be stored
+ * @brief Checksum overhead (\#bytes) in an infoblock line, reduces amount of data that can be
+ * stored
  */
 #define INFOBLOCK_LINE_OVERHEAD 2
 
 /**
- * @brief 8 bytes, arranged as 4 16-bit uints 
+ * @brief 8 bytes, arranged as 4 16-bit uints
  */
 #define INFOBLOCK_ICE_LOCK_SIZE 8
 
-/** 
- * @brief MAX32655 has 128-bit wide flash so the permanent line lock bit is at the top of every 16 bytes
+/**
+ * @brief MAX32655 has 128-bit wide flash so the permanent line lock bit is at the top of every 16
+ * bytes
  */
 #define INFOBLOCK_WRITE_LOCK_LINE_SIZE 16
 
-/** 
+/**
  * @brief Unprogrammed flash reads as all 0xFF
  */
 #define ICELOCK_UNMODIFIED_VALUE 0xFFFF
 
-/** 
- * @brief The value hardware looks for to lock the SWD in even numbered 16-bit locations (0-based so locations 0 and 2).
+/**
+ * @brief The value hardware looks for to lock the SWD in even numbered 16-bit locations (0-based so
+ * locations 0 and 2).
  */
 #define ICELOCK_EVEN_LOCK_VALUE 0xA5A5
 
-/** 
- * @brief The value hardware looks for to lock the SWD in odd numbered 16-bit locations (0-based so locations 1 and 3)
+/**
+ * @brief The value hardware looks for to lock the SWD in odd numbered 16-bit locations (0-based so
+ * locations 1 and 3)
  */
 #define ICELOCK_ODD_LOCK_VALUE 0x5A5A
 
-/** 
+/**
  * @brief Maximum information block read size.  Used in infoblock_read() to
  *  set upper limit on bytes read.
  */
 #define INFOBLOCK_MAXIMUM_READ_LENGTH 64
 
-/** 
+/**
  * @brief The offset inside the information block where the USN (Universal Serial Number) is stored
  */
 #define INFOBLOCK_USN_OFFSET 0x00
 
-/** 
+/**
  * @brief The offset inside the information block where the SWD locking information is stored
- * @note There are four locking locations starting at 0x30 for location 0, 0x32 for location 1, 0x34 for location 2, and 0x36 for location 3
+ * @note There are four locking locations starting at 0x30 for location 0, 0x32 for location 1, 0x34
+ * for location 2, and 0x36 for location 3
  */
 #define INFOBLOCK_ICE_LOCK_OFFSET 0x30
 
@@ -128,11 +134,12 @@ extern "C" {
 #define INFOBLOCK_KEY_OFFSET 0x1000
 /**
  * @brief The length in bytes of the ECDSA public key
- * @note This is the raw length. Once stored, 2 of every 8 bytes is used for CRC15, so the stored length is greater than 64 bytes.
+ * @note This is the raw length. Once stored, 2 of every 8 bytes is used for CRC15, so the stored
+ * length is greater than 64 bytes.
  */
 #define INFOBLOCK_KEY_SIZE 64
 
-/** 
+/**
  * @brief Storage locations for feature enables.
  *  The value 0x5a5aa5a5_5a5aa5a5 designates enable or disable depending on the function.
  *  No CRC15 format in this case.
@@ -146,7 +153,7 @@ extern "C" {
 
 /**
  * @brief Three information block line types
- *  
+ *
  *  USN: No CRC15, ignore lowest 15 bits [14:0]
  *
  *  RAW: No CRC15
@@ -156,14 +163,16 @@ extern "C" {
 typedef enum {
     INFOBLOCK_LINE_FORMAT_USN, /**< USN format is unique, ignore lowest 15 bits */
     INFOBLOCK_LINE_FORMAT_RAW, /**< Raw data format, use all bits */
-    INFOBLOCK_LINE_FORMAT_DESIGN, /**< Design format, has CRC15 in bits 62:48, bit 63 is a line locking bit */
+    INFOBLOCK_LINE_FORMAT_DESIGN, /**< Design format, has CRC15 in bits 62:48, bit 63 is a line
+                                     locking bit */
 } lineformat_e;
 
 /**@} end of group infoblock_defines */
 
 /**
  * @brief crc15_highbitinput    Calculate CRC15 on data bits
- * @param[out]  crc15val    Calling routine must supply a pointer to an array of at least 32 btyes. The hash digest will be placed there.
+ * @param[out]  crc15val    Calling routine must supply a pointer to an array of at least 32 btyes.
+ * The hash digest will be placed there.
  * @param[in]   input       pointer to the array of data to CRC15
  * @param[in]   bitlength   length in bits of the data to CRC15
  * @return      crc15val

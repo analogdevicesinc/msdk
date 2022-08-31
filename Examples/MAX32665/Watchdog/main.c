@@ -47,15 +47,15 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
+#include "board.h"
+#include "led.h"
+#include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "mxc_delay.h"
 #include "nvic_table.h"
 #include "wdt.h"
-#include "led.h"
-#include "board.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define SW1 0
@@ -64,18 +64,18 @@
 /***** Globals *****/
 #if defined(BOARD_FTHR)
 static mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 #elif defined(BOARD_FTHR2)
 static mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 #else
 static mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
 };
 #endif
 
@@ -84,7 +84,7 @@ static mxc_gpio_cfg_t pb_pin[] = {
 // *****************************************************************************
 void watchdog_timeout_handler()
 {
-    //get and clear flag
+    // get and clear flag
     MXC_WDT_GetIntFlag(MXC_WDT0);
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nTIMEOUT! \n");
@@ -135,25 +135,24 @@ int main(void)
     MXC_GPIO_Config(&pb_pin[SW1]);
     MXC_GPIO_Config(&pb_pin[SW2]);
 
-    //blink LED1 three times at startup
+    // blink LED1 three times at startup
     blinkled(1, 3);
 
-    //setup watchdog
+    // setup watchdog
     MXC_WDT_Setup();
 
     while (1) {
-        //Push SW1 to reset watchdog
+        // Push SW1 to reset watchdog
         if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
             printf("\nResetting Program...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_18);
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             MXC_WDT_ResetTimer(MXC_WDT0);
-            while (1)
-                ;
+            while (1) { }
         }
 
-        //Push SW2 to start longer delay - shows Interrupt before the reset happens
+        // Push SW2 to start longer delay - shows Interrupt before the reset happens
         if (MXC_GPIO_InGet(pb_pin[SW2].port, pb_pin[SW2].mask) == 0) {
             printf("\nEnabling Timeout Interrupt...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_27);
@@ -161,14 +160,13 @@ int main(void)
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
-            while (1)
-                ;
+            while (1) { }
         }
 
-        //blink LED0
+        // blink LED0
         blinkled(0, 1);
 
-        //Reset watchdog
+        // Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
 }

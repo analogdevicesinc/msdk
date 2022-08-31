@@ -22,19 +22,19 @@
  */
 /*************************************************************************************************/
 
-#include "ll_init_api.h"
+#include "bb_ble_sniffer_api.h"
 #include "chci_tr.h"
-#include "lhci_api.h"
 #include "hci_defs.h"
+#include "lhci_api.h"
+#include "ll_init_api.h"
+#include "pal_bb.h"
+#include "pal_cfg.h"
 #include "wsf_assert.h"
 #include "wsf_buf.h"
+#include "wsf_bufio.h"
 #include "wsf_heap.h"
 #include "wsf_timer.h"
 #include "wsf_trace.h"
-#include "wsf_bufio.h"
-#include "bb_ble_sniffer_api.h"
-#include "pal_bb.h"
-#include "pal_cfg.h"
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
@@ -86,11 +86,11 @@ static void mainLoadConfiguration(void)
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 
     /* Adjust the extended advertising and ISO settings */
-    mainLlRtCfg.maxAdvSets    = 2;
+    mainLlRtCfg.maxAdvSets = 2;
     mainLlRtCfg.maxAdvReports = 4;
-    mainLlRtCfg.numIsoTxBuf   = 8;
-    mainLlRtCfg.maxCis        = 2;
-    mainLlRtCfg.maxBis        = 2;
+    mainLlRtCfg.numIsoTxBuf = 8;
+    mainLlRtCfg.maxCis = 2;
+    mainLlRtCfg.maxBis = 2;
 }
 
 /*************************************************************************************************/
@@ -104,8 +104,8 @@ static void mainWsfInit(void)
     const uint16_t maxRptBufSize = 12 + 2 + 255;
 
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
-    const uint16_t dataBufSize =
-        12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+    const uint16_t dataBufSize
+        = 12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
@@ -113,13 +113,11 @@ static void mainWsfInit(void)
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
-    wsfBufPoolDesc_t poolDesc[] = {
-        {16, 8},
-        {32, 4},
-        {128, mainLlRtCfg.maxAdvReports},
-        {maxRptBufSize, mainLlRtCfg.maxAdvReports}, /* Extended reports. */
-        {dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
-                          mainLlRtCfg.numIsoRxBuf}};
+    wsfBufPoolDesc_t poolDesc[] = { { 16, 8 }, { 32, 4 }, { 128, mainLlRtCfg.maxAdvReports },
+        { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
+        { dataBufSize,
+            mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf
+                + mainLlRtCfg.numIsoRxBuf } };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -186,13 +184,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
-                           .wlSizeCfg    = 4,
-                           .rlSizeCfg    = 4,
-                           .plSizeCfg    = 4,
-                           .pLlRtCfg     = &mainLlRtCfg,
-                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
-                           .freeMemAvail = WsfHeapCountAvailable()};
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+        .wlSizeCfg = 4,
+        .rlSizeCfg = 4,
+        .plSizeCfg = 4,
+        .pLlRtCfg = &mainLlRtCfg,
+        .pFreeMem = WsfHeapGetFreeStartAddress(),
+        .freeMemAvail = WsfHeapCountAvailable() };
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);

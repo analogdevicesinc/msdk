@@ -1,35 +1,35 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /**
  * @file    main.c
@@ -39,21 +39,21 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include <MAX32xxx.h>
 
 /***** Definitions *****/
 
 // Parameters for PWM output
-#define FREQ       200      // (Hz)
-#define DUTY_CYCLE 75       // (%)
-#define PWM_TIMER  MXC_TMR0 // must change PWM_PORT and PWM_PIN if changed
+#define FREQ 200 // (Hz)
+#define DUTY_CYCLE 75 // (%)
+#define PWM_TIMER MXC_TMR0 // must change PWM_PORT and PWM_PIN if changed
 
 // Parameters for Continuous timer
-#define INTERVAL_TIME_CONT 1        // (s) will toggle after every interval
-#define CONT_TIMER         MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
+#define INTERVAL_TIME_CONT 1 // (s) will toggle after every interval
+#define CONT_TIMER MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
 
 // Check Frequency bounds
 #if (FREQ == 0)
@@ -76,7 +76,7 @@ void PWMTimer(void)
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = PeripheralClock / FREQ;
-    unsigned int dutyTicks   = periodTicks * DUTY_CYCLE / 100;
+    unsigned int dutyTicks = periodTicks * DUTY_CYCLE / 100;
 
     /*
     Steps for configuring a timer for PWM mode:
@@ -89,10 +89,10 @@ void PWMTimer(void)
 
     MXC_TMR_Shutdown(PWM_TIMER);
 
-    tmr.pres    = TMR_PRES_1;
-    tmr.mode    = TMR_MODE_PWM;
+    tmr.pres = TMR_PRES_1;
+    tmr.mode = TMR_MODE_PWM;
     tmr.cmp_cnt = periodTicks;
-    tmr.pol     = 1;
+    tmr.pol = 1;
 
     MXC_TMR_Init(PWM_TIMER, &tmr);
 
@@ -130,10 +130,10 @@ void ContinuousTimer(void)
 
     MXC_TMR_Shutdown(CONT_TIMER);
 
-    tmr.pres    = TMR_PRES_4;
-    tmr.mode    = TMR_MODE_CONTINUOUS;
-    tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pres = TMR_PRES_4;
+    tmr.mode = TMR_MODE_CONTINUOUS;
+    tmr.cmp_cnt = periodTicks; // SystemCoreClock*(1/interval_time);
+    tmr.pol = 0;
 
     MXC_TMR_Init(CONT_TIMER, &tmr);
 
@@ -145,11 +145,11 @@ void ContinuousTimer(void)
 // *****************************************************************************
 int main(void)
 {
-    //Exact timer operations can be found in tmr_utils.c
+    // Exact timer operations can be found in tmr_utils.c
 
     printf("\n************************** Timer Example **************************\n\n");
     printf("1. A continuous mode timer is used to create an interrupt every %d sec.\n",
-           INTERVAL_TIME_CONT);
+        INTERVAL_TIME_CONT);
     printf("   LED0 (Port 3.05) will toggle each time the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 1.14.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
@@ -160,8 +160,7 @@ int main(void)
     NVIC_EnableIRQ(TMR1_IRQn);
     ContinuousTimer();
 
-    while (1)
-        ;
+    while (1) { }
 
     return 0;
 }

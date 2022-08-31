@@ -1,41 +1,41 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
-* 
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*/
+ * Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
+ *
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************
+ */
 
 #include <emv_l1_stack/iso14443_3b_cmd.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry)
@@ -50,20 +50,20 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
     tx_buf[0] = 0x05;
     tx_buf[1] = 0x00;
     tx_buf[2] = 0x08;
-    tx_len    = 3;
+    tx_len = 3;
 
     rx_buf = atq;
 
     do {
         ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf,
-                                 &rx_len, ISO14443_FWT_ATQB);
+            &rx_len, ISO14443_FWT_ATQB);
 
         if (ret == ISO14443_3_ERR_SUCCESS) {
-            if ((rx_len != ISO3B_ATQB_MINLEN && rx_len != ISO3B_ATQB_MAXLEN) ||
-                rx_buf[0] != ISO3B_ATQB_BYTE1) {
+            if ((rx_len != ISO3B_ATQB_MINLEN && rx_len != ISO3B_ATQB_MAXLEN)
+                || rx_buf[0] != ISO3B_ATQB_BYTE1) {
                 ret = ISO14443_3_ERR_PROTOCOL;
             } else {
-                ret      = ISO14443_3_ERR_SUCCESS;
+                ret = ISO14443_3_ERR_SUCCESS;
                 *atq_len = rx_len;
             }
         }
@@ -79,8 +79,8 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
 }
 
 int32_t iso_14443_3b_cmd_attrib(uint8_t* pupi, uint8_t para1, uint8_t para2, uint8_t para3,
-                                uint8_t para4, uint8_t* inf, uint32_t* inf_len, uint32_t timeout,
-                                uint8_t* attrib_resp, int32_t* attrib_resp_len)
+    uint8_t para4, uint8_t* inf, uint32_t* inf_len, uint32_t timeout, uint8_t* attrib_resp,
+    int32_t* attrib_resp_len)
 {
     uint8_t tx_buf[256];
     int32_t tx_len = 0;
@@ -104,8 +104,8 @@ int32_t iso_14443_3b_cmd_attrib(uint8_t* pupi, uint8_t para1, uint8_t para2, uin
     }
 
     do {
-        ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf,
-                                 &rx_len, timeout);
+        ret = nfc_pcd_transceive(
+            PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf, &rx_len, timeout);
 
         if (ret == ISO14443_3_ERR_SUCCESS) {
             // If we have a non NULL buffer to save it, copy in the raw ATTRIB_RESPONSE
@@ -148,7 +148,7 @@ int32_t iso_14443_3b_cmd_halt(uint8_t* pupi)
     tx_len = 5;
 
     ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf,
-                             &rx_len, ISO14443_FWT_DEFAULT);
+        &rx_len, ISO14443_FWT_DEFAULT);
 
     if (ret == ISO14443_3_ERR_SUCCESS) {
         if (rx_len != 1 || rx_buf[0] != 0x00) {

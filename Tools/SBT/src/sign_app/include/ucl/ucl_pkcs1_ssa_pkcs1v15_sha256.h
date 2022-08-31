@@ -54,7 +54,7 @@ extern "C" {
  * @param[in]  message        The message to be signed
  * @param[in]  message_length The message byte length
  * @param[in]  keyPr          RSA private key
- * 
+ *
  * @note The output buffer length is the modulus length
  *
  * @return Error code
@@ -65,8 +65,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA256
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha256_sign(u8* signature, u8* message, u32 message_length,
-                                       ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha256_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA256 Signature Generation</b>.
@@ -76,7 +76,7 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_sign(u8* signature, u8* message, u32 message_l
  * @param[in]  message        The message to be signed, pre-hashed data
  * @param[in]  message_length The message byte length
  * @param[in]  keyPr          RSA private key
- * 
+ *
  * @note The output buffer length is the modulus length
  *
  * @return Error code
@@ -87,8 +87,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_sign(u8* signature, u8* message, u32 message_l
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA256
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_sign(u8* signature, u8* message, u32 message_length,
-                                              ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA256 CRT Signature Generation</b>.
@@ -101,7 +101,7 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_sign(u8* signature, u8* message, u32 me
  * @param[in]  keyPr          RSA CRT private key
  *
  * @note The output buffer length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if no error occurred
@@ -110,8 +110,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_sign(u8* signature, u8* message, u32 me
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA256
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_crt_sign(u8* signature, u8* message, u32 message_length,
-                                                  ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_crt_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_crt_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA256 CRT Signature Generation</b>.
@@ -123,7 +123,7 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_crt_sign(u8* signature, u8* message, u3
  * @param[in]  keyPr          RSA CRT private key
  *
  * @note The output buffer length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if no error occurred
@@ -132,8 +132,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_hashed_crt_sign(u8* signature, u8* message, u3
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA256
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha256_crt_sign(u8* signature, u8* message, u32 message_length,
-                                           ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha256_crt_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_crt_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA256 Signature Verification</b>.
@@ -143,7 +143,7 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_crt_sign(u8* signature, u8* message, u32 messa
  * @param[in] message        The message
  * @param[in] message_length The message byte length
  * @param[in] keyPu          The RSA public key
- * 
+ *
  * @note The signature length is the modulus length
  *
  * @return Error code
@@ -154,8 +154,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_crt_sign(u8* signature, u8* message, u32 messa
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA256
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha256_verify(u8* signature, u8* message, u32 message_length,
-                                         ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_sha256_verify(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_public_key_t* keyPu);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA256 Signature Verification</b>.
@@ -165,7 +165,7 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_verify(u8* signature, u8* message, u32 message
  * @param[in]  hash        The original message digest to be verified
  * @param[in]  hash_length The byte length of the digest
  * @param[in] keyPu          The RSA public key
- * 
+ *
  * @note The signature length is the modulus length
  *
  * @return Error code
@@ -176,8 +176,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha256_verify(u8* signature, u8* message, u32 message
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA256
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha256_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                                ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_sha256_verify_digest(
+    u8* signature, u8* hash, u32 hash_length, ucl_rsa_public_key_t* keyPu);
 
 #ifdef __cplusplus
 }

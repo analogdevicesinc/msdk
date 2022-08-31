@@ -101,7 +101,7 @@ int ucl_aes_cbc(u8* dst, u8* src, u32 len, u8* key, u32 keylen, u8* IV, int mode
  * @retval #UCL_INVALID_ARG    @p keylen is invalid
  * @retval #UCL_INVALID_MODE   The mode is not one of those described
  *
- * @ingroup UCL_CBC_AES 
+ * @ingroup UCL_CBC_AES
  */
 int ucl_aes_cbc_init(ucl_aes_ctx_t* ctx, u8* key, u32 keylen, u8* IV, int mode);
 
@@ -124,7 +124,7 @@ int ucl_aes_cbc_init(ucl_aes_ctx_t* ctx, u8* key, u32 keylen, u8* IV, int mode);
  * @retval #UCL_INVALID_ARG    The data byte length is not a multiple of
  *                             #UCL_AES_BLOCKSIZE
  *
- * @ingroup UCL_CBC_AES 
+ * @ingroup UCL_CBC_AES
  */
 int ucl_aes_cbc_core(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len);
 
@@ -139,7 +139,7 @@ int ucl_aes_cbc_core(u8* dst, ucl_aes_ctx_t* ctx, u8* src, u32 len);
  * @retval #UCL_OK             No error occurred
  * @retval #UCL_INVALID_OUTPUT The output is the pointer #NULL
  *
- * @ingroup UCL_CBC_AES 
+ * @ingroup UCL_CBC_AES
  */
 int ucl_aes_cbc_finish(ucl_aes_ctx_t* ctx);
 

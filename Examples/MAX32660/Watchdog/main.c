@@ -44,17 +44,17 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
+#include "board.h"
+#include "gpio.h"
+#include "led.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
-#include "gpio.h"
-#include "wdt.h"
-#include "board.h"
-#include "led.h"
 #include "pb.h"
+#include "wdt.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define OVERFLOW //Test Windowed timer \
@@ -62,7 +62,7 @@
                  //UNDERFLOW
 
 #define RESET_PERIOD MXC_WDT_PERIOD_2_28
-#define INT_PERIOD   MXC_WDT_PERIOD_2_27
+#define INT_PERIOD MXC_WDT_PERIOD_2_27
 
 // refers to array, do not change constants
 #define SW2 0
@@ -123,7 +123,7 @@ int main(void)
     printf("\nPressing button (SW2) will prevent the watchdog from\n");
     printf("reseting, allowing the timer to expire and the device to reset.\n");
 
-    //Blink LED
+    // Blink LED
     LED_Off(LED);
     int numBlinks = 5;
 
@@ -135,29 +135,26 @@ int main(void)
         numBlinks--;
     }
 
-    //Setup watchdog
+    // Setup watchdog
     WDT_Setup();
 
     while (1) {
-        //Push SW1 to see interrupt and reset handlers
+        // Push SW1 to see interrupt and reset handlers
         if (PB_Get(SW2) != 0) {
-            while (intCnt == 0)
-                ;
+            while (intCnt == 0) { }
             printf("WDT Timer restored in interrupt handler before reset.\n");
-            while (intCnt == 1)
-                ;
+            while (intCnt == 1) { }
             printf("WDT Timer not restored in interrupt handler. Device will reset shortly.\n");
-            while (1)
-                ;
+            while (1) { }
         }
 
-        //blink LED0
+        // blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_On(LED);
         MXC_Delay(MXC_DELAY_MSEC(500));
         LED_Off(LED);
 
-        //Reset watchdog
+        // Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
 }

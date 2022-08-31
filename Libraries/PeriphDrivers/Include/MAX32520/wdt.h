@@ -41,9 +41,9 @@
 #define _WDT_H_
 
 /* **** Includes **** */
-#include <stdint.h>
 #include "mxc_device.h"
 #include "wdt_regs.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,7 +83,7 @@ typedef enum {
 /**
  * @brief       Initialize the Watchdog Timer
  * @param       wdt      Pointer to the watchdog registers
- * @return      See \ref MXC_Error_Codes for the list of error codes. 
+ * @return      See \ref MXC_Error_Codes for the list of error codes.
  */
 int MXC_WDT_Init(mxc_wdt_regs_t* wdt);
 

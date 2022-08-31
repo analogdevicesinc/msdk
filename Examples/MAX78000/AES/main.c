@@ -34,32 +34,33 @@
 /**
  * @file        main.c
  * @brief       AES Example
- * @details     Encryption and decryption of AES on different modes (ECB and OFB) with different bit sizes (128, 192, and 256)
+ * @details     Encryption and decryption of AES on different modes (ECB and OFB) with different bit
+ * sizes (128, 192, and 256)
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_device.h"
-#include "board.h"
-#include "dma.h"
 #include "aes.h"
 #include "aes_regs.h"
+#include "board.h"
+#include "dma.h"
+#include "mxc_device.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /***** Definitions *****/
-#define MXC_AES_DATA_LENGTH 8 //4 words
+#define MXC_AES_DATA_LENGTH 8 // 4 words
 
-#define MXC_AES_ENC_DATA_LENGTH 8 //Always multiple of 4
+#define MXC_AES_ENC_DATA_LENGTH 8 // Always multiple of 4
 //(equal to or greater than MXC_AES_DATA_LENGTH)
 
 /***** Globals *****/
-uint32_t inputData[MXC_AES_DATA_LENGTH]         = {0x873AC125, 0x2F45A7C8, 0x3EB7190,  0x486FA931,
-                                           0x94AE56F2, 0x89B4D0C1, 0x2F45A7C8, 0x3EB7190};
-uint32_t encryptedData[MXC_AES_ENC_DATA_LENGTH] = {0};
-uint32_t decryptedData[MXC_AES_DATA_LENGTH]     = {0};
+uint32_t inputData[MXC_AES_DATA_LENGTH] = { 0x873AC125, 0x2F45A7C8, 0x3EB7190, 0x486FA931,
+    0x94AE56F2, 0x89B4D0C1, 0x2F45A7C8, 0x3EB7190 };
+uint32_t encryptedData[MXC_AES_ENC_DATA_LENGTH] = { 0 };
+uint32_t decryptedData[MXC_AES_DATA_LENGTH] = { 0 };
 
-//AES request
+// AES request
 mxc_aes_req_t req;
 
 volatile int dma_flag = 0;
@@ -72,10 +73,10 @@ void DMA0_IRQHandler()
 
 int AES_encrypt(int asynchronous, mxc_aes_keys_t key)
 {
-    req.length     = MXC_AES_DATA_LENGTH;
-    req.inputData  = inputData;
+    req.length = MXC_AES_DATA_LENGTH;
+    req.inputData = inputData;
     req.resultData = encryptedData;
-    req.keySize    = key;
+    req.keySize = key;
     req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
 
     MXC_AES_Init();
@@ -83,8 +84,7 @@ int AES_encrypt(int asynchronous, mxc_aes_keys_t key)
     if (asynchronous) {
         MXC_AES_EncryptAsync(&req);
 
-        while (dma_flag == 0)
-            ;
+        while (dma_flag == 0) { }
 
         dma_flag = 0;
     } else {
@@ -96,17 +96,16 @@ int AES_encrypt(int asynchronous, mxc_aes_keys_t key)
 
 int AES_decrypt(int asynchronous, mxc_aes_keys_t key)
 {
-    req.length     = MXC_AES_DATA_LENGTH;
-    req.inputData  = encryptedData;
+    req.length = MXC_AES_DATA_LENGTH;
+    req.inputData = encryptedData;
     req.resultData = decryptedData;
-    req.keySize    = key;
+    req.keySize = key;
     req.encryption = MXC_AES_DECRYPT_INT_KEY;
 
     if (asynchronous) {
         MXC_AES_DecryptAsync(&req);
 
-        while (dma_flag == 0)
-            ;
+        while (dma_flag == 0) { }
 
         dma_flag = 0;
     } else {
@@ -135,7 +134,7 @@ int main(void)
     MXC_DMA_ReleaseChannel(0);
     NVIC_EnableIRQ(DMA0_IRQn);
 
-    //ECB
+    // ECB
     printf("\nAES 128 bits Key Test");
     AES_encrypt(0, MXC_AES_128BITS);
     fail += AES_decrypt(0, MXC_AES_128BITS);
@@ -154,8 +153,7 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) {
-    }
+    while (1) { }
 
     return 0;
 }

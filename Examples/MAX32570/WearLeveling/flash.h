@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -49,8 +49,8 @@
 #define LOGF(...)
 #endif
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "lfs.h"
 
@@ -64,8 +64,8 @@
  * @param size Data size
  * @return Error code
  */
-int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* buffer,
-               lfs_size_t size);
+int flash_read(
+    const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* buffer, lfs_size_t size);
 
 /**
  * @brief Writes flash memory
@@ -78,7 +78,7 @@ int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, voi
  * @return Error code
  */
 int flash_write(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, const void* buffer,
-                lfs_size_t size);
+    lfs_size_t size);
 
 /**
  * @brief Erases flash memory block

@@ -14,21 +14,21 @@ extern "C" {
 #define MAX_DIGITS 20
 #define DIGIT_BITS 16*/
 #define DOUBLE_DIGIT unsigned long long int
-#define DIGIT        u32
-#define MAX_DIGIT    0xFFFFFFFF
-#define HALF_DIGIT   0xFFFF
-//move from 16 to 17 then 33 for dsa use of bignum_mod
+#define DIGIT u32
+#define MAX_DIGIT 0xFFFFFFFF
+#define HALF_DIGIT 0xFFFF
+// move from 16 to 17 then 33 for dsa use of bignum_mod
 #define MAX_DIGITS (UCL_RSA_KEY_MAXSIZE / 4 + 1)
 #define DIGIT_BITS 32
-#endif //WORD32
+#endif // WORD32
 #ifdef WORD16
 #define DOUBLE_DIGIT unsigned long int
-#define DIGIT        unsigned short int
-#define MAX_DIGIT    0xFFFF
-#define HALF_DIGIT   0xFF
-#define MAX_DIGITS   16
-#define DIGIT_BITS   16
-#endif //WORD16
+#define DIGIT unsigned short int
+#define MAX_DIGIT 0xFFFF
+#define HALF_DIGIT 0xFF
+#define MAX_DIGITS 16
+#define DIGIT_BITS 16
+#endif // WORD16
 
 /* Length of digit in bytes */
 #define DIGIT_LEN (DIGIT_BITS / 8)
@@ -83,7 +83,7 @@ void bignum_modinv(DIGIT* x, DIGIT* a0, DIGIT* b0, DIGIT digits);
  * in fact, it uses the fermat theorem which says that a^(n-1)=1 mod n
  * it implies a.a^(n-2)=1 mod n, which means that the inverse of a is a^(n-2)
  * because of the MAA, computing a^(n-2) is more efficient than a software inversion
- * 
+ *
  * @param[out]  x   The pointer to the inverse
  * @param[int]  a0  The pointer to the number to be inverted
  * @param[in]   b0   The pointer to the modulus, a prime number

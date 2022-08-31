@@ -6,63 +6,63 @@
  */
 
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_device.h"
+#include "flc.h"
+#include "icc.h"
 #include "mxc_delay.h"
+#include "mxc_device.h"
 #include "mxc_pins.h"
 #include "nvic_table.h"
 #include "sfe.h"
-#include "flc.h"
-#include "icc.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /***** FLASH Commands ******/
 
-//Write Command
+// Write Command
 #define FLASH_WRITE 0x02
-//Erase Commands
+// Erase Commands
 #define FLASH_PAGE_ERASE 0x55
 
-#define RAM_SBA   0x20020000
+#define RAM_SBA 0x20020000
 #define FLASH_SBA 0x10000000
-#define RAM_STA   0x20048000
+#define RAM_STA 0x20048000
 #define FLASH_STA 0x10008000
 
-#define RAM_HOST_SBA   0x00330000
+#define RAM_HOST_SBA 0x00330000
 #define FLASH_HOST_SBA 0x00990000
 
 #define FLASH_WRITE_SBA 0x20020008
@@ -87,7 +87,7 @@ int Flash_Verify(uint32_t address, uint32_t length, uint8_t* data)
     for (ptr = (uint8_t*)address; ptr < (uint8_t*)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
-                   (unsigned int)*data);
+                (unsigned int)*data);
             return E_UNKNOWN;
         }
     }
@@ -113,7 +113,7 @@ int Flash_CheckErased(uint32_t startaddr)
 void Flash_Write()
 {
     int fail = 0;
-    int i    = 0;
+    int i = 0;
 
     MXC_ICC_Disable();
 
@@ -121,7 +121,7 @@ void Flash_Write()
         // Clear and enable flash programming interrupts
 
         isr_flags = 0;
-        isr_cnt   = 0;
+        isr_cnt = 0;
 
         // Write a word
         if (MXC_FLC_Write32(flashAddr, *data) != E_NO_ERROR) {
@@ -191,7 +191,7 @@ void Flash_CommandCheck()
         flashAddr = (flashAddr - FLASH_HOST_SBA) + (FLASH_SBA);
         printf("\n\nFlash Address: %x", flashAddr);
         printf("\nErasing the Page\n");
-        eraseCmd  = (uint32_t*)FLASH_ERASE_SBA;
+        eraseCmd = (uint32_t*)FLASH_ERASE_SBA;
         *eraseCmd = 0x00;
 
         int error_status = MXC_FLC_PageErase(flashAddr);
@@ -220,10 +220,10 @@ void Flash_CommandCheck()
         printf("\n\nFlash Address: %x", flashAddr);
         length = (*writeCmd++) / 4;
         printf("\nWriting %d 32-bit words to flash\n", length);
-        data      = writeCmd;
-        writeCmd  = (uint32_t*)FLASH_WRITE_SBA;
+        data = writeCmd;
+        writeCmd = (uint32_t*)FLASH_WRITE_SBA;
         *writeCmd = 0x00;
-        isErased  = 0;
+        isErased = 0;
         Flash_Write();
     }
 }
@@ -257,9 +257,7 @@ int main(void)
     Flash_InterruptEN(MXC_FLC0);
 
     isr_flags = 0;
-    isr_cnt   = 0;
+    isr_cnt = 0;
 
-    while (1) {
-        Flash_CommandCheck();
-    }
+    while (1) { Flash_CommandCheck(); }
 }

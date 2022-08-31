@@ -32,32 +32,31 @@
  * ownership rights.
  *******************************************************************************/
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc_device.h"
-#include "mxc_sys.h"
 #include "bbfc_regs.h"
+#include "board.h"
+#include "camera.h"
+#include "cnn.h"
+#include "dma.h"
 #include "fcr_regs.h"
 #include "icc.h"
-#include "dma.h"
 #include "led.h"
-#include "tmr.h"
-#include "pb.h"
-#include "cnn.h"
-#include "weights.h"
-#include "sampledata.h"
-#include "mxc_delay.h"
-#include "camera.h"
-#include "spi.h"
 #include "mxc.h"
+#include "mxc_delay.h"
 #include "mxc_device.h"
-#include "board.h"
-#include "rtc.h"
-#include "uart.h"
-#include "tft_utils.h"
+#include "mxc_sys.h"
+#include "pb.h"
 #include "post_process.h"
+#include "rtc.h"
+#include "sampledata.h"
+#include "spi.h"
+#include "tft_utils.h"
+#include "tmr.h"
+#include "uart.h"
+#include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #ifdef BOARD_EVKIT_V1
 #include "bitmap.h"
 #include "tft_ssd2119.h"
@@ -78,17 +77,16 @@ volatile uint32_t cnn_time; // Stopwatch
 
 // 3-channel 74x74 data input (16428 bytes total / 5476 bytes per channel):
 // HWC 74x74, channels 0 to 2
-#ifdef USE_SAMPLEDATA //Sample DATA
+#ifdef USE_SAMPLEDATA // Sample DATA
 static uint32_t input_buffer[] = SAMPLE_INPUT_0;
-uint32_t* input                = input_buffer;
+uint32_t* input = input_buffer;
 #endif
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) { }
 }
 
 void load_input(void)
@@ -107,8 +105,7 @@ void load_input(void)
 
     camera_start_capture_image();
 
-    while (!camera_is_image_rcv())
-        ;
+    while (!camera_is_image_rcv()) { }
 
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
     buffer = frame_buffer;
@@ -127,8 +124,8 @@ void load_input(void)
             // display on TFT
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
-            color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) |
-                     (r & 0xF8));
+            color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5)
+                | (r & 0xF8));
 #endif
 #ifdef BOARD_FTHR_REVA
             // Convert to RGB565
@@ -144,8 +141,7 @@ void load_input(void)
 
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
-        ;
+    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12) { }
 
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -181,7 +177,7 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = MXC_GPIO2;
     gpio_out.mask = MXC_GPIO_PIN_5;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -221,8 +217,8 @@ int main(void)
 
     camera_init(CAMERA_FREQ);
 
-    int ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA,
-                           dma_channel);
+    int ret = camera_setup(
+        IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel);
 
     if (ret != STATUS_OK) {
         printf("\tError returned from setting up camera. Error %d\n", ret);
@@ -236,7 +232,7 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
 
     while (1) {
@@ -247,7 +243,7 @@ int main(void)
         cnn_init(); // Bring state machine into consistent state
         cnn_load_bias();
         cnn_configure(); // Configure state machine
-        load_input();    // Load data input
+        load_input(); // Load data input
 
         LED_On(LED1);
         cnn_start(); // Start CNN processing

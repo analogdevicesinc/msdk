@@ -37,16 +37,16 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_device.h"
-#include "nvic_table.h"
 #include "crc.h"
 #include "dma.h"
+#include "mxc_device.h"
+#include "nvic_table.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /***** Definitions *****/
-#define POLY  0xEDB88320
+#define POLY 0xEDB88320
 #define CHECK 0xDEBB20E3
 
 /***** Globals *****/
@@ -80,11 +80,9 @@ void Test_CRC(int asynchronous)
 
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
 
-    for (i = 0; i < 100; i++) {
-        array[i] = i;
-    }
+    for (i = 0; i < 100; i++) { array[i] = i; }
 
-    mxc_crc_req_t crc_req = {array, 100, 0};
+    mxc_crc_req_t crc_req = { array, 100, 0 };
 
     MXC_CRC_Init();
     // Load CRC polynomial into crc polynomial register
@@ -94,8 +92,7 @@ void Test_CRC(int asynchronous)
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
 
-        while (wait)
-            ;
+        while (wait) { }
     } else {
         MXC_CRC_Compute(&crc_req);
     }
@@ -114,8 +111,7 @@ void Test_CRC(int asynchronous)
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
 
-        while (wait)
-            ;
+        while (wait) { }
     } else {
         MXC_CRC_Compute(&crc_req);
     }

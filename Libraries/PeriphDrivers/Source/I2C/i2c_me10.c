@@ -34,28 +34,28 @@
  *
  *************************************************************************** */
 
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
 #include "i2c.h"
 #include "i2c_revb.h"
-#include <stdio.h>
+#include "mxc_assert.h"
 #include "mxc_delay.h"
+#include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Definitions **** */
-#define I2C_ERROR                                                                                \
-    (MXC_F_I2C_INT_FL0_ARB_ER | MXC_F_I2C_INT_FL0_TO_ER | MXC_F_I2C_INT_FL0_ADDR_NACK_ER |       \
-     MXC_F_I2C_INT_FL0_DATA_ER | MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER | MXC_F_I2C_INT_FL0_START_ER | \
-     MXC_F_I2C_INT_FL0_STOP_ER)
+#define I2C_ERROR                                                                                  \
+    (MXC_F_I2C_INT_FL0_ARB_ER | MXC_F_I2C_INT_FL0_TO_ER | MXC_F_I2C_INT_FL0_ADDR_NACK_ER           \
+        | MXC_F_I2C_INT_FL0_DATA_ER | MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER                             \
+        | MXC_F_I2C_INT_FL0_START_ER | MXC_F_I2C_INT_FL0_STOP_ER)
 #define MASTER 1
-#define SLAVE  0
+#define SLAVE 0
 
 #define MXC_I2C_MAX_ADDR_WIDTH 0x7F
-#define MXC_I2C_STD_MODE       100000
-#define MXC_I2C_FAST_SPEED     400000
+#define MXC_I2C_STD_MODE 100000
+#define MXC_I2C_FAST_SPEED 400000
 
 /* **** Variable Declaration **** */
 
@@ -68,16 +68,16 @@ int MXC_I2C_Init(mxc_i2c_regs_t* i2c, int masterMode, unsigned int slaveAddr)
     int idx = MXC_I2C_GET_IDX(i2c);
 
     switch (idx) {
-        case 0:
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
-            MXC_GPIO_Config(&gpio_cfg_i2c0);
-            break;
-        case 1:
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C1);
-            MXC_GPIO_Config(&gpio_cfg_i2c1);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
+        MXC_GPIO_Config(&gpio_cfg_i2c0);
+        break;
+    case 1:
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C1);
+        MXC_GPIO_Config(&gpio_cfg_i2c1);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     if ((err = MXC_I2C_RevB_Init((mxc_i2c_revb_regs_t*)i2c, masterMode, slaveAddr)) != E_NO_ERROR) {
@@ -97,16 +97,16 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t* i2c, unsigned int slaveAddr, int idx)
 int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c)
 {
     switch (MXC_I2C_GET_IDX(i2c)) {
-        case 0:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_I2C0);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C0);
-            break;
-        case 1:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_I2C1);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C1);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_I2C0);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C0);
+        break;
+    case 1:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_I2C1);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C1);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -176,8 +176,8 @@ int MXC_I2C_ReadByte(mxc_i2c_regs_t* i2c, unsigned char* byte, int ack)
 /* ************************************************************************** */
 int MXC_I2C_ReadByteInteractive(mxc_i2c_regs_t* i2c, unsigned char* byte, mxc_i2c_getAck_t getAck)
 {
-    return MXC_I2C_RevB_ReadByteInteractive((mxc_i2c_revb_regs_t*)i2c, byte,
-                                            (mxc_i2c_revb_getAck_t)getAck);
+    return MXC_I2C_RevB_ReadByteInteractive(
+        (mxc_i2c_revb_regs_t*)i2c, byte, (mxc_i2c_revb_getAck_t)getAck);
 }
 
 /* ************************************************************************** */
@@ -199,24 +199,24 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsig
 }
 
 /* ************************************************************************** */
-int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
-                          mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_ReadRXFIFODMA(
+    mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
     switch (MXC_I2C_GET_IDX(i2c)) {
-        case 0:
-            config.reqsel = MXC_DMA_REQUEST_I2C0RX;
-            break;
-        case 1:
-            config.reqsel = MXC_DMA_REQUEST_I2C1RX;
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_I2C0RX;
+        break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_I2C1RX;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
-    return MXC_I2C_RevB_ReadRXFIFODMA((mxc_i2c_revb_regs_t*)i2c, bytes, len, callback, config,
-                                      MXC_DMA);
+    return MXC_I2C_RevB_ReadRXFIFODMA(
+        (mxc_i2c_revb_regs_t*)i2c, bytes, len, callback, config, MXC_DMA);
 }
 
 /* ************************************************************************** */
@@ -232,24 +232,24 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsi
 }
 
 /* ************************************************************************** */
-int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
-                           mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_WriteTXFIFODMA(
+    mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
     switch (MXC_I2C_GET_IDX(i2c)) {
-        case 0:
-            config.reqsel = MXC_DMA_REQUEST_I2C0TX;
-            break;
-        case 1:
-            config.reqsel = MXC_DMA_REQUEST_I2C1TX;
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_I2C0TX;
+        break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_I2C1TX;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
-    return MXC_I2C_RevB_WriteTXFIFODMA((mxc_i2c_revb_regs_t*)i2c, bytes, len, callback, config,
-                                       MXC_DMA);
+    return MXC_I2C_RevB_WriteTXFIFODMA(
+        (mxc_i2c_revb_regs_t*)i2c, bytes, len, callback, config, MXC_DMA);
 }
 
 /* ************************************************************************** */
@@ -418,11 +418,10 @@ void MXC_I2C_MasterAsyncHandler(int i2cNum)
 
 /* ************************************************************************* */
 unsigned int MXC_I2C_SlaveAsyncHandler(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callback,
-                                       unsigned int interruptEnables, int* retVal)
+    unsigned int interruptEnables, int* retVal)
 {
     return MXC_I2C_RevB_SlaveAsyncHandler((mxc_i2c_revb_regs_t*)i2c,
-                                          (mxc_i2c_revb_slave_handler_t)callback, interruptEnables,
-                                          retVal);
+        (mxc_i2c_revb_slave_handler_t)callback, interruptEnables, retVal);
 }
 
 /* ************************************************************************* */

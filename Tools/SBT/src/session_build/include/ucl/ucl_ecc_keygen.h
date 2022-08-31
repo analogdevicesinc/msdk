@@ -3,18 +3,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus  */
-#include <ucl/ucl_retdefs.h>
-#include <ucl/ucl_types.h>
+#include <ucl/ecdsa_generic_api.h>
 #include <ucl/ucl_config.h>
 #include <ucl/ucl_defs.h>
-#include <ucl/ucl_sys.h>
+#include <ucl/ucl_retdefs.h>
+#include <ucl/ucl_rsa.h>
 #include <ucl/ucl_sha1.h>
 #include <ucl/ucl_sha224.h>
 #include <ucl/ucl_sha256.h>
 #include <ucl/ucl_sha384.h>
 #include <ucl/ucl_sha512.h>
-#include <ucl/ucl_rsa.h>
-#include <ucl/ecdsa_generic_api.h>
+#include <ucl/ucl_sys.h>
+#include <ucl/ucl_types.h>
 /** @defgroup UCL_ECC_KEYGEN ECC keys generation.
  * ECC keys generation.
  *
@@ -35,8 +35,8 @@ extern "C" {
  * @retval #UCL_STACK_ERROR if the UCL stack has a problem
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_generic(ucl_type_ecc_u8_affine_point Q, u8* d,
-                                  ucl_type_curve* curve_params);
+int ucl_ecc_keygeneration_generic(
+    ucl_type_ecc_u8_affine_point Q, u8* d, ucl_type_curve* curve_params);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-160
  * using the API introduced in the UCL 2.4.9

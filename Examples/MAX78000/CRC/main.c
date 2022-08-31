@@ -37,19 +37,19 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "nvic_table.h"
 #include "board.h"
 #include "crc.h"
 #include "dma.h"
+#include "mxc_device.h"
+#include "nvic_table.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
-#define POLY  0xEDB88320
+#define POLY 0xEDB88320
 #define CHECK 0xDEBB20E3
 
-#define SYNC  0
+#define SYNC 0
 #define ASYNC 1
 
 #define DATA_LENGTH 100
@@ -83,15 +83,13 @@ void Test_CRC(int asynchronous)
 
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
 
-    for (i = 0; i < DATA_LENGTH; i++) {
-        array[i] = i;
-    }
+    for (i = 0; i < DATA_LENGTH; i++) { array[i] = i; }
 
     // define the CRC parameters
     mxc_crc_req_t crc_req = {
-        array,       // pointer to data
+        array, // pointer to data
         DATA_LENGTH, // length of data
-        0            // initial crc result
+        0 // initial crc result
     };
 
     MXC_CRC_Init();
@@ -102,8 +100,7 @@ void Test_CRC(int asynchronous)
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
 
-        while (wait)
-            ;
+        while (wait) { }
     } else {
         MXC_CRC_Compute(&crc_req);
     }
@@ -122,8 +119,7 @@ void Test_CRC(int asynchronous)
         wait = 1;
         MXC_CRC_ComputeAsync(&crc_req);
 
-        while (wait)
-            ;
+        while (wait) { }
     } else {
         MXC_CRC_Compute(&crc_req);
     }
@@ -141,7 +137,7 @@ int main(void)
 
     Test_CRC(SYNC);
 
-    //Release DMA Channel 0 to use it for CRC transaction (Any DMA channel can be used)
+    // Release DMA Channel 0 to use it for CRC transaction (Any DMA channel can be used)
     MXC_DMA_ReleaseChannel(0);
     MXC_NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler);
     NVIC_EnableIRQ(DMA0_IRQn);
@@ -156,6 +152,5 @@ int main(void)
 
     printf("\n\n");
 
-    while (1)
-        ;
+    while (1) { }
 }

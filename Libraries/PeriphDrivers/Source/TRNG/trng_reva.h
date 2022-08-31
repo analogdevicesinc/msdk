@@ -45,6 +45,6 @@ int MXC_TRNG_RevA_Shutdown(void);
 void MXC_TRNG_RevA_Handler(mxc_trng_reva_regs_t* trng);
 int MXC_TRNG_RevA_RandomInt(mxc_trng_reva_regs_t* trng);
 int MXC_TRNG_RevA_Random(uint8_t* data, uint32_t len);
-void MXC_TRNG_RevA_RandomAsync(mxc_trng_reva_regs_t* trng, uint8_t* data, uint32_t len,
-                               mxc_trng_complete_t callback);
+void MXC_TRNG_RevA_RandomAsync(
+    mxc_trng_reva_regs_t* trng, uint8_t* data, uint32_t len, mxc_trng_complete_t callback);
 void MXC_TRNG_RevA_GenerateKey(mxc_trng_reva_regs_t* trng);

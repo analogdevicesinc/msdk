@@ -32,34 +32,34 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
+#include "board.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "board.h"
 #include "tpu.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /***** Definitions *****/
 #define ARR_SIZE 512
 
 /***** Globals *****/
-char temp[] = {0x00, 0x00, 0x00};
+char temp[] = { 0x00, 0x00, 0x00 };
 
-char multiplier_data[] = {0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
-                          0xf0, 0xde, 0xbc, 0x9a, 0x78, 0x56, 0x34, 0x12};
+char multiplier_data[] = { 0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe, 0xf0, 0xde, 0xbc, 0x9a,
+    0x78, 0x56, 0x34, 0x12 };
 
-char multiplicand_data[] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+char multiplicand_data[] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00 };
 
-char exponent_data[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-                        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f};
+char exponent_data[] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    0xff, 0xff, 0xff, 0x7f };
 
-char modulus_data[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-                       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f};
+char modulus_data[] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+    0xff, 0xff, 0xff, 0x7f };
 
-char result_data[] = {0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
-                      0xf0, 0xde, 0xbc, 0x9a, 0x78, 0x56, 0x34, 0x12};
+char result_data[] = { 0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe, 0xf0, 0xde, 0xbc, 0x9a, 0x78,
+    0x56, 0x34, 0x12 };
 
 /***** Functions *****/
 void ascii_to_byte(const char* src, char* dst, int len)
@@ -80,9 +80,9 @@ void ascii_to_byte(const char* src, char* dst, int len)
 unsigned int findLength(int num)
 {
     unsigned int len = 0;
-    len              = num / 8;
+    len = num / 8;
     if (num % 8 != 0) {
-        len++; //rounding up
+        len++; // rounding up
     }
     return len;
 }
@@ -111,34 +111,28 @@ int main(void)
     if (retval != E_SUCCESS) {
         printf("Failed MAA_Init().\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
     len = findLength(len);
 
     retval = MXC_TPU_MAA_Compute(MXC_TPU_MAA_EXP, multiplier_data, multiplicand_data, exponent_data,
-                                 modulus_data, result, len);
+        modulus_data, result, len);
     if (retval != E_SUCCESS) {
         printf("Failed MAA_Compute().\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
-    //Fit into four byte array
+    // Fit into four byte array
     printf("Computed:\n");
-    for (i = 0; i < len / 4; ++i) {
-        printf("result[%d] = 0x%x\n", i, *(result + i));
-    }
+    for (i = 0; i < len / 4; ++i) { printf("result[%d] = 0x%x\n", i, *(result + i)); }
 
-    //Print out expected array to compare to calculated result
+    // Print out expected array to compare to calculated result
     printf("\nExpected:\n");
     for (i = 1; i <= len / 4; ++i) {
         printf("expected[%d] = 0x", i - 1);
-        for (j = 0; j < 4; ++j) {
-            printf("%02x", result_data[i * len / 4 - 1 - j]);
-        }
+        for (j = 0; j < 4; ++j) { printf("%02x", result_data[i * len / 4 - 1 - j]); }
         printf("\n");
     }
 
@@ -151,6 +145,5 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) {
-    }
+    while (1) { }
 }

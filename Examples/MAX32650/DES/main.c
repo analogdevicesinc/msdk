@@ -39,18 +39,18 @@
  ******************************************************************************/
 
 /* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
 #include "mxc_errors.h"
 #include "tpu.h"
 #include "tpu_regs.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /* **** Definitions **** */
-#define MXC_DES_DATA_LEN \
-    (64 /                \
-     8) /**< Number of bytes in an DES plaintext or cyphertext block, which are always 64-bits long. */
-#define MXC_DES_KEY_LEN  (64 / 8)  /**< Number of bytes in a TDES key. */
+#define MXC_DES_DATA_LEN                                                                           \
+    (64 / 8) /**< Number of bytes in an DES plaintext or cyphertext block, which are always        \
+                64-bits long. */
+#define MXC_DES_KEY_LEN (64 / 8) /**< Number of bytes in a TDES key. */
 #define MXC_TDES_KEY_LEN (192 / 8) /**< Number of bytes in a TDES key. */
 
 /* **** Globals **** */
@@ -212,6 +212,5 @@ int main(void)
     TDES_ECB_dec();
 
     printf("\nExample complete.\n");
-    while (1) {
-    }
+    while (1) { }
 }

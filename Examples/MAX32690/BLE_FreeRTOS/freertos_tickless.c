@@ -32,17 +32,17 @@
  ******************************************************************************/
 
 /* Maxim CMSIS */
-#include "mxc_device.h"
 #include "board.h"
-#include "mxc_assert.h"
-#include "lp.h"
-#include "pwrseq_regs.h"
-#include "wut.h"
-#include "mcr_regs.h"
 #include "icc.h"
-#include "pb.h"
 #include "led.h"
+#include "lp.h"
+#include "mcr_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "pb.h"
+#include "pwrseq_regs.h"
 #include "uart.h"
+#include "wut.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
@@ -50,16 +50,17 @@
 #include "task.h"
 
 /* Bluetooth Cordio library */
+#include "pal_bb.h"
 #include "pal_timer.h"
 #include "pal_uart.h"
-#include "pal_bb.h"
 
-#define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
-#define MIN_WUT_TICKS 100                      /* Minimum deep sleep time, units of 32 kHz ticks */
-#define WAKEUP_US     500                      /* Deep sleep recovery time, units of us */
+#define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks   \
+                                                */
+#define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
+#define WAKEUP_US 500 /* Deep sleep recovery time, units of us */
 
 /* Minimum ticks before SysTick interrupt, units of system clock ticks.
- * Convert CPU_CLOCK_HZ to units of ticks per us 
+ * Convert CPU_CLOCK_HZ to units of ticks per us
  */
 #define MIN_SYSTICK (configCPU_CLOCK_HZ / 1000000 /* ticks / us */ * 10 /* us */)
 
@@ -114,8 +115,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     /* Calculate the number of WUT ticks, but we need one to synchronize */
-    idleTicks = (uint64_t)(xExpectedIdleTime - 1) * (uint64_t)configRTC_TICK_RATE_HZ /
-                (uint64_t)configTICK_RATE_HZ;
+    idleTicks = (uint64_t)(xExpectedIdleTime - 1) * (uint64_t)configRTC_TICK_RATE_HZ
+        / (uint64_t)configTICK_RATE_HZ;
 
     if (idleTicks > MAX_WUT_TICKS) {
         idleTicks = MAX_WUT_TICKS;
@@ -133,8 +134,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* If a context switch is pending or a task is waiting for the scheduler
        to be unsuspended then abandon the low power entry. */
     /* Also check the MXC drivers for any in-progress activity */
-    if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
-        (freertos_permit_tickless() != E_NO_ERROR)) {
+    if ((eTaskConfirmSleepModeStatus() == eAbortSleep)
+        || (freertos_permit_tickless() != E_NO_ERROR)) {
         /* Re-enable interrupts - see comments above the cpsid instruction()
            above. */
         __asm volatile("cpsie i");
@@ -152,7 +153,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     if (!schTimerActive) {
         uint32_t ts;
         if (PalBbGetTimestamp(&ts)) {
-            /*Determine if PalBb is active, return if we get a valid time stamp indicating 
+            /*Determine if PalBb is active, return if we get a valid time stamp indicating
              * that the scheduler is waiting for a PalBb event */
 
             /* Re-enable interrupts - see comments above the cpsid instruction()
@@ -175,7 +176,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         /* Snapshot the current WUT value with the PalBb clock */
         MXC_WUT_Store();
         preCapture = MXC_WUT_GetCount();
-        schUsec    = PalTimerGetExpTime();
+        schUsec = PalTimerGetExpTime();
 
         /* Adjust idleTicks for the time it takes to restart the BLE hardware */
         idleTicks -= ((WAKEUP_US)*configRTC_TICK_RATE_HZ / 1000000);
@@ -184,15 +185,15 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         if (schUsec < WAKEUP_US) {
             bleSleepTicks = 0;
         } else {
-            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US) *
-                            (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)BB_CLK_RATE_HZ;
+            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US)
+                * (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)BB_CLK_RATE_HZ;
         }
     } else {
         /* Snapshot the current WUT value */
         MXC_WUT_Edge();
-        preCapture    = MXC_WUT_GetCount();
+        preCapture = MXC_WUT_GetCount();
         bleSleepTicks = 0;
-        schUsec       = 0;
+        schUsec = 0;
     }
 
     /* Sleep for the shortest tick duration */
@@ -239,8 +240,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
             /* Restart the BLE scheduler timer */
             dsWutTicks = MXC_WUT->cnt - preCapture;
-            schUsecElapsed =
-                (uint64_t)dsWutTicks * (uint64_t)1000000 / (uint64_t)configRTC_TICK_RATE_HZ;
+            schUsecElapsed
+                = (uint64_t)dsWutTicks * (uint64_t)1000000 / (uint64_t)configRTC_TICK_RATE_HZ;
 
             int palTimerStartTicks = schUsec - schUsecElapsed;
             if (palTimerStartTicks < 1) {
@@ -253,13 +254,13 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Recalculate dsWutTicks for the FreeRTOS tick counter update */
     MXC_WUT_Edge();
     postCapture = MXC_WUT_GetCount();
-    dsWutTicks  = postCapture - preCapture;
+    dsWutTicks = postCapture - preCapture;
 
     /*
      * Advance ticks by # actually elapsed
      */
-    dsSysTickPeriods =
-        (uint64_t)dsWutTicks * (uint64_t)configTICK_RATE_HZ / (uint64_t)configRTC_TICK_RATE_HZ;
+    dsSysTickPeriods
+        = (uint64_t)dsWutTicks * (uint64_t)configTICK_RATE_HZ / (uint64_t)configRTC_TICK_RATE_HZ;
     vTaskStepTick(dsSysTickPeriods);
 
     /* Re-enable SysTick */

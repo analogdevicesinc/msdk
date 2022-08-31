@@ -1,41 +1,41 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
 // includes
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 // Defines
 #define CAM_OV7670 (1)
@@ -44,21 +44,21 @@
 #define CAM_GC0308 (4) // implementation not finalized yet
 
 #define ACTIVE_CAMERA CAM_OV7725
-#define CAMERA_FREQ   (15 * 1000 * 1000) //PT generates ~12.5MHz for 15MHz
+#define CAMERA_FREQ (15 * 1000 * 1000) // PT generates ~12.5MHz for 15MHz
 
+#include "gc0308_regs.h"
+#include "ov2640_regs.h"
 #include "ov7670_regs.h"
 #include "ov7725_regs.h"
-#include "ov2640_regs.h"
-#include "gc0308_regs.h"
 
 /******************************** Type Definitions ***************************/
 typedef enum {
     PIXFORMAT_INVALID = 0,
-    PIXFORMAT_BINARY,    // 1BPP/BINARY
+    PIXFORMAT_BINARY, // 1BPP/BINARY
     PIXFORMAT_GRAYSCALE, // 1BPP/GRAYSCALE
-    PIXFORMAT_RGB565,    // 2BPP/RGB565
-    PIXFORMAT_YUV422,    // 2BPP/YUV422
-    PIXFORMAT_BAYER,     // 1BPP/RAW
+    PIXFORMAT_RGB565, // 2BPP/RGB565
+    PIXFORMAT_YUV422, // 2BPP/YUV422
+    PIXFORMAT_BAYER, // 1BPP/RAW
 } pixformat_t;
 
 typedef enum {
@@ -68,7 +68,7 @@ typedef enum {
     FRAMESIZE_CIF, // 352x288
     // VGA Resolutions
     FRAMESIZE_QVGA, // 320x240
-    FRAMESIZE_VGA,  // 640x480
+    FRAMESIZE_VGA, // 640x480
 } framesize_t;
 
 typedef enum {

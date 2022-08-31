@@ -34,10 +34,10 @@
  *
  **************************************************************************** */
 
-#include <stddef.h>
-#include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "pb.h"
+#include "mxc_assert.h"
+#include "mxc_errors.h"
+#include <stddef.h>
 
 /* ************************************************************************** */
 

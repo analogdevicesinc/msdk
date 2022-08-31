@@ -1,7 +1,7 @@
 /**
  * @file    mxc_lock.h
  * @brief   Exclusive access lock utility functions.
-*/
+ */
 
 /* ****************************************************************************
  * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.

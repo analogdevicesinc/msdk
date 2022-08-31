@@ -37,13 +37,13 @@
  ******************************************************************************/
 
 /* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_errors.h"
 #include "board.h"
+#include "mxc_errors.h"
 #include "tpu.h"
 #include "tpu_regs.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /* **** Definitions **** */
 
@@ -77,8 +77,8 @@ int main(void)
 {
     printf("\n***** CRC Example *****\n");
 
-    uint8_t data[] = {0x14, 0x78, 0x9C, 0xDE};
-    uint8_t len    = sizeof(data) / sizeof(data[0]);
+    uint8_t data[] = { 0x14, 0x78, 0x9C, 0xDE };
+    uint8_t len = sizeof(data) / sizeof(data[0]);
     uint32_t sw_crc;
     uint32_t hw_crc;
 
@@ -89,10 +89,10 @@ int main(void)
 
     printf("CRC16:\n");
 
-    //Calculate correct result
+    // Calculate correct result
     sw_crc = crc_sw(data, len, MXC_TPU_CRC16);
 
-    //Generate hardware result
+    // Generate hardware result
     if (MXC_TPU_CRC(data, len, MXC_TPU_CRC16, &hw_crc) != E_SUCCESS) {
         printf("Failed CRYPTO_CRC()\n");
         return -1;
@@ -109,7 +109,7 @@ int main(void)
 
     printf("\n");
 
-    //Call CRYPTO_Crc_Config() again to reset
+    // Call CRYPTO_Crc_Config() again to reset
     if (MXC_TPU_CRC_Config() != E_SUCCESS) {
         printf("Failed CRYPTO_Crc_Config()\n");
         return -1;
@@ -117,10 +117,10 @@ int main(void)
 
     printf("CRC32:\n");
 
-    //Calculate correct result
+    // Calculate correct result
     sw_crc = crc_sw(data, len, MXC_TPU_CRC32_ETHERNET);
 
-    //Generate hardware result
+    // Generate hardware result
     if (MXC_TPU_CRC(data, len, MXC_TPU_CRC32_ETHERNET, &hw_crc) != E_SUCCESS) {
         printf("Failed CRYPTO_CRC()\n");
         return -1;
@@ -138,6 +138,5 @@ int main(void)
 
     printf("Example complete.\n");
 
-    while (1) {
-    }
+    while (1) { }
 }

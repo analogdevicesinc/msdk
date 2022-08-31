@@ -1,35 +1,35 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /**
  * @file    main.c
@@ -40,25 +40,25 @@
  *          and written.
  */
 
-#include <stdio.h>
 #include <stddef.h>
+#include <stdio.h>
 
 #include <MAX32xxx.h>
 
+#include "descriptors.h"
+#include "enumerate.h"
+#include "msc.h"
+#include "mscmem.h"
 #include "usb.h"
 #include "usb_event.h"
 #include "usb_protocol.h"
-#include "enumerate.h"
-#include "msc.h"
-#include "descriptors.h"
-#include "mscmem.h"
 
 /***** Definitions *****/
-#define EVENT_ENUM_COMP   MAXUSB_NUM_EVENTS
+#define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS
 #define EVENT_REMOTE_WAKE (EVENT_ENUM_COMP + 1)
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 /***** Global Data *****/
 int remoteWake;
@@ -81,21 +81,27 @@ static int eventCallback(maxusb_event_t evt, void* data);
 
 /* This EP assignment must match the Configuration Descriptor */
 static const msc_cfg_t msc_cfg = {
-    1,                    /* EP OUT */
+    1, /* EP OUT */
     MXC_USBHS_MAX_PACKET, /* OUT max packet size */
-    2,                    /* EP IN */
+    2, /* EP IN */
     MXC_USBHS_MAX_PACKET, /* IN max packet size */
 };
 
 static const msc_idstrings_t ids = {
-    "MAXIM",       /* Vendor string.  Maximum of 8 bytes */
+    "MAXIM", /* Vendor string.  Maximum of 8 bytes */
     "MSC Example", /* Product string.  Maximum of 16 bytes */
-    "1.0"          /* Version string.  Maximum of 4 bytes */
+    "1.0" /* Version string.  Maximum of 4 bytes */
 };
 
 /* Functions to control "disk" memory. See msc.h for definitions. */
 static const msc_mem_t mem = {
-    mscmem_Init, mscmem_Start, mscmem_Stop, mscmem_Ready, mscmem_Size, mscmem_Read, mscmem_Write,
+    mscmem_Init,
+    mscmem_Start,
+    mscmem_Stop,
+    mscmem_Ready,
+    mscmem_Size,
+    mscmem_Read,
+    mscmem_Write,
 };
 
 /******************************************************************************/
@@ -120,30 +126,28 @@ int main(void)
 
     /* Initialize state */
     configured = 0;
-    suspended  = 0;
-    evtFlags   = 0;
+    suspended = 0;
+    evtFlags = 0;
     remoteWake = 0;
 
     /* Start out in full speed */
-    usb_opts.enable_hs         = 0;
-    usb_opts.delay_us          = usDelay; /* Function which will be used for delays */
-    usb_opts.init_callback     = usbStartupCallback;
+    usb_opts.enable_hs = 0;
+    usb_opts.delay_us = usDelay; /* Function which will be used for delays */
+    usb_opts.init_callback = usbStartupCallback;
     usb_opts.shutdown_callback = usbShutdownCallback;
 
     /* Initialize the usb module */
     if (MXC_USB_Init(&usb_opts) != 0) {
         printf("MXC_USB_Init() failed\n");
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Initialize the enumeration module */
     if (enum_init() != 0) {
         printf("enum_init() failed\n");
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Register enumeration data */
@@ -165,8 +169,7 @@ int main(void)
     if (msc_init(&config_descriptor.msc_interface_descriptor, &ids, &mem) != 0) {
         printf("msc_init() failed\n");
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Register callback */
@@ -268,8 +271,9 @@ static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
     if (sud->wValue == config_descriptor.config_descriptor.bConfigurationValue) {
         configured = 1;
         MXC_SETBIT(&evtFlags, EVENT_ENUM_COMP);
-        return msc_configure(&msc_cfg, config_descriptor.msc_interface_descriptor
-                                           .bInterfaceNumber); /* Configure the device class */
+        return msc_configure(&msc_cfg,
+            config_descriptor.msc_interface_descriptor
+                .bInterfaceNumber); /* Configure the device class */
     } else if (sud->wValue == 0) {
         configured = 0;
         return msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
@@ -311,44 +315,44 @@ static int eventCallback(maxusb_event_t evt, void* data)
     MXC_SETBIT(&evtFlags, evt);
 
     switch (evt) {
-        case MAXUSB_EVENT_NOVBUS:
-            MXC_USB_EventDisable(MAXUSB_EVENT_BRST);
-            MXC_USB_EventDisable(MAXUSB_EVENT_SUSP);
-            MXC_USB_EventDisable(MAXUSB_EVENT_DPACT);
-            MXC_USB_Disconnect();
-            configured = 0;
-            enum_clearconfig();
-            msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
-            usbAppSleep();
-            break;
+    case MAXUSB_EVENT_NOVBUS:
+        MXC_USB_EventDisable(MAXUSB_EVENT_BRST);
+        MXC_USB_EventDisable(MAXUSB_EVENT_SUSP);
+        MXC_USB_EventDisable(MAXUSB_EVENT_DPACT);
+        MXC_USB_Disconnect();
+        configured = 0;
+        enum_clearconfig();
+        msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        usbAppSleep();
+        break;
 
-        case MAXUSB_EVENT_VBUS:
-            MXC_USB_EventClear(MAXUSB_EVENT_BRST);
-            MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
-            MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
-            MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
-            MXC_USB_Connect();
-            usbAppSleep();
-            break;
+    case MAXUSB_EVENT_VBUS:
+        MXC_USB_EventClear(MAXUSB_EVENT_BRST);
+        MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
+        MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
+        MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
+        MXC_USB_Connect();
+        usbAppSleep();
+        break;
 
-        case MAXUSB_EVENT_BRST:
-            usbAppWakeup();
-            enum_clearconfig();
-            msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
-            configured = 0;
-            suspended  = 0;
-            break;
+    case MAXUSB_EVENT_BRST:
+        usbAppWakeup();
+        enum_clearconfig();
+        msc_deconfigure(config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        configured = 0;
+        suspended = 0;
+        break;
 
-        case MAXUSB_EVENT_SUSP:
-            usbAppSleep();
-            break;
+    case MAXUSB_EVENT_SUSP:
+        usbAppSleep();
+        break;
 
-        case MAXUSB_EVENT_DPACT:
-            usbAppWakeup();
-            break;
+    case MAXUSB_EVENT_DPACT:
+        usbAppWakeup();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return 0;

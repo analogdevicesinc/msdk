@@ -1,9 +1,9 @@
 /**************************************************************************************************
-* Copyright (C) 2019-2021 Maxim Integrated Products, Inc. All Rights Reserved.
-*
-* Maxim Integrated Products, Inc. Default Copyright Notice:
-* https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
-**************************************************************************************************/
+ * Copyright (C) 2019-2021 Maxim Integrated Products, Inc. All Rights Reserved.
+ *
+ * Maxim Integrated Products, Inc. Default Copyright Notice:
+ * https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
+ **************************************************************************************************/
 
 /*
  * This header file was automatically generated for the kws20_v3 network from a template.
@@ -19,7 +19,7 @@ typedef int16_t q15_t;
 
 /* Return codes */
 #define CNN_FAIL 0
-#define CNN_OK   1
+#define CNN_OK 1
 
 /*
   SUMMARY OF OPS
@@ -47,16 +47,16 @@ typedef int16_t q15_t;
 
 /* Port pin actions used to signal that processing is active */
 
-#define CNN_START    LED_On(1)
+#define CNN_START LED_On(1)
 #define CNN_COMPLETE LED_Off(1)
-#define SYS_START    LED_On(0)
+#define SYS_START LED_On(0)
 #define SYS_COMPLETE LED_Off(0)
 
 /* Run software SoftMax on unloaded data */
 void softmax_q17p14_q15(const q31_t* vec_in, const uint16_t dim_vec, q15_t* p_out);
 /* Shift the input, then calculate SoftMax */
-void softmax_shift_q17p14_q15(q31_t* vec_in, const uint16_t dim_vec, uint8_t in_shift,
-                              q15_t* p_out);
+void softmax_shift_q17p14_q15(
+    q31_t* vec_in, const uint16_t dim_vec, uint8_t in_shift, q15_t* p_out);
 
 /* Stopwatch - holds the runtime when accelerator finishes */
 extern volatile uint32_t cnn_time;

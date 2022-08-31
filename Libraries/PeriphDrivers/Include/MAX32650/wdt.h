@@ -44,9 +44,9 @@
 #define _WDT_H_
 
 /* **** Includes **** */
-#include <stdint.h>
 #include "mxc_sys.h"
 #include "wdt_regs.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,7 +60,7 @@ extern "C" {
 
 /* **** Definitions **** */
 
-/** @brief Watchdog period enumeration. 
+/** @brief Watchdog period enumeration.
     Used to configure the period of the watchdog interrupt */
 typedef enum {
     MXC_WDT_PERIOD_2_31 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW31, /**< Period 2^31 */

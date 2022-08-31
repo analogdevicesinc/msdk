@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -40,8 +40,8 @@
  */
 
 /*******************************      INCLUDES    ****************************/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "spi_config.h"
@@ -74,9 +74,9 @@ int main(void)
 {
     int ret = 0;
     unsigned int i;
-    unsigned char tx_buff[TEST_BUFF_SIZE]       = {0};
-    unsigned char rx_buff[TEST_BUFF_SIZE]       = {0};
-    unsigned char expect_packet[TEST_BUFF_SIZE] = {0};
+    unsigned char tx_buff[TEST_BUFF_SIZE] = { 0 };
+    unsigned char rx_buff[TEST_BUFF_SIZE] = { 0 };
+    unsigned char expect_packet[TEST_BUFF_SIZE] = { 0 };
     unsigned int len;
 
     printf("---------------------------------------------------------------------------------------"
@@ -101,7 +101,7 @@ int main(void)
            "--------\n\n");
 
     for (i = 0; i < TEST_BUFF_SIZE; i++) {
-        tx_buff[i]       = i + 1;
+        tx_buff[i] = i + 1;
         expect_packet[i] = 0xFF - i;
     }
 

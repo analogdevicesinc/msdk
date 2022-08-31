@@ -1,35 +1,35 @@
 /*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 /**
 * @file cnn_memutils.h
 * @brief Utility functions for accessing CNN data SRAM as a virtually contiguous block
@@ -38,19 +38,19 @@
 
 #ifndef CNN_H
 #define CNN_h
-#include <stdint.h>
-#include "mxc.h"
 #include "gcfr_regs.h"
 #include "max78000.h"
+#include "mxc.h"
+#include <stdint.h>
 
 #define CNN_QUAD0_DSRAM_START 0x50400000
-#define CNN_QUAD0_DSRAM_END   0x5041FFFC
+#define CNN_QUAD0_DSRAM_END 0x5041FFFC
 #define CNN_QUAD1_DSRAM_START 0x50800000
-#define CNN_QUAD1_DSRAM_END   0x5081FFFC
+#define CNN_QUAD1_DSRAM_END 0x5081FFFC
 #define CNN_QUAD2_DSRAM_START 0x50C00000
-#define CNN_QUAD2_DSRAM_END   0x50C1FFFC
+#define CNN_QUAD2_DSRAM_END 0x50C1FFFC
 #define CNN_QUAD3_DSRAM_START 0x51000000
-#define CNN_QUAD3_DSRAM_END   0x5101FFFC
+#define CNN_QUAD3_DSRAM_END 0x5101FFFC
 
 // Enables all 4 CNN quadrants and their memories.
 int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
@@ -62,9 +62,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv =
-        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
-        clock_divider | clock_source;
+    MXC_GCR->pclkdiv
+        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
+        | clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     return 1;
@@ -112,17 +112,17 @@ int cnn_init(void)
 static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr)
 {
     int val = (int)ptr;
-    if (val != CNN_QUAD0_DSRAM_END && val != CNN_QUAD1_DSRAM_END && val != CNN_QUAD2_DSRAM_END &&
-        val != CNN_QUAD3_DSRAM_END) {
+    if (val != CNN_QUAD0_DSRAM_END && val != CNN_QUAD1_DSRAM_END && val != CNN_QUAD2_DSRAM_END
+        && val != CNN_QUAD3_DSRAM_END) {
         return ptr + 1;
-    } else if (val == CNN_QUAD0_DSRAM_END) {     // Quadrant 0 end
+    } else if (val == CNN_QUAD0_DSRAM_END) { // Quadrant 0 end
         return (uint32_t*)CNN_QUAD1_DSRAM_START; // Quadrant 1 start
-    } else if (val == CNN_QUAD1_DSRAM_END) {     // Quadrant 1 end
+    } else if (val == CNN_QUAD1_DSRAM_END) { // Quadrant 1 end
         return (uint32_t*)CNN_QUAD2_DSRAM_START; // Quadrant 2 start
-    } else if (val == CNN_QUAD2_DSRAM_END) {     // Quadrant 2 end
+    } else if (val == CNN_QUAD2_DSRAM_END) { // Quadrant 2 end
         return (uint32_t*)CNN_QUAD3_DSRAM_START; // Quadrant 3 start
-    } else if (val >= CNN_QUAD3_DSRAM_END) {     // Quadrant 3 end
-        return NULL;                             // End of CNN SRAM, return NULL
+    } else if (val >= CNN_QUAD3_DSRAM_END) { // Quadrant 3 end
+        return NULL; // End of CNN SRAM, return NULL
     } else {
         return NULL;
     }
@@ -145,7 +145,7 @@ static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_
     union bytes_to_word u;
 
     while (i < len) {
-        u.b   = &bytes[i];
+        u.b = &bytes[i];
         *addr = *u.word;
         // ^ De-reference using the typecast through the union.
         // Bytes do not need to be reversed in this case, but if
@@ -161,16 +161,16 @@ static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_
 // Returns the next-most CNN data SRAM address after all bytes have been read.
 static inline uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, uint32_t* addr)
 {
-    int i         = 0;
+    int i = 0;
     uint32_t word = *addr;
 
     while (i < len) {
-        out_bytes[i]     = word & 0xFF;
+        out_bytes[i] = word & 0xFF;
         out_bytes[i + 1] = (word >> 8) & 0xFF;
         out_bytes[i + 2] = (word >> 16) & 0xFF;
         out_bytes[i + 3] = (word >> 24) & 0xFF;
-        addr             = increment_cnn_sram_ptr(addr);
-        word             = *addr;
+        addr = increment_cnn_sram_ptr(addr);
+        word = *addr;
         i += 4;
     }
 

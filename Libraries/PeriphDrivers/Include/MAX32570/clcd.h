@@ -41,8 +41,8 @@
 #define _CLCD_H_
 
 /* **** Includes **** */
-#include "mxc_device.h"
 #include "clcd_regs.h"
+#include "mxc_device.h"
 #include "mxc_sys.h"
 
 #ifdef __cplusplus
@@ -82,19 +82,19 @@ typedef enum {
  *          CLCD and prepare it for outputting data to the screen.
  */
 typedef struct clcd_cfg {
-    uint32_t Width;           ///< The visible width of the display in pixels
-    uint32_t Height;          ///< The visible height of the display in pixels
-    uint32_t ClkFreq;         ///< The requested bit clock frequency in Hz
-    uint32_t VertFrontPorch;  ///< The vertical front porch size in lines
-    uint32_t VertBackPorch;   ///< The vertical back porch size in lines
+    uint32_t Width; ///< The visible width of the display in pixels
+    uint32_t Height; ///< The visible height of the display in pixels
+    uint32_t ClkFreq; ///< The requested bit clock frequency in Hz
+    uint32_t VertFrontPorch; ///< The vertical front porch size in lines
+    uint32_t VertBackPorch; ///< The vertical back porch size in lines
     uint32_t VSYNCPulseWidth; ///< The width of the VSYNC pulse in line clocks
     uint32_t HorizFrontPorch; ///< The horizontal front porch size in lines
-    uint32_t HorizBackPorch;  ///< The horizontal back porch size in lines
+    uint32_t HorizBackPorch; ///< The horizontal back porch size in lines
     uint32_t HSYNCPulseWidth; ///< The width of the HSYNC pulse in bit clocks
-    uint32_t* palette;        ///< Pointer to the color palette data (used for bpp < 16)
-    uint32_t paletteSize;     ///< Size of the color palette data (must be 768 bytes)
-    uint32_t bpp;             ///< Number of bits per pixel (see users guide for values)
-    void* frameBuffer;        ///< Pointer to the frame buffer, this must remain allocated
+    uint32_t* palette; ///< Pointer to the color palette data (used for bpp < 16)
+    uint32_t paletteSize; ///< Size of the color palette data (must be 768 bytes)
+    uint32_t bpp; ///< Number of bits per pixel (see users guide for values)
+    void* frameBuffer; ///< Pointer to the frame buffer, this must remain allocated
     ///< the entire time the CLCD is in use, unless the frameBuffer
     ///< pointer is changed with CLCD_SetFrameBuffer
 } mxc_clcd_cfg_t;

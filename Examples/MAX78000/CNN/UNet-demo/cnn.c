@@ -32,32 +32,40 @@
  ******************************************************************************/
 
 // unet_v5
-// Created using ./ai8xize.py --verbose --test-dir sdk/Examples/MAX78000/CNN --prefix unet_v5 --checkpoint-file ../ai8x-training/unet_visualize/unet_qat_best_q_v5.pth.tar --config-file ../ai8x-training/unet_visualize/unet_v5.yaml --sample-input ../ai8x-training/unet_visualize/sample_camvid.npy --overlap-data --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint --mlator --sample-numpy-filename sampleoutput.npy
+// Created using ./ai8xize.py --verbose --test-dir sdk/Examples/MAX78000/CNN --prefix unet_v5
+// --checkpoint-file ../ai8x-training/unet_visualize/unet_qat_best_q_v5.pth.tar --config-file
+// ../ai8x-training/unet_visualize/unet_v5.yaml --sample-input
+// ../ai8x-training/unet_visualize/sample_camvid.npy --overlap-data --device MAX78000 --compact-data
+// --mexpress --timer 0 --display-checkpoint --mlator --sample-numpy-filename sampleoutput.npy
 
 // DO NOT EDIT - regenerate this file instead!
 
 // Configuring 12 layers:
-// Layer 0: 3x80x80 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 4x80x80 output
-// Layer 1: 4x80x80 (HWC data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 8x40x40 output
-// Layer 2: 8x40x40 (HWC data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x20x20 output
-// Layer 3: 32x20x20 (HWC data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x10x10 output
-// Layer 4: 64x10x10 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 32x20x20 output
-// Layer 5: 64x20x20 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 60x20x20 output
-// Layer 6: 60x20x20 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 8x40x40 output
-// Layer 7: 16x40x40 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 48x40x40 output
-// Layer 8: 48x40x40 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 4x80x80 output
-// Layer 9: 8x80x80 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x80x80 output
-// Layer 10: 64x80x80 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x80x80 output
-// Layer 11: 32x80x80 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 4x80x80 output
+// Layer 0: 3x80x80 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
+// 4x80x80 output Layer 1: 4x80x80 (HWC data), 2x2 max pool with stride 2/2, conv2d with kernel size
+// 3x3, stride 1/1, pad 1/1, ReLU, 8x40x40 output Layer 2: 8x40x40 (HWC data), 2x2 max pool with
+// stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 32x20x20 output Layer 3:
+// 32x20x20 (HWC data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad
+// 1/1, ReLU, 64x10x10 output Layer 4: 64x10x10 (HWC data), no pooling, convtranspose2d with kernel
+// size 3x3, stride 2/2, pad 1/1, no activation, 32x20x20 output Layer 5: 64x20x20 (HWC data), no
+// pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 60x20x20 output Layer 6:
+// 60x20x20 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no
+// activation, 8x40x40 output Layer 7: 16x40x40 (HWC data), no pooling, conv2d with kernel size 3x3,
+// stride 1/1, pad 1/1, ReLU, 48x40x40 output Layer 8: 48x40x40 (HWC data), no pooling,
+// convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 4x80x80 output Layer 9:
+// 8x80x80 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x80x80
+// output Layer 10: 64x80x80 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad
+// 1/1, ReLU, 32x80x80 output Layer 11: 32x80x80 (HWC data), no pooling, conv2d with kernel size
+// 1x1, stride 1/1, pad 0/0, no activation, 4x80x80 output
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc.h"
-#include "gcfr_regs.h"
 #include "cnn.h"
+#include "gcfr_regs.h"
+#include "mxc.h"
 #include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void CNN_ISR(void)
 {
@@ -93,22 +101,20 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 // Kernels:
-static const uint32_t kernels_0[]  = KERNELS_0;
-static const uint32_t kernels_1[]  = KERNELS_1;
-static const uint32_t kernels_2[]  = KERNELS_2;
-static const uint32_t kernels_3[]  = KERNELS_3;
-static const uint32_t kernels_4[]  = KERNELS_4;
-static const uint32_t kernels_5[]  = KERNELS_5;
-static const uint32_t kernels_6[]  = KERNELS_6;
-static const uint32_t kernels_7[]  = KERNELS_7;
-static const uint32_t kernels_8[]  = KERNELS_8;
-static const uint32_t kernels_9[]  = KERNELS_9;
+static const uint32_t kernels_0[] = KERNELS_0;
+static const uint32_t kernels_1[] = KERNELS_1;
+static const uint32_t kernels_2[] = KERNELS_2;
+static const uint32_t kernels_3[] = KERNELS_3;
+static const uint32_t kernels_4[] = KERNELS_4;
+static const uint32_t kernels_5[] = KERNELS_5;
+static const uint32_t kernels_6[] = KERNELS_6;
+static const uint32_t kernels_7[] = KERNELS_7;
+static const uint32_t kernels_8[] = KERNELS_8;
+static const uint32_t kernels_9[] = KERNELS_9;
 static const uint32_t kernels_10[] = KERNELS_10;
 static const uint32_t kernels_11[] = KERNELS_11;
 static const uint32_t kernels_12[] = KERNELS_12;
@@ -305,9 +311,7 @@ static const uint8_t bias_3[] = BIAS_3;
 
 static void memcpy_8to32(uint32_t* dst, const uint8_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 int cnn_load_bias(void)
@@ -964,7 +968,7 @@ int cnn_start(void)
     MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-    CNN_START;                                      // Allow capture of processing time
+    CNN_START; // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x00100009; // Master enable group 0
 
     return CNN_OK;
@@ -980,11 +984,11 @@ int cnn_unload(uint32_t* out_buf32)
     ctrl = (volatile uint32_t*)0x50100000;
     mlat = (volatile uint32_t*)0x50101000;
     // Channel 0
-    offs                              = 0x0000;
+    offs = 0x0000;
     *((volatile uint32_t*)0x50100310) = 0x00000000; // Set SRAM address
     *((volatile uint32_t*)0x50100a10) = 0x00000000; // Set pointer increment
-    *ctrl                             = 0x00010008; // Enable mlator, byte 0
-    asm volatile("" : "=m"(*mlat) : "r"(*mlat));    // Prime
+    *ctrl = 0x00010008; // Enable mlator, byte 0
+    asm volatile("" : "=m"(*mlat) : "r"(*mlat)); // Prime
     for (i = 0; i < 200; i++) {
         out_buf32[offs++] = *mlat;
         out_buf32[offs++] = *mlat;
@@ -999,8 +1003,8 @@ int cnn_unload(uint32_t* out_buf32)
     // Channel 1
     *((volatile uint32_t*)0x50100310) = 0x00000000; // Set SRAM address
     *((volatile uint32_t*)0x50100a10) = 0x00000000; // Set pointer increment
-    *ctrl                             = 0x00030008; // Enable mlator, byte 1
-    asm volatile("" : "=m"(*mlat) : "r"(*mlat));    // Prime
+    *ctrl = 0x00030008; // Enable mlator, byte 1
+    asm volatile("" : "=m"(*mlat) : "r"(*mlat)); // Prime
     for (i = 0; i < 200; i++) {
         out_buf32[offs++] = *mlat;
         out_buf32[offs++] = *mlat;
@@ -1015,8 +1019,8 @@ int cnn_unload(uint32_t* out_buf32)
     // Channel 2
     *((volatile uint32_t*)0x50100310) = 0x00000000; // Set SRAM address
     *((volatile uint32_t*)0x50100a10) = 0x00000000; // Set pointer increment
-    *ctrl                             = 0x00050008; // Enable mlator, byte 2
-    asm volatile("" : "=m"(*mlat) : "r"(*mlat));    // Prime
+    *ctrl = 0x00050008; // Enable mlator, byte 2
+    asm volatile("" : "=m"(*mlat) : "r"(*mlat)); // Prime
     for (i = 0; i < 200; i++) {
         out_buf32[offs++] = *mlat;
         out_buf32[offs++] = *mlat;
@@ -1031,8 +1035,8 @@ int cnn_unload(uint32_t* out_buf32)
     // Channel 3
     *((volatile uint32_t*)0x50100310) = 0x00000000; // Set SRAM address
     *((volatile uint32_t*)0x50100a10) = 0x00000000; // Set pointer increment
-    *ctrl                             = 0x00070008; // Enable mlator, byte 3
-    asm volatile("" : "=m"(*mlat) : "r"(*mlat));    // Prime
+    *ctrl = 0x00070008; // Enable mlator, byte 3
+    asm volatile("" : "=m"(*mlat) : "r"(*mlat)); // Prime
     for (i = 0; i < 200; i++) {
         out_buf32[offs++] = *mlat;
         out_buf32[offs++] = *mlat;
@@ -1057,9 +1061,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv =
-        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
-        clock_divider | clock_source;
+    MXC_GCR->pclkdiv
+        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
+        | clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -1072,7 +1076,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -1085,7 +1089,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);

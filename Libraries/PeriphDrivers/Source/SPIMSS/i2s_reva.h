@@ -31,14 +31,14 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include <stddef.h>
-#include <stdint.h>
 #include "i2s.h"
 #include "spimss_reva_regs.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
-int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* req,
-                      void (*dma_ctz_cb)(int, int));
+int MXC_I2S_RevA_Init(
+    mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* req, void (*dma_ctz_cb)(int, int));
 int MXC_I2S_RevA_Shutdown(mxc_spimss_reva_regs_t* spimss);
 int MXC_I2S_RevA_Mute(mxc_spimss_reva_regs_t* spimss);
 int MXC_I2S_RevA_Unmute(mxc_spimss_reva_regs_t* spimss);

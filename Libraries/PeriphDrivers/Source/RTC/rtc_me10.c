@@ -32,12 +32,12 @@
  *
  **************************************************************************** */
 
-#include <stddef.h>
-#include "rtc.h"
-#include "rtc_reva.h"
-#include "mxc_sys.h"
 #include "mxc_delay.h"
 #include "mxc_errors.h"
+#include "mxc_sys.h"
+#include "rtc.h"
+#include "rtc_reva.h"
+#include <stddef.h>
 
 // *****************************************************************************
 int MXC_RTC_SetTimeofdayAlarm(uint32_t ras)
@@ -76,15 +76,15 @@ int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
 int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t fq)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
-                                   fq);
+    return MXC_RTC_RevA_SquareWave(
+        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED, fq);
 }
 
 // *****************************************************************************
 int MXC_RTC_SquareWaveStop(void)
 {
-    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED,
-                                   0);
+    return MXC_RTC_RevA_SquareWave(
+        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED, 0);
 }
 
 // *****************************************************************************

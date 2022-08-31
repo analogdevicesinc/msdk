@@ -39,27 +39,27 @@
  *
  *************************************************************************** */
 
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_errors.h"
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
+#include "i2s_reva.h"
 #include "dma.h"
 #include "i2s.h"
-#include "i2s_reva.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
 #include "spimss.h"
 #include "spimss_reva.h"
+#include <stddef.h>
+#include <stdint.h>
 
 #define I2S_CHANNELS 2
-#define I2S_WIDTH    16
+#define I2S_WIDTH 16
 
 static int tx_dma_channel = -1;
 static int rx_dma_channel = -1;
 
-int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* config,
-                      void (*dma_ctz_cb)(int, int))
+int MXC_I2S_RevA_Init(
+    mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* config, void (*dma_ctz_cb)(int, int))
 {
     unsigned int baud;
     uint16_t clkdiv;
@@ -74,13 +74,13 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* co
     spimss->mode = MXC_S_SPIMSS_REVA_MODE_NUMBITS_BITS16 | MXC_F_SPIMSS_REVA_MODE_SS_IO;
 
     spimss->dma = (1 << MXC_F_SPIMSS_DMA_TX_FIFO_LVL_POS) | /* TX DMA request FIFO level */
-                  MXC_F_SPIMSS_DMA_TX_FIFO_CLR |            /* Clear TX FIFO */
-                  (1 << MXC_F_SPIMSS_DMA_RX_FIFO_LVL_POS) | /* RX DMA request FIFO level */
-                  MXC_F_SPIMSS_DMA_RX_FIFO_CLR;             /* Clear RX FIFO */
+        MXC_F_SPIMSS_DMA_TX_FIFO_CLR | /* Clear TX FIFO */
+        (1 << MXC_F_SPIMSS_DMA_RX_FIFO_LVL_POS) | /* RX DMA request FIFO level */
+        MXC_F_SPIMSS_DMA_RX_FIFO_CLR; /* Clear RX FIFO */
 
     /* Setup I2S register from i2s_cfg_t */
-    spimss->i2s_ctrl = config->justify << MXC_F_SPIMSS_REVA_I2S_CTRL_I2S_LJ_POS |
-                       config->audio_mode << MXC_F_SPIMSS_I2S_CTRL_I2S_MONO_POS;
+    spimss->i2s_ctrl = config->justify << MXC_F_SPIMSS_REVA_I2S_CTRL_I2S_LJ_POS
+        | config->audio_mode << MXC_F_SPIMSS_I2S_CTRL_I2S_MONO_POS;
 
     /* Determine divisor for baud rate generator */
     baud = config->sample_rate * I2S_CHANNELS * I2S_WIDTH;
@@ -133,10 +133,10 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* co
         dma_config.srcinc_en = 1;
         dma_config.dstinc_en = 0;
 
-        srcdst.ch     = tx_dma_channel;
+        srcdst.ch = tx_dma_channel;
         srcdst.source = config->src_addr;
-        srcdst.dest   = NULL;
-        srcdst.len    = config->length;
+        srcdst.dest = NULL;
+        srcdst.len = config->length;
 
         MXC_DMA_ConfigChannel(dma_config, srcdst);
         MXC_DMA_SetChannelInterruptEn(tx_dma_channel, 0, 1);
@@ -152,7 +152,7 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* co
     if (config->audio_direction / 2) {
         spimss->dma |= MXC_F_SPIMSS_REVA_DMA_RX_DMA_EN | MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CLR;
         if ((err = MXC_DMA_Init()) != E_NO_ERROR) {
-            if (err != E_BAD_STATE) { //DMA already initialized
+            if (err != E_BAD_STATE) { // DMA already initialized
                 return err;
             }
         }
@@ -177,10 +177,10 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t* spimss, const mxc_i2s_config_t* co
         dma_config.srcinc_en = 0;
         dma_config.dstinc_en = 1;
 
-        srcdst.ch     = rx_dma_channel;
+        srcdst.ch = rx_dma_channel;
         srcdst.source = NULL;
-        srcdst.dest   = config->dst_addr;
-        srcdst.len    = config->length;
+        srcdst.dest = config->dst_addr;
+        srcdst.len = config->length;
 
         MXC_DMA_ConfigChannel(dma_config, srcdst);
         MXC_DMA_SetChannelInterruptEn(rx_dma_channel, 0, 1);
@@ -210,11 +210,11 @@ int MXC_I2S_RevA_Shutdown(mxc_spimss_reva_regs_t* spimss)
     int retTx = E_NO_ERROR;
     int retRx = E_NO_ERROR;
 
-    spimss->ctrl     = 0;
+    spimss->ctrl = 0;
     spimss->i2s_ctrl = 0;
-    spimss->brg      = 0;
-    spimss->mode     = 0;
-    spimss->dma      = 0;
+    spimss->brg = 0;
+    spimss->mode = 0;
+    spimss->dma = 0;
 
     if (tx_dma_channel != -1) {
         retTx = MXC_DMA_ReleaseChannel(tx_dma_channel);
@@ -330,18 +330,18 @@ int MXC_I2S_RevA_DMA_SetAddrCnt(void* src_addr, void* dst_addr, unsigned int cou
     mxc_dma_srcdst_t srcdst;
 
     if (tx_dma_channel != -1) {
-        srcdst.ch     = tx_dma_channel;
+        srcdst.ch = tx_dma_channel;
         srcdst.source = src_addr;
-        srcdst.dest   = dst_addr;
-        srcdst.len    = count;
-        retTx         = MXC_DMA_SetSrcDst(srcdst);
+        srcdst.dest = dst_addr;
+        srcdst.len = count;
+        retTx = MXC_DMA_SetSrcDst(srcdst);
     }
     if (rx_dma_channel != -1) {
-        srcdst.ch     = rx_dma_channel;
+        srcdst.ch = rx_dma_channel;
         srcdst.source = src_addr;
-        srcdst.dest   = dst_addr;
-        srcdst.len    = count;
-        retRx         = MXC_DMA_SetSrcDst(srcdst);
+        srcdst.dest = dst_addr;
+        srcdst.len = count;
+        retRx = MXC_DMA_SetSrcDst(srcdst);
     }
 
     if (retTx != E_NO_ERROR) {
@@ -359,18 +359,18 @@ int MXC_I2S_RevA_DMA_SetReload(void* src_addr, void* dst_addr, unsigned int coun
     mxc_dma_srcdst_t srcdst;
 
     if (tx_dma_channel != -1) {
-        srcdst.ch     = tx_dma_channel;
+        srcdst.ch = tx_dma_channel;
         srcdst.source = src_addr;
-        srcdst.dest   = dst_addr;
-        srcdst.len    = count;
-        retTx         = MXC_DMA_SetSrcReload(srcdst);
+        srcdst.dest = dst_addr;
+        srcdst.len = count;
+        retTx = MXC_DMA_SetSrcReload(srcdst);
     }
     if (rx_dma_channel != -1) {
-        srcdst.ch     = rx_dma_channel;
+        srcdst.ch = rx_dma_channel;
         srcdst.source = src_addr;
-        srcdst.dest   = dst_addr;
-        srcdst.len    = count;
-        retRx         = MXC_DMA_SetSrcReload(srcdst);
+        srcdst.dest = dst_addr;
+        srcdst.len = count;
+        retRx = MXC_DMA_SetSrcReload(srcdst);
     }
 
     if (retTx != E_NO_ERROR) {

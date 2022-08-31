@@ -32,9 +32,9 @@
  ******************************************************************************/
 
 /*******************************      INCLUDES    ****************************/
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 
 #include "bootloader.h"
 
@@ -85,8 +85,8 @@ static void hexdump(const char* title, unsigned char* buf, unsigned int len)
     g_plt_funcs.printf("\r\n");
 }
 
-static int send_rcv(unsigned char* tx, int txLen, unsigned char* rx, int rxLen, int delay_ms,
-                    int delay_step_ms)
+static int send_rcv(
+    unsigned char* tx, int txLen, unsigned char* rx, int rxLen, int delay_ms, int delay_step_ms)
 {
     int ret = 0;
     int i;
@@ -163,7 +163,7 @@ int bl_update_interface(comm_read_t read_func, comm_write_t write_func)
 {
     int ret = 0;
 
-    g_plt_funcs.read  = read_func;
+    g_plt_funcs.read = read_func;
     g_plt_funcs.write = write_func;
 
     return ret;
@@ -185,8 +185,8 @@ int bl_hard_reset_then_enter_bl_mode(void)
 
 int bl_enter_bl_mode(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x08};
+    int ret = 0;
+    unsigned char req[] = { BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x08 };
     unsigned char rsp[1] = {
         0xFF,
     };
@@ -198,8 +198,8 @@ int bl_enter_bl_mode(void)
 
 int bl_exit_bl_mode(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x00};
+    int ret = 0;
+    unsigned char req[] = { BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x00 };
     unsigned char rsp[1] = {
         0xFF,
     };
@@ -211,8 +211,8 @@ int bl_exit_bl_mode(void)
 
 int bl_get_partnumber(char* buf, unsigned int maxLen)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdDeviceInfo_MAIN_CMD, BLCmdDeviceInfo_GET_PLATFORM_TYPE};
+    int ret = 0;
+    unsigned char req[] = { BLCmdDeviceInfo_MAIN_CMD, BLCmdDeviceInfo_GET_PLATFORM_TYPE };
     unsigned char rsp[2] = {
         0xFF,
     };
@@ -221,21 +221,21 @@ int bl_get_partnumber(char* buf, unsigned int maxLen)
 
     if (ret == 0) {
         switch (rsp[1]) {
-            case 1:
-                memcpy(buf, "MAX32662", MIN(strlen("MAX32662") + 1, maxLen));
-                break;
-            case 3:
-                memcpy(buf, "MAX32670", MIN(strlen("MAX32670") + 1, maxLen));
-                break;
-            case 5:
-                memcpy(buf, "MAX78000", MIN(strlen("MAX78000") + 1, maxLen));
-                break;
-            case 6:
-                memcpy(buf, "MAX32655", MIN(strlen("MAX32655") + 1, maxLen));
-                break;
-            default:
-                memcpy(buf, "UNKNOWN", MIN(strlen("UNKNOWN") + 1, maxLen));
-                break;
+        case 1:
+            memcpy(buf, "MAX32662", MIN(strlen("MAX32662") + 1, maxLen));
+            break;
+        case 3:
+            memcpy(buf, "MAX32670", MIN(strlen("MAX32670") + 1, maxLen));
+            break;
+        case 5:
+            memcpy(buf, "MAX78000", MIN(strlen("MAX78000") + 1, maxLen));
+            break;
+        case 6:
+            memcpy(buf, "MAX32655", MIN(strlen("MAX32655") + 1, maxLen));
+            break;
+        default:
+            memcpy(buf, "UNKNOWN", MIN(strlen("UNKNOWN") + 1, maxLen));
+            break;
         }
     }
 
@@ -244,8 +244,8 @@ int bl_get_partnumber(char* buf, unsigned int maxLen)
 
 int bl_get_version(char* buf, unsigned int maxLen)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_VERSION};
+    int ret = 0;
+    unsigned char req[] = { BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_VERSION };
     unsigned char rsp[4] = {
         0xFF,
     };
@@ -261,8 +261,8 @@ int bl_get_version(char* buf, unsigned int maxLen)
 
 int bl_get_usn(char* buf, unsigned int maxLen)
 {
-    int ret               = 0;
-    unsigned char req[]   = {BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_USN};
+    int ret = 0;
+    unsigned char req[] = { BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_USN };
     unsigned char rsp[25] = {
         0xFF,
     };
@@ -278,8 +278,8 @@ int bl_get_usn(char* buf, unsigned int maxLen)
 
 int bl_get_page_size(unsigned int* page_size)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_PAGE_SIZE};
+    int ret = 0;
+    unsigned char req[] = { BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_PAGE_SIZE };
     unsigned char rsp[3] = {
         0xFF,
     };
@@ -295,8 +295,8 @@ int bl_get_page_size(unsigned int* page_size)
 
 int bl_erase_app(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdFlash_MAIN_CMD, BLCmdFlash_ERASE_APP_MEMORY};
+    int ret = 0;
+    unsigned char req[] = { BLCmdFlash_MAIN_CMD, BLCmdFlash_ERASE_APP_MEMORY };
     unsigned char rsp[1] = {
         0xFF,
     };
@@ -395,7 +395,7 @@ int bl_flash_image(const char* image)
     g_plt_funcs.printf("MSBL Info\r\n");
     g_plt_funcs.printf("------------------------------------------------\r\n");
     g_plt_funcs.printf("%-15s: %c%c%c%c\r\n", "magic", header.magic[0], header.magic[1],
-                       header.magic[2], header.magic[3]);
+        header.magic[2], header.magic[3]);
     g_plt_funcs.printf("%-15s: %d\r\n", "formatVersion", header.formatVersion);
     g_plt_funcs.printf("%-15s: %s\r\n", "target", header.target);
     g_plt_funcs.printf("%-15s: %s\r\n", "EncType", header.enc_type);
@@ -442,8 +442,8 @@ int bl_flash_image(const char* image)
     for (i = 0; i < header.numPages; i++) {
         ret = bl_write_page(&image[sizeof(MsblHeader_t) + i * page_len], page_len);
         if (ret) {
-            g_plt_funcs.printf("Flashing page %d/%d  [FAILED] err:%d\r\n", i + 1, header.numPages,
-                               ret);
+            g_plt_funcs.printf(
+                "Flashing page %d/%d  [FAILED] err:%d\r\n", i + 1, header.numPages, ret);
             return ret;
         }
         g_plt_funcs.printf("Flashing page %d/%d  [SUCCESS]\r\n", i + 1, header.numPages);
@@ -544,8 +544,8 @@ int bl_update_cfg_set_i2c_addr(const char* target_bl_version, unsigned char addr
         else if (addr == 0xAA)
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 3);
         else {
-            g_plt_funcs.printf("%s version bootloader does not support 0x%X I2C addr",
-                               target_bl_version, addr);
+            g_plt_funcs.printf(
+                "%s version bootloader does not support 0x%X I2C addr", target_bl_version, addr);
         }
     } else {
         ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, addr);
@@ -616,8 +616,8 @@ int b_update_cfg_set_bl_exit_timeout(unsigned short timeout)
 
 int bl_flash_bl_cfg(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdConfigWrite_MAIN_CMD, BLCmdConfigWrite_SAVE_SETTINGS};
+    int ret = 0;
+    unsigned char req[] = { BLCmdConfigWrite_MAIN_CMD, BLCmdConfigWrite_SAVE_SETTINGS };
     unsigned char rsp[1] = {
         0xFF,
     };

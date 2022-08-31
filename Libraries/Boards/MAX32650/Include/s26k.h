@@ -44,8 +44,8 @@
 #define _S26K_H_
 
 /* **** Includes **** */
-#include "mxc_config.h"
 #include "hpb.h"
+#include "mxc_config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -134,7 +134,7 @@ void S26K_GetCFI(uint32_t offset, uint16_t* data, unsigned len);
 
 /**
  * @brief Get Sector Protection
- * @param addr The address 
+ * @param addr The address
  * @return Sector status
  */
 uint16_t S26K_GetSectorProtection(uint32_t addr);

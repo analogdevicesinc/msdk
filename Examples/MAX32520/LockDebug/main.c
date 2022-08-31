@@ -1,35 +1,35 @@
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /**
  * @file    main.c
@@ -38,23 +38,23 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_device.h"
 #include "flc.h"
-#include "mxc_delay.h"
 #include "led.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "pb.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 typedef struct {
-    unsigned int locks;   /* # of locks left */
+    unsigned int locks; /* # of locks left */
     unsigned int unlocks; /* # of unlocks left */
-    unsigned int locked;  /* 1 if part is locked, 0 if unlocked */
+    unsigned int locked; /* 1 if part is locked, 0 if unlocked */
 } debug_status_t;
 
 /***** Globals *****/
@@ -73,7 +73,7 @@ int debug_lock(unsigned int permanent)
 {
     volatile uint32_t* lock0 = (uint32_t*)0x10800030;
     volatile uint32_t* lock1 = (uint32_t*)0x10800034;
-    uint32_t word            = 0x0;
+    uint32_t word = 0x0;
     debug_status_t st;
     int result = E_UNKNOWN;
 
@@ -91,7 +91,7 @@ int debug_lock(unsigned int permanent)
 
             /* Otherwise, can lock it with one of the words */
             if ((*lock0 & 0x0000ffff) == 0x0000ffff) {
-                word   = 0xffffa5a5;
+                word = 0xffffa5a5;
                 result = MXC_FLC_Write((uint32_t)lock0, 4, &word);
 
                 if (permanent && (result == E_NO_ERROR)) {
@@ -101,32 +101,32 @@ int debug_lock(unsigned int permanent)
                 }
             } else {
                 if ((*lock0 & 0xffff0000) == 0xffff0000) {
-                    word   = 0x5a5affff;
+                    word = 0x5a5affff;
                     result = MXC_FLC_Write((uint32_t)lock0, 4, &word);
 
                     if (permanent && (result == E_NO_ERROR)) {
                         /* Write the 64th bit to a zero */
-                        word   = 0x7fffffff;
+                        word = 0x7fffffff;
                         result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                     }
                 } else {
                     if ((*lock1 & 0x0000ffff) == 0x0000ffff) {
                         if (permanent) {
                             /* Write the 64th bit to a zero */
-                            word   = 0x7fffa5a5;
+                            word = 0x7fffa5a5;
                             result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                         } else {
-                            word   = 0xffffa5a5;
+                            word = 0xffffa5a5;
                             result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                         }
                     } else {
                         if ((*lock1 & 0xffff0000) == 0xffff0000) {
                             if (permanent) {
                                 /* Write the 64th bit to a zero */
-                                word   = 0x5a5affff;
+                                word = 0x5a5affff;
                                 result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                             } else {
-                                word   = 0xda5affff;
+                                word = 0xda5affff;
                                 result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                             }
                         } else {
@@ -173,27 +173,27 @@ int debug_unlock(unsigned int permanent)
             result = E_UNKNOWN;
 
             if ((*lock0 & 0x0000ffff) != 0x0000ffff) {
-                tmp    = (*lock0) & 0xffff0000;
+                tmp = (*lock0) & 0xffff0000;
                 result = MXC_FLC_Write((uint32_t)lock0, 4, &tmp);
             }
 
             if ((*lock0 & 0xffff0000) != 0xffff0000) {
-                tmp    = (*lock0) & 0x0000ffff;
+                tmp = (*lock0) & 0x0000ffff;
                 result = MXC_FLC_Write((uint32_t)lock0, 4, &tmp);
             }
 
             if ((*lock1 & 0x0000ffff) != 0x0000ffff) {
-                tmp    = (*lock1) & 0xffff0000;
+                tmp = (*lock1) & 0xffff0000;
                 result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
             }
 
             if ((*lock1 & 0xffff0000) != 0xffff0000) {
-                tmp    = (*lock1) & 0x8000ffff;
+                tmp = (*lock1) & 0x8000ffff;
                 result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
             }
 
             if (permanent) {
-                tmp    = (*lock1) & 0x7fffffff;
+                tmp = (*lock1) & 0x7fffffff;
                 result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
             }
 
@@ -218,60 +218,60 @@ unsigned int debug_status(debug_status_t* ptr)
 
     /* Check lower half-words */
     switch ((*lock0) & 0xffff) {
-        case 0xffff:
-            locks++;
-            break;
+    case 0xffff:
+        locks++;
+        break;
 
-        case 0xa5a5:
-            unlocks++;
-            break;
+    case 0xa5a5:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     switch (((*lock0) >> 16) & 0xffff) {
-        case 0xffff:
-            locks++;
-            break;
+    case 0xffff:
+        locks++;
+        break;
 
-        case 0x5a5a:
-            unlocks++;
-            break;
+    case 0x5a5a:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     /* Check upper half-words */
     switch ((*lock1) & 0xffff) {
-        case 0xffff:
-            locks++;
-            break;
+    case 0xffff:
+        locks++;
+        break;
 
-        case 0xa5a5:
-            unlocks++;
-            break;
+    case 0xa5a5:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     switch (((*lock1) >> 16) & 0x7fff) {
-        case 0x7fff:
-            locks++;
-            break;
+    case 0x7fff:
+        locks++;
+        break;
 
-        case 0x5a5a:
-            unlocks++;
-            break;
+    case 0x5a5a:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     if (unlocks) {
@@ -291,9 +291,9 @@ unsigned int debug_status(debug_status_t* ptr)
     MXC_FLC_LockInfoBlock(0x10800000);
 
     if (ptr) {
-        ptr->locks   = locks;
+        ptr->locks = locks;
         ptr->unlocks = unlocks;
-        ptr->locked  = locked;
+        ptr->locked = locked;
     }
 
     return locked;
@@ -331,7 +331,7 @@ int main(void)
 
     printf("debug_status = %d\n", y);
     printf("Locks left = %u, Unlocks left = %u, Debug port locked = %u\n", x.locks, x.unlocks,
-           x.locked);
+        x.locked);
 
     printf("\nPress button (SW2) to lock/unlock part.\n");
 
@@ -341,7 +341,7 @@ int main(void)
             printf(" -- BEFORE -- \n");
             y = debug_status(&x);
             printf("Locks left = %u, Unlocks left = %u, Debug port locked = %u\n", x.locks,
-                   x.unlocks, x.locked);
+                x.unlocks, x.locked);
 
             if (y) {
                 printf("Debug port LOCKED. Unlocking port.\n");
@@ -368,7 +368,7 @@ int main(void)
             printf(" -- AFTER -- \n");
             y = debug_status(&x);
             printf("Locks left = %u, Unlocks left = %u, Debug port locked = %u\n", x.locks,
-                   x.unlocks, x.locked);
+                x.unlocks, x.locked);
 
             /* Visually display locked (RED) or unlocked (GREEN) */
             if (y) {

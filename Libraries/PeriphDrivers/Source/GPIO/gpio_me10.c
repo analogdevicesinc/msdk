@@ -35,12 +35,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_errors.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
 #include "gpio.h"
 #include "gpio_common.h"
 #include "gpio_reva.h"
+#include "mxc_assert.h"
+#include "mxc_errors.h"
+#include "mxc_sys.h"
 #include <stddef.h>
 
 /* **** Definitions **** */
@@ -111,47 +111,47 @@ int MXC_GPIO_Reset(uint32_t port)
  *     0          |          0          |          0          |     Alternative 1
  *     0          |          1          |          0          |     Alternative 2
  *     0          |          0          |          1          |     GPIO (default)
-*/
+ */
 int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 {
     int err;
     mxc_gpio_regs_t* gpio = cfg->port;
 
     // Set the GPIO type
-    if ((err = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t*)gpio, cfg->func, cfg->mask)) !=
-        E_NO_ERROR) {
+    if ((err = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t*)gpio, cfg->func, cfg->mask))
+        != E_NO_ERROR) {
         return err;
     }
 
     // Configure the pad
     switch (cfg->pad) {
-        case MXC_GPIO_PAD_NONE:
-            gpio->pdpu_sel0 &= ~cfg->mask;
-            gpio->pdpu_sel1 &= ~cfg->mask;
-            gpio->pssel &= ~cfg->mask;
-            break;
-        case MXC_GPIO_PAD_WEAK_PULL_UP:
-            gpio->pdpu_sel0 |= cfg->mask;
-            gpio->pdpu_sel1 &= ~cfg->mask;
-            gpio->pssel |= cfg->mask;
-            break;
-        case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-            gpio->pdpu_sel0 &= ~cfg->mask;
-            gpio->pdpu_sel1 |= cfg->mask;
-            gpio->pssel |= cfg->mask;
-            break;
-        case MXC_GPIO_PAD_STRONG_PULL_UP:
-            gpio->pdpu_sel0 |= cfg->mask;
-            gpio->pdpu_sel1 &= ~cfg->mask;
-            gpio->pssel &= ~cfg->mask;
-            break;
-        case MXC_GPIO_PAD_STRONG_PULL_DOWN:
-            gpio->pdpu_sel0 &= ~cfg->mask;
-            gpio->pdpu_sel1 |= cfg->mask;
-            gpio->pssel &= ~cfg->mask;
-            break;
-        default:
-            return E_BAD_PARAM;
+    case MXC_GPIO_PAD_NONE:
+        gpio->pdpu_sel0 &= ~cfg->mask;
+        gpio->pdpu_sel1 &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
+        break;
+    case MXC_GPIO_PAD_WEAK_PULL_UP:
+        gpio->pdpu_sel0 |= cfg->mask;
+        gpio->pdpu_sel1 &= ~cfg->mask;
+        gpio->pssel |= cfg->mask;
+        break;
+    case MXC_GPIO_PAD_WEAK_PULL_DOWN:
+        gpio->pdpu_sel0 &= ~cfg->mask;
+        gpio->pdpu_sel1 |= cfg->mask;
+        gpio->pssel |= cfg->mask;
+        break;
+    case MXC_GPIO_PAD_STRONG_PULL_UP:
+        gpio->pdpu_sel0 |= cfg->mask;
+        gpio->pdpu_sel1 &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
+        break;
+    case MXC_GPIO_PAD_STRONG_PULL_DOWN:
+        gpio->pdpu_sel0 &= ~cfg->mask;
+        gpio->pdpu_sel1 |= cfg->mask;
+        gpio->pssel &= ~cfg->mask;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);

@@ -40,17 +40,17 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "led.h"
 #include "board.h"
 #include "gcr_regs.h"
+#include "led.h"
 #include "mcr_regs.h"
+#include "mxc_device.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 /***** Globals *****/
 volatile uint32_t badData;
@@ -66,7 +66,7 @@ uint32_t ramTop = (MXC_SRAM_MEM_BASE + 32768);
 
 void ECC_IRQHandler(void)
 {
-    eccErr  = MXC_GCR->eccerr;
+    eccErr = MXC_GCR->eccerr;
     eccDErr = MXC_GCR->eccced;
     eccAddr = MXC_GCR->eccaddr;
     eccFlag = 1;
@@ -181,9 +181,8 @@ int main(void)
     }
 
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail,
-           test_fail ? "FAIL!" : "Ok");
+        test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
-    while (1)
-        ;
+    while (1) { }
 }

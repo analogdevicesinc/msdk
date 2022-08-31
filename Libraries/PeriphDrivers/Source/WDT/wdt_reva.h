@@ -32,9 +32,9 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "wdt.h"
 #include "wdt_reva_regs.h"
@@ -42,7 +42,7 @@
 /* **** Definitions **** */
 typedef enum {
     MXC_WDT_REVA_DISABLE = 0,
-    MXC_WDT_REVA_ENABLE  = 1,
+    MXC_WDT_REVA_ENABLE = 1,
 } mxc_wdt_reva_en_t;
 
 /* **** Functions **** */

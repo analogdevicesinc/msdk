@@ -46,6 +46,5 @@
 /* ************************************************************************** */
 __weak void mxc_assert(const char* expr, const char* file, int line)
 {
-    while (1) {
-    }
+    while (1) { }
 }

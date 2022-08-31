@@ -26,10 +26,9 @@
  * @link ucl_sm3.h ucl_sm3.h @endlink
  *
  * SM3 is a data-digest algorithm and a component of
- * the chinese cryptographic algorithms standard (see http://www.oscca.gov.cn/UpFile /20101222141857786.pdf. and draft-shen-sm3-hash-00
- * The algorithm takes as input a data of arbitrary length and
- * produces as output a 256-bit "fingerprint" or "data digest"
- * of the input.@n
+ * the chinese cryptographic algorithms standard (see http://www.oscca.gov.cn/UpFile
+ * /20101222141857786.pdf. and draft-shen-sm3-hash-00 The algorithm takes as input a data of
+ * arbitrary length and produces as output a 256-bit "fingerprint" or "data digest" of the input.@n
  * @n
  *
  * <b>SM3 Descriptor:</b> @n
@@ -44,12 +43,12 @@
  *
  * @ingroup UCL_SM3
  */
-#define UCL_SM3          7
+#define UCL_SM3 7
 #define UCL_SM3_HASHSIZE 32
 
 typedef struct {
-    u32 total[2];  /*!< number of bytes processed  */
-    u32 state[8];  /*!< intermediate digest state  */
+    u32 total[2]; /*!< number of bytes processed  */
+    u32 state[8]; /*!< intermediate digest state  */
     u8 buffer[64]; /*!< data block being processed */
 
     u8 ipad[64]; /*!< HMAC: inner padding        */
@@ -231,6 +230,6 @@ int kdf_sm2_sm3(u8* secret_key, u8* z, int zlen, int klen);
 #ifdef __cplusplus
 }
 //#endif//HASH_SM3
-#endif //UCL_SM3.h
+#endif // UCL_SM3.h
 
 #endif /* ucl_sm3.h */

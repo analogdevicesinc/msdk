@@ -39,20 +39,20 @@
  ******************************************************************************/
 
 /* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "nvic_table.h"
 #include "mxc_errors.h"
+#include "nvic_table.h"
 #include "trng.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 /* **** Definitions **** */
-#define TRNG_32BIT_RND_NO 4  // Number of 32bit random numbers created
-#define LEN               16 // Length of one random number (bytes)
+#define TRNG_32BIT_RND_NO 4 // Number of 32bit random numbers created
+#define LEN 16 // Length of one random number (bytes)
 
 /* **** Globals **** */
-unsigned int rnd_no[TRNG_32BIT_RND_NO] = {0};
-uint8_t var_rnd_no[LEN]                = {0};
+unsigned int rnd_no[TRNG_32BIT_RND_NO] = { 0 };
+uint8_t var_rnd_no[LEN] = { 0 };
 volatile uint8_t TRNG_Async;
 
 // *****************************************************************************
@@ -72,7 +72,7 @@ int main(void)
 
     MXC_TRNG_Init();
 
-    //Reading and printing rnd 32-bit numbers
+    // Reading and printing rnd 32-bit numbers
     printf("%i Random 32 Bit Integers\n", TRNG_32BIT_RND_NO);
     int i;
     for (i = 0; i < TRNG_32BIT_RND_NO; i++) {
@@ -99,8 +99,7 @@ int main(void)
     NVIC_EnableIRQ(TRNG_IRQn);
     MXC_TRNG_RandomAsync(var_rnd_no, LEN, trng_callback);
 
-    while (TRNG_Async)
-        ;
+    while (TRNG_Async) { }
 
     for (i = 0; i < LEN; i++) {
         if (!(i % 4)) {
@@ -111,6 +110,5 @@ int main(void)
 
     printf("\n\nExample complete.\n");
 
-    while (1) {
-    }
+    while (1) { }
 }

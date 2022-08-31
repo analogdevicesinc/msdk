@@ -48,26 +48,26 @@ extern "C" {
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA1 digest signature verification</b>.
-   * Signature verification using the hash function SHA1.
-   *
-   * @param[in]  signature   Pointer to the signature to be checked
-   * @param[in]  hash        The original message digest to be verified
-   * @param[in]  hash_length The byte length of the digest
-   * @param[in]  keyPu       RSA public key
-   * @param[in] salt_length  Optional salt byte length
-   *
-   * @return Error code
-   *
-   * @retval #UCL_OK    if the signature is valid
-   * @retval #UCL_ERROR if the signature is invalid
-   *
-   * @see UCL_RSA
-   *
-   * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
-   */
+ * Signature verification using the hash function SHA1.
+ *
+ * @param[in]  signature   Pointer to the signature to be checked
+ * @param[in]  hash        The original message digest to be verified
+ * @param[in]  hash_length The byte length of the digest
+ * @param[in]  keyPu       RSA public key
+ * @param[in] salt_length  Optional salt byte length
+ *
+ * @return Error code
+ *
+ * @retval #UCL_OK    if the signature is valid
+ * @retval #UCL_ERROR if the signature is invalid
+ *
+ * @see UCL_RSA
+ *
+ * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
+ */
 
-int ucl_pkcs1_ssa_pss_sha1_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                         ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha1_verify_digest(
+    u8* signature, u8* hash, u32 hash_length, ucl_rsa_public_key_t* keyPu, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA1 signature verification</b>.
@@ -78,7 +78,7 @@ int ucl_pkcs1_ssa_pss_sha1_verify_digest(u8* signature, u8* hash, u32 hash_lengt
  * @param[in] message_length The message byte length
  * @param[in] keyPu          RSA public key
  * @param[in] salt_length    Optional salt byte length
- * 
+ *
  * @note The signature length is the modulus length
  *
  * @return Error code
@@ -90,8 +90,8 @@ int ucl_pkcs1_ssa_pss_sha1_verify_digest(u8* signature, u8* hash, u32 hash_lengt
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
  */
-int ucl_pkcs1_ssa_pss_sha1_verify(u8* signature, u8* message, u32 message_length,
-                                  ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha1_verify(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_public_key_t* keyPu, u32 salt_length);
 
 /** <b>RSASSA-PSS-SHA1 signature verification</b>.
  * Signature verification using the hash function SHA1.
@@ -113,8 +113,7 @@ int ucl_pkcs1_ssa_pss_sha1_verify(u8* signature, u8* message, u32 message_length
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
  */
 int __API__ ucl_pkcs1_ssa_pss_sha1_verify_(u8* signature, u8* message, u32 message_length,
-                                           ucl_rsa_public_key_t* keyPu, u32 salt_length,
-                                           int is_digest);
+    ucl_rsa_public_key_t* keyPu, u32 salt_length, int is_digest);
 
 /*============================================================================*/
 /** <b>RSA-SSA-PSS-SHA1 signature generation</b>.
@@ -128,7 +127,7 @@ int __API__ ucl_pkcs1_ssa_pss_sha1_verify_(u8* signature, u8* message, u32 messa
  * @param[in]  salt_length    Optional salt byte length
  *
  * @note The output length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if no error occurred
@@ -137,8 +136,8 @@ int __API__ ucl_pkcs1_ssa_pss_sha1_verify_(u8* signature, u8* message, u32 messa
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
  */
-int ucl_pkcs1_ssa_pss_sha1_sign(u8* signature, u8* message, u32 message_length,
-                                ucl_rsa_private_key_t* keyPr, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha1_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_private_key_t* keyPr, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSA-SSA-PSS-SHA1 signature generation</b>.
@@ -152,7 +151,7 @@ int ucl_pkcs1_ssa_pss_sha1_sign(u8* signature, u8* message, u32 message_length,
  * @param[in]  salt_length    Optional salt byte length
  *
  * @note The output length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if no error occurred
@@ -161,8 +160,8 @@ int ucl_pkcs1_ssa_pss_sha1_sign(u8* signature, u8* message, u32 message_length,
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
  */
-int ucl_pkcs1_ssa_pss_sha1_hashed_sign(u8* signature, u8* message, u32 message_length,
-                                       ucl_rsa_private_key_t* keyPr, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha1_hashed_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_private_key_t* keyPr, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA1 signature generation with CRT</b>.
@@ -176,7 +175,7 @@ int ucl_pkcs1_ssa_pss_sha1_hashed_sign(u8* signature, u8* message, u32 message_l
  * @param[in]  salt_length    Optional salt byte length
  *
  * @note The output length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if no error occurred
@@ -186,7 +185,7 @@ int ucl_pkcs1_ssa_pss_sha1_hashed_sign(u8* signature, u8* message, u32 message_l
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
  */
 int ucl_pkcs1_ssa_pss_sha1_crt_sign(u8* signature, u8* message, u32 message_length,
-                                    ucl_rsa_crt_private_key_t* key, u32 salt_length);
+    ucl_rsa_crt_private_key_t* key, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA1 signature generation with CRT</b>.
@@ -200,7 +199,7 @@ int ucl_pkcs1_ssa_pss_sha1_crt_sign(u8* signature, u8* message, u32 message_leng
  * @param[in]  salt_length    Optional salt byte length
  *
  * @note The output length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if no error occurred
@@ -210,7 +209,7 @@ int ucl_pkcs1_ssa_pss_sha1_crt_sign(u8* signature, u8* message, u32 message_leng
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA1
  */
 int ucl_pkcs1_ssa_pss_sha1_hashed_crt_sign(u8* signature, u8* message, u32 message_length,
-                                           ucl_rsa_crt_private_key_t* key, u32 salt_length);
+    ucl_rsa_crt_private_key_t* key, u32 salt_length);
 
 #ifdef __cplusplus
 }

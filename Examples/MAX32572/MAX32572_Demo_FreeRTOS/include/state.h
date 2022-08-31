@@ -46,9 +46,9 @@
 
 #include <FreeRTOS.h>
 #include <FreeRTOSConfig.h>
-#include <task.h>
 #include <queue.h>
 #include <semphr.h>
+#include <task.h>
 
 /********************************* 		DEFINES		 *************************/
 

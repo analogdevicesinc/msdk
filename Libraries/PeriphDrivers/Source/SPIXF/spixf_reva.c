@@ -2,9 +2,9 @@
  * Copyright(C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"), 
+ * copy of this software and associated documentation files(the "Software"),
  * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
  *
@@ -15,7 +15,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -24,7 +24,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents, 
+ * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -32,39 +32,39 @@
  *************************************************************************** */
 
 /****** Includes *******/
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_device.h"
+#include "spixf_reva.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "spixf.h"
 #include "spixfc_fifo_reva_regs.h"
 #include "spixfc_reva_regs.h"
 #include "spixfm_reva_regs.h"
-#include "spixf_reva.h"
+#include <stddef.h>
+#include <stdint.h>
 
 /***** Definitions *****/
-#define MXC_SPIXF_HEADER_DEASS_SS    1
-#define MAX_SCLK                     0x10
-#define MXC_SPIXF_HEADER_TX_DIR      1
-#define NOT_HEADER_DATA              0xF000 // 0xF makes sure it is not a header
-#define MXC_SPIXF_MAX_BYTE_LEN       32
-#define MXC_SPIXF_MAX_PAGE_LEN       32
+#define MXC_SPIXF_HEADER_DEASS_SS 1
+#define MAX_SCLK 0x10
+#define MXC_SPIXF_HEADER_TX_DIR 1
+#define NOT_HEADER_DATA 0xF000 // 0xF makes sure it is not a header
+#define MXC_SPIXF_MAX_BYTE_LEN 32
+#define MXC_SPIXF_MAX_PAGE_LEN 32
 #define MXC_SPIXF_NUM_BYTES_PER_PAGE 32
 
 /* Bit positions for the 16-BIT Header. */
 #define MXC_SPIXF_HEADER_DIRECTION_POS 0
-#define MXC_SPIXF_HEADER_UNITS_POS     2
-#define MXC_SPIXF_HEADER_SIZE_POS      4
-#define MXC_SPIXF_HEADER_WIDTH_POS     9
-#define MXC_SPIXF_HEADER_DEASS_SS_POS  13
+#define MXC_SPIXF_HEADER_UNITS_POS 2
+#define MXC_SPIXF_HEADER_SIZE_POS 4
+#define MXC_SPIXF_HEADER_WIDTH_POS 9
+#define MXC_SPIXF_HEADER_DEASS_SS_POS 13
 
 uint8_t mxc_spixf_busy(void);
-static int SPIXFC_ReadRXFIFO(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* fifo,
-                             uint8_t* data, int len);
-static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
-                                mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req);
+static int SPIXFC_ReadRXFIFO(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* fifo, uint8_t* data, int len);
+static void SPIXFC_TransHandler(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req);
 
 /******* Globals *******/
 typedef struct {
@@ -84,10 +84,10 @@ uint8_t mxc_spixf_busy(void)
 }
 
 int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                        uint32_t cmdval, uint32_t frequency)
+    uint32_t cmdval, uint32_t frequency)
 {
-    states.req       = NULL;
-    states.head_rem  = 0;
+    states.req = NULL;
+    states.head_rem = 0;
     spixfc->gen_ctrl = 0;
     MXC_SPIXF_RevA_RXFIFOEnable(spixfc);
     MXC_SPIXF_RevA_TXFIFOEnable(spixfc);
@@ -131,7 +131,7 @@ void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t* spixfc)
 }
 
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl)
+    mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl)
 {
     spixfm->io_ctrl = 0;
 
@@ -155,11 +155,11 @@ void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ds_t sclk_d
 }
 
 int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                          mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, uint32_t len, uint8_t deass)
+    mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, uint32_t len, uint8_t deass)
 {
     mxc_spixfc_fifo_reva_regs_t* fifo;
     uint16_t header = MXC_SPIXF_HEADER_TX_DIR;
-    uint32_t num    = len;
+    uint32_t num = len;
 
     // Make sure the SPIXFC has been initialized
     MXC_ASSERT(MXC_SPIXF_RevA_IsEnabled(spixfc));
@@ -174,8 +174,7 @@ int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t
     }
 
     // Wait for any previous data to transmit
-    while (spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT)
-        ;
+    while (spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) { }
 
     // Disable the feedback clock
     MXC_SPIXF_RevA_SCKFeedbackDisable(spixfc, spixfm);
@@ -208,8 +207,7 @@ int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t
     }
 
     // Wait for all of the data to transmit
-    while (spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT)
-        ;
+    while (spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) { }
 
     // Enable the feedback clock
     MXC_SPIXF_RevA_SCKFeedbackEnable(spixfc, spixfm);
@@ -220,8 +218,8 @@ int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t
     return num;
 }
 
-int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
-                               mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req)
+int MXC_SPIXF_RevA_Transaction(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req)
 {
     int remain, temp_read;
     uint32_t pages, bytes;
@@ -246,12 +244,12 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
     }
 
     // Clear the number of bytes counter
-    req->read_num   = 0;
-    req->write_num  = 0;
+    req->read_num = 0;
+    req->write_num = 0;
     states.head_rem = 0;
 
     // Figure out if we're reading and/or writing
-    read  = (req->rx_data != NULL);
+    read = (req->rx_data != NULL);
     write = (req->tx_data != NULL);
 
     // Get the TX and RX FIFO for this SPIXFC
@@ -261,16 +259,16 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
 
     while (remain) {
         // Set the transaction configuration in the header
-        header = ((write << MXC_SPIXF_HEADER_DIRECTION_POS) |
-                  (read << (MXC_SPIXF_HEADER_DIRECTION_POS + 1)) |
-                  (req->width << MXC_SPIXF_HEADER_WIDTH_POS));
+        header = ((write << MXC_SPIXF_HEADER_DIRECTION_POS)
+            | (read << (MXC_SPIXF_HEADER_DIRECTION_POS + 1))
+            | (req->width << MXC_SPIXF_HEADER_WIDTH_POS));
 
         if (remain >= MXC_SPIXF_MAX_BYTE_LEN) {
             // Send a 32 byte header
             if (remain == MXC_SPIXF_MAX_BYTE_LEN) {
                 // 0 maps to 32 in the header, ...
-                header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS) |
-                           (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
+                header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS)
+                    | (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
 
                 bytes = MXC_SPIXF_MAX_BYTE_LEN;
 
@@ -280,8 +278,8 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
                 pages = remain / MXC_SPIXF_NUM_BYTES_PER_PAGE;
 
                 if (pages >= MXC_SPIXF_MAX_PAGE_LEN) {
-                    // No need to set num pages field in header since 0 maps to MXC_SPIXF_MAX_PAGE_LEN in the header
-                    // There are 32 bytes per page
+                    // No need to set num pages field in header since 0 maps to
+                    // MXC_SPIXF_MAX_PAGE_LEN in the header There are 32 bytes per page
                     bytes = MXC_SPIXF_NUM_BYTES_PER_PAGE * MXC_SPIXF_MAX_PAGE_LEN;
                 } else {
                     header |= (pages << MXC_SPIXF_HEADER_SIZE_POS);
@@ -302,28 +300,27 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
         } else {
             // Send final header with the number of bytes remaining and if
             // we want to de-assert the SS at the end of the transaction
-            header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS) |
-                       (remain << MXC_SPIXF_HEADER_SIZE_POS) |
-                       (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
+            header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS)
+                | (remain << MXC_SPIXF_HEADER_SIZE_POS)
+                | (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
 
             fifo->tx_16 = header;
 
             states.head_rem = remain;
-            remain          = 0;
+            remain = 0;
         }
 
         /* *** */
         while (states.head_rem) {
             if (write) {
                 // Wait for there to be room in the TXFIFO
-                while (((spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) >>
-                        MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT_POS) >
-                       (MXC_CFG_SPIXFC_FIFO_DEPTH - 2)) {
-                }
+                while (((spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT)
+                           >> MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT_POS)
+                    > (MXC_CFG_SPIXFC_FIFO_DEPTH - 2)) { }
 
                 if (states.head_rem > 1) {
-                    fifo->tx_16 =
-                        ((req->tx_data[req->write_num + 1] << 8) | (req->tx_data[req->write_num]));
+                    fifo->tx_16 = ((req->tx_data[req->write_num + 1] << 8)
+                        | (req->tx_data[req->write_num]));
                     req->write_num += 2;
                 } else {
                     fifo->tx_16 = (NOT_HEADER_DATA | req->tx_data[req->write_num]);
@@ -337,8 +334,8 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
                     temp_read = 0;
 
                     do {
-                        temp_read =
-                            SPIXFC_ReadRXFIFO(spixfc, fifo, &req->rx_data[req->read_num], 1);
+                        temp_read
+                            = SPIXFC_ReadRXFIFO(spixfc, fifo, &req->rx_data[req->read_num], 1);
                     } while (temp_read != 1);
 
                     req->read_num += 1;
@@ -369,8 +366,8 @@ int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t* spixfc,
     return req->read_num;
 }
 
-int MXC_SPIXF_RevA_TransactionAsync(mxc_spixfc_reva_regs_t* spixfc,
-                                    mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req)
+int MXC_SPIXF_RevA_TransactionAsync(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req)
 {
     // Check the input parameters
     MXC_ASSERT(req != NULL);
@@ -389,8 +386,8 @@ int MXC_SPIXF_RevA_TransactionAsync(mxc_spixfc_reva_regs_t* spixfc,
     }
 
     // Clear the number of bytes counter
-    req->read_num   = 0;
-    req->write_num  = 0;
+    req->read_num = 0;
+    req->write_num = 0;
     states.head_rem = 0;
 
     // Start the write
@@ -430,14 +427,14 @@ int MXC_SPIXF_RevA_AbortAsync(mxc_spixfc_reva_regs_t* spixfc, mxc_spixf_req_t* r
     return E_BAD_PARAM;
 }
 
-void MXC_SPIXF_RevA_Handler(mxc_spixfc_reva_regs_t* spixfc,
-                            mxc_spixfc_fifo_reva_regs_t* spixfc_fifo)
+void MXC_SPIXF_RevA_Handler(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo)
 {
     uint32_t flags;
 
     // Clear the interrupt flags
     spixfc->int_en = 0;
-    flags          = spixfc->int_fl;
+    flags = spixfc->int_fl;
     spixfc->int_fl = flags;
 
     // Figure out if this SPIXFC has an active request
@@ -446,9 +443,8 @@ void MXC_SPIXF_RevA_Handler(mxc_spixfc_reva_regs_t* spixfc,
     }
 }
 
-__attribute__((noinline)) static int SPIXFC_ReadRXFIFO(mxc_spixfc_reva_regs_t* spixfc,
-                                                       mxc_spixfc_fifo_reva_regs_t* fifo,
-                                                       uint8_t* data, int len)
+__attribute__((noinline)) static int SPIXFC_ReadRXFIFO(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* fifo, uint8_t* data, int len)
 {
     int num = 0;
 
@@ -462,8 +458,8 @@ __attribute__((noinline)) static int SPIXFC_ReadRXFIFO(mxc_spixfc_reva_regs_t* s
     return num;
 }
 
-static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
-                                mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req)
+static void SPIXFC_TransHandler(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfc_fifo_reva_regs_t* spixfc_fifo, mxc_spixf_req_t* req)
 {
     int remain;
     uint8_t read, write;
@@ -495,8 +491,8 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
     // Read byte from the FIFO if we are reading
     if (read) {
         // Read all of the data in the RXFIFO, or until we don't need anymore
-        bytes_read = SPIXFC_ReadRXFIFO(spixfc, fifo, &req->rx_data[req->read_num],
-                                       (req->len - req->read_num));
+        bytes_read = SPIXFC_ReadRXFIFO(
+            spixfc, fifo, &req->rx_data[req->read_num], (req->len - req->read_num));
 
         req->read_num += bytes_read;
 
@@ -516,15 +512,15 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
 
             // Set the RX interrupts
             if (remain > MXC_CFG_SPIXFC_FIFO_DEPTH) { // FIFO Almost FULL level = 16-2 = 14;
-                spixfc->fifo_ctrl =
-                    ((spixfc->fifo_ctrl & ~MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL) |
-                     ((MXC_CFG_SPIXFC_FIFO_DEPTH - 2)
-                      << MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL_POS));
+                spixfc->fifo_ctrl
+                    = ((spixfc->fifo_ctrl & ~MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL)
+                        | ((MXC_CFG_SPIXFC_FIFO_DEPTH - 2)
+                            << MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL_POS));
 
             } else { // FIFO Almost Full level = remain-1;
-                spixfc->fifo_ctrl =
-                    ((spixfc->fifo_ctrl & ~MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL) |
-                     ((remain - 1) << MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL_POS));
+                spixfc->fifo_ctrl
+                    = ((spixfc->fifo_ctrl & ~MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL)
+                        | ((remain - 1) << MXC_F_SPIXFC_REVA_FIFO_CTRL_RX_FIFO_AF_LVL_POS));
             }
 
             inten |= MXC_F_SPIXFC_REVA_INT_EN_RX_FIFO_AF;
@@ -541,15 +537,15 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
     // See if we need to send a new header
     if (states.head_rem <= 0 && remain) {
         // Set the transaction configuration in the header
-        header = ((write << MXC_SPIXF_HEADER_DIRECTION_POS) |
-                  (read << (MXC_SPIXF_HEADER_DIRECTION_POS + 1)) |
-                  (req->width << MXC_SPIXF_HEADER_WIDTH_POS));
+        header = ((write << MXC_SPIXF_HEADER_DIRECTION_POS)
+            | (read << (MXC_SPIXF_HEADER_DIRECTION_POS + 1))
+            | (req->width << MXC_SPIXF_HEADER_WIDTH_POS));
 
         if (remain >= MXC_SPIXF_MAX_BYTE_LEN) {
             // Send a 32 byte header
             if (remain == MXC_SPIXF_MAX_BYTE_LEN) {
-                header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS) |
-                           (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
+                header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS)
+                    | (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
                 // Save the number of bytes we need to write to the FIFO
                 bytes = MXC_SPIXF_MAX_BYTE_LEN;
             } else {
@@ -579,10 +575,10 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
         } else {
             // Send final header with the number of bytes remaining and if
             // we want to de-assert the SS at the end of the transaction
-            header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS) |
-                       (remain << MXC_SPIXF_HEADER_SIZE_POS) |
-                       (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
-            fifo->tx_16     = header;
+            header |= ((MXC_SPIXF_HEADER_UNITS_BYTES << MXC_SPIXF_HEADER_UNITS_POS)
+                | (remain << MXC_SPIXF_HEADER_SIZE_POS)
+                | (req->deass << MXC_SPIXF_HEADER_DEASS_SS_POS));
+            fifo->tx_16 = header;
             states.head_rem = remain;
         }
     }
@@ -593,13 +589,14 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
     if (write && states.head_rem) { // from above... the num of bytes...
 
         // Fill the FIFO
-        while ((((spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) >>
-                 MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT_POS) < (MXC_CFG_SPIXFC_FIFO_DEPTH - 2)) &&
-               (states.head_rem)) {
+        while ((((spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT)
+                    >> MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT_POS)
+                   < (MXC_CFG_SPIXFC_FIFO_DEPTH - 2))
+            && (states.head_rem)) {
             if (states.head_rem > 1) {
                 // Write 2 byte at a time
-                fifo->tx_16 =
-                    ((req->tx_data[req->write_num + 1] << 8) | (req->tx_data[req->write_num]));
+                fifo->tx_16
+                    = ((req->tx_data[req->write_num + 1] << 8) | (req->tx_data[req->write_num]));
 
                 req->write_num += 2;
                 states.head_rem -= 2;
@@ -617,9 +614,9 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
         // Set the TX interrupts
         if (remain) {
             // Set the TX FIFO almost empty interrupt if we have to refill
-            spixfc->fifo_ctrl = ((spixfc->fifo_ctrl & ~MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_AE_LVL) |
-                                 ((MXC_CFG_SPIXFC_FIFO_DEPTH - 2)
-                                  << MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_AE_LVL_POS));
+            spixfc->fifo_ctrl = ((spixfc->fifo_ctrl & ~MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_AE_LVL)
+                | ((MXC_CFG_SPIXFC_FIFO_DEPTH - 2)
+                    << MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_AE_LVL_POS));
 
             inten |= MXC_F_SPIXFC_REVA_INT_EN_TX_FIFO_AE;
         } else if (req->wait_tx) {
@@ -627,15 +624,16 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t* spixfc,
             inten |= MXC_F_SPIXFC_REVA_INT_FL_TX_READY;
             req->wait_tx = 0;
 
-            // Wait for transaction to completely finish by just returning and waiting for next interrupt.
+            // Wait for transaction to completely finish by just returning and waiting for next
+            // interrupt.
             spixfc->int_en = inten;
             return;
         }
     }
 
     // Check to see if we've finished reading and writing
-    if (((read && (req->read_num == req->len)) || !read) &&
-        (((req->write_num == req->len) && !req->wait_tx) || !write)) {
+    if (((read && (req->read_num == req->len)) || !read)
+        && (((req->write_num == req->len) && !req->wait_tx) || !write)) {
         // clear interrupts
         spixfc->int_fl = spixfc->int_fl;
 
@@ -671,9 +669,9 @@ int MXC_SPIXF_RevA_ReadyForSleep(mxc_spixfc_reva_regs_t* spixfc)
 
 int MXC_SPIXF_RevA_EnableInt(mxc_spixfc_reva_regs_t* spixfc, uint32_t mask)
 {
-    mask &= (MXC_F_SPIXFC_REVA_INT_EN_TX_STALLED | MXC_F_SPIXFC_REVA_INT_EN_RX_STALLED |
-             MXC_F_SPIXFC_REVA_INT_EN_TX_READY | MXC_F_SPIXFC_REVA_INT_EN_RX_DONE |
-             MXC_F_SPIXFC_REVA_INT_EN_TX_FIFO_AE | MXC_F_SPIXFC_REVA_INT_EN_RX_FIFO_AF);
+    mask &= (MXC_F_SPIXFC_REVA_INT_EN_TX_STALLED | MXC_F_SPIXFC_REVA_INT_EN_RX_STALLED
+        | MXC_F_SPIXFC_REVA_INT_EN_TX_READY | MXC_F_SPIXFC_REVA_INT_EN_RX_DONE
+        | MXC_F_SPIXFC_REVA_INT_EN_TX_FIFO_AE | MXC_F_SPIXFC_REVA_INT_EN_RX_FIFO_AF);
 
     if (!mask) {
         /* No bits set? Wasn't something we can enable. */
@@ -686,9 +684,9 @@ int MXC_SPIXF_RevA_EnableInt(mxc_spixfc_reva_regs_t* spixfc, uint32_t mask)
 
 int MXC_SPIXF_RevA_DisableInt(mxc_spixfc_reva_regs_t* spixfc, uint32_t mask)
 {
-    mask &= (MXC_F_SPIXFC_REVA_INT_EN_TX_STALLED | MXC_F_SPIXFC_REVA_INT_EN_RX_STALLED |
-             MXC_F_SPIXFC_REVA_INT_EN_TX_READY | MXC_F_SPIXFC_REVA_INT_EN_RX_DONE |
-             MXC_F_SPIXFC_REVA_INT_EN_TX_FIFO_AE | MXC_F_SPIXFC_REVA_INT_EN_RX_FIFO_AF);
+    mask &= (MXC_F_SPIXFC_REVA_INT_EN_TX_STALLED | MXC_F_SPIXFC_REVA_INT_EN_RX_STALLED
+        | MXC_F_SPIXFC_REVA_INT_EN_TX_READY | MXC_F_SPIXFC_REVA_INT_EN_RX_DONE
+        | MXC_F_SPIXFC_REVA_INT_EN_TX_FIFO_AE | MXC_F_SPIXFC_REVA_INT_EN_RX_FIFO_AF);
 
     if (!mask) {
         /* No bits set? Wasn't something we can disable. */
@@ -701,9 +699,9 @@ int MXC_SPIXF_RevA_DisableInt(mxc_spixfc_reva_regs_t* spixfc, uint32_t mask)
 
 int MXC_SPIXF_RevA_ClearFlags(mxc_spixfc_reva_regs_t* spixfc, uint32_t flags)
 {
-    flags &= (MXC_F_SPIXFC_REVA_INT_FL_TX_STALLED | MXC_F_SPIXFC_REVA_INT_FL_RX_STALLED |
-              MXC_F_SPIXFC_REVA_INT_FL_TX_READY | MXC_F_SPIXFC_REVA_INT_FL_RX_DONE |
-              MXC_F_SPIXFC_REVA_INT_FL_TX_FIFO_AE | MXC_F_SPIXFC_REVA_INT_FL_RX_FIFO_AF);
+    flags &= (MXC_F_SPIXFC_REVA_INT_FL_TX_STALLED | MXC_F_SPIXFC_REVA_INT_FL_RX_STALLED
+        | MXC_F_SPIXFC_REVA_INT_FL_TX_READY | MXC_F_SPIXFC_REVA_INT_FL_RX_DONE
+        | MXC_F_SPIXFC_REVA_INT_FL_TX_FIFO_AE | MXC_F_SPIXFC_REVA_INT_FL_RX_FIFO_AF);
 
     if (!flags) {
         /* No bits set? Wasn't a flag we can clear. */
@@ -720,11 +718,11 @@ int MXC_SPIXF_RevA_GetFlags(mxc_spixfc_reva_regs_t* spixfc)
 }
 
 /* ************************************************ */
-//Low level
+// Low level
 /* ************************************************ */
 
-int MXC_SPIXF_RevA_SetMode(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                           mxc_spixf_mode_t mode)
+int MXC_SPIXF_RevA_SetMode(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_mode_t mode)
 {
     if (mxc_spixf_busy()) {
         return E_BUSY;
@@ -740,8 +738,8 @@ mxc_spixf_mode_t MXC_SPIXF_RevA_GetMode(mxc_spixfc_reva_regs_t* spixfc)
     return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_MODE) >> MXC_F_SPIXFC_REVA_CFG_MODE_POS);
 }
 
-int MXC_SPIXF_RevA_SetSSPolActiveHigh(mxc_spixfc_reva_regs_t* spixfc,
-                                      mxc_spixfm_reva_regs_t* spixfm)
+int MXC_SPIXF_RevA_SetSSPolActiveHigh(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm)
 {
     if (mxc_spixf_busy()) {
         return E_BUSY;
@@ -768,8 +766,8 @@ int MXC_SPIXF_RevA_GetSSPolarity(mxc_spixfc_reva_regs_t* spixfc)
     return !!(spixfc->ss_pol & MXC_F_SPIXFC_REVA_SS_POL_SS_POLARITY);
 }
 
-int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                                   unsigned int hz)
+int MXC_SPIXF_RevA_SetSPIFrequency(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, unsigned int hz)
 {
     uint32_t clocks, hi_clk, lo_clk;
 
@@ -796,15 +794,15 @@ int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_re
             spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_LO_CLK;
             spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_HI_CLK;
         } else if (hi_clk > 15) {
-            MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
-                         1 << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
-            MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
-                         1 << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
+            MXC_SETFIELD(
+                spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK, 1 << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
+            MXC_SETFIELD(
+                spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK, 1 << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
         } else {
             MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
-                         lo_clk << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
+                lo_clk << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
             MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
-                         hi_clk << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
+                hi_clk << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
         }
     }
 
@@ -827,15 +825,15 @@ int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_re
             spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_LO_CLK;
             spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_HI_CLK;
         } else if (hi_clk > 15) {
-            MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
-                         1 << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
-            MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
-                         1 << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
+            MXC_SETFIELD(
+                spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK, 1 << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
+            MXC_SETFIELD(
+                spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK, 1 << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
         } else {
             MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
-                         lo_clk << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
+                lo_clk << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
             MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
-                         hi_clk << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
+                hi_clk << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
         }
     }
 
@@ -874,17 +872,17 @@ uint32_t MXC_SPIXF_RevA_GetSPIFrequencyWrite(mxc_spixfc_reva_regs_t* spixfc)
     return PeripheralClock / (2 * clocks);
 }
 
-int MXC_SPIXF_RevA_SetSSActiveTime(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                                   mxc_spixf_ssact_t ssact)
+int MXC_SPIXF_RevA_SetSSActiveTime(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ssact_t ssact)
 {
     if (mxc_spixf_busy()) {
         return E_BUSY;
     }
 
-    MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_SSACT,
-                 ssact << MXC_F_SPIXFM_REVA_CFG_SSACT_POS);
-    MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_SSACT,
-                 ssact << MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
+    MXC_SETFIELD(
+        spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_SSACT, ssact << MXC_F_SPIXFM_REVA_CFG_SSACT_POS);
+    MXC_SETFIELD(
+        spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_SSACT, ssact << MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
     return E_NO_ERROR;
 }
 
@@ -893,17 +891,17 @@ mxc_spixf_ssact_t MXC_SPIXF_RevA_GetSSActiveTime(mxc_spixfc_reva_regs_t* spixfc)
     return ((spixfc->cfg & MXC_F_SPIXFC_REVA_CFG_SSACT) >> MXC_F_SPIXFC_REVA_CFG_SSACT_POS);
 }
 
-int MXC_SPIXF_RevA_SetSSInactiveTime(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                                     mxc_spixf_ssiact_t ssiact)
+int MXC_SPIXF_RevA_SetSSInactiveTime(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_ssiact_t ssiact)
 {
     if (mxc_spixf_busy()) {
         return E_BUSY;
     }
 
-    MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_SSIACT,
-                 ssiact << MXC_F_SPIXFM_REVA_CFG_SSIACT_POS);
-    MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_SSIACT,
-                 ssiact << MXC_F_SPIXFC_REVA_CFG_SSIACT_POS);
+    MXC_SETFIELD(
+        spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_SSIACT, ssiact << MXC_F_SPIXFM_REVA_CFG_SSIACT_POS);
+    MXC_SETFIELD(
+        spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_SSIACT, ssiact << MXC_F_SPIXFC_REVA_CFG_SSIACT_POS);
     return E_NO_ERROR;
 }
 
@@ -921,14 +919,14 @@ int MXC_SPIXF_RevA_SetCmdWidth(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_spiwidt
     }
 
     MXC_SETFIELD(spixfm->fetch_ctrl, MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH,
-                 width << MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
+        width << MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
     return E_NO_ERROR;
 }
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetCmdWidth(mxc_spixfm_reva_regs_t* spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
+    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH)
+        >> MXC_F_SPIXFM_REVA_FETCH_CTRL_CMD_WIDTH_POS);
 }
 
 int MXC_SPIXF_RevA_SetAddrWidth(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_spiwidth_t width)
@@ -940,14 +938,14 @@ int MXC_SPIXF_RevA_SetAddrWidth(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_spiwid
     }
 
     MXC_SETFIELD(spixfm->fetch_ctrl, MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH,
-                 width << MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
+        width << MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
     return E_NO_ERROR;
 }
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetAddrWidth(mxc_spixfm_reva_regs_t* spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
+    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH)
+        >> MXC_F_SPIXFM_REVA_FETCH_CTRL_ADDR_WIDTH_POS);
 }
 
 int MXC_SPIXF_RevA_SetDataWidth(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_spiwidth_t width)
@@ -959,14 +957,14 @@ int MXC_SPIXF_RevA_SetDataWidth(mxc_spixfm_reva_regs_t* spixfm, mxc_spixf_spiwid
     }
 
     MXC_SETFIELD(spixfm->fetch_ctrl, MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH,
-                 width << MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
+        width << MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
     return E_NO_ERROR;
 }
 
 mxc_spixf_spiwidth_t MXC_SPIXF_RevA_GetDataWidth(mxc_spixfm_reva_regs_t* spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
+    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH)
+        >> MXC_F_SPIXFM_REVA_FETCH_CTRL_DATA_WIDTH_POS);
 }
 
 int MXC_SPIXF_RevA_Set4ByteAddr(mxc_spixfm_reva_regs_t* spixfm)
@@ -1010,8 +1008,8 @@ int MXC_SPIXF_RevA_SetModeClk(mxc_spixfm_reva_regs_t* spixfm, uint8_t mdclk)
 
 uint8_t MXC_SPIXF_RevA_GetModeClk(mxc_spixfm_reva_regs_t* spixfm)
 {
-    return ((spixfm->mode_ctrl & MXC_F_SPIXFM_REVA_MODE_CTRL_MDCLK) >>
-            MXC_F_SPIXFM_REVA_MODE_CTRL_MDCLK_POS);
+    return ((spixfm->mode_ctrl & MXC_F_SPIXFM_REVA_MODE_CTRL_MDCLK)
+        >> MXC_F_SPIXFM_REVA_MODE_CTRL_MDCLK_POS);
 }
 
 int MXC_SPIXF_RevA_SetCmdModeEveryTrans(mxc_spixfm_reva_regs_t* spixfm)
@@ -1065,38 +1063,38 @@ int MXC_SPIXF_RevA_BBDataOutputDisable(mxc_spixfc_reva_regs_t* spixfc, uint8_t m
 
 uint8_t MXC_SPIXF_RevA_BBDataOutputIsEnabled(mxc_spixfc_reva_regs_t* spixfc)
 {
-    return ((spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA_OUT_EN) >>
-            MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA_OUT_EN_POS);
+    return ((spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA_OUT_EN)
+        >> MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA_OUT_EN_POS);
 }
 
 uint8_t MXC_SPIXF_RevA_GetBBDataOutputValue(mxc_spixfc_reva_regs_t* spixfc)
 {
-    return ((spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA) >>
-            MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA_POS);
+    return ((spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA)
+        >> MXC_F_SPIXFC_REVA_GEN_CTRL_BB_DATA_POS);
 }
 
 uint8_t MXC_SPIXF_RevA_GetBBDataInputValue(mxc_spixfc_reva_regs_t* spixfc)
 {
-    return ((spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_SDIO_DATA_IN) >>
-            MXC_F_SPIXFC_REVA_GEN_CTRL_SDIO_DATA_IN_POS);
+    return ((spixfc->gen_ctrl & MXC_F_SPIXFC_REVA_GEN_CTRL_SDIO_DATA_IN)
+        >> MXC_F_SPIXFC_REVA_GEN_CTRL_SDIO_DATA_IN_POS);
 }
 
-int MXC_SPIXF_RevA_SetModeData(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm,
-                               uint16_t data)
+int MXC_SPIXF_RevA_SetModeData(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm, uint16_t data)
 {
     if (mxc_spixf_busy()) {
         return E_BUSY;
     }
 
     MXC_SETFIELD(spixfm->mode_data, MXC_F_SPIXFM_REVA_MODE_DATA_DATA,
-                 data << MXC_F_SPIXFM_REVA_MODE_DATA_DATA_POS);
+        data << MXC_F_SPIXFM_REVA_MODE_DATA_DATA_POS);
     return E_NO_ERROR;
 }
 
 uint16_t MXC_SPIXF_RevA_GetModeData(mxc_spixfm_reva_regs_t* spixfm)
 {
-    return ((spixfm->mode_data & MXC_F_SPIXFM_REVA_MODE_DATA_DATA) >>
-            MXC_F_SPIXFM_REVA_MODE_DATA_DATA_POS);
+    return ((spixfm->mode_data & MXC_F_SPIXFM_REVA_MODE_DATA_DATA)
+        >> MXC_F_SPIXFM_REVA_MODE_DATA_DATA_POS);
 }
 
 int MXC_SPIXF_RevA_SetSCKInverted(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm)
@@ -1137,8 +1135,8 @@ int MXC_SPIXF_RevA_SCKFeedbackEnable(mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_
     return E_NO_ERROR;
 }
 
-int MXC_SPIXF_RevA_SCKFeedbackDisable(mxc_spixfc_reva_regs_t* spixfc,
-                                      mxc_spixfm_reva_regs_t* spixfm)
+int MXC_SPIXF_RevA_SCKFeedbackDisable(
+    mxc_spixfc_reva_regs_t* spixfc, mxc_spixfm_reva_regs_t* spixfm)
 {
     if (mxc_spixf_busy()) {
         return E_BUSY;
@@ -1160,8 +1158,8 @@ int MXC_SPIXF_RevA_SetSCKSampleDelay(mxc_spixfc_reva_regs_t* spixfc, uint8_t del
         return E_BUSY;
     }
 
-    MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_IOSMPL,
-                 delay << MXC_F_SPIXFC_REVA_CFG_IOSMPL_POS);
+    MXC_SETFIELD(
+        spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_IOSMPL, delay << MXC_F_SPIXFC_REVA_CFG_IOSMPL_POS);
     return E_NO_ERROR;
 }
 
@@ -1177,20 +1175,20 @@ int MXC_SPIXF_RevA_SetCmdValue(mxc_spixfm_reva_regs_t* spixfm, uint8_t cmdval)
     }
 
     MXC_SETFIELD(spixfm->fetch_ctrl, MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL,
-                 cmdval << MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL_POS);
+        cmdval << MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL_POS);
     return E_NO_ERROR;
 }
 
 uint8_t MXC_SPIXF_RevA_GetCmdValue(mxc_spixfm_reva_regs_t* spixfm)
 {
-    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL) >>
-            MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL_POS);
+    return ((spixfm->fetch_ctrl & MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL)
+        >> MXC_F_SPIXFM_REVA_FETCH_CTRL_CMDVAL_POS);
 }
 
 void MXC_SPIXF_RevA_SetPageSize(mxc_spixfc_reva_regs_t* spixfc, mxc_spixf_page_size_t size)
 {
-    MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE,
-                 size << MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE_POS);
+    MXC_SETFIELD(
+        spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE, size << MXC_F_SPIXFC_REVA_CFG_PAGE_SIZE_POS);
 }
 
 mxc_spixf_page_size_t MXC_SPIXF_RevA_GetPageSize(mxc_spixfc_reva_regs_t* spixfc)
@@ -1256,7 +1254,8 @@ int MXC_SPIXF_RevA_SampleOutputEnable(mxc_spixfc_reva_regs_t* spixfc, uint8_t ma
 
     spixfc->sp_ctrl |= (mask << MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_EN_POS);
     return E_NO_ERROR;
-    ;
+    {
+    }
 }
 
 int MXC_SPIXF_RevA_SampleOutputDisable(mxc_spixfc_reva_regs_t* spixfc, uint8_t mask)
@@ -1271,14 +1270,14 @@ int MXC_SPIXF_RevA_SampleOutputDisable(mxc_spixfc_reva_regs_t* spixfc, uint8_t m
 
 uint8_t MXC_SPIXF_RevA_SampleOutputIsEnabled(mxc_spixfc_reva_regs_t* spixfc)
 {
-    return ((spixfc->sp_ctrl & MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_EN) >>
-            MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_EN_POS);
+    return ((spixfc->sp_ctrl & MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_EN)
+        >> MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_EN_POS);
 }
 
 uint8_t MXC_SPIXF_RevA_GetSampleOutputValue(mxc_spixfc_reva_regs_t* spixfc)
 {
-    return ((spixfc->sp_ctrl & MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT) >>
-            MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_POS);
+    return ((spixfc->sp_ctrl & MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT)
+        >> MXC_F_SPIXFC_REVA_SP_CTRL_SDIO_OUT_POS);
 }
 
 void MXC_SPIXF_RevA_SetIoctrlSDIODriveHigh(mxc_spixfm_reva_regs_t* spixfm)

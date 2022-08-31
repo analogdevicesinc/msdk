@@ -32,56 +32,59 @@
  ******************************************************************************/
 
 // faceid_seq_nobias
-// Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir sdk/Examples/MAX78000/CNN --prefix faceid_seq_nobias --checkpoint-file trained/ai85-streaming_seqfaceid_nobias_x6.pth.tar --config-file tests/ai85faceid_nobias.yaml --device 85 --fifo --compact-data --mexpress --display-checkpoint --unload
+// Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir sdk/Examples/MAX78000/CNN
+// --prefix faceid_seq_nobias --checkpoint-file trained/ai85-streaming_seqfaceid_nobias_x6.pth.tar
+// --config-file tests/ai85faceid_nobias.yaml --device 85 --fifo --compact-data --mexpress
+// --display-checkpoint --unload
 
 // Configuring 9 layers:
-// Layer 0: 3x160x120 (streaming HWC/little data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 16x160x120 output
-// Layer 1: 16x160x120 (streaming HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 32x80x60 output
-// Layer 2: 32x80x60 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 32x40x30 output
-// Layer 3: 32x40x30 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 64x20x15 output
-// Layer 4: 64x20x15 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 64x10x7 output
-// Layer 5: 64x10x7 (HWC/little data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 64x10x7 output
-// Layer 6: 64x10x7 (HWC/little data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 64x10x7 output
-// Layer 7: 64x10x7 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 1x1, stride 1/1, pad 0/0, 512x5x3 output
-// Layer 8: 512x5x3 (HWC/little data), 5x3 avg pool with stride 1/1, no convolution, stride 1/1, pad 0/0, 512x1x1 output
+// Layer 0: 3x160x120 (streaming HWC/little data), no pooling, conv2d with kernel size 3x3, stride
+// 1/1, pad 1/1, 16x160x120 output Layer 1: 16x160x120 (streaming HWC/little data), 2x2 max pool
+// with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 32x80x60 output Layer 2:
+// 32x80x60 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride
+// 1/1, pad 1/1, 32x40x30 output Layer 3: 32x40x30 (HWC/little data), 2x2 max pool with stride 2/2,
+// conv2d with kernel size 3x3, stride 1/1, pad 1/1, 64x20x15 output Layer 4: 64x20x15 (HWC/little
+// data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 64x10x7
+// output Layer 5: 64x10x7 (HWC/little data), no pooling, conv2d with kernel size 3x3, stride 1/1,
+// pad 1/1, 64x10x7 output Layer 6: 64x10x7 (HWC/little data), no pooling, conv2d with kernel size
+// 3x3, stride 1/1, pad 1/1, 64x10x7 output Layer 7: 64x10x7 (HWC/little data), 2x2 max pool with
+// stride 2/2, conv2d with kernel size 1x1, stride 1/1, pad 0/0, 512x5x3 output Layer 8: 512x5x3
+// (HWC/little data), 5x3 avg pool with stride 1/1, no convolution, stride 1/1, pad 0/0, 512x1x1
+// output
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-#include "mxc_sys.h"
-#include "gcfr_regs.h"
 #include "fcr_regs.h"
+#include "gcfr_regs.h"
 #include "icc.h"
 #include "led.h"
+#include "mxc_sys.h"
+#include "sampledata.h"
 #include "tmr.h"
 #include "tornadocnn.h"
-#include "weights.h"
-#include "sampledata.h"
 #include "utils_faceid.h"
+#include "weights.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) { }
 }
 
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
-        ;
+    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12) { }
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
 }
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 /*void load_input(void)
@@ -96,16 +99,16 @@ void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 }*/
 
 // Kernels:
-static const uint32_t kernels_0[]  = KERNELS_0;
-static const uint32_t kernels_1[]  = KERNELS_1;
-static const uint32_t kernels_2[]  = KERNELS_2;
-static const uint32_t kernels_3[]  = KERNELS_3;
-static const uint32_t kernels_4[]  = KERNELS_4;
-static const uint32_t kernels_5[]  = KERNELS_5;
-static const uint32_t kernels_6[]  = KERNELS_6;
-static const uint32_t kernels_7[]  = KERNELS_7;
-static const uint32_t kernels_8[]  = KERNELS_8;
-static const uint32_t kernels_9[]  = KERNELS_9;
+static const uint32_t kernels_0[] = KERNELS_0;
+static const uint32_t kernels_1[] = KERNELS_1;
+static const uint32_t kernels_2[] = KERNELS_2;
+static const uint32_t kernels_3[] = KERNELS_3;
+static const uint32_t kernels_4[] = KERNELS_4;
+static const uint32_t kernels_5[] = KERNELS_5;
+static const uint32_t kernels_6[] = KERNELS_6;
+static const uint32_t kernels_7[] = KERNELS_7;
+static const uint32_t kernels_8[] = KERNELS_8;
+static const uint32_t kernels_9[] = KERNELS_9;
 static const uint32_t kernels_10[] = KERNELS_10;
 static const uint32_t kernels_11[] = KERNELS_11;
 static const uint32_t kernels_12[] = KERNELS_12;
@@ -858,7 +861,7 @@ int cnn_load(int8_t mode)
     *((volatile uint32_t*)0x50900000) = 0x0018c809; // Enable group 2
     *((volatile uint32_t*)0x50d00000) = 0x0018c809; // Enable group 3
 
-    CNN_START;                                      // Allow capture of processing time
+    CNN_START; // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x0018c809; // Master enable group 0
 
     load_input(mode); // Load data input
@@ -1137,770 +1140,770 @@ void cnn_unload(uint8_t* out_buf)
     volatile uint32_t* addr;
     uint32_t val;
 
-    addr       = (volatile uint32_t*)0x50400000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50400000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50408000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50408000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50410000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50410000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50418000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50418000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50800000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50800000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50808000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50808000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50810000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50810000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50818000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50818000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c00000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c00000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c08000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c08000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c10000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c10000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c18000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c18000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51000000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51000000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51008000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51008000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51010000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51010000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51018000;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51018000;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50400004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50400004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50408004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50408004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50410004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50410004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50418004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50418004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50800004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50800004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50808004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50808004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50810004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50810004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50818004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50818004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c00004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c00004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c08004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c08004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c10004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c10004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c18004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c18004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51000004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51000004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51008004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51008004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51010004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51010004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51018004;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51018004;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50400008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50400008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50408008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50408008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50410008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50410008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50418008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50418008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50800008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50800008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50808008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50808008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50810008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50810008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50818008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50818008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c00008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c00008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c08008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c08008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c10008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c10008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c18008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c18008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51000008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51000008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51008008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51008008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51010008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51010008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51018008;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51018008;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5040000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5040000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5040800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5040800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5041000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5041000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5041800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5041800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5080000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5080000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5080800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5080800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5081000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5081000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5081800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5081800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c0000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c0000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c0800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c0800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c1000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c1000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c1800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c1800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5100000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5100000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5100800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5100800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5101000c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5101000c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5101800c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5101800c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50400010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50400010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50408010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50408010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50410010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50410010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50418010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50418010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50800010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50800010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50808010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50808010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50810010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50810010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50818010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50818010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c00010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c00010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c08010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c08010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c10010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c10010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c18010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c18010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51000010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51000010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51008010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51008010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51010010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51010010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51018010;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51018010;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50400014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50400014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50408014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50408014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50410014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50410014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50418014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50418014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50800014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50800014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50808014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50808014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50810014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50810014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50818014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50818014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c00014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c00014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c08014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c08014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c10014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c10014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c18014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c18014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51000014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51000014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51008014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51008014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51010014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51010014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51018014;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51018014;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50400018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50400018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50408018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50408018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50410018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50410018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50418018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50418018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50800018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50800018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50808018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50808018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50810018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50810018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50818018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50818018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c00018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c00018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c08018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c08018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c10018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c10018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c18018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c18018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51000018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51000018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51008018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51008018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51010018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51010018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x51018018;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x51018018;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5040001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5040001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5040801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5040801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5041001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5041001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5041801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5041801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5080001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5080001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5080801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5080801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5081001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5081001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5081801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5081801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c0001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c0001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c0801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c0801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c1001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c1001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x50c1801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x50c1801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5100001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5100001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5100801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5100801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5101001c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5101001c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
     *out_buf++ = (val >> 24) & 0xff;
-    addr       = (volatile uint32_t*)0x5101801c;
-    val        = *addr++;
+    addr = (volatile uint32_t*)0x5101801c;
+    val = *addr++;
     *out_buf++ = val & 0xff;
     *out_buf++ = (val >> 8) & 0xff;
     *out_buf++ = (val >> 16) & 0xff;
@@ -1927,7 +1930,7 @@ int main(void)
 
     MXC_GCR->pclkdiv &= ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL);
     MXC_GCR->pclkdiv |= MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1; // CNN clock: 100 MHz div 2
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);        // Enable CNN clock
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     volatile uint8_t read_byte = 0;
 
@@ -1947,79 +1950,79 @@ int main(void)
         }
 
         switch (read_byte) {
-            case 38: // Test Image
-                uart_read(rxBuffer, sizeof(rxBuffer));
-                uart_write(rxBuffer, sizeof(rxBuffer));
-                break;
+        case 38: // Test Image
+            uart_read(rxBuffer, sizeof(rxBuffer));
+            uart_write(rxBuffer, sizeof(rxBuffer));
+            break;
 
-            case 48: // Test Embedding
-                uart_read(rxBuffer, sizeof(rxBuffer));
+        case 48: // Test Embedding
+            uart_read(rxBuffer, sizeof(rxBuffer));
 
-                const char* cnn_receiveDataPass = "Pass_cnn_receiveData";
-                uart_write((uint8_t*)cnn_receiveDataPass, 20);
-                MXC_TMR_Delay(MXC_TMR0, MSEC(200));
-                if (wait_for_feedback() == 0)
-                    return -1;
+            const char* cnn_receiveDataPass = "Pass_cnn_receiveData";
+            uart_write((uint8_t*)cnn_receiveDataPass, 20);
+            MXC_TMR_Delay(MXC_TMR0, MSEC(200));
+            if (wait_for_feedback() == 0)
+                return -1;
 
-                if (!cnn_load(1)) {
-                    fail();
-                    return 0;
-                }
+            if (!cnn_load(1)) {
+                fail();
+                return 0;
+            }
 
-                const char* cnn_loadPass = "Pass_cnn_load";
-                uart_write((uint8_t*)cnn_loadPass, 13);
-                MXC_TMR_Delay(MXC_TMR0, MSEC(200));
-                if (wait_for_feedback() == 0)
-                    return -1;
+            const char* cnn_loadPass = "Pass_cnn_load";
+            uart_write((uint8_t*)cnn_loadPass, 13);
+            MXC_TMR_Delay(MXC_TMR0, MSEC(200));
+            if (wait_for_feedback() == 0)
+                return -1;
 
-                cnn_wait();
-                const char* cnn_waitPass = "Pass_cnn_wait";
-                uart_write((uint8_t*)cnn_waitPass, 13);
-                MXC_TMR_Delay(MXC_TMR0, MSEC(200));
-                if (wait_for_feedback() == 0)
-                    return -1;
+            cnn_wait();
+            const char* cnn_waitPass = "Pass_cnn_wait";
+            uart_write((uint8_t*)cnn_waitPass, 13);
+            MXC_TMR_Delay(MXC_TMR0, MSEC(200));
+            if (wait_for_feedback() == 0)
+                return -1;
 
-                int success_check;
-                success_check             = cnn_check();
-                const char* cnn_checkPass = "Pass_cnn_check";
-                uart_write((uint8_t*)cnn_checkPass, 14);
-                MXC_TMR_Delay(MXC_TMR0, MSEC(200));
-                if (wait_for_feedback() == 0)
-                    return -1;
+            int success_check;
+            success_check = cnn_check();
+            const char* cnn_checkPass = "Pass_cnn_check";
+            uart_write((uint8_t*)cnn_checkPass, 14);
+            MXC_TMR_Delay(MXC_TMR0, MSEC(200));
+            if (wait_for_feedback() == 0)
+                return -1;
 
-                uart_write((uint8_t*)(&success_check), sizeof(int));
+            uart_write((uint8_t*)(&success_check), sizeof(int));
 
-                cnn_unload(ml_data);
-                const char* cnn_unloadPass = "Pass_cnn_unload";
-                uart_write((uint8_t*)cnn_unloadPass, 15);
-                MXC_TMR_Delay(MXC_TMR0, MSEC(200));
-                if (wait_for_feedback() == 0)
-                    return -1;
+            cnn_unload(ml_data);
+            const char* cnn_unloadPass = "Pass_cnn_unload";
+            uart_write((uint8_t*)cnn_unloadPass, 15);
+            MXC_TMR_Delay(MXC_TMR0, MSEC(200));
+            if (wait_for_feedback() == 0)
+                return -1;
 
-                // send embedding to host device
-                uart_write(ml_data, sizeof(ml_data));
+            // send embedding to host device
+            uart_write(ml_data, sizeof(ml_data));
 
-                break;
+            break;
 
-            case 58:
-                uart_read(rxBuffer, sizeof(rxBuffer));
+        case 58:
+            uart_read(rxBuffer, sizeof(rxBuffer));
 
-                if (!cnn_load(0)) {
-                    fail();
-                    return 0;
-                }
+            if (!cnn_load(0)) {
+                fail();
+                return 0;
+            }
 
-                cnn_wait();
+            cnn_wait();
 
-                cnn_unload(ml_data);
+            cnn_unload(ml_data);
 
-                // send embedding to host device
-                uart_write(ml_data, sizeof(ml_data));
+            // send embedding to host device
+            uart_write(ml_data, sizeof(ml_data));
 
-                break;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         const char* endSync = "End_Sequence";

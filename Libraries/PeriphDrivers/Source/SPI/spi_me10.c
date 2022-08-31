@@ -41,10 +41,10 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include "mxc_errors.h"
+#include "mxc_sys.h"
 #include "spi.h"
 #include "spi_reva.h"
-#include "mxc_sys.h"
-#include "mxc_errors.h"
 #include <string.h>
 
 /**
@@ -57,7 +57,7 @@
 /* **** Functions **** */
 
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz)
+    unsigned ssPolarity, unsigned int hz)
 {
     if (numSlaves > MXC_SPI_SS_INSTANCES) {
         return E_BAD_PARAM;
@@ -69,33 +69,33 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
     }
 
     switch (MXC_SPI_GET_IDX(spi)) {
-        case 0:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI0);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-            MXC_GPIO_Config(&gpio_cfg_spi0_0);
-            MXC_GPIO_Config(&gpio_cfg_spi0_1);
-            break;
-        case 1:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI1);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
-            MXC_GPIO_Config(&gpio_cfg_spi1);
-            break;
-        case 2:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI2);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
-            MXC_GPIO_Config(&gpio_cfg_spi2);
-            break;
-        case 3:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI3);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
-            MXC_GPIO_Config(&gpio_cfg_spi3);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
+        MXC_GPIO_Config(&gpio_cfg_spi0_0);
+        MXC_GPIO_Config(&gpio_cfg_spi0_1);
+        break;
+    case 1:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
+        MXC_GPIO_Config(&gpio_cfg_spi1);
+        break;
+    case 2:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI2);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
+        MXC_GPIO_Config(&gpio_cfg_spi2);
+        break;
+    case 3:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_SPI3);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
+        MXC_GPIO_Config(&gpio_cfg_spi3);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
-    return MXC_SPI_RevA_Init((mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves,
-                             ssPolarity, hz);
+    return MXC_SPI_RevA_Init(
+        (mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
 }
 
 /* ************************************************************************ */
@@ -104,20 +104,20 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t* spi)
     MXC_SPI_RevA_Shutdown((mxc_spi_reva_regs_t*)spi);
 
     switch (MXC_SPI_GET_IDX(spi)) {
-        case 0:
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-            break;
-        case 1:
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
-            break;
-        case 2:
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
-            break;
-        case 3:
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
+        break;
+    case 1:
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
+        break;
+    case 2:
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
+        break;
+    case 3:
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -183,8 +183,8 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t* spi)
 
     int slvSel = (spi->ctrl0 & MXC_F_SPI_CTRL0_SS_SEL) >> MXC_F_SPI_CTRL0_SS_SEL_POS;
 
-    if (slvSel &
-        (MXC_V_SPI_CTRL0_SS_SEL_SS0 | MXC_V_SPI_CTRL0_SS_SEL_SS1 | MXC_V_SPI_CTRL0_SS_SEL_SS2)) {
+    if (slvSel
+        & (MXC_V_SPI_CTRL0_SS_SEL_SS0 | MXC_V_SPI_CTRL0_SS_SEL_SS1 | MXC_V_SPI_CTRL0_SS_SEL_SS2)) {
         return slvSel >> 1;
     } else {
         return 3;
@@ -338,24 +338,24 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
     int retVal = E_NO_ERROR;
 
     switch (MXC_SPI_GET_IDX(req->spi)) {
-        case 0:
-            retVal = MXC_SPI_RevA_MasterTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI0TX, MXC_DMA_REQUEST_SPI0RX, MXC_DMA);
-            break;
-        case 1:
-            retVal = MXC_SPI_RevA_MasterTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI1TX, MXC_DMA_REQUEST_SPI1RX, MXC_DMA);
-            break;
-        case 2:
-            retVal = MXC_SPI_RevA_MasterTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI2TX, MXC_DMA_REQUEST_SPI2RX, MXC_DMA);
-            break;
-        case 3:
-            retVal = MXC_SPI_RevA_MasterTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI3TX, MXC_DMA_REQUEST_SPI3RX, MXC_DMA);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        retVal = MXC_SPI_RevA_MasterTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI0TX, MXC_DMA_REQUEST_SPI0RX, MXC_DMA);
+        break;
+    case 1:
+        retVal = MXC_SPI_RevA_MasterTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI1TX, MXC_DMA_REQUEST_SPI1RX, MXC_DMA);
+        break;
+    case 2:
+        retVal = MXC_SPI_RevA_MasterTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI2TX, MXC_DMA_REQUEST_SPI2RX, MXC_DMA);
+        break;
+    case 3:
+        retVal = MXC_SPI_RevA_MasterTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI3TX, MXC_DMA_REQUEST_SPI3RX, MXC_DMA);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return retVal;
@@ -379,24 +379,24 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
     int retVal = E_NO_ERROR;
 
     switch (MXC_SPI_GET_IDX(req->spi)) {
-        case 0:
-            retVal = MXC_SPI_RevA_SlaveTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI0TX, MXC_DMA_REQUEST_SPI0RX, MXC_DMA);
-            break;
-        case 1:
-            retVal = MXC_SPI_RevA_SlaveTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI1TX, MXC_DMA_REQUEST_SPI1RX, MXC_DMA);
-            break;
-        case 2:
-            retVal = MXC_SPI_RevA_SlaveTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI2TX, MXC_DMA_REQUEST_SPI2RX, MXC_DMA);
-            break;
-        case 3:
-            retVal = MXC_SPI_RevA_SlaveTransactionDMA(
-                (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI3TX, MXC_DMA_REQUEST_SPI3RX, MXC_DMA);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case 0:
+        retVal = MXC_SPI_RevA_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI0TX, MXC_DMA_REQUEST_SPI0RX, MXC_DMA);
+        break;
+    case 1:
+        retVal = MXC_SPI_RevA_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI1TX, MXC_DMA_REQUEST_SPI1RX, MXC_DMA);
+        break;
+    case 2:
+        retVal = MXC_SPI_RevA_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI2TX, MXC_DMA_REQUEST_SPI2RX, MXC_DMA);
+        break;
+    case 3:
+        retVal = MXC_SPI_RevA_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t*)req, MXC_DMA_REQUEST_SPI3TX, MXC_DMA_REQUEST_SPI3RX, MXC_DMA);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return retVal;

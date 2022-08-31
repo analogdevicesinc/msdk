@@ -39,8 +39,8 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
 #include "spixf.h"
+#include <stdio.h>
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 3000000

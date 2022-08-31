@@ -31,18 +31,18 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
-#include "mxc_delay.h"
-#include "i2c_regs.h"
 #include "dma_regs.h"
 #include "i2c.h"
+#include "i2c_regs.h"
 #include "i2c_reva.h"
+#include "mxc_assert.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Definitions **** */
 #define MXC_I2C_FASTPLUS_SPEED 1000000
@@ -192,8 +192,8 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsig
     return MXC_I2C_RevA_ReadRXFIFO(i2c, bytes, len);
 }
 
-int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
-                          mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_ReadRXFIFODMA(
+    mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
 {
     uint8_t i2cNum;
     mxc_dma_config_t config;
@@ -201,13 +201,13 @@ int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned in
     i2cNum = MXC_I2C_GET_IDX(i2c);
 
     switch (i2cNum) {
-        case 0:
-            config.reqsel = MXC_DMA_REQUEST_I2C0RX;
-            break;
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_I2C0RX;
+        break;
 
-        case 1:
-            config.reqsel = MXC_DMA_REQUEST_I2C1RX;
-            break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_I2C1RX;
+        break;
     }
 
     return MXC_I2C_RevA_ReadRXFIFODMA(i2c, bytes, len, callback, config);
@@ -223,8 +223,8 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsi
     return MXC_I2C_RevA_WriteTXFIFO(i2c, bytes, len);
 }
 
-int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
-                           mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_WriteTXFIFODMA(
+    mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
 {
     uint8_t i2cNum;
     mxc_dma_config_t config;
@@ -232,13 +232,13 @@ int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned i
     i2cNum = MXC_I2C_GET_IDX(i2c);
 
     switch (i2cNum) {
-        case 0:
-            config.reqsel = MXC_DMA_REQUEST_I2C0TX;
-            break;
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_I2C0TX;
+        break;
 
-        case 1:
-            config.reqsel = MXC_DMA_REQUEST_I2C1TX;
-            break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_I2C1TX;
+        break;
     }
 
     return MXC_I2C_RevA_WriteTXFIFODMA(i2c, bytes, len, callback, config);

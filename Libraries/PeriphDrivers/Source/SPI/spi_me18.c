@@ -31,24 +31,24 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
+#include <stdio.h>
 
-#include "mxc_device.h"
+#include "dma.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
-#include "mxc_delay.h"
 #include "spi_reva.h"
-#include "dma.h"
 
 /* **** Definitions **** */
 
 /* ************************************************************************** */
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
+    unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
     int spi_num;
 
@@ -162,8 +162,8 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         return E_NO_DEVICE;
     }
 
-    return MXC_SPI_RevA_Init((mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves,
-                             ssPolarity, hz);
+    return MXC_SPI_RevA_Init(
+        (mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
 }
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t* spi)
@@ -208,25 +208,25 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t* spi)
     if (MXC_SPI_GET_IDX(spi) > -1 && MXC_SPI_GET_IDX(spi) < 3) {
         clk_freq = PeripheralClock;
     } else if (MXC_SPI_GET_IDX(spi) > 2) {
-        uint32_t clk_src =
-            (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
+        uint32_t clk_src
+            = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
         switch (clk_src) {
-            case MXC_SYS_CLOCK_IPO:
-                clk_freq = IPO_FREQ;
-            case MXC_SYS_CLOCK_ERFO:
-                clk_freq = ERFO_FREQ;
-            case MXC_SYS_CLOCK_IBRO:
-                clk_freq = IBRO_FREQ;
-            case MXC_SYS_CLOCK_ISO:
-                clk_freq = ISO_FREQ;
-            case MXC_SYS_CLOCK_INRO:
-                clk_freq = INRO_FREQ;
-            case MXC_SYS_CLOCK_ERTCO:
-                clk_freq = ERTCO_FREQ;
-            case MXC_SYS_CLOCK_EXTCLK:
-                clk_freq = EXTCLK_FREQ;
-            default:
-                return E_BAD_PARAM;
+        case MXC_SYS_CLOCK_IPO:
+            clk_freq = IPO_FREQ;
+        case MXC_SYS_CLOCK_ERFO:
+            clk_freq = ERFO_FREQ;
+        case MXC_SYS_CLOCK_IBRO:
+            clk_freq = IBRO_FREQ;
+        case MXC_SYS_CLOCK_ISO:
+            clk_freq = ISO_FREQ;
+        case MXC_SYS_CLOCK_INRO:
+            clk_freq = INRO_FREQ;
+        case MXC_SYS_CLOCK_ERTCO:
+            clk_freq = ERTCO_FREQ;
+        case MXC_SYS_CLOCK_EXTCLK:
+            clk_freq = EXTCLK_FREQ;
+        default:
+            return E_BAD_PARAM;
         }
     } else {
         return E_BAD_PARAM;
@@ -391,45 +391,45 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselTx = MXC_DMA_REQUEST_SPI0TX;
-                break;
-            case 1:
-                reqselTx = MXC_DMA_REQUEST_SPI1TX;
-                break;
-            case 2:
-                reqselTx = MXC_DMA_REQUEST_SPI2TX;
-                break;
-            case 3:
-                reqselTx = MXC_DMA_REQUEST_SPI3TX;
-                break;
-            case 4:
-                reqselTx = MXC_DMA_REQUEST_SPI4TX;
-                break;
-            default:
-                return E_BAD_PARAM;
+        case 0:
+            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            break;
+        case 1:
+            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            break;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2TX;
+            break;
+        case 3:
+            reqselTx = MXC_DMA_REQUEST_SPI3TX;
+            break;
+        case 4:
+            reqselTx = MXC_DMA_REQUEST_SPI4TX;
+            break;
+        default:
+            return E_BAD_PARAM;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI0RX;
-                break;
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI1RX;
-                break;
-            case 2:
-                reqselTx = MXC_DMA_REQUEST_SPI2RX;
-                break;
-            case 3:
-                reqselTx = MXC_DMA_REQUEST_SPI3RX;
-                break;
-            case 4:
-                reqselTx = MXC_DMA_REQUEST_SPI4RX;
-                break;
-            default:
-                return E_BAD_PARAM;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI0RX;
+            break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI1RX;
+            break;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2RX;
+            break;
+        case 3:
+            reqselTx = MXC_DMA_REQUEST_SPI3RX;
+            break;
+        case 4:
+            reqselTx = MXC_DMA_REQUEST_SPI4RX;
+            break;
+        default:
+            return E_BAD_PARAM;
         }
     }
 
@@ -458,47 +458,47 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI0TX;
-                break;
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI1TX;
-                break;
-            case 2:
-                reqselTx = MXC_DMA_REQUEST_SPI2TX;
-                break;
-            case 3:
-                reqselTx = MXC_DMA_REQUEST_SPI3TX;
-                break;
-            case 4:
-                reqselTx = MXC_DMA_REQUEST_SPI4TX;
-                break;
-            default:
-                return E_BAD_PARAM;
-                break;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI0TX;
+            break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI1TX;
+            break;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2TX;
+            break;
+        case 3:
+            reqselTx = MXC_DMA_REQUEST_SPI3TX;
+            break;
+        case 4:
+            reqselTx = MXC_DMA_REQUEST_SPI4TX;
+            break;
+        default:
+            return E_BAD_PARAM;
+            break;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI0RX;
-                break;
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI1RX;
-                break;
-            case 2:
-                reqselTx = MXC_DMA_REQUEST_SPI2RX;
-                break;
-            case 3:
-                reqselTx = MXC_DMA_REQUEST_SPI3RX;
-                break;
-            case 4:
-                reqselTx = MXC_DMA_REQUEST_SPI4RX;
-                break;
-            default:
-                return E_BAD_PARAM;
-                break;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI0RX;
+            break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI1RX;
+            break;
+        case 2:
+            reqselTx = MXC_DMA_REQUEST_SPI2RX;
+            break;
+        case 3:
+            reqselTx = MXC_DMA_REQUEST_SPI3RX;
+            break;
+        case 4:
+            reqselTx = MXC_DMA_REQUEST_SPI4RX;
+            break;
+        default:
+            return E_BAD_PARAM;
+            break;
         }
     }
 

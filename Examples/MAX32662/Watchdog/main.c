@@ -39,23 +39,23 @@
  *          Then LED0 start blinking continuously.
  *          Open a terminal program to see interrupt messages.
  *
- *          SW2: Push SW2 (PB0) to trigger a watchdog reset. This will reset the watchdog before or after
- *               the wait period has expired and trigger an interrupt.
- *          Whether not SW2 will trigger a overflow or underflow event will depend on whether the OVERFLOW compiler
- * definition has been defined.
+ *          SW2: Push SW2 (PB0) to trigger a watchdog reset. This will reset the watchdog before or
+ * after the wait period has expired and trigger an interrupt. Whether not SW2 will trigger a
+ * overflow or underflow event will depend on whether the OVERFLOW compiler definition has been
+ * defined.
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_device.h"
-#include "nvic_table.h"
 #include "board.h"
-#include "mxc_sys.h"
-#include "wdt.h"
-#include "mxc_delay.h"
 #include "led.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "nvic_table.h"
 #include "pb.h"
+#include "wdt.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define OVERFLOW
@@ -67,7 +67,7 @@
 #endif
 
 /***** Globals *****/
-//use push buttons defined in board.h
+// use push buttons defined in board.h
 extern const mxc_gpio_cfg_t pb_pin[];
 extern const mxc_gpio_cfg_t led_pin[];
 
@@ -121,9 +121,9 @@ int main(void)
     } else {
         MXC_WDT_Disable(MXC_WDT0);
         cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-        cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
+        cfg.upperIntPeriod = MXC_WDT_PERIOD_2_27;
         cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-        cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
+        cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_23;
         MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
         MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
         MXC_WDT_EnableReset(MXC_WDT0);
@@ -145,10 +145,10 @@ int main(void)
     printf("example runs better without a debugger attached.\n");
     printf("\nPress SW2 (PB0) to create watchdog interrupt and reset.\n\n");
 
-    //Blink LED
+    // Blink LED
     MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
 
-    //Blink LED three times at startup
+    // Blink LED three times at startup
     int numBlinks = 3;
 
     while (numBlinks) {
@@ -167,7 +167,7 @@ int main(void)
     MXC_WDT_Enable(MXC_WDT0);
 
     while (1) {
-        //blink LED0
+        // blink LED0
         MXC_Delay(MXC_DELAY_MSEC(500));
         MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
         MXC_Delay(MXC_DELAY_MSEC(500));
@@ -179,8 +179,8 @@ int main(void)
             pb_int = 0;
 #ifdef OVERFLOW
             printf("\nHolding to trigger overflow condition...\n");
-            while (1)
-                ; // Let the WDT expire.  "Overflow"
+            while (1) { }
+// Let the WDT expire.  "Overflow"
 #endif
 #ifdef UNDERFLOW
             // Issue a reset before the WDT window.  "Underflow"
@@ -190,7 +190,7 @@ int main(void)
             MXC_WDT_ResetTimer(MXC_WDT0); // Double reset sequence guarantees underflow.
 #endif
         } else {
-            //Feed watchdog
+            // Feed watchdog
             printf("Feeding watchdog...\n");
             MXC_WDT_ResetTimer(MXC_WDT0);
         }

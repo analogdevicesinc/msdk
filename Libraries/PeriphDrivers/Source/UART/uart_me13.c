@@ -31,13 +31,13 @@
  *
  *************************************************************************** */
 
-#include "uart.h"
+#include "dma.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
-#include "mxc_assert.h"
-#include "uart_reva.h"
+#include "uart.h"
 #include "uart_common.h"
-#include "dma.h"
+#include "uart_reva.h"
 
 void MXC_UART_DMACallback(int ch, int error)
 {
@@ -65,39 +65,39 @@ int MXC_UART_Init(mxc_uart_regs_t* uart, unsigned int baud)
     }
 
     switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_GPIO_Config(&gpio_cfg_uart0);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
-            break;
+    case 0:
+        MXC_GPIO_Config(&gpio_cfg_uart0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
+        break;
 
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
-            break;
+    case 1:
+        MXC_GPIO_Config(&gpio_cfg_uart1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART1);
+        break;
 
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
-            break;
+    case 2:
+        MXC_GPIO_Config(&gpio_cfg_uart2);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
+        break;
 
-        case 3:
-            MXC_GPIO_Config(&gpio_cfg_uart3);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
-            break;
+    case 3:
+        MXC_GPIO_Config(&gpio_cfg_uart3);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART3);
+        break;
 
-        case 4:
-            MXC_GPIO_Config(&gpio_cfg_uart4);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART4);
-            break;
+    case 4:
+        MXC_GPIO_Config(&gpio_cfg_uart4);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART4);
+        break;
 
-        case 5:
-            MXC_GPIO_Config(&gpio_cfg_uart5);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART5);
-            break;
+    case 5:
+        MXC_GPIO_Config(&gpio_cfg_uart5);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART5);
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
     return MXC_UART_RevA_Init((mxc_uart_reva_regs_t*)uart, baud);
@@ -106,39 +106,39 @@ int MXC_UART_Init(mxc_uart_regs_t* uart, unsigned int baud)
 int MXC_UART_Shutdown(mxc_uart_regs_t* uart)
 {
     switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART0);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
-            break;
+    case 0:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART0);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
+        break;
 
-        case 1:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART1);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART1);
-            break;
+    case 1:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART1);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART1);
+        break;
 
-        case 2:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART2);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART2);
-            break;
+    case 2:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART2);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART2);
+        break;
 
-        case 3:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET1_UART3);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART3);
-            break;
+    case 3:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_UART3);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART3);
+        break;
 
-        case 4:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET1_UART4);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART4);
-            break;
+    case 4:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_UART4);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART4);
+        break;
 
-        case 5:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET1_UART5);
-            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART5);
-            break;
+    case 5:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_UART5);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART5);
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
     return E_NO_ERROR;
@@ -177,29 +177,29 @@ int MXC_UART_SetParity(mxc_uart_regs_t* uart, mxc_uart_parity_t parity)
 int MXC_UART_SetFlowCtrl(mxc_uart_regs_t* uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
 {
     switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_GPIO_Config(&gpio_cfg_uart0_flow);
-            break;
+    case 0:
+        MXC_GPIO_Config(&gpio_cfg_uart0_flow);
+        break;
 
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow);
-            break;
+    case 1:
+        MXC_GPIO_Config(&gpio_cfg_uart1_flow);
+        break;
 
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow);
-            break;
+    case 2:
+        MXC_GPIO_Config(&gpio_cfg_uart2_flow);
+        break;
 
-        case 3:
-            MXC_GPIO_Config(&gpio_cfg_uart3_flow);
-            break;
+    case 3:
+        MXC_GPIO_Config(&gpio_cfg_uart3_flow);
+        break;
 
-        case 4:
-            MXC_GPIO_Config(&gpio_cfg_uart4_flow);
-            break;
+    case 4:
+        MXC_GPIO_Config(&gpio_cfg_uart4_flow);
+        break;
 
-        case 5:
-            MXC_GPIO_Config(&gpio_cfg_uart5_flow);
-            break;
+    case 5:
+        MXC_GPIO_Config(&gpio_cfg_uart5_flow);
+        break;
     }
 
     return MXC_UART_RevA_SetFlowCtrl((mxc_uart_reva_regs_t*)uart, flowCtrl, rtsThreshold);
@@ -266,7 +266,7 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, un
 }
 
 int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-                           mxc_uart_dma_complete_cb_t callback)
+    mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
@@ -274,25 +274,25 @@ int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned
 
     // Only UART 0, 1 and 2 are supported for DMA transaction
     switch (uart_num) {
-        case 0:
-            config.reqsel = MXC_DMA_REQUEST_UART0RX;
-            break;
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_UART0RX;
+        break;
 
-        case 1:
-            config.reqsel = MXC_DMA_REQUEST_UART1RX;
-            break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_UART1RX;
+        break;
 
-        case 2:
-            config.reqsel = MXC_DMA_REQUEST_UART2RX;
-            break;
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_UART2RX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
-    return MXC_UART_RevA_ReadRXFIFODMA((mxc_uart_reva_regs_t*)uart, MXC_DMA, bytes, len, callback,
-                                       config);
+    return MXC_UART_RevA_ReadRXFIFODMA(
+        (mxc_uart_reva_regs_t*)uart, MXC_DMA, bytes, len, callback, config);
 }
 
 unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t* uart)
@@ -306,7 +306,7 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, u
 }
 
 int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-                            mxc_uart_dma_complete_cb_t callback)
+    mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
@@ -314,25 +314,25 @@ int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigne
 
     // Only UART 0, 1 and 2 are supported for DMA transaction
     switch (uart_num) {
-        case 0:
-            config.reqsel = MXC_DMA_REQUEST_UART0TX;
-            break;
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_UART0TX;
+        break;
 
-        case 1:
-            config.reqsel = MXC_DMA_REQUEST_UART1TX;
-            break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_UART1TX;
+        break;
 
-        case 2:
-            config.reqsel = MXC_DMA_REQUEST_UART2TX;
-            break;
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_UART2TX;
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+    default:
+        return E_BAD_PARAM;
+        break;
     }
 
-    return MXC_UART_RevA_WriteTXFIFODMA((mxc_uart_reva_regs_t*)uart, MXC_DMA, bytes, len, callback,
-                                        config);
+    return MXC_UART_RevA_WriteTXFIFODMA(
+        (mxc_uart_reva_regs_t*)uart, MXC_DMA, bytes, len, callback, config);
 }
 
 unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t* uart)

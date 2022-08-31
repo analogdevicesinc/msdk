@@ -39,19 +39,19 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
+#include "board.h"
+#include "gcr_regs.h"
+#include "led.h"
+#include "mcr_regs.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_pins.h"
-#include "led.h"
-#include "board.h"
-#include "gcr_regs.h"
-#include "mcr_regs.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 /***** Globals *****/
 volatile uint32_t badData;
@@ -67,12 +67,12 @@ uint32_t ramTop = (MXC_SRAM_MEM_BASE + (MXC_SRAM_MEM_SIZE * 0.8));
 
 void ECC_IRQHandler(void)
 {
-    eccErr  = MXC_GCR->ecc_er;
+    eccErr = MXC_GCR->ecc_er;
     eccDErr = MXC_GCR->ecc_ced;
     eccAddr = MXC_GCR->ecc_errad;
     eccFlag = 1;
 
-    MXC_GCR->ecc_er  = eccErr;
+    MXC_GCR->ecc_er = eccErr;
     MXC_GCR->ecc_ced = eccDErr;
 }
 
@@ -83,14 +83,14 @@ void clear_ram(void)
     uint32_t sysram0_end = 0x20007fff; // end of SRAM0
 
     // clear SRAM0 (after bss section)
-    for (ptr = (uint32_t*)&_ebss; (uint32_t)ptr < sysram0_end; ptr++) {
-        *ptr = 0;
-    }
+    for (ptr = (uint32_t*)&_ebss; (uint32_t)ptr < sysram0_end; ptr++) { *ptr = 0; }
 
     // clear SRAM1, SRAM2, ... SRAM6
     MXC_GCR->memzcn |= 0x3E;
     while (MXC_GCR->memzcn & 0x3E) {
-        ; // wait until clear done
+        {
+        }
+        // wait until clear done
     }
 }
 
@@ -110,19 +110,19 @@ int main(void)
     /*
      * Any read from non-initialized RAM could trigger an ECC error
      * since the random check bits will most likely not match the random data bits.
-     * Writing the memory to all zeroes at bootup can prevent this at the expense of the time required.
-     * So that clear RAM before ECC check
+     * Writing the memory to all zeroes at bootup can prevent this at the expense of the time
+     * required. So that clear RAM before ECC check
      */
     clear_ram();
 
     // Clear all ECC Errors -- write-1-to-clear
-    MXC_GCR->ecc_er  = (volatile uint32_t)MXC_GCR->ecc_er;
+    MXC_GCR->ecc_er = (volatile uint32_t)MXC_GCR->ecc_er;
     MXC_GCR->ecc_ced = (volatile uint32_t)MXC_GCR->ecc_ced;
 
     // Enable interrupts for ECC errors
-    MXC_GCR->ecc_irqen |= MXC_F_GCR_ECC_IRQEN_SYSRAM0ECCEN | MXC_F_GCR_ECC_IRQEN_SYSRAM1ECCEN |
-                          MXC_F_GCR_ECC_IRQEN_SYSRAM2ECCEN | MXC_F_GCR_ECC_IRQEN_SYSRAM3ECCEN |
-                          MXC_F_GCR_ECC_IRQEN_SYSRAM4ECCEN | MXC_F_GCR_ECC_IRQEN_SYSRAM5ECCEN;
+    MXC_GCR->ecc_irqen |= MXC_F_GCR_ECC_IRQEN_SYSRAM0ECCEN | MXC_F_GCR_ECC_IRQEN_SYSRAM1ECCEN
+        | MXC_F_GCR_ECC_IRQEN_SYSRAM2ECCEN | MXC_F_GCR_ECC_IRQEN_SYSRAM3ECCEN
+        | MXC_F_GCR_ECC_IRQEN_SYSRAM4ECCEN | MXC_F_GCR_ECC_IRQEN_SYSRAM5ECCEN;
     NVIC_EnableIRQ(ECC_IRQn);
 
     // Scan all of memory, which should not cause any errors to be detected
@@ -198,10 +198,11 @@ int main(void)
     eccFlag = 0;
 
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail,
-           test_fail ? "FAIL!" : "Ok");
+        test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
     while (1) {
-        ;
+        {
+        }
     }
 }

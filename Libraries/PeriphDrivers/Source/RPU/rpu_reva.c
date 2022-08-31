@@ -41,14 +41,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
-#include "mxc_errors.h"
-#include "rpu.h"
 #include "rpu_reva.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_sys.h"
+#include "rpu.h"
 #include "rpu_regs.h"
+#include <string.h>
 
 /* **** Functions **** */
 int MXC_RPU_RevA_Allow(mxc_rpu_device_t periph, uint32_t allow_mask)

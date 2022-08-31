@@ -1,39 +1,39 @@
 /*******************************************************************************
-* Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*
-* @author: Yann Loisel <yann.loisel@maximintegrated.com>
-* @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
-*
-*/
+ * Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************
+ *
+ * @author: Yann Loisel <yann.loisel@maximintegrated.com>
+ * @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
+ *
+ */
 
 #ifndef __SESSION_BUILD_H__
 #define __SESSION_BUILD_H__
@@ -41,13 +41,13 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include <ucl/ucl_aes.h>
 #include <ucl/ucl_config.h>
 #include <ucl/ucl_types.h>
-#include <ucl/ucl_aes.h>
 
 #include <ecdsa.h>
-#include <rsa.h>
 #include <process.h>
+#include <rsa.h>
 
 #ifdef _MAXIM_HSM
 #include <libhsm/HSM.h>
@@ -67,22 +67,22 @@
 #define FALSE 0
 #endif
 
-#define USE_COLOR   1
-#define MAX_FRAME   102400
+#define USE_COLOR 1
+#define MAX_FRAME 102400
 #define MAX_SEGMENT 102400
-#define MAX_DATA    102400
+#define MAX_DATA 102400
 
-#define MAX_PARAMS              4
-#define MAX_EXTRA_PARAMS        10
-#define MAX_SCP_SCRIPT_LINE     20
-#define MAX_TAB                 100
-#define MAX_FLASH_MB            1023
-#define MAX_CHUNK_SIZE          102400
+#define MAX_PARAMS 4
+#define MAX_EXTRA_PARAMS 10
+#define MAX_SCP_SCRIPT_LINE 20
+#define MAX_TAB 100
+#define MAX_FLASH_MB 1023
+#define MAX_CHUNK_SIZE 102400
 #define SCP_LITE_MAX_CHUNK_SIZE 40960
-#define ANGELA_MAX_CHUNK_SIZE   15354
-#define PAOLA_MAX_CHUNK_SIZE    MAX_CHUNK_SIZE
+#define ANGELA_MAX_CHUNK_SIZE 15354
+#define PAOLA_MAX_CHUNK_SIZE MAX_CHUNK_SIZE
 #define MAXQ1852_MAX_CHUNK_SIZE 1856
-#define FLORA_MAX_CHUNK_SIZE    4094
+#define FLORA_MAX_CHUNK_SIZE 4094
 
 /**
  *		Cryptography information
@@ -91,17 +91,17 @@
 #define MAX_RSA_LENGTH 512
 
 /* byte length of the CRK public exponent */
-#define RSA_2048_MODULUS_LEN    256
-#define RSA_4096_MODULUS_LEN    512
+#define RSA_2048_MODULUS_LEN 256
+#define RSA_4096_MODULUS_LEN 512
 #define RSA_PUBLIC_EXPONENT_LEN 4
-#define RSA_2048_SIGNATURE_LEN  RSA_2048_MODULUS_LEN
-#define RSA_4096_SIGNATURE_LEN  RSA_4096_MODULUS_LEN
+#define RSA_2048_SIGNATURE_LEN RSA_2048_MODULUS_LEN
+#define RSA_4096_SIGNATURE_LEN RSA_4096_MODULUS_LEN
 
 /* ECDSA256 so signature is 2*32=64 bytes */
 #define MAX_ECDSA 64
 
 /* byte length of the CRK public exponent */
-#define ECDSA_MODULUS_LEN   32
+#define ECDSA_MODULUS_LEN 32
 #define ECDSA_SIGNATURE_LEN (2 * ECDSA_MODULUS_LEN)
 
 #define SECTOR_SIZE 4096

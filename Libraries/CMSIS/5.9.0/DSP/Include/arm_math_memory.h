@@ -57,10 +57,10 @@ extern "C" {
 #error Unknown compiler
 #endif
 
-#define __SIMD32(addr)       (*(__SIMD32_TYPE**)&(addr))
+#define __SIMD32(addr) (*(__SIMD32_TYPE**)&(addr))
 #define __SIMD32_CONST(addr) ((__SIMD32_TYPE*)(addr))
 #define _SIMD32_OFFSET(addr) (*(__SIMD32_TYPE*)(addr))
-#define __SIMD64(addr)       (*(int64_t**)&(addr))
+#define __SIMD64(addr) (*(int64_t**)&(addr))
 
 /* SIMD replacement */
 
@@ -76,7 +76,7 @@ __STATIC_FORCEINLINE q31_t read_q15x2(q15_t const* pQ15)
 #ifdef __ARM_FEATURE_UNALIGNED
     memcpy(&val, pQ15, 4);
 #else
-    val        = (pQ15[1] << 16) | (pQ15[0] & 0x0FFFF);
+    val = (pQ15[1] << 16) | (pQ15[0] & 0x0FFFF);
 #endif
 
     return (val);
@@ -128,8 +128,8 @@ __STATIC_FORCEINLINE void write_q15x2(q15_t* pQ15, q31_t value)
 #ifdef __ARM_FEATURE_UNALIGNED
     memcpy(pQ15, &val, 4);
 #else
-    pQ15[0]    = (q15_t)(val & 0x0FFFF);
-    pQ15[1]    = (q15_t)(val >> 16);
+    pQ15[0] = (q15_t)(val & 0x0FFFF);
+    pQ15[1] = (q15_t)(val >> 16);
 #endif
 }
 
@@ -145,8 +145,8 @@ __STATIC_FORCEINLINE q31_t read_q7x4(q7_t const* pQ7)
 #ifdef __ARM_FEATURE_UNALIGNED
     memcpy(&val, pQ7, 4);
 #else
-    val        = ((pQ7[3] & 0x0FF) << 24) | ((pQ7[2] & 0x0FF) << 16) | ((pQ7[1] & 0x0FF) << 8) |
-          (pQ7[0] & 0x0FF);
+    val = ((pQ7[3] & 0x0FF) << 24) | ((pQ7[2] & 0x0FF) << 16) | ((pQ7[1] & 0x0FF) << 8)
+        | (pQ7[0] & 0x0FF);
 #endif
     return (val);
 }

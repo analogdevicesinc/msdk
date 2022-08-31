@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#include <string.h>
 #include "state.h"
+#include <string.h>
 
 static State* g_state = NULL;
 

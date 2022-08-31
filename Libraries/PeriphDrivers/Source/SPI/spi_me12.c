@@ -31,24 +31,24 @@
  *
  *************************************************************************** */
 
-#include <stdio.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
+#include <stdio.h>
 
-#include "mxc_device.h"
+#include "dma.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
-#include "mxc_delay.h"
 #include "spi_reva.h"
-#include "dma.h"
 
 /* **** Definitions **** */
 
 /* ************************************************************************** */
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
+    unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
     int spi_num;
 
@@ -69,7 +69,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
     }
 
     mxc_gpio_cfg_t gpio_cfg_spi;
-    gpio_cfg_spi.pad  = MXC_GPIO_PAD_NONE;
+    gpio_cfg_spi.pad = MXC_GPIO_PAD_NONE;
     gpio_cfg_spi.port = MXC_GPIO0;
 
     // Set VDDIO level
@@ -84,7 +84,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
 
-        //clear mask
+        // clear mask
         gpio_cfg_spi.mask = 0;
 
         if (pins.map_a) {
@@ -126,7 +126,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI0);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
 
-        //clear mask
+        // clear mask
         gpio_cfg_spi.mask = 0;
 
         // check rest of the pins
@@ -155,8 +155,8 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
 
     MXC_GPIO_Config(&gpio_cfg_spi);
 
-    return MXC_SPI_RevA_Init((mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves,
-                             ssPolarity, hz);
+    return MXC_SPI_RevA_Init(
+        (mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
 }
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t* spi)
@@ -194,23 +194,23 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t* spi)
     if (MXC_SPI_GET_IDX(spi) > -1 && MXC_SPI_GET_IDX(spi) < 3) {
         return PeripheralClock;
     } else if (MXC_SPI_GET_IDX(spi) > 2) {
-        uint32_t clk_src =
-            (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
+        uint32_t clk_src
+            = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
         switch (clk_src) {
-            case MXC_SYS_CLOCK_IPO:
-                return IPO_FREQ;
-            case MXC_SYS_CLOCK_ERFO:
-                return ERFO_FREQ;
-            case MXC_SYS_CLOCK_IBRO:
-                return IBRO_FREQ;
-            case MXC_SYS_CLOCK_INRO:
-                return INRO_FREQ;
-            case MXC_SYS_CLOCK_ERTCO:
-                return ERTCO_FREQ;
-            case MXC_SYS_CLOCK_EXTCLK:
-                return EXTCLK_FREQ;
-            default:
-                return E_BAD_PARAM;
+        case MXC_SYS_CLOCK_IPO:
+            return IPO_FREQ;
+        case MXC_SYS_CLOCK_ERFO:
+            return ERFO_FREQ;
+        case MXC_SYS_CLOCK_IBRO:
+            return IBRO_FREQ;
+        case MXC_SYS_CLOCK_INRO:
+            return INRO_FREQ;
+        case MXC_SYS_CLOCK_ERTCO:
+            return ERTCO_FREQ;
+        case MXC_SYS_CLOCK_EXTCLK:
+            return EXTCLK_FREQ;
+        default:
+            return E_BAD_PARAM;
         }
     } else {
         return E_BAD_PARAM;
@@ -375,31 +375,31 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselTx = MXC_DMA_REQUEST_SPI0TX;
-                break;
+        case 0:
+            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            break;
 
-            case 1:
-                reqselTx = MXC_DMA_REQUEST_SPI1TX;
-                break;
+        case 1:
+            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            break;
 
-            default:
-                return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI0RX;
-                break;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI0RX;
+            break;
 
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI1RX;
-                break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI1RX;
+            break;
 
-            default:
-                return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
         }
     }
 
@@ -428,33 +428,33 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselTx = MXC_DMA_REQUEST_SPI1TX;
-                break;
+        case 0:
+            reqselTx = MXC_DMA_REQUEST_SPI1TX;
+            break;
 
-            case 1:
-                reqselTx = MXC_DMA_REQUEST_SPI0TX;
-                break;
+        case 1:
+            reqselTx = MXC_DMA_REQUEST_SPI0TX;
+            break;
 
-            default:
-                return E_BAD_PARAM;
-                break;
+        default:
+            return E_BAD_PARAM;
+            break;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-            case 0:
-                reqselRx = MXC_DMA_REQUEST_SPI1RX;
-                break;
+        case 0:
+            reqselRx = MXC_DMA_REQUEST_SPI1RX;
+            break;
 
-            case 1:
-                reqselRx = MXC_DMA_REQUEST_SPI0RX;
-                break;
+        case 1:
+            reqselRx = MXC_DMA_REQUEST_SPI0RX;
+            break;
 
-            default:
-                return E_BAD_PARAM;
-                break;
+        default:
+            return E_BAD_PARAM;
+            break;
         }
     }
 

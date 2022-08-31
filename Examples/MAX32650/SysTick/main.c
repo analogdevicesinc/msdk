@@ -37,18 +37,18 @@
  ******************************************************************************/
 
 /* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
+#include "board.h"
+#include "led.h"
 #include "mxc_errors.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
-#include "board.h"
-#include "led.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Definitions **** */
-#define USE_SYSTEM_CLK         1
-#define SYSTICK_PERIOD_SYS_CLK 4800000 //40ms with 120MHz system clock
-#define SYSTICK_PERIOD_EXT_CLK 3277    //100ms with 32768Hz external RTC clock
+#define USE_SYSTEM_CLK 1
+#define SYSTICK_PERIOD_SYS_CLK 4800000 // 40ms with 120MHz system clock
+#define SYSTICK_PERIOD_EXT_CLK 3277 // 100ms with 32768Hz external RTC clock
 
 /* **** Globals **** */
 
@@ -57,7 +57,7 @@
 // *****************************************************************************
 void SysTick_Handler(void)
 {
-    //Toggle LED0 every systick period
+    // Toggle LED0 every systick period
     LED_Toggle(0);
 }
 
@@ -85,6 +85,5 @@ int main(void)
 
     LED_On(0);
 
-    while (1) {
-    }
+    while (1) { }
 }

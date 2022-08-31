@@ -40,13 +40,13 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
+#include "flc.h"
+#include "flc_common.h"
+#include "flc_reva.h"
+#include "icc.h"
 #include "mxc_errors.h"
 #include "mxc_sys.h"
-#include "flc.h"
-#include "flc_reva.h"
-#include "flc_common.h"
-#include "icc.h"
+#include <string.h>
 
 /* **** Definitions **** */
 
@@ -136,8 +136,8 @@ int MXC_FLC_PageErase(uint32_t address)
         return err;
     }
 
-    if ((err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)MXC_FLC, physicalAddress)) !=
-        E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)MXC_FLC, physicalAddress))
+        != E_NO_ERROR) {
         return err;
     }
 
@@ -195,8 +195,8 @@ int MXC_FLC_Write128(uint32_t address, uint32_t* data)
         return err;
     }
 
-    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)MXC_FLC, physicalAddress, data)) !=
-        E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)MXC_FLC, physicalAddress, data))
+        != E_NO_ERROR) {
         return err;
     }
 

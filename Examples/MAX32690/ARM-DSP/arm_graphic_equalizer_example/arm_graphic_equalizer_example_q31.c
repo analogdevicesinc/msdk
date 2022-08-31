@@ -1,42 +1,42 @@
 /* ----------------------------------------------------------------------
-* Copyright (C) 2010-2012 ARM Limited. All rights reserved.
-*
-* $Date:         17. January 2013
-* $Revision:     V1.4.0
-*
-* Project:       CMSIS DSP Library
-* Title:         arm_graphic_equalizer_example_q31.c
-*
-* Description:   Example showing an audio graphic equalizer constructed
-*                out of Biquad filters.
-*
-* Target Processor: Cortex-M4/Cortex-M3
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*   - Redistributions of source code must retain the above copyright
-*     notice, this list of conditions and the following disclaimer.
-*   - Redistributions in binary form must reproduce the above copyright
-*     notice, this list of conditions and the following disclaimer in
-*     the documentation and/or other materials provided with the
-*     distribution.
-*   - Neither the name of ARM LIMITED nor the names of its contributors
-*     may be used to endorse or promote products derived from this
-*     software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
+ * Copyright (C) 2010-2012 ARM Limited. All rights reserved.
+ *
+ * $Date:         17. January 2013
+ * $Revision:     V1.4.0
+ *
+ * Project:       CMSIS DSP Library
+ * Title:         arm_graphic_equalizer_example_q31.c
+ *
+ * Description:   Example showing an audio graphic equalizer constructed
+ *                out of Biquad filters.
+ *
+ * Target Processor: Cortex-M4/Cortex-M3
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *   - Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *   - Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *   - Neither the name of ARM LIMITED nor the names of its contributors
+ *     may be used to endorse or promote products derived from this
+ *     software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * -------------------------------------------------------------------- */
 
 /**
@@ -317,7 +317,7 @@ const q31_t coeffTable[950] = {
 ** Desired gains, in dB, per band
 ** ------------------------------------------------------------------- */
 
-int gainDB[5] = {0, -3, 6, 4, -6};
+int gainDB[5] = { 0, -3, 6, 4, -6 };
 
 float32_t snr;
 
@@ -336,72 +336,67 @@ int main(void)
     int i;
     int32_t status;
 
-    inputF32  = &testInput_f32[0];
+    inputF32 = &testInput_f32[0];
     outputF32 = &testOutput[0];
 
     /* Initialize the state and coefficient buffers for all Biquad sections */
 
     arm_biquad_cas_df1_32x64_init_q31(&S1, NUMSTAGES,
-                                      (q31_t*)&coeffTable[190 * 0 + 10 * (gainDB[0] + 9)],
-                                      &biquadStateBand1Q31[0], 2);
+        (q31_t*)&coeffTable[190 * 0 + 10 * (gainDB[0] + 9)], &biquadStateBand1Q31[0], 2);
 
     arm_biquad_cas_df1_32x64_init_q31(&S2, NUMSTAGES,
-                                      (q31_t*)&coeffTable[190 * 1 + 10 * (gainDB[1] + 9)],
-                                      &biquadStateBand2Q31[0], 2);
+        (q31_t*)&coeffTable[190 * 1 + 10 * (gainDB[1] + 9)], &biquadStateBand2Q31[0], 2);
 
     arm_biquad_cascade_df1_init_q31(&S3, NUMSTAGES,
-                                    (q31_t*)&coeffTable[190 * 2 + 10 * (gainDB[2] + 9)],
-                                    &biquadStateBand3Q31[0], 2);
+        (q31_t*)&coeffTable[190 * 2 + 10 * (gainDB[2] + 9)], &biquadStateBand3Q31[0], 2);
 
     arm_biquad_cascade_df1_init_q31(&S4, NUMSTAGES,
-                                    (q31_t*)&coeffTable[190 * 3 + 10 * (gainDB[3] + 9)],
-                                    &biquadStateBand4Q31[0], 2);
+        (q31_t*)&coeffTable[190 * 3 + 10 * (gainDB[3] + 9)], &biquadStateBand4Q31[0], 2);
 
     arm_biquad_cascade_df1_init_q31(&S5, NUMSTAGES,
-                                    (q31_t*)&coeffTable[190 * 4 + 10 * (gainDB[4] + 9)],
-                                    &biquadStateBand5Q31[0], 2);
+        (q31_t*)&coeffTable[190 * 4 + 10 * (gainDB[4] + 9)], &biquadStateBand5Q31[0], 2);
 
     /* Call the process functions and needs to change filter coefficients
      for varying the gain of each band */
 
     for (i = 0; i < NUMBLOCKS; i++) {
         /* ----------------------------------------------------------------------
-    ** Convert block of input data from float to Q31
-    ** ------------------------------------------------------------------- */
+         ** Convert block of input data from float to Q31
+         ** ------------------------------------------------------------------- */
 
         arm_float_to_q31(inputF32 + (i * BLOCKSIZE), inputQ31, BLOCKSIZE);
 
         /* ----------------------------------------------------------------------
-    ** Scale down by 1/8.  This provides additional headroom so that the
-    ** graphic EQ can apply gain.
-    ** ------------------------------------------------------------------- */
+         ** Scale down by 1/8.  This provides additional headroom so that the
+         ** graphic EQ can apply gain.
+         ** ------------------------------------------------------------------- */
 
         arm_scale_q31(inputQ31, 0x7FFFFFFF, -3, inputQ31, BLOCKSIZE);
 
         /* ----------------------------------------------------------------------
-    ** Call the Q31 Biquad Cascade DF1 32x64 process function for band1, band2
-    ** ------------------------------------------------------------------- */
+         ** Call the Q31 Biquad Cascade DF1 32x64 process function for band1, band2
+         ** ------------------------------------------------------------------- */
 
         arm_biquad_cas_df1_32x64_q31(&S1, inputQ31, outputQ31, BLOCKSIZE);
         arm_biquad_cas_df1_32x64_q31(&S2, outputQ31, outputQ31, BLOCKSIZE);
 
         /* ----------------------------------------------------------------------
-    ** Call the Q31 Biquad Cascade DF1 process function for band3, band4, band5
-    ** ------------------------------------------------------------------- */
+         ** Call the Q31 Biquad Cascade DF1 process function for band3, band4, band5
+         ** ------------------------------------------------------------------- */
 
         arm_biquad_cascade_df1_q31(&S3, outputQ31, outputQ31, BLOCKSIZE);
         arm_biquad_cascade_df1_q31(&S4, outputQ31, outputQ31, BLOCKSIZE);
         arm_biquad_cascade_df1_q31(&S5, outputQ31, outputQ31, BLOCKSIZE);
 
         /* ----------------------------------------------------------------------
-    ** Convert Q31 result back to float
-    ** ------------------------------------------------------------------- */
+         ** Convert Q31 result back to float
+         ** ------------------------------------------------------------------- */
 
         arm_q31_to_float(outputQ31, outputF32 + (i * BLOCKSIZE), BLOCKSIZE);
 
         /* ----------------------------------------------------------------------
-    ** Scale back up
-    ** ------------------------------------------------------------------- */
+         ** Scale back up
+         ** ------------------------------------------------------------------- */
 
         arm_scale_f32(outputF32 + (i * BLOCKSIZE), 8.0f, outputF32 + (i * BLOCKSIZE), BLOCKSIZE);
     };
@@ -414,16 +409,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) { }
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) { }
+/* main function does not return */
 #endif
         return 1;
     }

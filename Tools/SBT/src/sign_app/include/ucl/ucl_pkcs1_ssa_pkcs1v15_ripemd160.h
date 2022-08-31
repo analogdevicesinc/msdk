@@ -54,7 +54,7 @@ extern "C" {
  * @param[in]  message        The message to be signed
  * @param[in]  message_length The message byte length
  * @param[in]  keyPr          RSA private key
- * 
+ *
  * @note The output buffer length is the modulus length
  *
  * @return Error code
@@ -65,8 +65,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_RIPEMD160
  */
-int ucl_pkcs1_ssa_pkcs1v15_ripemd160_sign(u8* signature, u8* message, u32 message_length,
-                                          ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_ripemd160_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-RIPEMD160 CRT Signature Generation</b>.
@@ -76,7 +76,7 @@ int ucl_pkcs1_ssa_pkcs1v15_ripemd160_sign(u8* signature, u8* message, u32 messag
  * @param[in]  message        The messageto be signed
  * @param[in]  message_length The message byte length
  * @param[in]  keyPr          RSA CRT private key
- * 
+ *
  * @note The output buffer length is the modulus length
  *
  * @return Error code
@@ -87,8 +87,8 @@ int ucl_pkcs1_ssa_pkcs1v15_ripemd160_sign(u8* signature, u8* message, u32 messag
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_RIPEMD160
  */
-int ucl_pkcs1_ssa_pkcs1v15_ripemd160_crt_sign(u8* signature, u8* message, u32 message_length,
-                                              ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_ripemd160_crt_sign(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_crt_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-RIPEMD160 Signature Verification</b>.
@@ -100,7 +100,7 @@ int ucl_pkcs1_ssa_pkcs1v15_ripemd160_crt_sign(u8* signature, u8* message, u32 me
  * @param[in] keyPu          The RSA public key
  *
  * @note The signature length is the modulus length
- * 
+ *
  * @return Error code
  *
  * @retval #UCL_OK if the signature is valid
@@ -109,8 +109,8 @@ int ucl_pkcs1_ssa_pkcs1v15_ripemd160_crt_sign(u8* signature, u8* message, u32 me
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_RIPEMD160
  */
-int ucl_pkcs1_ssa_pkcs1v15_ripemd160_verify(u8* signature, u8* message, u32 message_length,
-                                            ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_ripemd160_verify(
+    u8* signature, u8* message, u32 message_length, ucl_rsa_public_key_t* keyPu);
 
 #ifdef __cplusplus
 }

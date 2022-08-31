@@ -1,93 +1,92 @@
 /*******************************************************************************
-* Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*
-* @author: Yann Loisel <yann.loisel@maximintegrated.com>
-* @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
-*
-*/
+ * Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *******************************************************************************
+ *
+ * @author: Yann Loisel <yann.loisel@maximintegrated.com>
+ * @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
+ *
+ */
 
+#include <ctype.h>
+#include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <ctype.h>
 #include <string.h>
-#include <errno.h>
 
 #include <ucl/ucl_config.h>
-#include <ucl/ucl_types.h>
-#include <ucl/ucl_sys.h>
-#include <ucl/ucl_retdefs.h>
 #include <ucl/ucl_defs.h>
+#include <ucl/ucl_retdefs.h>
+#include <ucl/ucl_sys.h>
+#include <ucl/ucl_types.h>
 //#include <ucl/ucl_aes.h>
-#include <ucl/ucl_sha256.h>
 #include <ucl/ecdsa_generic_api.h>
+#include <ucl/ucl_sha256.h>
 
-#include "session_build.h"
-#include "scp_definitions.h"
-#include "read_file.h"
 #include "ecdsa.h"
-#include <maxim_c_utils.h>
+#include "read_file.h"
+#include "scp_definitions.h"
+#include "session_build.h"
 #include <log.h>
+#include <maxim_c_utils.h>
 
-int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned char* signature,
-               ecdsa_key_t key)
+int ecdsa_sign(
+    const unsigned char* input, unsigned int input_size, unsigned char* signature, ecdsa_key_t key)
 {
     /* message */
-    uint8_t msg3[] = {'a', 'b', 'c'};
+    uint8_t msg3[] = { 'a', 'b', 'c' };
     /* public key */
-    uint8_t xq3[] = {0x24, 0x42, 0xA5, 0xCC, 0x0E, 0xCD, 0x01, 0x5F, 0xA3, 0xCA, 0x31,
-                     0xDC, 0x8E, 0x2B, 0xBC, 0x70, 0xBF, 0x42, 0xD6, 0x0C, 0xBC, 0xA2,
-                     0x00, 0x85, 0xE0, 0x82, 0x2C, 0xB0, 0x42, 0x35, 0xE9, 0x70};
-    uint8_t yq3[] = {0x6F, 0xC9, 0x8B, 0xD7, 0xE5, 0x02, 0x11, 0xA4, 0xA2, 0x71, 0x02,
-                     0xFA, 0x35, 0x49, 0xDF, 0x79, 0xEB, 0xCB, 0x4B, 0xF2, 0x46, 0xB8,
-                     0x09, 0x45, 0xCD, 0xDF, 0xE7, 0xD5, 0x09, 0xBB, 0xFD, 0x7D};
+    uint8_t xq3[] = { 0x24, 0x42, 0xA5, 0xCC, 0x0E, 0xCD, 0x01, 0x5F, 0xA3, 0xCA, 0x31, 0xDC, 0x8E,
+        0x2B, 0xBC, 0x70, 0xBF, 0x42, 0xD6, 0x0C, 0xBC, 0xA2, 0x00, 0x85, 0xE0, 0x82, 0x2C, 0xB0,
+        0x42, 0x35, 0xE9, 0x70 };
+    uint8_t yq3[] = { 0x6F, 0xC9, 0x8B, 0xD7, 0xE5, 0x02, 0x11, 0xA4, 0xA2, 0x71, 0x02, 0xFA, 0x35,
+        0x49, 0xDF, 0x79, 0xEB, 0xCB, 0x4B, 0xF2, 0x46, 0xB8, 0x09, 0x45, 0xCD, 0xDF, 0xE7, 0xD5,
+        0x09, 0xBB, 0xFD, 0x7D };
     /* signature for the message above */
-    uint8_t r3[] = {0xCB, 0x28, 0xE0, 0x99, 0x9B, 0x9C, 0x77, 0x15, 0xFD, 0x0A, 0x80,
-                    0xD8, 0xE4, 0x7A, 0x77, 0x07, 0x97, 0x16, 0xCB, 0xBF, 0x91, 0x7D,
-                    0xD7, 0x2E, 0x97, 0x56, 0x6E, 0xA1, 0xC0, 0x66, 0x95, 0x7C};
-    uint8_t s3[] = {0x86, 0xFA, 0x3B, 0xB4, 0xE2, 0x6C, 0xAD, 0x5B, 0xF9, 0x0B, 0x7F,
-                    0x81, 0x89, 0x92, 0x56, 0xCE, 0x75, 0x94, 0xBB, 0x1E, 0xA0, 0xC8,
-                    0x92, 0x12, 0x74, 0x8B, 0xFF, 0x3B, 0x3D, 0x5B, 0x03, 0x15};
+    uint8_t r3[] = { 0xCB, 0x28, 0xE0, 0x99, 0x9B, 0x9C, 0x77, 0x15, 0xFD, 0x0A, 0x80, 0xD8, 0xE4,
+        0x7A, 0x77, 0x07, 0x97, 0x16, 0xCB, 0xBF, 0x91, 0x7D, 0xD7, 0x2E, 0x97, 0x56, 0x6E, 0xA1,
+        0xC0, 0x66, 0x95, 0x7C };
+    uint8_t s3[] = { 0x86, 0xFA, 0x3B, 0xB4, 0xE2, 0x6C, 0xAD, 0x5B, 0xF9, 0x0B, 0x7F, 0x81, 0x89,
+        0x92, 0x56, 0xCE, 0x75, 0x94, 0xBB, 0x1E, 0xA0, 0xC8, 0x92, 0x12, 0x74, 0x8B, 0xFF, 0x3B,
+        0x3D, 0x5B, 0x03, 0x15 };
 
     unsigned int i;
     int resu;
 
     ucl_type_ecdsa_signature ucl_signature;
-    int configuration = (SECP256R1 << UCL_CURVE_SHIFT) ^ (UCL_MSG_INPUT << UCL_INPUT_SHIFT) ^
-                        (UCL_SHA256 << UCL_HASH_SHIFT) ^
-                        (UCL_NO_PRECOMP << UCL_PRECOMP_TRICK_SHIFT);
+    int configuration = (SECP256R1 << UCL_CURVE_SHIFT) ^ (UCL_MSG_INPUT << UCL_INPUT_SHIFT)
+        ^ (UCL_SHA256 << UCL_HASH_SHIFT) ^ (UCL_NO_PRECOMP << UCL_PRECOMP_TRICK_SHIFT);
 
-    ucl_type_ecc_u8_affine_point Q3 = {.x = xq3, .y = yq3};
-    ucl_type_ecdsa_signature RS3    = {.r = r3, .s = s3};
+    ucl_type_ecc_u8_affine_point Q3 = { .x = xq3, .y = yq3 };
+    ucl_type_ecdsa_signature RS3 = { .r = r3, .s = s3 };
 
 #ifdef _MAXIM_HSM
     long unsigned int l_iSignatureLength = 128;
@@ -109,8 +108,8 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 
     /* Known Answer Test Check */
 
-    resu =
-        ucl_ecdsa_verification(Q3, RS3, &ucl_sha256, msg3, sizeof(msg3), &secp256r1, configuration);
+    resu = ucl_ecdsa_verification(
+        Q3, RS3, &ucl_sha256, msg3, sizeof(msg3), &secp256r1, configuration);
 
     if (resu != UCL_OK) {
         free(ucl_signature.r);
@@ -125,8 +124,8 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 #ifdef _MAXIM_HSM
     if (key.in_hsm) {
         resu = ucl_sha256(hash, (unsigned char*)input, input_size);
-        resu = HSM_SignECDSA(session, hash, UCL_SHA256_HASHSIZE, signature, &l_iSignatureLength,
-                             key.HSM_Objkey);
+        resu = HSM_SignECDSA(
+            session, hash, UCL_SHA256_HASHSIZE, signature, &l_iSignatureLength, key.HSM_Objkey);
 
         if (resu != UCL_OK) {
             HSM_pError(resu);
@@ -145,7 +144,7 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 #endif /* _MAXIM_HSM */
     {
         resu = ucl_ecdsa_signature(ucl_signature, key.ecdsa_privkey, &ucl_sha256,
-                                   (unsigned char*)input, input_size, &secp256r1, configuration);
+            (unsigned char*)input, input_size, &secp256r1, configuration);
 
         if (resu != UCL_OK) {
             print_error("ECDSA-P256r1-SHA256 SIGNATURE COMPUTATION TEST-1 NOK %d \n", resu);
@@ -157,13 +156,13 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 
 #ifdef _MAXIM_HSM
     if (key.in_hsm) {
-        resu = HSM_VerifyECDSA(session, hash, UCL_SHA256_HASHSIZE, signature, l_iSignatureLength,
-                               key.HSM_Objpubkey);
+        resu = HSM_VerifyECDSA(
+            session, hash, UCL_SHA256_HASHSIZE, signature, l_iSignatureLength, key.HSM_Objpubkey);
     } else
 #endif /* _MAXIM_HSM */
     {
         resu = ucl_ecdsa_verification(key.ecdsa_pubkey, ucl_signature, &ucl_sha256,
-                                      (unsigned char*)input, input_size, &secp256r1, configuration);
+            (unsigned char*)input, input_size, &secp256r1, configuration);
 
         if (resu != UCL_OK) {
             print_error("ECDSA-P256r1-SHA256 Signature Verification Failed (%d) \n", resu);
@@ -173,28 +172,20 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 
     print_debug("Payload(%d):", input_size);
 
-    for (i = 0; i < input_size; i++) {
-        print_d("%02x", input[i]);
-    }
+    for (i = 0; i < input_size; i++) { print_d("%02x", input[i]); }
     print_d("\n");
 
     print_debug("Signature:\n");
     print_d("\tr:");
 
-    for (i = 0; i < 32; i++) {
-        print_d("%02x", ucl_signature.r[i]);
-    }
+    for (i = 0; i < 32; i++) { print_d("%02x", ucl_signature.r[i]); }
     print_d("\n");
 
     print_d("\ts:");
-    for (i = 0; i < 32; i++) {
-        print_d("%02x", ucl_signature.s[i]);
-    }
+    for (i = 0; i < 32; i++) { print_d("%02x", ucl_signature.s[i]); }
     print_d("\n");
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
-        signature[i] = ucl_signature.r[i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { signature[i] = ucl_signature.r[i]; }
 
     for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
         signature[ECDSA_MODULUS_LEN + i] = ucl_signature.s[i];
@@ -376,28 +367,20 @@ int read_file_signed_ecdsa_publickey(u8* x, u8* y, u8* r, u8* s, size_t size, co
 
     print_debug("Public Key:\n");
     print_d("\tX:\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", x[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", x[i]); }
     print_d("\n");
 
     print_d("\tY:\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", y[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", y[i]); }
     print_d("\n");
 
     print_debug("Public Key Signature:\n");
     print_d("\tr :\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", r[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", r[i]); }
     print_d("\n");
 
     print_d("\ts :\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", s[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", s[i]); }
     print_d("\n");
 
     fclose(pFile);
@@ -417,21 +400,15 @@ void print_ecdsaKey(ecdsa_key_t key)
 #endif /* _MAXIM_HSM */
     {
         print_d("\tX:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
-            print_d("%02x", key.ecdsa_pubkey.x[i]);
-        }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_pubkey.x[i]); }
         print_d("\n");
 
         print_d("\tY:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
-            print_d("%02x", key.ecdsa_pubkey.y[i]);
-        }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_pubkey.y[i]); }
         print_d("\n");
 
         print_d("\tD:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
-            print_d("%02x", key.ecdsa_privkey[i]);
-        }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_privkey[i]); }
         print_d("\n");
     }
 }

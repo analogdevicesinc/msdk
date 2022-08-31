@@ -33,17 +33,17 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- * 
+ *
  *************************************************************************** */
 
 #ifndef _DMA_H_
 #define _DMA_H_
 
 /* **** Includes **** */
-#include <stdbool.h>
+#include "dma_regs.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "dma_regs.h"
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,47 +62,47 @@ extern "C" {
  *
  */
 typedef enum {
-    MXC_DMA_PRIO_HIGH    = MXC_V_DMA_CFG_PRI_HIGH,    ///< High Priority */
+    MXC_DMA_PRIO_HIGH = MXC_V_DMA_CFG_PRI_HIGH, ///< High Priority */
     MXC_DMA_PRIO_MEDHIGH = MXC_V_DMA_CFG_PRI_MEDHIGH, ///< Medium High Priority */
-    MXC_DMA_PRIO_MEDLOW  = MXC_V_DMA_CFG_PRI_MEDLOW,  ///< Medium Low Priority */
-    MXC_DMA_PRIO_LOW     = MXC_V_DMA_CFG_PRI_LOW,     ///< Low Priority */
+    MXC_DMA_PRIO_MEDLOW = MXC_V_DMA_CFG_PRI_MEDLOW, ///< Medium Low Priority */
+    MXC_DMA_PRIO_LOW = MXC_V_DMA_CFG_PRI_LOW, ///< Low Priority */
 } mxc_dma_priority_t;
 
 /** @brief DMA request select */
 typedef enum {
-    MXC_DMA_REQUEST_MEMTOMEM =
-        MXC_S_DMA_CFG_REQSEL_MEMTOMEM, ///< Memory to Memory DMA Request Selection
-    MXC_DMA_REQUEST_SPI0RX  = MXC_S_DMA_CFG_REQSEL_SPI0RX,  ///< SPI0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI1RX  = MXC_S_DMA_CFG_REQSEL_SPI1RX,  ///< SPI1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_MEMTOMEM
+    = MXC_S_DMA_CFG_REQSEL_MEMTOMEM, ///< Memory to Memory DMA Request Selection
+    MXC_DMA_REQUEST_SPI0RX = MXC_S_DMA_CFG_REQSEL_SPI0RX, ///< SPI0 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CFG_REQSEL_SPI1RX, ///< SPI1 Receive DMA Request Selection
     MXC_DMA_REQUEST_UART0RX = MXC_S_DMA_CFG_REQSEL_UART0RX, ///< UART0 Receive DMA Request Selection
     MXC_DMA_REQUEST_UART1RX = MXC_S_DMA_CFG_REQSEL_UART1RX, ///< UART1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C0RX  = MXC_S_DMA_CFG_REQSEL_I2C0RX,  ///< I2C0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C1RX  = MXC_S_DMA_CFG_REQSEL_I2C1RX,  ///< I2C1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI0TX  = MXC_S_DMA_CFG_REQSEL_SPI0TX,  ///< SPI0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_SPI1TX  = MXC_S_DMA_CFG_REQSEL_SPI1TX,  ///< SPI1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_UART0TX =
-        MXC_S_DMA_CFG_REQSEL_UART0TX, ///< UART0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_UART1TX =
-        MXC_S_DMA_CFG_REQSEL_UART1TX,                     ///< UART1 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CFG_REQSEL_I2C0RX, ///< I2C0 Receive DMA Request Selection
+    MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CFG_REQSEL_I2C1RX, ///< I2C1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CFG_REQSEL_SPI0TX, ///< SPI0 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CFG_REQSEL_SPI1TX, ///< SPI1 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_UART0TX
+    = MXC_S_DMA_CFG_REQSEL_UART0TX, ///< UART0 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_UART1TX
+    = MXC_S_DMA_CFG_REQSEL_UART1TX, ///< UART1 Transmit DMA Request Selection
     MXC_DMA_REQUEST_I2C0TX = MXC_S_DMA_CFG_REQSEL_I2C0TX, ///< I2C0 Transmit DMA Request Selection
     MXC_DMA_REQUEST_I2C1TX = MXC_S_DMA_CFG_REQSEL_I2C1TX, ///< I2C1 Transmit DMA Request Selection
 } mxc_dma_reqsel_t;
 
 /** @brief Enumeration for the DMA prescaler */
 typedef enum {
-    MXC_DMA_PRESCALE_DISABLE = MXC_S_DMA_CFG_PSSEL_DIS,    ///< Prescaler disabled
-    MXC_DMA_PRESCALE_DIV256  = MXC_S_DMA_CFG_PSSEL_DIV256, ///< Divide by 256
-    MXC_DMA_PRESCALE_DIV64K  = MXC_S_DMA_CFG_PSSEL_DIV64K, ///< Divide by 65,536
-    MXC_DMA_PRESCALE_DIV16M  = MXC_S_DMA_CFG_PSSEL_DIV16M, ///< Divide by 16,777,216
+    MXC_DMA_PRESCALE_DISABLE = MXC_S_DMA_CFG_PSSEL_DIS, ///< Prescaler disabled
+    MXC_DMA_PRESCALE_DIV256 = MXC_S_DMA_CFG_PSSEL_DIV256, ///< Divide by 256
+    MXC_DMA_PRESCALE_DIV64K = MXC_S_DMA_CFG_PSSEL_DIV64K, ///< Divide by 65,536
+    MXC_DMA_PRESCALE_DIV16M = MXC_S_DMA_CFG_PSSEL_DIV16M, ///< Divide by 16,777,216
 } mxc_dma_prescale_t;
 
 /** @brief Enumeration for the DMA timeout value */
 typedef enum {
-    MXC_DMA_TIMEOUT_4_CLK   = MXC_S_DMA_CFG_TOSEL_TO4,   ///< DMA timeout of 4 clocks
-    MXC_DMA_TIMEOUT_8_CLK   = MXC_S_DMA_CFG_TOSEL_TO8,   ///< DMA timeout of 8 clocks
-    MXC_DMA_TIMEOUT_16_CLK  = MXC_S_DMA_CFG_TOSEL_TO16,  ///< DMA timeout of 16 clocks
-    MXC_DMA_TIMEOUT_32_CLK  = MXC_S_DMA_CFG_TOSEL_TO32,  ///< DMA timeout of 32 clocks
-    MXC_DMA_TIMEOUT_64_CLK  = MXC_S_DMA_CFG_TOSEL_TO64,  ///< DMA timeout of 64 clocks
+    MXC_DMA_TIMEOUT_4_CLK = MXC_S_DMA_CFG_TOSEL_TO4, ///< DMA timeout of 4 clocks
+    MXC_DMA_TIMEOUT_8_CLK = MXC_S_DMA_CFG_TOSEL_TO8, ///< DMA timeout of 8 clocks
+    MXC_DMA_TIMEOUT_16_CLK = MXC_S_DMA_CFG_TOSEL_TO16, ///< DMA timeout of 16 clocks
+    MXC_DMA_TIMEOUT_32_CLK = MXC_S_DMA_CFG_TOSEL_TO32, ///< DMA timeout of 32 clocks
+    MXC_DMA_TIMEOUT_64_CLK = MXC_S_DMA_CFG_TOSEL_TO64, ///< DMA timeout of 64 clocks
     MXC_DMA_TIMEOUT_128_CLK = MXC_S_DMA_CFG_TOSEL_TO128, ///< DMA timeout of 128 clocks
     MXC_DMA_TIMEOUT_256_CLK = MXC_S_DMA_CFG_TOSEL_TO256, ///< DMA timeout of 256 clocks
     MXC_DMA_TIMEOUT_512_CLK = MXC_S_DMA_CFG_TOSEL_TO512, ///< DMA timeout of 512 clocks
@@ -113,9 +113,9 @@ typedef enum {
     /* Using the '_V_' define instead of the '_S_' since these same values will be used to
        specify the DSTWD also.  The API functions will shift the value the correct amount
        prior to writing the cfg register. */
-    MXC_DMA_WIDTH_BYTE     = MXC_V_DMA_CFG_SRCWD_BYTE,     ///< DMA transfer in bytes
+    MXC_DMA_WIDTH_BYTE = MXC_V_DMA_CFG_SRCWD_BYTE, ///< DMA transfer in bytes
     MXC_DMA_WIDTH_HALFWORD = MXC_V_DMA_CFG_SRCWD_HALFWORD, ///< DMA transfer in 16-bit half-words
-    MXC_DMA_WIDTH_WORD     = MXC_V_DMA_CFG_SRCWD_WORD,     ///< DMA transfer in 32-bit words
+    MXC_DMA_WIDTH_WORD = MXC_V_DMA_CFG_SRCWD_WORD, ///< DMA transfer in 32-bit words
 } mxc_dma_width_t;
 
 /**
@@ -124,12 +124,12 @@ typedef enum {
  *
  */
 typedef struct {
-    int ch;                  ///< The channel to load the configuration data into
+    int ch; ///< The channel to load the configuration data into
     mxc_dma_reqsel_t reqsel; ///< The request select line to be used (mem2mem, peripheral)
-    mxc_dma_width_t srcwd;   ///< The source width (could be dependent on FIFO width)
-    mxc_dma_width_t dstwd;   ///< The destination width (could be dependent on FIFO width)
-    int srcinc_en;           ///< Whether to increment the source address during the transfer
-    int dstinc_en;           ///< Whether to increment the source address during the transfer
+    mxc_dma_width_t srcwd; ///< The source width (could be dependent on FIFO width)
+    mxc_dma_width_t dstwd; ///< The destination width (could be dependent on FIFO width)
+    int srcinc_en; ///< Whether to increment the source address during the transfer
+    int dstinc_en; ///< Whether to increment the source address during the transfer
 } mxc_dma_config_t;
 
 /**
@@ -137,10 +137,10 @@ typedef struct {
  *
  */
 typedef struct {
-    int ch;       ///< The channel to use for the transfer
+    int ch; ///< The channel to use for the transfer
     void* source; ///< Pointer to the source address, if applicable
-    void* dest;   ///< Pointer to the destination address, if applicable
-    int len;      ///< Number of bytes to transfer
+    void* dest; ///< Pointer to the destination address, if applicable
+    int len; ///< Number of bytes to transfer
 } mxc_dma_srcdst_t;
 
 /**
@@ -150,12 +150,12 @@ typedef struct {
  *
  */
 typedef struct {
-    int ch;                   ///< The channel to use for the transfer
-    mxc_dma_priority_t prio;  ///< The DMA priority for the channel
-    unsigned int reqwait_en;  ///< Delay the timeout timer start until after first transfer
-    mxc_dma_timeout_t tosel;  ///< Number of prescaled clocks seen by the channel before a timeout
+    int ch; ///< The channel to use for the transfer
+    mxc_dma_priority_t prio; ///< The DMA priority for the channel
+    unsigned int reqwait_en; ///< Delay the timeout timer start until after first transfer
+    mxc_dma_timeout_t tosel; ///< Number of prescaled clocks seen by the channel before a timeout
     mxc_dma_prescale_t pssel; ///< Prescaler for the timeout timer
-    unsigned int burst_size;  ///< Number of bytes moved in a single burst
+    unsigned int burst_size; ///< Number of bytes moved in a single burst
 } mxc_dma_adv_config_t;
 
 /**
@@ -252,7 +252,8 @@ int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t* srcdst);
 
 /**
  * @brief      Set channel reload source, destination, and count for the transfer
- * @param      srcdstReload Struct containing the channel, source, destination, and count for the channel
+ * @param      srcdstReload Struct containing the channel, source, destination, and count for the
+ * channel
  * @note       Unless the channel request select is #mxc_dma_srcdst_t = MXC_DMA_REQUEST_MEMTOMEM,
  *             either src_addr or dst_addr will be ignored by the DMA engine.
  *             In these cases, the address is a don't-care. See the User's
@@ -358,7 +359,8 @@ int MXC_DMA_DisableInt(int ch);
 /**
  * @brief      Start transfer
  * @param      ch   channel handle
- * @details    Start the DMA channel transfer, assumes that MXC_DMA_SetSrcDstCnt() has been called beforehand.
+ * @details    Start the DMA channel transfer, assumes that MXC_DMA_SetSrcDstCnt() has been called
+ * beforehand.
  * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
  */
 int MXC_DMA_Start(int ch);
@@ -415,8 +417,8 @@ int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callbac
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
-                       mxc_dma_trans_chain_t callback);
+int MXC_DMA_DoTransfer(
+    mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);
 /**
  * For other functional uses of DMA (UART, SPI, etc) see the appropriate peripheral driver
  */

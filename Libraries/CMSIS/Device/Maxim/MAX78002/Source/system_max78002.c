@@ -31,12 +31,12 @@
  *
  ******************************************************************************/
 
-#include <string.h>
+#include "gcr_regs.h"
+#include "max78002.h"
+#include "mxc_sys.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "max78002.h"
-#include "gcr_regs.h"
-#include "mxc_sys.h"
+#include <string.h>
 
 extern void (*const __isr_vector[])(void);
 
@@ -50,35 +50,35 @@ __weak void SystemCoreClockUpdate(void)
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     switch (clk_src) {
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-            base_freq = EXTCLK_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
-            base_freq = INRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-            base_freq = IPO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPLL:
-            base_freq = IPLL_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EBO:
-            base_freq = EBO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-            base_freq = IBRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
-            base_freq = ISO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
-            base_freq = ERTCO_FREQ;
-            break;
-        default:
-            // Codes 001 and 111 are reserved.
-            // This code should never execute, however, initialize to safe value.
-            base_freq = HIRC_FREQ;
-            break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+        base_freq = EXTCLK_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
+        base_freq = INRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
+        base_freq = IPO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPLL:
+        base_freq = IPLL_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EBO:
+        base_freq = EBO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
+        base_freq = IBRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
+        base_freq = ISO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
+        base_freq = ERTCO_FREQ;
+        break;
+    default:
+        // Codes 001 and 111 are reserved.
+        // This code should never execute, however, initialize to safe value.
+        base_freq = HIRC_FREQ;
+        break;
     }
 
     div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;
@@ -90,7 +90,7 @@ __weak void SystemCoreClockUpdate(void)
  * implemented by the application for early initializations. If a value other
  * than '0' is returned, the C runtime initialization will be skipped.
  *
- * You may over-ride this function in your program by defining a custom 
+ * You may over-ride this function in your program by defining a custom
  *  PreInit(), but care should be taken to reproduce the initialization steps
  *  or a non-functional system may result.
  */
@@ -109,7 +109,7 @@ __weak int Board_Init(void)
 
 /* This function is called just before control is transferred to main().
  *
- * You may over-ride this function in your program by defining a custom 
+ * You may over-ride this function in your program by defining a custom
  *  SystemInit(), but care should be taken to reproduce the initialization
  *  steps or a non-functional system may result.
  */

@@ -59,23 +59,22 @@
 #include "uart.h"
 
 /***** Definitions *****/
-#define LED_TODA        0
+#define LED_TODA 0
 #define TIME_OF_DAY_SEC 7
 
-#define MSEC_TO_RSSA(x) \
-    (0 - ((x * 4096) /  \
-          1000)) // Converts a time in milleseconds to the equivalent RSSA register value.
+#define MSEC_TO_RSSA(x)                                                                            \
+    (0                                                                                             \
+        - ((x * 4096)                                                                              \
+            / 1000)) // Converts a time in milleseconds to the equivalent RSSA register value.
 #define SECS_PER_MIN 60
-#define SECS_PER_HR  (60 * SECS_PER_MIN)
+#define SECS_PER_HR (60 * SECS_PER_MIN)
 #define SECS_PER_DAY (24 * SECS_PER_HR)
 
 /***** Globals *****/
 
 /***** Functions *****/
 // *****************************************************************************
-void RTC_IRQHandler(void)
-{
-}
+void RTC_IRQHandler(void) { }
 
 // *****************************************************************************
 void rescheduleAlarm()
@@ -88,16 +87,16 @@ void rescheduleAlarm()
 
         time = MXC_RTC_GetSecond(); // Get Current time (s)
 
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ; // Disable interrupt while re-arming RTC alarm
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) { }
+        // Disable interrupt while re-arming RTC alarm
 
-        if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) !=
-            E_NO_ERROR) { // Reset TOD alarm for TIME_OF_DAY_SEC in the future
-                          /* Handle Error */
+        if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC)
+            != E_NO_ERROR) { // Reset TOD alarm for TIME_OF_DAY_SEC in the future
+            /* Handle Error */
         }
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ; // Re-enable TOD alarm interrupt
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) { }
+        // Re-enable TOD alarm interrupt
     }
 
     MXC_LP_EnableRTCAlarmWakeup(); // Enable RTC as a wakeup source from low poer modes
@@ -120,7 +119,7 @@ void printTime()
     sec -= min * SECS_PER_MIN;
 
     printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%02d\n\n", day, hr, min,
-           sec); // Print current time
+        sec); // Print current time
 }
 
 // *****************************************************************************
@@ -135,15 +134,13 @@ int configureRTC()
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) { // Initialize RTC
         printf("Failed RTC Initialization\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
     if (MXC_RTC_Start() != E_NO_ERROR) { // Start RTC
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
     printf("RTC started\n");
@@ -156,8 +153,7 @@ int configureRTC()
     if (MXC_RTC_SetTimeofdayAlarm(TIME_OF_DAY_SEC) != E_NO_ERROR) { // Arm TOD alarm
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
     if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) { // Enable TOD interrupt
@@ -167,8 +163,7 @@ int configureRTC()
     if (MXC_RTC_Start() != E_NO_ERROR) { // Re-start RTC
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) { }
     }
 
     return E_NO_ERROR;
@@ -177,12 +172,11 @@ int configureRTC()
 // *****************************************************************************
 int main(void)
 {
-    if (MXC_PWRSEQ->lppwst !=
-        MXC_F_PWRSEQ_LPPWST_BACKUP) {       // Check whether the wakeup source is RTC
+    if (MXC_PWRSEQ->lppwst
+        != MXC_F_PWRSEQ_LPPWST_BACKUP) { // Check whether the wakeup source is RTC
         if (configureRTC() != E_NO_ERROR) { // System start/restart
             printf("Example Failed\n");
-            while (1)
-                ;
+            while (1) { }
         }
     } else {
         LED_On(LED_TODA); // RTC alarm fired off. Perform periodic task here
@@ -194,8 +188,7 @@ int main(void)
 
     LED_Off(LED_TODA);
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }
 
     MXC_LP_EnterBackupMode(); // Enter a backup mode
 }

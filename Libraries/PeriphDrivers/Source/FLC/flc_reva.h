@@ -40,13 +40,13 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_sys.h"
 #include "flc.h"
 #include "flc_common.h"
 #include "flc_reva_regs.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include <string.h>
 
 /**
  * @ingroup flc
@@ -65,11 +65,11 @@ int MXC_FLC_RevA_MassErase(mxc_flc_reva_regs_t* flc);
 
 int MXC_FLC_RevA_PageErase(mxc_flc_reva_regs_t* flc, uint32_t addr);
 
-int MXC_FLC_RevA_Write32(mxc_flc_reva_regs_t* flc, uint32_t locgialAddr, uint32_t data,
-                         uint32_t physicalAddr);
+int MXC_FLC_RevA_Write32(
+    mxc_flc_reva_regs_t* flc, uint32_t locgialAddr, uint32_t data, uint32_t physicalAddr);
 
-int MXC_FLC_RevA_Write32Using128(mxc_flc_reva_regs_t* flc, uint32_t locgialAddr, uint32_t data,
-                                 uint32_t physicalAddr);
+int MXC_FLC_RevA_Write32Using128(
+    mxc_flc_reva_regs_t* flc, uint32_t locgialAddr, uint32_t data, uint32_t physicalAddr);
 
 int MXC_FLC_RevA_Write128(mxc_flc_reva_regs_t* flc, uint32_t addr, uint32_t* data);
 

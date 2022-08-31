@@ -42,15 +42,15 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "board.h"
+#include "gpio.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
-#include "gpio.h"
 #include "uart.h"
 
 #include "ff.h"
@@ -62,17 +62,17 @@
 /***** Definitions *****/
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 #define MAXLEN 256
 
 /***** Globals *****/
-FATFS* fs; //FFat Filesystem Object
+FATFS* fs; // FFat Filesystem Object
 FATFS fs_obj;
-FIL file;    //FFat File Object
-FRESULT err; //FFat Result (Struct)
-FILINFO fno; //FFat File Information Object
-DIR dir;     //FFat Directory Object
+FIL file; // FFat File Object
+FRESULT err; // FFat Result (Struct)
+FILINFO fno; // FFat File Information Object
+DIR dir; // FFat Directory Object
 TCHAR message[MAXLEN], directory[MAXLEN], cwd[MAXLEN], filename[MAXLEN], volume_label[24],
     volume = '0';
 TCHAR* FF_ERRORS[20];
@@ -80,8 +80,8 @@ DWORD clusters_free = 0, sectors_free = 0, sectors_total = 0, volume_sn = 0;
 UINT bytes_written = 0, bytes_read = 0, mounted = 0;
 BYTE work[4096];
 static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
-mxc_gpio_cfg_t SDPowerEnablePin = {MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                   MXC_GPIO_VSSEL_VDDIO};
+mxc_gpio_cfg_t SDPowerEnablePin
+    = { MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 /***** FUNCTIONS *****/
 
@@ -97,7 +97,7 @@ int mount()
 {
     fs = &fs_obj;
 
-    if ((err = f_mount(fs, "", 1)) != FR_OK) { //Mount the default drive to fs now
+    if ((err = f_mount(fs, "", 1)) != FR_OK) { // Mount the default drive to fs now
         printf("Error opening SD card: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
     } else {
@@ -105,14 +105,14 @@ int mount()
         mounted = 1;
     }
 
-    f_getcwd(cwd, sizeof(cwd)); //Set the Current working directory
+    f_getcwd(cwd, sizeof(cwd)); // Set the Current working directory
 
     return err;
 }
 
 int umount()
 {
-    if ((err = f_mount(NULL, "", 0)) != FR_OK) { //Unmount the default drive from its mount point
+    if ((err = f_mount(NULL, "", 0)) != FR_OK) { // Unmount the default drive from its mount point
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
     } else {
         printf("SD card unmounted.\n");
@@ -135,8 +135,8 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
-        FR_OK) { //Format the default drive to FAT32
+    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work)))
+        != FR_OK) { // Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
         printf("Drive formatted.\n");
@@ -166,7 +166,7 @@ int getSize()
     }
 
     sectors_total = (fs->n_fatent - 2) * fs->csize;
-    sectors_free  = clusters_free * fs->csize;
+    sectors_free = clusters_free * fs->csize;
 
     printf("Disk Size: %u bytes\n", sectors_total / 2);
     printf("Available: %u bytes\n", sectors_free / 2);
@@ -393,7 +393,7 @@ int example()
         return err;
     }
 
-    //open SD Card
+    // open SD Card
     if ((err = mount()) != FR_OK) {
         printf("Error opening SD Card: %s\n", FF_ERRORS[err]);
         return err;
@@ -465,8 +465,8 @@ int example()
 
     printf("Renaming File...\n");
 
-    if ((err = f_rename("0:HelloWorld.txt", "0:MaximSDHC/HelloMaxim.txt")) !=
-        FR_OK) { //cr: clearify 0:file notation
+    if ((err = f_rename("0:HelloWorld.txt", "0:MaximSDHC/HelloMaxim.txt"))
+        != FR_OK) { // cr: clearify 0:file notation
         printf("Error moving file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -505,8 +505,8 @@ int example()
 
     printf("File Closed!\n");
 
-    //unmount SD Card
-    //f_mount(fs, "", 0);
+    // unmount SD Card
+    // f_mount(fs, "", 0);
     if ((err = f_mount(NULL, "", 0)) != FR_OK) {
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
         return err;
@@ -518,16 +518,16 @@ int example()
 /******************************************************************************/
 int main(void)
 {
-    FF_ERRORS[0]  = "FR_OK";
-    FF_ERRORS[1]  = "FR_DISK_ERR";
-    FF_ERRORS[2]  = "FR_INT_ERR";
-    FF_ERRORS[3]  = "FR_NOT_READY";
-    FF_ERRORS[4]  = "FR_NO_FILE";
-    FF_ERRORS[5]  = "FR_NO_PATH";
-    FF_ERRORS[6]  = "FR_INVLAID_NAME";
-    FF_ERRORS[7]  = "FR_DENIED";
-    FF_ERRORS[8]  = "FR_EXIST";
-    FF_ERRORS[9]  = "FR_INVALID_OBJECT";
+    FF_ERRORS[0] = "FR_OK";
+    FF_ERRORS[1] = "FR_DISK_ERR";
+    FF_ERRORS[2] = "FR_INT_ERR";
+    FF_ERRORS[3] = "FR_NOT_READY";
+    FF_ERRORS[4] = "FR_NO_FILE";
+    FF_ERRORS[5] = "FR_NO_PATH";
+    FF_ERRORS[6] = "FR_INVLAID_NAME";
+    FF_ERRORS[7] = "FR_DENIED";
+    FF_ERRORS[8] = "FR_EXIST";
+    FF_ERRORS[9] = "FR_INVALID_OBJECT";
     FF_ERRORS[10] = "FR_WRITE_PROTECTED";
     FF_ERRORS[11] = "FR_INVALID_DRIVE";
     FF_ERRORS[12] = "FR_NOT_ENABLED";
@@ -571,55 +571,55 @@ int main(void)
         err = 0;
 
         switch (input) {
-            case 0:
-                getSize();
-                break;
+        case 0:
+            getSize();
+            break;
 
-            case 1:
-                formatSDHC();
-                break;
+        case 1:
+            formatSDHC();
+            break;
 
-            case 3:
-                ls();
-                break;
+        case 3:
+            ls();
+            break;
 
-            case 6:
-                createFile();
-                break;
+        case 6:
+            createFile();
+            break;
 
-            case 7:
-                appendFile();
-                break;
+        case 7:
+            appendFile();
+            break;
 
-            case 4:
-                mkdir();
-                break;
+        case 4:
+            mkdir();
+            break;
 
-            case 5:
-                cd();
-                break;
+        case 5:
+            cd();
+            break;
 
-            case 9:
-                example();
-                break;
+        case 9:
+            example();
+            break;
 
-            case 10:
-                umount();
-                run = 0;
-                break;
+        case 10:
+            umount();
+            run = 0;
+            break;
 
-            case 2:
-                mount();
-                break;
+        case 2:
+            mount();
+            break;
 
-            case 8:
-                delete ();
-                break;
+        case 8:
+            delete ();
+            break;
 
-            default:
-                printf("Invalid Selection %d!\n", input);
-                err = -1;
-                break;
+        default:
+            printf("Invalid Selection %d!\n", input);
+            err = -1;
+            break;
         }
 
         if (err >= 0 && err <= 20) {

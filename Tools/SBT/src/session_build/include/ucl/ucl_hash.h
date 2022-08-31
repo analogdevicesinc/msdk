@@ -1,5 +1,5 @@
-//these defines are used to select or not hash functions
-//useful on platforms with limited resources
+// these defines are used to select or not hash functions
+// useful on platforms with limited resources
 
 #ifndef _UCL_HASH_H
 #define _UCL_HASH_H
@@ -22,6 +22,6 @@
 #endif
 #define MAX_HASH_FUNCTIONS 14
 #define UCL_UNDEFINED_HASH -1
-//extern int hash_size[MAX_HASH_FUNCTIONS];
+// extern int hash_size[MAX_HASH_FUNCTIONS];
 
-#endif //UCL_HASH
+#endif // UCL_HASH

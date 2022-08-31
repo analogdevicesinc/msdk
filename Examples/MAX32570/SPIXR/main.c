@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -42,8 +42,8 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -51,22 +51,22 @@
 
 /***** Definitions *****/
 // RAM Vendor Specific Commands
-#define A1024_READ  0x03
+#define A1024_READ 0x03
 #define A1024_WRITE 0x02
-#define A1024_EQIO  0x38
+#define A1024_EQIO 0x38
 
 // RAM Vendor Specific Values
-#define BUFFER_SIZE   16
+#define BUFFER_SIZE 16
 #define A1024_ADDRESS 0x80000000
 
 /***** Globals *****/
 mxc_spixr_cfg_t init_cfg = {
-    0x08,                /* Number of bits per character     */
+    0x08, /* Number of bits per character     */
     MXC_SPIXR_QUAD_SDIO, /* SPI Data Width                   */
-    0x04,                /* num of system clocks between SS active & first serial clock edge     */
-    0x08,                /* num of system clocks between last serial clock edge and ss inactive  */
-    0x10,                /* num of system clocks between transactions (read / write)             */
-    5000000              /* Baud freq                        */
+    0x04, /* num of system clocks between SS active & first serial clock edge     */
+    0x08, /* num of system clocks between last serial clock edge and ss inactive  */
+    0x10, /* num of system clocks between transactions (read / write)             */
+    5000000 /* Baud freq                        */
 };
 
 /***** Functions *****/
@@ -80,8 +80,7 @@ void setup(void)
         printf("\nSPIXR was not initialized properly.\n");
         printf("\nExample Failed\n");
 
-        while (1)
-            ;
+        while (1) { }
     }
 
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_SRCC_DIS;
@@ -94,8 +93,7 @@ void setup(void)
     MXC_SPIXR_SendCommand(&quad_cmd, 1, 1);
 
     // Wait until quad cmd is sent
-    while (MXC_SPIXR_Busy())
-        ;
+    while (MXC_SPIXR_Busy()) { }
 
     MXC_SPIXR_SetWidth(MXC_SPIXR_QUAD_SDIO);
     MXC_SPIXR_ThreeWireModeDisable();
@@ -117,7 +115,9 @@ int main(void)
     // Defining Variable(s) to write & store data to RAM
     uint8_t write_buffer[BUFFER_SIZE], read_buffer[BUFFER_SIZE];
     uint8_t* address = (uint8_t*)A1024_ADDRESS;
-    ; /* Variable to store address of RAM */
+    {
+    }
+    /* Variable to store address of RAM */
     int temp, i;
     int fail = 0;
 
@@ -136,8 +136,8 @@ int main(void)
     printf("\nTX BUFFER:\t ");
 
     for (i = 0; i < BUFFER_SIZE; i++) {
-        read_buffer[i]  = 0;
-        temp            = rand();
+        read_buffer[i] = 0;
+        temp = rand();
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = write_buffer[i];
@@ -169,6 +169,5 @@ int main(void)
         printf("EXAMPLE FAILED\n");
     }
 
-    while (1)
-        ;
+    while (1) { }
 }

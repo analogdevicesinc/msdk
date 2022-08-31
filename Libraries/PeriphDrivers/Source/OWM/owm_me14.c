@@ -35,11 +35,11 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
 #include "owm_reva.h"
+#include <string.h>
 
 /* **** Definitions **** */
-#define MXC_OWM_CLK_FREQ 1000000 //1-Wire requires 1MHz clock
+#define MXC_OWM_CLK_FREQ 1000000 // 1-Wire requires 1MHz clock
 
 /* **** Globals **** */
 
@@ -59,18 +59,18 @@ int MXC_OWM_Init(const mxc_owm_cfg_t* cfg, sys_map_t map)
 
     const mxc_gpio_cfg_t* gpio;
     switch (map) {
-        case MAP_A:
-            gpio = &gpio_cfg_owma;
-            break;
-        case MAP_B:
-            gpio = &gpio_cfg_owmb;
-            break;
-        case MAP_C:
-            gpio = &gpio_cfg_owmc;
-            break;
-        default:
-            gpio = &gpio_cfg_owma;
-            break;
+    case MAP_A:
+        gpio = &gpio_cfg_owma;
+        break;
+    case MAP_B:
+        gpio = &gpio_cfg_owmb;
+        break;
+    case MAP_C:
+        gpio = &gpio_cfg_owmc;
+        break;
+    default:
+        gpio = &gpio_cfg_owma;
+        break;
     }
 
     if ((err = MXC_GPIO_Config(gpio)) != E_NO_ERROR) {

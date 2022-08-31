@@ -44,8 +44,8 @@
 #define _DVS_H_
 
 /* **** Includes **** */
-#include "mxc_config.h"
 #include "dvs_regs.h"
+#include "mxc_config.h"
 
 #ifdef __cplusplus
 extern "C" {

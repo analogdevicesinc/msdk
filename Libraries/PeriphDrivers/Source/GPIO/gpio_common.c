@@ -32,9 +32,9 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_device.h"
-#include "mxc_assert.h"
 #include "gpio.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
 #include <stddef.h>
 
 /* **** Globals **** */
@@ -50,9 +50,7 @@ int MXC_GPIO_Common_Init(uint32_t portmask)
 
         for (i = 0; i < MXC_CFG_GPIO_INSTANCES; i++) {
             // Initialize call back arrays
-            for (j = 0; j < MXC_CFG_GPIO_PINS_PORT; j++) {
-                callback[i][j] = NULL;
-            }
+            for (j = 0; j < MXC_CFG_GPIO_PINS_PORT; j++) { callback[i][j] = NULL; }
         }
 
         initialized = 1;
@@ -61,19 +59,19 @@ int MXC_GPIO_Common_Init(uint32_t portmask)
     return E_NO_ERROR;
 }
 
-void MXC_GPIO_Common_RegisterCallback(const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn func,
-                                      void* cbdata)
+void MXC_GPIO_Common_RegisterCallback(
+    const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn func, void* cbdata)
 {
     uint32_t mask;
     unsigned int pin;
 
     mask = cfg->mask;
-    pin  = 0;
+    pin = 0;
 
     while (mask) {
         if (mask & 1) {
             callback[MXC_GPIO_GET_IDX(cfg->port)][pin] = func;
-            cbparam[MXC_GPIO_GET_IDX(cfg->port)][pin]  = cbdata;
+            cbparam[MXC_GPIO_GET_IDX(cfg->port)][pin] = cbdata;
         }
 
         pin++;

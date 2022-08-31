@@ -48,7 +48,7 @@
 extern "C" {
 #endif
 
-/* 
+/*
     Define board name:
     Use as #if defined(BOARD_FTHR)
     Not as #if BOARD_FTHR
@@ -64,10 +64,10 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
-#define LED_RED   0
-#define LED_BLUE  1
+#define LED_RED 0
+#define LED_BLUE 1
 #define LED_GREEN 2
 
 #ifndef HCI_UART

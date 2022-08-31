@@ -37,8 +37,8 @@
 extern "C" {
 #endif
 
-#include "mxc_device.h"
 #include "i2c_regs.h"
+#include "mxc_device.h"
 
 /**
  * @brief      Initialize I2C peripheral for use with MAX20303.

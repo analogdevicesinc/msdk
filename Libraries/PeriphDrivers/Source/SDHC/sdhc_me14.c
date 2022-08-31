@@ -35,13 +35,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
-#include "mxc_device.h"
 #include "mxc_assert.h"
-#include "mxc_sys.h"
+#include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_sys.h"
 #include "sdhc.h"
 #include "sdhc_reva.h"
+#include <string.h>
 
 /* **** Definitions **** */
 

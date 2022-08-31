@@ -38,12 +38,12 @@
  ******************************************************************************/
 
 /* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include "max32650.h"
 #include "led.h"
-#include "mxc_delay.h"
+#include "max32650.h"
 #include "mxc_assert.h"
+#include "mxc_delay.h"
+#include <stdint.h>
+#include <stdio.h>
 
 /* **** Definitions **** */
 

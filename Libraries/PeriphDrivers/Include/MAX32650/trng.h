@@ -44,9 +44,9 @@
 #define _TRNG_H_
 
 /* **** Includes **** */
-#include <stdint.h>
 #include "mxc_sys.h"
 #include "trng_regs.h"
+#include <stdint.h>
 
 /***** Includes *****/
 #include "trng_regs.h"

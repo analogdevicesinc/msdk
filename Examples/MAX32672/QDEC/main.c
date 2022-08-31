@@ -38,18 +38,18 @@
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "led.h"
 #include "board.h"
+#include "led.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
 #include "qdec.h"
 #include "qdec_regs.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 
 /***** Definitions *****/
-#define MAXCNT_FLAG  MXC_F_QDEC_INTFL_MAXCNT
+#define MAXCNT_FLAG MXC_F_QDEC_INTFL_MAXCNT
 #define COMPARE_FLAG MXC_F_QDEC_INTFL_COMPARE
 
 /***** Globals *****/
@@ -91,15 +91,15 @@ int main(void)
     printf("Direction: 1 - Clockwise\n\n");
 
     // QDEC request
-    req.mode    = MXC_QDEC_X2_MODE;
-    req.swap    = MXC_QDEC_SWAP_CW_A_LEADS_B;
-    req.sample  = MXC_QDEC_FILTER_2_SAMPLES;
-    req.clkdiv  = MXC_QDEC_CLKDIV_8;
-    req.sticky  = MXC_QDEC_STICKY_PULSE;
-    req.rst     = MXC_QDEC_RST_ON_MAXCNT;
-    req.func    = MXC_QDEC_COMPARE;
+    req.mode = MXC_QDEC_X2_MODE;
+    req.swap = MXC_QDEC_SWAP_CW_A_LEADS_B;
+    req.sample = MXC_QDEC_FILTER_2_SAMPLES;
+    req.clkdiv = MXC_QDEC_CLKDIV_8;
+    req.sticky = MXC_QDEC_STICKY_PULSE;
+    req.rst = MXC_QDEC_RST_ON_MAXCNT;
+    req.func = MXC_QDEC_COMPARE;
     req.initial = 0;
-    req.maxcnt  = 255;
+    req.maxcnt = 255;
     req.compare = 128;
 
     NVIC_EnableIRQ(QDEC_IRQn);
@@ -107,17 +107,16 @@ int main(void)
     error = MXC_QDEC_Init(&req);
     if (error != E_NO_ERROR) {
         printf("\nFail to initialize QDEC. Error: %d\n", error);
-        while (1) {
-        };
+        while (1) { };
     }
 
     direction = MXC_QDEC_GetDirection();
-    position  = MXC_QDEC_GetPosition();
+    position = MXC_QDEC_GetPosition();
     printf("Position: %d  -  Direction: %d\n", position, direction);
 
     while (1) {
         newDirection = MXC_QDEC_GetDirection();
-        newPosition  = MXC_QDEC_GetPosition();
+        newPosition = MXC_QDEC_GetPosition();
 
         if (position != newPosition || direction != newDirection) {
             if (direction != newDirection) {
@@ -125,7 +124,7 @@ int main(void)
             }
 
             direction = newDirection;
-            position  = newPosition;
+            position = newPosition;
             printf("Position: %d  -  Direction: %d\n", position, direction);
 
             MXC_Delay(MXC_DELAY_MSEC(100));

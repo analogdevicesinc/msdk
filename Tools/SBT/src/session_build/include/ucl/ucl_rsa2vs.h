@@ -42,14 +42,14 @@ extern "C" {
  * @ingroup UCL_RSA
  */
 
-#define UCL_ERROR_B43  1 // if p is not odd
-#define UCL_ERROR_B44  2 // if step 4.4 is not satisfied
+#define UCL_ERROR_B43 1 // if p is not odd
+#define UCL_ERROR_B44 2 // if step 4.4 is not satisfied
 #define UCL_ERROR_B452 3 // if p is probably not prime
-#define UCL_ERROR_B45  4 // if step 4.5 is not satisfied
-#define UCL_ERROR_B53  5 // if (p is prime and) q is not odd
-#define UCL_ERROR_B55  6 // if (p is prime and) step 5.5 is not satisfied
+#define UCL_ERROR_B45 4 // if step 4.5 is not satisfied
+#define UCL_ERROR_B53 5 // if (p is prime and) q is not odd
+#define UCL_ERROR_B55 6 // if (p is prime and) step 5.5 is not satisfied
 #define UCL_ERROR_B562 7 // if (p is prime and) q is probably not prime
-#define UCL_ERROR_B56  8 // if (p is prime and) step 5.6 is not satisfied
+#define UCL_ERROR_B56 8 // if (p is prime and) step 5.6 is not satisfied
 
 /** <b>RSA Parameters Generation</b>.
  * generate RSA keys pairs with FIPS 186-4 compliance.
@@ -88,9 +88,8 @@ extern "C" {
  * @ingroup UCL_RSA2VS
  */
 int ucl_rsa_param_gen_fips186_4_B36_RSA2VS(u32* n, u32* p, u32* q, u32* d, u32* xp1, u32* xp2,
-                                           u32* p1, u32* p2, u32* xp, u32* xq1, u32* xq2, u32* q1,
-                                           u32* q2, u32* xq, u32* bitlen1, u32* bitlen2, u32* e,
-                                           u32 t, u32 s);
+    u32* p1, u32* p2, u32* xp, u32* xq1, u32* xq2, u32* q1, u32* q2, u32* xq, u32* bitlen1,
+    u32* bitlen2, u32* e, u32 t, u32 s);
 
 /** <b>RSA Parameters Generation</b>.
  * generate RSA keys pairs with FIPS 186-4 compliance.
@@ -132,9 +131,8 @@ int ucl_rsa_param_gen_fips186_4_B36_RSA2VS(u32* n, u32* p, u32* q, u32* d, u32* 
  * @ingroup UCL_RSA2VS
  */
 int ucl_rsa_param_generation_fips186_4_B36_RSA2VS(u8* n, u8* p, u8* q, u8* d, u8* xp1, u8* xp2,
-                                                  u8* p1, u8* p2, u8* xp, u8* xq1, u8* xq2, u8* q1,
-                                                  u8* q2, u8* xq, int* bitlen1, int* bitlen2, u8* e,
-                                                  int t, int modulus_bytes_size);
+    u8* p1, u8* p2, u8* xp, u8* xq1, u8* xq2, u8* q1, u8* q2, u8* xq, int* bitlen1, int* bitlen2,
+    u8* e, int t, int modulus_bytes_size);
 
 /** <b>FIPS 186-4 prime number generation</b>.
  * prime number generation compliant with FIPS 186-4 appendix B3.3

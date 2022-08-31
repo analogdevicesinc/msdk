@@ -64,7 +64,7 @@ extern "C" {
  * @param[in]  input        Pointer to the message which must be processed
  * @param[in]  input_length Input byte length
  * @param[in]  keyPu        RSA public key
- * 
+ *
  * @note The output buffer length is the modulus length
  *
  * @return Error code
@@ -78,8 +78,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
-                                  ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_es_pkcs1v15_encrypt(
+    u8* output, u8* input, u32 input_length, ucl_rsa_public_key_t* keyPu);
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 decryption</b>.
@@ -90,7 +90,7 @@ int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
  * @param[out] output_length Pointer to the final length of the message
  * @param[in]  input         Pointer to the encrypted input
  * @param[in]  keyPr         RSA private key
- * 
+ *
  * @note the output_length shall be initialized with the supposed output length
  * it will be used for checking the decrypted output length and then avoid buffer overflow
  * in case the lengths do not match
@@ -100,7 +100,8 @@ int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
  * @retval #UCL_OK             If no error occurred
  * @retval #UCL_INVALID_INPUT  If one of the input pointers is the pointer #NULL
  * @retval #UCL_INVALID_OUTPUT If one of the output pointer is the pointer #NULL
- * @retval #UCL_INVALID_LENGTH If the given, supposed output length is smaller than the result output length
+ * @retval #UCL_INVALID_LENGTH If the given, supposed output length is smaller than the result
+ * output length
  * @retval #UCL_ERROR          If a decryption error occurred (PKCS1 Error)
  *
  *
@@ -108,8 +109,8 @@ int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
-                                  ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_es_pkcs1v15_decrypt(
+    u8* output, u32* output_length, u8* input, ucl_rsa_private_key_t* keyPr);
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 decryption with CRT</b>.
@@ -119,7 +120,7 @@ int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
  * @param[out] output_length Pointer to the final length of the message
  * @param[in]  input         Pointer to the encrypted input
  * @param[in]  keyPr         RSA private key
- * 
+ *
  * @note the output_length shall be initialized with the supposed output length
  * it will be used for checking the decrypted output length and then avoid buffer overflow
  * in case the lengths do not match
@@ -129,15 +130,16 @@ int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
  * @retval #UCL_OK             If no error occurred
  * @retval #UCL_INVALID_INPUT  If one of the input pointers is the pointer #NULL
  * @retval #UCL_INVALID_OUTPUT If one of the output pointer is the pointer #NULL
- * @retval #UCL_INVALID_LENGTH If the given, supposed output length is smaller than the result output length
+ * @retval #UCL_INVALID_LENGTH If the given, supposed output length is smaller than the result
+ * output length
  * @retval #UCL_ERROR          If a decryption error occurred (PKCS1 Error)
  *
  * @see UCL_RSA
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_crt_decrypt(u8* output, u32* output_length, u8* input,
-                                      ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_es_pkcs1v15_crt_decrypt(
+    u8* output, u32* output_length, u8* input, ucl_rsa_crt_private_key_t* keyPr);
 
 #ifdef __cplusplus
 }

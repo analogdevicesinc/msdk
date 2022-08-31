@@ -43,17 +43,16 @@
 uint32_t MXC_EMCC_ID(mxc_emcc_cache_id_t id)
 {
     switch (id) {
-        case MXC_EMCC_CACHE_ID_RELNUM:
-            return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_RELNUM) >>
-                   MXC_F_EMCC_CACHE_ID_RELNUM_POS;
-        case MXC_EMCC_CACHE_ID_PARTNUM:
-            return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_PARTNUM) >>
-                   MXC_F_EMCC_CACHE_ID_PARTNUM_POS;
-        case MXC_EMCC_CACHE_ID_CCHID:
-            return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_CCHID) >>
-                   MXC_F_EMCC_CACHE_ID_CCHID_POS;
-        default:
-            return E_BAD_PARAM;
+    case MXC_EMCC_CACHE_ID_RELNUM:
+        return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_RELNUM)
+            >> MXC_F_EMCC_CACHE_ID_RELNUM_POS;
+    case MXC_EMCC_CACHE_ID_PARTNUM:
+        return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_PARTNUM)
+            >> MXC_F_EMCC_CACHE_ID_PARTNUM_POS;
+    case MXC_EMCC_CACHE_ID_CCHID:
+        return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_CCHID) >> MXC_F_EMCC_CACHE_ID_CCHID_POS;
+    default:
+        return E_BAD_PARAM;
     }
 }
 
@@ -109,8 +108,8 @@ void MXC_EMCC_WriteAllocDisable(void)
 /* ************************************************************************** */
 void MXC_EMCC_CriticalWordFirstEnable(void)
 {
-    if (!(MXC_EMCC->cache_ctrl &
-          MXC_F_EMCC_CACHE_CTRL_ENABLE)) { //CWFST_DIS field only writable when cache disabled
+    if (!(MXC_EMCC->cache_ctrl
+            & MXC_F_EMCC_CACHE_CTRL_ENABLE)) { // CWFST_DIS field only writable when cache disabled
         MXC_EMCC->cache_ctrl &= ~MXC_F_EMCC_CACHE_CTRL_CWFST_DIS;
     }
 }
@@ -118,8 +117,8 @@ void MXC_EMCC_CriticalWordFirstEnable(void)
 /* ************************************************************************** */
 void MXC_EMCC_CriticalWordFirstDisable(void)
 {
-    if (!(MXC_EMCC->cache_ctrl &
-          MXC_F_EMCC_CACHE_CTRL_ENABLE)) { //CWFST_DIS field only writable when cache disabled
+    if (!(MXC_EMCC->cache_ctrl
+            & MXC_F_EMCC_CACHE_CTRL_ENABLE)) { // CWFST_DIS field only writable when cache disabled
         MXC_EMCC->cache_ctrl |= MXC_F_EMCC_CACHE_CTRL_CWFST_DIS;
     }
 }

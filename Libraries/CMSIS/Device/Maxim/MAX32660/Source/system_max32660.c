@@ -39,15 +39,15 @@
  *
  ******************************************************************************/
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "max32660.h"
 #include "gcr_regs.h"
+#include "max32660.h"
+#include "mxc_sys.h"
 #include "pwrseq_regs.h"
 #include "tmr_regs.h"
 #include "wdt_regs.h"
-#include "mxc_sys.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = HIRC96_FREQ;
@@ -118,8 +118,8 @@ __weak void SystemInit(void)
     /* IAR & Keil must set vector table after all memory initialization. */
     SCB->VTOR = (unsigned long)__isr_vector;
 
-    MXC_WDT0->ctrl &=
-        ~MXC_F_WDT_CTRL_WDT_EN; /* Turn off watchdog. Application can re-enable as needed. */
+    MXC_WDT0->ctrl
+        &= ~MXC_F_WDT_CTRL_WDT_EN; /* Turn off watchdog. Application can re-enable as needed. */
 
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11 */
     /* Grant full access, per "Table B3-24 CPACR bit assignments". */

@@ -35,11 +35,11 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <string.h>
 #include "owm_reva.h"
+#include <string.h>
 
 /* **** Definitions **** */
-#define MXC_OWM_CLK_FREQ 1000000 //1-Wire requires 1MHz clock
+#define MXC_OWM_CLK_FREQ 1000000 // 1-Wire requires 1MHz clock
 
 /* **** Globals **** */
 
@@ -200,9 +200,7 @@ void MXC_OWM_SetExtPullup(int enable)
     MXC_OWM_RevA_SetExtPullup((mxc_owm_reva_regs_t*)MXC_OWM, enable);
 }
 
-void MXC_OWM_SetOverdrive(int enable)
-{
-}
+void MXC_OWM_SetOverdrive(int enable) { }
 
 void MXC_OWM_EnableInt(int flags)
 {

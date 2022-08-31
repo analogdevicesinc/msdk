@@ -78,12 +78,12 @@ void MXC_EMCC_WriteAllocateDisable(void)
     MXC_EMCC_RevA_WriteAllocateDisable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
-void MXC_EMCC_CriticalWordFirstEnable(void) //cwfst_dis
+void MXC_EMCC_CriticalWordFirstEnable(void) // cwfst_dis
 {
     MXC_EMCC_RevA_CriticalWordFirstEnable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }
 
-void MXC_EMCC_CriticalWordFirstDisable(void) //cwfst_dis
+void MXC_EMCC_CriticalWordFirstDisable(void) // cwfst_dis
 {
     MXC_EMCC_RevA_CriticalWordFirstDisable((mxc_emcc_reva_regs_t*)MXC_EMCC);
 }

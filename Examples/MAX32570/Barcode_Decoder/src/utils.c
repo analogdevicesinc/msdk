@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -32,16 +32,16 @@
  * ownership rights.
  *
  ******************************************************************************/
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include "mxc_device.h"
-#include "led.h"
-#include "board.h"
-#include "mxc_delay.h"
-#include "uart.h"
-#include "rtc.h"
 #include "utils.h"
+#include "board.h"
+#include "led.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "rtc.h"
+#include "uart.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
 #pragma GCC optimize("-O0")
 
@@ -62,7 +62,7 @@ unsigned int utils_get_time_ms(void)
     unsigned int ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec    = MXC_RTC_GetSecond();
+    sec = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 
@@ -113,8 +113,8 @@ int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* p
     // imagelen
     MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 24) & 0xff); // high byte
     MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 16) & 0xff); // low byte
-    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 8) & 0xff);  // low byte
-    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 0) & 0xff);  // low byte
+    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 8) & 0xff); // low byte
+    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 0) & 0xff); // low byte
 
 #if 1
 
@@ -139,7 +139,7 @@ int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* p
             step_size -= len;
         }
 
-        //MXC_Delay(1);
+        // MXC_Delay(1);
     }
 
 #endif

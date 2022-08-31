@@ -32,8 +32,8 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_device.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
 #include "wut.h"
 #include "wut_reva.h"
 
@@ -82,7 +82,7 @@ uint32_t MXC_WUT_GetCompare(void)
 }
 
 ///* ************************************************************************** */
-//uint32_t MXC_WUT_GetCapture(void)
+// uint32_t MXC_WUT_GetCapture(void)
 //{
 //    return MXC_WUT_RevA_GetCapture((mxc_wut_reva_regs_t*) MXC_WUT);
 //}
@@ -126,8 +126,8 @@ int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t* ticks)
 /* ************************************************************************* */
 int MXC_WUT_GetTime(uint32_t ticks, uint32_t* time, mxc_wut_unit_t* units)
 {
-    return MXC_WUT_RevA_GetTime((mxc_wut_reva_regs_t*)MXC_WUT, ERTCO_FREQ, ticks, time,
-                                (mxc_wut_reva_unit_t*)units);
+    return MXC_WUT_RevA_GetTime(
+        (mxc_wut_reva_regs_t*)MXC_WUT, ERTCO_FREQ, ticks, time, (mxc_wut_reva_unit_t*)units);
 }
 
 /* ************************************************************************** */

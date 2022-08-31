@@ -34,40 +34,39 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <string.h>
-#include "mxc_device.h"
-#include "mxc_sys.h"
-#include "mxc_assert.h"
 #include "board.h"
-#include "uart.h"
+#include "Ext_Flash.h"
 #include "gpio.h"
 #include "i2c.h"
-#include "mxc_pins.h"
 #include "led.h"
 #include "max20303.h"
-#include "pb.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include "mxc_pins.h"
 #include "mxc_sys.h"
+#include "pb.h"
 #include "spi.h"
-#include "Ext_Flash.h"
+#include "uart.h"
+#include <stdio.h>
+#include <string.h>
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t pb_wakeup_pin[] = {
-    {MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_26, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_26, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 #ifndef __riscv /* RISCV does not have access to MXC_SPI0 */
@@ -77,9 +76,9 @@ static void ext_flash_board_init_quad(bool quadEnabled)
 {
     mxc_gpio_cfg_t sdio23;
 
-    sdio23.port  = MXC_GPIO0;
-    sdio23.mask  = (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
-    sdio23.pad   = MXC_GPIO_PAD_NONE;
+    sdio23.port = MXC_GPIO0;
+    sdio23.mask = (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
+    sdio23.pad = MXC_GPIO_PAD_NONE;
     sdio23.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     if (quadEnabled) {
@@ -104,12 +103,12 @@ static int ext_flash_board_init(void)
     mxc_spi_pins_t qspi_flash_pins;
     int err = E_NO_ERROR;
 
-    qspi_flash_pins.clock  = true;
-    qspi_flash_pins.ss0    = true;
-    qspi_flash_pins.ss1    = true;
-    qspi_flash_pins.ss2    = false;
-    qspi_flash_pins.miso   = true;
-    qspi_flash_pins.mosi   = true;
+    qspi_flash_pins.clock = true;
+    qspi_flash_pins.ss0 = true;
+    qspi_flash_pins.ss1 = true;
+    qspi_flash_pins.ss2 = false;
+    qspi_flash_pins.miso = true;
+    qspi_flash_pins.mosi = true;
     qspi_flash_pins.vddioh = true;
 
     err = MXC_SPI_Init(MXC_SPI0, 1, 1, 1, 0, EXT_FLASH_BAUD, qspi_flash_pins);
@@ -127,39 +126,39 @@ static int ext_flash_board_init(void)
 }
 
 /******************************************************************************/
-static int ext_flash_board_read(uint8_t* read, unsigned len, unsigned deassert,
-                                Ext_Flash_DataLine_t width)
+static int ext_flash_board_read(
+    uint8_t* read, unsigned len, unsigned deassert, Ext_Flash_DataLine_t width)
 {
     mxc_spi_req_t qspi_read_req;
     mxc_spi_width_t spi_width;
     int err = E_NO_ERROR;
 
     switch (width) {
-        case Ext_Flash_DataLine_Single:
-            spi_width = SPI_WIDTH_STANDARD;
-            break;
-        case Ext_Flash_DataLine_Dual:
-            spi_width = SPI_WIDTH_DUAL;
-            break;
-        case Ext_Flash_DataLine_Quad:
-            spi_width = SPI_WIDTH_QUAD;
-            ext_flash_board_init_quad(true);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case Ext_Flash_DataLine_Single:
+        spi_width = SPI_WIDTH_STANDARD;
+        break;
+    case Ext_Flash_DataLine_Dual:
+        spi_width = SPI_WIDTH_DUAL;
+        break;
+    case Ext_Flash_DataLine_Quad:
+        spi_width = SPI_WIDTH_QUAD;
+        ext_flash_board_init_quad(true);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     MXC_SPI_SetWidth(MXC_SPI0, spi_width);
 
-    qspi_read_req.spi        = MXC_SPI0;
-    qspi_read_req.ssIdx      = 1;
+    qspi_read_req.spi = MXC_SPI0;
+    qspi_read_req.ssIdx = 1;
     qspi_read_req.ssDeassert = deassert;
-    qspi_read_req.txData     = NULL;
-    qspi_read_req.rxData     = read;
-    qspi_read_req.txLen      = 0;
-    qspi_read_req.rxLen      = len;
-    qspi_read_req.txCnt      = 0;
-    qspi_read_req.rxCnt      = 0;
+    qspi_read_req.txData = NULL;
+    qspi_read_req.rxData = read;
+    qspi_read_req.txLen = 0;
+    qspi_read_req.rxLen = len;
+    qspi_read_req.txCnt = 0;
+    qspi_read_req.rxCnt = 0;
     qspi_read_req.completeCB = NULL;
 
     err = MXC_SPI_MasterTransaction(&qspi_read_req);
@@ -180,39 +179,39 @@ static int ext_flash_board_read(uint8_t* read, unsigned len, unsigned deassert,
 }
 
 /******************************************************************************/
-static int ext_flash_board_write(const uint8_t* write, unsigned len, unsigned deassert,
-                                 Ext_Flash_DataLine_t width)
+static int ext_flash_board_write(
+    const uint8_t* write, unsigned len, unsigned deassert, Ext_Flash_DataLine_t width)
 {
     mxc_spi_req_t qspi_write_req;
     mxc_spi_width_t spi_width;
     int err = E_NO_ERROR;
 
     switch (width) {
-        case Ext_Flash_DataLine_Single:
-            spi_width = SPI_WIDTH_STANDARD;
-            break;
-        case Ext_Flash_DataLine_Dual:
-            spi_width = SPI_WIDTH_DUAL;
-            break;
-        case Ext_Flash_DataLine_Quad:
-            spi_width = SPI_WIDTH_QUAD;
-            ext_flash_board_init_quad(true);
-            break;
-        default:
-            return E_BAD_PARAM;
+    case Ext_Flash_DataLine_Single:
+        spi_width = SPI_WIDTH_STANDARD;
+        break;
+    case Ext_Flash_DataLine_Dual:
+        spi_width = SPI_WIDTH_DUAL;
+        break;
+    case Ext_Flash_DataLine_Quad:
+        spi_width = SPI_WIDTH_QUAD;
+        ext_flash_board_init_quad(true);
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     MXC_SPI_SetWidth(MXC_SPI0, spi_width);
 
-    qspi_write_req.spi        = MXC_SPI0;
-    qspi_write_req.ssIdx      = 1;
+    qspi_write_req.spi = MXC_SPI0;
+    qspi_write_req.ssIdx = 1;
     qspi_write_req.ssDeassert = deassert;
-    qspi_write_req.txData     = (uint8_t*)write;
-    qspi_write_req.rxData     = NULL;
-    qspi_write_req.txLen      = len;
-    qspi_write_req.rxLen      = 0;
-    qspi_write_req.txCnt      = 0;
-    qspi_write_req.rxCnt      = 0;
+    qspi_write_req.txData = (uint8_t*)write;
+    qspi_write_req.rxData = NULL;
+    qspi_write_req.txLen = len;
+    qspi_write_req.rxLen = 0;
+    qspi_write_req.txCnt = 0;
+    qspi_write_req.rxCnt = 0;
     qspi_write_req.completeCB = NULL;
 
     err = MXC_SPI_MasterTransaction(&qspi_write_req);
@@ -245,31 +244,31 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
     width = MXC_SPI_GetWidth(MXC_SPI0);
 
     switch (width) {
-        case SPI_WIDTH_STANDARD:
-            len /= 8;
-            break;
-        case SPI_WIDTH_DUAL:
-            len /= 4;
-            break;
-        case SPI_WIDTH_QUAD:
-            len /= 2;
-            break;
-        default:
-            return E_BAD_STATE;
+    case SPI_WIDTH_STANDARD:
+        len /= 8;
+        break;
+    case SPI_WIDTH_DUAL:
+        len /= 4;
+        break;
+    case SPI_WIDTH_QUAD:
+        len /= 2;
+        break;
+    default:
+        return E_BAD_STATE;
     }
 
     uint8_t write[len];
     memset(write, 0, sizeof(write));
 
-    qspi_dummy_req.spi        = MXC_SPI0;
-    qspi_dummy_req.ssIdx      = 1;
+    qspi_dummy_req.spi = MXC_SPI0;
+    qspi_dummy_req.ssIdx = 1;
     qspi_dummy_req.ssDeassert = deassert;
-    qspi_dummy_req.txData     = write;
-    qspi_dummy_req.rxData     = NULL;
-    qspi_dummy_req.txLen      = len;
-    qspi_dummy_req.rxLen      = 0;
-    qspi_dummy_req.txCnt      = 0;
-    qspi_dummy_req.rxCnt      = 0;
+    qspi_dummy_req.txData = write;
+    qspi_dummy_req.rxData = NULL;
+    qspi_dummy_req.txLen = len;
+    qspi_dummy_req.rxLen = 0;
+    qspi_dummy_req.txCnt = 0;
+    qspi_dummy_req.rxCnt = 0;
     qspi_dummy_req.completeCB = NULL;
 
     return MXC_SPI_MasterTransaction(&qspi_dummy_req);
@@ -281,8 +280,7 @@ void mxc_assert(const char* expr, const char* file, int line)
 #ifdef DEBUG
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 #endif
-    while (1)
-        ;
+    while (1) { }
 }
 
 /******************************************************************************/
@@ -298,10 +296,10 @@ int Board_Init(void)
     int err;
 
 #ifndef __riscv /* RISCV does not have access to MXC_SPI0 */
-    Ext_Flash_Config_t exf_cfg = {.init  = ext_flash_board_init,
-                                  .read  = ext_flash_board_read,
-                                  .write = ext_flash_board_write,
-                                  .clock = ext_flash_clock};
+    Ext_Flash_Config_t exf_cfg = { .init = ext_flash_board_init,
+        .read = ext_flash_board_read,
+        .write = ext_flash_board_write,
+        .clock = ext_flash_clock };
 
     if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
         return err;

@@ -33,33 +33,32 @@
 
 /**
  * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360/PAG7920 camera sensors as defined in the makefile.
+ * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360/PAG7920 camera sensors as
+ * defined in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
- *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
- *          The image is prepended with a header that is interpreted by the grab_image.py
- *          python script.  The data from this example through the UART is in a binary format.
- *          Instructions: 1) Load and execute this example. The example will initialize the camera
- *                        and start the repeating binary output of camera frame data.
- *                        2) Run 'sudo grab_image.py /dev/ttyUSB0 115200'
- *                           Substitute the /dev/ttyUSB0 string for the serial port on your system.
- *                           The python program will read in the binary data from this example and
- *                           output a png image.
+ *          Alternatively, it can display the captured image on TFT is it is enabled in the make
+ * file. The image is prepended with a header that is interpreted by the grab_image.py python
+ * script.  The data from this example through the UART is in a binary format. Instructions: 1) Load
+ * and execute this example. The example will initialize the camera and start the repeating binary
+ * output of camera frame data. 2) Run 'sudo grab_image.py /dev/ttyUSB0 115200' Substitute the
+ * /dev/ttyUSB0 string for the serial port on your system. The python program will read in the
+ * binary data from this example and output a png image.
  */
 
 /***** Includes *****/
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "uart.h"
-#include "led.h"
 #include "board.h"
+#include "led.h"
+#include "mxc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "uart.h"
+#include <stdint.h>
+#include <stdio.h>
 
 #include "camera.h"
-#include "utils.h"
 #include "dma.h"
+#include "utils.h"
 
 // Configuration options
 // ------------------------
@@ -68,8 +67,8 @@
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
-With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in 
-stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144 
+With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in
+stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144
 if stream mode is disabled, or 320x240 if enabled
 */
 // #define BUTTON
@@ -150,8 +149,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#define CON_BAUD \
-    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define CON_BAUD                                                                                   \
+    115200 * 8 // UART baudrate used for sending data to PC, use max 921600 for serial stream
 #define X_START 0
 #define Y_START 0
 
@@ -218,13 +217,12 @@ void process_img(void)
 
     stream_stat_t* stat = get_camera_stream_statistic();
 
-    //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    //printf("OVERFLOW = %d\n", stat->overflow_count);
+    // printf("DMA transfer count = %d\n", stat->dma_transfer_count);
+    // printf("OVERFLOW = %d\n", stat->overflow_count);
     if (stat->overflow_count > 0) {
         LED_On(LED_RED); // Turn on red LED if overflow detected
 
-        while (1)
-            ;
+        while (1) { }
     }
 
 #endif //#ifndef STREAM_ENABLE
@@ -272,7 +270,8 @@ int main(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || defined(CAMERA_OV5642)
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR)          \
+    || defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
 #endif
@@ -293,10 +292,10 @@ int main(void)
 #ifndef STREAM_ENABLE
 #ifndef CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel); // RGB565
+        dma_channel); // RGB565
 #else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
-                       dma_channel); // Mono
+        dma_channel); // Mono
 #endif
 
 #ifdef ENABLE_TFT
@@ -308,10 +307,10 @@ int main(void)
 #else
 #ifndef CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
-                       dma_channel); // RGB565 stream
+        dma_channel); // RGB565 stream
 #else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
-                       dma_channel); // Mono stream
+        dma_channel); // Mono stream
 #endif
 
 #ifdef ENABLE_TFT
@@ -346,8 +345,7 @@ int main(void)
     // Start capturing a first camera image frame.
     printf("Starting\n");
 #ifdef BUTTON
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) { }
 #endif
     camera_start_capture_image();
 
@@ -363,8 +361,7 @@ int main(void)
             // Prepare for another frame capture.
             LED_Toggle(LED_GREEN);
 #ifdef BUTTON
-            while (!PB_Get(0))
-                ;
+            while (!PB_Get(0)) { }
 #endif
             camera_start_capture_image();
         }

@@ -32,9 +32,9 @@
  ******************************************************************************/
 
 /* MXC */
-#include "mxc_device.h"
 #include "board.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
@@ -42,19 +42,19 @@
 #include "task.h"
 
 /* Maxim CMSIS */
-#include "lp.h"
-#include "pwrseq_regs.h"
-#include "wut.h"
-#include "mcr_regs.h"
-#include "simo.h"
 #include "icc.h"
-#include "pb.h"
 #include "led.h"
+#include "lp.h"
+#include "mcr_regs.h"
+#include "pb.h"
+#include "pwrseq_regs.h"
+#include "simo.h"
+#include "wut.h"
 
-#define WUT_RATIO      (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
+#define WUT_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
 #define MAX_WUT_SNOOZE (5 * configRTC_TICK_RATE_HZ)
-#define MIN_SYSTICK    2
-#define MIN_WUT_TICKS  50
+#define MIN_SYSTICK 2
+#define MIN_WUT_TICKS 50
 
 static uint32_t wutSnooze = 0;
 static int wutSnoozeValid = 0;
@@ -81,7 +81,7 @@ __attribute__((weak)) int freertos_permit_tickless(void)
  */
 void wutHitSnooze(void)
 {
-    wutSnooze      = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
+    wutSnooze = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
     wutSnoozeValid = 1;
 }
 
@@ -136,8 +136,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* If a context switch is pending or a task is waiting for the scheduler
      to be unsuspended then abandon the low power entry. */
     /* Also check the MXC drivers for any in-progress activity */
-    if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
-        (freertos_permit_tickless() != E_NO_ERROR)) {
+    if ((eTaskConfirmSleepModeStatus() == eAbortSleep)
+        || (freertos_permit_tickless() != E_NO_ERROR)) {
         /* Re-enable interrupts - see comments above the cpsid instruction()
        above. */
         __asm volatile("cpsie i");
@@ -177,8 +177,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     __asm volatile("cpsie i");
 
     /*
-   * Advance ticks by # actually elapsed
-   */
+     * Advance ticks by # actually elapsed
+     */
     portENTER_CRITICAL();
     vTaskStepTick((actual_ticks / WUT_RATIO));
     portEXIT_CRITICAL();

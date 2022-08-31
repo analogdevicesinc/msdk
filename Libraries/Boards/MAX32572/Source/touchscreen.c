@@ -34,19 +34,19 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
-#include "mxc_device.h"
-#include "touchscreen.h"
-#include "spi.h"
 #include "gpio.h"
+#include "mxc_device.h"
+#include "spi.h"
+#include "touchscreen.h"
 
 /************************************ DEFINES ********************************/
-#define TS_SPI            (MXC_SPI0)
-#define TS_INT_GPIO_PIN   (MXC_GPIO_PIN_0)
-#define TS_INT_GPIO_PORT  (MXC_GPIO0)
-#define TS_BUSY_GPIO_PIN  (MXC_GPIO_PIN_1)
+#define TS_SPI (MXC_SPI0)
+#define TS_INT_GPIO_PIN (MXC_GPIO_PIN_0)
+#define TS_INT_GPIO_PORT (MXC_GPIO0)
+#define TS_BUSY_GPIO_PIN (MXC_GPIO_PIN_1)
 #define TS_BUSY_GPIO_PORT (MXC_GPIO0)
 
 /******************************* TYPE DEFINITIONS ****************************/
@@ -75,29 +75,27 @@ static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
 static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short* dataout)
 {
     int i;
-    uint8_t rx[2] = {0, 0};
+    uint8_t rx[2] = { 0, 0 };
 
     mxc_spi_req_t request = {
-        TS_SPI,  // spi
-        0,       // ssIdx
-        0,       // ssDeassert
+        TS_SPI, // spi
+        0, // ssIdx
+        0, // ssDeassert
         &datain, // txData
-        0,       // rxData
-        1,       // txLen
-        0        // rxLen
+        0, // rxData
+        1, // txLen
+        0 // rxLen
     };
 
     MXC_SPI_MasterTransaction(&request);
 
-    for (i = 0; i < 100; i++) {
-        __asm volatile("nop\n");
-    }
+    for (i = 0; i < 100; i++) { __asm volatile("nop\n"); }
 
     request.ssDeassert = 1;
-    request.txData     = 0;
-    request.rxData     = (uint8_t*)(rx);
-    request.txLen      = 0;
-    request.rxLen      = 2;
+    request.txData = 0;
+    request.rxData = (uint8_t*)(rx);
+    request.txLen = 0;
+    request.rxLen = 2;
 
     MXC_SPI_MasterTransaction(&request);
 
@@ -126,8 +124,8 @@ static int tsGetXY(unsigned short* x, unsigned short* y)
 
         ret = 1;
     } else {
-        *x  = 0;
-        *y  = 0;
+        *x = 0;
+        *y = 0;
         ret = 0;
     }
 
@@ -146,7 +144,7 @@ static void tsHandler(void)
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
                     if (is_inBox(touch_x, touch_y, ts_buttons[i].x0, ts_buttons[i].y0,
-                                 ts_buttons[i].x1, ts_buttons[i].y1)) {
+                            ts_buttons[i].x1, ts_buttons[i].y1)) {
                         // pressed key
                         pressed_key = ts_buttons[i].key_code;
                         break;
@@ -166,8 +164,8 @@ static void ts_gpio_init(void)
     mxc_gpio_cfg_t config;
 
     // Each pin needs to be configured for VDDIOH (3.3V) and no pad
-    config.pad   = MXC_GPIO_PAD_NONE;
-    config.func  = MXC_GPIO_FUNC_IN;
+    config.pad = MXC_GPIO_PAD_NONE;
+    config.func = MXC_GPIO_FUNC_IN;
     config.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     // Touchscreen busy pin
@@ -185,10 +183,10 @@ static void ts_gpio_init(void)
 
 static void ts_spi_Init(void)
 {
-    int master         = 1;
-    int quadMode       = 0;
-    int numSlaves      = 1;
-    int ssPol          = 0;
+    int master = 1;
+    int quadMode = 0;
+    int numSlaves = 1;
+    int ssPol = 0;
     unsigned int ts_hz = 200000;
 
     MXC_SPI_Init(TS_SPI, master, quadMode, numSlaves, ssPol, ts_hz);
@@ -240,10 +238,10 @@ int MXC_TS_AddButton(int x0, int y0, int x1, int y1, int on_press_expected_code)
 
     for (index = TS_MAX_BUTTONS - 1; index >= 0; index--) {
         if (ts_buttons[index].key_code == TS_INVALID_KEY_CODE) {
-            ts_buttons[index].x0       = x0;
-            ts_buttons[index].y0       = y0;
-            ts_buttons[index].x1       = x1;
-            ts_buttons[index].y1       = y1;
+            ts_buttons[index].x0 = x0;
+            ts_buttons[index].y0 = y0;
+            ts_buttons[index].x1 = x1;
+            ts_buttons[index].y1 = y1;
             ts_buttons[index].key_code = on_press_expected_code;
             break;
         }
@@ -259,7 +257,7 @@ void MXC_TS_RemoveButton(int x0, int y0, int x1, int y1)
     for (i = 0; i < TS_MAX_BUTTONS; i++) {
         if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
             if (is_inBox(x0, y0, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
-                         ts_buttons[i].y1)) {
+                    ts_buttons[i].y1)) {
                 // clear flag
                 ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
             }
@@ -271,16 +269,14 @@ void MXC_TS_RemoveAllButton(void)
 {
     int i;
 
-    for (i = 0; i < TS_MAX_BUTTONS; i++) {
-        ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
-    }
+    for (i = 0; i < TS_MAX_BUTTONS; i++) { ts_buttons[i].key_code = TS_INVALID_KEY_CODE; }
 }
 
 int MXC_TS_GetKey(void)
 {
     int key;
 
-    key         = pressed_key;
+    key = pressed_key;
     pressed_key = 0;
 
     return key;

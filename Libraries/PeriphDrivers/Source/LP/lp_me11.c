@@ -40,16 +40,15 @@
  *************************************************************************** */
 
 /***** Includes *****/
-#include "lp.h"
-#include "pwrseq_regs.h"
-#include "mxc_errors.h"
+#include "flc.h"
 #include "gcr_regs.h"
+#include "lp.h"
+#include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_pins.h"
 #include "mxc_sys.h"
-#include "flc.h"
-#include "mxc_delay.h"
+#include "pwrseq_regs.h"
 
 /***** Functions *****/
 void MXC_LP_ClearWakeStatus(void)
@@ -57,8 +56,7 @@ void MXC_LP_ClearWakeStatus(void)
     MXC_PWRSEQ->lp_wakefl = 0xFFFFFFFF;
 
     /* These flags are slow to clear, so block until they do */
-    while (MXC_PWRSEQ->lp_wakefl & (MXC_PWRSEQ->lpwk_en))
-        ;
+    while (MXC_PWRSEQ->lp_wakefl & (MXC_PWRSEQ->lpwk_en)) { }
 }
 
 void MXC_LP_EnableSRAM3(void)
@@ -164,17 +162,17 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
 void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIOWK_EN;
-    //switch(wu_pins->port)
+    // switch(wu_pins->port)
     //{
-    /*case 0:*/ MXC_PWRSEQ->lpwk_en |= wu_pins->mask; //break;
+    /*case 0:*/ MXC_PWRSEQ->lpwk_en |= wu_pins->mask; // break;
     //}
 }
 
 void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
 {
-    //switch(wu_pins->port)
+    // switch(wu_pins->port)
     //{
-    /*  case 0:*/ MXC_PWRSEQ->lpwk_en &= ~wu_pins->mask; //break;
+    /*  case 0:*/ MXC_PWRSEQ->lpwk_en &= ~wu_pins->mask; // break;
     //}
 
     if (MXC_PWRSEQ->lpwk_en == 0) {
@@ -206,16 +204,14 @@ void MXC_LP_EnterBackupMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
-    while (1)
-        ;
+    while (1) { }
 }
 
 void MXC_LP_EnterShutdownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
-    while (1)
-        ;
+    while (1) { }
 }
 
 int MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr)
@@ -238,8 +234,8 @@ int MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr)
     }
 
     // Set flash wait state for any clock so its not to low after clock changes.
-    MXC_GCR->mem_ctrl =
-        (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) | (0x5UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+    MXC_GCR->mem_ctrl
+        = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) | (0x5UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
 
     // Set the OVR bits
     MXC_PWRSEQ->lp_ctrl &= ~(MXC_F_PWRSEQ_LP_CTRL_OVR);
@@ -270,36 +266,36 @@ int MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr)
     // Set Flash Wait States
     if (ovr == MXC_LP_OVR_0_9) {
         if (div == 0) {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x2UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x2UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
 
         } else {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x1UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x1UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
         }
 
     } else if (ovr == MXC_LP_OVR_1_0) {
         if (div == 0) {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x2UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x2UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
 
         } else {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x1UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x1UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
         }
 
     } else {
         if (div == 0) {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x4UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x4UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
 
         } else if (div == 1) {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x2UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x2UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
 
         } else {
-            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
-                                (0x1UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+            MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS))
+                | (0x1UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
         }
     }
 

@@ -32,34 +32,34 @@
  *************************************************************************** */
 
 /****** Includes *******/
-#include <stddef.h>
-#include <stdint.h>
-#include "mxc_device.h"
+#include "dma_reva.h"
+#include "dma.h"
+#include "dma_reva_regs.h"
 #include "mxc_assert.h"
+#include "mxc_device.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
-#include "dma.h"
-#include "dma_reva.h"
-#include "dma_reva_regs.h"
+#include <stddef.h>
+#include <stdint.h>
 
 /***** Definitions *****/
 #define CHECK_HANDLE(x) ((x >= 0) && (x < MXC_DMA_CHANNELS) && (dma_resource[x].valid))
 
 typedef struct {
     void* userCallback; // user given callback
-    void* dest;         // memcpy destination
+    void* dest; // memcpy destination
 } mxc_dma_highlevel_t;
 
 typedef struct {
-    unsigned int valid;    // Flag to invalidate this resource
+    unsigned int valid; // Flag to invalidate this resource
     unsigned int instance; // Hardware instance of this DMA controller
-    unsigned int id;       // Channel ID, which matches the index into the underlying hardware
+    unsigned int id; // Channel ID, which matches the index into the underlying hardware
     mxc_dma_reva_ch_regs_t* regs; // Pointer to the registers for this channel
-    void (*cb)(int, int);         // Pointer to a callback function type
+    void (*cb)(int, int); // Pointer to a callback function type
 } mxc_dma_channel_t;
 
 /******* Globals *******/
-static unsigned int dma_initialized[MXC_DMA_INSTANCES] = {0};
+static unsigned int dma_initialized[MXC_DMA_INSTANCES] = { 0 };
 static mxc_dma_channel_t dma_resource[MXC_DMA_CHANNELS];
 static mxc_dma_highlevel_t memcpy_resource[MXC_DMA_CHANNELS];
 static uint32_t dma_lock;
@@ -72,11 +72,11 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t* dma)
 {
     int i, numCh, offset;
 #if TARGET_NUM == 32665
-    numCh  = MXC_DMA_CH_OFFSET;
+    numCh = MXC_DMA_CH_OFFSET;
     offset = numCh * MXC_DMA_GET_IDX((mxc_dma_regs_t*)dma);
 #else
-    numCh   = MXC_DMA_CHANNELS;
-    offset  = 0;
+    numCh = MXC_DMA_CHANNELS;
+    offset = 0;
 #endif
 
     if (dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t*)dma)]) {
@@ -96,11 +96,11 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t* dma)
     dma->inten = 0;
 
     for (i = offset; i < (offset + numCh); i++) {
-        dma_resource[i].valid        = 0;
-        dma_resource[i].instance     = 0;
-        dma_resource[i].id           = i;
-        dma_resource[i].regs         = (mxc_dma_reva_ch_regs_t*)&(dma->ch[(i % numCh)]);
-        dma_resource[i].regs->ctrl   = 0;
+        dma_resource[i].valid = 0;
+        dma_resource[i].instance = 0;
+        dma_resource[i].id = i;
+        dma_resource[i].regs = (mxc_dma_reva_ch_regs_t*)&(dma->ch[(i % numCh)]);
+        dma_resource[i].regs->ctrl = 0;
         dma_resource[i].regs->status = dma_resource[i].regs->status;
 
         dma_resource[i].cb = NULL;
@@ -124,11 +124,11 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t* dma)
     }
 
 #if TARGET_NUM == 32665
-    numCh  = MXC_DMA_CH_OFFSET;
+    numCh = MXC_DMA_CH_OFFSET;
     offset = MXC_DMA_CH_OFFSET * MXC_DMA_GET_IDX((mxc_dma_regs_t*)dma);
 #else
-    numCh   = MXC_DMA_CHANNELS;
-    offset  = 0;
+    numCh = MXC_DMA_CHANNELS;
+    offset = 0;
 #endif
 
 #ifndef __riscv
@@ -143,9 +143,9 @@ int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t* dma)
     for (i = offset; i < (offset + numCh); i++) {
         if (!dma_resource[i].valid) {
             /* Found one */
-            channel                      = i;
-            dma_resource[i].valid        = 1;
-            dma_resource[i].regs->ctrl   = 0;
+            channel = i;
+            dma_resource[i].valid = 1;
+            dma_resource[i].regs->ctrl = 0;
             dma_resource[i].regs->cntrld = 0; /* Used by DMA_Start() to conditionally set RLDEN */
             break;
         }
@@ -164,8 +164,8 @@ int MXC_DMA_RevA_ReleaseChannel(int ch)
             return E_BUSY;
         }
 
-        dma_resource[ch].valid        = 0;
-        dma_resource[ch].regs->ctrl   = 0;
+        dma_resource[ch].valid = 0;
+        dma_resource[ch].regs->ctrl = 0;
         dma_resource[ch].regs->status = dma_resource[ch].regs->status;
         MXC_FreeLock(&dma_lock);
     } else {
@@ -179,11 +179,10 @@ int MXC_DMA_RevA_ConfigChannel(mxc_dma_config_t config, mxc_dma_srcdst_t srcdst)
 {
     if (CHECK_HANDLE(config.ch)) {
         /* Designed to be safe, not speedy. Should not be called often */
-        dma_resource[config.ch].regs->ctrl =
-            ((config.srcinc_en ? MXC_F_DMA_REVA_CTRL_SRCINC : 0) |
-             (config.dstinc_en ? MXC_F_DMA_REVA_CTRL_DSTINC : 0) | config.reqsel |
-             (config.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS) |
-             (config.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
+        dma_resource[config.ch].regs->ctrl = ((config.srcinc_en ? MXC_F_DMA_REVA_CTRL_SRCINC : 0)
+            | (config.dstinc_en ? MXC_F_DMA_REVA_CTRL_DSTINC : 0) | config.reqsel
+            | (config.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS)
+            | (config.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
     } else {
         return E_BAD_PARAM;
     }
@@ -196,11 +195,11 @@ int MXC_DMA_RevA_AdvConfigChannel(mxc_dma_adv_config_t advConfig)
     if (CHECK_HANDLE(advConfig.ch) && (advConfig.burst_size > 0)) {
         dma_resource[advConfig.ch].regs->ctrl &= ~(0x1F00FC0C); // Clear all fields we set here
         /* Designed to be safe, not speedy. Should not be called often */
-        dma_resource[advConfig.ch].regs->ctrl |=
-            ((advConfig.reqwait_en ? MXC_F_DMA_REVA_CTRL_TO_WAIT : 0) | advConfig.prio |
-             advConfig.tosel | advConfig.pssel |
-             (((advConfig.burst_size - 1) << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS) &
-              MXC_F_DMA_REVA_CTRL_BURST_SIZE));
+        dma_resource[advConfig.ch].regs->ctrl
+            |= ((advConfig.reqwait_en ? MXC_F_DMA_REVA_CTRL_TO_WAIT : 0) | advConfig.prio
+                | advConfig.tosel | advConfig.pssel
+                | (((advConfig.burst_size - 1) << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS)
+                    & MXC_F_DMA_REVA_CTRL_BURST_SIZE));
     } else {
         return E_BAD_PARAM;
     }
@@ -225,8 +224,8 @@ int MXC_DMA_RevA_GetSrcDst(mxc_dma_srcdst_t* srcdst)
 {
     if (CHECK_HANDLE(srcdst->ch)) {
         srcdst->source = (void*)dma_resource[srcdst->ch].regs->src;
-        srcdst->dest   = (void*)dma_resource[srcdst->ch].regs->dst;
-        srcdst->len    = (dma_resource[srcdst->ch].regs->cnt) & ~MXC_F_DMA_REVA_CNTRLD_EN;
+        srcdst->dest = (void*)dma_resource[srcdst->ch].regs->dst;
+        srcdst->len = (dma_resource[srcdst->ch].regs->cnt) & ~MXC_F_DMA_REVA_CNTRLD_EN;
     } else {
         return E_BAD_PARAM;
     }
@@ -258,8 +257,8 @@ int MXC_DMA_RevA_GetSrcReload(mxc_dma_srcdst_t* srcdst)
 {
     if (CHECK_HANDLE(srcdst->ch)) {
         srcdst->source = (void*)dma_resource[srcdst->ch].regs->srcrld;
-        srcdst->dest   = (void*)dma_resource[srcdst->ch].regs->dstrld;
-        srcdst->len    = (dma_resource[srcdst->ch].regs->cntrld) & ~MXC_F_DMA_REVA_CNTRLD_EN;
+        srcdst->dest = (void*)dma_resource[srcdst->ch].regs->dstrld;
+        srcdst->len = (dma_resource[srcdst->ch].regs->cntrld) & ~MXC_F_DMA_REVA_CNTRLD_EN;
     } else {
         return E_BAD_PARAM;
     }
@@ -303,8 +302,8 @@ int MXC_DMA_RevA_GetChannelInterruptEn(int ch)
 int MXC_DMA_RevA_ChannelEnableInt(int ch, int flags)
 {
     if (CHECK_HANDLE(ch)) {
-        dma_resource[ch].regs->ctrl |=
-            (flags & (MXC_F_DMA_REVA_CTRL_DIS_IE | MXC_F_DMA_REVA_CTRL_CTZ_IE));
+        dma_resource[ch].regs->ctrl
+            |= (flags & (MXC_F_DMA_REVA_CTRL_DIS_IE | MXC_F_DMA_REVA_CTRL_CTZ_IE));
     } else {
         return E_BAD_PARAM;
     }
@@ -315,8 +314,8 @@ int MXC_DMA_RevA_ChannelEnableInt(int ch, int flags)
 int MXC_DMA_RevA_ChannelDisableInt(int ch, int flags)
 {
     if (CHECK_HANDLE(ch)) {
-        dma_resource[ch].regs->ctrl &=
-            ~(flags & (MXC_F_DMA_REVA_CTRL_DIS_IE | MXC_F_DMA_REVA_CTRL_CTZ_IE));
+        dma_resource[ch].regs->ctrl
+            &= ~(flags & (MXC_F_DMA_REVA_CTRL_DIS_IE | MXC_F_DMA_REVA_CTRL_CTZ_IE));
     } else {
         return E_BAD_PARAM;
     }
@@ -413,7 +412,7 @@ mxc_dma_ch_regs_t* MXC_DMA_RevA_GetCHRegs(int ch)
 
 void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t* dma)
 {
-    int numCh  = MXC_DMA_CHANNELS / MXC_DMA_INSTANCES;
+    int numCh = MXC_DMA_CHANNELS / MXC_DMA_INSTANCES;
     int offset = numCh * MXC_DMA_GET_IDX((mxc_dma_regs_t*)dma);
     /* Do callback, if enabled */
     for (int i = offset; i < (offset + numCh); i++) {
@@ -442,14 +441,14 @@ void memcpy_callback(int ch, int error)
     callback(memcpy_resource[ch].dest);
 
     // Release global objects and local resources
-    callback                         = NULL;
+    callback = NULL;
     memcpy_resource[ch].userCallback = NULL;
-    memcpy_resource[ch].dest         = NULL;
+    memcpy_resource[ch].dest = NULL;
     MXC_DMA_ReleaseChannel(ch);
 }
 
-int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t* dma, void* dest, void* src, int len,
-                        mxc_dma_complete_cb_t callback)
+int MXC_DMA_RevA_MemCpy(
+    mxc_dma_reva_regs_t* dma, void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
 {
     int retval;
     mxc_dma_config_t config;
@@ -468,15 +467,15 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t* dma, void* dest, void* src, int len
         return E_UNKNOWN;
     }
 
-    transfer.ch     = channel;
+    transfer.ch = channel;
     transfer.source = src;
-    transfer.dest   = dest;
-    transfer.len    = len;
+    transfer.dest = dest;
+    transfer.len = len;
 
-    config.ch        = channel;
-    config.reqsel    = MXC_DMA_REQUEST_MEMTOMEM;
-    config.srcwd     = MXC_DMA_WIDTH_WORD;
-    config.dstwd     = MXC_DMA_WIDTH_WORD;
+    config.ch = channel;
+    config.reqsel = MXC_DMA_REQUEST_MEMTOMEM;
+    config.srcwd = MXC_DMA_WIDTH_WORD;
+    config.dstwd = MXC_DMA_WIDTH_WORD;
     config.srcinc_en = 1;
     config.dstinc_en = 1;
 
@@ -501,7 +500,7 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t* dma, void* dest, void* src, int len
     MXC_DMA_SetCallback(channel, memcpy_callback);
 
     memcpy_resource[channel].userCallback = (void*)callback;
-    memcpy_resource[channel].dest         = dest;
+    memcpy_resource[channel].dest = dest;
 
     return MXC_DMA_Start(channel);
 }
@@ -513,12 +512,11 @@ void transfer_callback(int ch, int error)
     // Call user callback for next transfer
     // determine whether to load into the transfer slot or reload slot
     // continue on or stop
-    while (1)
-        ;
+    while (1) { }
 }
 
 int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t* dma, mxc_dma_config_t config,
-                            mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
+    mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
 {
     int retval, channel;
 

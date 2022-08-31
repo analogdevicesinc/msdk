@@ -32,27 +32,27 @@
  ******************************************************************************/
 
 /*******************************      INCLUDES    ****************************/
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
-#include "terminal.h"
 #include "platform.h"
+#include "terminal.h"
 
-#include "mxc_delay.h"
 #include "i2c.h"
+#include "mxc_delay.h"
 #include "spi.h"
 
 #include "nvic_table.h"
 
 /*******************************      DEFINES     ****************************/
 // I2C
-#define I2C_MASTER     MXC_I2C1
+#define I2C_MASTER MXC_I2C1
 #define I2C_SLAVE_ADDR 0x55
-#define I2C_FREQ       400000
+#define I2C_FREQ 400000
 
 //
-#define SPI       MXC_SPI0
-#define SPI_IRQ   SPI0_IRQn
+#define SPI MXC_SPI0
+#define SPI_IRQ SPI0_IRQn
 #define SPI_SPEED 1000000
 
 /******************************* Type Definitions ****************************/
@@ -80,13 +80,13 @@ int plt_i2c_write(unsigned char* src, unsigned int len)
     int ret = 0;
     mxc_i2c_req_t reqMaster;
 
-    reqMaster.i2c      = I2C_MASTER;
-    reqMaster.addr     = I2C_SLAVE_ADDR;
-    reqMaster.tx_buf   = src;
-    reqMaster.tx_len   = len;
-    reqMaster.rx_buf   = NULL;
-    reqMaster.rx_len   = 0;
-    reqMaster.restart  = 0;
+    reqMaster.i2c = I2C_MASTER;
+    reqMaster.addr = I2C_SLAVE_ADDR;
+    reqMaster.tx_buf = src;
+    reqMaster.tx_len = len;
+    reqMaster.rx_buf = NULL;
+    reqMaster.rx_len = 0;
+    reqMaster.restart = 0;
     reqMaster.callback = NULL;
 
     ret = MXC_I2C_MasterTransaction(&reqMaster);
@@ -99,13 +99,13 @@ int plt_i2c_read(unsigned char* dst, unsigned int len)
     int ret = 0;
     mxc_i2c_req_t reqMaster;
 
-    reqMaster.i2c      = I2C_MASTER;
-    reqMaster.addr     = I2C_SLAVE_ADDR;
-    reqMaster.tx_buf   = NULL;
-    reqMaster.tx_len   = 0;
-    reqMaster.rx_buf   = dst;
-    reqMaster.rx_len   = len;
-    reqMaster.restart  = 0;
+    reqMaster.i2c = I2C_MASTER;
+    reqMaster.addr = I2C_SLAVE_ADDR;
+    reqMaster.tx_buf = NULL;
+    reqMaster.tx_len = 0;
+    reqMaster.rx_buf = dst;
+    reqMaster.rx_len = len;
+    reqMaster.restart = 0;
     reqMaster.callback = NULL;
 
     ret = MXC_I2C_MasterTransaction(&reqMaster);
@@ -135,45 +135,45 @@ int plt_spi_write(unsigned char* src, unsigned int len)
     int ret = 0;
     mxc_spi_req_t req;
 
-    //SPI Request
-    req.spi        = SPI;
-    req.ssIdx      = 0;
+    // SPI Request
+    req.spi = SPI;
+    req.ssIdx = 0;
     req.ssDeassert = 1;
     req.completeCB = NULL;
 
     /* Bootloader SPI protocol on target expects command first,
-	   The target does not able to handle full command on first transaction,
-	   so send command first then the rest of it.
-	   Instead handling this differentiation in bootloader.c file
-	   it is preferred to handle here to make bootloader.c file generic
-	*/
+       The target does not able to handle full command on first transaction,
+       so send command first then the rest of it.
+       Instead handling this differentiation in bootloader.c file
+       it is preferred to handle here to make bootloader.c file generic
+    */
     if (len > 2) {
         req.txData = src;
         req.rxData = NULL;
-        req.txLen  = 2;
-        req.rxLen  = 0;
-        req.txCnt  = 0;
-        req.rxCnt  = 0;
+        req.txLen = 2;
+        req.rxLen = 0;
+        req.txCnt = 0;
+        req.rxCnt = 0;
         //
         ret = MXC_SPI_MasterTransaction(&req);
 
         if (ret == 0) {
             req.txData = &src[2];
             req.rxData = NULL;
-            req.txLen  = len - 2;
-            req.rxLen  = 0;
-            req.txCnt  = 0;
-            req.rxCnt  = 0;
+            req.txLen = len - 2;
+            req.rxLen = 0;
+            req.txCnt = 0;
+            req.rxCnt = 0;
             //
             ret = MXC_SPI_MasterTransaction(&req);
         }
     } else {
         req.txData = src;
         req.rxData = NULL;
-        req.txLen  = len;
-        req.rxLen  = 0;
-        req.txCnt  = 0;
-        req.rxCnt  = 0;
+        req.txLen = len;
+        req.rxLen = 0;
+        req.txCnt = 0;
+        req.rxCnt = 0;
         //
         ret = MXC_SPI_MasterTransaction(&req);
     }
@@ -186,16 +186,16 @@ int plt_spi_read(unsigned char* dst, unsigned int len)
     int ret = 0;
     mxc_spi_req_t req;
 
-    //SPI Request
-    req.spi        = SPI;
-    req.txData     = NULL;
-    req.rxData     = dst;
-    req.txLen      = 0;
-    req.rxLen      = len;
-    req.ssIdx      = 0;
+    // SPI Request
+    req.spi = SPI;
+    req.txData = NULL;
+    req.rxData = dst;
+    req.txLen = 0;
+    req.rxLen = len;
+    req.ssIdx = 0;
     req.ssDeassert = 1;
-    req.txCnt      = 0;
-    req.rxCnt      = 0;
+    req.txCnt = 0;
+    req.rxCnt = 0;
     req.completeCB = NULL;
 
     ret = MXC_SPI_MasterTransaction(&req);
@@ -207,8 +207,8 @@ int plt_spi_read(unsigned char* dst, unsigned int len)
  *  GPIO
  */
 static const mxc_gpio_cfg_t bl_pins[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO0, MXC_GPIO_PIN_9, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO0, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO0, MXC_GPIO_PIN_9, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
 };
 
 int plt_gpio_init(void)

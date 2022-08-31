@@ -35,13 +35,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include "icc.h"
+#include "icc_common.h"
+#include "icc_regs.h"
+#include "icc_reva.h"
+#include "mxc_errors.h"
 #include <stdint.h>
 #include <stdio.h>
-#include "mxc_errors.h"
-#include "icc_regs.h"
-#include "icc.h"
-#include "icc_reva.h"
-#include "icc_common.h"
 
 /* **************************************************************************** */
 int MXC_ICC_ID(mxc_icc_info_t cid)

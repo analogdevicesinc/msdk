@@ -34,15 +34,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mxc_sys.h"
+#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_assert.h"
 #include "mxc_lock.h"
+#include "mxc_sys.h"
 
-#include "dma.h"
 #include "crc_regs.h"
 #include "crc_reva.h"
+#include "dma.h"
 
 /***** Global Variables *****/
 static mxc_crc_reva_req_t* CRCreq;
@@ -54,7 +54,7 @@ static mxc_crc_reva_req_t* CRCreq;
 int MXC_CRC_RevA_Init(mxc_crc_reva_regs_t* crc)
 {
     crc->ctrl = 0x00;
-    crc->val  = 0xFFFFFFFF;
+    crc->val = 0xFFFFFFFF;
     return E_NO_ERROR;
 }
 
@@ -93,13 +93,13 @@ mxc_crc_bitorder_t MXC_CRC_RevA_GetDirection(mxc_crc_reva_regs_t* crc)
 void MXC_CRC_RevA_SwapDataIn(mxc_crc_reva_regs_t* crc, mxc_crc_reva_bitorder_t bitOrder)
 {
     MXC_SETFIELD(crc->ctrl, MXC_F_CRC_REVA_CTRL_BYTE_SWAP_IN,
-                 bitOrder << MXC_F_CRC_REVA_CTRL_BYTE_SWAP_IN_POS);
+        bitOrder << MXC_F_CRC_REVA_CTRL_BYTE_SWAP_IN_POS);
 }
 
 void MXC_CRC_RevA_SwapDataOut(mxc_crc_reva_regs_t* crc, mxc_crc_reva_bitorder_t bitOrder)
 {
     MXC_SETFIELD(crc->ctrl, MXC_F_CRC_REVA_CTRL_BYTE_SWAP_OUT,
-                 bitOrder << MXC_F_CRC_REVA_CTRL_BYTE_SWAP_OUT_POS);
+        bitOrder << MXC_F_CRC_REVA_CTRL_BYTE_SWAP_OUT_POS);
 }
 
 void MXC_CRC_RevA_SetPoly(mxc_crc_reva_regs_t* crc, uint32_t poly)
@@ -144,8 +144,7 @@ int MXC_CRC_RevA_Compute(mxc_crc_reva_regs_t* crc, mxc_crc_reva_req_t* req)
 
     while (length--) {
         crc->datain32 = req->dataBuffer[i++];
-        while (crc->ctrl & MXC_F_CRC_REVA_CTRL_BUSY)
-            ;
+        while (crc->ctrl & MXC_F_CRC_REVA_CTRL_BUSY) { }
     }
 
     // Store the crc value
@@ -188,9 +187,9 @@ int MXC_CRC_RevA_ComputeAsync(mxc_crc_reva_regs_t* crc, mxc_crc_reva_req_t* req)
     config.srcinc_en = 1;
     config.dstinc_en = 0;
 
-    srcdst.ch     = channel;
-    srcdst.source = (uint8_t*)req->dataBuffer; //transfering bytes
-    srcdst.len    = req->dataLen * 4;          //number of bytes
+    srcdst.ch = channel;
+    srcdst.source = (uint8_t*)req->dataBuffer; // transfering bytes
+    srcdst.len = req->dataLen * 4; // number of bytes
 
     MXC_CRC->ctrl |= MXC_F_CRC_CTRL_DMA_EN;
     MXC_CRC->ctrl |= MXC_F_CRC_CTRL_EN;
@@ -199,7 +198,7 @@ int MXC_CRC_RevA_ComputeAsync(mxc_crc_reva_regs_t* crc, mxc_crc_reva_req_t* req)
     MXC_DMA_SetCallback(channel, MXC_CRC_Handler);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
-    //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
+    // MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
     MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
 
     return E_NO_ERROR;

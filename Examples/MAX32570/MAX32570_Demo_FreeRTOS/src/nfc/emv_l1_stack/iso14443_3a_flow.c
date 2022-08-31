@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -39,8 +39,8 @@
 #include <emv_l1_stack/iso14443_4_transitive.h>
 #include <string.h>
 
-#include <mml_nfc_pcd_rf_driver.h>
 #include "logging.h"
+#include <mml_nfc_pcd_rf_driver.h>
 
 #define UID_LEVEL_1 1
 #define UID_LEVEL_2 2
@@ -54,7 +54,7 @@
 #define TA_DEFAULT_VALUE (0x00)
 
 #define ISO14443_3A_ANTICOLLISION_CT_VALUE 0x88
-#define TYPE_A_SAK_14443_4_SUPPORT         0x20
+#define TYPE_A_SAK_14443_4_SUPPORT 0x20
 
 #define ATQA_LEN 2
 
@@ -107,8 +107,8 @@ static int32_t check_atq(uint8_t* atq, uint32_t* uid_level)
     }
 
     /*for Bit1~5 RFU*/
-    if ((atq[0] & 0x1F) != 0x01 && (atq[0] & 0x1F) != 0x02 && (atq[0] & 0x1F) != 0x04 &&
-        (atq[0] & 0x1F) != 0x08 && (atq[0] & 0x1F) != 0x10) {
+    if ((atq[0] & 0x1F) != 0x01 && (atq[0] & 0x1F) != 0x02 && (atq[0] & 0x1F) != 0x04
+        && (atq[0] & 0x1F) != 0x08 && (atq[0] & 0x1F) != 0x10) {
         *uid_level = UID_LEVEL_1;
     }
 
@@ -160,8 +160,7 @@ int32_t iso_14443_3a_collision_detect()
 }
 
 int32_t iso_14443_3a_collision_detect_response(uint8_t* atqa_resp, int32_t* atqa_resp_len,
-                                               uint8_t* uid_resp, int32_t* uid_resp_len,
-                                               uint8_t* sak_resp)
+    uint8_t* uid_resp, int32_t* uid_resp_len, uint8_t* sak_resp)
 {
     uint8_t* atq = GetCommonBuffer();
     uint8_t* uid = GetCommonBuffer();
@@ -265,8 +264,8 @@ int32_t iso_14443_3a_collision_detect_response(uint8_t* atqa_resp, int32_t* atqa
     }
 
     if (uid_level == UID_LEVEL_3) {
-        status =
-            iso_14443_3a_cmd_anticoll(ISO_14443_3A_CMD_ANTICOLL_SEL_L3, uid + (2 * UID_EACH_LEN));
+        status
+            = iso_14443_3a_cmd_anticoll(ISO_14443_3A_CMD_ANTICOLL_SEL_L3, uid + (2 * UID_EACH_LEN));
 
         if (status == ISO14443_3_ERR_ABORTED) {
             return status;
@@ -283,8 +282,8 @@ int32_t iso_14443_3a_collision_detect_response(uint8_t* atqa_resp, int32_t* atqa
             *uid_resp_len = UID_EACH_LEN * 3;
         }
 
-        status =
-            iso_14443_3a_cmd_select(ISO_14443_3A_CMD_SELECT_SEL_L3, uid + (2 * UID_EACH_LEN), &sak);
+        status = iso_14443_3a_cmd_select(
+            ISO_14443_3A_CMD_SELECT_SEL_L3, uid + (2 * UID_EACH_LEN), &sak);
 
         if (status == ISO14443_3_ERR_ABORTED) {
             return status;
@@ -319,13 +318,13 @@ int32_t iso_14443_3a_active()
 int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len)
 {
     int32_t status = ISO14443_3_ERR_OTHER;
-    uint8_t fsci   = FSCI_DEFAULT_VALUE;
+    uint8_t fsci = FSCI_DEFAULT_VALUE;
     uint8_t cid = 0, nad = 0;
     uint8_t* ats = GetCommonBuffer();
     uint32_t ats_len;
     uint8_t fwi = FWI_DEFAULT_VALUE, sfgi = SFGI_DEFAULT_VALUE;
     uint32_t sfgi_fc = 0;
-    ATS_t* pats      = (ATS_t*)ats;
+    ATS_t* pats = (ATS_t*)ats;
 
     status = iso_14443_3a_cmd_rats(FSDI_DEFAULT_VALUE, cid, ats, &ats_len);
 
@@ -343,14 +342,14 @@ int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len)
         *ats_resp_len = ats_len;
     }
 
-    //check TL and ats len
+    // check TL and ats len
     if (!ats_len || pats->TL != ats_len)
         return ISO14443_3_ERR_PROTOCOL;
 
     if (pats->TL > TL_MAX_VALUE)
         return ISO14443_3_ERR_CMD;
 
-    //for debug ta104.14/15
+    // for debug ta104.14/15
     if (pats->TL == 0x13 || pats->TL == 0x14) {
         info("Case TA102.14/15.\n");
     }
@@ -360,15 +359,15 @@ int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len)
 
         if (pats->T0.has_ta && pats->TA != TA_DEFAULT_VALUE && !(pats->TA & TA_RESERVE_MAKE)) {
             warning("warn TA %x\n", pats->TA);
-            //return ISO14443_3_ERR_CMD;
+            // return ISO14443_3_ERR_CMD;
         }
 
         if (pats->T0.has_tb) {
-            fwi  = pats->TB.fwi <= FWI_MAX_VALUE ? pats->TB.fwi : FWI_DEFAULT_VALUE;
+            fwi = pats->TB.fwi <= FWI_MAX_VALUE ? pats->TB.fwi : FWI_DEFAULT_VALUE;
             sfgi = pats->TB.sfgi <= SFGI_MAX_VALUE ? pats->TB.sfgi : SFGI_DEFAULT_VALUE;
         }
 
-        //for emv we just ignore the tc value.
+        // for emv we just ignore the tc value.
 
     } else if (!pats->TL) {
         return ISO14443_3_ERR_PROTOCOL;
@@ -378,7 +377,7 @@ int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len)
     set_ats(PROTOCOL_ISO14443A, fsci, fwi, sfgi, nad, cid);
     seqnuminit();
 
-    //SFGI delay = 256x16x2^sfgi + 384x2^sfgi   /fc
+    // SFGI delay = 256x16x2^sfgi + 384x2^sfgi   /fc
     if (sfgi) {
         sfgi_fc = 4480 * (1 << sfgi);
 

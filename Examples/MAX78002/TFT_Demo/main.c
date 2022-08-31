@@ -31,37 +31,37 @@
  *
  ******************************************************************************/
 
-#include <stdio.h>
-#include <stdint.h>
+#include "mxc.h"
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mxc.h"
 
-#define TOD_START_TIME     (12 * SECS_PER_HR + 34 * SECS_PER_MIN + 56)
+#define TOD_START_TIME (12 * SECS_PER_HR + 34 * SECS_PER_MIN + 56)
 #define TOD_ALARM_INTERVAL 2
-#define SECS_PER_MIN       60
-#define SECS_PER_HR        (60 * SECS_PER_MIN)
-#define SECS_PER_DAY       (24 * SECS_PER_HR)
-#define TS_X_MIN           254
-#define TS_X_MAX           3680
-#define TS_Y_MIN           193
-#define TS_Y_MAX           3661
-#define TFT_BUFF_SIZE      32 // TFT buffer size
+#define SECS_PER_MIN 60
+#define SECS_PER_HR (60 * SECS_PER_MIN)
+#define SECS_PER_DAY (24 * SECS_PER_HR)
+#define TS_X_MIN 254
+#define TS_X_MAX 3680
+#define TS_Y_MIN 193
+#define TS_Y_MAX 3661
+#define TFT_BUFF_SIZE 32 // TFT buffer size
 
 volatile bool tod_alarm = false;
-int image_bitmap        = (int)&img_1_rgb565[0];
-int font_1              = (int)&Arial12x12[0];
-int font_2              = (int)&Arial24x23[0];
-int font_3              = (int)&Arial28x28[0];
-int font_4              = (int)&SansSerif16x16[0];
-int font_5              = (int)&SansSerif19x19[0];
-const int font_5_width  = 19;
+int image_bitmap = (int)&img_1_rgb565[0];
+int font_1 = (int)&Arial12x12[0];
+int font_2 = (int)&Arial24x23[0];
+int font_3 = (int)&Arial28x28[0];
+int font_4 = (int)&SansSerif16x16[0];
+int font_5 = (int)&SansSerif19x19[0];
+const int font_5_width = 19;
 const int font_5_height = 19;
 
 void TFT_Print(char* str, int x, int y, int font, int length)
 {
-    text_t text = {.data = str, .len = length};
+    text_t text = { .data = str, .len = length };
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
@@ -79,7 +79,7 @@ void TFT_test(void)
     MXC_Delay(MXC_DELAY_SEC(3));
     MXC_TFT_SetBackGroundColor(RED);
 
-    area    = &_area;
+    area = &_area;
     area->x = 10;
     area->y = 10;
     area->w = 200;
@@ -130,13 +130,11 @@ void RTC_IRQHandler(void)
 
     /* Check time-of-day alarm flag. */
     if (flags & MXC_F_RTC_CTRL_TOD_ALARM) {
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) { }
 
         MXC_RTC_SetTimeofdayAlarm(MXC_RTC_GetSecond() + TOD_ALARM_INTERVAL);
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) { }
 
         tod_alarm = true;
     }

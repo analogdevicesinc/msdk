@@ -55,7 +55,7 @@ extern "C" {
 #define EXTCLK_FREQ 12288000
 #endif
 
-/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
+/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip.
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: INRO was previously named NANORING */
 #ifndef INRO_FREQ

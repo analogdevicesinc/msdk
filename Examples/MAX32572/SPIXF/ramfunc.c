@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#include "mxc_device.h"
 #include "led.h"
+#include "mxc_device.h"
 
 /******************************************************************************/
 __attribute__((section(".xip_section"))) void xip_function(void)
@@ -47,13 +47,11 @@ __attribute__((section(".xip_section"))) void xip_function(void)
     for (j = 0; j < 25; j++) {
         LED_Off(0);
 
-        for (i = 0; i < 0xFFF; i++)
-            ;
+        for (i = 0; i < 0xFFF; i++) { }
 
         LED_On(0);
 
-        for (i = 0; i < 0xFFF; i++)
-            ;
+        for (i = 0; i < 0xFFF; i++) { }
     }
 
     LED_Off(0);

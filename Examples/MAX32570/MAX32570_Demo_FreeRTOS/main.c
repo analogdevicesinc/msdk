@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -39,17 +39,17 @@
  * @details
  */
 
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-#include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include "MAX32xxx.h"
 
-#include "state.h"
 #include "message.h"
+#include "state.h"
 #include "tft_ssd2119.h"
 
 //
@@ -73,8 +73,7 @@ void vApplicationStackOverflowHook(xTaskHandle xTask, signed char* pcTaskName)
     (void)xTask;
     (void)pcTaskName;
 
-    while (1)
-        ;
+    while (1) { }
 }
 
 static int system_init(void)
@@ -100,39 +99,34 @@ static void vMainTask(void* pvParameters)
     message_t mMessage;
     State* state;
     int ret;
-    unsigned int wait_time       = 0;
+    unsigned int wait_time = 0;
     unsigned int total_idle_time = 0;
-    unsigned int max_idle_time   = 15000;
+    unsigned int max_idle_time = 15000;
 
     ret = xTaskCreate(vGetTSTask, "GetTS", 500, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 
     ret = xTaskCreate(vGetATRTask, "GetATR", 1000, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
     ret = xTaskCreate(vGetKEYTask, "GetKey", 500, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 
     ret = xTaskCreate(vGetNFCTask, "GetNFC", 1000, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 
     ret = xTaskCreate(vGetMSRTask, "GetMSR", 1000, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 #endif
 
@@ -143,29 +137,29 @@ static void vMainTask(void* pvParameters)
 
         wait_time = state->timeout / 10;
         if (wait_time == 0) {
-            wait_time = 100; //100 * 10ms
+            wait_time = 100; // 100 * 10ms
         }
 
         if (xQueueReceive(xQueueMain, &mMessage, (wait_time * configTICK_RATE_10ms))) {
             switch (mMessage.pcType) {
-                case 'T': // Touch screen
-                    if (state->prcss_key)
-                        state->prcss_key(mMessage.pcMessage[0]); // process touch screen keys
-                    break;
-                case 'K': // Keyboard
-                    if (state->prcss_key)
-                        state->prcss_key(mMessage.pcMessage[0]); // process keypad keys
-                    break;
-                case 'M': // MSR
-                    if (state->prcss_msr)
-                        state->prcss_msr(mMessage.pcMessage, mMessage.len);
-                    break;
-                case 'N': // NFC
-                    if (state->prcss_nfc)
-                        state->prcss_nfc(mMessage.pcMessage, mMessage.len);
-                    break;
-                default:
-                    break;
+            case 'T': // Touch screen
+                if (state->prcss_key)
+                    state->prcss_key(mMessage.pcMessage[0]); // process touch screen keys
+                break;
+            case 'K': // Keyboard
+                if (state->prcss_key)
+                    state->prcss_key(mMessage.pcMessage[0]); // process keypad keys
+                break;
+            case 'M': // MSR
+                if (state->prcss_msr)
+                    state->prcss_msr(mMessage.pcMessage, mMessage.len);
+                break;
+            case 'N': // NFC
+                if (state->prcss_nfc)
+                    state->prcss_nfc(mMessage.pcMessage, mMessage.len);
+                break;
+            default:
+                break;
             }
             // reset total idle time
             total_idle_time = 0;
@@ -213,8 +207,7 @@ int main(void)
     /* Configure the clocks, UART and GPIO. */
     ret = system_init();
     if (ret) {
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Initialize SKBD port with default configurations */
@@ -223,15 +216,13 @@ int main(void)
     /* Start the tasks defined within the 5000. */
     ret = xTaskCreate(vMainTask, "Main", 1000, NULL, 2, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Start the tasks defined within the file. */
     ret = xTaskCreate(vAnimTask, "Logo_Anim", 500, NULL, 1, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) { }
     }
 
     /* Start the scheduler. */

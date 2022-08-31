@@ -39,8 +39,8 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
 #include "spixf.h"
+#include <stdio.h>
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 #define TQFN_DB /// Used in examples to control program flow
 
@@ -66,7 +66,7 @@ extern "C" {
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1      0
+#define LED1 0
 #define LED_GREEN LED1
 
 /**

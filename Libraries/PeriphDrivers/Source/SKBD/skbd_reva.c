@@ -31,17 +31,17 @@
  *
  **************************************************************************** */
 
-#include <stddef.h>
-#include <string.h>
+#include "skbd_reva.h"
 #include "mxc_assert.h"
-#include "mxc_pins.h"
-#include "mxc_lock.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_lock.h"
+#include "mxc_pins.h"
 #include "nvic_table.h"
 #include "skbd.h"
-#include "skbd_reva.h"
+#include <stddef.h>
+#include <string.h>
 
 /* ***** SKBD context info ***** */
 static mxc_skbd_reva_req_t mxc_skbd_req;
@@ -97,14 +97,13 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
         }
 
         /* Configure the SKBD  */
-        temp =
-            ((config.reg_erase << MXC_F_SKBD_REVA_CTRL1_CLEAR_POS) | MXC_F_SKBD_REVA_CTRL1_AUTOEN);
+        temp = ((config.reg_erase << MXC_F_SKBD_REVA_CTRL1_CLEAR_POS)
+            | MXC_F_SKBD_REVA_CTRL1_AUTOEN);
         temp |= (config.debounce << MXC_F_SKBD_REVA_CTRL1_DBTM_POS) & MXC_F_SKBD_REVA_CTRL1_DBTM;
         temp |= (outputs << MXC_F_SKBD_REVA_CTRL1_OUTNB_POS) & MXC_F_SKBD_REVA_CTRL1_OUTNB;
         skbd->ctrl1 |= temp;
 
-        while (!(skbd->sr & MXC_F_SKBD_REVA_SR_BUSY))
-            ;
+        while (!(skbd->sr & MXC_F_SKBD_REVA_SR_BUSY)) { }
 
         /* Setup IRQ */
         if (config.irq_handler) {
@@ -113,7 +112,7 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
 
         /* To be done once only */
         mxc_skbd_req.first_init = 1;
-        mxc_skbd_req.state      = MXC_SKBD_REVA_STATE_INITIALIZED;
+        mxc_skbd_req.state = MXC_SKBD_REVA_STATE_INITIALIZED;
     } else {
         result = MXC_SKBD_REVA_ERR_ALREAD_INITIALIZED;
     }
@@ -128,28 +127,28 @@ int MXC_SKBD_RevA_EnableInterruptEvents(mxc_skbd_reva_regs_t* skbd, unsigned int
     if (MXC_SKBD_REVA_STATE_INITIALIZED != mxc_skbd_req.state) {
         result = MXC_SKBD_REVA_ERR_NOT_INITIALIZED;
     } else {
-        events &=
-            (MXC_SKBD_REVA_EVENT_PUSH | MXC_SKBD_REVA_EVENT_RELEASE | MXC_SKBD_REVA_EVENT_OVERRUN);
+        events &= (MXC_SKBD_REVA_EVENT_PUSH | MXC_SKBD_REVA_EVENT_RELEASE
+            | MXC_SKBD_REVA_EVENT_OVERRUN);
         skbd->ier |= events;
     }
 
     return result;
 }
 
-extern inline int MXC_SKBD_RevA_DisableInterruptEvents(mxc_skbd_reva_regs_t* skbd,
-                                                       unsigned int events)
+extern inline int MXC_SKBD_RevA_DisableInterruptEvents(
+    mxc_skbd_reva_regs_t* skbd, unsigned int events)
 {
-    events &=
-        (MXC_SKBD_REVA_EVENT_PUSH | MXC_SKBD_REVA_EVENT_RELEASE | MXC_SKBD_REVA_EVENT_OVERRUN);
+    events
+        &= (MXC_SKBD_REVA_EVENT_PUSH | MXC_SKBD_REVA_EVENT_RELEASE | MXC_SKBD_REVA_EVENT_OVERRUN);
     skbd->ier &= ~events;
     return E_NO_ERROR;
 }
 
-extern inline int MXC_SKBD_RevA_ClearInterruptStatus(mxc_skbd_reva_regs_t* skbd,
-                                                     unsigned int status)
+extern inline int MXC_SKBD_RevA_ClearInterruptStatus(
+    mxc_skbd_reva_regs_t* skbd, unsigned int status)
 {
-    status &= (MXC_SKBD_REVA_INTERRUPT_STATUS_PUSHIS | MXC_SKBD_REVA_INTERRUPT_STATUS_RELEASEIS |
-               MXC_SKBD_REVA_INTERRUPT_STATUS_OVERIS);
+    status &= (MXC_SKBD_REVA_INTERRUPT_STATUS_PUSHIS | MXC_SKBD_REVA_INTERRUPT_STATUS_RELEASEIS
+        | MXC_SKBD_REVA_INTERRUPT_STATUS_OVERIS);
     skbd->isr &= ~status;
     return E_NO_ERROR;
 }
@@ -175,30 +174,30 @@ int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t* skbd, mxc_skbd_reva_keys_t* key
         return E_NULL_PTR;
     }
 
-    key     = (unsigned short*)&keys->key0_reva;
+    key = (unsigned short*)&keys->key0_reva;
     key_reg = (unsigned int*)&skbd->evt[0];
 
     for (i = 0; i < MXC_SKBD_REVA_TOTAL_KEY_REGS; i++) {
-        if (!(skbd->ctrl1 & MXC_F_SKBD_REVA_CTRL1_CLEAR) &&
-            (skbd->ier & MXC_F_SKBD_REVA_IER_PUSHIE)) {
+        if (!(skbd->ctrl1 & MXC_F_SKBD_REVA_CTRL1_CLEAR)
+            && (skbd->ier & MXC_F_SKBD_REVA_IER_PUSHIE)) {
             if (!(*key_reg & (MXC_F_SKBD_REVA_EVT_PUSH | MXC_F_SKBD_REVA_EVT_READ))) {
-                *key++ = ((*key_reg & MXC_F_SKBD_REVA_EVT_IOIN) |
-                          ((*key_reg & MXC_F_SKBD_REVA_EVT_IOOUT) >> 1));
+                *key++ = ((*key_reg & MXC_F_SKBD_REVA_EVT_IOIN)
+                    | ((*key_reg & MXC_F_SKBD_REVA_EVT_IOOUT) >> 1));
             }
-        } else if (!(skbd->ctrl1 & MXC_F_SKBD_REVA_CTRL1_CLEAR) &&
-                   (skbd->ier & MXC_F_SKBD_REVA_IER_RELEASEIE)) {
+        } else if (!(skbd->ctrl1 & MXC_F_SKBD_REVA_CTRL1_CLEAR)
+            && (skbd->ier & MXC_F_SKBD_REVA_IER_RELEASEIE)) {
             temp = *key_reg;
 
             if ((temp & MXC_F_SKBD_REVA_EVT_PUSH) && !(temp & MXC_F_SKBD_REVA_EVT_READ)) {
-                *key++ = ((*key_reg & MXC_F_SKBD_REVA_EVT_IOIN) |
-                          ((*key_reg & MXC_F_SKBD_REVA_EVT_IOOUT) >> 1));
+                *key++ = ((*key_reg & MXC_F_SKBD_REVA_EVT_IOIN)
+                    | ((*key_reg & MXC_F_SKBD_REVA_EVT_IOOUT) >> 1));
             }
         } else {
             temp = *key_reg;
 
             if (!(temp & MXC_F_SKBD_REVA_EVT_READ)) {
-                *key++ =
-                    ((temp & MXC_F_SKBD_REVA_EVT_IOIN) | ((temp & MXC_F_SKBD_REVA_EVT_IOOUT) >> 1));
+                *key++ = ((temp & MXC_F_SKBD_REVA_EVT_IOIN)
+                    | ((temp & MXC_F_SKBD_REVA_EVT_IOOUT) >> 1));
             }
         }
 
@@ -211,7 +210,7 @@ int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t* skbd, mxc_skbd_reva_keys_t* key
 int MXC_SKBD_RevA_Close(void)
 {
     NVIC_DisableIRQ(SKB_IRQn);
-    mxc_skbd_req.state      = MXC_SKBD_REVA_STATE_CLOSED;
+    mxc_skbd_req.state = MXC_SKBD_REVA_STATE_CLOSED;
     mxc_skbd_req.first_init = 0;
     return E_NO_ERROR;
 }

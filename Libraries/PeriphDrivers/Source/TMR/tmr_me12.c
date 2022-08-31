@@ -31,10 +31,10 @@
  *
  **************************************************************************** */
 
-#include "tmr.h"
-#include "tmr_revb.h"
-#include "tmr_common.h"
 #include "stdbool.h"
+#include "tmr.h"
+#include "tmr_common.h"
+#include "tmr_revb.h"
 
 int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins, sys_map_t pin_sel)
 {
@@ -49,129 +49,129 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins, sys_ma
     MXC_ASSERT(tmr_id >= 0);
 
     switch (cfg->clock) {
-        case MXC_TMR_32M_CLK:
-            if (tmr_id > 2) { // Timer 3 do not support this clock source
-                return E_NOT_SUPPORTED;
-            }
+    case MXC_TMR_32M_CLK:
+        if (tmr_id > 2) { // Timer 3 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
 
-            clockSource = MXC_TMR_CLK3;
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-            break;
+        clockSource = MXC_TMR_CLK3;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        break;
 
-        case MXC_TMR_8M_CLK:
-            if (tmr_id > 2) { // Timer 3 do not support this clock source
-                return E_NOT_SUPPORTED;
-            }
+    case MXC_TMR_8M_CLK:
+        if (tmr_id > 2) { // Timer 3 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
 
-            clockSource = MXC_TMR_CLK2;
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-            break;
+        clockSource = MXC_TMR_CLK2;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        break;
 
-        case MXC_TMR_32K_CLK:
-            if (tmr_id < 3) { // Timers 0-2 do not support this clock source
-                return E_NOT_SUPPORTED;
-            }
+    case MXC_TMR_32K_CLK:
+        if (tmr_id < 3) { // Timers 0-2 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
 
-            clockSource = MXC_TMR_CLK2;
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-            break;
+        clockSource = MXC_TMR_CLK2;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+        break;
 
-        case MXC_TMR_8K_CLK:
-            if (tmr_id < 3) { // Timers 0-2 do not support this clock source
-                return E_NOT_SUPPORTED;
-            }
+    case MXC_TMR_8K_CLK:
+        if (tmr_id < 3) { // Timers 0-2 do not support this clock source
+            return E_NOT_SUPPORTED;
+        }
 
-            clockSource = MXC_TMR_CLK3;
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-            break;
+        clockSource = MXC_TMR_CLK3;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+        break;
 
-        case MXC_TMR_EXT_CLK:
-            if (tmr_id < 3) {
-                MXC_GPIO_Config(&gpio_cfg_hf_extclk);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_lp_extclk);
-            }
+    case MXC_TMR_EXT_CLK:
+        if (tmr_id < 3) {
+            MXC_GPIO_Config(&gpio_cfg_hf_extclk);
+        } else {
+            MXC_GPIO_Config(&gpio_cfg_lp_extclk);
+        }
 
-        default:
-            break;
+    default:
+        break;
     }
 
-    //enable peripheral clock and configure gpio pins
+    // enable peripheral clock and configure gpio pins
     switch (tmr_id) {
-        case 0:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+    case 0:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
-            if (init_pins) {
-                switch (pin_sel) {
-                    case MAP_A:
-                        MXC_GPIO_Config(&gpio_cfg_tmr0);
-                        break;
-                    case MAP_B:
-                        MXC_GPIO_Config(&gpio_cfg_tmr0b);
-                        break;
-                    case MAP_C:
-                        MXC_GPIO_Config(&gpio_cfg_tmr0c);
-                        break;
-                    default:
-                        return E_BAD_PARAM;
-                }
+        if (init_pins) {
+            switch (pin_sel) {
+            case MAP_A:
+                MXC_GPIO_Config(&gpio_cfg_tmr0);
+                break;
+            case MAP_B:
+                MXC_GPIO_Config(&gpio_cfg_tmr0b);
+                break;
+            case MAP_C:
+                MXC_GPIO_Config(&gpio_cfg_tmr0c);
+                break;
+            default:
+                return E_BAD_PARAM;
             }
-            break;
+        }
+        break;
 
-        case 1:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
+    case 1:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
-            if (init_pins) {
-                switch (pin_sel) {
-                    case MAP_A:
-                        MXC_GPIO_Config(&gpio_cfg_tmr1);
-                        break;
-                    case MAP_B:
-                        MXC_GPIO_Config(&gpio_cfg_tmr1b);
-                        break;
-                    case MAP_C:
-                        MXC_GPIO_Config(&gpio_cfg_tmr1c);
-                        break;
-                    default:
-                        return E_BAD_PARAM;
-                }
+        if (init_pins) {
+            switch (pin_sel) {
+            case MAP_A:
+                MXC_GPIO_Config(&gpio_cfg_tmr1);
+                break;
+            case MAP_B:
+                MXC_GPIO_Config(&gpio_cfg_tmr1b);
+                break;
+            case MAP_C:
+                MXC_GPIO_Config(&gpio_cfg_tmr1c);
+                break;
+            default:
+                return E_BAD_PARAM;
             }
-            break;
+        }
+        break;
 
-        case 2:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
+    case 2:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
-            if (init_pins) {
-                switch (pin_sel) {
-                    case MAP_A:
-                        MXC_GPIO_Config(&gpio_cfg_tmr2);
-                        break;
-                    case MAP_B:
-                        MXC_GPIO_Config(&gpio_cfg_tmr2b);
-                        break;
-                    case MAP_C:
-                        MXC_GPIO_Config(&gpio_cfg_tmr2c);
-                        break;
-                    default:
-                        return E_BAD_PARAM;
-                }
+        if (init_pins) {
+            switch (pin_sel) {
+            case MAP_A:
+                MXC_GPIO_Config(&gpio_cfg_tmr2);
+                break;
+            case MAP_B:
+                MXC_GPIO_Config(&gpio_cfg_tmr2b);
+                break;
+            case MAP_C:
+                MXC_GPIO_Config(&gpio_cfg_tmr2c);
+                break;
+            default:
+                return E_BAD_PARAM;
             }
-            break;
+        }
+        break;
 
-        case 3:
-            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR3);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
+    case 3:
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR3);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
-            if (init_pins) {
-                MXC_GPIO_Config(&gpio_cfg_tmr3);
-            }
-            break;
+        if (init_pins) {
+            MXC_GPIO_Config(&gpio_cfg_tmr3);
+        }
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t*)tmr, cfg, clockSource);
@@ -184,7 +184,7 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     MXC_TMR_RevB_Shutdown((mxc_tmr_revb_regs_t*)tmr);
 
     // System settigns
-    //diasble peripheral clock
+    // diasble peripheral clock
     if (tmr == MXC_TMR0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
     }
@@ -227,47 +227,47 @@ uint32_t MXC_TMR_GetCapture(mxc_tmr_regs_t* tmr)
     return MXC_TMR_RevB_GetCapture((mxc_tmr_revb_regs_t*)tmr);
 }
 
-uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
-                           uint32_t frequency)
+uint32_t MXC_TMR_GetPeriod(
+    mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar, uint32_t frequency)
 {
     uint32_t clockFrequency = PeripheralClock;
-    uint8_t tmr_id          = MXC_TMR_GET_IDX(tmr);
+    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
 
     MXC_ASSERT(tmr_id >= 0);
 
     if (tmr_id > 2) {
         switch (clock) {
-            case MXC_TMR_APB_CLK:
-                clockFrequency = PeripheralClock / 4;
-                break;
+        case MXC_TMR_APB_CLK:
+            clockFrequency = PeripheralClock / 4;
+            break;
 
-            case MXC_TMR_32K_CLK:
-                clockFrequency = ERTCO_FREQ;
-                break;
+        case MXC_TMR_32K_CLK:
+            clockFrequency = ERTCO_FREQ;
+            break;
 
-            case MXC_TMR_8K_CLK:
-                clockFrequency = INRO_FREQ;
-                break;
+        case MXC_TMR_8K_CLK:
+            clockFrequency = INRO_FREQ;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     } else {
         switch (clock) {
-            case MXC_TMR_APB_CLK:
-                clockFrequency = PeripheralClock;
-                break;
+        case MXC_TMR_APB_CLK:
+            clockFrequency = PeripheralClock;
+            break;
 
-            case MXC_TMR_8M_CLK:
-                clockFrequency = IBRO_FREQ;
-                break;
+        case MXC_TMR_8M_CLK:
+            clockFrequency = IBRO_FREQ;
+            break;
 
-            case MXC_TMR_32M_CLK:
-                clockFrequency = ERFO_FREQ;
-                break;
+        case MXC_TMR_32M_CLK:
+            clockFrequency = ERFO_FREQ;
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

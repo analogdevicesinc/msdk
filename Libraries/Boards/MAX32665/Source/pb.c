@@ -34,12 +34,12 @@
  *
  ******************************************************************************/
 
-#include <stddef.h>
-#include "mxc_device.h"
-#include "mxc_assert.h"
 #include "pb.h"
+#include "mxc_assert.h"
+#include "mxc_device.h"
+#include <stddef.h>
 
-//int virtualButtons[2];
+// int virtualButtons[2];
 /******************************************************************************/
 int PB_Init(void)
 {

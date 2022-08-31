@@ -35,7 +35,7 @@ extern "C" {
 
 /** @defgroup UCL_ECC_MULT ECC Point Multiplication.
  * ECC Point Multiplication.
- * 
+ *
  * @ingroup UCL_ECC
  */
 
@@ -82,8 +82,8 @@ extern "C" {
  *
  * @ingroup UCL_ECC_MULT
  */
-int __API__ ucl_ecc_mult_unknown(ucl_ecc_point_st* R, ucl_ecc_point_st* P, ucl_ecc_curve_st* e,
-                                 u32* k, u32 sk, int opt);
+int __API__ ucl_ecc_mult_unknown(
+    ucl_ecc_point_st* R, ucl_ecc_point_st* P, ucl_ecc_curve_st* e, u32* k, u32 sk, int opt);
 
 /* ========================================================================== */
 /** <b>Fixed-Point Multiplication Precomputation</b>.
@@ -99,13 +99,13 @@ int __API__ ucl_ecc_mult_unknown(ucl_ecc_point_st* R, ucl_ecc_point_st* P, ucl_e
  *
  * @retval #UCL_OK          No error occurred
  * @retval #UCL_STACK_ERROR UCL Stack error
- * 
+ *
  * @see #ucl_ecc_mult_fixed
  *
  * @ingroup UCL_ECC_MULT
  */
-int __API__ ucl_ecc_mult_fixed_precomp(ucl_ecc_point_st*** mP, u32 w, ucl_ecc_point_st* P,
-                                       ucl_ecc_curve_st* e);
+int __API__ ucl_ecc_mult_fixed_precomp(
+    ucl_ecc_point_st*** mP, u32 w, ucl_ecc_point_st* P, ucl_ecc_curve_st* e);
 
 /* ========================================================================== */
 /** <b>Fixed-Point Multiplication</b>.
@@ -125,16 +125,16 @@ int __API__ ucl_ecc_mult_fixed_precomp(ucl_ecc_point_st*** mP, u32 w, ucl_ecc_po
  * @retval #UCL_INVALID_OUTPUT @p R point is not in affine coordinates
  * @retval #UCL_INVALID_INPUT  @p mP is a #NULL pointer or w is lower than 2
  * @retval #UCL_STACK_ERROR    UCL Stack error
- * 
+ *
  * @see #ucl_ecc_mult_fixed_precomp
  *
  * @ingroup UCL_ECC_MULT
  */
-int __API__ ucl_ecc_mult_fixed(ucl_ecc_point_st* R, ucl_ecc_point_st** mP, u32 w, u32* k, u32 sk,
-                               ucl_ecc_curve_st* e);
+int __API__ ucl_ecc_mult_fixed(
+    ucl_ecc_point_st* R, ucl_ecc_point_st** mP, u32 w, u32* k, u32 sk, ucl_ecc_curve_st* e);
 
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif //usip
+#endif // usip
 #endif /* UCL_ECC_MULT_H_ */

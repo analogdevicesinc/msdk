@@ -36,17 +36,17 @@
  ******************************************************************************
  */
 
+#include "utils.h"
+#include <MAX32xxx.h>
 #include <stdio.h>
 #include <string.h>
-#include <MAX32xxx.h>
-#include "utils.h"
 
 /****************************    DEFINES        ******************************/
 #define SECONDSONEDAY (24 * 3600)
-#define STARTYEAR     1970
+#define STARTYEAR 1970
 
 /****************************    Variables      ******************************/
-static unsigned char daysOfMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static unsigned char daysOfMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 /**************************** Static Functions *******************************/
 
@@ -74,7 +74,7 @@ void utils_hex_dump(const char* title, unsigned char* buf, unsigned int len)
 
 void utils_seconds_to_date(DateTime_t* dt, unsigned int sec)
 {
-    int startYear            = STARTYEAR;
+    int startYear = STARTYEAR;
     unsigned int oneYearSecs = 365 * SECONDSONEDAY, oneMonthSecs;
     unsigned char leapYear = 0, i, mon = 0, day, hour, min;
 
@@ -89,7 +89,7 @@ void utils_seconds_to_date(DateTime_t* dt, unsigned int sec)
             startYear++;
             sec -= (oneYearSecs + (leapYear * SECONDSONEDAY));
         } else {
-            //month
+            // month
             for (i = 0; i < 12; i++) {
                 oneMonthSecs = (unsigned int)daysOfMonth[i] * SECONDSONEDAY;
 
@@ -105,24 +105,24 @@ void utils_seconds_to_date(DateTime_t* dt, unsigned int sec)
                 }
             }
 
-            //day
+            // day
             day = sec / SECONDSONEDAY;
             sec = sec % SECONDSONEDAY;
 
-            //hour
+            // hour
             hour = sec / 3600;
-            sec  = sec % 3600;
+            sec = sec % 3600;
 
-            //min
+            // min
             min = sec / 60;
             sec = sec % 60;
 
             dt->year = startYear;
-            dt->mon  = mon;
-            dt->day  = day;
+            dt->mon = mon;
+            dt->day = day;
             dt->hour = hour;
-            dt->min  = min;
-            dt->sec  = sec;
+            dt->min = min;
+            dt->sec = sec;
             return;
         }
     }
