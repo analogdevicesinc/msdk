@@ -2,29 +2,36 @@
 # for the Secure Boot Tools (SBT).  It's imported by the core
 # Makefile for each example project.
 
+# Set the default secure target.  Different microcontrollers
+# may have different secure variants, each with their own
+# part numbers.  TARGET_SEC can be used to point the SBTs
+# to the correct variant. 
 ifeq "$(TARGET_UC)" "MAX32650"
-TARGET_SEC:=MAX32651
+TARGET_SEC?=MAX32651
 endif
 
+# Locate the SBT binaries.
 CA_SIGN_BUILD = $(MAXIM_SBT_DIR)/bin/sign_app
 BUILD_SESSION = $(MAXIM_SBT_DIR)/bin/build_scp_session
 
 ifeq ($(OS), Windows_NT)
+# Must use .exe extension on Windows, since the binaries
+# for Linux may live in the same place.
 CA_SIGN_BUILD := $(CA_SIGN_BUILD).exe
 BUILD_SESSION := $(BUILD_SESSION).exe
-# Must use .exe extension on Windows
 endif
 
+# Surround the tools with quotes, because the SBT may install to C:/Program Files (x86) on Windows,
+# and the spaces in the filepaths break the Makefile and SBT.
 CA_SIGN_BUILD := "$(CA_SIGN_BUILD)"
 BUILD_SESSION := "$(BUILD_SESSION)"
 TEST_KEY="$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key"
-# ^ Have to surround these with quotes, because the SBT may install to C:/Program Files (x86) on Windows,
-# and the spaces in the filepaths break the Makefile and SBT.  Surrounding with quotes
-# gets everything working.  TODO: Does this work on Linux???
 
-SCP_PACKETS=$(BUILD_DIR)/scp_packets
-# ^ Generate scp packets in the build directory
+# Generate SCP packets inside of the build directory by default
+SCP_PACKETS?=$(BUILD_DIR)/scp_packets
 
+# Based on the Make goal the source code may need some specific compiler
+# definitions and files.  Additionally, the linkerfile may need to be changed.
 ifeq ($(MAKECMDGOALS),sla)
 PROJ_CFLAGS += -D__SLA_FWK__
 SRCS += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/sla_header.c

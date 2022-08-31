@@ -1,10 +1,9 @@
 # This file is used by the Makefile system to extend the functionality
 # of certain recipes to integrate with the Secure Boot Tools (SBT).
-
-# 	On release, a secure binary file (.sbin) file will be generated.  The .sbin file can
-# be used to generate scpa packets.
+# It adds a few Make goals specific to the SBTs.
 
 # The SLA target.
+# TODO: Description of this target
 .PHONY: sla
 sla: release
 	$(CA_SIGN_BUILD) -c $(TARGET_SEC) key_file=$(TEST_KEY) ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
@@ -12,6 +11,8 @@ sla: release
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
 	$(BUILD_SESSION) -c $(TARGET_SEC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
 
+# The SCPA target.
+# TODO: Description of this target
 .PHONY:scpa
 scpa: release
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
