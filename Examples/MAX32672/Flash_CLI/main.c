@@ -387,8 +387,8 @@ int main(void)
     printf("\nNote:");
     printf("\nThe flash ECC operates on 128-bit words. If ECC is enabled (on default enabled),");
     printf("\nflash writes must be completed 128 bits at a time.");
-    printf("\nThis example uses MXC_FLC_Write128 so it will operate correctly when ECC is enabled.\n\n");
-
+    printf("\nThis example uses MXC_FLC_Write128 so it will operate correctly when ECC is "
+           "enabled.\n\n");
 
     NVIC_SetRAM();
     // Initialize the Flash
