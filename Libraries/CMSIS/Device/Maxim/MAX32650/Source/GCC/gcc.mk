@@ -48,7 +48,9 @@ OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
 # Goals
 
 # The default goal, which causes the example to be built.
-.DEFAULT_GOAL ?= all
+ifeq "$(.DEFAULT_GOAL)" ""
+.DEFAULT_GOAL := all
+endif
 .PHONY: all
 all: mkbuildir
 all: ${BUILD_DIR}/${PROJECT}.elf
