@@ -32,10 +32,20 @@ jobs:
       - name: clang-format-check
         run: |
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h')
+          CHECK_FAIL=0
+
+          set +e
           for change_file in ${CHANGE_FILES}
           do
             if [ -f ${change_file} ];
             then
             clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${change_file}
+            if [ $? != 0 ];
+            then
+              CHECK_FAIL=1
+            fi
             fi
           done
+          set -e
+
+          exit $CHECK_FAIL
