@@ -48,7 +48,7 @@ int MXC_TRNG_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 
-    MXC_TRNG_RevB_Init();
+    MXC_TRNG_RevB_Init((mxc_trng_revb_regs_t*)MXC_TRNG);
 
     return E_NO_ERROR;
 }
@@ -99,4 +99,13 @@ void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callb
 void MXC_TRNG_GenerateKey(void)
 {
     MXC_TRNG_RevB_GenerateKey((mxc_trng_revb_regs_t*)MXC_TRNG);
+}
+
+int MXC_TRNG_HealthTest(void)
+{
+    if((MXC_GCR->revision & 0xF0) == 0xA0) {  // ME15 Rev. A does not support health tests.
+        return E_NOT_SUPPORTED;
+    }
+
+    return MXC_TRNG_RevB_HealthTest((mxc_trng_revb_regs_t*)MXC_TRNG);
 }

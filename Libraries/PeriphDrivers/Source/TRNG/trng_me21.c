@@ -48,7 +48,7 @@ int MXC_TRNG_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 
-    MXC_TRNG_RevB_Init();
+    MXC_TRNG_RevB_Init((mxc_trng_revb_regs_t*)MXC_TRNG);
 
     return E_NO_ERROR;
 }
@@ -94,4 +94,9 @@ int MXC_TRNG_Random(uint8_t* data, uint32_t len)
 void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callback)
 {
     MXC_TRNG_RevB_RandomAsync((mxc_trng_revb_regs_t*)MXC_TRNG, data, len, callback);
+}
+
+int MXC_TRNG_HealthTest(void)
+{
+    return MXC_TRNG_RevB_HealthTest((mxc_trng_revb_regs_t*)MXC_TRNG);
 }
