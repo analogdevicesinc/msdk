@@ -18,7 +18,7 @@
 # For a full list of options for the 'CAMERA' variable, 
 # see the documentation.
 CAMERA=OV7692
-#CAMERA=OV5640
+#CAMERA=OV5642
 #CAMERA=HM0360_MONO
 #CAMERA=HM01B0
 
