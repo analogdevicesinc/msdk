@@ -28,6 +28,7 @@ CLI_Command_Definition_t registeredCommandList[10];
 static bool isDigit(char* symbol, uint8_t len);
 static bool paramsValid(char* commandstring, uint8_t numOfParams);
 static bool commandOnly(char* commandstring);
+static bool testIsActive(void);
 /***************************| Command handler protoypes |******************************/
 static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
@@ -211,12 +212,16 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
     (void)xWriteBufferLen;
-    uint8_t channel;
-    uint16_t testLen;
+    char* temp;
     BaseType_t lParameterStringLength;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    static tx_config_t rfCommand = {.testType = 0xFF};
+    static tx_config_t rfCommand = {.testType = 0xFF, .duration_ms = 0};
+
+    if (testIsActive()) {
+        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        return pdFALSE;
+    }
 
     /*if no params given and sweepConfig still has its init value */
     if (commandOnly(pcCommandString) && rfCommand.testType == 0xFF) {
@@ -224,26 +229,37 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
         return pdFALSE;
     }
 
-    if (paramsValid(pcCommandString, 2)) {
+    if (paramsValid(pcCommandString, 1)) {
         rfCommand.channel = atoi(FreeRTOS_CLIGetParameter(
             pcCommandString,        /* The command string itself. */
             1,                      /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
-        if (channel > 39 || channel < 0)
+        if (rfCommand.channel > 39 || rfCommand.channel < 0) {
+            sprintf(pcWriteBuffer, "Bad channel parameter\r\n");
             return pdFALSE;
-
-        rfCommand.duration_ms = atoi(FreeRTOS_CLIGetParameter(
+        }
+        /* get duration parameter which is optional */
+        temp = FreeRTOS_CLIGetParameter(
             pcCommandString,        /* The command string itself. */
             2,                      /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
-            ));
+        );
+        /* verify duration string */
+        if (temp != NULL) {
+            if (isDigit(temp, lParameterStringLength))
+                rfCommand.duration_ms = atoi(temp);
+            else {
+                sprintf(pcWriteBuffer, "Bad duration parameter\r\n");
+                return pdFALSE;
+            }
+        }
         /* check which command was called rx or tx */
         rfCommand.testType = (memcmp(pcCommandString, "tx", 2) == 0) ? TX_TEST : RX_TEST;
 
     }
     /* if parameters were given and are not valid */
-    else if (!paramsValid(pcCommandString, 2) && !commandOnly(pcCommandString)) {
+    else if (!paramsValid(pcCommandString, 1) && !commandOnly(pcCommandString)) {
         sprintf(pcWriteBuffer, "Bad parameters given\r\n");
         return pdFALSE;
     }
@@ -268,7 +284,6 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
     if (constTxisActive) {
-        sprintf(pcWriteBuffer, "Disabling active test\n");
         /* Disable constant TX */
         dbb_seq_tx_disable();
         PalBbDisable();
@@ -353,6 +368,11 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     static uint32_t channelNum = 0xFF;
     BaseType_t lParameterStringLength;
 
+    if (testIsActive()) {
+        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        return pdFALSE;
+    }
+
     char* channelStr =
         FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
                                  1,                      /* Return the next parameter. */
@@ -388,7 +408,10 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     MXC_R_PATTERN_GEN = 0x4B;
     // dbb_seq_tx_enable();
     // dbb_seq_tx_enable();
-
+    if (longTestActive | constTxisActive | freqHopisActive) {
+        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        return pdFALSE;
+    }
     longTestActive  = true;
     constTxisActive = true;
 
@@ -406,6 +429,10 @@ static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
 
+    if (testIsActive()) {
+        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        return pdFALSE;
+    }
     // TODO : validate value
     sprintf(pcWriteBuffer, "Starting frequency hopping\n");
     longTestActive  = true;
@@ -428,6 +455,11 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     uint8_t start, end;
     uint16_t duration;
     static sweep_config_t sweepConfig = {.duration_per_ch_ms = 0};
+
+    if (testIsActive()) {
+        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        return pdFALSE;
+    }
 
     /*if no params given and sweepConfig still has its init value */
     if (commandOnly(pcCommandString) && sweepConfig.duration_per_ch_ms == 0) {
@@ -524,5 +556,12 @@ static bool commandOnly(char* commandstring)
     if (str == NULL)
         return true;
 
+    return false;
+}
+static bool testIsActive(void)
+{
+    if (longTestActive | constTxisActive | freqHopisActive) {
+        return true;
+    }
     return false;
 }
