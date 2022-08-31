@@ -9,6 +9,8 @@ set -e
 CFILES=$(find . -iname "*.c")
 for cFile in ${CFILES}
 do
+  # Remove single line ;
+  perl -i -pe 's/\s+;\s/{}\n/' ${cFile}
   clang-format --verbose -style=file -i ${cFile}
 done
 
