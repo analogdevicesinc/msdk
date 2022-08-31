@@ -110,5 +110,5 @@ void vPostSleepProcessing(unsigned long);
 
 /* FreeRTOS+CLI requires this size to be defined, but we do not use it */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
-
+#define configUSE_CUSTOM_HELP_COMMAND     1
 #endif /* FREERTOS_CONFIG_H */
