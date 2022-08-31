@@ -24,4 +24,8 @@ PROJ_CFLAGS+=-DMAX32651_A4
 
 # Set default goal to scpa.  This means that running just 'make'
 # is equivalent to 'make scpa'
-.DEFAULT_GOAL:=scpa
+override .DEFAULT_GOAL=scpa
+
+# Force the project output filename to match the one that's expected
+# by the "scp_script.txt" file.
+override PROJECT=SCPA_OTP_Dump
