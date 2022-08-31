@@ -103,7 +103,7 @@ void MXC_TRNG_GenerateKey(void)
 
 int MXC_TRNG_HealthTest(void)
 {
-    if((MXC_GCR->revision & 0xF0) == 0xA0) {  // ME15 Rev. A does not support health tests.
+    if ((MXC_GCR->revision & 0xF0) == 0xA0) { // ME15 Rev. A does not support health tests.
         return E_NOT_SUPPORTED;
     }
 
