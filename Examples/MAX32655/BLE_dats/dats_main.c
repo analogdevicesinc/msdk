@@ -625,6 +625,9 @@ static void datsProcMsg(dmEvt_t* pMsg)
 
         case DM_CONN_OPEN_IND:
             uiEvent = APP_UI_CONN_OPEN;
+            if (datsSecCfg.initiateSec) {
+                AppSlaveSecurityReq((dmConnId_t)pMsg->hdr.param);
+            }
             break;
 
         case DM_CONN_CLOSE_IND:
