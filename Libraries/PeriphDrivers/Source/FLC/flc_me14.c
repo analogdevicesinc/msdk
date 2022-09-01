@@ -108,9 +108,13 @@ int MXC_FLC_ME14_GetPhysicalAddress(uint32_t addr, uint32_t* result)
     } else if (addr >= MXC_FLASH1_MEM_BASE && addr < (MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         *result = (addr - MXC_FLASH_MEM_SIZE) & (MXC_FLASH_MEM_SIZE - 1);
     } else if (addr >= MXC_INFO0_MEM_BASE && addr < (MXC_INFO0_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+        /* Prevent program and erase of info block */
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
+        return E_NOT_SUPPORTED;
     } else if (addr >= MXC_INFO1_MEM_BASE && addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE)) {
+        /* Prevent program and erase of info block */
         *result = ((addr - MXC_INFO_MEM_SIZE) & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
+        return E_NOT_SUPPORTED;
     } else {
         return E_BAD_PARAM;
     }
