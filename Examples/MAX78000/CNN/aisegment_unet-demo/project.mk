@@ -13,14 +13,8 @@
 
 # Add your config here!
 
-# Set the camera drivers.  Select a line to match the
-# connected camera.  These are some common values.  
-# For a full list of options for the 'CAMERA' variable, 
-# see the documentation.
-CAMERA=OV7692
-#CAMERA=OV5642
-#CAMERA=HM0360_MONO
-#CAMERA=HM01B0
+$(info Note: This project is designed and tested for the OV7692 only.)
+override CAMERA=OV7692
 
 #BOARD=FTHR_RevA
 
