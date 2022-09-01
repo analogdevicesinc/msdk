@@ -40,14 +40,12 @@
 #if defined(CAMERA_HM01B0)
 #define IMAGE_XRES 324 / 2
 #define IMAGE_YRES 244 / 2
-#define CAMERA_MONO
 //#define STREAM_ENABLE
 #endif
 
 #if defined(CAMERA_HM0360)
 #define IMAGE_XRES 320
 #define IMAGE_YRES 240
-#define CAMERA_MONO
 //#define STREAM_ENABLE
 #endif
 

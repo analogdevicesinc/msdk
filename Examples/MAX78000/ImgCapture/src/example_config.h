@@ -15,9 +15,4 @@
 #define CAMERA_FREQ 10000000
 // ^ Set the camera frequency
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_HM0360_MONO)
-// These are mono cameras.
-#define CAMERA_MONO
-#endif
-
 #endif
