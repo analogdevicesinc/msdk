@@ -281,7 +281,8 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
     if (constTxisActive) {
         /* Disable constant TX */
-        dbb_seq_tx_disable();
+        MXC_R_TX_CTRL     = 0x2;
+        MXC_R_PATTERN_GEN = 0x48;
         PalBbDisable();
         constTxisActive = false;
     } else if (longTestActive) {
