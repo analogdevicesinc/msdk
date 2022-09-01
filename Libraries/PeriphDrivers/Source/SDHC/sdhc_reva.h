@@ -38,8 +38,8 @@
 #include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "sdhc_reva_regs.h"
 #include "sdhc.h"
+#include "sdhc_reva_regs.h"
 #include <string.h>
 
 /* **** Definitions **** */

@@ -39,8 +39,8 @@
 #ifndef __CNN_H__
 #define __CNN_H__
 
-#include <stdint.h>
 #include "gpio.h"
+#include <stdint.h>
 
 typedef int32_t q31_t;
 typedef int16_t q15_t;

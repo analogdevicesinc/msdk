@@ -116,12 +116,14 @@ extern "C" {
     0x1A /**< Type A card found but not compliant with Half Duplex Block Transport */
 #define TYPE_B_NON_ISO14443_4_READY                                                                \
     0x1B /**< Type B card found but not compliant with Half Duplex Block Transport */
-#define NO_CARD_FOUND 0xFF /**< Polled for all supported technologies, but no support card found   \
-                            */
+#define NO_CARD_FOUND                                                                              \
+    0xFF /**< Polled for all supported technologies, but no support card found                     \
+          */
 #define CARD_FOUND_WITH_ERROR                                                                      \
     0xFE /**< Found a card but failed to activate due communications error or unsupported card */
-#define COLLISION_DETECTED 0xFD /**< Card or cards found, but failed to activate due to collision  \
-                                 */
+#define COLLISION_DETECTED                                                                         \
+    0xFD /**< Card or cards found, but failed to activate due to collision                         \
+          */
 #define POLLING_TERMINATED                                                                         \
     0x01 /**< Polling terminated by call back function @ref callback_check_for_loop_termination_t  \
           */

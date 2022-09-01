@@ -98,8 +98,7 @@ typedef struct {
     unsigned int dma; /**< DMA enable bit */
     unsigned int direction; /**< Direction of transfer */
     uint32_t command; /**< Command to be issued on bus (CMD0, CMD1, ...) */
-    uint32_t
-        host_control_1; /**< Host control register 1 to be assigned before command is issued */
+    uint32_t host_control_1; /**< Host control register 1 to be assigned before command is issued */
     mxc_sdhc_callback_fn
         callback; /**< Function pointer to completion callback function, NULL if not desired */
 } mxc_sdhc_cmd_cfg_t;

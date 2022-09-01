@@ -73,8 +73,7 @@ extern "C" {
 #define __CM3_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
 #define __CM3_CMSIS_VERSION_SUB (0x20) /*!< [15:0]  CMSIS HAL sub version    */
 #define __CM3_CMSIS_VERSION                                                                        \
-    ((__CM3_CMSIS_VERSION_MAIN << 16)                                                              \
-        | __CM3_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
+    ((__CM3_CMSIS_VERSION_MAIN << 16) | __CM3_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number */
 
 #define __CORTEX_M (0x03) /*!< Cortex-M Core                    */
 
@@ -799,8 +798,9 @@ typedef struct {
 #define DWT_CTRL_CYCEVTENA_Msk (0x1UL << DWT_CTRL_CYCEVTENA_Pos) /*!< DWT CTRL: CYCEVTENA Mask */
 
 #define DWT_CTRL_FOLDEVTENA_Pos 21 /*!< DWT CTRL: FOLDEVTENA Position */
-#define DWT_CTRL_FOLDEVTENA_Msk (0x1UL << DWT_CTRL_FOLDEVTENA_Pos) /*!< DWT CTRL: FOLDEVTENA Mask  \
-                                                                    */
+#define DWT_CTRL_FOLDEVTENA_Msk                                                                    \
+    (0x1UL << DWT_CTRL_FOLDEVTENA_Pos) /*!< DWT CTRL: FOLDEVTENA Mask                              \
+                                        */
 
 #define DWT_CTRL_LSUEVTENA_Pos 20 /*!< DWT CTRL: LSUEVTENA Position */
 #define DWT_CTRL_LSUEVTENA_Msk (0x1UL << DWT_CTRL_LSUEVTENA_Pos) /*!< DWT CTRL: LSUEVTENA Mask */
@@ -819,8 +819,9 @@ typedef struct {
 #define DWT_CTRL_EXCTRCENA_Msk (0x1UL << DWT_CTRL_EXCTRCENA_Pos) /*!< DWT CTRL: EXCTRCENA Mask */
 
 #define DWT_CTRL_PCSAMPLENA_Pos 12 /*!< DWT CTRL: PCSAMPLENA Position */
-#define DWT_CTRL_PCSAMPLENA_Msk (0x1UL << DWT_CTRL_PCSAMPLENA_Pos) /*!< DWT CTRL: PCSAMPLENA Mask  \
-                                                                    */
+#define DWT_CTRL_PCSAMPLENA_Msk                                                                    \
+    (0x1UL << DWT_CTRL_PCSAMPLENA_Pos) /*!< DWT CTRL: PCSAMPLENA Mask                              \
+                                        */
 
 #define DWT_CTRL_SYNCTAP_Pos 10 /*!< DWT CTRL: SYNCTAP Position */
 #define DWT_CTRL_SYNCTAP_Msk (0x3UL << DWT_CTRL_SYNCTAP_Pos) /*!< DWT CTRL: SYNCTAP Mask */
@@ -832,8 +833,9 @@ typedef struct {
 #define DWT_CTRL_POSTINIT_Msk (0xFUL << DWT_CTRL_POSTINIT_Pos) /*!< DWT CTRL: POSTINIT Mask */
 
 #define DWT_CTRL_POSTPRESET_Pos 1 /*!< DWT CTRL: POSTPRESET Position */
-#define DWT_CTRL_POSTPRESET_Msk (0xFUL << DWT_CTRL_POSTPRESET_Pos) /*!< DWT CTRL: POSTPRESET Mask  \
-                                                                    */
+#define DWT_CTRL_POSTPRESET_Msk                                                                    \
+    (0xFUL << DWT_CTRL_POSTPRESET_Pos) /*!< DWT CTRL: POSTPRESET Mask                              \
+                                        */
 
 #define DWT_CTRL_CYCCNTENA_Pos 0 /*!< DWT CTRL: CYCCNTENA Position */
 #define DWT_CTRL_CYCCNTENA_Msk (0x1UL << DWT_CTRL_CYCCNTENA_Pos) /*!< DWT CTRL: CYCCNTENA Mask */
@@ -940,8 +942,9 @@ typedef struct {
 
 /* TPI Asynchronous Clock Prescaler Register Definitions */
 #define TPI_ACPR_PRESCALER_Pos 0 /*!< TPI ACPR: PRESCALER Position */
-#define TPI_ACPR_PRESCALER_Msk (0x1FFFUL << TPI_ACPR_PRESCALER_Pos) /*!< TPI ACPR: PRESCALER Mask  \
-                                                                     */
+#define TPI_ACPR_PRESCALER_Msk                                                                     \
+    (0x1FFFUL << TPI_ACPR_PRESCALER_Pos) /*!< TPI ACPR: PRESCALER Mask                             \
+                                          */
 
 /* TPI Selected Pin Protocol Register Definitions */
 #define TPI_SPPR_TXMODE_Pos 0 /*!< TPI SPPR: TXMODE Position */
@@ -969,8 +972,9 @@ typedef struct {
 
 /* TPI TRIGGER Register Definitions */
 #define TPI_TRIGGER_TRIGGER_Pos 0 /*!< TPI TRIGGER: TRIGGER Position */
-#define TPI_TRIGGER_TRIGGER_Msk (0x1UL << TPI_TRIGGER_TRIGGER_Pos) /*!< TPI TRIGGER: TRIGGER Mask  \
-                                                                    */
+#define TPI_TRIGGER_TRIGGER_Msk                                                                    \
+    (0x1UL << TPI_TRIGGER_TRIGGER_Pos) /*!< TPI TRIGGER: TRIGGER Mask                              \
+                                        */
 
 /* TPI Integration ETM Data Register Definitions (FIFO0) */
 #define TPI_FIFO0_ITM_ATVALID_Pos 29 /*!< TPI FIFO0: ITM_ATVALID Position */
@@ -1043,19 +1047,22 @@ typedef struct {
 #define TPI_DEVID_NRZVALID_Msk (0x1UL << TPI_DEVID_NRZVALID_Pos) /*!< TPI DEVID: NRZVALID Mask */
 
 #define TPI_DEVID_MANCVALID_Pos 10 /*!< TPI DEVID: MANCVALID Position */
-#define TPI_DEVID_MANCVALID_Msk (0x1UL << TPI_DEVID_MANCVALID_Pos) /*!< TPI DEVID: MANCVALID Mask  \
-                                                                    */
+#define TPI_DEVID_MANCVALID_Msk                                                                    \
+    (0x1UL << TPI_DEVID_MANCVALID_Pos) /*!< TPI DEVID: MANCVALID Mask                              \
+                                        */
 
 #define TPI_DEVID_PTINVALID_Pos 9 /*!< TPI DEVID: PTINVALID Position */
-#define TPI_DEVID_PTINVALID_Msk (0x1UL << TPI_DEVID_PTINVALID_Pos) /*!< TPI DEVID: PTINVALID Mask  \
-                                                                    */
+#define TPI_DEVID_PTINVALID_Msk                                                                    \
+    (0x1UL << TPI_DEVID_PTINVALID_Pos) /*!< TPI DEVID: PTINVALID Mask                              \
+                                        */
 
 #define TPI_DEVID_MinBufSz_Pos 6 /*!< TPI DEVID: MinBufSz Position */
 #define TPI_DEVID_MinBufSz_Msk (0x7UL << TPI_DEVID_MinBufSz_Pos) /*!< TPI DEVID: MinBufSz Mask */
 
 #define TPI_DEVID_AsynClkIn_Pos 5 /*!< TPI DEVID: AsynClkIn Position */
-#define TPI_DEVID_AsynClkIn_Msk (0x1UL << TPI_DEVID_AsynClkIn_Pos) /*!< TPI DEVID: AsynClkIn Mask  \
-                                                                    */
+#define TPI_DEVID_AsynClkIn_Msk                                                                    \
+    (0x1UL << TPI_DEVID_AsynClkIn_Pos) /*!< TPI DEVID: AsynClkIn Mask                              \
+                                        */
 
 #define TPI_DEVID_NrTraceInput_Pos 0 /*!< TPI DEVID: NrTraceInput Position */
 #define TPI_DEVID_NrTraceInput_Msk                                                                 \
@@ -1063,8 +1070,9 @@ typedef struct {
 
 /* TPI DEVTYPE Register Definitions */
 #define TPI_DEVTYPE_SubType_Pos 0 /*!< TPI DEVTYPE: SubType Position */
-#define TPI_DEVTYPE_SubType_Msk (0xFUL << TPI_DEVTYPE_SubType_Pos) /*!< TPI DEVTYPE: SubType Mask  \
-                                                                    */
+#define TPI_DEVTYPE_SubType_Msk                                                                    \
+    (0xFUL << TPI_DEVTYPE_SubType_Pos) /*!< TPI DEVTYPE: SubType Mask                              \
+                                        */
 
 #define TPI_DEVTYPE_MajorType_Pos 4 /*!< TPI DEVTYPE: MajorType Position */
 #define TPI_DEVTYPE_MajorType_Msk                                                                  \

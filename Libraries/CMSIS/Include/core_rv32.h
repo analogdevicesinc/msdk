@@ -73,8 +73,7 @@ extern "C" {
 #define __CM4_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
 #define __CM4_CMSIS_VERSION_SUB (0x20) /*!< [15:0]  CMSIS HAL sub version    */
 #define __CM4_CMSIS_VERSION                                                                        \
-    ((__CM4_CMSIS_VERSION_MAIN << 16)                                                              \
-        | __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
+    ((__CM4_CMSIS_VERSION_MAIN << 16) | __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number */
 
 #define __CORTEX_M (0x04) /*!< Cortex-M Core                    */
 
@@ -511,7 +510,7 @@ __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 __STATIC_INLINE uint32_t NVIC_GetActive(IRQn_Type IRQn)
 {
     return (0); //((uint32_t)((NVIC->IABR[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) &
-                //0x1F)))?1:0)); /* Return 1 if active else 0 */
+                // 0x1F)))?1:0)); /* Return 1 if active else 0 */
 }
 
 /** \brief  System Reset
@@ -521,7 +520,7 @@ __STATIC_INLINE uint32_t NVIC_GetActive(IRQn_Type IRQn)
 __STATIC_INLINE void NVIC_SystemReset(void)
 {
     //__DSB();                                                     /* Ensure all outstanding memory
-    //accesses included
+    // accesses included
     //                                                                buffered write are completed
     //                                                                before reset */
     // SCB->AIRCR  = ((0x5FA << SCB_AIRCR_VECTKEY_Pos)      |
@@ -529,7 +528,7 @@ __STATIC_INLINE void NVIC_SystemReset(void)
     //                SCB_AIRCR_SYSRESETREQ_Msk);                   /* Keep priority group unchanged
     //                */
     //__DSB();                                                     /* Ensure completion of memory
-    //access */
+    // access */
     while (1)
         ; /* wait until reset */
 }

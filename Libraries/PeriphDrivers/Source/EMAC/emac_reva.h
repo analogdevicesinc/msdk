@@ -135,8 +135,7 @@ typedef enum {
     MXC_EMAC_REVA_EVENT_RLE = MXC_F_EMAC_REVA_INT_EN_RLE, /**! Retry Limit Exceeded Interrupt */
     MXC_EMAC_REVA_EVENT_TXERR
     = MXC_F_EMAC_REVA_INT_EN_TXERR, /**! Transmit Buffers Exhausted In Mid-Frame Interrupt  */
-    MXC_EMAC_REVA_EVENT_TXCMPL
-    = MXC_F_EMAC_REVA_INT_EN_TXCMPL, /**! Transmit Complete Interrupt                        */
+    MXC_EMAC_REVA_EVENT_TXCMPL = MXC_F_EMAC_REVA_INT_EN_TXCMPL, /**! Transmit Complete Interrupt */
     MXC_EMAC_REVA_EVENT_LC = MXC_F_EMAC_REVA_INT_EN_LC, /**! Link Change Interrupt */
     MXC_EMAC_REVA_EVENT_RXOR = MXC_F_EMAC_REVA_INT_EN_RXOR, /**! Receive Overrun Interrupt */
     MXC_EMAC_REVA_EVENT_HRESPNO = MXC_F_EMAC_REVA_INT_EN_HRESPNO, /**! HRESP Not OK Interrupt */

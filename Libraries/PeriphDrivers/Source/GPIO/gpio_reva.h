@@ -32,8 +32,8 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio_reva_regs.h"
 #include "gpio.h"
+#include "gpio_reva_regs.h"
 
 #ifdef __cplusplus
 extern "C" {

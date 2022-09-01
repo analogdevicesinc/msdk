@@ -126,8 +126,8 @@ typedef enum {
     MXC_DMA_REQUEST_UART2TX
     = MXC_S_DMA_CFG_REQSEL_UART2TX, /**< UART 2 Transmit DMA Request Selection */
     // MXC_DMA_REQUEST_SPI3TX = MXC_S_DMA_CFG_REQSEL_SPI3TX,            /**< SPI3 Transmit DMA
-    // Request Selection */ MXC_DMA_REQUEST_SPI_MSS0TX = MXC_S_DMA_CFG_REQSEL_SPI_MSS0TX,    /**< I2S
-    // Transmit DMA Request Selection */
+    // Request Selection */ MXC_DMA_REQUEST_SPI_MSS0TX = MXC_S_DMA_CFG_REQSEL_SPI_MSS0TX,    /**<
+    // I2S Transmit DMA Request Selection */
     MXC_DMA_REQUEST_USBTXEP1
     = MXC_S_DMA_CFG_REQSEL_USBTXEP1, /**< USB TX Endpoint 1 DMA Request Selection */
     MXC_DMA_REQUEST_USBTXEP2

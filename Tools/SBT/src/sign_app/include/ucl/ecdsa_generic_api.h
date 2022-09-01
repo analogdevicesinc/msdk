@@ -3652,8 +3652,8 @@ UCL_SHA256<<UCL_HASH_INPUT:verifying a signed message, hashed with SHA-256, -
 SECP256R1<<UCL_CURVE_SHIFT+ UCL_MSG_INPUT<<UCL_INPUT_SHIFT+ UCL_SHA256<<UCL_HASH_INPUT:verifying a
 signed message, hashed with SHA-256, -	UCL_PRECOMP_TRICK<<UCL_PRECOMP_TRICK_SHIFT:uses the precompx
 and precompy global variables as pointing to the customer tables containing the precomputed values
-       -	SECP192R1<<UCL_CURVE_SHIFT+UCL_HASH_INPUT<<UCL_INPUT_SHIFT: verifying a signed hash digest
-on P192 curve,
+       -	SECP192R1<<UCL_CURVE_SHIFT+UCL_HASH_INPUT<<UCL_INPUT_SHIFT: verifying a signed hash
+digest on P192 curve,
  * @return Error code
 
  * @retval #UCL_OK if the signature is verified
