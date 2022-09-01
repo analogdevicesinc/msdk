@@ -42,6 +42,8 @@
 #ifndef _NVIC_TABLE_H
 #define _NVIC_TABLE_H
 
+#include "mxc_device.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

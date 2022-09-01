@@ -41,11 +41,11 @@
 
 #ifndef __riscv
 
+#include "mxc_device.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "max78000.h"
 
 /**
  * @brief Set an IRQ hander callback function.  If the IRQ table is in

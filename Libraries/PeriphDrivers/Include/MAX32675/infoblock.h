@@ -44,6 +44,8 @@
 #ifndef _INFOBLOCK_H_
 #define _INFOBLOCK_H_
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

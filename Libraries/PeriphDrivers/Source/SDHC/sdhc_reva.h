@@ -39,6 +39,7 @@
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "sdhc_reva_regs.h"
+#include "sdhc.h"
 #include <string.h>
 
 /* **** Definitions **** */

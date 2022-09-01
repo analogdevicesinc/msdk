@@ -33,6 +33,7 @@
 
 /* **** Includes **** */
 #include "gpio_reva_regs.h"
+#include "gpio.h"
 
 #ifdef __cplusplus
 extern "C" {

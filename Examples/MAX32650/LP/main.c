@@ -252,7 +252,6 @@ int main(void)
 #endif // USE_CONSOLE
         setTrigger(0);
         MXC_LP_EnterBackupMode();
-#endif // DO_BACKUP \
-       //
+#endif // DO_BACKUP
     }
 }

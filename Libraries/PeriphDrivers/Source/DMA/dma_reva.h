@@ -33,6 +33,7 @@
 
 /****** Includes *******/
 #include "dma_reva_regs.h"
+#include "dma.h"
 #include <stdbool.h>
 
 /***** Definitions *****/

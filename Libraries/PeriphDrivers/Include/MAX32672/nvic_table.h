@@ -39,7 +39,7 @@
 #ifndef _NVIC_TABLE_H
 #define _NVIC_TABLE_H
 
-#include "max32672.h"
+#include "mxc_device.h"
 
 #ifdef __cplusplus
 extern "C" {

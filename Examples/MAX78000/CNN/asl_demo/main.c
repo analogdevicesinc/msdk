@@ -136,11 +136,13 @@ int8_t unsigned_to_signed(uint8_t val)
 /* **************************************************************************** */
 void TFT_Print(char* str, int x, int y, int font)
 {
+#ifdef TFT_ENABLE
     // fonts id
     text_t text;
     text.data = str;
     text.len = 36;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
+#endif
 }
 
 #define X_OFFSET 47
@@ -150,6 +152,7 @@ void TFT_Print(char* str, int x, int y, int font)
 /* **************************************************************************** */
 void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int length)
 {
+#ifdef ENABLE_TFT
     int i;
     int j;
     int x;
@@ -190,6 +193,7 @@ void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int 
             }
         }
     }
+#endif
 }
 
 /* **************************************************************************** */
@@ -318,6 +322,8 @@ int main(void)
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+
+#ifdef ENABLE_TFT
     /* Initialize TFT display */
     printf("Init LCD.\n");
 #ifdef BOARD_EVKIT_V1
@@ -332,6 +338,7 @@ int main(void)
     MXC_TFT_ShowImage(0, 0, image_bitmap_1);
     MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
 #endif
+#endif
     // MXC_Delay(1000000);
     // Initialize camera.
     printf("Init Camera.\n");
@@ -345,6 +352,7 @@ int main(void)
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
     }
+#ifdef ENABLE_TFT
     // MXC_Delay(1000000);
     MXC_TFT_SetPalette(image_bitmap_2);
     MXC_TFT_SetBackGroundColor(4);
@@ -356,6 +364,7 @@ int main(void)
     TFT_Print(buff, 55, 90, font_1);
     sprintf(buff, "PRESS PB1 TO START!          ");
     TFT_Print(buff, 55, 180, font_2);
+#endif
     printf("********** Press PB1 to capture an image **********\r\n");
     while (!PB_Get(0)) { }
     int frame = 0;
@@ -388,8 +397,10 @@ int main(void)
                 ml_data_avg[k] = 0;
                 // ml_softmax_avg[k] = 0;
             }
+#ifdef ENABLE_TFT
             MXC_TFT_ClearScreen();
             MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+#endif
             printf("Show camera frame on LCD.\n");
         }
         memset(buff, 32, TFT_BUFF_SIZE);
@@ -468,7 +479,9 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data, int16_t* out_class, do
             /// MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
             sprintf(buff, "%s (%0.1f%%)", classes[max_index], (double)100.0 * max / 32768.0);
+#ifdef ENABLE_TFT
             TFT_Print(buff, 100, 8, font_1);
+#endif
             // sprintf(buff, "__________________________ ");
             // TFT_Print(buff, 1, 50, urw_gothic_12_white_bg_grey);
             // sprintf(buff, "Top classes:");

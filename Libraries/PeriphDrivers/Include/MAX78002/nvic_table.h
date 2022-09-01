@@ -39,13 +39,15 @@
 #ifndef _NVIC_TABLE_H
 #define _NVIC_TABLE_H
 
+
 #ifndef __riscv
+
+#include "mxc_device.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "max78002.h"
 
 /**
  * @brief Set an IRQ hander callback function.  If the IRQ table is in

@@ -34,6 +34,7 @@
 #include "dma.h"
 #include "mxc_assert.h"
 #include "mxc_device.h"
+#include "uart.h"
 #include "uart_regs.h"
 #include "uart_revc_regs.h"
 

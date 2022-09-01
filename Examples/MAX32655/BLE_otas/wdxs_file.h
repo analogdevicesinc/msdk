@@ -20,6 +20,8 @@
 #ifndef WDXS_FILE_H
 #define WDXS_FILE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

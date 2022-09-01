@@ -45,6 +45,7 @@
  *  register write to last register write. Delays will occur after the cmd/data
  *  is transmitted.
  */
+#include "st7735s_drv.h"
 #include "st7735s_regs.h"
 
 st7735s_regcfg_t cfaf128128b1_regcfg[] = {

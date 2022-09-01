@@ -34,6 +34,7 @@
 /****** Includes *******/
 #include "mxc_device.h"
 #include "mxc_sys.h"
+#include "spixf.h"
 #include "spixfc_fifo_reva_regs.h"
 #include "spixfc_reva_regs.h"
 #include "spixfm_reva_regs.h"
