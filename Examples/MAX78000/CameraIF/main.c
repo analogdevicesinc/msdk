@@ -113,7 +113,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#if defined(CAMERA_HM0360_MONO) || defined(DCAMERA_HM0360_COLOR) || defined(CAMERA_PAG7920)
+#if defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || defined(CAMERA_PAG7920)
 
 #ifdef STREAM_ENABLE
 #define IMAGE_XRES 320
@@ -272,7 +272,8 @@ int main(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_OV5642)
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
+    defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
 #endif
