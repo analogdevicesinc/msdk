@@ -416,7 +416,7 @@ __weak void NMI_Handler(void)
 __weak void HardFault_Handler(void)
 {
 #ifdef DEBUG
-    printf("HandFault_Handler\n");
+    printf("HardFault_Handler\n");
 #endif
     while (1) {
     }
