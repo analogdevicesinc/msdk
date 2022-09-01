@@ -47,8 +47,9 @@
 #include "datc_api.h"
 #include "util/calc128.h"
 #include "pal_btn.h"
+#include "pal_uart.h"
 #include "tmr.h"
-
+#include "sdsc_api.h"
 /**************************************************************************************************
 Macros
 **************************************************************************************************/
@@ -124,29 +125,60 @@ static const appMasterCfg_t datcMasterCfg = {
     DM_SCAN_TYPE_ACTIVE /*! The scan type (active or passive) */
 };
 
-/*! configurable parameters for security */
+/*! Configurable security parameters to set
+*   pairing and authentication requirements.
+*
+*   Authentication and bonding flags
+*       -DM_AUTH_BOND_FLAG  : Bonding requested 
+*       -DM_AUTH_KP_FLAG    : Keypress notifications requested 
+*       -DM_AUTH_MITM_FLAG  : MITM (authenticated pairing) requested,
+                              pairing method is determined by IO capabilities below
+*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested 
+*
+*   Initiator key distribution flags
+*       -DM_KEY_DIST_LTK   : Distribute LTK used for encryption
+*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy 
+*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
+*/
 static const appSecCfg_t datcSecCfg = {
     DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
     DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
     FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    FALSE                                /*! TRUE to initiate security upon connection */
+    TRUE                                 /*! TRUE to initiate security upon connection */
 };
+
+/* OOB UART parameters */
+#define OOB_BAUD 115200
+#define OOB_FLOW FALSE
 
 /*! TRUE if Out-of-band pairing data is to be sent */
 static const bool_t datcSendOobData = FALSE;
 
-/*! SMP security parameter configuration */
+/* OOB Connection identifier */
+dmConnId_t oobConnId;
+
+/*! SMP security parameter configuration 
+*
+*   I/O Capability Codes to be set for 
+*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
+*   when the MITM flag is set in Configurable security parameters above.
+*       -SMP_IO_DISP_ONLY         : Display only. 
+*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
+*       -SMP_IO_KEY_ONLY          : Keyboard only.
+*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
+*       -SMP_IO_KEY_DISP          : Keyboard display. 
+*/
 static const smpCfg_t datcSmpCfg = {
-    500,                 /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
-    7,                   /*! Minimum encryption key length */
-    16,                  /*! Maximum encryption key length */
-    1,                   /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                   /*! Device authentication requirements */
-    64000,               /*! Maximum repeated attempts timeout in msec */
-    64000,               /*! Time msec before attemptExp decreases */
-    2                    /*! Repeated attempts multiplier exponent */
+    500,             /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_KEY_ONLY, /*! I/O Capability */
+    7,               /*! Minimum encryption key length */
+    16,              /*! Maximum encryption key length */
+    1,               /*! Attempts to trigger 'repeated attempts' timeout */
+    0,               /*! Device authentication requirements */
+    64000,           /*! Maximum repeated attempts timeout in msec */
+    64000,           /*! Time msec before attemptExp decreases */
+    2                /*! Repeated attempts multiplier exponent */
 };
 
 /*! Connection parameters */
@@ -191,6 +223,7 @@ enum {
     DATC_DISC_GATT_SVC, /*! GATT service */
     DATC_DISC_GAP_SVC,  /*! GAP service */
     DATC_DISC_WP_SVC,   /*! Arm Ltd. proprietary service */
+    DATC_DISC_SDS_SVC,  /*! Secured Data Service */
     DATC_DISC_SVC_MAX   /*! Discovery complete */
 };
 
@@ -214,12 +247,14 @@ enum {
 #define DATC_DISC_GATT_START   0
 #define DATC_DISC_GAP_START    (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
 #define DATC_DISC_WP_START     (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
-#define DATC_DISC_HDL_LIST_LEN (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
+#define DATC_DISC_SDS_START    (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
+#define DATC_DISC_HDL_LIST_LEN (DATC_DISC_SDS_START + SEC_HDL_LIST_LEN)
 
 /*! Pointers into handle list for each service's handles */
 static uint16_t* pDatcGattHdlList[DM_CONN_MAX];
 static uint16_t* pDatcGapHdlList[DM_CONN_MAX];
 static uint16_t* pDatcWpHdlList[DM_CONN_MAX];
+static uint16_t* pSecDatHdlList[DM_CONN_MAX];
 
 /* LESC OOB configuration */
 static dmSecLescOobCfg_t* datcOobCfg;
@@ -252,6 +287,9 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
     /* Write:  Proprietary data service changed ccc descriptor */
     {datcCccNtfVal, sizeof(datcCccNtfVal), (WPC_P1_NA_CCC_HDL_IDX + DATC_DISC_WP_START)},
 
+    /* Write:  Secured data service changed ccc descriptor */
+    {datcCccNtfVal, sizeof(datcCccNtfVal), (SEC_DAT_CCC_HDL_IDX + DATC_DISC_SDS_START)},
+
 };
 
 /* Characteristic configuration list length */
@@ -259,6 +297,22 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
 
 /* sanity check:  make sure configuration list length is <= handle list length */
 WSF_CT_ASSERT(DATC_DISC_CFG_LIST_LEN <= DATC_DISC_HDL_LIST_LEN);
+
+/*************************************************************************************************/
+/*!
+ *  \brief  OOB RX callback.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void oobRxCback(void)
+{
+    if (datcOobCfg != NULL) {
+        DmSecSetOob(oobConnId, datcOobCfg);
+    }
+
+    DmSecAuthRsp(oobConnId, 0, NULL);
+}
 
 /*************************************************************************************************/
 /*!
@@ -283,15 +337,31 @@ static void datcDmCback(dmEvt_t* pDmEvt)
             uint8_t oobLocalRandom[SMP_RAND_LEN];
             SecRand(oobLocalRandom, SMP_RAND_LEN);
             DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
+
+            /* Setup HCI UART for OOB */
+            PalUartConfig_t hciUartCfg;
+            hciUartCfg.rdCback = oobRxCback;
+            hciUartCfg.wrCback = NULL;
+            hciUartCfg.baud    = OOB_BAUD;
+            hciUartCfg.hwFlow  = OOB_FLOW;
+
+            PalUartInit(PAL_UART_ID_CHCI, &hciUartCfg);
         }
     } else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
         if (datcOobCfg == NULL) {
             datcOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
+            memset(datcOobCfg, 0, sizeof(dmSecLescOobCfg_t));
         }
 
         if (datcOobCfg) {
             Calc128Cpy(datcOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
             Calc128Cpy(datcOobCfg->localRandom, pDmEvt->oobCalcInd.random);
+
+            /* Start the RX for the peer OOB data */
+            PalUartReadData(PAL_UART_ID_CHCI, datcOobCfg->peerRandom,
+                            (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+        } else {
+            APP_TRACE_ERR0("Error allocating OOB data");
         }
     } else {
         len = DmSizeOfEvt(pDmEvt);
@@ -556,6 +626,8 @@ static void datcOpen(dmEvt_t* pMsg)
 /*************************************************************************************************/
 static void datcValueNtf(attEvt_t* pMsg)
 {
+    if (pMsg->handle == pSecDatHdlList[pMsg->hdr.param - 1][SEC_DAT_HDL_IDX])
+        APP_TRACE_INFO0(">> Notification from secure data service <<<");
     /* print the received data */
     if (datcCb.speedTestCounter == 0) {
         APP_TRACE_INFO0((const char*)pMsg->pValue);
@@ -641,6 +713,24 @@ static void datcSendData(dmConnId_t connId)
 
     if (pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
         AttcWriteCmd(connId, pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX], sizeof(str), str);
+    }
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Send example data to secured charactersitic.
+ *
+ *  \param  connId    Connection identifier.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void secDatSendData(dmConnId_t connId)
+{
+    uint8_t str[] = "Secret number is 0x42";
+
+    if (pSecDatHdlList[connId - 1][SEC_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
+        AttcWriteCmd(connId, pSecDatHdlList[connId - 1][SEC_DAT_HDL_IDX], sizeof(str), str);
     }
 }
 
@@ -812,7 +902,9 @@ static void datcBtnCback(uint8_t btn)
                 break;
             }
 #endif /* BT_VER */
-
+            case APP_UI_BTN_2_MED:
+                secDatSendData(connId);
+                break;
             case APP_UI_BTN_2_LONG:
                 /* send data */
                 datcSendData(connId);
@@ -918,7 +1010,8 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         case APP_DISC_FAILED:
             if (pAppCfg->abortDisc) {
                 /* if discovery failed for proprietary data service then disconnect */
-                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
+                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC ||
+                    (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
                     AppConnClose(connId);
                     break;
                 }
@@ -935,6 +1028,9 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
             } else if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
                 /* discover proprietary data service */
                 WpcP1Discover(connId, pDatcWpHdlList[connId - 1]);
+            } else if (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC) {
+                /* discover secured data service */
+                SecDatSvcDiscover(connId, pSecDatHdlList[connId - 1]);
             } else {
                 /* discovery complete */
                 AppDiscComplete(connId, APP_DISC_CMPL);
@@ -1075,15 +1171,13 @@ static void datcProcMsg(dmEvt_t* pMsg)
             if (pMsg->authReq.oob) {
                 dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-                /* TODO: Perform OOB Exchange with the peer. */
+                APP_TRACE_INFO0("Sending OOB data");
+                oobConnId = connId;
 
-                /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
+                /* Start the TX to send the local OOB data */
+                PalUartWriteData(PAL_UART_ID_CHCI, datcOobCfg->localRandom,
+                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
 
-                if (datcOobCfg != NULL) {
-                    DmSecSetOob(connId, datcOobCfg);
-                }
-
-                DmSecAuthRsp(connId, 0, NULL);
             } else {
                 AppHandlePasskey(&pMsg->authReq);
             }
@@ -1275,6 +1369,7 @@ static void datcInitSvcHdlList()
         pDatcGattHdlList[i] = &datcCb.hdlList[i][DATC_DISC_GATT_START];
         pDatcGapHdlList[i]  = &datcCb.hdlList[i][DATC_DISC_GAP_START];
         pDatcWpHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_WP_START];
+        pSecDatHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_SDS_START];
     }
 }
 /*************************************************************************************************/
