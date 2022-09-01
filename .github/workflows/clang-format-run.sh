@@ -5,18 +5,15 @@ set +e
 git submodule deinit --force --all
 set -e
 
-# Reformat all of the c files
+# Find the C files
 CFILES=$(find . -iname "*.c")
-for cFile in ${CFILES}
-do
-  # Remove single line ;
-  perl -i -pe 's/\s+;\s/{}\n/' ${cFile}
-  clang-format --verbose -style=file -i ${cFile}
-done
+
+# Remove single line ';', these confuse clang-format
+parallel -j 8 perl -i -pe 's/\s+;\s/{}\n/' -- $CFILES
+
+# Format the files
+parallel -j 8 clang-format --verbose -style=file -i -- $CFILES
 
 # Reformat all of the header files
 HFILES=$(find . -iname "*.h" -not -name "*regs*")
-for hFile in ${HFILES}
-do
-  clang-format --verbose -style=file -i ${hFile}
-done
+parallel -j 8 clang-format --verbose -style=file -i $HFILES
