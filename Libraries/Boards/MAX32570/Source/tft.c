@@ -129,7 +129,9 @@ static int concat(unsigned char* var, int size)
 {
     int result = 0;
 
-    for (int i = 1; i <= size; i++) { result |= var[size - i] << (8 * (size - i)); }
+    for (int i = 1; i <= size; i++) {
+        result |= var[size - i] << (8 * (size - i));
+    }
 
     return result;
 }
@@ -278,14 +280,18 @@ static void print_line(const unsigned char* line, int nb_of_pixel)
     int loop_counter = nb_of_pixel >> 2; // div 4
 
     for (x = 0; x < loop_counter; x++) {
-        for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]); }
+        for (i = 0; i < 4; i++) {
+            g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]);
+        }
 
         spi_transmit((unsigned short*)g_fifo, 8);
     }
 
     x <<= 2;
 
-    for (; x < nb_of_pixel; x++) { write_color(*(g_palette_ram + line[x])); }
+    for (; x < nb_of_pixel; x++) {
+        write_color(*(g_palette_ram + line[x]));
+    }
 }
 
 static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, int img_w)
@@ -362,7 +368,9 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
                 switch (data) {
                 case 0:
                 case 1:
-                    while (nb_of_pixel < (unsigned int)img_w) { line[nb_of_pixel++] = 0; }
+                    while (nb_of_pixel < (unsigned int)img_w) {
+                        line[nb_of_pixel++] = 0;
+                    }
 
                     print_line(line, img_w);
                     is_ended = 1;
@@ -373,13 +381,19 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
                     x = in[inpos++];
                     y = in[inpos++];
 
-                    for (i = 0; i < x; i++) { line[nb_of_pixel++] = 0; }
+                    for (i = 0; i < x; i++) {
+                        line[nb_of_pixel++] = 0;
+                    }
 
-                    for (i = 0; i < y; i++) { print_line(line, img_w); }
+                    for (i = 0; i < y; i++) {
+                        print_line(line, img_w);
+                    }
                 } break;
 
                 default:
-                    for (i = 0; i < data; i++) { line[nb_of_pixel++] = in[inpos++]; }
+                    for (i = 0; i < data; i++) {
+                        line[nb_of_pixel++] = in[inpos++];
+                    }
 
                     if (data % 2) {
                         inpos++;
@@ -388,7 +402,9 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
                     break;
                 }
             } else {
-                for (i = 0; i < cmd; i++) { line[nb_of_pixel++] = data; }
+                for (i = 0; i < cmd; i++) {
+                    line[nb_of_pixel++] = data;
+                }
             }
 
             if (is_ended == 1) {
@@ -429,12 +445,16 @@ static void displayInit(void)
     // CLR Reset pin;
     MXC_GPIO_OutClr(TFT_RESET_GPIO_PORT, TFT_RESET_GPIO_PIN);
 
-    for (i = 0; i < 50000; i++) { halfClockDelay(); }
+    for (i = 0; i < 50000; i++) {
+        halfClockDelay();
+    }
 
     // SET Reset pin;
     MXC_GPIO_OutSet(TFT_RESET_GPIO_PORT, TFT_RESET_GPIO_PIN);
 
-    for (i = 0; i < 150000; i++) { halfClockDelay(); }
+    for (i = 0; i < 150000; i++) {
+        halfClockDelay();
+    }
 
     write_command(0x0000);
     write_command(0x0028); // VCOM OTP
@@ -528,7 +548,9 @@ static void displayInit(void)
     write_command(0x0007); // Display Control
     write_data(0x0033); // Page 45 of SSD2119 datasheet
 
-    for (i = 0; i < 50000; i++) { halfClockDelay(); }
+    for (i = 0; i < 50000; i++) {
+        halfClockDelay();
+    }
 
     write_command(0x0022); // RAM data write/read
 }
@@ -753,7 +775,9 @@ void MXC_TFT_SetBackGroundColor(unsigned int color)
 
     for (y = 0; y < DISPLAY_HEIGHT; y++) {
         for (x = 0; x < (unsigned int)(DISPLAY_WIDTH >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
@@ -824,7 +848,9 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
     } else {
         img_w_rounded = ((8 * bitmap_info.w + 31) / 32) * 4;
 
-        for (y = height - 1; y >= 0; y--) { print_line(&pixel[y * img_w_rounded], width); }
+        for (y = height - 1; y >= 0; y--) {
+            print_line(&pixel[y * img_w_rounded], width);
+        }
     }
 
     __enable_irq();
@@ -855,14 +881,18 @@ void MXC_TFT_FillRect(area_t* area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(g_palette_ram[color]); }
+        for (; x < w; x++) {
+            write_color(g_palette_ram[color]);
+        }
     }
 
     __enable_irq();
@@ -987,14 +1017,18 @@ void MXC_TFT_ClearArea(area_t* area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + color); }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = *(g_palette_ram + color);
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(*(g_palette_ram + color)); }
+        for (; x < w; x++) {
+            write_color(*(g_palette_ram + color));
+        }
     }
 
     __enable_irq();

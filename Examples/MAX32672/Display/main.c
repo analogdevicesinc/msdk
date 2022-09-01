@@ -356,7 +356,7 @@ int main(void)
         if (demo_ticks > 1000) {
             /* Always wise to allow debugger access early in the demo */
             //__WFI(); /* FIXME -- causes visual artifacts, perhaps SPI is not done sending bits
-            //when core sleeps? */
+            // when core sleeps? */
         }
     }
 

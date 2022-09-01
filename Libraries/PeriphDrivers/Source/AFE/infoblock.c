@@ -135,7 +135,9 @@ int infoblock_read(uint32_t offset, uint8_t* data, int length)
         case INFOBLOCK_LINE_FORMAT_DESIGN:
             // Check for unprogrammed information block line
             crc = 0xFF;
-            for (i = 0; i < sizeof(oneinfoblockline); i++) { crc &= oneinfoblockline[i]; }
+            for (i = 0; i < sizeof(oneinfoblockline); i++) {
+                crc &= oneinfoblockline[i];
+            }
             if (crc == 0xFF) {
                 // Line is unprogrammed, return error.
                 return E_BAD_STATE;
@@ -146,7 +148,9 @@ int infoblock_read(uint32_t offset, uint8_t* data, int length)
             // First, CRC the lock bit.
             crc = crc15_highbitinput(0, oneinfoblockline + 7, 1);
             // Then CRC the data from high to low bits.  (bit 47 to 0)
-            for (i = 5; i >= 0; i--) { crc = crc15_highbitinput(crc, oneinfoblockline + i, 8); }
+            for (i = 5; i >= 0; i--) {
+                crc = crc15_highbitinput(crc, oneinfoblockline + i, 8);
+            }
             crcexpected = ((oneinfoblockline[7] & 0x7F) << 8) | oneinfoblockline[6];
             if (crc != crcexpected) {
                 return E_BAD_STATE;

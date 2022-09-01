@@ -99,7 +99,9 @@ int main(void)
     while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) { }
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
+    for (i = 0; i < BUFF_SIZE; i++) {
+        TxData[i] = i;
+    }
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifdef DMA

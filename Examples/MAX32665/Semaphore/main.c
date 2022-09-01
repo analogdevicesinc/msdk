@@ -2,8 +2,8 @@
 /**
  * @file    	main.c
  * @brief   	Semaphore example
- * @details 	Press button to overwrite a global variable. If someone is already writing to it, deny
- * the right
+ * @details 	Press button to overwrite a global variable. If someone is already writing to it,
+ * deny the right
  */
 
 /******************************************************************************

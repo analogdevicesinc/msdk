@@ -61,7 +61,9 @@ void setTrigger(int waitForTrigger)
     }
 
     // Debounce the button press.
-    for (int tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
+    for (int tmp = 0; tmp < 0x80000; tmp++) {
+        __NOP();
+    }
 
     // Wait for serial transactions to complete.
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }

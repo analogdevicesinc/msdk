@@ -99,7 +99,9 @@ static void appRxCallback(uint8_t* data, uint16_t len)
     /* Print the received data */
     printf("App received: ");
 
-    for (i = 0; i < len; i++) { printf("0x%02X ", data[i]); }
+    for (i = 0; i < len; i++) {
+        printf("0x%02X ", data[i]);
+    }
     printf("\n");
 
     /* Echo the data back to the central */

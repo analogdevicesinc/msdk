@@ -194,7 +194,9 @@ static BaseType_t prvWriteCommand(
 
     int offset = atoi(pcParameterOffset);
     uint32_t* data = (uint32_t*)pvPortMalloc(strlen(pcParameterText) * 4);
-    for (int i = 0; i < strlen(pcParameterText); i++) { data[i] = (uint32_t)pcParameterText[i]; }
+    for (int i = 0; i < strlen(pcParameterText); i++) {
+        data[i] = (uint32_t)pcParameterText[i];
+    }
     portENTER_CRITICAL();
     int retval = flash_write(FLASH_STORAGE_START_ADDR + offset * 4, strlen(pcParameterText), data);
     portEXIT_CRITICAL();

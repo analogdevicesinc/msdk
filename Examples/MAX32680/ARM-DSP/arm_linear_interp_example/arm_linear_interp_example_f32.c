@@ -150,7 +150,9 @@ int main(void)
     /*------------------------------------------------------------------------------
      *  Method 1: Test out Calculated from Cubic Interpolation
      *------------------------------------------------------------------------------*/
-    for (i = 0; i < TEST_LENGTH_SAMPLES; i++) { testOutput[i] = arm_sin_f32(testInputSin_f32[i]); }
+    for (i = 0; i < TEST_LENGTH_SAMPLES; i++) {
+        testOutput[i] = arm_sin_f32(testInputSin_f32[i]);
+    }
 
     /*------------------------------------------------------------------------------
      *  Method 2: Test out Calculated from Cubic Interpolation and Linear interpolation

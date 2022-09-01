@@ -177,10 +177,14 @@ void printData(void)
 {
     int i;
     printf("\n-->TxData: ");
-    for (i = 0; i < sizeof(txdata); ++i) { printf("%02x ", txdata[i]); }
+    for (i = 0; i < sizeof(txdata); ++i) {
+        printf("%02x ", txdata[i]);
+    }
 
     printf("\n\n-->RxData: ");
-    for (i = 0; i < sizeof(rxdata); ++i) { printf("%02x ", rxdata[i]); }
+    for (i = 0; i < sizeof(rxdata); ++i) {
+        printf("%02x ", rxdata[i]);
+    }
 
     printf("\n");
 

@@ -54,8 +54,9 @@
 #include "pal_timer.h"
 #include "pal_uart.h"
 
-#define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks   \
-                                                */
+#define MAX_WUT_TICKS                                                                              \
+    (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks                     \
+                              */
 #define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
 #define WAKEUP_US 700 /* Deep sleep recovery time, units of us */
 

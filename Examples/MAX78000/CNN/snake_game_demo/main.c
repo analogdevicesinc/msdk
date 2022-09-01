@@ -530,7 +530,9 @@ int main(void)
                 }
 
                 /* Wait for CNN  to complete */
-                while (cnn_time == 0) { __WFI(); }
+                while (cnn_time == 0) {
+                    __WFI();
+                }
 
                 /* read data */
                 cnn_unload((uint32_t*)ml_data);

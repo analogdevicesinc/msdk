@@ -224,7 +224,9 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
     //
     // Transmit the data
     //
-    for (i = 0; i < byte_length; i++) { pSPIm->fifo8[0] = data[i]; }
+    for (i = 0; i < byte_length; i++) {
+        pSPIm->fifo8[0] = data[i];
+    }
 
     //
     // Receive the data
@@ -355,13 +357,13 @@ static int afe_bank_select(uint8_t bank_num)
     // NOTE: As a workaround to allow for multiple ADC conversions, one in ADC0 and simultaneous one
     // in ADC1
     //	The SPI_ABORT_DIS feature in the sys_ctrl register can help.  Note that there is only 1
-    //sys_cntl register 	but it is available from every register bank, ADC0, ADC1, DAC, and HART.
+    // sys_cntl register 	but it is available from every register bank, ADC0, ADC1, DAC, and HART.
     //
     // Reading the sys_ctrl register arms the HW to set this bit automatically, it doesn't need to
     // be set by SW.
     //	WARNING: It blocks the abort signal. This means, if a conversion is active on the selected
-    //ADC, and 	after reading sys_ctrl, a write occurs to ADC bank with conversion in progress, the
-    //ADC data will 	be corrupted.
+    // ADC, and 	after reading sys_ctrl, a write occurs to ADC bank with conversion in progress,
+    // the ADC data will 	be corrupted.
     //
 
     if ((read_val & MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL)

@@ -75,34 +75,33 @@ uint8_t mml_nfc_pcd_packing_buffer[MAX_PACKING_BUFFER_LEN];
 /**
  * Default NFC Analog Configuration values
  */
-mml_nfc_pcd_analog_params_matrix_t mml_nfc_pcd_analog_parameters_matrix
-    = {
-          //                                    0                  1                  2 3 4 5 6 7 8
-          //                                    9
-          .fd_thresholds = { 215, 190, 165, 140, 110, 100, 70, 70, 70, 70 },
-          .fd_dyn_trigger_a = { 20, 20, 40, 50, 100, 100, 110, 110, 110, 110 },
-          .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q },
-          .fd_dyn_trigger_b = { 20, 20, 50, 50, 50, 50, 50, 50, 50, 50 },
-          .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
-          .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
-          .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-              0x00000000, 0x00000000, 0x00000000, 0x00000000 },
-          .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x07020702, 0x07020702,
-              0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
-          .fd_dyn_sttm_bfv = { 0x0C0C0C0C, 0x0A0A0A0A, 0x09090909, 0x08080808, 0x07070707,
-              0x03040506, 0x07070707, 0x07070707, 0x07070707, 0x07070707 },
-          .fd_dyn_stfm_bfv = { 0x7F0C0C0C, 0x7F0A0A0A, 0x7F090909, 0x7F080808, 0x7F070707,
-              0x06050403, 0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
-          .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
-          .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
-      };
+mml_nfc_pcd_analog_params_matrix_t mml_nfc_pcd_analog_parameters_matrix = {
+    //                                    0                  1                  2 3 4 5 6 7 8
+    //                                    9
+    .fd_thresholds = { 215, 190, 165, 140, 110, 100, 70, 70, 70, 70 },
+    .fd_dyn_trigger_a = { 20, 20, 40, 50, 100, 100, 110, 110, 110, 110 },
+    .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q },
+    .fd_dyn_trigger_b = { 20, 20, 50, 50, 50, 50, 50, 50, 50, 50 },
+    .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+        0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x07020702, 0x07020702,
+        0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x0C0C0C0C, 0x0A0A0A0A, 0x09090909, 0x08080808, 0x07070707, 0x03040506,
+        0x07070707, 0x07070707, 0x07070707, 0x07070707 },
+    .fd_dyn_stfm_bfv = { 0x7F0C0C0C, 0x7F0A0A0A, 0x7F090909, 0x7F080808, 0x7F070707, 0x06050403,
+        0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
+    .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
+    .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
+};
 
 /**
  * NFC Analog Configuration values to use for current transaction

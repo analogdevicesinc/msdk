@@ -94,63 +94,61 @@ typedef struct {
     int32_t application_label_len;
 } ppse_response_t;
 
-mml_nfc_pcd_analog_params_matrix_t custom_antenna_matrix
-    = {
-          //                                    0                  1                  2 3 4 5 6 7 8
-          //                                    9
-          .fd_thresholds = { 242, 228, 220, 215, 205, 180, 150, 140, 140, 140 },
-          .fd_dyn_trigger_a = { 30, 30, 30, 40, 40, 80, 40, 100, 120, 120 },
-          .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_Q, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_b = { 40, 40, 40, 40, 40, 50, 50, 50, 50, 50 },
-          .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
-          .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
-          .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-              0x00000000, 0x00000000, 0x00000000, 0x00000000 },
-          .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x7F037F03, 0x7F000000,
-              0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
-          .fd_dyn_sttm_bfv = { 0x0B0B0B0B, 0x0B0B0B0B, 0x09090909, 0x09090909, 0x08090A0B,
-              0x08080808, 0x07070707, 0x07070707, 0x07070707, 0x07070707 },
-          .fd_dyn_stfm_bfv = { 0x7F090909, 0x7F1A1409, 0x7F070707, 0x7F070707, 0x7F500A06,
-              0x7F555006, 0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
-          .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
-          .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
-      };
+mml_nfc_pcd_analog_params_matrix_t custom_antenna_matrix = {
+    //                                    0                  1                  2 3 4 5 6 7 8
+    //                                    9
+    .fd_thresholds = { 242, 228, 220, 215, 205, 180, 150, 140, 140, 140 },
+    .fd_dyn_trigger_a = { 30, 30, 30, 40, 40, 80, 40, 100, 120, 120 },
+    .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_Q, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_b = { 40, 40, 40, 40, 40, 50, 50, 50, 50, 50 },
+    .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+        0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x7F037F03, 0x7F000000,
+        0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x0B0B0B0B, 0x0B0B0B0B, 0x09090909, 0x09090909, 0x08090A0B, 0x08080808,
+        0x07070707, 0x07070707, 0x07070707, 0x07070707 },
+    .fd_dyn_stfm_bfv = { 0x7F090909, 0x7F1A1409, 0x7F070707, 0x7F070707, 0x7F500A06, 0x7F555006,
+        0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
+    .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
+    .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
+};
 
-mml_nfc_pcd_analog_params_matrix_t evkit_antenna_65x65_matrix
-    = {
-          //                                    0                  1                  2 3 4 5 6 7 8
-          //                                    9
-          .fd_thresholds = { 215, 190, 165, 140, 110, 100, 70, 70, 70, 70 },
-          .fd_dyn_trigger_a = { 20, 20, 40, 50, 100, 100, 110, 110, 110, 110 },
-          .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q },
-          .fd_dyn_trigger_b = { 20, 20, 50, 50, 50, 50, 50, 50, 50, 50 },
-          .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
-          .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
-          .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
-              IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
-          .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-              0x00000000, 0x00000000, 0x00000000, 0x00000000 },
-          .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x07020702, 0x07020702,
-              0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
-          .fd_dyn_sttm_bfv = { 0x0C0C0C0C, 0x0A0A0A0A, 0x09090909, 0x08080808, 0x07070707,
-              0x03040506, 0x07070707, 0x07070707, 0x07070707, 0x07070707 },
-          .fd_dyn_stfm_bfv = { 0x7F0C0C0C, 0x7F0A0A0A, 0x7F090909, 0x7F080808, 0x7F070707,
-              0x06050403, 0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
-          .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
-          .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
-      };
+mml_nfc_pcd_analog_params_matrix_t evkit_antenna_65x65_matrix = {
+    //                                    0                  1                  2 3 4 5 6 7 8
+    //                                    9
+    .fd_thresholds = { 215, 190, 165, 140, 110, 100, 70, 70, 70, 70 },
+    .fd_dyn_trigger_a = { 20, 20, 40, 50, 100, 100, 110, 110, 110, 110 },
+    .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q },
+    .fd_dyn_trigger_b = { 20, 20, 50, 50, 50, 50, 50, 50, 50, 50 },
+    .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+        IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+        0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x07020702, 0x07020702,
+        0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x0C0C0C0C, 0x0A0A0A0A, 0x09090909, 0x08080808, 0x07070707, 0x03040506,
+        0x07070707, 0x07070707, 0x07070707, 0x07070707 },
+    .fd_dyn_stfm_bfv = { 0x7F0C0C0C, 0x7F0A0A0A, 0x7F090909, 0x7F080808, 0x7F070707, 0x06050403,
+        0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
+    .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
+    .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
+};
 
 uint8_t dte_buffer[280];
 
@@ -551,10 +549,16 @@ void print_matrix_header(void)
 {
     int i;
     printf("\nStep Index:                 ");
-    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("%8d | ", i); }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("%8d | ", i);
+    }
     printf("\n");
-    for (i = 0; i < MATRIX_HORIZONTAL_NUM_TICKS; i++) { printf("-"); }
-    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("-----------"); }
+    for (i = 0; i < MATRIX_HORIZONTAL_NUM_TICKS; i++) {
+        printf("-");
+    }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("-----------");
+    }
     printf("\n");
 }
 
@@ -583,7 +587,9 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+                print_comb_math(val_array[j]);
+            }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -596,7 +602,9 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         i = key_press - '0';
         print_matrix_header();
         printf("%s", name);
-        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+            print_comb_math(val_array[j]);
+        }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -633,7 +641,9 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+                printf("%08X | ", val_array[j]);
+            }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -653,7 +663,9 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
         print_matrix_header();
 
         printf("%s", name);
-        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+            printf("%08X | ", val_array[j]);
+        }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -695,7 +707,9 @@ void get_analog_matrix_value(
         for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+                printf("     %3d | ", val_array[j]);
+            }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -712,7 +726,9 @@ void get_analog_matrix_value(
         print_matrix_header();
 
         printf("%s", name);
-        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) {
+            printf("     %3d | ", val_array[j]);
+        }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -868,7 +884,9 @@ void print_analog_matrix_index(char name[])
 
     printf("%s", name);
 
-    for (; i < FD_THRESH_NUM_STEPS; i++) { printf("%19d", i); }
+    for (; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("%19d", i);
+    }
 
     printf("\n");
 }
@@ -879,7 +897,9 @@ void print_analog_matrix_value(char name[], uint8_t val_array[])
 
     printf("%s", name);
 
-    for (; i < FD_THRESH_NUM_STEPS; i++) { printf("%18d,", val_array[i]); }
+    for (; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("%18d,", val_array[i]);
+    }
 
     // Delete last comma, add bracket
     printf("\b },\n");
@@ -933,7 +953,9 @@ void print_analog_matrix_hex_v(char name[], uint32_t val_array[])
 
     printf("%s", name);
 
-    for (; i < FD_THRESH_NUM_STEPS; i++) { printf("        0x%08X,", val_array[i]); }
+    for (; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("        0x%08X,", val_array[i]);
+    }
 
     // Delete last comma, add bracket
     printf("\b },\n");
@@ -1008,8 +1030,12 @@ void print_matrix_spacer(void)
 {
     int i = 0;
 
-    for (i = 0; i < 27; i++) { printf("-"); }
-    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("-----------"); }
+    for (i = 0; i < 27; i++) {
+        printf("-");
+    }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
+        printf("-----------");
+    }
     printf("\n");
 }
 
@@ -3285,7 +3311,9 @@ void pbm_commands(void)
             // this uses current_block_num (set by 'B')
             printf("\nWrite Block: %d\n", current_block_num);
 
-            for (i = 0; i < 8; i++) { data_buffer[i] = 0; }
+            for (i = 0; i < 8; i++) {
+                data_buffer[i] = 0;
+            }
 
             data_buffer[8] = 0xDE;
             data_buffer[9] = 0xAD;
@@ -3458,7 +3486,9 @@ void pbm_commands(void)
         case 'k':
             printf("\nWrite Trailer for Key B: %d\n", current_block_num);
 
-            for (i = 0; i < 8; i++) { data_buffer[i] = 0; }
+            for (i = 0; i < 8; i++) {
+                data_buffer[i] = 0;
+            }
 
             // Key A
             data_buffer[0] = (current_key >> 40) & 0xFF;
@@ -3568,7 +3598,9 @@ void pbm_commands(void)
             // erase a block by filling with all 0
             printf("\nErase Block (Fill with 0x00s)\n: %d\n", current_block_num);
 
-            for (i = 0; i < 16; i++) { data_buffer[i] = 0; }
+            for (i = 0; i < 16; i++) {
+                data_buffer[i] = 0;
+            }
 
             status = pbm_write_block(current_block_num, data_buffer);
 

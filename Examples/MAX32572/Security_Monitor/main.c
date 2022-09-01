@@ -109,7 +109,9 @@ int main(void)
     printf("\nInput device can be EvKit keypad or PC Keyboard (Default). To change it please check "
            "keypad.c file\n");
 
-    for (i = 0; i < nb_of_items; i++) { items[i] = list[i].name; }
+    for (i = 0; i < nb_of_items; i++) {
+        items[i] = list[i].name;
+    }
 
     // test loop
     while (1) {
