@@ -314,39 +314,32 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)                                                                         \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn                                                               \
-            : (i) == 1   ? TMR1_IRQn                                                               \
-            : (i) == 2   ? TMR2_IRQn                                                               \
-            : (i) == 3   ? TMR3_IRQn                                                               \
-            : (i) == 4   ? TMR4_IRQn                                                               \
-            : (i) == 5   ? TMR5_IRQn                                                               \
-                         : 0)
+                         : (i) == 1 ? TMR1_IRQn                                                    \
+                                    : (i) == 2                                                     \
+                    ? TMR2_IRQn                                                                    \
+                    : (i) == 3 ? TMR3_IRQn : (i) == 4 ? TMR4_IRQn : (i) == 5 ? TMR5_IRQn : 0)
 
 #define MXC_TMR_GET_BASE(i)                                                                        \
-    ((i) == 0          ? MXC_BASE_TMR0                                                             \
-            : (i) == 1 ? MXC_BASE_TMR1                                                             \
-            : (i) == 2 ? MXC_BASE_TMR2                                                             \
-            : (i) == 3 ? MXC_BASE_TMR3                                                             \
-            : (i) == 4 ? MXC_BASE_TMR4                                                             \
-            : (i) == 5 ? MXC_BASE_TMR5                                                             \
-                       : 0)
+    ((i) == 0 ? MXC_BASE_TMR0                                                                      \
+              : (i) == 1                                                                           \
+                ? MXC_BASE_TMR1                                                                    \
+                : (i) == 2 ? MXC_BASE_TMR2                                                         \
+                           : (i) == 3 ? MXC_BASE_TMR3                                              \
+                                      : (i) == 4 ? MXC_BASE_TMR4 : (i) == 5 ? MXC_BASE_TMR5 : 0)
 
 #define MXC_TMR_GET_TMR(i)                                                                         \
-    ((i) == 0          ? MXC_TMR0                                                                  \
-            : (i) == 1 ? MXC_TMR1                                                                  \
-            : (i) == 2 ? MXC_TMR2                                                                  \
-            : (i) == 3 ? MXC_TMR3                                                                  \
-            : (i) == 4 ? MXC_TMR4                                                                  \
-            : (i) == 5 ? MXC_TMR5                                                                  \
-                       : 0)
+    ((i) == 0 ? MXC_TMR0                                                                           \
+              : (i) == 1                                                                           \
+                ? MXC_TMR1                                                                         \
+                : (i) == 2 ? MXC_TMR2                                                              \
+                           : (i) == 3 ? MXC_TMR3 : (i) == 4 ? MXC_TMR4 : (i) == 5 ? MXC_TMR5 : 0)
 
 #define MXC_TMR_GET_IDX(p)                                                                         \
-    ((p) == MXC_TMR0          ? 0                                                                  \
-            : (p) == MXC_TMR1 ? 1                                                                  \
-            : (p) == MXC_TMR2 ? 2                                                                  \
-            : (p) == MXC_TMR3 ? 3                                                                  \
-            : (p) == MXC_TMR4 ? 4                                                                  \
-            : (p) == MXC_TMR5 ? 5                                                                  \
-                              : -1)
+    ((p) == MXC_TMR0 ? 0                                                                           \
+                     : (p) == MXC_TMR1 ? 1                                                         \
+                                       : (p) == MXC_TMR2                                           \
+                    ? 2                                                                            \
+                    : (p) == MXC_TMR3 ? 3 : (p) == MXC_TMR4 ? 4 : (p) == MXC_TMR5 ? 5 : -1)
 
 /******************************************************************************/
 /*                                                                        I2C */
@@ -430,18 +423,14 @@ typedef enum {
 #define MXC_UART3 ((mxc_uart_regs_t*)MXC_BASE_UART3)
 
 #define MXC_UART_GET_IRQ(i)                                                                        \
-    (IRQn_Type)((i) == 0 ? UART0_IRQn                                                              \
-            : (i) == 1   ? UART1_IRQn                                                              \
-            : (i) == 2   ? UART2_IRQn                                                              \
-            : (i) == 3   ? UART3_IRQn                                                              \
-                         : 0)
+    (IRQn_Type)((i) == 0                                                                           \
+            ? UART0_IRQn                                                                           \
+            : (i) == 1 ? UART1_IRQn : (i) == 2 ? UART2_IRQn : (i) == 3 ? UART3_IRQn : 0)
 
 #define MXC_UART_GET_BASE(i)                                                                       \
-    ((i) == 0          ? MXC_BASE_UART0                                                            \
-            : (i) == 1 ? MXC_BASE_UART1                                                            \
-            : (i) == 2 ? MXC_BASE_UART2                                                            \
-            : (i) == 3 ? MXC_BASE_UART3                                                            \
-                       : 0)
+    ((i) == 0 ? MXC_BASE_UART0                                                                     \
+              : (i) == 1 ? MXC_BASE_UART1                                                          \
+                         : (i) == 2 ? MXC_BASE_UART2 : (i) == 3 ? MXC_BASE_UART3 : 0)
 
 #define MXC_UART_GET_UART(i)                                                                       \
     ((i) == 0 ? MXC_UART0 : (i) == 1 ? MXC_UART1 : (i) == 2 ? MXC_UART2 : (i) == 3 ? MXC_UART3 : 0)

@@ -99,9 +99,7 @@ int main(void)
     printf("\n-->Test Length \t: %d bytes\n\n", BUFF_SIZE);
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) {
-        TxData[i] = i;
-    }
+    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
 
     memset(RxData, 0x0, BUFF_SIZE);
 

@@ -341,9 +341,7 @@ int main(void)
     printf("Size of testdata : %d\n", sizeof(testdata));
 
     // Initializing Test Data
-    for (i = 0; i < TESTSIZE; i++) {
-        testdata[i] = i;
-    }
+    for (i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
 
     MXC_ICC_Disable(MXC_ICC0);
     i = 0;

@@ -179,7 +179,5 @@ int main(void)
 
     bl_init(&plt);
 
-    while (1) {
-        terminal_select_from_list("Main Menu", list, sizeof(list) / sizeof(list[0]), 1);
-    }
+    while (1) { terminal_select_from_list("Main Menu", list, sizeof(list) / sizeof(list[0]), 1); }
 }

@@ -34,18 +34,14 @@ typedef struct {
 static char* rstrip(char* s)
 {
     char* p = s + strlen(s);
-    while (p > s && isspace((unsigned char)(*--p))) {
-        *p = '\0';
-    }
+    while (p > s && isspace((unsigned char)(*--p))) { *p = '\0'; }
     return s;
 }
 
 /* Return pointer to first non-whitespace char in given string. */
 static char* lskip(const char* s)
 {
-    while (*s && isspace((unsigned char)(*s))) {
-        s++;
-    }
+    while (*s && isspace((unsigned char)(*s))) { s++; }
     return (char*)s;
 }
 
@@ -62,9 +58,7 @@ static char* find_chars_or_comment(const char* s, const char* chars)
         s++;
     }
 #else
-    while (*s && (!chars || !strchr(chars, *s))) {
-        s++;
-    }
+    while (*s && (!chars || !strchr(chars, *s))) { s++; }
 #endif
     return (char*)s;
 }

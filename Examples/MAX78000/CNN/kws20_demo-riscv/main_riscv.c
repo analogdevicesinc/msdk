@@ -252,9 +252,7 @@ int main(void)
 #ifdef ENABLE_PRINT_ENVELOPE
         printf("%.6d|", sampleCounter);
 
-        for (int i = 0; i < avg / 10; i++) {
-            printf("=");
-        }
+        for (int i = 0; i < avg / 10; i++) { printf("="); }
 
         if (avg >= thresholdHigh) {
             printf("*");
@@ -387,9 +385,7 @@ int main(void)
 
                 // LED_On(0);
                 /* Wait for CNN  to complete */
-                while (cnn_time == 0) {
-                    asm volatile("wfi");
-                }
+                while (cnn_time == 0) { asm volatile("wfi"); }
 
                 // LED_Off(0);
 

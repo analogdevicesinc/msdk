@@ -323,17 +323,12 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)                                                                         \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn                                                               \
-            : (i) == 1   ? TMR1_IRQn                                                               \
-            : (i) == 2   ? TMR2_IRQn                                                               \
-            : (i) == 3   ? TMR3_IRQn                                                               \
-                         : 0)
+                         : (i) == 1 ? TMR1_IRQn : (i) == 2 ? TMR2_IRQn : (i) == 3 ? TMR3_IRQn : 0)
 
 #define MXC_TMR_GET_BASE(i)                                                                        \
-    ((i) == 0          ? MXC_BASE_TMR0                                                             \
-            : (i) == 1 ? MXC_BASE_TMR1                                                             \
-            : (i) == 2 ? MXC_BASE_TMR2                                                             \
-            : (i) == 3 ? MXC_BASE_TMR3                                                             \
-                       : 0)
+    ((i) == 0                                                                                      \
+            ? MXC_BASE_TMR0                                                                        \
+            : (i) == 1 ? MXC_BASE_TMR1 : (i) == 2 ? MXC_BASE_TMR2 : (i) == 3 ? MXC_BASE_TMR3 : 0)
 
 #define MXC_TMR_GET_TMR(i)                                                                         \
     ((i) == 0 ? MXC_TMR0 : (i) == 1 ? MXC_TMR1 : (i) == 2 ? MXC_TMR2 : (i) == 3 ? MXC_TMR3 : 0)
@@ -413,11 +408,8 @@ typedef enum {
 #define MXC_PT3 ((mxc_pt_regs_t*)MXC_BASE_PT3)
 
 #define MXC_PT_GET_BASE(i)                                                                         \
-    ((i) == 0          ? MXC_BASE_PT0                                                              \
-            : (i) == 1 ? MXC_BASE_PT1                                                              \
-            : (i) == 2 ? MXC_BASE_PT2                                                              \
-            : (i) == 3 ? MXC_BASE_PT3                                                              \
-                       : 0)
+    ((i) == 0 ? MXC_BASE_PT0                                                                       \
+              : (i) == 1 ? MXC_BASE_PT1 : (i) == 2 ? MXC_BASE_PT2 : (i) == 3 ? MXC_BASE_PT3 : 0)
 
 #define MXC_PT_GET_PT(i)                                                                           \
     ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)

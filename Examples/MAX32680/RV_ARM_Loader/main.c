@@ -72,7 +72,5 @@ int main(void)
     MXC_Delay(MXC_DELAY_SEC(5));
 
     /* Enter LPM */
-    while (1) {
-        MXC_LP_EnterSleepMode();
-    }
+    while (1) { MXC_LP_EnterSleepMode(); }
 }

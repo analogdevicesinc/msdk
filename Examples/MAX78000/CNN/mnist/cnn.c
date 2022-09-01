@@ -91,9 +91,7 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 static const uint32_t kernels[] = KERNELS;
@@ -117,9 +115,7 @@ static const uint8_t bias_0[] = BIAS_0;
 
 static void memcpy_8to32(uint32_t* dst, const uint8_t* src, int n)
 {
-    while (n-- > 0) {
-        *dst++ = *src++;
-    }
+    while (n-- > 0) { *dst++ = *src++; }
 }
 
 int cnn_load_bias(void)

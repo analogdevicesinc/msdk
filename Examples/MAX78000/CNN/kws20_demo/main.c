@@ -438,9 +438,7 @@ int main(void)
 #ifdef ENABLE_PRINT_ENVELOPE
         PR_DEBUG("%.6d|", sampleCounter);
 
-        for (int i = 0; i < avg / 10; i++) {
-            PR_DEBUG("=");
-        }
+        for (int i = 0; i < avg / 10; i++) { PR_DEBUG("="); }
 
         if (avg >= thresholdHigh) {
             PR_DEBUG("*");
@@ -571,15 +569,11 @@ int main(void)
 #if SLEEP_MODE == 0
 
                 /* Wait for CNN  to complete */
-                while (cnn_time == 0) {
-                    __WFI();
-                }
+                while (cnn_time == 0) { __WFI(); }
 
 #elif SLEEP_MODE == 1
 
-                while (cnn_time == 0) {
-                    __WFI();
-                }
+                while (cnn_time == 0) { __WFI(); }
 
 #elif SLEEP_MODE == 2
                 SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=1

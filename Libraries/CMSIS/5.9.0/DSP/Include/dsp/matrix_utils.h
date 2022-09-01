@@ -163,9 +163,7 @@ extern "C" {
                                                                                                    \
         data += i * numCols + (COL);                                                               \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *data++ *= (_Float16)v;                                                                \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *data++ *= (_Float16)v; }                                       \
     }
 
 #define MAC_ROW_F16(COL, A, i, v, B, j)                                                            \
@@ -179,9 +177,7 @@ extern "C" {
         dataA += i * numCols + (COL);                                                              \
         dataB += j * numCols + (COL);                                                              \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *dataA++ += (_Float16)v * (_Float16)*dataB++;                                          \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *dataA++ += (_Float16)v * (_Float16)*dataB++; }                 \
     }
 
 #define MAS_ROW_F16(COL, A, i, v, B, j)                                                            \
@@ -195,9 +191,7 @@ extern "C" {
         dataA += i * numCols + (COL);                                                              \
         dataB += j * numCols + (COL);                                                              \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *dataA++ -= (_Float16)v * (_Float16)*dataB++;                                          \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *dataA++ -= (_Float16)v * (_Float16)*dataB++; }                 \
     }
 
 #endif /*defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)*/
@@ -428,9 +422,7 @@ extern "C" {
                                                                                                    \
         data += i * numCols + (COL);                                                               \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *data++ *= v;                                                                          \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *data++ *= v; }                                                 \
     }
 
 #define MAC_ROW_F32(COL, A, i, v, B, j)                                                            \
@@ -444,9 +436,7 @@ extern "C" {
         dataA = dataA + i * numCols + (COL);                                                       \
         dataB = dataB + j * numCols + (COL);                                                       \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *dataA++ += v * *dataB++;                                                              \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *dataA++ += v * *dataB++; }                                     \
     }
 
 #define MAS_ROW_F32(COL, A, i, v, B, j)                                                            \
@@ -460,9 +450,7 @@ extern "C" {
         dataA = dataA + i * numCols + (COL);                                                       \
         dataB = dataB + j * numCols + (COL);                                                       \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *dataA++ -= v * *dataB++;                                                              \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *dataA++ -= v * *dataB++; }                                     \
     }
 
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
@@ -523,9 +511,7 @@ extern "C" {
                                                                                                    \
         data += i * numCols + (COL);                                                               \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *data++ *= v;                                                                          \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *data++ *= v; }                                                 \
     }
 
 #define SCALE_COL_F64(A, ROW, v, i) SCALE_COL_T(float64_t, , A, ROW, v, i)
@@ -541,9 +527,7 @@ extern "C" {
         dataA += i * numCols + (COL);                                                              \
         dataB += j * numCols + (COL);                                                              \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *dataA++ += v * *dataB++;                                                              \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *dataA++ += v * *dataB++; }                                     \
     }
 
 #define MAS_ROW_F64(COL, A, i, v, B, j)                                                            \
@@ -557,9 +541,7 @@ extern "C" {
         dataA += i * numCols + (COL);                                                              \
         dataB += j * numCols + (COL);                                                              \
                                                                                                    \
-        for (w = 0; w < nb; w++) {                                                                 \
-            *dataA++ -= v * *dataB++;                                                              \
-        }                                                                                          \
+        for (w = 0; w < nb; w++) { *dataA++ -= v * *dataB++; }                                     \
     }
 
 #ifdef __cplusplus

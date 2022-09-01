@@ -456,9 +456,7 @@ static int MXC_SEMA_RevA_WriteHandler(mxc_sema_reva_regs_t* sema_regs)
 
     /* Get the write semaphore */
     err = E_BUSY;
-    while (err != E_NO_ERROR) {
-        err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_WRITE_SEMA);
-    }
+    while (err != E_NO_ERROR) { err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_WRITE_SEMA); }
 
     /* Assign the writeBox pointer */
     if (SEMA_WRITE_BOX == 1) {
@@ -537,9 +535,7 @@ static int MXC_SEMA_RevA_ReadHandler(mxc_sema_reva_regs_t* sema_regs)
 
     /* Get the read semaphore */
     err = E_BUSY;
-    while (err != E_NO_ERROR) {
-        err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_READ_SEMA);
-    }
+    while (err != E_NO_ERROR) { err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_READ_SEMA); }
 
     /* Assign the read box pointer */
     if (SEMA_READ_BOX == 1) {

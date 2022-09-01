@@ -219,9 +219,7 @@ void print_help(void)
     int g_num_commands = sizeof(cmd_table) / sizeof(char*);
     printf("Registered %i total commands:\n", g_num_commands);
     printf("-----\n");
-    for (int i = 0; i < g_num_commands; i++) {
-        printf("\t'%s' %s\n", cmd_table[i], help_table[i]);
-    }
+    for (int i = 0; i < g_num_commands; i++) { printf("\t'%s' %s\n", cmd_table[i], help_table[i]); }
     printf("-----\n");
 }
 

@@ -313,11 +313,8 @@ typedef enum {
     ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
 
 #define MXC_GPIO_GET_IRQ(i)                                                                        \
-    ((i) == 0          ? GPIO0_IRQn                                                                \
-            : (i) == 1 ? GPIO1_IRQn                                                                \
-            : (i) == 2 ? GPIO2_IRQn                                                                \
-            : (i) == 3 ? GPIO3_IRQn                                                                \
-                       : 0)
+    ((i) == 0 ? GPIO0_IRQn                                                                         \
+              : (i) == 1 ? GPIO1_IRQn : (i) == 2 ? GPIO2_IRQn : (i) == 3 ? GPIO3_IRQn : 0)
 
 /******************************************************************************/
 /*                                                                     PCIF   */
@@ -355,47 +352,42 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)                                                                         \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn                                                               \
-            : (i) == 1   ? TMR1_IRQn                                                               \
-            : (i) == 2   ? TMR2_IRQn                                                               \
-            : (i) == 3   ? TMR3_IRQn                                                               \
-            : (i) == 4   ? TMR4_IRQn                                                               \
-            : (i) == 5   ? TMR5_IRQn                                                               \
-            : (i) == 6   ? TMR6_IRQn                                                               \
-            : (i) == 7   ? TMR7_IRQn                                                               \
-                         : 0)
+                         : (i) == 1 ? TMR1_IRQn                                                    \
+                                    : (i) == 2 ? TMR2_IRQn                                         \
+                                               : (i) == 3                                          \
+                        ? TMR3_IRQn                                                                \
+                        : (i) == 4 ? TMR4_IRQn                                                     \
+                                   : (i) == 5 ? TMR5_IRQn                                          \
+                                              : (i) == 6 ? TMR6_IRQn : (i) == 7 ? TMR7_IRQn : 0)
 
 #define MXC_TMR_GET_BASE(i)                                                                        \
-    ((i) == 0          ? MXC_BASE_TMR0                                                             \
-            : (i) == 1 ? MXC_BASE_TMR1                                                             \
-            : (i) == 2 ? MXC_BASE_TMR2                                                             \
-            : (i) == 3 ? MXC_BASE_TMR3                                                             \
-            : (i) == 4 ? MXC_BASE_TMR4                                                             \
-            : (i) == 5 ? MXC_BASE_TMR5                                                             \
-            : (i) == 6 ? MXC_BASE_TMR6                                                             \
-            : (i) == 7 ? MXC_BASE_TMR7                                                             \
-                       : 0)
+    ((i) == 0 ? MXC_BASE_TMR0                                                                      \
+              : (i) == 1 ? MXC_BASE_TMR1                                                           \
+                         : (i) == 2 ? MXC_BASE_TMR2                                                \
+                                    : (i) == 3 ? MXC_BASE_TMR3                                     \
+                                               : (i) == 4                                          \
+                            ? MXC_BASE_TMR4                                                        \
+                            : (i) == 5 ? MXC_BASE_TMR5                                             \
+                                       : (i) == 6 ? MXC_BASE_TMR6 : (i) == 7 ? MXC_BASE_TMR7 : 0)
 
 #define MXC_TMR_GET_TMR(i)                                                                         \
-    ((i) == 0          ? MXC_TMR0                                                                  \
-            : (i) == 1 ? MXC_TMR1                                                                  \
-            : (i) == 2 ? MXC_TMR2                                                                  \
-            : (i) == 3 ? MXC_TMR3                                                                  \
-            : (i) == 4 ? MXC_TMR4                                                                  \
-            : (i) == 5 ? MXC_TMR5                                                                  \
-            : (i) == 6 ? MXC_TMR6                                                                  \
-            : (i) == 7 ? MXC_TMR7                                                                  \
-                       : 0)
+    ((i) == 0 ? MXC_TMR0                                                                           \
+              : (i) == 1 ? MXC_TMR1                                                                \
+                         : (i) == 2 ? MXC_TMR2                                                     \
+                                    : (i) == 3 ? MXC_TMR3                                          \
+                                               : (i) == 4                                          \
+                            ? MXC_TMR4                                                             \
+                            : (i) == 5 ? MXC_TMR5 : (i) == 6 ? MXC_TMR6 : (i) == 7 ? MXC_TMR7 : 0)
 
 #define MXC_TMR_GET_IDX(p)                                                                         \
-    ((p) == MXC_TMR0          ? 0                                                                  \
-            : (p) == MXC_TMR1 ? 1                                                                  \
-            : (p) == MXC_TMR2 ? 2                                                                  \
-            : (p) == MXC_TMR3 ? 3                                                                  \
-            : (p) == MXC_TMR4 ? 4                                                                  \
-            : (p) == MXC_TMR5 ? 5                                                                  \
-            : (p) == MXC_TMR6 ? 6                                                                  \
-            : (p) == MXC_TMR7 ? 7                                                                  \
-                              : -1)
+    ((p) == MXC_TMR0 ? 0                                                                           \
+                     : (p) == MXC_TMR1 ? 1                                                         \
+                                       : (p) == MXC_TMR2 ? 2                                       \
+                                                         : (p) == MXC_TMR3 ? 3                     \
+                                                                           : (p) == MXC_TMR4       \
+                            ? 4                                                                    \
+                            : (p) == MXC_TMR5 ? 5                                                  \
+                                              : (p) == MXC_TMR6 ? 6 : (p) == MXC_TMR7 ? 7 : -1)
 
 /******************************************************************************/
 /*                                                           High Speed Timer */
@@ -572,37 +564,32 @@ typedef enum {
 #define MXC_PT7 ((mxc_pt_regs_t*)MXC_BASE_PT7)
 
 #define MXC_PT_GET_BASE(i)                                                                         \
-    ((i) == 0          ? MXC_BASE_PT0                                                              \
-            : (i) == 1 ? MXC_BASE_PT1                                                              \
-            : (i) == 2 ? MXC_BASE_PT2                                                              \
-            : (i) == 3 ? MXC_BASE_PT3                                                              \
-            : (i) == 4 ? MXC_BASE_PT4                                                              \
-            : (i) == 5 ? MXC_BASE_PT5                                                              \
-            : (i) == 6 ? MXC_BASE_PT6                                                              \
-            : (i) == 7 ? MXC_BASE_PT7                                                              \
-                       : 0)
+    ((i) == 0 ? MXC_BASE_PT0                                                                       \
+              : (i) == 1 ? MXC_BASE_PT1                                                            \
+                         : (i) == 2 ? MXC_BASE_PT2                                                 \
+                                    : (i) == 3 ? MXC_BASE_PT3                                      \
+                                               : (i) == 4                                          \
+                            ? MXC_BASE_PT4                                                         \
+                            : (i) == 5 ? MXC_BASE_PT5                                              \
+                                       : (i) == 6 ? MXC_BASE_PT6 : (i) == 7 ? MXC_BASE_PT7 : 0)
 
 #define MXC_PT_GET_PT(i)                                                                           \
-    ((i) == 0          ? MXC_PT0                                                                   \
-            : (i) == 1 ? MXC_PT1                                                                   \
-            : (i) == 2 ? MXC_PT2                                                                   \
-            : (i) == 3 ? MXC_PT3                                                                   \
-            : (i) == 4 ? MXC_PT4                                                                   \
-            : (i) == 5 ? MXC_PT5                                                                   \
-            : (i) == 6 ? MXC_PT6                                                                   \
-            : (i) == 7 ? MXC_PT7                                                                   \
-                       : 0)
+    ((i) == 0 ? MXC_PT0                                                                            \
+              : (i) == 1 ? MXC_PT1                                                                 \
+                         : (i) == 2 ? MXC_PT2                                                      \
+                                    : (i) == 3 ? MXC_PT3                                           \
+                                               : (i) == 4                                          \
+                            ? MXC_PT4                                                              \
+                            : (i) == 5 ? MXC_PT5 : (i) == 6 ? MXC_PT6 : (i) == 7 ? MXC_PT7 : 0)
 
 #define MXC_PT_GET_IDX(p)                                                                          \
-    ((p) == MXC_PT0          ? 0                                                                   \
-            : (p) == MXC_PT1 ? 1                                                                   \
-            : (p) == MXC_PT2 ? 2                                                                   \
-            : (p) == MXC_PT3 ? 3                                                                   \
-            : (p) == MXC_PT4 ? 4                                                                   \
-            : (p) == MXC_PT5 ? 5                                                                   \
-            : (p) == MXC_PT6 ? 6                                                                   \
-            : (p) == MXC_PT7 ? 7                                                                   \
-                             : -1)
+    ((p) == MXC_PT0 ? 0                                                                            \
+                    : (p) == MXC_PT1 ? 1                                                           \
+                                     : (p) == MXC_PT2 ? 2                                          \
+                                                      : (p) == MXC_PT3 ? 3                         \
+                                                                       : (p) == MXC_PT4            \
+                            ? 4                                                                    \
+                            : (p) == MXC_PT5 ? 5 : (p) == MXC_PT6 ? 6 : (p) == MXC_PT7 ? 7 : -1)
 
 /******************************************************************************/
 /*                                                            One Wire Master */
@@ -641,39 +628,32 @@ typedef enum {
 
 #define MXC_UART_GET_IRQ(i)                                                                        \
     (IRQn_Type)((i) == 0 ? UART0_IRQn                                                              \
-            : (i) == 1   ? UART1_IRQn                                                              \
-            : (i) == 2   ? UART2_IRQn                                                              \
-            : (i) == 3   ? UART3_IRQn                                                              \
-            : (i) == 4   ? UART4_IRQn                                                              \
-            : (i) == 5   ? UART5_IRQn                                                              \
-                         : 0)
+                         : (i) == 1 ? UART1_IRQn                                                   \
+                                    : (i) == 2                                                     \
+                    ? UART2_IRQn                                                                   \
+                    : (i) == 3 ? UART3_IRQn : (i) == 4 ? UART4_IRQn : (i) == 5 ? UART5_IRQn : 0)
 
 #define MXC_UART_GET_BASE(i)                                                                       \
-    ((i) == 0          ? MXC_BASE_UART0                                                            \
-            : (i) == 1 ? MXC_BASE_UART1                                                            \
-            : (i) == 2 ? MXC_BASE_UART2                                                            \
-            : (i) == 3 ? MXC_BASE_UART3                                                            \
-            : (i) == 4 ? MXC_BASE_UART4                                                            \
-            : (i) == 5 ? MXC_BASE_UART5                                                            \
-                       : 0)
+    ((i) == 0 ? MXC_BASE_UART0                                                                     \
+              : (i) == 1                                                                           \
+                ? MXC_BASE_UART1                                                                   \
+                : (i) == 2 ? MXC_BASE_UART2                                                        \
+                           : (i) == 3 ? MXC_BASE_UART3                                             \
+                                      : (i) == 4 ? MXC_BASE_UART4 : (i) == 5 ? MXC_BASE_UART5 : 0)
 
 #define MXC_UART_GET_UART(i)                                                                       \
-    ((i) == 0          ? MXC_UART0                                                                 \
-            : (i) == 1 ? MXC_UART1                                                                 \
-            : (i) == 2 ? MXC_UART2                                                                 \
-            : (i) == 3 ? MXC_UART3                                                                 \
-            : (i) == 4 ? MXC_UART4                                                                 \
-            : (i) == 5 ? MXC_UART5                                                                 \
-                       : 0)
+    ((i) == 0 ? MXC_UART0                                                                          \
+              : (i) == 1 ? MXC_UART1                                                               \
+                         : (i) == 2                                                                \
+                    ? MXC_UART2                                                                    \
+                    : (i) == 3 ? MXC_UART3 : (i) == 4 ? MXC_UART4 : (i) == 5 ? MXC_UART5 : 0)
 
 #define MXC_UART_GET_IDX(p)                                                                        \
-    ((p) == MXC_UART0          ? 0                                                                 \
-            : (p) == MXC_UART1 ? 1                                                                 \
-            : (p) == MXC_UART2 ? 2                                                                 \
-            : (p) == MXC_UART3 ? 3                                                                 \
-            : (p) == MXC_UART4 ? 4                                                                 \
-            : (p) == MXC_UART5 ? 5                                                                 \
-                               : -1)
+    ((p) == MXC_UART0 ? 0                                                                          \
+                      : (p) == MXC_UART1 ? 1                                                       \
+                                         : (p) == MXC_UART2                                        \
+                    ? 2                                                                            \
+                    : (p) == MXC_UART3 ? 3 : (p) == MXC_UART4 ? 4 : (p) == MXC_UART5 ? 5 : -1)
 
 /******************************************************************************/
 /*                                                                        SPI */
@@ -694,21 +674,16 @@ typedef enum {
     ((p) == MXC_SPI0 ? 0 : (p) == MXC_SPI1 ? 1 : (p) == MXC_SPI2 ? 2 : (p) == MXC_SPI3 ? 3 : -1)
 
 #define MXC_SPI_GET_BASE(i)                                                                        \
-    ((i) == 0          ? MXC_BASE_SPI0                                                             \
-            : (i) == 1 ? MXC_BASE_SPI1                                                             \
-            : (i) == 2 ? MXC_BASE_SPI2                                                             \
-            : (i) == 3 ? MXC_BASE_SPI3                                                             \
-                       : 0)
+    ((i) == 0                                                                                      \
+            ? MXC_BASE_SPI0                                                                        \
+            : (i) == 1 ? MXC_BASE_SPI1 : (i) == 2 ? MXC_BASE_SPI2 : (i) == 3 ? MXC_BASE_SPI3 : 0)
 
 #define MXC_SPI_GET_SPI(i)                                                                         \
     ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : (i) == 2 ? MXC_SPI2 : (i) == 3 ? MXC_SPI3 : 0)
 
 #define MXC_SPI_GET_IRQ(i)                                                                         \
     (IRQn_Type)((i) == 0 ? SPI0_IRQn                                                               \
-            : (i) == 1   ? SPI1_IRQn                                                               \
-            : (i) == 2   ? SPI2_IRQn                                                               \
-            : (i) == 3   ? SPI3_IRQn                                                               \
-                         : 0)
+                         : (i) == 1 ? SPI1_IRQn : (i) == 2 ? SPI2_IRQn : (i) == 3 ? SPI3_IRQn : 0)
 
 /******************************************************************************/
 /*                                                                       TRNG */

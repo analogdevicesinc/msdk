@@ -134,9 +134,7 @@ int main(void)
             continue;
         }
 
-        for (j = 0; j < DATA_LEN; j++) {
-            tx_data[j] = DATA_VALUE;
-        }
+        for (j = 0; j < DATA_LEN; j++) { tx_data[j] = DATA_VALUE; }
 
         // Configure the peripheral
         if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins) != E_NO_ERROR) {

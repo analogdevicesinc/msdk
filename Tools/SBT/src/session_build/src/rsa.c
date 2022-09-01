@@ -127,9 +127,7 @@ int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, 
     print_debug("Signature verification OK\n");
 
     print_debug("Signature :\n\t");
-    for (i = 0; i < key.keyPr.modulus_length; i++) {
-        print_d("%02x", signature[i]);
-    }
+    for (i = 0; i < key.keyPr.modulus_length; i++) { print_d("%02x", signature[i]); }
     print_d("\n");
 
     return ERR_OK;
@@ -201,22 +199,16 @@ int read_file_signed_rsa_publickey(uint8_t* modulus, size_t* modulus_len, uint8_
 
     print_debug("\tModulus Length: " SSIZET_FMT " bits\n", *modulus_len * 8);
     print_debug("\tModulus :\n\t");
-    for (i = 0; i < *modulus_len; i++) {
-        print_d("%02x", modulus[i]);
-    }
+    for (i = 0; i < *modulus_len; i++) { print_d("%02x", modulus[i]); }
     print_d("\n");
 
     print_debug("\tPublic Exponent :\n\t");
-    for (i = 0; i < public_exponent_len; i++) {
-        print_d("%02x", public_exponent[i]);
-    }
+    for (i = 0; i < public_exponent_len; i++) { print_d("%02x", public_exponent[i]); }
     print_d("\n");
 
     print_debug("\tSignature Length: " SSIZET_FMT " bits\n", *signature_len * 8);
     print_debug("\tSignature :\n\t");
-    for (i = 0; i < *signature_len; i++) {
-        print_d("%02x", signature[i]);
-    }
+    for (i = 0; i < *signature_len; i++) { print_d("%02x", signature[i]); }
     print_d("\n");
 
     fclose(pFile);
@@ -358,9 +350,7 @@ void print_rsakey(rsa_key_t key)
     {
         print_debug("\tModulus Length: %d bits\n", key.keyPu.modulus_length * 8);
         print_debug("\tModulus :\n\t");
-        for (i = 0; i < key.keyPu.modulus_length; i++) {
-            print_d("%02x", key.keyPu.modulus[i]);
-        }
+        for (i = 0; i < key.keyPu.modulus_length; i++) { print_d("%02x", key.keyPu.modulus[i]); }
         print_d("\n");
 
         print_debug("\tPrivate Exponent :\n\t");

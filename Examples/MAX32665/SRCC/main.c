@@ -149,9 +149,7 @@ void test_function(void)
     start_timer();
     for (temp = 0; temp < ITERATIONS; temp++) {
         // Read data from RAM
-        for (i = 0; i < BUFFER_SIZE; i++) {
-            read_buffer[i] = *(address + i);
-        }
+        for (i = 0; i < BUFFER_SIZE; i++) { read_buffer[i] = *(address + i); }
 
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {

@@ -109,9 +109,7 @@ int main(void)
     while (MXC_UART_GetActive(READING_UART)) { }
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) {
-        TxData[i] = i;
-    }
+    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
 
     memset(RxData, 0x0, BUFF_SIZE);
 

@@ -51,9 +51,7 @@ int MXC_SPIXR_RevA_ReadRXFIFO(mxc_spixr_reva_regs_t* spixr, uint8_t* buf, int le
         return E_NULL_PTR;
     }
 
-    for (i = 0; i < len; i++) {
-        buf[i] = spixr->data8[0];
-    }
+    for (i = 0; i < len; i++) { buf[i] = spixr->data8[0]; }
 
     return E_NO_ERROR;
 }
@@ -66,9 +64,7 @@ int MXC_SPIXR_RevA_WriteTXFIFO(mxc_spixr_reva_regs_t* spixr, uint8_t* buf, int l
         return E_NULL_PTR;
     }
 
-    for (i = 0; i < len; i++) {
-        spixr->data8[0] = buf[i];
-    }
+    for (i = 0; i < len; i++) { spixr->data8[0] = buf[i]; }
 
     return E_NO_ERROR;
 }
@@ -363,9 +359,7 @@ void MXC_SPIXR_RevA_SendCommand(
 
     while (MXC_SPIXR_Busy()) { }
 
-    for (i = 0; i < length; i++) {
-        spixr->data8[0] = cmd[i];
-    }
+    for (i = 0; i < length; i++) { spixr->data8[0] = cmd[i]; }
 
     spixr->ctrl1 |= MXC_F_SPIXR_REVA_CTRL1_TX_START; /* Send command to RAM */
 

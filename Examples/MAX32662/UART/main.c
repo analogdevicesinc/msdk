@@ -113,9 +113,7 @@ int main(void)
     while (!(ConsoleUART->status & MXC_F_UART_STATUS_TX_EM)) { }
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) {
-        TxData[i] = i;
-    }
+    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifdef DMA

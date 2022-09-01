@@ -57,9 +57,7 @@ int aes_checksum(u8* crc, const u8* data, int size, int trunk)
     int resu;
     u8 input[16];
 
-    for (i = 0; i < 16; i++) {
-        h[i] = keynull[i] = 0;
-    }
+    for (i = 0; i < 16; i++) { h[i] = keynull[i] = 0; }
 
     for (i = 0; i < size; i += 16) {
         for (j = 0; j < 16; j++) {
@@ -78,9 +76,7 @@ int aes_checksum(u8* crc, const u8* data, int size, int trunk)
         }
     }
 
-    for (i = 0; i < trunk; i++) {
-        crc[i] = h[i];
-    }
+    for (i = 0; i < trunk; i++) { crc[i] = h[i]; }
 
     return ERR_OK;
 }
@@ -91,8 +87,6 @@ void print_aeskey(const uint8_t* key, const char* keyname)
 
     print_debug("\tAES Key %s :", keyname);
 
-    for (i = 0; i < 16; i++) {
-        print_d("%02x", key[i]);
-    }
+    for (i = 0; i < 16; i++) { print_d("%02x", key[i]); }
     print_d("\n");
 }

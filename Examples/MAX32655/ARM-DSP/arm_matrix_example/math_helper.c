@@ -114,9 +114,7 @@ void arm_provide_guard_bits_q15(q15_t* input_buf, uint32_t blockSize, uint32_t g
 {
     uint32_t i;
 
-    for (i = 0; i < blockSize; i++) {
-        input_buf[i] = input_buf[i] >> guard_bits;
-    }
+    for (i = 0; i < blockSize; i++) { input_buf[i] = input_buf[i] >> guard_bits; }
 }
 
 /**
@@ -210,9 +208,7 @@ void arm_provide_guard_bits_q31(q31_t* input_buf, uint32_t blockSize, uint32_t g
 {
     uint32_t i;
 
-    for (i = 0; i < blockSize; i++) {
-        input_buf[i] = input_buf[i] >> guard_bits;
-    }
+    for (i = 0; i < blockSize; i++) { input_buf[i] = input_buf[i] >> guard_bits; }
 }
 
 /**
@@ -229,9 +225,7 @@ void arm_provide_guard_bits_q7(q7_t* input_buf, uint32_t blockSize, uint32_t gua
 {
     uint32_t i;
 
-    for (i = 0; i < blockSize; i++) {
-        input_buf[i] = input_buf[i] >> guard_bits;
-    }
+    for (i = 0; i < blockSize; i++) { input_buf[i] = input_buf[i] >> guard_bits; }
 }
 
 /**
@@ -270,9 +264,7 @@ void arm_apply_guard_bits(float32_t* pIn, uint32_t numSamples, uint32_t guard_bi
 {
     uint32_t i;
 
-    for (i = 0; i < numSamples; i++) {
-        pIn[i] = pIn[i] * arm_calc_2pow(guard_bits);
-    }
+    for (i = 0; i < numSamples; i++) { pIn[i] = pIn[i] * arm_calc_2pow(guard_bits); }
 }
 
 /**
@@ -284,9 +276,7 @@ uint32_t arm_calc_2pow(uint32_t numShifts)
 {
     uint32_t i, val = 1;
 
-    for (i = 0; i < numShifts; i++) {
-        val = val * 2;
-    }
+    for (i = 0; i < numShifts; i++) { val = val * 2; }
 
     return (val);
 }

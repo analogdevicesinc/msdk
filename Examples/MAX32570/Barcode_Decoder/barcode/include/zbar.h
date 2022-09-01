@@ -336,9 +336,7 @@ static inline unsigned long zbar_fourcc_parse(const char* format)
     if (format) {
         int i;
 
-        for (i = 0; i < 4 && format[i]; i++) {
-            fourcc |= ((unsigned long)format[i]) << (i * 8);
-        }
+        for (i = 0; i < 4 && format[i]; i++) { fourcc |= ((unsigned long)format[i]) << (i * 8); }
     }
 
     return (fourcc);

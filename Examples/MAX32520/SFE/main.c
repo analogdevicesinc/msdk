@@ -259,7 +259,5 @@ int main(void)
     isr_flags = 0;
     isr_cnt = 0;
 
-    while (1) {
-        Flash_CommandCheck();
-    }
+    while (1) { Flash_CommandCheck(); }
 }

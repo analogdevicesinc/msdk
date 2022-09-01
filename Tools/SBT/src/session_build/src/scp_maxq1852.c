@@ -159,13 +159,9 @@ int load_customer_key(char* pub_x, char* pub_y)
         yq[i] = one_byte;
     }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
-        payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i]; }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
-        payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i]; }
 
     return maxq1852_signed_cmd(payload, ipayload, "load_customer_key");
 }
@@ -204,13 +200,9 @@ int verify_customer_key(char* pub_x, char* pub_y)
         yq[i] = one_byte;
     }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
-        payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i]; }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
-        payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i]; }
 
     return maxq1852_signed_cmd(payload, ipayload, "verify_customer_key");
 }
@@ -387,9 +379,7 @@ int load_file(char* hexfilename)
         return (EXIT_FAILURE);
     }
 
-    for (i = 0; i < 1024 * 1024; i++) {
-        dataloc[i] = 0xff;
-    }
+    for (i = 0; i < 1024 * 1024; i++) { dataloc[i] = 0xff; }
 
     for (i = 0; i < data_len; i++) {
         if (addr_g[i] > 1024 * 1024) {
@@ -523,13 +513,9 @@ int verify_code_file(char* hexfilename)
         return (EXIT_FAILURE);
     }
 
-    for (i = 0; i < 1024 * 1024; i++) {
-        dataloc[i] = 0xff;
-    }
+    for (i = 0; i < 1024 * 1024; i++) { dataloc[i] = 0xff; }
 
-    for (i = 0; i < data_len; i++) {
-        dataloc[addr_g[i]] = data[i];
-    }
+    for (i = 0; i < data_len; i++) { dataloc[addr_g[i]] = data[i]; }
 
     last_index = addr_g[data_len - 1];
     for (i = 0; i < last_index; i += config_g.chunk_size) {
