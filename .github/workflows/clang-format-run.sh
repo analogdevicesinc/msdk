@@ -8,12 +8,20 @@ set -e
 # Find the C files
 CFILES=$(find . -iname "*.c")
 
-# Remove single line ';', these confuse clang-format
-parallel perl -i -pe 's/\s+;\s/{}\n/' -- $CFILES
+for c_file in ${CFILES}
+do
+  # Remove single line ';', these confuse clang-format
+  perl -i -pe 's/\s+;\s/{}\n/' ${c_file}
 
-# Format the files
-parallel clang-format --verbose -style=file -i -- $CFILES
+  # Format the files
+  clang-format --verbose -style=file -i ${c_file}
+
+done
+
 
 # Reformat all of the header files
 HFILES=$(find . -iname "*.h" -not -name "*regs*")
-parallel clang-format --verbose -style=file -i -- $HFILES
+for h_file in ${HFILES}
+do
+  clang-format --verbose -style=file -i ${h_file}
+done
