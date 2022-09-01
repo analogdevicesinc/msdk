@@ -50,6 +50,8 @@
 #include "wsf_trace.h"
 #include "wsf_types.h"
 #include "wut.h"
+#include <string.h>
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -675,25 +677,20 @@ static void datsProcMsg(dmEvt_t* pMsg)
 
     case DM_SEC_AUTH_REQ_IND:
 
-        APP_TRACE_INFO0("Sending OOB data");
-        oobConnId = connId;
+            if (pMsg->authReq.oob) {
+                dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-        /* Start the TX to send the local OOB data */
-        PalUartWriteData(
-            PAL_UART_ID_CHCI, datsOobCfg->localRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
-    }
-    else
-    {
-        AppHandlePasskey(&pMsg->authReq);
-    }
+                APP_TRACE_INFO0("Sending OOB data");
+                oobConnId = connId;
 
-    DmSecAuthRsp(connId, 0, NULL);
-}
-else
-{
-    AppHandlePasskey(&pMsg->authReq);
-}
-break;
+                /* Start the TX to send the local OOB data */
+                PalUartWriteData(PAL_UART_ID_CHCI, datsOobCfg->localRandom,
+                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+
+            } else {
+                AppHandlePasskey(&pMsg->authReq);
+            }
+            break;
 
 case DM_SEC_COMPARE_IND:
 AppHandleNumericComparison(&pMsg->cnfInd);

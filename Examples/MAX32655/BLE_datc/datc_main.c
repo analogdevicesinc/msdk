@@ -36,7 +36,21 @@
 #include "pal_btn.h"
 #include "pal_uart.h"
 #include "sdsc_api.h"
+#include "smp_api.h"
+#include "svc_ch.h"
+#include "svc_core.h"
 #include "tmr.h"
+#include "util/bstream.h"
+#include "util/calc128.h"
+#include "wpc/wpc_api.h"
+#include "wsf_assert.h"
+#include "wsf_buf.h"
+#include "wsf_msg.h"
+#include "wsf_nvm.h"
+#include "wsf_trace.h"
+#include "wsf_types.h"
+#include <string.h>
+
 /**************************************************************************************************
 Macros
 **************************************************************************************************/
@@ -1158,25 +1172,20 @@ static void datcProcMsg(dmEvt_t* pMsg)
 
     case DM_SEC_AUTH_REQ_IND:
 
-        APP_TRACE_INFO0("Sending OOB data");
-        oobConnId = connId;
+            if (pMsg->authReq.oob) {
+                dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-        /* Start the TX to send the local OOB data */
-        PalUartWriteData(
-            PAL_UART_ID_CHCI, datcOobCfg->localRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
-    }
-    else
-    {
-        AppHandlePasskey(&pMsg->authReq);
-    }
+                APP_TRACE_INFO0("Sending OOB data");
+                oobConnId = connId;
 
-    DmSecAuthRsp(connId, 0, NULL);
-}
-else
-{
-    AppHandlePasskey(&pMsg->authReq);
-}
-break;
+                /* Start the TX to send the local OOB data */
+                PalUartWriteData(PAL_UART_ID_CHCI, datcOobCfg->localRandom,
+                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+
+            } else {
+                AppHandlePasskey(&pMsg->authReq);
+            }
+            break;
 
 case DM_SEC_COMPARE_IND:
 AppHandleNumericComparison(&pMsg->cnfInd);

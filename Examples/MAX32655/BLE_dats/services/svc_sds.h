@@ -10,6 +10,8 @@
 #ifndef SVC_SEC_DATA_H
 #define SVC_SEC_DATA_H
 
+#include "att_api.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
