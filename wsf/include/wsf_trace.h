@@ -25,6 +25,8 @@
 #define WSF_TRACE_H
 
 #include <stdarg.h>
+#include <stdint.h>
+#include "wsf_types.h"
 
 #ifdef __cplusplus
 extern "C" {

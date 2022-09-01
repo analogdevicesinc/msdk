@@ -25,6 +25,8 @@
 #ifndef WDXC_API_H
 #define WDXC_API_H
 
+#include "wsf_efs.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

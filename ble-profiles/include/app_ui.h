@@ -24,6 +24,8 @@
 #ifndef APP_UI_H
 #define APP_UI_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

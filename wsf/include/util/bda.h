@@ -24,6 +24,9 @@
 #ifndef BDA_H
 #define BDA_H
 
+#include <stdint.h>
+#include "wsf_types.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
