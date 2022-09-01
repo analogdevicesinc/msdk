@@ -10,10 +10,13 @@ CFILES=$(find . -iname "*.c")
 
 for c_file in ${CFILES}
 do
-  # Remove single line ';', these confuse clang-format
+  # Format the files, this will turn while(1); into while(1)\n;
+  clang-format --verbose -style=file -i ${c_file}
+
+  # Remove single line ';' and replace with "{}"
   perl -i -pe 's/\s+;\s/{}\n/' ${c_file}
 
-  # Format the files
+  # Re-format the files
   clang-format --verbose -style=file -i ${c_file}
 
 done
