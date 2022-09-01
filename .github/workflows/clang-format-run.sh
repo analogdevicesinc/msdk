@@ -16,4 +16,4 @@ parallel clang-format --verbose -style=file -i -- $CFILES
 
 # Reformat all of the header files
 HFILES=$(find . -iname "*.h" -not -name "*regs*")
-parallel clang-format --verbose -style=file -i $HFILES
+parallel clang-format --verbose -style=file -i -- $HFILES
