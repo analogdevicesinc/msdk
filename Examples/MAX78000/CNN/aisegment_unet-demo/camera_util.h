@@ -44,7 +44,7 @@
 //#define STREAM_ENABLE
 #endif
 
-#if defined(CAMERA_HM0360)
+#if defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR)
 #define IMAGE_XRES 320
 #define IMAGE_YRES 240
 #define CAMERA_MONO
