@@ -45,6 +45,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build BLE5_ctr and flash to boards
         run: |
+          # Remove local modifications
+          git scorch
+
           echo `pwd`
           echo "\$GITHUB_WORKSPACE="$GITHUB_WORKSPACE
           bash /home/$USER/Workspace/BLE-examples-test/Examples_tests/verify_tifs.sh $GITHUB_WORKSPACE
