@@ -192,7 +192,9 @@ int process_command(char* line)
     int found_l;
     char loline[MAX_STRING];
 
-    for (i = 0; i < (int)strlen(line); i++) { loline[i] = (char)tolower((int)line[i]); }
+    for (i = 0; i < (int)strlen(line); i++) {
+        loline[i] = (char)tolower((int)line[i]);
+    }
 
     /* parse every command */
     for (found_l = 0, i = 0; i < MAX_SCP_COMMAND; i++) {
@@ -207,7 +209,9 @@ int process_command(char* line)
             /* while not eol */
             while (j < (int)strlen(line) - 1) {
                 /* while space, go on */
-                while (' ' == line[j]) { j++; }
+                while (' ' == line[j]) {
+                    j++;
+                }
                 /* if not eol */
                 if (j == (int)strlen(line) - 1) {
                     break;
@@ -226,7 +230,9 @@ int process_command(char* line)
                 k++;
                 /* display param */
                 print_debug("params[%d]:", nb_params);
-                for (l = 0; l < k - 1; l++) { print_d("%c", params[nb_params][l]); }
+                for (l = 0; l < k - 1; l++) {
+                    print_d("%c", params[nb_params][l]);
+                }
                 print_d("\n");
 
                 replace_extra_params(params[nb_params]);

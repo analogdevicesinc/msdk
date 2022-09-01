@@ -217,7 +217,9 @@ void load_input(void)
     if (retVal != E_NO_ERROR) {
         printf("SPI Transaction failed!\n");
     } else {
-        for (i = 0; i < DATA_LEN; i++) { rx_data[i] = unsigned_to_signed(rx_data[i]); }
+        for (i = 0; i < DATA_LEN; i++) {
+            rx_data[i] = unsigned_to_signed(rx_data[i]);
+        }
 
         memcpy32((uint32_t*)0x50408000, input, 6400);
     }

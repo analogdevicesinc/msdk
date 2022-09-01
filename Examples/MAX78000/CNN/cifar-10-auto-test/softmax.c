@@ -145,7 +145,9 @@ void softmax_shift_q17p14_q15(q31_t* vec_in, const uint16_t dim_vec, uint8_t in_
 {
     int16_t i;
 
-    for (i = 0; i < dim_vec; i++) { vec_in[i] <<= in_shift; }
+    for (i = 0; i < dim_vec; i++) {
+        vec_in[i] <<= in_shift;
+    }
 
     softmax_q17p14_q15(vec_in, dim_vec, p_out);
 }

@@ -120,7 +120,9 @@ int main(void)
 
     mxc_can_msg_info_t msg_tx;
     uint8_t data_tx[64];
-    for (int i = 0; i < 64; i++) { data_tx[i] = i; }
+    for (int i = 0; i < 64; i++) {
+        data_tx[i] = i;
+    }
 
     printf("Press button SW2 to begin example.\n");
     while (!PB_Get(0)) { }
@@ -281,7 +283,7 @@ void msgRead()
     while (wait_for_msg) { }
 #elif DMA
     //*** IMPORTANT ***: Set these fields to the expected values of the message to be received. The
-    //DMA transaction will be configured improperly if you fail to do this.
+    // DMA transaction will be configured improperly if you fail to do this.
     msg_rx.msg_id = MXC_CAN_EXTENDED_ID(0x255);
     msg_rx.rtr = 0;
     msg_rx.fdf = 0;

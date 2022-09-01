@@ -122,7 +122,9 @@ int main(void)
 
     for (i = 1; i < 17; i++) {
         // Initialize transmit and receive buffers
-        for (j = 0; j < TEST_LEN; j++) { txData[j] = j + OFFSET; }
+        for (j = 0; j < TEST_LEN; j++) {
+            txData[j] = j + OFFSET;
+        }
         memset(rxData, 0x0, TEST_LEN * 2);
 
         // Configure the peripheral

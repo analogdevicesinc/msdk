@@ -74,7 +74,7 @@
 #define WUT_ENABLE // enables WUT timer
 #define WUT_USEC 380 // continuous WUT duration close to I2S polling time in usec
 //#define ENERGY            // if enabled, turn off LED2, toggle LED1 for 10sec for energy
-//measurements on Power monitor (System Power)
+// measurements on Power monitor (System Power)
 
 #if SLEEP_MODE == 2 // need WakeUp Timer (WUT) for deepsleep (LPM)
 #ifndef WUT_ENABLE
@@ -438,7 +438,9 @@ int main(void)
 #ifdef ENABLE_PRINT_ENVELOPE
         PR_DEBUG("%.6d|", sampleCounter);
 
-        for (int i = 0; i < avg / 10; i++) { PR_DEBUG("="); }
+        for (int i = 0; i < avg / 10; i++) {
+            PR_DEBUG("=");
+        }
 
         if (avg >= thresholdHigh) {
             PR_DEBUG("*");
@@ -569,11 +571,15 @@ int main(void)
 #if SLEEP_MODE == 0
 
                 /* Wait for CNN  to complete */
-                while (cnn_time == 0) { __WFI(); }
+                while (cnn_time == 0) {
+                    __WFI();
+                }
 
 #elif SLEEP_MODE == 1
 
-                while (cnn_time == 0) { __WFI(); }
+                while (cnn_time == 0) {
+                    __WFI();
+                }
 
 #elif SLEEP_MODE == 2
                 SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=1

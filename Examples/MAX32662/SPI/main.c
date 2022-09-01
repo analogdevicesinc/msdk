@@ -121,7 +121,9 @@ int main(void)
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
-        for (j = 0; j < DATA_LEN; j++) { tx_data[j] = DATA_VALUE; }
+        for (j = 0; j < DATA_LEN; j++) {
+            tx_data[j] = DATA_VALUE;
+        }
 
         mxc_spi_pins_t spi_pin_init;
         spi_pin_init.clock = true;

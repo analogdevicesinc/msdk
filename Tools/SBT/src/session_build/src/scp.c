@@ -128,12 +128,16 @@ int data_link(ctl_code_t ctl_code, const uint8_t* payload_l, uint16_t payload_le
 
     if (payload_len != 0) {
         /* Add payload */
-        for (i = 0; i < payload_len; i++) { data_frame[iframe++] = payload_l[i]; }
+        for (i = 0; i < payload_len; i++) {
+            data_frame[iframe++] = payload_l[i];
+        }
 
         /* Add Payload CRC */
         ASSERT_OK(aes_checksum(crc, payload_l, payload_len, 4));
 
-        for (i = 4; i != 0; i--) { data_frame[iframe++] = crc[i - 1]; }
+        for (i = 4; i != 0; i--) {
+            data_frame[iframe++] = crc[i - 1];
+        }
     }
 
     return packet_send(data_frame, iframe, idf_ctl[ctl_code], msg);
@@ -216,7 +220,9 @@ int session_layer(session_cmd_t cmd, const uint8_t* data, uint16_t data_len, con
 
     if (data_len != 0) {
         /* Add payload */
-        for (i = 0; i < data_len; i++) { segment[isegment++] = data[i]; }
+        for (i = 0; i < data_len; i++) {
+            segment[isegment++] = data[i];
+        }
 
         /* Only Command are Signed */
         if (HOST == whoami() && cmd == DATA) {
@@ -263,7 +269,9 @@ int hello_request(void)
     uint8_t payload[MAX_FRAME];
     size_t ipayload = 0;
 
-    for (i = 0; i < HELLO_SCP_REQ_CONST_LEN; i++) { payload[ipayload++] = hello_scp_req_const[i]; }
+    for (i = 0; i < HELLO_SCP_REQ_CONST_LEN; i++) {
+        payload[ipayload++] = hello_scp_req_const[i];
+    }
 
     /* from the specs, the hello are the same for these two modes */
     if ((SCP_RSA == config_g.session_mode) || (SCP_FLORA_RSA == config_g.session_mode)
@@ -289,7 +297,9 @@ int hello_reply(void)
     uint8_t payload[MAX_FRAME];
     size_t ipayload = 0;
 
-    for (i = 0; i < HELLO_SCP_REP_CONST_LEN; i++) { payload[ipayload++] = hello_scp_rep_const[i]; }
+    for (i = 0; i < HELLO_SCP_REP_CONST_LEN; i++) {
+        payload[ipayload++] = hello_scp_rep_const[i];
+    }
 
     if (SCP_FLORA_RSA == config_g.session_mode || SCP_ANGELA_ECDSA == config_g.session_mode
         || SCP_PAOLA == config_g.session_mode) {
@@ -322,13 +332,19 @@ int hello_reply(void)
     }
 
     /* usn */
-    for (i = 0; i < USN_LEN; i++) { payload[ipayload++] = config_g.usn[i]; }
+    for (i = 0; i < USN_LEN; i++) {
+        payload[ipayload++] = config_g.usn[i];
+    }
 
     /* for flora modes, pad with 0 up to 16 bytes */
-    for (i = USN_LEN; i < 16; i++) { payload[ipayload++] = 0; }
+    for (i = USN_LEN; i < 16; i++) {
+        payload[ipayload++] = 0;
+    }
 
     /* random number */
-    for (i = 0; i < 16; i++) { payload[ipayload++] = 0x00; }
+    for (i = 0; i < 16; i++) {
+        payload[ipayload++] = 0x00;
+    }
 
     return session_layer(HELLO_REP, payload, ipayload, "hello_reply");
 }
@@ -490,7 +506,9 @@ int del_mem(char* sfilename, size_t address_offset)
     print_debug("address_offset is: " SSIZET_XFMT " bytes\n", address_offset);
 
     /* set up the start addr on 4 bytes */
-    for (i = 3; i >= 0; i--) { payload[ipayload++] = (start_addr >> (8 * i)) & 0xFF; }
+    for (i = 3; i >= 0; i--) {
+        payload[ipayload++] = (start_addr >> (8 * i)) & 0xFF;
+    }
 
     /* set up the length on 4 bytes */
     range = (end_addr - start_addr);
@@ -501,7 +519,9 @@ int del_mem(char* sfilename, size_t address_offset)
 
     print_debug("erase length is: %d bytes\n", range);
 
-    for (i = 3; i >= 0; i--) { payload[ipayload++] = ((range) >> (8 * i)) & 255; }
+    for (i = 3; i >= 0; i--) {
+        payload[ipayload++] = ((range) >> (8 * i)) & 255;
+    }
 
     return session_layer(DATA, payload, ipayload, "del_mem");
 }
@@ -516,7 +536,9 @@ int write_mem(const uint8_t* data, size_t data_len, size_t data_addr)
     payload[ipayload++] = WRITE_MEM & 255;
 
     /* set up the start addr on 4 bytes */
-    for (i = 4; i != 0; i--) { payload[ipayload++] = (data_addr >> (8 * (i - 1))) & 255; }
+    for (i = 4; i != 0; i--) {
+        payload[ipayload++] = (data_addr >> (8 * (i - 1))) & 255;
+    }
 
     /* set up the length */
     for (i = 4; i != 0; i--) {
@@ -524,7 +546,9 @@ int write_mem(const uint8_t* data, size_t data_len, size_t data_addr)
         ipayload++;
     }
 
-    for (i = 0; i < data_len; i++) { payload[ipayload++] = data[i]; }
+    for (i = 0; i < data_len; i++) {
+        payload[ipayload++] = data[i];
+    }
 
     return session_layer(DATA, payload, ipayload, "write_mem");
 }
@@ -539,12 +563,18 @@ int verify_data(const uint8_t* data, size_t data_len, size_t data_addr)
     payload[ipayload++] = VERIFY_MEM & 255;
 
     /* set up the start addr on 4 bytes */
-    for (i = 4; i != 0; i--) { payload[ipayload++] = (data_addr >> (8 * (i - 1))) & 255; }
+    for (i = 4; i != 0; i--) {
+        payload[ipayload++] = (data_addr >> (8 * (i - 1))) & 255;
+    }
 
     /* set up the length on 4 bytes */
-    for (i = 4; i != 0; i--) { payload[ipayload++] = (data_len >> (8 * (i - 1))) & 255; }
+    for (i = 4; i != 0; i--) {
+        payload[ipayload++] = (data_len >> (8 * (i - 1))) & 255;
+    }
 
-    for (i = 0; i < data_len; i++) { payload[ipayload++] = data[i]; }
+    for (i = 0; i < data_len; i++) {
+        payload[ipayload++] = data[i];
+    }
 
     return session_layer(DATA, payload, ipayload, "verify_data");
 }
@@ -562,7 +592,9 @@ int del_data(size_t start_addr, size_t length)
     payload[ipayload++] = ERASE_MEM & 255;
 
     /* set up the start addr on 4 bytes */
-    for (i = 3; i >= 0; i--) { payload[ipayload++] = (start_addr >> (8 * i)) & 255; }
+    for (i = 3; i >= 0; i--) {
+        payload[ipayload++] = (start_addr >> (8 * i)) & 255;
+    }
 
     /* set up the length on 4 bytes */
     range = (end_addr - start_addr);
@@ -573,7 +605,9 @@ int del_data(size_t start_addr, size_t length)
 
     print_debug("erase length is: %d bytes\n", range);
 
-    for (i = 3; i >= 0; i--) { payload[ipayload++] = ((range) >> (8 * i)) & 255; }
+    for (i = 3; i >= 0; i--) {
+        payload[ipayload++] = ((range) >> (8 * i)) & 255;
+    }
 
     return session_layer(DATA, payload, ipayload, "del_data");
 }
@@ -668,7 +702,9 @@ int kill_chip2(void)
     payload[ipayload++] = KILL_CHIP2 >> 8;
     payload[ipayload++] = KILL_CHIP2 & 255;
 
-    for (i = 0; i < USN_LEN; i++) { payload[ipayload++] = config_g.usn[i]; }
+    for (i = 0; i < USN_LEN; i++) {
+        payload[ipayload++] = config_g.usn[i];
+    }
 
     return session_layer(DATA, payload, ipayload, "kill_chip2");
 }
@@ -734,10 +770,14 @@ int write_otp(size_t offset, const uint8_t* data, size_t data_length)
     print_debug("offset:" SSIZET_XFMT "\n", offset);
 
     print_debug("data:");
-    for (i = 0; i < data_length; i++) { print_d("%c", data[i]); }
+    for (i = 0; i < data_length; i++) {
+        print_d("%c", data[i]);
+    }
     print_d("\n");
 
-    for (i = 0; i < data_length; i++) { payload[ipayload++] = data[i]; }
+    for (i = 0; i < data_length; i++) {
+        payload[ipayload++] = data[i];
+    }
 
     return session_layer(DATA, payload, ipayload, "write_otp");
 }

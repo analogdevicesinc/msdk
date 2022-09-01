@@ -105,7 +105,9 @@ int init_database(void)
         return -1;
     }
 
-    for (int i = 0; i < closest_sub_buffer_size; ++i) { pClosestSubId[i] = -1; }
+    for (int i = 0; i < closest_sub_buffer_size; ++i) {
+        pClosestSubId[i] = -1;
+    }
 
     pMinDistanceCounter = (uint8_t*)malloc(pDatabaseInfo->numberOfSubjects);
 
@@ -113,7 +115,9 @@ int init_database(void)
         return -1;
     }
 
-    for (int i = 0; i < pDatabaseInfo->numberOfSubjects; ++i) { pMinDistanceCounter[i] = 0; }
+    for (int i = 0; i < pDatabaseInfo->numberOfSubjects; ++i) {
+        pMinDistanceCounter[i] = 0;
+    }
 
     return 0;
 }
@@ -258,7 +262,9 @@ int calculate_minDistance(const uint8_t* embedding)
 
     PR_INFO("\t");
 
-    for (int i = 0; i < closest_sub_buffer_size; ++i) { PR_INFO("%d, ", pClosestSubId[i]); }
+    for (int i = 0; i < closest_sub_buffer_size; ++i) {
+        PR_INFO("%d, ", pClosestSubId[i]);
+    }
 
     PR_INFO("\nIdx: %d, Buffer Idx: %d\n", closestSubIdBufIdx, bufferIdx);
 

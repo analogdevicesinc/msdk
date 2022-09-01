@@ -334,7 +334,9 @@ int load_default_config(void)
     config_g.address_offset = 0;
     config_g.chunk_size = 1024;
 
-    for (i = 0; i < USN_LEN; i++) { config_g.usn[i] = usn_default[i]; }
+    for (i = 0; i < USN_LEN; i++) {
+        config_g.usn[i] = usn_default[i];
+    }
 
     sprintf(config_g.script_file, "script.txt");
     sprintf(config_g.output_file, "session.txt");
@@ -378,7 +380,9 @@ void display_config(void)
     print_d("\tAddress offset: %08x\n", config_g.address_offset);
 
     print_d("\tUSN:");
-    for (i = 0; i < 16; i++) { print_d("%02x", config_g.usn[i]); }
+    for (i = 0; i < 16; i++) {
+        print_d("%02x", config_g.usn[i]);
+    }
     print_d("\n");
 
 #ifdef _MAXIM_HSM

@@ -143,7 +143,9 @@ int hash_sign_payload(uint8_t* hash, const uint8_t* payload, size_t payload_len)
     }
 
     print_debug("hash: ");
-    for (i = 0; i < UCL_SHA256_HASHSIZE; i++) { print_d("%02x", hash[i]); }
+    for (i = 0; i < UCL_SHA256_HASHSIZE; i++) {
+        print_d("%02x", hash[i]);
+    }
     print_d("\n");
 
     return ERR_OK;
@@ -439,11 +441,15 @@ int generate_header(u8* payload, size_t payload_len, size_t* payload_offset)
     }
 
     print_debug("Header (Length " SSIZET_FMT ") :", header_len);
-    for (i = 0; i < header_len; i++) { print_d("%02x", payload[i]); }
+    for (i = 0; i < header_len; i++) {
+        print_d("%02x", payload[i]);
+    }
     print_d("\n");
 
     /* put the arguments in the empty space */
-    for (i = 0; i < arguments_len; i++) { payload[i] = config_g.arguments[i]; }
+    for (i = 0; i < arguments_len; i++) {
+        payload[i] = config_g.arguments[i];
+    }
 
     *payload_offset = offset + arguments_len;
 

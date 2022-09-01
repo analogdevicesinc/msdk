@@ -136,7 +136,9 @@ void setTrigger(int waitForTrigger)
         while (PB_Get(0) == 0) { }
 
         // Debounce the button press.
-        for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
+        for (tmp = 0; tmp < 0x800000; tmp++) {
+            __NOP();
+        }
     }
 
     // Wait for button to be "up" (unpressed).
