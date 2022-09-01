@@ -21,6 +21,7 @@ extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
 extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
+extern xSemaphoreHandle rfTestMutex;
 bool constTxisActive = false;
 CLI_Command_Definition_t registeredCommandList[10];
 
@@ -28,7 +29,6 @@ CLI_Command_Definition_t registeredCommandList[10];
 static bool isDigit(const char* symbol, uint8_t len);
 static bool paramsValid(const char* commandstring, uint8_t numOfParams);
 static bool commandOnly(const char* commandstring);
-static bool testIsActive(void);
 /***************************| Command handler protoypes |******************************/
 static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
@@ -214,11 +214,10 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     static tx_config_t rfCommand = {.testType = 0xFF, .duration_ms = 0};
 
-    if (testIsActive()) {
+    if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
         return pdFALSE;
     }
-
     /*if no params given and sweepConfig still has its init value */
     if (commandOnly(pcCommandString) && rfCommand.testType == 0xFF) {
         sprintf(pcWriteBuffer, "You have to call the command at least once with parameters\r\n");
@@ -241,7 +240,8 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
             2,                      /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
-        /* verify duration string */
+        /* if a duration param was given then verify it, otherwise we deafult to 
+           last used setting saved in the static rfCommand struct */
         if (temp != NULL) {
             if (isDigit(temp, lParameterStringLength))
                 rfCommand.duration_ms = atoi(temp);
@@ -294,6 +294,7 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     longTestActive = false;
     longTestActive = false;
     pausePrompt    = false;
+    xSemaphoreGive(rfTestMutex);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -365,7 +366,7 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     static uint32_t channelNum = 0xFF;
     BaseType_t lParameterStringLength;
 
-    if (testIsActive()) {
+    if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
         return pdFALSE;
     }
@@ -396,15 +397,14 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     strcat(pcWriteBuffer, "Starting TX\r\n");
     PalBbEnable();
     llc_api_tx_ldo_setup();
-    /* Enable constant TX */
+
     /* Enable constant TX */
     MXC_R_TX_CTRL = 0x1;
 
     /* Enable pattern generator, set PRBS-9 */
     MXC_R_CONST_OUPUT = 0x0;
     MXC_R_PATTERN_GEN = 0x4B;
-    // dbb_seq_tx_enable();
-    // dbb_seq_tx_enable();
+
     if (longTestActive | constTxisActive | freqHopisActive) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
         return pdFALSE;
@@ -426,10 +426,11 @@ static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
 
-    if (testIsActive()) {
+    if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
         return pdFALSE;
     }
+
     // TODO : validate value
     sprintf(pcWriteBuffer, "Starting frequency hopping\n");
     longTestActive  = true;
@@ -451,7 +452,7 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     BaseType_t lParameterStringLength;
     static sweep_config_t sweepConfig = {.duration_per_ch_ms = 0};
 
-    if (testIsActive()) {
+    if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
         return pdFALSE;
     }
@@ -551,12 +552,5 @@ static bool commandOnly(const char* commandstring)
     if (str == NULL)
         return true;
 
-    return false;
-}
-static bool testIsActive(void)
-{
-    if (longTestActive | constTxisActive | freqHopisActive) {
-        return true;
-    }
     return false;
 }

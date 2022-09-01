@@ -45,6 +45,8 @@ TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
+
+xSemaphoreHandle rfTestMutex;
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
 /**************************************************************************************************
@@ -331,11 +333,15 @@ void vCmdLineTask(void* pvParameters)
                         WsfBufIoWrite((const uint8_t*)backspace, sizeof(backspace));
                     }
                     fflush(stdout);
-                } else if ((char)tmp == 'e' && freqHopisActive) {
+                }
+                /*since freq hop does not allow user to see what they are typing, simply typing
+                  'e' without the need to press enter willl stop the frequency hopping test */
+                else if ((char)tmp == 'e' && freqHopisActive) {
                     LlEndTest(NULL);
                     MXC_TMR_Stop(MXC_TMR2);
                     longTestActive  = false;
                     freqHopisActive = false;
+                    xSemaphoreGive(rfTestMutex);
                     prompt();
                 } else if (tmp == 0x03) {
                     /* ^C abort */
@@ -593,6 +599,15 @@ int main(void)
     /* Register the UART RX request */
     WsfBufIoUartRegister(processConsoleRX);
 
+    /* FreeRTOS */
+    rfTestMutex = xSemaphoreCreateMutex();
+    if (rfTestMutex == NULL) {
+        printf("xSemaphoreCreateMutex failed to create a mutex.\n");
+        printf("necessary for operation...\r\n");
+        while (1) {
+            //hang here....
+        }
+    }
     xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
                 configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
                 tskIDLE_PRIORITY + 1, &cmd_task_id);
