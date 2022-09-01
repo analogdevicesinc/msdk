@@ -34,6 +34,7 @@ Pulse_Train
 RPU
 RTC
 RTC_Backup
+SCPA_OTP_Dump
 SDHC_FAT
 SDHC_Raw
 Semaphore

@@ -7,64 +7,44 @@ on:
 
 jobs:
 
-  run-not-pr: 
-    # Do not run on Analog-Devices-MSDK/msdk:main or PR branches
+  run-on-pr: 
+    # Run on branchs, not forked PR branches
     if: |
-      ${{ (github.ref != 'refs/heads/main' ||
-      github.repository != 'Analog-Devices-MSDK/msdk') &&
-      !startsWith(github.ref, 'refs/pull') &&
-      contains(github.event.comment.body, '/clang-format-run') }}
+      contains(github.event.comment.body, '/clang-format-run')
 
     runs-on:
       - self-hosted
       - software
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
+    - uses: actions/github-script@v3
+      id: get-pr
+      with:
+        script: |
+          const request = {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number
+          }
+          core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+          try {
+            const result = await github.pulls.get(request)
+            return result.data
+          } catch (err) {
+            core.setFailed(`Request failed with error ${err}`)
+          }
+    - uses: actions/checkout@v3
+      with:
+        repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+        ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+
+    - name: clang-format-run
+      run: |
+          bash -ex .github/workflows/clang-format-run.sh
           
-  
-      # Runs a set of commands using the runners shell
-      - name: clang-format-run
-        run: |
-
-          bash -ex .github/workflows/clang-format-run.sh
-
-      - name: Push reformatted files
-        uses: EndBug/add-and-commit@v9.0.1
-        with:
-          add: '*'
-          message: 'clang-format bot reformatting.'
-          push: true
-
-  run-pr: 
-    # Running on PR branches
-    if: |
-      ${{ startsWith(github.ref, 'refs/pull') &&
-      contains(github.event.comment.body, '/clang-format-run') }}
-
-    runs-on:
-      - self-hosted
-      - software
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
-          # Get on the appropriate branch
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-
-      # Runs a set of commands using the runners shell
-      - name: clang-format-run
-        run: |
-
-          bash -ex .github/workflows/clang-format-run.sh
-
-      - name: Push reformatted files
-        uses: EndBug/add-and-commit@v9.0.1
-        with:
-          add: '*'
-          message: 'clang-format bot reformatting.'
-          push: true
+    - name: Push reformatted files
+      uses: EndBug/add-and-commit@v9.0.1
+      with:
+        add: '*'
+        message: 'clang-format bot reformatting.'
+        push: true

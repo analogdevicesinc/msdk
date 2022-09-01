@@ -42,7 +42,7 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make -r distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
 
 ```bash
 # Specify the board used
@@ -52,7 +52,7 @@ BOARD=EvKit_V1
 endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile (requires TFT display for Feather https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Feather):
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk (requires TFT display for Feather https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Feather):
 
 ```bash
 # Specify the board used

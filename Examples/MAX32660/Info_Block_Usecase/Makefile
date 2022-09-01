@@ -120,6 +120,13 @@ export PERIPH_DRIVER_DIR
 # included before this one.
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
+all:
+ifneq "$(LINKER)" "$(TARGET_LC)_ram.ld"
+	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -O binary $(BUILD_DIR)/$(PROJECT).bin
+	@echo " "
+	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+endif
+
 libclean: 
 	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
 

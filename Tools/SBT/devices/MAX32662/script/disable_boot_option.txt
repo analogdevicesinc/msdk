@@ -1,0 +1,12 @@
+#
+# Deactivate boot option Eth/USB/SPI/UART/VBUS
+#		Peripheral  	Code
+#		----------------------
+#            0 - for UART
+#            V - for VBUS
+#            U - for USB
+#            E - for Ethernet
+#            S - for SPI
+#       ----------------------
+#
+write-deact E

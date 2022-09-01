@@ -54,8 +54,6 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "rtc.h"
-#include "simo_regs.h"
-#include "trimsir_regs.h"
 #include "uart.h"
 
 /***** Definitions *****/
@@ -170,7 +168,6 @@ int configureRTC()
 // *****************************************************************************
 int main(void)
 {
-    MXC_RTC_TrimCrystal();
     if (MXC_PWRSEQ->lppwst !=
         MXC_F_PWRSEQ_LPPWST_BACKUP) {       // Check whether the wakeup source is RTC
         if (configureRTC() != E_NO_ERROR) { // System start/restart

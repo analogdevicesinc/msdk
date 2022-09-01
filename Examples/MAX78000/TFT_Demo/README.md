@@ -41,24 +41,16 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
+```Makefile
 BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
+```Makefile
 BOARD=FTHR_RevA
-endif
 ```
 
 ### Load firmware image to MAX78000 EVKIT
@@ -93,7 +85,7 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in Makefile:
+To compile code with enabled TFT feature use following setting in project.mk:
 
 ```bash
 ifeq "$(BOARD)" "FTHR_RevA"

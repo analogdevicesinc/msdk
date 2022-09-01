@@ -553,6 +553,20 @@ uint32_t MXC_CTB_CRC_GetPoly(void);
  */
 uint32_t MXC_CTB_CRC_GetResult(void);
 
+/**
+ * @brief   Set the intial value used (the seed) when starting a CRC computation.
+ *
+ * @param   seed  The value to seed the CRC generator with
+ */
+void MXC_CTB_CRC_SetInitialValue(uint32_t seed);
+
+/**
+ * @brief   Set the value that will be bitwise XORed with the final output from the CRC computation.  Use 0 to skip the XOR step.
+ *
+ * @param   xor  The value that will be XORed with the CRC
+ */
+void MXC_CTB_CRC_SetFinalXORValue(uint32_t xor);
+
 /*******************************/
 /* High Level Functions        */
 /*******************************/

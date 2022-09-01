@@ -1,0 +1,4 @@
+write-only ./build/SCPA_OTP_Dump.srec
+execute-code 20010000
+erase-data C0000000 00000010 dump
+erase-data C0000000 00000020 dump

@@ -28,23 +28,14 @@ jobs:
           submodules: false
 
       # Runs a set of commands using the runners shell
+      #   Exclude register header files. Those don't follow clang formatting or it becomes unreadable
       - name: clang-format-check
         run: |
-          # Deinit all of the submodules
-          set +e
-          git submodule deinit --force --all
-          set -e
-
-          # Check source files
-          CFILES=$(find . -iname "*.c")
-          for cFile in ${CFILES}
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h')
+          for change_file in ${CHANGE_FILES}
           do
-            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${cFile}
-          done
-
-          # Check header files
-          HFILES=$(find . -iname "*.h" -not -name "*regs*")
-          for hFile in ${HFILES}
-          do
-            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${hFile}
+            if [ -f ${change_file} ];
+            then
+            clang-format --verbose -style=file -n --ferror-limit=1 -Werror ${change_file}
+            fi
           done

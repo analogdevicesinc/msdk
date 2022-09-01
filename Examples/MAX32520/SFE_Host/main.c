@@ -147,6 +147,5 @@ int main(void)
 
     MXC_SPI_Shutdown(MASTER_SPI);
 
-    while (1) {
-    }
+    return 0;
 }

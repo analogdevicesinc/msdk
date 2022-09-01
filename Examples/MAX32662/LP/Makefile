@@ -64,6 +64,11 @@ CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
 CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app
 BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/bin/build_scp_session
+ifeq ($(OS), Windows_NT)
+CA_SIGN_BUILD := $(CA_SIGN_BUILD).exe
+BUILD_SESSION := $(BUILD_SESSION).exe
+# Must use .exe extension on Windows
+endif
 TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/devices/$(TARGET_UC)/keys/maximtestcrk.key
 SCP_PACKETS=scp_packets
 #Use this for other library make files so they are all based off the same as root as the project

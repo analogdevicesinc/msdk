@@ -128,6 +128,5 @@ int main(void)
     Test_CRC(0);
     Test_CRC(1);
 
-    while (1) {
-    }
+    return 0;
 }

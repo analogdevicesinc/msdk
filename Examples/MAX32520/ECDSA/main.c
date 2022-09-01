@@ -510,6 +510,5 @@ int main(void)
 
     printf("Program exit.\n");
 
-    while (1) {
-    }
+    return 0;
 }

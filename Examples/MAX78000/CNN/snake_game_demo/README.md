@@ -40,7 +40,7 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
 
 ```bash
 # Specify the board used
@@ -50,7 +50,7 @@ BOARD=EvKit_V1
 endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
 
 ```bash
 # Specify the board used
