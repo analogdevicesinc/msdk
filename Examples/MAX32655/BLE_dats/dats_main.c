@@ -677,58 +677,59 @@ static void datsProcMsg(dmEvt_t* pMsg)
 
     case DM_SEC_AUTH_REQ_IND:
 
-            if (pMsg->authReq.oob) {
-                dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+        if (pMsg->authReq.oob) {
+            dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-                APP_TRACE_INFO0("Sending OOB data");
-                oobConnId = connId;
+            APP_TRACE_INFO0("Sending OOB data");
+            oobConnId = connId;
 
-                /* Start the TX to send the local OOB data */
-                PalUartWriteData(PAL_UART_ID_CHCI, datsOobCfg->localRandom,
-                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+            /* Start the TX to send the local OOB data */
+            PalUartWriteData(
+                PAL_UART_ID_CHCI, datsOobCfg->localRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
 
-            } else {
-                AppHandlePasskey(&pMsg->authReq);
-            }
-            break;
+        } else {
+            AppHandlePasskey(&pMsg->authReq);
+        }
+        break;
 
-case DM_SEC_COMPARE_IND:
-AppHandleNumericComparison(&pMsg->cnfInd);
-break;
+    case DM_SEC_COMPARE_IND:
+        AppHandleNumericComparison(&pMsg->cnfInd);
+        break;
 
-case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
-datsPrivAddDevToResListInd(pMsg);
-break;
+    case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
+        datsPrivAddDevToResListInd(pMsg);
+        break;
 
-case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
-datsPrivRemDevFromResListInd(pMsg);
-break;
+    case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
+        datsPrivRemDevFromResListInd(pMsg);
+        break;
 
-case DM_ADV_NEW_ADDR_IND:
-break;
+    case DM_ADV_NEW_ADDR_IND:
+        break;
 
-case DM_PRIV_CLEAR_RES_LIST_IND:
-APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-break;
+    case DM_PRIV_CLEAR_RES_LIST_IND:
+        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+        break;
 
 #if (BT_VER > 8)
-case DM_PHY_UPDATE_IND:
-APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
-break;
+    case DM_PHY_UPDATE_IND:
+        APP_TRACE_INFO2(
+            "DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
+        break;
 #endif /* BT_VER */
 
-case TRIM_TIMER_EVT:
-trimStart();
-WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
-break;
+    case TRIM_TIMER_EVT:
+        trimStart();
+        WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
+        break;
 
-default:
-break;
-}
+    default:
+        break;
+    }
 
-if (uiEvent != APP_UI_NONE) {
-    AppUiAction(uiEvent);
-}
+    if (uiEvent != APP_UI_NONE) {
+        AppUiAction(uiEvent);
+    }
 }
 
 /*************************************************************************************************/
