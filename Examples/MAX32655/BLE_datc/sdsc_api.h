@@ -1,8 +1,8 @@
 /*************************************************************************************************/
 /*! Secure Data Service Client
-*   Implements the necessary handles list to perform service 
-*   and characteristic discovery of custom secured service .
-*
+ *   Implements the necessary handles list to perform service
+ *   and characteristic discovery of custom secured service .
+ *
  */
 /*************************************************************************************************/
 
@@ -17,9 +17,9 @@ extern "C" {
 
 /*! \brief Secured service  enumeration of handle indexes of characteristics to be discovered */
 enum {
-    SEC_DAT_HDL_IDX,     /*!< \brief Secured data */
+    SEC_DAT_HDL_IDX, /*!< \brief Secured data */
     SEC_DAT_CCC_HDL_IDX, /*!< \brief Secured data client characteristic configuration descriptor */
-    SEC_HDL_LIST_LEN     /*!< \brief Handle list length */
+    SEC_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************

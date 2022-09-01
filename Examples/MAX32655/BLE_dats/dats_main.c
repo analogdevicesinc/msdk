@@ -32,10 +32,12 @@
 #include "gatt/gatt_api.h"
 #include "hci_api.h"
 #include "pal_btn.h"
+#include "pal_uart.h"
 #include "sec_api.h"
 #include "smp_api.h"
 #include "svc_ch.h"
 #include "svc_core.h"
+#include "svc_sds.h"
 #include "svc_wp.h"
 #include "tmr.h"
 #include "trimsir_regs.h"
@@ -48,11 +50,6 @@
 #include "wsf_trace.h"
 #include "wsf_types.h"
 #include "wut.h"
-#include "trimsir_regs.h"
-#include "pal_btn.h"
-#include "pal_uart.h"
-#include "tmr.h"
-#include "svc_sds.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -80,7 +77,7 @@
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
-    DATS_WP_DAT_CCC_IDX,  /*! Arm Ltd. proprietary service, data transfer characteristic */
+    DATS_WP_DAT_CCC_IDX, /*! Arm Ltd. proprietary service, data transfer characteristic */
     DATS_SEC_DAT_CCC_IDX,
     DATS_NUM_CCC_IDX
 };
@@ -104,23 +101,23 @@ static const appSlaveCfg_t datsSlaveCfg = {
 *   pairing and authentication requirements.
 *
 *   Authentication and bonding flags
-*       -DM_AUTH_BOND_FLAG  : Bonding requested 
-*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested 
-*       -DM_AUTH_KP_FLAG    : Keypress notifications requested 
+*       -DM_AUTH_BOND_FLAG  : Bonding requested
+*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested
+*       -DM_AUTH_KP_FLAG    : Keypress notifications requested
 *       -DM_AUTH_MITM_FLAG  : MITM (authenticated pairing) requested
                               pairing method is determined by IO capabilities below
 *
 *   Initiator key distribution flags
 *       -DM_KEY_DIST_LTK   : Distribute LTK used for encryption
-*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy 
-*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
+*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy
+*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data
 */
 static const appSecCfg_t datsSecCfg = {
     DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
-    DM_KEY_DIST_IRK,                                         /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,                       /*! Responder key distribution flags */
+    DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE   /*! TRUE to initiate security upon connection */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -133,27 +130,27 @@ static const bool_t datsSendOobData = FALSE;
 /* OOB Connection identifier */
 dmConnId_t oobConnId;
 
-/*! SMP security parameter configuration 
-*
-*   I/O Capability Codes to be set for 
-*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
-*   when the MITM flag is set in Configurable security parameters above.
-*       -SMP_IO_DISP_ONLY         : Display only. 
-*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
-*       -SMP_IO_KEY_ONLY          : Keyboard only.
-*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
-*       -SMP_IO_KEY_DISP          : Keyboard display. 
-*/
+/*! SMP security parameter configuration
+ *
+ *   I/O Capability Codes to be set for
+ *   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
+ *   when the MITM flag is set in Configurable security parameters above.
+ *       -SMP_IO_DISP_ONLY         : Display only.
+ *       -SMP_IO_DISP_YES_NO       : Display yes/no.
+ *       -SMP_IO_KEY_ONLY          : Keyboard only.
+ *       -SMP_IO_NO_IN_NO_OUT      : No input, no output.
+ *       -SMP_IO_KEY_DISP          : Keyboard display.
+ */
 static const smpCfg_t datsSmpCfg = {
-    500,             /*! 'Repeated attempts' timeout in msec */
+    500, /*! 'Repeated attempts' timeout in msec */
     SMP_IO_KEY_ONLY, /*! I/O Capability */
-    7,               /*! Minimum encryption key length */
-    16,              /*! Maximum encryption key length */
-    1,               /*! Attempts to trigger 'repeated attempts' timeout */
-    0,               /*! Device authentication requirements */
-    64000,           /*! Maximum repeated attempts timeout in msec */
-    64000,           /*! Time msec before attemptExp decreases */
-    2                /*! Repeated attempts multiplier exponent */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
 };
 
 /* iOS connection parameter update requirements
@@ -226,9 +223,9 @@ static const uint8_t datsScanDataDisc[] = {
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
 static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
-    {GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE}, /* DATS_GATT_SC_CCC_IDX */
-    {WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE},    /* DATS_WP_DAT_CCC_IDX */
-    {SEC_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE}    /* DATS_SEC_DAT_CCC_IDX */
+    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* DATS_GATT_SC_CCC_IDX */
+    { WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* DATS_WP_DAT_CCC_IDX */
+    { SEC_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* DATS_SEC_DAT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -312,8 +309,8 @@ static void datsDmCback(dmEvt_t* pDmEvt)
             PalUartConfig_t hciUartCfg;
             hciUartCfg.rdCback = oobRxCback;
             hciUartCfg.wrCback = NULL;
-            hciUartCfg.baud    = OOB_BAUD;
-            hciUartCfg.hwFlow  = OOB_FLOW;
+            hciUartCfg.baud = OOB_BAUD;
+            hciUartCfg.hwFlow = OOB_FLOW;
 
             PalUartInit(PAL_UART_ID_CHCI, &hciUartCfg);
         }
@@ -328,8 +325,8 @@ static void datsDmCback(dmEvt_t* pDmEvt)
             Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
 
             /* Start the RX for the peer OOB data */
-            PalUartReadData(PAL_UART_ID_CHCI, datsOobCfg->peerRandom,
-                            (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+            PalUartReadData(
+                PAL_UART_ID_CHCI, datsOobCfg->peerRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
         } else {
             APP_TRACE_ERR0("Error allocating OOB data");
         }
@@ -439,7 +436,7 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
  */
 /*************************************************************************************************/
 uint8_t secDatWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                         uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
+    uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
 {
     uint8_t str[] = "Secure data received!";
     APP_TRACE_INFO0(">> Received secure data <<");
@@ -457,13 +454,13 @@ uint8_t secDatWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
 
 /*************************************************************************************************/
 /*!
-*
-*  \brief  Add device to resolving list.
-*
-*  \param  dbHdl   Device DB record handle.
-*
-*  \return None.
-*/
+ *
+ *  \brief  Add device to resolving list.
+ *
+ *  \param  dbHdl   Device DB record handle.
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
 {
@@ -678,61 +675,63 @@ static void datsProcMsg(dmEvt_t* pMsg)
 
     case DM_SEC_AUTH_REQ_IND:
 
-                APP_TRACE_INFO0("Sending OOB data");
-                oobConnId = connId;
+        APP_TRACE_INFO0("Sending OOB data");
+        oobConnId = connId;
 
-                /* Start the TX to send the local OOB data */
-                PalUartWriteData(PAL_UART_ID_CHCI, datsOobCfg->localRandom,
-                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+        /* Start the TX to send the local OOB data */
+        PalUartWriteData(
+            PAL_UART_ID_CHCI, datsOobCfg->localRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+    }
+    else
+    {
+        AppHandlePasskey(&pMsg->authReq);
+    }
 
-            } else {
-                AppHandlePasskey(&pMsg->authReq);
-            }
+    DmSecAuthRsp(connId, 0, NULL);
+}
+else
+{
+    AppHandlePasskey(&pMsg->authReq);
+}
+break;
 
-            DmSecAuthRsp(connId, 0, NULL);
-        } else {
-            AppHandlePasskey(&pMsg->authReq);
-        }
-        break;
+case DM_SEC_COMPARE_IND:
+AppHandleNumericComparison(&pMsg->cnfInd);
+break;
 
-    case DM_SEC_COMPARE_IND:
-        AppHandleNumericComparison(&pMsg->cnfInd);
-        break;
+case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
+datsPrivAddDevToResListInd(pMsg);
+break;
 
-    case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
-        datsPrivAddDevToResListInd(pMsg);
-        break;
+case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
+datsPrivRemDevFromResListInd(pMsg);
+break;
 
-    case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
-        datsPrivRemDevFromResListInd(pMsg);
-        break;
+case DM_ADV_NEW_ADDR_IND:
+break;
 
-    case DM_ADV_NEW_ADDR_IND:
-        break;
-
-    case DM_PRIV_CLEAR_RES_LIST_IND:
-        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-        break;
+case DM_PRIV_CLEAR_RES_LIST_IND:
+APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+break;
 
 #if (BT_VER > 8)
-    case DM_PHY_UPDATE_IND:
-        APP_TRACE_INFO2(
-            "DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
-        break;
+case DM_PHY_UPDATE_IND:
+APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
+break;
 #endif /* BT_VER */
 
-    case TRIM_TIMER_EVT:
-        trimStart();
-        WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
-        break;
+case TRIM_TIMER_EVT:
+trimStart();
+WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
+break;
 
-    default:
-        break;
-    }
+default:
+break;
+}
 
-    if (uiEvent != APP_UI_NONE) {
-        AppUiAction(uiEvent);
-    }
+if (uiEvent != APP_UI_NONE) {
+    AppUiAction(uiEvent);
+}
 }
 
 /*************************************************************************************************/

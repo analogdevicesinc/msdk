@@ -35,8 +35,8 @@
 #include "hci_api.h"
 #include "pal_btn.h"
 #include "pal_uart.h"
-#include "tmr.h"
 #include "sdsc_api.h"
+#include "tmr.h"
 /**************************************************************************************************
 Macros
 **************************************************************************************************/
@@ -116,23 +116,23 @@ static const appMasterCfg_t datcMasterCfg = {
 *   pairing and authentication requirements.
 *
 *   Authentication and bonding flags
-*       -DM_AUTH_BOND_FLAG  : Bonding requested 
-*       -DM_AUTH_KP_FLAG    : Keypress notifications requested 
+*       -DM_AUTH_BOND_FLAG  : Bonding requested
+*       -DM_AUTH_KP_FLAG    : Keypress notifications requested
 *       -DM_AUTH_MITM_FLAG  : MITM (authenticated pairing) requested,
                               pairing method is determined by IO capabilities below
-*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested 
+*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested
 *
 *   Initiator key distribution flags
 *       -DM_KEY_DIST_LTK   : Distribute LTK used for encryption
-*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy 
-*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
+*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy
+*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data
 */
 static const appSecCfg_t datcSecCfg = {
     DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
-    DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
-    FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    TRUE                                 /*! TRUE to initiate security upon connection */
+    DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
@@ -145,27 +145,27 @@ static const bool_t datcSendOobData = FALSE;
 /* OOB Connection identifier */
 dmConnId_t oobConnId;
 
-/*! SMP security parameter configuration 
-*
-*   I/O Capability Codes to be set for 
-*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
-*   when the MITM flag is set in Configurable security parameters above.
-*       -SMP_IO_DISP_ONLY         : Display only. 
-*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
-*       -SMP_IO_KEY_ONLY          : Keyboard only.
-*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
-*       -SMP_IO_KEY_DISP          : Keyboard display. 
-*/
+/*! SMP security parameter configuration
+ *
+ *   I/O Capability Codes to be set for
+ *   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
+ *   when the MITM flag is set in Configurable security parameters above.
+ *       -SMP_IO_DISP_ONLY         : Display only.
+ *       -SMP_IO_DISP_YES_NO       : Display yes/no.
+ *       -SMP_IO_KEY_ONLY          : Keyboard only.
+ *       -SMP_IO_NO_IN_NO_OUT      : No input, no output.
+ *       -SMP_IO_KEY_DISP          : Keyboard display.
+ */
 static const smpCfg_t datcSmpCfg = {
-    500,             /*! 'Repeated attempts' timeout in msec */
+    500, /*! 'Repeated attempts' timeout in msec */
     SMP_IO_KEY_ONLY, /*! I/O Capability */
-    7,               /*! Minimum encryption key length */
-    16,              /*! Maximum encryption key length */
-    1,               /*! Attempts to trigger 'repeated attempts' timeout */
-    0,               /*! Device authentication requirements */
-    64000,           /*! Maximum repeated attempts timeout in msec */
-    64000,           /*! Time msec before attemptExp decreases */
-    2                /*! Repeated attempts multiplier exponent */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
 };
 
 /*! Connection parameters */
@@ -208,10 +208,10 @@ static uint8_t localIrk[] = { 0xA6, 0xD9, 0xFF, 0x70, 0xD6, 0x1E, 0xF0, 0xA4, 0x
 /*! Discovery states:  enumeration of services to be discovered */
 enum {
     DATC_DISC_GATT_SVC, /*! GATT service */
-    DATC_DISC_GAP_SVC,  /*! GAP service */
-    DATC_DISC_WP_SVC,   /*! Arm Ltd. proprietary service */
-    DATC_DISC_SDS_SVC,  /*! Secured Data Service */
-    DATC_DISC_SVC_MAX   /*! Discovery complete */
+    DATC_DISC_GAP_SVC, /*! GAP service */
+    DATC_DISC_WP_SVC, /*! Arm Ltd. proprietary service */
+    DATC_DISC_SDS_SVC, /*! Secured Data Service */
+    DATC_DISC_SVC_MAX /*! Discovery complete */
 };
 
 /*! the Client handle list, datcCb.hdlList[], is set as follows:
@@ -231,10 +231,10 @@ enum {
  */
 
 /*! Start of each service's handles in the the handle list */
-#define DATC_DISC_GATT_START   0
-#define DATC_DISC_GAP_START    (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
-#define DATC_DISC_WP_START     (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
-#define DATC_DISC_SDS_START    (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
+#define DATC_DISC_GATT_START 0
+#define DATC_DISC_GAP_START (DATC_DISC_GATT_START + GATT_HDL_LIST_LEN)
+#define DATC_DISC_WP_START (DATC_DISC_GAP_START + GAP_HDL_LIST_LEN)
+#define DATC_DISC_SDS_START (DATC_DISC_WP_START + WPC_P1_HDL_LIST_LEN)
 #define DATC_DISC_HDL_LIST_LEN (DATC_DISC_SDS_START + SEC_HDL_LIST_LEN)
 
 /*! Pointers into handle list for each service's handles */
@@ -275,7 +275,7 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
     { datcCccNtfVal, sizeof(datcCccNtfVal), (WPC_P1_NA_CCC_HDL_IDX + DATC_DISC_WP_START) },
 
     /* Write:  Secured data service changed ccc descriptor */
-    {datcCccNtfVal, sizeof(datcCccNtfVal), (SEC_DAT_CCC_HDL_IDX + DATC_DISC_SDS_START)},
+    { datcCccNtfVal, sizeof(datcCccNtfVal), (SEC_DAT_CCC_HDL_IDX + DATC_DISC_SDS_START) },
 
 };
 
@@ -329,8 +329,8 @@ static void datcDmCback(dmEvt_t* pDmEvt)
             PalUartConfig_t hciUartCfg;
             hciUartCfg.rdCback = oobRxCback;
             hciUartCfg.wrCback = NULL;
-            hciUartCfg.baud    = OOB_BAUD;
-            hciUartCfg.hwFlow  = OOB_FLOW;
+            hciUartCfg.baud = OOB_BAUD;
+            hciUartCfg.hwFlow = OOB_FLOW;
 
             PalUartInit(PAL_UART_ID_CHCI, &hciUartCfg);
         }
@@ -345,8 +345,8 @@ static void datcDmCback(dmEvt_t* pDmEvt)
             Calc128Cpy(datcOobCfg->localRandom, pDmEvt->oobCalcInd.random);
 
             /* Start the RX for the peer OOB data */
-            PalUartReadData(PAL_UART_ID_CHCI, datcOobCfg->peerRandom,
-                            (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+            PalUartReadData(
+                PAL_UART_ID_CHCI, datcOobCfg->peerRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
         } else {
             APP_TRACE_ERR0("Error allocating OOB data");
         }
@@ -891,13 +891,13 @@ static void datcBtnCback(uint8_t btn)
             break;
         }
 #endif /* BT_VER */
-            case APP_UI_BTN_2_MED:
-                secDatSendData(connId);
-                break;
-            case APP_UI_BTN_2_LONG:
-                /* send data */
-                datcSendData(connId);
-                break;
+        case APP_UI_BTN_2_MED:
+            secDatSendData(connId);
+            break;
+        case APP_UI_BTN_2_LONG:
+            /* send data */
+            datcSendData(connId);
+            break;
 
         case APP_UI_BTN_2_EX_LONG:
             /* Start the speed test */
@@ -970,62 +970,62 @@ static void datcBtnCback(uint8_t btn)
 static void datcDiscCback(dmConnId_t connId, uint8_t status)
 {
     switch (status) {
-        case APP_DISC_INIT:
-            /* set handle list when initialization requested */
-            AppDiscSetHdlList(connId, datcCb.hdlListLen, datcCb.hdlList[connId - 1]);
-            break;
+    case APP_DISC_INIT:
+        /* set handle list when initialization requested */
+        AppDiscSetHdlList(connId, datcCb.hdlListLen, datcCb.hdlList[connId - 1]);
+        break;
 
-        case APP_DISC_READ_DATABASE_HASH:
-            /* Read peer's database hash */
-            AppDiscReadDatabaseHash(connId);
-            break;
+    case APP_DISC_READ_DATABASE_HASH:
+        /* Read peer's database hash */
+        AppDiscReadDatabaseHash(connId);
+        break;
 
-        case APP_DISC_SEC_REQUIRED:
-            /* initiate security */
-            AppMasterSecurityReq(connId);
-            break;
+    case APP_DISC_SEC_REQUIRED:
+        /* initiate security */
+        AppMasterSecurityReq(connId);
+        break;
 
-        case APP_DISC_START:
-            /* initialize discovery state */
-            datcCb.discState[connId - 1] = DATC_DISC_GATT_SVC;
+    case APP_DISC_START:
+        /* initialize discovery state */
+        datcCb.discState[connId - 1] = DATC_DISC_GATT_SVC;
 
-            /* store possible change in cache by hash */
-            AppDbNvmStoreCacheByHash(AppDbGetHdl(connId));
+        /* store possible change in cache by hash */
+        AppDbNvmStoreCacheByHash(AppDbGetHdl(connId));
 
-            /* discover GATT service */
-            GattDiscover(connId, pDatcGattHdlList[connId - 1]);
-            break;
+        /* discover GATT service */
+        GattDiscover(connId, pDatcGattHdlList[connId - 1]);
+        break;
 
-        case APP_DISC_FAILED:
-            if (pAppCfg->abortDisc) {
-                /* if discovery failed for proprietary data service then disconnect */
-                if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC ||
-                    (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
-                    AppConnClose(connId);
-                    break;
-                }
+    case APP_DISC_FAILED:
+        if (pAppCfg->abortDisc) {
+            /* if discovery failed for proprietary data service then disconnect */
+            if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC
+                || (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
+                AppConnClose(connId);
+                break;
             }
-            /* Else falls through. */
+        }
+        /* Else falls through. */
 
-        case APP_DISC_CMPL:
-            /* next discovery state */
-            datcCb.discState[connId - 1]++;
+    case APP_DISC_CMPL:
+        /* next discovery state */
+        datcCb.discState[connId - 1]++;
 
-            if (datcCb.discState[connId - 1] == DATC_DISC_GAP_SVC) {
-                /* discover GAP service */
-                GapDiscover(connId, pDatcGapHdlList[connId - 1]);
-            } else if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
-                /* discover proprietary data service */
-                WpcP1Discover(connId, pDatcWpHdlList[connId - 1]);
-            } else if (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC) {
-                /* discover secured data service */
-                SecDatSvcDiscover(connId, pSecDatHdlList[connId - 1]);
-            } else {
-                /* discovery complete */
-                AppDiscComplete(connId, APP_DISC_CMPL);
+        if (datcCb.discState[connId - 1] == DATC_DISC_GAP_SVC) {
+            /* discover GAP service */
+            GapDiscover(connId, pDatcGapHdlList[connId - 1]);
+        } else if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
+            /* discover proprietary data service */
+            WpcP1Discover(connId, pDatcWpHdlList[connId - 1]);
+        } else if (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC) {
+            /* discover secured data service */
+            SecDatSvcDiscover(connId, pSecDatHdlList[connId - 1]);
+        } else {
+            /* discovery complete */
+            AppDiscComplete(connId, APP_DISC_CMPL);
 
-                /* GAP service discovery completed */
-                datcDiscGapCmpl(connId);
+            /* GAP service discovery completed */
+            datcDiscGapCmpl(connId);
 
             /* GAP service discovery completed */
             datcDiscGapCmpl(connId);
@@ -1158,56 +1158,58 @@ static void datcProcMsg(dmEvt_t* pMsg)
 
     case DM_SEC_AUTH_REQ_IND:
 
-                APP_TRACE_INFO0("Sending OOB data");
-                oobConnId = connId;
+        APP_TRACE_INFO0("Sending OOB data");
+        oobConnId = connId;
 
-                /* Start the TX to send the local OOB data */
-                PalUartWriteData(PAL_UART_ID_CHCI, datcOobCfg->localRandom,
-                                 (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+        /* Start the TX to send the local OOB data */
+        PalUartWriteData(
+            PAL_UART_ID_CHCI, datcOobCfg->localRandom, (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+    }
+    else
+    {
+        AppHandlePasskey(&pMsg->authReq);
+    }
 
-            } else {
-                AppHandlePasskey(&pMsg->authReq);
-            }
+    DmSecAuthRsp(connId, 0, NULL);
+}
+else
+{
+    AppHandlePasskey(&pMsg->authReq);
+}
+break;
 
-            DmSecAuthRsp(connId, 0, NULL);
-        } else {
-            AppHandlePasskey(&pMsg->authReq);
-        }
-        break;
+case DM_SEC_COMPARE_IND:
+AppHandleNumericComparison(&pMsg->cnfInd);
+break;
 
-    case DM_SEC_COMPARE_IND:
-        AppHandleNumericComparison(&pMsg->cnfInd);
-        break;
+case DM_ADV_NEW_ADDR_IND:
+break;
 
-    case DM_ADV_NEW_ADDR_IND:
-        break;
+case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
+datcPrivAddDevToResListInd(pMsg);
+break;
 
-    case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
-        datcPrivAddDevToResListInd(pMsg);
-        break;
-
-    case DM_PRIV_CLEAR_RES_LIST_IND:
-        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-        break;
+case DM_PRIV_CLEAR_RES_LIST_IND:
+APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+break;
 
 #if (BT_VER > 8)
-    case DM_PHY_UPDATE_IND:
-        APP_TRACE_INFO2(
-            "DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
-        break;
+case DM_PHY_UPDATE_IND:
+APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
+break;
 #endif /* BT_VER */
 
-    case SCAN_START_EVT:
-        datcRestartScanningHandler();
-        break;
+case SCAN_START_EVT:
+datcRestartScanningHandler();
+break;
 
-    default:
-        break;
-    }
+default:
+break;
+}
 
-    if (uiEvent != APP_UI_NONE) {
-        AppUiAction(uiEvent);
-    }
+if (uiEvent != APP_UI_NONE) {
+    AppUiAction(uiEvent);
+}
 }
 
 /*************************************************************************************************/
@@ -1359,9 +1361,9 @@ static void datcInitSvcHdlList()
     for (i = 0; i < DM_CONN_MAX; i++) {
         /*! Pointers into handle list for each service's handles */
         pDatcGattHdlList[i] = &datcCb.hdlList[i][DATC_DISC_GATT_START];
-        pDatcGapHdlList[i]  = &datcCb.hdlList[i][DATC_DISC_GAP_START];
-        pDatcWpHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_WP_START];
-        pSecDatHdlList[i]   = &datcCb.hdlList[i][DATC_DISC_SDS_START];
+        pDatcGapHdlList[i] = &datcCb.hdlList[i][DATC_DISC_GAP_START];
+        pDatcWpHdlList[i] = &datcCb.hdlList[i][DATC_DISC_WP_START];
+        pSecDatHdlList[i] = &datcCb.hdlList[i][DATC_DISC_SDS_START];
     }
 }
 /*************************************************************************************************/
