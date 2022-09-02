@@ -175,7 +175,7 @@ static const appUpdateCfg_t datsUpdateCfg = {
     (15 * 8 / 1.25),  /*! Minimum connection interval in 1.25ms units */
     (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
     0,                /*! Connection latency */
-    600,              /*! Supervision timeout in 10ms units */
+    620,              /*! Supervision timeout in 10ms units */
     5                 /*! Number of update attempts before giving up */
 };
 
