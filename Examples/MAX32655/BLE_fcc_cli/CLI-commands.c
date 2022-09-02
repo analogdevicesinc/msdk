@@ -315,15 +315,22 @@ static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  &lParameterStringLength /* Store the parameter string length. */
         );
 
-    memcmp(newPhy, "1M", 2) == 0 ? setPhy(LL_TEST_PHY_LE_1M) :
-    memcmp(newPhy, "1m", 2) == 0 ? setPhy(LL_TEST_PHY_LE_1M) :
-    memcmp(newPhy, "2M", 2) == 0 ? setPhy(LL_TEST_PHY_LE_2M) :
-    memcmp(newPhy, "2m", 2) == 0 ? setPhy(LL_TEST_PHY_LE_2M) :
-    memcmp(newPhy, "S2", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S2) :
-    memcmp(newPhy, "s2", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S2) :
-    memcmp(newPhy, "S8", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
-    memcmp(newPhy, "s8", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
-                                   sprintf(pcWriteBuffer, "Bad param\r\n");
+    memcmp(newPhy, "1M", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_1M) :
+        memcmp(newPhy, "1m", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_1M) :
+        memcmp(newPhy, "2M", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_2M) :
+        memcmp(newPhy, "2m", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_2M) :
+        memcmp(newPhy, "S2", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_CODED_S2) :
+        memcmp(newPhy, "s2", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_CODED_S2) :
+        memcmp(newPhy, "S8", 2) == 0 ?
+        setPhy(LL_TEST_PHY_LE_CODED_S8) :
+        memcmp(newPhy, "s8", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
+                                       sprintf(pcWriteBuffer, "Bad param\r\n");
 
     return pdFALSE;
 }
