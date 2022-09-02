@@ -34,12 +34,12 @@
 #include "adc.h"
 #include "adc_revb_regs.h"
 
-#include "mcr_regs.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_lock.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
+#include "mcr_regs.h"
+#include "mxc_lock.h"
 #include <stdio.h>
 
 int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req);
@@ -60,8 +60,8 @@ int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t* adcq);
 
 int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete_cb_t callback);
 
-int MXC_ADC_RevB_StartConversionDMA(
-    mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req, int* data, void (*callback)(int, int));
+int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req,
+                                    int* data, void (*callback)(int, int));
 
 int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc);
 
@@ -89,4 +89,4 @@ int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t*
 
 int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t* adc, mxc_adc_chsel_t ch, uint32_t slot_num);
 
-// End
+//End

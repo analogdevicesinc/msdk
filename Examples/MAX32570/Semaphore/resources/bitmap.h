@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -37,8 +37,8 @@
 #define _BITMAP_H_
 
 // bitmaps id
-#define key_1_bg_white_bmp 0
-#define key_2_bg_white_bmp 1
+#define key_1_bg_white_bmp      0
+#define key_2_bg_white_bmp      1
 #define logo_white_bg_white_bmp 2
 
 // fonts id

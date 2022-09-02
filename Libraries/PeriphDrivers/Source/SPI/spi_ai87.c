@@ -31,24 +31,24 @@
  *
  *************************************************************************** */
 
-#include <stdbool.h>
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include <stdbool.h>
 
-#include "dma.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
 #include "mxc_device.h"
+#include "mxc_assert.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
+#include "mxc_delay.h"
 #include "spi_reva.h"
+#include "dma.h"
 
 /* **** Definitions **** */
 
 /* ************************************************************************** */
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-    unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
+                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
     int spi_num;
 
@@ -69,7 +69,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
     }
 
     mxc_gpio_cfg_t gpio_cfg_spi;
-    gpio_cfg_spi.pad = MXC_GPIO_PAD_NONE;
+    gpio_cfg_spi.pad  = MXC_GPIO_PAD_NONE;
     gpio_cfg_spi.port = MXC_GPIO0;
 
     // Set VDDIO level
@@ -84,7 +84,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
 
-        // Define pins
+        //Define pins
         if (pins.ss1) {
             gpio_cfg_spi.mask = MXC_GPIO_PIN_26;
             gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
@@ -97,7 +97,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
             MXC_GPIO_Config(&gpio_cfg_spi);
         }
 
-        // clear mask
+        //clear mask
         gpio_cfg_spi.mask = 0;
 
         // check rest of the pins
@@ -132,7 +132,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
 
-        // Define pins
+        //Define pins
         if (pins.ss1) {
             gpio_cfg_spi.mask = MXC_GPIO_PIN_11;
             gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
@@ -145,7 +145,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
             MXC_GPIO_Config(&gpio_cfg_spi);
         }
 
-        // clear mask
+        //clear mask
         gpio_cfg_spi.mask = 0;
 
         // check rest of the pins
@@ -182,8 +182,8 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
 
     MXC_GPIO_Config(&gpio_cfg_spi);
 
-    return MXC_SPI_RevA_Init(
-        (mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
+    return MXC_SPI_RevA_Init((mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves,
+                             ssPolarity, hz);
 }
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t* spi)
@@ -225,29 +225,29 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t* spi)
     }
 #ifdef MXC_SPI0 // SPI0 is not accessible from the RISC core.
     else if (spi == MXC_SPI0) {
-        int sys_clk
-            = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
+        int sys_clk =
+            (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >> MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
         switch (sys_clk) {
-        case MXC_SYS_CLOCK_IPO:
-            retval = IPO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_IBRO:
-            retval = IBRO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_ISO:
-            retval = ISO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_INRO:
-            retval = INRO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_ERTCO:
-            retval = ERTCO_FREQ;
-            break;
-        case MXC_SYS_CLOCK_EXTCLK:
-            retval = EXTCLK_FREQ;
-            break;
-        default:
-            return E_BAD_STATE;
+            case MXC_SYS_CLOCK_IPO:
+                retval = IPO_FREQ;
+                break;
+            case MXC_SYS_CLOCK_IBRO:
+                retval = IBRO_FREQ;
+                break;
+            case MXC_SYS_CLOCK_ISO:
+                retval = ISO_FREQ;
+                break;
+            case MXC_SYS_CLOCK_INRO:
+                retval = INRO_FREQ;
+                break;
+            case MXC_SYS_CLOCK_ERTCO:
+                retval = ERTCO_FREQ;
+                break;
+            case MXC_SYS_CLOCK_EXTCLK:
+                retval = EXTCLK_FREQ;
+                break;
+            default:
+                return E_BAD_STATE;
         }
     }
 #endif // MXC_SPI0
@@ -417,31 +417,31 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+            case 0:
+                reqselTx = MXC_DMA_REQUEST_SPI1TX;
+                break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+            case 1:
+                reqselTx = MXC_DMA_REQUEST_SPI0TX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
+            case 0:
+                reqselRx = MXC_DMA_REQUEST_SPI1RX;
+                break;
 
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
+            case 1:
+                reqselRx = MXC_DMA_REQUEST_SPI0RX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 
@@ -470,33 +470,33 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+            case 0:
+                reqselTx = MXC_DMA_REQUEST_SPI1TX;
+                break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+            case 1:
+                reqselTx = MXC_DMA_REQUEST_SPI0TX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+            default:
+                return E_BAD_PARAM;
+                break;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
+            case 0:
+                reqselRx = MXC_DMA_REQUEST_SPI1RX;
+                break;
 
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
+            case 1:
+                reqselRx = MXC_DMA_REQUEST_SPI0RX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+            default:
+                return E_BAD_PARAM;
+                break;
         }
     }
 

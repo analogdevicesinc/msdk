@@ -45,16 +45,16 @@
  */
 
 /***** Includes *****/
-#include "board.h"
-#include "led.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
-#include "nvic_table.h"
-#include "pb.h"
-#include "wdt.h"
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "nvic_table.h"
+#include "board.h"
+#include "mxc_sys.h"
+#include "wdt.h"
+#include "mxc_delay.h"
+#include "led.h"
+#include "pb.h"
 
 /***** Definitions *****/
 
@@ -120,27 +120,27 @@ int main(void)
     printf("Push button 0 = timeout and reset program\n");
     printf("Push button 1 = reset program\n\n");
 
-    // blink LED1 three times at startup
+    //blink LED1 three times at startup
     blinkled(1, 3);
 
-    // Setup watchdog
+    //Setup watchdog
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_ResetTimer(MXC_WDT0);
 
     MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
     NVIC_EnableIRQ(WDT0_IRQn);
 
-    // Push SW1 to start longer delay - shows Interrupt before the reset happens
+    //Push SW1 to start longer delay - shows Interrupt before the reset happens
 
     while (1) {
-        // Push SW0 to reset watchdog
+        //Push SW0 to reset watchdog
         if (PB_Get(SW0) == TRUE) {
             printf("\nEnabling Timeout Interrupt...\n");
             MXC_WDT_Disable(MXC_WDT0);
             cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-            cfg.upperIntPeriod = MXC_WDT_PERIOD_2_27;
+            cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
             cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-            cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_23;
+            cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
             MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
             MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
             MXC_WDT_ResetTimer(MXC_WDT0);
@@ -150,8 +150,7 @@ int main(void)
             MXC_WDT_Enable(MXC_WDT0);
 
             while (1) {
-                {
-                }
+                ;
             }
         }
 
@@ -169,10 +168,10 @@ int main(void)
             MXC_WDT_Enable(MXC_WDT0);
         }
 
-        // blink LED0
+        //blink LED0
         blinkled(0, 1);
 
-        // Reset watchdog
+        //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
 }

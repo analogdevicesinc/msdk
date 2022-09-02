@@ -29,7 +29,7 @@
    * \section intro Introduction
    *
    * This user manual describes the CMSIS DSP software library,
-   * a suite of common signal processing functions for use on Cortex-M and Cortex-A processor
+   * a suite of common signal processing functions for use on Cortex-M and Cortex-A processor 
    * based devices.
    *
    * The library is divided into a number of functions each covering a specific category:
@@ -61,12 +61,10 @@
    *
    * \section using Using the Library
    *
-   * The library is released in source form. It is strongly advised to compile the library using
-   -Ofast to
+   * The library is released in source form. It is strongly advised to compile the library using -Ofast to
    * have the best performances.
    *
-   * The library functions are declared in the public file <code>arm_math.h</code> which is placed
-   in the <code>Include</code> folder.
+   * The library functions are declared in the public file <code>arm_math.h</code> which is placed in the <code>Include</code> folder.
    * Simply include this file. If you don't want to include everything, you can also rely
    * on headers in Include/dsp folder and use only what you need.
    *
@@ -86,8 +84,7 @@
    *
    * - ARM_MATH_BIG_ENDIAN:
    *
-   * Define macro ARM_MATH_BIG_ENDIAN to build the library for big endian targets. By default
-   library builds for little endian targets.
+   * Define macro ARM_MATH_BIG_ENDIAN to build the library for big endian targets. By default library builds for little endian targets.
    *
    * - ARM_MATH_MATRIX_CHECK:
    *
@@ -104,12 +101,12 @@
    * - ARM_MATH_NEON:
    *
    * Define macro ARM_MATH_NEON to enable Neon versions of the DSP functions.
-   * It is not enabled by default when Neon is available because performances are
+   * It is not enabled by default when Neon is available because performances are 
    * dependent on the compiler and target architecture.
    *
    * - ARM_MATH_NEON_EXPERIMENTAL:
    *
-   * Define macro ARM_MATH_NEON_EXPERIMENTAL to enable experimental Neon versions of
+   * Define macro ARM_MATH_NEON_EXPERIMENTAL to enable experimental Neon versions of 
    * of some DSP functions. Experimental Neon versions currently do not have better
    * performances than the scalar versions.
    *
@@ -151,17 +148,15 @@
    * <hr>
    * \section pack CMSIS-DSP in ARM::CMSIS Pack
    *
-   * The following files relevant to CMSIS-DSP are present in the <b>ARM::CMSIS</b> Pack
-   directories:
-   * |File/Folder                      |Content |
+   * The following files relevant to CMSIS-DSP are present in the <b>ARM::CMSIS</b> Pack directories:
+   * |File/Folder                      |Content                                                                 |
    * |---------------------------------|------------------------------------------------------------------------|
-   * |\b CMSIS\\Documentation\\DSP     | This documentation |
-   * |\b CMSIS\\DSP\\Examples          | Example projects demonstrating the usage of the library
-   functions      |
+   * |\b CMSIS\\Documentation\\DSP     | This documentation                                                     |
+   * |\b CMSIS\\DSP\\Examples          | Example projects demonstrating the usage of the library functions      |
    * |\b CMSIS\\DSP\\Include           | DSP_Lib include files for using and building the lib
-   * |\b CMSIS\\DSP\\PrivateInclude    | DSP_Lib private include files for building the lib |
-   * |\b CMSIS\\DSP\\Lib               | DSP_Lib binaries |
-   * |\b CMSIS\\DSP\\Source            | DSP_Lib source files |
+   * |\b CMSIS\\DSP\\PrivateInclude    | DSP_Lib private include files for building the lib                                               |
+   * |\b CMSIS\\DSP\\Lib               | DSP_Lib binaries                                                       |
+   * |\b CMSIS\\DSP\\Source            | DSP_Lib source files                                                   |
    *
    * <hr>
    * \section rev Revision History of CMSIS-DSP
@@ -175,26 +170,26 @@
 #ifndef _ARM_MATH_H
 #define _ARM_MATH_H
 
-#include "arm_math_memory.h"
 #include "arm_math_types.h"
+#include "arm_math_memory.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
 
 #include "dsp/basic_math_functions.h"
-#include "dsp/bayes_functions.h"
-#include "dsp/complex_math_functions.h"
-#include "dsp/controller_functions.h"
-#include "dsp/distance_functions.h"
-#include "dsp/fast_math_functions.h"
-#include "dsp/filtering_functions.h"
 #include "dsp/interpolation_functions.h"
+#include "dsp/bayes_functions.h"
 #include "dsp/matrix_functions.h"
-#include "dsp/quaternion_math_functions.h"
+#include "dsp/complex_math_functions.h"
 #include "dsp/statistics_functions.h"
+#include "dsp/controller_functions.h"
 #include "dsp/support_functions.h"
+#include "dsp/distance_functions.h"
 #include "dsp/svm_functions.h"
+#include "dsp/fast_math_functions.h"
 #include "dsp/transform_functions.h"
+#include "dsp/filtering_functions.h"
+#include "dsp/quaternion_math_functions.h"
 
 #ifdef __cplusplus
 extern "C" {

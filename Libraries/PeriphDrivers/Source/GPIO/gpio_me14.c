@@ -35,14 +35,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio.h"
-#include "gpio_common.h"
-#include "gpio_reva.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "gpio.h"
+#include "gpio_reva.h"
+#include "gpio_common.h"
 #include <stddef.h>
+#include "mxc_sys.h"
+#include "mxc_errors.h"
 
 /* **** Definitions **** */
 
@@ -103,37 +103,37 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 
     // Configure the pad
     switch (cfg->pad) {
-    case MXC_GPIO_PAD_NONE:
-        gpio->pad_cfg1 &= ~cfg->mask;
-        gpio->pad_cfg2 &= ~cfg->mask;
-        break;
+        case MXC_GPIO_PAD_NONE:
+            gpio->pad_cfg1 &= ~cfg->mask;
+            gpio->pad_cfg2 &= ~cfg->mask;
+            break;
 
-    case MXC_GPIO_PAD_WEAK_PULL_UP:
-        gpio->pad_cfg1 |= cfg->mask;
-        gpio->pad_cfg2 &= ~cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
+        case MXC_GPIO_PAD_WEAK_PULL_UP:
+            gpio->pad_cfg1 |= cfg->mask;
+            gpio->pad_cfg2 &= ~cfg->mask;
+            gpio->ps &= ~cfg->mask;
+            break;
 
-    case MXC_GPIO_PAD_PULL_UP:
-        gpio->pad_cfg1 |= cfg->mask;
-        gpio->pad_cfg2 &= ~cfg->mask;
-        gpio->ps |= cfg->mask;
-        break;
+        case MXC_GPIO_PAD_PULL_UP:
+            gpio->pad_cfg1 |= cfg->mask;
+            gpio->pad_cfg2 &= ~cfg->mask;
+            gpio->ps |= cfg->mask;
+            break;
 
-    case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-        gpio->pad_cfg1 &= ~cfg->mask;
-        gpio->pad_cfg2 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
+        case MXC_GPIO_PAD_WEAK_PULL_DOWN:
+            gpio->pad_cfg1 &= ~cfg->mask;
+            gpio->pad_cfg2 |= cfg->mask;
+            gpio->ps &= ~cfg->mask;
+            break;
 
-    case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->pad_cfg1 &= ~cfg->mask;
-        gpio->pad_cfg2 |= cfg->mask;
-        gpio->ps |= cfg->mask;
-        break;
+        case MXC_GPIO_PAD_PULL_DOWN:
+            gpio->pad_cfg1 &= ~cfg->mask;
+            gpio->pad_cfg2 |= cfg->mask;
+            gpio->ps |= cfg->mask;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     // Configure the vssel

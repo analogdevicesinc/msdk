@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -47,12 +47,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "Ext_Flash.h"
 #include <MAX32xxx.h>
+#include "Ext_Flash.h"
 
 /***** Definitions *****/
 
-#define EXT_FLASH_ADDR 0
+#define EXT_FLASH_ADDR  0
 #define EXT_FLASH_WIDTH Ext_Flash_DataLine_Quad
 
 int fail = 0;
@@ -121,7 +121,8 @@ int main(void)
         printf("Board Init Failed\n");
         printf("Example Failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     printf("%s Initialized.\n\n", EXT_FLASH_NAME);
@@ -135,7 +136,8 @@ int main(void)
         printf("Error verifying External Flash ID: 0x%x\n", id);
         printf("Example Failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     int err;
@@ -164,11 +166,11 @@ int main(void)
 
     // Program the External Flash
     printf("Programming function (%d bytes @ 0x%08x) into external flash\n",
-        (uint32_t)(&__load_length_xip), &__load_start_xip);
+           (uint32_t)(&__load_length_xip), &__load_start_xip);
 
-    if ((err = Ext_Flash_Program_Page(
-             EXT_FLASH_ADDR, &__load_start_xip, (uint32_t)(&__load_length_xip), EXT_FLASH_WIDTH))
-        != E_NO_ERROR) {
+    if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, &__load_start_xip,
+                                      (uint32_t)(&__load_length_xip), EXT_FLASH_WIDTH)) !=
+        E_NO_ERROR) {
         printf("Error Programming: %d\n", err);
         fail++;
     } else {
@@ -193,7 +195,7 @@ int main(void)
     spixf_cfg_setup();
 
     printf("Jumping to external flash (@ 0x%08x), watch for blinking LED.\n\n",
-        (MXC_XIP_MEM_BASE | 0x1));
+           (MXC_XIP_MEM_BASE | 0x1));
     func = (void (*)(void))(MXC_XIP_MEM_BASE | 0x1);
     func();
     printf("Returned from external flash\n\n");

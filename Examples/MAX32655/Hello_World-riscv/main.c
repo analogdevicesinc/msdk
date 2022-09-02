@@ -31,9 +31,9 @@
  *
  ******************************************************************************/
 
-#include "mxc.h"
-#include <stdint.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include "mxc.h"
 //#include "gcfr_regs.h"
 #include "fcr_regs.h"
 #include "sema_regs.h"
@@ -55,7 +55,7 @@ int main(void)
 
     MXC_FCR->urvbootaddr = (uint32_t)&__FlashStart_; // Set RISC-V boot address
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR); // Enable Sempahore clock
-    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR); // Set wakeup ISR
+    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR);         // Set wakeup ISR
 
     printf("Waiting...\n");
 

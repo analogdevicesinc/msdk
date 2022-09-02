@@ -33,7 +33,7 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
+ * 
  *************************************************************************** */
 
 #ifndef _CRC_H_
@@ -54,18 +54,18 @@ extern "C" {
 
 /***** CRC Definitions *****/
 /**
- * @brief  Structure used to set up CRC request
- *
- */
+  * @brief  Structure used to set up CRC request
+  *
+  */
 typedef struct _mxc_crc_req_t {
     uint32_t* dataBuffer; ///< Pointer to the data
-    uint32_t dataLen; ///< Length of the data
-    uint32_t resultCRC; ///< Calculated CRC value
+    uint32_t dataLen;     ///< Length of the data
+    uint32_t resultCRC;   ///< Calculated CRC value
 } mxc_crc_req_t;
 
-/**
+/** 
  * @brief CRC data bit order
- *
+ *  
  */
 typedef enum { CRC_LSB_FIRST, CRC_MSB_FIRST } mxc_crc_bitorder_t;
 
@@ -169,7 +169,7 @@ int MXC_CRC_Compute(mxc_crc_req_t* req);
  *          MXC_DMA_Handler() in the ISR
  *
  * @param   req   Structure containing the data for calculation
- *
+ * 
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_CRC_ComputeAsync(mxc_crc_req_t* req);

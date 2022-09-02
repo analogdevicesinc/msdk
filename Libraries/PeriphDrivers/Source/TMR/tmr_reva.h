@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "tmr.h"
-#include "tmr_reva_regs.h"
 #include <stddef.h>
+#include "mxc_assert.h"
+#include "tmr.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "mxc_lock.h"
+#include "tmr_reva_regs.h"
 
 /* **** Functions **** */
 void MXC_TMR_RevA_Init(mxc_tmr_reva_regs_t* tmr, mxc_tmr_cfg_t* cfg);
@@ -54,5 +54,5 @@ uint32_t MXC_TMR_RevA_GetFlags(mxc_tmr_reva_regs_t* tmr);
 void MXC_TMR_RevA_SetCompare(mxc_tmr_reva_regs_t* tmr, uint32_t cmp_cnt);
 void MXC_TMR_RevA_SetCount(mxc_tmr_reva_regs_t* tmr, uint32_t cnt);
 void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t* tmr, unsigned long us);
-int MXC_TMR_RevA_GetTime(
-    mxc_tmr_reva_regs_t* tmr, uint32_t ticks, uint32_t* time, mxc_tmr_unit_t* units);
+int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t* tmr, uint32_t ticks, uint32_t* time,
+                         mxc_tmr_unit_t* units);

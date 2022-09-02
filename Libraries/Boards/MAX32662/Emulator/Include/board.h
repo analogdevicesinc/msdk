@@ -55,9 +55,9 @@ extern "C" {
 #endif
 
 #define LED_OFF 0 /// Inactive state of LEDs
-#define LED_ON 1 /// Active state of LEDs
+#define LED_ON  1 /// Active state of LEDs
 
-#define MX25_SPI MXC_SPIXFC
+#define MX25_SPI  MXC_SPIXFC
 #define MX25_SSEL 0
 // #define SPI_CHAR_BITS               8
 
@@ -106,8 +106,7 @@ int Console_PrepForSleep(void);
 //  * @param   width       spi_width_t for how many data lines to use
 //  * \returns #E_NO_ERROR if successful, !=0 otherwise
 
-// int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, spixfc_width_t
-// width);
+// int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, spixfc_width_t width);
 
 // /**
 //  * \brief   Send clocks on SCLK.

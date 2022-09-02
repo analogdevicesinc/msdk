@@ -38,21 +38,21 @@
  */
 
 /***** Includes *****/
-#include "afe.h"
-#include "board.h"
-#include "hart_uart.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "uart.h"
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h> // For rand()
+#include <stdint.h>
 #include <string.h>
+#include <stdlib.h> // For rand()
+#include "mxc_device.h"
+#include "board.h"
+#include "mxc_delay.h"
+#include "afe.h"
+#include "hart_uart.h"
+#include "uart.h"
 
 /***** Definitions *****/
 
-#define HART_BANNER_LEN 26
-#define HART_ECHO_BAN_LEN 21
+#define HART_BANNER_LEN     26
+#define HART_ECHO_BAN_LEN   21
 #define HART_BUFFER_MAX_LEN 512
 
 /***** Globals *****/
@@ -62,16 +62,16 @@
 // *****************************************************************************
 int main(void)
 {
-    int retval = 0;
-    uint8_t hart_message[HART_BANNER_LEN] = { "\nHello from MAX32680 HART\n" };
-    uint8_t hart_echo_ban[HART_ECHO_BAN_LEN] = { "\nEcho from MAX32680: " };
+    int retval                               = 0;
+    uint8_t hart_message[HART_BANNER_LEN]    = {"\nHello from MAX32680 HART\n"};
+    uint8_t hart_echo_ban[HART_ECHO_BAN_LEN] = {"\nEcho from MAX32680: "};
 
     uint8_t hart_rx_buffer[HART_BUFFER_MAX_LEN];
     uint8_t hart_tx_buffer[HART_BUFFER_MAX_LEN];
 
     uint32_t rx_length = 0;
-    int i = 0;
-    int prev_cd_stat = 1;
+    int i              = 0;
+    int prev_cd_stat   = 1;
 
     printf("\n\n\n\n\nMAX32680 HART UART Example\n\n");
 
@@ -93,7 +93,8 @@ int main(void)
     retval = hart_uart_setup(NORMAL_HART_TRANSCEIVE_MODE);
     if (retval != E_NO_ERROR) {
         printf("Failed to setup HART UART Error: %d. Halting...\n", retval);
-        while (1) { }
+        while (1)
+            ;
     }
 
     // Note banner strings are NOT null terminated
@@ -102,7 +103,8 @@ int main(void)
     retval = hart_uart_send(hart_message, HART_BANNER_LEN);
     if (retval != E_NO_ERROR) {
         printf("Failed to send HART Banner Error: %d. Halting...\n", retval);
-        while (1) { }
+        while (1)
+            ;
     }
 
     printf("\nReady to Echo HART Messages...\n");
@@ -129,11 +131,15 @@ int main(void)
             if (rx_length > 0) {
                 // Got a response
                 printf("HEX received:\n");
-                for (i = 0; i < rx_length; i++) { printf("0x%02X ", hart_rx_buffer[i]); }
+                for (i = 0; i < rx_length; i++) {
+                    printf("0x%02X ", hart_rx_buffer[i]);
+                }
                 printf("\n");
 
                 printf("\nASCII received: ");
-                for (i = 0; i < rx_length; i++) { printf("%c", hart_rx_buffer[i]); }
+                for (i = 0; i < rx_length; i++) {
+                    printf("%c", hart_rx_buffer[i]);
+                }
                 printf("\n");
 
                 //

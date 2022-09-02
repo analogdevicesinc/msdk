@@ -34,25 +34,25 @@
  *
  **************************************************************************** */
 
-#include <stddef.h>
 #include <stdio.h>
+#include <stddef.h>
 
 #include <MAX32xxx.h>
 
-#include "descriptors.h"
+#include "usb.h"
+#include "usb_event.h"
 #include "enumerate.h"
 #include "hid_kbd.h"
 #include "msc.h"
+#include "descriptors.h"
 #include "mscmem.h"
-#include "usb.h"
-#include "usb_event.h"
 
 /* **** Definitions **** */
-#define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS
+#define EVENT_ENUM_COMP   MAXUSB_NUM_EVENTS
 #define EVENT_REMOTE_WAKE (EVENT_ENUM_COMP + 1)
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
+#define TOSTRING(x)  STRINGIFY(x)
 
 /* **** Global Data **** */
 volatile int configured;
@@ -62,27 +62,21 @@ int remote_wake_en;
 
 /* This EP assignment must match the Configuration Descriptor */
 static msc_cfg_t msc_cfg = {
-    1, /* EP OUT */
+    1,                    /* EP OUT */
     MXC_USBHS_MAX_PACKET, /* OUT max packet size */
-    2, /* EP IN */
+    2,                    /* EP IN */
     MXC_USBHS_MAX_PACKET, /* IN max packet size */
 };
 
 static const msc_idstrings_t ids = {
-    "MAXIM", /* Vendor string.  Maximum of 8 bytes */
+    "MAXIM",       /* Vendor string.  Maximum of 8 bytes */
     "MSC Example", /* Product string.  Maximum of 16 bytes */
-    "1.0" /* Version string.  Maximum of 4 bytes */
+    "1.0"          /* Version string.  Maximum of 4 bytes */
 };
 
 /* Functions to control "disk" memory. See msc.h for definitions. */
 static const msc_mem_t mem = {
-    mscmem_Init,
-    mscmem_Start,
-    mscmem_Stop,
-    mscmem_Ready,
-    mscmem_Size,
-    mscmem_Read,
-    mscmem_Write,
+    mscmem_Init, mscmem_Start, mscmem_Stop, mscmem_Ready, mscmem_Size, mscmem_Read, mscmem_Write,
 };
 
 /* **** Function Prototypes **** */
@@ -124,29 +118,31 @@ int main(void)
     printf("Waiting for VBUS...\n");
 
     /* Initialize state */
-    configured = 0;
-    suspended = 0;
-    event_flags = 0;
+    configured     = 0;
+    suspended      = 0;
+    event_flags    = 0;
     remote_wake_en = 0;
 
     /* Start out in full speed */
-    usb_opts.enable_hs = 0;
-    usb_opts.delay_us = delay_us; /* Function which will be used for delays */
-    usb_opts.init_callback = usbStartupCallback;
+    usb_opts.enable_hs         = 0;
+    usb_opts.delay_us          = delay_us; /* Function which will be used for delays */
+    usb_opts.init_callback     = usbStartupCallback;
     usb_opts.shutdown_callback = usbShutdownCallback;
 
     /* Initialize the usb module */
     if (MXC_USB_Init(&usb_opts) != 0) {
         printf("usb_init() failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     /* Initialize the enumeration module */
     if (enum_init() != 0) {
         printf("enum_init() failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     /* Register enumeration data */
@@ -170,15 +166,16 @@ int main(void)
     if (msc_init(&composite_config_descriptor.msc_interface_descriptor, &ids, &mem) != 0) {
         printf("msc_init() failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     if (hidkbd_init(&composite_config_descriptor.hid_interface_descriptor,
-            &composite_config_descriptor.hid_descriptor, report_descriptor)
-        != 0) {
+                    &composite_config_descriptor.hid_descriptor, report_descriptor) != 0) {
         printf("hidkbd_init() failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     /* Register callbacks */
@@ -189,7 +186,8 @@ int main(void)
     if (PB_RegisterCallback(0, buttonCallback) != E_NO_ERROR) {
         printf("PB_RegisterCallback() failed\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     /* Start with USB in low power mode */
@@ -315,10 +313,10 @@ static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
         msc_cfg.in_ep = composite_config_descriptor.endpoint_descriptor_2.bEndpointAddress & 0x7;
         msc_cfg.in_maxpacket = composite_config_descriptor.endpoint_descriptor_2.wMaxPacketSize;
 
-        msc_configure(
-            &msc_cfg, composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
-        return hidkbd_configure(
-            composite_config_descriptor.endpoint_descriptor_3.bEndpointAddress & USB_EP_NUM_MASK);
+        msc_configure(&msc_cfg,
+                      composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+        return hidkbd_configure(composite_config_descriptor.endpoint_descriptor_3.bEndpointAddress &
+                                USB_EP_NUM_MASK);
     } else if (sud->wValue == 0) {
         configured = 0;
         msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
@@ -336,46 +334,46 @@ static int eventCallback(maxusb_event_t evt, void* data)
     MXC_SETBIT(&event_flags, evt);
 
     switch (evt) {
-    case MAXUSB_EVENT_NOVBUS:
-        MXC_USB_EventDisable(MAXUSB_EVENT_BRST);
-        MXC_USB_EventDisable(MAXUSB_EVENT_SUSP);
-        MXC_USB_EventDisable(MAXUSB_EVENT_DPACT);
-        MXC_USB_Disconnect();
-        configured = 0;
-        enum_clearconfig();
-        hidkbd_deconfigure();
-        msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
-        usbAppSleep();
-        break;
+        case MAXUSB_EVENT_NOVBUS:
+            MXC_USB_EventDisable(MAXUSB_EVENT_BRST);
+            MXC_USB_EventDisable(MAXUSB_EVENT_SUSP);
+            MXC_USB_EventDisable(MAXUSB_EVENT_DPACT);
+            MXC_USB_Disconnect();
+            configured = 0;
+            enum_clearconfig();
+            hidkbd_deconfigure();
+            msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+            usbAppSleep();
+            break;
 
-    case MAXUSB_EVENT_VBUS:
-        MXC_USB_EventClear(MAXUSB_EVENT_BRST);
-        MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
-        MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
-        MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
-        MXC_USB_Connect();
-        usbAppSleep();
-        break;
+        case MAXUSB_EVENT_VBUS:
+            MXC_USB_EventClear(MAXUSB_EVENT_BRST);
+            MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
+            MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
+            MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
+            MXC_USB_Connect();
+            usbAppSleep();
+            break;
 
-    case MAXUSB_EVENT_BRST:
-        usbAppWakeup();
-        enum_clearconfig();
-        hidkbd_deconfigure();
-        msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
-        configured = 0;
-        suspended = 0;
-        break;
+        case MAXUSB_EVENT_BRST:
+            usbAppWakeup();
+            enum_clearconfig();
+            hidkbd_deconfigure();
+            msc_deconfigure(composite_config_descriptor.msc_interface_descriptor.bInterfaceNumber);
+            configured = 0;
+            suspended  = 0;
+            break;
 
-    case MAXUSB_EVENT_SUSP:
-        usbAppSleep();
-        break;
+        case MAXUSB_EVENT_SUSP:
+            usbAppSleep();
+            break;
 
-    case MAXUSB_EVENT_DPACT:
-        usbAppWakeup();
-        break;
+        case MAXUSB_EVENT_DPACT:
+            usbAppWakeup();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return 0;
@@ -386,11 +384,11 @@ static int eventCallback(maxusb_event_t evt, void* data)
 void buttonCallback(void* pb)
 {
     static const uint8_t chars[] = "Maxim Integrated\n";
-    static int i = 0;
-    int count = 0;
-    int button_pressed = 0;
+    static int i                 = 0;
+    int count                    = 0;
+    int button_pressed           = 0;
 
-    // determine if interrupt triggered by bounce or a true button press
+    //determine if interrupt triggered by bounce or a true button press
     while (PB_Get(0) && !button_pressed) {
         count++;
 

@@ -37,29 +37,31 @@
 #include "ucl/ucl_config.h"
 
 #if defined(JIBE_LINUX_HW)
-#include <errno.h>
-#include <fcntl.h>
-#include <linux/types.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <fcntl.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <ucl/ucl_aes.h>
+#include <linux/types.h>
 #include <ucl/ucl_des.h>
-#include <unistd.h>
+#include <ucl/ucl_aes.h>
 
-#define AF_ALG 38
+#define AF_ALG  38
 #define SOL_ALG 279
 
-#define SPLICE_F_GIFT (0x08) /* pages passed in are a gift */
+#define SPLICE_F_GIFT   (0x08) /* pages passed in are a gift */
 #define AES_BLOCKLENGTH (UCL_AES_BLOCKSIZE)
-#define DES3_KEYLENGTH (UCL_3DES_KEYSIZE)
+#define DES3_KEYLENGTH  (UCL_3DES_KEYSIZE)
 #define DES_BLOCKLENGTH (UCL_DES_BLOCKSIZE)
-#define DES_KEYLENGTH (UCL_DES_KEYSIZE)
+#define DES_KEYLENGTH   (UCL_DES_KEYSIZE)
 
 #ifndef TRUE
-#define TRUE (!!1)
+#define TRUE  (!!1)
 #define FALSE (!TRUE)
 #endif
 
@@ -80,8 +82,8 @@ struct af_alg_iv {
 
 /* Socket options */
 #define ALG_SET_KEY 1
-#define ALG_SET_IV 2
-#define ALG_SET_OP 3
+#define ALG_SET_IV  2
+#define ALG_SET_OP  3
 
 /* Operations */
 #define ALG_OP_DECRYPT 0
@@ -96,7 +98,7 @@ void crypto_hw_3des_flush_key(void);
 int crypto_hw_set_mode(int mode);
 int crypto_hw_get_mode(void);
 int crypto_hw(unsigned int op, const unsigned char* bufferIn, unsigned char* bufferOut,
-    unsigned int buflen, unsigned char* oiv, unsigned int blocklen);
+              unsigned int buflen, unsigned char* oiv, unsigned int blocklen);
 
 #endif /*#if defined (JIBE_LINUX_HW)*/
 

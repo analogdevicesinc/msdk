@@ -33,33 +33,33 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 
-#include "mxc_delay.h"
 #include "mxc_device.h"
+#include "mxc_delay.h"
 
-#include "gpio.h"
-#include "spi.h"
 #include "tft.h"
+#include "spi.h"
+#include "gpio.h"
 
 /************************************ DEFINES ********************************/
-#define DISPLAY_WIDTH 320
+#define DISPLAY_WIDTH  320
 #define DISPLAY_HEIGHT 240
-#define TFT_SPI_FREQ 12000000 // Hz
-#define TFT_SPI1_PINS MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20
-#define PALETTE_OFFSET(x)                                                                          \
-    concat(images_start_addr + images_header.offset2info_palatte                                   \
-            + 1 /* nb_palette */ + (x) * sizeof(unsigned int),                                     \
-        4)
-#define FONT_OFFSET(x)                                                                             \
-    concat(images_start_addr + images_header.offset2info_font                                      \
-            + 1 /* nb_font    */ + (x) * sizeof(unsigned int),                                     \
-        4)
-#define BITMAP_OFFSET(x)                                                                           \
-    concat(images_start_addr + images_header.offset2info_bitmap                                    \
-            + 1 /* nb_bitmap  */ + (x) * sizeof(unsigned int),                                     \
-        4)
+#define TFT_SPI_FREQ   12000000 // Hz
+#define TFT_SPI1_PINS  MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20
+#define PALETTE_OFFSET(x)                                                               \
+    concat(images_start_addr + images_header.offset2info_palatte + 1 /* nb_palette */ + \
+               (x) * sizeof(unsigned int),                                              \
+           4)
+#define FONT_OFFSET(x)                                                               \
+    concat(images_start_addr + images_header.offset2info_font + 1 /* nb_font    */ + \
+               (x) * sizeof(unsigned int),                                           \
+           4)
+#define BITMAP_OFFSET(x)                                                               \
+    concat(images_start_addr + images_header.offset2info_bitmap + 1 /* nb_bitmap  */ + \
+               (x) * sizeof(unsigned int),                                             \
+           4)
 
 /********************************* TYPE DEFINES ******************************/
 #pragma pack(1)
@@ -79,24 +79,24 @@ typedef struct {
 } font_char_t;
 
 typedef struct {
-    // unsigned char size;
+    //unsigned char size;
     unsigned char nb_char;
     unsigned char bitmap_id;
-    // font_char_t    *char_info; // X nb_char
+    //font_char_t    *char_info; // X nb_char
 } font_info_t;
 
 typedef struct {
-    // unsigned short    type;                        /* Magic identifier               */
-    // unsigned short    reserved1, reserved2;
-    // unsigned short    bits;                        /* Bits per pixel                 */
+    //unsigned short    type;                        /* Magic identifier               */
+    //unsigned short    reserved1, reserved2;
+    //unsigned short    bits;                        /* Bits per pixel                 */
     //
     unsigned int offset2info_palatte; // Palettes start address
-    unsigned int offset2info_font; // Fonts start address
-    unsigned int offset2info_bitmap; // Bitmap start address
+    unsigned int offset2info_font;    // Fonts start address
+    unsigned int offset2info_bitmap;  // Bitmap start address
     //
     unsigned int nb_palette; // number of palette
-    unsigned int nb_font; // number of fonts
-    unsigned int nb_bitmap; // number of bitmap
+    unsigned int nb_font;    // number of fonts
+    unsigned int nb_bitmap;  // number of bitmap
 } Header_images_t;
 
 #pragma pack()
@@ -127,7 +127,9 @@ static int concat(unsigned char* var, int size)
 {
     int result = 0;
 
-    for (int i = 1; i <= size; i++) { result |= var[size - i] << (8 * (size - i)); }
+    for (int i = 1; i <= size; i++) {
+        result |= var[size - i] << (8 * (size - i));
+    }
 
     return result;
 }
@@ -171,7 +173,7 @@ static void spi_transmit(void* datain, unsigned int count)
     unsigned int offset;
     unsigned int fifo;
     volatile unsigned short* u16ptrin = (volatile unsigned short*)datain;
-    unsigned int start = 0;
+    unsigned int start                = 0;
 
     MXC_SPI_SetFrequency(spi, TFT_SPI_FREQ);
     MXC_SPI_SetDataSize(spi, 9);
@@ -182,13 +184,13 @@ static void spi_transmit(void* datain, unsigned int count)
     spi->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_ACTIVE;
 
     // Setup the slave select
-    MXC_SETFIELD(
-        spi->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE, ((1 << ssel) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
+    MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE,
+                 ((1 << ssel) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
 
     // number of RX Char is 0xffff
     spi->ctrl1 &= ~(MXC_F_SPI_CTRL1_RX_NUM_CHAR);
 
-    // DMA RX FIFO disabled
+    //DMA RX FIFO disabled
     spi->dma &= ~(MXC_F_SPI_DMA_RX_FIFO_EN);
 
     // set number of char to be transmit
@@ -198,9 +200,10 @@ static void spi_transmit(void* datain, unsigned int count)
 
     /* Clear TX and RX FIFO in DMA
         TX: Set this bit to clear the TX FIFO and all TX FIFO flags in the QSPIn_INT_FL register.
-            Note: The TX FIFO should be disabled (QSPIn_DMA.tx_fifo_en = 0) prior to setting this
-       field. Note: Setting this field to 0 has no effect. RX: Clear the RX FIFO and any pending RX
-       FIFO flags in QSPIn_INTFL. This should be done when the RX FIFO is inactive.
+            Note: The TX FIFO should be disabled (QSPIn_DMA.tx_fifo_en = 0) prior to setting this field.
+            Note: Setting this field to 0 has no effect.
+        RX: Clear the RX FIFO and any pending RX FIFO flags in QSPIn_INTFL.
+            This should be done when the RX FIFO is inactive.
     */
     spi->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
     // QSPIn port is enabled
@@ -281,14 +284,18 @@ static void print_line(const unsigned char* line, int nb_of_pixel)
     int loop_counter = nb_of_pixel >> 2; // div 4
 
     for (x = 0; x < loop_counter; x++) {
-        for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]); }
+        for (i = 0; i < 4; i++) {
+            g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]);
+        }
 
         spi_transmit((unsigned short*)g_fifo, 8);
     }
 
     x <<= 2;
 
-    for (; x < nb_of_pixel; x++) { write_color(*(g_palette_ram + line[x])); }
+    for (; x < nb_of_pixel; x++) {
+        write_color(*(g_palette_ram + line[x]));
+    }
 }
 
 static void print_line_rgb565(const unsigned char* line, int nb_of_pixel)
@@ -324,8 +331,8 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
     unsigned int line_start_pos[320] = {
         0,
     };
-    int index = 0;
-    int is_ended = 0;
+    int index                = 0;
+    int is_ended             = 0;
     unsigned int nb_of_pixel = 0;
 
     if (length < 1) {
@@ -335,35 +342,35 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
     /*
      *  Find start position for each line
      */
-    inpos = 0;
+    inpos                   = 0;
     line_start_pos[index++] = inpos;
 
     do {
-        cmd = in[inpos++];
+        cmd  = in[inpos++];
         data = in[inpos++];
 
         if (cmd == 0x00) {
             switch (data) {
-            case 0:
-                line_start_pos[index++] = inpos;
-                break;
+                case 0:
+                    line_start_pos[index++] = inpos;
+                    break;
 
-            case 1: // end of image
-                is_ended = 1;
-                break;
+                case 1: //end of image
+                    is_ended = 1;
+                    break;
 
-            case 2:
-                inpos += 2; // pass x and y
-                break;
+                case 2:
+                    inpos += 2; // pass x and y
+                    break;
 
-            default:
-                inpos += data;
+                default:
+                    inpos += data;
 
-                if (data % 2) {
-                    inpos++;
-                }
+                    if (data % 2) {
+                        inpos++;
+                    }
 
-                break;
+                    break;
             }
         }
 
@@ -375,46 +382,57 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
     } while (inpos < length);
 
     for (index = index - 1; index >= 0; index--) {
-        inpos = line_start_pos[index];
-        is_ended = 0;
+        inpos       = line_start_pos[index];
+        is_ended    = 0;
         nb_of_pixel = 0;
 
         /* Main decompression loop */
         do {
-            cmd = in[inpos++];
+            cmd  = in[inpos++];
             data = in[inpos++];
 
             if (cmd == 0x00) {
                 switch (data) {
-                case 0:
-                case 1:
-                    while (nb_of_pixel < (unsigned int)img_w) { line[nb_of_pixel++] = 0; }
+                    case 0:
+                    case 1:
+                        while (nb_of_pixel < (unsigned int)img_w) {
+                            line[nb_of_pixel++] = 0;
+                        }
 
-                    print_line(line, img_w);
-                    is_ended = 1;
-                    break;
+                        print_line(line, img_w);
+                        is_ended = 1;
+                        break;
 
-                case 2: {
-                    unsigned int x, y;
-                    x = in[inpos++];
-                    y = in[inpos++];
+                    case 2:
+                    {
+                        unsigned int x, y;
+                        x = in[inpos++];
+                        y = in[inpos++];
 
-                    for (i = 0; i < x; i++) { line[nb_of_pixel++] = 0; }
+                        for (i = 0; i < x; i++) {
+                            line[nb_of_pixel++] = 0;
+                        }
 
-                    for (i = 0; i < y; i++) { print_line(line, img_w); }
-                } break;
+                        for (i = 0; i < y; i++) {
+                            print_line(line, img_w);
+                        }
+                    } break;
 
-                default:
-                    for (i = 0; i < data; i++) { line[nb_of_pixel++] = in[inpos++]; }
+                    default:
+                        for (i = 0; i < data; i++) {
+                            line[nb_of_pixel++] = in[inpos++];
+                        }
 
-                    if (data % 2) {
-                        inpos++;
-                    }
+                        if (data % 2) {
+                            inpos++;
+                        }
 
-                    break;
+                        break;
                 }
             } else {
-                for (i = 0; i < cmd; i++) { line[nb_of_pixel++] = data; }
+                for (i = 0; i < cmd; i++) {
+                    line[nb_of_pixel++] = data;
+                }
             }
 
             if (is_ended == 1) {
@@ -426,23 +444,23 @@ static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, 
 
 static void tft_spi_init(void)
 {
-    int master = 1;
-    int quadMode = 0;
-    int numSlaves = 2;
-    int ssPol = 0;
+    int master          = 1;
+    int quadMode        = 0;
+    int numSlaves       = 2;
+    int ssPol           = 0;
     unsigned int tft_hz = TFT_SPI_FREQ;
 
     mxc_spi_pins_t tft_pins;
 
-    tft_pins.clock = true;
-    tft_pins.ss0 = (ssel == 0); ///< Slave select pin 0
-    tft_pins.ss1 = (ssel == 1); ///< Slave select pin 1
-    tft_pins.ss2 = (ssel == 2); ///< Slave select pin 2
-    tft_pins.miso = true; ///< miso pin
-    tft_pins.mosi = true; ///< mosi pin
-    tft_pins.sdio2 = false; ///< SDIO2 pin
-    tft_pins.sdio3 = false; ///< SDIO3 pin
-    tft_pins.vddioh = true; ///< VDDIOHn (3.3V) select for display
+    tft_pins.clock  = true;
+    tft_pins.ss0    = (ssel == 0); ///< Slave select pin 0
+    tft_pins.ss1    = (ssel == 1); ///< Slave select pin 1
+    tft_pins.ss2    = (ssel == 2); ///< Slave select pin 2
+    tft_pins.miso   = true;        ///< miso pin
+    tft_pins.mosi   = true;        ///< mosi pin
+    tft_pins.sdio2  = false;       ///< SDIO2 pin
+    tft_pins.sdio3  = false;       ///< SDIO3 pin
+    tft_pins.vddioh = true;        ///< VDDIOHn (3.3V) select for display
 
     MXC_SPI_Init(spi, master, quadMode, numSlaves, ssPol, tft_hz, tft_pins);
 
@@ -467,67 +485,67 @@ static void displayInit(void)
     }
 
     write_command(0x0028); // VCOM OTP
-    write_data(0x0006); // Page 55-56 of SSD2119 datasheet
+    write_data(0x0006);    // Page 55-56 of SSD2119 datasheet
 
     write_command(0x0000); // start Oscillator
-    write_data(0x0001); // Page 36 of SSD2119 datasheet
+    write_data(0x0001);    // Page 36 of SSD2119 datasheet
 
     write_command(0x0010); // Sleep mode
-    write_data(0x0000); // Page 49 of SSD2119 datasheet
+    write_data(0x0000);    // Page 49 of SSD2119 datasheet
 
     write_command(0x0001); // Driver Output Control
-    write_data(0x72EF); // Page 36-39 of SSD2119 datasheet
+    write_data(0x72EF);    // Page 36-39 of SSD2119 datasheet
 
     write_command(0x0002); // LCD Driving Waveform Control
-    write_data(0x0600); // Page 40-42 of SSD2119 datasheet
+    write_data(0x0600);    // Page 40-42 of SSD2119 datasheet
 
     write_command(0x0003); // Power Control 1
-    write_data(0x6A38); // Page 43-44 of SSD2119 datasheet
+    write_data(0x6A38);    // Page 43-44 of SSD2119 datasheet
 
     write_command(0x0011); // Entry Mode
-    write_data(0x6870); // Page 50-52 of SSD2119 datasheet
+    write_data(0x6870);    // Page 50-52 of SSD2119 datasheet
 
     write_command(0X000F); // Gate Scan Position
-    write_data(0x0000); // Page 49 of SSD2119 datasheet
+    write_data(0x0000);    // Page 49 of SSD2119 datasheet
 
     write_command(0X000B); // Frame Cycle Control
-    write_data(0x5308); // Page 45 of SSD2119 datasheet
+    write_data(0x5308);    // Page 45 of SSD2119 datasheet
 
     write_command(0x000C); // Power Control 2
-    write_data(0x0003); // Page 47 of SSD2119 datasheet
+    write_data(0x0003);    // Page 47 of SSD2119 datasheet
 
     write_command(0x000D); // Power Control 3
-    write_data(0x000A); // Page 48 of SSD2119 datasheet
+    write_data(0x000A);    // Page 48 of SSD2119 datasheet
 
     write_command(0x000E); // Power Control 4
-    write_data(0x2E00); // Page 48 of SSD2119 datasheet
+    write_data(0x2E00);    // Page 48 of SSD2119 datasheet
 
     write_command(0x001E); // Power Control 5
-    write_data(0x00B7); // Page 55 of SSD2119 datasheet
+    write_data(0x00B7);    // Page 55 of SSD2119 datasheet
 
     write_command(0x0025); // Frame Frequency Control
-    write_data(0x8000); // Page 53 of SSD2119 datasheet
+    write_data(0x8000);    // Page 53 of SSD2119 datasheet
 
     write_command(0x0026); // Analog setting
-    write_data(0x3800); // Page 54 of SSD2119 datasheet
+    write_data(0x3800);    // Page 54 of SSD2119 datasheet
 
     write_command(0x0027); // Critical setting to avoid pixel defect
-    write_data(0x0078); // per solomon systech, apparently undocumented.
+    write_data(0x0078);    // per solomon systech, apparently undocumented.
 
     write_command(0x0048); // Screen driving position - start line
-    write_data(0x0000); // Page 59 of SSD2119 datasheet
+    write_data(0x0000);    // Page 59 of SSD2119 datasheet
 
     write_command(0x0049); // Screen driving position - end line
-    write_data(0x00ef); // Page 59 of SSD2119 datasheet
+    write_data(0x00ef);    // Page 59 of SSD2119 datasheet
 
     write_command(0x004E); // Ram Address Set
-    write_data(0x0000); // Page 58 of SSD2119 datasheet
+    write_data(0x0000);    // Page 58 of SSD2119 datasheet
 
     write_command(0x004F); // Ram Address Set
-    write_data(0x0000); // Page 58 of SSD2119 datasheet
+    write_data(0x0000);    // Page 58 of SSD2119 datasheet
 
     write_command(0x0012); // Sleep mode
-    write_data(0x0D99); // Page 49 of SSD2119 datasheet
+    write_data(0x0D99);    // Page 49 of SSD2119 datasheet
 
     // Gamma Control (R30h to R3Bh) -- Page 56 of SSD2119 datasheet
     write_command(0x0030);
@@ -561,7 +579,7 @@ static void displayInit(void)
     write_data(0x0800);
 
     write_command(0x0007); // Display Control
-    write_data(0x0033); // Page 45 of SSD2119 datasheet
+    write_data(0x0033);    // Page 45 of SSD2119 datasheet
 
     MXC_Delay(150000);
 
@@ -580,10 +598,10 @@ static void setPalette(unsigned char id)
     palette = (unsigned char*)(images_start_addr + PALETTE_OFFSET(id));
 
     /* set palette only if it was changed */
-    for (i = 0; i < 16; i++) { // only test the first 16
-        if (g_palette_ram[i]
-            != (0x01000100 | ((palette[0] & 0xF8) << 13) | ((palette[1] & 0x1C) << 19)
-                | ((palette[1] & 0xE0) >> 5) | (palette[2] & 0xF8))) {
+    for (i = 0; i < 16; i++) { //only test the first 16
+        if (g_palette_ram[i] !=
+            (0x01000100 | ((palette[0] & 0xF8) << 13) | ((palette[1] & 0x1C) << 19) |
+             ((palette[1] & 0xE0) >> 5) | (palette[2] & 0xF8))) {
             goto setup_palette;
         }
 
@@ -596,8 +614,8 @@ setup_palette:
 
     /** Setup Palette */
     for (; i < 256; i++) {
-        g_palette_ram[i] = (0x01000100 | ((palette[0] & 0xF8) << 13) | ((palette[1] & 0x1C) << 19)
-            | ((palette[1] & 0xE0) >> 5) | (palette[2] & 0xF8));
+        g_palette_ram[i] = (0x01000100 | ((palette[0] & 0xF8) << 13) | ((palette[1] & 0x1C) << 19) |
+                            ((palette[1] & 0xE0) >> 5) | (palette[2] & 0xF8));
         palette += 4;
     }
 }
@@ -605,49 +623,49 @@ setup_palette:
 static void displayAll(void)
 {
     write_command(0x004E); // RAM address set
-    write_data(0x0000); // Page 58 of SSD2119 datasheet
+    write_data(0x0000);    // Page 58 of SSD2119 datasheet
     write_command(0x004F); // RAM address set
-    write_data(0x0000); // Page 58 of SSD2119 datasheet
+    write_data(0x0000);    // Page 58 of SSD2119 datasheet
     write_command(0x0044); // Vertical RAM address position
-    write_data(0xEF00); // Page 57 of SSD2119 datasheet
+    write_data(0xEF00);    // Page 57 of SSD2119 datasheet
     write_command(0x0045); // Horizontal RAM address position
-    write_data(0x0000); // Page 57 of SSD2119 datasheet
+    write_data(0x0000);    // Page 57 of SSD2119 datasheet
     write_command(0x0046); // Horizontal RAM address position
-    write_data(0x013F); // Page 57 of SSD2119 datasheet
+    write_data(0x013F);    // Page 57 of SSD2119 datasheet
     write_command(0x0022); // RAM data write/read
 }
 
 static void displaySub(int x0, int y0, int width, int height)
 {
-    write_command(0x004E); // RAM address set
-    write_data(x0 & 0x1FF); // Page 58 of SSD2119 datasheet
-    write_command(0x004F); // RAM address set
-    write_data(y0 & 0xFF); // Page 58 of SSD2119 datasheet
-    write_command(0x0044); // Vertical RAM address position
+    write_command(0x004E);                                       // RAM address set
+    write_data(x0 & 0x1FF);                                      // Page 58 of SSD2119 datasheet
+    write_command(0x004F);                                       // RAM address set
+    write_data(y0 & 0xFF);                                       // Page 58 of SSD2119 datasheet
+    write_command(0x0044);                                       // Vertical RAM address position
     write_data((((y0 + height - 1) & 0xFF) << 8) | (y0 & 0xFF)); // Page 57 of SSD2119 datasheet
-    write_command(0x0045); // Horizontal RAM address position
-    write_data(x0 & 0x1FF); // Page 57 of SSD2119 datasheet
-    write_command(0x0046); // Horizontal RAM address position
-    write_data((x0 + width - 1) & 0x1FF); // Page 57 of SSD2119 datasheet
-    write_command(0x0022); // RAM data write/read
+    write_command(0x0045);                                       // Horizontal RAM address position
+    write_data(x0 & 0x1FF);                                      // Page 57 of SSD2119 datasheet
+    write_command(0x0046);                                       // Horizontal RAM address position
+    write_data((x0 + width - 1) & 0x1FF);                        // Page 57 of SSD2119 datasheet
+    write_command(0x0022);                                       // RAM data write/read
 }
 
 static void displaySub_Rotated(int x0, int y0, int width, int height)
 {
-    write_command(0x004E); // RAM address set
+    write_command(0x004E);  // RAM address set
     write_data(y0 & 0x1FF); // Page 58 of SSD2119 datasheet //ram start horizontal position
 
     write_command(0x004F); // RAM address set
-    write_data((DISPLAY_HEIGHT - x0 - 1)
-        & 0xFF); // Page 58 of SSD2119 datasheet //ram start vertical position
+    write_data((DISPLAY_HEIGHT - x0 - 1) &
+               0xFF); // Page 58 of SSD2119 datasheet //ram start vertical position
 
     write_command(0x0044); // Vertical RAM address window
-    write_data((((DISPLAY_HEIGHT - x0 - 1) & 0xFF) << 8)
-        | ((DISPLAY_HEIGHT - x0 - width) & 0xFF)); // Page 57 of SSD2119 datasheet
+    write_data((((DISPLAY_HEIGHT - x0 - 1) & 0xFF) << 8) |
+               ((DISPLAY_HEIGHT - x0 - width) & 0xFF)); // Page 57 of SSD2119 datasheet
 
-    write_command(0x0045); // Horizontal RAM address window
-    write_data(y0 & 0x1FF); // Page 57 of SSD2119 datasheet
-    write_command(0x0046); // Horizontal RAM address position
+    write_command(0x0045);                 // Horizontal RAM address window
+    write_data(y0 & 0x1FF);                // Page 57 of SSD2119 datasheet
+    write_command(0x0046);                 // Horizontal RAM address position
     write_data((y0 + height - 1) & 0x1FF); // Page 57 of SSD2119 datasheet
 
     write_command(0x0022); // RAM data write/read
@@ -656,27 +674,27 @@ static void displaySub_Rotated(int x0, int y0, int width, int height)
 static void displaySub_Special(int x0, int y0, int width, int height)
 {
     write_command(0x004E); // RAM address set
-    write_data(
-        (y0 + height - 1) & 0x1FF); // Page 58 of SSD2119 datasheet //ram start horizontal position
+    write_data((y0 + height - 1) &
+               0x1FF); // Page 58 of SSD2119 datasheet //ram start horizontal position
 
     write_command(0x004F); // RAM address set
-    write_data((DISPLAY_HEIGHT - x0 - 1)
-        & 0xFF); // Page 58 of SSD2119 datasheet //ram start vertical position
+    write_data((DISPLAY_HEIGHT - x0 - 1) &
+               0xFF); // Page 58 of SSD2119 datasheet //ram start vertical position
 
     write_command(0x0044); // Vertical RAM address window
-    write_data((((DISPLAY_HEIGHT - x0 - 1) & 0xFF) << 8)
-        | ((DISPLAY_HEIGHT - x0 - width) & 0xFF)); // Page 57 of SSD2119 datasheet
+    write_data((((DISPLAY_HEIGHT - x0 - 1) & 0xFF) << 8) |
+               ((DISPLAY_HEIGHT - x0 - width) & 0xFF)); // Page 57 of SSD2119 datasheet
 
-    write_command(0x0045); // Horizontal RAM address window
-    write_data(y0 & 0x1FF); // Page 57 of SSD2119 datasheet
-    write_command(0x0046); // Horizontal RAM address position
+    write_command(0x0045);                 // Horizontal RAM address window
+    write_data(y0 & 0x1FF);                // Page 57 of SSD2119 datasheet
+    write_command(0x0046);                 // Horizontal RAM address position
     write_data((y0 + height - 1) & 0x1FF); // Page 57 of SSD2119 datasheet
 
     write_command(0x0022); // RAM data write/read
 }
 
-static void writeSubBitmap(
-    int x0, int y0, int img_w, int img_h, const unsigned char* img_data, int sub_x, int sub_w)
+static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const unsigned char* img_data,
+                           int sub_x, int sub_w)
 {
     __disable_irq();
     int y, x, i;
@@ -791,7 +809,7 @@ static void printCursor(char* str)
     for (i = 0; i < len; i++) {
         if (str[i] == '\n') {
             printfCheckBounds(DISPLAY_WIDTH,
-                bitmap_info.h); // using display size will force cursor to next line
+                              bitmap_info.h); // using display size will force cursor to next line
         } else if (str[i] == ' ') {
             printfCheckBounds(8, bitmap_info.h); // Check if space will need to wrap
             cursor_x += 8;
@@ -801,7 +819,7 @@ static void printCursor(char* str)
                 if (str[i] == chr_pos[chId].hex_code) {
                     printfCheckBounds(chr_pos[chId].w + 1, bitmap_info.h);
                     writeSubBitmap(cursor_x, cursor_y, bitmap_info.w, bitmap_info.h, pixel,
-                        chr_pos[chId].x, chr_pos[chId].w);
+                                   chr_pos[chId].x, chr_pos[chId].w);
                     cursor_x += chr_pos[chId].w + 1; // font.intr_chr;
                     break;
                 }
@@ -811,15 +829,15 @@ static void printCursor(char* str)
 }
 
 /******************************** Public Functions ***************************/
-int MXC_TFT_Init(
-    mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl, mxc_gpio_cfg_t* bl_ctrl)
+int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl,
+                 mxc_gpio_cfg_t* bl_ctrl)
 {
     int result = E_NO_ERROR;
 
-    spi = tft_spi;
-    ssel = ss_idx;
+    spi       = tft_spi;
+    ssel      = ss_idx;
     reset_pin = reset_ctrl;
-    blen_pin = bl_ctrl;
+    blen_pin  = bl_ctrl;
 
     // set images start addr
     if (images_start_addr == NULL) {
@@ -878,7 +896,9 @@ void MXC_TFT_SetBackGroundColor(unsigned int color)
 
     for (y = 0; y < DISPLAY_HEIGHT; y++) {
         for (x = 0; x < (unsigned int)(DISPLAY_WIDTH >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
@@ -929,7 +949,7 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
 
     get_bitmap_info(id, &bitmap_info, &pixel);
 
-    width = bitmap_info.w;
+    width  = bitmap_info.w;
     height = bitmap_info.h;
 
     if (tft_rotation == SCREEN_NORMAL || tft_rotation == SCREEN_FLIP) {
@@ -962,7 +982,9 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
     } else {
         img_w_rounded = ((8 * bitmap_info.w + 31) / 32) * 4;
 
-        for (y = height - 1; y >= 0; y--) { print_line(&pixel[y * img_w_rounded], width); }
+        for (y = height - 1; y >= 0; y--) {
+            print_line(&pixel[y * img_w_rounded], width);
+        }
     }
 }
 
@@ -981,7 +1003,9 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t* image, int width, in
 
         displaySub(x0, y0, width, height);
 
-        for (y = 0; y < height; y++) { print_line_rgb565(&image[y * width * 2], width); }
+        for (y = 0; y < height; y++) {
+            print_line_rgb565(&image[y * width * 2], width);
+        }
     } else if (tft_rotation == SCREEN_ROTATE) {
         if ((x0 + width) > DISPLAY_HEIGHT) {
             width = DISPLAY_HEIGHT - x0;
@@ -996,7 +1020,9 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t* image, int width, in
 
         displaySub_Special(x0, y0, width, height);
 
-        for (x = 0; x < width; x++) { print_line_rgb565(&image[x * height * 2], height); }
+        for (x = 0; x < width; x++) {
+            print_line_rgb565(&image[x * height * 2], height);
+        }
 
         write_command(0x0011); // Entry Mode
         write_data(0x6858);
@@ -1028,14 +1054,18 @@ void MXC_TFT_FillRect(area_t* area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(g_palette_ram[color]); }
+        for (; x < w; x++) {
+            write_color(g_palette_ram[color]);
+        }
     }
 
     __enable_irq();
@@ -1046,7 +1076,7 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
     area_t _area;
     area_t* area;
 
-    area = &_area;
+    area    = &_area;
     area->x = pixelX;
     area->y = pixelY;
     area->w = width;
@@ -1070,14 +1100,18 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = color; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = color;
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(color); }
+        for (; x < w; x++) {
+            write_color(color);
+        }
     }
 
     __enable_irq();
@@ -1086,7 +1120,7 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
 void MXC_TFT_PrintPalette(void)
 {
     int i;
-    area_t area = { 10, 10, 2, 25 };
+    area_t area = {10, 10, 2, 25};
 
     for (i = 0; i < 256; i++) {
         area.x += 4;
@@ -1119,7 +1153,7 @@ void MXC_TFT_Printf(const char* format, ...)
 
     sprintf(str, format, *((&format) + 1), *((&format) + 2), *((&format) + 3));
 
-    printCursor(str); // printf_message
+    printCursor(str); //printf_message
 }
 
 void MXC_TFT_ConfigPrintf(area_t* area)
@@ -1154,13 +1188,13 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
 
     for (i = 0; i < str->len; i++) {
         if (str->data[i] == ' ') {
-            x += 8; // font.space; // TODO add space in font bitmap file
+            x += 8; //font.space; // TODO add space in font bitmap file
         } else {
             // find char
             for (chId = 0; chId < font_info.nb_char; chId++) {
                 if (str->data[i] == chr_pos[chId].hex_code) {
                     writeSubBitmap(x, y0, bitmap_info.w, bitmap_info.h, pixel, chr_pos[chId].x,
-                        chr_pos[chId].w);
+                                   chr_pos[chId].w);
                     x += chr_pos[chId].w + 1; // font.intr_chr;
                     break;
                 }
@@ -1213,14 +1247,18 @@ void MXC_TFT_ClearArea(area_t* area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + color); }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = *(g_palette_ram + color);
+            }
 
             spi_transmit((unsigned short*)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(*(g_palette_ram + color)); }
+        for (; x < w; x++) {
+            write_color(*(g_palette_ram + color));
+        }
     }
 }
 

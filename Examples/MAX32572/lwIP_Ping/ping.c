@@ -44,18 +44,18 @@
 
 #include "ping.h"
 
-#include "lwip/icmp.h"
-#include "lwip/inet_chksum.h"
 #include "lwip/mem.h"
-#include "lwip/netif.h"
-#include "lwip/prot/ip4.h"
 #include "lwip/raw.h"
+#include "lwip/icmp.h"
+#include "lwip/netif.h"
 #include "lwip/sys.h"
 #include "lwip/timeouts.h"
+#include "lwip/inet_chksum.h"
+#include "lwip/prot/ip4.h"
 
 #if PING_USE_SOCKETS
-#include "lwip/inet.h"
 #include "lwip/sockets.h"
+#include "lwip/inet.h"
 #include <string.h>
 #endif /* PING_USE_SOCKETS */
 
@@ -110,11 +110,13 @@ static void ping_prepare_echo(struct icmp_echo_hdr* iecho, u16_t len)
     ICMPH_TYPE_SET(iecho, ICMP_ECHO);
     ICMPH_CODE_SET(iecho, 0);
     iecho->chksum = 0;
-    iecho->id = PING_ID;
-    iecho->seqno = lwip_htons(++ping_seq_num);
+    iecho->id     = PING_ID;
+    iecho->seqno  = lwip_htons(++ping_seq_num);
 
     /* fill the additional data buffer with some data */
-    for (i = 0; i < data_len; i++) { ((char*)iecho)[sizeof(struct icmp_echo_hdr) + i] = (char)i; }
+    for (i = 0; i < data_len; i++) {
+        ((char*)iecho)[sizeof(struct icmp_echo_hdr) + i] = (char)i;
+    }
 
     iecho->chksum = inet_chksum(iecho, len);
 }
@@ -151,8 +153,8 @@ static err_t ping_send(int s, const ip_addr_t* addr)
 
     if (IP_IS_V4(addr)) {
         struct sockaddr_in* to4 = (struct sockaddr_in*)&to;
-        to4->sin_len = sizeof(to4);
-        to4->sin_family = AF_INET;
+        to4->sin_len            = sizeof(to4);
+        to4->sin_family         = AF_INET;
         inet_addr_from_ip4addr(&to4->sin_addr, ip_2_ip4(addr));
     }
 
@@ -162,8 +164,8 @@ static err_t ping_send(int s, const ip_addr_t* addr)
 
     if (IP_IS_V6(addr)) {
         struct sockaddr_in6* to6 = (struct sockaddr_in6*)&to;
-        to6->sin6_len = sizeof(to6);
-        to6->sin6_family = AF_INET6;
+        to6->sin6_len            = sizeof(to6);
+        to6->sin6_family         = AF_INET6;
         inet6_addr_from_ip6addr(&to6->sin6_addr, ip_2_ip6(addr));
     }
 
@@ -183,9 +185,8 @@ static void ping_recv(int s)
     struct sockaddr_storage from;
     int fromlen = sizeof(from);
 
-    while (
-        (len = lwip_recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*)&from, (socklen_t*)&fromlen))
-        > 0) {
+    while ((len = lwip_recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*)&from,
+                                (socklen_t*)&fromlen)) > 0) {
         if (len >= (int)(sizeof(struct ip_hdr) + sizeof(struct icmp_echo_hdr))) {
             ip_addr_t fromaddr;
             memset(&fromaddr, 0, sizeof(fromaddr));
@@ -240,8 +241,8 @@ static void ping_recv(int s)
     }
 
     if (len == 0) {
-        LWIP_DEBUGF(
-            PING_DEBUG, ("ping: recv - %" U32_F " ms - timeout\n", (sys_now() - ping_time)));
+        LWIP_DEBUGF(PING_DEBUG,
+                    ("ping: recv - %" U32_F " ms - timeout\n", (sys_now() - ping_time)));
     }
 
     /* do some ping result processing */
@@ -257,7 +258,7 @@ static void ping_thread(void* arg)
     int timeout = PING_RCV_TIMEO;
 #else
     struct timeval timeout;
-    timeout.tv_sec = PING_RCV_TIMEO / 1000;
+    timeout.tv_sec  = PING_RCV_TIMEO / 1000;
     timeout.tv_usec = (PING_RCV_TIMEO % 1000) * 1000;
 #endif
     LWIP_UNUSED_ARG(arg);
@@ -271,7 +272,7 @@ static void ping_thread(void* arg)
     }
 
 #else
-    s = lwip_socket(AF_INET, SOCK_RAW, IP_PROTO_ICMP);
+    s               = lwip_socket(AF_INET, SOCK_RAW, IP_PROTO_ICMP);
 #endif
 
     if (s < 0) {
@@ -313,8 +314,8 @@ static u8_t ping_recv(void* arg, struct raw_pcb* pcb, struct pbuf* p, const ip_a
     LWIP_UNUSED_ARG(addr);
     LWIP_ASSERT("p != NULL", p != NULL);
 
-    if ((p->tot_len >= (PBUF_IP_HLEN + sizeof(struct icmp_echo_hdr)))
-        && pbuf_remove_header(p, PBUF_IP_HLEN) == 0) {
+    if ((p->tot_len >= (PBUF_IP_HLEN + sizeof(struct icmp_echo_hdr))) &&
+        pbuf_remove_header(p, PBUF_IP_HLEN) == 0) {
         iecho = (struct icmp_echo_hdr*)p->payload;
 
         if ((iecho->id == PING_ID) && (iecho->seqno == lwip_htons(ping_seq_num))) {
@@ -401,7 +402,7 @@ void ping_init(const ip_addr_t* ping_addr)
 
 #if PING_USE_SOCKETS
     sys_thread_new("ping_thread", ping_thread, NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
-#else /* PING_USE_SOCKETS */
+#else  /* PING_USE_SOCKETS */
     ping_raw_init();
 #endif /* PING_USE_SOCKETS */
 }

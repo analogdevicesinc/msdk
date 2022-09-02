@@ -32,14 +32,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "wdt_revb.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "wdt_revb.h"
 
 /* **** Functions **** */
 
@@ -64,18 +64,18 @@ void MXC_WDT_RevB_SetIntPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg
 
     if (cfg->mode & MXC_WDT_REVB_WINDOWED) {
         MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL,
-            (cfg->lowerIntPeriod << MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL_POS));
+                     (cfg->lowerIntPeriod << MXC_F_WDT_REVB_CTRL_INT_EARLY_VAL_POS));
     }
 }
 
 void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
 {
     MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_LATE_VAL,
-        (cfg->upperResetPeriod << MXC_F_WDT_REVB_CTRL_RST_LATE_VAL_POS));
+                 (cfg->upperResetPeriod << MXC_F_WDT_REVB_CTRL_RST_LATE_VAL_POS));
 
     if (cfg->mode & MXC_WDT_REVB_WINDOWED) {
         MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL,
-            (cfg->lowerResetPeriod << MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL_POS));
+                     (cfg->lowerResetPeriod << MXC_F_WDT_REVB_CTRL_RST_EARLY_VAL_POS));
     }
 }
 

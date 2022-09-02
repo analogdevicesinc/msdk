@@ -40,8 +40,8 @@
 #define _I2S_H_
 
 /* **** Includes **** */
-#include "dma.h"
 #include "mxc_sys.h"
+#include "dma.h"
 #include "spimss_regs.h"
 
 #ifdef __cplusplus
@@ -62,19 +62,19 @@ typedef enum {
 } mxc_i2s_sys_map_t;
 
 typedef enum {
-    LEFT_JUSTIFIED = 0,
+    LEFT_JUSTIFIED  = 0,
     RIGHT_JUSTIFIED = 1,
 } mxc_i2s_justify_t;
 
 typedef enum {
     STEREO_MODE = 0,
-    MONO_MODE = 1,
+    MONO_MODE   = 1,
 } mxc_i2s_audio_mode_t;
 
 /** @brief I2S audio directions */
 typedef enum {
     AUDIO_OUT = 1,
-    AUDIO_IN = 2,
+    AUDIO_IN  = 2,
 } mxc_i2s_direction_t;
 
 /** @brief I2S Configuration Struct */
@@ -94,8 +94,8 @@ typedef struct {
 /* **** Function Prototypes **** */
 
 /**
- * @brief   Initialize I2S resources
- *
+ * @brief   Initialize I2S resources 
+ * 
  * @param   config        see \ref mxc_i2s_config_t I2S Config Struct
  * @param   dma_ctz_cb    Function pointer to Count-to-Zero callback function.
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
@@ -161,7 +161,7 @@ int MXC_I2S_DMA_ClearFlags(void);
 /**
  * @brief      Set DMA Addr (Source or Dest) and bytes to transfer
  * @param      src_addr The address to read data from (Audio Out)
- * @param      dst_addr The address to write data to (Audio In)
+ * @param      dst_addr The address to write data to (Audio In)    
  * @param      count    The length of the transfer in bytes
  * @details    Sets the address to read/write data in memory and the length of
  *             the transfer. The unused addr parameter is ignored.
@@ -172,10 +172,10 @@ int MXC_I2S_DMA_SetAddrCnt(void* src_addr, void* dst_addr, unsigned int count);
 /**
  * @brief      Sets the DMA reload address and count
  * @param      src_addr The address to read data from (Audio Out)
- * @param      dst_addr The address to write data to (Audio In)
+ * @param      dst_addr The address to write data to (Audio In)    
  * @param      count    The length of the transfer in bytes
  * @details    If DMA reload is enabled, when the DMA has transfered $count bytes
- *             (a CTZ event occurs) the src, dst, and count registers will be
+ *             (a CTZ event occurs) the src, dst, and count registers will be 
  *             set to these. The DMA reload flag clears after a reload occurs.
  * @return   \c #E_NO_ERROR
  */

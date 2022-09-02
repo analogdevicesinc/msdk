@@ -41,9 +41,9 @@
 #define _WDT_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "mxc_device.h"
 #include "wdt_regs.h"
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -99,18 +99,18 @@ typedef enum {
  */
 typedef enum {
     MXC_WDT_COMPATIBILITY = 0,
-    MXC_WDT_WINDOWED = 1,
+    MXC_WDT_WINDOWED      = 1,
 } mxc_wdt_mode_t;
 
 /**
  * @brief Timer Configuration
  */
 typedef struct {
-    mxc_wdt_mode_t mode; ///< WDT mode
+    mxc_wdt_mode_t mode;               ///< WDT mode
     mxc_wdt_period_t upperResetPeriod; ///< Reset upper limit
     mxc_wdt_period_t lowerResetPeriod; ///< Reset lower limit
-    mxc_wdt_period_t upperIntPeriod; ///< Interrupt upper limit
-    mxc_wdt_period_t lowerIntPeriod; ///< Interrupt lower limit
+    mxc_wdt_period_t upperIntPeriod;   ///< Interrupt upper limit
+    mxc_wdt_period_t lowerIntPeriod;   ///< Interrupt lower limit
 } mxc_wdt_cfg_t;
 /* **** Function Prototypes **** */
 
@@ -118,7 +118,7 @@ typedef struct {
  * @brief Initialize the Watchdog Timer
  * @param       wdt     Pointer to the watchdog registers
  * @param       cfg     watchdog configuration
- * @return      See \ref MXC_Error_Codes for the list of error codes.
+ * @return      See \ref MXC_Error_Codes for the list of error codes. 
  */
 int MXC_WDT_Init(mxc_wdt_regs_t* wdt, mxc_wdt_cfg_t* cfg);
 

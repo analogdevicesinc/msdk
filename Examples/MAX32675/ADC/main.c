@@ -38,24 +38,24 @@
  */
 
 /***** Includes *****/
-#include "afe.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "mxc_device.h"
 #include "board.h"
 #include "led.h"
 #include "mxc_delay.h"
-#include "mxc_device.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
+#include "afe.h"
 
 /***** Definitions *****/
 #define ADC_CONVERSIONS_PER_SECOND 50
-#define ADC_SAMPLE_RATE_120SPS 7
-#define ADC_CH0 0
-#define ADC_CH1 1
-#define ADC_CH2 2
-#define ADC_CH3 3
-#define GPIO_OUT 3
-#define DATA_READY_INT 2
+#define ADC_SAMPLE_RATE_120SPS     7
+#define ADC_CH0                    0
+#define ADC_CH1                    1
+#define ADC_CH2                    2
+#define ADC_CH3                    3
+#define GPIO_OUT                   3
+#define DATA_READY_INT             2
 
 /***** Globals *****/
 
@@ -65,7 +65,7 @@
 int main(void)
 {
     MXC_Delay(MXC_DELAY_SEC(1));
-    uint32_t read_val = 0;
+    uint32_t read_val  = 0;
     uint64_t avg_adc_0 = 0;
     uint64_t avg_adc_1 = 0;
 
@@ -94,52 +94,53 @@ int main(void)
     afe_write_register(MXC_R_AFE_ADC_ONE_PD, MXC_S_AFE_ADC_ONE_PD_PD_NORMAL_MODE);
 
     // Set Reference voltages to be the Analog Power supply and ground
-    afe_write_register(MXC_R_AFE_ADC_ZERO_CTRL,
-        MXC_S_AFE_ADC_ZERO_CTRL_REF_SEL_AVDD_AND_AGND & MXC_F_AFE_ADC_ZERO_CTRL_REF_SEL);
-    afe_write_register(MXC_R_AFE_ADC_ONE_CTRL,
-        MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_AVDD_AND_AGND & MXC_F_AFE_ADC_ONE_CTRL_REF_SEL);
+    afe_write_register(MXC_R_AFE_ADC_ZERO_CTRL, MXC_S_AFE_ADC_ZERO_CTRL_REF_SEL_AVDD_AND_AGND &
+                                                    MXC_F_AFE_ADC_ZERO_CTRL_REF_SEL);
+    afe_write_register(MXC_R_AFE_ADC_ONE_CTRL, MXC_S_AFE_ADC_ONE_CTRL_REF_SEL_AVDD_AND_AGND &
+                                                   MXC_F_AFE_ADC_ONE_CTRL_REF_SEL);
 
     // Select AINP and AINN for AIN0
     afe_write_register(MXC_R_AFE_ADC_ZERO_MUX_CTRL0,
-        (((ADC_CH2 << MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINP_SEL_POS)
-             & MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINP_SEL)
-            | ((ADC_CH3 << MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINN_SEL_POS)
-                & MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINN_SEL)));
+                       (((ADC_CH2 << MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINP_SEL_POS) &
+                         MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINP_SEL) |
+                        ((ADC_CH3 << MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINN_SEL_POS) &
+                         MXC_F_AFE_ADC_ZERO_MUX_CTRL0_AINN_SEL)));
 
     afe_write_register(MXC_R_AFE_ADC_ONE_MUX_CTRL0,
-        (((ADC_CH2 << MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINP_SEL_POS)
-             & MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINP_SEL)
-            | ((ADC_CH3 << MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINN_SEL_POS)
-                & MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINN_SEL)));
+                       (((ADC_CH2 << MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINP_SEL_POS) &
+                         MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINP_SEL) |
+                        ((ADC_CH3 << MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINN_SEL_POS) &
+                         MXC_F_AFE_ADC_ONE_MUX_CTRL0_AINN_SEL)));
 
     // Filter Options, Select SINC4 @ 120 samples per second
     afe_write_register(MXC_R_AFE_ADC_ZERO_FILTER,
-        MXC_S_AFE_ADC_ZERO_FILTER_LINEF_SINC4
-            | ((ADC_SAMPLE_RATE_120SPS << MXC_F_AFE_ADC_ZERO_FILTER_RATE_POS)
-                & MXC_F_AFE_ADC_ZERO_FILTER_RATE));
+                       MXC_S_AFE_ADC_ZERO_FILTER_LINEF_SINC4 |
+                           ((ADC_SAMPLE_RATE_120SPS << MXC_F_AFE_ADC_ZERO_FILTER_RATE_POS) &
+                            MXC_F_AFE_ADC_ZERO_FILTER_RATE));
 
     afe_write_register(MXC_R_AFE_ADC_ONE_FILTER,
-        MXC_S_AFE_ADC_ONE_FILTER_LINEF_SINC4
-            | ((ADC_SAMPLE_RATE_120SPS << MXC_F_AFE_ADC_ONE_FILTER_RATE_POS)
-                & MXC_F_AFE_ADC_ONE_FILTER_RATE));
+                       MXC_S_AFE_ADC_ONE_FILTER_LINEF_SINC4 |
+                           ((ADC_SAMPLE_RATE_120SPS << MXC_F_AFE_ADC_ONE_FILTER_RATE_POS) &
+                            MXC_F_AFE_ADC_ONE_FILTER_RATE));
 
     // Bypass mode for input
-    afe_write_register(MXC_R_AFE_ADC_ZERO_PGA,
-        MXC_S_AFE_ADC_ZERO_PGA_SIG_PATH_PGA_PATH | MXC_S_AFE_ADC_ZERO_PGA_GAIN_GAIN_8X);
-    afe_write_register(MXC_R_AFE_ADC_ONE_PGA,
-        MXC_S_AFE_ADC_ONE_PGA_SIG_PATH_PGA_PATH | MXC_S_AFE_ADC_ONE_PGA_GAIN_GAIN_16X);
+    afe_write_register(MXC_R_AFE_ADC_ZERO_PGA, MXC_S_AFE_ADC_ZERO_PGA_SIG_PATH_PGA_PATH |
+                                                   MXC_S_AFE_ADC_ZERO_PGA_GAIN_GAIN_8X);
+    afe_write_register(MXC_R_AFE_ADC_ONE_PGA, MXC_S_AFE_ADC_ONE_PGA_SIG_PATH_PGA_PATH |
+                                                  MXC_S_AFE_ADC_ONE_PGA_GAIN_GAIN_16X);
 
-    // Enable ADC_RDY GPIO outputs
+    //Enable ADC_RDY GPIO outputs
     afe_write_register(MXC_R_AFE_ADC_ZERO_GP0_CTRL,
-        (((GPIO_OUT << MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_DIR_POS)
-             & MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_DIR)
-            | ((DATA_READY_INT << MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_OSEL_POS)
-                & MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_OSEL)));
+                       (((GPIO_OUT << MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_DIR_POS) &
+                         MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_DIR) |
+                        ((DATA_READY_INT << MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_OSEL_POS) &
+                         MXC_F_AFE_ADC_ZERO_GP0_CTRL_GP0_OSEL)));
 
     afe_write_register(MXC_R_AFE_ADC_ONE_GP0_CTRL,
-        (((GPIO_OUT << MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_DIR_POS) & MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_DIR)
-            | ((DATA_READY_INT << MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_OSEL_POS)
-                & MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_OSEL)));
+                       (((GPIO_OUT << MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_DIR_POS) &
+                         MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_DIR) |
+                        ((DATA_READY_INT << MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_OSEL_POS) &
+                         MXC_F_AFE_ADC_ONE_GP0_CTRL_GP0_OSEL)));
 
     //
     // Infinite ADC reading loop
@@ -151,15 +152,14 @@ int main(void)
         for (int adc_loop_count = 0; adc_loop_count < ADC_CONVERSIONS_PER_SECOND;
              adc_loop_count++) {
             // Start a single Conversion
-            afe_write_register(
-                MXC_R_AFE_ADC_ZERO_CONV_START, MXC_S_AFE_ADC_ZERO_CONV_START_CONV_TYPE_SINGLE);
+            afe_write_register(MXC_R_AFE_ADC_ZERO_CONV_START,
+                               MXC_S_AFE_ADC_ZERO_CONV_START_CONV_TYPE_SINGLE);
 
-            afe_write_register(
-                MXC_R_AFE_ADC_ONE_CONV_START, MXC_S_AFE_ADC_ONE_CONV_START_CONV_TYPE_SINGLE);
+            afe_write_register(MXC_R_AFE_ADC_ONE_CONV_START,
+                               MXC_S_AFE_ADC_ONE_CONV_START_CONV_TYPE_SINGLE);
 
-            // NOTE: Wait for DATA_RDY on ADC1, so we don't need to bank swap back to 0, and assume
-            // it will finish first. Also, this is only safe to do if ADCs are sampling at the same
-            // RATE.
+            // NOTE: Wait for DATA_RDY on ADC1, so we don't need to bank swap back to 0, and assume it will finish first.
+            // Also, this is only safe to do if ADCs are sampling at the same RATE.
 
             while (1) {
                 afe_read_register(MXC_R_AFE_ADC_ONE_STATUS, &read_val);

@@ -42,25 +42,25 @@
  */
 
 #include "mscmem.h"
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 //#include "Ext_Flash.h"
 //#include "spixf.h"
 
 /***** Definitions *****/
 
 #define SPIXF_DISK 0
-#define RAM_DISK 1
+#define RAM_DISK   1
 
-#define LBA_SIZE 512 /* Size of "logical blocks" in bytes */
-#define LBA_SIZE_SHIFT 9 /* The shift value used to convert between addresses and block numbers */
+#define LBA_SIZE       512 /* Size of "logical blocks" in bytes */
+#define LBA_SIZE_SHIFT 9   /* The shift value used to convert between addresses and block numbers */
 
 /***** Global Data *****/
 
 /***** File Scope Variables *****/
 
 static int initialized = 0;
-static int running = 0;
+static int running     = 0;
 
 #if SPIXF_DISK
 
@@ -68,14 +68,14 @@ static int running = 0;
 #define EXT_FLASH_BAUD 5000000 /* SPI clock rate to communicate with the external flash */
 
 #define EXT_FLASH_SECTOR_SIZE 4096 /* Number of bytes in one sector of the external flash */
-#define EXT_FLASH_SECTOR_SIZE_SHIFT                                                                \
+#define EXT_FLASH_SECTOR_SIZE_SHIFT \
     12 /* The shift value used to convert between addresses and block numbers */
 #define EXT_FLASH_NUM_SECTORS 2048 /* Total number of sectors in the external flash */
 
 #define MXC_SPIXF_WIDTH Ext_Flash_DataLine_Single /*Number of data lines*/
 
 #define LBA_PER_SECTOR (EXT_FLASH_SECTOR_SIZE >> LBA_SIZE_SHIFT)
-#define INVALID_SECTOR                                                                             \
+#define INVALID_SECTOR \
     EXT_FLASH_NUM_SECTORS /* Use a sector number past the end of memory to indicate invalid */
 
 /***** File Scope Variables *****/
@@ -117,7 +117,7 @@ static uint32_t getSector(uint32_t num)
                 Ext_Flash_Erase(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, Ext_Flash_Erase_4K);
                 /* Write the new */
                 Ext_Flash_Program_Page(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, sector,
-                    EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH);
+                                       EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH);
                 /* Mark data as clean */
                 sectorDirty = 0;
             }
@@ -125,10 +125,10 @@ static uint32_t getSector(uint32_t num)
 
         /* Requesting a new valid sector? */
         if (num != INVALID_SECTOR) {
-            Ext_Flash_Read(
-                num << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH);
+            Ext_Flash_Read(num << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE,
+                           MXC_SPIXF_WIDTH);
             sectorDirty = 0;
-            sectorNum = num;
+            sectorNum   = num;
         }
     }
 

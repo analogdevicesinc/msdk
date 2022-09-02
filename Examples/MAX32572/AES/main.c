@@ -1,46 +1,45 @@
 /*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 /**
  * @file        main.c
  * @brief       AES Example
- * @details     Encryption and decryption of AES on different modes (ECB and OFB) with different bit
- * sizes (128, 192, and 256)
+ * @details     Encryption and decryption of AES on different modes (ECB and OFB) with different bit sizes (128, 192, and 256)
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 
 #include <MAX32xxx.h>
@@ -51,16 +50,16 @@ volatile int wait;
 volatile int callback_result;
 volatile int counter;
 
-#define MXC_AES_DATA_LEN (128 / 8)
+#define MXC_AES_DATA_LEN    (128 / 8)
 #define MXC_AES_KEY_128_LEN (128 / 8)
 #define MXC_AES_KEY_192_LEN (192 / 8)
 #define MXC_AES_KEY_256_LEN (256 / 8)
 
 /***** Globals *****/
-unsigned int rnd_no[4] = { 0 };
-uint8_t var_rnd_no[16] = { 0 };
+unsigned int rnd_no[4] = {0};
+uint8_t var_rnd_no[16] = {0};
 
-char temp[] = { 0x00, 0x00, 0x00 };
+char temp[] = {0x00, 0x00, 0x00};
 
 /***** Globals *****/
 char result[512];
@@ -73,11 +72,11 @@ void CRYPTO_IRQHandler(void)
 
 void Test_Callback(void* req, int result)
 {
-    wait = 0;
+    wait            = 0;
     callback_result = result;
 }
 
-// Convert ascii to byte
+//Convert ascii to byte
 void ascii_to_byte(const char* src, char* dst, int len)
 {
     int i;
@@ -95,7 +94,7 @@ void ascii_to_byte(const char* src, char* dst, int len)
     return;
 }
 
-// Verify by comparing calculated to expected
+//Verify by comparing calculated to expected
 int AES_check(char* calculated, char* expected, int len)
 {
     int i, fail = 0;
@@ -132,8 +131,8 @@ int AES128_ECB_enc(int asynchronous)
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req
-        = { (uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src, (uint8_t*)result, &Test_Callback };
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -150,7 +149,8 @@ int AES128_ECB_enc(int asynchronous)
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
 
-        while (wait) { }
+        while (wait)
+            ;
     } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
@@ -178,8 +178,8 @@ int AES128_ECB_dec(int asynchronous)
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req
-        = { (uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src, (uint8_t*)result, &Test_Callback };
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -196,7 +196,8 @@ int AES128_ECB_dec(int asynchronous)
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
 
-        while (wait) { }
+        while (wait)
+            ;
     } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
@@ -224,8 +225,8 @@ int AES192_ECB_enc(int asynchronous)
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req
-        = { (uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src, (uint8_t*)result, &Test_Callback };
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -242,7 +243,8 @@ int AES192_ECB_enc(int asynchronous)
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
 
-        while (wait) { }
+        while (wait)
+            ;
     } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
@@ -270,8 +272,8 @@ int AES192_ECB_dec(int asynchronous)
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req
-        = { (uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src, (uint8_t*)result, &Test_Callback };
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -288,7 +290,8 @@ int AES192_ECB_dec(int asynchronous)
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
 
-        while (wait) { }
+        while (wait)
+            ;
     } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
@@ -316,8 +319,8 @@ int AES256_ECB_enc(int asynchronous)
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req
-        = { (uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src, (uint8_t*)result, &Test_Callback };
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -334,7 +337,8 @@ int AES256_ECB_enc(int asynchronous)
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
 
-        while (wait) { }
+        while (wait)
+            ;
     } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
@@ -362,8 +366,8 @@ int AES256_ECB_dec(int asynchronous)
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req
-        = { (uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src, (uint8_t*)result, &Test_Callback };
+    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
+                                       (uint8_t*)result, &Test_Callback};
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -380,7 +384,8 @@ int AES256_ECB_dec(int asynchronous)
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
 
-        while (wait) { }
+        while (wait)
+            ;
     } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
@@ -399,7 +404,7 @@ int main(void)
 
     int fail = 0;
 
-    // ECB
+    //ECB
     fail += AES128_ECB_enc(0);
     fail += AES128_ECB_enc(1);
     fail += AES128_ECB_dec(0);
@@ -421,7 +426,8 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) { }
+    while (1) {
+    }
 
     return 0;
 }

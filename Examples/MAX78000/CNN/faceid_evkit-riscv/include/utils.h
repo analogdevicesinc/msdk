@@ -34,8 +34,8 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include "uart.h"
 #include <stdint.h>
+#include "uart.h"
 
 /*****************************     MACROS    *********************************/
 

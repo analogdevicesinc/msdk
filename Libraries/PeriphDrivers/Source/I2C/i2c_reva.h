@@ -34,35 +34,35 @@
 #ifndef _I2C_REVA_H_
 #define _I2C_REVA_H_
 
-#include "dma.h"
-#include "i2c_regs.h"
-#include "i2c_reva_regs.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "i2c_regs.h"
+#include "i2c_reva_regs.h"
+#include "dma.h"
 
 /* **** Definitions **** */
 #define MXC_I2C_REVA_MAX_ADDR_WIDTH 0x7F
-#define MXC_I2C_REVA_STD_MODE 100000
-#define MXC_I2C_REVA_FAST_SPEED 400000
+#define MXC_I2C_REVA_STD_MODE       100000
+#define MXC_I2C_REVA_FAST_SPEED     400000
 #define MXC_I2C_REVA_FASTPLUS_SPEED 1000000
-#define MXC_I2C_REVA_HS_MODE 3400000
+#define MXC_I2C_REVA_HS_MODE        3400000
 
 #define MXC_I2C_REVA_INTFL0_MASK 0x00FFFFFF
 #define MXC_I2C_REVA_INTFL1_MASK 0x00000007
 
 #define MXC_I2C_REVA_MAX_FIFO_TRANSACTION 256
 
-#define MXC_I2C_REVA_ERROR                                                                         \
-    (MXC_F_I2C_REVA_INTFL0_ARB_ERR | MXC_F_I2C_REVA_INTFL0_TO_ERR                                  \
-        | MXC_F_I2C_REVA_INTFL0_ADDR_NACK_ERR | MXC_F_I2C_REVA_INTFL0_DATA_ERR                     \
-        | MXC_F_I2C_REVA_INTFL0_DNR_ERR | MXC_F_I2C_REVA_INTFL0_START_ERR                          \
-        | MXC_F_I2C_REVA_INTFL0_STOP_ERR)
+#define MXC_I2C_REVA_ERROR                                                  \
+    (MXC_F_I2C_REVA_INTFL0_ARB_ERR | MXC_F_I2C_REVA_INTFL0_TO_ERR |         \
+     MXC_F_I2C_REVA_INTFL0_ADDR_NACK_ERR | MXC_F_I2C_REVA_INTFL0_DATA_ERR | \
+     MXC_F_I2C_REVA_INTFL0_DNR_ERR | MXC_F_I2C_REVA_INTFL0_START_ERR |      \
+     MXC_F_I2C_REVA_INTFL0_STOP_ERR)
 
 typedef struct _i2c_reva_req_t mxc_i2c_reva_req_t;
 typedef int (*mxc_i2c_reva_getAck_t)(mxc_i2c_reva_regs_t* i2c, unsigned char byte);
@@ -87,8 +87,8 @@ typedef enum {
     MXC_I2C_REVA_EVT_UNDERFLOW,
     MXC_I2C_REVA_EVT_OVERFLOW,
 } mxc_i2c_reva_slave_event_t;
-typedef int (*mxc_i2c_reva_slave_handler_t)(
-    mxc_i2c_reva_regs_t* i2c, mxc_i2c_reva_slave_event_t event, void* data);
+typedef int (*mxc_i2c_reva_slave_handler_t)(mxc_i2c_reva_regs_t* i2c,
+                                            mxc_i2c_reva_slave_event_t event, void* data);
 /* **** Variable Declaration **** */
 
 extern void* AsyncRequests[MXC_I2C_INSTANCES];
@@ -114,19 +114,21 @@ int MXC_I2C_RevA_Start(mxc_i2c_reva_regs_t* i2c);
 int MXC_I2C_RevA_Stop(mxc_i2c_reva_regs_t* i2c);
 int MXC_I2C_RevA_WriteByte(mxc_i2c_reva_regs_t* i2c, unsigned char byte);
 int MXC_I2C_RevA_ReadByte(mxc_i2c_reva_regs_t* i2c, unsigned char* byte, int ack);
-int MXC_I2C_RevA_ReadByteInteractive(
-    mxc_i2c_reva_regs_t* i2c, unsigned char* byte, mxc_i2c_reva_getAck_t getAck);
+int MXC_I2C_RevA_ReadByteInteractive(mxc_i2c_reva_regs_t* i2c, unsigned char* byte,
+                                     mxc_i2c_reva_getAck_t getAck);
 int MXC_I2C_RevA_Write(mxc_i2c_reva_regs_t* i2c, unsigned char* bytes, unsigned int* len);
 int MXC_I2C_RevA_Read(mxc_i2c_reva_regs_t* i2c, unsigned char* bytes, unsigned int* len, int ack);
-int MXC_I2C_RevA_ReadRXFIFO(
-    mxc_i2c_reva_regs_t* i2c, volatile unsigned char* bytes, unsigned int len);
+int MXC_I2C_RevA_ReadRXFIFO(mxc_i2c_reva_regs_t* i2c, volatile unsigned char* bytes,
+                            unsigned int len);
 int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t* i2c, unsigned char* bytes, unsigned int len,
-    mxc_i2c_reva_dma_complete_cb_t callback, mxc_dma_config_t config, mxc_dma_regs_t* dma);
+                               mxc_i2c_reva_dma_complete_cb_t callback, mxc_dma_config_t config,
+                               mxc_dma_regs_t* dma);
 int MXC_I2C_RevA_GetRXFIFOAvailable(mxc_i2c_reva_regs_t* i2c);
-int MXC_I2C_RevA_WriteTXFIFO(
-    mxc_i2c_reva_regs_t* i2c, volatile unsigned char* bytes, unsigned int len);
+int MXC_I2C_RevA_WriteTXFIFO(mxc_i2c_reva_regs_t* i2c, volatile unsigned char* bytes,
+                             unsigned int len);
 int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t* i2c, unsigned char* bytes, unsigned int len,
-    mxc_i2c_reva_dma_complete_cb_t callback, mxc_dma_config_t config, mxc_dma_regs_t* dma);
+                                mxc_i2c_reva_dma_complete_cb_t callback, mxc_dma_config_t config,
+                                mxc_dma_regs_t* dma);
 int MXC_I2C_RevA_GetTXFIFOAvailable(mxc_i2c_reva_regs_t* i2c);
 void MXC_I2C_RevA_ClearRXFIFO(mxc_i2c_reva_regs_t* i2c);
 void MXC_I2C_RevA_ClearTXFIFO(mxc_i2c_reva_regs_t* i2c);
@@ -148,10 +150,11 @@ int MXC_I2C_RevA_Recover(mxc_i2c_reva_regs_t* i2c, unsigned int retries);
 int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t* req);
 int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t* req);
 int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t* req, mxc_dma_regs_t* dma);
-int MXC_I2C_RevA_SlaveTransaction(
-    mxc_i2c_reva_regs_t* i2c, mxc_i2c_reva_slave_handler_t callback, uint32_t interruptCheck);
-int MXC_I2C_RevA_SlaveTransactionAsync(
-    mxc_i2c_reva_regs_t* i2c, mxc_i2c_reva_slave_handler_t callback, uint32_t interruptCheck);
+int MXC_I2C_RevA_SlaveTransaction(mxc_i2c_reva_regs_t* i2c, mxc_i2c_reva_slave_handler_t callback,
+                                  uint32_t interruptCheck);
+int MXC_I2C_RevA_SlaveTransactionAsync(mxc_i2c_reva_regs_t* i2c,
+                                       mxc_i2c_reva_slave_handler_t callback,
+                                       uint32_t interruptCheck);
 int MXC_I2C_RevA_SetRXThreshold(mxc_i2c_reva_regs_t* i2c, unsigned int numBytes);
 unsigned int MXC_I2C_RevA_GetRXThreshold(mxc_i2c_reva_regs_t* i2c);
 int MXC_I2C_RevA_SetTXThreshold(mxc_i2c_reva_regs_t* i2c, unsigned int numBytes);
@@ -161,7 +164,8 @@ void MXC_I2C_RevA_AsyncStop(mxc_i2c_reva_regs_t* i2c);
 void MXC_I2C_RevA_AbortAsync(mxc_i2c_reva_regs_t* i2c);
 void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum);
 unsigned int MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t* i2c,
-    mxc_i2c_reva_slave_handler_t callback, unsigned int interruptEnables, int* retVal);
+                                            mxc_i2c_reva_slave_handler_t callback,
+                                            unsigned int interruptEnables, int* retVal);
 void MXC_I2C_RevA_AsyncHandler(mxc_i2c_reva_regs_t* i2c, uint32_t interruptCheck);
 void MXC_I2C_RevA_DMACallback(int ch, int error);
 

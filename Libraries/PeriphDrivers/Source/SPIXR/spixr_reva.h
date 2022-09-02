@@ -34,8 +34,8 @@
 /****** Includes *******/
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "spixr.h"
 #include "spixr_reva_regs.h"
+#include "spixr.h"
 
 /* **** Definitions **** */
 /**
@@ -67,8 +67,8 @@ typedef enum {
  * @brief       Configuration parameters of SPIXR
  */
 typedef struct {
-    uint32_t numbits; ///< Number of Bits per character. In slave mode 9-bit character length is not
-                      ///< supported.
+    uint32_t
+        numbits; ///< Number of Bits per character. In slave mode 9-bit character length is not supported.
     mxc_spixr_reva_width_t data_width; ///< SPI Data width
 
     uint32_t ssel_act_1; ///< Slave Select Action delay 1
@@ -98,7 +98,7 @@ int MXC_SPIXR_RevA_SetWidth(mxc_spixr_reva_regs_t* spixr, mxc_spixr_reva_width_t
 int MXC_SPIXR_RevA_SetSPIMode(mxc_spixr_reva_regs_t* spixr, mxc_spixr_reva_mode_t mode);
 int MXC_SPIXR_RevA_SetSSPolarity(mxc_spixr_reva_regs_t* spixr, int active);
 void MXC_SPIXR_RevA_SetSSTiming(mxc_spixr_reva_regs_t* spixr, unsigned int ssIActDelay,
-    unsigned int postActive, unsigned int preActive);
+                                unsigned int postActive, unsigned int preActive);
 int MXC_SPIXR_RevA_SetFrequency(mxc_spixr_reva_regs_t* spixr, int hz);
 int MXC_SPIXR_RevA_GetFrequency(mxc_spixr_reva_regs_t* spixr);
 int MXC_SPIXR_RevA_GetIntFlags(mxc_spixr_reva_regs_t* spixr);
@@ -117,8 +117,8 @@ uint8_t MXC_SPIXR_RevA_ExMemGetReadCommand(mxc_spixr_reva_regs_t* spixr);
 int MXC_SPIXR_RevA_Busy(mxc_spixr_reva_regs_t* spixr);
 int MXC_SPIXR_RevA_Init(mxc_spixr_reva_regs_t* spixr, mxc_spixr_reva_cfg_t* cfg);
 int MXC_SPIXR_RevA_Shutdown(mxc_spixr_reva_regs_t* spixr);
-void MXC_SPIXR_RevA_SendCommand(
-    mxc_spixr_reva_regs_t* spixr, uint8_t* cmd, uint32_t length, uint32_t tx_num_char);
+void MXC_SPIXR_RevA_SendCommand(mxc_spixr_reva_regs_t* spixr, uint8_t* cmd, uint32_t length,
+                                uint32_t tx_num_char);
 void MXC_SPIXR_RevA_TXFIFOEnable(mxc_spixr_reva_regs_t* spixr);
 void MXC_SPIXR_RevA_TXFIFODisable(mxc_spixr_reva_regs_t* spixr);
 int MXC_SPIXR_RevA_TXFIFOIsEnabled(mxc_spixr_reva_regs_t* spixr);

@@ -43,17 +43,17 @@
  */
 
 /***** Includes *****/
-#include "board.h"
-#include "gpio.h"
-#include "htmr.h"
-#include "led.h"
-#include "mxc_delay.h"
+#include <stdio.h>
+#include <stdint.h>
 #include "mxc_device.h"
+#include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "nvic_table.h"
+#include "board.h"
+#include "htmr.h"
+#include "led.h"
 #include "pb.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "gpio.h"
 
 /***** Definitions *****/
 #define LED_FLASH 0
@@ -88,8 +88,8 @@ void alarmSetHandler()
 {
     MXC_HTMR_Stop(MXC_HTMR0);
 
-    if (MXC_HTMR_SetLongAlarm(MXC_HTMR0, MXC_HTMR_GetLongCount(MXC_HTMR0) + LONG_ALARM_COUNT)
-        != E_NO_ERROR) {
+    if (MXC_HTMR_SetLongAlarm(MXC_HTMR0, MXC_HTMR_GetLongCount(MXC_HTMR0) + LONG_ALARM_COUNT) !=
+        E_NO_ERROR) {
         printf("Failed to set Long Interval Alarm.\n");
     }
 
@@ -119,10 +119,10 @@ int main(void)
     printf("alarm to trigger every ~2^22 short interval counts (0.5sec)\n");
     printf("Pressing PB0 will print the current count to the console\n");
     printf("Pressing PB1 will set the Long Interval alarm to light LED1 in %d counts\n\n",
-        LONG_ALARM_COUNT);
+           LONG_ALARM_COUNT);
 #if !defined(BOARD_FTHR)
     printf("Pressing PB1 will set the Long Interval alarm to light LED1 in %d counts\n\n",
-        LONG_ALARM_COUNT);
+           LONG_ALARM_COUNT);
 #else
     printf("The board has only one push button\n");
 #endif
@@ -142,7 +142,8 @@ int main(void)
 
     if (MXC_HTMR_Init(MXC_HTMR0, 0, 0) != E_NO_ERROR) {
         printf("Failed HTMR Initialization.\n");
-        while (1) { }
+        while (1)
+            ;
     }
 
     if (MXC_HTMR_SetShortAlarm(MXC_HTMR0, 0xFFC7BFFF) != E_NO_ERROR) {

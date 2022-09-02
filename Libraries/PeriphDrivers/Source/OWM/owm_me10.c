@@ -35,16 +35,16 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio.h"
+#include <string.h>
 #include "mxc_assert.h"
-#include "mxc_errors.h"
 #include "mxc_sys.h"
+#include "mxc_errors.h"
+#include "gpio.h"
 #include "owm.h"
 #include "owm_reva.h"
-#include <string.h>
 
 /* **** Definitions **** */
-#define MXC_OWM_CLK_FREQ 1000000 // 1-Wire requires 1MHz clock
+#define MXC_OWM_CLK_FREQ 1000000 //1-Wire requires 1MHz clock
 
 /* **** Globals **** */
 

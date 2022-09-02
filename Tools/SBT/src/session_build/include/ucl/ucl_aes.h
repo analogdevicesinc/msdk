@@ -75,7 +75,7 @@ extern "C" {
  * @ingroup UCL_AES */
 struct ucl_aes_key {
     u32 rd_key[4 * (UCL_AES_MAXNR + 1)]; /**< Round key.        */
-    int rounds; /**< Number of rounds. */
+    int rounds;                          /**< Number of rounds. */
 };
 
 /** <b>AES Key</b>.
@@ -88,12 +88,12 @@ typedef struct ucl_aes_key ucl_aes_key_t;
  *
  * @ingroup UCL_AES */
 struct ucl_aes_ctx {
-    int mode; /**< Ciphering Mode.    */
+    int mode;                     /**< Ciphering Mode.    */
     u8 memory[UCL_AES_BLOCKSIZE]; /**< Intermediate state.*/
-    u32 index; /**< index.             */
+    u32 index;                    /**< index.             */
 #if defined(__rw20)
     int key_id;
-    // for cmac
+    //for cmac
     u8 k1[UCL_AES_KEYLEN_256];
     u8 k2[UCL_AES_KEYLEN_256];
 #else

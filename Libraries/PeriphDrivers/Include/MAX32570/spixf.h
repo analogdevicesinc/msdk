@@ -43,8 +43,8 @@
 /* **** Includes **** */
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "spixfc_fifo_regs.h"
 #include "spixfc_regs.h"
+#include "spixfc_fifo_regs.h"
 #include "spixfm_regs.h"
 
 #ifdef __cplusplus
@@ -63,13 +63,13 @@ extern "C" {
  */
 typedef enum {
     MXC_SPIXF_SSEL0_HIGH = (0x1 << 0),
-    MXC_SPIXF_SSEL0_LOW = 0,
+    MXC_SPIXF_SSEL0_LOW  = 0,
     MXC_SPIXF_SSEL1_HIGH = (0x1 << 1),
-    MXC_SPIXF_SSEL1_LOW = 0,
+    MXC_SPIXF_SSEL1_LOW  = 0,
     MXC_SPIXF_SSEL2_HIGH = (0x1 << 2),
-    MXC_SPIXF_SSEL2_LOW = 0,
+    MXC_SPIXF_SSEL2_LOW  = 0,
     MXC_SPIXF_SSEL3_HIGH = (0x1 << 3),
-    MXC_SPIXF_SSEL3_LOW = 0
+    MXC_SPIXF_SSEL3_LOW  = 0
 } mxc_spixf_ssel_t;
 
 /**
@@ -142,7 +142,7 @@ typedef struct {
     mxc_spixf_mode_t mode; ///< MXC_SPIXF mode to use, 0-3.
     mxc_spixf_sspol_t
         ssel_pol; ///< Mask of active levels for slave select signals, use mxc_spixf_ssel_t.
-    uint32_t hz; ///< SPI Frequency in Hz.
+    uint32_t hz;  ///< SPI Frequency in Hz.
 } mxc_spixf_cfg_t;
 
 /**
@@ -179,14 +179,14 @@ typedef enum {
  * @brief      IO pullup/pulldown Control
  */
 typedef enum {
-    MXC_SPIXF_TRISTATE = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE,
-    MXC_SPIXF_PULL_UP = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP,
+    MXC_SPIXF_TRISTATE  = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE,
+    MXC_SPIXF_PULL_UP   = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP,
     MXC_SPIXF_PULL_DOWN = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN,
 } mxc_spixf_pup_t;
 
 /**
  * @brief       SPIXF drive strentgh
- *
+ * 
  */
 typedef enum { MXC_SPIXF_LOW = 0, MXC_SPIXF_HIGH } mxc_spixf_ds_t;
 
@@ -203,14 +203,14 @@ typedef struct mxc_spixf_req mxc_spixf_req_t;
 typedef void (*spixr_complete_cb_t)(mxc_spixf_req_t*, int);
 
 struct mxc_spixf_req {
-    uint8_t deass; ///< De-assert slave select at the end of the transaction.
-    uint8_t wait_tx; ///< Wait for the TX FIFO to be empty before returning.
-    const uint8_t* tx_data; ///< TX buffer.
-    uint8_t* rx_data; ///< RX buffer.
-    mxc_spixf_width_t width; ///< Number of data lines to use
-    unsigned len; ///< Number of bytes to send.
-    unsigned read_num; ///< Number of bytes read.
-    unsigned write_num; ///< Number of bytes written.
+    uint8_t deass;                ///< De-assert slave select at the end of the transaction.
+    uint8_t wait_tx;              ///< Wait for the TX FIFO to be empty before returning.
+    const uint8_t* tx_data;       ///< TX buffer.
+    uint8_t* rx_data;             ///< RX buffer.
+    mxc_spixf_width_t width;      ///< Number of data lines to use
+    unsigned len;                 ///< Number of bytes to send.
+    unsigned read_num;            ///< Number of bytes read.
+    unsigned write_num;           ///< Number of bytes written.
     spixr_complete_cb_t callback; ///< callback function
 };
 
@@ -240,8 +240,8 @@ void MXC_SPIXF_Shutdown(void);
  * @param      sdio_ds   SDIO Drive Strength
  * @param      pupdctrl  IO Pullup/Pulldown Control
  */
-void MXC_SPIXF_IOCtrl(
-    mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl);
+void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
+                      mxc_spixf_pup_t pupdctrl);
 
 /**
  * @brief      Send Clock cycles on SCK without reading or writing.
@@ -335,7 +335,7 @@ int MXC_SPIXF_ClearFlags(uint32_t flags);
  */
 int MXC_SPIXF_GetFlags(void);
 
-// Low level
+//Low level
 
 /**
  * @brief      Sets the SPI Mode
@@ -425,9 +425,8 @@ uint32_t MXC_SPIXF_GetSPIFrequencyRead(void);
 uint32_t MXC_SPIXF_GetSPIFrequencyWrite(void);
 
 /**
- * @brief      Set the slave select active timing. This will control the delay from assertion of
- * slave select to start of the SCK pulse and delay from the end of SCK pulse to de-assertion of
- * slave select.
+ * @brief      Set the slave select active timing. This will control the delay from assertion of slave select to start
+ *             of the SCK pulse and delay from the end of SCK pulse to de-assertion of slave select.
  *
  * @param[in]  ssact  The enum that corresponds with 0,2,4,8 clocks of delay
  *
@@ -456,8 +455,8 @@ mxc_spixf_ssact_t MXC_SPIXF_GetSSActiveTime(void);
 int MXC_SPIXF_SetSSInactiveTime(mxc_spixf_ssiact_t ssiact);
 
 /**
- * @brief      Get slave select inactive timing to delay from de-assertion of slave select to
- * re-assertion of slave select for another spi transaction.
+ * @brief      Get slave select inactive timing to delay from de-assertion of slave select to re-assertion of
+ *             slave select for another spi transaction.
  *
  * @return     The enum that corresponds to a 1,3,5,9 clock delay
  */
@@ -575,8 +574,7 @@ int MXC_SPIXF_SetCmdModeFirstTrans(void);
 /**
  * @brief      Get Command mode
  *
- * @return     When the read command is sent.  It will be either every time (0) or First transaction
- * only (1).
+ * @return     When the read command is sent.  It will be either every time (0) or First transaction only (1).
  */
 mxc_spixf_cmd_t MXC_SPIXF_GetCmdMode(void);
 

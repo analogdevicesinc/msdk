@@ -114,7 +114,7 @@ void lv_init(void)
     if (lv_gpu_nxp_pxp_init(&pxp_default_cfg) != LV_RES_OK) {
         LV_LOG_ERROR("PXP init error. STOP.\n");
         for (;;)
-{}
+            ;
     }
 #endif
 

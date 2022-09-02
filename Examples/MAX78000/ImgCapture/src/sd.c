@@ -2,21 +2,36 @@
 
 FATFS fatfs; // Private fatFS object.
 
-FATFS* sd_fs; // FFat Filesystem Object
-FIL sd_file; // FFat File Object
-FRESULT sd_err; // FFat Result (Struct)
-FILINFO sd_fno; // FFat File Information Object
-DIR sd_dir; // FFat Directory Object
+FATFS* sd_fs;   //FFat Filesystem Object
+FIL sd_file;    //FFat File Object
+FRESULT sd_err; //FFat Result (Struct)
+FILINFO sd_fno; //FFat File Information Object
+DIR sd_dir;     //FFat Directory Object
 TCHAR sd_message[MAXLEN], sd_directory[MAXLEN], sd_cwd[MAXLEN], sd_filename[MAXLEN],
     sd_volume_label[24], sd_volume = '0';
 DWORD sd_clusters_free = 0, sd_sectors_free = 0, sd_sectors_total = 0, sd_volume_sn = 0;
 UINT sd_bytes_written = 0, sd_bytes_read = 0, sd_mounted = 0;
 BYTE sd_work[4096];
-TCHAR* FR_ERRORS[20]
-    = { "FR_OK", "FR_DISK_ERR", "FR_INT_ERR", "FR_NOT_READY", "FR_NO_FILE", "FR_NO_PATH",
-          "FR_INVLAID_NAME", "FR_DENIED", "FR_EXIST", "FR_INVALID_OBJECT", "FR_WRITE_PROTECTED",
-          "FR_INVALID_DRIVE", "FR_NOT_ENABLED", "FR_NO_FILESYSTEM", "FR_MKFS_ABORTED", "FR_TIMEOUT",
-          "FR_LOCKED", "FR_NOT_ENOUGH_CORE", "FR_TOO_MANY_OPEN_FILES", "FR_INVALID_PARAMETER" };
+TCHAR* FR_ERRORS[20] = {"FR_OK",
+                        "FR_DISK_ERR",
+                        "FR_INT_ERR",
+                        "FR_NOT_READY",
+                        "FR_NO_FILE",
+                        "FR_NO_PATH",
+                        "FR_INVLAID_NAME",
+                        "FR_DENIED",
+                        "FR_EXIST",
+                        "FR_INVALID_OBJECT",
+                        "FR_WRITE_PROTECTED",
+                        "FR_INVALID_DRIVE",
+                        "FR_NOT_ENABLED",
+                        "FR_NO_FILESYSTEM",
+                        "FR_MKFS_ABORTED",
+                        "FR_TIMEOUT",
+                        "FR_LOCKED",
+                        "FR_NOT_ENOUGH_CORE",
+                        "FR_TOO_MANY_OPEN_FILES",
+                        "FR_INVALID_PARAMETER"};
 
 FRESULT sd_mount()
 {
@@ -81,7 +96,7 @@ FRESULT sd_get_size()
     }
 
     sd_sectors_total = (sd_fs->n_fatent - 2) * sd_fs->csize; // Calculate total size (in bytes)
-    sd_sectors_free = sd_clusters_free * sd_fs->csize; // Calculate free space (in byte)
+    sd_sectors_free  = sd_clusters_free * sd_fs->csize;      // Calculate free space (in byte)
 
     return sd_err;
 }
@@ -163,9 +178,9 @@ FRESULT sd_touch(const char* filepath)
 
 FRESULT sd_write_string(const char* filepath, const char* string)
 {
-    int len = strlen(string);
+    int len    = strlen(string);
     UINT wrote = 0;
-    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE);
+    sd_err     = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE);
     if (sd_err != FR_OK) {
         printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
     } else {

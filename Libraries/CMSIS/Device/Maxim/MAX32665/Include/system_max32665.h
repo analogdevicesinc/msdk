@@ -58,7 +58,7 @@ extern "C" {
 #define HIRC_FREQ 60000000
 #endif
 
-/* NOTE: This is the nominal value for LIRC8. The actual value may vary from chip to chip.
+/* NOTE: This is the nominal value for LIRC8. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: LIRC8 was previously named NANORING */
 #ifndef LIRC8_FREQ

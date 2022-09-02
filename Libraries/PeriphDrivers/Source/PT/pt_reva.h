@@ -30,21 +30,21 @@
  * ownership rights.
  *
  *************************************************************************** */
-#include "gcr_regs.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
 #include "pt.h"
+#include "gcr_regs.h"
 #include "pt_reva_regs.h"
 #include "ptg_reva_regs.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
 #include <stdio.h>
 
 void MXC_PT_RevA_Init(mxc_ptg_reva_regs_t* ptg, mxc_clk_scale_t clk_scale);
 int MXC_PT_RevA_Shutdown(mxc_ptg_reva_regs_t* ptg, uint32_t pts);
 int MXC_PT_RevA_Config(mxc_ptg_reva_regs_t* ptg, mxc_pt_cfg_t* cfg);
-int MXC_PT_RevA_SqrWaveConfig(
-    mxc_ptg_reva_regs_t* ptg, mxc_pt_cfg_t* sqwcfg, unsigned channel, uint32_t freq);
+int MXC_PT_RevA_SqrWaveConfig(mxc_ptg_reva_regs_t* ptg, mxc_pt_cfg_t* sqwcfg, unsigned channel,
+                              uint32_t freq);
 void MXC_PT_RevA_Start(mxc_ptg_reva_regs_t* ptg, unsigned pts);
 void MXC_PT_RevA_Stop(mxc_ptg_reva_regs_t* ptg, unsigned pts);
 uint32_t MXC_PT_RevA_IsActive(mxc_ptg_reva_regs_t* ptg, uint32_t pts);

@@ -33,13 +33,13 @@
 
 // asl
 
-#include "cnn.h"
-#include "mxc.h"
-#include "sampledata.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "cnn.h"
+#include "sampledata.h"
 
 volatile uint32_t cnn_time; // Stopwatch
 
@@ -47,7 +47,8 @@ void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1) { }
+    while (1)
+        ;
 }
 
 // 3-channel 64x64 data input (12288 bytes total / 4096 bytes per channel):
@@ -115,12 +116,12 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init(); // Bring state machine into consistent state
+    cnn_init();         // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    load_input(); // Load data input
-    cnn_start(); // Start CNN processing
+    load_input();    // Load data input
+    cnn_start();     // Start CNN processing
 
     while (cnn_time == 0) {
         __WFI(); // Wait for CNN

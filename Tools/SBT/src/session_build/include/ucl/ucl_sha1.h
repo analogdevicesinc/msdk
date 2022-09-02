@@ -96,7 +96,7 @@ typedef struct ucl_sha1_ctx ucl_sha1_ctx_t;
  *
  * @ingroup UCL_SHA1
  */
-#define UCL_SHA1 0
+#define UCL_SHA1          0
 #define UCL_SHA1_HASHSIZE 20
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA1.
@@ -183,6 +183,6 @@ int ucl_sha1_finish(u8* hash, ucl_sha1_ctx_t* context);
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif // HASH_SHA1
+#endif //HASH_SHA1
 #endif /* _UCL_SHA1_H_ */
-#endif // PROFILE2
+#endif //PROFILE2

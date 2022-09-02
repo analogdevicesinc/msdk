@@ -32,32 +32,29 @@
  ******************************************************************************/
 
 // kws20_v3
-// Created using ./ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix kws20_v3
-// --checkpoint-file trained/ai85-kws20_v3-qat8-q.pth.tar --config-file networks/kws20-v3-hwc.yaml
-// --softmax --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint
+// Created using ./ai8xize.py --verbose --log --test-dir sdk/Examples/MAX78000/CNN --prefix kws20_v3 --checkpoint-file trained/ai85-kws20_v3-qat8-q.pth.tar --config-file networks/kws20-v3-hwc.yaml --softmax --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint
 
 // DO NOT EDIT - regenerate this file instead!
 
 // Configuring 9 layers:
-// Layer 0: 128x128 (HWC data), no pooling, conv1d with kernel size 1, stride 1, pad 0, 100x128
-// output Layer 1: 100x128 (HWC data), no pooling, conv1d with kernel size 3, stride 1, pad 0,
-// 96x126 output Layer 2: 96x126 (HWC data), 2 max pool with stride 2, conv1d with kernel size 3,
-// stride 1, pad 1, 64x63 output Layer 3: 64x63 (HWC data), no pooling, conv1d with kernel size 3,
-// stride 1, pad 0, 48x61 output Layer 4: 48x61 (HWC data), 2 max pool with stride 2, conv1d with
-// kernel size 3, stride 1, pad 1, 64x30 output Layer 5: 64x30 (HWC data), no pooling, conv1d with
-// kernel size 3, stride 1, pad 0, 96x28 output Layer 6: 96x28 (HWC data), 2 avg pool with stride 2,
-// conv1d with kernel size 3, stride 1, pad 1, 100x14 output Layer 7: 100x14 (HWC data), 2 max pool
-// with stride 2, conv1d with kernel size 6, stride 1, pad 1, 64x4 output Layer 8: 64x4x1 (flattened
-// HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, 21x1x1 output
+// Layer 0: 128x128 (HWC data), no pooling, conv1d with kernel size 1, stride 1, pad 0, 100x128 output
+// Layer 1: 100x128 (HWC data), no pooling, conv1d with kernel size 3, stride 1, pad 0, 96x126 output
+// Layer 2: 96x126 (HWC data), 2 max pool with stride 2, conv1d with kernel size 3, stride 1, pad 1, 64x63 output
+// Layer 3: 64x63 (HWC data), no pooling, conv1d with kernel size 3, stride 1, pad 0, 48x61 output
+// Layer 4: 48x61 (HWC data), 2 max pool with stride 2, conv1d with kernel size 3, stride 1, pad 1, 64x30 output
+// Layer 5: 64x30 (HWC data), no pooling, conv1d with kernel size 3, stride 1, pad 0, 96x28 output
+// Layer 6: 96x28 (HWC data), 2 avg pool with stride 2, conv1d with kernel size 3, stride 1, pad 1, 100x14 output
+// Layer 7: 100x14 (HWC data), 2 max pool with stride 2, conv1d with kernel size 6, stride 1, pad 1, 64x4 output
+// Layer 8: 64x4x1 (flattened HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, 21x1x1 output
 
-#include "cnn.h"
-#include "gcfr_regs.h"
-#include "mxc.h"
-#include "weights.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "gcfr_regs.h"
+#include "cnn.h"
+#include "weights.h"
 
 void CNN_ISR(void)
 {
@@ -67,7 +64,7 @@ void CNN_ISR(void)
     *((volatile uint32_t*)0x50900000) &= ~((1 << 12) | 1);
     *((volatile uint32_t*)0x50d00000) &= ~((1 << 12) | 1);
 
-    // CNN_COMPLETE; // Signal that processing is complete
+    //CNN_COMPLETE; // Signal that processing is complete
 #ifdef CNN_INFERENCE_TIMER
     cnn_time = MXC_TMR_SW_Stop(CNN_INFERENCE_TIMER);
 #else
@@ -93,20 +90,22 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 // Kernels:
-static const uint32_t kernels_0[] = KERNELS_0;
-static const uint32_t kernels_1[] = KERNELS_1;
-static const uint32_t kernels_2[] = KERNELS_2;
-static const uint32_t kernels_3[] = KERNELS_3;
-static const uint32_t kernels_4[] = KERNELS_4;
-static const uint32_t kernels_5[] = KERNELS_5;
-static const uint32_t kernels_6[] = KERNELS_6;
-static const uint32_t kernels_7[] = KERNELS_7;
-static const uint32_t kernels_8[] = KERNELS_8;
-static const uint32_t kernels_9[] = KERNELS_9;
+static const uint32_t kernels_0[]  = KERNELS_0;
+static const uint32_t kernels_1[]  = KERNELS_1;
+static const uint32_t kernels_2[]  = KERNELS_2;
+static const uint32_t kernels_3[]  = KERNELS_3;
+static const uint32_t kernels_4[]  = KERNELS_4;
+static const uint32_t kernels_5[]  = KERNELS_5;
+static const uint32_t kernels_6[]  = KERNELS_6;
+static const uint32_t kernels_7[]  = KERNELS_7;
+static const uint32_t kernels_8[]  = KERNELS_8;
+static const uint32_t kernels_9[]  = KERNELS_9;
 static const uint32_t kernels_10[] = KERNELS_10;
 static const uint32_t kernels_11[] = KERNELS_11;
 static const uint32_t kernels_12[] = KERNELS_12;
@@ -788,7 +787,7 @@ int cnn_start(void)
     MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-    // CNN_START; // Allow capture of processing time
+    //CNN_START; // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x00100009; // Master enable group 0
 
     return CNN_OK;
@@ -798,32 +797,32 @@ int cnn_start(void)
 int cnn_unload(uint32_t* out_buf)
 {
     volatile uint32_t* addr;
-    addr = (volatile uint32_t*)0x50402000;
+    addr       = (volatile uint32_t*)0x50402000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x5040a000;
+    addr       = (volatile uint32_t*)0x5040a000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x50412000;
+    addr       = (volatile uint32_t*)0x50412000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x5041a000;
+    addr       = (volatile uint32_t*)0x5041a000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x50802000;
+    addr       = (volatile uint32_t*)0x50802000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x5080a000;
+    addr       = (volatile uint32_t*)0x5080a000;
     *out_buf++ = *addr++;
 
     return CNN_OK;
@@ -838,9 +837,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv
-        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-        | clock_divider | clock_source;
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -853,7 +852,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -866,7 +865,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);

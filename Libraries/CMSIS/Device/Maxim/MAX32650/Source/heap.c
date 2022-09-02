@@ -35,8 +35,8 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include <errno.h>
 #include <stdint.h>
+#include <errno.h>
 #include <unistd.h>
 
 /**

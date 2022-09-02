@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -36,8 +36,8 @@
 #define __CAMERA_H__
 
 // includes
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 // Defines
 #define CAM_OV7670 (1)
@@ -46,21 +46,21 @@
 #define CAM_GC0308 (4) // implementation not finalized yet
 
 #define ACTIVE_CAMERA CAM_OV7725
-#define CAMERA_FREQ (15 * 1000 * 1000) // PT generates ~12.5MHz for 15MHz
+#define CAMERA_FREQ   (15 * 1000 * 1000) //PT generates ~12.5MHz for 15MHz
 
-#include "gc0308_regs.h"
-#include "ov2640_regs.h"
 #include "ov7670_regs.h"
 #include "ov7725_regs.h"
+#include "ov2640_regs.h"
+#include "gc0308_regs.h"
 
 /******************************** Type Definitions ***************************/
 typedef enum {
     PIXFORMAT_INVALID = 0,
-    PIXFORMAT_BINARY, // 1BPP/BINARY
+    PIXFORMAT_BINARY,    // 1BPP/BINARY
     PIXFORMAT_GRAYSCALE, // 1BPP/GRAYSCALE
-    PIXFORMAT_RGB565, // 2BPP/RGB565
-    PIXFORMAT_YUV422, // 2BPP/YUV422
-    PIXFORMAT_BAYER, // 1BPP/RAW
+    PIXFORMAT_RGB565,    // 2BPP/RGB565
+    PIXFORMAT_YUV422,    // 2BPP/YUV422
+    PIXFORMAT_BAYER,     // 1BPP/RAW
 } pixformat_t;
 
 typedef enum {
@@ -70,7 +70,7 @@ typedef enum {
     FRAMESIZE_CIF, // 352x288
     // VGA Resolutions
     FRAMESIZE_QVGA, // 320x240
-    FRAMESIZE_VGA, // 640x480
+    FRAMESIZE_VGA,  // 640x480
 } framesize_t;
 
 typedef enum {

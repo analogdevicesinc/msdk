@@ -38,11 +38,11 @@
  */
 
 /***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
 #include "led.h"
 #include "mxc_delay.h"
-#include "mxc_device.h"
-#include <stdint.h>
-#include <stdio.h>
 
 /***** Definitions *****/
 

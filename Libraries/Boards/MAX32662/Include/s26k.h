@@ -41,8 +41,8 @@
 #define _S26K_H_
 
 /* **** Includes **** */
-#include "hpb.h"
 #include "mxc_device.h"
+#include "hpb.h"
 
 #ifdef __cplusplus
 extern "C" {

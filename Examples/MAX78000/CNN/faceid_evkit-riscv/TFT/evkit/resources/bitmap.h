@@ -35,7 +35,7 @@
 #define _BITMAP_H_
 
 // bitmaps id
-#define left_arrow_bmp 0
+#define left_arrow_bmp             0
 #define logo_white_bg_darkgrey_bmp 1
 
 // fonts id

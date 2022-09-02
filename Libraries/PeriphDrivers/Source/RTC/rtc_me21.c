@@ -31,14 +31,14 @@
  *
  **************************************************************************** */
 
-#include "gpio_regs.h"
-#include "mcr_regs.h"
-#include "mxc_delay.h"
 #include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
-#include "rtc.h"
 #include "rtc_regs.h"
+#include "rtc.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "gpio_regs.h"
+#include "mxc_errors.h"
+#include "mcr_regs.h"
 #include "rtc_reva.h"
 
 /* ***** Functions ***** */
@@ -92,14 +92,14 @@ int MXC_RTC_SquareWaveStart(mxc_rtc_freq_sel_t fq)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
 
-    return MXC_RTC_RevA_SquareWave(
-        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED, fq);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_ENABLED,
+                                   fq);
 }
 
 int MXC_RTC_SquareWaveStop(void)
 {
-    return MXC_RTC_RevA_SquareWave(
-        (mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED, 0);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*)MXC_RTC, MXC_RTC_REVA_SQUARE_WAVE_DISABLED,
+                                   0);
 }
 
 int MXC_RTC_Trim(int8_t trm)
@@ -139,21 +139,20 @@ int MXC_RTC_GetBusyFlag(void)
 
 int MXC_RTC_TrimCrystal(mxc_tmr_regs_t* tmr)
 {
-    if (MXC_TMR_GET_IDX(tmr) < 0
-        || MXC_TMR_GET_IDX(tmr) > 3) { // Timer must support ERFO as clock source
+    if (MXC_TMR_GET_IDX(tmr) < 0 ||
+        MXC_TMR_GET_IDX(tmr) > 3) { // Timer must support ERFO as clock source
         return E_BAD_PARAM;
     }
 
     mxc_tmr_cfg_t
         tmr_cfg; // Configure timer to trigger interrupt NUM_PERIOD number of times within a second
-    tmr_cfg.pres = TMR_PRES_1;
-    tmr_cfg.mode = TMR_MODE_CONTINUOUS;
+    tmr_cfg.pres    = TMR_PRES_1;
+    tmr_cfg.mode    = TMR_MODE_CONTINUOUS;
     tmr_cfg.bitMode = TMR_BIT_MODE_32;
-    tmr_cfg.clock = MXC_TMR_32M_CLK;
-    tmr_cfg.cmp_cnt = ERFO_FREQ
-        / MXC_RTC_REVA_TRIM_PERIODS; // *** Ensure ERFO_FREQ (defined in system_max32672.h) matches
-                                     // the oscillator frequency of the ERFO oscillator you have
-                                     // selected for your board ***
+    tmr_cfg.clock   = MXC_TMR_32M_CLK;
+    tmr_cfg.cmp_cnt =
+        ERFO_FREQ /
+        MXC_RTC_REVA_TRIM_PERIODS; // *** Ensure ERFO_FREQ (defined in system_max32672.h) matches the oscillator frequency of the ERFO oscillator you have selected for your board ***
     tmr_cfg.pol = 0;
     MXC_TMR_Init(tmr, &tmr_cfg, false);
 

@@ -26,8 +26,8 @@
 #ifndef _BASIC_MATH_FUNCTIONS_H_
 #define _BASIC_MATH_FUNCTIONS_H_
 
-#include "arm_math_memory.h"
 #include "arm_math_types.h"
+#include "arm_math_memory.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
@@ -41,41 +41,41 @@ extern "C" {
  */
 
 /**
- * @brief Q7 vector multiplication.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q7 vector multiplication.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_mult_q7(const q7_t* pSrcA, const q7_t* pSrcB, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector multiplication.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q15 vector multiplication.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_mult_q15(const q15_t* pSrcA, const q15_t* pSrcB, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector multiplication.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q31 vector multiplication.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_mult_q31(const q31_t* pSrcA, const q31_t* pSrcB, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Floating-point vector multiplication.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_mult_f32(
-    const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
+   * @brief Floating-point vector multiplication.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
+void arm_mult_f32(const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst,
+                  uint32_t blockSize);
 
 /**
  * @brief Floating-point vector multiplication.
@@ -84,167 +84,167 @@ void arm_mult_f32(
  * @param[out] pDst       points to the output vector
  * @param[in]  blockSize  number of samples in each vector
  */
-void arm_mult_f64(
-    const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst, uint32_t blockSize);
+void arm_mult_f64(const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst,
+                  uint32_t blockSize);
 
 /**
- * @brief Floating-point vector addition.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_add_f32(
-    const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
+   * @brief Floating-point vector addition.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
+void arm_add_f32(const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst,
+                 uint32_t blockSize);
 
 /**
- * @brief Floating-point vector addition.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_add_f64(
-    const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst, uint32_t blockSize);
+  * @brief Floating-point vector addition.
+  * @param[in]  pSrcA      points to the first input vector
+  * @param[in]  pSrcB      points to the second input vector
+  * @param[out] pDst       points to the output vector
+  * @param[in]  blockSize  number of samples in each vector
+  */
+void arm_add_f64(const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst,
+                 uint32_t blockSize);
 
 /**
- * @brief Q7 vector addition.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q7 vector addition.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_add_q7(const q7_t* pSrcA, const q7_t* pSrcB, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector addition.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q15 vector addition.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_add_q15(const q15_t* pSrcA, const q15_t* pSrcB, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector addition.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q31 vector addition.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_add_q31(const q31_t* pSrcA, const q31_t* pSrcB, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Floating-point vector subtraction.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_sub_f32(
-    const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
+   * @brief Floating-point vector subtraction.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
+void arm_sub_f32(const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst,
+                 uint32_t blockSize);
 
 /**
- * @brief Floating-point vector subtraction.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
-void arm_sub_f64(
-    const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst, uint32_t blockSize);
+   * @brief Floating-point vector subtraction.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
+void arm_sub_f64(const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst,
+                 uint32_t blockSize);
 
 /**
- * @brief Q7 vector subtraction.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q7 vector subtraction.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_sub_q7(const q7_t* pSrcA, const q7_t* pSrcB, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector subtraction.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q15 vector subtraction.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_sub_q15(const q15_t* pSrcA, const q15_t* pSrcB, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector subtraction.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q31 vector subtraction.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_sub_q31(const q31_t* pSrcA, const q31_t* pSrcB, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a floating-point vector by a scalar.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  scale      scale factor to be applied
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief Multiplies a floating-point vector by a scalar.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  scale      scale factor to be applied
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_scale_f32(const float32_t* pSrc, float32_t scale, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a floating-point vector by a scalar.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  scale      scale factor to be applied
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief Multiplies a floating-point vector by a scalar.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  scale      scale factor to be applied
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_scale_f64(const float64_t* pSrc, float64_t scale, float64_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a Q7 vector by a scalar.
- * @param[in]  pSrc        points to the input vector
- * @param[in]  scaleFract  fractional portion of the scale value
- * @param[in]  shift       number of bits to shift the result by
- * @param[out] pDst        points to the output vector
- * @param[in]  blockSize   number of samples in the vector
- */
+   * @brief Multiplies a Q7 vector by a scalar.
+   * @param[in]  pSrc        points to the input vector
+   * @param[in]  scaleFract  fractional portion of the scale value
+   * @param[in]  shift       number of bits to shift the result by
+   * @param[out] pDst        points to the output vector
+   * @param[in]  blockSize   number of samples in the vector
+   */
 void arm_scale_q7(const q7_t* pSrc, q7_t scaleFract, int8_t shift, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a Q15 vector by a scalar.
- * @param[in]  pSrc        points to the input vector
- * @param[in]  scaleFract  fractional portion of the scale value
- * @param[in]  shift       number of bits to shift the result by
- * @param[out] pDst        points to the output vector
- * @param[in]  blockSize   number of samples in the vector
- */
-void arm_scale_q15(
-    const q15_t* pSrc, q15_t scaleFract, int8_t shift, q15_t* pDst, uint32_t blockSize);
+   * @brief Multiplies a Q15 vector by a scalar.
+   * @param[in]  pSrc        points to the input vector
+   * @param[in]  scaleFract  fractional portion of the scale value
+   * @param[in]  shift       number of bits to shift the result by
+   * @param[out] pDst        points to the output vector
+   * @param[in]  blockSize   number of samples in the vector
+   */
+void arm_scale_q15(const q15_t* pSrc, q15_t scaleFract, int8_t shift, q15_t* pDst,
+                   uint32_t blockSize);
 
 /**
- * @brief Multiplies a Q31 vector by a scalar.
- * @param[in]  pSrc        points to the input vector
- * @param[in]  scaleFract  fractional portion of the scale value
- * @param[in]  shift       number of bits to shift the result by
- * @param[out] pDst        points to the output vector
- * @param[in]  blockSize   number of samples in the vector
- */
-void arm_scale_q31(
-    const q31_t* pSrc, q31_t scaleFract, int8_t shift, q31_t* pDst, uint32_t blockSize);
+   * @brief Multiplies a Q31 vector by a scalar.
+   * @param[in]  pSrc        points to the input vector
+   * @param[in]  scaleFract  fractional portion of the scale value
+   * @param[in]  shift       number of bits to shift the result by
+   * @param[out] pDst        points to the output vector
+   * @param[in]  blockSize   number of samples in the vector
+   */
+void arm_scale_q31(const q31_t* pSrc, q31_t scaleFract, int8_t shift, q31_t* pDst,
+                   uint32_t blockSize);
 
 /**
- * @brief Q7 vector absolute value.
- * @param[in]  pSrc       points to the input buffer
- * @param[out] pDst       points to the output buffer
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q7 vector absolute value.
+   * @param[in]  pSrc       points to the input buffer
+   * @param[out] pDst       points to the output buffer
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_abs_q7(const q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Floating-point vector absolute value.
- * @param[in]  pSrc       points to the input buffer
- * @param[out] pDst       points to the output buffer
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Floating-point vector absolute value.
+   * @param[in]  pSrc       points to the input buffer
+   * @param[out] pDst       points to the output buffer
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_abs_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
@@ -256,30 +256,30 @@ void arm_abs_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 void arm_abs_f64(const float64_t* pSrc, float64_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector absolute value.
- * @param[in]  pSrc       points to the input buffer
- * @param[out] pDst       points to the output buffer
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q15 vector absolute value.
+   * @param[in]  pSrc       points to the input buffer
+   * @param[out] pDst       points to the output buffer
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_abs_q15(const q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector absolute value.
- * @param[in]  pSrc       points to the input buffer
- * @param[out] pDst       points to the output buffer
- * @param[in]  blockSize  number of samples in each vector
- */
+   * @brief Q31 vector absolute value.
+   * @param[in]  pSrc       points to the input buffer
+   * @param[out] pDst       points to the output buffer
+   * @param[in]  blockSize  number of samples in each vector
+   */
 void arm_abs_q31(const q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Dot product of floating-point vectors.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[in]  blockSize  number of samples in each vector
- * @param[out] result     output result returned here
- */
-void arm_dot_prod_f32(
-    const float32_t* pSrcA, const float32_t* pSrcB, uint32_t blockSize, float32_t* result);
+   * @brief Dot product of floating-point vectors.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[in]  blockSize  number of samples in each vector
+   * @param[out] result     output result returned here
+   */
+void arm_dot_prod_f32(const float32_t* pSrcA, const float32_t* pSrcB, uint32_t blockSize,
+                      float32_t* result);
 
 /**
  * @brief Dot product of floating-point vectors.
@@ -288,64 +288,61 @@ void arm_dot_prod_f32(
  * @param[in]  blockSize  number of samples in each vector
  * @param[out] result     output result returned here
  */
-void arm_dot_prod_f64(
-    const float64_t* pSrcA, const float64_t* pSrcB, uint32_t blockSize, float64_t* result);
+void arm_dot_prod_f64(const float64_t* pSrcA, const float64_t* pSrcB, uint32_t blockSize,
+                      float64_t* result);
 
 /**
- * @brief Dot product of Q7 vectors.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[in]  blockSize  number of samples in each vector
- * @param[out] result     output result returned here
- */
+   * @brief Dot product of Q7 vectors.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[in]  blockSize  number of samples in each vector
+   * @param[out] result     output result returned here
+   */
 void arm_dot_prod_q7(const q7_t* pSrcA, const q7_t* pSrcB, uint32_t blockSize, q31_t* result);
 
 /**
- * @brief Dot product of Q15 vectors.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[in]  blockSize  number of samples in each vector
- * @param[out] result     output result returned here
- */
+   * @brief Dot product of Q15 vectors.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[in]  blockSize  number of samples in each vector
+   * @param[out] result     output result returned here
+   */
 void arm_dot_prod_q15(const q15_t* pSrcA, const q15_t* pSrcB, uint32_t blockSize, q63_t* result);
 
 /**
- * @brief Dot product of Q31 vectors.
- * @param[in]  pSrcA      points to the first input vector
- * @param[in]  pSrcB      points to the second input vector
- * @param[in]  blockSize  number of samples in each vector
- * @param[out] result     output result returned here
- */
+   * @brief Dot product of Q31 vectors.
+   * @param[in]  pSrcA      points to the first input vector
+   * @param[in]  pSrcB      points to the second input vector
+   * @param[in]  blockSize  number of samples in each vector
+   * @param[out] result     output result returned here
+   */
 void arm_dot_prod_q31(const q31_t* pSrcA, const q31_t* pSrcB, uint32_t blockSize, q63_t* result);
 
 /**
- * @brief  Shifts the elements of a Q7 vector a specified number of bits.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  shiftBits  number of bits to shift.  A positive value shifts left; a negative value
- * shifts right.
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Shifts the elements of a Q7 vector a specified number of bits.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  shiftBits  number of bits to shift.  A positive value shifts left; a negative value shifts right.
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_shift_q7(const q7_t* pSrc, int8_t shiftBits, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Shifts the elements of a Q15 vector a specified number of bits.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  shiftBits  number of bits to shift.  A positive value shifts left; a negative value
- * shifts right.
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Shifts the elements of a Q15 vector a specified number of bits.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  shiftBits  number of bits to shift.  A positive value shifts left; a negative value shifts right.
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_shift_q15(const q15_t* pSrc, int8_t shiftBits, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Shifts the elements of a Q31 vector a specified number of bits.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  shiftBits  number of bits to shift.  A positive value shifts left; a negative value
- * shifts right.
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Shifts the elements of a Q31 vector a specified number of bits.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  shiftBits  number of bits to shift.  A positive value shifts left; a negative value shifts right.
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_shift_q31(const q31_t* pSrc, int8_t shiftBits, q31_t* pDst, uint32_t blockSize);
 
 /**
@@ -358,47 +355,47 @@ void arm_shift_q31(const q31_t* pSrc, int8_t shiftBits, q31_t* pDst, uint32_t bl
 void arm_offset_f64(const float64_t* pSrc, float64_t offset, float64_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a floating-point vector.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  offset     is the offset to be added
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Adds a constant offset to a floating-point vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  offset     is the offset to be added
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_offset_f32(const float32_t* pSrc, float32_t offset, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a Q7 vector.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  offset     is the offset to be added
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Adds a constant offset to a Q7 vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  offset     is the offset to be added
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_offset_q7(const q7_t* pSrc, q7_t offset, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a Q15 vector.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  offset     is the offset to be added
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Adds a constant offset to a Q15 vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  offset     is the offset to be added
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_offset_q15(const q15_t* pSrc, q15_t offset, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a Q31 vector.
- * @param[in]  pSrc       points to the input vector
- * @param[in]  offset     is the offset to be added
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Adds a constant offset to a Q31 vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[in]  offset     is the offset to be added
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_offset_q31(const q31_t* pSrc, q31_t offset, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a floating-point vector.
- * @param[in]  pSrc       points to the input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Negates the elements of a floating-point vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_negate_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
@@ -410,144 +407,144 @@ void arm_negate_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 void arm_negate_f64(const float64_t* pSrc, float64_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a Q7 vector.
- * @param[in]  pSrc       points to the input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Negates the elements of a Q7 vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_negate_q7(const q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a Q15 vector.
- * @param[in]  pSrc       points to the input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Negates the elements of a Q15 vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_negate_q15(const q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a Q31 vector.
- * @param[in]  pSrc       points to the input vector
- * @param[out] pDst       points to the output vector
- * @param[in]  blockSize  number of samples in the vector
- */
+   * @brief  Negates the elements of a Q31 vector.
+   * @param[in]  pSrc       points to the input vector
+   * @param[out] pDst       points to the output vector
+   * @param[in]  blockSize  number of samples in the vector
+   */
 void arm_negate_q31(const q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise AND of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise AND of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_and_u16(const uint16_t* pSrcA, const uint16_t* pSrcB, uint16_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise AND of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise AND of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_and_u32(const uint32_t* pSrcA, const uint32_t* pSrcB, uint32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise AND of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise AND of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_and_u8(const uint8_t* pSrcA, const uint8_t* pSrcB, uint8_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise OR of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise OR of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_or_u16(const uint16_t* pSrcA, const uint16_t* pSrcB, uint16_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise OR of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise OR of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_or_u32(const uint32_t* pSrcA, const uint32_t* pSrcB, uint32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise OR of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise OR of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_or_u8(const uint8_t* pSrcA, const uint8_t* pSrcB, uint8_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise NOT of a fixed-point vector.
- * @param[in]     pSrc       points to input vector
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise NOT of a fixed-point vector.
+   * @param[in]     pSrc       points to input vector 
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_not_u16(const uint16_t* pSrc, uint16_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise NOT of a fixed-point vector.
- * @param[in]     pSrc       points to input vector
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise NOT of a fixed-point vector.
+   * @param[in]     pSrc       points to input vector 
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_not_u32(const uint32_t* pSrc, uint32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise NOT of a fixed-point vector.
- * @param[in]     pSrc       points to input vector
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise NOT of a fixed-point vector.
+   * @param[in]     pSrc       points to input vector 
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_not_u8(const uint8_t* pSrc, uint8_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise XOR of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise XOR of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_xor_u16(const uint16_t* pSrcA, const uint16_t* pSrcB, uint16_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise XOR of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise XOR of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_xor_u32(const uint32_t* pSrcA, const uint32_t* pSrcB, uint32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief         Compute the logical bitwise XOR of two fixed-point vectors.
- * @param[in]     pSrcA      points to input vector A
- * @param[in]     pSrcB      points to input vector B
- * @param[out]    pDst       points to output vector
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief         Compute the logical bitwise XOR of two fixed-point vectors.
+   * @param[in]     pSrcA      points to input vector A
+   * @param[in]     pSrcB      points to input vector B
+   * @param[out]    pDst       points to output vector
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_xor_u8(const uint8_t* pSrcA, const uint8_t* pSrcB, uint8_t* pDst, uint32_t blockSize);
 
 /**
@@ -560,8 +557,8 @@ void arm_xor_u8(const uint8_t* pSrcA, const uint8_t* pSrcB, uint8_t* pDst, uint3
   @return        none
  */
 
-void arm_clip_f32(
-    const float32_t* pSrc, float32_t* pDst, float32_t low, float32_t high, uint32_t numSamples);
+void arm_clip_f32(const float32_t* pSrc, float32_t* pDst, float32_t low, float32_t high,
+                  uint32_t numSamples);
 
 /**
   @brief         Elementwise fixed-point clipping

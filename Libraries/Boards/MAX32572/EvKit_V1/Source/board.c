@@ -34,29 +34,30 @@
  *
  ******************************************************************************/
 
-#include "board.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "led.h"
-#include "mxc_assert.h"
+#include <stdio.h>
 #include "mxc_device.h"
-#include "mxc_pins.h"
 #include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "board.h"
+#include "uart.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "led.h"
 #include "pb.h"
 #include "spixf.h"
-#include "uart.h"
-#include <stdio.h>
+#include "i2c.h"
+#include "mxc_sys.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
-const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN,
-    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO } };
+const mxc_gpio_cfg_t pb_pin[] = {
+    {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO}};
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
-const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT,
-    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
+const mxc_gpio_cfg_t led_pin[] = {
+    {MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO}};
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
@@ -64,7 +65,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1) { }
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -137,7 +139,7 @@ int MX25_Board_Init(void)
 /******************************************************************************/
 int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_width_t width)
 {
-    mxc_spixf_req_t req = { deassert, 0, NULL, read, width, len, 0, 0, NULL };
+    mxc_spixf_req_t req = {deassert, 0, NULL, read, width, len, 0, 0, NULL};
 
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;
@@ -149,7 +151,7 @@ int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_wi
 /******************************************************************************/
 int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, mxc_spixf_width_t width)
 {
-    mxc_spixf_req_t req = { deassert, 0, write, NULL, width, len, 0, 0, NULL };
+    mxc_spixf_req_t req = {deassert, 0, write, NULL, width, len, 0, 0, NULL};
 
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;

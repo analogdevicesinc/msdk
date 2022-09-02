@@ -79,12 +79,12 @@
  * 512 bytes: 4096 bits.
  * @ingroup UCL_CONFIG
  */
-// 1024 is ok on mingw for rsa encrypt up to 3072
-// but seems to be too large for jibe stack
+//1024 is ok on mingw for rsa encrypt up to 3072
+//but seems to be too large for jibe stack
 #define UCL_RSA_KEY_MAXSIZE 512
-#if defined(__lighthouse) || defined(__yumen) || defined(__max32550) || defined(__max32555)        \
-    || defined(__max32552) || defined(__max32560) || defined(__max32510) || defined(__max32558)    \
-    || defined(__max32590) || defined(__jibe)
+#if defined(__lighthouse) || defined(__yumen) || defined(__max32550) || defined(__max32555) ||  \
+    defined(__max32552) || defined(__max32560) || defined(__max32510) || defined(__max32558) || \
+    defined(__max32590) || defined(__jibe)
 #define UCL_RSA_KEY_MAA_MAXSIZE 256
 #elif defined(__max32621) || defined(__max32631) || defined(__max32600) || defined(__wasp)
 #define UCL_RSA_KEY_MAA_MAXSIZE 128

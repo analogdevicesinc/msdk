@@ -46,39 +46,39 @@
  */
 
 #include "mscmem.h"
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 //#include "mx25.h"
 //#include "spixf.h"
 
 /***** Definitions *****/
 
 #define SPIXF_DISK 0
-#define RAM_DISK 1
+#define RAM_DISK   1
 
-#define LBA_SIZE 512 /* Size of "logical blocks" in bytes */
-#define LBA_SIZE_SHIFT 9 /* The shift value used to convert between addresses and block numbers */
+#define LBA_SIZE       512 /* Size of "logical blocks" in bytes */
+#define LBA_SIZE_SHIFT 9   /* The shift value used to convert between addresses and block numbers */
 
 /***** Global Data *****/
 
 /***** File Scope Variables *****/
 
 static int initialized = 0;
-static int running = 0;
+static int running     = 0;
 
 #if SPIXF_DISK
 
 #define MX25_BAUD 5000000 /* SPI clock rate to communicate with the MX25 */
 
 #define MX25_SECTOR_SIZE 4096 /* Number of bytes in one sector of the MX25 */
-#define MX25_SECTOR_SIZE_SHIFT                                                                     \
+#define MX25_SECTOR_SIZE_SHIFT \
     12 /* The shift value used to convert between addresses and block numbers */
 #define MX25_NUM_SECTORS 2048 /* Total number of sectors in the MX25 */
 
 #define MXC_SPIXF_WIDTH MXC_SPIXF_WIDTH_1 /*Number of data lines*/
 
 #define LBA_PER_SECTOR (MX25_SECTOR_SIZE >> LBA_SIZE_SHIFT)
-#define INVALID_SECTOR                                                                             \
+#define INVALID_SECTOR \
     MX25_NUM_SECTORS /* Use a sector number past the end of memory to indicate invalid */
 
 /***** File Scope Variables *****/
@@ -119,8 +119,8 @@ static uint32_t getSector(uint32_t num)
                 /* Erase the old data. */
                 MX25_Erase(sectorNum << MX25_SECTOR_SIZE_SHIFT, MX25_Erase_4K);
                 /* Write the new */
-                MX25_Program_Page(
-                    sectorNum << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE, MXC_SPIXF_WIDTH);
+                MX25_Program_Page(sectorNum << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE,
+                                  MXC_SPIXF_WIDTH);
                 /* Mark data as clean */
                 sectorDirty = 0;
             }
@@ -130,7 +130,7 @@ static uint32_t getSector(uint32_t num)
         if (num != INVALID_SECTOR) {
             MX25_Read(num << MX25_SECTOR_SIZE_SHIFT, sector, MX25_SECTOR_SIZE, MXC_SPIXF_WIDTH);
             sectorDirty = 0;
-            sectorNum = num;
+            sectorNum   = num;
         }
     }
 

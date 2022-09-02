@@ -31,15 +31,15 @@
  *
  *************************************************************************** */
 
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
-#include "sfe.h"
-#include "sfe_reva_regs.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "sfe.h"
+#include "sfe_reva_regs.h"
 
 int MXC_SFE_RevA_Init(void);
 int MXC_SFE_RevA_Shutdown(void);

@@ -41,9 +41,9 @@
 #define _WDT_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "mxc_device.h"
 #include "wdt_regs.h"
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {

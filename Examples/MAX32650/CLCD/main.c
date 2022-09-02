@@ -40,22 +40,23 @@
  *
  ******************************************************************************/
 
+#include <stdio.h>
+#include <stdint.h>
+#include "mxc_errors.h"
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include "mxc_pins.h"
+#include "gpio.h"
 #include "clcd.h"
 #include "frame.h"
-#include "gpio.h"
-#include "mxc_delay.h"
-#include "mxc_errors.h"
-#include "mxc_pins.h"
 #include "mxc_sys.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "mxc_delay.h"
 
 /* **** Definitions **** */
 #define IRAM_BUFFER_SIZE 0x00012C00
-#define PANEL_WIDTH 320
-#define PANEL_HEIGHT 240
+#define PANEL_WIDTH      320
+#define PANEL_HEIGHT     240
 
 /* **** Globals **** */
 uint8_t framebuffer[IRAM_BUFFER_SIZE + ((PANEL_WIDTH * PANEL_HEIGHT * LOGO_BPP) >> 3) + 31];
@@ -76,27 +77,27 @@ void display_logo(void)
     volatile uint32_t base_addr = 0;
     mxc_clcd_cfg_t panel; /**! Panel configuration structure */
 
-    panel.width = PANEL_WIDTH; /**! Set the size of the panel in pixels */
-    panel.height = PANEL_HEIGHT; /**! Set the width of the panel in pixels */
-    panel.frequency = 6400000; /**! minimum panel supported frequency */
-    panel.vfrontporch = 2; /**! the vertical front porch for the display */
-    panel.vbackporch = 2; /**! the vertical back porch for the display */
-    panel.vsyncwidth = 10;
+    panel.width       = PANEL_WIDTH;  /**! Set the size of the panel in pixels */
+    panel.height      = PANEL_HEIGHT; /**! Set the width of the panel in pixels */
+    panel.frequency   = 6400000;      /**! minimum panel supported frequency */
+    panel.vfrontporch = 2;            /**! the vertical front porch for the display */
+    panel.vbackporch  = 2;            /**! the vertical back porch for the display */
+    panel.vsyncwidth  = 10;
     panel.hfrontporch = 12; /**! Set the horizontal front porch width */
-    panel.hbackporch = 2; /**! Set the horizontal back porch width */
-    panel.hsyncwidth = 70; /**! Set the horizontal sync width */
-    panel.palette = palette;
+    panel.hbackporch  = 2;  /**! Set the horizontal back porch width */
+    panel.hsyncwidth  = 70; /**! Set the horizontal sync width */
+    panel.palette     = palette;
     panel.paletteSize = sizeof(palette) / sizeof(uint32_t); /** set the palette size in words */
 
     /** Enable the CLCD panel based on the number of bits per pixel */
     switch (LOGO_BPP) {
-    case 1:
-        panel.bpp = MXC_BPP1;
-        break;
-    case 8:
-    default:
-        panel.bpp = MXC_BPP8;
-        break;
+        case 1:
+            panel.bpp = MXC_BPP1;
+            break;
+        case 8:
+        default:
+            panel.bpp = MXC_BPP8;
+            break;
     }
 
     /** Init and config CLCD */
@@ -113,7 +114,7 @@ void display_logo(void)
     yoffs = (panel.height - LOGO_H) >> 1;
 
     source = image;
-    dest = (unsigned char*)(base_addr + (((panel.width * yoffs + xoffs) * LOGO_BPP) >> 3));
+    dest   = (unsigned char*)(base_addr + (((panel.width * yoffs + xoffs) * LOGO_BPP) >> 3));
     /** Copy the image to the frame buffer */
     for (i = 0; i < LOGO_H; i++) {
         memcpy(dest, source, (LOGO_W * LOGO_BPP) >> 3);

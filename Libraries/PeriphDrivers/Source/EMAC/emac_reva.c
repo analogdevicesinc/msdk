@@ -32,9 +32,9 @@
  *************************************************************************** */
 
 /*******   Includes      *******/
-#include "emac_reva.h"
-#include "emac.h"
 #include <string.h>
+#include "emac.h"
+#include "emac_reva.h"
 
 /*******   Variables     *******/
 mxc_emac_reva_device_t mxc_emac_context;
@@ -54,9 +54,9 @@ static void emac_mdio_write(unsigned char reg, unsigned short value)
     netctl |= EMAC_BIT(CN, MPEN);
     EMAC_WRITEL(emac, cn, netctl);
 
-    frame = (EMAC_BF(PHY_MT, SOP, 1) | EMAC_BF(PHY_MT, OP, 1)
-        | EMAC_BF(PHY_MT, PHYADDR, emac->phy_addr) | EMAC_BF(PHY_MT, REGADDR, reg)
-        | EMAC_BF(PHY_MT, CODE, 2) | EMAC_BF(PHY_MT, DATA, value));
+    frame = (EMAC_BF(PHY_MT, SOP, 1) | EMAC_BF(PHY_MT, OP, 1) |
+             EMAC_BF(PHY_MT, PHYADDR, emac->phy_addr) | EMAC_BF(PHY_MT, REGADDR, reg) |
+             EMAC_BF(PHY_MT, CODE, 2) | EMAC_BF(PHY_MT, DATA, value));
     EMAC_WRITEL(emac, phy_mt, frame);
 
     do {
@@ -78,9 +78,9 @@ static unsigned short emac_mdio_read(unsigned char reg)
     netctl |= EMAC_BIT(CN, MPEN);
     EMAC_WRITEL(emac, cn, netctl);
 
-    frame = (EMAC_BF(PHY_MT, SOP, 1) | EMAC_BF(PHY_MT, OP, 2)
-        | EMAC_BF(PHY_MT, PHYADDR, emac->phy_addr) | EMAC_BF(PHY_MT, REGADDR, reg)
-        | EMAC_BF(PHY_MT, CODE, 2));
+    frame = (EMAC_BF(PHY_MT, SOP, 1) | EMAC_BF(PHY_MT, OP, 2) |
+             EMAC_BF(PHY_MT, PHYADDR, emac->phy_addr) | EMAC_BF(PHY_MT, REGADDR, reg) |
+             EMAC_BF(PHY_MT, CODE, 2));
     EMAC_WRITEL(emac, phy_mt, frame);
 
     do {
@@ -157,7 +157,7 @@ static int emac_phy_find(void)
 
     return E_NO_DEVICE;
 }
-#endif // CONFIG_EMAC_SEARCH_PHY
+#endif //CONFIG_EMAC_SEARCH_PHY
 
 static unsigned int emac_mii_nway_result(unsigned int negotiated)
 {
@@ -198,7 +198,7 @@ static int emac_phy_init(void)
         return result;
     }
 
-#endif // CONFIG_EMAC_SEARCH_PHY
+#endif //CONFIG_EMAC_SEARCH_PHY
 
     phy_id = emac_mdio_read(MII_PHYSID1);
 
@@ -223,13 +223,13 @@ static int emac_phy_init(void)
     }
 
     if (!(status & BMSR_LSTATUS)) {
-        return E_NO_RESPONSE; // PHY Link Down
+        return E_NO_RESPONSE; //PHY Link Down
     } else {
         adv = emac_mdio_read(MII_ADVERTISE);
         lpa = emac_mdio_read(MII_LPA);
 
-        media = emac_mii_nway_result(lpa & adv);
-        speed = ((media & (ADVERTISE_100FULL | ADVERTISE_100HALF)) ? 1 : 0);
+        media  = emac_mii_nway_result(lpa & adv);
+        speed  = ((media & (ADVERTISE_100FULL | ADVERTISE_100HALF)) ? 1 : 0);
         duplex = (media & ADVERTISE_FULL) ? 1 : 0;
 
         ncfgr = EMAC_READL(emac, cfg);
@@ -304,15 +304,15 @@ int MXC_EMAC_RevA_SetConfiguration(mxc_emac_reva_config_t* config)
         return E_NULL_PTR;
     }
 
-    if ((config->rx_ring_buff_size % sizeof(mxc_emac_dma_desc_t))
-        || (config->tx_ring_buff_size % sizeof(mxc_emac_dma_desc_t))
-        || (config->rx_buff_size % EMAC_RX_BUFFER_SIZE)) {
+    if ((config->rx_ring_buff_size % sizeof(mxc_emac_dma_desc_t)) ||
+        (config->tx_ring_buff_size % sizeof(mxc_emac_dma_desc_t)) ||
+        (config->rx_buff_size % EMAC_RX_BUFFER_SIZE)) {
         return E_INVALID;
     }
 
-    if (((config->rx_ring_buff_size / sizeof(mxc_emac_dma_desc_t)) > MAX_SYS_EMAC_RX_RING_SIZE)
-        || ((config->tx_ring_buff_size / sizeof(mxc_emac_dma_desc_t)) > MAX_SYS_EMAC_TX_RING_SIZE)
-        || (config->rx_buff_size > MAX_SYS_EMAC_RX_BUFFER_SIZE)) {
+    if (((config->rx_ring_buff_size / sizeof(mxc_emac_dma_desc_t)) > MAX_SYS_EMAC_RX_RING_SIZE) ||
+        ((config->tx_ring_buff_size / sizeof(mxc_emac_dma_desc_t)) > MAX_SYS_EMAC_TX_RING_SIZE) ||
+        (config->rx_buff_size > MAX_SYS_EMAC_RX_BUFFER_SIZE)) {
         return E_INVALID;
     }
 
@@ -320,16 +320,16 @@ int MXC_EMAC_RevA_SetConfiguration(mxc_emac_reva_config_t* config)
         return E_INVALID;
     }
 
-    emac->rx_buffer = (void*)(config->rx_buff);
-    emac->rx_buffer_dma = (unsigned int)(config->rx_buff);
+    emac->rx_buffer      = (void*)(config->rx_buff);
+    emac->rx_buffer_dma  = (unsigned int)(config->rx_buff);
     emac->rx_buffer_size = config->rx_buff_size;
 
-    emac->rx_ring = (mxc_emac_reva_dma_desc_t*)(config->rx_ring_buff);
-    emac->rx_ring_dma = (unsigned int)(config->rx_ring_buff);
+    emac->rx_ring      = (mxc_emac_reva_dma_desc_t*)(config->rx_ring_buff);
+    emac->rx_ring_dma  = (unsigned int)(config->rx_ring_buff);
     emac->rx_ring_size = (config->rx_ring_buff_size / sizeof(mxc_emac_dma_desc_t));
 
-    emac->tx_ring = (mxc_emac_reva_dma_desc_t*)(config->tx_ring_buff);
-    emac->tx_ring_dma = (unsigned int)(config->tx_ring_buff);
+    emac->tx_ring      = (mxc_emac_reva_dma_desc_t*)(config->tx_ring_buff);
+    emac->tx_ring_dma  = (unsigned int)(config->tx_ring_buff);
     emac->tx_ring_size = (config->tx_ring_buff_size / sizeof(mxc_emac_dma_desc_t));
 
     emac->phy_addr = config->phy_addr;
@@ -337,7 +337,7 @@ int MXC_EMAC_RevA_SetConfiguration(mxc_emac_reva_config_t* config)
 
     if (config->interrupt_mode) {
         memcpy((void*)&emac->cb_funcs, (const void*)&config->conf_cb_funcs,
-            sizeof(mxc_emac_cb_funcs_tbl_t));
+               sizeof(mxc_emac_cb_funcs_tbl_t));
         MXC_EMAC_RevA_EnableInterruptEvents(config->interrupt_events);
     } else {
         memset((void*)&emac->cb_funcs, 0, sizeof(mxc_emac_cb_funcs_tbl_t));
@@ -357,8 +357,8 @@ int MXC_EMAC_RevA_SetHwAddr(unsigned char* enetaddr)
     }
 
     /* Set Hardware Address */
-    hwaddr_bottom
-        = ((enetaddr[0]) | (enetaddr[1] << 8) | (enetaddr[2] << 16) | (enetaddr[3] << 24));
+    hwaddr_bottom =
+        ((enetaddr[0]) | (enetaddr[1] << 8) | (enetaddr[2] << 16) | (enetaddr[3] << 24));
     EMAC_WRITEL(emac, sa1l, hwaddr_bottom);
 
     hwaddr_top = (enetaddr[4] | (enetaddr[5] << 8));
@@ -508,7 +508,7 @@ int MXC_EMAC_RevA_ReadLinkStatus(void)
     if (status & BMSR_LSTATUS) {
         result = E_NO_ERROR;
     } else {
-        result = E_NO_DEVICE; // PHY Link Down
+        result = E_NO_DEVICE; //PHY Link Down
     }
 
     return result;
@@ -534,7 +534,7 @@ int MXC_EMAC_RevA_SendSync(const void* packet, unsigned int length)
     }
 
     tx_head = emac->tx_head;
-    paddr = (unsigned int)packet;
+    paddr   = (unsigned int)packet;
 
     ctrl = length & TXBUF_FRMLEN_MASK;
     ctrl |= TXBUF_FRAME_END;
@@ -595,7 +595,7 @@ int MXC_EMAC_RevA_SendAsync(const void* packet, unsigned int length)
     }
 
     tx_head = emac->tx_head;
-    paddr = (unsigned int)packet;
+    paddr   = (unsigned int)packet;
 
     ctrl = length & TXBUF_FRMLEN_MASK;
     ctrl |= TXBUF_FRAME_END;
@@ -624,7 +624,7 @@ int MXC_EMAC_RevA_SendAsync(const void* packet, unsigned int length)
 
 int MXC_EMAC_RevA_Recv(void* rx_buff, unsigned int max_len)
 {
-    int result = E_UNKNOWN;
+    int result  = E_UNKNOWN;
     int wrapped = 0;
     unsigned int length;
     unsigned int status;
@@ -668,8 +668,8 @@ int MXC_EMAC_RevA_Recv(void* rx_buff, unsigned int max_len)
             length = status & RXBUF_FRMLEN_MASK;
 
             if (wrapped) {
-                headlen = EMAC_RX_BUFFER_SIZE * (emac->rx_ring_size - emac->rx_tail);
-                taillen = length - headlen;
+                headlen       = EMAC_RX_BUFFER_SIZE * (emac->rx_ring_size - emac->rx_tail);
+                taillen       = length - headlen;
                 tail_buff_ptr = (unsigned char*)rx_buff + headlen;
 
                 if ((headlen + taillen) <= max_len) {
@@ -677,13 +677,13 @@ int MXC_EMAC_RevA_Recv(void* rx_buff, unsigned int max_len)
                     memcpy((void*)tail_buff_ptr, (const void*)emac->rx_buffer, taillen);
                     result = headlen + taillen;
                 } else {
-                    result = E_NONE_AVAIL; // RX User Buffer Full
+                    result = E_NONE_AVAIL; //RX User Buffer Full
                 }
             } else if (length <= max_len) {
                 memcpy(rx_buff, (const void*)buffer, length);
                 result = length;
             } else {
-                result = E_NONE_AVAIL; // RX User Buffer Full
+                result = E_NONE_AVAIL; //RX User Buffer Full
             }
 
             if (++rx_tail >= emac->rx_ring_size) {

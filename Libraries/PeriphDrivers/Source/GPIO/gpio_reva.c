@@ -32,12 +32,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio_reva.h"
-#include "gpio.h"
-#include "gpio_common.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
+#include "mxc_assert.h"
 #include "mxc_errors.h"
+#include "gpio.h"
+#include "gpio_reva.h"
+#include "gpio_common.h"
 #include <stddef.h>
 
 /* **** Functions **** */
@@ -76,37 +76,37 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t* cfg, mxc_gpio_int_pol_t pol)
     mxc_gpio_reva_regs_t* gpio = (mxc_gpio_reva_regs_t*)cfg->port;
 
     switch (pol) {
-    case MXC_GPIO_INT_HIGH:
-        gpio->intpol &= ~cfg->mask;
-        gpio->dualedge &= ~cfg->mask;
-        gpio->intmode &= ~cfg->mask;
-        break;
+        case MXC_GPIO_INT_HIGH:
+            gpio->intpol &= ~cfg->mask;
+            gpio->dualedge &= ~cfg->mask;
+            gpio->intmode &= ~cfg->mask;
+            break;
 
-    case MXC_GPIO_INT_FALLING: /* MXC_GPIO_INT_HIGH */
-        gpio->intpol &= ~cfg->mask;
-        gpio->dualedge &= ~cfg->mask;
-        gpio->intmode |= cfg->mask;
-        break;
+        case MXC_GPIO_INT_FALLING: /* MXC_GPIO_INT_HIGH */
+            gpio->intpol &= ~cfg->mask;
+            gpio->dualedge &= ~cfg->mask;
+            gpio->intmode |= cfg->mask;
+            break;
 
-    case MXC_GPIO_INT_LOW: /* MXC_GPIO_INT_LOW */
-        gpio->intpol |= cfg->mask;
-        gpio->dualedge &= ~cfg->mask;
-        gpio->intmode &= ~cfg->mask;
-        break;
+        case MXC_GPIO_INT_LOW: /* MXC_GPIO_INT_LOW */
+            gpio->intpol |= cfg->mask;
+            gpio->dualedge &= ~cfg->mask;
+            gpio->intmode &= ~cfg->mask;
+            break;
 
-    case MXC_GPIO_INT_RISING: /* MXC_GPIO_INT_LOW */
-        gpio->intpol |= cfg->mask;
-        gpio->dualedge &= ~cfg->mask;
-        gpio->intmode |= cfg->mask;
-        break;
+        case MXC_GPIO_INT_RISING: /* MXC_GPIO_INT_LOW */
+            gpio->intpol |= cfg->mask;
+            gpio->dualedge &= ~cfg->mask;
+            gpio->intmode |= cfg->mask;
+            break;
 
-    case MXC_GPIO_INT_BOTH:
-        gpio->dualedge |= cfg->mask;
-        gpio->intmode |= cfg->mask;
-        break;
+        case MXC_GPIO_INT_BOTH:
+            gpio->dualedge |= cfg->mask;
+            gpio->intmode |= cfg->mask;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -136,16 +136,16 @@ int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t* port, mxc_gpio_vssel_t vssel, u
 {
     // Configure the vssel
     switch (vssel) {
-    case MXC_GPIO_VSSEL_VDDIO:
-        port->vssel &= ~mask;
-        break;
+        case MXC_GPIO_VSSEL_VDDIO:
+            port->vssel &= ~mask;
+            break;
 
-    case MXC_GPIO_VSSEL_VDDIOH:
-        port->vssel |= mask;
-        break;
+        case MXC_GPIO_VSSEL_VDDIOH:
+            port->vssel |= mask;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -153,66 +153,66 @@ int MXC_GPIO_RevA_SetVSSEL(mxc_gpio_reva_regs_t* port, mxc_gpio_vssel_t vssel, u
 
 int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t* port, mxc_gpio_func_t func, uint32_t mask)
 {
-    // This is required for new devices going forward.
+    //This is required for new devices going forward.
     port->inen |= mask;
 
     switch (func) {
-    case MXC_GPIO_FUNC_IN:
-        port->outen_clr = mask;
-        port->en0_set = mask;
-        port->en1_clr = mask;
-        port->en2_clr = mask;
-        port->en3_clr = mask;
-        break;
+        case MXC_GPIO_FUNC_IN:
+            port->outen_clr = mask;
+            port->en0_set   = mask;
+            port->en1_clr   = mask;
+            port->en2_clr   = mask;
+            port->en3_clr   = mask;
+            break;
 
-    case MXC_GPIO_FUNC_OUT:
-        port->outen_set = mask;
-        port->en0_set = mask;
-        port->en1_clr = mask;
-        port->en2_clr = mask;
-        port->en3_clr = mask;
-        break;
+        case MXC_GPIO_FUNC_OUT:
+            port->outen_set = mask;
+            port->en0_set   = mask;
+            port->en1_clr   = mask;
+            port->en2_clr   = mask;
+            port->en3_clr   = mask;
+            break;
 
-    case MXC_GPIO_FUNC_ALT1:
-        port->en2_clr = mask;
-        port->en1_clr = mask;
-        port->en0_clr = mask;
-        port->en3_clr = mask;
-        break;
+        case MXC_GPIO_FUNC_ALT1:
+            port->en2_clr = mask;
+            port->en1_clr = mask;
+            port->en0_clr = mask;
+            port->en3_clr = mask;
+            break;
 
-    case MXC_GPIO_FUNC_ALT2:
-        port->en2_clr = mask;
-        port->en1_set = mask;
-        port->en0_clr = mask;
-        port->en3_clr = mask;
-        break;
+        case MXC_GPIO_FUNC_ALT2:
+            port->en2_clr = mask;
+            port->en1_set = mask;
+            port->en0_clr = mask;
+            port->en3_clr = mask;
+            break;
 
 #if TARGET_NUM != 32650
-    case MXC_GPIO_FUNC_ALT3:
-        port->en2_set = mask;
-        port->en1_clr = mask;
-        port->en0_clr = mask;
-        port->en3_clr = mask;
-        break;
+        case MXC_GPIO_FUNC_ALT3:
+            port->en2_set = mask;
+            port->en1_clr = mask;
+            port->en0_clr = mask;
+            port->en3_clr = mask;
+            break;
 
-    case MXC_GPIO_FUNC_ALT4:
-        port->en2_set = mask;
-        port->en1_set = mask;
-        port->en0_clr = mask;
-        port->en3_clr = mask;
-        break;
+        case MXC_GPIO_FUNC_ALT4:
+            port->en2_set = mask;
+            port->en1_set = mask;
+            port->en0_clr = mask;
+            port->en3_clr = mask;
+            break;
 
 #if TARGET_NUM == 32662
-    case MXC_GPIO_FUNC_ALT5:
-        port->en0_clr = mask;
-        port->en1_clr = mask;
-        port->en2_clr = mask;
-        port->en3_set = mask;
-        break;
+        case MXC_GPIO_FUNC_ALT5:
+            port->en0_clr = mask;
+            port->en1_clr = mask;
+            port->en2_clr = mask;
+            port->en3_set = mask;
+            break;
 #endif
 #endif
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;

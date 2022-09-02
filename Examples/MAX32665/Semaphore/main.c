@@ -2,8 +2,7 @@
 /**
  * @file    	main.c
  * @brief   	Semaphore example
- * @details 	Press button to overwrite a global variable. If someone is already writing to it,
- * deny the right
+ * @details 	Press button to overwrite a global variable. If someone is already writing to it, deny the right
  */
 
 /******************************************************************************
@@ -40,14 +39,14 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include "board.h"
+#include <stdio.h>
+#include <stdint.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_sys.h"
 #include "pb.h"
 #include "sema.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "mxc_sys.h"
+#include "board.h"
 
 /***** Definitions *****/
 #define SW1 0
@@ -63,9 +62,9 @@ int shared_variable = 0;
 void PB_AWrites(void* idx)
 {
     int retval;
-    // First check if A is already writing
+    //First check if A is already writing
     if (!A_active) {
-        // Check if B is writing
+        //Check if B is writing
         retval = MXC_SEMA_CheckSema(0);
         if (retval == E_NO_ERROR) {
             if (MXC_SEMA_GetSema(0) == E_NO_ERROR) {
@@ -82,7 +81,7 @@ void PB_AWrites(void* idx)
         }
     } else {
         A_active = !A_active;
-        // Semaphore should be busy...
+        //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
         if (retval == E_BUSY) {
             printf("A stopped writing.\n");
@@ -102,9 +101,9 @@ void PB_AWrites(void* idx)
 void PB_BWrites(void* idx)
 {
     int retval;
-    // First check if B is already writing
+    //First check if B is already writing
     if (!B_active) {
-        // Check if A is writing
+        //Check if A is writing
         retval = MXC_SEMA_CheckSema(0);
         if (retval == E_NO_ERROR) {
             if (MXC_SEMA_GetSema(0) == E_NO_ERROR) {
@@ -121,7 +120,7 @@ void PB_BWrites(void* idx)
         }
     } else {
         B_active = !B_active;
-        // Semaphore should be busy...
+        //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
         if (retval == E_BUSY) {
             printf("B stopped writing.\n");
@@ -174,5 +173,6 @@ int main(void)
 #endif
 
     printf("\nExample running.\n");
-    while (1) { }
+    while (1)
+        ;
 }

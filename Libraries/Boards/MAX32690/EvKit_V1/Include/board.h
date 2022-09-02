@@ -69,7 +69,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#define LED_ON  0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 1000000
@@ -81,14 +81,14 @@ extern "C" {
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1 0
+#define LED1    0
 #define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2 1
+#define LED2      1
 #define LED_GREEN LED2
 
 /**

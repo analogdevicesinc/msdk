@@ -40,11 +40,11 @@
  *
  */
 
-#include "tcpecho_raw.h"
-#include "lwip/debug.h"
 #include "lwip/opt.h"
+#include "lwip/debug.h"
 #include "lwip/stats.h"
 #include "lwip/tcp.h"
+#include "tcpecho_raw.h"
 
 #if LWIP_TCP && LWIP_CALLBACK_API
 
@@ -166,7 +166,7 @@ static err_t tcpecho_raw_sent(void* arg, struct tcp_pcb* tpcb, u16_t len)
 
     LWIP_UNUSED_ARG(len);
 
-    es = (struct tcpecho_raw_state*)arg;
+    es          = (struct tcpecho_raw_state*)arg;
     es->retries = 0;
 
     if (es->p != NULL) {
@@ -261,10 +261,10 @@ static err_t tcpecho_raw_accept(void* arg, struct tcp_pcb* newpcb, err_t err)
     es = (struct tcpecho_raw_state*)mem_malloc(sizeof(struct tcpecho_raw_state));
 
     if (es != NULL) {
-        es->state = ES_ACCEPTED;
-        es->pcb = newpcb;
+        es->state   = ES_ACCEPTED;
+        es->pcb     = newpcb;
         es->retries = 0;
-        es->p = NULL;
+        es->p       = NULL;
         /* pass newly allocated es to our callbacks */
         tcp_arg(newpcb, es);
         tcp_recv(newpcb, tcpecho_raw_recv);

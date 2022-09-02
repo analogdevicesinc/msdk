@@ -32,9 +32,9 @@
  *************************************************************************** */
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "i2s.h"
 #include "i2s_reva_regs.h"
-#include <stdint.h>
 
 /****** Definitions *****/
 
@@ -57,21 +57,21 @@ int MXC_I2S_RevA_SetRXThreshold(mxc_i2s_reva_regs_t* i2s, uint8_t threshold);
 
 int MXC_I2S_RevA_SetFrequency(mxc_i2s_reva_regs_t* i2s, mxc_i2s_ch_mode_t mode, uint16_t clkdiv);
 
-int MXC_I2S_RevA_SetSampleRate(
-    mxc_i2s_reva_regs_t* i2s, uint32_t smpl_rate, mxc_i2s_wsize_t smpl_sz, uint32_t src_clk);
+int MXC_I2S_RevA_SetSampleRate(mxc_i2s_reva_regs_t* i2s, uint32_t smpl_rate,
+                               mxc_i2s_wsize_t smpl_sz, uint32_t src_clk);
 
 int MXC_I2S_RevA_GetSampleRate(mxc_i2s_reva_regs_t* i2s, uint32_t src_clk);
 
-int MXC_I2S_RevA_CalculateClockDiv(
-    mxc_i2s_reva_regs_t* i2s, uint32_t smpl_rate, mxc_i2s_wsize_t smpl_sz, uint32_t src_clk);
+int MXC_I2S_RevA_CalculateClockDiv(mxc_i2s_reva_regs_t* i2s, uint32_t smpl_rate,
+                                   mxc_i2s_wsize_t smpl_sz, uint32_t src_clk);
 
 void MXC_I2S_RevA_Flush(mxc_i2s_reva_regs_t* i2s);
 
-int MXC_I2S_RevA_FillTXFIFO(
-    mxc_i2s_reva_regs_t* i2s, void* txData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt);
+int MXC_I2S_RevA_FillTXFIFO(mxc_i2s_reva_regs_t* i2s, void* txData, mxc_i2s_wsize_t wordSize,
+                            int len, int smpl_cnt);
 
-int MXC_I2S_RevA_ReadRXFIFO(
-    mxc_i2s_reva_regs_t* i2s, void* rxData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt);
+int MXC_I2S_RevA_ReadRXFIFO(mxc_i2s_reva_regs_t* i2s, void* rxData, mxc_i2s_wsize_t wordSize,
+                            int len, int smpl_cnt);
 
 void MXC_I2S_RevA_EnableInt(mxc_i2s_reva_regs_t* i2s, uint32_t flags);
 

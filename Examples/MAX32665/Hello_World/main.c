@@ -39,12 +39,12 @@
  */
 
 /***** Includes *****/
-#include "board.h"
-#include "led.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "led.h"
+#include "board.h"
+#include "mxc_delay.h"
 
 /***** Definitions *****/
 

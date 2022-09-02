@@ -44,10 +44,10 @@
 #define _PT_H_
 
 /* **** Includes **** */
+#include "ptg_regs.h"
+#include "pt_regs.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "pt_regs.h"
-#include "ptg_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,15 +66,14 @@ extern "C" {
  */
 typedef struct {
     unsigned channel; /**< PT Channel to use */
-    uint32_t bps; /**< pulse train bit rate */
+    uint32_t bps;     /**< pulse train bit rate */
     uint32_t pattern; /**< Output pattern to shift out, starts at LSB */
     uint8_t
         ptLength; /**< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ... */
-    uint16_t loop; /**< Number of times to repeat the train, 0 = continuous */
+    uint16_t loop;      /**< Number of times to repeat the train, 0 = continuous */
     uint16_t loopDelay; /**< Delay between loops specified in multiples of bps */
-    uint8_t outputSelect; /**< Select 0 or 1. See pins_me10.c for the pin selection for each
-                             channel. Note: not all selections valid depending on package type (See
-                             UG section 5.2). */
+    uint8_t
+        outputSelect; /**< Select 0 or 1. See pins_me10.c for the pin selection for each channel. Note: not all selections valid depending on package type (See UG section 5.2). */
 } mxc_pt_cfg_t;
 
 /**
@@ -101,8 +100,7 @@ void MXC_PT_Init(mxc_ptg_regs_t* ptg, mxc_clk_scale_t clk_scale);
 
 /**
  * @brief      Shutdown the pulse train channel/channels.
- * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train
- * clock.
+ * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train clock.
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      ptg    Pointer to pulse train global bus to use.
@@ -136,19 +134,18 @@ int MXC_PT_Config(mxc_ptg_regs_t* ptg, mxc_pt_cfg_t* cfg);
  * @param   ptg             Pointer to pulse train global bus to use.
  * @param   channel         Pulse train channel to operate on
  * @param   freq            Square wave output frequency in Hz
- * @param   outputSelect    Select the output to route the pulse train channel to. 0 for output 0,
- * non-zero for output 1.
+ * @param   outputSelect    Select the output to route the pulse train channel to. 0 for output 0, non-zero for output 1.
  *
  * @returns #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_PT_SqrWaveConfig(
-    mxc_ptg_regs_t* ptg, unsigned channel, uint32_t freq, uint8_t outputSelect);
+int MXC_PT_SqrWaveConfig(mxc_ptg_regs_t* ptg, unsigned channel, uint32_t freq,
+                         uint8_t outputSelect);
 
 /**
  * @brief   Starts the pulse train specified.
  *
  * @param   ptg   Pointer to pulse train global bus to use.
- * @param   pts   Pulse train pts to start. Set the bits of pulse
+ * @param   pts   Pulse train pts to start. Set the bits of pulse 
  *                trains to check Bit0-\>pt0, Bit1-\>pt1... etc.
  */
 void MXC_PT_Start(mxc_ptg_regs_t* ptg, unsigned pts);
@@ -157,7 +154,7 @@ void MXC_PT_Start(mxc_ptg_regs_t* ptg, unsigned pts);
  * @brief   Stops a pulse train.
  *
  * @param   ptg   Pointer to pulse train global bus to use.
- * @param   pts   Pulse train pts to stop. Set the bits of pulse
+ * @param   pts   Pulse train pts to stop. Set the bits of pulse 
  *                trains to check Bit0-\>pt0, Bit1-\>pt1... etc.
  */
 void MXC_PT_Stop(mxc_ptg_regs_t* ptg, unsigned pts);

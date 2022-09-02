@@ -39,18 +39,18 @@
  *
  *************************************************************************** */
 
-#include "dma.h"
-#include "i2s.h"
-#include "i2s_regs.h"
-#include "i2s_reva.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "dma.h"
+#include "i2s.h"
+#include "i2s_reva.h"
+#include "i2s_regs.h"
 
 int MXC_I2S_Init(mxc_i2s_req_t* req)
 {
@@ -125,8 +125,8 @@ int MXC_I2S_GetSampleRate(uint32_t i2s_clk)
 
 int MXC_I2S_CalculateClockDiv(uint32_t smpl_rate, mxc_i2s_wsize_t smpl_sz, uint32_t i2s_clk)
 {
-    return MXC_I2S_RevA_CalculateClockDiv(
-        (mxc_i2s_reva_regs_t*)MXC_I2S, smpl_rate, smpl_sz, i2s_clk);
+    return MXC_I2S_RevA_CalculateClockDiv((mxc_i2s_reva_regs_t*)MXC_I2S, smpl_rate, smpl_sz,
+                                          i2s_clk);
 }
 
 void MXC_I2S_Flush(void)

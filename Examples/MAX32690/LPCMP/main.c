@@ -38,18 +38,18 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
+#include "mxc_delay.h"
+#include "mxc_errors.h"
+#include "mxc_pins.h"
+#include "nvic_table.h"
 #include "adc.h"
 #include "dma.h"
 #include "gpio.h"
 #include "led.h"
 #include "lp.h"
-#include "mxc_delay.h"
-#include "mxc_errors.h"
-#include "mxc_pins.h"
-#include "nvic_table.h"
 #include "pb.h"
 #include "tmr.h"
 #include "uart.h"
@@ -75,7 +75,8 @@ int main(void)
     printf("comparator output to wakeup.\n\n");
 
     printf("Press SW2 to begin.\n");
-    while (!PB_Get(0)) { }
+    while (!PB_Get(0))
+        ;
 
     // Enable comparator 0
     MXC_LP_EnableLPCMPWakeup(MXC_LPCMP_CMP0);
@@ -88,7 +89,8 @@ int main(void)
 
     while (1) {
         printf("\nEntering sleep mode.\n");
-        while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) { }
+        while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)))
+            ;
         MXC_LP_EnterSleepMode();
         printf("Waking up.\n");
     }

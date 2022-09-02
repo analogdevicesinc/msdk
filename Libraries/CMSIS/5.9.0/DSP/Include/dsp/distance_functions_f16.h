@@ -26,8 +26,8 @@
 #ifndef _DISTANCE_FUNCTIONS_F16_H_
 #define _DISTANCE_FUNCTIONS_F16_H_
 
-#include "arm_math_memory.h"
 #include "arm_math_types_f16.h"
+#include "arm_math_memory.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
@@ -38,8 +38,8 @@
 __attribute__((weak)) float __powisf2(float a, int b);
 #endif
 
-#include "dsp/basic_math_functions_f16.h"
 #include "dsp/statistics_functions_f16.h"
+#include "dsp/basic_math_functions_f16.h"
 
 #include "dsp/fast_math_functions_f16.h"
 
@@ -150,8 +150,8 @@ float16_t arm_cosine_distance_f16(const float16_t* pA, const float16_t* pB, uint
  *
  */
 
-float16_t arm_jensenshannon_distance_f16(
-    const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_jensenshannon_distance_f16(const float16_t* pA, const float16_t* pB,
+                                         uint32_t blockSize);
 
 /**
  * @brief        Minkowski distance between two vectors
@@ -164,8 +164,8 @@ float16_t arm_jensenshannon_distance_f16(
  *
  */
 
-float16_t arm_minkowski_distance_f16(
-    const float16_t* pA, const float16_t* pB, int32_t order, uint32_t blockSize);
+float16_t arm_minkowski_distance_f16(const float16_t* pA, const float16_t* pB, int32_t order,
+                                     uint32_t blockSize);
 
 #endif /*defined(ARM_FLOAT16_SUPPORTED)*/
 #ifdef __cplusplus

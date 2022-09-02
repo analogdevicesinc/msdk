@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -34,8 +34,8 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "camera.h"
 #include "utils.h"
@@ -95,7 +95,7 @@ static void process_img(void)
     for (; symbol; symbol = zbar_symbol_next(symbol)) {
         /* do something useful with results */
         zbar_symbol_type_t typ = zbar_symbol_get_type(symbol);
-        const char* data = zbar_symbol_get_data(symbol);
+        const char* data       = zbar_symbol_get_data(symbol);
         printf("decoded %s symbol \"%s\"\n", zbar_get_symbol_name(typ), data);
         is_barcode_find = 1;
     }
@@ -156,5 +156,5 @@ void app_loop_endless(void)
         }
     }
 
-    // zbar_image_scanner_destroy(image_scanner);
+    //zbar_image_scanner_destroy(image_scanner);
 }

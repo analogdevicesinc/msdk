@@ -39,8 +39,8 @@
 #ifndef _TFT_H_
 #define _TFT_H_
 
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "touchscreen.h"
 

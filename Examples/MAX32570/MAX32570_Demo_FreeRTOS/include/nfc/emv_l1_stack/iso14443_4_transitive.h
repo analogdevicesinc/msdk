@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -63,9 +63,8 @@ void seqnuminit(void);
  * Primary interface to EMV Level 2 Stack
  *
  * Transmit and Receive APDU to and from a PICC (Card).
- * Implements [EMV Book D: Contactless Communication
- * Protocol](https://www.emvco.com/specifications.aspx?id=21) chapter "10 Half-Duplex Block
- * Transmission Protocol"
+ * Implements [EMV Book D: Contactless Communication Protocol](https://www.emvco.com/specifications.aspx?id=21)
+ * chapter "10 Half-Duplex Block Transmission Protocol"
  *
  * @param[in] capdu             data buffer to send to Card (up to 256 bytes)
  * @param[in] capdu_len         number of bytes in buffer to send to Card

@@ -39,15 +39,13 @@
 #ifndef __CNN_H__
 #define __CNN_H__
 
-#include "gpio.h"
 #include <stdint.h>
-
 typedef int32_t q31_t;
 typedef int16_t q15_t;
 
 /* Return codes */
 #define CNN_FAIL 0
-#define CNN_OK 1
+#define CNN_OK   1
 
 /*
   SUMMARY OF OPS
@@ -65,9 +63,9 @@ typedef int16_t q15_t;
 #define CNN_INFERENCE_TIMER MXC_TMR0
 
 /* Port pin actions used to signal that processing is active */
-#define CNN_START LED_On(1)
+#define CNN_START    LED_On(1)
 #define CNN_COMPLETE LED_Off(1)
-#define SYS_START LED_On(0)
+#define SYS_START    LED_On(0)
 #define SYS_COMPLETE LED_Off(0)
 
 /* Unload data from accelerator and run software SoftMax */

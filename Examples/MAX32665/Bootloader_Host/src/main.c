@@ -39,13 +39,13 @@
  */
 
 /*******************************      INCLUDES    ****************************/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
-#include "board.h"
+#include "terminal.h"
 #include "bootloader.h"
 #include "platform.h"
-#include "terminal.h"
+#include "board.h"
 
 #include "test_images.h"
 
@@ -62,8 +62,8 @@ static int select_interface(const char* parentName)
     int ret;
 
     list_t list[] = {
-        { "I2C", NULL },
-        { "SPI", NULL },
+        {"I2C", NULL},
+        {"SPI", NULL},
     };
 
     while (1) {
@@ -120,20 +120,20 @@ static int update_fw_devkey_MAX32670_blinkled_P0_23(const char* parentName)
 
 /******************************* Public Functions ****************************/
 static list_t list[] = {
-    { "Select Interface", select_interface },
-    { "Bootloader Test Menu", bootloader_menu },
-    { "Load MSBL: Non-secure MAX32660 blinkled fast P0.13",
-        update_fw_nonsecure_MAX32660_blinkled_fast_P0_13 },
-    { "Load MSBL: Non-secure MAX32660 blinkled slow P0.13",
-        update_fw_nonsecure_MAX32660_blinkled_slow_P0_13 },
-    { "Load MSBL: MAX32660 blinkled fast P0.13 (development key)",
-        update_fw_devkey_MAX32660_blinkled_fast_P0_13 },
-    { "Load MSBL: MAX32660 blinkled slow P0.13 (development key)",
-        update_fw_devkey_MAX32660_blinkled_slow_P0_13 },
-    { "Load MSBL: MAX32670 blinkled P0.22 (development key)",
-        update_fw_devkey_MAX32670_blinkled_P0_22 },
-    { "Load MSBL: MAX32670 blinkled P0.23 (development key)",
-        update_fw_devkey_MAX32670_blinkled_P0_23 },
+    {"Select Interface", select_interface},
+    {"Bootloader Test Menu", bootloader_menu},
+    {"Load MSBL: Non-secure MAX32660 blinkled fast P0.13",
+     update_fw_nonsecure_MAX32660_blinkled_fast_P0_13},
+    {"Load MSBL: Non-secure MAX32660 blinkled slow P0.13",
+     update_fw_nonsecure_MAX32660_blinkled_slow_P0_13},
+    {"Load MSBL: MAX32660 blinkled fast P0.13 (development key)",
+     update_fw_devkey_MAX32660_blinkled_fast_P0_13},
+    {"Load MSBL: MAX32660 blinkled slow P0.13 (development key)",
+     update_fw_devkey_MAX32660_blinkled_slow_P0_13},
+    {"Load MSBL: MAX32670 blinkled P0.22 (development key)",
+     update_fw_devkey_MAX32670_blinkled_P0_22},
+    {"Load MSBL: MAX32670 blinkled P0.23 (development key)",
+     update_fw_devkey_MAX32670_blinkled_P0_23},
 };
 
 int main(void)
@@ -142,8 +142,7 @@ int main(void)
     plt_spi_init();
     plt_gpio_init();
 
-    // Initialize terminal uart after SPI initialization because some pins (P0.20, P0.21) are
-    // overlaps
+    // Initialize terminal uart after SPI initialization because some pins (P0.20, P0.21) are overlaps
     terminal_init();
     terminal_printf("\r\n***********Bootloader Host Example***********\r\n");
     terminal_printf("The purpose of this example is:\r\n");
@@ -171,13 +170,15 @@ int main(void)
 
     bl_conf_struct_t plt;
 
-    plt.read = plt_i2c_read;
-    plt.write = plt_i2c_write;
+    plt.read     = plt_i2c_read;
+    plt.write    = plt_i2c_write;
     plt.gpio_set = plt_gpio_set;
     plt.delay_ms = plt_delay_ms;
-    plt.printf = terminal_printf;
+    plt.printf   = terminal_printf;
 
     bl_init(&plt);
 
-    while (1) { terminal_select_from_list("Main Menu", list, sizeof(list) / sizeof(list[0]), 1); }
+    while (1) {
+        terminal_select_from_list("Main Menu", list, sizeof(list) / sizeof(list[0]), 1);
+    }
 }

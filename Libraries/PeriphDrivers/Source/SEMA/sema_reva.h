@@ -31,9 +31,9 @@
  *
  **************************************************************************** */
 
-#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "sema.h"
 #include "sema_reva_regs.h"
@@ -50,9 +50,9 @@ void MXC_SEMA_RevA_FreeSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema);
 int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t* sema_regs, uint8_t* data, unsigned len);
 int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t* sema_regs, const uint8_t* data, unsigned len);
 
-int MXC_SEMA_RevA_WriteBoxAsync(
-    mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb, const uint8_t* data, unsigned len);
-int MXC_SEMA_RevA_ReadBoxAsync(
-    mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb, uint8_t* data, unsigned len);
+int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb,
+                                const uint8_t* data, unsigned len);
+int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb,
+                               uint8_t* data, unsigned len);
 
 int MXC_SEMA_RevA_Handler(mxc_sema_reva_regs_t* sema_regs);

@@ -62,8 +62,8 @@ extern "C" {
 /** <b>USIP&reg; AES Interface definition </b>.
  *  @ingroup UCL_UAES */
 struct usip_aes {
-    int (*setkey)(const u8* key); /**< Set key */
-    int (*dkeygen)(void); /**< Generate decryption key */
+    int (*setkey)(const u8* key);            /**< Set key */
+    int (*dkeygen)(void);                    /**< Generate decryption key */
     int (*decrypt)(u8* dataOut, u8* dataIn); /**< Decryption */
     int (*encrypt)(u8* dataOut, u8* dataIn); /**< Encryption */
 };

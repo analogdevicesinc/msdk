@@ -61,39 +61,39 @@ extern "C" {
  * @brief Wakeup Timer prescaler values
  */
 typedef enum {
-    MXC_WUT_PRES_1 = MXC_S_WUT_CTRL_PRES_DIV1, /// Divide input clock by 1
-    MXC_WUT_PRES_2 = MXC_S_WUT_CTRL_PRES_DIV2, /// Divide input clock by 2
-    MXC_WUT_PRES_4 = MXC_S_WUT_CTRL_PRES_DIV4, /// Divide input clock by 4
-    MXC_WUT_PRES_8 = MXC_S_WUT_CTRL_PRES_DIV8, /// Divide input clock by 8
-    MXC_WUT_PRES_16 = MXC_S_WUT_CTRL_PRES_DIV16, /// Divide input clock by 16
-    MXC_WUT_PRES_32 = MXC_S_WUT_CTRL_PRES_DIV32, /// Divide input clock by 32
-    MXC_WUT_PRES_64 = MXC_S_WUT_CTRL_PRES_DIV64, /// Divide input clock by 64
+    MXC_WUT_PRES_1   = MXC_S_WUT_CTRL_PRES_DIV1,   /// Divide input clock by 1
+    MXC_WUT_PRES_2   = MXC_S_WUT_CTRL_PRES_DIV2,   /// Divide input clock by 2
+    MXC_WUT_PRES_4   = MXC_S_WUT_CTRL_PRES_DIV4,   /// Divide input clock by 4
+    MXC_WUT_PRES_8   = MXC_S_WUT_CTRL_PRES_DIV8,   /// Divide input clock by 8
+    MXC_WUT_PRES_16  = MXC_S_WUT_CTRL_PRES_DIV16,  /// Divide input clock by 16
+    MXC_WUT_PRES_32  = MXC_S_WUT_CTRL_PRES_DIV32,  /// Divide input clock by 32
+    MXC_WUT_PRES_64  = MXC_S_WUT_CTRL_PRES_DIV64,  /// Divide input clock by 64
     MXC_WUT_PRES_128 = MXC_S_WUT_CTRL_PRES_DIV128, /// Divide input clock by 128
-    MXC_WUT_PRES_256
-    = MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV1, /// Divide input clock by 256
-    MXC_WUT_PRES_512
-    = MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV2, /// Divide input clock by 512
-    MXC_WUT_PRES_1024
-    = MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV4, /// Divide input clock by 1024
-    MXC_WUT_PRES_2048
-    = MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV8, /// Divide input clock by 2048
-    MXC_WUT_PRES_4096
-    = MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV16 /// Divide input clock by 4096
+    MXC_WUT_PRES_256 =
+        MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV1, /// Divide input clock by 256
+    MXC_WUT_PRES_512 =
+        MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV2, /// Divide input clock by 512
+    MXC_WUT_PRES_1024 =
+        MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV4, /// Divide input clock by 1024
+    MXC_WUT_PRES_2048 =
+        MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV8, /// Divide input clock by 2048
+    MXC_WUT_PRES_4096 =
+        MXC_F_WUT_CTRL_PRES3 | MXC_S_WUT_CTRL_PRES_DIV16 /// Divide input clock by 4096
 } mxc_wut_pres_t;
 
 /**
  * @brief Wakeup Timer modes
  */
 typedef enum {
-    MXC_WUT_MODE_ONESHOT = MXC_V_WUT_CTRL_TMODE_ONESHOT, /// Wakeup Timer Mode ONESHOT
+    MXC_WUT_MODE_ONESHOT    = MXC_V_WUT_CTRL_TMODE_ONESHOT,    /// Wakeup Timer Mode ONESHOT
     MXC_WUT_MODE_CONTINUOUS = MXC_V_WUT_CTRL_TMODE_CONTINUOUS, /// Wakeup Timer Mode CONTINUOUS
-    MXC_WUT_MODE_COUNTER = MXC_V_WUT_CTRL_TMODE_COUNTER, /// Wakeup Timer Mode COUNTER
-    MXC_WUT_MODE_PWM = MXC_V_WUT_CTRL_TMODE_PWM, /// Wakeup Timer Mode PWM
-    MXC_WUT_MODE_CAPTURE = MXC_V_WUT_CTRL_TMODE_CAPTURE, /// Wakeup Timer Mode CAPTURE
-    MXC_WUT_MODE_COMPARE = MXC_V_WUT_CTRL_TMODE_COMPARE, /// Wakeup Timer Mode COMPARE
-    MXC_WUT_MODE_GATED = MXC_V_WUT_CTRL_TMODE_GATED, /// Wakeup Timer Mode GATED
-    MXC_WUT_MODE_CAPTURE_COMPARE
-    = MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE /// Wakeup Timer Mode CAPTURECOMPARE
+    MXC_WUT_MODE_COUNTER    = MXC_V_WUT_CTRL_TMODE_COUNTER,    /// Wakeup Timer Mode COUNTER
+    MXC_WUT_MODE_PWM        = MXC_V_WUT_CTRL_TMODE_PWM,        /// Wakeup Timer Mode PWM
+    MXC_WUT_MODE_CAPTURE    = MXC_V_WUT_CTRL_TMODE_CAPTURE,    /// Wakeup Timer Mode CAPTURE
+    MXC_WUT_MODE_COMPARE    = MXC_V_WUT_CTRL_TMODE_COMPARE,    /// Wakeup Timer Mode COMPARE
+    MXC_WUT_MODE_GATED      = MXC_V_WUT_CTRL_TMODE_GATED,      /// Wakeup Timer Mode GATED
+    MXC_WUT_MODE_CAPTURE_COMPARE =
+        MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE /// Wakeup Timer Mode CAPTURECOMPARE
 } mxc_wut_mode_t;
 
 /**
@@ -101,9 +101,9 @@ typedef enum {
  */
 typedef enum {
     MXC_WUT_UNIT_NANOSEC = 0, /**< Nanosecond Unit Indicator. */
-    MXC_WUT_UNIT_MICROSEC, /**< Microsecond Unit Indicator. */
-    MXC_WUT_UNIT_MILLISEC, /**< Millisecond Unit Indicator. */
-    MXC_WUT_UNIT_SEC /**< Second Unit Indicator. */
+    MXC_WUT_UNIT_MICROSEC,    /**< Microsecond Unit Indicator. */
+    MXC_WUT_UNIT_MILLISEC,    /**< Millisecond Unit Indicator. */
+    MXC_WUT_UNIT_SEC          /**< Second Unit Indicator. */
 } mxc_wut_unit_t;
 
 /**
@@ -111,7 +111,7 @@ typedef enum {
  */
 typedef struct {
     mxc_wut_mode_t mode; /// Desired timer mode
-    uint32_t cmp_cnt; /// Compare register value in timer ticks
+    uint32_t cmp_cnt;    /// Compare register value in timer ticks
 } mxc_wut_cfg_t;
 
 /**

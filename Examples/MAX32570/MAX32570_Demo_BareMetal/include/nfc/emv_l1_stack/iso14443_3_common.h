@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -61,8 +61,8 @@ extern "C" {
  *
  */
 
-#include "mml_nfc_pcd_rf_driver.h"
 #include <stdint.h>
+#include "mml_nfc_pcd_rf_driver.h"
 
 /** @defgroup NFC_PCD_EMV_LVL1_STACK_VER_HIST EMV L1 Stack Version History
  *
@@ -110,12 +110,11 @@ extern "C" {
  *
  * @par 2.1.0 - 08/23/2018
  *  - Significant throughput performance enhancements, now utilizes the new `delay_till_send`
- *      parameter of the @ref mml_nfc_pcd_transceive to time each packet to transmit.  This allows
- * upper stack PCD processing during the inter-packet delay with minimal increases in inter-packet
+ *      parameter of the @ref mml_nfc_pcd_transceive to time each packet to transmit.  This allows upper
+ *      stack PCD processing during the inter-packet delay with minimal increases in inter-packet
  *      latency.
  *  - New function @ref nfc_set_delay_till_next_send_fc may be used to set `delay_till_send` for the
- *      immediately following transceive.  After every transceive it is reset to @ref
- * ISO14443_FDT_MIN
+ *      immediately following transceive.  After every transceive it is reset to @ref ISO14443_FDT_MIN
  *  - Renamed `nfc_delay_ms` to `nfc_yield_ms` to better represent its actual behavior.
  *  - Renamed `nfc_delay_us` to `nfc_block_for_us` to better represent its actual behavior.
  *  - @ref nfc_pcd_reset_wait added for better precision of reset timing
@@ -180,113 +179,110 @@ extern "C" {
  */
 
 /**
- * @defgroup NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES ERROR_CODES
- *
- * EMV Level 1 Error Codes from library routines
- *
- * @{
- */
+  * @defgroup NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES ERROR_CODES
+  *
+  * EMV Level 1 Error Codes from library routines
+  *
+  * @{
+  */
 #define ISO14443_3_ERR_SUCCESS (0x0000) /**< No Errors, Success */
-// Command error
+//Command error
 
-#define ISO14443_3_ERR_TIMEOUT (0x0001) /**< Transmit or Receive operation timeout */
+#define ISO14443_3_ERR_TIMEOUT      (0x0001) /**< Transmit or Receive operation timeout */
 #define ISO14443_3_ERR_TRANSMISSION (0x0005) /**< Error during transmission */
 
-// Flow error
+//Flow error
 #define ISO14443_3_ERR_CMD (0x0020) /**< Cmd execute error */
 #define ISO14443_3_ERR_SEQ (0x0021) /**< Flow sequence error */
 
-#define ISO14443_3_ERR_PROTOCOL (0x0022) /**< Protocol error */
-#define ISO14443_3_ERR_COLLISION (0x0023) /**< Data Collision */
-#define ISO14443_3_ERR_EARLY_RESPONSE (0x0024) /**< Response from Card came too soon */
+#define ISO14443_3_ERR_PROTOCOL            (0x0022) /**< Protocol error */
+#define ISO14443_3_ERR_COLLISION           (0x0023) /**< Data Collision */
+#define ISO14443_3_ERR_EARLY_RESPONSE      (0x0024) /**< Response from Card came too soon */
 #define ISO14443_3_ERR_NON_ISO14443_4_CARD (0x0025) /**< Non ISO14443 Card type detected */
-#define ISO14443_3_ERR_CONTAINS_HIGH_INF                                                           \
+#define ISO14443_3_ERR_CONTAINS_HIGH_INF \
     (0x0026) /**< ATTRIB Response received with HIGH INF set (Not allowed by EMV) */
-#define ISO14443_3_ERR_ABORTED                                                                     \
+#define ISO14443_3_ERR_ABORTED \
     (0x0027) /**< Current transaction has been aborted by application request */
 
 #define ISO14443_3_ERR_OTHER (0x00ff) /**< Other, unspecified error */
-/** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES */
+/** @} */                             /* End of @defgroup NFC_PCD_EMV_LVL1_DRIVER_ERROR_CODES */
 
 /**
- * @defgroup NFC_PCD_EMV_LVL1_DRIVER_STD_VALUES STANDARD CONSTANTS
- *
- * EMV L1 (ISO14443) Constants
- *
- * @{
- */
+  * @defgroup NFC_PCD_EMV_LVL1_DRIVER_STD_VALUES STANDARD CONSTANTS
+  *
+  * EMV L1 (ISO14443) Constants
+  *
+  * @{
+  */
 #define FSDI_DEFAULT_VALUE (8) /**< FSDI nominal value */
 
 #define FSCI_DEFAULT_VALUE (2) /**< FSCI nominal value */
-#define FSCI_MAX_VALUE (8) /**< FSCI maximum value */
+#define FSCI_MAX_VALUE     (8) /**< FSCI maximum value */
 
-#define FWI_DEFAULT_VALUE (4) /**< FWI nominal value */
-#define FWI_MAX_VALUE (14) /**< FWI maximum value */
+#define FWI_DEFAULT_VALUE (4)  /**< FWI nominal value */
+#define FWI_MAX_VALUE     (14) /**< FWI maximum value */
 
-#define SFGI_DEFAULT_VALUE (0) /**< SFGI nominal value */
-#define SFGI_MAX_VALUE (14) /**< SFGI maximum value */
+#define SFGI_DEFAULT_VALUE (0)  /**< SFGI nominal value */
+#define SFGI_MAX_VALUE     (14) /**< SFGI maximum value */
 
 #define WAKEUP_NOTRETRY 0 /**< value for NO retry on Wake */
-#define WAKEUP_DORETRY 1 /**< value for retry on Wake */
+#define WAKEUP_DORETRY  1 /**< value for retry on Wake */
 
-#define TPDELAY_US 5100 /**< TP (Pause) time in microseconds, 5.1~10ms per spec */
+#define TPDELAY_US    5100              /**< TP (Pause) time in microseconds, 5.1~10ms per spec */
 #define TPDELAY_IN_FC US2FC(TPDELAY_US) /**< TP (Pause) Delay of 5.1ms per spec in fc */
 
 #define TRESET_US 5100 /**< Reset time in microseconds, 5.1~10ms per spec */
 
 #define TMIN_RETRANSMISSION_US 3000 /**< New for EMV 2.6b Minimum retransmission time FDT in us */
-#define TMIN_RETRANSMISSION_FC                                                                     \
+#define TMIN_RETRANSMISSION_FC \
     US2FC(TMIN_RETRANSMISSION_US) /**< New for EMV 2.6b Minimum retransmission time FDT in fc */
 
 #define PROTOCOL_DISREGARD_BITS 0xF1 /**< Mask off bits b4-b2 per 6.3.2.10 */
 
 // time unit all fc
 #define ISO14443_FWT_MAX 67108864UL /**< maximum FWT = 4096 x 2^14 */
-#define ISO14443_FWT_DEFAULT                                                                       \
+#define ISO14443_FWT_DEFAULT \
     114688 /**< nominal FWT in 'fc' units =FWTmax+ AFWT = 4096 * 2^4  + 49152 = 114688 */
 #define ISO14443_FWT_DELTA 49152 /**< delta FWT, use for attrib & apdu */
 
-#define ISO14443_FDT_A_EXTRA_MARGIN                                                                \
-    16 /**< Provide a bit of allowed margin on reception timing.  Relaxes early limit, and         \
-          timeout.  Units are fc */
-#define ISO14443_FDT_A_PICC_MIN                                                                    \
-    (1172) /**< Time when PICC is to respond during activation to PCD command. EMV spec 4.21.      \
-              @note we don't care about last bit value, timestamp happens the same regardless. */
-#define ISO14443_FDT_A_EARLY_LIMIT                                                                 \
-    (ISO14443_FDT_A_PICC_MIN - 128) /**< Defines the Deaf Time before which any response from PICC \
-                                       is ignored.  EMV spec 4.8.1.3 as FDTa,picc,min - 128fc */
-#define ISO14443_FWT_A_ACT                                                                         \
-    (ISO14443_FDT_A_PICC_MIN + 1 + 6) /**< FWT max during activation = FDTa,picc,min + 1fc + .4us  \
-                                         (5.424fc, round up to 6) */
+#define ISO14443_FDT_A_EXTRA_MARGIN \
+    16 /**< Provide a bit of allowed margin on reception timing.  Relaxes early limit, and timeout.  Units are fc */
+#define ISO14443_FDT_A_PICC_MIN \
+    (1172) /**< Time when PICC is to respond during activation to PCD command. EMV spec 4.21.  @note we don't care about last bit value, timestamp happens the same regardless. */
+#define ISO14443_FDT_A_EARLY_LIMIT \
+    (ISO14443_FDT_A_PICC_MIN -     \
+     128) /**< Defines the Deaf Time before which any response from PICC is ignored.  EMV spec 4.8.1.3 as FDTa,picc,min - 128fc */
+#define ISO14443_FWT_A_ACT         \
+    (ISO14443_FDT_A_PICC_MIN + 1 + \
+     6) /**< FWT max during activation = FDTa,picc,min + 1fc + .4us (5.424fc, round up to 6) */
 
-#define ISO14443_FDT_B_EXTRA_MARGIN                                                                \
-    0 /**< Provide a bit of allowed margin on reception timing.  Relaxes early limit, and timeout. \
-         Units are fc */
-#define ISO14443_FDT_B_PICC_MIN                                                                    \
-    (1008 + 1264) /**< FDTmin Type B, defines the deaf time: TR0min (1008fc) + TR1min (1264fc) =>  \
-                     1008+1264 = 2272 */
+#define ISO14443_FDT_B_EXTRA_MARGIN \
+    0 /**< Provide a bit of allowed margin on reception timing.  Relaxes early limit, and timeout.  Units are fc */
+#define ISO14443_FDT_B_PICC_MIN \
+    (1008 +                     \
+     1264) /**< FDTmin Type B, defines the deaf time: TR0min (1008fc) + TR1min (1264fc) => 1008+1264 = 2272 */
 #define ISO14443_FWT_ATQB (7680) /**< typeB FWT */
 
 // TODO: Probably need a new include file for vicinity maybe ISO as well
 // TODO: timing values for vicinity need more work as well
-#define ISO15693_FDT_VICC_MIN (3320) /**< FDTmin Type V, */
+#define ISO15693_FDT_VICC_MIN   (3320) /**< FDTmin Type V, */
 #define ISO15693_FWT_ACTIVATION (8800) /**< FWTmax Type V, */
 
 #define ISO14443_FWT_ACTIVATION (71680) /**< typeA FWT during activation */
-#define ISO14443_FDT_MIN                                                                           \
+#define ISO14443_FDT_MIN \
     (6780) /**< minimum FDT in 'fc' units, (frame delay time) between PICC and pcd new command */
 
 // This is added to long timings in excess of 100,000
 #define CRYSTAL_PPM_MARGIN_MULTIPLIER 20
-#define CRYSTAL_PPM_MARGIN_DIVISOR 1000000
+#define CRYSTAL_PPM_MARGIN_DIVISOR    1000000
 
-#define ISO14443_FDT_MIN_US                                                                        \
-    FC2US(ISO14443_FDT_MIN) /**< minimum FDT in microseconds, (frame delay time) between PICC and  \
-                               pcd new command */
-/** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_DRIVER_STD_VALUES */
+#define ISO14443_FDT_MIN_US \
+    FC2US(                  \
+        ISO14443_FDT_MIN) /**< minimum FDT in microseconds, (frame delay time) between PICC and pcd new command */
+/** @} */                 /* End of @defgroup NFC_PCD_EMV_LVL1_DRIVER_STD_VALUES */
 
 /* Defines *********************************************************************/
-#define MAX_BUFFER_LEN 511 /**< Max length of @ref gcommonbuffer */
+#define MAX_BUFFER_LEN 511      /**< Max length of @ref gcommonbuffer */
 extern uint8_t gcommonbuffer[]; /**< Buffer used by all internal routines */
 /**
  * @brief GetCommonBuffer
@@ -414,8 +410,7 @@ void poweroff_operatingfield(void);
  * Perform an NFC reset action to cause PICCs to reset.
  * Turns off the 13.56Mhz field, waits 5 mSec, turns the field back on and waits another 5 mSec
  *
- * @note The field is on and the PICC should be reset and ready to communicate after this routine
- * returns
+ * @note The field is on and the PICC should be reset and ready to communicate after this routine returns
  * @return Always returns 0
  */
 int32_t nfc_reset(void);
@@ -425,8 +420,7 @@ int32_t nfc_reset(void);
  *
  * prints data in a hex format according to the debug level
  *
- * @param[in] dbg_level Debug level indicating level of debug output needed for this to be printed
- * out
+ * @param[in] dbg_level Debug level indicating level of debug output needed for this to be printed out
  * @param[in] buf       Buffer with data to print out
  * @param[in] len       Length of data to print out
  * @param[in] send      Binary value: 1 means data send out, 0 is incoming data
@@ -463,7 +457,7 @@ void hexdump(int32_t dbg_level, uint8_t* buf, int32_t len, int32_t send);
  * @retval #ISO14443_3_ERR_OTHER            All other types of error
  */
 int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t* tx_buf, uint32_t tx_len,
-    uint8_t* rx_buf, uint32_t* rx_len, uint32_t timeout);
+                           uint8_t* rx_buf, uint32_t* rx_len, uint32_t timeout);
 /** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_STACK */
 /** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_COMMON */
 

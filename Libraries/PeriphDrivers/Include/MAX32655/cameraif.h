@@ -44,8 +44,8 @@
 #define _CAMERAIF_H_
 
 /* **** Includes **** */
-#include "cameraif_regs.h"
 #include "mxc_device.h"
+#include "cameraif_regs.h"
 
 #ifdef __cplusplus
 extern "C" {

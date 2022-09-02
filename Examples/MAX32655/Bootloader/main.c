@@ -38,17 +38,17 @@
  */
 
 /***** Includes *****/
-#include "Ext_Flash.h"
-#include "board.h"
-#include "flc.h"
-#include "led.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "pb.h"
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
+#include "mxc_device.h"
+#include "led.h"
+#include "pb.h"
+#include "board.h"
+#include "mxc_delay.h"
+#include "flc.h"
+#include "Ext_Flash.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -57,14 +57,15 @@
 extern uint32_t _flash0;
 extern uint32_t _flash1;
 
-#define FLASH0_START ((uint32_t)&_flash0)
-#define FLASH1_START ((uint32_t)&_flash1)
-#define FLASH_ERASED_WORD 0xFFFFFFFF
-#define CRC32_LEN 4
+#define FLASH0_START         ((uint32_t)&_flash0)
+#define FLASH1_START         ((uint32_t)&_flash1)
+#define FLASH_ERASED_WORD    0xFFFFFFFF
+#define CRC32_LEN            4
 #define EXT_FLASH_BLOCK_SIZE 224
 
-#define DELAY(loopCount)                                                                           \
-    for (i = 0; i < loopCount; i++) { }
+#define DELAY(loopCount)              \
+    for (i = 0; i < loopCount; i++) { \
+    }
 
 /**************************************************************************************************
   Local Variables
@@ -114,7 +115,8 @@ void ledFailPattern(void)
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j)
+        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -129,11 +131,12 @@ uint32_t crc32_for_byte(uint32_t r)
  *  \return None.
  */
 /*************************************************************************************************/
-static uint32_t table[0x100] = { 0 };
+static uint32_t table[0x100] = {0};
 void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 {
     if (!*table)
-        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i)
+            table[i] = crc32_for_byte(i);
     for (size_t i = 0; i < n_bytes; ++i)
         *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
 }
@@ -180,7 +183,8 @@ uint32_t findUpperLen(void)
     }
 
     /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) { }
+    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {
+    }
     flashPagePointer += 2;
 
     /* return the starting address of the CRC, last address of the image */
@@ -236,21 +240,21 @@ static int flashWrite(uint32_t* address, uint32_t* data, uint32_t len)
 
 uint32_t externFileOperation(externFileOp_t fileOperation)
 {
-    uint32_t internalFlashStartingAddress = FLASH0_START;
-    uint8_t extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = { 0 };
-    uint32_t startingAddress = 0x00000000 + sizeof(fileHeader_t);
-    uint32_t fileLen = fileHeader.fileLen;
-    uint32_t crcResult = 0;
-    uint32_t err = 0;
+    uint32_t internalFlashStartingAddress           = FLASH0_START;
+    uint8_t extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = {0};
+    uint32_t startingAddress                        = 0x00000000 + sizeof(fileHeader_t);
+    uint32_t fileLen                                = fileHeader.fileLen;
+    uint32_t crcResult                              = 0;
+    uint32_t err                                    = 0;
     /* Read blocks from ext flash and perform desired fileOperation */
     while (fileLen >= EXT_FLASH_BLOCK_SIZE) {
-        Ext_Flash_Read(
-            startingAddress, extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE, Ext_Flash_DataLine_Quad);
+        Ext_Flash_Read(startingAddress, extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE,
+                       Ext_Flash_DataLine_Quad);
         if (fileOperation == CALC_CRC32_OP) {
             crc32(extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE, &crcResult);
         } else if (fileOperation == COPY_FILE_OP) {
             err += flashWrite((uint32_t*)internalFlashStartingAddress, (uint32_t*)extFlashBlockBuff,
-                EXT_FLASH_BLOCK_SIZE);
+                              EXT_FLASH_BLOCK_SIZE);
             internalFlashStartingAddress += EXT_FLASH_BLOCK_SIZE;
         }
         fileLen -= EXT_FLASH_BLOCK_SIZE;
@@ -262,8 +266,8 @@ uint32_t externFileOperation(externFileOp_t fileOperation)
         if (fileOperation == CALC_CRC32_OP) {
             crc32(extFlashBlockBuff, fileLen, &crcResult);
         } else if (fileOperation == COPY_FILE_OP) {
-            err += flashWrite(
-                (uint32_t*)internalFlashStartingAddress, (uint32_t*)extFlashBlockBuff, fileLen);
+            err += flashWrite((uint32_t*)internalFlashStartingAddress, (uint32_t*)extFlashBlockBuff,
+                              fileLen);
         }
     }
     if (fileOperation == COPY_FILE_OP)
@@ -278,9 +282,9 @@ int main(void)
     volatile int i;
     DELAY(0x3FFFFF);
 
-    int err = 0x00000000;
+    int err                  = 0x00000000;
     uint32_t startingAddress = 0x00000000;
-    uint32_t crcResult = 0x00000000;
+    uint32_t crcResult       = 0x00000000;
 
     LED_Init();
     for (int led = 0; led < num_leds; led++) {
@@ -299,8 +303,8 @@ int main(void)
 
     if (err == 0) {
         /* Get header from ext flash */
-        Ext_Flash_Read(
-            startingAddress, (uint8_t*)&fileHeader, sizeof(fileHeader_t), Ext_Flash_DataLine_Quad);
+        Ext_Flash_Read(startingAddress, (uint8_t*)&fileHeader, sizeof(fileHeader_t),
+                       Ext_Flash_DataLine_Quad);
 
         /* Verify header integrity */
         if (fileHeader.fileLen != 0xFFFFFFFF && fileHeader.fileCRC != 0xFFFFFFFF) {
@@ -321,8 +325,7 @@ int main(void)
                 if (err) {
                     bootError();
                 }
-                /* As long as first sector is erased so the bootloader does not try to reload its
-                 * contents */
+                /* As long as first sector is erased so the bootloader does not try to reload its contents */
                 Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);
                 if (err == 0) {
                     ledSuccessPattern();
@@ -338,7 +341,8 @@ int main(void)
     /* Boot from lower image */
     Boot_Lower();
 
-    while (1) { }
+    while (1) {
+    }
 
     return 0;
 }

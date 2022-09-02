@@ -31,12 +31,11 @@
  *
  *************************************************************************** */
 
-#include "dma.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
-#include "uart.h"
-#include "uart_regs.h"
+#include "mxc_assert.h"
+#include "dma.h"
 #include "uart_revc_regs.h"
+#include "uart_regs.h"
 
 typedef struct _mxc_uart_revc_req_t mxc_uart_revc_req_t;
 
@@ -65,15 +64,15 @@ int MXC_UART_RevC_ReadCharacterRaw(mxc_uart_revc_regs_t* uart);
 int MXC_UART_RevC_WriteCharacterRaw(mxc_uart_revc_regs_t* uart, uint8_t character);
 int MXC_UART_RevC_Read(mxc_uart_revc_regs_t* uart, uint8_t* buffer, int* len);
 int MXC_UART_RevC_Write(mxc_uart_revc_regs_t* uart, uint8_t* byte, int* len);
-unsigned int MXC_UART_RevC_ReadRXFIFO(
-    mxc_uart_revc_regs_t* uart, unsigned char* bytes, unsigned int len);
+unsigned int MXC_UART_RevC_ReadRXFIFO(mxc_uart_revc_regs_t* uart, unsigned char* bytes,
+                                      unsigned int len);
 int MXC_UART_RevC_ReadRXFIFODMA(mxc_uart_revc_regs_t* uart, unsigned char* bytes, unsigned int len,
-    mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
+                                mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevC_GetRXFIFOAvailable(mxc_uart_revc_regs_t* uart);
-unsigned int MXC_UART_RevC_WriteTXFIFO(
-    mxc_uart_revc_regs_t* uart, unsigned char* bytes, unsigned int len);
+unsigned int MXC_UART_RevC_WriteTXFIFO(mxc_uart_revc_regs_t* uart, unsigned char* bytes,
+                                       unsigned int len);
 int MXC_UART_RevC_WriteTXFIFODMA(mxc_uart_revc_regs_t* uart, unsigned char* bytes, unsigned int len,
-    mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
+                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevC_GetTXFIFOAvailable(mxc_uart_revc_regs_t* uart);
 int MXC_UART_RevC_ClearRXFIFO(mxc_uart_revc_regs_t* uart);
 int MXC_UART_RevC_ClearTXFIFO(mxc_uart_revc_regs_t* uart);

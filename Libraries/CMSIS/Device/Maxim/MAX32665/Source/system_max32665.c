@@ -34,16 +34,16 @@
  *
  ******************************************************************************/
 
-#include "gcr_regs.h"
-#include "icc_regs.h"
-#include "max32665.h"
-#include "mcr_regs.h"
-#include "mxc_sys.h"
-#include "pwrseq_regs.h"
-#include "simo_regs.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "max32665.h"
+#include "mxc_sys.h"
+#include "gcr_regs.h"
+#include "icc_regs.h"
+#include "pwrseq_regs.h"
+#include "simo_regs.h"
+#include "mcr_regs.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
@@ -60,28 +60,28 @@ __weak void SystemCoreClockUpdate(void)
     // Determine the clock source and frequency
     clk_src = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CLKSEL);
     switch (clk_src) {
-    case MXC_S_GCR_CLKCN_CLKSEL_HIRC:
-        base_freq = HIRC_FREQ;
-        break;
-    case MXC_S_GCR_CLKCN_CLKSEL_XTAL32M:
-        base_freq = XTAL32M_FREQ;
-        break;
-    case MXC_S_GCR_CLKCN_CLKSEL_LIRC8:
-        base_freq = LIRC8_FREQ;
-        break;
-    case MXC_S_GCR_CLKCN_CLKSEL_HIRC96:
-        base_freq = HIRC96_FREQ;
-        break;
-    case MXC_S_GCR_CLKCN_CLKSEL_HIRC8:
-        base_freq = HIRC8_FREQ;
-        break;
-    case MXC_S_GCR_CLKCN_CLKSEL_XTAL32K:
-        base_freq = XTAL32K_FREQ;
-        break;
-    default:
-        // Values 001 and 111 are reserved, and should never be encountered.
-        base_freq = HIRC_FREQ;
-        break;
+        case MXC_S_GCR_CLKCN_CLKSEL_HIRC:
+            base_freq = HIRC_FREQ;
+            break;
+        case MXC_S_GCR_CLKCN_CLKSEL_XTAL32M:
+            base_freq = XTAL32M_FREQ;
+            break;
+        case MXC_S_GCR_CLKCN_CLKSEL_LIRC8:
+            base_freq = LIRC8_FREQ;
+            break;
+        case MXC_S_GCR_CLKCN_CLKSEL_HIRC96:
+            base_freq = HIRC96_FREQ;
+            break;
+        case MXC_S_GCR_CLKCN_CLKSEL_HIRC8:
+            base_freq = HIRC8_FREQ;
+            break;
+        case MXC_S_GCR_CLKCN_CLKSEL_XTAL32K:
+            base_freq = XTAL32K_FREQ;
+            break;
+        default:
+            // Values 001 and 111 are reserved, and should never be encountered.
+            base_freq = HIRC_FREQ;
+            break;
     }
     // Clock divider is retrieved to compute system clock
     div = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_PSC) >> MXC_F_GCR_CLKCN_PSC_POS;
@@ -93,7 +93,7 @@ __weak void SystemCoreClockUpdate(void)
  * implemented by the application for early initializations. If a value other
  * than '0' is returned, the C runtime initialization will be skipped.
  *
- * You may over-ride this function in your program by defining a custom
+ * You may over-ride this function in your program by defining a custom 
  *  PreInit(), but care should be taken to reproduce the initialization steps
  *  or a non-functional system may result.
  */
@@ -107,9 +107,12 @@ __weak int PreInit(void)
     /* Divide down system clock until SIMO is ready */
     MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (MXC_S_GCR_CLKCN_PSC_DIV128);
 
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) { }
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) { }
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) { }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
+    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
+    }
 
     /* Restore system clock divider */
     MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (psc);
@@ -127,22 +130,24 @@ __weak int Board_Init(void)
     return 0;
 }
 
-__weak void PalSysInit(void) { }
+__weak void PalSysInit(void)
+{
+}
 
 /* This function is called just before control is transferred to main().
  *
- * You may over-ride this function in your program by defining a custom
+ * You may over-ride this function in your program by defining a custom 
  *  SystemInit(), but care should be taken to reproduce the initialization
  *  steps or a non-functional system may result.
  */
 __weak void SystemInit(void)
 {
-    /* Configure the interrupt controller to use the application vector
+    /* Configure the interrupt controller to use the application vector 
      * table in flash. Initially, VTOR points to the ROM's table.
      */
     SCB->VTOR = (unsigned long)&__isr_vector;
 
-    /* We'd like to switch to the fast clock, but can only do so if the
+    /* We'd like to switch to the fast clock, but can only do so if the 
      * core's operating voltage (VregO_B) is high enough to support it
      * Otherwise, we need to remain on the slow clock
      */
@@ -170,9 +175,11 @@ __weak void SystemInit(void)
 
     // Flush and enable instruction cache
     MXC_ICC0->invalidate = 1;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) { }
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
+    }
     MXC_ICC0->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) { }
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
+    }
 
     SystemCoreClockUpdate();
 
@@ -211,6 +218,7 @@ void $Sub$$__main_after_scatterload(void)
 {
     SystemInit();
     $Super$$__main_after_scatterload();
-    while (1) { }
+    while (1)
+        ;
 }
 #endif /* __CC_ARM */

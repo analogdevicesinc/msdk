@@ -31,11 +31,11 @@
  *
  *************************************************************************** */
 
-#include "can.h"
-#include "can_reva.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_pins.h"
+#include "can.h"
+#include "can_reva.h"
 
 /**********************************************************************************************************************************************************************/
 mxc_can_drv_version_t MXC_CAN_GetVersion(void)
@@ -47,13 +47,13 @@ mxc_can_drv_version_t MXC_CAN_GetVersion(void)
 mxc_can_capabilities_t MXC_CAN_GetCapabilities(void)
 {
     mxc_can_capabilities_t ret = MXC_CAN_RevA_GetCapabilities();
-    ret.fd_mode = 0;
+    ret.fd_mode                = 0;
     return ret;
 }
 
 /**********************************************************************************************************************************************************************/
 int MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg, mxc_can_unit_event_cb_t unit_cb,
-    mxc_can_object_event_cb_t obj_cb, uint8_t map)
+                 mxc_can_object_event_cb_t obj_cb, uint8_t map)
 {
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if (can == 0) {
@@ -69,12 +69,12 @@ int MXC_CAN_Init(uint32_t can_idx, mxc_can_obj_cfg_t cfg, mxc_can_unit_event_cb_
 int MXC_CAN_UnInit(uint32_t can_idx)
 {
     switch (can_idx) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_CAN);
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CAN);
-        break;
-    default:
-        return E_BAD_PARAM;
+        case 0:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_CAN);
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CAN);
+            break;
+        default:
+            return E_BAD_PARAM;
     }
 
     return MXC_CAN_RevA_UnInit((mxc_can_reva_regs_t*)MXC_CAN_GET_CAN(can_idx));
@@ -91,15 +91,15 @@ int MXC_CAN_PowerControl(uint32_t can_idx, mxc_can_pwr_ctrl_t pwr)
     }
 
     switch (pwr) {
-    case MXC_CAN_PWR_CTRL_OFF:
-        MXC_SYS_ClockDisable(periph_clk);
-        return E_NO_ERROR;
-    case MXC_CAN_PWR_CTRL_SLEEP: // Fall through
-    case MXC_CAN_PWR_CTRL_FULL:
-        MXC_SYS_ClockEnable(periph_clk);
-        break;
-    default:
-        return E_BAD_PARAM;
+        case MXC_CAN_PWR_CTRL_OFF:
+            MXC_SYS_ClockDisable(periph_clk);
+            return E_NO_ERROR;
+        case MXC_CAN_PWR_CTRL_SLEEP: //Fall through
+        case MXC_CAN_PWR_CTRL_FULL:
+            MXC_SYS_ClockEnable(periph_clk);
+            break;
+        default:
+            return E_BAD_PARAM;
     }
 
     return MXC_CAN_RevA_PowerControl((mxc_can_reva_regs_t*)MXC_CAN_GET_CAN(can_idx), pwr);
@@ -169,8 +169,8 @@ int MXC_CAN_GetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel)
 }
 
 /**********************************************************************************************************************************************************************/
-int MXC_CAN_SetBitRate(
-    uint32_t can_idx, mxc_can_bitrate_sel_t sel, uint32_t bitrate, uint32_t bit_segments)
+int MXC_CAN_SetBitRate(uint32_t can_idx, mxc_can_bitrate_sel_t sel, uint32_t bitrate,
+                       uint32_t bit_segments)
 {
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if (can == 0) {
@@ -181,10 +181,10 @@ int MXC_CAN_SetBitRate(
 
     uint8_t seg1 = (bit_segments & (0xFF << MXC_CAN_SEG1_SHIFT)) >> MXC_CAN_SEG1_SHIFT;
     uint8_t seg2 = (bit_segments & (0xFF << MXC_CAN_SEG2_SHIFT)) >> MXC_CAN_SEG2_SHIFT;
-    uint8_t sjw = (bit_segments & (0xFF << MXC_CAN_SJW_SHIFT)) >> MXC_CAN_SJW_SHIFT;
+    uint8_t sjw  = (bit_segments & (0xFF << MXC_CAN_SJW_SHIFT)) >> MXC_CAN_SJW_SHIFT;
 
-    return MXC_CAN_RevA_SetBitRate(
-        (mxc_can_reva_regs_t*)can, MXC_CAN_GetClock(can_idx), sel, bitrate, seg1, seg2, sjw);
+    return MXC_CAN_RevA_SetBitRate((mxc_can_reva_regs_t*)can, MXC_CAN_GetClock(can_idx), sel,
+                                   bitrate, seg1, seg2, sjw);
 }
 
 /**********************************************************************************************************************************************************************/
@@ -203,7 +203,7 @@ mxc_can_obj_capabilities_t MXC_CAN_ObjectGetCapabilities(uint32_t can_idx)
 {
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if (can == 0) {
-        return (mxc_can_obj_capabilities_t) { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        return (mxc_can_obj_capabilities_t){-1, -1, -1, -1, -1, -1, -1, -1, -1};
     }
 
     return MXC_CAN_RevA_ObjectGetCapabilities((mxc_can_reva_regs_t*)can);
@@ -229,20 +229,20 @@ int MXC_CAN_ObjectConfigure(uint32_t can_idx, mxc_can_obj_cfg_t cfg, uint8_t map
     }
 
     switch (map) {
-    case 0:
-        MXC_GPIO_Config(&gpio_cfg_can);
-        break;
-    case 1:
-        MXC_GPIO_Config(&gpio_cfg_canb);
-        break;
+        case 0:
+            MXC_GPIO_Config(&gpio_cfg_can);
+            break;
+        case 1:
+            MXC_GPIO_Config(&gpio_cfg_canb);
+            break;
     }
 
     return MXC_CAN_RevA_ObjectConfigure((mxc_can_reva_regs_t*)can, cfg);
 }
 
 /**********************************************************************************************************************************************************************/
-int MXC_CAN_WriteTXFIFO(
-    uint32_t can_idx, mxc_can_msg_info_t* info, const uint8_t* data, uint8_t size)
+int MXC_CAN_WriteTXFIFO(uint32_t can_idx, mxc_can_msg_info_t* info, const uint8_t* data,
+                        uint8_t size)
 {
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if (can == 0) {
@@ -375,23 +375,23 @@ int MXC_CAN_Control(uint32_t can_idx, mxc_can_ctrl_t ctrl, uint32_t ctrl_arg)
 }
 
 /**********************************************************************************************************************************************************************/
-int MXC_CAN_SetWakeupTimer(
-    uint32_t can_idx, uint8_t prescaler, uint16_t wup_filter_tm, uint32_t wup_expire_tm)
+int MXC_CAN_SetWakeupTimer(uint32_t can_idx, uint8_t prescaler, uint16_t wup_filter_tm,
+                           uint32_t wup_expire_tm)
 {
     mxc_can_regs_t* can = MXC_CAN_GET_CAN(can_idx);
     if (can == 0) {
         return E_BAD_PARAM;
     }
 
-    return MXC_CAN_RevA_SetWakeupTimer(
-        (mxc_can_reva_regs_t*)can, prescaler, wup_filter_tm, wup_expire_tm);
+    return MXC_CAN_RevA_SetWakeupTimer((mxc_can_reva_regs_t*)can, prescaler, wup_filter_tm,
+                                       wup_expire_tm);
 }
 
 /**********************************************************************************************************************************************************************/
 mxc_can_stat_t MXC_CAN_GetStatus(uint32_t can_idx)
 {
     mxc_can_stat_t obj_stat;
-    obj_stat = MXC_CAN_RevA_GetStatus((mxc_can_reva_regs_t*)MXC_CAN_GET_CAN(can_idx));
+    obj_stat         = MXC_CAN_RevA_GetStatus((mxc_can_reva_regs_t*)MXC_CAN_GET_CAN(can_idx));
     obj_stat.can_idx = can_idx;
 
     return obj_stat;

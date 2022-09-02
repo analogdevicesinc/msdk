@@ -34,14 +34,14 @@
  *
  ******************************************************************************/
 
-#include "gcr_regs.h"
-#include "icc_regs.h"
-#include "max32520.h"
-#include "mxc_sys.h"
-#include "pwrseq_regs.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "max32520.h"
+#include "mxc_sys.h"
+#include "gcr_regs.h"
+#include "icc_regs.h"
+#include "pwrseq_regs.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
@@ -57,20 +57,20 @@ __weak void SystemCoreClockUpdate(void)
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     switch (clk_src) {
-    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
-        base_freq = INRO_FREQ;
-        break;
-    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-        base_freq = IPO_FREQ;
-        break;
-    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-        base_freq = IBRO_FREQ;
-        break;
-    default:
-        // Codes 001 and 111 are reserved.
-        // This code should never execute, however, initialize to safe value.
-        base_freq = IPO_FREQ;
-        break;
+        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
+            base_freq = INRO_FREQ;
+            break;
+        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
+            base_freq = IPO_FREQ;
+            break;
+        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
+            base_freq = IBRO_FREQ;
+            break;
+        default:
+            // Codes 001 and 111 are reserved.
+            // This code should never execute, however, initialize to safe value.
+            base_freq = IPO_FREQ;
+            break;
     }
     // Get the clock divider
     div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;
@@ -82,7 +82,7 @@ __weak void SystemCoreClockUpdate(void)
  * implemented by the application for early initializations. If a value other
  * than '0' is returned, the C runtime initialization will be skipped.
  *
- * You may over-ride this function in your program by defining a custom
+ * You may over-ride this function in your program by defining a custom 
  *  PreInit(), but care should be taken to reproduce the initialization steps
  *  or a non-functional system may result.
  */
@@ -101,7 +101,7 @@ __weak int Board_Init(void)
 
 /* This function is called just before control is transferred to main().
  *
- * You may over-ride this function in your program by defining a custom
+ * You may over-ride this function in your program by defining a custom 
  *  SystemInit(), but care should be taken to reproduce the initialization
  *  steps or a non-functional system may result.
  */
@@ -131,11 +131,11 @@ __weak void SystemInit(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 
-    // MXC_GPIO0->vssel |= 0xFFFFFFFF;      Not supported according to UG Rev 0.94
+    //MXC_GPIO0->vssel |= 0xFFFFFFFF;      Not supported according to UG Rev 0.94
     MXC_GPIO0->pssel |= 0xFFFFFFFF;
     MXC_GPIO0->pdpu_sel0 |= 0xFFFFFFFF;
     MXC_GPIO0->pdpu_sel1 &= ~(0xFFFFFFFF);
-    // MXC_GPIO1->vssel |= 0xFFFFFFFF;      Not supported according to UG Rev 0.94
+    //MXC_GPIO1->vssel |= 0xFFFFFFFF;      Not supported according to UG Rev 0.94
     MXC_GPIO1->pssel |= 0xFFFFFFFF;
     MXC_GPIO1->pdpu_sel0 |= 0xFFFFFFFF;
     MXC_GPIO1->pdpu_sel1 &= ~(0xFFFFFFFF);

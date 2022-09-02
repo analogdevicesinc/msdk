@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief    List of common error return codes for Maxim Integrated libraries.
- */
+*/
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *

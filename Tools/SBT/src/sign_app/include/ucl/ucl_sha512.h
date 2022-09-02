@@ -33,8 +33,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus  */
-#include <ucl/ucl_hash.h>
 #include <ucl/ucl_types.h>
+#include <ucl/ucl_hash.h>
 #ifdef HASH_SHA512
 #include <ucl/ucl_sha512.h>
 
@@ -96,7 +96,7 @@ typedef struct ucl_sha512_ctx ucl_sha512_ctx_t;
  *
  * @ingroup UCL_SHA512
  */
-#define UCL_SHA512 4
+#define UCL_SHA512          4
 #define UCL_SHA512_HASHSIZE 64
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA512.
@@ -182,16 +182,16 @@ int ucl_sha512_finish(u8* hash, ucl_sha512_ctx_t* context);
 
 void sha512_stone(u64 hash[8], u64 stone[16]);
 
-int ucl_hmac_sha512(
-    u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key, u32 key_byteLen);
+int ucl_hmac_sha512(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+                    u32 key_byteLen);
 int ucl_hmac_sha512_init(ucl_sha512_ctx_t* context, u8* key, u32 key_byteLen);
 int ucl_hmac_sha512_core(ucl_sha512_ctx_t* context, u8* data, u32 byteLen);
-int ucl_hmac_sha512_finish(
-    u8* mac, u32 mac_byteLen, ucl_sha512_ctx_t* context, u8* key, u32 key_byteLen);
+int ucl_hmac_sha512_finish(u8* mac, u32 mac_byteLen, ucl_sha512_ctx_t* context, u8* key,
+                           u32 key_byteLen);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */
 
-#endif // HASH_SHA512
+#endif //HASH_SHA512
 #endif
-#endif // PROFILE_2
+#endif //PROFILE_2

@@ -32,12 +32,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "wdt_reva.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "wdt.h"
+#include "wdt_reva.h"
 
 /* **** Functions **** */
 
@@ -48,7 +48,8 @@ void MXC_WDT_RevA_SetIntPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period
 
 void MXC_WDT_RevA_SetResetPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period)
 {
-    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVA_CTRL_RST_PERIOD,
+    MXC_SETFIELD(
+        wdt->ctrl, MXC_F_WDT_REVA_CTRL_RST_PERIOD,
         (period << (MXC_F_WDT_REVA_CTRL_RST_PERIOD_POS - MXC_F_WDT_REVA_CTRL_INT_PERIOD_POS)));
 }
 

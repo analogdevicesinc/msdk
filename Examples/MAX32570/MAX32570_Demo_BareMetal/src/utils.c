@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -49,7 +49,7 @@ unsigned int utils_get_time_ms(void)
     unsigned int ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    sec    = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 
@@ -94,7 +94,8 @@ static void timer0_irq_handler(void)
 void timer_init(TimerCb cb)
 {
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-    while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR0) { }
+    while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR0)
+        ;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
     MXC_NVIC_SetVector(TMR0_IRQn, timer0_irq_handler);
@@ -117,7 +118,7 @@ void timer_start(unsigned int timeout)
 
     TICK_TIMER->cn |= TMR_MODE_ONESHOT << MXC_F_TMR_CN_TMODE_POS;
     TICK_TIMER->cn |= (0) << MXC_F_TMR_CN_TPOL_POS;
-    // enable timer interrupt if needed
+    //enable timer interrupt if needed
     TICK_TIMER->cnt = 0x1;
     // set timeout
     TICK_TIMER->cmp = (PeripheralClock / 4000) * timeout;

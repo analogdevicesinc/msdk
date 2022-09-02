@@ -1,57 +1,56 @@
 /*******************************************************************************
- * Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************/
+* Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
+*
+* This software is protected by copyright laws of the United States and
+* of foreign countries. This material may also be protected by patent laws
+* and technology transfer regulations of the United States and of foreign
+* countries. This software is furnished under a license agreement and/or a
+* nondisclosure agreement and may only be used or reproduced in accordance
+* with the terms of those agreements. Dissemination of this information to
+* any party or parties not specified in the license agreement and/or
+* nondisclosure agreement is expressly prohibited.
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************/
 
 // faceid
-// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix faceid --checkpoint-file
-// trained/ai85-faceid-qat8-q.pth.tar --config-file networks/faceid.yaml --fifo --device MAX78000
-// --timer 0 --display-checkpoint --verbose
+// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix faceid --checkpoint-file trained/ai85-faceid-qat8-q.pth.tar --config-file networks/faceid.yaml --fifo --device MAX78000 --timer 0 --display-checkpoint --verbose
 
-#include "cnn.h"
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 #include "mxc.h"
+#include "cnn.h"
 #include "sampledata.h"
 #include "sampleoutput.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 volatile uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1) { }
+    while (1)
+        ;
 }
 
 // Data input: HWC 3x160x120 (57600 bytes total / 19200 bytes per channel):
@@ -65,8 +64,8 @@ void load_input(void)
 
     for (i = 0; i < 19200; i++) {
         // Remove the following line if there is no risk that the source would overrun the FIFO:
-        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0) { }
-        // Wait for FIFO 0
+        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
+            ;                                       // Wait for FIFO 0
         *((volatile uint32_t*)0x50000008) = *in0++; // Write FIFO 0
     }
 }
@@ -83,11 +82,11 @@ int check_output(void)
 
     while ((addr = (volatile uint32_t*)*ptr++) != 0) {
         mask = *ptr++;
-        len = *ptr++;
+        len  = *ptr++;
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
-                    i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
+                       i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
                 return CNN_FAIL;
             }
     }
@@ -116,15 +115,16 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init(); // Bring state machine into consistent state
+    cnn_init();         // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
-    cnn_load_bias(); // Not used in this network
-    cnn_configure(); // Configure state machine
-    cnn_start(); // Start CNN processing
-    load_input(); // Load data input via FIFO
+    cnn_load_bias();    // Not used in this network
+    cnn_configure();    // Configure state machine
+    cnn_start();        // Start CNN processing
+    load_input();       // Load data input via FIFO
 
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0) __WFI(); // Wait for CNN
+    while (cnn_time == 0)
+        __WFI(); // Wait for CNN
 
     if (check_output() != CNN_OK)
         fail();

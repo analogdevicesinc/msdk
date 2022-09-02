@@ -62,40 +62,39 @@ typedef enum {
 #define MAX_INCOMING_DATA (256 + 3)
 
 // MAX32620 CRYPTO CTL bits
-// on MAX32620 MAA_CTRL is used for reset, starting a calculation and checking the calculation is
-// completed
+//on MAX32620 MAA_CTRL is used for reset, starting a calculation and checking the calculation is completed
 
 #define CRYPTO_MAA_DONE (1 << 5)
-#define CRYPTO_DONE (unsigned int)(1 << 0)
-#define CRYPTO_READY (1 << 30)
-#define CRYPTO_BUSERR (1 << 29)
+#define CRYPTO_DONE     (unsigned int)(1 << 0)
+#define CRYPTO_READY    (1 << 30)
+#define CRYPTO_BUSERR   (1 << 29)
 
 #define UCL_MAA_CLR_DONE (0xffffffdf)
 
 #define UCL_MAA_BASE 0x40000000
 
 // MAX32620 CRYPTO block address
-#define TRNG_BASE 0x400B5000
-#define TRNG_TRNGC TRNG_BASE + 0x0
+#define TRNG_BASE   0x400B5000
+#define TRNG_TRNGC  TRNG_BASE + 0x0
 #define AES_KEY_GEN 0x43
 
-#define RESET_VALUE 0x00
+#define RESET_VALUE           0x00
 #define UCL_MAA_REG_WORD_SIZE 16
 
-// Crypto
-// on max32620, there is no distinct crypto_ctl and maa_ctl: both are the same
-#define CRYPTO_CTL (UCL_MAA_BASE + 0x11800)
+//Crypto
+//on max32620, there is no distinct crypto_ctl and maa_ctl: both are the same
+#define CRYPTO_CTL  (UCL_MAA_BASE + 0x11800)
 #define CRYPTO_BASE 0x40000000
 
 // MAX32620 MAA memory addresses
-#define UCL_MAA_CTL (UCL_MAA_BASE + 0x11800) // MAA CTRL offset, equivalent to CRYPTO_CTL
-#define UCL_MAA_MAWS (UCL_MAA_BASE + 0x11804) // MAWS
-#define UCL_MAA_A (UCL_MAA_BASE + 0x010A800) // MAA_A memory offset
-#define UCL_MAA_B (UCL_MAA_BASE + 0x010A840) // MAA_B memory offset
-#define UCL_MAA_R (UCL_MAA_BASE + 0x010A880) // MAA_R memory offset
-#define UCL_MAA_T (UCL_MAA_BASE + 0x010A8C0) // MAA_T memory offset
-#define UCL_MAA_E (UCL_MAA_BASE + 0x010A900) // MAA_E memory offset
-#define UCL_MAA_M (UCL_MAA_BASE + 0x010A940) // MAA_M memory offset
+#define UCL_MAA_CTL  (UCL_MAA_BASE + 0x11800)   // MAA CTRL offset, equivalent to CRYPTO_CTL
+#define UCL_MAA_MAWS (UCL_MAA_BASE + 0x11804)   // MAWS
+#define UCL_MAA_A    (UCL_MAA_BASE + 0x010A800) // MAA_A memory offset
+#define UCL_MAA_B    (UCL_MAA_BASE + 0x010A840) // MAA_B memory offset
+#define UCL_MAA_R    (UCL_MAA_BASE + 0x010A880) // MAA_R memory offset
+#define UCL_MAA_T    (UCL_MAA_BASE + 0x010A8C0) // MAA_T memory offset
+#define UCL_MAA_E    (UCL_MAA_BASE + 0x010A900) // MAA_E memory offset
+#define UCL_MAA_M    (UCL_MAA_BASE + 0x010A940) // MAA_M memory offset
 
 #define UCL_MAA_SEGA 0
 #define UCL_MAA_SEGB 2
@@ -108,12 +107,12 @@ typedef enum {
 #define UCL_MAA_SHIFT_BMA 20
 #define UCL_MAA_SHIFT_TMA 28
 
-// MAX32620 AES memory address
-#define AES_CTRL CRYPTO_BASE + 0x7400
-#define AES_CTRL_START 1
+//MAX32620 AES memory address
+#define AES_CTRL           CRYPTO_BASE + 0x7400
+#define AES_CTRL_START     1
 #define AES_CTRL_BUSY_MASK 1
-#define AES_CTRL_ENCRYPT 0
-#define AES_CTRL_DECRYPT 2
+#define AES_CTRL_ENCRYPT   0
+#define AES_CTRL_DECRYPT   2
 
 #define AES_CTRL_AES_128 0
 #define AES_CTRL_AES_192 (1 << 3)
@@ -138,10 +137,10 @@ typedef enum {
 #define AES_DATA_OUT_2 CRYPTO_BASE + 0x102038
 #define AES_DATA_OUT_3 CRYPTO_BASE + 0x10203C
 
-#define MXC_BASE_AES ((uint32_t)0x40007400UL)
-#define MXC_AES ((mxc_aes_regs_t*)MXC_BASE_AES)
+#define MXC_BASE_AES     ((uint32_t)0x40007400UL)
+#define MXC_AES          ((mxc_aes_regs_t*)MXC_BASE_AES)
 #define MXC_BASE_AES_MEM ((uint32_t)0x40102000UL)
-#define MXC_AES_MEM ((mxc_aes_mem_regs_t*)MXC_BASE_AES_MEM)
+#define MXC_AES_MEM      ((mxc_aes_mem_regs_t*)MXC_BASE_AES_MEM)
 
 #endif /* MAX32620_CRYPTO_H_ */
 #endif //_max32620

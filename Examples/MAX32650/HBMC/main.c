@@ -42,10 +42,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "board.h"
-#include "hpb.h"
-#include "led.h"
 #include "mxc_errors.h"
+#include "board.h"
+#include "led.h"
+#include "hpb.h"
 
 /* **** Definitions **** */
 
@@ -92,7 +92,7 @@ int init_xcella_psram(int cs)
 
     /* Xcella configuration for fixed latency mode (see datasheet) */
     cfg_reg[0].addr = 0x0000;
-    cfg_reg[0].val = 0x29;
+    cfg_reg[0].val  = 0x29;
 
     /* Hyperbus/Xccelabus controller configuration */
     if (cs) {
@@ -100,17 +100,17 @@ int init_xcella_psram(int cs)
     } else {
         mem.base_addr = (unsigned int)&__hpb_cs0_start;
     }
-    mem.device_type = MXC_HPB_DEV_XCCELA_PSRAM;
-    mem.cfg_reg_val = cfg_reg;
+    mem.device_type     = MXC_HPB_DEV_XCCELA_PSRAM;
+    mem.cfg_reg_val     = cfg_reg;
     mem.cfg_reg_val_len = 1;
-    mem.read_cs_high = MXC_HPB_CS_HIGH_2_5;
-    mem.write_cs_high = MXC_HPB_CS_HIGH_2_5;
-    mem.read_cs_setup = MXC_HPB_CS_SETUP_HOLD_2;
-    mem.write_cs_setup = MXC_HPB_CS_SETUP_HOLD_2;
-    mem.read_cs_hold = MXC_HPB_CS_SETUP_HOLD_2;
-    mem.write_cs_hold = MXC_HPB_CS_SETUP_HOLD_2;
-    mem.latency_cycle = MXC_V_HPB_MTR_LATENCY_5CLK;
-    mem.fixed_latency = 1;
+    mem.read_cs_high    = MXC_HPB_CS_HIGH_2_5;
+    mem.write_cs_high   = MXC_HPB_CS_HIGH_2_5;
+    mem.read_cs_setup   = MXC_HPB_CS_SETUP_HOLD_2;
+    mem.write_cs_setup  = MXC_HPB_CS_SETUP_HOLD_2;
+    mem.read_cs_hold    = MXC_HPB_CS_SETUP_HOLD_2;
+    mem.write_cs_hold   = MXC_HPB_CS_SETUP_HOLD_2;
+    mem.latency_cycle   = MXC_V_HPB_MTR_LATENCY_5CLK;
+    mem.fixed_latency   = 1;
 
     if (cs) {
         /* Xccela PSRAM on chip select 1 */
@@ -132,7 +132,7 @@ int init_hyperbus_ram(int cs)
 
     /* Hyperbus RAM chip configuration */
     cfg_reg[0].addr = 0x01000;
-    cfg_reg[0].val = 0x801f;
+    cfg_reg[0].val  = 0x801f;
 
     /* Hyperbus/Xccelabus controller configuration */
     if (cs) {
@@ -140,17 +140,17 @@ int init_hyperbus_ram(int cs)
     } else {
         mem.base_addr = (unsigned int)&__hpb_cs0_start;
     }
-    mem.device_type = MXC_HPB_DEV_HYPER_RAM;
-    mem.cfg_reg_val = cfg_reg;
+    mem.device_type     = MXC_HPB_DEV_HYPER_RAM;
+    mem.cfg_reg_val     = cfg_reg;
     mem.cfg_reg_val_len = 1;
-    mem.read_cs_high = MXC_HPB_CS_HIGH_10_5;
-    mem.write_cs_high = MXC_HPB_CS_HIGH_10_5;
-    mem.read_cs_setup = MXC_HPB_CS_SETUP_HOLD_16;
-    mem.write_cs_setup = MXC_HPB_CS_SETUP_HOLD_14;
-    mem.read_cs_hold = MXC_HPB_CS_SETUP_HOLD_5;
-    mem.write_cs_hold = MXC_HPB_CS_SETUP_HOLD_12;
-    mem.latency_cycle = MXC_V_HPB_MTR_LATENCY_6CLK;
-    mem.fixed_latency = 0;
+    mem.read_cs_high    = MXC_HPB_CS_HIGH_10_5;
+    mem.write_cs_high   = MXC_HPB_CS_HIGH_10_5;
+    mem.read_cs_setup   = MXC_HPB_CS_SETUP_HOLD_16;
+    mem.write_cs_setup  = MXC_HPB_CS_SETUP_HOLD_14;
+    mem.read_cs_hold    = MXC_HPB_CS_SETUP_HOLD_5;
+    mem.write_cs_hold   = MXC_HPB_CS_SETUP_HOLD_12;
+    mem.latency_cycle   = MXC_V_HPB_MTR_LATENCY_6CLK;
+    mem.fixed_latency   = 0;
 
     if (cs) {
         /* Xccela PSRAM on chip select 1 */
@@ -186,18 +186,18 @@ int main(void)
     }
 
     if (HPB_CS == 0) {
-        int_flash_src = &__load_start_hpb_cs0;
-        int_flash_len = (uint32_t)&__load_length_hpb_cs0;
+        int_flash_src  = &__load_start_hpb_cs0;
+        int_flash_len  = (uint32_t)&__load_length_hpb_cs0;
         ext_flash_dest = &__hpb_cs0_start;
     } else {
-        int_flash_src = &__load_start_hpb_cs1;
-        int_flash_len = (uint32_t)&__load_length_hpb_cs1;
+        int_flash_src  = &__load_start_hpb_cs1;
+        int_flash_len  = (uint32_t)&__load_length_hpb_cs1;
         ext_flash_dest = &__hpb_cs1_start;
     }
 
     /* Copy function from flash to external RAM */
     printf("Copying function from internal flash @ 0x%08x to external RAM @ 0x%08x (%u bytes)\n",
-        int_flash_src, ext_flash_dest, int_flash_len);
+           int_flash_src, ext_flash_dest, int_flash_len);
     memcpy(ext_flash_dest, int_flash_src, int_flash_len);
 
     /* Demonstrate reads */
@@ -229,5 +229,6 @@ int main(void)
     }
 
     printf("\nEND OF LINE.\n");
-    while (1) { }
+    while (1) {
+    }
 }

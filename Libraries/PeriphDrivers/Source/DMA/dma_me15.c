@@ -32,14 +32,14 @@
  *************************************************************************** */
 
 /****** Includes *******/
-#include "dma.h"
-#include "dma_reva.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
 #include <stddef.h>
 #include <stdint.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "dma.h"
+#include "dma_reva.h"
 
 /****** Functions ******/
 
@@ -158,8 +158,8 @@ int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callbac
     return MXC_DMA_RevA_MemCpy((mxc_dma_reva_regs_t*)MXC_DMA, dest, src, len, callback);
 }
 
-int MXC_DMA_DoTransfer(
-    mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
+int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
+                       mxc_dma_trans_chain_t callback)
 {
     return MXC_DMA_RevA_DoTransfer((mxc_dma_reva_regs_t*)MXC_DMA, config, firstSrcDst, callback);
 }

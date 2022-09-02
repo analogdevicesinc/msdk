@@ -63,43 +63,43 @@ extern "C" {
  * @brief Timer prescaler values
  */
 typedef enum {
-    TMR_PRES_1 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1, /**< Divide input clock by 1 */
-    TMR_PRES_2 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2, /**< Divide input clock by 2 */
-    TMR_PRES_4 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4, /**< Divide input clock by 4 */
-    TMR_PRES_8 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_8, /**< Divide input clock by 8 */
-    TMR_PRES_16 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_16, /**< Divide input clock by 16 */
-    TMR_PRES_32 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_32, /**< Divide input clock by 32 */
-    TMR_PRES_64 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_64, /**< Divide input clock by 64 */
-    TMR_PRES_128 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_128, /**< Divide input clock by 128 */
-    TMR_PRES_256 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_256, /**< Divide input clock by 256 */
-    TMR_PRES_512 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_512, /**< Divide input clock by 512 */
+    TMR_PRES_1    = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1,    /**< Divide input clock by 1 */
+    TMR_PRES_2    = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2,    /**< Divide input clock by 2 */
+    TMR_PRES_4    = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4,    /**< Divide input clock by 4 */
+    TMR_PRES_8    = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_8,    /**< Divide input clock by 8 */
+    TMR_PRES_16   = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_16,   /**< Divide input clock by 16 */
+    TMR_PRES_32   = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_32,   /**< Divide input clock by 32 */
+    TMR_PRES_64   = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_64,   /**< Divide input clock by 64 */
+    TMR_PRES_128  = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_128,  /**< Divide input clock by 128 */
+    TMR_PRES_256  = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_256,  /**< Divide input clock by 256 */
+    TMR_PRES_512  = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_512,  /**< Divide input clock by 512 */
     TMR_PRES_1024 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1024, /**< Divide input clock by 1024 */
     TMR_PRES_2048 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2048, /**< Divide input clock by 2048 */
-    TMR_PRES_4096 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4096 /**< Divide input clock by 4096 */
+    TMR_PRES_4096 = MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4096  /**< Divide input clock by 4096 */
 } mxc_tmr_pres_t;
 
 /**
  * @brief Timer modes
  */
 typedef enum {
-    TMR_MODE_ONESHOT = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT, /**< Timer Mode ONESHOT */
-    TMR_MODE_CONTINUOUS = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS, /**< Timer Mode CONTINUOUS */
-    TMR_MODE_COUNTER = MXC_V_TMR_CTRL0_MODE_A_COUNTER, /**< Timer Mode COUNTER */
-    TMR_MODE_PWM = MXC_V_TMR_CTRL0_MODE_A_PWM, /**< Timer Mode PWM */
-    TMR_MODE_CAPTURE = MXC_V_TMR_CTRL0_MODE_A_CAPTURE, /**< Timer Mode CAPTURE */
-    TMR_MODE_COMPARE = MXC_V_TMR_CTRL0_MODE_A_COMPARE, /**< Timer Mode COMPARE */
-    TMR_MODE_GATED = MXC_V_TMR_CTRL0_MODE_A_GATED, /**< Timer Mode GATED */
-    TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP /**< Timer Mode CAPTURECOMPARE */
+    TMR_MODE_ONESHOT         = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT,   /**< Timer Mode ONESHOT */
+    TMR_MODE_CONTINUOUS      = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS, /**< Timer Mode CONTINUOUS */
+    TMR_MODE_COUNTER         = MXC_V_TMR_CTRL0_MODE_A_COUNTER,    /**< Timer Mode COUNTER */
+    TMR_MODE_PWM             = MXC_V_TMR_CTRL0_MODE_A_PWM,        /**< Timer Mode PWM */
+    TMR_MODE_CAPTURE         = MXC_V_TMR_CTRL0_MODE_A_CAPTURE,    /**< Timer Mode CAPTURE */
+    TMR_MODE_COMPARE         = MXC_V_TMR_CTRL0_MODE_A_COMPARE,    /**< Timer Mode COMPARE */
+    TMR_MODE_GATED           = MXC_V_TMR_CTRL0_MODE_A_GATED,      /**< Timer Mode GATED */
+    TMR_MODE_CAPTURE_COMPARE = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP     /**< Timer Mode CAPTURECOMPARE */
 } mxc_tmr_mode_t;
 
 /**
- * @brief Timer bit mode
- *
+ * @brief Timer bit mode 
+ * 
  */
 typedef enum {
     TMR_BIT_MODE_32 = 0, /**< Timer Mode 32 bit  */
-    TMR_BIT_MODE_16A, /**< Timer Mode Lower 16 bit */
-    TMR_BIT_MODE_16B, /**< Timer Mode Upper 16 bit */
+    TMR_BIT_MODE_16A,    /**< Timer Mode Lower 16 bit */
+    TMR_BIT_MODE_16B,    /**< Timer Mode Upper 16 bit */
 } mxc_tmr_bit_mode_t;
 
 /**
@@ -107,13 +107,13 @@ typedef enum {
  */
 typedef enum {
     TMR_UNIT_NANOSEC = 0, /**< Nanosecond Unit Indicator */
-    TMR_UNIT_MICROSEC, /**< Microsecond Unit Indicator */
-    TMR_UNIT_MILLISEC, /**< Millisecond Unit Indicator */
-    TMR_UNIT_SEC, /**< Second Unit Indicator */
+    TMR_UNIT_MICROSEC,    /**< Microsecond Unit Indicator */
+    TMR_UNIT_MILLISEC,    /**< Millisecond Unit Indicator */
+    TMR_UNIT_SEC,         /**< Second Unit Indicator */
 } mxc_tmr_unit_t;
 
 /**
- * @brief      Peripheral Clock settings
+ * @brief      Peripheral Clock settings 
  */
 typedef enum {
     MXC_TMR_APB_CLK = 0,
@@ -132,12 +132,12 @@ typedef enum {
  * @brief Timer Configuration
  */
 typedef struct {
-    mxc_tmr_pres_t pres; /**< Desired timer prescaler */
-    mxc_tmr_mode_t mode; /**< Desired timer mode */
+    mxc_tmr_pres_t pres;        /**< Desired timer prescaler */
+    mxc_tmr_mode_t mode;        /**< Desired timer mode */
     mxc_tmr_bit_mode_t bitMode; /**< Desired timer bits */
-    mxc_tmr_clock_t clock; /**< Desired clock source */
-    uint32_t cmp_cnt; /**< Compare register value in timer ticks */
-    unsigned pol; /**< Polarity (0 or 1) */
+    mxc_tmr_clock_t clock;      /**< Desired clock source */
+    uint32_t cmp_cnt;           /**< Compare register value in timer ticks */
+    unsigned pol;               /**< Polarity (0 or 1) */
 } mxc_tmr_cfg_t;
 
 /* **** Definitions **** */
@@ -149,11 +149,10 @@ typedef void (*mxc_tmr_complete_t)(int error);
  * @brief   Initialize timer module clock.
  * @param   tmr        Pointer to timer module to initialize.
  * @param   cfg        System configuration object
- * @param   init_pins  True will initialize pins corresponding to the TMR and False will not if pins
- * are pinned out otherwise it will not be used
- * @param   pin_sel    Selects which set of pins to initialize (if init_pins set to true) for the
- * given timer instance
- *
+ * @param   init_pins  True will initialize pins corresponding to the TMR and False will not if pins are pinned out otherwise it will not
+ *                     be used
+ * @param   pin_sel    Selects which set of pins to initialize (if init_pins set to true) for the given timer instance  
+ * 
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins, sys_map_t pin_sel);
@@ -214,8 +213,8 @@ uint32_t MXC_TMR_GetCount(mxc_tmr_regs_t* tmr);
  * @param   frequency   required frequency.
  * @return  Returns the period count.
  */
-uint32_t MXC_TMR_GetPeriod(
-    mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar, uint32_t frequency);
+uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
+                           uint32_t frequency);
 
 /**
  * @brief   Clear the timer interrupt.
@@ -246,15 +245,15 @@ void MXC_TMR_DisableInt(mxc_tmr_regs_t* tmr);
 
 /**
  * @brief   Enable wakeup from sleep
- *
+ * 
  * @param   tmr   Pointer to timer module to initialize.
- * @param   cfg   System configuration object
+ * @param   cfg   System configuration object  
  */
 void MXC_TMR_EnableWakeup(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg);
 
 /**
  * @brief   Disable wakeup from sleep
- *
+ * 
  * @param   tmr   Pointer to timer module to initialize.
  * @param   cfg   System configuration object
  */

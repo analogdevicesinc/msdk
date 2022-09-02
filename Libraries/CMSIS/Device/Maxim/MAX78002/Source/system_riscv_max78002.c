@@ -31,11 +31,11 @@
  *
  ******************************************************************************/
 
-#include "gcr_regs.h"
-#include "max78002.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "max78002.h"
+#include "gcr_regs.h"
 
 volatile uint32_t mailbox __attribute__((section(".mailbox")));
 uint32_t SystemCoreClock __attribute__((section(".shared")));
@@ -57,7 +57,7 @@ __weak void SystemCoreClockUpdate(void)
  * implemented by the application for early initializations. If a value other
  * than '0' is returned, the C runtime initialization will be skipped.
  *
- * You may over-ride this function in your program by defining a custom
+ * You may over-ride this function in your program by defining a custom 
  *  PreInit(), but care should be taken to reproduce the initilization steps
  *  or a non-functional system may result.
  */
@@ -76,7 +76,7 @@ __weak int Board_Init(void)
 
 /* This function is called just before control is transferred to main().
  *
- * You may over-ride this function in your program by defining a custom
+ * You may over-ride this function in your program by defining a custom 
  *  SystemInit(), but care should be taken to reproduce the initialization
  *  steps or a non-functional system may result.
  */

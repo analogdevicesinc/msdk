@@ -42,8 +42,8 @@
 #define _MEM_UTILS_H_
 #include "mxc_config.h"
 /**
- * @defgroup    mem_utils Memory Utility Functions
- * @ingroup     devicelibs
+ * @defgroup    mem_utils Memory Utility Functions 
+ * @ingroup     devicelibs 
  * @{
  */
 /* **** Definitions **** */

@@ -40,17 +40,17 @@
  ******************************************************************************/
 
 /***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "led.h"
 #include "board.h"
 #include "gcr_regs.h"
-#include "led.h"
 #include "mcr_regs.h"
-#include "mxc_device.h"
-#include <stdint.h>
-#include <stdio.h>
 
 /***** Definitions *****/
 #define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
+#define TOSTRING(x)  STRINGIFY(x)
 
 /***** Globals *****/
 volatile uint32_t badData;
@@ -66,7 +66,7 @@ uint32_t ramTop = (MXC_SRAM_MEM_BASE + (MXC_SRAM_MEM_SIZE * 0.8));
 
 void ECC_IRQHandler(void)
 {
-    eccErr = MXC_GCR->eccerr;
+    eccErr  = MXC_GCR->eccerr;
     eccDErr = MXC_GCR->eccced;
     eccAddr = MXC_GCR->eccaddr;
     eccFlag = 1;
@@ -88,8 +88,7 @@ int main(void)
     printf("and ensure that the ECC interrupts on an error\n");
     printf("when the corrupted address is read\n\n");
 
-    // Clear all ECC Errors -- write-1-to-clear (cast is necessary to avoid compiler warning about
-    // assigning value to itself)
+    // Clear all ECC Errors -- write-1-to-clear (cast is necessary to avoid compiler warning about assigning value to itself)
     MXC_GCR->eccerr = (volatile uint32_t)MXC_GCR->eccerr;
     MXC_GCR->eccced = (volatile uint32_t)MXC_GCR->eccced;
 
@@ -170,11 +169,12 @@ int main(void)
     }
 
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail,
-        test_fail ? "FAIL!" : "Ok");
+           test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
     // Return the ECC back to its POR state (disabled)
     MXC_MCR->eccen &= ~MXC_F_MCR_ECCEN_RAM0;
 
-    while (1) { }
+    while (1)
+        ;
 }

@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -41,9 +41,9 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
@@ -56,10 +56,10 @@
 #define WITH_WRITE_TEST 0 // set it to test write test
 
 // OTP Address
-#define OTP_MAXIM_AREA MXC_INFO0_MEM_BASE
+#define OTP_MAXIM_AREA      MXC_INFO0_MEM_BASE
 #define OTP_MAXIM_AREA_SIZE MXC_INFO_MEM_SIZE
 
-#define OTP_USER_AREA MXC_INFO1_MEM_BASE
+#define OTP_USER_AREA      MXC_INFO1_MEM_BASE
 #define OTP_USER_AREA_SIZE MXC_INFO_MEM_SIZE
 
 /***** Static Functions *****/
@@ -94,9 +94,9 @@ static void dump_section(unsigned int address, unsigned int length)
 #if WITH_WRITE_TEST
 static int write_test(void)
 {
-    int ret = 0;
-    uint32_t test_val = 0x11223344;
-    volatile uint32_t* addr = (uint32_t*)OTP_USER_AREA;
+    int ret                     = 0;
+    uint32_t test_val           = 0x11223344;
+    volatile uint32_t* addr     = (uint32_t*)OTP_USER_AREA;
     volatile uint32_t* end_addr = (uint32_t*)(OTP_USER_AREA + 1024);
 
     // unlock otp

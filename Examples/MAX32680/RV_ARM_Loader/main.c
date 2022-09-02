@@ -34,19 +34,19 @@
 /**
  * @file    main.c
  * @brief   A basic getting started program for the RISCV, run from the ARM core.
- * @details RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV
- debugger pins, and start the RISCV core.
+ * @details RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins, 
+            and start the RISCV core.
  */
 
 /***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "mxc_delay.h"
+#include "mxc_sys.h"
+#include "mxc_pins.h"
 #include "gpio.h"
 #include "lp.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include <stdint.h>
-#include <stdio.h>
 
 /***** Definitions *****/
 
@@ -72,5 +72,7 @@ int main(void)
     MXC_Delay(MXC_DELAY_SEC(5));
 
     /* Enter LPM */
-    while (1) { MXC_LP_EnterSleepMode(); }
+    while (1) {
+        MXC_LP_EnterSleepMode();
+    }
 }

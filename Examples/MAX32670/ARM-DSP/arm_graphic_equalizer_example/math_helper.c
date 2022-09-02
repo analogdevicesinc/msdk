@@ -1,52 +1,52 @@
 /* ----------------------------------------------------------------------
- * Copyright (C) 2010-2012 ARM Limited. All rights reserved.
- *
- * $Date:        17. January 2013
- * $Revision: 	V1.4.0  b
- *
- * Project: 	    CMSIS DSP Library
- *
- * Title:	    math_helper.c
- *
- * Description:	Definition of all helper functions required.
- *
- * Target Processor: Cortex-M4/Cortex-M3
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
- *   - Neither the name of ARM LIMITED nor the names of its contributors
- *     may be used to endorse or promote products derived from this
- *     software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * -------------------------------------------------------------------- */
+* Copyright (C) 2010-2012 ARM Limited. All rights reserved.
+*
+* $Date:        17. January 2013
+* $Revision: 	V1.4.0  b
+*
+* Project: 	    CMSIS DSP Library
+*
+* Title:	    math_helper.c
+*
+* Description:	Definition of all helper functions required.
+*
+* Target Processor: Cortex-M4/Cortex-M3
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*   - Redistributions of source code must retain the above copyright
+*     notice, this list of conditions and the following disclaimer.
+*   - Redistributions in binary form must reproduce the above copyright
+*     notice, this list of conditions and the following disclaimer in
+*     the documentation and/or other materials provided with the
+*     distribution.
+*   - Neither the name of ARM LIMITED nor the names of its contributors
+*     may be used to endorse or promote products derived from this
+*     software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+* -------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------
- *		Include standard header files
- * -------------------------------------------------------------------- */
+*		Include standard header files
+* -------------------------------------------------------------------- */
 #include <math.h>
 
 /* ----------------------------------------------------------------------
- *		Include project header files
- * -------------------------------------------------------------------- */
+*		Include project header files
+* -------------------------------------------------------------------- */
 #include "math_helper.h"
 
 /**
@@ -114,7 +114,9 @@ void arm_provide_guard_bits_q15(q15_t* input_buf, uint32_t blockSize, uint32_t g
 {
     uint32_t i;
 
-    for (i = 0; i < blockSize; i++) { input_buf[i] = input_buf[i] >> guard_bits; }
+    for (i = 0; i < blockSize; i++) {
+        input_buf[i] = input_buf[i] >> guard_bits;
+    }
 }
 
 /**
@@ -157,7 +159,7 @@ uint32_t arm_compare_fixed_q15(q15_t* pIn, q15_t* pOut, uint32_t numSamples)
     uint32_t maxDiff = 0;
 
     for (i = 0; i < numSamples; i++) {
-        diff = pIn[i] - pOut[i];
+        diff     = pIn[i] - pOut[i];
         diffCrnt = (diff > 0) ? diff : -diff;
 
         if (diffCrnt > maxDiff) {
@@ -183,7 +185,7 @@ uint32_t arm_compare_fixed_q31(q31_t* pIn, q31_t* pOut, uint32_t numSamples)
     uint32_t maxDiff = 0;
 
     for (i = 0; i < numSamples; i++) {
-        diff = pIn[i] - pOut[i];
+        diff     = pIn[i] - pOut[i];
         diffCrnt = (diff > 0) ? diff : -diff;
 
         if (diffCrnt > maxDiff) {
@@ -208,7 +210,9 @@ void arm_provide_guard_bits_q31(q31_t* input_buf, uint32_t blockSize, uint32_t g
 {
     uint32_t i;
 
-    for (i = 0; i < blockSize; i++) { input_buf[i] = input_buf[i] >> guard_bits; }
+    for (i = 0; i < blockSize; i++) {
+        input_buf[i] = input_buf[i] >> guard_bits;
+    }
 }
 
 /**
@@ -225,7 +229,9 @@ void arm_provide_guard_bits_q7(q7_t* input_buf, uint32_t blockSize, uint32_t gua
 {
     uint32_t i;
 
-    for (i = 0; i < blockSize; i++) { input_buf[i] = input_buf[i] >> guard_bits; }
+    for (i = 0; i < blockSize; i++) {
+        input_buf[i] = input_buf[i] >> guard_bits;
+    }
 }
 
 /**
@@ -264,7 +270,9 @@ void arm_apply_guard_bits(float32_t* pIn, uint32_t numSamples, uint32_t guard_bi
 {
     uint32_t i;
 
-    for (i = 0; i < numSamples; i++) { pIn[i] = pIn[i] * arm_calc_2pow(guard_bits); }
+    for (i = 0; i < numSamples; i++) {
+        pIn[i] = pIn[i] * arm_calc_2pow(guard_bits);
+    }
 }
 
 /**
@@ -276,7 +284,9 @@ uint32_t arm_calc_2pow(uint32_t numShifts)
 {
     uint32_t i, val = 1;
 
-    for (i = 0; i < numShifts; i++) { val = val * 2; }
+    for (i = 0; i < numShifts; i++) {
+        val = val * 2;
+    }
 
     return (val);
 }

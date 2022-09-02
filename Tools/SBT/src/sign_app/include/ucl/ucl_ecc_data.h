@@ -56,7 +56,7 @@ extern "C" {
  * os[0] = PC = 00 @n
  * @ingroup UCL_ECC
  */
-static u8 _infinity[1] = { 0x00 };
+static u8 _infinity[1] = {0x00};
 
 /* ========================================================================== */
 
@@ -110,4 +110,4 @@ int __API__ ucl_data_os2point(ucl_ecc_point_st* P, u8* os, u32 os_len, ucl_ecc_c
 #endif /* _ cplusplus  */
 
 #endif /*UCL_ECC_DATA_H_*/
-#endif // mips
+#endif //mips

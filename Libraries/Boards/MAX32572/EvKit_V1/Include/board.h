@@ -39,8 +39,8 @@
  * @brief   Board support package API.
  */
 
-#include "spixf.h"
 #include <stdio.h>
+#include "spixf.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#define LED_ON  0 /// Active state of LEDs
 
 #ifndef MX25_BAUD
 #define MX25_BAUD 3000000
@@ -96,7 +96,7 @@ int Console_PrepForSleep(void);
 
 /**
  * \brief   Initialize the SPI peripheral to use for MX25
- * \returns #E_NO_ERROR if everything is successful
+  * \returns #E_NO_ERROR if everything is successful
  */
 int MX25_Board_Init(void);
 
@@ -119,8 +119,8 @@ int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_wi
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 
-int MX25_Board_Write(
-    const uint8_t* write, unsigned len, unsigned deassert, mxc_spixf_width_t width);
+int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert,
+                     mxc_spixf_width_t width);
 
 /**
  * \brief   Send clocks on SCLK.

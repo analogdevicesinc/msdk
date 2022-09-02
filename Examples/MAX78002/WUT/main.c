@@ -38,11 +38,11 @@
  */
 
 /***** Includes *****/
-#include "mxc.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "mxc_delay.h"
+#include "mxc.h"
 
 /***** Definitions *****/
 #define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE
@@ -65,14 +65,18 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed) { }
+        while (!buttonPressed)
+            ;
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
+    for (tmp = 0; tmp < 0x80000; tmp++) {
+        __NOP();
+    }
 
     // Wait for serial transactions to complete.
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
 }
 
 void WUT_IRQHandler()
@@ -96,13 +100,13 @@ int main(void)
     MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
 
     // config structure for one shot timer to trigger in a number of ticks
-    cfg.mode = MXC_WUT_MODE_ONESHOT;
+    cfg.mode    = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
 
     // Init WUT
     MXC_WUT_Init(MXC_WUT_PRES_1);
 
-    // Config WUT
+    //Config WUT
     MXC_WUT_Config(&cfg);
     MXC_LP_EnableWUTAlarmWakeup();
 

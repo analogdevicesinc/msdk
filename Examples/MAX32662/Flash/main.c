@@ -39,16 +39,16 @@
  */
 
 /***** Includes *****/
-#include "flc.h"
-#include "flc_regs.h"
-#include "gcr_regs.h"
-#include "icc.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "nvic_table.h"
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "nvic_table.h"
+#include "flc.h"
+#include "icc.h"
+#include "flc_regs.h"
+#include "gcr_regs.h"
 
 /***** Definitions *****/
 #define TESTSIZE 8192 // Page size
@@ -91,7 +91,7 @@ int flash_fill(uint32_t address, uint32_t size, uint32_t data)
         // Write remaining bytes in a 32-bit unit
 
         uint32_t last_word = 0xffffffff;
-        uint32_t mask = 0xff;
+        uint32_t mask      = 0xff;
 
         while (size > 0) {
             last_word &= (data | ~mask);
@@ -120,7 +120,7 @@ int flash_verify(uint32_t address, uint32_t length, uint8_t* data)
     for (ptr = (uint8_t*)address; ptr < (uint8_t*)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
-                (unsigned int)*data);
+                   (unsigned int)*data);
             return E_UNKNOWN;
         }
     }
@@ -219,9 +219,9 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
 
     // Align start and end on page boundaries, calculate length of data to buffer
     start_align = start - (start % MXC_FLASH_PAGE_SIZE);
-    start_len = (start % MXC_FLASH_PAGE_SIZE);
-    end_align = end - (end % MXC_FLASH_PAGE_SIZE);
-    end_len = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
+    start_len   = (start % MXC_FLASH_PAGE_SIZE);
+    end_align   = end - (end % MXC_FLASH_PAGE_SIZE);
+    end_len     = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
 
     // Make sure the length of buffer is sufficient
     if ((length < start_len) || (length < end_len)) {
@@ -315,7 +315,7 @@ int main(void)
     // Clear and enable flash programming interrupts
     MXC_FLC_EnableInt((MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_AF_IE));
     isr_flags = 0;
-    isr_cnt = 0;
+    isr_cnt   = 0;
 
     error_status = MXC_FLC_MassErase();
 
@@ -346,7 +346,9 @@ int main(void)
     printf("Size of testdata : %d\n", sizeof(testdata));
 
     // Initializing Test Data
-    for (i = 0; i < DATASIZE; i++) { testdata[i] = i; }
+    for (i = 0; i < DATASIZE; i++) {
+        testdata[i] = i;
+    }
 
     MXC_ICC_Disable();
     i = 0;
@@ -354,7 +356,7 @@ int main(void)
     for (testaddr = (MXC_FLASH_MEM_BASE); i < TESTSIZE; testaddr += 4) {
         // Clear and enable flash programming interrupts
         isr_flags = 0;
-        isr_cnt = 0;
+        isr_cnt   = 0;
 
         // Write a word
         if (MXC_FLC_Write(testaddr, 4, &testdata[i % DATASIZE]) != E_NO_ERROR) {
@@ -385,7 +387,7 @@ int main(void)
         i++;
     }
 
-    // Page Erase
+    //Page Erase
     MXC_FLC_PageErase(MXC_FLASH_MEM_BASE);
 
     if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_PAGE_SIZE)) {
@@ -395,10 +397,9 @@ int main(void)
         fail += 1;
     }
 
-    // Erase parital pages or wide range of pages and keep the data on the page not inbetween start
-    // and end.
+    // Erase parital pages or wide range of pages and keep the data on the page not inbetween start and end.
     start = (MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE + 0x500);
-    end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
+    end   = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
     flash_erase(start, end, buffer, 0x1000);
 
     if (check_erased(start, ((end - start) - 0x1000))) {
@@ -418,7 +419,8 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) { }
+    while (1)
+        ;
 
     return 0;
 }

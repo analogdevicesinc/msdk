@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -45,27 +45,27 @@ static void display_page1(void);
 static void display_page2(void);
 static void display_page3(void);
 
-static ScreenFunc info_screens[] = { display_page1, display_page2, display_page3 };
-static int screen_index = 0;
+static ScreenFunc info_screens[] = {display_page1, display_page2, display_page3};
+static int screen_index          = 0;
 
 static text_t text_msg[] = {
-    { (char*)"INFORMATION", 11 },
-    { (char*)"Scroll through pages", 20 },
+    {(char*)"INFORMATION", 11},
+    {(char*)"Scroll through pages", 20},
     // pages 1
-    { (char*)"Cortex M4 @ 150MHz", 18 },
-    { (char*)"1MB Flash, 760KB SRAM", 21 },
-    { (char*)"TFT, ISO7816 PHY, MSR", 21 },
+    {(char*)"Cortex M4 @ 150MHz", 18},
+    {(char*)"1MB Flash, 760KB SRAM", 21},
+    {(char*)"TFT, ISO7816 PHY, MSR", 21},
     // pages 2
-    { (char*)"6 dynamic sensor pairs", 22 },
-    { (char*)"Hardware crypto blocks", 22 },
-    { (char*)"ECDSA Bootloader", 16 },
+    {(char*)"6 dynamic sensor pairs", 22},
+    {(char*)"Hardware crypto blocks", 22},
+    {(char*)"ECDSA Bootloader", 16},
     // pages 3
-    { (char*)"EMV-L1 stack", 12 },
-    { (char*)"Cryptographic library", 21 },
-    { (char*)"FreeRTOS OS", 11 },
+    {(char*)"EMV-L1 stack", 12},
+    {(char*)"Cryptographic library", 21},
+    {(char*)"FreeRTOS OS", 11},
 };
 
-static area_t area_cleanMSG = { 0, 70, 320, 115 };
+static area_t area_cleanMSG = {0, 70, 320, 115};
 
 /********************************* Static Functions **************************/
 static void display_page1(void)
@@ -76,11 +76,11 @@ static void display_page1(void)
     MXC_TFT_ShowImage(13, 108, check_bmp);
     MXC_TFT_ShowImage(13, 143, check_bmp);
     MXC_TFT_PrintFont(47, 75, urw_gothic_16_white_bg_grey, &text_msg[2],
-        NULL); // "Cortex M3 @ 150MHz",18
+                      NULL); // "Cortex M3 @ 150MHz",18
     MXC_TFT_PrintFont(47, 109, urw_gothic_16_white_bg_grey, &text_msg[3],
-        NULL); // "1MB Flash, 760KB SRAM",20
+                      NULL); // "1MB Flash, 760KB SRAM",20
     MXC_TFT_PrintFont(47, 145, urw_gothic_16_white_bg_grey, &text_msg[4],
-        NULL); // "TFT, ISO7817 PHY, MSR",19
+                      NULL); // "TFT, ISO7817 PHY, MSR",19
 }
 
 static void display_page2(void)
@@ -91,11 +91,11 @@ static void display_page2(void)
     MXC_TFT_ShowImage(13, 108, check_bmp);
     MXC_TFT_ShowImage(13, 143, check_bmp);
     MXC_TFT_PrintFont(47, 75, urw_gothic_16_white_bg_grey, &text_msg[5],
-        NULL); // "6 dynamic sensor pairs",22
+                      NULL); // "6 dynamic sensor pairs",22
     MXC_TFT_PrintFont(47, 109, urw_gothic_16_white_bg_grey, &text_msg[6],
-        NULL); // "Hardware crypto blocks",22
+                      NULL); // "Hardware crypto blocks",22
     MXC_TFT_PrintFont(47, 145, urw_gothic_16_white_bg_grey, &text_msg[7],
-        NULL); //"ECDSA Bootloader",16
+                      NULL); //"ECDSA Bootloader",16
 }
 
 static void display_page3(void)
@@ -107,9 +107,9 @@ static void display_page3(void)
     MXC_TFT_ShowImage(13, 143, check_bmp);
     MXC_TFT_PrintFont(47, 75, urw_gothic_16_white_bg_grey, &text_msg[8], NULL); //"EMV-L1 stack",12
     MXC_TFT_PrintFont(47, 109, urw_gothic_16_white_bg_grey, &text_msg[9],
-        NULL); //"Cryptographic library",21
+                      NULL); //"Cryptographic library",21
     MXC_TFT_PrintFont(47, 145, urw_gothic_16_white_bg_grey, &text_msg[10],
-        NULL); // "FreeRTOS OS",11
+                      NULL); // "FreeRTOS OS",11
 }
 
 static int init(void)
@@ -118,14 +118,14 @@ static int init(void)
 
     MXC_TFT_PrintFont(96, 12, urw_gothic_16_bleu_bg_grey, &text_msg[0], NULL); // "INFORMATION"
     MXC_TFT_PrintFont(79, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
-        NULL); // "Scroll through pages",20
+                      NULL); // "Scroll through pages",20
     MXC_TFT_ShowImage(33, 12, integrated_only_small_bmp);
     MXC_TFT_ShowImage(12, 191, arrow_left_bmp);
     MXC_TFT_ShowImage(135, 191, home_bmp);
     MXC_TFT_ShowImage(259, 191, arrow_right_bmp);
 
     MXC_TS_RemoveAllButton();
-    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), KEY_C); // Home
+    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), KEY_C); //Home
     MXC_TS_AddButton(12, 191, (12 + 48), (191 + 39), KEY_A);
     MXC_TS_AddButton(259, 191, (259 + 48), (191 + 39), KEY_B);
 
@@ -139,29 +139,29 @@ static int init(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-    case KEY_A:
-        if (--screen_index < 0) {
-            screen_index = (ARRAY_SIZE(info_screens) - 1);
-        }
-        info_screens[screen_index]();
-        break;
-    case KEY_B:
-        if (++screen_index >= (int)ARRAY_SIZE(info_screens)) {
-            screen_index = 0;
-        }
-        info_screens[screen_index]();
-        break;
-    case KEY_C:
-        state_set_current(get_home_state());
-        break;
-    default:
-        break;
+        case KEY_A:
+            if (--screen_index < 0) {
+                screen_index = (ARRAY_SIZE(info_screens) - 1);
+            }
+            info_screens[screen_index]();
+            break;
+        case KEY_B:
+            if (++screen_index >= (int)ARRAY_SIZE(info_screens)) {
+                screen_index = 0;
+            }
+            info_screens[screen_index]();
+            break;
+        case KEY_C:
+            state_set_current(get_home_state());
+            break;
+        default:
+            break;
     }
 
     return 0;
 }
 
-static State g_state = { "info", init, key_process, NULL, 0 };
+static State g_state = {"info", init, key_process, NULL, 0};
 
 /********************************* Public Functions **************************/
 State* get_info_state(void)

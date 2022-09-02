@@ -2,13 +2,12 @@
 /**
  * @file        main.c
  * @brief       Semaphore example
- * @details     Press button to overwrite a global variable. If someone is already writing to it,
- * deny the right
+ * @details     Press button to overwrite a global variable. If someone is already writing to it, deny the right
  */
 
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -42,8 +41,8 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
@@ -51,8 +50,8 @@
 #include "tft_ssd2119.h"
 
 /***** Definitions *****/
-#define KEY_1 1 // P(3.07)
-#define KEY_2 2 // P(3.06)
+#define KEY_1 1 //P(3.07)
+#define KEY_2 2 //P(3.06)
 
 #define BUTTON_SIZE_X 42 //
 #define BUTTON_SIZE_Y 41 //
@@ -68,9 +67,9 @@ static void PB_AWrites(void)
 {
     int retval;
 
-    // First check if A is already writing
+    //First check if A is already writing
     if (!A_active) {
-        // Check if B is writing
+        //Check if B is writing
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_NO_ERROR) {
@@ -88,7 +87,7 @@ static void PB_AWrites(void)
         }
     } else {
         A_active = !A_active;
-        // Semaphore should be busy...
+        //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_BUSY) {
@@ -110,9 +109,9 @@ static void PB_BWrites(void)
 {
     int retval;
 
-    // First check if B is already writing
+    //First check if B is already writing
     if (!B_active) {
-        // Check if A is writing
+        //Check if A is writing
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_NO_ERROR) {
@@ -130,7 +129,7 @@ static void PB_BWrites(void)
         }
     } else {
         B_active = !B_active;
-        // Semaphore should be busy...
+        //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_BUSY) {
@@ -212,16 +211,16 @@ int main(void)
 
         if (key > 0) {
             switch (key) {
-            case KEY_1:
-                PB_AWrites();
-                break;
+                case KEY_1:
+                    PB_AWrites();
+                    break;
 
-            case KEY_2:
-                PB_BWrites();
-                break;
+                case KEY_2:
+                    PB_BWrites();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }

@@ -32,39 +32,39 @@
  **************************************************************************** */
 
 #include "tmr.h"
-#include "tmr_common.h"
 #include "tmr_reva.h"
+#include "tmr_common.h"
 
 void MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
-    // enable peripheral clock and configure gpio pins
+    //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
-        MXC_GPIO_Config(&gpio_cfg_tmr0);
-        break;
+        case 0:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR0);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+            MXC_GPIO_Config(&gpio_cfg_tmr0);
+            break;
 
-    case 1:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR1);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
-        MXC_GPIO_Config(&gpio_cfg_tmr1);
-        break;
+        case 1:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR1);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
+            MXC_GPIO_Config(&gpio_cfg_tmr1);
+            break;
 
-    case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR2);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
-        MXC_GPIO_Config(&gpio_cfg_tmr2);
-        break;
+        case 2:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR2);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
+            MXC_GPIO_Config(&gpio_cfg_tmr2);
+            break;
 
-    case 3:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR3);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
-        MXC_GPIO_Config(&gpio_cfg_tmr3);
-        break;
+        case 3:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR3);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
+            MXC_GPIO_Config(&gpio_cfg_tmr3);
+            break;
     }
 
     MXC_TMR_RevA_Init((mxc_tmr_reva_regs_t*)tmr, cfg);
@@ -80,21 +80,21 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     // System settigns
     // disable peripheral clock
     switch (tmr_id) {
-    case 0:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
-        break;
+        case 0:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
+            break;
 
-    case 1:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
-        break;
+        case 1:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR1);
+            break;
 
-    case 2:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
-        break;
+        case 2:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR2);
+            break;
 
-    case 3:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR3);
-        break;
+        case 3:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR3);
+            break;
     }
 }
 

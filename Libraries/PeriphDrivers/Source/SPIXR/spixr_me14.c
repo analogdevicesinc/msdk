@@ -32,14 +32,14 @@
  *************************************************************************** */
 
 /****** Includes *******/
-#include "mxc_assert.h"
+#include <stddef.h>
+#include <stdint.h>
 #include "mxc_device.h"
+#include "mxc_assert.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "spixr.h"
 #include "spixr_reva.h"
-#include <stddef.h>
-#include <stdint.h>
 
 /****** Functions ******/
 int MXC_SPIXR_ReadRXFIFO(uint8_t* buf, int len)
@@ -114,14 +114,14 @@ int MXC_SPIXR_GetRXFIFOCount(void)
 
 int MXC_SPIXR_SetWidth(mxc_spixr_width_t width)
 {
-    return MXC_SPIXR_RevA_SetWidth(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, (mxc_spixr_reva_width_t)width);
+    return MXC_SPIXR_RevA_SetWidth((mxc_spixr_reva_regs_t*)MXC_SPIXR,
+                                   (mxc_spixr_reva_width_t)width);
 }
 
 int MXC_SPIXR_SetSPIMode(mxc_spixr_mode_t mode)
 {
-    return MXC_SPIXR_RevA_SetSPIMode(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, (mxc_spixr_reva_mode_t)mode);
+    return MXC_SPIXR_RevA_SetSPIMode((mxc_spixr_reva_regs_t*)MXC_SPIXR,
+                                     (mxc_spixr_reva_mode_t)mode);
 }
 
 int MXC_SPIXR_SetSSPolarity(int activeLow)
@@ -129,11 +129,11 @@ int MXC_SPIXR_SetSSPolarity(int activeLow)
     return MXC_SPIXR_RevA_SetSSPolarity((mxc_spixr_reva_regs_t*)MXC_SPIXR, activeLow);
 }
 
-void MXC_SPIXR_SetSSTiming(
-    unsigned int ssIActDelay, unsigned int postActive, unsigned int preActive)
+void MXC_SPIXR_SetSSTiming(unsigned int ssIActDelay, unsigned int postActive,
+                           unsigned int preActive)
 {
-    MXC_SPIXR_RevA_SetSSTiming(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, ssIActDelay, postActive, preActive);
+    MXC_SPIXR_RevA_SetSSTiming((mxc_spixr_reva_regs_t*)MXC_SPIXR, ssIActDelay, postActive,
+                               preActive);
 }
 
 int MXC_SPIXR_SetFrequency(int hz)
@@ -234,7 +234,7 @@ int MXC_SPIXR_Init(mxc_spixr_cfg_t* cfg)
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIPD);
 
-    MXC_GPIO_Config(&gpio_cfg_spixr); // Configure GPIO for spid
+    MXC_GPIO_Config(&gpio_cfg_spixr); //Configure GPIO for spid
 
     return MXC_SPIXR_RevA_Init((mxc_spixr_reva_regs_t*)MXC_SPIXR, (mxc_spixr_reva_cfg_t*)cfg);
 }

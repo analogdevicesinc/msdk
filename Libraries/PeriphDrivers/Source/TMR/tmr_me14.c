@@ -32,57 +32,63 @@
  **************************************************************************** */
 
 #include "tmr.h"
-#include "tmr_common.h"
 #include "tmr_reva.h"
+#include "tmr_common.h"
 
 void MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
-    // enable peripheral clock and configure gpio pins
+    //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER0);
-        while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER0) { }
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T0);
-        MXC_GPIO_Config(&gpio_cfg_tmr0);
-        break;
+        case 0:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER0);
+            while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER0)
+                ;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T0);
+            MXC_GPIO_Config(&gpio_cfg_tmr0);
+            break;
 
-    case 1:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER1);
-        while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER1) { }
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T1);
-        MXC_GPIO_Config(&gpio_cfg_tmr1);
-        break;
+        case 1:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER1);
+            while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER1)
+                ;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T1);
+            MXC_GPIO_Config(&gpio_cfg_tmr1);
+            break;
 
-    case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER2);
-        while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER2) { }
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T2);
-        MXC_GPIO_Config(&gpio_cfg_tmr2);
-        break;
+        case 2:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER2);
+            while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER2)
+                ;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T2);
+            MXC_GPIO_Config(&gpio_cfg_tmr2);
+            break;
 
-    case 3:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER3);
-        while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER3) { }
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T3);
-        MXC_GPIO_Config(&gpio_cfg_tmr3);
-        break;
+        case 3:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER3);
+            while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER3)
+                ;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T3);
+            MXC_GPIO_Config(&gpio_cfg_tmr3);
+            break;
 
-    case 4:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER4);
-        while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER4) { }
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T4);
-        MXC_GPIO_Config(&gpio_cfg_tmr4);
-        break;
+        case 4:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER4);
+            while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER4)
+                ;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T4);
+            MXC_GPIO_Config(&gpio_cfg_tmr4);
+            break;
 
-    case 5:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER5);
-        while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER5) { }
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T5);
-        MXC_GPIO_Config(&gpio_cfg_tmr5);
-        break;
+        case 5:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TIMER5);
+            while (MXC_GCR->rstr0 & MXC_F_GCR_RSTR0_TIMER5)
+                ;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_T5);
+            MXC_GPIO_Config(&gpio_cfg_tmr5);
+            break;
     }
 
     MXC_TMR_RevA_Init((mxc_tmr_reva_regs_t*)tmr, cfg);
@@ -98,29 +104,29 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     // System settigns
     // disable peripheral clock
     switch (tmr_id) {
-    case 0:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T0);
-        break;
+        case 0:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T0);
+            break;
 
-    case 1:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T1);
-        break;
+        case 1:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T1);
+            break;
 
-    case 2:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T2);
-        break;
+        case 2:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T2);
+            break;
 
-    case 3:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T3);
-        break;
+        case 3:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T3);
+            break;
 
-    case 4:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T4);
-        break;
+        case 4:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T4);
+            break;
 
-    case 5:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T5);
-        break;
+        case 5:
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_T5);
+            break;
     }
 }
 

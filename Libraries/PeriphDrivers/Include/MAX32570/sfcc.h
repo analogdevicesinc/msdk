@@ -41,9 +41,9 @@
 #define _SFCC_H_
 
 /* **** Includes **** */
-#include "icc.h"
-#include "icc_regs.h"
 #include <stdint.h>
+#include "icc_regs.h"
+#include "icc.h"
 
 #ifdef __cplusplus
 extern "C" {

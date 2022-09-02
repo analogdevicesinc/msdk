@@ -41,9 +41,9 @@
  * @brief   Enumeration type for the EMCC Cache ID Register
  */
 typedef enum {
-    EMCC_REVA_CACHE_ID_RELNUM, ///< Release Number
+    EMCC_REVA_CACHE_ID_RELNUM,  ///< Release Number
     EMCC_REVA_CACHE_ID_PARTNUM, ///< Part Number
-    EMCC_REVA_CACHE_ID_CCHID ///< Cache ID
+    EMCC_REVA_CACHE_ID_CCHID    ///< Cache ID
 } mxc_emcc_reva_info_t;
 
 /***** Function Prototypes *****/

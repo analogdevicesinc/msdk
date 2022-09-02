@@ -5,7 +5,7 @@
 
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -57,23 +57,23 @@ extern "C" {
  * @{
  */
 
-#include "iso14443_3_common.h"
 #include <stdint.h>
+#include "iso14443_3_common.h"
 
 /**
- * @defgroup NFC_PCD_EMV_LVL1_TYPEB_INIT_DEFINES Type B Initialization Defines
- *
- * EMV Level 1 Type B defines for initialization and anticollision
- *
- * @{
- */
+  * @defgroup NFC_PCD_EMV_LVL1_TYPEB_INIT_DEFINES Type B Initialization Defines
+  *
+  * EMV Level 1 Type B defines for initialization and anticollision
+  *
+  * @{
+  */
 #define PUPI_SIZE (4) /**< Length of PUPI Pseudo-Unique PICC Identifier */
 
 #define ISO3B_ATQB_MINLEN 12 /**< Min allowed number of bytes in ATQB response */
 #define ISO3B_ATQB_MAXLEN 13 /**< Max allowed number of bytes in ATQB response */
 
 #define ISO3B_ATQB_BYTE1 0x50 /**< ATQB byte 1 should always be this, used for error checks */
-/** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEB_ENUM_DEFINES */
+/** @} */                     /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEB_ENUM_DEFINES */
 
 /**
  * @brief Send WUPB
@@ -95,8 +95,8 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
  * @brief Sends ATTRIB command, and captures response
  *
  * Creates and sends the ATTRIB command to the PICC and looks for the correct response
- * Creates the ATTRIB command starting with 0x1D, then adds 4 bytes of PUPI, then adds the 4
- * parameters and finally adds the info supplied in *inf
+ * Creates the ATTRIB command starting with 0x1D, then adds 4 bytes of PUPI, then adds the 4 parameters
+ * and finally adds the info supplied in *inf
  *
  * @param[in] pupi  Pointer to 4 bytes of PUPI used to create the ATTRIB command
  * @param[in] para1 First of 4 parameter bytes used to create the ATTRIB command
@@ -119,12 +119,11 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
  * @retval  #ISO14443_3_ERR_COLLISION
  * @retval  #ISO14443_3_ERR_CONTAINS_HIGH_INF ATTRIB response received containing HIGH INF data
  * @retval  #ISO14443_3_ERR_TIMEOUT No response seen within timeout
- * @retval  #ISO14443_3_ERR_EARLY_RESPONSE Response from PICC comes too soon after the ATTRIB
- * command is sent
+ * @retval  #ISO14443_3_ERR_EARLY_RESPONSE Response from PICC comes too soon after the ATTRIB command is sent
  */
 int32_t iso_14443_3b_cmd_attrib(uint8_t* pupi, uint8_t para1, uint8_t para2, uint8_t para3,
-    uint8_t para4, uint8_t* inf, uint32_t* inf_len, uint32_t timeout, uint8_t* attrib_resp,
-    int32_t* attrib_resp_len);
+                                uint8_t para4, uint8_t* inf, uint32_t* inf_len, uint32_t timeout,
+                                uint8_t* attrib_resp, int32_t* attrib_resp_len);
 
 /**
  * @brief Halt PICC

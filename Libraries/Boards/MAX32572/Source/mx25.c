@@ -39,10 +39,10 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mx25.h"
+#include <string.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include <string.h>
+#include "mx25.h"
 // #include "spi.h"
 #include "board.h"
 #include "spixf.h"
@@ -192,7 +192,8 @@ int MX25_Quad(int enable)
 
     MX25_Read_SR(&pre_buf);
 
-    while (flash_busy()) { }
+    while (flash_busy()) {
+    }
 
     if (enable) {
         pre_buf |= MX25_QE_MASK;
@@ -206,11 +207,13 @@ int MX25_Quad(int enable)
 
     MX25_Write_SR(pre_buf);
 
-    while (flash_busy()) { }
+    while (flash_busy()) {
+    }
 
     MX25_Read_SR(&post_buf);
 
-    while (flash_busy()) { }
+    while (flash_busy()) {
+    }
 
     if (enable) {
         if (!(post_buf & MX25_QE_MASK)) {
@@ -245,7 +248,8 @@ int MX25_Write_Protect(int enable)
 
     MX25_Write_SR(pre_buf);
 
-    while (flash_busy()) { }
+    while (flash_busy()) {
+    }
 
     MX25_Read_SR(&post_buf);
 
@@ -409,7 +413,7 @@ int MX25_Program_Page(uint32_t address, uint8_t* tx_buf, uint32_t tx_len, mxc_sp
 
         // if there is more to write
         if (tx_len > 0) {
-            address += len; // calculate new starting flash_address
+            address += len;     // calculate new starting flash_address
             pWrite_Data += len; // and source data address
         }
 
@@ -473,18 +477,18 @@ int MX25_Erase(uint32_t address, MX25_Erase_t size)
     }
 
     switch (size) {
-    case MX25_Erase_4K:
-    default:
-        cmd[0] = MX25_CMD_4K_ERASE;
-        break;
+        case MX25_Erase_4K:
+        default:
+            cmd[0] = MX25_CMD_4K_ERASE;
+            break;
 
-    case MX25_Erase_32K:
-        cmd[0] = MX25_CMD_32K_ERASE;
-        break;
+        case MX25_Erase_32K:
+            cmd[0] = MX25_CMD_32K_ERASE;
+            break;
 
-    case MX25_Erase_64K:
-        cmd[0] = MX25_CMD_64K_ERASE;
-        break;
+        case MX25_Erase_64K:
+            cmd[0] = MX25_CMD_64K_ERASE;
+            break;
     }
 
     cmd[1] = (address >> 16) & 0xFF;
@@ -518,7 +522,7 @@ int MX25_Read_SR(uint8_t* buf)
 /* ************************************************************************* */
 int MX25_Write_SR(uint8_t value)
 {
-    uint8_t cmd[2] = { MX25_CMD_WRITE_SR, value };
+    uint8_t cmd[2] = {MX25_CMD_WRITE_SR, value};
 
     return write_reg(cmd, 2);
 }

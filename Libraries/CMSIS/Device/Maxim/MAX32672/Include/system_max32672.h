@@ -58,13 +58,13 @@ extern "C" {
 #define EXTCLK_FREQ 75000000
 #endif
 
-/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip.
+/* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
          Update if use of this oscillator requires precise timing.*/
 /* NOTE: INRO was previously named NANORING */
 #ifndef INRO_FREQ
 #define INRO_FREQ 80000
 #endif
-// NOTE: IPO clock bit is documented as 96MHz, but SR says this will be 100.
+//NOTE: IPO clock bit is documented as 96MHz, but SR says this will be 100.
 #ifndef IPO_FREQ
 #define IPO_FREQ 100000000
 #endif

@@ -40,9 +40,9 @@
 #define _SFE_H_
 
 /* **** Includes **** */
-#include "mxc_sys.h"
 #include "sfe_regs.h"
 #include "spi_regs.h"
+#include "mxc_sys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,56 +58,56 @@ extern "C" {
 
 /**
  * @brief   Initialize serial flash emulator
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_Init(void);
 
 /**
  * @brief   Shutdown serial flash emulator
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_Shutdown(void);
 
 /**
  * @brief   Enable Flash Read
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_ReadEnable(void);
 
 /**
- * @brief   Enable Flash Write
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * @brief   Enable Flash Write 
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_WriteEnable(void);
 
 /**
  * @brief   Set Flash Base and Top address
- *
+ * 
  * @param   baseAdd     Base address of Flash region
  * @param   topAdd      Top address of Flash region
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_SetFlashAddress(uint32_t baseAdd, uint32_t topAdd);
 
 /**
  * @brief   Set RAM Base and Top address
- *
+ * 
  * @param   baseAdd     Base address of RAM region
  * @param   topAdd      Top address of RAM region
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_SetRAMAddress(uint32_t baseAdd, uint32_t topAdd);
 
 /**
  * @brief   Set RAM and Flash base address for Host
- *
+ * 
  * @param   RAMAdd      Base address of RAM for Host device
  * @param   FLASHAdd    Base address of Flash for Host device
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes 
  */
 int MXC_SFE_SetHostAddress(uint32_t RAMAdd, uint32_t FLASHAdd);
 

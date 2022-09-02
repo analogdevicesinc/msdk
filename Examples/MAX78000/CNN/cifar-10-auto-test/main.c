@@ -33,19 +33,19 @@
 
 // cifar-10-auto-test
 
-#include "cnn.h"
-#include "mxc.h"
-#include "spi.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "cnn.h"
+#include "spi.h"
 
 #define FT4222_CLK 60000000
-#define DATA_LEN 3072
-#define SPI_REGS MXC_SPI1
-#define SPI_IRQ SPI1_IRQn
-#define SPI_SPEED FT4222_CLK / 8 // Must match the SPI clock in python script
+#define DATA_LEN   3072
+#define SPI_REGS   MXC_SPI1
+#define SPI_IRQ    SPI1_IRQn
+#define SPI_SPEED  FT4222_CLK / 8 // Must match the SPI clock in python script
 
 uint8_t rx_data[DATA_LEN];
 uint8_t tx_data[1];
@@ -56,7 +56,8 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1) { }
+    while (1)
+        ;
 }
 
 int8_t unsigned_to_signed(uint8_t val)
@@ -71,8 +72,8 @@ void memcpy_input(uint32_t* dst, uint8_t* src, size_t n)
     uint32_t val;
 
     while (n--) {
-        val = *src++; // R
-        val += (*src++) << 8; // G
+        val = *src++;          // R
+        val += (*src++) << 8;  // G
         val += (*src++) << 16; // B
         *dst++ = val;
     }
@@ -87,12 +88,12 @@ void load_input(void)
     mxc_spi_req_t req;
 
     // SPI transaction request
-    req.spi = SPI_REGS;
+    req.spi    = SPI_REGS;
     req.txData = (uint8_t*)tx_data;
     req.rxData = (uint8_t*)rx_data;
-    req.txLen = 0;
-    req.rxLen = DATA_LEN;
-    req.ssIdx = 0;
+    req.txLen  = 0;
+    req.rxLen  = DATA_LEN;
+    req.ssIdx  = 0;
 
     // Blocking SPI transaction
     retVal = MXC_SPI_SlaveTransaction(&req);
@@ -100,7 +101,9 @@ void load_input(void)
     if (retVal != E_NO_ERROR) {
         printf("SPI Transaction failed!\n");
     } else {
-        for (i = 0; i < DATA_LEN; i++) { rx_data[i] = unsigned_to_signed(rx_data[i]); }
+        for (i = 0; i < DATA_LEN; i++) {
+            rx_data[i] = unsigned_to_signed(rx_data[i]);
+        }
         memcpy_input((uint32_t*)0x50400000, rx_data, 1024);
     }
 }
@@ -132,31 +135,34 @@ static void spi_init(void)
     mxc_spi_pins_t spi_pins;
 
     spi_pins.clock = TRUE;
-    spi_pins.miso = TRUE;
-    spi_pins.mosi = TRUE;
-    spi_pins.ss0 = TRUE;
-    spi_pins.ss1 = FALSE;
-    spi_pins.ss2 = FALSE;
+    spi_pins.miso  = TRUE;
+    spi_pins.mosi  = TRUE;
+    spi_pins.ss0   = TRUE;
+    spi_pins.ss1   = FALSE;
+    spi_pins.ss2   = FALSE;
     spi_pins.sdio2 = FALSE;
     spi_pins.sdio3 = FALSE;
 
     retVal = MXC_SPI_Init(SPI_REGS, 1, 0, 1, 0, SPI_SPEED, spi_pins);
     if (retVal != E_NO_ERROR) {
         printf("SPI Slave Initialization Error\n");
-        while (1) { }
+        while (1)
+            ;
     }
     retVal = MXC_SPI_SetDataSize(SPI_REGS, 8); // 8 bits per character
 
     if (retVal != E_NO_ERROR) {
         printf("SPI SET DATASIZE ERROR: %d\n", retVal);
-        while (1) { }
+        while (1)
+            ;
     }
 
     retVal = MXC_SPI_SetWidth(SPI_REGS, SPI_WIDTH_STANDARD);
 
     if (retVal != E_NO_ERROR) {
         printf("SPI SET WIDTH ERROR: %d\n", retVal);
-        while (1) { }
+        while (1)
+            ;
     }
 
     spi_enable_interrupts(MXC_F_SPI_INTEN_SSA);
@@ -176,7 +182,7 @@ void SPI1_IRQHandler(void)
 
 int main(void)
 {
-    int32_t max_ml; // ml before going to soft_max
+    int32_t max_ml;   // ml before going to soft_max
     int16_t class_id; // Identified class
 
     MXC_ICC_Enable(MXC_ICC0); // Enable cache
@@ -193,7 +199,7 @@ int main(void)
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 
     spi_init();
-    cnn_init(); // Bring state machine into consistent state
+    cnn_init();         // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
@@ -201,17 +207,17 @@ int main(void)
     while (1) {
         if (SPI_FLAG) {
             load_input(); // Load data input
-            cnn_start(); // Start CNN processing
-            while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12) { }
-            // Wait for CNN to complete processing
+            cnn_start();  // Start CNN processing
+            while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
+                ; // Wait for CNN to complete processing
             softmax_layer();
 
-            max_ml = 1 << 31;
+            max_ml   = 1 << 31;
             class_id = -1;
             // Classification of the results
             for (int i = 0; i < CNN_NUM_OUTPUTS; i++) {
                 if (ml_data[i] > max_ml) {
-                    max_ml = ml_data[i];
+                    max_ml   = ml_data[i];
                     class_id = i;
                 }
             }

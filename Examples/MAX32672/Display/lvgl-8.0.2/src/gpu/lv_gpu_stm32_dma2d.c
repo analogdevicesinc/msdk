@@ -230,7 +230,7 @@ void lv_gpu_stm32_dma2d_wait_cb(lv_disp_drv_t* drv)
         }
     } else {
         while (DMA2D->CR & DMA2D_CR_START_Msk)
-{}
+            ;
     }
 }
 

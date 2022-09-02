@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief    Exclusive access lock utility functions.
- */
+*/
 
 /* ****************************************************************************
  * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
@@ -44,9 +44,7 @@
 #define _MXC_LOCK_H_
 
 /* **** Includes **** */
-
 #include "mxc_errors.h"
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {

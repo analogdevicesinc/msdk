@@ -1,16 +1,12 @@
 /**************************************************************************/ /**
-                                                                              * @file     core_cm4.h
-                                                                              * @brief    CMSIS
-                                                                              *Cortex-M4 Core
-                                                                              *Peripheral Access
-                                                                              *Layer Header File
-                                                                              * @version  V3.20
-                                                                              * @date     25.
-                                                                              *February 2013
-                                                                              *
-                                                                              * @note
-                                                                              *
-                                                                              ******************************************************************************/
+ * @file     core_cm4.h
+ * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File
+ * @version  V3.20
+ * @date     25. February 2013
+ *
+ * @note
+ *
+ ******************************************************************************/
 /* Copyright (c) 2009 - 2013 ARM LIMITED
 
    All rights reserved.
@@ -71,46 +67,41 @@ extern "C" {
 
 /*  CMSIS CM4 definitions */
 #define __CM4_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
-#define __CM4_CMSIS_VERSION_SUB (0x20) /*!< [15:0]  CMSIS HAL sub version    */
-#define __CM4_CMSIS_VERSION                                                                        \
-    ((__CM4_CMSIS_VERSION_MAIN << 16) | __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number */
+#define __CM4_CMSIS_VERSION_SUB  (0x20) /*!< [15:0]  CMSIS HAL sub version    */
+#define __CM4_CMSIS_VERSION             \
+    ((__CM4_CMSIS_VERSION_MAIN << 16) | \
+     __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
 
 #define __CORTEX_M (0x04) /*!< Cortex-M Core                    */
 
 #if defined(__CC_ARM)
-// #define __ASM            __asm                                      /*!< asm keyword for ARM
-// Compiler          */ #define __INLINE         __inline                                   /*!<
-// inline keyword for ARM Compiler       */
+// #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler          */
+// #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler       */
 #define __STATIC_INLINE static __inline
 
 #elif defined(__ICCARM__)
-// #define __ASM            __asm                                      /*!< asm keyword for IAR
-// Compiler          */ #define __INLINE         inline                                     /*!<
-// inline keyword for IAR Compiler. Only available in High optimization mode! */
+// #define __ASM            __asm                                      /*!< asm keyword for IAR Compiler          */
+// #define __INLINE         inline                                     /*!< inline keyword for IAR Compiler. Only available in High optimization mode! */
 #define __STATIC_INLINE static inline
 
 #elif defined(__TMS470__)
-// #define __ASM            __asm                                      /*!< asm keyword for TI CCS
-// Compiler       */
+// #define __ASM            __asm                                      /*!< asm keyword for TI CCS Compiler       */
 #define __STATIC_INLINE static inline
 
 #elif defined(__GNUC__)
-// #define __ASM            __asm                                      /*!< asm keyword for GNU
-// Compiler          */ #define __INLINE         inline                                     /*!<
-// inline keyword for GNU Compiler       */
+// #define __ASM            __asm                                      /*!< asm keyword for GNU Compiler          */
+// #define __INLINE         inline                                     /*!< inline keyword for GNU Compiler       */
 #define __STATIC_INLINE static inline
 
 #elif defined(__TASKING__)
-// #define __ASM            __asm                                      /*!< asm keyword for TASKING
-// Compiler      */ #define __INLINE         inline                                     /*!< inline
-// keyword for TASKING Compiler   */
+// #define __ASM            __asm                                      /*!< asm keyword for TASKING Compiler      */
+// #define __INLINE         inline                                     /*!< inline keyword for TASKING Compiler   */
 #define __STATIC_INLINE static inline
 
 #endif
 
-/** __FPU_USED indicates whether an FPU is used or not. For this, __FPU_PRESENT has to be checked
- * prior to making use of FPU specific registers and functions.
- */
+/** __FPU_USED indicates whether an FPU is used or not. For this, __FPU_PRESENT has to be checked prior to making use of FPU specific registers and functions.
+*/
 #if defined(__CC_ARM)
 #if defined __TARGET_FPU_VFP
 #if (__FPU_PRESENT == 1)
@@ -225,7 +216,7 @@ extern "C" {
 #else
 #define __I volatile const /*!< Defines 'read only' permissions                 */
 #endif
-#define __O volatile /*!< Defines 'write only' permissions                */
+#define __O  volatile /*!< Defines 'write only' permissions                */
 #define __IO volatile /*!< Defines 'read / write' permissions              */
 
 /*@} end of group Cortex_M4 */
@@ -308,44 +299,44 @@ __attribute__((always_inline)) __STATIC_INLINE void __WFI(void)
  * @brief Structure type to access the GCR Registers.
  */
 typedef struct {
-    __IO uint32_t irq0_enable; /**< <tt>\b 0x00:<\tt> */
-    __IO uint32_t irq0_pending; /**< <tt>\b 0x04:<\tt>  */
-    __IO uint32_t irq0_set_pending; /**< <tt>\b 0x08:<\tt>  */
+    __IO uint32_t irq0_enable;        /**< <tt>\b 0x00:<\tt> */
+    __IO uint32_t irq0_pending;       /**< <tt>\b 0x04:<\tt>  */
+    __IO uint32_t irq0_set_pending;   /**< <tt>\b 0x08:<\tt>  */
     __IO uint32_t irq0_clear_pending; /**< <tt>\b 0x0c:<\tt>  */
-    __IO uint32_t irq1_enable; /**< <tt>\b 0x10:<\tt> */
-    __IO uint32_t irq1_pending; /**< <tt>\b 0x14:<\tt>  */
-    __IO uint32_t irq1_set_pending; /**< <tt>\b 0x18:<\tt>  */
+    __IO uint32_t irq1_enable;        /**< <tt>\b 0x10:<\tt> */
+    __IO uint32_t irq1_pending;       /**< <tt>\b 0x14:<\tt>  */
+    __IO uint32_t irq1_set_pending;   /**< <tt>\b 0x18:<\tt>  */
     __IO uint32_t irq1_clear_pending; /**< <tt>\b 0x1c:<\tt>  */
 } mxc_intr_regs_t;
 
 typedef struct {
-    __IO uint32_t event0_enable; /**< <tt>\b 0x20:<\tt>*/
-    __IO uint32_t event0_pending; /**< <tt>\b 0x24:<\tt> */
-    __IO uint32_t event0_set_pending; /**< <tt>\b 0x28:<\tt> */
+    __IO uint32_t event0_enable;        /**< <tt>\b 0x20:<\tt>*/
+    __IO uint32_t event0_pending;       /**< <tt>\b 0x24:<\tt> */
+    __IO uint32_t event0_set_pending;   /**< <tt>\b 0x28:<\tt> */
     __IO uint32_t event0_clear_pending; /**< <tt>\b 0x2C:<\tt> */
-    __IO uint32_t event1_enable; /**< <tt>\b 0x30:<\tt>*/
-    __IO uint32_t event1_pending; /**< <tt>\b 0x34:<\tt> */
-    __IO uint32_t event1_set_pending; /**< <tt>\b 0x38:<\tt> */
+    __IO uint32_t event1_enable;        /**< <tt>\b 0x30:<\tt>*/
+    __IO uint32_t event1_pending;       /**< <tt>\b 0x34:<\tt> */
+    __IO uint32_t event1_set_pending;   /**< <tt>\b 0x38:<\tt> */
     __IO uint32_t event1_clear_pending; /**< <tt>\b 0x3C:<\tt> */
 } mxc_event_regs_t;
 
 typedef struct {
-    __IO uint32_t sleep_ctrl; /**< <tt>\b 0x40:<\tt>  */
+    __IO uint32_t sleep_ctrl;   /**< <tt>\b 0x40:<\tt>  */
     __IO uint32_t sleep_status; /**< <tt>\b 0x44:<\tt>  */
 } mxc_sleep_regs_t;
 
 /* Software Triggered Interrupt Register Definitions */
-#define NVIC_STIR_INTID_Pos 0 /*!< STIR: INTLINESNUM Position */
+#define NVIC_STIR_INTID_Pos 0                                /*!< STIR: INTLINESNUM Position */
 #define NVIC_STIR_INTID_Msk (0x1FFUL << NVIC_STIR_INTID_Pos) /*!< STIR: INTLINESNUM Mask */
 
 /*@} end of group CMSIS_NVIC */
 
 #define MXC_BASE_INTR ((uint32_t)0xE5070000UL)
 //#define MXC_BASE_INTR                   ((uint32_t)0xE5000000UL)
-#define MXC_INTR ((mxc_intr_regs_t*)MXC_BASE_INTR)
+#define MXC_INTR       ((mxc_intr_regs_t*)MXC_BASE_INTR)
 #define MXC_BASE_EVENT ((uint32_t)0xE5070020UL)
 //#define MXC_BASE_EVENT                  ((uint32_t)0xE5000020UL)
-#define MXC_EVENT ((mxc_event_regs_t*)MXC_BASE_EVENT)
+#define MXC_EVENT      ((mxc_event_regs_t*)MXC_BASE_EVENT)
 #define MXC_BASE_SLEEP ((uint32_t)0xE5070040UL)
 //#define MXC_BASE_SLEEP                  ((uint32_t)0xE5000040UL)
 #define MXC_SLEEP ((mxc_sleep_regs_t*)MXC_BASE_SLEEP)
@@ -361,7 +352,7 @@ typedef struct {
   - Core Register Access Functions
  ******************************************************************************/
 /** \defgroup CMSIS_Core_FunctionInterface Functions and Instructions Reference
- */
+*/
 
 /* ##########################   NVIC functions  #################################### */
 /** \ingroup  CMSIS_Core_FunctionInterface
@@ -475,8 +466,7 @@ __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
 {
-    // NVIC->ISPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* set interrupt
-    // pending */
+    //NVIC->ISPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* set interrupt pending */
 }
 
 /** \brief  Clear Pending Interrupt
@@ -487,8 +477,7 @@ __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 {
-    // NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending
-    // interrupt */
+    //NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrupt */
     if (IRQn < 32) {
         MXC_INTR->irq0_clear_pending |= (1 << IRQn);
         MXC_EVENT->event0_clear_pending |= (1 << IRQn);
@@ -509,8 +498,8 @@ __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
  */
 __STATIC_INLINE uint32_t NVIC_GetActive(IRQn_Type IRQn)
 {
-    return (0); //((uint32_t)((NVIC->IABR[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) &
-                // 0x1F)))?1:0)); /* Return 1 if active else 0 */
+    return (
+        0); //((uint32_t)((NVIC->IABR[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) & 0x1F)))?1:0)); /* Return 1 if active else 0 */
 }
 
 /** \brief  System Reset
@@ -519,22 +508,18 @@ __STATIC_INLINE uint32_t NVIC_GetActive(IRQn_Type IRQn)
  */
 __STATIC_INLINE void NVIC_SystemReset(void)
 {
-    //__DSB();                                                     /* Ensure all outstanding memory
-    // accesses included
-    //                                                                buffered write are completed
-    //                                                                before reset */
+    //__DSB();                                                     /* Ensure all outstanding memory accesses included
+    //                                                                buffered write are completed before reset */
     // SCB->AIRCR  = ((0x5FA << SCB_AIRCR_VECTKEY_Pos)      |
     //               (SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) |
-    //                SCB_AIRCR_SYSRESETREQ_Msk);                   /* Keep priority group unchanged
-    //                */
-    //__DSB();                                                     /* Ensure completion of memory
-    // access */
+    //                SCB_AIRCR_SYSRESETREQ_Msk);                   /* Keep priority group unchanged */
+    //__DSB();                                                     /* Ensure completion of memory access */
     while (1)
         ; /* wait until reset */
 }
 
 /**
-  This function returns the content of the Performance Counter Mode Register (PCMR).
+  This function returns the content of the Performance Counter Mode Register (PCMR). 
  */
 __STATIC_INLINE uint32_t CSR_GetPCMR(void)
 {
@@ -544,7 +529,7 @@ __STATIC_INLINE uint32_t CSR_GetPCMR(void)
 }
 
 /**
-  This function sets the content of the Performance Counter Mode Register (PCMR).
+  This function sets the content of the Performance Counter Mode Register (PCMR). 
  */
 __STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
 {
@@ -552,7 +537,7 @@ __STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
 }
 
 /**
-  This function returns the content of the Performance Counter Event Register (PCER).
+  This function returns the content of the Performance Counter Event Register (PCER). 
  */
 __STATIC_INLINE uint32_t CSR_GetPCER(void)
 {
@@ -562,7 +547,7 @@ __STATIC_INLINE uint32_t CSR_GetPCER(void)
 }
 
 /**
-  This function sets the content of the Performance Counter Event Register (PCER).
+  This function sets the content of the Performance Counter Event Register (PCER). 
  */
 __STATIC_INLINE void CSR_SetPCER(uint32_t reg)
 {
@@ -570,7 +555,7 @@ __STATIC_INLINE void CSR_SetPCER(uint32_t reg)
 }
 
 /**
-  This function returns the content of the Performance Counter Counter Register (PCCR).
+  This function returns the content of the Performance Counter Counter Register (PCCR). 
  */
 __STATIC_INLINE uint32_t CSR_GetPCCR(void)
 {
@@ -580,7 +565,7 @@ __STATIC_INLINE uint32_t CSR_GetPCCR(void)
 }
 
 /**
-  This function sets the content of the Performance Counter Counter Register (PCCR).
+  This function sets the content of the Performance Counter Counter Register (PCCR). 
  */
 __STATIC_INLINE void CSR_SetPCCR(uint32_t reg)
 {

@@ -31,9 +31,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *******************************************************************************/
-
-#include <stdint.h>
-
 #ifdef BOARD_EVKIT_V1
 #include "bitmap.h"
 #include "tft_ssd2119.h"

@@ -17,23 +17,23 @@
  */
 /*************************************************************************************************/
 
-#include "wdxs_file.h"
-#include "app_api.h"
-#include "att_api.h"
-#include "dm_api.h"
-#include "flc.h"
+#include <string.h>
 #include "mxc_device.h"
-#include "svc_wdxs.h"
-#include "util/bstream.h"
+#include "wsf_types.h"
 #include "util/wstr.h"
+#include "wsf_trace.h"
+#include "wsf_assert.h"
+#include "wsf_efs.h"
+#include "wsf_cs.h"
+#include "util/bstream.h"
+#include "svc_wdxs.h"
 #include "wdxs/wdxs_api.h"
 #include "wdxs/wdxs_main.h"
-#include "wsf_assert.h"
-#include "wsf_cs.h"
-#include "wsf_efs.h"
-#include "wsf_trace.h"
-#include "wsf_types.h"
-#include <string.h>
+#include "wdxs_file.h"
+#include "dm_api.h"
+#include "att_api.h"
+#include "app_api.h"
+#include "flc.h"
 
 #ifndef FW_VERSION
 #define FW_VERSION 1
@@ -62,8 +62,7 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
     /*   wsfMediaEraseFunc_t     *erase;        Media erase callback. */ wdxsFileErase,
     /*   wsfMediaReadFunc_t      *read;         Media read callback. */ wdxsFileRead,
     /*   wsfMediaWriteFunc_t     *write;        Media write callback. */ wdxsFileWrite,
-    /*   wsfMediaHandleCmdFunc_t *handleCmd;    Media command handler callback. */ wsfFileHandle
-};
+    /*   wsfMediaHandleCmdFunc_t *handleCmd;    Media command handler callback. */ wsfFileHandle};
 
 /*************************************************************************************************/
 /*!
@@ -145,7 +144,7 @@ static uint8_t wdxsFileWrite(const uint8_t* pBuf, uint8_t* pAddress, uint32_t si
     WsfCsExit();
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
-        lastWriteLen = size;
+        lastWriteLen  = size;
         return WSF_EFS_SUCCESS;
     }
 
@@ -166,7 +165,8 @@ static uint8_t wdxsFileWrite(const uint8_t* pBuf, uint8_t* pAddress, uint32_t si
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j)
+        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -181,11 +181,12 @@ uint32_t crc32_for_byte(uint32_t r)
  *  \return None.
  */
 /*************************************************************************************************/
-static uint32_t table[0x100] = { 0 };
+static uint32_t table[0x100] = {0};
 void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 {
     if (!*table) {
-        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i)
+            table[i] = crc32_for_byte(i);
     }
     for (size_t i = 0; i < n_bytes; ++i) {
         *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
@@ -205,34 +206,36 @@ void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
 {
     switch (cmd) {
-    case WSF_EFS_WDXS_PUT_COMPLETE_CMD: {
-        /* Currently unimplemented */
-        return WDX_FTC_ST_SUCCESS;
-    } break;
-    case WSF_EFS_VALIDATE_CMD:
-    default: {
-        /* Validate the image with CRC32 */
-        uint32_t crcResult = 0;
-        uint32_t crcFile;
+        case WSF_EFS_WDXS_PUT_COMPLETE_CMD:
+        {
+            /* Currently unimplemented */
+            return WDX_FTC_ST_SUCCESS;
+        } break;
+        case WSF_EFS_VALIDATE_CMD:
+        default:
+        {
+            /* Validate the image with CRC32 */
+            uint32_t crcResult = 0;
+            uint32_t crcFile;
 
-        verifyLen = (uint32_t)lastWriteAddr - WDXS_FileMedia.startAddress;
+            verifyLen = (uint32_t)lastWriteAddr - WDXS_FileMedia.startAddress;
 
-        APP_TRACE_INFO2(
-            "CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress, verifyLen);
+            APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
+                            verifyLen);
 
-        crc32((const void*)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
+            crc32((const void*)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
 
-        memcpy(&crcFile, (const char*)(WDXS_FileMedia.startAddress + verifyLen), 4);
+            memcpy(&crcFile, (const char*)(WDXS_FileMedia.startAddress + verifyLen), 4);
 
-        /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
-        if (crcFile != crcResult) {
-            APP_TRACE_INFO0("Update file verification failure");
-            APP_TRACE_INFO2("File CRC: 0x%08X Calculated CRC: 0x%08X", crcFile, crcResult);
-            return WDX_FTC_ST_VERIFICATION;
-        }
+            /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
+            if (crcFile != crcResult) {
+                APP_TRACE_INFO0("Update file verification failure");
+                APP_TRACE_INFO2("File CRC: 0x%08X Calculated CRC: 0x%08X", crcFile, crcResult);
+                return WDX_FTC_ST_VERIFICATION;
+            }
 
-        return WDX_FTC_ST_SUCCESS;
-    } break;
+            return WDX_FTC_ST_SUCCESS;
+        } break;
     }
     return WDX_FTC_ST_SUCCESS;
 }
@@ -264,10 +267,10 @@ void WdxsFileInit(void)
     WsfEfsRegisterMedia(&WDXS_FileMedia, WDX_FLASH_MEDIA);
 
     /* Set the attributes for the stream */
-    attr.permissions = (WSF_EFS_REMOTE_GET_PERMITTED | WSF_EFS_REMOTE_PUT_PERMITTED
-        | WSF_EFS_REMOTE_ERASE_PERMITTED | WSF_EFS_REMOTE_VERIFY_PERMITTED
-        | WSF_EFS_LOCAL_GET_PERMITTED | WSF_EFS_LOCAL_PUT_PERMITTED | WSF_EFS_LOCAL_ERASE_PERMITTED
-        | WSF_EFS_REMOTE_VISIBLE);
+    attr.permissions = (WSF_EFS_REMOTE_GET_PERMITTED | WSF_EFS_REMOTE_PUT_PERMITTED |
+                        WSF_EFS_REMOTE_ERASE_PERMITTED | WSF_EFS_REMOTE_VERIFY_PERMITTED |
+                        WSF_EFS_LOCAL_GET_PERMITTED | WSF_EFS_LOCAL_PUT_PERMITTED |
+                        WSF_EFS_LOCAL_ERASE_PERMITTED | WSF_EFS_REMOTE_VISIBLE);
 
     attr.type = WSF_EFS_FILE_TYPE_BULK;
 
@@ -278,8 +281,8 @@ void WdxsFileInit(void)
     WstrnCpy(attr.version, versionString, WSF_EFS_VERSION_LEN);
 
     /* Add a file for the stream */
-    WsfEfsAddFile(
-        WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress, WDX_FLASH_MEDIA, &attr, 0);
+    WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress, WDX_FLASH_MEDIA, &attr,
+                  0);
 }
 
 /*************************************************************************************************/

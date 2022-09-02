@@ -41,17 +41,17 @@
  */
 
 /* **** Includes **** */
-#include "fcr_regs.h"
-#include "flc.h"
-#include "gcr_regs.h"
-#include "mcr_regs.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
-#include "pwrseq_regs.h"
 #include <stddef.h>
 #include <string.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "gcr_regs.h"
+#include "fcr_regs.h"
+#include "mcr_regs.h"
+#include "pwrseq_regs.h"
+#include "flc.h"
 
 /**
  * @ingroup mxc_sys
@@ -89,7 +89,7 @@ int MXC_SYS_GetUSN(uint8_t* usn, uint8_t* checksum)
     usn[7] = (infoblock[2] & 0x7F800000) >> 23;
     usn[8] = (infoblock[3] & 0x0000007F) << 1;
     usn[8] |= (infoblock[2] & 0x80000000) >> 31;
-    usn[9] = (infoblock[3] & 0x00007F80) >> 7;
+    usn[9]  = (infoblock[3] & 0x00007F80) >> 7;
     usn[10] = (infoblock[3] & 0x007F8000) >> 15;
 
 #if 0
@@ -203,41 +203,41 @@ int MXC_SYS_RTCClockDisable(void)
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
 {
     switch (clock) {
-    case MXC_SYS_CLOCK_IPO:
-        MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IPO_EN;
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IPO_RDY);
-        break;
+        case MXC_SYS_CLOCK_IPO:
+            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IPO_EN;
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IPO_RDY);
+            break;
 
-    case MXC_SYS_CLOCK_IBRO:
-        MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IBRO_EN;
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
-        break;
+        case MXC_SYS_CLOCK_IBRO:
+            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IBRO_EN;
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
+            break;
 
-    case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
-        break;
+        case MXC_SYS_CLOCK_EXTCLK:
+            // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+            // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
+            return E_NOT_SUPPORTED;
+            break;
 
-    case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_INRO_RDY);
-        break;
+        case MXC_SYS_CLOCK_INRO:
+            // The 80k clock is always enabled
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_INRO_RDY);
+            break;
 
-    case MXC_SYS_CLOCK_ERFO:
-        MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY);
-        break;
+        case MXC_SYS_CLOCK_ERFO:
+            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY);
+            break;
 
-    case MXC_SYS_CLOCK_ERTCO:
-        MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_PD;
-        MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY);
-        break;
+        case MXC_SYS_CLOCK_ERTCO:
+            MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_PD;
+            MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY);
+            break;
 
-    default:
-        return E_BAD_PARAM;
-        break;
+        default:
+            return E_BAD_PARAM;
+            break;
     }
 }
 
@@ -254,32 +254,32 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
     }
 
     switch (clock) {
-    case MXC_SYS_CLOCK_IPO:
-        MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IPO_EN;
-        break;
+        case MXC_SYS_CLOCK_IPO:
+            MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IPO_EN;
+            break;
 
-    case MXC_SYS_CLOCK_IBRO:
-        MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IBRO_EN;
-        break;
+        case MXC_SYS_CLOCK_IBRO:
+            MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_IBRO_EN;
+            break;
 
-    case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        break;
+        case MXC_SYS_CLOCK_EXTCLK:
+            // MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+            break;
 
-    case MXC_SYS_CLOCK_INRO:
-        // The 80k clock is always enabled
-        break;
+        case MXC_SYS_CLOCK_INRO:
+            // The 80k clock is always enabled
+            break;
 
-    case MXC_SYS_CLOCK_ERFO:
-        MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_ERFO_EN;
-        break;
+        case MXC_SYS_CLOCK_ERFO:
+            MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_ERFO_EN;
+            break;
 
-    case MXC_SYS_CLOCK_ERTCO:
-        MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
-        break;
+        case MXC_SYS_CLOCK_ERTCO:
+            MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -292,7 +292,8 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
 
     /* TODO: Timeout on clock switch, use this for untrimmed parts. */
-    while (!(MXC_GCR->clkctrl & ready)) { }
+    while (!(MXC_GCR->clkctrl & ready)) {
+    }
     return E_NO_ERROR;
 
     do {
@@ -314,104 +315,103 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
 
     switch (clock) {
-    case MXC_SYS_CLOCK_IPO:
+        case MXC_SYS_CLOCK_IPO:
 
-        // Enable IPO clock
-        if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IPO_EN;
+            // Enable IPO clock
+            if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_EN)) {
+                MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IPO_EN;
 
-            // Check if IPO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IPO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
+                // Check if IPO clock is ready
+                if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IPO_RDY) != E_NO_ERROR) {
+                    return E_TIME_OUT;
+                }
             }
-        }
 
-        // Set IPO clock as System Clock
-        MXC_SETFIELD(
-            MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO);
+            // Set IPO clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                         MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_IBRO:
+        case MXC_SYS_CLOCK_IBRO:
 
-        // Enable IBRO clock
-        if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IBRO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IBRO_EN;
+            // Enable IBRO clock
+            if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IBRO_EN)) {
+                MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IBRO_EN;
 
-            // Check if IBRO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
+                // Check if IBRO clock is ready
+                if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY) != E_NO_ERROR) {
+                    return E_TIME_OUT;
+                }
             }
-        }
 
-        // Set IBRO clock as System Clock
-        MXC_SETFIELD(
-            MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO);
+            // Set IBRO clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                         MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_EXTCLK:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clkctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        case MXC_SYS_CLOCK_EXTCLK:
+            // Enable HIRC clock
+            // if(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
+            //     MXC_GCR->clkctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
+            //     // Check if HIRC clock is ready
+            //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
+            //         return E_TIME_OUT;
+            //     }
+            // }
 
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-        // MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+            // Set HIRC clock as System Clock
+            // MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_ERFO:
+        case MXC_SYS_CLOCK_ERFO:
 
-        // Enable ERFO clock
-        if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
+            // Enable ERFO clock
+            if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_EN)) {
+                MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
 
-            // Check if ERFO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
+                // Check if ERFO clock is ready
+                if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY) != E_NO_ERROR) {
+                    return E_TIME_OUT;
+                }
             }
-        }
 
-        // Set ERFO clock as System Clock
-        MXC_SETFIELD(
-            MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERFO);
+            // Set ERFO clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                         MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERFO);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_INRO:
-        // Set INRO clock as System Clock
-        MXC_SETFIELD(
-            MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO);
+        case MXC_SYS_CLOCK_INRO:
+            // Set INRO clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                         MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_ERTCO:
+        case MXC_SYS_CLOCK_ERTCO:
 
-        // Enable ERTCO clock
-        if (!(MXC_MCR->clkctrl & MXC_F_MCR_CLKCTRL_ERTCO_EN)) {
-            MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+            // Enable ERTCO clock
+            if (!(MXC_MCR->clkctrl & MXC_F_MCR_CLKCTRL_ERTCO_EN)) {
+                MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
 
-            // Check if ERTCO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
+                // Check if ERTCO clock is ready
+                if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY) != E_NO_ERROR) {
+                    return E_TIME_OUT;
+                }
             }
-        }
 
-        // Set ERTCO clock as System Clock
-        MXC_SETFIELD(
-            MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO);
+            // Set ERTCO clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                         MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO);
 
-        break;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     // Wait for system clock to be ready

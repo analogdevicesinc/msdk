@@ -2,8 +2,8 @@
 #define CONFIG_H
 
 #ifdef BOARD_EVKIT_V1
-#include "bitmap.h"
 #include "tft_ssd2119.h"
+#include "bitmap.h"
 
 // Enable TFT display
 #define ENABLE_TFT

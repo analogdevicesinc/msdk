@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -38,8 +38,8 @@
 #include <iso14443_4_transitive.h>
 #include <string.h>
 
-#include "logging.h"
 #include <mml_nfc_pcd_rf_driver.h>
+#include "logging.h"
 
 typedef struct {
     uint8_t bit_rate;
@@ -84,7 +84,7 @@ int32_t iso_14443_3b_polling_response(uint8_t* atqb_resp, int32_t* atqb_resp_len
     }
 
     if (ret == ISO14443_3_ERR_TIMEOUT) {
-        // Timeout
+        //Timeout
         return ISO14443_3_ERR_OTHER;
     }
 
@@ -120,7 +120,7 @@ int32_t iso_14443_3b_collision_detect_response(uint8_t* atqb_resp, int32_t* atqb
     int32_t atqb_len;
 
     uint8_t fsci = FSCI_DEFAULT_VALUE;
-    uint8_t fwi = FWI_DEFAULT_VALUE;
+    uint8_t fwi  = FWI_DEFAULT_VALUE;
     uint8_t sfgi = SFGI_DEFAULT_VALUE;
     uint8_t nad = 0, cid = 0; /*we don't support nad&cid in default*/
 
@@ -139,7 +139,7 @@ int32_t iso_14443_3b_collision_detect_response(uint8_t* atqb_resp, int32_t* atqb
     }
 
     fsci = patqb->proinfo.fsci <= FSCI_MAX_VALUE ? patqb->proinfo.fsci : FSCI_MAX_VALUE;
-    fwi = patqb->proinfo.fwi <= FWI_MAX_VALUE ? patqb->proinfo.fwi : FWI_DEFAULT_VALUE;
+    fwi  = patqb->proinfo.fwi <= FWI_MAX_VALUE ? patqb->proinfo.fwi : FWI_DEFAULT_VALUE;
 
     if (atqb_len == ISO3B_ATQB_MAXLEN)
         sfgi = patqb->proinfo.sfgi <= SFGI_MAX_VALUE ? patqb->proinfo.sfgi : SFGI_DEFAULT_VALUE;
@@ -179,8 +179,9 @@ int32_t iso_14443_3b_active_response(uint8_t* attrib_resp, int32_t* attrib_resp_
 
     /* 6.3.2.10 PCD must disregard the value of bits b4-b2 of Protocol_Type */
     ret = iso_14443_3b_cmd_attrib(atqb.pupi, 0x00, FSDI_DEFAULT_VALUE,
-        (atqb.proinfo.pro_type & PROTOCOL_DISREGARD_BITS), 0x00, NULL, NULL,
-        (4096 * (1 << ats.FWI) + ISO14443_FWT_DELTA), attrib_resp, attrib_resp_len);
+                                  (atqb.proinfo.pro_type & PROTOCOL_DISREGARD_BITS), 0x00, NULL,
+                                  NULL, (4096 * (1 << ats.FWI) + ISO14443_FWT_DELTA), attrib_resp,
+                                  attrib_resp_len);
 
     if (ret == ISO14443_3_ERR_ABORTED) {
         return ret;
@@ -192,7 +193,7 @@ int32_t iso_14443_3b_active_response(uint8_t* attrib_resp, int32_t* attrib_resp_
 
     seqnuminit();
 
-    // SFGI delay = 256x16x2^sfgi + 384x2^sfgi
+    //SFGI delay = 256x16x2^sfgi + 384x2^sfgi
     if (ats.SFGI) {
         sfgi_fc = 4480 * (1 << ats.SFGI);
 

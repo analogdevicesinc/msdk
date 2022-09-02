@@ -32,8 +32,8 @@
  *************************************************************************** */
 
 /***** Includes *****/
-#include "mxc_device.h"
 #include "srcc_reva_regs.h"
+#include "mxc_device.h"
 
 /***** Definitions *****/
 
@@ -41,9 +41,9 @@
  * @brief   Enumeration type for the SRCC Cache ID Register
  */
 typedef enum {
-    SRCC_REVA_CACHE_ID_RELNUM, ///< Release Number
+    SRCC_REVA_CACHE_ID_RELNUM,  ///< Release Number
     SRCC_REVA_CACHE_ID_PARTNUM, ///< Part Number
-    SRCC_REVA_CACHE_ID_CCHID ///< Cache ID
+    SRCC_REVA_CACHE_ID_CCHID    ///< Cache ID
 } mxc_srcc_reva_cache_id_t;
 
 /***** Function Prototypes *****/

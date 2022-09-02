@@ -42,13 +42,13 @@
 #define _SPI_H_
 
 /***** includes *******/
-#include "gpio.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include "spi_regs.h"
 #include <stdbool.h>
+#include "spi_regs.h"
+#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "mxc_lock.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,22 +83,22 @@ extern "C" {
  *
  */
 typedef enum {
-    SPI_WIDTH_3WIRE, ///< 1 Data line, half duplex
+    SPI_WIDTH_3WIRE,    ///< 1 Data line, half duplex
     SPI_WIDTH_STANDARD, ///< MISO/MOSI, full duplex
-    SPI_WIDTH_DUAL, ///< 2 Data lines, half duplex
-    SPI_WIDTH_QUAD, ///< 4 Data lines, half duplex
+    SPI_WIDTH_DUAL,     ///< 2 Data lines, half duplex
+    SPI_WIDTH_QUAD,     ///< 4 Data lines, half duplex
 } mxc_spi_width_t;
 
 /**
  * @brief The list of SPI modes
- *
+ * 
  * SPI supports four combinations of clock and phase polarity
- *
- * Clock polarity is controlled using the bit SPIn_CTRL2.cpol
+ * 
+ * Clock polarity is controlled using the bit SPIn_CTRL2.cpol 
  * and determines if the clock is active high or active low
- *
+ * 
  * Clock phase determines when the data must be stable for sampling
- *
+ *  
  */
 typedef enum {
     SPI_MODE_0, ///< clock phase = 0, clock polarity = 0
@@ -117,14 +117,14 @@ typedef struct _mxc_spi_pins_t mxc_spi_pins_t;
  * @note True equals pin is set for the spi function false the pin is left to its latest state.
  */
 struct _mxc_spi_pins_t {
-    bool clock; ///< Clock pin
-    bool ss0; ///< Slave select pin 0
-    bool ss1; ///< Slave select pin 1
-    bool ss2; ///< Slave select pin 2
-    bool miso; ///< miso pin
-    bool mosi; ///< mosi pin
-    bool sdio2; ///< SDIO2 pin
-    bool sdio3; ///< SDIO3 pin
+    bool clock;  ///<Clock pin
+    bool ss0;    ///< Slave select pin 0
+    bool ss1;    ///< Slave select pin 1
+    bool ss2;    ///< Slave select pin 2
+    bool miso;   ///< miso pin
+    bool mosi;   ///< mosi pin
+    bool sdio2;  ///< SDIO2 pin
+    bool sdio3;  ///< SDIO3 pin
     bool vddioh; ///< VDDIOH Select
 };
 
@@ -141,14 +141,13 @@ typedef void (*spi_complete_cb_t)(void* req, int result);
  * @brief   The information required to perform a complete SPI transaction
  *
  * This structure is used by blocking, async, and DMA based transactions.
- * @note "completeCB" only needs to be initialized for interrupt driven (Async) and DMA
- * transactions.
+ * @note "completeCB" only needs to be initialized for interrupt driven (Async) and DMA transactions.
  */
 struct _mxc_spi_req_t {
-    mxc_spi_regs_t* spi; ///< Point to SPI registers
-    int ssIdx; ///< Slave select line to use (Master only, ignored in slave mode)
-    int ssDeassert; ///< 1 - Deassert SS at end of transaction, 0 - leave SS asserted
-    uint8_t* txData; ///< Buffer containing transmit data. For character sizes
+    mxc_spi_regs_t* spi; ///<Point to SPI registers
+    int ssIdx;           ///< Slave select line to use (Master only, ignored in slave mode)
+    int ssDeassert;      ///< 1 - Deassert SS at end of transaction, 0 - leave SS asserted
+    uint8_t* txData;     ///< Buffer containing transmit data. For character sizes
     ///< < 8 bits, pad the MSB of each byte with zeros. For
     ///< character sizes > 8 bits, use two bytes per character
     ///< and pad the MSB of the upper byte with zeros
@@ -193,14 +192,14 @@ struct _mxc_spi_req_t {
  * @param   hz              The requested clock frequency. The actual clock frequency
  *                          will be returned by the function if successful. Used in
  *                          master mode only.
- * @param   pins            SPI pin structure. Pins selected as true will be initialized
+ * @param   pins            SPI pin structure. Pins selected as true will be initialized 
  *                          for the requested SPI block.
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-    unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins);
+                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins);
 
 /**
  * @brief   Disable and shutdown SPI peripheral.
@@ -226,8 +225,7 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t* spi);
 int MXC_SPI_ReadyForSleep(mxc_spi_regs_t* spi);
 
 /**
- * @brief   Returns the frequency of the clock used as the bit rate generator for a given SPI
- * instance.
+ * @brief   Returns the frequency of the clock used as the bit rate generator for a given SPI instance.
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  *
@@ -326,19 +324,19 @@ mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t* spi);
 
 /**
  * @brief   Sets the spi mode using clock polarity and clock phase
- *
+ * 
  * @param spi           Pointer to SPI registers (selects the SPI block used.)
  * @param spiMode       \ref mxc_spi_mode_t
- *
- * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
 int MXC_SPI_SetMode(mxc_spi_regs_t* spi, mxc_spi_mode_t spiMode);
 
 /**
  * @brief   Gets the spi mode
- *
+ * 
  * @param spi           Pointer to SPI registers (selects the SPI block used.)
- *
+ * 
  * @return mxc_spi_mode_t   \ref mxc_spi_mode_t
  */
 mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t* spi);

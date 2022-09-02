@@ -34,37 +34,38 @@
 /**
  * @file    	main.c
  * @brief   	AES Example
- * @details 	Encryption and decryption of AES on different modes (ECB and OFB) with different bit
- * sizes (128, 192, and 256)
+ * @details 	Encryption and decryption of AES on different modes (ECB and OFB) with different bit sizes (128, 192, and 256)
  */
 
 /***** Includes *****/
-#include "board.h"
-#include "mxc_device.h"
-#include "tpu.h"
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
+#include "mxc_device.h"
+#include "board.h"
+#include "tpu.h"
 
 /***** Definitions *****/
 
 /***** Globals *****/
-char temp[] = { 0x00, 0x00, 0x00 }; // for ascii_to_byte()
+char temp[] = {0x00, 0x00, 0x00}; //for ascii_to_byte()
 char result[512];
 
 /***** Functions *****/
-// Print human-friendly readable output of array
+//Print human-friendly readable output of array
 void print(char* stuff)
 {
     int i, j, size = 4;
     for (i = 0; i < 4; ++i) {
-        for (j = 0; j < 4; ++j) { printf("0x%02x ", stuff[i * size + j]); }
+        for (j = 0; j < 4; ++j) {
+            printf("0x%02x ", stuff[i * size + j]);
+        }
         printf("\n");
     }
     return;
 }
 
-// Convert ascii to byte
+//Convert ascii to byte
 void ascii_to_byte(const char* src, char* dst, int len)
 {
     int i;
@@ -75,13 +76,13 @@ void ascii_to_byte(const char* src, char* dst, int len)
         temp[1] = *src;
         src++;
         sscanf(temp, "%x", &val);
-        // val = hexconf(temp[0])*16 + hexconf(temp[1]);
+        //val = hexconf(temp[0])*16 + hexconf(temp[1]);
         dst[i] = val;
     }
     return;
 }
 
-// Verify by comparing calculated to expected
+//Verify by comparing calculated to expected
 int AES_check(char* calculated, char* expected, int len)
 {
     int i, fail = 0;
@@ -116,8 +117,8 @@ int AES128_ECB_enc(void)
     ascii_to_byte(_msg, msg, MXC_AES_DATA_LEN);
 
     MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES128);
-    MXC_TPU_Cipher_AES_Encrypt(
-        msg, iv_dst, key, MXC_TPU_CIPHER_AES128, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN, result);
+    MXC_TPU_Cipher_AES_Encrypt(msg, iv_dst, key, MXC_TPU_CIPHER_AES128, MXC_TPU_MODE_ECB,
+                               MXC_AES_DATA_LEN, result);
 
     const char* _expected = "6d251e6944b051e04eaa6fb4dbf78465";
     char expected[MXC_AES_DATA_LEN];
@@ -142,8 +143,8 @@ int AES128_ECB_dec(void)
     ascii_to_byte(_ct, ct, MXC_AES_DATA_LEN);
 
     MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES128);
-    MXC_TPU_Cipher_AES_Decrypt(
-        ct, iv_dst, key, MXC_TPU_CIPHER_AES128, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN, result);
+    MXC_TPU_Cipher_AES_Decrypt(ct, iv_dst, key, MXC_TPU_CIPHER_AES128, MXC_TPU_MODE_ECB,
+                               MXC_AES_DATA_LEN, result);
 
     const char* _expected = "00000000000000000000000000000000";
     char expected[MXC_AES_DATA_LEN];
@@ -168,8 +169,8 @@ int AES192_ECB_enc(void)
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
     MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES192);
-    MXC_TPU_Cipher_AES_Encrypt(
-        pt, iv_dst, key, MXC_TPU_CIPHER_AES192, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN, result);
+    MXC_TPU_Cipher_AES_Encrypt(pt, iv_dst, key, MXC_TPU_CIPHER_AES192, MXC_TPU_MODE_ECB,
+                               MXC_AES_DATA_LEN, result);
 
     const char* _expected = "ace4b91c9c669e77e7acacd19859ed49";
     char expected[MXC_AES_DATA_LEN];
@@ -194,8 +195,8 @@ int AES192_ECB_dec(void)
     ascii_to_byte(_ct, ct, MXC_AES_DATA_LEN);
 
     MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES192);
-    MXC_TPU_Cipher_AES_Decrypt(
-        ct, iv_dst, key, MXC_TPU_CIPHER_AES192, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN, result);
+    MXC_TPU_Cipher_AES_Decrypt(ct, iv_dst, key, MXC_TPU_CIPHER_AES192, MXC_TPU_MODE_ECB,
+                               MXC_AES_DATA_LEN, result);
 
     const char* _expected = "00000000000000000000000000000000";
     char expected[MXC_AES_DATA_LEN];
@@ -220,8 +221,8 @@ int AES256_ECB_enc(void)
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
     MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES256);
-    MXC_TPU_Cipher_AES_Encrypt(
-        pt, iv_dst, key, MXC_TPU_CIPHER_AES256, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN, result);
+    MXC_TPU_Cipher_AES_Encrypt(pt, iv_dst, key, MXC_TPU_CIPHER_AES256, MXC_TPU_MODE_ECB,
+                               MXC_AES_DATA_LEN, result);
 
     const char* _expected = "a74289fe73a4c123ca189ea1e1b49ad5";
     char expected[MXC_AES_DATA_LEN];
@@ -246,8 +247,8 @@ int AES256_ECB_dec(void)
     ascii_to_byte(_ct, ct, MXC_AES_DATA_LEN);
 
     MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES256);
-    MXC_TPU_Cipher_AES_Decrypt(
-        ct, iv_dst, key, MXC_TPU_CIPHER_AES256, MXC_TPU_MODE_ECB, MXC_AES_DATA_LEN, result);
+    MXC_TPU_Cipher_AES_Decrypt(ct, iv_dst, key, MXC_TPU_CIPHER_AES256, MXC_TPU_MODE_ECB,
+                               MXC_AES_DATA_LEN, result);
 
     const char* _expected = "00000000000000000000000000000000";
     char expected[MXC_AES_DATA_LEN];
@@ -263,7 +264,7 @@ int main(void)
 
     int fail = 0;
 
-    // ECB
+    //ECB
     fail += AES128_ECB_enc();
     fail += AES128_ECB_dec();
     fail += AES192_ECB_enc();
@@ -277,5 +278,6 @@ int main(void)
     } else {
         printf("Example Failed\n");
     }
-    while (1) { }
+    while (1) {
+    }
 }

@@ -9,8 +9,8 @@
  * linking) to your LDFLAGS; same with all the other symbols you need.
  */
 
-#include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
+#include "FreeRTOS.h"
 
 #ifdef __GNUC__
 #define USED __attribute__((used))

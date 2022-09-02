@@ -51,25 +51,25 @@
  *            8. BACKUP mode
  */
 
-#include "icc.h"
-#include "led.h"
-#include "lp.h"
+#include <stdio.h>
+#include <stdint.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "nvic_table.h"
 #include "pb.h"
+#include "led.h"
+#include "lp.h"
+#include "icc.h"
 #include "rtc.h"
 #include "uart.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "nvic_table.h"
 
 #define DELAY_IN_SEC 2
-#define USE_CONSOLE 1
+#define USE_CONSOLE  1
 
-#define DO_SLEEP 1
+#define DO_SLEEP     1
 #define DO_DEEPSLEEP 1
-#define DO_BACKUP 0
-#define DO_SHUTDOWN 0
+#define DO_BACKUP    0
+#define DO_SHUTDOWN  0
 
 #if (DO_BACKUP && DO_STORAGE)
 #error "You must select either DO_BACKUP or DO_STORAGE or neither, not both."
@@ -89,23 +89,27 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed) { }
+        while (!buttonPressed)
+            ;
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
+    for (tmp = 0; tmp < 0x80000; tmp++) {
+        __NOP();
+    }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) { }
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
+        ;
 
 #endif // USE_CONSOLE
 }
 
 void configure_gpio(void)
 {
-    // Set GPIOs to output mode except PB0 and UART0 pins
+    //Set GPIOs to output mode except PB0 and UART0 pins
     MXC_GPIO0->en0 |= 0xFFFFFCFFUL;
     MXC_GPIO0->outen |= 0xFFFFFCFFUL;
 
@@ -120,7 +124,7 @@ void configure_gpio(void)
     MXC_GPIO1->padctrl1 |= 0xFFFFF7FFUL;
     MXC_GPIO1->ps &= ~0xFFFFF7FFUL;
 
-    // Set output low
+    //Set output low
     // MXC_GPIO0->out      &= ~0xFFDFFCFFUL;
     // MXC_GPIO1->out      &= ~0xFFFFFFFFUL;
 }
@@ -137,7 +141,7 @@ int main(void)
 #endif // USE_CONSOLE
     PB_RegisterCallback(0, buttonHandler);
 
-    // Pull down all GPIOs except PB0 and UART0 pins
+    //Pull down all GPIOs except PB0 and UART0 pins
     configure_gpio();
 
 #if USE_CONSOLE

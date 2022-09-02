@@ -31,20 +31,20 @@
  *
  ******************************************************************************/
 
-#include "board.h"
-#include "fcr_regs.h"
-#include "mxc.h"
-#include "sema_regs.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "fcr_regs.h"
+#include "sema_regs.h"
+#include "board.h"
 
 int main(void)
 {
     int cnt = 0;
 
-    Debug_Init(); // Set up RISCV JTAG
+    Debug_Init();             // Set up RISCV JTAG
     MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
     printf("Hello World!\n");

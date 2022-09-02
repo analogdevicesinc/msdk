@@ -41,11 +41,11 @@
 
 #ifndef __riscv
 
-#include "mxc_device.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include "max78002.h"
 
 /**
  * @brief Set an IRQ hander callback function.  If the IRQ table is in
@@ -71,7 +71,7 @@ void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 // MXC_NVIC_SetVector will work with legacy code.
 inline __attribute__((
     deprecated("Use MXC_NVIC_SetVector instead.  See nvic_table.h for more details."))) void
-NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void))
+    NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void))
 {
     MXC_NVIC_SetVector(irqn, irq_callback);
 }
@@ -108,7 +108,7 @@ uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 // MXC_NVIC_GetVector will work with legacy code.
 inline __attribute__((
     deprecated("Use MXC_NVIC_GetVector instead.  See nvic_table.h for more details."))) void
-NVIC_GetVector(IRQn_Type irqn)
+    NVIC_GetVector(IRQn_Type irqn)
 {
     MXC_NVIC_GetVector(irqn);
 }

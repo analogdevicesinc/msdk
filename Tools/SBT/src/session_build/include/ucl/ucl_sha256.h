@@ -94,7 +94,7 @@ typedef struct ucl_sha256_ctx ucl_sha256_ctx_t;
  *
  * @ingroup UCL_SHA256
  */
-#define UCL_SHA256 1
+#define UCL_SHA256          1
 #define UCL_SHA256_HASHSIZE 32
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA256.

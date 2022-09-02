@@ -35,9 +35,9 @@
 #define _BITMAP_H_
 
 // bitmaps id
-#define logo_white_bg_darkgrey_bmp 0
+#define logo_white_bg_darkgrey_bmp  0
 #define logo_white_bg_lightgrey_bmp 1
-#define img_1_bmp 2
+#define img_1_bmp                   2
 
 // fonts id
 #define urw_gothic_12_grey_bg_white 0

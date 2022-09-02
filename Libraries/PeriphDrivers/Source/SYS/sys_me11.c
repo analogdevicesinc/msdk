@@ -41,15 +41,15 @@
  */
 
 /* **** Includes **** */
-#include "fcr_regs.h"
+#include <stddef.h>
+#include "mxc_errors.h"
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
 #include "flc.h"
 #include "gcr_regs.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
-#include <stddef.h>
+#include "fcr_regs.h"
 
 /**
  * @ingroup mxc_sys
@@ -119,8 +119,7 @@ int MXC_SYS_GetUSN(uint8_t* usn, int len, int part)
 /* ************************************************************************** */
 int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 {
-    /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 for the pclkdis1
-     * register. */
+    /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 for the pclkdis1 register. */
     if (clock > 31) {
         clock -= 32;
         return !(MXC_GCR->pclk_dis1 & (0x1 << clock));
@@ -132,8 +131,7 @@ int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 {
-    /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 for the pclkdis1
-     * register. */
+    /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 for the pclkdis1 register. */
     if (clock > 31) {
         clock -= 32;
         MXC_GCR->pclk_dis1 |= (0x1 << clock);
@@ -145,8 +143,7 @@ void MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 {
-    /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 for the pclkdis1
-     * register. */
+    /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 for the pclkdis1 register. */
     if (clock > 31) {
         clock -= 32;
         MXC_GCR->pclk_dis1 &= ~(0x1 << clock);
@@ -176,25 +173,25 @@ int MXC_SYS_RTCClockDisable(void)
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
 {
     switch (clock) {
-    case MXC_SYS_CLOCK_HIRC:
-        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC_EN;
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC_RDY);
-        break;
+        case MXC_SYS_CLOCK_HIRC:
+            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC_EN;
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC_RDY);
+            break;
 
-    case MXC_SYS_CLOCK_HFXIN:
-        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
-        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY);
-        break;
+        case MXC_SYS_CLOCK_HFXIN:
+            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
+            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY);
+            break;
 
-    case MXC_SYS_CLOCK_NANORING:
-        // MXC_GCR->clk_ctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
-        break;
+        case MXC_SYS_CLOCK_NANORING:
+            // MXC_GCR->clk_ctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+            // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
+            return E_NOT_SUPPORTED;
+            break;
 
-    default:
-        return E_BAD_PARAM;
-        break;
+        default:
+            return E_BAD_PARAM;
+            break;
     }
 }
 
@@ -211,20 +208,20 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
     }
 
     switch (clock) {
-    case MXC_SYS_CLOCK_HIRC:
-        MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_HIRC_EN;
-        break;
+        case MXC_SYS_CLOCK_HIRC:
+            MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_HIRC_EN;
+            break;
 
-    case MXC_SYS_CLOCK_HFXIN:
-        MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_X32K_EN;
-        break;
+        case MXC_SYS_CLOCK_HFXIN:
+            MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_X32K_EN;
+            break;
 
-    case MXC_SYS_CLOCK_NANORING:
-        // MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        return E_BAD_PARAM;
+        case MXC_SYS_CLOCK_NANORING:
+            // MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+            return E_BAD_PARAM;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -255,61 +252,62 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     current_clock = MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_CLKSEL;
 
     switch (clock) {
-    case MXC_SYS_CLOCK_HIRC:
+        case MXC_SYS_CLOCK_HIRC:
 
-        // Enable HIRC clock
-        if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_HIRC_EN)) {
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC_EN;
+            // Enable HIRC clock
+            if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_HIRC_EN)) {
+                MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC_EN;
 
-            // Check if HIRC clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
+                // Check if HIRC clock is ready
+                if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC_RDY) != E_NO_ERROR) {
+                    return E_TIME_OUT;
+                }
             }
-        }
 
-        // Set HIRC clock as System Clock
-        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL, MXC_S_GCR_CLK_CTRL_CLKSEL_HIRC);
+            // Set HIRC clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL,
+                         MXC_S_GCR_CLK_CTRL_CLKSEL_HIRC);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_HFXIN:
+        case MXC_SYS_CLOCK_HFXIN:
 
-        // Enable HFXtal clock
-        if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_X32K_EN)) {
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
+            // Enable HFXtal clock
+            if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_X32K_EN)) {
+                MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
 
-            // Check if HFXtal clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
+                // Check if HFXtal clock is ready
+                if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY) != E_NO_ERROR) {
+                    return E_TIME_OUT;
+                }
             }
-        }
 
-        // Set HFXtal clock as System Clock
-        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL, MXC_S_GCR_CLK_CTRL_CLKSEL_HFXIN);
+            // Set HFXtal clock as System Clock
+            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL,
+                         MXC_S_GCR_CLK_CTRL_CLKSEL_HFXIN);
 
-        break;
+            break;
 
-    case MXC_SYS_CLOCK_NANORING:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clk_ctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        case MXC_SYS_CLOCK_NANORING:
+            // Enable HIRC clock
+            // if(!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
+            //     MXC_GCR->clk_ctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
+            //     // Check if HIRC clock is ready
+            //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
+            //         return E_TIME_OUT;
+            //     }
+            // }
 
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
-        // MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
-        MXC_SETFIELD(
-            MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL, MXC_S_GCR_CLK_CTRL_CLKSEL_NANORING);
+            // Set HIRC clock as System Clock
+            // MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL,
+                         MXC_S_GCR_CLK_CTRL_CLKSEL_NANORING);
 
-        break;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     // Wait for system clock to be ready
@@ -329,15 +327,16 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 {
-    /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 for the rstr1 register.
-     */
+    /* The mxc_sys_reset_t enum uses enum values that are the offset by 32 for the rstr1 register. */
     if (reset > 31) {
         reset -= 32;
         MXC_GCR->rst1 = (0x1 << reset);
-        while (MXC_GCR->rst1 & (0x1 << reset)) { }
+        while (MXC_GCR->rst1 & (0x1 << reset))
+            ;
     } else {
         MXC_GCR->rst0 = (0x1 << reset);
-        while (MXC_GCR->rst0 & (0x1 << reset)) { }
+        while (MXC_GCR->rst0 & (0x1 << reset))
+            ;
     }
 }
 /**@} end of mxc_sys */

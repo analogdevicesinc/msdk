@@ -32,9 +32,9 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
 #include "mxc_assert.h"
 #include "tmr.h"
-#include <stddef.h>
 
 /* **** Functions **** */
 void MXC_TMR_Common_Delay(mxc_tmr_regs_t* tmr, unsigned long us);

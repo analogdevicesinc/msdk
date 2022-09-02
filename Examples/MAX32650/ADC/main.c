@@ -38,12 +38,12 @@
  */
 
 /***** Includes *****/
-#include "adc.h"
-#include "led.h"
+#include <stdio.h>
+#include <stdint.h>
 #include "mxc_delay.h"
 #include "mxc_errors.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "adc.h"
+#include "led.h"
 
 /***** Definitions *****/
 
@@ -83,11 +83,13 @@ int main(void)
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
-    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_PWR_UP_ACTIVE)) { }
+    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_PWR_UP_ACTIVE))
+        ;
     MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_3, ADC_CHANNEL);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_3, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_3, 0x25);
@@ -108,7 +110,8 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(ADC_CHANNEL, adc_complete_cb);
 
-        while (!adc_done) { };
+        while (!adc_done) {
+        };
 
 #else
         MXC_ADC_StartConversion(ADC_CHANNEL);
@@ -119,10 +122,10 @@ int main(void)
         overflow = (MXC_ADC_GetData(&adc_val) == E_OVERFLOW ? 1 : 0);
 
         /* Determine if programmable limits on AIN0 were exceeded */
-        // MXC_ADC_GetFlags()
+        //MXC_ADC_GetFlags()
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
             printf("%s Limit on AIN0 ",
-                (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
+                   (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
         } else {
             printf("                   ");

@@ -57,21 +57,21 @@ extern "C" {
 
 /**
  * @brief Callback funtion for ctb
- *
+ * 
  */
 typedef void (*mxc_ctb_complete_cb_t)(void* req, int result);
 
 /**
- * @brief  Enumeration type for Crypto Toolbox features
- *
- */
+  * @brief  Enumeration type for Crypto Toolbox features
+  *
+  */
 typedef enum {
-    MXC_CTB_FEATURE_DMA = 1 << 0,
-    MXC_CTB_FEATURE_ECC = 1 << 1,
-    MXC_CTB_FEATURE_CRC = 1 << 2,
-    MXC_CTB_FEATURE_HASH = 1 << 4,
+    MXC_CTB_FEATURE_DMA    = 1 << 0,
+    MXC_CTB_FEATURE_ECC    = 1 << 1,
+    MXC_CTB_FEATURE_CRC    = 1 << 2,
+    MXC_CTB_FEATURE_HASH   = 1 << 4,
     MXC_CTB_FEATURE_CIPHER = 1 << 5,
-    MXC_CTB_FEATURE_TRNG = 1 << 6
+    MXC_CTB_FEATURE_TRNG   = 1 << 6
 } mxc_ctb_features_t;
 
 /* ************************************************************************* */
@@ -79,33 +79,33 @@ typedef enum {
 /* ************************************************************************* */
 
 /**
- * @brief  Structure for using DMA with CTB
- *
- */
+  * @brief  Structure for using DMA with CTB
+  *
+  */
 struct _mxc_ctb_dma_req_t {
-    uint8_t* sourceBuffer; ///< pointer to source data
-    uint8_t* destBuffer; ///< pointer to destination buffer
-    uint32_t length; ///< length of source data
+    uint8_t* sourceBuffer;          ///< pointer to source data
+    uint8_t* destBuffer;            ///< pointer to destination buffer
+    uint32_t length;                ///< length of source data
     mxc_ctb_complete_cb_t callback; ///< Null callback indicates a blocking operation
 } typedef mxc_ctb_dma_req_t;
 
 /**
- * @brief  Enumeration type to select read source channel of DMA
- *
- */
+  * @brief  Enumeration type to select read source channel of DMA
+  *
+  */
 typedef enum {
     MXC_CTB_DMA_READ_FIFO_DMA = MXC_V_CTB_CTRL_RDSRC_DMAORAPB,
     MXC_CTB_DMA_READ_FIFO_RNG = MXC_V_CTB_CTRL_RDSRC_RNG
 } mxc_ctb_dma_read_source_t;
 
 /**
- * @brief  Enumeration type to select write source channel of DMA
- *
- */
+  * @brief  Enumeration type to select write source channel of DMA
+  *
+  */
 typedef enum {
-    MXC_CTB_DMA_WRITE_FIFO_CIPHER = MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT,
+    MXC_CTB_DMA_WRITE_FIFO_CIPHER    = MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT,
     MXC_CTB_DMA_WRITE_FIFO_READ_FIFO = MXC_V_CTB_CTRL_WRSRC_READFIFO,
-    MXC_CTB_DMA_WRITE_FIFO_NONE = MXC_V_CTB_CTRL_WRSRC_NONE
+    MXC_CTB_DMA_WRITE_FIFO_NONE      = MXC_V_CTB_CTRL_WRSRC_NONE
 } mxc_ctb_dma_write_source_t;
 
 /* ************************************************************************* */
@@ -113,9 +113,9 @@ typedef enum {
 /* ************************************************************************* */
 
 /**
- * @brief  Structure used to set up ECC request
- *
- */
+  * @brief  Structure used to set up ECC request
+  *
+  */
 struct _mxc_ctb_ecc_req_t {
     uint8_t* dataBuffer;
     uint32_t dataLen;
@@ -124,9 +124,9 @@ struct _mxc_ctb_ecc_req_t {
 } typedef mxc_ctb_ecc_req_t;
 
 /**
- * @brief  Structure used to set up CRC request
- *
- */
+  * @brief  Structure used to set up CRC request
+  *
+  */
 struct _mxc_ctb_crc_req_t {
     uint8_t* dataBuffer;
     uint32_t dataLen;
@@ -134,9 +134,9 @@ struct _mxc_ctb_crc_req_t {
     mxc_ctb_complete_cb_t callback;
 } typedef mxc_ctb_crc_req_t;
 
-/**
+/** 
  * @brief CRC data bit order
- *
+ *  
  */
 typedef enum { MXC_CTB_CRC_LSB_FIRST, MXC_CTB_CRC_MSB_FIRST } mxc_ctb_crc_bitorder_t;
 
@@ -145,9 +145,9 @@ typedef enum { MXC_CTB_CRC_LSB_FIRST, MXC_CTB_CRC_MSB_FIRST } mxc_ctb_crc_bitord
 /* ************************************************************************* */
 
 /**
- * @brief  Structure used to set up Hash request
- *
- */
+  * @brief  Structure used to set up Hash request
+  *
+  */
 struct _mxc_ctb_hash_req_t {
     uint8_t* msg;
     uint32_t len;
@@ -156,24 +156,24 @@ struct _mxc_ctb_hash_req_t {
 } typedef mxc_ctb_hash_req_t;
 
 /**
- * @brief  Enumeration type to select Hash function
- *
- */
+  * @brief  Enumeration type to select Hash function
+  *
+  */
 typedef enum {
-    MXC_CTB_HASH_DIS = MXC_V_CTB_HASH_CTRL_HASH_DIS, // Disable
-    MXC_CTB_HASH_SHA1 = MXC_V_CTB_HASH_CTRL_HASH_SHA1, // Select SHA1
+    MXC_CTB_HASH_DIS    = MXC_V_CTB_HASH_CTRL_HASH_DIS,    // Disable
+    MXC_CTB_HASH_SHA1   = MXC_V_CTB_HASH_CTRL_HASH_SHA1,   // Select SHA1
     MXC_CTB_HASH_SHA224 = MXC_V_CTB_HASH_CTRL_HASH_SHA224, // Select SHA224
     MXC_CTB_HASH_SHA256 = MXC_V_CTB_HASH_CTRL_HASH_SHA256, // Select SHA256
     MXC_CTB_HASH_SHA384 = MXC_V_CTB_HASH_CTRL_HASH_SHA384, // Select SHA384
-    MXC_CTB_HASH_SHA512 = MXC_V_CTB_HASH_CTRL_HASH_SHA512 // Select SHA384
+    MXC_CTB_HASH_SHA512 = MXC_V_CTB_HASH_CTRL_HASH_SHA512  // Select SHA384
 } mxc_ctb_hash_func_t;
 
 /**
- * @brief  Enumeration type to select FIFO source for Hash
- *
- */
+  * @brief  Enumeration type to select FIFO source for Hash
+  *
+  */
 typedef enum {
-    MXC_CTB_HASH_SOURCE_INFIFO = 0,
+    MXC_CTB_HASH_SOURCE_INFIFO  = 0,
     MXC_CTB_HASH_SOURCE_OUTFIFO = 1
 } mxc_ctb_hash_source_t;
 
@@ -182,9 +182,9 @@ typedef enum {
 /* ************************************************************************* */
 
 /**
- * @brief  Structure used to set up Cipher request
- *
- */
+  * @brief  Structure used to set up Cipher request
+  *
+  */
 struct _mxc_ctb_cipher_req_t {
     uint8_t* plaintext;
     uint32_t ptLen;
@@ -194,43 +194,43 @@ struct _mxc_ctb_cipher_req_t {
 } typedef mxc_ctb_cipher_req_t;
 
 /**
- * @brief  Enumeration type to select Cipher mode
- *
- */
+  * @brief  Enumeration type to select Cipher mode
+  *
+  */
 typedef enum {
     MXC_CTB_MODE_ECB = MXC_V_CTB_CIPHER_CTRL_MODE_ECB, ///< Electronic Code Book
     MXC_CTB_MODE_CBC = MXC_V_CTB_CIPHER_CTRL_MODE_CBC, ///< Cipher Block Chaining
     MXC_CTB_MODE_CFB = MXC_V_CTB_CIPHER_CTRL_MODE_CFB, ///< Cipher Feedback
     MXC_CTB_MODE_CTR = MXC_V_CTB_CIPHER_CTRL_MODE_CTR, ///< Counter
-    MXC_CTB_MODE_OFB = MXC_V_CTB_CIPHER_CTRL_MODE_OFB ///< Output Feedback
+    MXC_CTB_MODE_OFB = MXC_V_CTB_CIPHER_CTRL_MODE_OFB  ///< Output Feedback
 } mxc_ctb_cipher_mode_t;
 
 /**
- * @brief  Enumeration type to select Cipher function
- *
- */
+  * @brief  Enumeration type to select Cipher function
+  *
+  */
 typedef enum {
-    MXC_CTB_CIPHER_DIS = MXC_V_CTB_CIPHER_CTRL_CIPHER_DIS, ///< Disable
+    MXC_CTB_CIPHER_DIS    = MXC_V_CTB_CIPHER_CTRL_CIPHER_DIS,    ///< Disable
     MXC_CTB_CIPHER_AES128 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES128, ///< Select AES-128
     MXC_CTB_CIPHER_AES192 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES192, ///< Select AES-192
     MXC_CTB_CIPHER_AES256 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES256, ///< Select AES-256
-    MXC_CTB_CIPHER_DES = MXC_V_CTB_CIPHER_CTRL_CIPHER_DES, ///< Select DES
-    MXC_CTB_CIPHER_TDES = MXC_V_CTB_CIPHER_CTRL_CIPHER_TDES ///< Select TDES
+    MXC_CTB_CIPHER_DES    = MXC_V_CTB_CIPHER_CTRL_CIPHER_DES,    ///< Select DES
+    MXC_CTB_CIPHER_TDES   = MXC_V_CTB_CIPHER_CTRL_CIPHER_TDES    ///< Select TDES
 } mxc_ctb_cipher_t;
 
 /**
- * @brief  Enumeration type to select Cipher key
- *
- */
+  * @brief  Enumeration type to select Cipher key
+  *
+  */
 typedef enum {
     MXC_CTB_CIPHER_KEY_SOFTWARE = 0,
     MXC_CTB_CIPHER_KEY_AES_KEY2 = 2,
     MXC_CTB_CIPHER_KEY_AES_KEY3 = 3
 } mxc_ctb_cipher_key_t;
 
-/**
+/** 
  * @brief Cipher operation
- *
+ *  
  */
 typedef enum { MXC_CTB_CIPHER_ENCRYPTION, MXC_CTB_CIPHER_DECRYPTION } mxc_ctb_cipher_operation_t;
 
@@ -534,8 +534,7 @@ void MXC_CTB_CRC_SetDirection(mxc_ctb_crc_bitorder_t bitOrder);
 /**
  * @brief   Set the bit-order of CRC calculation
  *
- * @return  The direction of calculation, 1 for MSB first, 0 for LSB first , \ref
- * mxc_ctb_crc_bitorder_t
+ * @return  The direction of calculation, 1 for MSB first, 0 for LSB first , \ref mxc_ctb_crc_bitorder_t
  */
 mxc_ctb_crc_bitorder_t MXC_CTB_CRC_GetDirection(void);
 
@@ -568,8 +567,7 @@ uint32_t MXC_CTB_CRC_GetResult(void);
 void MXC_CTB_CRC_SetInitialValue(uint32_t seed);
 
 /**
- * @brief   Set the value that will be bitwise XORed with the final output from the CRC computation.
- * Use 0 to skip the XOR step.
+ * @brief   Set the value that will be bitwise XORed with the final output from the CRC computation.  Use 0 to skip the XOR step.
  *
  * @param   xor  The value that will be XORed with the CRC
  */

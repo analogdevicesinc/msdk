@@ -32,12 +32,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_assert.h"
+#include <string.h>
+#include <stdio.h>
 #include "mxc_device.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "simo_reva.h"
-#include <stdio.h>
-#include <string.h>
 
 /* **** Functions **** */
 void MXC_SIMO_SetVregO_A(uint32_t voltage)

@@ -26,15 +26,15 @@
 #ifndef _DISTANCE_FUNCTIONS_H_
 #define _DISTANCE_FUNCTIONS_H_
 
-#include "arm_math_memory.h"
 #include "arm_math_types.h"
+#include "arm_math_memory.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
 
+#include "dsp/statistics_functions.h"
 #include "dsp/basic_math_functions.h"
 #include "dsp/fast_math_functions.h"
-#include "dsp/statistics_functions.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -199,8 +199,8 @@ float64_t arm_cosine_distance_f64(const float64_t* pA, const float64_t* pB, uint
  *
  */
 
-float32_t arm_jensenshannon_distance_f32(
-    const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_jensenshannon_distance_f32(const float32_t* pA, const float32_t* pB,
+                                         uint32_t blockSize);
 
 /**
  * @brief        Minkowski distance between two vectors
@@ -213,8 +213,8 @@ float32_t arm_jensenshannon_distance_f32(
  *
  */
 
-float32_t arm_minkowski_distance_f32(
-    const float32_t* pA, const float32_t* pB, int32_t order, uint32_t blockSize);
+float32_t arm_minkowski_distance_f32(const float32_t* pA, const float32_t* pB, int32_t order,
+                                     uint32_t blockSize);
 
 /**
  * @brief        Dice distance between two vectors
@@ -275,8 +275,8 @@ float32_t arm_kulsinski_distance(const uint32_t* pA, const uint32_t* pB, uint32_
  *
  */
 
-float32_t arm_rogerstanimoto_distance(
-    const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_rogerstanimoto_distance(const uint32_t* pA, const uint32_t* pB,
+                                      uint32_t numberOfBools);
 
 /**
  * @brief        Russell-Rao distance between two vectors
@@ -300,8 +300,8 @@ float32_t arm_russellrao_distance(const uint32_t* pA, const uint32_t* pB, uint32
  *
  */
 
-float32_t arm_sokalmichener_distance(
-    const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_sokalmichener_distance(const uint32_t* pA, const uint32_t* pB,
+                                     uint32_t numberOfBools);
 
 /**
  * @brief        Sokal-Sneath distance between two vectors

@@ -41,10 +41,10 @@
 #define _HTMR_H_
 
 /* **** Includes **** */
-#include "htmr_regs.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
 #include <stdint.h>
+#include "mxc_device.h"
+#include "htmr_regs.h"
+#include "mxc_sys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,8 +62,8 @@ extern "C" {
  * @brief   Bitmasks for each of the HTimer's interrupt enables.
  */
 typedef enum {
-    MXC_HTMR_INT_EN_LONG = MXC_F_HTMR_CTRL_ADE, ///< Long-interval alarm interrupt enable
-    MXC_HTMR_INT_EN_SHORT = MXC_F_HTMR_CTRL_ASE, ///< Short-interval alarm interrupt enable
+    MXC_HTMR_INT_EN_LONG  = MXC_F_HTMR_CTRL_ADE,  ///< Long-interval alarm interrupt enable
+    MXC_HTMR_INT_EN_SHORT = MXC_F_HTMR_CTRL_ASE,  ///< Short-interval alarm interrupt enable
     MXC_HTMR_INT_EN_READY = MXC_F_HTMR_CTRL_RDYE, ///< Timer ready interrupt enable
 } mxc_htmr_int_en_t;
 
@@ -71,9 +71,9 @@ typedef enum {
  * @brief   Bitmasks for each of the HTimer's interrupt flags.
  */
 typedef enum {
-    MXC_HTMR_INT_FL_LONG = MXC_F_HTMR_CTRL_ALDF, ///< Long-interval alarm interrupt flag
+    MXC_HTMR_INT_FL_LONG  = MXC_F_HTMR_CTRL_ALDF, ///< Long-interval alarm interrupt flag
     MXC_HTMR_INT_FL_SHORT = MXC_F_HTMR_CTRL_ALSF, ///< Short-interval alarm interrupt flag
-    MXC_HTMR_INT_FL_READY = MXC_F_HTMR_CTRL_RDY, ///< Timer ready interrupt flag
+    MXC_HTMR_INT_FL_READY = MXC_F_HTMR_CTRL_RDY,  ///< Timer ready interrupt flag
 } mxc_htmr_int_fl_t;
 
 /**

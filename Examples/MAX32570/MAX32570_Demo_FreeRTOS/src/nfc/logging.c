@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -33,10 +33,10 @@
  *
  ******************************************************************************/
 
-#include "logging.h"
-#include <stdarg.h>
 #include <stdint.h>
+#include <stdarg.h>
 #include <stdio.h>
+#include "logging.h"
 
 /**
  * @brief Controls the logging level for the L1 Stack
@@ -50,11 +50,9 @@ int32_t g_logging_level = DBG_LVL_LOG;
 /**
  * @brief Conditionally print some logging information
  *
- * This function is called by @ref NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS to implement multilevel
- * debugging messages
+ * This function is called by @ref NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS to implement multilevel debugging messages
  *
- * @param[in]   req_level Level for this logging message, use one of @ref
- * NFC_PCD_EMV_LVL1_STACK_LOGGING_LVLS
+ * @param[in]   req_level Level for this logging message, use one of @ref NFC_PCD_EMV_LVL1_STACK_LOGGING_LVLS
  * @param[in]   ... printf style formating string and variables to print etc.
  */
 void do_log(int32_t req_level, ...)

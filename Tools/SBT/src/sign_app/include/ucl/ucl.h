@@ -29,9 +29,9 @@
 #ifndef UCL_H_
 #define UCL_H_
 
+#include "ucl/ucl_types.h"
 #include "ucl/ucl_config.h"
 #include "ucl/ucl_defs.h"
 #include "ucl/ucl_retdefs.h"
-#include "ucl/ucl_types.h"
 
 #endif /*UCL_H_*/

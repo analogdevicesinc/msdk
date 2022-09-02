@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "icc.h"
-#include "icc_reva_regs.h"
-#include "mxc_assert.h"
+#include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include <stddef.h>
+#include "icc.h"
+#include "icc_reva_regs.h"
 
 /* **** Definitions **** */
 
@@ -57,17 +57,17 @@ int MXC_ICC_RevA_ID(mxc_icc_reva_regs_t* icc, mxc_icc_info_t cid)
     }
 
     switch (cid) {
-    case ICC_INFO_RELNUM:
-        return ((icc->info & MXC_F_ICC_REVA_INFO_RELNUM) >> MXC_F_ICC_REVA_INFO_RELNUM_POS);
+        case ICC_INFO_RELNUM:
+            return ((icc->info & MXC_F_ICC_REVA_INFO_RELNUM) >> MXC_F_ICC_REVA_INFO_RELNUM_POS);
 
-    case ICC_INFO_PARTNUM:
-        return ((icc->info & MXC_F_ICC_REVA_INFO_PARTNUM) >> MXC_F_ICC_REVA_INFO_PARTNUM_POS);
+        case ICC_INFO_PARTNUM:
+            return ((icc->info & MXC_F_ICC_REVA_INFO_PARTNUM) >> MXC_F_ICC_REVA_INFO_PARTNUM_POS);
 
-    case ICC_INFO_ID:
-        return ((icc->info & MXC_F_ICC_REVA_INFO_ID) >> MXC_F_ICC_REVA_INFO_ID_POS);
+        case ICC_INFO_ID:
+            return ((icc->info & MXC_F_ICC_REVA_INFO_ID) >> MXC_F_ICC_REVA_INFO_ID_POS);
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 }
 
@@ -77,11 +77,13 @@ void MXC_ICC_RevA_Enable(mxc_icc_reva_regs_t* icc)
     icc->ctrl &= ~MXC_F_ICC_REVA_CTRL_EN;
     icc->invalidate = 1;
 
-    while (!(MXC_ICC_Ready(icc))) { }
+    while (!(MXC_ICC_Ready(icc)))
+        ;
 
     // Enable Cache
     icc->ctrl |= MXC_F_ICC_REVA_CTRL_EN;
-    while (!(MXC_ICC_Ready(icc))) { }
+    while (!(MXC_ICC_Ready(icc)))
+        ;
 }
 
 void MXC_ICC_RevA_Disable(mxc_icc_reva_regs_t* icc)

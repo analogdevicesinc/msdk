@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -41,8 +41,8 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
@@ -62,15 +62,17 @@ void Test1()
     mxc_smon_ext_cfg_t cfg;
 
     cfg.sensorNumber = SMON_EXTSENSOR_1;
-    cfg.clockDivide = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
-    cfg.errorCount = 1;
+    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
+    cfg.errorCount   = 1;
 
     MXC_SMON_ExtSensorEnable(&cfg, 5000);
 
     flags = 0x00;
 
-    while (!(flags)) { flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1; }
+    while (!(flags)) {
+        flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1;
+    }
 
     printf("\nAlarm Flags After Error: 0x%x\n", flags);
 
@@ -88,17 +90,19 @@ void Test2()
     mxc_smon_ext_cfg_t cfg;
 
     cfg.sensorNumber = SMON_EXTSENSOR_0;
-    cfg.clockDivide = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
-    cfg.data = 0x51;
-    cfg.errorCount = 1;
+    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
+    cfg.data         = 0x51;
+    cfg.errorCount   = 1;
 
     MXC_SMON_SelfDestructByteEnable(&cfg, 5000);
     printf("\nData before Error: 0x%x\n", (MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE));
 
     flags = 0x00;
 
-    while (!(flags)) { flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0; }
+    while (!(flags)) {
+        flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0;
+    }
 
     printf("\nAlarm Flags After Error: 0x%x", flags);
     printf("\nData: 0x%x\n", MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE);

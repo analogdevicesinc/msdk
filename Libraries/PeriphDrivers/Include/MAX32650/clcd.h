@@ -59,20 +59,20 @@ extern "C" {
 
 /* **** Definitions **** */
 
-/**
- * Enumeration type for setting the number Bits per Pixel for the LCD screen
+/** 
+ * Enumeration type for setting the number Bits per Pixel for the LCD screen 
  */
 typedef enum {
-    MXC_BPP1 = MXC_S_CLCD_CTRL_BPP_BPP1, /**< 1 Bits per Pixel.                       */
-    MXC_BPP2 = MXC_S_CLCD_CTRL_BPP_BPP2, /**< 2 Bits per Pixel.                       */
-    MXC_BPP4 = MXC_S_CLCD_CTRL_BPP_BPP4, /**< 4 Bits per Pixel.                       */
-    MXC_BPP8 = MXC_S_CLCD_CTRL_BPP_BPP8, /**< 8 Bits per Pixel.                       */
+    MXC_BPP1  = MXC_S_CLCD_CTRL_BPP_BPP1,  /**< 1 Bits per Pixel.                       */
+    MXC_BPP2  = MXC_S_CLCD_CTRL_BPP_BPP2,  /**< 2 Bits per Pixel.                       */
+    MXC_BPP4  = MXC_S_CLCD_CTRL_BPP_BPP4,  /**< 4 Bits per Pixel.                       */
+    MXC_BPP8  = MXC_S_CLCD_CTRL_BPP_BPP8,  /**< 8 Bits per Pixel.                       */
     MXC_BPP16 = MXC_S_CLCD_CTRL_BPP_BPP16, /**< 16 Bits per Pixel.                      */
     MXC_BPP24 = MXC_S_CLCD_CTRL_BPP_BPP24, /**< 24 Bits per Pixel.                      */
 } mxc_clcd_bpp_t;
 
-/**
- * Structure type for configuring the CLCD peripheral.
+/** 
+ * Structure type for configuring the CLCD peripheral. 
  */
 typedef struct mxc_clcd_cfg {
     uint32_t width;

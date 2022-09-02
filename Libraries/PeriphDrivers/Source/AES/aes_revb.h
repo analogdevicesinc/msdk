@@ -31,16 +31,16 @@
  *
  *************************************************************************** */
 
-#include "aes.h"
-#include "aes_key_revb_regs.h"
-#include "aes_revb_regs.h"
-#include "trng_revb_regs.h"
 #include <stdint.h>
+#include "aes.h"
+#include "aes_revb_regs.h"
+#include "aes_key_revb_regs.h"
+#include "trng_revb_regs.h"
 
 /**
- * @brief  Enumeration type to select AES key
- *
- */
+  * @brief  Enumeration type to select AES key
+  *
+  */
 typedef enum {
     MXC_AES_REVB_128BITS = MXC_S_AES_REVB_CTRL_KEY_SIZE_AES128, ///< Select AES-128 bit key
     MXC_AES_REVB_192BITS = MXC_S_AES_REVB_CTRL_KEY_SIZE_AES192, ///< Select AES-192 bit key
@@ -48,26 +48,26 @@ typedef enum {
 } mxc_aes_revb_keys_t;
 
 /**
- * @brief  Enumeration type to select AES key source and encryption type
- *
- */
+  * @brief  Enumeration type to select AES key source and encryption type
+  *
+  */
 typedef enum {
     MXC_AES_REVB_ENCRYPT_EXT_KEY = 0, ///< Encryption using External key
     MXC_AES_REVB_DECRYPT_EXT_KEY = 1, ///< Encryption using internal key
-    MXC_AES_REVB_DECRYPT_INT_KEY = 2 ///< Decryption using internal key
+    MXC_AES_REVB_DECRYPT_INT_KEY = 2  ///< Decryption using internal key
 } mxc_aes_revb_enc_type_t;
 
 /**
- * @brief  Structure used to set up AES request
- *
- */
+  * @brief  Structure used to set up AES request
+  *
+  */
 typedef struct _mxc_aes_revb_cipher_req_t {
-    uint32_t length; ///< Length of the data
-    uint32_t* inputData; ///< Pointer to input data
-    uint32_t* resultData; ///< Pointer to encrypted data
-    mxc_aes_revb_keys_t keySize; ///< Size of AES key
+    uint32_t length;                    ///< Length of the data
+    uint32_t* inputData;                ///< Pointer to input data
+    uint32_t* resultData;               ///< Pointer to encrypted data
+    mxc_aes_revb_keys_t keySize;        ///< Size of AES key
     mxc_aes_revb_enc_type_t encryption; ///< Encrytion type or \ref mxc_aes_enc_type_t
-    mxc_aes_complete_t callback; ///< Callback function
+    mxc_aes_complete_t callback;        ///< Callback function
 } mxc_aes_revb_req_t;
 
 int MXC_AES_RevB_Init(mxc_aes_revb_regs_t* aes);

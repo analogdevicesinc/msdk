@@ -1,54 +1,54 @@
 /*******************************************************************************
- * Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************
- *
- * @author: Yann Loisel <yann.loisel@maximintegrated.com>
- * @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
- *
- */
+* Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************
+*
+* @author: Yann Loisel <yann.loisel@maximintegrated.com>
+* @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
+*
+*/
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
 #include <ctype.h>
 #include <errno.h>
 #include <regex.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#include <ucl/ucl_aes.h>
 #include <ucl/ucl_config.h>
 #include <ucl/ucl_types.h>
+#include <ucl/ucl_aes.h>
 
-#include "scp_utils.h"
 #include "session_build.h"
+#include "scp_utils.h"
 
 #include <log.h>
 
@@ -59,18 +59,18 @@ int hex_extended_address;
 /* -- ASCII files - format parameters -- */
 
 #define S19_ADDRESS_LEN 4
-#define S19_CRC_LEN 1
+#define S19_CRC_LEN     1
 
-#define HEX_START_CHAR ':'
-#define HEX_RECORD_TYPE_POS1 7
-#define HEX_RECORD_TYPE_POS2 8
-#define HEX_LINE_LEN_POS1 1
-#define HEX_LINE_LEN_POS2 2
-#define HEX_ADDRESS_START 3
-#define HEX_ADDRESS_END 6
+#define HEX_START_CHAR                    ':'
+#define HEX_RECORD_TYPE_POS1              7
+#define HEX_RECORD_TYPE_POS2              8
+#define HEX_LINE_LEN_POS1                 1
+#define HEX_LINE_LEN_POS2                 2
+#define HEX_ADDRESS_START                 3
+#define HEX_ADDRESS_END                   6
 #define HEX_EXTENDED_LINEAR_ADDRESS_START 9
-#define HEX_EXTENDED_LINEAR_ADDRESS_END 10
-#define HEX_DATA_START 9
+#define HEX_EXTENDED_LINEAR_ADDRESS_END   10
+#define HEX_DATA_START                    9
 
 int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t* addr)
 {
@@ -89,10 +89,10 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
     unsigned int tmp;
 
     unsigned int record_type = 0;
-    size_t current_len = 0;
-    size_t record_len = 0;
-    size_t record_addr = 0;
-    size_t extended_addr = 0;
+    size_t current_len       = 0;
+    size_t record_len        = 0;
+    size_t record_addr       = 0;
+    size_t extended_addr     = 0;
 
     if ((filename == NULL) || (strlen(filename) == 0)) {
         print_error("Invalid HEX filename\n");
@@ -114,9 +114,9 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
 
     /* Parse hex record line : :LLAAAATTDDDD..DDDCC */
     ret = regcomp(&regex,
-        "^:([0-9A-Fa-f]{2})([0-9A-Fa-f]{4})([0-9A-Fa-f]{2})([0-9A-Fa-f]*)([0-9A-Fa-f]{2})"
-        "[[:cntrl:]]*$",
-        REG_EXTENDED);
+                  "^:([0-9A-Fa-f]{2})([0-9A-Fa-f]{4})([0-9A-Fa-f]{2})([0-9A-Fa-f]*)([0-9A-Fa-f]{2})"
+                  "[[:cntrl:]]*$",
+                  REG_EXTENDED);
     if (ret) {
         return ERR_REGEXP_ERROR;
     }
@@ -138,46 +138,46 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
             return ERR_BAD_FORMAT;
         }
 
-        record_len = strtoul(record_len_str, NULL, 16);
+        record_len  = strtoul(record_len_str, NULL, 16);
         record_addr = strtoul(record_addr_str, NULL, 16);
         record_type = strtoul(record_type_str, NULL, 16);
 
         switch (record_type) {
-        case 0: /* Data */
-            if (record_len + current_len >= *data_len) {
-                print_error("HEX file is too large\n");
-                return ERR_FILE_TOO_LONG;
-            }
+            case 0: /* Data */
+                if (record_len + current_len >= *data_len) {
+                    print_error("HEX file is too large\n");
+                    return ERR_FILE_TOO_LONG;
+                }
 
-            i = 0;
-            while (EOF != sscanf(&(record_data_str[2 * i]), "%02x", &tmp)) {
-                data[current_len + i] = (unsigned char)tmp;
-                addr[current_len + i] = record_addr + i + extended_addr;
-                i++;
-            }
-            current_len += i;
+                i = 0;
+                while (EOF != sscanf(&(record_data_str[2 * i]), "%02x", &tmp)) {
+                    data[current_len + i] = (unsigned char)tmp;
+                    addr[current_len + i] = record_addr + i + extended_addr;
+                    i++;
+                }
+                current_len += i;
 
-            if (i != record_len) {
-                print_error("HEX Reading error, Length field and data length mismatch (%d "
-                            "!= " SSIZET_FMT ") \n",
-                    i, record_len);
-                return ERR_BAD_FORMAT;
-            }
+                if (i != record_len) {
+                    print_error("HEX Reading error, Length field and data length mismatch (%d "
+                                "!= " SSIZET_FMT ") \n",
+                                i, record_len);
+                    return ERR_BAD_FORMAT;
+                }
 
-            break;
-        case 1: /* End Of File : do nothing */
-            break;
-        case 2: /* Extended Segment Address : do nothing */
-            break;
-        case 3: /* Start Segment Address : do nothing */
-            break;
-        case 4: /* Extended Linear Address  */
-            extended_addr = strtoul(record_data_str, NULL, 16) * 65536;
-            break;
-        case 5: /* Start Linear Address : do nothing */
-            break;
-        default:
-            break;
+                break;
+            case 1: /* End Of File : do nothing */
+                break;
+            case 2: /* Extended Segment Address : do nothing */
+                break;
+            case 3: /* Start Segment Address : do nothing */
+                break;
+            case 4: /* Extended Linear Address  */
+                extended_addr = strtoul(record_data_str, NULL, 16) * 65536;
+                break;
+            case 5: /* Start Linear Address : do nothing */
+                break;
+            default:
+                break;
         }
     }
 
@@ -200,8 +200,8 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
     return ERR_OK;
 }
 
-int read_s19_file(
-    const char* filename, size_t address_offset, uint8_t* data, size_t* data_len, size_t* addr)
+int read_s19_file(const char* filename, size_t address_offset, uint8_t* data, size_t* data_len,
+                  size_t* addr)
 {
     FILE* pFile;
     char line[MAXLINE];
@@ -217,7 +217,7 @@ int read_s19_file(
     unsigned int tmp;
 
     size_t current_len = 0;
-    size_t record_len = 0;
+    size_t record_len  = 0;
     size_t record_addr = 0;
 
     if ((filename == NULL) || (strlen(filename) == 0)) {
@@ -240,8 +240,8 @@ int read_s19_file(
 
     /* Parse S3 record line : S3LLAAAAAAAADDDD..DDDCC */
     ret = regcomp(&regex,
-        "^S3([0-9A-Fa-f]{2})([0-9A-Fa-f]{8})([0-9A-Fa-f]*)([0-9A-Fa-f]{2})[[:cntrl:]]*$",
-        REG_EXTENDED);
+                  "^S3([0-9A-Fa-f]{2})([0-9A-Fa-f]{8})([0-9A-Fa-f]*)([0-9A-Fa-f]{2})[[:cntrl:]]*$",
+                  REG_EXTENDED);
     if (ret) {
         return ERR_REGEXP_ERROR;
     }
@@ -272,7 +272,7 @@ int read_s19_file(
             return ERR_BAD_FORMAT;
         }
 
-        record_len = strtoul(record_len_str, NULL, 16);
+        record_len  = strtoul(record_len_str, NULL, 16);
         record_addr = strtoul(record_addr_str, NULL, 16);
 
         record_addr += address_offset;
@@ -329,7 +329,7 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
     char record_len_str[10];
     char record_addr_str[10];
 
-    size_t record_len = 0;
+    size_t record_len  = 0;
     size_t record_addr = 0;
 
     if ((filename == NULL) || (strlen(filename) == 0)) {
@@ -352,8 +352,8 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
 
     /* Parse S3 record line : S3LLAAAADDDD..DDDCC */
     ret = regcomp(&regex,
-        "^S3([0-9A-Fa-f]{2})([0-9A-Fa-f]{8})([0-9A-Fa-f]*)([0-9A-Fa-f]{2})[[:cntrl:]]*$",
-        REG_EXTENDED);
+                  "^S3([0-9A-Fa-f]{2})([0-9A-Fa-f]{8})([0-9A-Fa-f]*)([0-9A-Fa-f]{2})[[:cntrl:]]*$",
+                  REG_EXTENDED);
     if (ret) {
         return ERR_REGEXP_ERROR;
     }
@@ -365,7 +365,7 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
     }
 
     *start_addr = SIZE_MAX;
-    *end_addr = 0;
+    *end_addr   = 0;
 
     while (fgets(line, MAXLINE, pFile) != NULL) {
         /* This function only read S3 records */
@@ -383,7 +383,7 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
             return ERR_BAD_FORMAT;
         }
 
-        record_len = strtoul(record_len_str, NULL, 16) - S19_ADDRESS_LEN - S19_CRC_LEN;
+        record_len  = strtoul(record_len_str, NULL, 16) - S19_ADDRESS_LEN - S19_CRC_LEN;
         record_addr = strtoul(record_addr_str, NULL, 16);
 
         if (record_addr < *start_addr) {
@@ -414,7 +414,7 @@ int read_line_ascii_data(FILE* file_ptr, size_t* data_length, unsigned char* dat
 {
     char* result = NULL;
     char* ascii_data;
-    unsigned int i = 0;
+    unsigned int i   = 0;
     unsigned int tmp = 0;
 
     /* Null pointer check */

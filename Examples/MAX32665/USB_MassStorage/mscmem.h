@@ -42,7 +42,7 @@
 
 #include <stdint.h>
 
-#define ERASE_MEMORY_ON_INIT                                                                       \
+#define ERASE_MEMORY_ON_INIT \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
 /* Use 1 to clear or 0 to leave untouched. */
 

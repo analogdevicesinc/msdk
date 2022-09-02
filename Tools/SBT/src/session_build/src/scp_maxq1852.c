@@ -1,51 +1,51 @@
 /*******************************************************************************
- * Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************
- *
- * @author: Yann Loisel <yann.loisel@maximintegrated.com>
- * @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
- *
- */
+* Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************
+*
+* @author: Yann Loisel <yann.loisel@maximintegrated.com>
+* @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
+*
+*/
 
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
 
+#include "scp_definitions.h"
+#include "session_build.h"
+#include "scp_utils.h"
+#include "read_file.h"
 #include "ecdsa.h"
 #include "maxim_c_utils.h"
-#include "read_file.h"
-#include "scp_definitions.h"
-#include "scp_utils.h"
-#include "session_build.h"
 #include <log.h>
 
 static int seq;
@@ -63,7 +63,7 @@ int maxq1852_signed_cmd(const uint8_t* payload, size_t payload_length, char* nam
     uint8_t signature[ECDSA_SIGNATURE_LEN];
 
     /* Length : payload + TRID + SEQ + Signature */
-    length = payload_length + 4 + 2 + ECDSA_SIGNATURE_LEN;
+    length               = payload_length + 4 + 2 + ECDSA_SIGNATURE_LEN;
     data_frame[iframe++] = length & 255;
     data_frame[iframe++] = length >> 8;
 
@@ -80,7 +80,7 @@ int maxq1852_signed_cmd(const uint8_t* payload, size_t payload_length, char* nam
     /* Sequence Number */
     data_frame[iframe++] = seq & 255;
     data_frame[iframe++] = seq >> 8;
-    seq = (seq + 1) & 0xffff;
+    seq                  = (seq + 1) & 0xffff;
 
     /* Sign Command */
     ASSERT_OK(ecdsa_sign(data_frame, iframe, signature, config_g.ecdsaKey));
@@ -94,7 +94,7 @@ int maxq1852_signed_cmd(const uint8_t* payload, size_t payload_length, char* nam
         data_frame[iframe++] = signature[2 * ECDSA_MODULUS_LEN - 1 - i];
     }
 
-    // sprintf (message, "%s", idf_scp_cmd[COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS]);
+    //sprintf (message, "%s", idf_scp_cmd[COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS]);
     return packet_send(data_frame, iframe, "", name);
 }
 
@@ -112,7 +112,7 @@ int maxq1852_generic_response(char* name)
     data_frame[iframe++] = 0x00;
     data_frame[iframe++] = MAXQ1852_SCPROMPT;
 
-    // sprintf (message, "%s", idf_scp_cmd[COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS]);
+    //sprintf (message, "%s", idf_scp_cmd[COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS]);
     return packet_send(data_frame, iframe, "", name);
 }
 
@@ -159,9 +159,13 @@ int load_customer_key(char* pub_x, char* pub_y)
         yq[i] = one_byte;
     }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i]; }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
+        payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i];
+    }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i]; }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
+        payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i];
+    }
 
     return maxq1852_signed_cmd(payload, ipayload, "load_customer_key");
 }
@@ -200,9 +204,13 @@ int verify_customer_key(char* pub_x, char* pub_y)
         yq[i] = one_byte;
     }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i]; }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
+        payload[ipayload++] = xq[ECDSA_MODULUS_LEN - 1 - i];
+    }
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i]; }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
+        payload[ipayload++] = yq[ECDSA_MODULUS_LEN - 1 - i];
+    }
 
     return maxq1852_signed_cmd(payload, ipayload, "verify_customer_key");
 }
@@ -360,10 +368,10 @@ int load_file(char* hexfilename)
     int result;
 
     size_t data_len = sizeof(u8) * 1024 * 1024 * config_g.flash_mb;
-    uint8_t* data = malloc(data_len);
+    uint8_t* data   = malloc(data_len);
     if (NULL == data) {
-        print_error(
-            "Unable to allocate memory for binary data (%dMB requested)\n", config_g.flash_mb);
+        print_error("Unable to allocate memory for binary data (%dMB requested)\n",
+                    config_g.flash_mb);
         return ERR_MEMORY_ERROR;
     }
 
@@ -379,7 +387,9 @@ int load_file(char* hexfilename)
         return (EXIT_FAILURE);
     }
 
-    for (i = 0; i < 1024 * 1024; i++) { dataloc[i] = 0xff; }
+    for (i = 0; i < 1024 * 1024; i++) {
+        dataloc[i] = 0xff;
+    }
 
     for (i = 0; i < data_len; i++) {
         if (addr_g[i] > 1024 * 1024) {
@@ -388,7 +398,7 @@ int load_file(char* hexfilename)
         }
         if (dataloc[addr_g[i]] != 0xff) {
             printf("ERROR: data already allocated in " SSIZET_XFMT ": %02x-%02x\n", addr_g[i],
-                dataloc[addr_g[i]], data[i]);
+                   dataloc[addr_g[i]], data[i]);
         } else {
             dataloc[addr_g[i]] = data[i];
         }
@@ -405,7 +415,7 @@ int load_file(char* hexfilename)
         /* 3.7.14 */
         /* extended-address is now already included in the address */
         /*      ad=(hex_extended_address<<16)^(i); */
-        ad = i;
+        ad  = i;
         ad1 = ad >> 24;
         ad2 = (ad >> 16) & 255;
         ad3 = (ad >> 8) & 255;
@@ -491,10 +501,10 @@ int verify_code_file(char* hexfilename)
     int result;
 
     size_t data_len = sizeof(u8) * 1024 * 1024 * config_g.flash_mb;
-    uint8_t* data = malloc(data_len);
+    uint8_t* data   = malloc(data_len);
     if (NULL == data) {
-        print_error(
-            "Unable to allocate memory for binary data (%dMB requested)\n", config_g.flash_mb);
+        print_error("Unable to allocate memory for binary data (%dMB requested)\n",
+                    config_g.flash_mb);
         return ERR_MEMORY_ERROR;
     }
 
@@ -513,17 +523,21 @@ int verify_code_file(char* hexfilename)
         return (EXIT_FAILURE);
     }
 
-    for (i = 0; i < 1024 * 1024; i++) { dataloc[i] = 0xff; }
+    for (i = 0; i < 1024 * 1024; i++) {
+        dataloc[i] = 0xff;
+    }
 
-    for (i = 0; i < data_len; i++) { dataloc[addr_g[i]] = data[i]; }
+    for (i = 0; i < data_len; i++) {
+        dataloc[addr_g[i]] = data[i];
+    }
 
     last_index = addr_g[data_len - 1];
     for (i = 0; i < last_index; i += config_g.chunk_size) {
         /*3.7.14
-           extended-address is now already included in the address
-           ad=(hex_extended_address<<16)^(i);
-         */
-        ad = i;
+		   extended-address is now already included in the address
+		   ad=(hex_extended_address<<16)^(i);
+		 */
+        ad  = i;
         ad1 = ad >> 24;
         ad2 = (ad >> 16) & 255;
         ad3 = (ad >> 8) & 255;
@@ -695,263 +709,266 @@ int process_script_maxq1852_ecdsa(const char* filename)
             return (EXIT_FAILURE);
         }
         switch (command) {
-            /*	case COMMAND_HELP:
-        if (0 == nb_params)
-        {
-            if (EXIT_SUCCESS != help ())
-            {
-                printf ("ERROR: help\n");
+                /*	case COMMAND_HELP:
+			if (0 == nb_params)
+			{
+				if (EXIT_SUCCESS != help ())
+				{
+					printf ("ERROR: help\n");
+					return (EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				printf ("ERROR for help command\n");
+				return (EXIT_FAILURE);
+			}
+			break;*/
+            case COMMAND_MAXQ1852_ENGAGE_PLLO:
+                if (0 == nb_params) {
+                    if (EXIT_SUCCESS != engage_pllo()) {
+                        printf("ERROR: engage-pllo\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    engage_pllo_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for engage-pllo command: engage-pllo\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_ERASE_CODE_FLASH_AREA:
+                if (0 == nb_params) {
+                    if (EXIT_SUCCESS != erase_code_flash_area()) {
+                        printf("ERROR: erase-code-flash-area\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    erase_code_flash_area_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for erase-code-flash-area command: "
+                           "erase-code-flash-area\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS:
+                if (0 == nb_params) {
+                    if (EXIT_SUCCESS != erase_all_flash_areas()) {
+                        printf("ERROR: erase-all-flash-areas\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    erase_all_flash_areas_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for erase-all-flash-areas command: "
+                           "erase-all-flash-areas\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_ACTIVATE_CUSTOMER_KEY:
+                if (0 == nb_params) {
+                    if (EXIT_SUCCESS != activate_customer_key()) {
+                        printf("ERROR: activate-customer-key\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    activate_customer_key_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for activate-customer-key command: "
+                           "activate-customer-key\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_GENERATE_APPLICATION_STARTUP_SIGNATURE:
+                if (0 == nb_params) {
+                    if (EXIT_SUCCESS != generate_application_startup_signature()) {
+                        printf("ERROR: generate-application-startup-signature\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    generate_application_startup_signature_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for generate-application-startup-signature "
+                           "command: generate-application-startup-signature\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_VERIFY_APPLICATION_STARTUP_SIGNATURE:
+                if (0 == nb_params) {
+                    if (EXIT_SUCCESS != verify_application_startup_signature()) {
+                        printf("ERROR: verify-application-startup-signature\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    verify_application_startup_signature_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for verify-application-startup-signature "
+                           "command: verify-application-startup-signature\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_LOAD_CUSTOMER_KEY:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != load_customer_key(params[0], params[1])) {
+                        printf("ERROR: load-customer-key\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    load_customer_key_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for load-customer-key command: "
+                           "load-customer-key <pub-x> <pub-y>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_VERIFY_CUSTOMER_KEY:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != verify_customer_key(params[0], params[1])) {
+                        printf("ERROR: verify-customer-key\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    verify_customer_key_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for verify-customer-key command: "
+                           "verify-customer-key <pub-x> <pub-y>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_WRITE_REGISTER:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != write_register(params[0], params[1])) {
+                        printf("ERROR: write-register\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    write_register_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for write-register: write-register <register> "
+                           "<value>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_READ_REGISTER:
+                if (1 == nb_params) {
+                    if (EXIT_SUCCESS != read_register(params[0])) {
+                        printf("ERROR: read-register\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    read_register_response();
+                    host();
+                } else {
+                    printf(
+                        "ERROR: incorrect format for write-register: read-register <register>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+                /* write-only-file is an abstraction for write-data, used in scp and scp-flora */
+            case COMMAND_MAXQ1852_LOAD_FILE:
+                if (1 == nb_params) {
+                    if (EXIT_SUCCESS != load_file(params[0])) {
+                        printf("ERROR: load-file\n");
+                        return (EXIT_FAILURE);
+                    }
+                } else if (2 == nb_params) {
+                    if (EXIT_SUCCESS != load_file(params[0])) {
+                        printf("ERROR: load-file\n");
+                        return (EXIT_FAILURE);
+                    }
+                } else {
+                    printf("ERROR: incorrect format for WRITE-ONLY command: write-file-only "
+                           "<s19file> <address-offset:optional>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_LOAD_CODE:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != load_code(params[0], params[1])) {
+                        printf("ERROR: load-code\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    load_code_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for load-code: load-code <address> <code>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_VERIFY_FILE:
+                if (1 == nb_params) {
+                    if (EXIT_SUCCESS != verify_code_file(params[0])) {
+                        printf("ERROR: verify-file\n");
+                        return (EXIT_FAILURE);
+                    }
+                } else if (2 == nb_params) {
+                    if (EXIT_SUCCESS != verify_code_file(params[0])) {
+                        printf("ERROR: verify-file\n");
+                        return (EXIT_FAILURE);
+                    }
+                } else {
+                    printf("ERROR: incorrect format for WRITE-ONLY command: verify-code-file-only "
+                           "<s19file> <address-offset:optional>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_VERIFY_CODE:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != verify_code(params[0], params[1])) {
+                        printf("ERROR: verify-code\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    verify_code_response();
+                    host();
+                } else {
+                    printf(
+                        "ERROR: incorrect format for verify-code: verify-code <address> <code>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_LOAD_DATA:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != load_data(params[0], params[1])) {
+                        printf("ERROR: load-data\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    load_data_response();
+                    host();
+                } else {
+                    printf("ERROR: incorrect format for load-data: load-data <address> <data>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            case COMMAND_MAXQ1852_VERIFY_DATA:
+                if (2 == nb_params) {
+                    if (EXIT_SUCCESS != verify_maxq1852_data(params[0], params[1])) {
+                        printf("ERROR: verify-data\n");
+                        return (EXIT_FAILURE);
+                    }
+                    target();
+                    verify_maxq1852_data_response();
+                    host();
+                } else {
+                    printf(
+                        "ERROR: incorrect format for verify-data: verify-data <address> <code>\n");
+                    return (EXIT_FAILURE);
+                }
+                break;
+            default:
+                printf("ERROR: the command <%s> is not supported\n", line);
                 return (EXIT_FAILURE);
-            }
-        }
-        else
-        {
-            printf ("ERROR for help command\n");
-            return (EXIT_FAILURE);
-        }
-        break;*/
-        case COMMAND_MAXQ1852_ENGAGE_PLLO:
-            if (0 == nb_params) {
-                if (EXIT_SUCCESS != engage_pllo()) {
-                    printf("ERROR: engage-pllo\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                engage_pllo_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for engage-pllo command: engage-pllo\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_ERASE_CODE_FLASH_AREA:
-            if (0 == nb_params) {
-                if (EXIT_SUCCESS != erase_code_flash_area()) {
-                    printf("ERROR: erase-code-flash-area\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                erase_code_flash_area_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for erase-code-flash-area command: "
-                       "erase-code-flash-area\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS:
-            if (0 == nb_params) {
-                if (EXIT_SUCCESS != erase_all_flash_areas()) {
-                    printf("ERROR: erase-all-flash-areas\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                erase_all_flash_areas_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for erase-all-flash-areas command: "
-                       "erase-all-flash-areas\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_ACTIVATE_CUSTOMER_KEY:
-            if (0 == nb_params) {
-                if (EXIT_SUCCESS != activate_customer_key()) {
-                    printf("ERROR: activate-customer-key\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                activate_customer_key_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for activate-customer-key command: "
-                       "activate-customer-key\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_GENERATE_APPLICATION_STARTUP_SIGNATURE:
-            if (0 == nb_params) {
-                if (EXIT_SUCCESS != generate_application_startup_signature()) {
-                    printf("ERROR: generate-application-startup-signature\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                generate_application_startup_signature_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for generate-application-startup-signature "
-                       "command: generate-application-startup-signature\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_VERIFY_APPLICATION_STARTUP_SIGNATURE:
-            if (0 == nb_params) {
-                if (EXIT_SUCCESS != verify_application_startup_signature()) {
-                    printf("ERROR: verify-application-startup-signature\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                verify_application_startup_signature_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for verify-application-startup-signature "
-                       "command: verify-application-startup-signature\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_LOAD_CUSTOMER_KEY:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != load_customer_key(params[0], params[1])) {
-                    printf("ERROR: load-customer-key\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                load_customer_key_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for load-customer-key command: "
-                       "load-customer-key <pub-x> <pub-y>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_VERIFY_CUSTOMER_KEY:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != verify_customer_key(params[0], params[1])) {
-                    printf("ERROR: verify-customer-key\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                verify_customer_key_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for verify-customer-key command: "
-                       "verify-customer-key <pub-x> <pub-y>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_WRITE_REGISTER:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != write_register(params[0], params[1])) {
-                    printf("ERROR: write-register\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                write_register_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for write-register: write-register <register> "
-                       "<value>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_READ_REGISTER:
-            if (1 == nb_params) {
-                if (EXIT_SUCCESS != read_register(params[0])) {
-                    printf("ERROR: read-register\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                read_register_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for write-register: read-register <register>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-            /* write-only-file is an abstraction for write-data, used in scp and scp-flora */
-        case COMMAND_MAXQ1852_LOAD_FILE:
-            if (1 == nb_params) {
-                if (EXIT_SUCCESS != load_file(params[0])) {
-                    printf("ERROR: load-file\n");
-                    return (EXIT_FAILURE);
-                }
-            } else if (2 == nb_params) {
-                if (EXIT_SUCCESS != load_file(params[0])) {
-                    printf("ERROR: load-file\n");
-                    return (EXIT_FAILURE);
-                }
-            } else {
-                printf("ERROR: incorrect format for WRITE-ONLY command: write-file-only "
-                       "<s19file> <address-offset:optional>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_LOAD_CODE:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != load_code(params[0], params[1])) {
-                    printf("ERROR: load-code\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                load_code_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for load-code: load-code <address> <code>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_VERIFY_FILE:
-            if (1 == nb_params) {
-                if (EXIT_SUCCESS != verify_code_file(params[0])) {
-                    printf("ERROR: verify-file\n");
-                    return (EXIT_FAILURE);
-                }
-            } else if (2 == nb_params) {
-                if (EXIT_SUCCESS != verify_code_file(params[0])) {
-                    printf("ERROR: verify-file\n");
-                    return (EXIT_FAILURE);
-                }
-            } else {
-                printf("ERROR: incorrect format for WRITE-ONLY command: verify-code-file-only "
-                       "<s19file> <address-offset:optional>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_VERIFY_CODE:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != verify_code(params[0], params[1])) {
-                    printf("ERROR: verify-code\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                verify_code_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for verify-code: verify-code <address> <code>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_LOAD_DATA:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != load_data(params[0], params[1])) {
-                    printf("ERROR: load-data\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                load_data_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for load-data: load-data <address> <data>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        case COMMAND_MAXQ1852_VERIFY_DATA:
-            if (2 == nb_params) {
-                if (EXIT_SUCCESS != verify_maxq1852_data(params[0], params[1])) {
-                    printf("ERROR: verify-data\n");
-                    return (EXIT_FAILURE);
-                }
-                target();
-                verify_maxq1852_data_response();
-                host();
-            } else {
-                printf("ERROR: incorrect format for verify-data: verify-data <address> <code>\n");
-                return (EXIT_FAILURE);
-            }
-            break;
-        default:
-            printf("ERROR: the command <%s> is not supported\n", line);
-            return (EXIT_FAILURE);
         }
     }
     (void)fclose(fpscript);

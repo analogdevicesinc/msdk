@@ -1,7 +1,7 @@
 /**
  * @file    mxc_delay.h
  * @brief   Asynchronous delay routines based on the SysTick Timer.
- */
+*/
 
 /* ****************************************************************************
  * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.

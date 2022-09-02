@@ -161,8 +161,7 @@ __STATIC_INLINE void __set_MSP(uint32_t topOfMainStack)
 
 /** @brief  Get Priority Mask
 
-    This function returns the current state of the priority mask bit from the Priority Mask
-   Register.
+    This function returns the current state of the priority mask bit from the Priority Mask Register.
 
     @return               Priority Mask value
  */
@@ -436,8 +435,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_MSP(uint32_t topOfMain
 
 /** @brief  Get Priority Mask
 
-    This function returns the current state of the priority mask bit from the Priority Mask
-   Register.
+    This function returns the current state of the priority mask bit from the Priority Mask Register.
 
     @return               Priority Mask value
  */

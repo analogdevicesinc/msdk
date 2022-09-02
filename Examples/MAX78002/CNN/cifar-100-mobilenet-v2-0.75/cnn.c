@@ -1,133 +1,127 @@
 /*******************************************************************************
- * Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************/
+* Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
+*
+* This software is protected by copyright laws of the United States and
+* of foreign countries. This material may also be protected by patent laws
+* and technology transfer regulations of the United States and of foreign
+* countries. This software is furnished under a license agreement and/or a
+* nondisclosure agreement and may only be used or reproduced in accordance
+* with the terms of those agreements. Dissemination of this information to
+* any party or parties not specified in the license agreement and/or
+* nondisclosure agreement is expressly prohibited.
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************/
 
 // cifar-100-mobilenet-v2-0.75
-// Created using ai8xize.py --test-dir sdk/Examples/MAX78002/CNN --prefix
-// cifar-100-mobilenet-v2-0.75 --checkpoint-file
-// trained/ai87-cifar100-mobilenet-v2-0.75-qat8-q.pth.tar --config-file
-// networks/ai87-cifar100-mobilenet-v2-0.75.yaml --softmax --device MAX78002 --timer 0
-// --display-checkpoint --verbose --overwrite
+// Created using ai8xize.py --test-dir sdk/Examples/MAX78002/CNN --prefix cifar-100-mobilenet-v2-0.75 --checkpoint-file trained/ai87-cifar100-mobilenet-v2-0.75-qat8-q.pth.tar --config-file networks/ai87-cifar100-mobilenet-v2-0.75.yaml --softmax --device MAX78002 --timer 0 --display-checkpoint --verbose --overwrite
 
 // DO NOT EDIT - regenerate this file instead!
 
 // Configuring 73 layers
 // Input data: HWC
-// Layer 0: 3x32x32, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 24x32x32
-// output Layer 1: 24x32x32, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 24x32x32 output Layer 2: 24x32x32, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0,
-// no activation, 12x32x32 output Layer 3: 12x32x32, no pooling, conv2d with kernel size 1x1, stride
-// 1/1, pad 0/0, ReLU, 72x32x32 output Layer 4: 72x32x32, max pool 2x2 with stride 2/2, conv2d with
-// kernel size 3x3, stride 1/1, pad 1/1, ReLU, 72x16x16 output Layer 5: 72x16x16, no pooling, conv2d
-// with kernel size 1x1, stride 1/1, pad 0/0, no activation, 20x16x16 output Layer 6: 20x16x16, no
-// pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 120x16x16 output Layer 7:
-// 120x16x16, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 120x16x16 output
-// Layer 8: 120x16x16, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation,
-// 20x16x16 output Layer 9: 20x16x16, no pooling, no convolution, 20x16x16 output Layer 10:
-// 2x20x16x16, no pooling, 2-element add, no convolution, 20x16x16 output Layer 11: 20x16x16, no
-// pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 120x16x16 output Layer 12:
-// 120x16x16, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 120x8x8 output Layer 13: 120x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0,
-// no activation, 24x8x8 output Layer 14: 24x8x8, no pooling, conv2d with kernel size 1x1, stride
-// 1/1, pad 0/0, ReLU, 144x8x8 output Layer 15: 144x8x8, no pooling, conv2d with kernel size 3x3,
-// stride 1/1, pad 1/1, ReLU, 144x8x8 output Layer 16: 144x8x8, no pooling, conv2d with kernel size
-// 1x1, stride 1/1, pad 0/0, no activation, 24x8x8 output Layer 17: 24x8x8, no pooling, no
-// convolution, 24x8x8 output Layer 18: 2x24x8x8, no pooling, 2-element add, no convolution, 24x8x8
-// output Layer 19: 24x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU,
-// 144x8x8 output Layer 20: 144x8x8, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1,
-// ReLU, 144x8x8 output Layer 21: 144x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad
-// 0/0, no activation, 24x8x8 output Layer 22: 24x8x8, no pooling, no convolution, 24x8x8 output
+// Layer 0: 3x32x32, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 24x32x32 output
+// Layer 1: 24x32x32, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 24x32x32 output
+// Layer 2: 24x32x32, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 12x32x32 output
+// Layer 3: 12x32x32, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 72x32x32 output
+// Layer 4: 72x32x32, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 72x16x16 output
+// Layer 5: 72x16x16, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 20x16x16 output
+// Layer 6: 20x16x16, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 120x16x16 output
+// Layer 7: 120x16x16, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 120x16x16 output
+// Layer 8: 120x16x16, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 20x16x16 output
+// Layer 9: 20x16x16, no pooling, no convolution, 20x16x16 output
+// Layer 10: 2x20x16x16, no pooling, 2-element add, no convolution, 20x16x16 output
+// Layer 11: 20x16x16, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 120x16x16 output
+// Layer 12: 120x16x16, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 120x8x8 output
+// Layer 13: 120x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 24x8x8 output
+// Layer 14: 24x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 144x8x8 output
+// Layer 15: 144x8x8, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 144x8x8 output
+// Layer 16: 144x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 24x8x8 output
+// Layer 17: 24x8x8, no pooling, no convolution, 24x8x8 output
+// Layer 18: 2x24x8x8, no pooling, 2-element add, no convolution, 24x8x8 output
+// Layer 19: 24x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 144x8x8 output
+// Layer 20: 144x8x8, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 144x8x8 output
+// Layer 21: 144x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 24x8x8 output
+// Layer 22: 24x8x8, no pooling, no convolution, 24x8x8 output
 // Layer 23: 2x24x8x8, no pooling, 2-element add, no convolution, 24x8x8 output
-// Layer 24: 24x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 144x8x8
-// output Layer 25: 144x8x8, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1,
-// pad 1/1, ReLU, 144x4x4 output Layer 26: 144x4x4, no pooling, conv2d with kernel size 1x1, stride
-// 1/1, pad 0/0, no activation, 48x4x4 output Layer 27: 48x4x4, no pooling, conv2d with kernel size
-// 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4 output Layer 28: 288x4x4, no pooling, conv2d with kernel
-// size 3x3, stride 1/1, pad 1/1, ReLU, 288x4x4 output Layer 29: 288x4x4, no pooling, conv2d with
-// kernel size 1x1, stride 1/1, pad 0/0, no activation, 48x4x4 output Layer 30: 48x4x4, no pooling,
-// no convolution, 48x4x4 output Layer 31: 2x48x4x4, no pooling, 2-element add, no convolution,
-// 48x4x4 output Layer 32: 48x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0,
-// ReLU, 288x4x4 output Layer 33: 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad
-// 1/1, ReLU, 288x4x4 output Layer 34: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1,
-// pad 0/0, no activation, 48x4x4 output Layer 35: 48x4x4, no pooling, no convolution, 48x4x4 output
+// Layer 24: 24x8x8, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 144x8x8 output
+// Layer 25: 144x8x8, max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 144x4x4 output
+// Layer 26: 144x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 48x4x4 output
+// Layer 27: 48x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4 output
+// Layer 28: 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 288x4x4 output
+// Layer 29: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 48x4x4 output
+// Layer 30: 48x4x4, no pooling, no convolution, 48x4x4 output
+// Layer 31: 2x48x4x4, no pooling, 2-element add, no convolution, 48x4x4 output
+// Layer 32: 48x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4 output
+// Layer 33: 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 288x4x4 output
+// Layer 34: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 48x4x4 output
+// Layer 35: 48x4x4, no pooling, no convolution, 48x4x4 output
 // Layer 36: 2x48x4x4, no pooling, 2-element add, no convolution, 48x4x4 output
-// Layer 37: 48x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4
-// output Layer 38: 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 288x4x4 output Layer 39: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0,
-// no activation, 48x4x4 output Layer 40: 48x4x4, no pooling, no convolution, 48x4x4 output Layer
-// 41: 2x48x4x4, no pooling, 2-element add, no convolution, 48x4x4 output Layer 42: 48x4x4, no
-// pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4 output Layer 43:
-// 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 288x4x4 output Layer
-// 44: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 72x4x4
-// output Layer 45: 72x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU,
-// 432x4x4 output Layer 46: 432x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1,
-// ReLU, 432x4x4 output Layer 47: 432x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad
-// 0/0, no activation, 72x4x4 output Layer 48: 72x4x4, no pooling, no convolution, 72x4x4 output
+// Layer 37: 48x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4 output
+// Layer 38: 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 288x4x4 output
+// Layer 39: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 48x4x4 output
+// Layer 40: 48x4x4, no pooling, no convolution, 48x4x4 output
+// Layer 41: 2x48x4x4, no pooling, 2-element add, no convolution, 48x4x4 output
+// Layer 42: 48x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 288x4x4 output
+// Layer 43: 288x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 288x4x4 output
+// Layer 44: 288x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 72x4x4 output
+// Layer 45: 72x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 432x4x4 output
+// Layer 46: 432x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 432x4x4 output
+// Layer 47: 432x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 72x4x4 output
+// Layer 48: 72x4x4, no pooling, no convolution, 72x4x4 output
 // Layer 49: 2x72x4x4, no pooling, 2-element add, no convolution, 72x4x4 output
-// Layer 50: 72x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 432x4x4
-// output Layer 51: 432x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 432x4x4 output Layer 52: 432x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0,
-// no activation, 72x4x4 output Layer 53: 72x4x4, no pooling, no convolution, 72x4x4 output Layer
-// 54: 2x72x4x4, no pooling, 2-element add, no convolution, 72x4x4 output Layer 55: 72x4x4, no
-// pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 432x4x4 output Layer 56:
-// 432x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 432x4x4 output Layer
-// 57: 432x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 120x4x4
-// output Layer 58: 120x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU,
-// 720x4x4 output Layer 59: 720x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1,
-// ReLU, 720x4x4 output Layer 60: 720x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad
-// 0/0, no activation, 120x4x4 output Layer 61: 120x4x4, no pooling, no convolution, 120x4x4 output
+// Layer 50: 72x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 432x4x4 output
+// Layer 51: 432x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 432x4x4 output
+// Layer 52: 432x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 72x4x4 output
+// Layer 53: 72x4x4, no pooling, no convolution, 72x4x4 output
+// Layer 54: 2x72x4x4, no pooling, 2-element add, no convolution, 72x4x4 output
+// Layer 55: 72x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 432x4x4 output
+// Layer 56: 432x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 432x4x4 output
+// Layer 57: 432x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 120x4x4 output
+// Layer 58: 120x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 720x4x4 output
+// Layer 59: 720x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 720x4x4 output
+// Layer 60: 720x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 120x4x4 output
+// Layer 61: 120x4x4, no pooling, no convolution, 120x4x4 output
 // Layer 62: 2x120x4x4, no pooling, 2-element add, no convolution, 120x4x4 output
-// Layer 63: 120x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 720x4x4
-// output Layer 64: 720x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 720x4x4 output Layer 65: 720x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0,
-// no activation, 120x4x4 output Layer 66: 120x4x4, no pooling, no convolution, 120x4x4 output Layer
-// 67: 2x120x4x4, no pooling, 2-element add, no convolution, 120x4x4 output Layer 68: 120x4x4, no
-// pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 720x4x4 output Layer 69:
-// 720x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 720x4x4 output Layer
-// 70: 720x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 240x4x4
-// output Layer 71: 240x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU,
-// 960x4x4 output Layer 72: 960x4x4, avg pool 4x4 with stride 4/4, conv2d with kernel size 1x1,
-// stride 1/1, pad 0/0, no activation, 100x1x1 output
+// Layer 63: 120x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 720x4x4 output
+// Layer 64: 720x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 720x4x4 output
+// Layer 65: 720x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 120x4x4 output
+// Layer 66: 120x4x4, no pooling, no convolution, 120x4x4 output
+// Layer 67: 2x120x4x4, no pooling, 2-element add, no convolution, 120x4x4 output
+// Layer 68: 120x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 720x4x4 output
+// Layer 69: 720x4x4, no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 720x4x4 output
+// Layer 70: 720x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 240x4x4 output
+// Layer 71: 240x4x4, no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 960x4x4 output
+// Layer 72: 960x4x4, avg pool 4x4 with stride 4/4, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 100x1x1 output
 
-#include "cnn.h"
-#include "gcfr_regs.h"
-#include "mxc.h"
-#include "weights.h"
 #include <assert.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "gcfr_regs.h"
+#include "cnn.h"
+#include "weights.h"
 
 void CNN_ISR(void)
 {
@@ -163,7 +157,9 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 static const uint32_t kernels[] = KERNELS;
@@ -176,8 +172,9 @@ int cnn_load_weights(void)
 
     while ((addr = (volatile uint32_t*)*ptr++) != 0) {
         *((volatile uint8_t*)((uint32_t)addr | 1)) = 0x01; // Set address
-        len = *ptr++;
-        while (len-- > 0) *addr++ = *ptr++;
+        len                                        = *ptr++;
+        while (len-- > 0)
+            *addr++ = *ptr++;
     }
 
     return CNN_OK;
@@ -190,7 +187,9 @@ static const uint8_t bias_3[] = BIAS_3;
 
 static void memcpy_8to32(uint32_t* dst, const uint8_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 int cnn_load_bias(void)
@@ -218,14 +217,14 @@ int cnn_init(void)
     *((volatile uint32_t*)0x5200000c) = 0x00001c80; // Clear registers
     *((volatile uint32_t*)0x5300000c) = 0x00001c80; // Clear registers
     *((volatile uint32_t*)0x5400000c) = 0x00001c80; // Clear registers
-    while ((*((volatile uint32_t*)0x5100000c) & 0x2000000) != 0x2000000) { }
-    // Wait for clear
-    while ((*((volatile uint32_t*)0x5200000c) & 0x2000000) != 0x2000000) { }
-    // Wait for clear
-    while ((*((volatile uint32_t*)0x5300000c) & 0x2000000) != 0x2000000) { }
-    // Wait for clear
-    while ((*((volatile uint32_t*)0x5400000c) & 0x2000000) != 0x2000000) { }
-    // Wait for clear
+    while ((*((volatile uint32_t*)0x5100000c) & 0x2000000) != 0x2000000)
+        ; // Wait for clear
+    while ((*((volatile uint32_t*)0x5200000c) & 0x2000000) != 0x2000000)
+        ; // Wait for clear
+    while ((*((volatile uint32_t*)0x5300000c) & 0x2000000) != 0x2000000)
+        ; // Wait for clear
+    while ((*((volatile uint32_t*)0x5400000c) & 0x2000000) != 0x2000000)
+        ;                                           // Wait for clear
     *((volatile uint32_t*)0x5100000c) = 0x00000000; // Reset BIST
     *((volatile uint32_t*)0x5200000c) = 0x00000000; // Reset BIST
     *((volatile uint32_t*)0x5300000c) = 0x00000000; // Reset BIST
@@ -4907,7 +4906,7 @@ int cnn_start(void)
     MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-    CNN_START; // Allow capture of processing time
+    CNN_START;                                      // Allow capture of processing time
     *((volatile uint32_t*)0x51000000) = 0x00100009; // Master enable quadrant 0
 
     return CNN_OK;
@@ -4918,127 +4917,127 @@ int cnn_unload(uint32_t* out_buf)
     volatile uint32_t* addr;
 
     // Custom unload for this network, layer 72: 32-bit data, shape: (100, 1, 1)
-    addr = (volatile uint32_t*)0x51800000;
+    addr       = (volatile uint32_t*)0x51800000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51820000;
+    addr       = (volatile uint32_t*)0x51820000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51840000;
+    addr       = (volatile uint32_t*)0x51840000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51860000;
+    addr       = (volatile uint32_t*)0x51860000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52800000;
+    addr       = (volatile uint32_t*)0x52800000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52820000;
+    addr       = (volatile uint32_t*)0x52820000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52840000;
+    addr       = (volatile uint32_t*)0x52840000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52860000;
+    addr       = (volatile uint32_t*)0x52860000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53800000;
+    addr       = (volatile uint32_t*)0x53800000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53820000;
+    addr       = (volatile uint32_t*)0x53820000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53840000;
+    addr       = (volatile uint32_t*)0x53840000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53860000;
+    addr       = (volatile uint32_t*)0x53860000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x54800000;
+    addr       = (volatile uint32_t*)0x54800000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51800010;
+    addr       = (volatile uint32_t*)0x51800010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51820010;
+    addr       = (volatile uint32_t*)0x51820010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51840010;
+    addr       = (volatile uint32_t*)0x51840010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x51860010;
+    addr       = (volatile uint32_t*)0x51860010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52800010;
+    addr       = (volatile uint32_t*)0x52800010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52820010;
+    addr       = (volatile uint32_t*)0x52820010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52840010;
+    addr       = (volatile uint32_t*)0x52840010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x52860010;
+    addr       = (volatile uint32_t*)0x52860010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53800010;
+    addr       = (volatile uint32_t*)0x53800010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53820010;
+    addr       = (volatile uint32_t*)0x53820010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53840010;
+    addr       = (volatile uint32_t*)0x53840010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x53860010;
+    addr       = (volatile uint32_t*)0x53860010;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
@@ -5053,17 +5052,17 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg3 = 0xf; // Reset
     MXC_GCFR->reg1 = 0xf; // Mask memory
     MXC_GCFR->reg0 = 0xf; // Power
-    MXC_Delay(MSEC(10)); // Wait for load switches
+    MXC_Delay(MSEC(10));  // Wait for load switches
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
     if (clock_source == MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL)
-        while ((MXC_GCR->ipll_ctrl & MXC_F_GCR_IPLL_CTRL_RDY) != MXC_F_GCR_IPLL_CTRL_RDY) { }
-    // Wait for PLL
+        while ((MXC_GCR->ipll_ctrl & MXC_F_GCR_IPLL_CTRL_RDY) != MXC_F_GCR_IPLL_CTRL_RDY)
+            ; // Wait for PLL
 
-    MXC_GCR->pclkdiv
-        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-        | clock_divider | clock_source;
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -5076,7 +5075,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -5089,7 +5088,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);

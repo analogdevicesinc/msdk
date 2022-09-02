@@ -31,18 +31,18 @@
  *
  *************************************************************************** */
 
-#include "dma.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
-#include "spi.h"
-#include "spi_regs.h"
-#include "spi_reva_regs.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "spi_regs.h"
+#include "spi_reva_regs.h"
+#include "spi.h"
+#include "dma.h"
 
 typedef enum {
     SPI_REVA_WIDTH_3WIRE,
@@ -74,7 +74,7 @@ struct _mxc_spi_reva_req_t {
 };
 
 int MXC_SPI_RevA_Init(mxc_spi_reva_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-    unsigned ssPolarity, unsigned int hz);
+                      unsigned ssPolarity, unsigned int hz);
 int MXC_SPI_RevA_Shutdown(mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_ReadyForSleep(mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_SetFrequency(mxc_spi_reva_regs_t* spi, unsigned int hz);
@@ -92,10 +92,10 @@ mxc_spi_reva_mode_t MXC_SPI_RevA_GetMode(mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_StartTransmission(mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_GetActive(mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_AbortTransmission(mxc_spi_reva_regs_t* spi);
-unsigned int MXC_SPI_RevA_ReadRXFIFO(
-    mxc_spi_reva_regs_t* spi, unsigned char* bytes, unsigned int len);
-unsigned int MXC_SPI_RevA_WriteTXFIFO(
-    mxc_spi_reva_regs_t* spi, unsigned char* bytes, unsigned int len);
+unsigned int MXC_SPI_RevA_ReadRXFIFO(mxc_spi_reva_regs_t* spi, unsigned char* bytes,
+                                     unsigned int len);
+unsigned int MXC_SPI_RevA_WriteTXFIFO(mxc_spi_reva_regs_t* spi, unsigned char* bytes,
+                                      unsigned int len);
 unsigned int MXC_SPI_RevA_GetTXFIFOAvailable(mxc_spi_reva_regs_t* spi);
 unsigned int MXC_SPI_RevA_GetRXFIFOAvailable(mxc_spi_reva_regs_t* spi);
 void MXC_SPI_RevA_ClearRXFIFO(mxc_spi_reva_regs_t* spi);
@@ -110,12 +110,12 @@ void MXC_SPI_RevA_EnableInt(mxc_spi_reva_regs_t* spi, unsigned int mask);
 void MXC_SPI_RevA_DisableInt(mxc_spi_reva_regs_t* spi, unsigned int mask);
 int MXC_SPI_RevA_MasterTransaction(mxc_spi_reva_req_t* req);
 int MXC_SPI_RevA_MasterTransactionAsync(mxc_spi_reva_req_t* req);
-int MXC_SPI_RevA_MasterTransactionDMA(
-    mxc_spi_reva_req_t* req, int reqselTx, int reqselRx, mxc_dma_regs_t* dma);
+int MXC_SPI_RevA_MasterTransactionDMA(mxc_spi_reva_req_t* req, int reqselTx, int reqselRx,
+                                      mxc_dma_regs_t* dma);
 int MXC_SPI_RevA_SlaveTransaction(mxc_spi_reva_req_t* req);
 int MXC_SPI_RevA_SlaveTransactionAsync(mxc_spi_reva_req_t* req);
-int MXC_SPI_RevA_SlaveTransactionDMA(
-    mxc_spi_reva_req_t* req, int reqselTx, int reqselRx, mxc_dma_regs_t* dma);
+int MXC_SPI_RevA_SlaveTransactionDMA(mxc_spi_reva_req_t* req, int reqselTx, int reqselRx,
+                                     mxc_dma_regs_t* dma);
 void MXC_SPI_RevA_DMACallback(int ch, int error);
 int MXC_SPI_RevA_SetDefaultTXData(mxc_spi_reva_regs_t* spi, unsigned int defaultTXData);
 void MXC_SPI_RevA_AbortAsync(mxc_spi_reva_regs_t* spi);

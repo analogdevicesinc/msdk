@@ -35,15 +35,15 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_assert.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
-#include "spixr.h"
-#include "spixr_reva.h"
-#include "tpu.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "spixr.h"
+#include "spixr_reva.h"
+#include "tpu.h"
+#include "mxc_errors.h"
 
 /* **** Definitions **** */
 
@@ -242,11 +242,11 @@ int MXC_SPIXR_SetSSPolarity(int activeLow)
 }
 
 /* ************************************************************************* */
-void MXC_SPIXR_SetSSTiming(
-    unsigned int ssIActDelay, unsigned int postActive, unsigned int preActive)
+void MXC_SPIXR_SetSSTiming(unsigned int ssIActDelay, unsigned int postActive,
+                           unsigned int preActive)
 {
-    MXC_SPIXR_RevA_SetSSTiming(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, ssIActDelay, postActive, preActive);
+    MXC_SPIXR_RevA_SetSSTiming((mxc_spixr_reva_regs_t*)MXC_SPIXR, ssIActDelay, postActive,
+                               preActive);
 }
 
 /* ************************************************************************* */

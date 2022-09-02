@@ -31,12 +31,12 @@
  *
  *************************************************************************** */
 
-#include "ctb_common.h"
-#include "ctb_reva.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
+#include "ctb_reva.h"
+#include "ctb_common.h"
 #include "trng_regs.h"
 
 /* ************************************************************************* */
@@ -62,8 +62,8 @@ int MXC_CTB_Init(uint32_t features)
 
 uint32_t MXC_CTB_CheckFeatures(void)
 {
-    return MXC_CTB_FEATURE_DMA | MXC_CTB_FEATURE_ECC | MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_HASH
-        | MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_TRNG;
+    return MXC_CTB_FEATURE_DMA | MXC_CTB_FEATURE_ECC | MXC_CTB_FEATURE_CIPHER |
+           MXC_CTB_FEATURE_HASH | MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_TRNG;
 }
 
 void MXC_CTB_EnableInt(void)

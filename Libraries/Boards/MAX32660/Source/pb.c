@@ -34,11 +34,11 @@
  *
  ******************************************************************************/
 
-#include "pb.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
 #include <stddef.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_errors.h"
+#include "pb.h"
 
 /******************************************************************************/
 int PB_Init(void)

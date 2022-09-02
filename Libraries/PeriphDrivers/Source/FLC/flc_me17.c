@@ -40,14 +40,14 @@
  *************************************************************************** */
 
 /* **** Includes **** */
-#include "flc.h"
-#include "flc_common.h"
-#include "flc_reva.h"
-#include "mcr_regs.h" // For ECCEN registers.
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
 #include <string.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "flc.h"
+#include "flc_reva.h"
+#include "flc_common.h"
+#include "mcr_regs.h" // For ECCEN registers.
 
 //******************************************************************************
 void MXC_FLC_ME17_Flash_Operation(void)
@@ -55,13 +55,13 @@ void MXC_FLC_ME17_Flash_Operation(void)
     /*
     This function should be called after modifying the contents of flash memory.
     It flushes the instruction caches and line fill buffer.
-
+    
     It should be called _afterwards_ because after flash is modified the cache
     may contain instructions that may no longer be valid.  _Before_ the
-    flash modifications the ICC may contain relevant cached instructions related to
+    flash modifications the ICC may contain relevant cached instructions related to 
     the incoming flash instructions (especially relevant in the case of external memory),
     and these instructions will be valid up until the point that the modifications are made.
-
+    
     The line fill buffer is a FLC-related buffer that also may no longer be valid.
     It's flushed by reading 2 pages of flash.
     */
@@ -70,15 +70,16 @@ void MXC_FLC_ME17_Flash_Operation(void)
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
 
     /* Wait for flush to complete */
-    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) { }
+    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {
+    }
 
     // Clear the line fill buffer by reading 2 pages from flash
     volatile uint32_t* line_addr;
     volatile uint32_t __unused line; // __unused attribute removes warning
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
-    line = *line_addr;
+    line      = *line_addr;
     line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
-    line = *line_addr;
+    line      = *line_addr;
 }
 
 //******************************************************************************
@@ -330,18 +331,18 @@ int MXC_FLC_BlockPageRead(uint32_t address)
 volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
 {
     uint32_t reg_num;
-    reg_num
-        = page_num >> 5; // Divide by 32 to get WELR register number containing the page lock bit
+    reg_num =
+        page_num >> 5; // Divide by 32 to get WELR register number containing the page lock bit
 
     if (address < MXC_FLASH_MEM_BASE || address > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         return NULL;
     }
 
     switch (reg_num) {
-    case 0:
-        return &(MXC_FLC->welr0);
-    case 1:
-        return &(MXC_FLC->welr1);
+        case 0:
+            return &(MXC_FLC->welr0);
+        case 1:
+            return &(MXC_FLC->welr1);
     }
 
     return NULL;
@@ -358,10 +359,10 @@ volatile uint32_t* MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
     }
 
     switch (reg_num) {
-    case 0:
-        return &(MXC_FLC->rlr0);
-    case 1:
-        return &(MXC_FLC->rlr1);
+        case 0:
+            return &(MXC_FLC->rlr0);
+        case 1:
+            return &(MXC_FLC->rlr1);
     }
 
     return NULL;

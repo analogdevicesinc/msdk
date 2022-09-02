@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio.h"
-#include "gpio_common.h"
-#include "gpio_reva.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
-#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "gpio.h"
+#include "gpio_reva.h"
+#include "gpio_common.h"
 #include <stddef.h>
+#include "mxc_sys.h"
 
 /* **** Definitions **** */
 #define MXC_GPIO_HART_UART (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16 | MXC_GPIO_PIN_17)
@@ -95,10 +95,10 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
     }
 
     // Make sure UART2 pins aren't used by the HART Modem
-    if ((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_HART_UART)
-        && (cfg->func == MXC_GPIO_FUNC_ALT2)) {
-        if ((gpio->en0 & MXC_GPIO_HART_UART) == 0 && (gpio->en1 & MXC_GPIO_HART_UART)
-            && (gpio->en2 & MXC_GPIO_HART_UART) == 0) {
+    if ((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_HART_UART) &&
+        (cfg->func == MXC_GPIO_FUNC_ALT2)) {
+        if ((gpio->en0 & MXC_GPIO_HART_UART) == 0 && (gpio->en1 & MXC_GPIO_HART_UART) &&
+            (gpio->en2 & MXC_GPIO_HART_UART) == 0) {
             return E_BAD_STATE;
         }
     }
@@ -111,22 +111,22 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 
     // Configure the pad
     switch (cfg->pad) {
-    case MXC_GPIO_PAD_NONE:
-        gpio->padctrl0 &= ~cfg->mask;
-        break;
+        case MXC_GPIO_PAD_NONE:
+            gpio->padctrl0 &= ~cfg->mask;
+            break;
 
-    case MXC_GPIO_PAD_PULL_UP:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->ps |= cfg->mask;
-        break;
+        case MXC_GPIO_PAD_PULL_UP:
+            gpio->padctrl0 |= cfg->mask;
+            gpio->ps |= cfg->mask;
+            break;
 
-    case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
+        case MXC_GPIO_PAD_PULL_DOWN:
+            gpio->padctrl0 |= cfg->mask;
+            gpio->ps &= ~cfg->mask;
+            break;
 
-    default:
-        return E_BAD_PARAM;
+        default:
+            return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;

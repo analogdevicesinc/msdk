@@ -2,54 +2,53 @@
 /**
  * @file        main.c
  * @brief       Semaphore example
- * @details     Press button to overwrite a global variable. If someone is already writing to it,
- * deny the right
+ * @details     Press button to overwrite a global variable. If someone is already writing to it, deny the right
  */
 
 /*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
 #include "bitmap.h"
 
 /***** Definitions *****/
-#define KEY_1 1 // P(3.07)
-#define KEY_2 2 // P(3.06)
+#define KEY_1 1 //P(3.07)
+#define KEY_2 2 //P(3.06)
 
 #define BUTTON_SIZE_X 42 //
 #define BUTTON_SIZE_Y 41 //
@@ -65,9 +64,9 @@ static void PB_AWrites(void)
 {
     int retval;
 
-    // First check if A is already writing
+    //First check if A is already writing
     if (!A_active) {
-        // Check if B is writing
+        //Check if B is writing
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_NO_ERROR) {
@@ -85,7 +84,7 @@ static void PB_AWrites(void)
         }
     } else {
         A_active = !A_active;
-        // Semaphore should be busy...
+        //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_BUSY) {
@@ -107,9 +106,9 @@ static void PB_BWrites(void)
 {
     int retval;
 
-    // First check if B is already writing
+    //First check if B is already writing
     if (!B_active) {
-        // Check if A is writing
+        //Check if A is writing
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_NO_ERROR) {
@@ -127,7 +126,7 @@ static void PB_BWrites(void)
         }
     } else {
         B_active = !B_active;
-        // Semaphore should be busy...
+        //Semaphore should be busy...
         retval = MXC_SEMA_CheckSema(0);
 
         if (retval == E_BUSY) {
@@ -209,16 +208,16 @@ int main(void)
 
         if (key > 0) {
             switch (key) {
-            case KEY_1:
-                PB_AWrites();
-                break;
+                case KEY_1:
+                    PB_AWrites();
+                    break;
 
-            case KEY_2:
-                PB_BWrites();
-                break;
+                case KEY_2:
+                    PB_BWrites();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }

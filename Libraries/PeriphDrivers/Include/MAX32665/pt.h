@@ -43,13 +43,13 @@
 /* **** Includes **** */
 
 #include "gcr_regs.h"
-#include "mcr_regs.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_errors.h"
-#include "mxc_sys.h"
 #include "pt_regs.h"
 #include "ptg_regs.h"
+#include "mxc_device.h"
+#include "mxc_errors.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "mcr_regs.h"
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -69,13 +69,13 @@ extern "C" {
  */
 typedef struct {
     unsigned channel; ///< PT Channel to use
-    uint32_t bps; ///< pulse train bit rate
+    uint32_t bps;     ///< pulse train bit rate
     uint32_t pattern; ///< Output pattern to shift out, starts at LSB
     uint8_t
-        ptLength; ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ...
+        ptLength;  ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ...
     uint16_t loop; ///< Number of times to repeat the train, 0 = continuous
-    uint16_t loopDelay; ///< Delay between loops specified in bits Example: loopDelay = 4,  delays
-                        ///< time  = time it takes to shift out 4 bits
+    uint16_t
+        loopDelay; ///< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits
 } mxc_pt_cfg_t;
 
 /**
@@ -95,7 +95,7 @@ typedef enum {
 /**
  * @brief      This function initializes the pulse trains to a known stopped
  *             state and sets the global PT clock scale.
- *
+ * 
  * @param      ptg        pointer to pulse train global bus to use.
  * @param      clk_scale  Scale the system clock for the global PT clock.
  */
@@ -103,8 +103,7 @@ void MXC_PT_Init(mxc_ptg_regs_t* ptg, mxc_clk_scale_t clk_scale);
 
 /**
  * @brief      Shutdown the pulse train channel/channels.
- * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train
- * clock.
+ * @details    Shutdown pulse train and if all pluse trains are shut down then turn off pulse train clock.
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      ptg    Pointer to pulse train global bus to use.
@@ -139,8 +138,7 @@ int MXC_PT_Config(mxc_ptg_regs_t* ptg, mxc_pt_cfg_t* cfg);
  * @param      channel Pulse train channel to operate on
  * @param      freq    square wave output frequency in Hz
  *
- * @returns    #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if
- * unsuccessful.
+ * @returns    #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
 int MXC_PT_SqrWaveConfig(mxc_ptg_regs_t* ptg, unsigned channel, uint32_t freq);
 
@@ -207,7 +205,7 @@ void MXC_PT_DisableInt(mxc_ptg_regs_t* ptg, uint32_t pts);
  * @brief      Gets the pulse trains's interrupt flags.
  *
  * @param      ptg   Pointer to pulse train global bus to use.
- *
+ * 
  * @return     The Pulse Train Interrupt Flags, \ref PTG_INTFL Register
  *             for details.
  */

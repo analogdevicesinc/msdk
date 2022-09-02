@@ -31,26 +31,26 @@
  *
  *************************************************************************** */
 
-#include "htmr_reva.h"
-#include "htmr.h"
-#include "htmr_reva_regs.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "htmr_reva_regs.h"
+#include "htmr.h"
+#include "htmr_reva.h"
 
 /* **** Definitions **** */
 #define HTMR_CTRL_RESET_DEFAULT (0x8000UL)
-#define BUSY_TIMEOUT (10000) // Timeout counts for the Busy bit
-#define ASYNC_MODE (htmr->ctrl & MXC_F_HTMR_REVA_CTRL_ACRE)
+#define BUSY_TIMEOUT            (10000) // Timeout counts for the Busy bit
+#define ASYNC_MODE              (htmr->ctrl & MXC_F_HTMR_REVA_CTRL_ACRE)
 
-#define MXC_HTMR_ALL_INT_FLAGS                                                                     \
+#define MXC_HTMR_ALL_INT_FLAGS \
     (MXC_F_HTMR_REVA_CTRL_RDY | MXC_F_HTMR_REVA_CTRL_ALDF | MXC_F_HTMR_REVA_CTRL_ALSF)
-#define MXC_HTMR_ALL_INT_ENABLES                                                                   \
+#define MXC_HTMR_ALL_INT_ENABLES \
     (MXC_F_HTMR_REVA_CTRL_RDYE | MXC_F_HTMR_REVA_CTRL_ADE | MXC_F_HTMR_REVA_CTRL_ASE)
 
 /* ***** Functions ***** */

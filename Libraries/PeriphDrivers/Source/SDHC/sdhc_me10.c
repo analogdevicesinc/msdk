@@ -35,14 +35,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio.h"
-#include "mxc_assert.h"
+#include <string.h>
 #include "mxc_errors.h"
-#include "mxc_pins.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
+#include "mxc_pins.h"
+#include "gpio.h"
 #include "sdhc.h"
 #include "sdhc_reva.h"
-#include <string.h>
 
 /* **** Definitions **** */
 

@@ -31,20 +31,21 @@
  *
  ******************************************************************************/
 
-#include "board.h"
-#include "gpio.h"
-#include "led.h"
-#include "lpgcr_regs.h"
-#include "max20303.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include "pb.h"
-#include "simo_regs.h"
-#include "uart.h"
 #include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "board.h"
+#include "uart.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "led.h"
+#include "pb.h"
+#include "mxc_sys.h"
+#include "lpgcr_regs.h"
+#include "simo_regs.h"
+#include "max20303.h"
+#include "mxc_delay.h"
 
 #define MAX20303_I2C MXC_I2C1
 
@@ -53,15 +54,15 @@ mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    {MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    {MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -70,7 +71,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1) { }
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -188,8 +190,8 @@ int SD_Power(int on)
 #ifdef MXC_SPI0
 void SD_Get_Connections(mxc_spi_regs_t** spi, mxc_gpio_regs_t** ssPort, int* ssPin)
 {
-    *spi = MXC_SPI0;
+    *spi    = MXC_SPI0;
     *ssPort = MXC_GPIO0;
-    *ssPin = 4;
+    *ssPin  = 4;
 }
 #endif

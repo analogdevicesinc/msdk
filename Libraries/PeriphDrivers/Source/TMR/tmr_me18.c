@@ -31,11 +31,11 @@
  *
  **************************************************************************** */
 
+#include "tmr.h"
+#include "tmr_revb.h"
+#include "tmr_common.h"
 #include "lpgcr_regs.h"
 #include "stdbool.h"
-#include "tmr.h"
-#include "tmr_common.h"
-#include "tmr_revb.h"
 
 int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
 {
@@ -50,136 +50,136 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
     MXC_ASSERT(tmr_id >= 0);
 
     switch (cfg->clock) {
-    case MXC_TMR_60M_CLK:
-        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
+        case MXC_TMR_60M_CLK:
+            if (tmr_id > 3) { // Timers 4-5 do not support this clock source
+                return E_NOT_SUPPORTED;
+            }
 
-        clockSource = MXC_TMR_CLK1;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
-        break;
-
-    case MXC_TMR_8M_CLK:
-        if (tmr_id > 3) { // Timers 4-5
-            clockSource = MXC_TMR_CLK0;
-        } else if (tmr_id < 4) { // Timers 0-3
-            clockSource = MXC_TMR_CLK2;
-        }
-
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
-
-    case MXC_TMR_32M_CLK:
-        if (tmr_id > 3) { // Timers 4-5 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
-
-        clockSource = MXC_TMR_CLK3;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
-
-    case MXC_TMR_32K_CLK:
-        if (tmr_id == 4) {
             clockSource = MXC_TMR_CLK1;
-        } else { // Timers 5 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
+            break;
 
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        break;
+        case MXC_TMR_8M_CLK:
+            if (tmr_id > 3) { // Timers 4-5
+                clockSource = MXC_TMR_CLK0;
+            } else if (tmr_id < 4) { // Timers 0-3
+                clockSource = MXC_TMR_CLK2;
+            }
 
-    case MXC_TMR_8K_CLK:
-        if (tmr_id < 4) { // Timers 0-3 do not support this clock source
-            return E_NOT_SUPPORTED;
-        }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            break;
 
-        clockSource = MXC_TMR_CLK2;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-        break;
+        case MXC_TMR_32M_CLK:
+            if (tmr_id > 3) { // Timers 4-5 do not support this clock source
+                return E_NOT_SUPPORTED;
+            }
 
-    case MXC_TMR_EXT_CLK:
-        if (tmr_id < 3) { // GPIO3[5]
             clockSource = MXC_TMR_CLK3;
-        } else {
-            return E_NOT_SUPPORTED;
-        }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+            break;
 
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-        break;
+        case MXC_TMR_32K_CLK:
+            if (tmr_id == 4) {
+                clockSource = MXC_TMR_CLK1;
+            } else { // Timers 5 do not support this clock source
+                return E_NOT_SUPPORTED;
+            }
 
-    default:
-        break;
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+            break;
+
+        case MXC_TMR_8K_CLK:
+            if (tmr_id < 4) { // Timers 0-3 do not support this clock source
+                return E_NOT_SUPPORTED;
+            }
+
+            clockSource = MXC_TMR_CLK2;
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+            break;
+
+        case MXC_TMR_EXT_CLK:
+            if (tmr_id < 3) { // GPIO3[5]
+                clockSource = MXC_TMR_CLK3;
+            } else {
+                return E_NOT_SUPPORTED;
+            }
+
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+            break;
+
+        default:
+            break;
     }
 
-    // enable peripheral clock and configure gpio pins
+    //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
+        case 0:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
 
-        if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr0);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr0b);
+            if (init_pins) {
+                if (cfg->bitMode != TMR_BIT_MODE_16B) {
+                    MXC_GPIO_Config(&gpio_cfg_tmr0);
+                } else {
+                    MXC_GPIO_Config(&gpio_cfg_tmr0b);
+                }
             }
-        }
 
-        break;
+            break;
 
-    case 1:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
+        case 1:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
 
-        if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr1);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr1b);
+            if (init_pins) {
+                if (cfg->bitMode != TMR_BIT_MODE_16B) {
+                    MXC_GPIO_Config(&gpio_cfg_tmr1);
+                } else {
+                    MXC_GPIO_Config(&gpio_cfg_tmr1b);
+                }
             }
-        }
 
-        break;
+            break;
 
-    case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
+        case 2:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
 
-        if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr2);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr2b);
+            if (init_pins) {
+                if (cfg->bitMode != TMR_BIT_MODE_16B) {
+                    MXC_GPIO_Config(&gpio_cfg_tmr2);
+                } else {
+                    MXC_GPIO_Config(&gpio_cfg_tmr2b);
+                }
             }
-        }
 
-        break;
+            break;
 
-    case 3:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
+        case 3:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
 
-        if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr3);
-            } else {
-                MXC_GPIO_Config(&gpio_cfg_tmr3b);
+            if (init_pins) {
+                if (cfg->bitMode != TMR_BIT_MODE_16B) {
+                    MXC_GPIO_Config(&gpio_cfg_tmr3);
+                } else {
+                    MXC_GPIO_Config(&gpio_cfg_tmr3b);
+                }
             }
-        }
 
-        break;
+            break;
 
-    case 4:
-        MXC_GPIO_Config(&gpio_cfg_tmr4);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
-        break;
+        case 4:
+            MXC_GPIO_Config(&gpio_cfg_tmr4);
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
+            break;
 
-    case 5:
-        MXC_GPIO_Config(&gpio_cfg_tmr5);
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
-        break;
+        case 5:
+            MXC_GPIO_Config(&gpio_cfg_tmr5);
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
+            break;
     }
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t*)tmr, cfg, clockSource);
@@ -192,7 +192,7 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     MXC_TMR_RevB_Shutdown((mxc_tmr_revb_regs_t*)tmr);
 
     // System settigns
-    // diasble peripheral clock
+    //diasble peripheral clock
     if (tmr == MXC_TMR0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR0);
     }
@@ -243,52 +243,52 @@ uint32_t MXC_TMR_GetCapture(mxc_tmr_regs_t* tmr)
     return MXC_TMR_RevB_GetCapture((mxc_tmr_revb_regs_t*)tmr);
 }
 
-uint32_t MXC_TMR_GetPeriod(
-    mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar, uint32_t frequency)
+uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
+                           uint32_t frequency)
 {
     uint32_t clockFrequency = PeripheralClock;
-    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+    uint8_t tmr_id          = MXC_TMR_GET_IDX(tmr);
 
     MXC_ASSERT(tmr_id >= 0);
 
     if (tmr_id > 3) {
         switch (clock) {
-        case MXC_TMR_8M_CLK:
-            clockFrequency = IBRO_FREQ;
-            break;
+            case MXC_TMR_8M_CLK:
+                clockFrequency = IBRO_FREQ;
+                break;
 
-        case MXC_TMR_32K_CLK:
-            clockFrequency = ERTCO_FREQ;
-            break;
+            case MXC_TMR_32K_CLK:
+                clockFrequency = ERTCO_FREQ;
+                break;
 
-        case MXC_TMR_8K_CLK:
-            clockFrequency = INRO_FREQ;
-            break;
+            case MXC_TMR_8K_CLK:
+                clockFrequency = INRO_FREQ;
+                break;
 
-        default:
-            return E_NOT_SUPPORTED;
-            break;
+            default:
+                return E_NOT_SUPPORTED;
+                break;
         }
     } else {
         switch (clock) {
-        case MXC_TMR_APB_CLK:
-            clockFrequency = PeripheralClock;
-            break;
+            case MXC_TMR_APB_CLK:
+                clockFrequency = PeripheralClock;
+                break;
 
-        case MXC_TMR_60M_CLK:
-            clockFrequency = ISO_FREQ;
-            break;
+            case MXC_TMR_60M_CLK:
+                clockFrequency = ISO_FREQ;
+                break;
 
-        case MXC_TMR_8M_CLK:
-            clockFrequency = IBRO_FREQ;
-            break;
+            case MXC_TMR_8M_CLK:
+                clockFrequency = IBRO_FREQ;
+                break;
 
-        case MXC_TMR_32M_CLK:
-            clockFrequency = ERFO_FREQ;
-            break;
+            case MXC_TMR_32M_CLK:
+                clockFrequency = ERFO_FREQ;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 

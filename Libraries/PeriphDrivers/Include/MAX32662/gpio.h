@@ -70,16 +70,16 @@ extern "C" {
  * @ingroup gpio_port_pin
  * @{
  */
-#define MXC_GPIO_PIN_0 ((uint32_t)(1UL << 0)) /**< Pin 0 Define */
-#define MXC_GPIO_PIN_1 ((uint32_t)(1UL << 1)) /**< Pin 1 Define */
-#define MXC_GPIO_PIN_2 ((uint32_t)(1UL << 2)) /**< Pin 2 Define */
-#define MXC_GPIO_PIN_3 ((uint32_t)(1UL << 3)) /**< Pin 3 Define */
-#define MXC_GPIO_PIN_4 ((uint32_t)(1UL << 4)) /**< Pin 4 Define */
-#define MXC_GPIO_PIN_5 ((uint32_t)(1UL << 5)) /**< Pin 5 Define */
-#define MXC_GPIO_PIN_6 ((uint32_t)(1UL << 6)) /**< Pin 6 Define */
-#define MXC_GPIO_PIN_7 ((uint32_t)(1UL << 7)) /**< Pin 7 Define */
-#define MXC_GPIO_PIN_8 ((uint32_t)(1UL << 8)) /**< Pin 8 Define */
-#define MXC_GPIO_PIN_9 ((uint32_t)(1UL << 9)) /**< Pin 9 Define */
+#define MXC_GPIO_PIN_0  ((uint32_t)(1UL << 0))  /**< Pin 0 Define */
+#define MXC_GPIO_PIN_1  ((uint32_t)(1UL << 1))  /**< Pin 1 Define */
+#define MXC_GPIO_PIN_2  ((uint32_t)(1UL << 2))  /**< Pin 2 Define */
+#define MXC_GPIO_PIN_3  ((uint32_t)(1UL << 3))  /**< Pin 3 Define */
+#define MXC_GPIO_PIN_4  ((uint32_t)(1UL << 4))  /**< Pin 4 Define */
+#define MXC_GPIO_PIN_5  ((uint32_t)(1UL << 5))  /**< Pin 5 Define */
+#define MXC_GPIO_PIN_6  ((uint32_t)(1UL << 6))  /**< Pin 6 Define */
+#define MXC_GPIO_PIN_7  ((uint32_t)(1UL << 7))  /**< Pin 7 Define */
+#define MXC_GPIO_PIN_8  ((uint32_t)(1UL << 8))  /**< Pin 8 Define */
+#define MXC_GPIO_PIN_9  ((uint32_t)(1UL << 9))  /**< Pin 9 Define */
 #define MXC_GPIO_PIN_10 ((uint32_t)(1UL << 10)) /**< Pin 10 Define */
 #define MXC_GPIO_PIN_11 ((uint32_t)(1UL << 11)) /**< Pin 11 Define */
 #define MXC_GPIO_PIN_12 ((uint32_t)(1UL << 12)) /**< Pin 12 Define */
@@ -119,8 +119,8 @@ typedef void (*mxc_gpio_callback_fn)(void* cbdata);
  * @brief   Enumeration type for the GPIO Function Type
  */
 typedef enum {
-    MXC_GPIO_FUNC_IN, /**< GPIO Input */
-    MXC_GPIO_FUNC_OUT, /**< GPIO Output */
+    MXC_GPIO_FUNC_IN,   /**< GPIO Input */
+    MXC_GPIO_FUNC_OUT,  /**< GPIO Output */
     MXC_GPIO_FUNC_ALT1, /**< Alternate Function Selection */
     MXC_GPIO_FUNC_ALT2, /**< Alternate Function Selection */
     MXC_GPIO_FUNC_ALT3, /**< Alternate Function Selection */
@@ -132,7 +132,7 @@ typedef enum {
  * @brief   Enumeration type for the voltage level on a given pin.
  */
 typedef enum {
-    MXC_GPIO_VSSEL_VDDIO, /**< Set pin to VIDDIO voltage */
+    MXC_GPIO_VSSEL_VDDIO,  /**< Set pin to VIDDIO voltage */
     MXC_GPIO_VSSEL_VDDIOH, /**< Set pin to VIDDIOH voltage */
 } mxc_gpio_vssel_t;
 
@@ -140,10 +140,10 @@ typedef enum {
  * @brief   Enumeration type for the type of GPIO pad on a given pin.
  */
 typedef enum {
-    MXC_GPIO_PAD_NONE, /**< No pull-up or pull-down */
-    MXC_GPIO_PAD_PULL_UP, /**< Set pad to strong pull-up */
-    MXC_GPIO_PAD_PULL_DOWN, /**< Set pad to strong pull-down */
-    MXC_GPIO_PAD_WEAK_PULL_UP, /**< Set pad to weak pull-up */
+    MXC_GPIO_PAD_NONE,           /**< No pull-up or pull-down */
+    MXC_GPIO_PAD_PULL_UP,        /**< Set pad to strong pull-up */
+    MXC_GPIO_PAD_PULL_DOWN,      /**< Set pad to strong pull-down */
+    MXC_GPIO_PAD_WEAK_PULL_UP,   /**< Set pad to weak pull-up */
     MXC_GPIO_PAD_WEAK_PULL_DOWN, /**< Set pad to weak pull-down */
 } mxc_gpio_pad_t;
 
@@ -151,10 +151,10 @@ typedef enum {
  * @brief   Structure type for configuring a GPIO port.
  */
 typedef struct {
-    mxc_gpio_regs_t* port; /**< Pointer to GPIO regs */
-    uint32_t mask; /**< Pin mask (multiple pins may be set) */
-    mxc_gpio_func_t func; /**< Function type */
-    mxc_gpio_pad_t pad; /**< Pad type */
+    mxc_gpio_regs_t* port;  /**< Pointer to GPIO regs */
+    uint32_t mask;          /**< Pin mask (multiple pins may be set) */
+    mxc_gpio_func_t func;   /**< Function type */
+    mxc_gpio_pad_t pad;     /**< Pad type */
     mxc_gpio_vssel_t vssel; /**< Voltage select */
 } mxc_gpio_cfg_t;
 
@@ -163,7 +163,7 @@ typedef struct {
  */
 typedef enum {
     MXC_GPIO_INT_LEVEL, /**< Interrupt is level sensitive */
-    MXC_GPIO_INT_EDGE /**< Interrupt is edge sensitive */
+    MXC_GPIO_INT_EDGE   /**< Interrupt is edge sensitive */
 } mxc_gpio_int_mode_t;
 
 /**
@@ -171,10 +171,10 @@ typedef enum {
  */
 typedef enum {
     MXC_GPIO_INT_FALLING, /**< Interrupt triggers on falling edge */
-    MXC_GPIO_INT_HIGH, /**< Interrupt triggers when level is high */
-    MXC_GPIO_INT_RISING, /**< Interrupt triggers on rising edge */
-    MXC_GPIO_INT_LOW, /**< Interrupt triggers when level is low */
-    MXC_GPIO_INT_BOTH /**< Interrupt triggers on either edge */
+    MXC_GPIO_INT_HIGH,    /**< Interrupt triggers when level is high */
+    MXC_GPIO_INT_RISING,  /**< Interrupt triggers on rising edge */
+    MXC_GPIO_INT_LOW,     /**< Interrupt triggers when level is low */
+    MXC_GPIO_INT_BOTH     /**< Interrupt triggers on either edge */
 } mxc_gpio_int_pol_t;
 
 /* **** Function Prototypes **** */
@@ -266,7 +266,7 @@ int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t* cfg, mxc_gpio_int_pol_t pol);
  * @brief      Enables the specified GPIO interrupt
  * @param      port  Pointer to the GPIO port registers
  * @param      mask  Mask of the pin(s) to enable interrupts for
- *
+ * 
  */
 void MXC_GPIO_EnableInt(mxc_gpio_regs_t* port, uint32_t mask);
 
@@ -298,12 +298,11 @@ void MXC_GPIO_ClearFlags(mxc_gpio_regs_t* port, uint32_t flags);
  * @brief      Registers a callback for the interrupt on a given port and pin.
  * @param      cfg       Pointer to configuration structure describing the pin
  * @param      callback  A pointer to a function of type #callback_fn.
- * @param      cbdata    The parameter to be passed to the callback function, #callback_fn, when an
- * interrupt occurs.
+ * @param      cbdata    The parameter to be passed to the callback function, #callback_fn, when an interrupt occurs.
  *
  */
-void MXC_GPIO_RegisterCallback(
-    const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn callback, void* cbdata);
+void MXC_GPIO_RegisterCallback(const mxc_gpio_cfg_t* cfg, mxc_gpio_callback_fn callback,
+                               void* cbdata);
 
 /**
  * @brief      GPIO IRQ Handler. @note If a callback is registered for a given

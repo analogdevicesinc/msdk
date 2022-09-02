@@ -9,11 +9,11 @@ extern "C" {
 #include <ucl/ucl_hash.h>
 //#ifdef HASH_SHA384
 
-#define UCL_SHA3_224_HASHSIZE 28
-#define UCL_SHA3_256_HASHSIZE 32
-#define UCL_SHA3_384_HASHSIZE 48
-#define UCL_SHA3_512_HASHSIZE 64
-#define UCL_SHA3_MAX_PERMSIZE 25
+#define UCL_SHA3_224_HASHSIZE    28
+#define UCL_SHA3_256_HASHSIZE    32
+#define UCL_SHA3_384_HASHSIZE    48
+#define UCL_SHA3_512_HASHSIZE    64
+#define UCL_SHA3_MAX_PERMSIZE    25
 #define UCL_SHA3_MAXQRATE_QWORDS 24
 
 #define UCL_SHA3_224 9
@@ -67,12 +67,12 @@ typedef struct sha3_context_ {
         u64 s[SHA3_SPONGE_WORDS];
         u8 sb[SHA3_SPONGE_WORDS * 8];
     };
-    int byteIndex; /* 0..7--the next byte after the set one
-                    * (starts from 0; 0--none are buffered) */
-    int wordIndex; /* 0..24--the next word to integrate input
-                    * (starts from 0) */
+    int byteIndex;     /* 0..7--the next byte after the set one
+                                 * (starts from 0; 0--none are buffered) */
+    int wordIndex;     /* 0..24--the next word to integrate input
+                                 * (starts from 0) */
     int capacityWords; /* the double size of the hash output in
-                        * words (e.g. 16 for Keccak 512) */
+                                 * words (e.g. 16 for Keccak 512) */
 } ucl_sha3_ctx_t;
 
 // methods for calculating the hash function

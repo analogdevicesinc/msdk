@@ -31,16 +31,16 @@
  *
  *************************************************************************** */
 
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
-#include "spimss_reva.h"
-#include "spimss_reva_regs.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "spimss_reva_regs.h"
+#include "spimss_reva.h"
 
 /* **** Functions **** */
 
@@ -65,7 +65,8 @@ int MXC_SPIMSS_Init(mxc_spimss_regs_t* spi, unsigned mode, unsigned freq, const 
     // Configure GPIO for spimss
     if (spi == MXC_SPIMSS) {
         MXC_GCR->rst0 |= MXC_F_GCR_RST0_SPI1;
-        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_SPI1) { }
+        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_SPI1)
+            ;
         MXC_GCR->pclk_dis0 &= ~(MXC_F_GCR_PCLK_DIS0_SPI1D);
         if (sys_cfg == MAP_A) {
             MXC_GPIO_Config(&gpio_cfg_spi1a); // SPI1A chosen

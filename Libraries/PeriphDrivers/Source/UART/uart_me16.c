@@ -30,18 +30,18 @@
  * ownership rights.
  *
  *************************************************************************** */
-#ifdef __CC_ARM // Keil
+#ifdef __CC_ARM          // Keil
 #pragma diag_suppress 68 // integer conversion resulted in a change of sign
 #endif
 
-#include "dma.h"
-#include "mcr_regs.h"
-#include "mxc_assert.h"
+#include "uart.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
-#include "uart.h"
-#include "uart_common.h"
+#include "mxc_assert.h"
 #include "uart_revb.h"
+#include "uart_common.h"
+#include "mcr_regs.h"
+#include "dma.h"
 
 void MXC_UART_DMACallback(int ch, int error)
 {
@@ -68,44 +68,44 @@ int MXC_UART_Init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clo
     }
 
     switch (clock) {
-    case MXC_UART_EXT_CLK:
-        MXC_GPIO_Config(&gpio_cfg_extclk);
-        break;
+        case MXC_UART_EXT_CLK:
+            MXC_GPIO_Config(&gpio_cfg_extclk);
+            break;
 
-    case MXC_UART_ERTCO_CLK:
-        // UART0 and UART2 doesn't use ERTCO
-        return E_BAD_PARAM;
-        break;
+        case MXC_UART_ERTCO_CLK:
+            // UART0 and UART2 doesn't use ERTCO
+            return E_BAD_PARAM;
+            break;
 
-    case MXC_UART_IBRO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
+        case MXC_UART_IBRO_CLK:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            break;
 
-    case MXC_UART_ERFO_CLK:
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
+        case MXC_UART_ERFO_CLK:
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     switch (MXC_UART_GET_IDX(uart)) {
-    case 0:
-        MXC_GPIO_Config(&gpio_cfg_uart0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
-        break;
+        case 0:
+            MXC_GPIO_Config(&gpio_cfg_uart0);
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
+            break;
 
-    case 2: // Can't use UART2 when HART Modem is used for MAX32675.
-        error = MXC_GPIO_Config(&gpio_cfg_uart2);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
+        case 2: // Can't use UART2 when HART Modem is used for MAX32675.
+            error = MXC_GPIO_Config(&gpio_cfg_uart2);
+            if (error != E_NO_ERROR) {
+                return error;
+            }
 
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
-        break;
+            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
+            break;
 
-    default:
-        return E_NOT_SUPPORTED;
+        default:
+            return E_NOT_SUPPORTED;
     }
 
     return MXC_UART_RevB_Init((mxc_uart_revb_regs_t*)uart, baud, (mxc_uart_revb_clock_t)clock);
@@ -114,18 +114,18 @@ int MXC_UART_Init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clo
 int MXC_UART_Shutdown(mxc_uart_regs_t* uart)
 {
     switch (MXC_UART_GET_IDX(uart)) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART0);
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
-        break;
+        case 0:
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART0);
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
+            break;
 
-    case 2: // Make sure UART2 isn't used for HART_Modem
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART2);
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART2);
-        break;
+        case 2: // Make sure UART2 isn't used for HART_Modem
+            MXC_SYS_Reset_Periph(MXC_SYS_RESET0_UART2);
+            MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART2);
+            break;
 
-    default:
-        return E_NOT_SUPPORTED;
+        default:
+            return E_NOT_SUPPORTED;
     }
 
     return E_NO_ERROR;
@@ -150,32 +150,32 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
         uart->osr = 5;
 
         switch (clock) {
-        case MXC_UART_APB_CLK:
-            uart->clkdiv = ((IBRO_FREQ) / baud);
-            break;
+            case MXC_UART_APB_CLK:
+                uart->clkdiv = ((IBRO_FREQ) / baud);
+                break;
 
-        case MXC_UART_EXT_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            break;
+            case MXC_UART_EXT_CLK:
+                uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+                break;
 
-        case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
-            if (baud == 9600) {
-                uart->clkdiv = 7;
-            } else {
-                uart->clkdiv = ((ERTCO_FREQ * 2) / baud);
-            }
+            case MXC_UART_ERTCO_CLK:
+                uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+                uart->ctrl |= MXC_F_UART_CTRL_FDM;
+                if (baud == 9600) {
+                    uart->clkdiv = 7;
+                } else {
+                    uart->clkdiv = ((ERTCO_FREQ * 2) / baud);
+                }
 
-            if (baud > 2400) {
-                uart->osr = 0;
-            } else {
-                uart->osr = 1;
-            }
-            break;
+                if (baud > 2400) {
+                    uart->osr = 0;
+                } else {
+                    uart->osr = 1;
+                }
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
         freq = MXC_UART_GetFrequency(uart);
     } else {
@@ -188,43 +188,44 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
         uart->osr = 5;
 
         switch (clock) {
-        case MXC_UART_REVB_APB_CLK:
-            clkDiv = (PeripheralClock / baud);
-            mod = (PeripheralClock % baud);
-            break;
+            case MXC_UART_REVB_APB_CLK:
+                clkDiv = (PeripheralClock / baud);
+                mod    = (PeripheralClock % baud);
+                break;
 
-        case MXC_UART_REVB_EXT_CLK:
-            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            break;
+            case MXC_UART_REVB_EXT_CLK:
+                uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+                break;
 
-        // case MXC_UART_IBRO_CLK:
-        case MXC_UART_REVB_CLK2:
-            clkDiv = (IBRO_FREQ / baud);
-            mod = (IBRO_FREQ % baud);
-            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
-            break;
+            //case MXC_UART_IBRO_CLK:
+            case MXC_UART_REVB_CLK2:
+                clkDiv = (IBRO_FREQ / baud);
+                mod    = (IBRO_FREQ % baud);
+                uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
+                break;
 
-        // case MXC_UART_ERFO:
-        case MXC_UART_REVB_CLK3:
-            clkDiv = (ERFO_FREQ / baud);
-            mod = (ERFO_FREQ % baud);
-            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
-            break;
+            //case MXC_UART_ERFO:
+            case MXC_UART_REVB_CLK3:
+                clkDiv = (ERFO_FREQ / baud);
+                mod    = (ERFO_FREQ % baud);
+                uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
 
         if (!clkDiv || mod > (baud / 2)) {
             clkDiv++;
         }
         uart->clkdiv = clkDiv;
-        freq = MXC_UART_GetFrequency((mxc_uart_regs_t*)uart);
+        freq         = MXC_UART_GetFrequency((mxc_uart_regs_t*)uart);
     }
     if (freq > 0) {
         // Enable baud clock and wait for it to become ready.
         uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
-        while (((uart->ctrl & MXC_F_UART_CTRL_BCLKRDY) >> MXC_F_UART_CTRL_BCLKRDY_POS) == 0) { }
+        while (((uart->ctrl & MXC_F_UART_CTRL_BCLKRDY) >> MXC_F_UART_CTRL_BCLKRDY_POS) == 0)
+            ;
     }
 
     return freq;
@@ -242,8 +243,8 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t* uart)
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
             return E_NOT_SUPPORTED;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC)
-            == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
+                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = 7372800;
         } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
             periphClock = ERTCO_FREQ * 2;
@@ -254,23 +255,23 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t* uart)
         }
         return (periphClock / uart->clkdiv);
     } else {
-        // return MXC_UART_RevB_GetFrequency ((mxc_uart_revb_regs_t*) uart);
+        //return MXC_UART_RevB_GetFrequency ((mxc_uart_revb_regs_t*) uart);
 
         if (MXC_UART_GET_IDX((mxc_uart_regs_t*)uart) < 0) {
             return E_BAD_PARAM;
         }
 
-        if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC)
-            == MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+        if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
+            MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
             return E_NOT_SUPPORTED;
-        } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC)
-            == MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+        } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
+                   MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = PeripheralClock;
-        } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC)
-            == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2) {
+        } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
+                   MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2) {
             periphClock = IBRO_FREQ;
-        } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC)
-            == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3) {
+        } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
+                   MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3) {
             periphClock = ERFO_FREQ;
         } else {
             return E_BAD_PARAM;
@@ -299,29 +300,29 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t* uart, mxc_uart_flow_t flowCtrl, int rt
 {
     if (flowCtrl == MXC_UART_FLOW_EN) {
         switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_GPIO_Config(&gpio_cfg_uart0_flow);
-            break;
+            case 0:
+                MXC_GPIO_Config(&gpio_cfg_uart0_flow);
+                break;
 
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow);
-            break;
+            case 2:
+                MXC_GPIO_Config(&gpio_cfg_uart2_flow);
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     } else {
         switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable);
-            break;
+            case 0:
+                MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable);
+                break;
 
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable);
-            break;
+            case 2:
+                MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable);
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 
@@ -379,24 +380,24 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, un
 }
 
 int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-    mxc_uart_dma_complete_cb_t callback)
+                           mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
     int uart_num = MXC_UART_GET_IDX(uart);
 
     switch (uart_num) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_UART0RX;
-        break;
+        case 0:
+            config.reqsel = MXC_DMA_REQUEST_UART0RX;
+            break;
 
-    case 2:
-        config.reqsel = MXC_DMA_REQUEST_UART2RX;
-        break;
+        case 2:
+            config.reqsel = MXC_DMA_REQUEST_UART2RX;
+            break;
 
-    default:
-        return E_BAD_PARAM;
-        break;
+        default:
+            return E_BAD_PARAM;
+            break;
     }
 
     return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t*)uart, bytes, len, callback, config);
@@ -407,31 +408,31 @@ unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t* uart)
     return MXC_UART_RevB_GetRXFIFOAvailable((mxc_uart_revb_regs_t*)uart);
 }
 
-unsigned int MXC_UART_WriteTXFIFO(
-    mxc_uart_regs_t* uart, const unsigned char* bytes, unsigned int len)
+unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* bytes,
+                                  unsigned int len)
 {
     return MXC_UART_RevB_WriteTXFIFO((mxc_uart_revb_regs_t*)uart, bytes, len);
 }
 
 int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes, unsigned int len,
-    mxc_uart_dma_complete_cb_t callback)
+                            mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;
 
     int uart_num = MXC_UART_GET_IDX(uart);
 
     switch (uart_num) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_UART0TX;
-        break;
+        case 0:
+            config.reqsel = MXC_DMA_REQUEST_UART0TX;
+            break;
 
-    case 2:
-        config.reqsel = MXC_DMA_REQUEST_UART2TX;
-        break;
+        case 2:
+            config.reqsel = MXC_DMA_REQUEST_UART2TX;
+            break;
 
-    default:
-        return E_BAD_PARAM;
-        break;
+        default:
+            return E_BAD_PARAM;
+            break;
     }
 
     return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t*)uart, bytes, len, callback, config);

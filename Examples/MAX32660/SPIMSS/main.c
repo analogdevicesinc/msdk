@@ -39,6 +39,9 @@
  ******************************************************************************/
 
 /***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include "board.h"
 #include "led.h"
 #include "mxc_pins.h"
@@ -46,22 +49,19 @@
 #include "spi.h"
 #include "spimss.h"
 #include "uart.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
 /***** Definitions *****/
-#define TEST_LEN 100 // Words
-#define BLAH (TEST_LEN / MXC_SPIMSS_FIFO_DEPTH) * MXC_SPIMSS_FIFO_DEPTH
-#define OFFSET 256 // offsets data for tx_data
-#define VALUE 0xFFFF
+#define TEST_LEN  100 // Words
+#define BLAH      (TEST_LEN / MXC_SPIMSS_FIFO_DEPTH) * MXC_SPIMSS_FIFO_DEPTH
+#define OFFSET    256 //offsets data for tx_data
+#define VALUE     0xFFFF
 #define SPI_SPEED 10000 // Bit Rate
 
 // SELECT FROM BELOW
 #define SYNC
 //#define ASYNC
 
-#define SPIMSS MXC_SPIMSS // SPIMSS peripheral registers pointer
+#define SPIMSS     MXC_SPIMSS //SPIMSS peripheral registers pointer
 #define SPIMSS_IRQ SPIMSS_IRQn
 
 /***** Globals *****/
@@ -80,21 +80,21 @@ void spimss_cb(mxc_spimss_req_t* req, int error)
 void SPIMSS_IRQHandler(void)
 {
     /* Only calling MXC_SPIMSS_HANDLER is necessary for the interrupt handler in most cases.
-     * 		Since a loopback is used in this case, this logic block is necessary to avoid
-     * 		an RX FIFO overrun.
-     */
-    uint32_t rxFifoCnt
-        = ((SPIMSS->dma & MXC_F_SPIMSS_DMA_RX_FIFO_CNT) >> MXC_F_SPIMSS_DMA_RX_FIFO_CNT_POS);
+	 * 		Since a loopback is used in this case, this logic block is necessary to avoid
+	 * 		an RX FIFO overrun.
+	 */
+    uint32_t rxFifoCnt =
+        ((SPIMSS->dma & MXC_F_SPIMSS_DMA_RX_FIFO_CNT) >> MXC_F_SPIMSS_DMA_RX_FIFO_CNT_POS);
     if (req.tx_num != 0) {
         if (req.rx_num >= BLAH) {
             while ((rxFifoCnt == 0) || (rxFifoCnt % (TEST_LEN - BLAH))) {
-                rxFifoCnt = ((SPIMSS->dma & MXC_F_SPIMSS_DMA_RX_FIFO_CNT)
-                    >> MXC_F_SPIMSS_DMA_RX_FIFO_CNT_POS);
+                rxFifoCnt = ((SPIMSS->dma & MXC_F_SPIMSS_DMA_RX_FIFO_CNT) >>
+                             MXC_F_SPIMSS_DMA_RX_FIFO_CNT_POS);
             }
         } else {
             while ((rxFifoCnt == 0) || (rxFifoCnt % MXC_SPIMSS_FIFO_DEPTH)) {
-                rxFifoCnt = ((SPIMSS->dma & MXC_F_SPIMSS_DMA_RX_FIFO_CNT)
-                    >> MXC_F_SPIMSS_DMA_RX_FIFO_CNT_POS);
+                rxFifoCnt = ((SPIMSS->dma & MXC_F_SPIMSS_DMA_RX_FIFO_CNT) >>
+                             MXC_F_SPIMSS_DMA_RX_FIFO_CNT_POS);
             }
         }
     }
@@ -113,7 +113,8 @@ int main(void)
     printf("sending between 1 and 16 bits of data at a time.  During this demo you\n");
     printf("may see junk data printed to the serial port because the console UART\n");
     printf("shares the same pins as the SPIMSS.\n\n");
-    while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
+    while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+        ;
 
 #ifdef ASYNC
     MXC_NVIC_SetVector(SPIMSS_IRQ, SPIMSS_IRQHandler);
@@ -121,49 +122,60 @@ int main(void)
 #endif
 
     for (i = 1; i < 17; i++) {
-        // Initialize transmit and receive buffers
-        for (j = 0; j < TEST_LEN; j++) { txData[j] = j + OFFSET; }
+        //Initialize transmit and receive buffers
+        for (j = 0; j < TEST_LEN; j++) {
+            txData[j] = j + OFFSET;
+        }
         memset(rxData, 0x0, TEST_LEN * 2);
 
         // Configure the peripheral
         if (MXC_SPIMSS_Init(SPIMSS, 0, SPI_SPEED, MAP_A) != 0) {
             Console_Init();
             printf("Error configuring SPI\n");
-            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
-            while (1) { }
+            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+                ;
+            while (1) {
+            }
         }
 
-        req.tx_data = txData;
-        req.rx_data = rxData;
-        req.len = TEST_LEN;
-        req.bits = i;
-        req.deass = 1;
-        req.tx_num = 0;
-        req.rx_num = 0;
+        req.tx_data  = txData;
+        req.rx_data  = rxData;
+        req.len      = TEST_LEN;
+        req.bits     = i;
+        req.deass    = 1;
+        req.tx_num   = 0;
+        req.rx_num   = 0;
         req.callback = spimss_cb;
-        spimssFlag = 1;
+        spimssFlag   = 1;
 
 #ifdef ASYNC
         if ((err = MXC_SPIMSS_MasterTransAsync(SPIMSS, &req)) != E_NO_ERROR) {
             Console_Init();
             printf("SPIMSS Asynchronus Transaction failed with error code : %d", spimssFlag);
-            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
-            while (1) { }
+            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+                ;
+            while (1)
+                ;
         }
-        while (spimssFlag == 1) { }
+        while (spimssFlag == 1)
+            ;
         if (spimssFlag != 0) {
             Console_Init();
             printf("SPIMSS Asynchronus Transaction failed with error code : %d", spimssFlag);
-            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
-            while (1) { }
+            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+                ;
+            while (1)
+                ;
         }
 #endif
 #ifdef SYNC
         if ((err = MXC_SPIMSS_MasterTrans(SPIMSS, &req)) != E_NO_ERROR) {
             Console_Init();
             printf("SPIMSS Transaction failed with error code:%d\n", err);
-            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
-            while (1) { }
+            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+                ;
+            while (1)
+                ;
         }
 #endif
 
@@ -195,12 +207,14 @@ int main(void)
         if (memcmp(rxData, txData, sizeof(txData)) != 0) {
             Console_Init();
             printf("\nError verifying rx_data for data width %d\n\n", i);
-            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
+            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+                ;
             fails++;
         } else {
             Console_Init();
             printf("Sent %d bits per transaction\n", i);
-            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) { }
+            while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART)))
+                ;
         }
         MXC_SPIMSS_Shutdown(SPIMSS);
     }

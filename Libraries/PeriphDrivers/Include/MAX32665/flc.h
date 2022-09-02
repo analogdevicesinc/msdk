@@ -42,8 +42,8 @@
 
 /* **** Includes **** */
 #include "flc_regs.h"
-#include "mxc_errors.h"
 #include "mxc_sys.h"
+#include "mxc_errors.h"
 
 #ifdef __cplusplus
 extern "C" {

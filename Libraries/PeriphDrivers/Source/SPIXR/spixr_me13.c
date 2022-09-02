@@ -2,9 +2,9 @@
  * Copyright(C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
+ * copy of this software and associated documentation files(the "Software"), 
  * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
  *
@@ -15,7 +15,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -24,7 +24,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
+ * of trade secrets, proprietary technology, copyrights, patents, 
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -32,14 +32,14 @@
  *************************************************************************** */
 
 /****** Includes *******/
-#include "mxc_assert.h"
+#include <stddef.h>
+#include <stdint.h>
 #include "mxc_device.h"
+#include "mxc_assert.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "spixr.h"
 #include "spixr_reva.h"
-#include <stddef.h>
-#include <stdint.h>
 
 /****** Functions ******/
 int MXC_SPIXR_ReadRXFIFO(uint8_t* buf, int len)
@@ -114,14 +114,14 @@ int MXC_SPIXR_GetRXFIFOCount(void)
 
 int MXC_SPIXR_SetWidth(mxc_spixr_width_t width)
 {
-    return MXC_SPIXR_RevA_SetWidth(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, (mxc_spixr_reva_width_t)width);
+    return MXC_SPIXR_RevA_SetWidth((mxc_spixr_reva_regs_t*)MXC_SPIXR,
+                                   (mxc_spixr_reva_width_t)width);
 }
 
 int MXC_SPIXR_SetSPIMode(mxc_spixr_mode_t mode)
 {
-    return MXC_SPIXR_RevA_SetSPIMode(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, (mxc_spixr_reva_mode_t)mode);
+    return MXC_SPIXR_RevA_SetSPIMode((mxc_spixr_reva_regs_t*)MXC_SPIXR,
+                                     (mxc_spixr_reva_mode_t)mode);
 }
 
 int MXC_SPIXR_SetSSPolarity(int activeLow)
@@ -129,11 +129,11 @@ int MXC_SPIXR_SetSSPolarity(int activeLow)
     return MXC_SPIXR_RevA_SetSSPolarity((mxc_spixr_reva_regs_t*)MXC_SPIXR, activeLow);
 }
 
-void MXC_SPIXR_SetSSTiming(
-    unsigned int ssIActDelay, unsigned int postActive, unsigned int preActive)
+void MXC_SPIXR_SetSSTiming(unsigned int ssIActDelay, unsigned int postActive,
+                           unsigned int preActive)
 {
-    MXC_SPIXR_RevA_SetSSTiming(
-        (mxc_spixr_reva_regs_t*)MXC_SPIXR, ssIActDelay, postActive, preActive);
+    MXC_SPIXR_RevA_SetSSTiming((mxc_spixr_reva_regs_t*)MXC_SPIXR, ssIActDelay, postActive,
+                               preActive);
 }
 
 int MXC_SPIXR_SetFrequency(int hz)
@@ -234,8 +234,8 @@ int MXC_SPIXR_Init(mxc_spixr_cfg_t* cfg)
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIPD);
 
-    MXC_GPIO_Config(&gpio_cfg_spixr_P0); // Configure GPIO for spid
-    MXC_GPIO_Config(&gpio_cfg_spixr_P1); // Configure GPIO for spid
+    MXC_GPIO_Config(&gpio_cfg_spixr_P0); //Configure GPIO for spid
+    MXC_GPIO_Config(&gpio_cfg_spixr_P1); //Configure GPIO for spid
 
     return MXC_SPIXR_RevA_Init((mxc_spixr_reva_regs_t*)MXC_SPIXR, (mxc_spixr_reva_cfg_t*)cfg);
 }

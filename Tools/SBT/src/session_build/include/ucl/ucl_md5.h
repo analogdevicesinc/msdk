@@ -69,8 +69,8 @@ extern "C" {
  * @ingroup UCL_MD5
  */
 struct ucl_md5_ctx {
-    u32 state[4]; /**< Intermediate and then final hash */
-    u32 count[2]; /**< Counter in bits                  */
+    u32 state[4];  /**< Intermediate and then final hash */
+    u32 count[2];  /**< Counter in bits                  */
     u8 buffer[64]; /**< Buffer                           */
 };
 
@@ -97,7 +97,7 @@ typedef struct ucl_md5_ctx ucl_md5_ctx_t;
  * @ingroup UCL_MD5
  */
 #define UCL_MD5_HASHW32SIZE 5
-#define UCL_MD5 13
+#define UCL_MD5             13
 
 /*============================================================================*/
 /** <b>MD5</b>.
@@ -177,6 +177,6 @@ int ucl_md5_finish(u8* hash, ucl_md5_ctx_t* context);
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
-#endif // HASH_MD5
+#endif //HASH_MD5
 #endif /* _UCL_MD5_H_ */
-#endif // PROFILE_1
+#endif //PROFILE_1

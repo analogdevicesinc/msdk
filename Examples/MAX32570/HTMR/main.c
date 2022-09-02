@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -45,8 +45,8 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
@@ -150,7 +150,7 @@ static int setup_display(void)
     MXC_TFT_SetFont(urw_gothic_13_grey_bg_white);
 
     // Set print area
-    area_t print = { 20, 40, 300, 30 };
+    area_t print = {20, 40, 300, 30};
     MXC_TFT_ConfigPrintf(&print);
 
     return 0;
@@ -179,7 +179,8 @@ int main(void)
     if (MXC_HTMR_Init(MXC_HTMR0, 0, 0) != E_NO_ERROR) {
         printf("Failed HTMR Initialization.\n");
 
-        while (1) { }
+        while (1)
+            ;
     }
 
     if (MXC_HTMR_SetShortAlarm(MXC_HTMR0, 0xFFC7BFFF) != E_NO_ERROR) {
@@ -201,16 +202,16 @@ int main(void)
             MXC_TMR_Delay(MXC_TMR0, MSEC(100));
 
             switch (key) {
-            case KEY_1:
-                setAlarm();
-                break;
+                case KEY_1:
+                    setAlarm();
+                    break;
 
-            case KEY_2:
-                resetAlarm();
-                break;
+                case KEY_2:
+                    resetAlarm();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }

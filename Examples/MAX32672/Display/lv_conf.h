@@ -27,8 +27,7 @@
 
 /*Enable more complex drawing routines to manage screens transparency.
  *Can be used if the UI is above another layer, e.g. an OSD menu or video player.
- *Requires `LV_COLOR_DEPTH = 32` colors and the screen's `bg_opa` should be set to non LV_OPA_COVER
- *value*/
+ *Requires `LV_COLOR_DEPTH = 32` colors and the screen's `bg_opa` should be set to non LV_OPA_COVER value*/
 #define LV_COLOR_SCREEN_TRANSP 0
 
 /*Images pixels with this color will not be drawn if they are  chroma keyed)*/
@@ -44,18 +43,16 @@
 /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
 #define LV_MEM_SIZE (8U * 1024U) /*[bytes]*/
 
-/*Set an address for the memory pool instead of allocating it as a normal array. Can be in external
- * SRAM too.*/
-#define LV_MEM_ADR 0 /*0: unused*/
-#else /*LV_MEM_CUSTOM*/
+/*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
+#define LV_MEM_ADR 0                     /*0: unused*/
+#else                                    /*LV_MEM_CUSTOM*/
 #define LV_MEM_CUSTOM_INCLUDE <stdlib.h> /*Header for the dynamic memory function*/
-#define LV_MEM_CUSTOM_ALLOC malloc
-#define LV_MEM_CUSTOM_FREE free
+#define LV_MEM_CUSTOM_ALLOC   malloc
+#define LV_MEM_CUSTOM_FREE    free
 #define LV_MEM_CUSTOM_REALLOC realloc
 #endif /*LV_MEM_CUSTOM*/
 
-/*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be
- * faster).*/
+/*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
 #define LV_MEMCPY_MEMSET_STD 0
 
 /*====================
@@ -73,9 +70,9 @@
 #define LV_TICK_CUSTOM 0
 #if LV_TICK_CUSTOM
 #define LV_TICK_CUSTOM_INCLUDE "Arduino.h" /*Header for the system time function*/
-#define LV_TICK_CUSTOM_SYS_TIME_EXPR                                                               \
+#define LV_TICK_CUSTOM_SYS_TIME_EXPR \
     (millis()) /*Expression evaluating to current system time in ms*/
-#endif /*LV_TICK_CUSTOM*/
+#endif         /*LV_TICK_CUSTOM*/
 
 /*Default Dot Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
  *(Not so important, you can adjust it to modify default sizes and spaces)*/
@@ -90,26 +87,24 @@
  *-----------*/
 
 /*Enable complex draw engine.
- *Required to draw shadow, gradient, rounded corners, circles, arc, skew lines, image
- *transformations or any masks*/
+ *Required to draw shadow, gradient, rounded corners, circles, arc, skew lines, image transformations or any masks*/
 #define LV_DRAW_COMPLEX 1
 #if LV_DRAW_COMPLEX != 0
 
 /*Allow buffering some shadow calculation.
- *LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer, where shadow size is `shadow_width +
- *radius` Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost*/
+ *LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer, where shadow size is `shadow_width + radius`
+ *Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost*/
 #define LV_SHADOW_CACHE_SIZE 0
 #endif /*LV_DRAW_COMPLEX*/
 
 /*Default image cache size. Image caching keeps the images opened.
- *If only the built-in image formats are used there is no real advantage of caching. (I.e. if no new
- *image decoder is added) With complex image decoders (e.g. PNG or JPG) caching can save the
- *continuous open/decode of images. However the opened images might consume additional RAM. 0: to
- *disable caching*/
+ *If only the built-in image formats are used there is no real advantage of caching. (I.e. if no new image decoder is added)
+ *With complex image decoders (e.g. PNG or JPG) caching can save the continuous open/decode of images.
+ *However the opened images might consume additional RAM.
+ *0: to disable caching*/
 #define LV_IMG_CACHE_DEF_SIZE 0
 
-/*Maximum buffer size to allocate for rotation. Only used if software rotation is enabled in the
- * display driver.*/
+/*Maximum buffer size to allocate for rotation. Only used if software rotation is enabled in the display driver.*/
 #define LV_DISP_ROT_MAX_BUF (10 * 1024)
 /*-------------
  * GPU
@@ -127,9 +122,9 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_GPU_NXP_PXP 0
 #if LV_USE_GPU_NXP_PXP
 /*1: Add default bare metal and FreeRTOS interrupt handling routines for PXP (lv_gpu_nxp_pxp_osa.c)
- *   and call lv_gpu_nxp_pxp_init() automatically during lv_init(). Note that symbol
- *SDK_OS_FREE_RTOS has to be defined in order to use FreeRTOS OSA, otherwise bare-metal
- *implementation is selected. 0: lv_gpu_nxp_pxp_init() has to be called manually before lv_init()
+ *   and call lv_gpu_nxp_pxp_init() automatically during lv_init(). Note that symbol SDK_OS_FREE_RTOS
+ *   has to be defined in order to use FreeRTOS OSA, otherwise bare-metal implementation is selected.
+ *0: lv_gpu_nxp_pxp_init() has to be called manually before lv_init()
  */
 #define LV_USE_GPU_NXP_PXP_AUTO_INIT 0
 #endif
@@ -159,14 +154,14 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_LOG_PRINTF 1
 
 /*Enable/disable LV_LOG_TRACE in modules that produces a huge number of logs*/
-#define LV_LOG_TRACE_MEM 1
-#define LV_LOG_TRACE_TIMER 1
-#define LV_LOG_TRACE_INDEV 1
-#define LV_LOG_TRACE_DISP_REFR 1
-#define LV_LOG_TRACE_EVENT 1
+#define LV_LOG_TRACE_MEM        1
+#define LV_LOG_TRACE_TIMER      1
+#define LV_LOG_TRACE_INDEV      1
+#define LV_LOG_TRACE_DISP_REFR  1
+#define LV_LOG_TRACE_EVENT      1
 #define LV_LOG_TRACE_OBJ_CREATE 1
-#define LV_LOG_TRACE_LAYOUT 1
-#define LV_LOG_TRACE_ANIM 1
+#define LV_LOG_TRACE_LAYOUT     1
+#define LV_LOG_TRACE_ANIM       1
 
 #endif /*LV_USE_LOG*/
 
@@ -177,18 +172,18 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Enable asserts if an operation is failed or an invalid data is found.
  *If LV_USE_LOG is enabled an error message will be printed on failure*/
 #define LV_USE_ASSERT_NULL 1 /*Check if the parameter is NULL. (Very fast, recommended)*/
-#define LV_USE_ASSERT_MALLOC                                                                       \
+#define LV_USE_ASSERT_MALLOC \
     1 /*Checks is the memory is successfully allocated or no. (Very fast, recommended)*/
-#define LV_USE_ASSERT_STYLE                                                                        \
+#define LV_USE_ASSERT_STYLE \
     1 /*Check if the styles are properly initialized. (Very fast, recommended)*/
-#define LV_USE_ASSERT_MEM_INTEGRITY                                                                \
-    0 /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
+#define LV_USE_ASSERT_MEM_INTEGRITY \
+    0                       /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
 #define LV_USE_ASSERT_OBJ 0 /*Check the object's type and existence (e.g. not deleted). (Slow)*/
 
 /*Add a custom handler when assert happens e.g. to restart the MCU*/
 #define LV_ASSERT_HANDLER_INCLUDE <stdint.h>
-#define LV_ASSERT_HANDLER                                                                          \
-    while (1)                                                                                      \
+#define LV_ASSERT_HANDLER \
+    while (1)             \
         ; /*Halt by default*/
 
 /*-------------
@@ -209,8 +204,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_SPRINTF_CUSTOM 0
 #if LV_SPRINTF_CUSTOM
 #define LV_SPRINTF_INCLUDE <stdio.h>
-#define lv_snprintf snprintf
-#define lv_vsnprintf vsnprintf
+#define lv_snprintf        snprintf
+#define lv_vsnprintf       vsnprintf
 #else /*LV_SPRINTF_CUSTOM*/
 #define LV_SPRINTF_USE_FLOAT 0
 #endif /*LV_SPRINTF_CUSTOM*/
@@ -222,7 +217,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_ENABLE_GC 0
 #if LV_ENABLE_GC != 0
 #define LV_GC_INCLUDE "gc.h" /*Include Garbage Collector related things*/
-#endif /*LV_ENABLE_GC*/
+#endif                       /*LV_ENABLE_GC*/
 
 /*=====================
  *  COMPILER SETTINGS
@@ -243,8 +238,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Required alignment size for buffers*/
 #define LV_ATTRIBUTE_MEM_ALIGN_SIZE
 
-/*Will be added where memories needs to be aligned (with -Os data might not be aligned to boundary
- * by default). E.g. __attribute__((aligned(4)))*/
+/*Will be added where memories needs to be aligned (with -Os data might not be aligned to boundary by default).
+ * E.g. __attribute__((aligned(4)))*/
 #define LV_ATTRIBUTE_MEM_ALIGN
 
 /*Attribute to mark large constant arrays for example font's bitmaps*/
@@ -256,17 +251,15 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Place performance critical functions into a faster memory (e.g RAM)*/
 #define LV_ATTRIBUTE_FAST_MEM
 
-/*Prefix variables that are used in GPU accelerated operations, often these need to be placed in RAM
- * sections that are DMA accessible*/
+/*Prefix variables that are used in GPU accelerated operations, often these need to be placed in RAM sections that are DMA accessible*/
 #define LV_ATTRIBUTE_DMA
 
-/*Export integer constant to binding. This macro is used with constants in the form of LV_<CONST>
- *that should also appear on LVGL binding API such as Micropython.*/
-#define LV_EXPORT_CONST_INT(int_value)                                                             \
+/*Export integer constant to binding. This macro is used with constants in the form of LV_<CONST> that
+ *should also appear on LVGL binding API such as Micropython.*/
+#define LV_EXPORT_CONST_INT(int_value) \
     struct _silence_gcc_warning /*The default value just prevents GCC warning*/
 
-/*Extend the default -32k..32k coordinate range to -4M..4M by using int32_t for coordinates instead
- * of int16_t*/
+/*Extend the default -32k..32k coordinate range to -4M..4M by using int32_t for coordinates instead of int16_t*/
 #define LV_USE_LARGE_COORD 0
 
 /*==================
@@ -275,7 +268,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 /*Montserrat fonts with ASCII range and some symbols using bpp = 4
  *https://fonts.google.com/specimen/Montserrat*/
-#define LV_FONT_MONTSERRAT_8 0
+#define LV_FONT_MONTSERRAT_8  0
 #define LV_FONT_MONTSERRAT_10 0
 #define LV_FONT_MONTSERRAT_12 0
 #define LV_FONT_MONTSERRAT_14 1
@@ -298,13 +291,13 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FONT_MONTSERRAT_48 0
 
 /*Demonstrate special features*/
-#define LV_FONT_MONTSERRAT_12_SUBPX 0
+#define LV_FONT_MONTSERRAT_12_SUBPX      0
 #define LV_FONT_MONTSERRAT_28_COMPRESSED 0 /*bpp = 3*/
 #define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0 /*Hebrew, Arabic, Perisan letters and all their forms*/
-#define LV_FONT_SIMSUN_16_CJK 0 /*1000 most common CJK radicals*/
+#define LV_FONT_SIMSUN_16_CJK            0 /*1000 most common CJK radicals*/
 
 /*Pixel perfect monospace fonts*/
-#define LV_FONT_UNSCII_8 1
+#define LV_FONT_UNSCII_8  1
 #define LV_FONT_UNSCII_16 0
 
 /*Optionally declare custom fonts here.
@@ -326,8 +319,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Enable subpixel rendering*/
 #define LV_USE_FONT_SUBPX 0
 #if LV_USE_FONT_SUBPX
-/*Set the pixel order of the display. Physical order of RGB channels. Doesn't matter with "normal"
- * fonts.*/
+/*Set the pixel order of the display. Physical order of RGB channels. Doesn't matter with "normal" fonts.*/
 #define LV_FONT_SUBPX_BGR 0 /*0: RGB; 1:BGR order*/
 #endif
 
@@ -374,8 +366,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #endif
 
 /*Enable Arabic/Persian processing
- *In these languages characters should be replaced with an other form based on their position in the
- *text*/
+ *In these languages characters should be replaced with an other form based on their position in the text*/
 #define LV_USE_ARABIC_PERSIAN_CHARS 0
 
 /*==================
@@ -405,7 +396,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_LABEL 1
 #if LV_USE_LABEL
 #define LV_LABEL_TEXT_SELECTION 1 /*Enable selecting text of the label*/
-#define LV_LABEL_LONG_TXT_HINT                                                                     \
+#define LV_LABEL_LONG_TXT_HINT \
     1 /*Store some extra info in labels to speed up drawing of very long texts*/
 #endif
 
@@ -438,23 +429,23 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #if LV_USE_CALENDAR
 #define LV_CALENDAR_WEEK_STARTS_MONDAY 0
 #if LV_CALENDAR_WEEK_STARTS_MONDAY
-#define LV_CALENDAR_DEFAULT_DAY_NAMES                                                              \
-    {                                                                                              \
-        "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"                                                   \
+#define LV_CALENDAR_DEFAULT_DAY_NAMES            \
+    {                                            \
+        "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" \
     }
 #else
-#define LV_CALENDAR_DEFAULT_DAY_NAMES                                                              \
-    {                                                                                              \
-        "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"                                                   \
+#define LV_CALENDAR_DEFAULT_DAY_NAMES            \
+    {                                            \
+        "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" \
     }
 #endif
 
-#define LV_CALENDAR_DEFAULT_MONTH_NAMES                                                            \
-    {                                                                                              \
-        "January", "February", "March", "April", "May", "June", "July", "August", "September",     \
-            "October", "November", "December"                                                      \
+#define LV_CALENDAR_DEFAULT_MONTH_NAMES                                                        \
+    {                                                                                          \
+        "January", "February", "March", "April", "May", "June", "July", "August", "September", \
+            "October", "November", "December"                                                  \
     }
-#define LV_USE_CALENDAR_HEADER_ARROW 1
+#define LV_USE_CALENDAR_HEADER_ARROW    1
 #define LV_USE_CALENDAR_HEADER_DROPDOWN 1
 #endif /*LV_USE_CALENDAR*/
 
@@ -524,8 +515,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_GRID 1
 
 /*==================
- * EXAMPLES
- *==================*/
+* EXAMPLES
+*==================*/
 
 /*Enable the examples to be built with the library*/
 #define LV_BUILD_EXAMPLES 1

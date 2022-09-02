@@ -44,10 +44,10 @@
 #define _RTC_H_
 
 /* **** Includes **** */
-#include "mxc_device.h"
-#include "mxc_sys.h"
-#include "rtc_regs.h"
 #include <stdint.h>
+#include "mxc_device.h"
+#include "rtc_regs.h"
+#include "mxc_sys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -60,18 +60,18 @@ extern "C" {
  */
 
 #define MXC_RTC_MAX_SSEC (MXC_F_RTC_SSEC_SSEC + 1)
-#define MXC_RTC_TRIM_TMR_IRQ                                                                       \
-    0x0 // Place holder to prevent build errors, RevA function which uses this will never be called
+#define MXC_RTC_TRIM_TMR_IRQ \
+    0x0 //Place holder to prevent build errors, RevA function which uses this will never be called
 
 /* **** Definitions **** */
 /**
  * Bitmasks for each of the RTC's Frequency.
  */
 typedef enum {
-    MXC_RTC_F_1HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ, /**< 1Hz (Compensated)   */
+    MXC_RTC_F_1HZ   = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ,   /**< 1Hz (Compensated)   */
     MXC_RTC_F_512HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ, /**< 512Hz (Compensated) */
-    MXC_RTC_F_4KHZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ, /**< 4Khz                */
-    MXC_RTC_F_32KHZ = 32, /**< 32Khz               */
+    MXC_RTC_F_4KHZ  = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ,  /**< 4Khz                */
+    MXC_RTC_F_32KHZ = 32,                               /**< 32Khz               */
 } mxc_rtc_freq_sel_t;
 
 /**
@@ -79,8 +79,8 @@ typedef enum {
  */
 typedef enum {
     MXC_RTC_INT_EN_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IE, /**< Long-interval alarm interrupt enable */
-    MXC_RTC_INT_EN_SHORT
-    = MXC_F_RTC_CTRL_SSEC_ALARM_IE, /**< Short-interval alarm interrupt enable */
+    MXC_RTC_INT_EN_SHORT =
+        MXC_F_RTC_CTRL_SSEC_ALARM_IE,             /**< Short-interval alarm interrupt enable */
     MXC_RTC_INT_EN_READY = MXC_F_RTC_CTRL_RDY_IE, /**< Timer ready interrupt enable */
 } mxc_rtc_int_en_t;
 
@@ -88,9 +88,9 @@ typedef enum {
  * @brief     Bitmasks for each of the RTC's interrupt flags.
  */
 typedef enum {
-    MXC_RTC_INT_FL_LONG = MXC_F_RTC_CTRL_TOD_ALARM, /**< Long-interval alarm interrupt flag */
+    MXC_RTC_INT_FL_LONG  = MXC_F_RTC_CTRL_TOD_ALARM,  /**< Long-interval alarm interrupt flag */
     MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM, /**< Short-interval alarm interrupt flag */
-    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY, /**< Timer ready interrupt flag */
+    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY,        /**< Timer ready interrupt flag */
 } mxc_rtc_int_fl_t;
 
 /**
@@ -207,7 +207,7 @@ int MXC_RTC_GetBusyFlag(void);
 
 /**
  * @brief     Use the 32 MHz crystal to trim the 32 kHz crystal.
- * @details   Assumes that RTC interrupts are disabled and 32 MHz crystal is
+ * @details   Assumes that RTC interrupts are disabled and 32 MHz crystal is 
  *            enabled and selected as the system clock.
  * @retval    returns trimmed value of 32 kHz crystal or error,
  *            see /ref MXC_ERROR_CODES

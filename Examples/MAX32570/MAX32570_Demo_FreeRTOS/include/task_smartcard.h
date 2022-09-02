@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -36,9 +36,9 @@
 #ifndef _SMARTCARD_H_
 #define _SMARTCARD_H_
 
-#include "MAX325xx_afe.h"
 #include "sc_types.h"
 #include "smartcard_api.h"
+#include "MAX325xx_afe.h"
 
 /*****************************     DEFINES    *********************************/
 #define SC_SLOT_NUMBER SCI_1_BYPASS_SLOT

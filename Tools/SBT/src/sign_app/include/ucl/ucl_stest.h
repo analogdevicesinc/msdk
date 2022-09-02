@@ -224,8 +224,7 @@ int ucl_ecdsa_p192r1_sha256_stest(void);
 int ucl_ecdsa_p256r1_sha256_stest(void);
 
 /** <b>ECDSA secp256r1 SHA-1 self test</b>.
- * Test ECDSA function with the new API (verify) for the secp256r1 curve and the SHA-1 hash
- * function.
+ * Test ECDSA function with the new API (verify) for the secp256r1 curve and the SHA-1 hash function.
  *
  * @return Error code
  *
@@ -236,11 +235,10 @@ int ucl_ecdsa_p256r1_sha256_stest(void);
  */
 int ucl_ecdsa_p256r1_sha1_stest(void);
 
-// NEW API
+//NEW API
 
 /** <b>ECDSA secp224r1 SHA-1 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp224r1 curve and the SHA-1 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp224r1 curve and the SHA-1 hash function.
  *
  * @return Error code
  *
@@ -251,8 +249,7 @@ int ucl_ecdsa_p256r1_sha1_stest(void);
  */
 int ucl_ecdsa_p224r1_sha1_selftest(void);
 /** <b>ECDSA secp224r1 SHA-224 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp224r1 curve and the SHA-224 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp224r1 curve and the SHA-224 hash function.
  *
  * @return Error code
  *
@@ -263,8 +260,7 @@ int ucl_ecdsa_p224r1_sha1_selftest(void);
  */
 int ucl_ecdsa_p224r1_sha224_selftest(void);
 /** <b>ECDSA secp521r1 SHA-512 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp521r1 curve and the SHA-512 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp521r1 curve and the SHA-512 hash function.
  *
  * @return Error code
  *
@@ -275,8 +271,7 @@ int ucl_ecdsa_p224r1_sha224_selftest(void);
  */
 int ucl_ecdsa_p521r1_sha512_selftest(void);
 /** <b>ECDSA secp384r1 SHA-384 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp384r1 curve and the SHA-384 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp384r1 curve and the SHA-384 hash function.
  *
  * @return Error code
  *
@@ -287,8 +282,7 @@ int ucl_ecdsa_p521r1_sha512_selftest(void);
  */
 int ucl_ecdsa_p384r1_sha384_selftest(void);
 /** <b>ECDSA secp160r1 SHA-256 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp160r1 curve and the SHA-256 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp160r1 curve and the SHA-256 hash function.
  *
  * @return Error code
  *
@@ -299,8 +293,7 @@ int ucl_ecdsa_p384r1_sha384_selftest(void);
  */
 int ucl_ecdsa_p160r1_sha256_selftest(void);
 /** <b>ECDSA secp160r1 SHA-1 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp160r1 curve and the SHA-1 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp160r1 curve and the SHA-1 hash function.
  *
  * @return Error code
  *
@@ -311,8 +304,7 @@ int ucl_ecdsa_p160r1_sha256_selftest(void);
  */
 int ucl_ecdsa_p160r1_sha1_selftest(void);
 /** <b>ECDSA secp192r1 SHA-1 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp192r1 curve and the SHA-1 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp192r1 curve and the SHA-1 hash function.
  *
  * @return Error code
  *
@@ -323,8 +315,7 @@ int ucl_ecdsa_p160r1_sha1_selftest(void);
  */
 int ucl_ecdsa_p192r1_sha1_selftest(void);
 /** <b>ECDSA secp192r1 SHA-256 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp192r1 curve and the SHA-256 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp192r1 curve and the SHA-256 hash function.
  *
  * @return Error code
  *
@@ -335,8 +326,7 @@ int ucl_ecdsa_p192r1_sha1_selftest(void);
  */
 int ucl_ecdsa_p192r1_sha256_selftest(void);
 /** <b>ECDSA secp256r1 SHA-256 self test</b>.
- * Test ECDSA function with the new API (verify/sign) for the secp256r1 curve and the SHA-256 hash
- * function.
+ * Test ECDSA function with the new API (verify/sign) for the secp256r1 curve and the SHA-256 hash function.
  *
  * @return Error code
  *
@@ -348,8 +338,7 @@ int ucl_ecdsa_p192r1_sha256_selftest(void);
 int ucl_ecdsa_p256r1_sha256_selftest(void);
 
 /** <b>ECDSA secp256r1 SHA-1 self test</b>.
- * Test ECDSA function with the new API (verify) for the secp256r1 curve and the SHA-1 hash
- * function.
+ * Test ECDSA function with the new API (verify) for the secp256r1 curve and the SHA-1 hash function.
  *
  * @return Error code
  *

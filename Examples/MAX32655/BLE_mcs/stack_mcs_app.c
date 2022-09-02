@@ -22,27 +22,27 @@
  */
 /*************************************************************************************************/
 
-#include "util/bstream.h"
-#include "wsf_os.h"
 #include "wsf_types.h"
+#include "wsf_os.h"
+#include "util/bstream.h"
 
 #include "mcs_app_api.h"
 #include "wdxs/wdxs_api.h"
 
-#include "app_api.h"
-#include "att_api.h"
-#include "att_handler.h"
-#include "dm_handler.h"
-#include "hci_core.h"
-#include "hci_defs.h"
 #include "hci_handler.h"
-#include "l2c_api.h"
+#include "dm_handler.h"
 #include "l2c_handler.h"
-#include "sec_api.h"
-#include "smp_api.h"
+#include "att_handler.h"
 #include "smp_handler.h"
-#include "svc_core.h"
+#include "l2c_api.h"
+#include "att_api.h"
+#include "smp_api.h"
+#include "app_api.h"
+#include "hci_core.h"
 #include "svc_dis.h"
+#include "svc_core.h"
+#include "sec_api.h"
+#include "hci_defs.h"
 
 /*************************************************************************************************/
 /*!

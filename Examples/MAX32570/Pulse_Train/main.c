@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -44,8 +44,8 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
@@ -66,34 +66,34 @@ void PT_IRQHandler(void)
 // *****************************************************************************
 void ContinuousPulseTrain(void)
 {
-    // Setup GPIO to PT output function
-    // GPIO P0.13 uses PT4
+    //Setup GPIO to PT output function
+    //GPIO P0.13 uses PT4
 
-    // setup PT configuration
+    //setup PT configuration
     mxc_pt_cfg_t ptConfig;
-    ptConfig.channel = 4; // PT4
-    ptConfig.bps = 2; // bit rate
-    ptConfig.ptLength = 5; // bits
-    ptConfig.pattern = 0x16;
-    ptConfig.loop = 0; // continuous loop
+    ptConfig.channel   = 4; //PT4
+    ptConfig.bps       = 2; //bit rate
+    ptConfig.ptLength  = 5; //bits
+    ptConfig.pattern   = 0x16;
+    ptConfig.loop      = 0; //continuous loop
     ptConfig.loopDelay = 0;
 
     MXC_PT_Config(&ptConfig);
 
-    // start PT4
+    //start PT4
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT4);
 }
 
 // *****************************************************************************
 void SquareWave(void)
 {
-    // Setup GPIO to PT output function
-    // GPIO P0.12 uses PT3
+    //Setup GPIO to PT output function
+    //GPIO P0.12 uses PT3
 
-    uint32_t freq = 10; // Hz
-    MXC_PT_SqrWaveConfig(3, freq); // PT3
+    uint32_t freq = 10;            //Hz
+    MXC_PT_SqrWaveConfig(3, freq); //PT3
 
-    // start PT3
+    //start PT3
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT3);
 }
 
@@ -107,13 +107,14 @@ int main(void)
     printf("\nConnect external LEDS to see the demo.\n");
     printf("LED0 to P0.13 and LED1 to P0.12");
 
-    NVIC_EnableIRQ(PT_IRQn); // enabled default interrupt handler
-    MXC_PT_EnableInt(ALL_PT); // enabled interrupts for all PT
-    MXC_PT_Init(MXC_PT_CLK_DIV1); // initialize pulse trains
+    NVIC_EnableIRQ(PT_IRQn);      //enabled default interrupt handler
+    MXC_PT_EnableInt(ALL_PT);     //enabled interrupts for all PT
+    MXC_PT_Init(MXC_PT_CLK_DIV1); //initialize pulse trains
 
-    // configure and start pulse trains
+    //configure and start pulse trains
     ContinuousPulseTrain();
     SquareWave();
 
-    while (1) { }
+    while (1) {
+    }
 }

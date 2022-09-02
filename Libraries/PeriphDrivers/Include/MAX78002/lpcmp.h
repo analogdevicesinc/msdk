@@ -41,9 +41,9 @@
 #define _LPCMP_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "lpcmp_regs.h"
 #include "mcr_regs.h"
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,7 +51,7 @@ extern "C" {
 
 /**
  * @brief Comparator polarity select
- *
+ * 
  */
 typedef enum {
     MXC_LPCMP_POL_RISE, //< Comparator interrupt happens on rising edge of comparator output
@@ -60,17 +60,17 @@ typedef enum {
 
 /**
  * @brief Comparator select
- *
+ * 
  */
 typedef enum {
-    MXC_LPCMP_CMP0
-    = 0, //< Comparator output high when positive input is greater than negative input
-    MXC_LPCMP_CMP1
-    = 1, //< Comparator output high when negative input is greater than positive input
-    MXC_LPCMP_CMP2
-    = 2, //< Comparator output high when negative input is greater than positive input
-    MXC_LPCMP_CMP3
-    = 3, //< Comparator output high when negative input is greater than positive input
+    MXC_LPCMP_CMP0 =
+        0, //< Comparator output high when positive input is greater than negative input
+    MXC_LPCMP_CMP1 =
+        1, //< Comparator output high when negative input is greater than positive input
+    MXC_LPCMP_CMP2 =
+        2, //< Comparator output high when negative input is greater than positive input
+    MXC_LPCMP_CMP3 =
+        3, //< Comparator output high when negative input is greater than positive input
 } mxc_lpcmp_cmpsel_t;
 
 /**
@@ -80,25 +80,25 @@ typedef volatile uint32_t* mxc_lpcmp_ctrl_reg_t;
 
 /**
  * @brief enables comparator
- *
+ * 
  * @param cmp   Selects the comparator to enable
- *
+ * 
  * @return int  \ref MXC_Error_Codes for the list of error codes
  */
 int MXC_LPCMP_Init(mxc_lpcmp_cmpsel_t cmp);
 
 /**
  * @brief Shutdown comparator
- *
+ * 
  * @param cmp   Selects the comparator to disable
- *
+ * 
  * @return int  \ref MXC_Error_Codes for the list of error codes
  */
 int MXC_LPCMP_Shutdown(mxc_lpcmp_cmpsel_t cmp);
 
 /**
  * @brief Enable interrupts
- *
+ * 
  * @param cmp   Selects the comparator to enable interrupt for
  * @param pol   Selects polarity of the interrupt
  */
@@ -106,30 +106,30 @@ int MXC_LPCMP_EnableInt(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol);
 
 /**
  * @brief Disable interrupts
- *
+ * 
  * @param cmp   Selects the comparator to disable interrupt for
  */
 int MXC_LPCMP_DisableInt(mxc_lpcmp_cmpsel_t cmp);
 
 /**
  * @brief Returns the interrupt flags set
- *
- * @param cmp   Selects the comparator to get interrupt falg status for
- *
+ * 
+ * @param cmp   Selects the comparator to get interrupt falg status for 
+ * 
  * @return int  interrupt flag status (1 if set, 0 if cleared)
  */
 int MXC_LPCMP_GetFlags(mxc_lpcmp_cmpsel_t cmp);
 
 /**
  * @brief Clear interrupt flags
- *
+ * 
  * @param cmp   Selects the comparator to clear interrupt flag for
  */
 int MXC_LPCMP_ClearFlags(mxc_lpcmp_cmpsel_t cmp);
 
 /**
  * @brief Select polatity
- *
+ * 
  * @param cmp   Selects the comparator to select polarity for
  * @param pol   \ref mxc_lpcmp_polarity_t
  */

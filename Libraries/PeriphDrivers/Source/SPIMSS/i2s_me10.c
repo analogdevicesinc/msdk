@@ -34,17 +34,17 @@
  *
  *************************************************************************** */
 
-#include "dma.h"
-#include "gpio.h"
-#include "i2s.h"
-#include "i2s_reva.h"
-#include "mxc_assert.h"
-#include "mxc_errors.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
 #include <stddef.h>
 #include <stdint.h>
+#include "mxc_errors.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_pins.h"
+#include "gpio.h"
+#include "dma.h"
+#include "i2s.h"
+#include "i2s_reva.h"
 
 int dma_channel = -1;
 mxc_i2s_direction_t dir;

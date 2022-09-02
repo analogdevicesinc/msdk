@@ -1,8 +1,8 @@
 /**
  * @file        main.c
  * @brief       I2C Scanner Example
- * @details     This example uses the I2C Master to found addresses of the I2C Slave devices
- *              connected to the bus. You must connect the pull-up jumpers (JP21 and JP22)
+ * @details     This example uses the I2C Master to found addresses of the I2C Slave devices 
+ *              connected to the bus. You must connect the pull-up jumpers (JP21 and JP22) 
  *              to the proper I/O voltage.
  */
 
@@ -40,18 +40,18 @@
  ******************************************************************************/
 
 /***** Includes *****/
-#include "i2c.h"
-#include "i2c_regs.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "nvic_table.h"
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
+#include "mxc_device.h"
+#include "mxc_delay.h"
+#include "nvic_table.h"
+#include "i2c_regs.h"
+#include "i2c.h"
 
 /***** Definitions *****/
 #define I2C_MASTER MXC_I2C1 // SCL P0_16; SDA P0_17
-#define I2C_FREQ 100000 // 100kHZ
+#define I2C_FREQ   100000   // 100kHZ
 
 typedef enum { FAILED, PASSED } test_t;
 
@@ -68,7 +68,7 @@ int main()
 
     int error;
 
-    // Setup the I2CM
+    //Setup the I2CM
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("-->Failed master\n");
@@ -80,13 +80,13 @@ int main()
     printf("-->Scanning started\n");
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
     mxc_i2c_req_t reqMaster;
-    reqMaster.i2c = I2C_MASTER;
-    reqMaster.addr = 0;
-    reqMaster.tx_buf = NULL;
-    reqMaster.tx_len = 0;
-    reqMaster.rx_buf = NULL;
-    reqMaster.rx_len = 0;
-    reqMaster.restart = 0;
+    reqMaster.i2c      = I2C_MASTER;
+    reqMaster.addr     = 0;
+    reqMaster.tx_buf   = NULL;
+    reqMaster.tx_len   = 0;
+    reqMaster.rx_buf   = NULL;
+    reqMaster.rx_len   = 0;
+    reqMaster.restart  = 0;
     reqMaster.callback = NULL;
 
     for (uint8_t address = 8; address < 120; address++) {

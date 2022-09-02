@@ -1,64 +1,73 @@
 /*******************************************************************************
- * Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************
- *
- * @author: Yann Loisel <yann.loisel@maximintegrated.com>
- * @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
- *
- */
+* Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************
+*
+* @author: Yann Loisel <yann.loisel@maximintegrated.com>
+* @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
+*
+*/
 
-#include <ctype.h>
-#include <errno.h>
-#include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
+#include <regex.h>
+#include <errno.h>
 
-#include "aes.h"
-#include "log.h"
 #include "scp_definitions.h"
 #include "session_build.h"
+#include "aes.h"
+#include "log.h"
 
 u8 who;
-char* source[2] = { "host", "bl" };
+char* source[2] = {"host", "bl"};
 FILE* fp_packetlist_g;
 int compteur_g = 0;
 
 static char params[MAX_PARAMS][MAX_STRING];
 static int nb_params;
 
-const char* mode_name[] = { "", "", "", "", "SCP_FLORA_RSA", "", "MSP_MAXQ1852_ECDSA", "SCP_ECDSA",
-    "SCP_LITE_ECDSA", "SCP_PAOLA", NULL };
+const char* mode_name[] = {"",
+                           "",
+                           "",
+                           "",
+                           "SCP_FLORA_RSA",
+                           "",
+                           "MSP_MAXQ1852_ECDSA",
+                           "SCP_ECDSA",
+                           "SCP_LITE_ECDSA",
+                           "SCP_PAOLA",
+                           NULL};
 
-const char* pp_name[] = { "", "", "", "", "", "", "", "", "RSA_4096", "RSA_2048", "ECDSA", NULL };
+const char* pp_name[] = {"", "", "", "", "", "", "", "", "RSA_4096", "RSA_2048", "ECDSA", NULL};
 
 void display_frame(uint8_t* frame, size_t frame_size)
 {
@@ -119,12 +128,12 @@ int write_packet(uint8_t* frame, size_t frame_size, const char* name_file)
 
     if (strcmp(config_g.output_dir, "") != 0) {
         sprintf(filename, "%s/%s.%07d.%s.%s.packet", config_g.output_dir, config_g.output_file,
-            compteur_g, source[who], name_file);
+                compteur_g, source[who], name_file);
         fprintf(fp_packetlist_g, "%s.%07d.%s.%s.packet\n", config_g.output_file, compteur_g,
-            source[who], name_file);
+                source[who], name_file);
     } else {
         sprintf(filename, "%s.%07d.%s.%s.packet", config_g.output_file, compteur_g, source[who],
-            name_file);
+                name_file);
         fprintf(fp_packetlist_g, "%s\n", filename);
     }
 
@@ -177,7 +186,7 @@ int replace_extra_params(char* param)
     if (!ret) {
         memcpy(value_str, &param[rm[1].rm_so], 1);
         value_str[1] = '\0';
-        idx = strtol(value_str, NULL, 10) - 1;
+        idx          = strtol(value_str, NULL, 10) - 1;
         strcpy(param, config_g.extra_param[idx]);
     } else {
         return ERR_INVALID_OPTION_FORMAT;
@@ -192,7 +201,9 @@ int process_command(char* line)
     int found_l;
     char loline[MAX_STRING];
 
-    for (i = 0; i < (int)strlen(line); i++) { loline[i] = (char)tolower((int)line[i]); }
+    for (i = 0; i < (int)strlen(line); i++) {
+        loline[i] = (char)tolower((int)line[i]);
+    }
 
     /* parse every command */
     for (found_l = 0, i = 0; i < MAX_SCP_COMMAND; i++) {
@@ -207,7 +218,9 @@ int process_command(char* line)
             /* while not eol */
             while (j < (int)strlen(line) - 1) {
                 /* while space, go on */
-                while (' ' == line[j]) { j++; }
+                while (' ' == line[j]) {
+                    j++;
+                }
                 /* if not eol */
                 if (j == (int)strlen(line) - 1) {
                     break;
@@ -226,7 +239,9 @@ int process_command(char* line)
                 k++;
                 /* display param */
                 print_debug("params[%d]:", nb_params);
-                for (l = 0; l < k - 1; l++) { print_d("%c", params[nb_params][l]); }
+                for (l = 0; l < k - 1; l++) {
+                    print_d("%c", params[nb_params][l]);
+                }
                 print_d("\n");
 
                 replace_extra_params(params[nb_params]);

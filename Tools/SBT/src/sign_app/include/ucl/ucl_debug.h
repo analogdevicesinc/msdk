@@ -30,7 +30,7 @@
 #include "ucl/ucl_config.h"
 #include <stdio.h>
 
-#define __userland_format(fmt) "%s:%d " fmt "\n"
+#define __userland_format(fmt)   "%s:%d " fmt "\n"
 #define __userland_format_source __func__, __LINE__
 
 #define _userland_debug(fmt) __userland_format(fmt), __userland_format_source

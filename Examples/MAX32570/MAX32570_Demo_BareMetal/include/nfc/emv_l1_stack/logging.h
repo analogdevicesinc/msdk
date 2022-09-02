@@ -5,7 +5,7 @@
 
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -63,8 +63,7 @@ extern "C" {
  *
  * @ref g_logging_level can be changed on the fly to any of these values for debugging
  *
- * @note Use of @ref DBG_LVL_FDB will delay some operations long enough to fail certain Level 1
- * Digital test cases
+ * @note Use of @ref DBG_LVL_FDB will delay some operations long enough to fail certain Level 1 Digital test cases
  *
  * @{
  */
@@ -72,10 +71,10 @@ extern "C" {
 #define DBG_LVL_LOG 1 /**< Basic logging, this level is used to comply with DTE requirements */
 #define DBG_LVL_ERR 2 /**< Same as @ref DBG_LVL_LOG plus various errors encountered */
 #define DBG_LVL_WRN 3 /**< Same as @ref DBG_LVL_ERR plus various warning encountered */
-#define DBG_LVL_INF                                                                                \
-    4 /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the stack                \
+#define DBG_LVL_INF \
+    4 /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the stack
                               including uid level, uid, sfgi, and other interface details */
-#define DBG_LVL_DBG                                                                                \
+#define DBG_LVL_DBG \
     5 /**< Same as @ref DBG_LVL_INF plus TX buffer contents, and RF Driver response status */
 #define DBG_LVL_FDB 6 /**< Same as @ref DBG_LVL_DBG plus RX buffer contents */
 
@@ -85,27 +84,27 @@ extern "C" {
  *
  * Convenience functions to assist with stack logging, these can be used similar to printf
  *
- * @note Use of @ref full_debug will delay some operations long enough to fail certain Level 1
- * Digital test cases
+ * @note Use of @ref full_debug will delay some operations long enough to fail certain Level 1 Digital test cases
  *
  * @{
  */
-#define logging(x...)                                                                              \
-    do_log(DBG_LVL_LOG, x) /**< Basic logging, this level is used to comply with DTE requirements  \
-                            */
-#define error(x...)                                                                                \
+#define logging(x...) \
+    do_log(DBG_LVL_LOG, x) /**< Basic logging, this level is used to comply with DTE requirements */
+#define error(x...) \
     do_log(DBG_LVL_ERR, x) /**< Same as @ref DBG_LVL_LOG plus various errors encountered */
-#define warning(x...)                                                                              \
+#define warning(x...) \
     do_log(DBG_LVL_WRN, x) /**< Same as @ref DBG_LVL_ERR plus various warning encountered */
-#define info(x...)                                                                                 \
-    do_log(DBG_LVL_INF, x) /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the \
-                              stack including uid level, uid, sfgi, and other interface details */
-#define debug(x...)                                                                                \
-    do_log(DBG_LVL_DBG,                                                                            \
+#define info(x...)      \
+    do_log(DBG_LVL_INF, \
+           x) /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the stack
+                                                        including uid level, uid, sfgi, and other interface details */
+#define debug(x...)  \
+    do_log(          \
+        DBG_LVL_DBG, \
         x) /**< Same as @ref DBG_LVL_INF plus TX buffer contents, and RF Driver response status */
-#define full_debug(x...)                                                                           \
+#define full_debug(x...) \
     do_log(DBG_LVL_FDB, x) /**< Same as @ref DBG_LVL_DBG plus RX buffer contents */
-/** @} */ /* @defgroup NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS */
+/** @} */                  /* @defgroup NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS */
 
 /**
  * @brief Controls the logging level for the L1 Stack
@@ -119,11 +118,9 @@ extern int32_t g_logging_level;
 /**
  * @brief Conditionally print some logging information
  *
- * This function is called by @ref NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS to implement multilevel
- * debugging messages
+ * This function is called by @ref NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS to implement multilevel debugging messages
  *
- * @param[in]   req_level Level for this logging message, use one of @ref
- * NFC_PCD_EMV_LVL1_STACK_LOGGING_LVLS
+ * @param[in]   req_level Level for this logging message, use one of @ref NFC_PCD_EMV_LVL1_STACK_LOGGING_LVLS
  * @param[in]   ... printf style formating string and variables to print etc.
  */
 void do_log(int32_t req_level, ...);

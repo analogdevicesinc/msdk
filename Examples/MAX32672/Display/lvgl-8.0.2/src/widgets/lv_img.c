@@ -483,7 +483,7 @@ static void lv_img_event(const lv_obj_class_t* class_p, lv_event_t* e)
         }
     } else if (code == LV_EVENT_GET_SELF_SIZE) {
         lv_point_t* p = lv_event_get_param(e);
-{}
+        ;
         p->x = img->w;
         p->y = img->h;
     } else if (code == LV_EVENT_DRAW_MAIN || code == LV_EVENT_DRAW_POST ||

@@ -32,10 +32,10 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "tmr_common.h"
+#include <stddef.h>
 #include "mxc_assert.h"
 #include "tmr.h"
-#include <stddef.h>
+#include "tmr_common.h"
 
 /* **** Functions **** */
 
@@ -48,7 +48,8 @@ void MXC_TMR_Common_Delay(mxc_tmr_regs_t* tmr, unsigned long us)
 
     MXC_TMR_TO_Start(tmr, us);
 
-    while (MXC_TMR_TO_Check(tmr) != E_TIME_OUT) { }
+    while (MXC_TMR_TO_Check(tmr) != E_TIME_OUT) {
+    }
 }
 
 int MXC_TMR_Common_TO_Check(mxc_tmr_regs_t* tmr)
@@ -81,18 +82,18 @@ unsigned int MXC_TMR_Common_TO_Remaining(mxc_tmr_regs_t* tmr)
     MXC_TMR_GetTime(tmr, remaining_ticks, &remaining_time, &units);
 
     switch (units) {
-    case TMR_UNIT_NANOSEC:
-    default:
-        return (remaining_time / 1000);
+        case TMR_UNIT_NANOSEC:
+        default:
+            return (remaining_time / 1000);
 
-    case TMR_UNIT_MICROSEC:
-        return (remaining_time);
+        case TMR_UNIT_MICROSEC:
+            return (remaining_time);
 
-    case TMR_UNIT_MILLISEC:
-        return (remaining_time * 1000);
+        case TMR_UNIT_MILLISEC:
+            return (remaining_time * 1000);
 
-    case TMR_UNIT_SEC:
-        return (remaining_time * 1000000);
+        case TMR_UNIT_SEC:
+            return (remaining_time * 1000000);
     }
 }
 
@@ -115,17 +116,17 @@ unsigned int MXC_TMR_Common_TO_Elapsed(mxc_tmr_regs_t* tmr)
     MXC_TMR_GetTime(tmr, tmr->cnt, &elapsed, &units);
 
     switch (units) {
-    case TMR_UNIT_NANOSEC:
-    default:
-        return (elapsed / 1000);
+        case TMR_UNIT_NANOSEC:
+        default:
+            return (elapsed / 1000);
 
-    case TMR_UNIT_MICROSEC:
-        return (elapsed);
+        case TMR_UNIT_MICROSEC:
+            return (elapsed);
 
-    case TMR_UNIT_MILLISEC:
-        return (elapsed * 1000);
+        case TMR_UNIT_MILLISEC:
+            return (elapsed * 1000);
 
-    case TMR_UNIT_SEC:
-        return (elapsed * 1000000);
+        case TMR_UNIT_SEC:
+            return (elapsed * 1000000);
     }
 }

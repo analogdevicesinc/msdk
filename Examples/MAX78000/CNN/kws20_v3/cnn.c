@@ -1,41 +1,39 @@
 /*******************************************************************************
- * Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************/
+* Copyright (C) 2019-2022 Maxim Integrated Products, Inc., All rights Reserved.
+*
+* This software is protected by copyright laws of the United States and
+* of foreign countries. This material may also be protected by patent laws
+* and technology transfer regulations of the United States and of foreign
+* countries. This software is furnished under a license agreement and/or a
+* nondisclosure agreement and may only be used or reproduced in accordance
+* with the terms of those agreements. Dissemination of this information to
+* any party or parties not specified in the license agreement and/or
+* nondisclosure agreement is expressly prohibited.
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************/
 
 // kws20_v3
-// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix kws20_v3 --checkpoint-file
-// trained/ai85-kws20_v3-qat8-q.pth.tar --config-file networks/kws20-v3-hwc.yaml --softmax --device
-// MAX78000 --timer 0 --display-checkpoint --verbose
+// Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix kws20_v3 --checkpoint-file trained/ai85-kws20_v3-qat8-q.pth.tar --config-file networks/kws20-v3-hwc.yaml --softmax --device MAX78000 --timer 0 --display-checkpoint --verbose
 
 // DO NOT EDIT - regenerate this file instead!
 
@@ -43,23 +41,22 @@
 // Input data: HWC
 // Layer 0: 128x128, no pooling, conv1d with kernel size 1, stride 1, pad 0, ReLU, 100x128 output
 // Layer 1: 100x128, no pooling, conv1d with kernel size 3, stride 1, pad 0, ReLU, 96x126 output
-// Layer 2: 96x126, max pool 2 with stride 2, conv1d with kernel size 3, stride 1, pad 1, ReLU,
-// 64x63 output Layer 3: 64x63, no pooling, conv1d with kernel size 3, stride 1, pad 0, ReLU, 48x61
-// output Layer 4: 48x61, max pool 2 with stride 2, conv1d with kernel size 3, stride 1, pad 1,
-// ReLU, 64x30 output Layer 5: 64x30, no pooling, conv1d with kernel size 3, stride 1, pad 0, ReLU,
-// 96x28 output Layer 6: 96x28, avg pool 2 with stride 2, conv1d with kernel size 3, stride 1, pad
-// 1, ReLU, 100x14 output Layer 7: 100x14, max pool 2 with stride 2, conv1d with kernel size 6,
-// stride 1, pad 1, ReLU, 64x4 output Layer 8: 64x4x1 flattened to 256x1x1, no pooling, linear, no
-// activation, 21x1x1 output
+// Layer 2: 96x126, max pool 2 with stride 2, conv1d with kernel size 3, stride 1, pad 1, ReLU, 64x63 output
+// Layer 3: 64x63, no pooling, conv1d with kernel size 3, stride 1, pad 0, ReLU, 48x61 output
+// Layer 4: 48x61, max pool 2 with stride 2, conv1d with kernel size 3, stride 1, pad 1, ReLU, 64x30 output
+// Layer 5: 64x30, no pooling, conv1d with kernel size 3, stride 1, pad 0, ReLU, 96x28 output
+// Layer 6: 96x28, avg pool 2 with stride 2, conv1d with kernel size 3, stride 1, pad 1, ReLU, 100x14 output
+// Layer 7: 100x14, max pool 2 with stride 2, conv1d with kernel size 6, stride 1, pad 1, ReLU, 64x4 output
+// Layer 8: 64x4x1 flattened to 256x1x1, no pooling, linear, no activation, 21x1x1 output
 
-#include "cnn.h"
-#include "gcfr_regs.h"
-#include "mxc.h"
-#include "weights.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "gcfr_regs.h"
+#include "cnn.h"
+#include "weights.h"
 
 void CNN_ISR(void)
 {
@@ -95,7 +92,9 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 static const uint32_t kernels[] = KERNELS;
@@ -108,8 +107,9 @@ int cnn_load_weights(void)
 
     while ((addr = (volatile uint32_t*)*ptr++) != 0) {
         *((volatile uint8_t*)((uint32_t)addr | 1)) = 0x01; // Set address
-        len = *ptr++;
-        while (len-- > 0) *addr++ = *ptr++;
+        len                                        = *ptr++;
+        while (len-- > 0)
+            *addr++ = *ptr++;
     }
 
     return CNN_OK;
@@ -587,7 +587,7 @@ int cnn_start(void)
     MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-    CNN_START; // Allow capture of processing time
+    CNN_START;                                      // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x00100009; // Master enable quadrant 0
 
     return CNN_OK;
@@ -598,32 +598,32 @@ int cnn_unload(uint32_t* out_buf)
     volatile uint32_t* addr;
 
     // Custom unload for this network, layer 8: 32-bit data, shape: (21, 1, 1)
-    addr = (volatile uint32_t*)0x50402000;
+    addr       = (volatile uint32_t*)0x50402000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x5040a000;
+    addr       = (volatile uint32_t*)0x5040a000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x50412000;
+    addr       = (volatile uint32_t*)0x50412000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x5041a000;
+    addr       = (volatile uint32_t*)0x5041a000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x50802000;
+    addr       = (volatile uint32_t*)0x50802000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x5080a000;
+    addr       = (volatile uint32_t*)0x5080a000;
     *out_buf++ = *addr++;
 
     return CNN_OK;
@@ -638,9 +638,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv
-        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-        | clock_divider | clock_source;
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -653,7 +653,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -666,7 +666,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);

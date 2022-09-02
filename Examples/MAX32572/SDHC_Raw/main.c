@@ -43,33 +43,32 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
 #include "sdhc_lib.h"
 
 /***** Definitions *****/
-#define BLOCK_SIZE 512
-#define BLOCK_COUNT 1024
+#define BLOCK_SIZE        512
+#define BLOCK_COUNT       1024
 #define MULTI_BLOCK_COUNT 512
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
+#define TOSTRING(x)  STRINGIFY(x)
 
 /***** Globals *****/
-__attribute__((aligned(4))) uint8_t array[BLOCK_SIZE]; // Array to hold data read and written to
-                                                       // card
+__attribute__((aligned(4))) uint8_t array[BLOCK_SIZE]; //Array to hold data read and written to card
 __attribute__((aligned(4)))
-uint8_t marray[BLOCK_SIZE * MULTI_BLOCK_COUNT]; // Array to hold data read and written to card
+uint8_t marray[BLOCK_SIZE * MULTI_BLOCK_COUNT]; //Array to hold data read and written to card
 
-volatile int sdhc_flag = 1;
-mxc_gpio_cfg_t SDPowerEnablePin
-    = { MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+volatile int sdhc_flag          = 1;
+mxc_gpio_cfg_t SDPowerEnablePin = {MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                   MXC_GPIO_VSSEL_VDDIO};
 
 /******************************************************************************/
-// sdhc callback from async functions
+//sdhc callback from async functions
 void sdhc_cb(int error)
 {
     sdhc_flag = error;
@@ -95,7 +94,7 @@ int check_data(uint8_t* x, uint8_t expected, unsigned int length)
 }
 
 /******************************************************************************/
-// Sends write async to card and then does a read async to see if the right data was written
+//Sends write async to card and then does a read async to see if the right data was written
 int async_transactions(unsigned int width)
 {
     // initialize array
@@ -108,7 +107,8 @@ int async_transactions(unsigned int width)
     }
 
     /* Wait for write to complete */
-    while (sdhc_flag == 1) { }
+    while (sdhc_flag == 1)
+        ;
 
     if (sdhc_flag == E_NO_ERROR) {
         printf("non-blocking write ok\n");
@@ -128,7 +128,8 @@ int async_transactions(unsigned int width)
     }
 
     /* Wait for read to complete */
-    while (sdhc_flag == 1) { }
+    while (sdhc_flag == 1)
+        ;
 
     if (sdhc_flag == E_NO_ERROR) {
         printf("non-blocking read ok\n");
@@ -142,14 +143,14 @@ int async_transactions(unsigned int width)
 }
 
 /******************************************************************************/
-// erases card with blocking functions
+//erases card with blocking functions
 int erase(unsigned int width)
 {
     int error;
 
     memset(array, 0, BLOCK_SIZE);
 
-    // Write data from array to the card
+    //Write data from array to the card
     if ((error = MXC_SDHC_Lib_Write(0, array, 1, width)) == E_NO_ERROR) {
         printf("blocking erase ok\n");
 
@@ -160,7 +161,7 @@ int erase(unsigned int width)
 
     memset(array, 1, BLOCK_SIZE);
 
-    // Read data from card and store in array
+    //Read data from card and store in array
     if ((error = MXC_SDHC_Lib_Read(array, 0, 1, width)) == E_NO_ERROR) {
         printf("blocking erase read ok\n");
 
@@ -173,7 +174,7 @@ int erase(unsigned int width)
 }
 
 /******************************************************************************/
-// Write and then read what was written to card using blocking methods.
+//Write and then read what was written to card using blocking methods.
 int blocking_transactions(unsigned int width)
 {
     unsigned int card_block;
@@ -186,7 +187,8 @@ int blocking_transactions(unsigned int width)
         if ((error = MXC_SDHC_Lib_Write(card_block, array, 1, width)) != E_NO_ERROR) {
             printf("blocking write failed %d at block %u\n", error, card_block);
 
-            while (1) { }
+            while (1)
+                ;
 
             return error;
         }
@@ -255,15 +257,16 @@ int main(void)
 
     // Initialize SDHC peripheral
     cfg.bus_voltage = MXC_SDHC_Bus_Voltage_3_3;
-    cfg.block_gap = 0;
-    cfg.clk_div = 0x0B0; // Maximum divide ratio, frequency must be < 400 kHz during Card
-                         // Identification phase (SD Specification Part 1 Ch 6.6.6)
+    cfg.block_gap   = 0;
+    cfg.clk_div =
+        0x0B0; // Maximum divide ratio, frequency must be < 400 kHz during Card Identification phase (SD Specification Part 1 Ch 6.6.6)
     MXC_SDHC_Init(&cfg);
 
     // wait for card to be inserted
     printf("Waiting for card.\n");
 
-    while (!MXC_SDHC_Card_Inserted()) { }
+    while (!MXC_SDHC_Card_Inserted())
+        ;
 
     printf("Card inserted.\n");
 

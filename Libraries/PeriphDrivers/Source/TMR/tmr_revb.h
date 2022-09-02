@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gpio.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "tmr.h"
-#include "tmr_revb_regs.h"
 #include <stddef.h>
+#include "mxc_assert.h"
+#include "tmr.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "mxc_lock.h"
+#include "tmr_revb_regs.h"
 
 typedef enum {
     MXC_TMR_CLK0,
@@ -57,8 +57,8 @@ int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t* tmr, uint32_t pwm);
 uint32_t MXC_TMR_RevB_GetCompare(mxc_tmr_revb_regs_t* tmr);
 uint32_t MXC_TMR_RevB_GetCapture(mxc_tmr_revb_regs_t* tmr);
 uint32_t MXC_TMR_RevB_GetCount(mxc_tmr_revb_regs_t* tmr);
-uint32_t MXC_TMR_RevB_GetPeriod(
-    mxc_tmr_revb_regs_t* tmr, uint32_t clk_frequency, uint32_t prescalar, uint32_t frequency);
+uint32_t MXC_TMR_RevB_GetPeriod(mxc_tmr_revb_regs_t* tmr, uint32_t clk_frequency,
+                                uint32_t prescalar, uint32_t frequency);
 void MXC_TMR_RevB_ClearFlags(mxc_tmr_revb_regs_t* tmr);
 uint32_t MXC_TMR_RevB_GetFlags(mxc_tmr_revb_regs_t* tmr);
 void MXC_TMR_RevB_EnableInt(mxc_tmr_revb_regs_t* tmr);
@@ -68,7 +68,7 @@ void MXC_TMR_RevB_DisableWakeup(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg);
 void MXC_TMR_RevB_SetCompare(mxc_tmr_revb_regs_t* tmr, uint32_t cmp_cnt);
 void MXC_TMR_RevB_SetCount(mxc_tmr_revb_regs_t* tmr, uint32_t cnt);
 void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t* tmr, unsigned long us);
-int MXC_TMR_RevB_GetTime(
-    mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* time, mxc_tmr_unit_t* units);
-int MXC_TMR_RevB_GetTicks(
-    mxc_tmr_revb_regs_t* tmr, uint32_t time, mxc_tmr_unit_t units, uint32_t* ticks);
+int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* time,
+                         mxc_tmr_unit_t* units);
+int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t* tmr, uint32_t time, mxc_tmr_unit_t units,
+                          uint32_t* ticks);

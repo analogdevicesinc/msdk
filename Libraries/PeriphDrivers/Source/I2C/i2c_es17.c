@@ -31,18 +31,18 @@
  *
  *************************************************************************** */
 
-#include "dma.h"
-#include "i2c.h"
-#include "i2c_regs.h"
-#include "i2c_reva.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "i2c_regs.h"
+#include "dma.h"
+#include "i2c.h"
+#include "i2c_reva.h"
 
 /* **** Definitions **** */
 #define MXC_I2C_FASTPLUS_SPEED 1000000
@@ -181,8 +181,8 @@ int MXC_I2C_ReadByte(mxc_i2c_regs_t* i2c, unsigned char* byte, int ack)
 
 int MXC_I2C_ReadByteInteractive(mxc_i2c_regs_t* i2c, unsigned char* byte, mxc_i2c_getAck_t getAck)
 {
-    return MXC_I2C_RevA_ReadByteInteractive(
-        (mxc_i2c_reva_regs_t*)i2c, byte, (mxc_i2c_reva_getAck_t)getAck);
+    return MXC_I2C_RevA_ReadByteInteractive((mxc_i2c_reva_regs_t*)i2c, byte,
+                                            (mxc_i2c_reva_getAck_t)getAck);
 }
 
 int MXC_I2C_Write(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len)
@@ -200,8 +200,8 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsig
     return MXC_I2C_RevA_ReadRXFIFO((mxc_i2c_reva_regs_t*)i2c, bytes, len);
 }
 
-int MXC_I2C_ReadRXFIFODMA(
-    mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
+                          mxc_i2c_dma_complete_cb_t callback)
 {
     uint8_t i2cNum;
     mxc_dma_config_t config;
@@ -209,12 +209,12 @@ int MXC_I2C_ReadRXFIFODMA(
     i2cNum = MXC_I2C_GET_IDX(i2c);
 
     switch (i2cNum) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0RX;
-        break;
+        case 0:
+            config.reqsel = MXC_DMA_REQUEST_I2C0RX;
+            break;
     }
-    return MXC_I2C_RevA_ReadRXFIFODMA(
-        (mxc_i2c_reva_regs_t*)i2c, bytes, len, callback, config, MXC_DMA);
+    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t*)i2c, bytes, len, callback, config,
+                                      MXC_DMA);
 }
 
 int MXC_I2C_GetRXFIFOAvailable(mxc_i2c_regs_t* i2c)
@@ -227,8 +227,8 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsi
     return MXC_I2C_RevA_WriteTXFIFO((mxc_i2c_reva_regs_t*)i2c, bytes, len);
 }
 
-int MXC_I2C_WriteTXFIFODMA(
-    mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len, mxc_i2c_dma_complete_cb_t callback)
+int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
+                           mxc_i2c_dma_complete_cb_t callback)
 {
     uint8_t i2cNum;
     mxc_dma_config_t config;
@@ -236,12 +236,12 @@ int MXC_I2C_WriteTXFIFODMA(
     i2cNum = MXC_I2C_GET_IDX(i2c);
 
     switch (i2cNum) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0TX;
-        break;
+        case 0:
+            config.reqsel = MXC_DMA_REQUEST_I2C0TX;
+            break;
     }
     return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t*)i2c, bytes, len,
-        (mxc_i2c_reva_dma_complete_cb_t)callback, config, MXC_DMA);
+                                       (mxc_i2c_reva_dma_complete_cb_t)callback, config, MXC_DMA);
 }
 
 int MXC_I2C_GetTXFIFOAvailable(mxc_i2c_regs_t* i2c)
@@ -335,8 +335,8 @@ int MXC_I2C_MasterTransactionDMA(mxc_i2c_req_t* req)
 
 int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callback)
 {
-    return MXC_I2C_RevA_SlaveTransaction(
-        (mxc_i2c_reva_regs_t*)i2c, (mxc_i2c_reva_slave_handler_t)callback, interruptCheck);
+    return MXC_I2C_RevA_SlaveTransaction((mxc_i2c_reva_regs_t*)i2c,
+                                         (mxc_i2c_reva_slave_handler_t)callback, interruptCheck);
 }
 
 int MXC_I2C_SlaveTransactionAsync(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callback)

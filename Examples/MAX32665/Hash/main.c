@@ -37,17 +37,17 @@
  *
  ******************************************************************************/
 
-#include "board.h"
-#include "max32665.h"
-#include "mxc_device.h"
-#include "tpu.h"
-#include <stdint.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
+#include "mxc_device.h"
+#include "max32665.h"
+#include "board.h"
+#include "tpu.h"
 
 /***** Globals *****/
 
-char temp[] = { 0x00, 0x00, 0x00 };
+char temp[] = {0x00, 0x00, 0x00};
 
 void Test_Result(int result)
 {
@@ -75,8 +75,8 @@ void Test_Hash(void)
 {
     printf("Test Hash\n");
 
-    unsigned char sha256_msg[]
-        = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%&*()";
+    unsigned char sha256_msg[] =
+        "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%&*()";
 
     char _sha256_result[] = "93bfb2299f7427f021ad038cec5054b4db2e935f3ae10d64e4e6a40a77269803";
     char sha256_result[33];

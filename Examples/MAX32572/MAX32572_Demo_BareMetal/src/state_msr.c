@@ -36,27 +36,27 @@
 #include <string.h>
 
 #include "state.h"
-#include "task_msr.h"
 #include "utils.h"
+#include "task_msr.h"
 
 /********************************* 		DEFINES		 *************************/
-#define TICK_TIMEOUT 10
+#define TICK_TIMEOUT        10
 #define DISPLAY_MSG_TIMEOUT 1000
 
 /********************************* 		VARIABLES	 *************************/
 static text_t text_msg[] = {
-    { (char*)"MAG STRIPE", 10 },
+    {(char*)"MAG STRIPE", 10},
 #ifndef MN_EvKit_V1
-    { (char*)"Swipe a card", 12 },
-    { (char*)"Track:", 6 },
+    {(char*)"Swipe a card", 12},
+    {(char*)"Track:", 6},
 #else
-    { (char*)"This EvKit does not support MSR", 31 }
+    {(char*)"This EvKit does not support MSR", 31}
 #endif
 };
 
 #ifndef MN_EvKit_V1
-static area_t area_clean = { 0, 0, 0, 0 };
-static area_t area_cleanMSG = { 0, 0, 0, 0 };
+static area_t area_clean    = {0, 0, 0, 0};
+static area_t area_cleanMSG = {0, 0, 0, 0};
 
 static int g_tick_counter = 0;
 #endif
@@ -72,13 +72,13 @@ static int init(void)
 
 #ifndef MN_EvKit_V1
     MXC_TFT_PrintFont(101, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
-        &area_clean); //"Swipe a card", 12
+                      &area_clean); //"Swipe a card", 12
 #else
     MXC_TFT_PrintFont(23, 40, urw_gothic_12_white_bg_grey, &text_msg[1], NULL); //
 #endif
 
     MXC_TS_RemoveAllButton();
-    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); // Home
+    MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); //Home
 
 #ifndef MN_EvKit_V1
     g_tick_counter = 0;
@@ -91,14 +91,14 @@ static int init(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-    case KEY_C: // exit
+        case KEY_C: // exit
 #ifndef MN_EvKit_V1
-        msr_stop();
+            msr_stop();
 #endif
-        state_set_current(get_home_state());
-        break;
-    default:
-        break;
+            state_set_current(get_home_state());
+            break;
+        default:
+            break;
     }
 
     return 0;
@@ -116,13 +116,13 @@ static int time_tick(void)
 
         MXC_TFT_ClearArea(&area_clean, 0);
         msg_var.data = (char*)msg;
-        msg_var.len = msg_len;
+        msg_var.len  = msg_len;
         if (msg_var.len > 18) {
             msg_var.len = 18;
         }
         MXC_TFT_PrintFont(82, 162, urw_gothic_16_white_bg_grey, &msg_var, &area_clean);
         MXC_TFT_PrintFont(17, 162, urw_gothic_16_bleu_bg_grey, &text_msg[2],
-            &area_cleanMSG); // "Track:",
+                          &area_cleanMSG); // "Track:",
 
         g_tick_counter = 1; // means enable timeout
     }
@@ -135,7 +135,7 @@ static int time_tick(void)
             MXC_TFT_ClearArea(&area_clean, 0);
             MXC_TFT_ClearArea(&area_cleanMSG, 0);
             MXC_TFT_PrintFont(101, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
-                &area_clean); //"Swipe a card",
+                              &area_clean); //"Swipe a card",
         }
     }
 
@@ -144,9 +144,9 @@ static int time_tick(void)
 #endif // for #ifndef MN_EvKit_V1
 
 #ifndef MN_EvKit_V1
-static State g_state = { "msr", init, key_process, time_tick, TICK_TIMEOUT };
+static State g_state = {"msr", init, key_process, time_tick, TICK_TIMEOUT};
 #else
-static State g_state = { "msr", init, key_process, NULL, 0 };
+static State g_state = {"msr", init, key_process, NULL, 0};
 #endif
 
 /********************************* Public Functions **************************/

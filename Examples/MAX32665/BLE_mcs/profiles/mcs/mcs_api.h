@@ -1,12 +1,12 @@
 #ifndef TST_API_H
 #define TST_API_H
 
-#include "app_api.h"
+#include "wsf_types.h"
 #include "att_api.h"
+#include "app_api.h"
+#include "svc_mcs.h"
 #include "board.h"
 #include "led.h"
-#include "svc_mcs.h"
-#include "wsf_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,8 +18,8 @@ extern "C" {
 /*! \brief Maxim custom service configurable parameters */
 typedef struct {
     wsfTimerTicks_t period; /*!< \brief Button timer expiration period in seconds */
-    uint16_t count; /*!< \brief Perform button after this many timer periods */
-    uint8_t threshold; /*!< \brief Send button notification to peer when below this level. */
+    uint16_t count;         /*!< \brief Perform button after this many timer periods */
+    uint8_t threshold;      /*!< \brief Send button notification to peer when below this level. */
 } mcsCfg_t;
 
 /*************************************************************************************************/
@@ -39,7 +39,7 @@ typedef struct {
  */
 /*************************************************************************************************/
 uint8_t McsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-    uint16_t len, uint8_t* pValue, attsAttr_t* pAttr);
+                      uint16_t len, uint8_t* pValue, attsAttr_t* pAttr);
 
 /*************************************************************************************************/
 /*!

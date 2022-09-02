@@ -39,8 +39,8 @@
  * @brief   Board support package API.
  */
 
-#include "spixf.h"
 #include <stdio.h>
+#include "spixf.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H

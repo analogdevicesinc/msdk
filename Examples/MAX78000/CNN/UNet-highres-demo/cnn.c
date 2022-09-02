@@ -1,80 +1,71 @@
 /*******************************************************************************
- * Copyright (C) 2019-2021 Maxim Integrated Products, Inc., All rights Reserved.
- *
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************/
+* Copyright (C) 2019-2021 Maxim Integrated Products, Inc., All rights Reserved.
+*
+* This software is protected by copyright laws of the United States and
+* of foreign countries. This material may also be protected by patent laws
+* and technology transfer regulations of the United States and of foreign
+* countries. This software is furnished under a license agreement and/or a
+* nondisclosure agreement and may only be used or reproduced in accordance
+* with the terms of those agreements. Dissemination of this information to
+* any party or parties not specified in the license agreement and/or
+* nondisclosure agreement is expressly prohibited.
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************/
 
 // camvid_unet
-// Created using ai8xize.py --test-dir sdk_temp --prefix camvid_unet --checkpoint-file
-// trained/ai85-camvid-unet-large-fakept-q.pth.tar --config-file
-// networks/camvid-unet-large-fakept.yaml --device MAX78000 --compact-data --mexpress --timer 0
-// --display-checkpoint --verbose --overlap-data --mlator --no-unload
+// Created using ai8xize.py --test-dir sdk_temp --prefix camvid_unet --checkpoint-file trained/ai85-camvid-unet-large-fakept-q.pth.tar --config-file networks/camvid-unet-large-fakept.yaml --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint --verbose --overlap-data --mlator --no-unload
 
 // DO NOT EDIT - regenerate this file instead!
 
 // Configuring 19 layers:
-// Layer 0: 48x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU,
-// 64x88x88 output Layer 1: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride
-// 1/1, pad 0/0, ReLU, 64x88x88 output Layer 2: 64x88x88 (HWC data), no pooling, conv2d with kernel
-// size 1x1, stride 1/1, pad 0/0, ReLU, 32x88x88 output Layer 3: 32x88x88 (HWC data), no pooling,
-// conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 8x88x88 output Layer 4: 8x88x88 (HWC
-// data), max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 28x44x44 output Layer 5: 28x44x44 (HWC data), max pool 2x2 with stride 2/2, conv2d with kernel
-// size 3x3, stride 1/1, pad 1/1, ReLU, 56x22x22 output Layer 6: 56x22x22 (HWC data), max pool 2x2
-// with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 112x11x11 output Layer
-// 7: 56x22x22 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no
-// activation, 56x22x22 output Layer 8: 112x11x11 (HWC data), no pooling, convtranspose2d with
-// kernel size 3x3, stride 2/2, pad 1/1, no activation, 56x22x22 output Layer 9: 112x22x22 (HWC
-// data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 56x22x22 output Layer
-// 10: 56x22x22 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1,
-// no activation, 28x44x44 output Layer 11: 56x44x44 (HWC data), no pooling, conv2d with kernel size
-// 3x3, stride 1/1, pad 1/1, ReLU, 28x44x44 output Layer 12: 28x44x44 (HWC data), no pooling,
-// convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 8x88x88 output Layer
-// 13: 16x88x88 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU,
-// 48x88x88 output Layer 14: 48x88x88 (HWC data), no pooling, conv2d with kernel size 3x3, stride
-// 1/1, pad 1/1, ReLU, 64x88x88 output Layer 15: 64x88x88 (HWC data), no pooling, conv2d with kernel
-// size 1x1, stride 1/1, pad 0/0, ReLU, 64x88x88 output Layer 16: 64x88x88 (HWC data), no pooling,
-// conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 64x88x88 output Layer 17: 64x88x88 (HWC
-// data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 64x88x88
-// output Layer 18: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad
-// 0/0, no activation, 64x88x88 output
+// Layer 0: 48x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 64x88x88 output
+// Layer 1: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 64x88x88 output
+// Layer 2: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 32x88x88 output
+// Layer 3: 32x88x88 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 8x88x88 output
+// Layer 4: 8x88x88 (HWC data), max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 28x44x44 output
+// Layer 5: 28x44x44 (HWC data), max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 56x22x22 output
+// Layer 6: 56x22x22 (HWC data), max pool 2x2 with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 112x11x11 output
+// Layer 7: 56x22x22 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 56x22x22 output
+// Layer 8: 112x11x11 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 56x22x22 output
+// Layer 9: 112x22x22 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 56x22x22 output
+// Layer 10: 56x22x22 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 28x44x44 output
+// Layer 11: 56x44x44 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 28x44x44 output
+// Layer 12: 28x44x44 (HWC data), no pooling, convtranspose2d with kernel size 3x3, stride 2/2, pad 1/1, no activation, 8x88x88 output
+// Layer 13: 16x88x88 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 48x88x88 output
+// Layer 14: 48x88x88 (HWC data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, ReLU, 64x88x88 output
+// Layer 15: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 64x88x88 output
+// Layer 16: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, ReLU, 64x88x88 output
+// Layer 17: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 64x88x88 output
+// Layer 18: 64x88x88 (HWC data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, no activation, 64x88x88 output
 
-#include "cnn.h"
-#include "gcfr_regs.h"
-#include "mxc.h"
-#include "weights.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "gcfr_regs.h"
+#include "cnn.h"
+#include "weights.h"
 
 void CNN_ISR(void)
 {
@@ -84,7 +75,7 @@ void CNN_ISR(void)
     *((volatile uint32_t*)0x50900000) &= ~((1 << 12) | 1);
     *((volatile uint32_t*)0x50d00000) &= ~((1 << 12) | 1);
 
-    /// CNN_COMPLETE; // Signal that processing is complete
+    ///CNN_COMPLETE; // Signal that processing is complete
 #ifdef CNN_INFERENCE_TIMER
     cnn_time = MXC_TMR_SW_Stop(CNN_INFERENCE_TIMER);
 #else
@@ -110,20 +101,22 @@ int cnn_stop(void)
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 // Kernels:
-static const uint32_t kernels_0[] = KERNELS_0;
-static const uint32_t kernels_1[] = KERNELS_1;
-static const uint32_t kernels_2[] = KERNELS_2;
-static const uint32_t kernels_3[] = KERNELS_3;
-static const uint32_t kernels_4[] = KERNELS_4;
-static const uint32_t kernels_5[] = KERNELS_5;
-static const uint32_t kernels_6[] = KERNELS_6;
-static const uint32_t kernels_7[] = KERNELS_7;
-static const uint32_t kernels_8[] = KERNELS_8;
-static const uint32_t kernels_9[] = KERNELS_9;
+static const uint32_t kernels_0[]  = KERNELS_0;
+static const uint32_t kernels_1[]  = KERNELS_1;
+static const uint32_t kernels_2[]  = KERNELS_2;
+static const uint32_t kernels_3[]  = KERNELS_3;
+static const uint32_t kernels_4[]  = KERNELS_4;
+static const uint32_t kernels_5[]  = KERNELS_5;
+static const uint32_t kernels_6[]  = KERNELS_6;
+static const uint32_t kernels_7[]  = KERNELS_7;
+static const uint32_t kernels_8[]  = KERNELS_8;
+static const uint32_t kernels_9[]  = KERNELS_9;
 static const uint32_t kernels_10[] = KERNELS_10;
 static const uint32_t kernels_11[] = KERNELS_11;
 static const uint32_t kernels_12[] = KERNELS_12;
@@ -320,7 +313,9 @@ static const uint8_t bias_3[] = BIAS_3;
 
 static void memcpy_8to32(uint32_t* dst, const uint8_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 int cnn_load_bias(void)
@@ -1384,9 +1379,9 @@ int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
     MXC_GCFR->reg2 = 0x0; // Iso
     MXC_GCFR->reg3 = 0x0; // Reset
 
-    MXC_GCR->pclkdiv
-        = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-        | clock_divider | clock_source;
+    MXC_GCR->pclkdiv =
+        (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
+        clock_divider | clock_source;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_NVIC_SetVector(CNN_IRQn, CNN_ISR); // Set CNN complete vector
@@ -1399,7 +1394,7 @@ int cnn_boost_enable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -1412,7 +1407,7 @@ int cnn_boost_disable(mxc_gpio_regs_t* port, uint32_t pin)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = port;
     gpio_out.mask = pin;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.pad  = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);

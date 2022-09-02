@@ -35,11 +35,11 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_assert.h"
-#include "mxc_device.h"
 #include "owm.h"
-#include "owm_regs.h"
+#include "mxc_device.h"
+#include "mxc_assert.h"
 #include "owm_reva_regs.h"
+#include "owm_regs.h"
 
 /* **** Definitions **** */
 

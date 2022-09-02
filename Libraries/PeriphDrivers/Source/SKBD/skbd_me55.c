@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 //#include "smoh.h"
-#include "gpio.h"
-#include "mxc_assert.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
 #include "skbd.h"
 #include "skbd_reva.h"
+#include "gpio.h"
+#include "mxc_assert.h"
+#include "mxc_pins.h"
+#include "mxc_sys.h"
+#include "mxc_lock.h"
 
 int MXC_SKBD_PreInit(void)
 {
@@ -89,7 +89,8 @@ int MXC_SKBD_Close(void)
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SKBD);
 
     /* Wait until SKBD reset completes */
-    while (MXC_F_GCR_RST1_SKBD & MXC_GCR->rst1) { }
+    while (MXC_F_GCR_RST1_SKBD & MXC_GCR->rst1)
+        ;
 
     return MXC_SKBD_RevA_Close();
 }

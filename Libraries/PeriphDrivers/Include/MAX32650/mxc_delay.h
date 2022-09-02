@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief    Asynchronous delay routines based on the SysTick Timer.
- */
+*/
 
 /* ****************************************************************************
  * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:06:43 -0500 (Tue, 28 Aug 2018) $
+ * $Date: 2018-08-28 17:06:43 -0500 (Tue, 28 Aug 2018) $ 
  * $Revision: 37425 $
  *
  *************************************************************************** */
@@ -46,8 +46,8 @@
 #include "mxc_errors.h"
 
 /**
- * @ingroup devicelibs
- * @defgroup    MXC_delay Delay Utility Functions
+ * @ingroup devicelibs 
+ * @defgroup    MXC_delay Delay Utility Functions 
  * @brief       Asynchronous delay routines based on the SysTick Timer
  * @{
  */
@@ -56,7 +56,7 @@
 /**
  * Macro used to specify a microsecond timing parameter in seconds.
  * \code
- * x = SEC(3) // 3 seconds -> x = 3,000,000
+ * x = SEC(3) // 3 seconds -> x = 3,000,000 
  * \endcode
  */
 #define MXC_DELAY_SEC(s) (((unsigned long)s) * 1000000UL)

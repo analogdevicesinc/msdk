@@ -1,133 +1,133 @@
 /*******************************************************************************
- * Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *******************************************************************************
- *
- * @author: Yann Loisel <yann.loisel@maximintegrated.com>
- * @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
- *
- */
+* Copyright (C) 2009-2018 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*******************************************************************************
+*
+* @author: Yann Loisel <yann.loisel@maximintegrated.com>
+* @author: Benjamin VINOT <benjamin.vinot@maximintegrated.com>
+*
+*/
 
-#include <ctype.h>
-#include <errno.h>
-#include <getopt.h>
-#include <ini.h>
-#include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
+#include <ini.h>
+#include <regex.h>
 #include <unistd.h>
+#include <getopt.h>
+#include <errno.h>
 
 #include <ucl/ucl.h>
 #include <ucl/ucl_info.h>
 #include <ucl/ucl_sys.h>
 
 #ifdef _MAXIM_HSM
-#include "hsm.h"
 #include <libhsm/HSM.h>
+#include "hsm.h"
 #endif /* _MAXIM_HSM */
 
-#include "ecdsa.h"
-#include "log.h"
-#include "process.h"
-#include "rsa.h"
-#include "scp.h"
+#include "session_build.h"
 #include "scp_definitions.h"
+#include <maxim_c_utils.h>
+#include "process.h"
+#include "scp.h"
 #include "scp_lite.h"
 #include "scp_maxq1852.h"
-#include "session_build.h"
+#include "ecdsa.h"
+#include "rsa.h"
+#include "log.h"
 #include "utils.h"
-#include <maxim_c_utils.h>
 
 #ifndef MAX_ARG_LEN
 #define MAX_ARG_LEN 4096
 #endif
 
 config_option_t config_option[] = {
-    { "flash_size_mb", OT_INT, &config_g.flash_mb, 0, 0 },
-    { "usn", OT_USN, &config_g.usn, USN_LEN, 0 },
-    { "key_file", OT_FILE, &config_g.keyfile, 0, 0 },
+    {"flash_size_mb", OT_INT, &config_g.flash_mb, 0, 0},
+    {"usn", OT_USN, &config_g.usn, USN_LEN, 0},
+    {"key_file", OT_FILE, &config_g.keyfile, 0, 0},
     /* Legacy */
-    { "ecdsa_file", OT_FILE, &config_g.keyfile, 0, 0 },
-    { "rsa_file", OT_FILE, &config_g.keyfile, 0, 0 },
+    {"ecdsa_file", OT_FILE, &config_g.keyfile, 0, 0},
+    {"rsa_file", OT_FILE, &config_g.keyfile, 0, 0},
 
 #ifdef _MAXIM_HSM
-    { "hsm", OT_YESNO, &config_g.hsm, 0, 0 },
-    { "hsm_key_name", OT_STRING, &config_g.HSM_KeyLabel, 0, 0 },
-    { "hsm_thales_dll", OT_FILE, &config_g.hsm_thales_dll, 0, 0 },
-    { "hsm_slot_nb", OT_INT, &config_g.hsm_slot_nb, 0, 0 },
+    {"hsm", OT_YESNO, &config_g.hsm, 0, 0},
+    {"hsm_key_name", OT_STRING, &config_g.HSM_KeyLabel, 0, 0},
+    {"hsm_thales_dll", OT_FILE, &config_g.hsm_thales_dll, 0, 0},
+    {"hsm_slot_nb", OT_INT, &config_g.hsm_slot_nb, 0, 0},
 #endif
 
-    { "verbose", OT_INT, &verbose, 0, 0 },
+    {"verbose", OT_INT, &verbose, 0, 0},
 
-    { "session_mode", OT_SESSION_MODE, &config_g.session_mode, 0, 0 },
-    { "pp", OT_PP, &config_g.pp, 0, 0 },
-    { "script_file", OT_FILE, config_g.script_file, 0, 0 },
-    { "output_file", OT_FILE, config_g.output_file, 0, 0 },
-    { "output_dir", OT_FILE, config_g.output_dir, 0, 0 },
+    {"session_mode", OT_SESSION_MODE, &config_g.session_mode, 0, 0},
+    {"pp", OT_PP, &config_g.pp, 0, 0},
+    {"script_file", OT_FILE, config_g.script_file, 0, 0},
+    {"output_file", OT_FILE, config_g.output_file, 0, 0},
+    {"output_dir", OT_FILE, config_g.output_dir, 0, 0},
 
-    { "chunk_size", OT_INT, &config_g.chunk_size, 0, 0 },
-    { "transaction_id", OT_INT, &config_g.msp_1852_tr_id, 0, 0 },
-    { "addr_offset", OT_LONGHEX, &config_g.address_offset, 0, 0 },
-    { 0, 0, 0, 0, 0 },
+    {"chunk_size", OT_INT, &config_g.chunk_size, 0, 0},
+    {"transaction_id", OT_INT, &config_g.msp_1852_tr_id, 0, 0},
+    {"addr_offset", OT_LONGHEX, &config_g.address_offset, 0, 0},
+    {0, 0, 0, 0, 0},
 };
 
-static const int mode[MAX_SCP_COMMAND] = { [COMMAND_WRITE_FILE]
-    = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_ONLY] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_ERASE_DATA] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
+static const int mode[MAX_SCP_COMMAND] = {
+    [COMMAND_WRITE_FILE]  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_ONLY]  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_ERASE_DATA]  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
     [COMMAND_VERIFY_FILE] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_CRK] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_CRK]   = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
     [COMMAND_REWRITE_CRK] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_OTP] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_TIMEOUT] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_KILL_CHIP] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_KILL_CHIP2] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_EXECUTE_CODE] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_OTP]   = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_TIMEOUT]              = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_KILL_CHIP]                  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_KILL_CHIP2]                 = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_EXECUTE_CODE]               = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
     [COMMAND_MAXQ1852_LOAD_CUSTOMER_KEY] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_CUSTOMER_KEY] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ACTIVATE_CUSTOMER_KEY] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ERASE_CODE_FLASH_AREA] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_LOAD_CODE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_LOAD_FILE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_LOAD_DATA] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_FILE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_CODE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_DATA] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_WRITE_REGISTER] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_READ_REGISTER] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ENGAGE_PLLO] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_CUSTOMER_KEY]                    = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ACTIVATE_CUSTOMER_KEY]                  = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ERASE_CODE_FLASH_AREA]                  = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS]                  = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_LOAD_CODE]                              = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_LOAD_FILE]                              = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_LOAD_DATA]                              = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_FILE]                            = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_CODE]                            = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_DATA]                            = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_WRITE_REGISTER]                         = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_READ_REGISTER]                          = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ENGAGE_PLLO]                            = MSP_MAXQ1852_ECDSA_MSK,
     [COMMAND_MAXQ1852_GENERATE_APPLICATION_STARTUP_SIGNATURE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_APPLICATION_STARTUP_SIGNATURE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_SCP_LITE_LOAD_RAM] = SCP_LITE_ECDSA };
+    [COMMAND_MAXQ1852_VERIFY_APPLICATION_STARTUP_SIGNATURE]   = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_SCP_LITE_LOAD_RAM]                               = SCP_LITE_ECDSA};
 
 uint32_t ucl_buffer_g[4096];
 
@@ -160,12 +160,12 @@ int init_crypto(void)
 int parse_store_option(const char* name, const char* value)
 {
     unsigned int i = 0;
-    int result = 0;
+    int result     = 0;
 
     while (config_option[i].name != 0) {
         if (strcmp(config_option[i].name, name) == 0) {
-            ASSERT_OK(parse_store(
-                config_option[i].type, config_option[i].ptr, value, config_option[i].min));
+            ASSERT_OK(parse_store(config_option[i].type, config_option[i].ptr, value,
+                                  config_option[i].min));
             break;
         }
         i++;
@@ -233,8 +233,8 @@ static int load_keys(void)
     int resu;
     size_t max_chunk_size = 1024;
 
-    if (MSP_MAXQ1852_ECDSA == config_g.session_mode || SCP_ANGELA_ECDSA == config_g.session_mode
-        || SCP_LITE_ECDSA == config_g.session_mode) {
+    if (MSP_MAXQ1852_ECDSA == config_g.session_mode || SCP_ANGELA_ECDSA == config_g.session_mode ||
+        SCP_LITE_ECDSA == config_g.session_mode) {
 #ifdef _MAXIM_HSM
         if (config_g.hsm) {
             resu = load_HSM_ecdsa_key(&config_g.ecdsaKey, config_g.HSM_KeyLabel);
@@ -251,13 +251,13 @@ static int load_keys(void)
 
         if (config_g.pp != SCP_PP_ECDSA) {
             print_warn("SCP session mode is defined with this value: \"%s\".\n",
-                mode_name[config_g.session_mode]);
+                       mode_name[config_g.session_mode]);
             print_warn("But the protection profile (\"pp\" value) is different from \"ECDSA\".\n");
         }
     }
 
-    if (SCP_RSA == config_g.session_mode || SCP_FLORA_RSA == config_g.session_mode
-        || SCP_PAOLA == config_g.session_mode) {
+    if (SCP_RSA == config_g.session_mode || SCP_FLORA_RSA == config_g.session_mode ||
+        SCP_PAOLA == config_g.session_mode) {
 #ifdef _MAXIM_HSM
         if (config_g.hsm) {
             resu = load_HSM_rsa_key(&config_g.rsaKey, config_g.HSM_KeyLabel);
@@ -272,24 +272,24 @@ static int load_keys(void)
             return resu;
         }
 
-        if (SCP_PP_PAOLA_4096 == config_g.pp
-            && config_g.rsaKey.keyPr.modulus_length != RSA_4096_MODULUS_LEN) {
+        if (SCP_PP_PAOLA_4096 == config_g.pp &&
+            config_g.rsaKey.keyPr.modulus_length != RSA_4096_MODULUS_LEN) {
             print_error("Protection Profile selected RSA-4096 but key length is %d bits.\n",
-                config_g.rsaKey.keyPr.modulus_length * 8);
+                        config_g.rsaKey.keyPr.modulus_length * 8);
             return ERR_INCONSISTENT_KEY;
         }
 
-        if (SCP_PP_PAOLA_2048 == config_g.pp
-            && config_g.rsaKey.keyPr.modulus_length != RSA_2048_MODULUS_LEN) {
+        if (SCP_PP_PAOLA_2048 == config_g.pp &&
+            config_g.rsaKey.keyPr.modulus_length != RSA_2048_MODULUS_LEN) {
             print_error("Protection Profile selected RSA-2048 but key length is %d bits.\n",
-                config_g.rsaKey.keyPr.modulus_length * 8);
+                        config_g.rsaKey.keyPr.modulus_length * 8);
             return ERR_INCONSISTENT_KEY;
         }
 
-        if (config_g.pp != SCP_PP_RSA && config_g.pp != SCP_PP_PAOLA_4096
-            && config_g.pp != SCP_PP_PAOLA_2048) {
+        if (config_g.pp != SCP_PP_RSA && config_g.pp != SCP_PP_PAOLA_4096 &&
+            config_g.pp != SCP_PP_PAOLA_2048) {
             print_warn("SCP session mode is defined with this value: \"%s\".\n",
-                mode_name[config_g.session_mode]);
+                       mode_name[config_g.session_mode]);
             print_warn("But the protection profile (\"pp\" value) is different from \"RSA_2048\" "
                        "or  \"RSA_4096\".\n");
         }
@@ -313,7 +313,7 @@ static int load_keys(void)
     if (config_g.chunk_size > max_chunk_size) {
         print_warn("Provided chunk_size (" SSIZET_FMT
                    " bytes) is larger than the supported max chunk_size (" SSIZET_FMT " bytes)\n",
-            config_g.chunk_size, max_chunk_size);
+                   config_g.chunk_size, max_chunk_size);
         print_warn("Using Maximum chunk size (" SSIZET_FMT " bytes).\n", max_chunk_size);
         config_g.chunk_size = max_chunk_size;
     }
@@ -324,17 +324,19 @@ static int load_keys(void)
 int load_default_config(void)
 {
     int i;
-    u8 usn_default[] = { 0x04, 0x00, 0x43, 0x47, 0x1f, 0xd2, 0x03, 0x08, 0x0c, 0x07, 0x00, 0x00,
-        0x7f, 0x24, 0xea, 0x2f };
+    u8 usn_default[]      = {0x04, 0x00, 0x43, 0x47, 0x1f, 0xd2, 0x03, 0x08,
+                        0x0c, 0x07, 0x00, 0x00, 0x7f, 0x24, 0xea, 0x2f};
     config_g.session_mode = SCP_RSA;
     /* default config */
     config_g.pp = SCP_PP_RSA;
     /* flash size is 32MB */
-    config_g.flash_mb = 32;
+    config_g.flash_mb       = 32;
     config_g.address_offset = 0;
-    config_g.chunk_size = 1024;
+    config_g.chunk_size     = 1024;
 
-    for (i = 0; i < USN_LEN; i++) { config_g.usn[i] = usn_default[i]; }
+    for (i = 0; i < USN_LEN; i++) {
+        config_g.usn[i] = usn_default[i];
+    }
 
     sprintf(config_g.script_file, "script.txt");
     sprintf(config_g.output_file, "session.txt");
@@ -378,7 +380,9 @@ void display_config(void)
     print_d("\tAddress offset: %08x\n", config_g.address_offset);
 
     print_d("\tUSN:");
-    for (i = 0; i < 16; i++) { print_d("%02x", config_g.usn[i]); }
+    for (i = 0; i < 16; i++) {
+        print_d("%02x", config_g.usn[i]);
+    }
     print_d("\n");
 
 #ifdef _MAXIM_HSM
@@ -414,11 +418,10 @@ int check_parameters(void)
     }
 #endif /*_MAXIM_HSM */
 
-    /* check if requested size is not too large compared to what supported (i.e. MAX_FLASH_MB),
-     * because of int coding) */
+    /* check if requested size is not too large compared to what supported (i.e. MAX_FLASH_MB), because of int coding) */
     if (config_g.flash_mb > MAX_FLASH_MB) {
         print_error("Requested flash size is too large (%dMB) while limited to %dMB\n",
-            config_g.flash_mb, MAX_FLASH_MB);
+                    config_g.flash_mb, MAX_FLASH_MB);
         return ERR_BAD_PARAMETER;
     }
 
@@ -493,8 +496,8 @@ int process(script_cmd_list_t* script, size_t list_length)
     /* dynamic allocation of *addr, which contains the addresses of meaningful binary file bytes */
     addr_g = malloc(sizeof(size_t) * 1024 * 1024 * config_g.flash_mb);
     if (NULL == addr_g) {
-        print_error(
-            "Unable to allocate memory for Address array (%dMB requested)\n", config_g.flash_mb);
+        print_error("Unable to allocate memory for Address array (%dMB requested)\n",
+                    config_g.flash_mb);
         return ERR_MEMORY_ERROR;
     }
 
@@ -623,7 +626,7 @@ int main(int argc, char** argv)
     char c;
     char default_device[MAX_STRING] = "";
     char output_name[MAX_STRING + 5];
-    verbose = 3;
+    verbose                   = 3;
     script_cmd_list_t* script = NULL;
     size_t list_length;
 
@@ -636,35 +639,35 @@ int main(int argc, char** argv)
 
     while ((c = getopt(argc, argv, "dhvc:")) != -1) {
         switch (c) {
-        case 'c':
-            strcpy(default_device, optarg);
-            break;
-        case 'h':
-            print_help();
-            return ERR_OK;
-            break;
-        case 'v':
-            print_version();
-            return ERR_OK;
-            break;
-        case 'd':
-            verbose = 5;
-            break;
-        case '?':
-            if (optopt == 'c') {
-                fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-            } else if (isprint(optopt)) {
-                fprintf(stderr, "Unknown option `-%c'.\n", optopt);
-            } else {
-                fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-            }
-            return 1;
-        default:
-            abort();
+            case 'c':
+                strcpy(default_device, optarg);
+                break;
+            case 'h':
+                print_help();
+                return ERR_OK;
+                break;
+            case 'v':
+                print_version();
+                return ERR_OK;
+                break;
+            case 'd':
+                verbose = 5;
+                break;
+            case '?':
+                if (optopt == 'c') {
+                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+                } else if (isprint(optopt)) {
+                    fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+                } else {
+                    fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+                }
+                return 1;
+            default:
+                abort();
         }
     }
     print_info("SBL/SCP packets builder v%d.%d.%d (%s %s) (c)Maxim Integrated 2006-2018\n", MAJV,
-        MINV, ZVER, __DATE__, __TIME__);
+               MINV, ZVER, __DATE__, __TIME__);
 
     load_default_config();
 
@@ -709,7 +712,7 @@ int main(int argc, char** argv)
     }
 
     fprintf(fp_g, "session generation v%d.%d.%d (%s %s) (c)Maxim Integrated 2006-2018\n", MAJV,
-        MINV, ZVER, __DATE__, __TIME__);
+            MINV, ZVER, __DATE__, __TIME__);
 
     print_info("Processing SCP script %s \n", config_g.script_file);
     result = process(script, list_length);

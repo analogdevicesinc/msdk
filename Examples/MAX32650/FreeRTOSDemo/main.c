@@ -37,32 +37,32 @@
  ******************************************************************************/
 
 /* **** Includes **** */
-#include "board.h"
-#include "mxc_delay.h"
 #include "mxc_errors.h"
+#include "mxc_delay.h"
+#include "board.h"
 
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 
 /* FreeRTOS */
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
-#include "semphr.h"
 #include "task.h"
+#include "semphr.h"
 
 /* FreeRTOS+ */
 #include "FreeRTOS_CLI.h"
 
 /* Maxim CMSIS SDK */
-#include "board.h"
-#include "led.h"
-#include "lp.h"
 #include "rtc.h"
 #include "uart.h"
+#include "lp.h"
+#include "led.h"
+#include "board.h"
 
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
@@ -77,16 +77,16 @@ TaskHandle_t cmd_task_id;
 unsigned int disable_tickless = 1;
 
 /* Stringification macros */
-#define STRING(x) STRING_(x)
+#define STRING(x)  STRING_(x)
 #define STRING_(x) #x
 
 /* Console ISR selection */
 #if (CONSOLE_UART == 0)
 #define UARTx_IRQHandler UART0_IRQHandler
-#define UARTx_IRQn UART0_IRQn
+#define UARTx_IRQn       UART0_IRQn
 #elif (CONSOLE_UART == 1)
 #define UARTx_IRQHandler UART1_IRQHandler
-#define UARTx_IRQn UART1_IRQn
+#define UARTx_IRQn       UART1_IRQn
 #else
 #error "Please update ISR macro for UART CONSOLE_UART"
 #endif
@@ -95,7 +95,7 @@ mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 /* **** Definitions **** */
 /* Array sizes */
 #define CMD_LINE_BUF_SIZE 80
-#define OUTPUT_BUF_SIZE 512
+#define OUTPUT_BUF_SIZE   512
 
 /**
  * @brief   vTask0
@@ -116,8 +116,7 @@ void vTask0(void* pvParameters)
         /* Protect hardware access with mutex
          *
          * Note: This is not strictly necessary, since GPIO_SetOutVal() is implemented with bit-band
-         * access, which is inherently task-safe. However, for other drivers, this would be
-         * required.
+         * access, which is inherently task-safe. However, for other drivers, this would be required.
          *
          */
         if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
@@ -137,7 +136,7 @@ void vTask0(void* pvParameters)
 }
 
 /**
- * @brief   vTask1()
+ * @brief   vTask1() 
  * @details This task blinks LED1 at a 0.5Hz rate, and does not
  *          drift due to the use of vTaskDelayUntil(). It may have
  *          jitter, however, due to any higher-priority task or
@@ -156,8 +155,7 @@ void vTask1(void* pvParameters)
         /* Protect hardware access with mutex
          *
          * Note: This is not strictly necessary, since GPIO_SetOutVal() is implemented with bit-band
-         * access, which is inherently task-safe. However, for other drivers, this would be
-         * required.
+         * access, which is inherently task-safe. However, for other drivers, this would be required.
          *
          */
         if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
@@ -177,7 +175,7 @@ void vTask1(void* pvParameters)
     }
 }
 
-/**
+/**  
  * @brief   vTickTockTask
  * @details This task writes the current RTOS tick time to the console
  */
@@ -192,12 +190,12 @@ void vTickTockTask(void* pvParameters)
     while (1) {
         ticks = xTaskGetTickCount();
         printf("Uptime is 0x%08x (%u seconds), tickless-idle is %s\n", ticks,
-            ticks / configTICK_RATE_HZ, disable_tickless ? "disabled" : "ENABLED");
+               ticks / configTICK_RATE_HZ, disable_tickless ? "disabled" : "ENABLED");
         vTaskDelayUntil(&xLastWakeTime, (configTICK_RATE_HZ * 60));
     }
 }
 
-/**
+/** 
  * @brief   UART0_IRQHandler
  * @details This function overrides the weakly-declared interrupt handler
  *          in system_max326xx.c and is needed for asynchronous UART
@@ -208,7 +206,7 @@ void UARTx_IRQHandler(void)
     MXC_UART_AsyncHandler(ConsoleUART);
 }
 
-/**
+/** 
  * @brief   vCmdLineTask_cb
  * @details Callback on asynchronous reads to wake the waiting command
  *          processor task
@@ -223,13 +221,13 @@ void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
-/**
+/** 
  * @brief   vCmdLineTask
  * @details The command line task provides a prompt on the serial
  *          interface and takes input from the user to evaluate
  *          via the FreeRTOS+CLI parser.
- * @note    FreeRTOS+CLI is part of FreeRTOS+ and has
- *          different licensing requirements. Please see
+ * @note    FreeRTOS+CLI is part of FreeRTOS+ and has 
+ *          different licensing requirements. Please see 
  *          http://www.freertos.org/FreeRTOS-Plus for more information
  */
 void vCmdLineTask(void* pvParameters)
@@ -239,11 +237,10 @@ void vCmdLineTask(void* pvParameters)
     unsigned int x;
     int tmpLen;
     char buffer[CMD_LINE_BUF_SIZE]; /* Buffer for input */
-    char output[OUTPUT_BUF_SIZE]; /* Buffer for output */
+    char output[OUTPUT_BUF_SIZE];   /* Buffer for output */
     BaseType_t xMore;
     mxc_uart_req_t async_read_req;
-    mxc_gpio_cfg_t uart_rx_pin
-        = { MXC_GPIO2, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE };
+    mxc_gpio_cfg_t uart_rx_pin = {MXC_GPIO2, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE};
 
     memset(buffer, 0, CMD_LINE_BUF_SIZE);
     index = 0;
@@ -265,13 +262,13 @@ void vCmdLineTask(void* pvParameters)
     NVIC_EnableIRQ(UARTx_IRQn);
 
     /* Async read will be used to wake process */
-    async_read_req.uart = ConsoleUART;
-    async_read_req.txData = NULL;
-    async_read_req.rxData = &tmp;
-    async_read_req.txLen = 0;
-    async_read_req.rxLen = 1;
-    async_read_req.txCnt = 0;
-    async_read_req.rxCnt = 0;
+    async_read_req.uart     = ConsoleUART;
+    async_read_req.txData   = NULL;
+    async_read_req.rxData   = &tmp;
+    async_read_req.txLen    = 0;
+    async_read_req.rxLen    = 1;
+    async_read_req.txCnt    = 0;
+    async_read_req.rxCnt    = 0;
     async_read_req.callback = vCmdLineTask_cb;
 
     printf("\nEnter 'help' to view a list of available commands.\n");
@@ -309,8 +306,8 @@ void vCmdLineTask(void* pvParameters)
                     do {
                         xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
                         /* If xMore == pdTRUE, then output buffer contains no null termination, so
-                         *  we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can use strlen.
-                         */
+						 *  we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can use strlen.
+						 */
                         for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
                             putchar(*(output + x));
                         }
@@ -332,16 +329,16 @@ void vCmdLineTask(void* pvParameters)
                     fflush(stdout);
                 }
                 /* If more characters are ready, process them here */
-            } while ((MXC_UART_GetRXFIFOAvailable(ConsoleUART) > 0)
-                && !MXC_UART_Read(ConsoleUART, (uint8_t*)&tmp, &tmpLen));
+            } while ((MXC_UART_GetRXFIFOAvailable(ConsoleUART) > 0) &&
+                     !MXC_UART_Read(ConsoleUART, (uint8_t*)&tmp, &tmpLen));
         }
     }
 }
 
 #if configUSE_TICKLESS_IDLE
-/**
+/** 
  * @brief   freertos_permit_tickless
- * @details Determine if any hardware activity should prevent
+ * @details Determine if any hardware activity should prevent 
  *          low-power tickless operation.
  */
 int freertos_permit_tickless(void)
@@ -361,7 +358,7 @@ void RTC_IRQHandler(void)
 
 /**
  * @brief   main()
- * @detials This program demonstrates FreeRTOS tasks, mutexes,
+ * @detials This program demonstrates FreeRTOS tasks, mutexes, 
  *          and the FreeRTOS+CLI extension.
  */
 int main(void)
@@ -393,18 +390,14 @@ int main(void)
     } else {
         /* Configure task */
         if ((xTaskCreate(vTask0, (const char*)"Task0", configMINIMAL_STACK_SIZE, NULL,
-                 tskIDLE_PRIORITY + 2, NULL)
-                != pdPASS)
-            || (xTaskCreate(vTask1, (const char*)"Task1", configMINIMAL_STACK_SIZE, NULL,
-                    tskIDLE_PRIORITY + 2, NULL)
-                != pdPASS)
-            || (xTaskCreate(vTickTockTask, (const char*)"TickTock", 2 * configMINIMAL_STACK_SIZE,
-                    NULL, tskIDLE_PRIORITY + 3, NULL)
-                != pdPASS)
-            || (xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
-                    configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                    tskIDLE_PRIORITY + 1, &cmd_task_id)
-                != pdPASS)) {
+                         tskIDLE_PRIORITY + 2, NULL) != pdPASS) ||
+            (xTaskCreate(vTask1, (const char*)"Task1", configMINIMAL_STACK_SIZE, NULL,
+                         tskIDLE_PRIORITY + 2, NULL) != pdPASS) ||
+            (xTaskCreate(vTickTockTask, (const char*)"TickTock", 2 * configMINIMAL_STACK_SIZE, NULL,
+                         tskIDLE_PRIORITY + 3, NULL) != pdPASS) ||
+            (xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
+                         configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
+                         tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
             printf("xTaskCreate() failed to create a task.\n");
         } else {
             /* Start scheduler */
@@ -415,7 +408,9 @@ int main(void)
 
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
-    while (1) { __NOP(); }
+    while (1) {
+        __NOP();
+    }
 
     /* Quiet GCC warnings */
     return -1;

@@ -32,24 +32,23 @@
  ******************************************************************************/
 
 // pt-rps82
-// Created using ./ai8xize.py --verbose --log --test-dir pytorch --prefix pt-rps82 --checkpoint-file
-// trained/ai85-rps82-chw.pth.tar --config-file networks/rps-chw.yaml --softmax --embedded-code
-// --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint --fifo
+// Created using ./ai8xize.py --verbose --log --test-dir pytorch --prefix pt-rps82 --checkpoint-file trained/ai85-rps82-chw.pth.tar --config-file networks/rps-chw.yaml --softmax --embedded-code --device MAX78000 --compact-data --mexpress --timer 0 --display-checkpoint --fifo
 
-#include "cnn.h"
-#include "mxc.h"
-#include "sampledata.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include "mxc.h"
+#include "cnn.h"
+#include "sampledata.h"
 
 volatile uint32_t cnn_time; // Stopwatch
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1) { }
+    while (1)
+        ;
 }
 
 // Data input: CHW 3x64x64 (12288 bytes total / 4096 bytes per channel):
@@ -66,14 +65,14 @@ void load_input(void)
     const uint32_t* in2 = input_2;
 
     for (i = 0; i < 1024; i++) {
-        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0) { }
-        // Wait for FIFO 0
+        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
+            ;                                       // Wait for FIFO 0
         *((volatile uint32_t*)0x50000008) = *in0++; // Write FIFO 0
-        while (((*((volatile uint32_t*)0x50000004) & 2)) != 0) { }
-        // Wait for FIFO 1
+        while (((*((volatile uint32_t*)0x50000004) & 2)) != 0)
+            ;                                       // Wait for FIFO 1
         *((volatile uint32_t*)0x5000000c) = *in1++; // Write FIFO 1
-        while (((*((volatile uint32_t*)0x50000004) & 4)) != 0) { }
-        // Wait for FIFO 2
+        while (((*((volatile uint32_t*)0x50000004) & 4)) != 0)
+            ;                                       // Wait for FIFO 2
         *((volatile uint32_t*)0x50000010) = *in2++; // Write FIFO 2
     }
 }
@@ -123,16 +122,17 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init(); // Bring state machine into consistent state
+    cnn_init();         // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    cnn_start(); // Start CNN processing
-    load_input(); // Load data input via FIFO
+    cnn_start();     // Start CNN processing
+    load_input();    // Load data input via FIFO
 
-    while (cnn_time == 0) __WFI(); // Wait for CNN
+    while (cnn_time == 0)
+        __WFI(); // Wait for CNN
 
-    // if (check_output() != CNN_OK) fail();
+    //if (check_output() != CNN_OK) fail();
     softmax_layer();
 
     printf("\n*** PASS ***\n\n");

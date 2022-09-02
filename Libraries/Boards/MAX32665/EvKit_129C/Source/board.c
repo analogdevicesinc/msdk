@@ -34,39 +34,40 @@
  *
  ******************************************************************************/
 
-#include "board.h"
-#include "Ext_Flash.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "led.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include "pb.h"
-#include "spixf.h"
-#include "uart.h"
 #include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "board.h"
+#include "uart.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "led.h"
+#include "pb.h"
+#include "i2c.h"
+#include "spixf.h"
+#include "mxc_sys.h"
+#include "Ext_Flash.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    {MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO1, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    {MXC_GPIO1, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
     /* Logical LEDs for Bluetooth debugging */
-    { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO0, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO1, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    {MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO0, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    {MXC_GPIO1, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -84,10 +85,10 @@ static int ext_flash_board_init(void)
 }
 
 /******************************************************************************/
-static int ext_flash_board_read(
-    uint8_t* read, unsigned len, unsigned deassert, Ext_Flash_DataLine_t width)
+static int ext_flash_board_read(uint8_t* read, unsigned len, unsigned deassert,
+                                Ext_Flash_DataLine_t width)
 {
-    mxc_spixf_req_t req = { deassert, 0, NULL, read, (mxc_spixf_width_t)width, len, 0, 0, NULL };
+    mxc_spixf_req_t req = {deassert, 0, NULL, read, (mxc_spixf_width_t)width, len, 0, 0, NULL};
 
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;
@@ -96,10 +97,10 @@ static int ext_flash_board_read(
 }
 
 /******************************************************************************/
-static int ext_flash_board_write(
-    const uint8_t* write, unsigned len, unsigned deassert, Ext_Flash_DataLine_t width)
+static int ext_flash_board_write(const uint8_t* write, unsigned len, unsigned deassert,
+                                 Ext_Flash_DataLine_t width)
 {
-    mxc_spixf_req_t req = { deassert, 0, write, NULL, (mxc_spixf_width_t)width, len, 0, 0, NULL };
+    mxc_spixf_req_t req = {deassert, 0, write, NULL, (mxc_spixf_width_t)width, len, 0, 0, NULL};
 
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;
@@ -119,17 +120,18 @@ void mxc_assert(const char* expr, const char* file, int line)
 #ifdef DEBUG
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 #endif
-    while (1) { }
+    while (1)
+        ;
 }
 
 /******************************************************************************/
 int Board_Init(void)
 {
     int err;
-    Ext_Flash_Config_t exf_cfg = { .init = ext_flash_board_init,
-        .read = ext_flash_board_read,
-        .write = ext_flash_board_write,
-        .clock = ext_flash_clock };
+    Ext_Flash_Config_t exf_cfg = {.init  = ext_flash_board_init,
+                                  .read  = ext_flash_board_read,
+                                  .write = ext_flash_board_write,
+                                  .clock = ext_flash_clock};
 
     if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
         return err;

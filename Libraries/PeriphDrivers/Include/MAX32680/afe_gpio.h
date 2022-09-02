@@ -53,8 +53,7 @@ extern "C" {
 /**
  * @brief      Configure GPIO pin(s) and used only for internal HART pins.
  * @param      cfg   Pointer to configuration structure describing the pin.
- * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of
- * error codes.
+ * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
  */
 int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t* cfg);
 

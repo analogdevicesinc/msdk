@@ -73,8 +73,7 @@ int PB_Init(void);
  *  void pb_callback(void * pb)
  * @endcode
  * To receive notification of a push button event, define a callback
- * function and pass it as a pointer to the PB_RegisterCallback(unsigned int pb, pb_callback
- * callback) function.
+ * function and pass it as a pointer to the PB_RegisterCallback(unsigned int pb, pb_callback callback) function.
  * @param      pb    Pointer to the push button index that triggered the
  *                   callback.
  */
@@ -83,10 +82,10 @@ typedef void (*pb_callback)(void* pb);
 /**
  * @brief      Register or Unregister a callback handler for events on the @p pb push button.
  * @details
- * - Calling this function with a pointer to a function @p callback, configures the pushbutton @p pb
- * and enables the interrupt to handle the push button events.
- * - Calling this function with a <tt>NULL</tt> pointer will disable the interrupt and unregister
- * the callback function.
+ * - Calling this function with a pointer to a function @p callback, configures the pushbutton @p pb and enables the
+ * interrupt to handle the push button events.
+ * - Calling this function with a <tt>NULL</tt> pointer will disable the interrupt and unregister the
+ * callback function.
  * @p pb must be a value between 0 and num_pbs
  *
  * @param      pb        push button index to receive event callbacks.

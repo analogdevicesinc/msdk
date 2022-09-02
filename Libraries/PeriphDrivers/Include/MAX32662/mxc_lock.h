@@ -1,7 +1,7 @@
 /**
  * @file
  * @brief    Exclusive access lock utility functions.
- */
+*/
 
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.

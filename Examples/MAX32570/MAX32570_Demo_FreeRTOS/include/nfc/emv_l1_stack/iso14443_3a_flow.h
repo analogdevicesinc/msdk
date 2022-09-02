@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -108,8 +108,7 @@ int32_t iso_14443_3a_polling_response(uint8_t* atqa_resp, int32_t* atqa_resp_len
  * @retval #ISO14443_3_ERR_PROTOCOL Format error
  * @retval #ISO14443_3_ERR_OTHER
  *
- * @note Do not call this function without first calling iso_14443_3a_polling and getting a
- * #ISO14443_3_ERR_SUCCESS indicating at least one Type A card found
+ * @note Do not call this function without first calling iso_14443_3a_polling and getting a #ISO14443_3_ERR_SUCCESS indicating at least one Type A card found
  */
 int32_t iso_14443_3a_collision_detect();
 
@@ -145,11 +144,11 @@ int32_t iso_14443_3a_collision_detect();
  * @retval #ISO14443_3_ERR_PROTOCOL Format error
  * @retval #ISO14443_3_ERR_OTHER
  *
- * @note Do not call this function without first calling iso_14443_3a_polling and getting a
- * #ISO14443_3_ERR_SUCCESS indicating at least one Type A card found
+ * @note Do not call this function without first calling iso_14443_3a_polling and getting a #ISO14443_3_ERR_SUCCESS indicating at least one Type A card found
  */
 int32_t iso_14443_3a_collision_detect_response(uint8_t* atqa_resp, int32_t* atqa_resp_len,
-    uint8_t* uid_resp, int32_t* uid_resp_len, uint8_t* sak_resp);
+                                               uint8_t* uid_resp, int32_t* uid_resp_len,
+                                               uint8_t* sak_resp);
 
 /**
  * @brief Activate a Type A PICC (Card)

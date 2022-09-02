@@ -36,18 +36,18 @@
  ******************************************************************************
  */
 
-#include <MAX32xxx.h>
 #include <stdio.h>
 #include <string.h>
+#include <MAX32xxx.h>
 #include <trng_regs.h>
 
-#include "keypad.h"
 #include "security_monitor.h"
+#include "keypad.h"
 #include "utils.h"
 
 /****************************       DEFINES     ******************************/
 // CHIPPER Key type, BB: Battery Backed key
-#define BB_KEY 0
+#define BB_KEY   0
 #define USER_KEY 1
 
 static unsigned int* nvsram_region0 = (unsigned int*)0x20100000;
@@ -106,7 +106,8 @@ void get_aes_result(unsigned int* data, int enc, int chipper_key)
     MXC_CTB->crypto_din[3] = data[3];
 
     /* Poll to wait for AES completion */
-    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) { }
+    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE))
+        ;
 
     /* Clear CPH_DONE */
     MXC_CTB->crypto_ctrl = 0;
@@ -144,11 +145,11 @@ static void set_nvsram(void)
 static void dump_nvsram(char* title)
 {
     int i, k;
-    unsigned char buf[16] = { 0 };
+    unsigned char buf[16] = {0};
     unsigned char byt;
     unsigned int nb_regions = 8;
-    unsigned int* regions[] = { nvsram_region0, nvsram_region1, nvsram_region2, nvsram_region3,
-        nvsram_region4, nvsram_region5, nvsram_region6, nvsram_region7 };
+    unsigned int* regions[] = {nvsram_region0, nvsram_region1, nvsram_region2, nvsram_region3,
+                               nvsram_region4, nvsram_region5, nvsram_region6, nvsram_region7};
 
     if (title) {
         printf("%s\n", title);
@@ -240,13 +241,15 @@ int smon_start_rtc(void)
     MXC_RTC_Start();
 
     /* Wait for the busy flag */
-    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1) { }
+    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1)
+        ;
 
     /* Read back RTC control register */
     printf("\nRTC control register: 0x%08x", (unsigned int)MXC_RTC->ctrl);
 
     /* Wait for the busy flag */
-    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1) { }
+    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1)
+        ;
 
     printf("\nRTC second register: 0x%08x", (unsigned int)MXC_RTC->sec);
 
@@ -272,13 +275,14 @@ int smon_set_ext_sensors(void)
      *  lock the register
      */
 #ifndef _UNLOCK_
-    MXC_SMON->extscn = MXC_F_SMON_EXTSCN_LOCK | MXC_F_SMON_EXTSCN_EXTS_EN0
-        | MXC_F_SMON_EXTSCN_EXTS_EN1 | MXC_F_SMON_EXTSCN_EXTS_EN2 | MXC_F_SMON_EXTSCN_EXTS_EN3
-        | MXC_F_SMON_EXTSCN_EXTS_EN4 | MXC_F_SMON_EXTSCN_EXTS_EN5;
+    MXC_SMON->extscn = MXC_F_SMON_EXTSCN_LOCK | MXC_F_SMON_EXTSCN_EXTS_EN0 |
+                       MXC_F_SMON_EXTSCN_EXTS_EN1 | MXC_F_SMON_EXTSCN_EXTS_EN2 |
+                       MXC_F_SMON_EXTSCN_EXTS_EN3 | MXC_F_SMON_EXTSCN_EXTS_EN4 |
+                       MXC_F_SMON_EXTSCN_EXTS_EN5;
 #else
-    MXC_SMON->extscn = MXC_F_SMON_EXTSCN_EXTS_EN0 | MXC_F_SMON_EXTSCN_EXTS_EN1
-        | MXC_F_SMON_EXTSCN_EXTS_EN2 | MXC_F_SMON_EXTSCN_EXTS_EN3 | MXC_F_SMON_EXTSCN_EXTS_EN4
-        | MXC_F_SMON_EXTSCN_EXTS_EN5;
+    MXC_SMON->extscn = MXC_F_SMON_EXTSCN_EXTS_EN0 | MXC_F_SMON_EXTSCN_EXTS_EN1 |
+                       MXC_F_SMON_EXTSCN_EXTS_EN2 | MXC_F_SMON_EXTSCN_EXTS_EN3 |
+                       MXC_F_SMON_EXTSCN_EXTS_EN4 | MXC_F_SMON_EXTSCN_EXTS_EN5;
 #endif /* _UNLOCK_ */
 
     printf("\nAll External Sensors Activated\n");
@@ -294,11 +298,11 @@ int smon_set_int_sensors(void)
      *  bit 2: Vbat
      */
 #ifndef _UNLOCK_
-    MXC_SMON->intscn = MXC_F_SMON_INTSCN_LOCK | MXC_F_SMON_INTSCN_SHIELD_EN
-        | MXC_F_SMON_INTSCN_TEMP_EN | MXC_F_SMON_INTSCN_VBAT_EN;
+    MXC_SMON->intscn = MXC_F_SMON_INTSCN_LOCK | MXC_F_SMON_INTSCN_SHIELD_EN |
+                       MXC_F_SMON_INTSCN_TEMP_EN | MXC_F_SMON_INTSCN_VBAT_EN;
 #else
-    MXC_SMON->intscn
-        = MXC_F_SMON_INTSCN_SHIELD_EN | MXC_F_SMON_INTSCN_TEMP_EN | MXC_F_SMON_INTSCN_VBAT_EN;
+    MXC_SMON->intscn =
+        MXC_F_SMON_INTSCN_SHIELD_EN | MXC_F_SMON_INTSCN_TEMP_EN | MXC_F_SMON_INTSCN_VBAT_EN;
 #endif
 
     printf("\nAll Internal Sensors Activated\n");
@@ -308,14 +312,9 @@ int smon_set_int_sensors(void)
 
 int load_user_chipper_key(void)
 {
-    unsigned int result = 0;
+    unsigned int result       = 0;
     unsigned char aes_key[32] = {
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
+        1, 2, 3, 4, 5, 6,
     };
     unsigned int* ptr;
     unsigned int* ptr_key_register = (unsigned int*)AES_BASE;
@@ -338,7 +337,7 @@ int load_user_chipper_key(void)
     *ptr_key_register++ = ptr[4];
     *ptr_key_register++ = ptr[5];
     *ptr_key_register++ = ptr[6];
-    *ptr_key_register = ptr[7];
+    *ptr_key_register   = ptr[7];
 
     return result;
 }
@@ -360,16 +359,16 @@ int smon_load_aes_key(void)
     load_aes_bb_key();
 
     /*
-     *	Configure plain/encrypted area of the backed NVSRAM.
-     *	NVSRAM is divided in 8 regions, Each MEU_CFG bit correspond to one of the 8 regions:
-     *	0 --> region is in plain
-     *	1 --> region is encrypted
+	 *	Configure plain/encrypted area of the backed NVSRAM.
+ 	 *	NVSRAM is divided in 8 regions, Each MEU_CFG bit correspond to one of the 8 regions:
+	 *	0 --> region is in plain
+	 *	1 --> region is encrypted
      */
     MXC_SMON->meucfg |= (1 << 0); // region0: encrypted
     /*
      * For test purpose keep region1 as plain text
      */
-    // MXC_SMON->meucfg |= (1<<1);  // region1: encrypted
+    //MXC_SMON->meucfg |= (1<<1);  // region1: encrypted
     MXC_SMON->meucfg |= (1 << 2); // region2: encrypted
     MXC_SMON->meucfg |= (1 << 3); // region3: encrypted
     MXC_SMON->meucfg |= (1 << 4); // region4: encrypted
@@ -382,7 +381,7 @@ int smon_load_aes_key(void)
      * 	Once locked, the MEUCFG register can no longer be modified.
      * 	Only a battery disconnect will clear this bit. VBAT powers this register.
      * 			0: Not locked. Writes to this register allowed.
-     *			1: Locked. Writes to this register ignored.
+	 *			1: Locked. Writes to this register ignored.
      */
     MXC_SMON->meucfg |= (1 << 31); // LOCK it
 
@@ -390,7 +389,8 @@ int smon_load_aes_key(void)
     MXC_CTB->crypto_ctrl |= MXC_F_CTB_CRYPTO_CTRL_RST;
 
     // wait until ready
-    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_RDY)) { }
+    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_RDY))
+        ;
 
     if (MXC_SMON->secdiag & MXC_F_SMON_SECDIAG_AESKT) {
         printf("\nAES Key has been transferred to battery backed location\n");
@@ -425,7 +425,7 @@ int smon_check_tamper_time(void)
     if (rtcLog) {
         utils_seconds_to_date(&dt, rtcLog);
         printf("\nTamper Time is: %u-%02u-%02u %02u:%02u:%02u\n", dt.year, dt.mon + 1, dt.day + 1,
-            dt.hour, dt.min, dt.sec);
+               dt.hour, dt.min, dt.sec);
     } else {
         printf("\nTamper Time is: 0 (MXC_SMON->DLRRTC=0)\n");
     }
@@ -442,27 +442,27 @@ int smon_check_tamper(void)
     printf("\nSECALM register: %X\n", reg);
 
     printf("\nshield: %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_SHIELDF) >> MXC_F_SMON_SECALM_SHIELDF_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_SHIELDF) >> MXC_F_SMON_SECALM_SHIELDF_POS);
     printf("\nhtf   : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_HITEMP) >> MXC_F_SMON_SECALM_HITEMP_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_HITEMP) >> MXC_F_SMON_SECALM_HITEMP_POS);
     printf("\nltf   : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_LOTEMP) >> MXC_F_SMON_SECALM_LOTEMP_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_LOTEMP) >> MXC_F_SMON_SECALM_LOTEMP_POS);
     printf("\nhbf   : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_BATHI) >> MXC_F_SMON_SECALM_BATHI_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_BATHI) >> MXC_F_SMON_SECALM_BATHI_POS);
     printf("\nlbf   : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_BATLO) >> MXC_F_SMON_SECALM_BATLO_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_BATLO) >> MXC_F_SMON_SECALM_BATLO_POS);
     printf("\nexts0 : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT0) >> MXC_F_SMON_SECALM_EXTSTAT0_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT0) >> MXC_F_SMON_SECALM_EXTSTAT0_POS);
     printf("\nexts1 : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT1) >> MXC_F_SMON_SECALM_EXTSTAT1_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT1) >> MXC_F_SMON_SECALM_EXTSTAT1_POS);
     printf("\nexts2 : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT2) >> MXC_F_SMON_SECALM_EXTSTAT2_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT2) >> MXC_F_SMON_SECALM_EXTSTAT2_POS);
     printf("\nexts3 : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT3) >> MXC_F_SMON_SECALM_EXTSTAT3_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT3) >> MXC_F_SMON_SECALM_EXTSTAT3_POS);
     printf("\nexts4 : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT4) >> MXC_F_SMON_SECALM_EXTSTAT4_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT4) >> MXC_F_SMON_SECALM_EXTSTAT4_POS);
     printf("\nexts5 : %d",
-        (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT5) >> MXC_F_SMON_SECALM_EXTSTAT5_POS);
+           (unsigned int)(reg & MXC_F_SMON_SECALM_EXTSTAT5) >> MXC_F_SMON_SECALM_EXTSTAT5_POS);
 
     return 0;
 }

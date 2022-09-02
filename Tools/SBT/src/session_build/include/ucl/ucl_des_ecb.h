@@ -129,7 +129,7 @@ int ucl_des_ecb_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteL
  * @param[out, in] ctx Pointer to the context
  *
  * @return Error code
- *
+ * 
  * @retval #UCL_OK             If no error occurred
  * @retval #UCL_INVALID_OUTPUT If the output is the pointer #NULL
  *

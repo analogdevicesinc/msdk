@@ -90,56 +90,47 @@ void MXC_LP_EnableSRAM1(void);
 void MXC_LP_EnableSRAM0(void);
 
 /**
- * @brief      Disables power to RAM addresses 0x20010000-0x20017FFF. The contents of the RAM are
- * destroyed.
+ * @brief      Disables power to RAM addresses 0x20010000-0x20017FFF. The contents of the RAM are destroyed.
  */
 void MXC_LP_DisableSRAM3(void);
 
 /**
- * @brief      Disables power to RAM addresses 0x20008000-0x2000FFFF. The contents of the RAM are
- * destroyed.
+ * @brief      Disables power to RAM addresses 0x20008000-0x2000FFFF. The contents of the RAM are destroyed.
  */
 void MXC_LP_DisableSRAM2(void);
 
 /**
- * @brief      Disables power to RAM addresses 0x20004000-0x20007FFF. The contents of the RAM are
- * destroyed.
+ * @brief      Disables power to RAM addresses 0x20004000-0x20007FFF. The contents of the RAM are destroyed.
  */
 void MXC_LP_DisableSRAM1(void);
 
 /**
- * @brief      Disables power to RAM addresses 0x20000000-0x20003FFF. The contents of the RAM are
- * destroyed.
+ * @brief      Disables power to RAM addresses 0x20000000-0x20003FFF. The contents of the RAM are destroyed.
  */
 void MXC_LP_DisableSRAM0(void);
 
 /**
- * @brief      Places the instruction cache in light sleep mode. Data will be unavailable for
- * read/write operations but will be retained.
+ * @brief      Places the instruction cache in light sleep mode. Data will be unavailable for read/write operations but will be retained.
  */
 void MXC_LP_EnableICacheLightSleep(void);
 
 /**
- * @brief      Places addresses 0x20010000 to 0x20017FFF of the RAM in light sleep mode. Data will
- * be unavailable for read/write operations but will be retained.
+ * @brief      Places addresses 0x20010000 to 0x20017FFF of the RAM in light sleep mode. Data will be unavailable for read/write operations but will be retained.
  */
 void MXC_LP_EnableSysRAM3LightSleep(void);
 
 /**
- * @brief      Places addresses 0x20008000 to 0x2000FFFF of the RAM in light sleep mode. Data will
- * be unavailable for read/write operations but will be retained.
+ * @brief      Places addresses 0x20008000 to 0x2000FFFF of the RAM in light sleep mode. Data will be unavailable for read/write operations but will be retained.
  */
 void MXC_LP_EnableSysRAM2LightSleep(void);
 
 /**
- * @brief      Places addresses 0x20004000 to 0x20007FFF of the RAM in light sleep mode. Data will
- * be unavailable for read/write operations but will be retained.
+ * @brief      Places addresses 0x20004000 to 0x20007FFF of the RAM in light sleep mode. Data will be unavailable for read/write operations but will be retained.
  */
 void MXC_LP_EnableSysRAM1LightSleep(void);
 
 /**
- * @brief      Places addresses 0x20000000 to 0x20003FFF of the RAM in light sleep mode. Data will
- * be unavailable for read/write operations but will be retained.
+ * @brief      Places addresses 0x20000000 to 0x20003FFF of the RAM in light sleep mode. Data will be unavailable for read/write operations but will be retained.
  */
 void MXC_LP_EnableSysRAM0LightSleep(void);
 
@@ -169,19 +160,19 @@ void MXC_LP_DisableSysRAM1LightSleep(void);
 void MXC_LP_DisableSysRAM0LightSleep(void);
 
 /**
- * @brief      Enables the selected GPIO port and its selected pins to wake up the device from any
- * low power mode. Call this function multiple times to enable pins on multiple ports.  This
- * function does not configure the GPIO pins nor does it setup their interrupt functionality.
- * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and
- * mask fields of the structure are used.  The func and pad fields are ignored.
+ * @brief      Enables the selected GPIO port and its selected pins to wake up the device from any low power mode.
+ *             Call this function multiple times to enable pins on multiple ports.  This function does not configure
+ *             the GPIO pins nor does it setup their interrupt functionality.
+ * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
+ *                          structure are used.  The func and pad fields are ignored.
  */
 void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
  *             Call this function multiple times to disable pins on multiple ports.
- * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask
- * fields of the structure are used.  The func and pad fields are ignored.
+ * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
+ *                          structure are used.  The func and pad fields are ignored.
  */
 void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
 
@@ -197,32 +188,26 @@ void MXC_LP_DisableRTCAlarmWakeup(void);
 
 /**
  * @brief      Places the device into SLEEP mode.  This function returns once any interrupt occurs.
- * @note 	   MXC_LP_ClearWakeStatus should be called before this function, to avoid immediately
- * waking up again
+ * @note 	   MXC_LP_ClearWakeStatus should be called before this function, to avoid immediately waking up again
  */
 void MXC_LP_EnterSleepMode(void);
 
 /**
- * @brief      Places the device into DEEPSLEEP mode.  This function returns once an RTC or external
- * interrupt occur.
- * @note      MXC_LP_ClearWakeStatus should be called before this function, to avoid immediately
- * waking up again
- */
+ * @brief      Places the device into DEEPSLEEP mode.  This function returns once an RTC or external interrupt occur.
+ * @note      MXC_LP_ClearWakeStatus should be called before this function, to avoid immediately waking up again
+*/
 void MXC_LP_EnterDeepSleepMode(void);
 
 /**
- * @brief      Places the device into BACKUP mode.  CPU state is not maintained in this mode, so
- * this function never returns. Instead, the device will restart once an RTC or external interrupt
- * occur.
- * @note       MXC_LP_ClearWakeStatus should be called before this function, to avoid immediately
- * waking up again
+ * @brief      Places the device into BACKUP mode.  CPU state is not maintained in this mode, so this function never returns.
+ *             Instead, the device will restart once an RTC or external interrupt occur.
+ * @note       MXC_LP_ClearWakeStatus should be called before this function, to avoid immediately waking up again
  */
 void MXC_LP_EnterBackupMode(void);
 
 /**
- * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so
- * this function never returns. Instead, the device will restart once an RTC, USB wakeup, or
- * external interrupt occur.
+ * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so this function never returns.
+ *             Instead, the device will restart once an RTC, USB wakeup, or external interrupt occur.
  */
 void MXC_LP_EnterShutDownMode(void);
 
@@ -273,14 +258,12 @@ void MXC_LP_EnableSRamRet3(void);
 void MXC_LP_DisableSRamRet3(void);
 
 /**
- * @brief      Enables Bypassing the hardware detection of an external supply on V CORE enables a
- * faster wakeup time.
+ * @brief      Enables Bypassing the hardware detection of an external supply on V CORE enables a faster wakeup time.
  */
 void MXC_LP_EnableBlockDetect(void);
 
 /**
- * @brief      Disables Bypassing the hardware detection of an external supply on V CORE enables a
- * faster wakeup time
+ * @brief      Disables Bypassing the hardware detection of an external supply on V CORE enables a faster wakeup time
  */
 void MXC_LP_DisableBlockDetect(void);
 

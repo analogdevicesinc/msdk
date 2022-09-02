@@ -44,8 +44,8 @@
 #define _CLCD_REVA_H_
 
 /* **** Includes **** */
-#include "clcd.h"
 #include "clcd_reva_regs.h"
+#include "clcd.h"
 #include "mxc_sys.h"
 
 #ifdef __cplusplus

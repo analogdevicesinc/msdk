@@ -64,8 +64,8 @@ extern "C" {
  *
  * @ingroup UCL_HMAC_MD5
  */
-int ucl_hmac_md5(
-    u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key, u32 key_byteLen);
+int ucl_hmac_md5(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+                 u32 key_byteLen);
 
 /*============================================================================*/
 /** <b>The initialisation of HMAC-MD5</b>.

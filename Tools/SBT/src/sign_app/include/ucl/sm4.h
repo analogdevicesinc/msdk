@@ -1,25 +1,24 @@
 #ifndef XYSSL_SM4_H
 #define XYSSL_SM4_H
 
-#define SM4_ENCRYPT 1
-#define SM4_DECRYPT 0
+#define SM4_ENCRYPT   1
+#define SM4_DECRYPT   0
 #define SM4_BLOCKSIZE 16
 
 /** @file sm4.h
  * @defgroup UCL_SM4 SM4
- * the SM4, see
- * http://www1.cnnic.cn/ScientificResearch/LeadingEdge/soea/sm4/201312/t20131204_43351.htm
+ * the SM4, see http://www1.cnnic.cn/ScientificResearch/LeadingEdge/soea/sm4/201312/t20131204_43351.htm
  *
  * @par Header:
  * @link sm4.h sm4.h @endlink
- *
+ * 
  * <b>SM4 Descriptor:</b>
  * @li Length of Input/Output Block: 128 bits
  * @li Length of Key: 128 bits
- *
+ * 
  * For messages longer than 128 bits, use an Operation mode.@n
  * @n
- *
+ * 
  * @see UCL_OPERATION_MODES
  * @ingroup UCL_BLOCK_CIPHER */
 
@@ -27,8 +26,8 @@
  * @ingroup UCL_SM4 */
 
 typedef struct {
-    int mode; //  encrypt/decrypt
-    unsigned long sk[32]; // SM4 subkeys
+    int mode;             //  encrypt/decrypt
+    unsigned long sk[32]; //SM4 subkeys
 } sm4_context;
 
 #ifdef __cplusplus
@@ -101,8 +100,8 @@ int sm4_setkey_dec(sm4_context* ctx, unsigned char key[16]);
  * @ingroup UCL_SM4
  */
 
-int sm4_crypt_ecb(
-    sm4_context* ctx, int mode, int length, unsigned char* input, unsigned char* output);
+int sm4_crypt_ecb(sm4_context* ctx, int mode, int length, unsigned char* input,
+                  unsigned char* output);
 
 /*============================================================================*/
 /** <b>SM4 for CBC blocks processing </b>.
@@ -125,7 +124,7 @@ int sm4_crypt_ecb(
  * @ingroup UCL_SM4
  */
 int sm4_crypt_cbc(sm4_context* ctx, int mode, int length, unsigned char iv[16],
-    unsigned char* input, unsigned char* output);
+                  unsigned char* input, unsigned char* output);
 
 #ifdef __cplusplus
 }

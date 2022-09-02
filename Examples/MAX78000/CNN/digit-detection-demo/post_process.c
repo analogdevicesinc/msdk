@@ -35,27 +35,29 @@
 #include "tft_utils.h"
 
 const int dims[NUM_SCALES] = {
-    18, 9, 4, 2
-}; // NUM_PRIORS_PER_AR = SQUARE(dims[0]) + SQUARE(dims[1]) + SQUARE(dims[2]) + SQUARE(dims[3])
-const float scales[NUM_SCALES] = { 0.15f, 0.35f, 0.55f, 0.725f };
-const float ars[NUM_ARS] = { 0.85f, 0.60f, 0.40f, 0.25f };
+    18, 9, 4,
+    2}; // NUM_PRIORS_PER_AR = SQUARE(dims[0]) + SQUARE(dims[1]) + SQUARE(dims[2]) + SQUARE(dims[3])
+const float scales[NUM_SCALES] = {0.15f, 0.35f, 0.55f, 0.725f};
+const float ars[NUM_ARS]       = {0.85f, 0.60f, 0.40f, 0.25f};
 
-// Arrays to store model outputs
+//Arrays to store model outputs
 static int8_t prior_locs[LOC_DIM * NUM_PRIORS]; //(x, y, w, h)
 static int8_t prior_cls[NUM_CLASSES * NUM_PRIORS];
-static uint16_t prior_cls_softmax[NUM_CLASSES * NUM_PRIORS] = { 0 };
+static uint16_t prior_cls_softmax[NUM_CLASSES * NUM_PRIORS] = {0};
 
-// NMS related arrays
+//NMS related arrays
 static uint16_t nms_scores[NUM_CLASSES - 2][MAX_PRIORS];
 static uint16_t nms_indices[NUM_CLASSES - 2][MAX_PRIORS];
-static uint8_t nms_removed[NUM_CLASSES - 2][MAX_PRIORS] = { 0 };
-static int num_nms_priors[NUM_CLASSES - 2] = { 0 };
+static uint8_t nms_removed[NUM_CLASSES - 2][MAX_PRIORS] = {0};
+static int num_nms_priors[NUM_CLASSES - 2]              = {0};
 
 int get_prior_idx(int ar_idx, int scale_idx, int rel_idx)
 {
     int prior_idx = 0;
 
-    for (int s = 0; s < scale_idx; ++s) { prior_idx += NUM_ARS * SQUARE(dims[s]); }
+    for (int s = 0; s < scale_idx; ++s) {
+        prior_idx += NUM_ARS * SQUARE(dims[s]);
+    }
 
     prior_idx += NUM_ARS * rel_idx + ar_idx;
     return prior_idx;
@@ -78,10 +80,12 @@ void get_indices(int* ar_idx, int* scale_idx, int* rel_idx, int prior_idx)
 
     int in_scale_idx = prior_idx;
 
-    for (s = 0; s < *scale_idx; ++s) { in_scale_idx -= (NUM_ARS * SQUARE(dims[s])); }
+    for (s = 0; s < *scale_idx; ++s) {
+        in_scale_idx -= (NUM_ARS * SQUARE(dims[s]));
+    }
 
-    *ar_idx = in_scale_idx % NUM_ARS;
-    *rel_idx = in_scale_idx / NUM_ARS; // SQUARE(dims[*scale_idx]);
+    *ar_idx  = in_scale_idx % NUM_ARS;
+    *rel_idx = in_scale_idx / NUM_ARS; //SQUARE(dims[*scale_idx]);
 }
 
 void softmax(void)
@@ -92,7 +96,7 @@ void softmax(void)
     memset(prior_cls_softmax, 0, sizeof(prior_cls_softmax));
 
     for (i = 0; i < NUM_PRIORS; ++i) {
-        sum = 0.;
+        sum          = 0.;
         calc_softmax = 0;
 
         for (ch = 1; ch < (NUM_CLASSES - 1); ++ch) {
@@ -111,8 +115,8 @@ void softmax(void)
         }
 
         for (ch = 0; ch < (NUM_CLASSES); ++ch) {
-            prior_cls_softmax[i * NUM_CLASSES + ch]
-                = (uint16_t)(65536. * exp(prior_cls[i * NUM_CLASSES + ch] / 128.) / sum);
+            prior_cls_softmax[i * NUM_CLASSES + ch] =
+                (uint16_t)(65536. * exp(prior_cls[i * NUM_CLASSES + ch] / 128.) / sum);
         }
     }
 }
@@ -179,9 +183,9 @@ void get_priors(void)
 
 float calculate_IOU(float* box1, float* box2)
 {
-    float x_left = MAX(box1[0], box2[0]);
-    float y_top = MAX(box1[1], box2[1]);
-    float x_right = MIN(box1[2], box2[2]);
+    float x_left   = MAX(box1[0], box2[0]);
+    float y_top    = MAX(box1[1], box2[1]);
+    float x_right  = MIN(box1[2], box2[2]);
     float y_bottom = MIN(box1[3], box2[3]);
     float intersection_area;
 
@@ -205,8 +209,8 @@ void get_cxcy(float* cxcy, int prior_idx)
 
     get_indices(&ar_idx, &scale_idx, &rel_idx, prior_idx);
 
-    cy = rel_idx / dims[scale_idx];
-    cx = rel_idx % dims[scale_idx];
+    cy      = rel_idx / dims[scale_idx];
+    cx      = rel_idx % dims[scale_idx];
     cxcy[0] = (float)((float)(cx + 0.5) / dims[scale_idx]);
     cxcy[1] = (float)((float)(cy + 0.5) / dims[scale_idx]);
     cxcy[2] = scales[scale_idx] * sqrt(ars[ar_idx]);
@@ -222,7 +226,9 @@ void gcxgcy_to_cxcy(float* cxcy, int prior_idx, float* priors_cxcy)
 {
     float gcxgcy[4];
 
-    for (int i = 0; i < 4; i++) { gcxgcy[i] = (float)prior_locs[4 * prior_idx + i] / 128.0; }
+    for (int i = 0; i < 4; i++) {
+        gcxgcy[i] = (float)prior_locs[4 * prior_idx + i] / 128.0;
+    }
 
     cxcy[0] = priors_cxcy[0] + gcxgcy[0] * priors_cxcy[2] / 10;
     cxcy[1] = priors_cxcy[1] + gcxgcy[1] * priors_cxcy[3] / 10;
@@ -244,7 +250,9 @@ void insert_val(uint16_t val, uint16_t* arr, int arr_len, int idx)
         arr[arr_len] = arr[arr_len - 1];
     }
 
-    for (int j = (arr_len - 1); j > idx; --j) { arr[j] = arr[j - 1]; }
+    for (int j = (arr_len - 1); j > idx; --j) {
+        arr[j] = arr[j - 1];
+    }
 
     arr[idx] = val;
 }
@@ -255,7 +263,9 @@ void insert_idx(uint16_t val, uint16_t* arr, int arr_len, int idx)
         arr[arr_len] = arr[arr_len - 1];
     }
 
-    for (int j = (arr_len - 1); j > idx; --j) { arr[j] = arr[j - 1]; }
+    for (int j = (arr_len - 1); j > idx; --j) {
+        arr[j] = arr[j - 1];
+    }
 
     arr[idx] = val;
 }
@@ -284,7 +294,7 @@ void reset_nms(void)
         num_nms_priors[cl] = 0;
 
         for (int p_idx = 0; p_idx < MAX_PRIORS; ++p_idx) {
-            nms_scores[cl][p_idx] = 0;
+            nms_scores[cl][p_idx]  = 0;
             nms_indices[cl][p_idx] = 0;
             nms_removed[cl][p_idx] = 0;
         }
@@ -312,23 +322,21 @@ void nms(void)
                 continue;
             }
 
-            // num_nms_priors[class_idx] = insert_nms_prior(cls_prob, prior_idx,
-            // nms_scores[class_idx], nms_indices[class_idx], num_nms_priors[class_idx]);
+            //num_nms_priors[class_idx] = insert_nms_prior(cls_prob, prior_idx, nms_scores[class_idx], nms_indices[class_idx], num_nms_priors[class_idx]);
             insert_nms_prior(cls_prob, prior_idx, nms_scores[class_idx], nms_indices[class_idx],
-                &num_nms_priors[class_idx]);
+                             &num_nms_priors[class_idx]);
         }
     }
 
     for (class_idx = 0; class_idx < (NUM_CLASSES - 2); ++class_idx) {
         for (nms_idx1 = 0; nms_idx1 < num_nms_priors[class_idx]; ++nms_idx1) {
-            if (nms_removed[class_idx][nms_idx1] != 1
-                && nms_idx1 != num_nms_priors[class_idx] - 1) {
+            if (nms_removed[class_idx][nms_idx1] != 1 &&
+                nms_idx1 != num_nms_priors[class_idx] - 1) {
                 for (nms_idx2 = nms_idx1 + 1; nms_idx2 < num_nms_priors[class_idx]; ++nms_idx2) {
                     prior1_idx = nms_indices[class_idx][nms_idx1];
                     prior2_idx = nms_indices[class_idx][nms_idx2];
 
-                    // TODO: Let's implement the box loc finding before this nested loop for 100
-                    // priors
+                    // TODO: Let's implement the box loc finding before this nested loop for 100 priors
                     get_cxcy(prior_cxcy1, prior1_idx);
                     get_cxcy(prior_cxcy2, prior2_idx);
 
@@ -368,7 +376,7 @@ void localize_objects(void)
 
                 printf("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
                        "%.2f \n",
-                    class_idx + 1, prior_idx, global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
+                       class_idx + 1, prior_idx, global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
                 draw_obj_rect(xy, class_idx, IMAGE_SIZE_X, IMAGE_SIZE_Y, IMG_SCALE);
             }
         }

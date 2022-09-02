@@ -38,15 +38,17 @@
 uint32_t MXC_EMCC_RevA_ID(mxc_emcc_reva_regs_t* emcc, mxc_emcc_info_t id)
 {
     switch (id) {
-    case EMCC_INFO_RELNUM:
-        return (((emcc->info) & MXC_F_EMCC_REVA_INFO_RELNUM)) >> MXC_F_EMCC_REVA_INFO_RELNUM_POS;
+        case EMCC_INFO_RELNUM:
+            return (((emcc->info) & MXC_F_EMCC_REVA_INFO_RELNUM)) >>
+                   MXC_F_EMCC_REVA_INFO_RELNUM_POS;
 
-    case EMCC_INFO_PARTNUM:
-        return (((emcc->info) & MXC_F_EMCC_REVA_INFO_PARTNUM)) >> MXC_F_EMCC_REVA_INFO_PARTNUM_POS;
+        case EMCC_INFO_PARTNUM:
+            return (((emcc->info) & MXC_F_EMCC_REVA_INFO_PARTNUM)) >>
+                   MXC_F_EMCC_REVA_INFO_PARTNUM_POS;
 
-    case EMCC_INFO_ID:
-    default:
-        return (((emcc->info) & MXC_F_EMCC_REVA_INFO_ID)) >> MXC_F_EMCC_REVA_INFO_ID_POS;
+        case EMCC_INFO_ID:
+        default:
+            return (((emcc->info) & MXC_F_EMCC_REVA_INFO_ID)) >> MXC_F_EMCC_REVA_INFO_ID_POS;
     }
 }
 #endif
@@ -81,12 +83,12 @@ void MXC_EMCC_RevA_WriteAllocateDisable(mxc_emcc_reva_regs_t* emcc)
     emcc->ctrl &= ~MXC_F_EMCC_REVA_CTRL_WRITE_ALLOC;
 }
 
-void MXC_EMCC_RevA_CriticalWordFirstEnable(mxc_emcc_reva_regs_t* emcc) // cwfst_dis
+void MXC_EMCC_RevA_CriticalWordFirstEnable(mxc_emcc_reva_regs_t* emcc) //cwfst_dis
 {
     emcc->ctrl |= MXC_F_EMCC_REVA_CTRL_CWFST_DIS;
 }
 
-void MXC_EMCC_RevA_CriticalWordFirstDisable(mxc_emcc_reva_regs_t* emcc) // cwfst_dis
+void MXC_EMCC_RevA_CriticalWordFirstDisable(mxc_emcc_reva_regs_t* emcc) //cwfst_dis
 {
     emcc->ctrl &= ~MXC_F_EMCC_REVA_CTRL_CWFST_DIS;
 }

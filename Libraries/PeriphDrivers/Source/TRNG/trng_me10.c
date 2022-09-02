@@ -32,17 +32,16 @@
  * $Date: 2016-10-12 11:23:31 -0500 (Wed, 12 Oct 2016) $
  * $Revision: 24687 $
  *
- **********************************************************************************************************
- */
+ ********************************************************************************************************** */
 
 /* **** Includes **** */
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 #include "mxc_errors.h"
 #include "mxc_sys.h"
 #include "trng.h"
 #include "trng_reva.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
 /* **** MACROS **** */
 #define WORD 3

@@ -31,17 +31,17 @@
  *
  *************************************************************************** */
 
-#include "htmr.h"
-#include "htmr_regs.h"
-#include "htmr_reva.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "htmr_regs.h"
+#include "htmr.h"
+#include "htmr_reva.h"
 
 /* ****** Functions ****** */
 int MXC_HTMR_Init(mxc_htmr_regs_t* htmr, uint32_t longInterval, uint8_t shortInterval)

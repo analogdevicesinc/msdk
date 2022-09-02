@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -34,9 +34,9 @@
  ******************************************************************************/
 
 /* MXC */
+#include "mxc_device.h"
 #include "board.h"
 #include "mxc_assert.h"
-#include "mxc_device.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
@@ -45,12 +45,12 @@
 
 /* Maxim CMSIS */
 //#include "lp.h"
-#include "pwrseq_regs.h"
 #include "rtc.h"
+#include "pwrseq_regs.h"
 
-#define RTC_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
-#define MAX_SNOOZE 0xFF
-#define MIN_SYSTICK 2
+#define RTC_RATIO     (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
+#define MAX_SNOOZE    0xFF
+#define MIN_SYSTICK   2
 #define MIN_RTC_TICKS 5
 
 static uint32_t residual = 0;
@@ -80,16 +80,16 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     volatile uint32_t rtc_ticks, rtc_ss_val;
     volatile uint32_t actual_ticks;
     volatile uint32_t pre_capture, post_capture;
-    mxc_gpio_cfg_t uart_rx_pin = { MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN,
-        MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO };
+    mxc_gpio_cfg_t uart_rx_pin = {MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN,
+                                  MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO};
 
     /* Example:
      *
      *  configTICK_RATE_HZ      512
      *  configRTC_TICK_RATE_HZ 4096
      *
-     *  RTC is 8x more accurate than the normal tick in this case. We can accumulate an error term
-     * and fix up when called again as the error term equals 1 task tick
+     *  RTC is 8x more accurate than the normal tick in this case. We can accumulate an error term and
+     *   fix up when called again as the error term equals 1 task tick
      */
 
     /* We do not currently handle to case where the RTC is slower than the RTOS tick */
@@ -121,8 +121,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* If a context switch is pending or a task is waiting for the scheduler
        to be unsuspended then abandon the low power entry. */
     /* Also check the MXC drivers for any in-progress activity */
-    if ((eTaskConfirmSleepModeStatus() == eAbortSleep)
-        || (freertos_permit_tickless() != E_NO_ERROR)) {
+    if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
+        (freertos_permit_tickless() != E_NO_ERROR)) {
         /* Re-enable interrupts - see comments above the cpsid instruction()
            above. */
         __asm volatile("cpsie i");
@@ -155,7 +155,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     MXC_GPIO_DisableInt(uart_rx_pin.port, uart_rx_pin.mask);
 
     /* Snapshot the current RTC value */
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) { }
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY))
+        ;
 
     post_capture = MXC_RTC->ssec;
 

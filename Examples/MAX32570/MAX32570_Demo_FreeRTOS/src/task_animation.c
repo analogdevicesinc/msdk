@@ -2,7 +2,7 @@
  *
  ******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
- *
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -41,9 +41,9 @@
 #include "tft_ssd2119.h"
 
 #include <FreeRTOS.h>
+#include <task.h>
 #include <queue.h>
 #include <semphr.h>
-#include <task.h>
 
 /********************************* 		DEFINES		 *************************/
 #define NB_SPRITE (32)
@@ -51,17 +51,18 @@
 /********************************* 		TYPE DEF	 *************************/
 
 /********************************* 		VARIABLES	 *************************/
-static const int logo_maxim_data[] = { maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp,
-    maxim_logo_only_small_002_bmp, maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp,
-    maxim_logo_only_small_005_bmp, maxim_logo_only_small_006_bmp, maxim_logo_only_small_007_bmp,
-    maxim_logo_only_small_008_bmp, maxim_logo_only_small_009_bmp, maxim_logo_only_small_010_bmp,
-    maxim_logo_only_small_011_bmp, maxim_logo_only_small_012_bmp, maxim_logo_only_small_013_bmp,
-    maxim_logo_only_small_014_bmp, maxim_logo_only_small_015_bmp, maxim_logo_only_small_016_bmp,
-    maxim_logo_only_small_017_bmp, maxim_logo_only_small_018_bmp, maxim_logo_only_small_019_bmp,
-    maxim_logo_only_small_020_bmp, maxim_logo_only_small_021_bmp, maxim_logo_only_small_022_bmp,
-    maxim_logo_only_small_023_bmp, maxim_logo_only_small_024_bmp, maxim_logo_only_small_025_bmp,
-    maxim_logo_only_small_026_bmp, maxim_logo_only_small_027_bmp, maxim_logo_only_small_028_bmp,
-    maxim_logo_only_small_029_bmp, maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp };
+static const int logo_maxim_data[] = {
+    maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp, maxim_logo_only_small_002_bmp,
+    maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp, maxim_logo_only_small_005_bmp,
+    maxim_logo_only_small_006_bmp, maxim_logo_only_small_007_bmp, maxim_logo_only_small_008_bmp,
+    maxim_logo_only_small_009_bmp, maxim_logo_only_small_010_bmp, maxim_logo_only_small_011_bmp,
+    maxim_logo_only_small_012_bmp, maxim_logo_only_small_013_bmp, maxim_logo_only_small_014_bmp,
+    maxim_logo_only_small_015_bmp, maxim_logo_only_small_016_bmp, maxim_logo_only_small_017_bmp,
+    maxim_logo_only_small_018_bmp, maxim_logo_only_small_019_bmp, maxim_logo_only_small_020_bmp,
+    maxim_logo_only_small_021_bmp, maxim_logo_only_small_022_bmp, maxim_logo_only_small_023_bmp,
+    maxim_logo_only_small_024_bmp, maxim_logo_only_small_025_bmp, maxim_logo_only_small_026_bmp,
+    maxim_logo_only_small_027_bmp, maxim_logo_only_small_028_bmp, maxim_logo_only_small_029_bmp,
+    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp};
 
 static volatile int g_animation_status = 0;
 static xSemaphoreHandle xAnimLock;
@@ -90,8 +91,7 @@ void vAnimTask(void* pvParameters)
 
     for (;;) {
         while (xSemaphoreTake(xAnimLock, 0xFFFF) != pdTRUE) {
-            {
-            }
+            ;
         }
 
         while (g_animation_status) {

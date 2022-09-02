@@ -33,19 +33,15 @@
 
 // ARM wrapper code
 // mnist-stream_0
-// Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir demos --prefix
-// mnist-stream_0 --checkpoint-file trained/ai85-mnist.pth.tar --config-file
-// networks/mnist-chw-ai85.yaml --device MAX78000 --compact-data --mexpress --softmax
-// --display-checkpoint --riscv --riscv-flash --riscv-cache --riscv-debug --fast-fifo
-// --streaming-layer 0
-#include "fcr_regs.h"
+// Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir demos --prefix mnist-stream_0 --checkpoint-file trained/ai85-mnist.pth.tar --config-file networks/mnist-chw-ai85.yaml --device MAX78000 --compact-data --mexpress --softmax --display-checkpoint --riscv --riscv-flash --riscv-cache --riscv-debug --fast-fifo --streaming-layer 0
+#include <stdlib.h>
+#include <stdint.h>
+#include "mxc_sys.h"
 #include "gcfr_regs.h"
+#include "fcr_regs.h"
 #include "icc.h"
 #include "led.h"
-#include "mxc_sys.h"
 #include "tmr.h"
-#include <stdint.h>
-#include <stdlib.h>
 
 extern volatile void const* __FlashStart_; // Defined in linker file
 
@@ -68,13 +64,14 @@ int main(void)
 
     MXC_GCR->pclkdiv &= ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL);
     MXC_GCR->pclkdiv |= MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1; // CNN clock: 100 MHz div 2
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);        // Enable CNN clock
 
     MXC_FCR->urvbootaddr = (uint32_t)&__FlashStart_; // Set RISC-V boot address
-    MXC_GCR->pclkdis1 &= ~MXC_F_GCR_PCLKDIS1_CPU1; // Enable RISC-V clock
+    MXC_GCR->pclkdis1 &= ~MXC_F_GCR_PCLKDIS1_CPU1;   // Enable RISC-V clock
 
-    for (i = 0; i < (1 << 27); i++) { }
-    // Let debugger interrupt if needed
-    while (1) { } //__WFI(); // Let RISC-V run
+    for (i = 0; i < (1 << 27); i++)
+        ; // Let debugger interrupt if needed
+    while (1) {
+    } //__WFI(); // Let RISC-V run
     return 0;
 }

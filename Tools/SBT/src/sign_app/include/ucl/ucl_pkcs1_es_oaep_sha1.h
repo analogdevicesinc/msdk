@@ -75,7 +75,8 @@ extern "C" {
  * @ingroup UCL_PKCS1V21_OAEP_SHA1
  */
 int ucl_pkcs1_es_oaep_sha1_encrypt(u8* output, u8* input, u32 input_length,
-    ucl_rsa_public_key_t* keyPu, u8* optional_label, u32 optional_label_length);
+                                   ucl_rsa_public_key_t* keyPu, u8* optional_label,
+                                   u32 optional_label_length);
 
 /*============================================================================*/
 /** <b>RSA-OAEP-SHA1 decryption</b>.
@@ -87,7 +88,7 @@ int ucl_pkcs1_es_oaep_sha1_encrypt(u8* output, u8* input, u32 input_length,
  * @param[in] keyPr                 RSA private key
  * @param[in] optional_label        Pointer to optional label
  * @param[in] optional_label_length Optional label byte length
- *
+ * 
  * @note The output buffer length is the modulus length
  *
  * @return Error code
@@ -103,7 +104,8 @@ int ucl_pkcs1_es_oaep_sha1_encrypt(u8* output, u8* input, u32 input_length,
  * @ingroup UCL_PKCS1V21_OAEP_SHA1
  */
 int ucl_pkcs1_es_oaep_sha1_decrypt(u8* output, u32* output_length, u8* input,
-    ucl_rsa_private_key_t* keyPr, u8* optional_label, u32 optional_label_length);
+                                   ucl_rsa_private_key_t* keyPr, u8* optional_label,
+                                   u32 optional_label_length);
 
 /*============================================================================*/
 /** <b>RSA-OAEP-SHA1 decryption with CRT</b>.
@@ -115,9 +117,9 @@ int ucl_pkcs1_es_oaep_sha1_decrypt(u8* output, u32* output_length, u8* input,
  * @param[in] key                   Pointer to the RSA CRT key
  * @param[in] optional_label        Pointer to optional label
  * @param[in] optional_label_length Optional label byte length
- *
+ * 
  * @note The output buffer length is the modulus length
- *
+ * 
  * @return Error code
  *
  * @retval #UCL_OK             If no error occurred
@@ -130,7 +132,8 @@ int ucl_pkcs1_es_oaep_sha1_decrypt(u8* output, u32* output_length, u8* input,
  * @ingroup UCL_PKCS1V21_OAEP_SHA1
  */
 int ucl_pkcs1_es_oaep_sha1_crt_decrypt(u8* output, u32* output_length, u8* input,
-    ucl_rsa_crt_private_key_t* key, u8* optional_label, u32 optional_label_length);
+                                       ucl_rsa_crt_private_key_t* key, u8* optional_label,
+                                       u32 optional_label_length);
 
 #ifdef __cplusplus
 }

@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "gcr_regs.h"
-#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "wdt.h"
 #include "wdt_reva.h"
+#include "gcr_regs.h"
 
 /* **** Functions **** */
 

@@ -1,35 +1,35 @@
 /*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"), 
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents, 
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 /**
  * @file    main.c
@@ -39,14 +39,14 @@
  */
 
 /***** Includes *****/
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
 /***** Definitions *****/
-#define TESTSIZE 8192 // 2 pages worth so we can do erase functions
+#define TESTSIZE 8192 //2 pages worth so we can do erase functions
 #if EMULATOR
 #define MXC_FLASH_MEM_SIZE_TEST 0x00004000
 #else
@@ -87,7 +87,7 @@ int flash_fill(uint32_t address, uint32_t size, uint32_t data)
         // Write remaining bytes in a 32-bit unit
 
         uint32_t last_word = 0xffffffff;
-        uint32_t mask = 0xff;
+        uint32_t mask      = 0xff;
 
         while (size > 0) {
             last_word &= (data | ~mask);
@@ -115,7 +115,7 @@ int flash_verify(uint32_t address, uint32_t length, uint8_t* data)
     for (ptr = (uint8_t*)address; ptr < (uint8_t*)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
-                (unsigned int)*data);
+                   (unsigned int)*data);
             return E_UNKNOWN;
         }
     }
@@ -214,9 +214,9 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
 
     // Align start and end on page boundaries, calculate length of data to buffer
     start_align = start - (start % MXC_FLASH_PAGE_SIZE);
-    start_len = (start % MXC_FLASH_PAGE_SIZE);
-    end_align = end - (end % MXC_FLASH_PAGE_SIZE);
-    end_len = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
+    start_len   = (start % MXC_FLASH_PAGE_SIZE);
+    end_align   = end - (end % MXC_FLASH_PAGE_SIZE);
+    end_len     = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
 
     // Make sure the length of buffer is sufficient
     if ((length < start_len) || (length < end_len)) {
@@ -310,7 +310,7 @@ int main(void)
     // Clear and enable flash programming interrupts
     MXC_FLC_EnableInt((MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE));
     isr_flags = 0;
-    isr_cnt = 0;
+    isr_cnt   = 0;
 
     error_status = MXC_FLC_MassErase();
 
@@ -341,7 +341,9 @@ int main(void)
     printf("Size of testdata : %d\n", sizeof(testdata));
 
     // Initializing Test Data
-    for (i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
+    for (i = 0; i < TESTSIZE; i++) {
+        testdata[i] = i;
+    }
 
     MXC_ICC_Disable();
     i = 0;
@@ -349,7 +351,7 @@ int main(void)
     for (testaddr = MXC_FLASH_MEM_BASE; i < TESTSIZE; testaddr += 4) {
         // Clear and enable flash programming interrupts
         isr_flags = 0;
-        isr_cnt = 0;
+        isr_cnt   = 0;
 
         // Write a word
         if (MXC_FLC_Write(testaddr, 4, &testdata[i]) != E_NO_ERROR) {
@@ -357,7 +359,7 @@ int main(void)
             fail += 1;
             break;
         } else {
-            // printf("Word %d : %u is written to the flash.\n", i, testdata[i]);
+            //printf("Word %d : %u is written to the flash.\n", i, testdata[i]);
         }
 
         // Checking Interrupt
@@ -382,7 +384,7 @@ int main(void)
         i++;
     }
 
-    // Page Erase
+    //Page Erase
     MXC_FLC_PageErase(MXC_FLASH_MEM_BASE);
 
     if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_PAGE_SIZE)) {
@@ -393,10 +395,9 @@ int main(void)
         fail += 1;
     }
 
-    // Erase parital pages or wide range of pages and keep the data on the page not inbetween start
-    // and end.
+    // Erase parital pages or wide range of pages and keep the data on the page not inbetween start and end.
     start = (MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE + 0x500);
-    end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
+    end   = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
     flash_erase(start, end, buffer, 0x1000);
 
     if (check_erased(start, ((end - start) - 0x1000))) {
@@ -416,7 +417,8 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) { }
+    while (1)
+        ;
 
     return 0;
 }

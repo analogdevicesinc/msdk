@@ -43,9 +43,9 @@
 #include <stdint.h>
 
 /* **** Definitions **** */
-#define ERASE_MEMORY_ON_INIT                                                                       \
+#define ERASE_MEMORY_ON_INIT \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
-/* Use 1 to clear or 0 to leave untouched. */
+      /* Use 1 to clear or 0 to leave untouched. */
 /**
  * @brief   Perform any initialization necessary to prepare the memory for reading/writing data.
  * @returns 0 if initialization is successful, non-zero if an error occurred.

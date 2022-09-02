@@ -2,9 +2,9 @@
  * Copyright(C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
+ * copy of this software and associated documentation files(the "Software"), 
  * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
  *
@@ -15,7 +15,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -24,27 +24,27 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
+ * of trade secrets, proprietary technology, copyrights, patents, 
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  *************************************************************************** */
 
-#include "dma.h"
-#include "mxc_assert.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
-#include "spi_reva.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_lock.h"
+#include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "spi_reva.h"
+#include "dma.h"
 
 /* **** Functions **** */
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
-    unsigned ssPolarity, unsigned int hz)
+                 unsigned ssPolarity, unsigned int hz)
 {
     int spi_num;
 
@@ -63,15 +63,16 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
     // Configure GPIO for spi
     if (spi == MXC_SPI0) {
         MXC_GCR->rst0 |= MXC_F_GCR_RST0_SPI0;
-        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_SPI0) { }
+        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_SPI0)
+            ;
         MXC_GCR->pclk_dis0 &= ~(MXC_F_GCR_PCLK_DIS0_SPI0D);
         MXC_GPIO_Config(&gpio_cfg_spi0);
     } else {
         return E_NO_DEVICE;
     }
 
-    return MXC_SPI_RevA_Init(
-        (mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz);
+    return MXC_SPI_RevA_Init((mxc_spi_reva_regs_t*)spi, masterMode, quadModeUsed, numSlaves,
+                             ssPolarity, hz);
 }
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t* spi)
@@ -263,31 +264,31 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+            case 0:
+                reqselTx = MXC_DMA_REQUEST_SPI0TX;
+                break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+            case 1:
+                reqselTx = MXC_DMA_REQUEST_SPI1TX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
+            case 0:
+                reqselRx = MXC_DMA_REQUEST_SPI0RX;
+                break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1RX;
-            break;
+            case 1:
+                reqselTx = MXC_DMA_REQUEST_SPI1RX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 
@@ -316,31 +317,31 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
 
     if (req->txData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselTx = MXC_DMA_REQUEST_SPI0TX;
-            break;
+            case 0:
+                reqselTx = MXC_DMA_REQUEST_SPI0TX;
+                break;
 
-        case 1:
-            reqselTx = MXC_DMA_REQUEST_SPI1TX;
-            break;
+            case 1:
+                reqselTx = MXC_DMA_REQUEST_SPI1TX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 
     if (req->rxData != NULL) {
         switch (spi_num) {
-        case 0:
-            reqselRx = MXC_DMA_REQUEST_SPI0RX;
-            break;
+            case 0:
+                reqselRx = MXC_DMA_REQUEST_SPI0RX;
+                break;
 
-        case 1:
-            reqselRx = MXC_DMA_REQUEST_SPI1RX;
-            break;
+            case 1:
+                reqselRx = MXC_DMA_REQUEST_SPI1RX;
+                break;
 
-        default:
-            return E_BAD_PARAM;
+            default:
+                return E_BAD_PARAM;
         }
     }
 

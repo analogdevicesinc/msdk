@@ -1,7 +1,7 @@
 /**
- * @file
- * @brief   Inter-integrated circuit (I2C) communications interface driver.
- */
+* @file
+* @brief   Inter-integrated circuit (I2C) communications interface driver.
+*/
 
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
@@ -40,9 +40,9 @@
 #ifndef _MXC_I2C_H_
 #define _MXC_I2C_H_
 
-#include "i2c_regs.h"
-#include "mxc_sys.h"
 #include <stdint.h>
+#include "mxc_sys.h"
+#include "i2c_regs.h"
 /***** Definitions *****/
 
 #ifdef __cplusplus
@@ -102,13 +102,13 @@ typedef void (*mxc_i2c_dma_complete_cb_t)(int len, int result);
 struct _i2c_req_t {
     mxc_i2c_regs_t* i2c; ///< Pointer to I2C registers (selects the
     ///< I2C block used.)
-    unsigned int addr; ///< The 7-bit or 10-bit address of the slave.
+    unsigned int addr;     ///< The 7-bit or 10-bit address of the slave.
     unsigned char* tx_buf; ///< The buffer containing the bytes to write.
-    unsigned int tx_len; ///< The number of bytes to write. On return
+    unsigned int tx_len;   ///< The number of bytes to write. On return
     ///< from the function, this will be set to
     ///< the number of bytes actually transmitted.
     unsigned char* rx_buf; ///< The buffer to read the data into.
-    unsigned int rx_len; ///< The number of bytes to read.  On return
+    unsigned int rx_len;   ///< The number of bytes to read.  On return
     ///< from the function, this will be set to
     ///< the number of bytes actually received.
     int restart; ///< Controls whether the transaction is
@@ -143,7 +143,7 @@ typedef enum {
     MXC_I2C_EVT_TX_THRESH, ///< The transmit FIFO contains fewer bytes than its
     ///< threshold level.
     MXC_I2C_EVT_TRANS_COMP, ///< The transaction has ended.
-    MXC_I2C_EVT_UNDERFLOW, ///< The master has attempted a read when the
+    MXC_I2C_EVT_UNDERFLOW,  ///< The master has attempted a read when the
     ///< transmit FIFO was empty.
     MXC_I2C_EVT_OVERFLOW, ///< The master has written data when the receive
     ///< FIFO was already full.
@@ -165,8 +165,8 @@ typedef enum {
  *          non-zero to not acknowledge.  The return value is ignored for all
  *          other event types.
  */
-typedef int (*mxc_i2c_slave_handler_t)(
-    mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event, void* data);
+typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event,
+                                       void* data);
 
 /***** Function Prototypes *****/
 
@@ -198,7 +198,7 @@ int MXC_I2C_Init(mxc_i2c_regs_t* i2c, int masterMode, unsigned int slaveAddr);
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   slaveAddr   7-bit or 10-bit address to use when in slave mode.
  *                      This parameter is ignored when masterMode is non-zero.
- * @param   idx         Index of the I2C slave.
+ * @param   idx         Index of the I2C slave. 
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -424,7 +424,7 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsig
  * @return  See \ref MXC_Error_Codes for a list of return values.
  */
 int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
-    mxc_i2c_dma_complete_cb_t callback);
+                          mxc_i2c_dma_complete_cb_t callback);
 
 /**
  * @brief   Get the number of bytes currently available in the receive FIFO.
@@ -458,7 +458,7 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsi
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
 int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
-    mxc_i2c_dma_complete_cb_t callback);
+                           mxc_i2c_dma_complete_cb_t callback);
 
 /**
  * @brief   Get the amount of free space available in the transmit FIFO.

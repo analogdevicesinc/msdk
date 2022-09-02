@@ -31,11 +31,11 @@
  *
  *************************************************************************** */
 
-#include "sfe_reva.h"
-#include "mxc_sys.h"
+#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
+#include "mxc_sys.h"
+#include "sfe_reva.h"
 
 int MXC_SFE_RevA_Init(void)
 {
@@ -63,7 +63,7 @@ int MXC_SFE_RevA_SetFlashAddress(mxc_sfe_reva_regs_t* sfe, uint32_t lowerAdd, ui
 {
     sfe->flash_sba = lowerAdd;
     sfe->flash_sta = upperAdd;
-    sfe->sfdp_sba = 0x10008000; // FLash base address
+    sfe->sfdp_sba  = 0x10008000; // FLash base address
 
     return E_NO_ERROR;
 }

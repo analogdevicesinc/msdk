@@ -35,14 +35,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <string.h>
+#include "mxc_errors.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "mxc_pins.h"
 #include "clcd.h"
 #include "clcd_reva.h"
-#include "mxc_assert.h"
-#include "mxc_errors.h"
 #include "mxc_lock.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include <string.h>
 
 /* **** Definitions **** */
 

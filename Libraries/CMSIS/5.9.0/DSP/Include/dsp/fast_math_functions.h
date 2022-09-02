@@ -26,8 +26,8 @@
 #ifndef _FAST_MATH_FUNCTIONS_H_
 #define _FAST_MATH_FUNCTIONS_H_
 
-#include "arm_math_memory.h"
 #include "arm_math_types.h"
+#include "arm_math_memory.h"
 
 #include "dsp/none.h"
 #include "dsp/utils.h"
@@ -39,12 +39,12 @@ extern "C" {
 #endif
 
 /**
- * @brief Macros required for SINE and COSINE Fast math approximations
- */
+   * @brief Macros required for SINE and COSINE Fast math approximations
+   */
 
 #define FAST_MATH_TABLE_SIZE 512
-#define FAST_MATH_Q31_SHIFT (32 - 10)
-#define FAST_MATH_Q15_SHIFT (16 - 10)
+#define FAST_MATH_Q31_SHIFT  (32 - 10)
+#define FAST_MATH_Q15_SHIFT  (16 - 10)
 
 #ifndef PI
 #define PI 3.14159265358979f
@@ -60,8 +60,8 @@ extern "C" {
  */
 
 /**
- * @ingroup groupFastMath
- */
+   * @ingroup groupFastMath
+   */
 
 /**
   @addtogroup sin
@@ -69,24 +69,24 @@ extern "C" {
  */
 
 /**
- * @brief  Fast approximation to the trigonometric sine function for floating-point data.
- * @param[in] x  input value in radians.
- * @return  sin(x).
- */
+   * @brief  Fast approximation to the trigonometric sine function for floating-point data.
+   * @param[in] x  input value in radians.
+   * @return  sin(x).
+   */
 float32_t arm_sin_f32(float32_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric sine function for Q31 data.
- * @param[in] x  Scaled input value in radians.
- * @return  sin(x).
- */
+   * @brief  Fast approximation to the trigonometric sine function for Q31 data.
+   * @param[in] x  Scaled input value in radians.
+   * @return  sin(x).
+   */
 q31_t arm_sin_q31(q31_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric sine function for Q15 data.
- * @param[in] x  Scaled input value in radians.
- * @return  sin(x).
- */
+   * @brief  Fast approximation to the trigonometric sine function for Q15 data.
+   * @param[in] x  Scaled input value in radians.
+   * @return  sin(x).
+   */
 q15_t arm_sin_q15(q15_t x);
 
 /**
@@ -99,24 +99,24 @@ q15_t arm_sin_q15(q15_t x);
  */
 
 /**
- * @brief  Fast approximation to the trigonometric cosine function for floating-point data.
- * @param[in] x  input value in radians.
- * @return  cos(x).
- */
+   * @brief  Fast approximation to the trigonometric cosine function for floating-point data.
+   * @param[in] x  input value in radians.
+   * @return  cos(x).
+   */
 float32_t arm_cos_f32(float32_t x);
 
 /**
- * @brief Fast approximation to the trigonometric cosine function for Q31 data.
- * @param[in] x  Scaled input value in radians.
- * @return  cos(x).
- */
+   * @brief Fast approximation to the trigonometric cosine function for Q31 data.
+   * @param[in] x  Scaled input value in radians.
+   * @return  cos(x).
+   */
 q31_t arm_cos_q31(q31_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric cosine function for Q15 data.
- * @param[in] x  Scaled input value in radians.
- * @return  cos(x).
- */
+   * @brief  Fast approximation to the trigonometric cosine function for Q15 data.
+   * @param[in] x  Scaled input value in radians.
+   * @return  cos(x).
+   */
 q15_t arm_cos_q15(q15_t x);
 
 /**
@@ -142,21 +142,21 @@ void arm_vlog_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 void arm_vlog_f64(const float64_t* pSrc, float64_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  q31 vector of log values.
- * @param[in]     pSrc       points to the input vector in q31
- * @param[out]    pDst       points to the output vector in q5.26
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief  q31 vector of log values.
+   * @param[in]     pSrc       points to the input vector in q31
+   * @param[out]    pDst       points to the output vector in q5.26
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_vlog_q31(const q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  q15 vector of log values.
- * @param[in]     pSrc       points to the input vector in q15
- * @param[out]    pDst       points to the output vector in q4.11
- * @param[in]     blockSize  number of samples in each vector
- * @return        none
- */
+   * @brief  q15 vector of log values.
+   * @param[in]     pSrc       points to the input vector in q15
+   * @param[out]    pDst       points to the output vector in q4.11
+   * @param[in]     blockSize  number of samples in each vector
+   * @return        none
+   */
 void arm_vlog_q15(const q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
@@ -178,29 +178,29 @@ void arm_vexp_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 void arm_vexp_f64(const float64_t* pSrc, float64_t* pDst, uint32_t blockSize);
 
 /**
- * @defgroup SQRT Square Root
- *
- * Computes the square root of a number.
- * There are separate functions for Q15, Q31, and floating-point data types.
- * The square root function is computed using the Newton-Raphson algorithm.
- * This is an iterative algorithm of the form:
- * <pre>
- *      x1 = x0 - f(x0)/f'(x0)
- * </pre>
- * where <code>x1</code> is the current estimate,
- * <code>x0</code> is the previous estimate, and
- * <code>f'(x0)</code> is the derivative of <code>f()</code> evaluated at <code>x0</code>.
- * For the square root function, the algorithm reduces to:
- * <pre>
- *     x0 = in/2                         [initial guess]
- *     x1 = 1/2 * ( x0 + in / x0)        [each iteration]
- * </pre>
- */
+   * @defgroup SQRT Square Root
+   *
+   * Computes the square root of a number.
+   * There are separate functions for Q15, Q31, and floating-point data types.
+   * The square root function is computed using the Newton-Raphson algorithm.
+   * This is an iterative algorithm of the form:
+   * <pre>
+   *      x1 = x0 - f(x0)/f'(x0)
+   * </pre>
+   * where <code>x1</code> is the current estimate,
+   * <code>x0</code> is the previous estimate, and
+   * <code>f'(x0)</code> is the derivative of <code>f()</code> evaluated at <code>x0</code>.
+   * For the square root function, the algorithm reduces to:
+   * <pre>
+   *     x0 = in/2                         [initial guess]
+   *     x1 = 1/2 * ( x0 + in / x0)        [each iteration]
+   * </pre>
+   */
 
 /**
- * @addtogroup SQRT
- * @{
- */
+   * @addtogroup SQRT
+   * @{
+   */
 
 /**
   @brief         Floating-point square root function.
@@ -240,8 +240,7 @@ __STATIC_FORCEINLINE arm_status arm_sqrt_f32(const float32_t in, float32_t* pOut
 
 /**
   @brief         Q31 square root function.
-  @param[in]     in    input value.  The range of the input value is [0 +1) or 0x00000000 to
-  0x7FFFFFFF
+  @param[in]     in    input value.  The range of the input value is [0 +1) or 0x00000000 to 0x7FFFFFFF
   @param[out]    pOut  points to square root of input value
   @return        execution status
                    - \ref ARM_MATH_SUCCESS        : input value is positive
@@ -260,8 +259,8 @@ arm_status arm_sqrt_q31(q31_t in, q31_t* pOut);
 arm_status arm_sqrt_q15(q15_t in, q15_t* pOut);
 
 /**
- * @} end of SQRT group
- */
+   * @} end of SQRT group
+   */
 
 /**
   @brief         Fixed point division

@@ -35,7 +35,7 @@
  * ownership rights.
  *
  *
- * $Date: 2018-08-28 17:06:43 -0500 (Tue, 28 Aug 2018) $
+ * $Date: 2018-08-28 17:06:43 -0500 (Tue, 28 Aug 2018) $ 
  * $Revision: 37425 $
  *
  *************************************************************************** */
@@ -59,7 +59,7 @@ extern "C" {
 /* **** Definitions **** */
 /**
  * @note       To use debug assertions, the symbol @c MXC_ASSERT_ENABLE must be
- *             defined.
+ *             defined. 
  */
 ///@cond
 #ifdef MXC_ASSERT_ENABLE
@@ -68,9 +68,9 @@ extern "C" {
  * @note       To use debug assertions, the symbol @c MXC_ASSERT_ENABLE must be
  *             defined.
  */
-#define MXC_ASSERT(expr)                                                                           \
-    if (!(expr)) {                                                                                 \
-        mxc_assert(#expr, __FILE__, __LINE__);                                                     \
+#define MXC_ASSERT(expr)                       \
+    if (!(expr)) {                             \
+        mxc_assert(#expr, __FILE__, __LINE__); \
     }
 /**
  * Macro that generates an assertion with the message "FAIL".
@@ -93,12 +93,12 @@ extern "C" {
  * @param      file  File containing the failed assertion.
  * @param      line  Line number for the failed assertion.
  * @note       This is defined as a weak function and can be overridden at the
- *             application layer to print the debugging information.
- *             @code
+ *             application layer to print the debugging information. 
+ *             @code 
  *             printf("%s, file: %s, line %d\n", expr, file, line);
  *             @endcode
  * @note       To use debug assertions, the symbol @c MXC_ASSERT_ENABLE must be
- *             defined.
+ *             defined. 
  */
 void mxc_assert(const char* expr, const char* file, int line);
 

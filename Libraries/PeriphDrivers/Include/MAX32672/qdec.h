@@ -44,9 +44,9 @@
 #define _QDEC_H_
 
 /* **** Includes **** */
-#include "mcr_regs.h"
-#include "qdec_regs.h"
 #include <stdint.h>
+#include "qdec_regs.h"
+#include "mcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,12 +63,12 @@ extern "C" {
 ***************************************************************************************************************/
 
 /**
- * @brief  Enumeration type for the QDEC Counter Modes
- */
+  * @brief  Enumeration type for the QDEC Counter Modes
+  */
 typedef enum {
     MXC_QDEC_X1_MODE = 0, ///< Select Channel 0
     MXC_QDEC_X2_MODE = 1, ///< Select Channel 1
-    MXC_QDEC_x4_MODE, ///< Select Channel 2
+    MXC_QDEC_x4_MODE,     ///< Select Channel 2
 } mxc_qdec_counter_mode_t;
 
 /**
@@ -83,14 +83,14 @@ typedef enum {
  * @brief       Enumeration type for QDEC Filtering
  */
 typedef enum {
-    MXC_QDEC_FILTER_1_SAMPLE
-    = MXC_S_QDEC_CTRL_FILTER_1_SAMPLE, ///< QDEC Pulse active for one clock cycle
-    MXC_QDEC_FILTER_2_SAMPLES
-    = MXC_S_QDEC_CTRL_FILTER_2_SAMPLES, ///< QDEC Pulse active for one clock cycle
-    MXC_QDEC_FILTER_3_SAMPLES
-    = MXC_S_QDEC_CTRL_FILTER_3_SAMPLES, ///< QDEC Pulse active for one clock cycle
-    MXC_QDEC_FILTER_4_SAMPLES
-    = MXC_S_QDEC_CTRL_FILTER_4_SAMPLES, ///< QDEC Pulse active for one clock cycle
+    MXC_QDEC_FILTER_1_SAMPLE =
+        MXC_S_QDEC_CTRL_FILTER_1_SAMPLE, ///< QDEC Pulse active for one clock cycle
+    MXC_QDEC_FILTER_2_SAMPLES =
+        MXC_S_QDEC_CTRL_FILTER_2_SAMPLES, ///< QDEC Pulse active for one clock cycle
+    MXC_QDEC_FILTER_3_SAMPLES =
+        MXC_S_QDEC_CTRL_FILTER_3_SAMPLES, ///< QDEC Pulse active for one clock cycle
+    MXC_QDEC_FILTER_4_SAMPLES =
+        MXC_S_QDEC_CTRL_FILTER_4_SAMPLES, ///< QDEC Pulse active for one clock cycle
 } mxc_qdec_filter_t;
 
 /**
@@ -98,7 +98,7 @@ typedef enum {
  */
 typedef enum {
     MXC_QDEC_STICKY_PULSE = 0, ///< QDEC Pulse active for one clock cycle
-    MXC_QDEC_STICKY_MIRROR, ///< QDEC Mirror state
+    MXC_QDEC_STICKY_MIRROR,    ///< QDEC Mirror state
 } mxc_qdec_sticky_t;
 
 /**
@@ -106,13 +106,13 @@ typedef enum {
  */
 typedef enum {
     MXC_QDEC_CLKDIV_1 = 0, ///< QDEC Scale by 1
-    MXC_QDEC_CLKDIV_2, ///< QDEC Scale by 1/2
-    MXC_QDEC_CLKDIV_4, ///< QDEC Scale by 1/4
-    MXC_QDEC_CLKDIV_8, ///< QDEC Scale by 1/8
-    MXC_QDEC_CLKDIV_16, ///< QDEC Scale by 1/16
-    MXC_QDEC_CLKDIV_32, ///< QDEC Scale by 1/32
-    MXC_QDEC_CLKDIV_64, ///< QDEC Scale by 1/64
-    MXC_QDEC_CLKDIV_128, ///< QDEC Scale by 1/128
+    MXC_QDEC_CLKDIV_2,     ///< QDEC Scale by 1/2
+    MXC_QDEC_CLKDIV_4,     ///< QDEC Scale by 1/4
+    MXC_QDEC_CLKDIV_8,     ///< QDEC Scale by 1/8
+    MXC_QDEC_CLKDIV_16,    ///< QDEC Scale by 1/16
+    MXC_QDEC_CLKDIV_32,    ///< QDEC Scale by 1/32
+    MXC_QDEC_CLKDIV_64,    ///< QDEC Scale by 1/64
+    MXC_QDEC_CLKDIV_128,   ///< QDEC Scale by 1/128
 } mxc_qdec_clkdiv_t;
 
 /**
@@ -137,15 +137,15 @@ typedef void (*mxc_qdec_cb_t)(void* req, int error);
 
 typedef struct {
     mxc_qdec_counter_mode_t mode; ///< counter mode
-    mxc_qdec_swap_t swap; ///< phase swap
-    mxc_qdec_filter_t sample; ///< filter
-    mxc_qdec_clkdiv_t clkdiv; ///< clock divider
-    mxc_qdec_sticky_t sticky; ///< sticky condition
-    mxc_qdec_rst_on_t rst; ///< reset on maxcnt or index
-    mxc_qdec_function_t func; ///< compare, capture, none
-    uint32_t maxcnt; ///< Maximum count value
-    uint32_t initial; ///< Initial count value
-    uint32_t compare; ///< Compare value
+    mxc_qdec_swap_t swap;         ///< phase swap
+    mxc_qdec_filter_t sample;     ///< filter
+    mxc_qdec_clkdiv_t clkdiv;     ///< clock divider
+    mxc_qdec_sticky_t sticky;     ///< sticky condition
+    mxc_qdec_rst_on_t rst;        ///< reset on maxcnt or index
+    mxc_qdec_function_t func;     ///< compare, capture, none
+    uint32_t maxcnt;              ///< Maximum count value
+    uint32_t initial;             ///< Initial count value
+    uint32_t compare;             ///< Compare value
     mxc_qdec_cb_t callback;
 } mxc_qdec_req_t;
 
@@ -257,7 +257,7 @@ int MXC_QDEC_Handler(void);
 
 /**
  * @brief   Gets the current position of the QDEC
- *
+ * 
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_QDEC_GetPosition(void);

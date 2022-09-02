@@ -93,7 +93,7 @@ typedef struct ucl_sia256_ctx ucl_sia256_ctx_t;
  *
  * @ingroup UCL_SIA256
  */
-#define UCL_SIA256 6
+#define UCL_SIA256          6
 #define UCL_SIA256_HASHSIZE 32
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SIA256.
@@ -182,4 +182,4 @@ int __API__ ucl_sia256_finish(u8* hash, ucl_sia256_ctx_t* context);
 #endif /* _ cplusplus  */
 
 #endif /* _UCL_SIA256_H_ */
-#endif // PROFILE2
+#endif //PROFILE2

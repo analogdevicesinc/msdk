@@ -36,23 +36,23 @@
  ******************************************************************************
  */
 
-#include "gpio.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "sc.h"
 #include <stdint.h>
+#include "mxc_device.h"
+#include "mxc_delay.h"
+#include "sc.h"
+#include "gpio.h"
 
+#include "MAX325xx_bypass_afe.h"
+#include "sc_errors.h"
+#include "sc_states.h"
+#include "sc_config.h"
+#include "sc_regs.h"
+#include "iccabstract.h"
+#include "OSWrapper.h"
 #include "MAX325xx_afe.h"
 #include "MAX325xx_afe_private.h"
-#include "MAX325xx_bypass_afe.h"
 #include "MAX325xx_uart.h"
 #include "MAX325xx_uart_private.h"
-#include "OSWrapper.h"
-#include "iccabstract.h"
-#include "sc_config.h"
-#include "sc_errors.h"
-#include "sc_regs.h"
-#include "sc_states.h"
 #include "slot.h"
 
 #include "demo_config.h"
@@ -63,17 +63,17 @@ extern mxc_sc_context_t sc_context;
 #define MAX325XX_EVKIT_EXT_AFE_PORT (MXC_GPIO0) /* Port 0 */
 
 #define MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN (MXC_GPIO_PIN_21) /* CMDVCC pin mask */
-#define MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS (21) /* CMDVCC pin pos */
-#define MAX325XX_EVKIT_EXT_AFE_OFF_PIN (MXC_GPIO_PIN_23) /* OFF pin mask */
-#define MAX325XX_EVKIT_EXT_AFE_OFF_POS (23) /* OFF pin pos */
-#define MAX325XX_EVKIT_EXT_AFE_5V3V_PIN (MXC_GPIO_PIN_22) /* 5V3V pin mask */
-#define MAX325XX_EVKIT_EXT_AFE_5V3V_POS (22) /* 5V3V pin pos */
+#define MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS (21)              /* CMDVCC pin pos */
+#define MAX325XX_EVKIT_EXT_AFE_OFF_PIN    (MXC_GPIO_PIN_23) /* OFF pin mask */
+#define MAX325XX_EVKIT_EXT_AFE_OFF_POS    (23)              /* OFF pin pos */
+#define MAX325XX_EVKIT_EXT_AFE_5V3V_PIN   (MXC_GPIO_PIN_22) /* 5V3V pin mask */
+#define MAX325XX_EVKIT_EXT_AFE_5V3V_POS   (22)              /* 5V3V pin pos */
 
-#define MAX325XX_EVKIT_EXT_AFE_OFFLINE (1) /* when CMDVCC = 1, SAM is off */
+#define MAX325XX_EVKIT_EXT_AFE_OFFLINE     (1) /* when CMDVCC = 1, SAM is off */
 #define MAX325XX_EVKIT_EXT_AFE_CARD_ABSENT (0) /* OFF pin is low when no card */
 
 #define ST8034_NOT_SELECTED (0)
-#define ST8034_SELECTED (1)
+#define ST8034_SELECTED     (1)
 
 #if SMARTCARD_EXT_AFE_Voltage == SMARTCARD_EXT_AFE_5V
 #define MAX325XX_EVKIT_EXT_AFE_5V3V_VALUE (1) // Means configure sc gpio to 5V
@@ -85,8 +85,8 @@ static IccVoltage_t icc_voltage = VCC_5V;
 
 IccReturn_t bypassSelect(SlotContext_t* SlotCtx, boolean_t Selected)
 {
-    // uint32_t ChipSelect = ST8034_NOT_SELECTED;
-    SCControl_t sccr = { .word = 0 }; /* control register value */
+    //uint32_t ChipSelect = ST8034_NOT_SELECTED;
+    SCControl_t sccr       = {.word = 0}; /* control register value */
     UartState_t* UartState = NULL;
 
     if (NULL == SlotCtx) {
@@ -113,10 +113,10 @@ IccReturn_t bypassSelect(SlotContext_t* SlotCtx, boolean_t Selected)
     sccr.bits.BYP_PHY = 1;
 #else
     if (bTRUE == Selected) {
-        // ChipSelect          = ST8034_SELECTED;
+        //ChipSelect          = ST8034_SELECTED;
         sccr.bits.BYP_PHY = 1;
     } else {
-        // ChipSelect          = ST8034_NOT_SELECTED;
+        //ChipSelect          = ST8034_NOT_SELECTED;
         sccr.bits.BYP_PHY = 0;
     }
 #endif
@@ -142,8 +142,9 @@ IccReturn_t bypassSetVoltage(SlotContext_t* SlotCtx, IccVoltage_t Voltage)
     }
 
     /* check if the card is already powered */
-    CurrentVoltage = MXC_GPIO_OutGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN)
-        >> MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS;
+    CurrentVoltage =
+        MXC_GPIO_OutGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN) >>
+        MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS;
 
     if (MAX325XX_EVKIT_EXT_AFE_OFFLINE != CurrentVoltage) {
         /* if the card is already powered, we cannot change the voltage ! */
@@ -151,14 +152,14 @@ IccReturn_t bypassSetVoltage(SlotContext_t* SlotCtx, IccVoltage_t Voltage)
     }
 
     switch (Voltage) {
-    case VCC_5V:
-    case VCC_3V:
-    case VCC_1V8:
-        icc_voltage = Voltage;
-        break;
+        case VCC_5V:
+        case VCC_3V:
+        case VCC_1V8:
+            icc_voltage = Voltage;
+            break;
 
-    default:
-        return ICC_ERR_BAD_PARAMETER;
+        default:
+            return ICC_ERR_BAD_PARAMETER;
     }
 
     return ICC_OK;
@@ -175,8 +176,9 @@ IccReturn_t bypassApplyVoltage(SlotContext_t* SlotCtx)
         return ICC_ERR_BAD_SLOT;
 
     /* check if the card is already powered */
-    CurrentVoltage = MXC_GPIO_OutGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN)
-        >> MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS;
+    CurrentVoltage =
+        MXC_GPIO_OutGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN) >>
+        MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS;
 
     if (MAX325XX_EVKIT_EXT_AFE_OFFLINE != CurrentVoltage) {
         /* if the card is already powered, we cannot change the voltage ! */
@@ -184,29 +186,28 @@ IccReturn_t bypassApplyVoltage(SlotContext_t* SlotCtx)
     }
 
     switch (icc_voltage) {
-    case VCC_5V:
-    case VCC_3V:
-    case VCC_1V8:
-        CurrentVoltage = 0;
-        break;
+        case VCC_5V:
+        case VCC_3V:
+        case VCC_1V8:
+            CurrentVoltage = 0;
+            break;
 
-    default:
-        return ICC_ERR_BAD_PARAMETER;
+        default:
+            return ICC_ERR_BAD_PARAMETER;
     }
 
     MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN,
-        (CurrentVoltage << MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS));
-    // MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_OFF_PIN, (0 <<
-    // MAX325XX_EVKIT_EXT_AFE_OFF_POS));
+                    (CurrentVoltage << MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS));
+    //MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_OFF_PIN, (0 << MAX325XX_EVKIT_EXT_AFE_OFF_POS));
 
     return ICC_OK;
 }
 
 IccReturn_t bypassPower(SlotContext_t* SlotCtx, CardPowerState_t PowerUp)
 {
-    IccReturn_t retval = ICC_OK;
-    SCPin_t scpin = { .word = 0 };
-    UartData_t* UartData = NULL;
+    IccReturn_t retval     = ICC_OK;
+    SCPin_t scpin          = {.word = 0};
+    UartData_t* UartData   = NULL;
     UartState_t* UartState = NULL;
 
     if (NULL == SlotCtx) {
@@ -228,56 +229,56 @@ IccReturn_t bypassPower(SlotContext_t* SlotCtx, CardPowerState_t PowerUp)
     }
 
     switch (PowerUp) {
-    case POWER_DOWN:
-        scpin.word = sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN;
-        scpin.bits.CRDRST = RESET_ACTIVE;
-        sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
-        MXC_Delay(2);
+        case POWER_DOWN:
+            scpin.word        = sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN;
+            scpin.bits.CRDRST = RESET_ACTIVE;
+            sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
+            MXC_Delay(2);
 
-        /*
-         * wait CWT to help the test tool
-         * (if we deactivate too fast, the Lab test tool crashes)
-         */
-        IccWait(SlotCtx, SlotCtx->IccProtocolConfig.IccCharWaitingTime);
+            /*
+		 * wait CWT to help the test tool
+		 * (if we deactivate too fast, the Lab test tool crashes)
+		 */
+            IccWait(SlotCtx, SlotCtx->IccProtocolConfig.IccCharWaitingTime);
 
-        /* set CMDVCC input to be high to keep card power down */
-        MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN,
-            (MAX325XX_EVKIT_EXT_AFE_OFFLINE << MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS));
-        break;
+            /* set CMDVCC input to be high to keep card power down */
+            MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN,
+                            (MAX325XX_EVKIT_EXT_AFE_OFFLINE << MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS));
+            break;
 
-    case POWER_UP:
-        /*
-         * here we do not set the isPowering flag,
-         * this will be done when we release the RST signal
-         */
-        retval = bypassApplyVoltage(SlotCtx);
-        if (ICC_OK != retval) {
-            return retval;
-        }
-        break;
+        case POWER_UP:
+            /*
+		 * here we do not set the isPowering flag,
+		 * this will be done when we release the RST signal
+		 */
+            retval = bypassApplyVoltage(SlotCtx);
+            if (ICC_OK != retval) {
+                return retval;
+            }
+            break;
 
-    case RESET_DO:
-        scpin.word = sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN;
-        scpin.bits.CRDRST = RESET_ACTIVE;
-        sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
-        MXC_Delay(2);
-        break;
+        case RESET_DO:
+            scpin.word        = sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN;
+            scpin.bits.CRDRST = RESET_ACTIVE;
+            sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
+            MXC_Delay(2);
+            break;
 
-    case RESET_RELEASE:
-        /* Set the Powering bit
-         * this will indicates to the UART driver that the next
-         * data are the ATR
-         */
-        SlotCtx->isPoweringUp = bTRUE;
+        case RESET_RELEASE:
+            /* Set the Powering bit
+		 * this will indicates to the UART driver that the next
+		 * data are the ATR
+		 */
+            SlotCtx->isPoweringUp = bTRUE;
 
-        scpin.word = sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN;
-        scpin.bits.CRDRST = !RESET_ACTIVE;
-        sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
-        MXC_Delay(2);
-        break;
+            scpin.word        = sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN;
+            scpin.bits.CRDRST = !RESET_ACTIVE;
+            sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
+            MXC_Delay(2);
+            break;
 
-    default:
-        return ICC_ERR_BAD_PARAMETER;
+        default:
+            return ICC_ERR_BAD_PARAMETER;
     }
 
     return ICC_OK;
@@ -308,8 +309,8 @@ IccReturn_t bypassEnableIrq(SlotContext_t* SlotCtx, int32_t enable)
     UartState_t* UartState = NULL;
 
     UartState = (UartState_t*)(SlotCtx->UartData->PrivateData);
-    if ((NULL == UartState) || (NULL == (void*)UartState->UartAddress) || (NULL == SlotCtx)
-        || (NULL == SlotCtx->UartData)) {
+    if ((NULL == UartState) || (NULL == (void*)UartState->UartAddress) || (NULL == SlotCtx) ||
+        (NULL == SlotCtx->UartData)) {
         return ICC_ERR_NULL_PTR;
     }
 
@@ -338,8 +339,8 @@ IccReturn_t bypassGetCardStatus(SlotContext_t* SlotCtx)
     }
 
     // Read OFF PIN
-    PinValue = MXC_GPIO_InGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_OFF_PIN)
-        >> MAX325XX_EVKIT_EXT_AFE_OFF_POS;
+    PinValue = MXC_GPIO_InGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_OFF_PIN) >>
+               MAX325XX_EVKIT_EXT_AFE_OFF_POS;
 
     /* Is a card present in the slot ? */
     if (MAX325XX_EVKIT_EXT_AFE_CARD_ABSENT == PinValue) {
@@ -347,8 +348,8 @@ IccReturn_t bypassGetCardStatus(SlotContext_t* SlotCtx)
     }
 
     /* check if the card is powered */
-    PinValue = MXC_GPIO_OutGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN)
-        >> MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS;
+    PinValue = MXC_GPIO_OutGet(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN) >>
+               MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS;
 
     /* SAM present but not powered */
     if (MAX325XX_EVKIT_EXT_AFE_OFFLINE == PinValue) {
@@ -363,10 +364,10 @@ IccReturn_t bypassGetCardStatus(SlotContext_t* SlotCtx)
  *  @brief  Analog Front End supported operations
  */
 static const SlotOps_t bypass_AfeOps = {
-    .select = bypassSelect,
-    .setvoltage = bypassSetVoltage,
-    .power = bypassPower,
-    .getcardstatus = bypassGetCardStatus,
+    .select          = bypassSelect,
+    .setvoltage      = bypassSetVoltage,
+    .power           = bypassPower,
+    .getcardstatus   = bypassGetCardStatus,
     .enableinterrupt = bypassEnableIrq,
 };
 
@@ -383,8 +384,8 @@ static const SlotOps_t bypass_AfeOps = {
 IccReturn_t bypassInit(UartId_t UartId, MAX325xxSlots_t SlotId)
 {
     SlotContext_t* SlotCtx = NULL;
-    SCPin_t scpin = { .word = 0 };
-    SCControl_t sccr = { .word = 0 };
+    SCPin_t scpin          = {.word = 0};
+    SCControl_t sccr       = {.word = 0};
     mxc_gpio_cfg_t config;
     UartState_t* UartState = NULL;
 
@@ -411,117 +412,117 @@ IccReturn_t bypassInit(UartId_t UartId, MAX325xxSlots_t SlotId)
     sccr.word = sc_context.sc[SlotCtx->UartId].reg_sc->SC_CR;
 #if !defined(__MAX32590) && !defined(__MAX32591) && !defined(__MAX32565) && !defined(__MAX32572)
     sccr.bits.DUAL_MODE = 1;
-    sccr.bits.BYP_PHY = 1;
+    sccr.bits.BYP_PHY   = 1;
 #endif
     sc_context.sc[SlotCtx->UartId].reg_sc->SC_CR = sccr.word;
     MXC_Delay(2);
 
-    scpin.bits.CLKSEL = bTRUE;
-    scpin.bits.CRDC4 = bTRUE;
-    scpin.bits.CRDC8 = bTRUE;
+    scpin.bits.CLKSEL                            = bTRUE;
+    scpin.bits.CRDC4                             = bTRUE;
+    scpin.bits.CRDC8                             = bTRUE;
     sc_context.sc[SlotCtx->UartId].reg_sc->SC_PN = scpin.word;
     MXC_Delay(2);
 
     /* Initialize CMDVCC */
-    config.port = MAX325XX_EVKIT_EXT_AFE_PORT;
-    config.mask = MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN;
-    config.pad = MXC_GPIO_PAD_NONE;
-    config.func = MXC_GPIO_FUNC_OUT;
+    config.port  = MAX325XX_EVKIT_EXT_AFE_PORT;
+    config.mask  = MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN;
+    config.pad   = MXC_GPIO_PAD_NONE;
+    config.func  = MXC_GPIO_FUNC_OUT;
     config.vssel = MXC_GPIO_VSSEL_VDDIOH;
     MXC_GPIO_Config(&config);
 
     /* deactivate the card */
     MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_CMDVCC_PIN,
-        (MAX325XX_EVKIT_EXT_AFE_OFFLINE << MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS));
+                    (MAX325XX_EVKIT_EXT_AFE_OFFLINE << MAX325XX_EVKIT_EXT_AFE_CMDVCC_POS));
 
     /* Initialize OFF */
-    config.port = MAX325XX_EVKIT_EXT_AFE_PORT;
-    config.mask = MAX325XX_EVKIT_EXT_AFE_OFF_PIN;
-    config.pad = MXC_GPIO_PAD_PULL_UP;
-    config.func = MXC_GPIO_FUNC_IN;
+    config.port  = MAX325XX_EVKIT_EXT_AFE_PORT;
+    config.mask  = MAX325XX_EVKIT_EXT_AFE_OFF_PIN;
+    config.pad   = MXC_GPIO_PAD_PULL_UP;
+    config.func  = MXC_GPIO_FUNC_IN;
     config.vssel = MXC_GPIO_VSSEL_VDDIOH;
     MXC_GPIO_Config(&config);
 
     /* Configure GPIO pin corresponding to the correct smart card interfaces(SC0 or SC1) */
     switch (UartId) {
-    case SCI_0:
-        /* Initialize GPIOs */
-        /* Out - SC UART GPIOs ***************************************************/
-        /* RST */
-        config.port = MAX325xx_SC0_BYP_RST_PORT;
-        config.mask = MAX325xx_SC0_BYP_RST;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_ALT1;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+        case SCI_0:
+            /* Initialize GPIOs */
+            /* Out - SC UART GPIOs ***************************************************/
+            /* RST */
+            config.port  = MAX325xx_SC0_BYP_RST_PORT;
+            config.mask  = MAX325xx_SC0_BYP_RST;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_ALT1;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        /* CLK */
-        config.port = MAX325xx_SC0_BYP_CLK_PORT;
-        config.mask = MAX325xx_SC0_BYP_CLK;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_ALT1;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+            /* CLK */
+            config.port  = MAX325xx_SC0_BYP_CLK_PORT;
+            config.mask  = MAX325xx_SC0_BYP_CLK;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_ALT1;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        /* In - SC UART GPIOs ***************************************************/
-        /* IO */
-        config.port = MAX325xx_SC0_BYP_IO_PORT;
-        config.mask = MAX325xx_SC0_BYP_IO;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_ALT1;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+            /* In - SC UART GPIOs ***************************************************/
+            /* IO */
+            config.port  = MAX325xx_SC0_BYP_IO_PORT;
+            config.mask  = MAX325xx_SC0_BYP_IO;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_ALT1;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        /* 5V3V_PIN */
-        config.port = MAX325XX_EVKIT_EXT_AFE_PORT;
-        config.mask = MAX325XX_EVKIT_EXT_AFE_5V3V_PIN;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_OUT;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+            /* 5V3V_PIN */
+            config.port  = MAX325XX_EVKIT_EXT_AFE_PORT;
+            config.mask  = MAX325XX_EVKIT_EXT_AFE_5V3V_PIN;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_OUT;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_5V3V_PIN,
-            (MAX325XX_EVKIT_EXT_AFE_5V3V_VALUE << MAX325XX_EVKIT_EXT_AFE_5V3V_POS));
-        break;
+            MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_5V3V_PIN,
+                            (MAX325XX_EVKIT_EXT_AFE_5V3V_VALUE << MAX325XX_EVKIT_EXT_AFE_5V3V_POS));
+            break;
 #if defined(__MAX32552) || defined(__MAX32560) || defined(__MAX32565) || defined(__MAX32572)
-    case SCI_1:
-        /* Initialize GPIOs */
-        /* Out - SC UART GPIOs ***************************************************/
-        /* RST */
-        config.port = MAX325xx_SC1_BYP_RST_PORT;
-        config.mask = MAX325xx_SC1_BYP_RST;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_ALT1;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+        case SCI_1:
+            /* Initialize GPIOs */
+            /* Out - SC UART GPIOs ***************************************************/
+            /* RST */
+            config.port  = MAX325xx_SC1_BYP_RST_PORT;
+            config.mask  = MAX325xx_SC1_BYP_RST;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_ALT1;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        /* CLK */
-        config.port = MAX325xx_SC1_BYP_CLK_PORT;
-        config.mask = MAX325xx_SC1_BYP_CLK;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_ALT1;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+            /* CLK */
+            config.port  = MAX325xx_SC1_BYP_CLK_PORT;
+            config.mask  = MAX325xx_SC1_BYP_CLK;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_ALT1;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        /* In - SC UART GPIOs ***************************************************/
-        /* IO */
-        config.port = MAX325xx_SC1_BYP_IO_PORT;
-        config.mask = MAX325xx_SC1_BYP_IO;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_ALT1;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+            /* In - SC UART GPIOs ***************************************************/
+            /* IO */
+            config.port  = MAX325xx_SC1_BYP_IO_PORT;
+            config.mask  = MAX325xx_SC1_BYP_IO;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_ALT1;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        /* 5V3V_PIN */
-        config.port = MAX325XX_EVKIT_EXT_AFE_PORT;
-        config.mask = MAX325XX_EVKIT_EXT_AFE_5V3V_PIN;
-        config.pad = MXC_GPIO_PAD_NONE;
-        config.func = MXC_GPIO_FUNC_OUT;
-        config.vssel = MXC_GPIO_VSSEL_VDDIOH;
-        MXC_GPIO_Config(&config);
+            /* 5V3V_PIN */
+            config.port  = MAX325XX_EVKIT_EXT_AFE_PORT;
+            config.mask  = MAX325XX_EVKIT_EXT_AFE_5V3V_PIN;
+            config.pad   = MXC_GPIO_PAD_NONE;
+            config.func  = MXC_GPIO_FUNC_OUT;
+            config.vssel = MXC_GPIO_VSSEL_VDDIOH;
+            MXC_GPIO_Config(&config);
 
-        MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_5V3V_PIN,
-            (MAX325XX_EVKIT_EXT_AFE_5V3V_VALUE << MAX325XX_EVKIT_EXT_AFE_5V3V_POS));
+            MXC_GPIO_OutPut(MAX325XX_EVKIT_EXT_AFE_PORT, MAX325XX_EVKIT_EXT_AFE_5V3V_PIN,
+                            (MAX325XX_EVKIT_EXT_AFE_5V3V_VALUE << MAX325XX_EVKIT_EXT_AFE_5V3V_POS));
 #endif
     }
 

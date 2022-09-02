@@ -38,18 +38,18 @@
 uint32_t MXC_SRCC_RevA_ID(mxc_srcc_reva_regs_t* srcc, mxc_srcc_cache_id_t id)
 {
     switch (id) {
-    case SRCC_CACHE_ID_RELNUM:
-        return (((srcc->cache_id) & MXC_F_SRCC_REVA_CACHE_ID_RELNUM))
-            >> MXC_F_SRCC_REVA_CACHE_ID_RELNUM_POS;
+        case SRCC_CACHE_ID_RELNUM:
+            return (((srcc->cache_id) & MXC_F_SRCC_REVA_CACHE_ID_RELNUM)) >>
+                   MXC_F_SRCC_REVA_CACHE_ID_RELNUM_POS;
 
-    case SRCC_CACHE_ID_PARTNUM:
-        return (((srcc->cache_id) & MXC_F_SRCC_REVA_CACHE_ID_PARTNUM))
-            >> MXC_F_SRCC_REVA_CACHE_ID_PARTNUM_POS;
+        case SRCC_CACHE_ID_PARTNUM:
+            return (((srcc->cache_id) & MXC_F_SRCC_REVA_CACHE_ID_PARTNUM)) >>
+                   MXC_F_SRCC_REVA_CACHE_ID_PARTNUM_POS;
 
-    case SRCC_CACHE_ID_CCHID:
-    default:
-        return (((srcc->cache_id) & MXC_F_SRCC_REVA_CACHE_ID_CCHID))
-            >> MXC_F_SRCC_REVA_CACHE_ID_CCHID_POS;
+        case SRCC_CACHE_ID_CCHID:
+        default:
+            return (((srcc->cache_id) & MXC_F_SRCC_REVA_CACHE_ID_CCHID)) >>
+                   MXC_F_SRCC_REVA_CACHE_ID_CCHID_POS;
     }
 }
 #endif
@@ -84,18 +84,18 @@ void MXC_SRCC_RevA_WriteAllocateDisable(mxc_srcc_reva_regs_t* srcc)
     srcc->cache_ctrl &= ~MXC_F_SRCC_REVA_CACHE_CTRL_WRITE_ALLOC_EN;
 }
 
-void MXC_SRCC_RevA_CriticalWordFirstEnable(mxc_srcc_reva_regs_t* srcc) // cwfst_dis
+void MXC_SRCC_RevA_CriticalWordFirstEnable(mxc_srcc_reva_regs_t* srcc) //cwfst_dis
 {
     srcc->cache_ctrl &= ~MXC_F_SRCC_REVA_CACHE_CTRL_CWFST_DIS;
 }
 
-void MXC_SRCC_RevA_CriticalWordFirstDisable(mxc_srcc_reva_regs_t* srcc) // cwfst_dis
+void MXC_SRCC_RevA_CriticalWordFirstDisable(mxc_srcc_reva_regs_t* srcc) //cwfst_dis
 {
     srcc->cache_ctrl |= MXC_F_SRCC_REVA_CACHE_CTRL_CWFST_DIS;
 }
 
 uint32_t MXC_SRCC_RevA_Ready(mxc_srcc_reva_regs_t* srcc)
 {
-    return (srcc->cache_ctrl & MXC_F_SRCC_REVA_CACHE_CTRL_CACHE_RDY)
-        >> MXC_F_SRCC_REVA_CACHE_CTRL_CACHE_RDY_POS;
+    return (srcc->cache_ctrl & MXC_F_SRCC_REVA_CACHE_CTRL_CACHE_RDY) >>
+           MXC_F_SRCC_REVA_CACHE_CTRL_CACHE_RDY_POS;
 }

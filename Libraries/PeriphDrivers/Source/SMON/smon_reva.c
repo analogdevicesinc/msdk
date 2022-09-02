@@ -31,16 +31,16 @@
  *
  **************************************************************************** */
 
-#include "smon_reva.h"
+#include <stddef.h>
 #include "mxc_assert.h"
+#include "mxc_pins.h"
+#include "mxc_lock.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_pins.h"
-#include <stddef.h>
+#include "smon_reva.h"
 
-int MXC_SMON_RevA_ExtSensorEnable(
-    mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg, uint32_t delay)
+int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg,
+                                  uint32_t delay)
 {
     int err;
 
@@ -56,7 +56,7 @@ int MXC_SMON_RevA_ExtSensorEnable(
         return err;
     }
 
-    // Enable external sensor
+    //Enable external sensor
     smon->extscn |= cfg->sensorNumber;
 
     if ((err = MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_EXTSENSOR, delay)) != E_NO_ERROR) {
@@ -101,8 +101,8 @@ int MXC_SMON_RevA_SetErrorCount(mxc_smon_reva_regs_t* smon, uint8_t errorCount)
     return err;
 }
 
-int MXC_SMON_RevA_TempSensorEnable(
-    mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold, uint32_t delay)
+int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold,
+                                   uint32_t delay)
 {
     int err;
 
@@ -110,7 +110,7 @@ int MXC_SMON_RevA_TempSensorEnable(
         return err;
     }
 
-    smon->intscn |= MXC_F_SMON_REVA_INTSCN_TEMP_EN; // Enable Sensor
+    smon->intscn |= MXC_F_SMON_REVA_INTSCN_TEMP_EN; //Enable Sensor
 
     if ((err = MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_INTSENSOR, delay)) != E_NO_ERROR) {
         return err;
@@ -138,8 +138,8 @@ int MXC_SMON_RevA_SetTempThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_tem
     return err;
 }
 
-int MXC_SMON_RevA_VoltageMonitorEnable(
-    mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold, uint32_t delay)
+int MXC_SMON_RevA_VoltageMonitorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold,
+                                       uint32_t delay)
 {
     int err;
 
@@ -147,7 +147,7 @@ int MXC_SMON_RevA_VoltageMonitorEnable(
         return err;
     }
 
-    smon->intscn |= MXC_F_SMON_REVA_INTSCN_VBAT_EN; // Enable Sensor
+    smon->intscn |= MXC_F_SMON_REVA_INTSCN_VBAT_EN; //Enable Sensor
 
     if ((err = MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_INTSENSOR, delay)) != E_NO_ERROR) {
         return err;
@@ -182,7 +182,7 @@ int MXC_SMON_RevA_ActiveDieShieldEnable(mxc_smon_reva_regs_t* smon, uint32_t del
 {
     int err;
 
-    smon->intscn |= MXC_F_SMON_REVA_INTSCN_SHIELD_EN; // Enable Sensor
+    smon->intscn |= MXC_F_SMON_REVA_INTSCN_SHIELD_EN; //Enable Sensor
 
     if ((err = MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_INTSENSOR, delay)) != E_NO_ERROR) {
         return err;
@@ -191,8 +191,8 @@ int MXC_SMON_RevA_ActiveDieShieldEnable(mxc_smon_reva_regs_t* smon, uint32_t del
     return err;
 }
 
-int MXC_SMON_RevA_SelfDestructByteEnable(
-    mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg, uint32_t delay)
+int MXC_SMON_RevA_SelfDestructByteEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg,
+                                         uint32_t delay)
 {
     int err;
 
@@ -232,8 +232,9 @@ void MXC_SMON_RevA_DisablePUFTrimErase(mxc_smon_reva_regs_t* smon)
 }
 
 int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t* smon,
-    mxc_smon_reva_interrupt_mode_t interruptMode, mxc_smon_reva_lowpower_mode_t lowPowerMode,
-    uint32_t delay)
+                                             mxc_smon_reva_interrupt_mode_t interruptMode,
+                                             mxc_smon_reva_lowpower_mode_t lowPowerMode,
+                                             uint32_t delay)
 {
     int err;
 
@@ -253,7 +254,7 @@ int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t* smon,
         return E_BAD_PARAM;
     }
 
-    smon->intscn |= MXC_F_SMON_REVA_INTSCN_DFD_EN; // Enable DFD
+    smon->intscn |= MXC_F_SMON_REVA_INTSCN_DFD_EN; //Enable DFD
 
     if ((err = MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_INTSENSOR, delay)) != E_NO_ERROR) {
         return err;
@@ -287,7 +288,8 @@ void MXC_SMON_RevA_IntSensorLock(mxc_smon_reva_regs_t* smon)
 int MXC_SMON_RevA_isBusy(mxc_smon_reva_regs_t* smon, mxc_smon_reva_busy_t reg, uint32_t delay)
 {
     if (delay == 0) {
-        while (smon->secst & reg) { }
+        while (smon->secst & reg)
+            ;
 
         return E_NO_ERROR;
     }

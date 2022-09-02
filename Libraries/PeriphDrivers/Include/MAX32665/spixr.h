@@ -41,8 +41,8 @@
 #define _MXC_SPIXR_H_
 
 /* **** Includes **** */
-#include "mxc_sys.h"
 #include "spixr_regs.h"
+#include "mxc_sys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,8 +86,8 @@ typedef enum {
  * @brief       Configuration parameters of SPIXR
  */
 typedef struct {
-    uint32_t numbits; ///< Number of Bits per character. In slave mode 9-bit character length is not
-                      ///< supported.
+    uint32_t
+        numbits; ///< Number of Bits per character. In slave mode 9-bit character length is not supported.
     mxc_spixr_width_t data_width; ///< SPI Data width
 
     uint32_t ssel_act_1; ///< Slave Select Action delay 1
@@ -325,8 +325,8 @@ int MXC_SPIXR_SetSSPolarity(int activeLow);
  * @param       preActive   Time after SS becomes active until first SCLK
  *
  */
-void MXC_SPIXR_SetSSTiming(
-    unsigned int ssIActDelay, unsigned int postActive, unsigned int preActive);
+void MXC_SPIXR_SetSSTiming(unsigned int ssIActDelay, unsigned int postActive,
+                           unsigned int preActive);
 
 /**
  * @brief       Set the SPI Frequency

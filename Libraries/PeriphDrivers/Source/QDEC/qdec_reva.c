@@ -31,24 +31,24 @@
  *
  *************************************************************************** */
 
-#include "qdec_reva.h"
-#include "mxc_assert.h"
+#include <stdio.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "mxc_lock.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
+#include "mxc_lock.h"
 #include "qdec.h"
-#include <stdio.h>
+#include "qdec_reva.h"
 
-#define QDEC_IE_MASK                                                                               \
-    (MXC_F_QDEC_REVA_INTEN_INDEX | MXC_F_QDEC_REVA_INTEN_QERR | MXC_F_QDEC_REVA_INTEN_COMPARE      \
-        | MXC_F_QDEC_REVA_INTEN_MAXCNT | MXC_F_QDEC_REVA_INTEN_CAPTURE | MXC_F_QDEC_REVA_INTEN_DIR \
-        | MXC_F_QDEC_REVA_INTEN_MOVE)
+#define QDEC_IE_MASK                                                                            \
+    (MXC_F_QDEC_REVA_INTEN_INDEX | MXC_F_QDEC_REVA_INTEN_QERR | MXC_F_QDEC_REVA_INTEN_COMPARE | \
+     MXC_F_QDEC_REVA_INTEN_MAXCNT | MXC_F_QDEC_REVA_INTEN_CAPTURE | MXC_F_QDEC_REVA_INTEN_DIR | \
+     MXC_F_QDEC_REVA_INTEN_MOVE)
 
-#define QDEC_IF_MASK                                                                               \
-    (MXC_F_QDEC_REVA_INTFL_INDEX | MXC_F_QDEC_REVA_INTFL_QERR | MXC_F_QDEC_REVA_INTFL_COMPARE      \
-        | MXC_F_QDEC_REVA_INTFL_MAXCNT | MXC_F_QDEC_REVA_INTFL_CAPTURE | MXC_F_QDEC_REVA_INTFL_DIR \
-        | MXC_F_QDEC_REVA_INTFL_MOVE)
+#define QDEC_IF_MASK                                                                            \
+    (MXC_F_QDEC_REVA_INTFL_INDEX | MXC_F_QDEC_REVA_INTFL_QERR | MXC_F_QDEC_REVA_INTFL_COMPARE | \
+     MXC_F_QDEC_REVA_INTFL_MAXCNT | MXC_F_QDEC_REVA_INTFL_CAPTURE | MXC_F_QDEC_REVA_INTFL_DIR | \
+     MXC_F_QDEC_REVA_INTFL_MOVE)
 
 static mxc_qdec_cb_t async_callback;
 
@@ -131,8 +131,8 @@ int MXC_QDEC_RevA_Shutdown(mxc_qdec_reva_regs_t* qdec)
     qdec->intfl = QDEC_IF_MASK;
 
     // Clear registers
-    qdec->ctrl = 0;
-    qdec->maxcnt = 0xFFFFFFFF;
+    qdec->ctrl    = 0;
+    qdec->maxcnt  = 0xFFFFFFFF;
     qdec->initial = 0;
 
     return E_NO_ERROR;
@@ -241,7 +241,7 @@ int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t* qdec)
     uint32_t flags;
 
     // Clear Flags
-    flags = MXC_QDEC_GetFlags();
+    flags       = MXC_QDEC_GetFlags();
     qdec->intfl = flags;
 
     if (async_callback != NULL) {
@@ -251,8 +251,7 @@ int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t* qdec)
     return E_NO_ERROR;
 }
 
-// ************************************* Function to Read QDEC Data
-// *******************************************
+// ************************************* Function to Read QDEC Data *******************************************
 int MXC_QDEC_RevA_GetPosition(mxc_qdec_reva_regs_t* qdec)
 {
     return qdec->position;

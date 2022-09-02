@@ -34,16 +34,16 @@
  *
  ******************************************************************************/
 
-#include "board.h"
-#include "gpio.h"
-#include "led.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_pins.h"
-#include "mxc_sys.h"
-#include "pb.h"
-#include "uart.h"
 #include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "mxc_assert.h"
+#include "board.h"
+#include "uart.h"
+#include "gpio.h"
+#include "mxc_pins.h"
+#include "led.h"
+#include "pb.h"
 // #include "spixc.h"
 #include "i2c.h"
 #include "mxc_sys.h"
@@ -53,12 +53,12 @@ mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+    {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    {MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -72,11 +72,9 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 //     CONSOLE_BAUD
 // };
 
-// const sys_cfg_uart_t uart_sys_cfg = {MAP_A,Enable};    // There is no special system
-// configuration parameters for UART on MAX32650 const sys_cfg_i2c_t i2c_sys_cfg = NULL;     //
-// There is no special system configuration parameters for I2C on MAX32650 const sys_cfg_spixc_t
-// spixc_sys_cfg = NULL;   // There is no special system configuration parameters for SPIXC on
-// MAX32650
+// const sys_cfg_uart_t uart_sys_cfg = {MAP_A,Enable};    // There is no special system configuration parameters for UART on MAX32650
+// const sys_cfg_i2c_t i2c_sys_cfg = NULL;     // There is no special system configuration parameters for I2C on MAX32650
+// const sys_cfg_spixc_t spixc_sys_cfg = NULL;   // There is no special system configuration parameters for SPIXC on MAX32650
 
 // const spixc_cfg_t mx25_spixc_cfg = {
 //     0, //mode
@@ -89,7 +87,8 @@ void mxc_assert(const char* expr, const char* file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1) { }
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -105,7 +104,7 @@ int Board_Init(void)
     int err;
 
     /*
-
+    
         if ((err = MX25_BoardInit()) != E_NO_ERROR) {
             MXC_ASSERT_FAIL();
             return err;
@@ -164,7 +163,7 @@ int MX25_Board_Init(void)
 /******************************************************************************/
 int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_width_t width)
 {
-    mxc_spixf_req_t req = { deassert, 0, NULL, read, width, len, 0, 0, NULL };
+    mxc_spixf_req_t req = {deassert, 0, NULL, read, width, len, 0, 0, NULL};
 
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;
@@ -176,7 +175,7 @@ int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_wi
 /******************************************************************************/
 int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, mxc_spixf_width_t width)
 {
-    mxc_spixf_req_t req = { deassert, 0, write, NULL, width, len, 0, 0, NULL };
+    mxc_spixf_req_t req = {deassert, 0, write, NULL, width, len, 0, 0, NULL};
 
     if (MXC_SPIXF_Transaction(&req) != len) {
         return E_COMM_ERR;

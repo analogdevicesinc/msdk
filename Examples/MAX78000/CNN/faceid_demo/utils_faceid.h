@@ -1,12 +1,12 @@
 #ifndef UTILS_FACEID_H_
 #define UTILS_FACEID_H_
 
-#include "sampledata.h"
 #include "uart.h"
+#include "sampledata.h"
 
 #define DATA_SIZE_IN (160 * 120 * 3)
 #define CONSOLE_UART 0
-#define MXC_UARTn MXC_UART_GET_UART(CONSOLE_UART)
+#define MXC_UARTn    MXC_UART_GET_UART(CONSOLE_UART)
 
 // Data input: HWC (little data): 3x160x120
 static const uint32_t input_0[] = INPUT_0;

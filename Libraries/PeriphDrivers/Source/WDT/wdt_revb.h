@@ -32,9 +32,9 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
 //#include "wdt.h"
 #include "wdt_revb_regs.h"
@@ -61,20 +61,20 @@ typedef enum {
 
 typedef enum {
     MXC_WDT_REVB_COMPATIBILITY = 0,
-    MXC_WDT_REVB_WINDOWED = 1,
+    MXC_WDT_REVB_WINDOWED      = 1,
 } mxc_wdt_revb_mode_t;
 
 typedef enum {
     MXC_WDT_REVB_DISABLE = 0,
-    MXC_WDT_REVB_ENABLE = 1,
+    MXC_WDT_REVB_ENABLE  = 1,
 } mxc_wdt_revb_en_t;
 
 typedef struct {
-    mxc_wdt_revb_mode_t mode; ///< WDT mode
+    mxc_wdt_revb_mode_t mode;               ///< WDT mode
     mxc_wdt_revb_period_t upperResetPeriod; ///< Reset upper limit
     mxc_wdt_revb_period_t lowerResetPeriod; ///< Reset lower limit
-    mxc_wdt_revb_period_t upperIntPeriod; ///< Interrupt upper limit
-    mxc_wdt_revb_period_t lowerIntPeriod; ///< Interrupt lower limit
+    mxc_wdt_revb_period_t upperIntPeriod;   ///< Interrupt upper limit
+    mxc_wdt_revb_period_t lowerIntPeriod;   ///< Interrupt lower limit
 } mxc_wdt_revb_cfg_t;
 
 /* **** Functions **** */

@@ -18,26 +18,26 @@
 /* #define STATIC_BUILD to avoid __declspec(dllimport) etc.
    even when compiling with /MD */
 #ifdef STATIC_BUILD
-#define CK_DEFINE_FUNCTION(returnType, name) returnType name
-#define CK_DECLARE_FUNCTION(returnType, name) returnType name
+#define CK_DEFINE_FUNCTION(returnType, name)          returnType name
+#define CK_DECLARE_FUNCTION(returnType, name)         returnType name
 #define CK_DECLARE_FUNCTION_POINTER(returnType, name) returnType(*name)
 #else
 #ifdef _DLL
 #ifdef BUILDING_CRYPTOKI
 /* BUILDING_CRYPTOKI should be defined iff we are compiling
-    the library contents, not just using it. */
-#define CK_DEFINE_FUNCTION(returnType, name) returnType __declspec(dllexport) name
-#define CK_DECLARE_FUNCTION(returnType, name) returnType __declspec(dllexport) name
+	the library contents, not just using it. */
+#define CK_DEFINE_FUNCTION(returnType, name)          returnType __declspec(dllexport) name
+#define CK_DECLARE_FUNCTION(returnType, name)         returnType __declspec(dllexport) name
 #define CK_DECLARE_FUNCTION_POINTER(returnType, name) returnType __declspec(dllexport)(*name)
 #else
-#define CK_DEFINE_FUNCTION(returnType, name) returnType __declspec(dllexport) name
-#define CK_DECLARE_FUNCTION(returnType, name) returnType __declspec(dllimport) name
+#define CK_DEFINE_FUNCTION(returnType, name)          returnType __declspec(dllexport) name
+#define CK_DECLARE_FUNCTION(returnType, name)         returnType __declspec(dllimport) name
 #define CK_DECLARE_FUNCTION_POINTER(returnType, name) returnType __declspec(dllimport)(*name)
 #endif
 #else
 /* Win32, not DLL */
-#define CK_DEFINE_FUNCTION(returnType, name) returnType name
-#define CK_DECLARE_FUNCTION(returnType, name) returnType name
+#define CK_DEFINE_FUNCTION(returnType, name)          returnType name
+#define CK_DECLARE_FUNCTION(returnType, name)         returnType name
 #define CK_DECLARE_FUNCTION_POINTER(returnType, name) returnType(*name)
 #endif
 #endif
@@ -47,7 +47,7 @@
 #else /* win16 */
 /* We don't support win16. This may be wrong or incomplete,
         it's just taken from the example in the spec. */
-#define CK_PTR far*
+#define CK_PTR                               far*
 #define CK_DEFINE_FUNCTION(returnType, name) returnType __export _far _pascal name
 #ifdef BUILDING_CRYPTOKI
 #define CK_DECLARE_FUNCTION(returnType, name) returnType __export _far _pascal name
@@ -55,16 +55,16 @@
 #define CK_DECLARE_FUNCTION(returnType, name) returnType __import _far _pascal name
 #endif
 #define CK_DECLARE_FUNCTION_POINTER(returnType, name) returnType __export _far _pascal(*name)
-#define CK_CALLBACK_FUNCTION(returnType, name) returnType _far _pascal(*name)
+#define CK_CALLBACK_FUNCTION(returnType, name)        returnType _far _pascal(*name)
 #endif
 
 #else /* not windows */
 
-#define CK_PTR *
-#define CK_DEFINE_FUNCTION(returnType, name) returnType name
-#define CK_DECLARE_FUNCTION(returnType, name) returnType name
+#define CK_PTR                                        *
+#define CK_DEFINE_FUNCTION(returnType, name)          returnType name
+#define CK_DECLARE_FUNCTION(returnType, name)         returnType name
 #define CK_DECLARE_FUNCTION_POINTER(returnType, name) returnType(*name)
-#define CK_CALLBACK_FUNCTION(returnType, name) returnType(*name)
+#define CK_CALLBACK_FUNCTION(returnType, name)        returnType(*name)
 #endif
 
 #ifndef NULL_PTR

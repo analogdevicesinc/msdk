@@ -41,14 +41,14 @@
  **************************************************************************** */
 
 /* **** Includes **** */
-#include "spimss_reva.h"
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "mxc_lock.h"
-#include "mxc_sys.h"
-#include <stdint.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_sys.h"
+#include "spimss_reva.h"
+#include "mxc_lock.h"
 
 /**
  * @ingroup spimss
@@ -65,13 +65,13 @@ typedef struct {
 static spimss_reva_req_state_t states[MXC_SPIMSS_INSTANCES];
 
 /* **** Functions **** */
-static int MXC_SPIMSS_RevA_TransSetup(
-    mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req, int master);
-static uint32_t MXC_SPIMSS_RevA_MasterTransHandler(
-    mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
+static int MXC_SPIMSS_RevA_TransSetup(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req,
+                                      int master);
+static uint32_t MXC_SPIMSS_RevA_MasterTransHandler(mxc_spimss_reva_regs_t* spi,
+                                                   spimss_reva_req_t* req);
 static uint32_t MXC_SPIMSS_RevA_TransHandler(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
-static uint32_t MXC_SPIMSS_RevA_SlaveTransHandler(
-    mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* req);
+static uint32_t MXC_SPIMSS_RevA_SlaveTransHandler(mxc_spimss_reva_regs_t* spi,
+                                                  spimss_reva_req_t* req);
 
 /* ************************************************************************** */
 int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t* spi, unsigned mode, unsigned freq)
@@ -80,23 +80,23 @@ int MXC_SPIMSS_RevA_Init(mxc_spimss_reva_regs_t* spi, unsigned mode, unsigned fr
     unsigned int spimss_clk;
     unsigned int pol, pha; // Polarity and phase of the clock (SPI mode)
 
-    spi_num = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t*)spi);
+    spi_num             = MXC_SPIMSS_GET_IDX((mxc_spimss_regs_t*)spi);
     states[spi_num].req = NULL;
     spi->ctrl &= ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Keep the SPI Disabled (This is the SPI Start)
 
     // Set the bit rate
     spimss_clk = PeripheralClock;
-    spi->brg = (spimss_clk / freq) >> 1;
+    spi->brg   = (spimss_clk / freq) >> 1;
 
     // Set the mode
     pol = mode >> 1; // Get the polarity out of the mode input value
-    pha = mode & 1; // Get the phase out of the mode input value
+    pha = mode & 1;  // Get the phase out of the mode input value
 
-    spi->ctrl = (spi->ctrl & ~(MXC_F_SPIMSS_REVA_CTRL_CLKPOL))
-        | (pol << MXC_F_SPIMSS_REVA_CTRL_CLKPOL_POS); // polarity
+    spi->ctrl = (spi->ctrl & ~(MXC_F_SPIMSS_REVA_CTRL_CLKPOL)) |
+                (pol << MXC_F_SPIMSS_REVA_CTRL_CLKPOL_POS); // polarity
 
-    spi->ctrl = (spi->ctrl & ~(MXC_F_SPIMSS_REVA_CTRL_PHASE))
-        | (pha << MXC_F_SPIMSS_REVA_CTRL_PHASE_POS); // phase
+    spi->ctrl = (spi->ctrl & ~(MXC_F_SPIMSS_REVA_CTRL_PHASE)) |
+                (pha << MXC_F_SPIMSS_REVA_CTRL_PHASE_POS); // phase
 
     spi->int_fl &= ~(MXC_F_SPIMSS_REVA_INT_FL_IRQ);
 
@@ -109,9 +109,9 @@ int MXC_SPIMSS_RevA_Shutdown(mxc_spimss_reva_regs_t* spi)
     spimss_reva_req_t* temp_req;
 
     // Disable and turn off the SPI transaction.
-    spi->ctrl = 0; // Interrupts, SPI transaction all turned off
+    spi->ctrl   = 0; // Interrupts, SPI transaction all turned off
     spi->int_fl = 0;
-    spi->mode = 0;
+    spi->mode   = 0;
 
     // Reset FIFO counters
     spi->dma &= ~(MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT | MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT);
@@ -165,10 +165,10 @@ int MXC_SPIMSS_RevA_TransSetup(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* r
         return E_BUSY;
     }
 
-    if (master) { // Enable master mode
-        spi->ctrl |= MXC_F_SPIMSS_REVA_CTRL_MMEN; // SPI configured as master.
-        spi->mode |= MXC_F_SPIMSS_REVA_CTRL_MMEN; // SSEL pin is an output.
-    } else { // Enable slave mode
+    if (master) {                                    // Enable master mode
+        spi->ctrl |= MXC_F_SPIMSS_REVA_CTRL_MMEN;    // SPI configured as master.
+        spi->mode |= MXC_F_SPIMSS_REVA_CTRL_MMEN;    // SSEL pin is an output.
+    } else {                                         // Enable slave mode
         spi->ctrl &= ~(MXC_F_SPIMSS_REVA_CTRL_MMEN); // SPI configured as slave.
         spi->mode &= ~(MXC_F_SPIMSS_REVA_CTRL_MMEN); // SSEL pin is an input.
     }
@@ -177,11 +177,11 @@ int MXC_SPIMSS_RevA_TransSetup(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* r
 
     if (req->bits < 16) {
         MXC_SETFIELD(spi->mode, MXC_F_SPIMSS_REVA_MODE_NUMBITS,
-            req->bits << MXC_F_SPIMSS_REVA_MODE_NUMBITS_POS);
+                     req->bits << MXC_F_SPIMSS_REVA_MODE_NUMBITS_POS);
 
     } else {
-        MXC_SETFIELD(
-            spi->mode, MXC_F_SPIMSS_REVA_MODE_NUMBITS, 0 << MXC_F_SPIMSS_REVA_MODE_NUMBITS_POS);
+        MXC_SETFIELD(spi->mode, MXC_F_SPIMSS_REVA_MODE_NUMBITS,
+                     0 << MXC_F_SPIMSS_REVA_MODE_NUMBITS_POS);
     }
 
     // Setup the slave select
@@ -201,7 +201,7 @@ void MXC_SPIMSS_RevA_Handler(mxc_spimss_reva_regs_t* spi) // From the IRQ
     uint32_t flags;
     unsigned int int_enable;
 
-    flags = spi->int_fl;
+    flags       = spi->int_fl;
     spi->int_fl = flags;
     spi->int_fl |= 0x80; // clear interrupt
 
@@ -236,12 +236,14 @@ int MXC_SPIMSS_RevA_MasterTrans(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* 
     spi->mode &= ~(MXC_F_SPIMSS_REVA_MODE_SSV); // This will assert the Slave Select.
     spi->ctrl |= MXC_F_SPIMSS_REVA_CTRL_ENABLE; // Enable/Start SPI
 
-    while (MXC_SPIMSS_RevA_MasterTransHandler(spi, req) != 0) { }
+    while (MXC_SPIMSS_RevA_MasterTransHandler(spi, req) != 0) {
+    }
 
     spi->mode |= MXC_F_SPIMSS_REVA_MODE_SSV;
 
-    spi->ctrl &= ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Last of the SPIMSS value has been
-                                                   // transmitted... stop the transmission...
+    spi->ctrl &=
+        ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Last of the SPIMSS value has been transmitted...
+                                          // stop the transmission...
     return E_NO_ERROR;
 }
 
@@ -256,11 +258,13 @@ int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t* spi, spimss_reva_req_t* r
 
     while (MXC_SPIMSS_RevA_SlaveTransHandler(spi, req) != 0) {
         spi->ctrl |= MXC_F_SPIMSS_REVA_CTRL_ENABLE; // Enable/Start SPI
-        while ((spi->int_fl & MXC_F_SPIMSS_REVA_INT_FL_TXST) == MXC_F_SPIMSS_REVA_INT_FL_TXST) { }
+        while ((spi->int_fl & MXC_F_SPIMSS_REVA_INT_FL_TXST) == MXC_F_SPIMSS_REVA_INT_FL_TXST) {
+        }
     }
 
-    spi->ctrl &= ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Last of the SPIMSS value has been
-                                                   // transmitted... stop the transmission...
+    spi->ctrl &=
+        ~(MXC_F_SPIMSS_REVA_CTRL_ENABLE); // Last of the SPIMSS value has been transmitted...
+                                          // stop the transmission...
     return E_NO_ERROR;
 }
 
@@ -318,7 +322,7 @@ uint32_t MXC_SPIMSS_RevA_MasterTransHandler(mxc_spimss_reva_regs_t* spi, spimss_
 
     if (!start_set) {
         start_set = 1;
-        retval = MXC_SPIMSS_RevA_TransHandler(spi, req);
+        retval    = MXC_SPIMSS_RevA_TransHandler(spi, req);
     }
 
     return retval;
@@ -343,8 +347,8 @@ uint32_t MXC_SPIMSS_RevA_TransHandler(mxc_spimss_reva_regs_t* spi, spimss_reva_r
     // Read the RX FIFO
     if (req->rx_data != NULL) {
         // Wait for there to be data in the RX FIFO
-        rx_avail = ((spi->dma & MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT)
-            >> MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS);
+        rx_avail = ((spi->dma & MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT) >>
+                    MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS);
         if ((length - req->rx_num) < rx_avail) {
             rx_avail = (length - req->rx_num);
         }
@@ -360,8 +364,8 @@ uint32_t MXC_SPIMSS_RevA_TransHandler(mxc_spimss_reva_regs_t* spi, spimss_reva_r
                 ((uint8_t*)req->rx_data)[req->rx_num++] = spi->data;
                 rx_avail -= 1;
             }
-            rx_avail = ((spi->dma & MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT)
-                >> MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS);
+            rx_avail = ((spi->dma & MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT) >>
+                        MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS);
             if ((length - req->rx_num) < rx_avail) {
                 rx_avail = (length - req->rx_num);
             }
@@ -371,11 +375,11 @@ uint32_t MXC_SPIMSS_RevA_TransHandler(mxc_spimss_reva_regs_t* spi, spimss_reva_r
 
         if (remain) {
             if (remain > MXC_SPIMSS_FIFO_DEPTH) {
-                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT)
-                    | ((2) << MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS));
+                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT) |
+                            ((2) << MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS));
             } else {
-                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT)
-                    | ((remain - 1) << MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS));
+                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT) |
+                            ((remain - 1) << MXC_F_SPIMSS_REVA_DMA_RX_FIFO_CNT_POS));
             }
 
             int_en = 1;
@@ -397,9 +401,9 @@ uint32_t MXC_SPIMSS_RevA_TransHandler(mxc_spimss_reva_regs_t* spi, spimss_reva_r
     if (req->tx_data != NULL) {
         if (req->tx_num < length) {
             // Calculate how many bytes we can write to the FIFO (tx_avail holds that value)
-            tx_avail = MXC_SPIMSS_FIFO_DEPTH
-                - (((spi->dma & MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT)
-                    >> MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT_POS)); // in bytes
+            tx_avail =
+                MXC_SPIMSS_FIFO_DEPTH - (((spi->dma & MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT) >>
+                                          MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT_POS)); // in bytes
 
             if ((length - req->tx_num) < tx_avail) {
                 tx_avail = (length - req->tx_num); // This is for the last spin
@@ -425,13 +429,13 @@ uint32_t MXC_SPIMSS_RevA_TransHandler(mxc_spimss_reva_regs_t* spi, spimss_reva_r
         // If there are values remaining to be transmitted, this portion will get
         // executed and int_en set, to indicate that this must spin and come back again...
         if (remain) {
-            if (remain
-                > MXC_SPIMSS_FIFO_DEPTH) { //  more tx rounds will happen... Transfer the maximum,
-                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT)
-                    | ((MXC_SPIMSS_FIFO_DEPTH) << MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT_POS));
+            if (remain >
+                MXC_SPIMSS_FIFO_DEPTH) { //  more tx rounds will happen... Transfer the maximum,
+                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT) |
+                            ((MXC_SPIMSS_FIFO_DEPTH) << MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT_POS));
             } else { // only one more tx round will be done... Transfer whatever remains,
-                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT)
-                    | ((remain) << MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT_POS));
+                spi->dma = ((spi->dma & ~MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT) |
+                            ((remain) << MXC_F_SPIMSS_REVA_DMA_TX_FIFO_CNT_POS));
             }
             int_en = 1; // This will act as a trigger for the next round...
         }

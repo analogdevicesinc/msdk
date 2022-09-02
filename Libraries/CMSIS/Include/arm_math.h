@@ -1,5 +1,5 @@
 #warning This file has been deprecated for newer versions of CMSIS-DSP.
-/*
+/* 
 This header file is for use with the older CMSIS-DSP pre-compiled libraries
 in the Libraries\CMSIS\Lib\GCC folder.  That library is CMSIS version 3.
 The MaximSDK now contains CMSIS version 5.9.0, which should be used instead.
@@ -7,43 +7,43 @@ The newer header files can be found in the Libraries\CMSIS\5.9.0\DSP\Include
 folder, and these should be used instead.
 */
 /* ----------------------------------------------------------------------
- * Copyright (C) 2010-2013 ARM Limited. All rights reserved.
- *
- * $Date:        17. January 2013
- * $Revision:    V1.4.1
- *
- * Project:      CMSIS DSP Library
- * Title:        arm_math.h
- *
- * Description:  Public header file for CMSIS DSP Library
- *
- * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
- *   - Neither the name of ARM LIMITED nor the names of its contributors
- *     may be used to endorse or promote products derived from this
- *     software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+* Copyright (C) 2010-2013 ARM Limited. All rights reserved.
+*
+* $Date:        17. January 2013
+* $Revision:    V1.4.1
+*
+* Project:      CMSIS DSP Library
+* Title:        arm_math.h
+*
+* Description:  Public header file for CMSIS DSP Library
+*
+* Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*   - Redistributions of source code must retain the above copyright
+*     notice, this list of conditions and the following disclaimer.
+*   - Redistributions in binary form must reproduce the above copyright
+*     notice, this list of conditions and the following disclaimer in
+*     the documentation and/or other materials provided with the
+*     distribution.
+*   - Neither the name of ARM LIMITED nor the names of its contributors
+*     may be used to endorse or promote products derived from this
+*     software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
  * -------------------------------------------------------------------- */
 
 /**
@@ -71,8 +71,7 @@ folder, and these should be used instead.
    *
    * <b>Using the Library</b>
    *
-   * The library installer contains prebuilt versions of the libraries in the <code>Lib</code>
-   folder.
+   * The library installer contains prebuilt versions of the libraries in the <code>Lib</code> folder.
    * - arm_cortexM4lf_math.lib (Little endian and Floating Point Unit on Cortex-M4)
    * - arm_cortexM4bf_math.lib (Big endian and Floating Point Unit on Cortex-M4)
    * - arm_cortexM4l_math.lib (Little endian on Cortex-M4)
@@ -82,12 +81,9 @@ folder, and these should be used instead.
    * - arm_cortexM0l_math.lib (Little endian on Cortex-M0)
    * - arm_cortexM0b_math.lib (Big endian on Cortex-M3)
    *
-   * The library functions are declared in the public file <code>arm_math.h</code> which is placed
-   in the <code>Include</code> folder.
-   * Simply include this file and link the appropriate library in the application and begin calling
-   the library functions. The Library supports single
-   * public header file <code> arm_math.h</code> for Cortex-M4/M3/M0 with little endian and big
-   endian. Same header file will be used for floating point unit(FPU) variants.
+   * The library functions are declared in the public file <code>arm_math.h</code> which is placed in the <code>Include</code> folder.
+   * Simply include this file and link the appropriate library in the application and begin calling the library functions. The Library supports single
+   * public header file <code> arm_math.h</code> for Cortex-M4/M3/M0 with little endian and big endian. Same header file will be used for floating point unit(FPU) variants.
    * Define the appropriate pre processor MACRO ARM_MATH_CM4 or  ARM_MATH_CM3 or
    * ARM_MATH_CM0 or ARM_MATH_CM0PLUS depending on the target processor in the application.
    *
@@ -98,13 +94,11 @@ folder, and these should be used instead.
    * <b>Toolchain Support</b>
    *
    * The library has been developed and tested with MDK-ARM version 4.60.
-   * The library is being tested in GCC and IAR toolchains and updates on this activity will be made
-   available shortly.
+   * The library is being tested in GCC and IAR toolchains and updates on this activity will be made available shortly.
    *
    * <b>Building the Library</b>
    *
-   * The library installer contains project files to re build libraries on MDK Tool chain in the
-   <code>CMSIS\\DSP_Lib\\Source\\ARM</code> folder.
+   * The library installer contains project files to re build libraries on MDK Tool chain in the <code>CMSIS\\DSP_Lib\\Source\\ARM</code> folder.
    * - arm_cortexM0b_math.uvproj
    * - arm_cortexM0l_math.uvproj
    * - arm_cortexM3b_math.uvproj
@@ -115,8 +109,7 @@ folder, and these should be used instead.
    * - arm_cortexM4lf_math.uvproj
    *
    *
-   * The project can be built by opening the appropriate project in MDK-ARM 4.60 chain and defining
-   the optional pre processor MACROs detailed above.
+   * The project can be built by opening the appropriate project in MDK-ARM 4.60 chain and defining the optional pre processor MACROs detailed above.
    *
    * <b>Pre-processor Macros</b>
    *
@@ -128,8 +121,7 @@ folder, and these should be used instead.
    *
    * - ARM_MATH_BIG_ENDIAN:
    *
-   * Define macro ARM_MATH_BIG_ENDIAN to build the library for big endian targets. By default
-   library builds for little endian targets.
+   * Define macro ARM_MATH_BIG_ENDIAN to build the library for big endian targets. By default library builds for little endian targets.
    *
    * - ARM_MATH_MATRIX_CHECK:
    *
@@ -141,15 +133,12 @@ folder, and these should be used instead.
    *
    * - ARM_MATH_CMx:
    *
-   * Define macro ARM_MATH_CM4 for building the library on Cortex-M4 target, ARM_MATH_CM3 for
-   building library on Cortex-M3 target
-   * and ARM_MATH_CM0 for building library on cortex-M0 target, ARM_MATH_CM0PLUS for building
-   library on cortex-M0+ target.
+   * Define macro ARM_MATH_CM4 for building the library on Cortex-M4 target, ARM_MATH_CM3 for building library on Cortex-M3 target
+   * and ARM_MATH_CM0 for building library on cortex-M0 target, ARM_MATH_CM0PLUS for building library on cortex-M0+ target.
    *
    * - __FPU_PRESENT:
    *
-   * Initialize macro __FPU_PRESENT = 1 when building on FPU supported Targets. Enable this macro
-   for M4bf and M4lf libraries
+   * Initialize macro __FPU_PRESENT = 1 when building on FPU supported Targets. Enable this macro for M4bf and M4lf libraries
    *
    * <b>Copyright Notice</b>
    *
@@ -300,41 +289,41 @@ folder, and these should be used instead.
 #endif
 
 #undef __CMSIS_GENERIC /* enable NVIC and Systick functions */
-#include "math.h"
 #include "string.h"
+#include "math.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * @brief Macros required for reciprocal calculation in Normalized LMS
- */
+   * @brief Macros required for reciprocal calculation in Normalized LMS
+   */
 
-#define DELTA_Q31 (0x100)
-#define DELTA_Q15 0x5
+#define DELTA_Q31  (0x100)
+#define DELTA_Q15  0x5
 #define INDEX_MASK 0x0000003F
 #ifndef PI
 #define PI 3.14159265358979f
 #endif
 
 /**
- * @brief Macros required for SINE and COSINE Fast math approximations
- */
+   * @brief Macros required for SINE and COSINE Fast math approximations
+   */
 
-#define TABLE_SIZE 256
+#define TABLE_SIZE        256
 #define TABLE_SPACING_Q31 0x800000
 #define TABLE_SPACING_Q15 0x80
 
 /**
- * @brief Macros required for SINE and COSINE Controller functions
- */
+   * @brief Macros required for SINE and COSINE Controller functions
+   */
 /* 1.31(q31) Fixed value of 2/360 */
 /* -1 to +1 is divided into 360 values so total spacing is (2/360) */
 #define INPUT_SPACING 0xB60B61
 
 /**
- * @brief Macro for Unaligned Support
- */
+   * @brief Macro for Unaligned Support
+   */
 #ifndef UNALIGNED_SUPPORT_DISABLE
 #define ALIGN4
 #else
@@ -346,67 +335,67 @@ extern "C" {
 #endif /*	#ifndef UNALIGNED_SUPPORT_DISABLE	*/
 
 /**
- * @brief Error status returned by some functions in the library.
- */
+   * @brief Error status returned by some functions in the library.
+   */
 
 typedef enum {
-    ARM_MATH_SUCCESS = 0, /**< No error */
+    ARM_MATH_SUCCESS        = 0,  /**< No error */
     ARM_MATH_ARGUMENT_ERROR = -1, /**< One or more arguments are incorrect */
-    ARM_MATH_LENGTH_ERROR = -2, /**< Length of data buffer is incorrect */
-    ARM_MATH_SIZE_MISMATCH = -3, /**< Size of matrices is not compatible with the operation. */
-    ARM_MATH_NANINF = -4, /**< Not-a-number (NaN) or infinity is generated */
-    ARM_MATH_SINGULAR = -5, /**< Generated by matrix inversion if the input matrix is singular and
-                               cannot be inverted. */
+    ARM_MATH_LENGTH_ERROR   = -2, /**< Length of data buffer is incorrect */
+    ARM_MATH_SIZE_MISMATCH  = -3, /**< Size of matrices is not compatible with the operation. */
+    ARM_MATH_NANINF         = -4, /**< Not-a-number (NaN) or infinity is generated */
+    ARM_MATH_SINGULAR =
+        -5, /**< Generated by matrix inversion if the input matrix is singular and cannot be inverted. */
     ARM_MATH_TEST_FAILURE = -6 /**< Test Failed  */
 } arm_status;
 
 /**
- * @brief 8-bit fractional data type in 1.7 format.
- */
+   * @brief 8-bit fractional data type in 1.7 format.
+   */
 typedef int8_t q7_t;
 
 /**
- * @brief 16-bit fractional data type in 1.15 format.
- */
+   * @brief 16-bit fractional data type in 1.15 format.
+   */
 typedef int16_t q15_t;
 
 /**
- * @brief 32-bit fractional data type in 1.31 format.
- */
+   * @brief 32-bit fractional data type in 1.31 format.
+   */
 typedef int32_t q31_t;
 
 /**
- * @brief 64-bit fractional data type in 1.63 format.
- */
+   * @brief 64-bit fractional data type in 1.63 format.
+   */
 typedef int64_t q63_t;
 
 /**
- * @brief 32-bit floating-point type definition.
- */
+   * @brief 32-bit floating-point type definition.
+   */
 typedef float float32_t;
 
 /**
- * @brief 64-bit floating-point type definition.
- */
+   * @brief 64-bit floating-point type definition.
+   */
 typedef double float64_t;
 
 /**
- * @brief definition to read/write two 16 bit values.
- */
+   * @brief definition to read/write two 16 bit values.
+   */
 #if defined __CC_ARM
 #define __SIMD32_TYPE int32_t __packed
-#define CMSIS_UNUSED __attribute__((unused))
+#define CMSIS_UNUSED  __attribute__((unused))
 #elif defined __ICCARM__
 #define CMSIS_UNUSED
 #define __SIMD32_TYPE int32_t __packed
 #elif defined __GNUC__
 #define __SIMD32_TYPE int32_t
-#define CMSIS_UNUSED __attribute__((unused))
+#define CMSIS_UNUSED  __attribute__((unused))
 #else
 #error Unknown compiler
 #endif
 
-#define __SIMD32(addr) (*(__SIMD32_TYPE**)&(addr))
+#define __SIMD32(addr)       (*(__SIMD32_TYPE**)&(addr))
 #define __SIMD32_CONST(addr) ((__SIMD32_TYPE*)(addr))
 
 #define _SIMD32_OFFSET(addr) (*(__SIMD32_TYPE*)(addr))
@@ -415,71 +404,71 @@ typedef double float64_t;
 
 #if defined(ARM_MATH_CM3) || defined(ARM_MATH_CM0_FAMILY)
 /**
- * @brief definition to pack two 16 bit values.
- */
-#define __PKHBT(ARG1, ARG2, ARG3)                                                                  \
-    ((((int32_t)(ARG1) << 0) & (int32_t)0x0000FFFF)                                                \
-        | (((int32_t)(ARG2) << ARG3) & (int32_t)0xFFFF0000))
-#define __PKHTB(ARG1, ARG2, ARG3)                                                                  \
-    ((((int32_t)(ARG1) << 0) & (int32_t)0xFFFF0000)                                                \
-        | (((int32_t)(ARG2) >> ARG3) & (int32_t)0x0000FFFF))
+   * @brief definition to pack two 16 bit values.
+   */
+#define __PKHBT(ARG1, ARG2, ARG3)                     \
+    ((((int32_t)(ARG1) << 0) & (int32_t)0x0000FFFF) | \
+     (((int32_t)(ARG2) << ARG3) & (int32_t)0xFFFF0000))
+#define __PKHTB(ARG1, ARG2, ARG3)                     \
+    ((((int32_t)(ARG1) << 0) & (int32_t)0xFFFF0000) | \
+     (((int32_t)(ARG2) >> ARG3) & (int32_t)0x0000FFFF))
 
 #endif
 
 /**
- * @brief definition to pack four 8 bit values.
- */
+   * @brief definition to pack four 8 bit values.
+   */
 #ifndef ARM_MATH_BIG_ENDIAN
 
 #define __PACKq7(v0, v1, v2, v3)                                                                   \
-    ((((int32_t)(v0) << 0) & (int32_t)0x000000FF) | (((int32_t)(v1) << 8) & (int32_t)0x0000FF00)   \
-        | (((int32_t)(v2) << 16) & (int32_t)0x00FF0000)                                            \
-        | (((int32_t)(v3) << 24) & (int32_t)0xFF000000))
+    ((((int32_t)(v0) << 0) & (int32_t)0x000000FF) | (((int32_t)(v1) << 8) & (int32_t)0x0000FF00) | \
+     (((int32_t)(v2) << 16) & (int32_t)0x00FF0000) |                                               \
+     (((int32_t)(v3) << 24) & (int32_t)0xFF000000))
 #else
 
 #define __PACKq7(v0, v1, v2, v3)                                                                   \
-    ((((int32_t)(v3) << 0) & (int32_t)0x000000FF) | (((int32_t)(v2) << 8) & (int32_t)0x0000FF00)   \
-        | (((int32_t)(v1) << 16) & (int32_t)0x00FF0000)                                            \
-        | (((int32_t)(v0) << 24) & (int32_t)0xFF000000))
+    ((((int32_t)(v3) << 0) & (int32_t)0x000000FF) | (((int32_t)(v2) << 8) & (int32_t)0x0000FF00) | \
+     (((int32_t)(v1) << 16) & (int32_t)0x00FF0000) |                                               \
+     (((int32_t)(v0) << 24) & (int32_t)0xFF000000))
 
 #endif
 
 /**
- * @brief Clips Q63 to Q31 values.
- */
+   * @brief Clips Q63 to Q31 values.
+   */
 static __INLINE q31_t clip_q63_to_q31(q63_t x)
 {
     return ((q31_t)(x >> 32) != ((q31_t)x >> 31)) ? ((0x7FFFFFFF ^ ((q31_t)(x >> 63)))) : (q31_t)x;
 }
 
 /**
- * @brief Clips Q63 to Q15 values.
- */
+   * @brief Clips Q63 to Q15 values.
+   */
 static __INLINE q15_t clip_q63_to_q15(q63_t x)
 {
-    return ((q31_t)(x >> 32) != ((q31_t)x >> 31)) ? ((0x7FFF ^ ((q15_t)(x >> 63))))
-                                                  : (q15_t)(x >> 15);
+    return ((q31_t)(x >> 32) != ((q31_t)x >> 31)) ? ((0x7FFF ^ ((q15_t)(x >> 63)))) :
+                                                    (q15_t)(x >> 15);
 }
 
 /**
- * @brief Clips Q31 to Q7 values.
- */
+   * @brief Clips Q31 to Q7 values.
+   */
 static __INLINE q7_t clip_q31_to_q7(q31_t x)
 {
     return ((q31_t)(x >> 24) != ((q31_t)x >> 23)) ? ((0x7F ^ ((q7_t)(x >> 31)))) : (q7_t)x;
 }
 
 /**
- * @brief Clips Q31 to Q15 values.
- */
+   * @brief Clips Q31 to Q15 values.
+   */
 static __INLINE q15_t clip_q31_to_q15(q31_t x)
 {
     return ((q31_t)(x >> 16) != ((q31_t)x >> 15)) ? ((0x7FFF ^ ((q15_t)(x >> 31)))) : (q15_t)x;
 }
 
 /**
- * @brief Multiplies 32 X 64 and returns 32 bit result in 2.30 format.
- */
+   * @brief Multiplies 32 X 64 and returns 32 bit result in 2.30 format.
+   */
 
 static __INLINE q63_t mult32x64(q63_t x, q31_t y)
 {
@@ -490,15 +479,15 @@ static __INLINE q63_t mult32x64(q63_t x, q31_t y)
 #define __CLZ __clz
 #endif
 
-#if defined(ARM_MATH_CM0_FAMILY)                                                                   \
-    && ((defined(__ICCARM__)) || (defined(__GNUC__)) || defined(__TASKING__))
+#if defined(ARM_MATH_CM0_FAMILY) && \
+    ((defined(__ICCARM__)) || (defined(__GNUC__)) || defined(__TASKING__))
 
 static __INLINE uint32_t __CLZ(q31_t data);
 
 static __INLINE uint32_t __CLZ(q31_t data)
 {
     uint32_t count = 0;
-    uint32_t mask = 0x80000000;
+    uint32_t mask  = 0x80000000;
 
     while ((data & mask) == 0) {
         count += 1u;
@@ -511,8 +500,8 @@ static __INLINE uint32_t __CLZ(q31_t data)
 #endif
 
 /**
- * @brief Function to Calculates 1/in (reciprocal) value of Q31 Data type.
- */
+   * @brief Function to Calculates 1/in (reciprocal) value of Q31 Data type.
+   */
 
 static __INLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, q31_t* pRecipTable)
 {
@@ -542,7 +531,7 @@ static __INLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, q31_t* pRecipTable)
         tempVal = (q31_t)(((q63_t)in * out) >> 31u);
         tempVal = 0x7FFFFFFF - tempVal;
         /*      1.31 with exp 1 */
-        // out = (q31_t) (((q63_t) out * tempVal) >> 30u);
+        //out = (q31_t) (((q63_t) out * tempVal) >> 30u);
         out = (q31_t)clip_q63_to_q31(((q63_t)out * tempVal) >> 30u);
     }
 
@@ -554,8 +543,8 @@ static __INLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, q31_t* pRecipTable)
 }
 
 /**
- * @brief Function to Calculates 1/in (reciprocal) value of Q15 Data type.
- */
+   * @brief Function to Calculates 1/in (reciprocal) value of Q15 Data type.
+   */
 static __INLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, q15_t* pRecipTable)
 {
     uint32_t out = 0, tempVal = 0;
@@ -595,8 +584,8 @@ static __INLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, q15_t* pRecipTable)
 }
 
 /*
- * @brief C custom defined intrinisic function for only M0 processors
- */
+   * @brief C custom defined intrinisic function for only M0 processors
+   */
 #if defined(ARM_MATH_CM0_FAMILY)
 
 static __INLINE q31_t __SSAT(q31_t x, uint32_t y)
@@ -605,7 +594,9 @@ static __INLINE q31_t __SSAT(q31_t x, uint32_t y)
     uint32_t i;
 
     posMax = 1;
-    for (i = 0; i < (y - 1); i++) { posMax = posMax * 2; }
+    for (i = 0; i < (y - 1); i++) {
+        posMax = posMax * 2;
+    }
 
     if (x > 0) {
         posMax = (posMax - 1);
@@ -626,13 +617,13 @@ static __INLINE q31_t __SSAT(q31_t x, uint32_t y)
 #endif /* end of ARM_MATH_CM0_FAMILY */
 
 /*
- * @brief C custom defined intrinsic function for M3 and M0 processors
- */
+   * @brief C custom defined intrinsic function for M3 and M0 processors
+   */
 #if defined(ARM_MATH_CM3) || defined(ARM_MATH_CM0_FAMILY)
 
 /*
- * @brief C custom defined QADD8 for M3 and M0 processors
- */
+   * @brief C custom defined QADD8 for M3 and M0 processors
+   */
 static __INLINE q31_t __QADD8(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -646,15 +637,15 @@ static __INLINE q31_t __QADD8(q31_t x, q31_t y)
     t = __SSAT(((q31_t)(((x << 8) >> 24) + ((y << 8) >> 24))), 8);
     u = __SSAT(((q31_t)((x >> 24) + (y >> 24))), 8);
 
-    sum = (((q31_t)u << 24) & 0xFF000000) | (((q31_t)t << 16) & 0x00FF0000)
-        | (((q31_t)s << 8) & 0x0000FF00) | (r & 0x000000FF);
+    sum = (((q31_t)u << 24) & 0xFF000000) | (((q31_t)t << 16) & 0x00FF0000) |
+          (((q31_t)s << 8) & 0x0000FF00) | (r & 0x000000FF);
 
     return sum;
 }
 
 /*
- * @brief C custom defined QSUB8 for M3 and M0 processors
- */
+   * @brief C custom defined QSUB8 for M3 and M0 processors
+   */
 static __INLINE q31_t __QSUB8(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -674,12 +665,12 @@ static __INLINE q31_t __QSUB8(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined QADD16 for M3 and M0 processors
- */
+   * @brief C custom defined QADD16 for M3 and M0 processors
+   */
 
 /*
- * @brief C custom defined QADD16 for M3 and M0 processors
- */
+   * @brief C custom defined QADD16 for M3 and M0 processors
+   */
 static __INLINE q31_t __QADD16(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -697,8 +688,8 @@ static __INLINE q31_t __QADD16(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined SHADD16 for M3 and M0 processors
- */
+   * @brief C custom defined SHADD16 for M3 and M0 processors
+   */
 static __INLINE q31_t __SHADD16(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -716,8 +707,8 @@ static __INLINE q31_t __SHADD16(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined QSUB16 for M3 and M0 processors
- */
+   * @brief C custom defined QSUB16 for M3 and M0 processors
+   */
 static __INLINE q31_t __QSUB16(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -735,8 +726,8 @@ static __INLINE q31_t __QSUB16(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined SHSUB16 for M3 and M0 processors
- */
+   * @brief C custom defined SHSUB16 for M3 and M0 processors
+   */
 static __INLINE q31_t __SHSUB16(q31_t x, q31_t y)
 {
     q31_t diff;
@@ -754,21 +745,21 @@ static __INLINE q31_t __SHSUB16(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined QASX for M3 and M0 processors
- */
+   * @brief C custom defined QASX for M3 and M0 processors
+   */
 static __INLINE q31_t __QASX(q31_t x, q31_t y)
 {
     q31_t sum = 0;
 
-    sum = ((sum + clip_q31_to_q15((q31_t)((short)(x >> 16) + (short)y))) << 16)
-        + clip_q31_to_q15((q31_t)((short)x - (short)(y >> 16)));
+    sum = ((sum + clip_q31_to_q15((q31_t)((short)(x >> 16) + (short)y))) << 16) +
+          clip_q31_to_q15((q31_t)((short)x - (short)(y >> 16)));
 
     return sum;
 }
 
 /*
- * @brief C custom defined SHASX for M3 and M0 processors
- */
+   * @brief C custom defined SHASX for M3 and M0 processors
+   */
 static __INLINE q31_t __SHASX(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -786,21 +777,21 @@ static __INLINE q31_t __SHASX(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined QSAX for M3 and M0 processors
- */
+   * @brief C custom defined QSAX for M3 and M0 processors
+   */
 static __INLINE q31_t __QSAX(q31_t x, q31_t y)
 {
     q31_t sum = 0;
 
-    sum = ((sum + clip_q31_to_q15((q31_t)((short)(x >> 16) - (short)y))) << 16)
-        + clip_q31_to_q15((q31_t)((short)x + (short)(y >> 16)));
+    sum = ((sum + clip_q31_to_q15((q31_t)((short)(x >> 16) - (short)y))) << 16) +
+          clip_q31_to_q15((q31_t)((short)x + (short)(y >> 16)));
 
     return sum;
 }
 
 /*
- * @brief C custom defined SHSAX for M3 and M0 processors
- */
+   * @brief C custom defined SHSAX for M3 and M0 processors
+   */
 static __INLINE q31_t __SHSAX(q31_t x, q31_t y)
 {
     q31_t sum;
@@ -818,96 +809,96 @@ static __INLINE q31_t __SHSAX(q31_t x, q31_t y)
 }
 
 /*
- * @brief C custom defined SMUSDX for M3 and M0 processors
- */
+   * @brief C custom defined SMUSDX for M3 and M0 processors
+   */
 static __INLINE q31_t __SMUSDX(q31_t x, q31_t y)
 {
     return ((q31_t)(((short)x * (short)(y >> 16)) - ((short)(x >> 16) * (short)y)));
 }
 
 /*
- * @brief C custom defined SMUADX for M3 and M0 processors
- */
+   * @brief C custom defined SMUADX for M3 and M0 processors
+   */
 static __INLINE q31_t __SMUADX(q31_t x, q31_t y)
 {
     return ((q31_t)(((short)x * (short)(y >> 16)) + ((short)(x >> 16) * (short)y)));
 }
 
 /*
- * @brief C custom defined QADD for M3 and M0 processors
- */
+   * @brief C custom defined QADD for M3 and M0 processors
+   */
 static __INLINE q31_t __QADD(q31_t x, q31_t y)
 {
     return clip_q63_to_q31((q63_t)x + y);
 }
 
 /*
- * @brief C custom defined QSUB for M3 and M0 processors
- */
+   * @brief C custom defined QSUB for M3 and M0 processors
+   */
 static __INLINE q31_t __QSUB(q31_t x, q31_t y)
 {
     return clip_q63_to_q31((q63_t)x - y);
 }
 
 /*
- * @brief C custom defined SMLAD for M3 and M0 processors
- */
+   * @brief C custom defined SMLAD for M3 and M0 processors
+   */
 static __INLINE q31_t __SMLAD(q31_t x, q31_t y, q31_t sum)
 {
     return (sum + ((short)(x >> 16) * (short)(y >> 16)) + ((short)x * (short)y));
 }
 
 /*
- * @brief C custom defined SMLADX for M3 and M0 processors
- */
+   * @brief C custom defined SMLADX for M3 and M0 processors
+   */
 static __INLINE q31_t __SMLADX(q31_t x, q31_t y, q31_t sum)
 {
     return (sum + ((short)(x >> 16) * (short)(y)) + ((short)x * (short)(y >> 16)));
 }
 
 /*
- * @brief C custom defined SMLSDX for M3 and M0 processors
- */
+   * @brief C custom defined SMLSDX for M3 and M0 processors
+   */
 static __INLINE q31_t __SMLSDX(q31_t x, q31_t y, q31_t sum)
 {
     return (sum - ((short)(x >> 16) * (short)(y)) + ((short)x * (short)(y >> 16)));
 }
 
 /*
- * @brief C custom defined SMLALD for M3 and M0 processors
- */
+   * @brief C custom defined SMLALD for M3 and M0 processors
+   */
 static __INLINE q63_t __SMLALD(q31_t x, q31_t y, q63_t sum)
 {
     return (sum + ((short)(x >> 16) * (short)(y >> 16)) + ((short)x * (short)y));
 }
 
 /*
- * @brief C custom defined SMLALDX for M3 and M0 processors
- */
+   * @brief C custom defined SMLALDX for M3 and M0 processors
+   */
 static __INLINE q63_t __SMLALDX(q31_t x, q31_t y, q63_t sum)
 {
     return (sum + ((short)(x >> 16) * (short)y)) + ((short)x * (short)(y >> 16));
 }
 
 /*
- * @brief C custom defined SMUAD for M3 and M0 processors
- */
+   * @brief C custom defined SMUAD for M3 and M0 processors
+   */
 static __INLINE q31_t __SMUAD(q31_t x, q31_t y)
 {
     return (((x >> 16) * (y >> 16)) + (((x << 16) >> 16) * ((y << 16) >> 16)));
 }
 
 /*
- * @brief C custom defined SMUSD for M3 and M0 processors
- */
+   * @brief C custom defined SMUSD for M3 and M0 processors
+   */
 static __INLINE q31_t __SMUSD(q31_t x, q31_t y)
 {
     return (-((x >> 16) * (y >> 16)) + (((x << 16) >> 16) * ((y << 16) >> 16)));
 }
 
 /*
- * @brief C custom defined SXTB16 for M3 and M0 processors
- */
+   * @brief C custom defined SXTB16 for M3 and M0 processors
+   */
 static __INLINE q31_t __SXTB16(q31_t x)
 {
     return ((((x << 24) >> 24) & 0x0000FFFF) | (((x << 8) >> 8) & 0xFFFF0000));
@@ -916,165 +907,164 @@ static __INLINE q31_t __SXTB16(q31_t x)
 #endif /* defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY) */
 
 /**
- * @brief Instance structure for the Q7 FIR filter.
- */
+   * @brief Instance structure for the Q7 FIR filter.
+   */
 typedef struct {
     uint16_t numTaps; /**< number of filter coefficients in the filter. */
-    q7_t* pState; /**< points to the state variable array. The array is of length
-                     numTaps+blockSize-1. */
+    q7_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
     q7_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
 } arm_fir_instance_q7;
 
 /**
- * @brief Instance structure for the Q15 FIR filter.
- */
+   * @brief Instance structure for the Q15 FIR filter.
+   */
 typedef struct {
     uint16_t numTaps; /**< number of filter coefficients in the filter. */
-    q15_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
+    q15_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
     q15_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
 } arm_fir_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 FIR filter.
- */
+   * @brief Instance structure for the Q31 FIR filter.
+   */
 typedef struct {
     uint16_t numTaps; /**< number of filter coefficients in the filter. */
-    q31_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
+    q31_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
     q31_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
 } arm_fir_instance_q31;
 
 /**
- * @brief Instance structure for the floating-point FIR filter.
- */
+   * @brief Instance structure for the floating-point FIR filter.
+   */
 typedef struct {
     uint16_t numTaps; /**< number of filter coefficients in the filter. */
-    float32_t* pState; /**< points to the state variable array. The array is of length
-                          numTaps+blockSize-1. */
+    float32_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
     float32_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
 } arm_fir_instance_f32;
 
 /**
- * @brief Processing function for the Q7 FIR filter.
- * @param[in] *S points to an instance of the Q7 FIR filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the Q7 FIR filter.
+   * @param[in] *S points to an instance of the Q7 FIR filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 void arm_fir_q7(const arm_fir_instance_q7* S, q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q7 FIR filter.
- * @param[in,out] *S points to an instance of the Q7 FIR structure.
- * @param[in] numTaps  Number of filter coefficients in the filter.
- * @param[in] *pCoeffs points to the filter coefficients.
- * @param[in] *pState points to the state buffer.
- * @param[in] blockSize number of samples that are processed.
- * @return none
- */
-void arm_fir_init_q7(
-    arm_fir_instance_q7* S, uint16_t numTaps, q7_t* pCoeffs, q7_t* pState, uint32_t blockSize);
+   * @brief  Initialization function for the Q7 FIR filter.
+   * @param[in,out] *S points to an instance of the Q7 FIR structure.
+   * @param[in] numTaps  Number of filter coefficients in the filter.
+   * @param[in] *pCoeffs points to the filter coefficients.
+   * @param[in] *pState points to the state buffer.
+   * @param[in] blockSize number of samples that are processed.
+   * @return none
+   */
+void arm_fir_init_q7(arm_fir_instance_q7* S, uint16_t numTaps, q7_t* pCoeffs, q7_t* pState,
+                     uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q15 FIR filter.
- * @param[in] *S points to an instance of the Q15 FIR structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the Q15 FIR filter.
+   * @param[in] *S points to an instance of the Q15 FIR structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 void arm_fir_q15(const arm_fir_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Processing function for the fast Q15 FIR filter for Cortex-M3 and Cortex-M4.
- * @param[in] *S points to an instance of the Q15 FIR filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the fast Q15 FIR filter for Cortex-M3 and Cortex-M4.
+   * @param[in] *S points to an instance of the Q15 FIR filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 void arm_fir_fast_q15(const arm_fir_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q15 FIR filter.
- * @param[in,out] *S points to an instance of the Q15 FIR filter structure.
- * @param[in] numTaps  Number of filter coefficients in the filter. Must be even and greater than or
- * equal to 4.
- * @param[in] *pCoeffs points to the filter coefficients.
- * @param[in] *pState points to the state buffer.
- * @param[in] blockSize number of samples that are processed at a time.
- * @return The function returns ARM_MATH_SUCCESS if initialization was successful or
- * ARM_MATH_ARGUMENT_ERROR if <code>numTaps</code> is not a supported value.
- */
+   * @brief  Initialization function for the Q15 FIR filter.
+   * @param[in,out] *S points to an instance of the Q15 FIR filter structure.
+   * @param[in] numTaps  Number of filter coefficients in the filter. Must be even and greater than or equal to 4.
+   * @param[in] *pCoeffs points to the filter coefficients.
+   * @param[in] *pState points to the state buffer.
+   * @param[in] blockSize number of samples that are processed at a time.
+   * @return The function returns ARM_MATH_SUCCESS if initialization was successful or ARM_MATH_ARGUMENT_ERROR if
+   * <code>numTaps</code> is not a supported value.
+   */
 
-arm_status arm_fir_init_q15(
-    arm_fir_instance_q15* S, uint16_t numTaps, q15_t* pCoeffs, q15_t* pState, uint32_t blockSize);
+arm_status arm_fir_init_q15(arm_fir_instance_q15* S, uint16_t numTaps, q15_t* pCoeffs,
+                            q15_t* pState, uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q31 FIR filter.
- * @param[in] *S points to an instance of the Q31 FIR filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the Q31 FIR filter.
+   * @param[in] *S points to an instance of the Q31 FIR filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 void arm_fir_q31(const arm_fir_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Processing function for the fast Q31 FIR filter for Cortex-M3 and Cortex-M4.
- * @param[in] *S points to an instance of the Q31 FIR structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the fast Q31 FIR filter for Cortex-M3 and Cortex-M4.
+   * @param[in] *S points to an instance of the Q31 FIR structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 void arm_fir_fast_q31(const arm_fir_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q31 FIR filter.
- * @param[in,out] *S points to an instance of the Q31 FIR structure.
- * @param[in] 	numTaps  Number of filter coefficients in the filter.
- * @param[in] 	*pCoeffs points to the filter coefficients.
- * @param[in] 	*pState points to the state buffer.
- * @param[in] 	blockSize number of samples that are processed at a time.
- * @return 		none.
- */
-void arm_fir_init_q31(
-    arm_fir_instance_q31* S, uint16_t numTaps, q31_t* pCoeffs, q31_t* pState, uint32_t blockSize);
+   * @brief  Initialization function for the Q31 FIR filter.
+   * @param[in,out] *S points to an instance of the Q31 FIR structure.
+   * @param[in] 	numTaps  Number of filter coefficients in the filter.
+   * @param[in] 	*pCoeffs points to the filter coefficients.
+   * @param[in] 	*pState points to the state buffer.
+   * @param[in] 	blockSize number of samples that are processed at a time.
+   * @return 		none.
+   */
+void arm_fir_init_q31(arm_fir_instance_q31* S, uint16_t numTaps, q31_t* pCoeffs, q31_t* pState,
+                      uint32_t blockSize);
 
 /**
- * @brief Processing function for the floating-point FIR filter.
- * @param[in] *S points to an instance of the floating-point FIR structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
-void arm_fir_f32(
-    const arm_fir_instance_f32* S, float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
+   * @brief Processing function for the floating-point FIR filter.
+   * @param[in] *S points to an instance of the floating-point FIR structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
+void arm_fir_f32(const arm_fir_instance_f32* S, float32_t* pSrc, float32_t* pDst,
+                 uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the floating-point FIR filter.
- * @param[in,out] *S points to an instance of the floating-point FIR filter structure.
- * @param[in] 	numTaps  Number of filter coefficients in the filter.
- * @param[in] 	*pCoeffs points to the filter coefficients.
- * @param[in] 	*pState points to the state buffer.
- * @param[in] 	blockSize number of samples that are processed at a time.
- * @return    	none.
- */
+   * @brief  Initialization function for the floating-point FIR filter.
+   * @param[in,out] *S points to an instance of the floating-point FIR filter structure.
+   * @param[in] 	numTaps  Number of filter coefficients in the filter.
+   * @param[in] 	*pCoeffs points to the filter coefficients.
+   * @param[in] 	*pState points to the state buffer.
+   * @param[in] 	blockSize number of samples that are processed at a time.
+   * @return    	none.
+   */
 void arm_fir_init_f32(arm_fir_instance_f32* S, uint16_t numTaps, float32_t* pCoeffs,
-    float32_t* pState, uint32_t blockSize);
+                      float32_t* pState, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q15 Biquad cascade filter.
- */
+   * @brief Instance structure for the Q15 Biquad cascade filter.
+   */
 typedef struct {
     int8_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    q15_t* pState; /**< Points to the array of state coefficients.  The array is of length
-                      4*numStages. */
+    q15_t*
+        pState; /**< Points to the array of state coefficients.  The array is of length 4*numStages. */
     q15_t*
         pCoeffs; /**< Points to the array of coefficients.  The array is of length 5*numStages. */
     int8_t postShift; /**< Additional shift, in bits, applied to each output sample. */
@@ -1082,13 +1072,13 @@ typedef struct {
 } arm_biquad_casd_df1_inst_q15;
 
 /**
- * @brief Instance structure for the Q31 Biquad cascade filter.
- */
+   * @brief Instance structure for the Q31 Biquad cascade filter.
+   */
 typedef struct {
     uint32_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    q31_t* pState; /**< Points to the array of state coefficients.  The array is of length
-                      4*numStages. */
+    q31_t*
+        pState; /**< Points to the array of state coefficients.  The array is of length 4*numStages. */
     q31_t*
         pCoeffs; /**< Points to the array of coefficients.  The array is of length 5*numStages. */
     uint8_t postShift; /**< Additional shift, in bits, applied to each output sample. */
@@ -1096,123 +1086,119 @@ typedef struct {
 } arm_biquad_casd_df1_inst_q31;
 
 /**
- * @brief Instance structure for the floating-point Biquad cascade filter.
- */
+   * @brief Instance structure for the floating-point Biquad cascade filter.
+   */
 typedef struct {
     uint32_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    float32_t* pState; /**< Points to the array of state coefficients.  The array is of length
-                          4*numStages. */
+    float32_t*
+        pState; /**< Points to the array of state coefficients.  The array is of length 4*numStages. */
     float32_t*
         pCoeffs; /**< Points to the array of coefficients.  The array is of length 5*numStages. */
 
 } arm_biquad_casd_df1_inst_f32;
 
 /**
- * @brief Processing function for the Q15 Biquad cascade filter.
- * @param[in]  *S points to an instance of the Q15 Biquad cascade structure.
- * @param[in]  *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in]  blockSize number of samples to process.
- * @return     none.
- */
+   * @brief Processing function for the Q15 Biquad cascade filter.
+   * @param[in]  *S points to an instance of the Q15 Biquad cascade structure.
+   * @param[in]  *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in]  blockSize number of samples to process.
+   * @return     none.
+   */
 
-void arm_biquad_cascade_df1_q15(
-    const arm_biquad_casd_df1_inst_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_biquad_cascade_df1_q15(const arm_biquad_casd_df1_inst_q15* S, q15_t* pSrc, q15_t* pDst,
+                                uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q15 Biquad cascade filter.
- * @param[in,out] *S           points to an instance of the Q15 Biquad cascade structure.
- * @param[in]     numStages    number of 2nd order stages in the filter.
- * @param[in]     *pCoeffs     points to the filter coefficients.
- * @param[in]     *pState      points to the state buffer.
- * @param[in]     postShift    Shift to be applied to the output. Varies according to the
- * coefficients format
- * @return        none
- */
+   * @brief  Initialization function for the Q15 Biquad cascade filter.
+   * @param[in,out] *S           points to an instance of the Q15 Biquad cascade structure.
+   * @param[in]     numStages    number of 2nd order stages in the filter.
+   * @param[in]     *pCoeffs     points to the filter coefficients.
+   * @param[in]     *pState      points to the state buffer.
+   * @param[in]     postShift    Shift to be applied to the output. Varies according to the coefficients format
+   * @return        none
+   */
 
 void arm_biquad_cascade_df1_init_q15(arm_biquad_casd_df1_inst_q15* S, uint8_t numStages,
-    q15_t* pCoeffs, q15_t* pState, int8_t postShift);
+                                     q15_t* pCoeffs, q15_t* pState, int8_t postShift);
 
 /**
- * @brief Fast but less precise processing function for the Q15 Biquad cascade filter for Cortex-M3
- * and Cortex-M4.
- * @param[in]  *S points to an instance of the Q15 Biquad cascade structure.
- * @param[in]  *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in]  blockSize number of samples to process.
- * @return     none.
- */
+   * @brief Fast but less precise processing function for the Q15 Biquad cascade filter for Cortex-M3 and Cortex-M4.
+   * @param[in]  *S points to an instance of the Q15 Biquad cascade structure.
+   * @param[in]  *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in]  blockSize number of samples to process.
+   * @return     none.
+   */
 
-void arm_biquad_cascade_df1_fast_q15(
-    const arm_biquad_casd_df1_inst_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
-
-/**
- * @brief Processing function for the Q31 Biquad cascade filter
- * @param[in]  *S         points to an instance of the Q31 Biquad cascade structure.
- * @param[in]  *pSrc      points to the block of input data.
- * @param[out] *pDst      points to the block of output data.
- * @param[in]  blockSize  number of samples to process.
- * @return     none.
- */
-
-void arm_biquad_cascade_df1_q31(
-    const arm_biquad_casd_df1_inst_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_biquad_cascade_df1_fast_q15(const arm_biquad_casd_df1_inst_q15* S, q15_t* pSrc,
+                                     q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Fast but less precise processing function for the Q31 Biquad cascade filter for Cortex-M3
- * and Cortex-M4.
- * @param[in]  *S         points to an instance of the Q31 Biquad cascade structure.
- * @param[in]  *pSrc      points to the block of input data.
- * @param[out] *pDst      points to the block of output data.
- * @param[in]  blockSize  number of samples to process.
- * @return     none.
- */
+   * @brief Processing function for the Q31 Biquad cascade filter
+   * @param[in]  *S         points to an instance of the Q31 Biquad cascade structure.
+   * @param[in]  *pSrc      points to the block of input data.
+   * @param[out] *pDst      points to the block of output data.
+   * @param[in]  blockSize  number of samples to process.
+   * @return     none.
+   */
 
-void arm_biquad_cascade_df1_fast_q31(
-    const arm_biquad_casd_df1_inst_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_biquad_cascade_df1_q31(const arm_biquad_casd_df1_inst_q31* S, q31_t* pSrc, q31_t* pDst,
+                                uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q31 Biquad cascade filter.
- * @param[in,out] *S           points to an instance of the Q31 Biquad cascade structure.
- * @param[in]     numStages      number of 2nd order stages in the filter.
- * @param[in]     *pCoeffs     points to the filter coefficients.
- * @param[in]     *pState      points to the state buffer.
- * @param[in]     postShift    Shift to be applied to the output. Varies according to the
- * coefficients format
- * @return        none
- */
+   * @brief Fast but less precise processing function for the Q31 Biquad cascade filter for Cortex-M3 and Cortex-M4.
+   * @param[in]  *S         points to an instance of the Q31 Biquad cascade structure.
+   * @param[in]  *pSrc      points to the block of input data.
+   * @param[out] *pDst      points to the block of output data.
+   * @param[in]  blockSize  number of samples to process.
+   * @return     none.
+   */
+
+void arm_biquad_cascade_df1_fast_q31(const arm_biquad_casd_df1_inst_q31* S, q31_t* pSrc,
+                                     q31_t* pDst, uint32_t blockSize);
+
+/**
+   * @brief  Initialization function for the Q31 Biquad cascade filter.
+   * @param[in,out] *S           points to an instance of the Q31 Biquad cascade structure.
+   * @param[in]     numStages      number of 2nd order stages in the filter.
+   * @param[in]     *pCoeffs     points to the filter coefficients.
+   * @param[in]     *pState      points to the state buffer.
+   * @param[in]     postShift    Shift to be applied to the output. Varies according to the coefficients format
+   * @return        none
+   */
 
 void arm_biquad_cascade_df1_init_q31(arm_biquad_casd_df1_inst_q31* S, uint8_t numStages,
-    q31_t* pCoeffs, q31_t* pState, int8_t postShift);
+                                     q31_t* pCoeffs, q31_t* pState, int8_t postShift);
 
 /**
- * @brief Processing function for the floating-point Biquad cascade filter.
- * @param[in]  *S         points to an instance of the floating-point Biquad cascade structure.
- * @param[in]  *pSrc      points to the block of input data.
- * @param[out] *pDst      points to the block of output data.
- * @param[in]  blockSize  number of samples to process.
- * @return     none.
- */
+   * @brief Processing function for the floating-point Biquad cascade filter.
+   * @param[in]  *S         points to an instance of the floating-point Biquad cascade structure.
+   * @param[in]  *pSrc      points to the block of input data.
+   * @param[out] *pDst      points to the block of output data.
+   * @param[in]  blockSize  number of samples to process.
+   * @return     none.
+   */
 
-void arm_biquad_cascade_df1_f32(
-    const arm_biquad_casd_df1_inst_f32* S, float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
-
-/**
- * @brief  Initialization function for the floating-point Biquad cascade filter.
- * @param[in,out] *S           points to an instance of the floating-point Biquad cascade structure.
- * @param[in]     numStages    number of 2nd order stages in the filter.
- * @param[in]     *pCoeffs     points to the filter coefficients.
- * @param[in]     *pState      points to the state buffer.
- * @return        none
- */
-
-void arm_biquad_cascade_df1_init_f32(
-    arm_biquad_casd_df1_inst_f32* S, uint8_t numStages, float32_t* pCoeffs, float32_t* pState);
+void arm_biquad_cascade_df1_f32(const arm_biquad_casd_df1_inst_f32* S, float32_t* pSrc,
+                                float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the floating-point matrix structure.
- */
+   * @brief  Initialization function for the floating-point Biquad cascade filter.
+   * @param[in,out] *S           points to an instance of the floating-point Biquad cascade structure.
+   * @param[in]     numStages    number of 2nd order stages in the filter.
+   * @param[in]     *pCoeffs     points to the filter coefficients.
+   * @param[in]     *pState      points to the state buffer.
+   * @return        none
+   */
+
+void arm_biquad_cascade_df1_init_f32(arm_biquad_casd_df1_inst_f32* S, uint8_t numStages,
+                                     float32_t* pCoeffs, float32_t* pState);
+
+/**
+   * @brief Instance structure for the floating-point matrix structure.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows of the matrix.     */
@@ -1221,280 +1207,269 @@ typedef struct {
 } arm_matrix_instance_f32;
 
 /**
- * @brief Instance structure for the Q15 matrix structure.
- */
+   * @brief Instance structure for the Q15 matrix structure.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows of the matrix.     */
     uint16_t numCols; /**< number of columns of the matrix.  */
-    q15_t* pData; /**< points to the data of the matrix. */
+    q15_t* pData;     /**< points to the data of the matrix. */
 
 } arm_matrix_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 matrix structure.
- */
+   * @brief Instance structure for the Q31 matrix structure.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows of the matrix.     */
     uint16_t numCols; /**< number of columns of the matrix.  */
-    q31_t* pData; /**< points to the data of the matrix. */
+    q31_t* pData;     /**< points to the data of the matrix. */
 
 } arm_matrix_instance_q31;
 
 /**
- * @brief Floating-point matrix addition.
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Floating-point matrix addition.
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_add_f32(const arm_matrix_instance_f32* pSrcA,
-    const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
+                           const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
 
 /**
- * @brief Q15 matrix addition.
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q15 matrix addition.
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_add_q15(const arm_matrix_instance_q15* pSrcA,
-    const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst);
+                           const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst);
 
 /**
- * @brief Q31 matrix addition.
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q31 matrix addition.
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_add_q31(const arm_matrix_instance_q31* pSrcA,
-    const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+                           const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
 
 /**
- * @brief Floating-point matrix transpose.
- * @param[in]  *pSrc points to the input matrix
- * @param[out] *pDst points to the output matrix
- * @return 	The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
- * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
- */
+   * @brief Floating-point matrix transpose.
+   * @param[in]  *pSrc points to the input matrix
+   * @param[out] *pDst points to the output matrix
+   * @return 	The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
+   * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_trans_f32(const arm_matrix_instance_f32* pSrc, arm_matrix_instance_f32* pDst);
 
 /**
- * @brief Q15 matrix transpose.
- * @param[in]  *pSrc points to the input matrix
- * @param[out] *pDst points to the output matrix
- * @return 	The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
- * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
- */
+   * @brief Q15 matrix transpose.
+   * @param[in]  *pSrc points to the input matrix
+   * @param[out] *pDst points to the output matrix
+   * @return 	The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
+   * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_trans_q15(const arm_matrix_instance_q15* pSrc, arm_matrix_instance_q15* pDst);
 
 /**
- * @brief Q31 matrix transpose.
- * @param[in]  *pSrc points to the input matrix
- * @param[out] *pDst points to the output matrix
- * @return 	The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
- * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
- */
+   * @brief Q31 matrix transpose.
+   * @param[in]  *pSrc points to the input matrix
+   * @param[out] *pDst points to the output matrix
+   * @return 	The function returns either  <code>ARM_MATH_SIZE_MISMATCH</code>
+   * or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_trans_q31(const arm_matrix_instance_q31* pSrc, arm_matrix_instance_q31* pDst);
 
 /**
- * @brief Floating-point matrix multiplication
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Floating-point matrix multiplication
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_mult_f32(const arm_matrix_instance_f32* pSrcA,
-    const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
+                            const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
 
 /**
- * @brief Q15 matrix multiplication
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @param[in]		  *pState points to the array for storing intermediate results
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q15 matrix multiplication
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @param[in]		  *pState points to the array for storing intermediate results
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_mult_q15(const arm_matrix_instance_q15* pSrcA,
-    const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst, q15_t* pState);
+                            const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst,
+                            q15_t* pState);
 
 /**
- * @brief Q15 matrix multiplication (fast variant) for Cortex-M3 and Cortex-M4
- * @param[in]       *pSrcA  points to the first input matrix structure
- * @param[in]       *pSrcB  points to the second input matrix structure
- * @param[out]      *pDst   points to output matrix structure
- * @param[in]		  *pState points to the array for storing intermediate results
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q15 matrix multiplication (fast variant) for Cortex-M3 and Cortex-M4
+   * @param[in]       *pSrcA  points to the first input matrix structure
+   * @param[in]       *pSrcB  points to the second input matrix structure
+   * @param[out]      *pDst   points to output matrix structure
+   * @param[in]		  *pState points to the array for storing intermediate results
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_mult_fast_q15(const arm_matrix_instance_q15* pSrcA,
-    const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst, q15_t* pState);
+                                 const arm_matrix_instance_q15* pSrcB,
+                                 arm_matrix_instance_q15* pDst, q15_t* pState);
 
 /**
- * @brief Q31 matrix multiplication
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q31 matrix multiplication
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_mult_q31(const arm_matrix_instance_q31* pSrcA,
-    const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+                            const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
 
 /**
- * @brief Q31 matrix multiplication (fast variant) for Cortex-M3 and Cortex-M4
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q31 matrix multiplication (fast variant) for Cortex-M3 and Cortex-M4
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_mult_fast_q31(const arm_matrix_instance_q31* pSrcA,
-    const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+                                 const arm_matrix_instance_q31* pSrcB,
+                                 arm_matrix_instance_q31* pDst);
 
 /**
- * @brief Floating-point matrix subtraction
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Floating-point matrix subtraction
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_sub_f32(const arm_matrix_instance_f32* pSrcA,
-    const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
+                           const arm_matrix_instance_f32* pSrcB, arm_matrix_instance_f32* pDst);
 
 /**
- * @brief Q15 matrix subtraction
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q15 matrix subtraction
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_sub_q15(const arm_matrix_instance_q15* pSrcA,
-    const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst);
+                           const arm_matrix_instance_q15* pSrcB, arm_matrix_instance_q15* pDst);
 
 /**
- * @brief Q31 matrix subtraction
- * @param[in]       *pSrcA points to the first input matrix structure
- * @param[in]       *pSrcB points to the second input matrix structure
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q31 matrix subtraction
+   * @param[in]       *pSrcA points to the first input matrix structure
+   * @param[in]       *pSrcB points to the second input matrix structure
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_sub_q31(const arm_matrix_instance_q31* pSrcA,
-    const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
+                           const arm_matrix_instance_q31* pSrcB, arm_matrix_instance_q31* pDst);
 
 /**
- * @brief Floating-point matrix scaling.
- * @param[in]  *pSrc points to the input matrix
- * @param[in]  scale scale factor
- * @param[out] *pDst points to the output matrix
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Floating-point matrix scaling.
+   * @param[in]  *pSrc points to the input matrix
+   * @param[in]  scale scale factor
+   * @param[out] *pDst points to the output matrix
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
-arm_status arm_mat_scale_f32(
-    const arm_matrix_instance_f32* pSrc, float32_t scale, arm_matrix_instance_f32* pDst);
+arm_status arm_mat_scale_f32(const arm_matrix_instance_f32* pSrc, float32_t scale,
+                             arm_matrix_instance_f32* pDst);
 
 /**
- * @brief Q15 matrix scaling.
- * @param[in]       *pSrc points to input matrix
- * @param[in]       scaleFract fractional portion of the scale factor
- * @param[in]       shift number of bits to shift the result by
- * @param[out]      *pDst points to output matrix
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q15 matrix scaling.
+   * @param[in]       *pSrc points to input matrix
+   * @param[in]       scaleFract fractional portion of the scale factor
+   * @param[in]       shift number of bits to shift the result by
+   * @param[out]      *pDst points to output matrix
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_scale_q15(const arm_matrix_instance_q15* pSrc, q15_t scaleFract, int32_t shift,
-    arm_matrix_instance_q15* pDst);
+                             arm_matrix_instance_q15* pDst);
 
 /**
- * @brief Q31 matrix scaling.
- * @param[in]       *pSrc points to input matrix
- * @param[in]       scaleFract fractional portion of the scale factor
- * @param[in]       shift number of bits to shift the result by
- * @param[out]      *pDst points to output matrix structure
- * @return     The function returns either
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size
- * checking.
- */
+   * @brief Q31 matrix scaling.
+   * @param[in]       *pSrc points to input matrix
+   * @param[in]       scaleFract fractional portion of the scale factor
+   * @param[in]       shift number of bits to shift the result by
+   * @param[out]      *pDst points to output matrix structure
+   * @return     The function returns either
+   * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+   */
 
 arm_status arm_mat_scale_q31(const arm_matrix_instance_q31* pSrc, q31_t scaleFract, int32_t shift,
-    arm_matrix_instance_q31* pDst);
+                             arm_matrix_instance_q31* pDst);
 
 /**
- * @brief  Q31 matrix initialization.
- * @param[in,out] *S             points to an instance of the floating-point matrix structure.
- * @param[in]     nRows          number of rows in the matrix.
- * @param[in]     nColumns       number of columns in the matrix.
- * @param[in]     *pData	       points to the matrix data array.
- * @return        none
- */
+   * @brief  Q31 matrix initialization.
+   * @param[in,out] *S             points to an instance of the floating-point matrix structure.
+   * @param[in]     nRows          number of rows in the matrix.
+   * @param[in]     nColumns       number of columns in the matrix.
+   * @param[in]     *pData	       points to the matrix data array.
+   * @return        none
+   */
 
 void arm_mat_init_q31(arm_matrix_instance_q31* S, uint16_t nRows, uint16_t nColumns, q31_t* pData);
 
 /**
- * @brief  Q15 matrix initialization.
- * @param[in,out] *S             points to an instance of the floating-point matrix structure.
- * @param[in]     nRows          number of rows in the matrix.
- * @param[in]     nColumns       number of columns in the matrix.
- * @param[in]     *pData	       points to the matrix data array.
- * @return        none
- */
+   * @brief  Q15 matrix initialization.
+   * @param[in,out] *S             points to an instance of the floating-point matrix structure.
+   * @param[in]     nRows          number of rows in the matrix.
+   * @param[in]     nColumns       number of columns in the matrix.
+   * @param[in]     *pData	       points to the matrix data array.
+   * @return        none
+   */
 
 void arm_mat_init_q15(arm_matrix_instance_q15* S, uint16_t nRows, uint16_t nColumns, q15_t* pData);
 
 /**
- * @brief  Floating-point matrix initialization.
- * @param[in,out] *S             points to an instance of the floating-point matrix structure.
- * @param[in]     nRows          number of rows in the matrix.
- * @param[in]     nColumns       number of columns in the matrix.
- * @param[in]     *pData	       points to the matrix data array.
- * @return        none
- */
+   * @brief  Floating-point matrix initialization.
+   * @param[in,out] *S             points to an instance of the floating-point matrix structure.
+   * @param[in]     nRows          number of rows in the matrix.
+   * @param[in]     nColumns       number of columns in the matrix.
+   * @param[in]     *pData	       points to the matrix data array.
+   * @return        none
+   */
 
-void arm_mat_init_f32(
-    arm_matrix_instance_f32* S, uint16_t nRows, uint16_t nColumns, float32_t* pData);
+void arm_mat_init_f32(arm_matrix_instance_f32* S, uint16_t nRows, uint16_t nColumns,
+                      float32_t* pData);
 
 /**
- * @brief Instance structure for the Q15 PID Control.
- */
+   * @brief Instance structure for the Q15 PID Control.
+   */
 typedef struct {
     q15_t A0; /**< The derived gain, A0 = Kp + Ki + Kd . */
 #ifdef ARM_MATH_CM0_FAMILY
@@ -1504,99 +1479,97 @@ typedef struct {
     q31_t A1; /**< The derived gain A1 = -Kp - 2Kd | Kd.*/
 #endif
     q15_t state[3]; /**< The state array of length 3. */
-    q15_t Kp; /**< The proportional gain. */
-    q15_t Ki; /**< The integral gain. */
-    q15_t Kd; /**< The derivative gain. */
+    q15_t Kp;       /**< The proportional gain. */
+    q15_t Ki;       /**< The integral gain. */
+    q15_t Kd;       /**< The derivative gain. */
 } arm_pid_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 PID Control.
- */
+   * @brief Instance structure for the Q31 PID Control.
+   */
 typedef struct {
-    q31_t A0; /**< The derived gain, A0 = Kp + Ki + Kd . */
-    q31_t A1; /**< The derived gain, A1 = -Kp - 2Kd. */
-    q31_t A2; /**< The derived gain, A2 = Kd . */
+    q31_t A0;       /**< The derived gain, A0 = Kp + Ki + Kd . */
+    q31_t A1;       /**< The derived gain, A1 = -Kp - 2Kd. */
+    q31_t A2;       /**< The derived gain, A2 = Kd . */
     q31_t state[3]; /**< The state array of length 3. */
-    q31_t Kp; /**< The proportional gain. */
-    q31_t Ki; /**< The integral gain. */
-    q31_t Kd; /**< The derivative gain. */
+    q31_t Kp;       /**< The proportional gain. */
+    q31_t Ki;       /**< The integral gain. */
+    q31_t Kd;       /**< The derivative gain. */
 
 } arm_pid_instance_q31;
 
 /**
- * @brief Instance structure for the floating-point PID Control.
- */
+   * @brief Instance structure for the floating-point PID Control.
+   */
 typedef struct {
-    float32_t A0; /**< The derived gain, A0 = Kp + Ki + Kd . */
-    float32_t A1; /**< The derived gain, A1 = -Kp - 2Kd. */
-    float32_t A2; /**< The derived gain, A2 = Kd . */
+    float32_t A0;       /**< The derived gain, A0 = Kp + Ki + Kd . */
+    float32_t A1;       /**< The derived gain, A1 = -Kp - 2Kd. */
+    float32_t A2;       /**< The derived gain, A2 = Kd . */
     float32_t state[3]; /**< The state array of length 3. */
-    float32_t Kp; /**< The proportional gain. */
-    float32_t Ki; /**< The integral gain. */
-    float32_t Kd; /**< The derivative gain. */
+    float32_t Kp;       /**< The proportional gain. */
+    float32_t Ki;       /**< The integral gain. */
+    float32_t Kd;       /**< The derivative gain. */
 } arm_pid_instance_f32;
 
 /**
- * @brief  Initialization function for the floating-point PID Control.
- * @param[in,out] *S      points to an instance of the PID structure.
- * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the
- * state.
- * @return none.
- */
+   * @brief  Initialization function for the floating-point PID Control.
+   * @param[in,out] *S      points to an instance of the PID structure.
+   * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.
+   * @return none.
+   */
 void arm_pid_init_f32(arm_pid_instance_f32* S, int32_t resetStateFlag);
 
 /**
- * @brief  Reset function for the floating-point PID Control.
- * @param[in,out] *S is an instance of the floating-point PID Control structure
- * @return none
- */
+   * @brief  Reset function for the floating-point PID Control.
+   * @param[in,out] *S is an instance of the floating-point PID Control structure
+   * @return none
+   */
 void arm_pid_reset_f32(arm_pid_instance_f32* S);
 
 /**
- * @brief  Initialization function for the Q31 PID Control.
- * @param[in,out] *S points to an instance of the Q15 PID structure.
- * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the
- * state.
- * @return none.
- */
+   * @brief  Initialization function for the Q31 PID Control.
+   * @param[in,out] *S points to an instance of the Q15 PID structure.
+   * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.
+   * @return none.
+   */
 void arm_pid_init_q31(arm_pid_instance_q31* S, int32_t resetStateFlag);
 
 /**
- * @brief  Reset function for the Q31 PID Control.
- * @param[in,out] *S points to an instance of the Q31 PID Control structure
- * @return none
- */
+   * @brief  Reset function for the Q31 PID Control.
+   * @param[in,out] *S points to an instance of the Q31 PID Control structure
+   * @return none
+   */
 
 void arm_pid_reset_q31(arm_pid_instance_q31* S);
 
 /**
- * @brief  Initialization function for the Q15 PID Control.
- * @param[in,out] *S points to an instance of the Q15 PID structure.
- * @param[in] resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.
- * @return none.
- */
+   * @brief  Initialization function for the Q15 PID Control.
+   * @param[in,out] *S points to an instance of the Q15 PID structure.
+   * @param[in] resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.
+   * @return none.
+   */
 void arm_pid_init_q15(arm_pid_instance_q15* S, int32_t resetStateFlag);
 
 /**
- * @brief  Reset function for the Q15 PID Control.
- * @param[in,out] *S points to an instance of the q15 PID Control structure
- * @return none
- */
+   * @brief  Reset function for the Q15 PID Control.
+   * @param[in,out] *S points to an instance of the q15 PID Control structure
+   * @return none
+   */
 void arm_pid_reset_q15(arm_pid_instance_q15* S);
 
 /**
- * @brief Instance structure for the floating-point Linear Interpolate function.
- */
+   * @brief Instance structure for the floating-point Linear Interpolate function.
+   */
 typedef struct {
-    uint32_t nValues; /**< nValues */
-    float32_t x1; /**< x1 */
+    uint32_t nValues;   /**< nValues */
+    float32_t x1;       /**< x1 */
     float32_t xSpacing; /**< xSpacing */
-    float32_t* pYData; /**< pointer to the table of Y values */
+    float32_t* pYData;  /**< pointer to the table of Y values */
 } arm_linear_interp_instance_f32;
 
 /**
- * @brief Instance structure for the floating-point bilinear interpolation function.
- */
+   * @brief Instance structure for the floating-point bilinear interpolation function.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows in the data table. */
@@ -1605,845 +1578,842 @@ typedef struct {
 } arm_bilinear_interp_instance_f32;
 
 /**
- * @brief Instance structure for the Q31 bilinear interpolation function.
- */
+   * @brief Instance structure for the Q31 bilinear interpolation function.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows in the data table. */
     uint16_t numCols; /**< number of columns in the data table. */
-    q31_t* pData; /**< points to the data table. */
+    q31_t* pData;     /**< points to the data table. */
 } arm_bilinear_interp_instance_q31;
 
 /**
- * @brief Instance structure for the Q15 bilinear interpolation function.
- */
+   * @brief Instance structure for the Q15 bilinear interpolation function.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows in the data table. */
     uint16_t numCols; /**< number of columns in the data table. */
-    q15_t* pData; /**< points to the data table. */
+    q15_t* pData;     /**< points to the data table. */
 } arm_bilinear_interp_instance_q15;
 
 /**
- * @brief Instance structure for the Q15 bilinear interpolation function.
- */
+   * @brief Instance structure for the Q15 bilinear interpolation function.
+   */
 
 typedef struct {
     uint16_t numRows; /**< number of rows in the data table. */
     uint16_t numCols; /**< number of columns in the data table. */
-    q7_t* pData; /**< points to the data table. */
+    q7_t* pData;      /**< points to the data table. */
 } arm_bilinear_interp_instance_q7;
 
 /**
- * @brief Q7 vector multiplication.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst  points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q7 vector multiplication.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst  points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_mult_q7(q7_t* pSrcA, q7_t* pSrcB, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector multiplication.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst  points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q15 vector multiplication.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst  points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_mult_q15(q15_t* pSrcA, q15_t* pSrcB, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector multiplication.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q31 vector multiplication.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_mult_q31(q31_t* pSrcA, q31_t* pSrcB, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Floating-point vector multiplication.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Floating-point vector multiplication.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_mult_f32(float32_t* pSrcA, float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q15 CFFT/CIFFT function.
- */
+   * @brief Instance structure for the Q15 CFFT/CIFFT function.
+   */
 
 typedef struct {
     uint16_t fftLen; /**< length of the FFT. */
     uint8_t
         ifftFlag; /**< flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform. */
-    uint8_t bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0)
-                               bit reversal of output. */
-    q15_t* pTwiddle; /**< points to the Sin twiddle factor table. */
+    uint8_t
+        bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output. */
+    q15_t* pTwiddle;        /**< points to the Sin twiddle factor table. */
     uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                  with the same twiddle factor table. */
-    uint16_t bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the
-                              same bit reversal table. */
+    uint16_t
+        twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    uint16_t
+        bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the same bit reversal table. */
 } arm_cfft_radix2_instance_q15;
 
-arm_status arm_cfft_radix2_init_q15(
-    arm_cfft_radix2_instance_q15* S, uint16_t fftLen, uint8_t ifftFlag, uint8_t bitReverseFlag);
+arm_status arm_cfft_radix2_init_q15(arm_cfft_radix2_instance_q15* S, uint16_t fftLen,
+                                    uint8_t ifftFlag, uint8_t bitReverseFlag);
 
 void arm_cfft_radix2_q15(const arm_cfft_radix2_instance_q15* S, q15_t* pSrc);
 
 /**
- * @brief Instance structure for the Q15 CFFT/CIFFT function.
- */
+   * @brief Instance structure for the Q15 CFFT/CIFFT function.
+   */
 
 typedef struct {
     uint16_t fftLen; /**< length of the FFT. */
     uint8_t
         ifftFlag; /**< flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform. */
-    uint8_t bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0)
-                               bit reversal of output. */
-    q15_t* pTwiddle; /**< points to the twiddle factor table. */
+    uint8_t
+        bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output. */
+    q15_t* pTwiddle;        /**< points to the twiddle factor table. */
     uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                  with the same twiddle factor table. */
-    uint16_t bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the
-                              same bit reversal table. */
+    uint16_t
+        twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    uint16_t
+        bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the same bit reversal table. */
 } arm_cfft_radix4_instance_q15;
 
-arm_status arm_cfft_radix4_init_q15(
-    arm_cfft_radix4_instance_q15* S, uint16_t fftLen, uint8_t ifftFlag, uint8_t bitReverseFlag);
+arm_status arm_cfft_radix4_init_q15(arm_cfft_radix4_instance_q15* S, uint16_t fftLen,
+                                    uint8_t ifftFlag, uint8_t bitReverseFlag);
 
 void arm_cfft_radix4_q15(const arm_cfft_radix4_instance_q15* S, q15_t* pSrc);
 
 /**
- * @brief Instance structure for the Radix-2 Q31 CFFT/CIFFT function.
- */
+   * @brief Instance structure for the Radix-2 Q31 CFFT/CIFFT function.
+   */
 
 typedef struct {
     uint16_t fftLen; /**< length of the FFT. */
     uint8_t
         ifftFlag; /**< flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform. */
-    uint8_t bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0)
-                               bit reversal of output. */
-    q31_t* pTwiddle; /**< points to the Twiddle factor table. */
+    uint8_t
+        bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output. */
+    q31_t* pTwiddle;        /**< points to the Twiddle factor table. */
     uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                  with the same twiddle factor table. */
-    uint16_t bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the
-                              same bit reversal table. */
+    uint16_t
+        twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    uint16_t
+        bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the same bit reversal table. */
 } arm_cfft_radix2_instance_q31;
 
-arm_status arm_cfft_radix2_init_q31(
-    arm_cfft_radix2_instance_q31* S, uint16_t fftLen, uint8_t ifftFlag, uint8_t bitReverseFlag);
+arm_status arm_cfft_radix2_init_q31(arm_cfft_radix2_instance_q31* S, uint16_t fftLen,
+                                    uint8_t ifftFlag, uint8_t bitReverseFlag);
 
 void arm_cfft_radix2_q31(const arm_cfft_radix2_instance_q31* S, q31_t* pSrc);
 
 /**
- * @brief Instance structure for the Q31 CFFT/CIFFT function.
- */
+   * @brief Instance structure for the Q31 CFFT/CIFFT function.
+   */
 
 typedef struct {
     uint16_t fftLen; /**< length of the FFT. */
     uint8_t
         ifftFlag; /**< flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform. */
-    uint8_t bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0)
-                               bit reversal of output. */
-    q31_t* pTwiddle; /**< points to the twiddle factor table. */
+    uint8_t
+        bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output. */
+    q31_t* pTwiddle;        /**< points to the twiddle factor table. */
     uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                  with the same twiddle factor table. */
-    uint16_t bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the
-                              same bit reversal table. */
+    uint16_t
+        twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    uint16_t
+        bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the same bit reversal table. */
 } arm_cfft_radix4_instance_q31;
 
 void arm_cfft_radix4_q31(const arm_cfft_radix4_instance_q31* S, q31_t* pSrc);
 
-arm_status arm_cfft_radix4_init_q31(
-    arm_cfft_radix4_instance_q31* S, uint16_t fftLen, uint8_t ifftFlag, uint8_t bitReverseFlag);
+arm_status arm_cfft_radix4_init_q31(arm_cfft_radix4_instance_q31* S, uint16_t fftLen,
+                                    uint8_t ifftFlag, uint8_t bitReverseFlag);
 
 /**
- * @brief Instance structure for the floating-point CFFT/CIFFT function.
- */
+   * @brief Instance structure for the floating-point CFFT/CIFFT function.
+   */
 
 typedef struct {
     uint16_t fftLen; /**< length of the FFT. */
     uint8_t
         ifftFlag; /**< flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform. */
-    uint8_t bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0)
-                               bit reversal of output. */
-    float32_t* pTwiddle; /**< points to the Twiddle factor table. */
+    uint8_t
+        bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output. */
+    float32_t* pTwiddle;    /**< points to the Twiddle factor table. */
     uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                  with the same twiddle factor table. */
-    uint16_t bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the
-                              same bit reversal table. */
+    uint16_t
+        twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    uint16_t
+        bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the same bit reversal table. */
     float32_t onebyfftLen; /**< value of 1/fftLen. */
 } arm_cfft_radix2_instance_f32;
 
 /* Deprecated */
-arm_status arm_cfft_radix2_init_f32(
-    arm_cfft_radix2_instance_f32* S, uint16_t fftLen, uint8_t ifftFlag, uint8_t bitReverseFlag);
+arm_status arm_cfft_radix2_init_f32(arm_cfft_radix2_instance_f32* S, uint16_t fftLen,
+                                    uint8_t ifftFlag, uint8_t bitReverseFlag);
 
 /* Deprecated */
 void arm_cfft_radix2_f32(const arm_cfft_radix2_instance_f32* S, float32_t* pSrc);
 
 /**
- * @brief Instance structure for the floating-point CFFT/CIFFT function.
- */
+   * @brief Instance structure for the floating-point CFFT/CIFFT function.
+   */
 
 typedef struct {
     uint16_t fftLen; /**< length of the FFT. */
     uint8_t
         ifftFlag; /**< flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform. */
-    uint8_t bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0)
-                               bit reversal of output. */
-    float32_t* pTwiddle; /**< points to the Twiddle factor table. */
+    uint8_t
+        bitReverseFlag; /**< flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output. */
+    float32_t* pTwiddle;    /**< points to the Twiddle factor table. */
     uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                  with the same twiddle factor table. */
-    uint16_t bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the
-                              same bit reversal table. */
+    uint16_t
+        twidCoefModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    uint16_t
+        bitRevFactor; /**< bit reversal modifier that supports different size FFTs with the same bit reversal table. */
     float32_t onebyfftLen; /**< value of 1/fftLen. */
 } arm_cfft_radix4_instance_f32;
 
 /* Deprecated */
-arm_status arm_cfft_radix4_init_f32(
-    arm_cfft_radix4_instance_f32* S, uint16_t fftLen, uint8_t ifftFlag, uint8_t bitReverseFlag);
+arm_status arm_cfft_radix4_init_f32(arm_cfft_radix4_instance_f32* S, uint16_t fftLen,
+                                    uint8_t ifftFlag, uint8_t bitReverseFlag);
 
 /* Deprecated */
 void arm_cfft_radix4_f32(const arm_cfft_radix4_instance_f32* S, float32_t* pSrc);
 
 /**
- * @brief Instance structure for the floating-point CFFT/CIFFT function.
- */
+   * @brief Instance structure for the floating-point CFFT/CIFFT function.
+   */
 
 typedef struct {
-    uint16_t fftLen; /**< length of the FFT. */
-    const float32_t* pTwiddle; /**< points to the Twiddle factor table. */
+    uint16_t fftLen;              /**< length of the FFT. */
+    const float32_t* pTwiddle;    /**< points to the Twiddle factor table. */
     const uint16_t* pBitRevTable; /**< points to the bit reversal table. */
-    uint16_t bitRevLength; /**< bit reversal table length. */
+    uint16_t bitRevLength;        /**< bit reversal table length. */
 } arm_cfft_instance_f32;
 
-void arm_cfft_f32(
-    const arm_cfft_instance_f32* S, float32_t* p1, uint8_t ifftFlag, uint8_t bitReverseFlag);
+void arm_cfft_f32(const arm_cfft_instance_f32* S, float32_t* p1, uint8_t ifftFlag,
+                  uint8_t bitReverseFlag);
 
 /**
- * @brief Instance structure for the Q15 RFFT/RIFFT function.
- */
+   * @brief Instance structure for the Q15 RFFT/RIFFT function.
+   */
 
 typedef struct {
     uint32_t fftLenReal; /**< length of the real FFT. */
-    uint32_t fftLenBy2; /**< length of the complex FFT. */
-    uint8_t ifftFlagR; /**< flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1)
-                          transform. */
-    uint8_t bitReverseFlagR; /**< flag that enables (bitReverseFlagR=1) or disables
-                                (bitReverseFlagR=0) bit reversal of output. */
-    uint32_t twidCoefRModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                   with the same twiddle factor table. */
-    q15_t* pTwiddleAReal; /**< points to the real twiddle factor table. */
-    q15_t* pTwiddleBReal; /**< points to the imag twiddle factor table. */
+    uint32_t fftLenBy2;  /**< length of the complex FFT. */
+    uint8_t
+        ifftFlagR; /**< flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1) transform. */
+    uint8_t
+        bitReverseFlagR; /**< flag that enables (bitReverseFlagR=1) or disables (bitReverseFlagR=0) bit reversal of output. */
+    uint32_t
+        twidCoefRModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    q15_t* pTwiddleAReal;  /**< points to the real twiddle factor table. */
+    q15_t* pTwiddleBReal;  /**< points to the imag twiddle factor table. */
     arm_cfft_radix4_instance_q15* pCfft; /**< points to the complex FFT instance. */
 } arm_rfft_instance_q15;
 
 arm_status arm_rfft_init_q15(arm_rfft_instance_q15* S, arm_cfft_radix4_instance_q15* S_CFFT,
-    uint32_t fftLenReal, uint32_t ifftFlagR, uint32_t bitReverseFlag);
+                             uint32_t fftLenReal, uint32_t ifftFlagR, uint32_t bitReverseFlag);
 
 void arm_rfft_q15(const arm_rfft_instance_q15* S, q15_t* pSrc, q15_t* pDst);
 
 /**
- * @brief Instance structure for the Q31 RFFT/RIFFT function.
- */
+   * @brief Instance structure for the Q31 RFFT/RIFFT function.
+   */
 
 typedef struct {
     uint32_t fftLenReal; /**< length of the real FFT. */
-    uint32_t fftLenBy2; /**< length of the complex FFT. */
-    uint8_t ifftFlagR; /**< flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1)
-                          transform. */
-    uint8_t bitReverseFlagR; /**< flag that enables (bitReverseFlagR=1) or disables
-                                (bitReverseFlagR=0) bit reversal of output. */
-    uint32_t twidCoefRModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                   with the same twiddle factor table. */
-    q31_t* pTwiddleAReal; /**< points to the real twiddle factor table. */
-    q31_t* pTwiddleBReal; /**< points to the imag twiddle factor table. */
+    uint32_t fftLenBy2;  /**< length of the complex FFT. */
+    uint8_t
+        ifftFlagR; /**< flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1) transform. */
+    uint8_t
+        bitReverseFlagR; /**< flag that enables (bitReverseFlagR=1) or disables (bitReverseFlagR=0) bit reversal of output. */
+    uint32_t
+        twidCoefRModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    q31_t* pTwiddleAReal;  /**< points to the real twiddle factor table. */
+    q31_t* pTwiddleBReal;  /**< points to the imag twiddle factor table. */
     arm_cfft_radix4_instance_q31* pCfft; /**< points to the complex FFT instance. */
 } arm_rfft_instance_q31;
 
 arm_status arm_rfft_init_q31(arm_rfft_instance_q31* S, arm_cfft_radix4_instance_q31* S_CFFT,
-    uint32_t fftLenReal, uint32_t ifftFlagR, uint32_t bitReverseFlag);
+                             uint32_t fftLenReal, uint32_t ifftFlagR, uint32_t bitReverseFlag);
 
 void arm_rfft_q31(const arm_rfft_instance_q31* S, q31_t* pSrc, q31_t* pDst);
 
 /**
- * @brief Instance structure for the floating-point RFFT/RIFFT function.
- */
+   * @brief Instance structure for the floating-point RFFT/RIFFT function.
+   */
 
 typedef struct {
     uint32_t fftLenReal; /**< length of the real FFT. */
-    uint16_t fftLenBy2; /**< length of the complex FFT. */
-    uint8_t ifftFlagR; /**< flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1)
-                          transform. */
-    uint8_t bitReverseFlagR; /**< flag that enables (bitReverseFlagR=1) or disables
-                                (bitReverseFlagR=0) bit reversal of output. */
-    uint32_t twidCoefRModifier; /**< twiddle coefficient modifier that supports different size FFTs
-                                   with the same twiddle factor table. */
-    float32_t* pTwiddleAReal; /**< points to the real twiddle factor table. */
-    float32_t* pTwiddleBReal; /**< points to the imag twiddle factor table. */
+    uint16_t fftLenBy2;  /**< length of the complex FFT. */
+    uint8_t
+        ifftFlagR; /**< flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1) transform. */
+    uint8_t
+        bitReverseFlagR; /**< flag that enables (bitReverseFlagR=1) or disables (bitReverseFlagR=0) bit reversal of output. */
+    uint32_t
+        twidCoefRModifier; /**< twiddle coefficient modifier that supports different size FFTs with the same twiddle factor table. */
+    float32_t* pTwiddleAReal;            /**< points to the real twiddle factor table. */
+    float32_t* pTwiddleBReal;            /**< points to the imag twiddle factor table. */
     arm_cfft_radix4_instance_f32* pCfft; /**< points to the complex FFT instance. */
 } arm_rfft_instance_f32;
 
 arm_status arm_rfft_init_f32(arm_rfft_instance_f32* S, arm_cfft_radix4_instance_f32* S_CFFT,
-    uint32_t fftLenReal, uint32_t ifftFlagR, uint32_t bitReverseFlag);
+                             uint32_t fftLenReal, uint32_t ifftFlagR, uint32_t bitReverseFlag);
 
 void arm_rfft_f32(const arm_rfft_instance_f32* S, float32_t* pSrc, float32_t* pDst);
 
 /**
- * @brief Instance structure for the floating-point RFFT/RIFFT function.
- */
+   * @brief Instance structure for the floating-point RFFT/RIFFT function.
+   */
 
 typedef struct {
     arm_cfft_instance_f32 Sint; /**< Internal CFFT structure. */
-    uint16_t fftLenRFFT; /**< length of the real sequence */
-    float32_t* pTwiddleRFFT; /**< Twiddle factors real stage  */
+    uint16_t fftLenRFFT;        /**< length of the real sequence */
+    float32_t* pTwiddleRFFT;    /**< Twiddle factors real stage  */
 } arm_rfft_fast_instance_f32;
 
 arm_status arm_rfft_fast_init_f32(arm_rfft_fast_instance_f32* S, uint16_t fftLen);
 
-void arm_rfft_fast_f32(
-    arm_rfft_fast_instance_f32* S, float32_t* p, float32_t* pOut, uint8_t ifftFlag);
+void arm_rfft_fast_f32(arm_rfft_fast_instance_f32* S, float32_t* p, float32_t* pOut,
+                       uint8_t ifftFlag);
 
 /**
- * @brief Instance structure for the floating-point DCT4/IDCT4 function.
- */
+   * @brief Instance structure for the floating-point DCT4/IDCT4 function.
+   */
 
 typedef struct {
-    uint16_t N; /**< length of the DCT4. */
-    uint16_t Nby2; /**< half of the length of the DCT4. */
-    float32_t normalize; /**< normalizing factor. */
-    float32_t* pTwiddle; /**< points to the twiddle factor table. */
-    float32_t* pCosFactor; /**< points to the cosFactor table. */
-    arm_rfft_instance_f32* pRfft; /**< points to the real FFT instance. */
+    uint16_t N;                          /**< length of the DCT4. */
+    uint16_t Nby2;                       /**< half of the length of the DCT4. */
+    float32_t normalize;                 /**< normalizing factor. */
+    float32_t* pTwiddle;                 /**< points to the twiddle factor table. */
+    float32_t* pCosFactor;               /**< points to the cosFactor table. */
+    arm_rfft_instance_f32* pRfft;        /**< points to the real FFT instance. */
     arm_cfft_radix4_instance_f32* pCfft; /**< points to the complex FFT instance. */
 } arm_dct4_instance_f32;
 
 /**
- * @brief  Initialization function for the floating-point DCT4/IDCT4.
- * @param[in,out] *S         points to an instance of floating-point DCT4/IDCT4 structure.
- * @param[in]     *S_RFFT    points to an instance of floating-point RFFT/RIFFT structure.
- * @param[in]     *S_CFFT    points to an instance of floating-point CFFT/CIFFT structure.
- * @param[in]     N          length of the DCT4.
- * @param[in]     Nby2       half of the length of the DCT4.
- * @param[in]     normalize  normalizing factor.
- * @return		arm_status function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_ARGUMENT_ERROR if <code>fftLenReal</code> is not a supported transform length.
- */
+   * @brief  Initialization function for the floating-point DCT4/IDCT4.
+   * @param[in,out] *S         points to an instance of floating-point DCT4/IDCT4 structure.
+   * @param[in]     *S_RFFT    points to an instance of floating-point RFFT/RIFFT structure.
+   * @param[in]     *S_CFFT    points to an instance of floating-point CFFT/CIFFT structure.
+   * @param[in]     N          length of the DCT4.
+   * @param[in]     Nby2       half of the length of the DCT4.
+   * @param[in]     normalize  normalizing factor.
+   * @return		arm_status function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>fftLenReal</code> is not a supported transform length.
+   */
 
 arm_status arm_dct4_init_f32(arm_dct4_instance_f32* S, arm_rfft_instance_f32* S_RFFT,
-    arm_cfft_radix4_instance_f32* S_CFFT, uint16_t N, uint16_t Nby2, float32_t normalize);
+                             arm_cfft_radix4_instance_f32* S_CFFT, uint16_t N, uint16_t Nby2,
+                             float32_t normalize);
 
 /**
- * @brief Processing function for the floating-point DCT4/IDCT4.
- * @param[in]       *S             points to an instance of the floating-point DCT4/IDCT4 structure.
- * @param[in]       *pState        points to state buffer.
- * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
- * @return none.
- */
+   * @brief Processing function for the floating-point DCT4/IDCT4.
+   * @param[in]       *S             points to an instance of the floating-point DCT4/IDCT4 structure.
+   * @param[in]       *pState        points to state buffer.
+   * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
+   * @return none.
+   */
 
 void arm_dct4_f32(const arm_dct4_instance_f32* S, float32_t* pState, float32_t* pInlineBuffer);
 
 /**
- * @brief Instance structure for the Q31 DCT4/IDCT4 function.
- */
+   * @brief Instance structure for the Q31 DCT4/IDCT4 function.
+   */
 
 typedef struct {
-    uint16_t N; /**< length of the DCT4. */
-    uint16_t Nby2; /**< half of the length of the DCT4. */
-    q31_t normalize; /**< normalizing factor. */
-    q31_t* pTwiddle; /**< points to the twiddle factor table. */
-    q31_t* pCosFactor; /**< points to the cosFactor table. */
-    arm_rfft_instance_q31* pRfft; /**< points to the real FFT instance. */
+    uint16_t N;                          /**< length of the DCT4. */
+    uint16_t Nby2;                       /**< half of the length of the DCT4. */
+    q31_t normalize;                     /**< normalizing factor. */
+    q31_t* pTwiddle;                     /**< points to the twiddle factor table. */
+    q31_t* pCosFactor;                   /**< points to the cosFactor table. */
+    arm_rfft_instance_q31* pRfft;        /**< points to the real FFT instance. */
     arm_cfft_radix4_instance_q31* pCfft; /**< points to the complex FFT instance. */
 } arm_dct4_instance_q31;
 
 /**
- * @brief  Initialization function for the Q31 DCT4/IDCT4.
- * @param[in,out] *S         points to an instance of Q31 DCT4/IDCT4 structure.
- * @param[in]     *S_RFFT    points to an instance of Q31 RFFT/RIFFT structure
- * @param[in]     *S_CFFT    points to an instance of Q31 CFFT/CIFFT structure
- * @param[in]     N          length of the DCT4.
- * @param[in]     Nby2       half of the length of the DCT4.
- * @param[in]     normalize  normalizing factor.
- * @return		arm_status function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_ARGUMENT_ERROR if <code>N</code> is not a supported transform length.
- */
+   * @brief  Initialization function for the Q31 DCT4/IDCT4.
+   * @param[in,out] *S         points to an instance of Q31 DCT4/IDCT4 structure.
+   * @param[in]     *S_RFFT    points to an instance of Q31 RFFT/RIFFT structure
+   * @param[in]     *S_CFFT    points to an instance of Q31 CFFT/CIFFT structure
+   * @param[in]     N          length of the DCT4.
+   * @param[in]     Nby2       half of the length of the DCT4.
+   * @param[in]     normalize  normalizing factor.
+   * @return		arm_status function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>N</code> is not a supported transform length.
+   */
 
 arm_status arm_dct4_init_q31(arm_dct4_instance_q31* S, arm_rfft_instance_q31* S_RFFT,
-    arm_cfft_radix4_instance_q31* S_CFFT, uint16_t N, uint16_t Nby2, q31_t normalize);
+                             arm_cfft_radix4_instance_q31* S_CFFT, uint16_t N, uint16_t Nby2,
+                             q31_t normalize);
 
 /**
- * @brief Processing function for the Q31 DCT4/IDCT4.
- * @param[in]       *S             points to an instance of the Q31 DCT4 structure.
- * @param[in]       *pState        points to state buffer.
- * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
- * @return none.
- */
+   * @brief Processing function for the Q31 DCT4/IDCT4.
+   * @param[in]       *S             points to an instance of the Q31 DCT4 structure.
+   * @param[in]       *pState        points to state buffer.
+   * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
+   * @return none.
+   */
 
 void arm_dct4_q31(const arm_dct4_instance_q31* S, q31_t* pState, q31_t* pInlineBuffer);
 
 /**
- * @brief Instance structure for the Q15 DCT4/IDCT4 function.
- */
+   * @brief Instance structure for the Q15 DCT4/IDCT4 function.
+   */
 
 typedef struct {
-    uint16_t N; /**< length of the DCT4. */
-    uint16_t Nby2; /**< half of the length of the DCT4. */
-    q15_t normalize; /**< normalizing factor. */
-    q15_t* pTwiddle; /**< points to the twiddle factor table. */
-    q15_t* pCosFactor; /**< points to the cosFactor table. */
-    arm_rfft_instance_q15* pRfft; /**< points to the real FFT instance. */
+    uint16_t N;                          /**< length of the DCT4. */
+    uint16_t Nby2;                       /**< half of the length of the DCT4. */
+    q15_t normalize;                     /**< normalizing factor. */
+    q15_t* pTwiddle;                     /**< points to the twiddle factor table. */
+    q15_t* pCosFactor;                   /**< points to the cosFactor table. */
+    arm_rfft_instance_q15* pRfft;        /**< points to the real FFT instance. */
     arm_cfft_radix4_instance_q15* pCfft; /**< points to the complex FFT instance. */
 } arm_dct4_instance_q15;
 
 /**
- * @brief  Initialization function for the Q15 DCT4/IDCT4.
- * @param[in,out] *S         points to an instance of Q15 DCT4/IDCT4 structure.
- * @param[in]     *S_RFFT    points to an instance of Q15 RFFT/RIFFT structure.
- * @param[in]     *S_CFFT    points to an instance of Q15 CFFT/CIFFT structure.
- * @param[in]     N          length of the DCT4.
- * @param[in]     Nby2       half of the length of the DCT4.
- * @param[in]     normalize  normalizing factor.
- * @return		arm_status function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_ARGUMENT_ERROR if <code>N</code> is not a supported transform length.
- */
+   * @brief  Initialization function for the Q15 DCT4/IDCT4.
+   * @param[in,out] *S         points to an instance of Q15 DCT4/IDCT4 structure.
+   * @param[in]     *S_RFFT    points to an instance of Q15 RFFT/RIFFT structure.
+   * @param[in]     *S_CFFT    points to an instance of Q15 CFFT/CIFFT structure.
+   * @param[in]     N          length of the DCT4.
+   * @param[in]     Nby2       half of the length of the DCT4.
+   * @param[in]     normalize  normalizing factor.
+   * @return		arm_status function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>N</code> is not a supported transform length.
+   */
 
 arm_status arm_dct4_init_q15(arm_dct4_instance_q15* S, arm_rfft_instance_q15* S_RFFT,
-    arm_cfft_radix4_instance_q15* S_CFFT, uint16_t N, uint16_t Nby2, q15_t normalize);
+                             arm_cfft_radix4_instance_q15* S_CFFT, uint16_t N, uint16_t Nby2,
+                             q15_t normalize);
 
 /**
- * @brief Processing function for the Q15 DCT4/IDCT4.
- * @param[in]       *S             points to an instance of the Q15 DCT4 structure.
- * @param[in]       *pState        points to state buffer.
- * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
- * @return none.
- */
+   * @brief Processing function for the Q15 DCT4/IDCT4.
+   * @param[in]       *S             points to an instance of the Q15 DCT4 structure.
+   * @param[in]       *pState        points to state buffer.
+   * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
+   * @return none.
+   */
 
 void arm_dct4_q15(const arm_dct4_instance_q15* S, q15_t* pState, q15_t* pInlineBuffer);
 
 /**
- * @brief Floating-point vector addition.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Floating-point vector addition.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_add_f32(float32_t* pSrcA, float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q7 vector addition.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q7 vector addition.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_add_q7(q7_t* pSrcA, q7_t* pSrcB, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector addition.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q15 vector addition.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_add_q15(q15_t* pSrcA, q15_t* pSrcB, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector addition.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q31 vector addition.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_add_q31(q31_t* pSrcA, q31_t* pSrcB, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Floating-point vector subtraction.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Floating-point vector subtraction.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_sub_f32(float32_t* pSrcA, float32_t* pSrcB, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q7 vector subtraction.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q7 vector subtraction.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_sub_q7(q7_t* pSrcA, q7_t* pSrcB, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector subtraction.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q15 vector subtraction.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_sub_q15(q15_t* pSrcA, q15_t* pSrcB, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector subtraction.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q31 vector subtraction.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_sub_q31(q31_t* pSrcA, q31_t* pSrcB, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a floating-point vector by a scalar.
- * @param[in]       *pSrc points to the input vector
- * @param[in]       scale scale factor to be applied
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in the vector
- * @return none.
- */
+   * @brief Multiplies a floating-point vector by a scalar.
+   * @param[in]       *pSrc points to the input vector
+   * @param[in]       scale scale factor to be applied
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_scale_f32(float32_t* pSrc, float32_t scale, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a Q7 vector by a scalar.
- * @param[in]       *pSrc points to the input vector
- * @param[in]       scaleFract fractional portion of the scale value
- * @param[in]       shift number of bits to shift the result by
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in the vector
- * @return none.
- */
+   * @brief Multiplies a Q7 vector by a scalar.
+   * @param[in]       *pSrc points to the input vector
+   * @param[in]       scaleFract fractional portion of the scale value
+   * @param[in]       shift number of bits to shift the result by
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_scale_q7(q7_t* pSrc, q7_t scaleFract, int8_t shift, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a Q15 vector by a scalar.
- * @param[in]       *pSrc points to the input vector
- * @param[in]       scaleFract fractional portion of the scale value
- * @param[in]       shift number of bits to shift the result by
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in the vector
- * @return none.
- */
+   * @brief Multiplies a Q15 vector by a scalar.
+   * @param[in]       *pSrc points to the input vector
+   * @param[in]       scaleFract fractional portion of the scale value
+   * @param[in]       shift number of bits to shift the result by
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_scale_q15(q15_t* pSrc, q15_t scaleFract, int8_t shift, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Multiplies a Q31 vector by a scalar.
- * @param[in]       *pSrc points to the input vector
- * @param[in]       scaleFract fractional portion of the scale value
- * @param[in]       shift number of bits to shift the result by
- * @param[out]      *pDst points to the output vector
- * @param[in]       blockSize number of samples in the vector
- * @return none.
- */
+   * @brief Multiplies a Q31 vector by a scalar.
+   * @param[in]       *pSrc points to the input vector
+   * @param[in]       scaleFract fractional portion of the scale value
+   * @param[in]       shift number of bits to shift the result by
+   * @param[out]      *pDst points to the output vector
+   * @param[in]       blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_scale_q31(q31_t* pSrc, q31_t scaleFract, int8_t shift, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q7 vector absolute value.
- * @param[in]       *pSrc points to the input buffer
- * @param[out]      *pDst points to the output buffer
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q7 vector absolute value.
+   * @param[in]       *pSrc points to the input buffer
+   * @param[out]      *pDst points to the output buffer
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_abs_q7(q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Floating-point vector absolute value.
- * @param[in]       *pSrc points to the input buffer
- * @param[out]      *pDst points to the output buffer
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Floating-point vector absolute value.
+   * @param[in]       *pSrc points to the input buffer
+   * @param[out]      *pDst points to the output buffer
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_abs_f32(float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q15 vector absolute value.
- * @param[in]       *pSrc points to the input buffer
- * @param[out]      *pDst points to the output buffer
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q15 vector absolute value.
+   * @param[in]       *pSrc points to the input buffer
+   * @param[out]      *pDst points to the output buffer
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_abs_q15(q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Q31 vector absolute value.
- * @param[in]       *pSrc points to the input buffer
- * @param[out]      *pDst points to the output buffer
- * @param[in]       blockSize number of samples in each vector
- * @return none.
- */
+   * @brief Q31 vector absolute value.
+   * @param[in]       *pSrc points to the input buffer
+   * @param[out]      *pDst points to the output buffer
+   * @param[in]       blockSize number of samples in each vector
+   * @return none.
+   */
 
 void arm_abs_q31(q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Dot product of floating-point vectors.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[in]       blockSize number of samples in each vector
- * @param[out]      *result output result returned here
- * @return none.
- */
+   * @brief Dot product of floating-point vectors.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[in]       blockSize number of samples in each vector
+   * @param[out]      *result output result returned here
+   * @return none.
+   */
 
 void arm_dot_prod_f32(float32_t* pSrcA, float32_t* pSrcB, uint32_t blockSize, float32_t* result);
 
 /**
- * @brief Dot product of Q7 vectors.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[in]       blockSize number of samples in each vector
- * @param[out]      *result output result returned here
- * @return none.
- */
+   * @brief Dot product of Q7 vectors.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[in]       blockSize number of samples in each vector
+   * @param[out]      *result output result returned here
+   * @return none.
+   */
 
 void arm_dot_prod_q7(q7_t* pSrcA, q7_t* pSrcB, uint32_t blockSize, q31_t* result);
 
 /**
- * @brief Dot product of Q15 vectors.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[in]       blockSize number of samples in each vector
- * @param[out]      *result output result returned here
- * @return none.
- */
+   * @brief Dot product of Q15 vectors.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[in]       blockSize number of samples in each vector
+   * @param[out]      *result output result returned here
+   * @return none.
+   */
 
 void arm_dot_prod_q15(q15_t* pSrcA, q15_t* pSrcB, uint32_t blockSize, q63_t* result);
 
 /**
- * @brief Dot product of Q31 vectors.
- * @param[in]       *pSrcA points to the first input vector
- * @param[in]       *pSrcB points to the second input vector
- * @param[in]       blockSize number of samples in each vector
- * @param[out]      *result output result returned here
- * @return none.
- */
+   * @brief Dot product of Q31 vectors.
+   * @param[in]       *pSrcA points to the first input vector
+   * @param[in]       *pSrcB points to the second input vector
+   * @param[in]       blockSize number of samples in each vector
+   * @param[out]      *result output result returned here
+   * @return none.
+   */
 
 void arm_dot_prod_q31(q31_t* pSrcA, q31_t* pSrcB, uint32_t blockSize, q63_t* result);
 
 /**
- * @brief  Shifts the elements of a Q7 vector a specified number of bits.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  shiftBits number of bits to shift.  A positive value shifts left; a negative value
- * shifts right.
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Shifts the elements of a Q7 vector a specified number of bits.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  shiftBits number of bits to shift.  A positive value shifts left; a negative value shifts right.
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_shift_q7(q7_t* pSrc, int8_t shiftBits, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Shifts the elements of a Q15 vector a specified number of bits.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  shiftBits number of bits to shift.  A positive value shifts left; a negative value
- * shifts right.
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Shifts the elements of a Q15 vector a specified number of bits.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  shiftBits number of bits to shift.  A positive value shifts left; a negative value shifts right.
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_shift_q15(q15_t* pSrc, int8_t shiftBits, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Shifts the elements of a Q31 vector a specified number of bits.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  shiftBits number of bits to shift.  A positive value shifts left; a negative value
- * shifts right.
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Shifts the elements of a Q31 vector a specified number of bits.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  shiftBits number of bits to shift.  A positive value shifts left; a negative value shifts right.
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_shift_q31(q31_t* pSrc, int8_t shiftBits, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a floating-point vector.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  offset is the offset to be added
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Adds a constant offset to a floating-point vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  offset is the offset to be added
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_offset_f32(float32_t* pSrc, float32_t offset, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a Q7 vector.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  offset is the offset to be added
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Adds a constant offset to a Q7 vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  offset is the offset to be added
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_offset_q7(q7_t* pSrc, q7_t offset, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a Q15 vector.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  offset is the offset to be added
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Adds a constant offset to a Q15 vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  offset is the offset to be added
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_offset_q15(q15_t* pSrc, q15_t offset, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Adds a constant offset to a Q31 vector.
- * @param[in]  *pSrc points to the input vector
- * @param[in]  offset is the offset to be added
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Adds a constant offset to a Q31 vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[in]  offset is the offset to be added
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_offset_q31(q31_t* pSrc, q31_t offset, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a floating-point vector.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Negates the elements of a floating-point vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_negate_f32(float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a Q7 vector.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Negates the elements of a Q7 vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_negate_q7(q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a Q15 vector.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Negates the elements of a Q15 vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_negate_q15(q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Negates the elements of a Q31 vector.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  blockSize number of samples in the vector
- * @return none.
- */
+   * @brief  Negates the elements of a Q31 vector.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  blockSize number of samples in the vector
+   * @return none.
+   */
 
 void arm_negate_q31(q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 /**
- * @brief  Copies the elements of a floating-point vector.
- * @param[in]  *pSrc input pointer
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Copies the elements of a floating-point vector.
+   * @param[in]  *pSrc input pointer
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_copy_f32(float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Copies the elements of a Q7 vector.
- * @param[in]  *pSrc input pointer
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Copies the elements of a Q7 vector.
+   * @param[in]  *pSrc input pointer
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_copy_q7(q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Copies the elements of a Q15 vector.
- * @param[in]  *pSrc input pointer
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Copies the elements of a Q15 vector.
+   * @param[in]  *pSrc input pointer
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_copy_q15(q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Copies the elements of a Q31 vector.
- * @param[in]  *pSrc input pointer
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Copies the elements of a Q31 vector.
+   * @param[in]  *pSrc input pointer
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_copy_q31(q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
 /**
- * @brief  Fills a constant value into a floating-point vector.
- * @param[in]  value input value to be filled
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Fills a constant value into a floating-point vector.
+   * @param[in]  value input value to be filled
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_fill_f32(float32_t value, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Fills a constant value into a Q7 vector.
- * @param[in]  value input value to be filled
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Fills a constant value into a Q7 vector.
+   * @param[in]  value input value to be filled
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_fill_q7(q7_t value, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Fills a constant value into a Q15 vector.
- * @param[in]  value input value to be filled
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Fills a constant value into a Q15 vector.
+   * @param[in]  value input value to be filled
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_fill_q15(q15_t value, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Fills a constant value into a Q31 vector.
- * @param[in]  value input value to be filled
- * @param[out]  *pDst output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Fills a constant value into a Q31 vector.
+   * @param[in]  value input value to be filled
+   * @param[out]  *pDst output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_fill_q31(q31_t value, q31_t* pDst, uint32_t blockSize);
 
 /**
@@ -2452,29 +2422,27 @@ void arm_fill_q31(q31_t value, q31_t* pDst, uint32_t blockSize);
  * @param[in] srcALen length of the first input sequence.
  * @param[in] *pSrcB points to the second input sequence.
  * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the location where the output result is written.  Length
- * srcALen+srcBLen-1.
+ * @param[out] *pDst points to the location where the output result is written.  Length srcALen+srcBLen-1.
  * @return none.
  */
 
-void arm_conv_f32(
-    float32_t* pSrcA, uint32_t srcALen, float32_t* pSrcB, uint32_t srcBLen, float32_t* pDst);
+void arm_conv_f32(float32_t* pSrcA, uint32_t srcALen, float32_t* pSrcB, uint32_t srcBLen,
+                  float32_t* pDst);
 
 /**
- * @brief Convolution of Q15 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @param[in]  *pScratch1 points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen,
- * srcBLen) - 2.
- * @param[in]  *pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
- * @return none.
- */
+   * @brief Convolution of Q15 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @param[in]  *pScratch1 points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]  *pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
+   * @return none.
+   */
 
 void arm_conv_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst,
-    q15_t* pScratch1, q15_t* pScratch2);
+                      q15_t* pScratch1, q15_t* pScratch2);
 
 /**
  * @brief Convolution of Q15 sequences.
@@ -2482,520 +2450,508 @@ void arm_conv_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t src
  * @param[in] srcALen length of the first input sequence.
  * @param[in] *pSrcB points to the second input sequence.
  * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the location where the output result is written.  Length
- * srcALen+srcBLen-1.
+ * @param[out] *pDst points to the location where the output result is written.  Length srcALen+srcBLen-1.
  * @return none.
  */
 
 void arm_conv_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst);
 
 /**
- * @brief Convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @return none.
- */
+   * @brief Convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @return none.
+   */
 
 void arm_conv_fast_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst);
 
 /**
- * @brief Convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @param[in]  *pScratch1 points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen,
- * srcBLen) - 2.
- * @param[in]  *pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
- * @return none.
- */
+   * @brief Convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @param[in]  *pScratch1 points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]  *pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
+   * @return none.
+   */
 
 void arm_conv_fast_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
-    q15_t* pDst, q15_t* pScratch1, q15_t* pScratch2);
+                           q15_t* pDst, q15_t* pScratch1, q15_t* pScratch2);
 
 /**
- * @brief Convolution of Q31 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @return none.
- */
+   * @brief Convolution of Q31 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @return none.
+   */
 
 void arm_conv_q31(q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen, q31_t* pDst);
 
 /**
- * @brief Convolution of Q31 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @return none.
- */
+   * @brief Convolution of Q31 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @return none.
+   */
 
 void arm_conv_fast_q31(q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen, q31_t* pDst);
 
 /**
- * @brief Convolution of Q7 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @param[in]  *pScratch1 points to scratch buffer(of type q15_t) of size max(srcALen, srcBLen) +
- * 2*min(srcALen, srcBLen) - 2.
- * @param[in]  *pScratch2 points to scratch buffer (of type q15_t) of size min(srcALen, srcBLen).
- * @return none.
- */
+   * @brief Convolution of Q7 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @param[in]  *pScratch1 points to scratch buffer(of type q15_t) of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]  *pScratch2 points to scratch buffer (of type q15_t) of size min(srcALen, srcBLen).
+   * @return none.
+   */
 
 void arm_conv_opt_q7(q7_t* pSrcA, uint32_t srcALen, q7_t* pSrcB, uint32_t srcBLen, q7_t* pDst,
-    q15_t* pScratch1, q15_t* pScratch2);
+                     q15_t* pScratch1, q15_t* pScratch2);
 
 /**
- * @brief Convolution of Q7 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
- * @return none.
- */
+   * @brief Convolution of Q7 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length srcALen+srcBLen-1.
+   * @return none.
+   */
 
 void arm_conv_q7(q7_t* pSrcA, uint32_t srcALen, q7_t* pSrcB, uint32_t srcBLen, q7_t* pDst);
 
 /**
- * @brief Partial convolution of floating-point sequences.
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of floating-point sequences.
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_f32(float32_t* pSrcA, uint32_t srcALen, float32_t* pSrcB,
-    uint32_t srcBLen, float32_t* pDst, uint32_t firstIndex, uint32_t numPoints);
+                                uint32_t srcBLen, float32_t* pDst, uint32_t firstIndex,
+                                uint32_t numPoints);
 
 /**
- * @brief Partial convolution of Q15 sequences.
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @param[in]       * pScratch1 points to scratch buffer of size max(srcALen, srcBLen) +
- * 2*min(srcALen, srcBLen) - 2.
- * @param[in]       * pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q15 sequences.
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @param[in]       * pScratch1 points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]       * pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
-    q15_t* pDst, uint32_t firstIndex, uint32_t numPoints, q15_t* pScratch1, q15_t* pScratch2);
+                                    q15_t* pDst, uint32_t firstIndex, uint32_t numPoints,
+                                    q15_t* pScratch1, q15_t* pScratch2);
 
 /**
- * @brief Partial convolution of Q15 sequences.
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q15 sequences.
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
-    q15_t* pDst, uint32_t firstIndex, uint32_t numPoints);
+                                q15_t* pDst, uint32_t firstIndex, uint32_t numPoints);
 
 /**
- * @brief Partial convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_fast_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
-    q15_t* pDst, uint32_t firstIndex, uint32_t numPoints);
+                                     q15_t* pDst, uint32_t firstIndex, uint32_t numPoints);
 
 /**
- * @brief Partial convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @param[in]       * pScratch1 points to scratch buffer of size max(srcALen, srcBLen) +
- * 2*min(srcALen, srcBLen) - 2.
- * @param[in]       * pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @param[in]       * pScratch1 points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]       * pScratch2 points to scratch buffer of size min(srcALen, srcBLen).
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_fast_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB,
-    uint32_t srcBLen, q15_t* pDst, uint32_t firstIndex, uint32_t numPoints, q15_t* pScratch1,
-    q15_t* pScratch2);
+                                         uint32_t srcBLen, q15_t* pDst, uint32_t firstIndex,
+                                         uint32_t numPoints, q15_t* pScratch1, q15_t* pScratch2);
 
 /**
- * @brief Partial convolution of Q31 sequences.
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q31 sequences.
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_q31(q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen,
-    q31_t* pDst, uint32_t firstIndex, uint32_t numPoints);
+                                q31_t* pDst, uint32_t firstIndex, uint32_t numPoints);
 
 /**
- * @brief Partial convolution of Q31 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q31 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_fast_q31(q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen,
-    q31_t* pDst, uint32_t firstIndex, uint32_t numPoints);
+                                     q31_t* pDst, uint32_t firstIndex, uint32_t numPoints);
 
 /**
- * @brief Partial convolution of Q7 sequences
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @param[in]  *pScratch1 points to scratch buffer(of type q15_t) of size max(srcALen, srcBLen) +
- * 2*min(srcALen, srcBLen) - 2.
- * @param[in]  *pScratch2 points to scratch buffer (of type q15_t) of size min(srcALen, srcBLen).
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q7 sequences
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @param[in]  *pScratch1 points to scratch buffer(of type q15_t) of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]  *pScratch2 points to scratch buffer (of type q15_t) of size min(srcALen, srcBLen).
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_opt_q7(q7_t* pSrcA, uint32_t srcALen, q7_t* pSrcB, uint32_t srcBLen,
-    q7_t* pDst, uint32_t firstIndex, uint32_t numPoints, q15_t* pScratch1, q15_t* pScratch2);
+                                   q7_t* pDst, uint32_t firstIndex, uint32_t numPoints,
+                                   q15_t* pScratch1, q15_t* pScratch2);
 
 /**
- * @brief Partial convolution of Q7 sequences.
- * @param[in]       *pSrcA points to the first input sequence.
- * @param[in]       srcALen length of the first input sequence.
- * @param[in]       *pSrcB points to the second input sequence.
- * @param[in]       srcBLen length of the second input sequence.
- * @param[out]      *pDst points to the block of output data
- * @param[in]       firstIndex is the first output sample to start with.
- * @param[in]       numPoints is the number of output points to be computed.
- * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or
- * ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
- */
+   * @brief Partial convolution of Q7 sequences.
+   * @param[in]       *pSrcA points to the first input sequence.
+   * @param[in]       srcALen length of the first input sequence.
+   * @param[in]       *pSrcB points to the second input sequence.
+   * @param[in]       srcBLen length of the second input sequence.
+   * @param[out]      *pDst points to the block of output data
+   * @param[in]       firstIndex is the first output sample to start with.
+   * @param[in]       numPoints is the number of output points to be computed.
+   * @return  Returns either ARM_MATH_SUCCESS if the function completed correctly or ARM_MATH_ARGUMENT_ERROR if the requested subset is not in the range [0 srcALen+srcBLen-2].
+   */
 
 arm_status arm_conv_partial_q7(q7_t* pSrcA, uint32_t srcALen, q7_t* pSrcB, uint32_t srcBLen,
-    q7_t* pDst, uint32_t firstIndex, uint32_t numPoints);
+                               q7_t* pDst, uint32_t firstIndex, uint32_t numPoints);
 
 /**
- * @brief Instance structure for the Q15 FIR decimator.
- */
+   * @brief Instance structure for the Q15 FIR decimator.
+   */
 
 typedef struct {
-    uint8_t M; /**< decimation factor. */
+    uint8_t M;        /**< decimation factor. */
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    q15_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
-    q15_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
+    q15_t* pCoeffs;   /**< points to the coefficient array. The array is of length numTaps.*/
+    q15_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
 } arm_fir_decimate_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 FIR decimator.
- */
+   * @brief Instance structure for the Q31 FIR decimator.
+   */
 
 typedef struct {
-    uint8_t M; /**< decimation factor. */
+    uint8_t M;        /**< decimation factor. */
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    q31_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
-    q31_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
+    q31_t* pCoeffs;   /**< points to the coefficient array. The array is of length numTaps.*/
+    q31_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
 
 } arm_fir_decimate_instance_q31;
 
 /**
- * @brief Instance structure for the floating-point FIR decimator.
- */
+   * @brief Instance structure for the floating-point FIR decimator.
+   */
 
 typedef struct {
-    uint8_t M; /**< decimation factor. */
-    uint16_t numTaps; /**< number of coefficients in the filter. */
+    uint8_t M;          /**< decimation factor. */
+    uint16_t numTaps;   /**< number of coefficients in the filter. */
     float32_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
-    float32_t* pState; /**< points to the state variable array. The array is of length
-                          numTaps+blockSize-1. */
+    float32_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
 
 } arm_fir_decimate_instance_f32;
 
 /**
- * @brief Processing function for the floating-point FIR decimator.
- * @param[in] *S points to an instance of the floating-point FIR decimator structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data
- * @param[in] blockSize number of input samples to process per call.
- * @return none
- */
+   * @brief Processing function for the floating-point FIR decimator.
+   * @param[in] *S points to an instance of the floating-point FIR decimator structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none
+   */
 
-void arm_fir_decimate_f32(
-    const arm_fir_decimate_instance_f32* S, float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_fir_decimate_f32(const arm_fir_decimate_instance_f32* S, float32_t* pSrc, float32_t* pDst,
+                          uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the floating-point FIR decimator.
- * @param[in,out] *S points to an instance of the floating-point FIR decimator structure.
- * @param[in] numTaps  number of coefficients in the filter.
- * @param[in] M  decimation factor.
- * @param[in] *pCoeffs points to the filter coefficients.
- * @param[in] *pState points to the state buffer.
- * @param[in] blockSize number of input samples to process per call.
- * @return    The function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_LENGTH_ERROR if <code>blockSize</code> is not a multiple of <code>M</code>.
- */
+   * @brief  Initialization function for the floating-point FIR decimator.
+   * @param[in,out] *S points to an instance of the floating-point FIR decimator structure.
+   * @param[in] numTaps  number of coefficients in the filter.
+   * @param[in] M  decimation factor.
+   * @param[in] *pCoeffs points to the filter coefficients.
+   * @param[in] *pState points to the state buffer.
+   * @param[in] blockSize number of input samples to process per call.
+   * @return    The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_LENGTH_ERROR if
+   * <code>blockSize</code> is not a multiple of <code>M</code>.
+   */
 
 arm_status arm_fir_decimate_init_f32(arm_fir_decimate_instance_f32* S, uint16_t numTaps, uint8_t M,
-    float32_t* pCoeffs, float32_t* pState, uint32_t blockSize);
+                                     float32_t* pCoeffs, float32_t* pState, uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q15 FIR decimator.
- * @param[in] *S points to an instance of the Q15 FIR decimator structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data
- * @param[in] blockSize number of input samples to process per call.
- * @return none
- */
+   * @brief Processing function for the Q15 FIR decimator.
+   * @param[in] *S points to an instance of the Q15 FIR decimator structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none
+   */
 
-void arm_fir_decimate_q15(
-    const arm_fir_decimate_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
-
-/**
- * @brief Processing function for the Q15 FIR decimator (fast variant) for Cortex-M3 and Cortex-M4.
- * @param[in] *S points to an instance of the Q15 FIR decimator structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data
- * @param[in] blockSize number of input samples to process per call.
- * @return none
- */
-
-void arm_fir_decimate_fast_q15(
-    const arm_fir_decimate_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_fir_decimate_q15(const arm_fir_decimate_instance_q15* S, q15_t* pSrc, q15_t* pDst,
+                          uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q15 FIR decimator.
- * @param[in,out] *S points to an instance of the Q15 FIR decimator structure.
- * @param[in] numTaps  number of coefficients in the filter.
- * @param[in] M  decimation factor.
- * @param[in] *pCoeffs points to the filter coefficients.
- * @param[in] *pState points to the state buffer.
- * @param[in] blockSize number of input samples to process per call.
- * @return    The function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_LENGTH_ERROR if <code>blockSize</code> is not a multiple of <code>M</code>.
- */
+   * @brief Processing function for the Q15 FIR decimator (fast variant) for Cortex-M3 and Cortex-M4.
+   * @param[in] *S points to an instance of the Q15 FIR decimator structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none
+   */
+
+void arm_fir_decimate_fast_q15(const arm_fir_decimate_instance_q15* S, q15_t* pSrc, q15_t* pDst,
+                               uint32_t blockSize);
+
+/**
+   * @brief  Initialization function for the Q15 FIR decimator.
+   * @param[in,out] *S points to an instance of the Q15 FIR decimator structure.
+   * @param[in] numTaps  number of coefficients in the filter.
+   * @param[in] M  decimation factor.
+   * @param[in] *pCoeffs points to the filter coefficients.
+   * @param[in] *pState points to the state buffer.
+   * @param[in] blockSize number of input samples to process per call.
+   * @return    The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_LENGTH_ERROR if
+   * <code>blockSize</code> is not a multiple of <code>M</code>.
+   */
 
 arm_status arm_fir_decimate_init_q15(arm_fir_decimate_instance_q15* S, uint16_t numTaps, uint8_t M,
-    q15_t* pCoeffs, q15_t* pState, uint32_t blockSize);
+                                     q15_t* pCoeffs, q15_t* pState, uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q31 FIR decimator.
- * @param[in] *S points to an instance of the Q31 FIR decimator structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data
- * @param[in] blockSize number of input samples to process per call.
- * @return none
- */
+   * @brief Processing function for the Q31 FIR decimator.
+   * @param[in] *S points to an instance of the Q31 FIR decimator structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none
+   */
 
-void arm_fir_decimate_q31(
-    const arm_fir_decimate_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
-
-/**
- * @brief Processing function for the Q31 FIR decimator (fast variant) for Cortex-M3 and Cortex-M4.
- * @param[in] *S points to an instance of the Q31 FIR decimator structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data
- * @param[in] blockSize number of input samples to process per call.
- * @return none
- */
-
-void arm_fir_decimate_fast_q31(
-    arm_fir_decimate_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_fir_decimate_q31(const arm_fir_decimate_instance_q31* S, q31_t* pSrc, q31_t* pDst,
+                          uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q31 FIR decimator.
- * @param[in,out] *S points to an instance of the Q31 FIR decimator structure.
- * @param[in] numTaps  number of coefficients in the filter.
- * @param[in] M  decimation factor.
- * @param[in] *pCoeffs points to the filter coefficients.
- * @param[in] *pState points to the state buffer.
- * @param[in] blockSize number of input samples to process per call.
- * @return    The function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_LENGTH_ERROR if <code>blockSize</code> is not a multiple of <code>M</code>.
- */
+   * @brief Processing function for the Q31 FIR decimator (fast variant) for Cortex-M3 and Cortex-M4.
+   * @param[in] *S points to an instance of the Q31 FIR decimator structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none
+   */
+
+void arm_fir_decimate_fast_q31(arm_fir_decimate_instance_q31* S, q31_t* pSrc, q31_t* pDst,
+                               uint32_t blockSize);
+
+/**
+   * @brief  Initialization function for the Q31 FIR decimator.
+   * @param[in,out] *S points to an instance of the Q31 FIR decimator structure.
+   * @param[in] numTaps  number of coefficients in the filter.
+   * @param[in] M  decimation factor.
+   * @param[in] *pCoeffs points to the filter coefficients.
+   * @param[in] *pState points to the state buffer.
+   * @param[in] blockSize number of input samples to process per call.
+   * @return    The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_LENGTH_ERROR if
+   * <code>blockSize</code> is not a multiple of <code>M</code>.
+   */
 
 arm_status arm_fir_decimate_init_q31(arm_fir_decimate_instance_q31* S, uint16_t numTaps, uint8_t M,
-    q31_t* pCoeffs, q31_t* pState, uint32_t blockSize);
+                                     q31_t* pCoeffs, q31_t* pState, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q15 FIR interpolator.
- */
+   * @brief Instance structure for the Q15 FIR interpolator.
+   */
 
 typedef struct {
-    uint8_t L; /**< upsample factor. */
+    uint8_t L;            /**< upsample factor. */
     uint16_t phaseLength; /**< length of each polyphase filter component. */
     q15_t* pCoeffs; /**< points to the coefficient array. The array is of length L*phaseLength. */
-    q15_t* pState; /**< points to the state variable array. The array is of length
-                      blockSize+phaseLength-1. */
+    q15_t*
+        pState; /**< points to the state variable array. The array is of length blockSize+phaseLength-1. */
 } arm_fir_interpolate_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 FIR interpolator.
- */
+   * @brief Instance structure for the Q31 FIR interpolator.
+   */
 
 typedef struct {
-    uint8_t L; /**< upsample factor. */
+    uint8_t L;            /**< upsample factor. */
     uint16_t phaseLength; /**< length of each polyphase filter component. */
     q31_t* pCoeffs; /**< points to the coefficient array. The array is of length L*phaseLength. */
-    q31_t* pState; /**< points to the state variable array. The array is of length
-                      blockSize+phaseLength-1. */
+    q31_t*
+        pState; /**< points to the state variable array. The array is of length blockSize+phaseLength-1. */
 } arm_fir_interpolate_instance_q31;
 
 /**
- * @brief Instance structure for the floating-point FIR interpolator.
- */
+   * @brief Instance structure for the floating-point FIR interpolator.
+   */
 
 typedef struct {
-    uint8_t L; /**< upsample factor. */
+    uint8_t L;            /**< upsample factor. */
     uint16_t phaseLength; /**< length of each polyphase filter component. */
     float32_t*
         pCoeffs; /**< points to the coefficient array. The array is of length L*phaseLength. */
-    float32_t* pState; /**< points to the state variable array. The array is of length
-                          phaseLength+numTaps-1. */
+    float32_t*
+        pState; /**< points to the state variable array. The array is of length phaseLength+numTaps-1. */
 } arm_fir_interpolate_instance_f32;
 
 /**
- * @brief Processing function for the Q15 FIR interpolator.
- * @param[in] *S        points to an instance of the Q15 FIR interpolator structure.
- * @param[in] *pSrc     points to the block of input data.
- * @param[out] *pDst    points to the block of output data.
- * @param[in] blockSize number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the Q15 FIR interpolator.
+   * @param[in] *S        points to an instance of the Q15 FIR interpolator structure.
+   * @param[in] *pSrc     points to the block of input data.
+   * @param[out] *pDst    points to the block of output data.
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none.
+   */
 
-void arm_fir_interpolate_q15(
-    const arm_fir_interpolate_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_fir_interpolate_q15(const arm_fir_interpolate_instance_q15* S, q15_t* pSrc, q15_t* pDst,
+                             uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q15 FIR interpolator.
- * @param[in,out] *S        points to an instance of the Q15 FIR interpolator structure.
- * @param[in]     L         upsample factor.
- * @param[in]     numTaps   number of filter coefficients in the filter.
- * @param[in]     *pCoeffs  points to the filter coefficient buffer.
- * @param[in]     *pState   points to the state buffer.
- * @param[in]     blockSize number of input samples to process per call.
- * @return        The function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_LENGTH_ERROR if the filter length <code>numTaps</code> is not a multiple of the
- * interpolation factor <code>L</code>.
- */
+   * @brief  Initialization function for the Q15 FIR interpolator.
+   * @param[in,out] *S        points to an instance of the Q15 FIR interpolator structure.
+   * @param[in]     L         upsample factor.
+   * @param[in]     numTaps   number of filter coefficients in the filter.
+   * @param[in]     *pCoeffs  points to the filter coefficient buffer.
+   * @param[in]     *pState   points to the state buffer.
+   * @param[in]     blockSize number of input samples to process per call.
+   * @return        The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_LENGTH_ERROR if
+   * the filter length <code>numTaps</code> is not a multiple of the interpolation factor <code>L</code>.
+   */
 
 arm_status arm_fir_interpolate_init_q15(arm_fir_interpolate_instance_q15* S, uint8_t L,
-    uint16_t numTaps, q15_t* pCoeffs, q15_t* pState, uint32_t blockSize);
+                                        uint16_t numTaps, q15_t* pCoeffs, q15_t* pState,
+                                        uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q31 FIR interpolator.
- * @param[in] *S        points to an instance of the Q15 FIR interpolator structure.
- * @param[in] *pSrc     points to the block of input data.
- * @param[out] *pDst    points to the block of output data.
- * @param[in] blockSize number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the Q31 FIR interpolator.
+   * @param[in] *S        points to an instance of the Q15 FIR interpolator structure.
+   * @param[in] *pSrc     points to the block of input data.
+   * @param[out] *pDst    points to the block of output data.
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none.
+   */
 
-void arm_fir_interpolate_q31(
-    const arm_fir_interpolate_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_fir_interpolate_q31(const arm_fir_interpolate_instance_q31* S, q31_t* pSrc, q31_t* pDst,
+                             uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q31 FIR interpolator.
- * @param[in,out] *S        points to an instance of the Q31 FIR interpolator structure.
- * @param[in]     L         upsample factor.
- * @param[in]     numTaps   number of filter coefficients in the filter.
- * @param[in]     *pCoeffs  points to the filter coefficient buffer.
- * @param[in]     *pState   points to the state buffer.
- * @param[in]     blockSize number of input samples to process per call.
- * @return        The function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_LENGTH_ERROR if the filter length <code>numTaps</code> is not a multiple of the
- * interpolation factor <code>L</code>.
- */
+   * @brief  Initialization function for the Q31 FIR interpolator.
+   * @param[in,out] *S        points to an instance of the Q31 FIR interpolator structure.
+   * @param[in]     L         upsample factor.
+   * @param[in]     numTaps   number of filter coefficients in the filter.
+   * @param[in]     *pCoeffs  points to the filter coefficient buffer.
+   * @param[in]     *pState   points to the state buffer.
+   * @param[in]     blockSize number of input samples to process per call.
+   * @return        The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_LENGTH_ERROR if
+   * the filter length <code>numTaps</code> is not a multiple of the interpolation factor <code>L</code>.
+   */
 
 arm_status arm_fir_interpolate_init_q31(arm_fir_interpolate_instance_q31* S, uint8_t L,
-    uint16_t numTaps, q31_t* pCoeffs, q31_t* pState, uint32_t blockSize);
+                                        uint16_t numTaps, q31_t* pCoeffs, q31_t* pState,
+                                        uint32_t blockSize);
 
 /**
- * @brief Processing function for the floating-point FIR interpolator.
- * @param[in] *S        points to an instance of the floating-point FIR interpolator structure.
- * @param[in] *pSrc     points to the block of input data.
- * @param[out] *pDst    points to the block of output data.
- * @param[in] blockSize number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the floating-point FIR interpolator.
+   * @param[in] *S        points to an instance of the floating-point FIR interpolator structure.
+   * @param[in] *pSrc     points to the block of input data.
+   * @param[out] *pDst    points to the block of output data.
+   * @param[in] blockSize number of input samples to process per call.
+   * @return none.
+   */
 
 void arm_fir_interpolate_f32(const arm_fir_interpolate_instance_f32* S, float32_t* pSrc,
-    float32_t* pDst, uint32_t blockSize);
+                             float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the floating-point FIR interpolator.
- * @param[in,out] *S        points to an instance of the floating-point FIR interpolator structure.
- * @param[in]     L         upsample factor.
- * @param[in]     numTaps   number of filter coefficients in the filter.
- * @param[in]     *pCoeffs  points to the filter coefficient buffer.
- * @param[in]     *pState   points to the state buffer.
- * @param[in]     blockSize number of input samples to process per call.
- * @return        The function returns ARM_MATH_SUCCESS if initialization is successful or
- * ARM_MATH_LENGTH_ERROR if the filter length <code>numTaps</code> is not a multiple of the
- * interpolation factor <code>L</code>.
- */
+   * @brief  Initialization function for the floating-point FIR interpolator.
+   * @param[in,out] *S        points to an instance of the floating-point FIR interpolator structure.
+   * @param[in]     L         upsample factor.
+   * @param[in]     numTaps   number of filter coefficients in the filter.
+   * @param[in]     *pCoeffs  points to the filter coefficient buffer.
+   * @param[in]     *pState   points to the state buffer.
+   * @param[in]     blockSize number of input samples to process per call.
+   * @return        The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_LENGTH_ERROR if
+   * the filter length <code>numTaps</code> is not a multiple of the interpolation factor <code>L</code>.
+   */
 
 arm_status arm_fir_interpolate_init_f32(arm_fir_interpolate_instance_f32* S, uint8_t L,
-    uint16_t numTaps, float32_t* pCoeffs, float32_t* pState, uint32_t blockSize);
+                                        uint16_t numTaps, float32_t* pCoeffs, float32_t* pState,
+                                        uint32_t blockSize);
 
 /**
- * @brief Instance structure for the high precision Q31 Biquad cascade filter.
- */
+   * @brief Instance structure for the high precision Q31 Biquad cascade filter.
+   */
 
 typedef struct {
     uint8_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    q63_t* pState; /**< points to the array of state coefficients.  The array is of length
-                      4*numStages. */
+    q63_t*
+        pState; /**< points to the array of state coefficients.  The array is of length 4*numStages. */
     q31_t*
         pCoeffs; /**< points to the array of coefficients.  The array is of length 5*numStages. */
     uint8_t postShift; /**< additional shift, in bits, applied to each output sample. */
@@ -3003,93 +2959,88 @@ typedef struct {
 } arm_biquad_cas_df1_32x64_ins_q31;
 
 /**
- * @param[in]  *S        points to an instance of the high precision Q31 Biquad cascade filter
- * structure.
- * @param[in]  *pSrc     points to the block of input data.
- * @param[out] *pDst     points to the block of output data
- * @param[in]  blockSize number of samples to process.
- * @return none.
- */
+   * @param[in]  *S        points to an instance of the high precision Q31 Biquad cascade filter structure.
+   * @param[in]  *pSrc     points to the block of input data.
+   * @param[out] *pDst     points to the block of output data
+   * @param[in]  blockSize number of samples to process.
+   * @return none.
+   */
 
-void arm_biquad_cas_df1_32x64_q31(
-    const arm_biquad_cas_df1_32x64_ins_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_biquad_cas_df1_32x64_q31(const arm_biquad_cas_df1_32x64_ins_q31* S, q31_t* pSrc,
+                                  q31_t* pDst, uint32_t blockSize);
 
 /**
- * @param[in,out] *S           points to an instance of the high precision Q31 Biquad cascade filter
- * structure.
- * @param[in]     numStages    number of 2nd order stages in the filter.
- * @param[in]     *pCoeffs     points to the filter coefficients.
- * @param[in]     *pState      points to the state buffer.
- * @param[in]     postShift    shift to be applied to the output. Varies according to the
- * coefficients format
- * @return        none
- */
+   * @param[in,out] *S           points to an instance of the high precision Q31 Biquad cascade filter structure.
+   * @param[in]     numStages    number of 2nd order stages in the filter.
+   * @param[in]     *pCoeffs     points to the filter coefficients.
+   * @param[in]     *pState      points to the state buffer.
+   * @param[in]     postShift    shift to be applied to the output. Varies according to the coefficients format
+   * @return        none
+   */
 
 void arm_biquad_cas_df1_32x64_init_q31(arm_biquad_cas_df1_32x64_ins_q31* S, uint8_t numStages,
-    q31_t* pCoeffs, q63_t* pState, uint8_t postShift);
+                                       q31_t* pCoeffs, q63_t* pState, uint8_t postShift);
 
 /**
- * @brief Instance structure for the floating-point transposed direct form II Biquad cascade filter.
- */
+   * @brief Instance structure for the floating-point transposed direct form II Biquad cascade filter.
+   */
 
 typedef struct {
     uint8_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    float32_t* pState; /**< points to the array of state coefficients.  The array is of length
-                          2*numStages. */
+    float32_t*
+        pState; /**< points to the array of state coefficients.  The array is of length 2*numStages. */
     float32_t*
         pCoeffs; /**< points to the array of coefficients.  The array is of length 5*numStages. */
 } arm_biquad_cascade_df2T_instance_f32;
 
 /**
- * @brief Processing function for the floating-point transposed direct form II Biquad cascade
- * filter.
- * @param[in]  *S        points to an instance of the filter data structure.
- * @param[in]  *pSrc     points to the block of input data.
- * @param[out] *pDst     points to the block of output data
- * @param[in]  blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the floating-point transposed direct form II Biquad cascade filter.
+   * @param[in]  *S        points to an instance of the filter data structure.
+   * @param[in]  *pSrc     points to the block of input data.
+   * @param[out] *pDst     points to the block of output data
+   * @param[in]  blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_biquad_cascade_df2T_f32(const arm_biquad_cascade_df2T_instance_f32* S, float32_t* pSrc,
-    float32_t* pDst, uint32_t blockSize);
+                                 float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the floating-point transposed direct form II Biquad cascade
- * filter.
- * @param[in,out] *S           points to an instance of the filter data structure.
- * @param[in]     numStages    number of 2nd order stages in the filter.
- * @param[in]     *pCoeffs     points to the filter coefficients.
- * @param[in]     *pState      points to the state buffer.
- * @return        none
- */
+   * @brief  Initialization function for the floating-point transposed direct form II Biquad cascade filter.
+   * @param[in,out] *S           points to an instance of the filter data structure.
+   * @param[in]     numStages    number of 2nd order stages in the filter.
+   * @param[in]     *pCoeffs     points to the filter coefficients.
+   * @param[in]     *pState      points to the state buffer.
+   * @return        none
+   */
 
 void arm_biquad_cascade_df2T_init_f32(arm_biquad_cascade_df2T_instance_f32* S, uint8_t numStages,
-    float32_t* pCoeffs, float32_t* pState);
+                                      float32_t* pCoeffs, float32_t* pState);
 
 /**
- * @brief Instance structure for the Q15 FIR lattice filter.
- */
+   * @brief Instance structure for the Q15 FIR lattice filter.
+   */
 
 typedef struct {
     uint16_t numStages; /**< number of filter stages. */
-    q15_t* pState; /**< points to the state variable array. The array is of length numStages. */
+    q15_t* pState;  /**< points to the state variable array. The array is of length numStages. */
     q15_t* pCoeffs; /**< points to the coefficient array. The array is of length numStages. */
 } arm_fir_lattice_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 FIR lattice filter.
- */
+   * @brief Instance structure for the Q31 FIR lattice filter.
+   */
 
 typedef struct {
     uint16_t numStages; /**< number of filter stages. */
-    q31_t* pState; /**< points to the state variable array. The array is of length numStages. */
+    q31_t* pState;  /**< points to the state variable array. The array is of length numStages. */
     q31_t* pCoeffs; /**< points to the coefficient array. The array is of length numStages. */
 } arm_fir_lattice_instance_q31;
 
 /**
- * @brief Instance structure for the floating-point FIR lattice filter.
- */
+   * @brief Instance structure for the floating-point FIR lattice filter.
+   */
 
 typedef struct {
     uint16_t numStages; /**< number of filter stages. */
@@ -3098,51 +3049,51 @@ typedef struct {
 } arm_fir_lattice_instance_f32;
 
 /**
- * @brief Initialization function for the Q15 FIR lattice filter.
- * @param[in] *S points to an instance of the Q15 FIR lattice structure.
- * @param[in] numStages  number of filter stages.
- * @param[in] *pCoeffs points to the coefficient buffer.  The array is of length numStages.
- * @param[in] *pState points to the state buffer.  The array is of length numStages.
- * @return none.
- */
+   * @brief Initialization function for the Q15 FIR lattice filter.
+   * @param[in] *S points to an instance of the Q15 FIR lattice structure.
+   * @param[in] numStages  number of filter stages.
+   * @param[in] *pCoeffs points to the coefficient buffer.  The array is of length numStages.
+   * @param[in] *pState points to the state buffer.  The array is of length numStages.
+   * @return none.
+   */
 
-void arm_fir_lattice_init_q15(
-    arm_fir_lattice_instance_q15* S, uint16_t numStages, q15_t* pCoeffs, q15_t* pState);
-
-/**
- * @brief Processing function for the Q15 FIR lattice filter.
- * @param[in] *S points to an instance of the Q15 FIR lattice structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
-void arm_fir_lattice_q15(
-    const arm_fir_lattice_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_fir_lattice_init_q15(arm_fir_lattice_instance_q15* S, uint16_t numStages, q15_t* pCoeffs,
+                              q15_t* pState);
 
 /**
- * @brief Initialization function for the Q31 FIR lattice filter.
- * @param[in] *S points to an instance of the Q31 FIR lattice structure.
- * @param[in] numStages  number of filter stages.
- * @param[in] *pCoeffs points to the coefficient buffer.  The array is of length numStages.
- * @param[in] *pState points to the state buffer.   The array is of length numStages.
- * @return none.
- */
-
-void arm_fir_lattice_init_q31(
-    arm_fir_lattice_instance_q31* S, uint16_t numStages, q31_t* pCoeffs, q31_t* pState);
+   * @brief Processing function for the Q15 FIR lattice filter.
+   * @param[in] *S points to an instance of the Q15 FIR lattice structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
+void arm_fir_lattice_q15(const arm_fir_lattice_instance_q15* S, q15_t* pSrc, q15_t* pDst,
+                         uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q31 FIR lattice filter.
- * @param[in]  *S        points to an instance of the Q31 FIR lattice structure.
- * @param[in]  *pSrc     points to the block of input data.
- * @param[out] *pDst     points to the block of output data
- * @param[in]  blockSize number of samples to process.
- * @return none.
- */
+   * @brief Initialization function for the Q31 FIR lattice filter.
+   * @param[in] *S points to an instance of the Q31 FIR lattice structure.
+   * @param[in] numStages  number of filter stages.
+   * @param[in] *pCoeffs points to the coefficient buffer.  The array is of length numStages.
+   * @param[in] *pState points to the state buffer.   The array is of length numStages.
+   * @return none.
+   */
 
-void arm_fir_lattice_q31(
-    const arm_fir_lattice_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_fir_lattice_init_q31(arm_fir_lattice_instance_q31* S, uint16_t numStages, q31_t* pCoeffs,
+                              q31_t* pState);
+
+/**
+   * @brief Processing function for the Q31 FIR lattice filter.
+   * @param[in]  *S        points to an instance of the Q31 FIR lattice structure.
+   * @param[in]  *pSrc     points to the block of input data.
+   * @param[out] *pDst     points to the block of output data
+   * @param[in]  blockSize number of samples to process.
+   * @return none.
+   */
+
+void arm_fir_lattice_q31(const arm_fir_lattice_instance_q31* S, q31_t* pSrc, q31_t* pDst,
+                         uint32_t blockSize);
 
 /**
  * @brief Initialization function for the floating-point FIR lattice filter.
@@ -3153,127 +3104,124 @@ void arm_fir_lattice_q31(
  * @return none.
  */
 
-void arm_fir_lattice_init_f32(
-    arm_fir_lattice_instance_f32* S, uint16_t numStages, float32_t* pCoeffs, float32_t* pState);
+void arm_fir_lattice_init_f32(arm_fir_lattice_instance_f32* S, uint16_t numStages,
+                              float32_t* pCoeffs, float32_t* pState);
 
 /**
- * @brief Processing function for the floating-point FIR lattice filter.
- * @param[in]  *S        points to an instance of the floating-point FIR lattice structure.
- * @param[in]  *pSrc     points to the block of input data.
- * @param[out] *pDst     points to the block of output data
- * @param[in]  blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the floating-point FIR lattice filter.
+   * @param[in]  *S        points to an instance of the floating-point FIR lattice structure.
+   * @param[in]  *pSrc     points to the block of input data.
+   * @param[out] *pDst     points to the block of output data
+   * @param[in]  blockSize number of samples to process.
+   * @return none.
+   */
 
-void arm_fir_lattice_f32(
-    const arm_fir_lattice_instance_f32* S, float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_fir_lattice_f32(const arm_fir_lattice_instance_f32* S, float32_t* pSrc, float32_t* pDst,
+                         uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q15 IIR lattice filter.
- */
+   * @brief Instance structure for the Q15 IIR lattice filter.
+   */
 typedef struct {
     uint16_t numStages; /**< number of stages in the filter. */
-    q15_t* pState; /**< points to the state variable array. The array is of length
-                      numStages+blockSize. */
-    q15_t* pkCoeffs; /**< points to the reflection coefficient array. The array is of length
-                        numStages. */
-    q15_t* pvCoeffs; /**< points to the ladder coefficient array. The array is of length
-                        numStages+1. */
+    q15_t*
+        pState; /**< points to the state variable array. The array is of length numStages+blockSize. */
+    q15_t*
+        pkCoeffs; /**< points to the reflection coefficient array. The array is of length numStages. */
+    q15_t*
+        pvCoeffs; /**< points to the ladder coefficient array. The array is of length numStages+1. */
 } arm_iir_lattice_instance_q15;
 
 /**
- * @brief Instance structure for the Q31 IIR lattice filter.
- */
+   * @brief Instance structure for the Q31 IIR lattice filter.
+   */
 typedef struct {
     uint16_t numStages; /**< number of stages in the filter. */
-    q31_t* pState; /**< points to the state variable array. The array is of length
-                      numStages+blockSize. */
-    q31_t* pkCoeffs; /**< points to the reflection coefficient array. The array is of length
-                        numStages. */
-    q31_t* pvCoeffs; /**< points to the ladder coefficient array. The array is of length
-                        numStages+1. */
+    q31_t*
+        pState; /**< points to the state variable array. The array is of length numStages+blockSize. */
+    q31_t*
+        pkCoeffs; /**< points to the reflection coefficient array. The array is of length numStages. */
+    q31_t*
+        pvCoeffs; /**< points to the ladder coefficient array. The array is of length numStages+1. */
 } arm_iir_lattice_instance_q31;
 
 /**
- * @brief Instance structure for the floating-point IIR lattice filter.
- */
+   * @brief Instance structure for the floating-point IIR lattice filter.
+   */
 typedef struct {
     uint16_t numStages; /**< number of stages in the filter. */
-    float32_t* pState; /**< points to the state variable array. The array is of length
-                          numStages+blockSize. */
-    float32_t* pkCoeffs; /**< points to the reflection coefficient array. The array is of length
-                            numStages. */
-    float32_t* pvCoeffs; /**< points to the ladder coefficient array. The array is of length
-                            numStages+1. */
+    float32_t*
+        pState; /**< points to the state variable array. The array is of length numStages+blockSize. */
+    float32_t*
+        pkCoeffs; /**< points to the reflection coefficient array. The array is of length numStages. */
+    float32_t*
+        pvCoeffs; /**< points to the ladder coefficient array. The array is of length numStages+1. */
 } arm_iir_lattice_instance_f32;
 
 /**
- * @brief Processing function for the floating-point IIR lattice filter.
- * @param[in] *S points to an instance of the floating-point IIR lattice structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the floating-point IIR lattice filter.
+   * @param[in] *S points to an instance of the floating-point IIR lattice structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
-void arm_iir_lattice_f32(
-    const arm_iir_lattice_instance_f32* S, float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_iir_lattice_f32(const arm_iir_lattice_instance_f32* S, float32_t* pSrc, float32_t* pDst,
+                         uint32_t blockSize);
 
 /**
- * @brief Initialization function for the floating-point IIR lattice filter.
- * @param[in] *S points to an instance of the floating-point IIR lattice structure.
- * @param[in] numStages number of stages in the filter.
- * @param[in] *pkCoeffs points to the reflection coefficient buffer.  The array is of length
- * numStages.
- * @param[in] *pvCoeffs points to the ladder coefficient buffer.  The array is of length
- * numStages+1.
- * @param[in] *pState points to the state buffer.  The array is of length numStages+blockSize-1.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Initialization function for the floating-point IIR lattice filter.
+   * @param[in] *S points to an instance of the floating-point IIR lattice structure.
+   * @param[in] numStages number of stages in the filter.
+   * @param[in] *pkCoeffs points to the reflection coefficient buffer.  The array is of length numStages.
+   * @param[in] *pvCoeffs points to the ladder coefficient buffer.  The array is of length numStages+1.
+   * @param[in] *pState points to the state buffer.  The array is of length numStages+blockSize-1.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_iir_lattice_init_f32(arm_iir_lattice_instance_f32* S, uint16_t numStages,
-    float32_t* pkCoeffs, float32_t* pvCoeffs, float32_t* pState, uint32_t blockSize);
+                              float32_t* pkCoeffs, float32_t* pvCoeffs, float32_t* pState,
+                              uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q31 IIR lattice filter.
- * @param[in] *S points to an instance of the Q31 IIR lattice structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the Q31 IIR lattice filter.
+   * @param[in] *S points to an instance of the Q31 IIR lattice structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
-void arm_iir_lattice_q31(
-    const arm_iir_lattice_instance_q31* S, q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_iir_lattice_q31(const arm_iir_lattice_instance_q31* S, q31_t* pSrc, q31_t* pDst,
+                         uint32_t blockSize);
 
 /**
- * @brief Initialization function for the Q31 IIR lattice filter.
- * @param[in] *S points to an instance of the Q31 IIR lattice structure.
- * @param[in] numStages number of stages in the filter.
- * @param[in] *pkCoeffs points to the reflection coefficient buffer.  The array is of length
- * numStages.
- * @param[in] *pvCoeffs points to the ladder coefficient buffer.  The array is of length
- * numStages+1.
- * @param[in] *pState points to the state buffer.  The array is of length numStages+blockSize.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Initialization function for the Q31 IIR lattice filter.
+   * @param[in] *S points to an instance of the Q31 IIR lattice structure.
+   * @param[in] numStages number of stages in the filter.
+   * @param[in] *pkCoeffs points to the reflection coefficient buffer.  The array is of length numStages.
+   * @param[in] *pvCoeffs points to the ladder coefficient buffer.  The array is of length numStages+1.
+   * @param[in] *pState points to the state buffer.  The array is of length numStages+blockSize.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_iir_lattice_init_q31(arm_iir_lattice_instance_q31* S, uint16_t numStages, q31_t* pkCoeffs,
-    q31_t* pvCoeffs, q31_t* pState, uint32_t blockSize);
+                              q31_t* pvCoeffs, q31_t* pState, uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q15 IIR lattice filter.
- * @param[in] *S points to an instance of the Q15 IIR lattice structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[out] *pDst points to the block of output data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for the Q15 IIR lattice filter.
+   * @param[in] *S points to an instance of the Q15 IIR lattice structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[out] *pDst points to the block of output data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
-void arm_iir_lattice_q15(
-    const arm_iir_lattice_instance_q15* S, q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_iir_lattice_q15(const arm_iir_lattice_instance_q15* S, q15_t* pSrc, q15_t* pDst,
+                         uint32_t blockSize);
 
 /**
  * @brief Initialization function for the Q15 IIR lattice filter.
@@ -3287,715 +3235,714 @@ void arm_iir_lattice_q15(
  */
 
 void arm_iir_lattice_init_q15(arm_iir_lattice_instance_q15* S, uint16_t numStages, q15_t* pkCoeffs,
-    q15_t* pvCoeffs, q15_t* pState, uint32_t blockSize);
+                              q15_t* pvCoeffs, q15_t* pState, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the floating-point LMS filter.
- */
+   * @brief Instance structure for the floating-point LMS filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    float32_t* pState; /**< points to the state variable array. The array is of length
-                          numTaps+blockSize-1. */
+    float32_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
     float32_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
-    float32_t mu; /**< step size that controls filter coefficient updates. */
+    float32_t mu;       /**< step size that controls filter coefficient updates. */
 } arm_lms_instance_f32;
 
 /**
- * @brief Processing function for floating-point LMS filter.
- * @param[in]  *S points to an instance of the floating-point LMS filter structure.
- * @param[in]  *pSrc points to the block of input data.
- * @param[in]  *pRef points to the block of reference data.
- * @param[out] *pOut points to the block of output data.
- * @param[out] *pErr points to the block of error data.
- * @param[in]  blockSize number of samples to process.
- * @return     none.
- */
+   * @brief Processing function for floating-point LMS filter.
+   * @param[in]  *S points to an instance of the floating-point LMS filter structure.
+   * @param[in]  *pSrc points to the block of input data.
+   * @param[in]  *pRef points to the block of reference data.
+   * @param[out] *pOut points to the block of output data.
+   * @param[out] *pErr points to the block of error data.
+   * @param[in]  blockSize number of samples to process.
+   * @return     none.
+   */
 
 void arm_lms_f32(const arm_lms_instance_f32* S, float32_t* pSrc, float32_t* pRef, float32_t* pOut,
-    float32_t* pErr, uint32_t blockSize);
+                 float32_t* pErr, uint32_t blockSize);
 
 /**
- * @brief Initialization function for floating-point LMS filter.
- * @param[in] *S points to an instance of the floating-point LMS filter structure.
- * @param[in] numTaps  number of filter coefficients.
- * @param[in] *pCoeffs points to the coefficient buffer.
- * @param[in] *pState points to state buffer.
- * @param[in] mu step size that controls filter coefficient updates.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Initialization function for floating-point LMS filter.
+   * @param[in] *S points to an instance of the floating-point LMS filter structure.
+   * @param[in] numTaps  number of filter coefficients.
+   * @param[in] *pCoeffs points to the coefficient buffer.
+   * @param[in] *pState points to state buffer.
+   * @param[in] mu step size that controls filter coefficient updates.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_lms_init_f32(arm_lms_instance_f32* S, uint16_t numTaps, float32_t* pCoeffs,
-    float32_t* pState, float32_t mu, uint32_t blockSize);
+                      float32_t* pState, float32_t mu, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q15 LMS filter.
- */
+   * @brief Instance structure for the Q15 LMS filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    q15_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
-    q15_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
-    q15_t mu; /**< step size that controls filter coefficient updates. */
+    q15_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
+    q15_t* pCoeffs;     /**< points to the coefficient array. The array is of length numTaps. */
+    q15_t mu;           /**< step size that controls filter coefficient updates. */
     uint32_t postShift; /**< bit shift applied to coefficients. */
 } arm_lms_instance_q15;
 
 /**
- * @brief Initialization function for the Q15 LMS filter.
- * @param[in] *S points to an instance of the Q15 LMS filter structure.
- * @param[in] numTaps  number of filter coefficients.
- * @param[in] *pCoeffs points to the coefficient buffer.
- * @param[in] *pState points to the state buffer.
- * @param[in] mu step size that controls filter coefficient updates.
- * @param[in] blockSize number of samples to process.
- * @param[in] postShift bit shift applied to coefficients.
- * @return    none.
- */
+   * @brief Initialization function for the Q15 LMS filter.
+   * @param[in] *S points to an instance of the Q15 LMS filter structure.
+   * @param[in] numTaps  number of filter coefficients.
+   * @param[in] *pCoeffs points to the coefficient buffer.
+   * @param[in] *pState points to the state buffer.
+   * @param[in] mu step size that controls filter coefficient updates.
+   * @param[in] blockSize number of samples to process.
+   * @param[in] postShift bit shift applied to coefficients.
+   * @return    none.
+   */
 
 void arm_lms_init_q15(arm_lms_instance_q15* S, uint16_t numTaps, q15_t* pCoeffs, q15_t* pState,
-    q15_t mu, uint32_t blockSize, uint32_t postShift);
+                      q15_t mu, uint32_t blockSize, uint32_t postShift);
 
 /**
- * @brief Processing function for Q15 LMS filter.
- * @param[in] *S points to an instance of the Q15 LMS filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[in] *pRef points to the block of reference data.
- * @param[out] *pOut points to the block of output data.
- * @param[out] *pErr points to the block of error data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for Q15 LMS filter.
+   * @param[in] *S points to an instance of the Q15 LMS filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[in] *pRef points to the block of reference data.
+   * @param[out] *pOut points to the block of output data.
+   * @param[out] *pErr points to the block of error data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_lms_q15(const arm_lms_instance_q15* S, q15_t* pSrc, q15_t* pRef, q15_t* pOut, q15_t* pErr,
-    uint32_t blockSize);
+                 uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q31 LMS filter.
- */
+   * @brief Instance structure for the Q31 LMS filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    q31_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
-    q31_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
-    q31_t mu; /**< step size that controls filter coefficient updates. */
+    q31_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
+    q31_t* pCoeffs;     /**< points to the coefficient array. The array is of length numTaps. */
+    q31_t mu;           /**< step size that controls filter coefficient updates. */
     uint32_t postShift; /**< bit shift applied to coefficients. */
 
 } arm_lms_instance_q31;
 
 /**
- * @brief Processing function for Q31 LMS filter.
- * @param[in]  *S points to an instance of the Q15 LMS filter structure.
- * @param[in]  *pSrc points to the block of input data.
- * @param[in]  *pRef points to the block of reference data.
- * @param[out] *pOut points to the block of output data.
- * @param[out] *pErr points to the block of error data.
- * @param[in]  blockSize number of samples to process.
- * @return     none.
- */
+   * @brief Processing function for Q31 LMS filter.
+   * @param[in]  *S points to an instance of the Q15 LMS filter structure.
+   * @param[in]  *pSrc points to the block of input data.
+   * @param[in]  *pRef points to the block of reference data.
+   * @param[out] *pOut points to the block of output data.
+   * @param[out] *pErr points to the block of error data.
+   * @param[in]  blockSize number of samples to process.
+   * @return     none.
+   */
 
 void arm_lms_q31(const arm_lms_instance_q31* S, q31_t* pSrc, q31_t* pRef, q31_t* pOut, q31_t* pErr,
-    uint32_t blockSize);
+                 uint32_t blockSize);
 
 /**
- * @brief Initialization function for Q31 LMS filter.
- * @param[in] *S points to an instance of the Q31 LMS filter structure.
- * @param[in] numTaps  number of filter coefficients.
- * @param[in] *pCoeffs points to coefficient buffer.
- * @param[in] *pState points to state buffer.
- * @param[in] mu step size that controls filter coefficient updates.
- * @param[in] blockSize number of samples to process.
- * @param[in] postShift bit shift applied to coefficients.
- * @return none.
- */
+   * @brief Initialization function for Q31 LMS filter.
+   * @param[in] *S points to an instance of the Q31 LMS filter structure.
+   * @param[in] numTaps  number of filter coefficients.
+   * @param[in] *pCoeffs points to coefficient buffer.
+   * @param[in] *pState points to state buffer.
+   * @param[in] mu step size that controls filter coefficient updates.
+   * @param[in] blockSize number of samples to process.
+   * @param[in] postShift bit shift applied to coefficients.
+   * @return none.
+   */
 
 void arm_lms_init_q31(arm_lms_instance_q31* S, uint16_t numTaps, q31_t* pCoeffs, q31_t* pState,
-    q31_t mu, uint32_t blockSize, uint32_t postShift);
+                      q31_t mu, uint32_t blockSize, uint32_t postShift);
 
 /**
- * @brief Instance structure for the floating-point normalized LMS filter.
- */
+   * @brief Instance structure for the floating-point normalized LMS filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    float32_t* pState; /**< points to the state variable array. The array is of length
-                          numTaps+blockSize-1. */
+    float32_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
     float32_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
-    float32_t mu; /**< step size that control filter coefficient updates. */
-    float32_t energy; /**< saves previous frame energy. */
-    float32_t x0; /**< saves previous input sample. */
+    float32_t mu;       /**< step size that control filter coefficient updates. */
+    float32_t energy;   /**< saves previous frame energy. */
+    float32_t x0;       /**< saves previous input sample. */
 } arm_lms_norm_instance_f32;
 
 /**
- * @brief Processing function for floating-point normalized LMS filter.
- * @param[in] *S points to an instance of the floating-point normalized LMS filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[in] *pRef points to the block of reference data.
- * @param[out] *pOut points to the block of output data.
- * @param[out] *pErr points to the block of error data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for floating-point normalized LMS filter.
+   * @param[in] *S points to an instance of the floating-point normalized LMS filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[in] *pRef points to the block of reference data.
+   * @param[out] *pOut points to the block of output data.
+   * @param[out] *pErr points to the block of error data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_lms_norm_f32(arm_lms_norm_instance_f32* S, float32_t* pSrc, float32_t* pRef,
-    float32_t* pOut, float32_t* pErr, uint32_t blockSize);
+                      float32_t* pOut, float32_t* pErr, uint32_t blockSize);
 
 /**
- * @brief Initialization function for floating-point normalized LMS filter.
- * @param[in] *S points to an instance of the floating-point LMS filter structure.
- * @param[in] numTaps  number of filter coefficients.
- * @param[in] *pCoeffs points to coefficient buffer.
- * @param[in] *pState points to state buffer.
- * @param[in] mu step size that controls filter coefficient updates.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Initialization function for floating-point normalized LMS filter.
+   * @param[in] *S points to an instance of the floating-point LMS filter structure.
+   * @param[in] numTaps  number of filter coefficients.
+   * @param[in] *pCoeffs points to coefficient buffer.
+   * @param[in] *pState points to state buffer.
+   * @param[in] mu step size that controls filter coefficient updates.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_lms_norm_init_f32(arm_lms_norm_instance_f32* S, uint16_t numTaps, float32_t* pCoeffs,
-    float32_t* pState, float32_t mu, uint32_t blockSize);
+                           float32_t* pState, float32_t mu, uint32_t blockSize);
 
 /**
- * @brief Instance structure for the Q31 normalized LMS filter.
- */
+   * @brief Instance structure for the Q31 normalized LMS filter.
+   */
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
-    q31_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
-    q31_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
-    q31_t mu; /**< step size that controls filter coefficient updates. */
+    q31_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
+    q31_t* pCoeffs;    /**< points to the coefficient array. The array is of length numTaps. */
+    q31_t mu;          /**< step size that controls filter coefficient updates. */
     uint8_t postShift; /**< bit shift applied to coefficients. */
     q31_t* recipTable; /**< points to the reciprocal initial value table. */
-    q31_t energy; /**< saves previous frame energy. */
-    q31_t x0; /**< saves previous input sample. */
+    q31_t energy;      /**< saves previous frame energy. */
+    q31_t x0;          /**< saves previous input sample. */
 } arm_lms_norm_instance_q31;
 
 /**
- * @brief Processing function for Q31 normalized LMS filter.
- * @param[in] *S points to an instance of the Q31 normalized LMS filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[in] *pRef points to the block of reference data.
- * @param[out] *pOut points to the block of output data.
- * @param[out] *pErr points to the block of error data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for Q31 normalized LMS filter.
+   * @param[in] *S points to an instance of the Q31 normalized LMS filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[in] *pRef points to the block of reference data.
+   * @param[out] *pOut points to the block of output data.
+   * @param[out] *pErr points to the block of error data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_lms_norm_q31(arm_lms_norm_instance_q31* S, q31_t* pSrc, q31_t* pRef, q31_t* pOut,
-    q31_t* pErr, uint32_t blockSize);
+                      q31_t* pErr, uint32_t blockSize);
 
 /**
- * @brief Initialization function for Q31 normalized LMS filter.
- * @param[in] *S points to an instance of the Q31 normalized LMS filter structure.
- * @param[in] numTaps  number of filter coefficients.
- * @param[in] *pCoeffs points to coefficient buffer.
- * @param[in] *pState points to state buffer.
- * @param[in] mu step size that controls filter coefficient updates.
- * @param[in] blockSize number of samples to process.
- * @param[in] postShift bit shift applied to coefficients.
- * @return none.
- */
+   * @brief Initialization function for Q31 normalized LMS filter.
+   * @param[in] *S points to an instance of the Q31 normalized LMS filter structure.
+   * @param[in] numTaps  number of filter coefficients.
+   * @param[in] *pCoeffs points to coefficient buffer.
+   * @param[in] *pState points to state buffer.
+   * @param[in] mu step size that controls filter coefficient updates.
+   * @param[in] blockSize number of samples to process.
+   * @param[in] postShift bit shift applied to coefficients.
+   * @return none.
+   */
 
 void arm_lms_norm_init_q31(arm_lms_norm_instance_q31* S, uint16_t numTaps, q31_t* pCoeffs,
-    q31_t* pState, q31_t mu, uint32_t blockSize, uint8_t postShift);
+                           q31_t* pState, q31_t mu, uint32_t blockSize, uint8_t postShift);
 
 /**
- * @brief Instance structure for the Q15 normalized LMS filter.
- */
+   * @brief Instance structure for the Q15 normalized LMS filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< Number of coefficients in the filter. */
-    q15_t* pState; /**< points to the state variable array. The array is of length
-                      numTaps+blockSize-1. */
-    q15_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
-    q15_t mu; /**< step size that controls filter coefficient updates. */
+    q15_t*
+        pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
+    q15_t* pCoeffs;    /**< points to the coefficient array. The array is of length numTaps. */
+    q15_t mu;          /**< step size that controls filter coefficient updates. */
     uint8_t postShift; /**< bit shift applied to coefficients. */
     q15_t* recipTable; /**< Points to the reciprocal initial value table. */
-    q15_t energy; /**< saves previous frame energy. */
-    q15_t x0; /**< saves previous input sample. */
+    q15_t energy;      /**< saves previous frame energy. */
+    q15_t x0;          /**< saves previous input sample. */
 } arm_lms_norm_instance_q15;
 
 /**
- * @brief Processing function for Q15 normalized LMS filter.
- * @param[in] *S points to an instance of the Q15 normalized LMS filter structure.
- * @param[in] *pSrc points to the block of input data.
- * @param[in] *pRef points to the block of reference data.
- * @param[out] *pOut points to the block of output data.
- * @param[out] *pErr points to the block of error data.
- * @param[in] blockSize number of samples to process.
- * @return none.
- */
+   * @brief Processing function for Q15 normalized LMS filter.
+   * @param[in] *S points to an instance of the Q15 normalized LMS filter structure.
+   * @param[in] *pSrc points to the block of input data.
+   * @param[in] *pRef points to the block of reference data.
+   * @param[out] *pOut points to the block of output data.
+   * @param[out] *pErr points to the block of error data.
+   * @param[in] blockSize number of samples to process.
+   * @return none.
+   */
 
 void arm_lms_norm_q15(arm_lms_norm_instance_q15* S, q15_t* pSrc, q15_t* pRef, q15_t* pOut,
-    q15_t* pErr, uint32_t blockSize);
+                      q15_t* pErr, uint32_t blockSize);
 
 /**
- * @brief Initialization function for Q15 normalized LMS filter.
- * @param[in] *S points to an instance of the Q15 normalized LMS filter structure.
- * @param[in] numTaps  number of filter coefficients.
- * @param[in] *pCoeffs points to coefficient buffer.
- * @param[in] *pState points to state buffer.
- * @param[in] mu step size that controls filter coefficient updates.
- * @param[in] blockSize number of samples to process.
- * @param[in] postShift bit shift applied to coefficients.
- * @return none.
- */
+   * @brief Initialization function for Q15 normalized LMS filter.
+   * @param[in] *S points to an instance of the Q15 normalized LMS filter structure.
+   * @param[in] numTaps  number of filter coefficients.
+   * @param[in] *pCoeffs points to coefficient buffer.
+   * @param[in] *pState points to state buffer.
+   * @param[in] mu step size that controls filter coefficient updates.
+   * @param[in] blockSize number of samples to process.
+   * @param[in] postShift bit shift applied to coefficients.
+   * @return none.
+   */
 
 void arm_lms_norm_init_q15(arm_lms_norm_instance_q15* S, uint16_t numTaps, q15_t* pCoeffs,
-    q15_t* pState, q15_t mu, uint32_t blockSize, uint8_t postShift);
+                           q15_t* pState, q15_t mu, uint32_t blockSize, uint8_t postShift);
 
 /**
- * @brief Correlation of floating-point sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @return none.
- */
+   * @brief Correlation of floating-point sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @return none.
+   */
 
-void arm_correlate_f32(
-    float32_t* pSrcA, uint32_t srcALen, float32_t* pSrcB, uint32_t srcBLen, float32_t* pDst);
-
-/**
- * @brief Correlation of Q15 sequences
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @param[in]  *pScratch points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen,
- * srcBLen) - 2.
- * @return none.
- */
-void arm_correlate_opt_q15(
-    q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst, q15_t* pScratch);
+void arm_correlate_f32(float32_t* pSrcA, uint32_t srcALen, float32_t* pSrcB, uint32_t srcBLen,
+                       float32_t* pDst);
 
 /**
- * @brief Correlation of Q15 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @return none.
- */
+   * @brief Correlation of Q15 sequences
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @param[in]  *pScratch points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @return none.
+   */
+void arm_correlate_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
+                           q15_t* pDst, q15_t* pScratch);
+
+/**
+   * @brief Correlation of Q15 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @return none.
+   */
 
 void arm_correlate_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst);
 
 /**
- * @brief Correlation of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @return none.
- */
+   * @brief Correlation of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @return none.
+   */
 
-void arm_correlate_fast_q15(
-    q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst);
-
-/**
- * @brief Correlation of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @param[in]  *pScratch points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen,
- * srcBLen) - 2.
- * @return none.
- */
-
-void arm_correlate_fast_opt_q15(
-    q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen, q15_t* pDst, q15_t* pScratch);
+void arm_correlate_fast_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
+                            q15_t* pDst);
 
 /**
- * @brief Correlation of Q31 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @return none.
- */
+   * @brief Correlation of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @param[in]  *pScratch points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @return none.
+   */
+
+void arm_correlate_fast_opt_q15(q15_t* pSrcA, uint32_t srcALen, q15_t* pSrcB, uint32_t srcBLen,
+                                q15_t* pDst, q15_t* pScratch);
+
+/**
+   * @brief Correlation of Q31 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @return none.
+   */
 
 void arm_correlate_q31(q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen, q31_t* pDst);
 
 /**
- * @brief Correlation of Q31 sequences (fast version) for Cortex-M3 and Cortex-M4
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @return none.
- */
+   * @brief Correlation of Q31 sequences (fast version) for Cortex-M3 and Cortex-M4
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @return none.
+   */
 
-void arm_correlate_fast_q31(
-    q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen, q31_t* pDst);
+void arm_correlate_fast_q31(q31_t* pSrcA, uint32_t srcALen, q31_t* pSrcB, uint32_t srcBLen,
+                            q31_t* pDst);
 
 /**
- * @brief Correlation of Q7 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @param[in]  *pScratch1 points to scratch buffer(of type q15_t) of size max(srcALen, srcBLen) +
- * 2*min(srcALen, srcBLen) - 2.
- * @param[in]  *pScratch2 points to scratch buffer (of type q15_t) of size min(srcALen, srcBLen).
- * @return none.
- */
+   * @brief Correlation of Q7 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @param[in]  *pScratch1 points to scratch buffer(of type q15_t) of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+   * @param[in]  *pScratch2 points to scratch buffer (of type q15_t) of size min(srcALen, srcBLen).
+   * @return none.
+   */
 
 void arm_correlate_opt_q7(q7_t* pSrcA, uint32_t srcALen, q7_t* pSrcB, uint32_t srcBLen, q7_t* pDst,
-    q15_t* pScratch1, q15_t* pScratch2);
+                          q15_t* pScratch1, q15_t* pScratch2);
 
 /**
- * @brief Correlation of Q7 sequences.
- * @param[in] *pSrcA points to the first input sequence.
- * @param[in] srcALen length of the first input sequence.
- * @param[in] *pSrcB points to the second input sequence.
- * @param[in] srcBLen length of the second input sequence.
- * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
- * @return none.
- */
+   * @brief Correlation of Q7 sequences.
+   * @param[in] *pSrcA points to the first input sequence.
+   * @param[in] srcALen length of the first input sequence.
+   * @param[in] *pSrcB points to the second input sequence.
+   * @param[in] srcBLen length of the second input sequence.
+   * @param[out] *pDst points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
+   * @return none.
+   */
 
 void arm_correlate_q7(q7_t* pSrcA, uint32_t srcALen, q7_t* pSrcB, uint32_t srcBLen, q7_t* pDst);
 
 /**
- * @brief Instance structure for the floating-point sparse FIR filter.
- */
+   * @brief Instance structure for the floating-point sparse FIR filter.
+   */
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
     uint16_t
         stateIndex; /**< state buffer index.  Points to the oldest sample in the state buffer. */
-    float32_t* pState; /**< points to the state buffer array. The array is of length
-                          maxDelay+blockSize-1. */
+    float32_t*
+        pState; /**< points to the state buffer array. The array is of length maxDelay+blockSize-1. */
     float32_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
-    uint16_t maxDelay; /**< maximum offset specified by the pTapDelay array. */
+    uint16_t maxDelay;  /**< maximum offset specified by the pTapDelay array. */
     int32_t*
         pTapDelay; /**< points to the array of delay values.  The array is of length numTaps. */
 } arm_fir_sparse_instance_f32;
 
 /**
- * @brief Instance structure for the Q31 sparse FIR filter.
- */
+   * @brief Instance structure for the Q31 sparse FIR filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
     uint16_t
         stateIndex; /**< state buffer index.  Points to the oldest sample in the state buffer. */
-    q31_t* pState; /**< points to the state buffer array. The array is of length
-                      maxDelay+blockSize-1. */
-    q31_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
+    q31_t*
+        pState; /**< points to the state buffer array. The array is of length maxDelay+blockSize-1. */
+    q31_t* pCoeffs;    /**< points to the coefficient array. The array is of length numTaps.*/
     uint16_t maxDelay; /**< maximum offset specified by the pTapDelay array. */
     int32_t*
         pTapDelay; /**< points to the array of delay values.  The array is of length numTaps. */
 } arm_fir_sparse_instance_q31;
 
 /**
- * @brief Instance structure for the Q15 sparse FIR filter.
- */
+   * @brief Instance structure for the Q15 sparse FIR filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
     uint16_t
         stateIndex; /**< state buffer index.  Points to the oldest sample in the state buffer. */
-    q15_t* pState; /**< points to the state buffer array. The array is of length
-                      maxDelay+blockSize-1. */
-    q15_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
+    q15_t*
+        pState; /**< points to the state buffer array. The array is of length maxDelay+blockSize-1. */
+    q15_t* pCoeffs;    /**< points to the coefficient array. The array is of length numTaps.*/
     uint16_t maxDelay; /**< maximum offset specified by the pTapDelay array. */
     int32_t*
         pTapDelay; /**< points to the array of delay values.  The array is of length numTaps. */
 } arm_fir_sparse_instance_q15;
 
 /**
- * @brief Instance structure for the Q7 sparse FIR filter.
- */
+   * @brief Instance structure for the Q7 sparse FIR filter.
+   */
 
 typedef struct {
     uint16_t numTaps; /**< number of coefficients in the filter. */
     uint16_t
         stateIndex; /**< state buffer index.  Points to the oldest sample in the state buffer. */
-    q7_t* pState; /**< points to the state buffer array. The array is of length
-                     maxDelay+blockSize-1. */
-    q7_t* pCoeffs; /**< points to the coefficient array. The array is of length numTaps.*/
+    q7_t*
+        pState; /**< points to the state buffer array. The array is of length maxDelay+blockSize-1. */
+    q7_t* pCoeffs;     /**< points to the coefficient array. The array is of length numTaps.*/
     uint16_t maxDelay; /**< maximum offset specified by the pTapDelay array. */
     int32_t*
         pTapDelay; /**< points to the array of delay values.  The array is of length numTaps. */
 } arm_fir_sparse_instance_q7;
 
 /**
- * @brief Processing function for the floating-point sparse FIR filter.
- * @param[in]  *S          points to an instance of the floating-point sparse FIR structure.
- * @param[in]  *pSrc       points to the block of input data.
- * @param[out] *pDst       points to the block of output data
- * @param[in]  *pScratchIn points to a temporary buffer of size blockSize.
- * @param[in]  blockSize   number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the floating-point sparse FIR filter.
+   * @param[in]  *S          points to an instance of the floating-point sparse FIR structure.
+   * @param[in]  *pSrc       points to the block of input data.
+   * @param[out] *pDst       points to the block of output data
+   * @param[in]  *pScratchIn points to a temporary buffer of size blockSize.
+   * @param[in]  blockSize   number of input samples to process per call.
+   * @return none.
+   */
 
 void arm_fir_sparse_f32(arm_fir_sparse_instance_f32* S, float32_t* pSrc, float32_t* pDst,
-    float32_t* pScratchIn, uint32_t blockSize);
+                        float32_t* pScratchIn, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the floating-point sparse FIR filter.
- * @param[in,out] *S         points to an instance of the floating-point sparse FIR structure.
- * @param[in]     numTaps    number of nonzero coefficients in the filter.
- * @param[in]     *pCoeffs   points to the array of filter coefficients.
- * @param[in]     *pState    points to the state buffer.
- * @param[in]     *pTapDelay points to the array of offset times.
- * @param[in]     maxDelay   maximum offset time supported.
- * @param[in]     blockSize  number of samples that will be processed per block.
- * @return none
- */
+   * @brief  Initialization function for the floating-point sparse FIR filter.
+   * @param[in,out] *S         points to an instance of the floating-point sparse FIR structure.
+   * @param[in]     numTaps    number of nonzero coefficients in the filter.
+   * @param[in]     *pCoeffs   points to the array of filter coefficients.
+   * @param[in]     *pState    points to the state buffer.
+   * @param[in]     *pTapDelay points to the array of offset times.
+   * @param[in]     maxDelay   maximum offset time supported.
+   * @param[in]     blockSize  number of samples that will be processed per block.
+   * @return none
+   */
 
 void arm_fir_sparse_init_f32(arm_fir_sparse_instance_f32* S, uint16_t numTaps, float32_t* pCoeffs,
-    float32_t* pState, int32_t* pTapDelay, uint16_t maxDelay, uint32_t blockSize);
+                             float32_t* pState, int32_t* pTapDelay, uint16_t maxDelay,
+                             uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q31 sparse FIR filter.
- * @param[in]  *S          points to an instance of the Q31 sparse FIR structure.
- * @param[in]  *pSrc       points to the block of input data.
- * @param[out] *pDst       points to the block of output data
- * @param[in]  *pScratchIn points to a temporary buffer of size blockSize.
- * @param[in]  blockSize   number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the Q31 sparse FIR filter.
+   * @param[in]  *S          points to an instance of the Q31 sparse FIR structure.
+   * @param[in]  *pSrc       points to the block of input data.
+   * @param[out] *pDst       points to the block of output data
+   * @param[in]  *pScratchIn points to a temporary buffer of size blockSize.
+   * @param[in]  blockSize   number of input samples to process per call.
+   * @return none.
+   */
 
 void arm_fir_sparse_q31(arm_fir_sparse_instance_q31* S, q31_t* pSrc, q31_t* pDst, q31_t* pScratchIn,
-    uint32_t blockSize);
+                        uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q31 sparse FIR filter.
- * @param[in,out] *S         points to an instance of the Q31 sparse FIR structure.
- * @param[in]     numTaps    number of nonzero coefficients in the filter.
- * @param[in]     *pCoeffs   points to the array of filter coefficients.
- * @param[in]     *pState    points to the state buffer.
- * @param[in]     *pTapDelay points to the array of offset times.
- * @param[in]     maxDelay   maximum offset time supported.
- * @param[in]     blockSize  number of samples that will be processed per block.
- * @return none
- */
+   * @brief  Initialization function for the Q31 sparse FIR filter.
+   * @param[in,out] *S         points to an instance of the Q31 sparse FIR structure.
+   * @param[in]     numTaps    number of nonzero coefficients in the filter.
+   * @param[in]     *pCoeffs   points to the array of filter coefficients.
+   * @param[in]     *pState    points to the state buffer.
+   * @param[in]     *pTapDelay points to the array of offset times.
+   * @param[in]     maxDelay   maximum offset time supported.
+   * @param[in]     blockSize  number of samples that will be processed per block.
+   * @return none
+   */
 
 void arm_fir_sparse_init_q31(arm_fir_sparse_instance_q31* S, uint16_t numTaps, q31_t* pCoeffs,
-    q31_t* pState, int32_t* pTapDelay, uint16_t maxDelay, uint32_t blockSize);
+                             q31_t* pState, int32_t* pTapDelay, uint16_t maxDelay,
+                             uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q15 sparse FIR filter.
- * @param[in]  *S           points to an instance of the Q15 sparse FIR structure.
- * @param[in]  *pSrc        points to the block of input data.
- * @param[out] *pDst        points to the block of output data
- * @param[in]  *pScratchIn  points to a temporary buffer of size blockSize.
- * @param[in]  *pScratchOut points to a temporary buffer of size blockSize.
- * @param[in]  blockSize    number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the Q15 sparse FIR filter.
+   * @param[in]  *S           points to an instance of the Q15 sparse FIR structure.
+   * @param[in]  *pSrc        points to the block of input data.
+   * @param[out] *pDst        points to the block of output data
+   * @param[in]  *pScratchIn  points to a temporary buffer of size blockSize.
+   * @param[in]  *pScratchOut points to a temporary buffer of size blockSize.
+   * @param[in]  blockSize    number of input samples to process per call.
+   * @return none.
+   */
 
 void arm_fir_sparse_q15(arm_fir_sparse_instance_q15* S, q15_t* pSrc, q15_t* pDst, q15_t* pScratchIn,
-    q31_t* pScratchOut, uint32_t blockSize);
+                        q31_t* pScratchOut, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q15 sparse FIR filter.
- * @param[in,out] *S         points to an instance of the Q15 sparse FIR structure.
- * @param[in]     numTaps    number of nonzero coefficients in the filter.
- * @param[in]     *pCoeffs   points to the array of filter coefficients.
- * @param[in]     *pState    points to the state buffer.
- * @param[in]     *pTapDelay points to the array of offset times.
- * @param[in]     maxDelay   maximum offset time supported.
- * @param[in]     blockSize  number of samples that will be processed per block.
- * @return none
- */
+   * @brief  Initialization function for the Q15 sparse FIR filter.
+   * @param[in,out] *S         points to an instance of the Q15 sparse FIR structure.
+   * @param[in]     numTaps    number of nonzero coefficients in the filter.
+   * @param[in]     *pCoeffs   points to the array of filter coefficients.
+   * @param[in]     *pState    points to the state buffer.
+   * @param[in]     *pTapDelay points to the array of offset times.
+   * @param[in]     maxDelay   maximum offset time supported.
+   * @param[in]     blockSize  number of samples that will be processed per block.
+   * @return none
+   */
 
 void arm_fir_sparse_init_q15(arm_fir_sparse_instance_q15* S, uint16_t numTaps, q15_t* pCoeffs,
-    q15_t* pState, int32_t* pTapDelay, uint16_t maxDelay, uint32_t blockSize);
+                             q15_t* pState, int32_t* pTapDelay, uint16_t maxDelay,
+                             uint32_t blockSize);
 
 /**
- * @brief Processing function for the Q7 sparse FIR filter.
- * @param[in]  *S           points to an instance of the Q7 sparse FIR structure.
- * @param[in]  *pSrc        points to the block of input data.
- * @param[out] *pDst        points to the block of output data
- * @param[in]  *pScratchIn  points to a temporary buffer of size blockSize.
- * @param[in]  *pScratchOut points to a temporary buffer of size blockSize.
- * @param[in]  blockSize    number of input samples to process per call.
- * @return none.
- */
+   * @brief Processing function for the Q7 sparse FIR filter.
+   * @param[in]  *S           points to an instance of the Q7 sparse FIR structure.
+   * @param[in]  *pSrc        points to the block of input data.
+   * @param[out] *pDst        points to the block of output data
+   * @param[in]  *pScratchIn  points to a temporary buffer of size blockSize.
+   * @param[in]  *pScratchOut points to a temporary buffer of size blockSize.
+   * @param[in]  blockSize    number of input samples to process per call.
+   * @return none.
+   */
 
 void arm_fir_sparse_q7(arm_fir_sparse_instance_q7* S, q7_t* pSrc, q7_t* pDst, q7_t* pScratchIn,
-    q31_t* pScratchOut, uint32_t blockSize);
+                       q31_t* pScratchOut, uint32_t blockSize);
 
 /**
- * @brief  Initialization function for the Q7 sparse FIR filter.
- * @param[in,out] *S         points to an instance of the Q7 sparse FIR structure.
- * @param[in]     numTaps    number of nonzero coefficients in the filter.
- * @param[in]     *pCoeffs   points to the array of filter coefficients.
- * @param[in]     *pState    points to the state buffer.
- * @param[in]     *pTapDelay points to the array of offset times.
- * @param[in]     maxDelay   maximum offset time supported.
- * @param[in]     blockSize  number of samples that will be processed per block.
- * @return none
- */
+   * @brief  Initialization function for the Q7 sparse FIR filter.
+   * @param[in,out] *S         points to an instance of the Q7 sparse FIR structure.
+   * @param[in]     numTaps    number of nonzero coefficients in the filter.
+   * @param[in]     *pCoeffs   points to the array of filter coefficients.
+   * @param[in]     *pState    points to the state buffer.
+   * @param[in]     *pTapDelay points to the array of offset times.
+   * @param[in]     maxDelay   maximum offset time supported.
+   * @param[in]     blockSize  number of samples that will be processed per block.
+   * @return none
+   */
 
 void arm_fir_sparse_init_q7(arm_fir_sparse_instance_q7* S, uint16_t numTaps, q7_t* pCoeffs,
-    q7_t* pState, int32_t* pTapDelay, uint16_t maxDelay, uint32_t blockSize);
+                            q7_t* pState, int32_t* pTapDelay, uint16_t maxDelay,
+                            uint32_t blockSize);
 
 /*
- * @brief  Floating-point sin_cos function.
- * @param[in]  theta    input value in degrees
- * @param[out] *pSinVal points to the processed sine output.
- * @param[out] *pCosVal points to the processed cos output.
- * @return none.
- */
+   * @brief  Floating-point sin_cos function.
+   * @param[in]  theta    input value in degrees
+   * @param[out] *pSinVal points to the processed sine output.
+   * @param[out] *pCosVal points to the processed cos output.
+   * @return none.
+   */
 
 void arm_sin_cos_f32(float32_t theta, float32_t* pSinVal, float32_t* pCcosVal);
 
 /*
- * @brief  Q31 sin_cos function.
- * @param[in]  theta    scaled input value in degrees
- * @param[out] *pSinVal points to the processed sine output.
- * @param[out] *pCosVal points to the processed cosine output.
- * @return none.
- */
+   * @brief  Q31 sin_cos function.
+   * @param[in]  theta    scaled input value in degrees
+   * @param[out] *pSinVal points to the processed sine output.
+   * @param[out] *pCosVal points to the processed cosine output.
+   * @return none.
+   */
 
 void arm_sin_cos_q31(q31_t theta, q31_t* pSinVal, q31_t* pCosVal);
 
 /**
- * @brief  Floating-point complex conjugate.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  numSamples number of complex samples in each vector
- * @return none.
- */
+   * @brief  Floating-point complex conjugate.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @return none.
+   */
 
 void arm_cmplx_conj_f32(float32_t* pSrc, float32_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q31 complex conjugate.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  numSamples number of complex samples in each vector
- * @return none.
- */
+   * @brief  Q31 complex conjugate.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @return none.
+   */
 
 void arm_cmplx_conj_q31(q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q15 complex conjugate.
- * @param[in]  *pSrc points to the input vector
- * @param[out]  *pDst points to the output vector
- * @param[in]  numSamples number of complex samples in each vector
- * @return none.
- */
+   * @brief  Q15 complex conjugate.
+   * @param[in]  *pSrc points to the input vector
+   * @param[out]  *pDst points to the output vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @return none.
+   */
 
 void arm_cmplx_conj_q15(q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Floating-point complex magnitude squared
- * @param[in]  *pSrc points to the complex input vector
- * @param[out]  *pDst points to the real output vector
- * @param[in]  numSamples number of complex samples in the input vector
- * @return none.
- */
+   * @brief  Floating-point complex magnitude squared
+   * @param[in]  *pSrc points to the complex input vector
+   * @param[out]  *pDst points to the real output vector
+   * @param[in]  numSamples number of complex samples in the input vector
+   * @return none.
+   */
 
 void arm_cmplx_mag_squared_f32(float32_t* pSrc, float32_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q31 complex magnitude squared
- * @param[in]  *pSrc points to the complex input vector
- * @param[out]  *pDst points to the real output vector
- * @param[in]  numSamples number of complex samples in the input vector
- * @return none.
- */
+   * @brief  Q31 complex magnitude squared
+   * @param[in]  *pSrc points to the complex input vector
+   * @param[out]  *pDst points to the real output vector
+   * @param[in]  numSamples number of complex samples in the input vector
+   * @return none.
+   */
 
 void arm_cmplx_mag_squared_q31(q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q15 complex magnitude squared
- * @param[in]  *pSrc points to the complex input vector
- * @param[out]  *pDst points to the real output vector
- * @param[in]  numSamples number of complex samples in the input vector
- * @return none.
- */
+   * @brief  Q15 complex magnitude squared
+   * @param[in]  *pSrc points to the complex input vector
+   * @param[out]  *pDst points to the real output vector
+   * @param[in]  numSamples number of complex samples in the input vector
+   * @return none.
+   */
 
 void arm_cmplx_mag_squared_q15(q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
 
 /**
- * @ingroup groupController
- */
+   * @ingroup groupController
+   */
 
 /**
- * @defgroup PID PID Motor Control
- *
- * A Proportional Integral Derivative (PID) controller is a generic feedback control
- * loop mechanism widely used in industrial control systems.
- * A PID controller is the most commonly used type of feedback controller.
- *
- * This set of functions implements (PID) controllers
- * for Q15, Q31, and floating-point data types.  The functions operate on a single sample
- * of data and each call to the function returns a single processed value.
- * <code>S</code> points to an instance of the PID control data structure.  <code>in</code>
- * is the input sample value. The functions return the output value.
- *
- * \par Algorithm:
- * <pre>
- *    y[n] = y[n-1] + A0 * x[n] + A1 * x[n-1] + A2 * x[n-2]
- *    A0 = Kp + Ki + Kd
- *    A1 = (-Kp ) - (2 * Kd )
- *    A2 = Kd  </pre>
- *
- * \par
- * where \c Kp is proportional constant, \c Ki is Integral constant and \c Kd is Derivative constant
- *
- * \par
- * \image html PID.gif "Proportional Integral Derivative Controller"
- *
- * \par
- * The PID controller calculates an "error" value as the difference between
- * the measured output and the reference input.
- * The controller attempts to minimize the error by adjusting the process control inputs.
- * The proportional value determines the reaction to the current error,
- * the integral value determines the reaction based on the sum of recent errors,
- * and the derivative value determines the reaction based on the rate at which the error has been
- * changing.
- *
- * \par Instance Structure
- * The Gains A0, A1, A2 and state variables for a PID controller are stored together in an instance
- * data structure. A separate instance structure must be defined for each PID Controller. There are
- * separate instance structure declarations for each of the 3 supported data types.
- *
- * \par Reset Functions
- * There is also an associated reset function for each data type which clears the state array.
- *
- * \par Initialization Functions
- * There is also an associated initialization function for each data type.
- * The initialization function performs the following operations:
- * - Initializes the Gains A0, A1, A2 from Kp,Ki, Kd gains.
- * - Zeros out the values in the state buffer.
- *
- * \par
- * Instance structure cannot be placed into a const data section and it is recommended to use the
- * initialization function.
- *
- * \par Fixed-Point Behavior
- * Care must be taken when using the fixed-point versions of the PID Controller functions.
- * In particular, the overflow and saturation behavior of the accumulator used in each function must
- * be considered. Refer to the function specific documentation below for usage guidelines.
- */
+   * @defgroup PID PID Motor Control
+   *
+   * A Proportional Integral Derivative (PID) controller is a generic feedback control
+   * loop mechanism widely used in industrial control systems.
+   * A PID controller is the most commonly used type of feedback controller.
+   *
+   * This set of functions implements (PID) controllers
+   * for Q15, Q31, and floating-point data types.  The functions operate on a single sample
+   * of data and each call to the function returns a single processed value.
+   * <code>S</code> points to an instance of the PID control data structure.  <code>in</code>
+   * is the input sample value. The functions return the output value.
+   *
+   * \par Algorithm:
+   * <pre>
+   *    y[n] = y[n-1] + A0 * x[n] + A1 * x[n-1] + A2 * x[n-2]
+   *    A0 = Kp + Ki + Kd
+   *    A1 = (-Kp ) - (2 * Kd )
+   *    A2 = Kd  </pre>
+   *
+   * \par
+   * where \c Kp is proportional constant, \c Ki is Integral constant and \c Kd is Derivative constant
+   *
+   * \par
+   * \image html PID.gif "Proportional Integral Derivative Controller"
+   *
+   * \par
+   * The PID controller calculates an "error" value as the difference between
+   * the measured output and the reference input.
+   * The controller attempts to minimize the error by adjusting the process control inputs.
+   * The proportional value determines the reaction to the current error,
+   * the integral value determines the reaction based on the sum of recent errors,
+   * and the derivative value determines the reaction based on the rate at which the error has been changing.
+   *
+   * \par Instance Structure
+   * The Gains A0, A1, A2 and state variables for a PID controller are stored together in an instance data structure.
+   * A separate instance structure must be defined for each PID Controller.
+   * There are separate instance structure declarations for each of the 3 supported data types.
+   *
+   * \par Reset Functions
+   * There is also an associated reset function for each data type which clears the state array.
+   *
+   * \par Initialization Functions
+   * There is also an associated initialization function for each data type.
+   * The initialization function performs the following operations:
+   * - Initializes the Gains A0, A1, A2 from Kp,Ki, Kd gains.
+   * - Zeros out the values in the state buffer.
+   *
+   * \par
+   * Instance structure cannot be placed into a const data section and it is recommended to use the initialization function.
+   *
+   * \par Fixed-Point Behavior
+   * Care must be taken when using the fixed-point versions of the PID Controller functions.
+   * In particular, the overflow and saturation behavior of the accumulator used in each function must be considered.
+   * Refer to the function specific documentation below for usage guidelines.
+   */
 
 /**
- * @addtogroup PID
- * @{
- */
+   * @addtogroup PID
+   * @{
+   */
 
 /**
- * @brief  Process function for the floating-point PID Control.
- * @param[in,out] *S is an instance of the floating-point PID Control structure
- * @param[in] in input sample to process
- * @return out processed output sample.
- */
+   * @brief  Process function for the floating-point PID Control.
+   * @param[in,out] *S is an instance of the floating-point PID Control structure
+   * @param[in] in input sample to process
+   * @return out processed output sample.
+   */
 
 static __INLINE float32_t arm_pid_f32(arm_pid_instance_f32* S, float32_t in)
 {
@@ -4014,20 +3961,19 @@ static __INLINE float32_t arm_pid_f32(arm_pid_instance_f32* S, float32_t in)
 }
 
 /**
- * @brief  Process function for the Q31 PID Control.
- * @param[in,out] *S points to an instance of the Q31 PID Control structure
- * @param[in] in input sample to process
- * @return out processed output sample.
- *
- * <b>Scaling and Overflow Behavior:</b>
- * \par
- * The function is implemented using an internal 64-bit accumulator.
- * The accumulator has a 2.62 format and maintains full precision of the intermediate multiplication
- * results but provides only a single guard bit. Thus, if the accumulator result overflows it wraps
- * around rather than clip. In order to avoid overflows completely the input signal must be scaled
- * down by 2 bits as there are four additions. After all multiply-accumulates are performed,
- * the 2.62 accumulator is truncated to 1.32 format and then saturated to 1.31 format.
- */
+   * @brief  Process function for the Q31 PID Control.
+   * @param[in,out] *S points to an instance of the Q31 PID Control structure
+   * @param[in] in input sample to process
+   * @return out processed output sample.
+   *
+   * <b>Scaling and Overflow Behavior:</b>
+   * \par
+   * The function is implemented using an internal 64-bit accumulator.
+   * The accumulator has a 2.62 format and maintains full precision of the intermediate multiplication results but provides only a single guard bit.
+   * Thus, if the accumulator result overflows it wraps around rather than clip.
+   * In order to avoid overflows completely the input signal must be scaled down by 2 bits as there are four additions.
+   * After all multiply-accumulates are performed, the 2.62 accumulator is truncated to 1.32 format and then saturated to 1.31 format.
+   */
 
 static __INLINE q31_t arm_pid_q31(arm_pid_instance_q31* S, q31_t in)
 {
@@ -4059,21 +4005,20 @@ static __INLINE q31_t arm_pid_q31(arm_pid_instance_q31* S, q31_t in)
 }
 
 /**
- * @brief  Process function for the Q15 PID Control.
- * @param[in,out] *S points to an instance of the Q15 PID Control structure
- * @param[in] in input sample to process
- * @return out processed output sample.
- *
- * <b>Scaling and Overflow Behavior:</b>
- * \par
- * The function is implemented using a 64-bit internal accumulator.
- * Both Gains and state variables are represented in 1.15 format and multiplications yield a 2.30
- * result. The 2.30 intermediate results are accumulated in a 64-bit accumulator in 34.30 format.
- * There is no risk of internal overflow with this approach and the full precision of intermediate
- * multiplications is preserved. After all additions have been performed, the accumulator is
- * truncated to 34.15 format by discarding low 15 bits. Lastly, the accumulator is saturated to
- * yield a result in 1.15 format.
- */
+   * @brief  Process function for the Q15 PID Control.
+   * @param[in,out] *S points to an instance of the Q15 PID Control structure
+   * @param[in] in input sample to process
+   * @return out processed output sample.
+   *
+   * <b>Scaling and Overflow Behavior:</b>
+   * \par
+   * The function is implemented using a 64-bit internal accumulator.
+   * Both Gains and state variables are represented in 1.15 format and multiplications yield a 2.30 result.
+   * The 2.30 intermediate results are accumulated in a 64-bit accumulator in 34.30 format.
+   * There is no risk of internal overflow with this approach and the full precision of intermediate multiplications is preserved.
+   * After all additions have been performed, the accumulator is truncated to 34.15 format by discarding low 15 bits.
+   * Lastly, the accumulator is saturated to yield a result in 1.15 format.
+   */
 
 static __INLINE q15_t arm_pid_q15(arm_pid_instance_q15* S, q15_t in)
 {
@@ -4090,7 +4035,7 @@ static __INLINE q15_t arm_pid_q15(arm_pid_instance_q15* S, q15_t in)
 
     /* acc += A1 * x[n-1] + A2 * x[n-2]  */
     vstate = __SIMD32_CONST(S->state);
-    acc = __SMLALD(S->A1, (q31_t)*vstate, acc);
+    acc    = __SMLALD(S->A1, (q31_t)*vstate, acc);
 
 #else
     /* acc = A0 * x[n]  */
@@ -4118,63 +4063,62 @@ static __INLINE q15_t arm_pid_q15(arm_pid_instance_q15* S, q15_t in)
 }
 
 /**
- * @} end of PID group
- */
+   * @} end of PID group
+   */
 
 /**
- * @brief Floating-point matrix inverse.
- * @param[in]  *src points to the instance of the input floating-point matrix structure.
- * @param[out] *dst points to the instance of the output floating-point matrix structure.
- * @return The function returns ARM_MATH_SIZE_MISMATCH, if the dimensions do not match.
- * If the input matrix is singular (does not have an inverse), then the algorithm terminates and
- * returns error status ARM_MATH_SINGULAR.
- */
+   * @brief Floating-point matrix inverse.
+   * @param[in]  *src points to the instance of the input floating-point matrix structure.
+   * @param[out] *dst points to the instance of the output floating-point matrix structure.
+   * @return The function returns ARM_MATH_SIZE_MISMATCH, if the dimensions do not match.
+   * If the input matrix is singular (does not have an inverse), then the algorithm terminates and returns error status ARM_MATH_SINGULAR.
+   */
 
 arm_status arm_mat_inverse_f32(const arm_matrix_instance_f32* src, arm_matrix_instance_f32* dst);
 
 /**
- * @ingroup groupController
- */
+   * @ingroup groupController
+   */
 
 /**
- * @defgroup clarke Vector Clarke Transform
- * Forward Clarke transform converts the instantaneous stator phases into a two-coordinate time
- * invariant vector. Generally the Clarke transform uses three-phase currents <code>Ia, Ib and
- * Ic</code> to calculate currents in the two-phase orthogonal stator axis <code>Ialpha</code> and
- * <code>Ibeta</code>. When <code>Ialpha</code> is superposed with <code>Ia</code> as shown in the
- * figure below \image html clarke.gif Stator current space vector and its components in (a,b). and
- * <code>Ia + Ib + Ic = 0</code>, in this condition <code>Ialpha</code> and <code>Ibeta</code> can
- * be calculated using only <code>Ia</code> and <code>Ib</code>.
- *
- * The function operates on a single sample of data and each call to the function returns the
- * processed output. The library provides separate functions for Q31 and floating-point data types.
- * \par Algorithm
- * \image html clarkeFormula.gif
- * where <code>Ia</code> and <code>Ib</code> are the instantaneous stator phases and
- * <code>pIalpha</code> and <code>pIbeta</code> are the two coordinates of time invariant vector.
- * \par Fixed-Point Behavior
- * Care must be taken when using the Q31 version of the Clarke transform.
- * In particular, the overflow and saturation behavior of the accumulator used must be considered.
- * Refer to the function specific documentation below for usage guidelines.
- */
+   * @defgroup clarke Vector Clarke Transform
+   * Forward Clarke transform converts the instantaneous stator phases into a two-coordinate time invariant vector.
+   * Generally the Clarke transform uses three-phase currents <code>Ia, Ib and Ic</code> to calculate currents
+   * in the two-phase orthogonal stator axis <code>Ialpha</code> and <code>Ibeta</code>.
+   * When <code>Ialpha</code> is superposed with <code>Ia</code> as shown in the figure below
+   * \image html clarke.gif Stator current space vector and its components in (a,b).
+   * and <code>Ia + Ib + Ic = 0</code>, in this condition <code>Ialpha</code> and <code>Ibeta</code>
+   * can be calculated using only <code>Ia</code> and <code>Ib</code>.
+   *
+   * The function operates on a single sample of data and each call to the function returns the processed output.
+   * The library provides separate functions for Q31 and floating-point data types.
+   * \par Algorithm
+   * \image html clarkeFormula.gif
+   * where <code>Ia</code> and <code>Ib</code> are the instantaneous stator phases and
+   * <code>pIalpha</code> and <code>pIbeta</code> are the two coordinates of time invariant vector.
+   * \par Fixed-Point Behavior
+   * Care must be taken when using the Q31 version of the Clarke transform.
+   * In particular, the overflow and saturation behavior of the accumulator used must be considered.
+   * Refer to the function specific documentation below for usage guidelines.
+   */
 
 /**
- * @addtogroup clarke
- * @{
- */
+   * @addtogroup clarke
+   * @{
+   */
 
 /**
- *
- * @brief  Floating-point Clarke transform
- * @param[in]       Ia       input three-phase coordinate <code>a</code>
- * @param[in]       Ib       input three-phase coordinate <code>b</code>
- * @param[out]      *pIalpha points to output two-phase orthogonal vector axis alpha
- * @param[out]      *pIbeta  points to output two-phase orthogonal vector axis beta
- * @return none.
- */
+   *
+   * @brief  Floating-point Clarke transform
+   * @param[in]       Ia       input three-phase coordinate <code>a</code>
+   * @param[in]       Ib       input three-phase coordinate <code>b</code>
+   * @param[out]      *pIalpha points to output two-phase orthogonal vector axis alpha
+   * @param[out]      *pIbeta  points to output two-phase orthogonal vector axis beta
+   * @return none.
+   */
 
-static __INLINE void arm_clarke_f32(
-    float32_t Ia, float32_t Ib, float32_t* pIalpha, float32_t* pIbeta)
+static __INLINE void arm_clarke_f32(float32_t Ia, float32_t Ib, float32_t* pIalpha,
+                                    float32_t* pIbeta)
 {
     /* Calculate pIalpha using the equation, pIalpha = Ia */
     *pIalpha = Ia;
@@ -4184,20 +4128,19 @@ static __INLINE void arm_clarke_f32(
 }
 
 /**
- * @brief  Clarke transform for Q31 version
- * @param[in]       Ia       input three-phase coordinate <code>a</code>
- * @param[in]       Ib       input three-phase coordinate <code>b</code>
- * @param[out]      *pIalpha points to output two-phase orthogonal vector axis alpha
- * @param[out]      *pIbeta  points to output two-phase orthogonal vector axis beta
- * @return none.
- *
- * <b>Scaling and Overflow Behavior:</b>
- * \par
- * The function is implemented using an internal 32-bit accumulator.
- * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate
- * multiplication in 2.62 format. There is saturation on the addition, hence there is no risk of
- * overflow.
- */
+   * @brief  Clarke transform for Q31 version
+   * @param[in]       Ia       input three-phase coordinate <code>a</code>
+   * @param[in]       Ib       input three-phase coordinate <code>b</code>
+   * @param[out]      *pIalpha points to output two-phase orthogonal vector axis alpha
+   * @param[out]      *pIbeta  points to output two-phase orthogonal vector axis beta
+   * @return none.
+   *
+   * <b>Scaling and Overflow Behavior:</b>
+   * \par
+   * The function is implemented using an internal 32-bit accumulator.
+   * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
+   * There is saturation on the addition, hence there is no risk of overflow.
+   */
 
 static __INLINE void arm_clarke_q31(q31_t Ia, q31_t Ib, q31_t* pIalpha, q31_t* pIbeta)
 {
@@ -4217,79 +4160,76 @@ static __INLINE void arm_clarke_q31(q31_t Ia, q31_t Ib, q31_t* pIalpha, q31_t* p
 }
 
 /**
- * @} end of clarke group
- */
+   * @} end of clarke group
+   */
 
 /**
- * @brief  Converts the elements of the Q7 vector to Q31 vector.
- * @param[in]  *pSrc     input pointer
- * @param[out]  *pDst    output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q7 vector to Q31 vector.
+   * @param[in]  *pSrc     input pointer
+   * @param[out]  *pDst    output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_q7_to_q31(q7_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @ingroup groupController
- */
+   * @ingroup groupController
+   */
 
 /**
- * @defgroup inv_clarke Vector Inverse Clarke Transform
- * Inverse Clarke transform converts the two-coordinate time invariant vector into instantaneous
- * stator phases.
- *
- * The function operates on a single sample of data and each call to the function returns the
- * processed output. The library provides separate functions for Q31 and floating-point data types.
- * \par Algorithm
- * \image html clarkeInvFormula.gif
- * where <code>pIa</code> and <code>pIb</code> are the instantaneous stator phases and
- * <code>Ialpha</code> and <code>Ibeta</code> are the two coordinates of time invariant vector.
- * \par Fixed-Point Behavior
- * Care must be taken when using the Q31 version of the Clarke transform.
- * In particular, the overflow and saturation behavior of the accumulator used must be considered.
- * Refer to the function specific documentation below for usage guidelines.
- */
+   * @defgroup inv_clarke Vector Inverse Clarke Transform
+   * Inverse Clarke transform converts the two-coordinate time invariant vector into instantaneous stator phases.
+   *
+   * The function operates on a single sample of data and each call to the function returns the processed output.
+   * The library provides separate functions for Q31 and floating-point data types.
+   * \par Algorithm
+   * \image html clarkeInvFormula.gif
+   * where <code>pIa</code> and <code>pIb</code> are the instantaneous stator phases and
+   * <code>Ialpha</code> and <code>Ibeta</code> are the two coordinates of time invariant vector.
+   * \par Fixed-Point Behavior
+   * Care must be taken when using the Q31 version of the Clarke transform.
+   * In particular, the overflow and saturation behavior of the accumulator used must be considered.
+   * Refer to the function specific documentation below for usage guidelines.
+   */
 
 /**
- * @addtogroup inv_clarke
- * @{
- */
+   * @addtogroup inv_clarke
+   * @{
+   */
 
 /**
- * @brief  Floating-point Inverse Clarke transform
- * @param[in]       Ialpha  input two-phase orthogonal vector axis alpha
- * @param[in]       Ibeta   input two-phase orthogonal vector axis beta
- * @param[out]      *pIa    points to output three-phase coordinate <code>a</code>
- * @param[out]      *pIb    points to output three-phase coordinate <code>b</code>
- * @return none.
- */
+   * @brief  Floating-point Inverse Clarke transform
+   * @param[in]       Ialpha  input two-phase orthogonal vector axis alpha
+   * @param[in]       Ibeta   input two-phase orthogonal vector axis beta
+   * @param[out]      *pIa    points to output three-phase coordinate <code>a</code>
+   * @param[out]      *pIb    points to output three-phase coordinate <code>b</code>
+   * @return none.
+   */
 
-static __INLINE void arm_inv_clarke_f32(
-    float32_t Ialpha, float32_t Ibeta, float32_t* pIa, float32_t* pIb)
+static __INLINE void arm_inv_clarke_f32(float32_t Ialpha, float32_t Ibeta, float32_t* pIa,
+                                        float32_t* pIb)
 {
     /* Calculating pIa from Ialpha by equation pIa = Ialpha */
     *pIa = Ialpha;
 
-    /* Calculating pIb from Ialpha and Ibeta by equation pIb = -(1/2) * Ialpha + (sqrt(3)/2) * Ibeta
-     */
+    /* Calculating pIb from Ialpha and Ibeta by equation pIb = -(1/2) * Ialpha + (sqrt(3)/2) * Ibeta */
     *pIb = -0.5 * Ialpha + (float32_t)0.8660254039 * Ibeta;
 }
 
 /**
- * @brief  Inverse Clarke transform for Q31 version
- * @param[in]       Ialpha  input two-phase orthogonal vector axis alpha
- * @param[in]       Ibeta   input two-phase orthogonal vector axis beta
- * @param[out]      *pIa    points to output three-phase coordinate <code>a</code>
- * @param[out]      *pIb    points to output three-phase coordinate <code>b</code>
- * @return none.
- *
- * <b>Scaling and Overflow Behavior:</b>
- * \par
- * The function is implemented using an internal 32-bit accumulator.
- * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate
- * multiplication in 2.62 format. There is saturation on the subtraction, hence there is no risk of
- * overflow.
- */
+   * @brief  Inverse Clarke transform for Q31 version
+   * @param[in]       Ialpha  input two-phase orthogonal vector axis alpha
+   * @param[in]       Ibeta   input two-phase orthogonal vector axis beta
+   * @param[out]      *pIa    points to output three-phase coordinate <code>a</code>
+   * @param[out]      *pIb    points to output three-phase coordinate <code>b</code>
+   * @return none.
+   *
+   * <b>Scaling and Overflow Behavior:</b>
+   * \par
+   * The function is implemented using an internal 32-bit accumulator.
+   * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
+   * There is saturation on the subtraction, hence there is no risk of overflow.
+   */
 
 static __INLINE void arm_inv_clarke_q31(q31_t Ialpha, q31_t Ibeta, q31_t* pIa, q31_t* pIb)
 {
@@ -4309,66 +4249,67 @@ static __INLINE void arm_inv_clarke_q31(q31_t Ialpha, q31_t Ibeta, q31_t* pIa, q
 }
 
 /**
- * @} end of inv_clarke group
- */
+   * @} end of inv_clarke group
+   */
 
 /**
- * @brief  Converts the elements of the Q7 vector to Q15 vector.
- * @param[in]  *pSrc     input pointer
- * @param[out] *pDst     output pointer
- * @param[in]  blockSize number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q7 vector to Q15 vector.
+   * @param[in]  *pSrc     input pointer
+   * @param[out] *pDst     output pointer
+   * @param[in]  blockSize number of samples to process
+   * @return none.
+   */
 void arm_q7_to_q15(q7_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @ingroup groupController
- */
+   * @ingroup groupController
+   */
 
 /**
- * @defgroup park Vector Park Transform
- *
- * Forward Park transform converts the input two-coordinate vector to flux and torque components.
- * The Park transform can be used to realize the transformation of the <code>Ialpha</code> and the
- * <code>Ibeta</code> currents from the stationary to the moving reference frame and control the
- * spatial relationship between the stator vector current and rotor flux vector. If we consider the
- * d axis aligned with the rotor flux, the diagram below shows the current vector and the
- * relationship from the two reference frames: \image html park.gif "Stator current space vector and
- * its component in (a,b) and in the d,q rotating reference frame"
- *
- * The function operates on a single sample of data and each call to the function returns the
- * processed output. The library provides separate functions for Q31 and floating-point data types.
- * \par Algorithm
- * \image html parkFormula.gif
- * where <code>Ialpha</code> and <code>Ibeta</code> are the stator vector components,
- * <code>pId</code> and <code>pIq</code> are rotor vector components and <code>cosVal</code> and
- * <code>sinVal</code> are the cosine and sine values of theta (rotor flux position). \par
- * Fixed-Point Behavior Care must be taken when using the Q31 version of the Park transform. In
- * particular, the overflow and saturation behavior of the accumulator used must be considered.
- * Refer to the function specific documentation below for usage guidelines.
- */
+   * @defgroup park Vector Park Transform
+   *
+   * Forward Park transform converts the input two-coordinate vector to flux and torque components.
+   * The Park transform can be used to realize the transformation of the <code>Ialpha</code> and the <code>Ibeta</code> currents
+   * from the stationary to the moving reference frame and control the spatial relationship between
+   * the stator vector current and rotor flux vector.
+   * If we consider the d axis aligned with the rotor flux, the diagram below shows the
+   * current vector and the relationship from the two reference frames:
+   * \image html park.gif "Stator current space vector and its component in (a,b) and in the d,q rotating reference frame"
+   *
+   * The function operates on a single sample of data and each call to the function returns the processed output.
+   * The library provides separate functions for Q31 and floating-point data types.
+   * \par Algorithm
+   * \image html parkFormula.gif
+   * where <code>Ialpha</code> and <code>Ibeta</code> are the stator vector components,
+   * <code>pId</code> and <code>pIq</code> are rotor vector components and <code>cosVal</code> and <code>sinVal</code> are the
+   * cosine and sine values of theta (rotor flux position).
+   * \par Fixed-Point Behavior
+   * Care must be taken when using the Q31 version of the Park transform.
+   * In particular, the overflow and saturation behavior of the accumulator used must be considered.
+   * Refer to the function specific documentation below for usage guidelines.
+   */
 
 /**
- * @addtogroup park
- * @{
- */
+   * @addtogroup park
+   * @{
+   */
 
 /**
- * @brief Floating-point Park transform
- * @param[in]       Ialpha input two-phase vector coordinate alpha
- * @param[in]       Ibeta  input two-phase vector coordinate beta
- * @param[out]      *pId   points to output	rotor reference frame d
- * @param[out]      *pIq   points to output	rotor reference frame q
- * @param[in]       sinVal sine value of rotation angle theta
- * @param[in]       cosVal cosine value of rotation angle theta
- * @return none.
- *
- * The function implements the forward Park transform.
- *
- */
+   * @brief Floating-point Park transform
+   * @param[in]       Ialpha input two-phase vector coordinate alpha
+   * @param[in]       Ibeta  input two-phase vector coordinate beta
+   * @param[out]      *pId   points to output	rotor reference frame d
+   * @param[out]      *pIq   points to output	rotor reference frame q
+   * @param[in]       sinVal sine value of rotation angle theta
+   * @param[in]       cosVal cosine value of rotation angle theta
+   * @return none.
+   *
+   * The function implements the forward Park transform.
+   *
+   */
 
 static __INLINE void arm_park_f32(float32_t Ialpha, float32_t Ibeta, float32_t* pId, float32_t* pIq,
-    float32_t sinVal, float32_t cosVal)
+                                  float32_t sinVal, float32_t cosVal)
 {
     /* Calculate pId using the equation, pId = Ialpha * cosVal + Ibeta * sinVal */
     *pId = Ialpha * cosVal + Ibeta * sinVal;
@@ -4378,25 +4319,24 @@ static __INLINE void arm_park_f32(float32_t Ialpha, float32_t Ibeta, float32_t* 
 }
 
 /**
- * @brief  Park transform for Q31 version
- * @param[in]       Ialpha input two-phase vector coordinate alpha
- * @param[in]       Ibeta  input two-phase vector coordinate beta
- * @param[out]      *pId   points to output rotor reference frame d
- * @param[out]      *pIq   points to output rotor reference frame q
- * @param[in]       sinVal sine value of rotation angle theta
- * @param[in]       cosVal cosine value of rotation angle theta
- * @return none.
- *
- * <b>Scaling and Overflow Behavior:</b>
- * \par
- * The function is implemented using an internal 32-bit accumulator.
- * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate
- * multiplication in 2.62 format. There is saturation on the addition and subtraction, hence there
- * is no risk of overflow.
- */
+   * @brief  Park transform for Q31 version
+   * @param[in]       Ialpha input two-phase vector coordinate alpha
+   * @param[in]       Ibeta  input two-phase vector coordinate beta
+   * @param[out]      *pId   points to output rotor reference frame d
+   * @param[out]      *pIq   points to output rotor reference frame q
+   * @param[in]       sinVal sine value of rotation angle theta
+   * @param[in]       cosVal cosine value of rotation angle theta
+   * @return none.
+   *
+   * <b>Scaling and Overflow Behavior:</b>
+   * \par
+   * The function is implemented using an internal 32-bit accumulator.
+   * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
+   * There is saturation on the addition and subtraction, hence there is no risk of overflow.
+   */
 
-static __INLINE void arm_park_q31(
-    q31_t Ialpha, q31_t Ibeta, q31_t* pId, q31_t* pIq, q31_t sinVal, q31_t cosVal)
+static __INLINE void arm_park_q31(q31_t Ialpha, q31_t Ibeta, q31_t* pId, q31_t* pIq, q31_t sinVal,
+                                  q31_t cosVal)
 {
     q31_t product1, product2; /* Temporary variables used to store intermediate results */
     q31_t product3, product4; /* Temporary variables used to store intermediate results */
@@ -4421,56 +4361,57 @@ static __INLINE void arm_park_q31(
 }
 
 /**
- * @} end of park group
- */
+   * @} end of park group
+   */
 
 /**
- * @brief  Converts the elements of the Q7 vector to floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q7 vector to floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q7_to_float(q7_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @ingroup groupController
- */
+   * @ingroup groupController
+   */
 
 /**
- * @defgroup inv_park Vector Inverse Park transform
- * Inverse Park transform converts the input flux and torque components to two-coordinate vector.
- *
- * The function operates on a single sample of data and each call to the function returns the
- * processed output. The library provides separate functions for Q31 and floating-point data types.
- * \par Algorithm
- * \image html parkInvFormula.gif
- * where <code>pIalpha</code> and <code>pIbeta</code> are the stator vector components,
- * <code>Id</code> and <code>Iq</code> are rotor vector components and <code>cosVal</code> and
- * <code>sinVal</code> are the cosine and sine values of theta (rotor flux position). \par
- * Fixed-Point Behavior Care must be taken when using the Q31 version of the Park transform. In
- * particular, the overflow and saturation behavior of the accumulator used must be considered.
- * Refer to the function specific documentation below for usage guidelines.
- */
+   * @defgroup inv_park Vector Inverse Park transform
+   * Inverse Park transform converts the input flux and torque components to two-coordinate vector.
+   *
+   * The function operates on a single sample of data and each call to the function returns the processed output.
+   * The library provides separate functions for Q31 and floating-point data types.
+   * \par Algorithm
+   * \image html parkInvFormula.gif
+   * where <code>pIalpha</code> and <code>pIbeta</code> are the stator vector components,
+   * <code>Id</code> and <code>Iq</code> are rotor vector components and <code>cosVal</code> and <code>sinVal</code> are the
+   * cosine and sine values of theta (rotor flux position).
+   * \par Fixed-Point Behavior
+   * Care must be taken when using the Q31 version of the Park transform.
+   * In particular, the overflow and saturation behavior of the accumulator used must be considered.
+   * Refer to the function specific documentation below for usage guidelines.
+   */
 
 /**
- * @addtogroup inv_park
- * @{
- */
+   * @addtogroup inv_park
+   * @{
+   */
 
 /**
- * @brief  Floating-point Inverse Park transform
- * @param[in]       Id        input coordinate of rotor reference frame d
- * @param[in]       Iq        input coordinate of rotor reference frame q
- * @param[out]      *pIalpha  points to output two-phase orthogonal vector axis alpha
- * @param[out]      *pIbeta   points to output two-phase orthogonal vector axis beta
- * @param[in]       sinVal    sine value of rotation angle theta
- * @param[in]       cosVal    cosine value of rotation angle theta
- * @return none.
- */
+   * @brief  Floating-point Inverse Park transform
+   * @param[in]       Id        input coordinate of rotor reference frame d
+   * @param[in]       Iq        input coordinate of rotor reference frame q
+   * @param[out]      *pIalpha  points to output two-phase orthogonal vector axis alpha
+   * @param[out]      *pIbeta   points to output two-phase orthogonal vector axis beta
+   * @param[in]       sinVal    sine value of rotation angle theta
+   * @param[in]       cosVal    cosine value of rotation angle theta
+   * @return none.
+   */
 
 static __INLINE void arm_inv_park_f32(float32_t Id, float32_t Iq, float32_t* pIalpha,
-    float32_t* pIbeta, float32_t sinVal, float32_t cosVal)
+                                      float32_t* pIbeta, float32_t sinVal, float32_t cosVal)
 {
     /* Calculate pIalpha using the equation, pIalpha = Id * cosVal - Iq * sinVal */
     *pIalpha = Id * cosVal - Iq * sinVal;
@@ -4480,25 +4421,24 @@ static __INLINE void arm_inv_park_f32(float32_t Id, float32_t Iq, float32_t* pIa
 }
 
 /**
- * @brief  Inverse Park transform for	Q31 version
- * @param[in]       Id        input coordinate of rotor reference frame d
- * @param[in]       Iq        input coordinate of rotor reference frame q
- * @param[out]      *pIalpha  points to output two-phase orthogonal vector axis alpha
- * @param[out]      *pIbeta   points to output two-phase orthogonal vector axis beta
- * @param[in]       sinVal    sine value of rotation angle theta
- * @param[in]       cosVal    cosine value of rotation angle theta
- * @return none.
- *
- * <b>Scaling and Overflow Behavior:</b>
- * \par
- * The function is implemented using an internal 32-bit accumulator.
- * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate
- * multiplication in 2.62 format. There is saturation on the addition, hence there is no risk of
- * overflow.
- */
+   * @brief  Inverse Park transform for	Q31 version
+   * @param[in]       Id        input coordinate of rotor reference frame d
+   * @param[in]       Iq        input coordinate of rotor reference frame q
+   * @param[out]      *pIalpha  points to output two-phase orthogonal vector axis alpha
+   * @param[out]      *pIbeta   points to output two-phase orthogonal vector axis beta
+   * @param[in]       sinVal    sine value of rotation angle theta
+   * @param[in]       cosVal    cosine value of rotation angle theta
+   * @return none.
+   *
+   * <b>Scaling and Overflow Behavior:</b>
+   * \par
+   * The function is implemented using an internal 32-bit accumulator.
+   * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
+   * There is saturation on the addition, hence there is no risk of overflow.
+   */
 
-static __INLINE void arm_inv_park_q31(
-    q31_t Id, q31_t Iq, q31_t* pIalpha, q31_t* pIbeta, q31_t sinVal, q31_t cosVal)
+static __INLINE void arm_inv_park_q31(q31_t Id, q31_t Iq, q31_t* pIalpha, q31_t* pIbeta,
+                                      q31_t sinVal, q31_t cosVal)
 {
     q31_t product1, product2; /* Temporary variables used to store intermediate results */
     q31_t product3, product4; /* Temporary variables used to store intermediate results */
@@ -4523,77 +4463,75 @@ static __INLINE void arm_inv_park_q31(
 }
 
 /**
- * @} end of Inverse park group
- */
+   * @} end of Inverse park group
+   */
 
 /**
- * @brief  Converts the elements of the Q31 vector to floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q31 vector to floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q31_to_float(q31_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @ingroup groupInterpolation
- */
+   * @ingroup groupInterpolation
+   */
 
 /**
- * @defgroup LinearInterpolate Linear Interpolation
- *
- * Linear interpolation is a method of curve fitting using linear polynomials.
- * Linear interpolation works by effectively drawing a straight line between two neighboring samples
- * and returning the appropriate point along that line
- *
- * \par
- * \image html LinearInterp.gif "Linear interpolation"
- *
- * \par
- * A  Linear Interpolate function calculates an output value(y), for the input(x)
- * using linear interpolation of the input values x0, x1( nearest input values) and the output
- * values y0 and y1(nearest output values)
- *
- * \par Algorithm:
- * <pre>
- *       y = y0 + (x - x0) * ((y1 - y0)/(x1-x0))
- *       where x0, x1 are nearest values of input x
- *             y0, y1 are nearest values to output y
- * </pre>
- *
- * \par
- * This set of functions implements Linear interpolation process
- * for Q7, Q15, Q31, and floating-point data types.  The functions operate on a single
- * sample of data and each call to the function returns a single processed value.
- * <code>S</code> points to an instance of the Linear Interpolate function data structure.
- * <code>x</code> is the input sample value. The functions returns the output value.
- *
- * \par
- * if x is outside of the table boundary, Linear interpolation returns first value of the table
- * if x is below input range and returns last value of table if x is above range.
- */
+   * @defgroup LinearInterpolate Linear Interpolation
+   *
+   * Linear interpolation is a method of curve fitting using linear polynomials.
+   * Linear interpolation works by effectively drawing a straight line between two neighboring samples and returning the appropriate point along that line
+   *
+   * \par
+   * \image html LinearInterp.gif "Linear interpolation"
+   *
+   * \par
+   * A  Linear Interpolate function calculates an output value(y), for the input(x)
+   * using linear interpolation of the input values x0, x1( nearest input values) and the output values y0 and y1(nearest output values)
+   *
+   * \par Algorithm:
+   * <pre>
+   *       y = y0 + (x - x0) * ((y1 - y0)/(x1-x0))
+   *       where x0, x1 are nearest values of input x
+   *             y0, y1 are nearest values to output y
+   * </pre>
+   *
+   * \par
+   * This set of functions implements Linear interpolation process
+   * for Q7, Q15, Q31, and floating-point data types.  The functions operate on a single
+   * sample of data and each call to the function returns a single processed value.
+   * <code>S</code> points to an instance of the Linear Interpolate function data structure.
+   * <code>x</code> is the input sample value. The functions returns the output value.
+   *
+   * \par
+   * if x is outside of the table boundary, Linear interpolation returns first value of the table
+   * if x is below input range and returns last value of table if x is above range.
+   */
 
 /**
- * @addtogroup LinearInterpolate
- * @{
- */
+   * @addtogroup LinearInterpolate
+   * @{
+   */
 
 /**
- * @brief  Process function for the floating-point Linear Interpolation Function.
- * @param[in,out] *S is an instance of the floating-point Linear Interpolation structure
- * @param[in] x input sample to process
- * @return y processed output sample.
- *
- */
+   * @brief  Process function for the floating-point Linear Interpolation Function.
+   * @param[in,out] *S is an instance of the floating-point Linear Interpolation structure
+   * @param[in] x input sample to process
+   * @return y processed output sample.
+   *
+   */
 
 static __INLINE float32_t arm_linear_interp_f32(arm_linear_interp_instance_f32* S, float32_t x)
 {
     float32_t y;
-    float32_t x0, x1; /* Nearest input values */
-    float32_t y0, y1; /* Nearest output values */
+    float32_t x0, x1;                 /* Nearest input values */
+    float32_t y0, y1;                 /* Nearest output values */
     float32_t xSpacing = S->xSpacing; /* spacing between input values */
-    int32_t i; /* Index variable */
-    float32_t* pYData = S->pYData; /* pointer to output table */
+    int32_t i;                        /* Index variable */
+    float32_t* pYData = S->pYData;    /* pointer to output table */
 
     /* Calculation of index */
     i = (int32_t)((x - S->x1) / xSpacing);
@@ -4622,24 +4560,24 @@ static __INLINE float32_t arm_linear_interp_f32(arm_linear_interp_instance_f32* 
 }
 
 /**
- *
- * @brief  Process function for the Q31 Linear Interpolation Function.
- * @param[in] *pYData  pointer to Q31 Linear Interpolation table
- * @param[in] x input sample to process
- * @param[in] nValues number of table values
- * @return y processed output sample.
- *
- * \par
- * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits
- * for fractional part. This function can support maximum of table size 2^12.
- *
- */
+   *
+   * @brief  Process function for the Q31 Linear Interpolation Function.
+   * @param[in] *pYData  pointer to Q31 Linear Interpolation table
+   * @param[in] x input sample to process
+   * @param[in] nValues number of table values
+   * @return y processed output sample.
+   *
+   * \par
+   * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits for fractional part.
+   * This function can support maximum of table size 2^12.
+   *
+   */
 
 static __INLINE q31_t arm_linear_interp_q31(q31_t* pYData, q31_t x, uint32_t nValues)
 {
-    q31_t y; /* output */
-    q31_t y0, y1; /* Nearest output values */
-    q31_t fract; /* fractional part */
+    q31_t y;       /* output */
+    q31_t y0, y1;  /* Nearest output values */
+    q31_t fract;   /* fractional part */
     int32_t index; /* Index to read nearest output values */
 
     /* Input is in 12.20 format */
@@ -4672,24 +4610,24 @@ static __INLINE q31_t arm_linear_interp_q31(q31_t* pYData, q31_t x, uint32_t nVa
 }
 
 /**
- *
- * @brief  Process function for the Q15 Linear Interpolation Function.
- * @param[in] *pYData  pointer to Q15 Linear Interpolation table
- * @param[in] x input sample to process
- * @param[in] nValues number of table values
- * @return y processed output sample.
- *
- * \par
- * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits
- * for fractional part. This function can support maximum of table size 2^12.
- *
- */
+   *
+   * @brief  Process function for the Q15 Linear Interpolation Function.
+   * @param[in] *pYData  pointer to Q15 Linear Interpolation table
+   * @param[in] x input sample to process
+   * @param[in] nValues number of table values
+   * @return y processed output sample.
+   *
+   * \par
+   * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits for fractional part.
+   * This function can support maximum of table size 2^12.
+   *
+   */
 
 static __INLINE q15_t arm_linear_interp_q15(q15_t* pYData, q31_t x, uint32_t nValues)
 {
-    q63_t y; /* output */
-    q15_t y0, y1; /* Nearest output values */
-    q31_t fract; /* fractional part */
+    q63_t y;       /* output */
+    q15_t y0, y1;  /* Nearest output values */
+    q31_t fract;   /* fractional part */
     int32_t index; /* Index to read nearest output values */
 
     /* Input is in 12.20 format */
@@ -4722,23 +4660,23 @@ static __INLINE q15_t arm_linear_interp_q15(q15_t* pYData, q31_t x, uint32_t nVa
 }
 
 /**
- *
- * @brief  Process function for the Q7 Linear Interpolation Function.
- * @param[in] *pYData  pointer to Q7 Linear Interpolation table
- * @param[in] x input sample to process
- * @param[in] nValues number of table values
- * @return y processed output sample.
- *
- * \par
- * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits
- * for fractional part. This function can support maximum of table size 2^12.
- */
+   *
+   * @brief  Process function for the Q7 Linear Interpolation Function.
+   * @param[in] *pYData  pointer to Q7 Linear Interpolation table
+   * @param[in] x input sample to process
+   * @param[in] nValues number of table values
+   * @return y processed output sample.
+   *
+   * \par
+   * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits for fractional part.
+   * This function can support maximum of table size 2^12.
+   */
 
 static __INLINE q7_t arm_linear_interp_q7(q7_t* pYData, q31_t x, uint32_t nValues)
 {
-    q31_t y; /* output */
-    q7_t y0, y1; /* Nearest output values */
-    q31_t fract; /* fractional part */
+    q31_t y;        /* output */
+    q7_t y0, y1;    /* Nearest output values */
+    q31_t fract;    /* fractional part */
     uint32_t index; /* Index to read nearest output values */
 
     /* Input is in 12.20 format */
@@ -4771,94 +4709,93 @@ static __INLINE q7_t arm_linear_interp_q7(q7_t* pYData, q31_t x, uint32_t nValue
     }
 }
 /**
- * @} end of LinearInterpolate group
- */
+   * @} end of LinearInterpolate group
+   */
 
 /**
- * @brief  Fast approximation to the trigonometric sine function for floating-point data.
- * @param[in] x input value in radians.
- * @return  sin(x).
- */
+   * @brief  Fast approximation to the trigonometric sine function for floating-point data.
+   * @param[in] x input value in radians.
+   * @return  sin(x).
+   */
 
 float32_t arm_sin_f32(float32_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric sine function for Q31 data.
- * @param[in] x Scaled input value in radians.
- * @return  sin(x).
- */
+   * @brief  Fast approximation to the trigonometric sine function for Q31 data.
+   * @param[in] x Scaled input value in radians.
+   * @return  sin(x).
+   */
 
 q31_t arm_sin_q31(q31_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric sine function for Q15 data.
- * @param[in] x Scaled input value in radians.
- * @return  sin(x).
- */
+   * @brief  Fast approximation to the trigonometric sine function for Q15 data.
+   * @param[in] x Scaled input value in radians.
+   * @return  sin(x).
+   */
 
 q15_t arm_sin_q15(q15_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric cosine function for floating-point data.
- * @param[in] x input value in radians.
- * @return  cos(x).
- */
+   * @brief  Fast approximation to the trigonometric cosine function for floating-point data.
+   * @param[in] x input value in radians.
+   * @return  cos(x).
+   */
 
 float32_t arm_cos_f32(float32_t x);
 
 /**
- * @brief Fast approximation to the trigonometric cosine function for Q31 data.
- * @param[in] x Scaled input value in radians.
- * @return  cos(x).
- */
+   * @brief Fast approximation to the trigonometric cosine function for Q31 data.
+   * @param[in] x Scaled input value in radians.
+   * @return  cos(x).
+   */
 
 q31_t arm_cos_q31(q31_t x);
 
 /**
- * @brief  Fast approximation to the trigonometric cosine function for Q15 data.
- * @param[in] x Scaled input value in radians.
- * @return  cos(x).
- */
+   * @brief  Fast approximation to the trigonometric cosine function for Q15 data.
+   * @param[in] x Scaled input value in radians.
+   * @return  cos(x).
+   */
 
 q15_t arm_cos_q15(q15_t x);
 
 /**
- * @ingroup groupFastMath
- */
+   * @ingroup groupFastMath
+   */
 
 /**
- * @defgroup SQRT Square Root
- *
- * Computes the square root of a number.
- * There are separate functions for Q15, Q31, and floating-point data types.
- * The square root function is computed using the Newton-Raphson algorithm.
- * This is an iterative algorithm of the form:
- * <pre>
- *      x1 = x0 - f(x0)/f'(x0)
- * </pre>
- * where <code>x1</code> is the current estimate,
- * <code>x0</code> is the previous estimate, and
- * <code>f'(x0)</code> is the derivative of <code>f()</code> evaluated at <code>x0</code>.
- * For the square root function, the algorithm reduces to:
- * <pre>
- *     x0 = in/2                         [initial guess]
- *     x1 = 1/2 * ( x0 + in / x0)        [each iteration]
- * </pre>
- */
+   * @defgroup SQRT Square Root
+   *
+   * Computes the square root of a number.
+   * There are separate functions for Q15, Q31, and floating-point data types.
+   * The square root function is computed using the Newton-Raphson algorithm.
+   * This is an iterative algorithm of the form:
+   * <pre>
+   *      x1 = x0 - f(x0)/f'(x0)
+   * </pre>
+   * where <code>x1</code> is the current estimate,
+   * <code>x0</code> is the previous estimate, and
+   * <code>f'(x0)</code> is the derivative of <code>f()</code> evaluated at <code>x0</code>.
+   * For the square root function, the algorithm reduces to:
+   * <pre>
+   *     x0 = in/2                         [initial guess]
+   *     x1 = 1/2 * ( x0 + in / x0)        [each iteration]
+   * </pre>
+   */
 
 /**
- * @addtogroup SQRT
- * @{
- */
+   * @addtogroup SQRT
+   * @{
+   */
 
 /**
- * @brief  Floating-point square root function.
- * @param[in]  in     input value.
- * @param[out] *pOut  square root of input value.
- * @return The function returns ARM_MATH_SUCCESS if input value is positive value or
- * ARM_MATH_ARGUMENT_ERROR if <code>in</code> is negative value and returns zero output for negative
- * values.
- */
+   * @brief  Floating-point square root function.
+   * @param[in]  in     input value.
+   * @param[out] *pOut  square root of input value.
+   * @return The function returns ARM_MATH_SUCCESS if input value is positive value or ARM_MATH_ARGUMENT_ERROR if
+   * <code>in</code> is negative value and returns zero output for negative values.
+   */
 
 static __INLINE arm_status arm_sqrt_f32(float32_t in, float32_t* pOut)
 {
@@ -4878,36 +4815,34 @@ static __INLINE arm_status arm_sqrt_f32(float32_t in, float32_t* pOut)
 }
 
 /**
- * @brief Q31 square root function.
- * @param[in]   in    input value.  The range of the input value is [0 +1) or 0x00000000 to
- * 0x7FFFFFFF.
- * @param[out]  *pOut square root of input value.
- * @return The function returns ARM_MATH_SUCCESS if input value is positive value or
- * ARM_MATH_ARGUMENT_ERROR if <code>in</code> is negative value and returns zero output for negative
- * values.
- */
+   * @brief Q31 square root function.
+   * @param[in]   in    input value.  The range of the input value is [0 +1) or 0x00000000 to 0x7FFFFFFF.
+   * @param[out]  *pOut square root of input value.
+   * @return The function returns ARM_MATH_SUCCESS if input value is positive value or ARM_MATH_ARGUMENT_ERROR if
+   * <code>in</code> is negative value and returns zero output for negative values.
+   */
 arm_status arm_sqrt_q31(q31_t in, q31_t* pOut);
 
 /**
- * @brief  Q15 square root function.
- * @param[in]   in     input value.  The range of the input value is [0 +1) or 0x0000 to 0x7FFF.
- * @param[out]  *pOut  square root of input value.
- * @return The function returns ARM_MATH_SUCCESS if input value is positive value or
- * ARM_MATH_ARGUMENT_ERROR if <code>in</code> is negative value and returns zero output for negative
- * values.
- */
+   * @brief  Q15 square root function.
+   * @param[in]   in     input value.  The range of the input value is [0 +1) or 0x0000 to 0x7FFF.
+   * @param[out]  *pOut  square root of input value.
+   * @return The function returns ARM_MATH_SUCCESS if input value is positive value or ARM_MATH_ARGUMENT_ERROR if
+   * <code>in</code> is negative value and returns zero output for negative values.
+   */
 arm_status arm_sqrt_q15(q15_t in, q15_t* pOut);
 
 /**
- * @} end of SQRT group
- */
+   * @} end of SQRT group
+   */
 
 /**
- * @brief floating-point Circular write function.
- */
+   * @brief floating-point Circular write function.
+   */
 
 static __INLINE void arm_circularWrite_f32(int32_t* circBuffer, int32_t L, uint16_t* writeOffset,
-    int32_t bufferInc, const int32_t* src, int32_t srcInc, uint32_t blockSize)
+                                           int32_t bufferInc, const int32_t* src, int32_t srcInc,
+                                           uint32_t blockSize)
 {
     uint32_t i = 0u;
     int32_t wOffset;
@@ -4940,11 +4875,11 @@ static __INLINE void arm_circularWrite_f32(int32_t* circBuffer, int32_t L, uint1
 }
 
 /**
- * @brief floating-point Circular Read function.
- */
+   * @brief floating-point Circular Read function.
+   */
 static __INLINE void arm_circularRead_f32(int32_t* circBuffer, int32_t L, int32_t* readOffset,
-    int32_t bufferInc, int32_t* dst, int32_t* dst_base, int32_t dst_length, int32_t dstInc,
-    uint32_t blockSize)
+                                          int32_t bufferInc, int32_t* dst, int32_t* dst_base,
+                                          int32_t dst_length, int32_t dstInc, uint32_t blockSize)
 {
     uint32_t i = 0u;
     int32_t rOffset, dst_end;
@@ -4984,11 +4919,12 @@ static __INLINE void arm_circularRead_f32(int32_t* circBuffer, int32_t L, int32_
 }
 
 /**
- * @brief Q15 Circular write function.
- */
+   * @brief Q15 Circular write function.
+   */
 
 static __INLINE void arm_circularWrite_q15(q15_t* circBuffer, int32_t L, uint16_t* writeOffset,
-    int32_t bufferInc, const q15_t* src, int32_t srcInc, uint32_t blockSize)
+                                           int32_t bufferInc, const q15_t* src, int32_t srcInc,
+                                           uint32_t blockSize)
 {
     uint32_t i = 0u;
     int32_t wOffset;
@@ -5021,11 +4957,11 @@ static __INLINE void arm_circularWrite_q15(q15_t* circBuffer, int32_t L, uint16_
 }
 
 /**
- * @brief Q15 Circular Read function.
- */
+   * @brief Q15 Circular Read function.
+   */
 static __INLINE void arm_circularRead_q15(q15_t* circBuffer, int32_t L, int32_t* readOffset,
-    int32_t bufferInc, q15_t* dst, q15_t* dst_base, int32_t dst_length, int32_t dstInc,
-    uint32_t blockSize)
+                                          int32_t bufferInc, q15_t* dst, q15_t* dst_base,
+                                          int32_t dst_length, int32_t dstInc, uint32_t blockSize)
 {
     uint32_t i = 0;
     int32_t rOffset, dst_end;
@@ -5066,11 +5002,12 @@ static __INLINE void arm_circularRead_q15(q15_t* circBuffer, int32_t L, int32_t*
 }
 
 /**
- * @brief Q7 Circular write function.
- */
+   * @brief Q7 Circular write function.
+   */
 
 static __INLINE void arm_circularWrite_q7(q7_t* circBuffer, int32_t L, uint16_t* writeOffset,
-    int32_t bufferInc, const q7_t* src, int32_t srcInc, uint32_t blockSize)
+                                          int32_t bufferInc, const q7_t* src, int32_t srcInc,
+                                          uint32_t blockSize)
 {
     uint32_t i = 0u;
     int32_t wOffset;
@@ -5103,11 +5040,11 @@ static __INLINE void arm_circularWrite_q7(q7_t* circBuffer, int32_t L, uint16_t*
 }
 
 /**
- * @brief Q7 Circular Read function.
- */
+   * @brief Q7 Circular Read function.
+   */
 static __INLINE void arm_circularRead_q7(q7_t* circBuffer, int32_t L, int32_t* readOffset,
-    int32_t bufferInc, q7_t* dst, q7_t* dst_base, int32_t dst_length, int32_t dstInc,
-    uint32_t blockSize)
+                                         int32_t bufferInc, q7_t* dst, q7_t* dst_base,
+                                         int32_t dst_length, int32_t dstInc, uint32_t blockSize)
 {
     uint32_t i = 0;
     int32_t rOffset, dst_end;
@@ -5148,317 +5085,317 @@ static __INLINE void arm_circularRead_q7(q7_t* circBuffer, int32_t L, int32_t* r
 }
 
 /**
- * @brief  Sum of the squares of the elements of a Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Sum of the squares of the elements of a Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_power_q31(q31_t* pSrc, uint32_t blockSize, q63_t* pResult);
 
 /**
- * @brief  Sum of the squares of the elements of a floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Sum of the squares of the elements of a floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_power_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult);
 
 /**
- * @brief  Sum of the squares of the elements of a Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Sum of the squares of the elements of a Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_power_q15(q15_t* pSrc, uint32_t blockSize, q63_t* pResult);
 
 /**
- * @brief  Sum of the squares of the elements of a Q7 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Sum of the squares of the elements of a Q7 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_power_q7(q7_t* pSrc, uint32_t blockSize, q31_t* pResult);
 
 /**
- * @brief  Mean value of a Q7 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Mean value of a Q7 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_mean_q7(q7_t* pSrc, uint32_t blockSize, q7_t* pResult);
 
 /**
- * @brief  Mean value of a Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Mean value of a Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 void arm_mean_q15(q15_t* pSrc, uint32_t blockSize, q15_t* pResult);
 
 /**
- * @brief  Mean value of a Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Mean value of a Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 void arm_mean_q31(q31_t* pSrc, uint32_t blockSize, q31_t* pResult);
 
 /**
- * @brief  Mean value of a floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Mean value of a floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 void arm_mean_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult);
 
 /**
- * @brief  Variance of the elements of a floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Variance of the elements of a floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_var_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult);
 
 /**
- * @brief  Variance of the elements of a Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Variance of the elements of a Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_var_q31(q31_t* pSrc, uint32_t blockSize, q63_t* pResult);
 
 /**
- * @brief  Variance of the elements of a Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Variance of the elements of a Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_var_q15(q15_t* pSrc, uint32_t blockSize, q31_t* pResult);
 
 /**
- * @brief  Root Mean Square of the elements of a floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Root Mean Square of the elements of a floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_rms_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult);
 
 /**
- * @brief  Root Mean Square of the elements of a Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Root Mean Square of the elements of a Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_rms_q31(q31_t* pSrc, uint32_t blockSize, q31_t* pResult);
 
 /**
- * @brief  Root Mean Square of the elements of a Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Root Mean Square of the elements of a Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_rms_q15(q15_t* pSrc, uint32_t blockSize, q15_t* pResult);
 
 /**
- * @brief  Standard deviation of the elements of a floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Standard deviation of the elements of a floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_std_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult);
 
 /**
- * @brief  Standard deviation of the elements of a Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Standard deviation of the elements of a Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_std_q31(q31_t* pSrc, uint32_t blockSize, q31_t* pResult);
 
 /**
- * @brief  Standard deviation of the elements of a Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output value.
- * @return none.
- */
+   * @brief  Standard deviation of the elements of a Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output value.
+   * @return none.
+   */
 
 void arm_std_q15(q15_t* pSrc, uint32_t blockSize, q15_t* pResult);
 
 /**
- * @brief  Floating-point complex magnitude
- * @param[in]  *pSrc points to the complex input vector
- * @param[out]  *pDst points to the real output vector
- * @param[in]  numSamples number of complex samples in the input vector
- * @return none.
- */
+   * @brief  Floating-point complex magnitude
+   * @param[in]  *pSrc points to the complex input vector
+   * @param[out]  *pDst points to the real output vector
+   * @param[in]  numSamples number of complex samples in the input vector
+   * @return none.
+   */
 
 void arm_cmplx_mag_f32(float32_t* pSrc, float32_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q31 complex magnitude
- * @param[in]  *pSrc points to the complex input vector
- * @param[out]  *pDst points to the real output vector
- * @param[in]  numSamples number of complex samples in the input vector
- * @return none.
- */
+   * @brief  Q31 complex magnitude
+   * @param[in]  *pSrc points to the complex input vector
+   * @param[out]  *pDst points to the real output vector
+   * @param[in]  numSamples number of complex samples in the input vector
+   * @return none.
+   */
 
 void arm_cmplx_mag_q31(q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q15 complex magnitude
- * @param[in]  *pSrc points to the complex input vector
- * @param[out]  *pDst points to the real output vector
- * @param[in]  numSamples number of complex samples in the input vector
- * @return none.
- */
+   * @brief  Q15 complex magnitude
+   * @param[in]  *pSrc points to the complex input vector
+   * @param[out]  *pDst points to the real output vector
+   * @param[in]  numSamples number of complex samples in the input vector
+   * @return none.
+   */
 
 void arm_cmplx_mag_q15(q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q15 complex dot product
- * @param[in]  *pSrcA points to the first input vector
- * @param[in]  *pSrcB points to the second input vector
- * @param[in]  numSamples number of complex samples in each vector
- * @param[out]  *realResult real part of the result returned here
- * @param[out]  *imagResult imaginary part of the result returned here
- * @return none.
- */
+   * @brief  Q15 complex dot product
+   * @param[in]  *pSrcA points to the first input vector
+   * @param[in]  *pSrcB points to the second input vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @param[out]  *realResult real part of the result returned here
+   * @param[out]  *imagResult imaginary part of the result returned here
+   * @return none.
+   */
 
-void arm_cmplx_dot_prod_q15(
-    q15_t* pSrcA, q15_t* pSrcB, uint32_t numSamples, q31_t* realResult, q31_t* imagResult);
-
-/**
- * @brief  Q31 complex dot product
- * @param[in]  *pSrcA points to the first input vector
- * @param[in]  *pSrcB points to the second input vector
- * @param[in]  numSamples number of complex samples in each vector
- * @param[out]  *realResult real part of the result returned here
- * @param[out]  *imagResult imaginary part of the result returned here
- * @return none.
- */
-
-void arm_cmplx_dot_prod_q31(
-    q31_t* pSrcA, q31_t* pSrcB, uint32_t numSamples, q63_t* realResult, q63_t* imagResult);
+void arm_cmplx_dot_prod_q15(q15_t* pSrcA, q15_t* pSrcB, uint32_t numSamples, q31_t* realResult,
+                            q31_t* imagResult);
 
 /**
- * @brief  Floating-point complex dot product
- * @param[in]  *pSrcA points to the first input vector
- * @param[in]  *pSrcB points to the second input vector
- * @param[in]  numSamples number of complex samples in each vector
- * @param[out]  *realResult real part of the result returned here
- * @param[out]  *imagResult imaginary part of the result returned here
- * @return none.
- */
+   * @brief  Q31 complex dot product
+   * @param[in]  *pSrcA points to the first input vector
+   * @param[in]  *pSrcB points to the second input vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @param[out]  *realResult real part of the result returned here
+   * @param[out]  *imagResult imaginary part of the result returned here
+   * @return none.
+   */
+
+void arm_cmplx_dot_prod_q31(q31_t* pSrcA, q31_t* pSrcB, uint32_t numSamples, q63_t* realResult,
+                            q63_t* imagResult);
+
+/**
+   * @brief  Floating-point complex dot product
+   * @param[in]  *pSrcA points to the first input vector
+   * @param[in]  *pSrcB points to the second input vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @param[out]  *realResult real part of the result returned here
+   * @param[out]  *imagResult imaginary part of the result returned here
+   * @return none.
+   */
 
 void arm_cmplx_dot_prod_f32(float32_t* pSrcA, float32_t* pSrcB, uint32_t numSamples,
-    float32_t* realResult, float32_t* imagResult);
+                            float32_t* realResult, float32_t* imagResult);
 
 /**
- * @brief  Q15 complex-by-real multiplication
- * @param[in]  *pSrcCmplx points to the complex input vector
- * @param[in]  *pSrcReal points to the real input vector
- * @param[out]  *pCmplxDst points to the complex output vector
- * @param[in]  numSamples number of samples in each vector
- * @return none.
- */
+   * @brief  Q15 complex-by-real multiplication
+   * @param[in]  *pSrcCmplx points to the complex input vector
+   * @param[in]  *pSrcReal points to the real input vector
+   * @param[out]  *pCmplxDst points to the complex output vector
+   * @param[in]  numSamples number of samples in each vector
+   * @return none.
+   */
 
-void arm_cmplx_mult_real_q15(
-    q15_t* pSrcCmplx, q15_t* pSrcReal, q15_t* pCmplxDst, uint32_t numSamples);
-
-/**
- * @brief  Q31 complex-by-real multiplication
- * @param[in]  *pSrcCmplx points to the complex input vector
- * @param[in]  *pSrcReal points to the real input vector
- * @param[out]  *pCmplxDst points to the complex output vector
- * @param[in]  numSamples number of samples in each vector
- * @return none.
- */
-
-void arm_cmplx_mult_real_q31(
-    q31_t* pSrcCmplx, q31_t* pSrcReal, q31_t* pCmplxDst, uint32_t numSamples);
+void arm_cmplx_mult_real_q15(q15_t* pSrcCmplx, q15_t* pSrcReal, q15_t* pCmplxDst,
+                             uint32_t numSamples);
 
 /**
- * @brief  Floating-point complex-by-real multiplication
- * @param[in]  *pSrcCmplx points to the complex input vector
- * @param[in]  *pSrcReal points to the real input vector
- * @param[out]  *pCmplxDst points to the complex output vector
- * @param[in]  numSamples number of samples in each vector
- * @return none.
- */
+   * @brief  Q31 complex-by-real multiplication
+   * @param[in]  *pSrcCmplx points to the complex input vector
+   * @param[in]  *pSrcReal points to the real input vector
+   * @param[out]  *pCmplxDst points to the complex output vector
+   * @param[in]  numSamples number of samples in each vector
+   * @return none.
+   */
 
-void arm_cmplx_mult_real_f32(
-    float32_t* pSrcCmplx, float32_t* pSrcReal, float32_t* pCmplxDst, uint32_t numSamples);
+void arm_cmplx_mult_real_q31(q31_t* pSrcCmplx, q31_t* pSrcReal, q31_t* pCmplxDst,
+                             uint32_t numSamples);
 
 /**
- * @brief  Minimum value of a Q7 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *result is output pointer
- * @param[in]  index is the array index of the minimum value in the input buffer.
- * @return none.
- */
+   * @brief  Floating-point complex-by-real multiplication
+   * @param[in]  *pSrcCmplx points to the complex input vector
+   * @param[in]  *pSrcReal points to the real input vector
+   * @param[out]  *pCmplxDst points to the complex output vector
+   * @param[in]  numSamples number of samples in each vector
+   * @return none.
+   */
+
+void arm_cmplx_mult_real_f32(float32_t* pSrcCmplx, float32_t* pSrcReal, float32_t* pCmplxDst,
+                             uint32_t numSamples);
+
+/**
+   * @brief  Minimum value of a Q7 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *result is output pointer
+   * @param[in]  index is the array index of the minimum value in the input buffer.
+   * @return none.
+   */
 
 void arm_min_q7(q7_t* pSrc, uint32_t blockSize, q7_t* result, uint32_t* index);
 
 /**
- * @brief  Minimum value of a Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output pointer
- * @param[in]  *pIndex is the array index of the minimum value in the input buffer.
- * @return none.
- */
+   * @brief  Minimum value of a Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output pointer
+   * @param[in]  *pIndex is the array index of the minimum value in the input buffer.
+   * @return none.
+   */
 
 void arm_min_q15(q15_t* pSrc, uint32_t blockSize, q15_t* pResult, uint32_t* pIndex);
 
 /**
- * @brief  Minimum value of a Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output pointer
- * @param[out]  *pIndex is the array index of the minimum value in the input buffer.
- * @return none.
- */
+   * @brief  Minimum value of a Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output pointer
+   * @param[out]  *pIndex is the array index of the minimum value in the input buffer.
+   * @return none.
+   */
 void arm_min_q31(q31_t* pSrc, uint32_t blockSize, q31_t* pResult, uint32_t* pIndex);
 
 /**
- * @brief  Minimum value of a floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[in]  blockSize is the number of samples to process
- * @param[out]  *pResult is output pointer
- * @param[out]  *pIndex is the array index of the minimum value in the input buffer.
- * @return none.
- */
+   * @brief  Minimum value of a floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @param[out]  *pResult is output pointer
+   * @param[out]  *pIndex is the array index of the minimum value in the input buffer.
+   * @return none.
+   */
 
 void arm_min_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult, uint32_t* pIndex);
 
@@ -5507,182 +5444,183 @@ void arm_max_q31(q31_t* pSrc, uint32_t blockSize, q31_t* pResult, uint32_t* pInd
 void arm_max_f32(float32_t* pSrc, uint32_t blockSize, float32_t* pResult, uint32_t* pIndex);
 
 /**
- * @brief  Q15 complex-by-complex multiplication
- * @param[in]  *pSrcA points to the first input vector
- * @param[in]  *pSrcB points to the second input vector
- * @param[out]  *pDst  points to the output vector
- * @param[in]  numSamples number of complex samples in each vector
- * @return none.
- */
+   * @brief  Q15 complex-by-complex multiplication
+   * @param[in]  *pSrcA points to the first input vector
+   * @param[in]  *pSrcB points to the second input vector
+   * @param[out]  *pDst  points to the output vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @return none.
+   */
 
 void arm_cmplx_mult_cmplx_q15(q15_t* pSrcA, q15_t* pSrcB, q15_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Q31 complex-by-complex multiplication
- * @param[in]  *pSrcA points to the first input vector
- * @param[in]  *pSrcB points to the second input vector
- * @param[out]  *pDst  points to the output vector
- * @param[in]  numSamples number of complex samples in each vector
- * @return none.
- */
+   * @brief  Q31 complex-by-complex multiplication
+   * @param[in]  *pSrcA points to the first input vector
+   * @param[in]  *pSrcB points to the second input vector
+   * @param[out]  *pDst  points to the output vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @return none.
+   */
 
 void arm_cmplx_mult_cmplx_q31(q31_t* pSrcA, q31_t* pSrcB, q31_t* pDst, uint32_t numSamples);
 
 /**
- * @brief  Floating-point complex-by-complex multiplication
- * @param[in]  *pSrcA points to the first input vector
- * @param[in]  *pSrcB points to the second input vector
- * @param[out]  *pDst  points to the output vector
- * @param[in]  numSamples number of complex samples in each vector
- * @return none.
- */
+   * @brief  Floating-point complex-by-complex multiplication
+   * @param[in]  *pSrcA points to the first input vector
+   * @param[in]  *pSrcB points to the second input vector
+   * @param[out]  *pDst  points to the output vector
+   * @param[in]  numSamples number of complex samples in each vector
+   * @return none.
+   */
 
-void arm_cmplx_mult_cmplx_f32(
-    float32_t* pSrcA, float32_t* pSrcB, float32_t* pDst, uint32_t numSamples);
+void arm_cmplx_mult_cmplx_f32(float32_t* pSrcA, float32_t* pSrcB, float32_t* pDst,
+                              uint32_t numSamples);
 
 /**
- * @brief Converts the elements of the floating-point vector to Q31 vector.
- * @param[in]       *pSrc points to the floating-point input vector
- * @param[out]      *pDst points to the Q31 output vector
- * @param[in]       blockSize length of the input vector
- * @return none.
- */
+   * @brief Converts the elements of the floating-point vector to Q31 vector.
+   * @param[in]       *pSrc points to the floating-point input vector
+   * @param[out]      *pDst points to the Q31 output vector
+   * @param[in]       blockSize length of the input vector
+   * @return none.
+   */
 void arm_float_to_q31(float32_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Converts the elements of the floating-point vector to Q15 vector.
- * @param[in]       *pSrc points to the floating-point input vector
- * @param[out]      *pDst points to the Q15 output vector
- * @param[in]       blockSize length of the input vector
- * @return          none
- */
+   * @brief Converts the elements of the floating-point vector to Q15 vector.
+   * @param[in]       *pSrc points to the floating-point input vector
+   * @param[out]      *pDst points to the Q15 output vector
+   * @param[in]       blockSize length of the input vector
+   * @return          none
+   */
 void arm_float_to_q15(float32_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief Converts the elements of the floating-point vector to Q7 vector.
- * @param[in]       *pSrc points to the floating-point input vector
- * @param[out]      *pDst points to the Q7 output vector
- * @param[in]       blockSize length of the input vector
- * @return          none
- */
+   * @brief Converts the elements of the floating-point vector to Q7 vector.
+   * @param[in]       *pSrc points to the floating-point input vector
+   * @param[out]      *pDst points to the Q7 output vector
+   * @param[in]       blockSize length of the input vector
+   * @return          none
+   */
 void arm_float_to_q7(float32_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Converts the elements of the Q31 vector to Q15 vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q31 vector to Q15 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q31_to_q15(q31_t* pSrc, q15_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Converts the elements of the Q31 vector to Q7 vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q31 vector to Q7 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q31_to_q7(q31_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Converts the elements of the Q15 vector to floating-point vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q15 vector to floating-point vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q15_to_float(q15_t* pSrc, float32_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Converts the elements of the Q15 vector to Q31 vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q15 vector to Q31 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q15_to_q31(q15_t* pSrc, q31_t* pDst, uint32_t blockSize);
 
 /**
- * @brief  Converts the elements of the Q15 vector to Q7 vector.
- * @param[in]  *pSrc is input pointer
- * @param[out]  *pDst is output pointer
- * @param[in]  blockSize is the number of samples to process
- * @return none.
- */
+   * @brief  Converts the elements of the Q15 vector to Q7 vector.
+   * @param[in]  *pSrc is input pointer
+   * @param[out]  *pDst is output pointer
+   * @param[in]  blockSize is the number of samples to process
+   * @return none.
+   */
 void arm_q15_to_q7(q15_t* pSrc, q7_t* pDst, uint32_t blockSize);
 
 /**
- * @ingroup groupInterpolation
- */
+   * @ingroup groupInterpolation
+   */
 
 /**
- * @defgroup BilinearInterpolate Bilinear Interpolation
- *
- * Bilinear interpolation is an extension of linear interpolation applied to a two dimensional grid.
- * The underlying function <code>f(x, y)</code> is sampled on a regular grid and the interpolation
- * process determines values between the grid points. Bilinear interpolation is equivalent to two
- * step linear interpolation, first in the x-dimension and then in the y-dimension. Bilinear
- * interpolation is often used in image processing to rescale images. The CMSIS DSP library provides
- * bilinear interpolation functions for Q7, Q15, Q31, and floating-point data types.
- *
- * <b>Algorithm</b>
- * \par
- * The instance structure used by the bilinear interpolation functions describes a two dimensional
- * data table. For floating-point, the instance structure is defined as: <pre> typedef struct
- *   {
- *     uint16_t numRows;
- *     uint16_t numCols;
- *     float32_t *pData;
- * } arm_bilinear_interp_instance_f32;
- * </pre>
- *
- * \par
- * where <code>numRows</code> specifies the number of rows in the table;
- * <code>numCols</code> specifies the number of columns in the table;
- * and <code>pData</code> points to an array of size <code>numRows*numCols</code> values.
- * The data table <code>pTable</code> is organized in row order and the supplied data values fall on
- * integer indexes. That is, table element (x,y) is located at <code>pTable[x + y*numCols]</code>
- * where x and y are integers.
- *
- * \par
- * Let <code>(x, y)</code> specify the desired interpolation point.  Then define:
- * <pre>
- *     XF = floor(x)
- *     YF = floor(y)
- * </pre>
- * \par
- * The interpolated output point is computed as:
- * <pre>
- *  f(x, y) = f(XF, YF) * (1-(x-XF)) * (1-(y-YF))
- *           + f(XF+1, YF) * (x-XF)*(1-(y-YF))
- *           + f(XF, YF+1) * (1-(x-XF))*(y-YF)
- *           + f(XF+1, YF+1) * (x-XF)*(y-YF)
- * </pre>
- * Note that the coordinates (x, y) contain integer and fractional components.
- * The integer components specify which portion of the table to use while the
- * fractional components control the interpolation processor.
- *
- * \par
- * if (x,y) are outside of the table boundary, Bilinear interpolation returns zero output.
- */
+   * @defgroup BilinearInterpolate Bilinear Interpolation
+   *
+   * Bilinear interpolation is an extension of linear interpolation applied to a two dimensional grid.
+   * The underlying function <code>f(x, y)</code> is sampled on a regular grid and the interpolation process
+   * determines values between the grid points.
+   * Bilinear interpolation is equivalent to two step linear interpolation, first in the x-dimension and then in the y-dimension.
+   * Bilinear interpolation is often used in image processing to rescale images.
+   * The CMSIS DSP library provides bilinear interpolation functions for Q7, Q15, Q31, and floating-point data types.
+   *
+   * <b>Algorithm</b>
+   * \par
+   * The instance structure used by the bilinear interpolation functions describes a two dimensional data table.
+   * For floating-point, the instance structure is defined as:
+   * <pre>
+   *   typedef struct
+   *   {
+   *     uint16_t numRows;
+   *     uint16_t numCols;
+   *     float32_t *pData;
+   * } arm_bilinear_interp_instance_f32;
+   * </pre>
+   *
+   * \par
+   * where <code>numRows</code> specifies the number of rows in the table;
+   * <code>numCols</code> specifies the number of columns in the table;
+   * and <code>pData</code> points to an array of size <code>numRows*numCols</code> values.
+   * The data table <code>pTable</code> is organized in row order and the supplied data values fall on integer indexes.
+   * That is, table element (x,y) is located at <code>pTable[x + y*numCols]</code> where x and y are integers.
+   *
+   * \par
+   * Let <code>(x, y)</code> specify the desired interpolation point.  Then define:
+   * <pre>
+   *     XF = floor(x)
+   *     YF = floor(y)
+   * </pre>
+   * \par
+   * The interpolated output point is computed as:
+   * <pre>
+   *  f(x, y) = f(XF, YF) * (1-(x-XF)) * (1-(y-YF))
+   *           + f(XF+1, YF) * (x-XF)*(1-(y-YF))
+   *           + f(XF, YF+1) * (1-(x-XF))*(y-YF)
+   *           + f(XF+1, YF+1) * (x-XF)*(y-YF)
+   * </pre>
+   * Note that the coordinates (x, y) contain integer and fractional components.
+   * The integer components specify which portion of the table to use while the
+   * fractional components control the interpolation processor.
+   *
+   * \par
+   * if (x,y) are outside of the table boundary, Bilinear interpolation returns zero output.
+   */
 
 /**
- * @addtogroup BilinearInterpolate
- * @{
- */
+   * @addtogroup BilinearInterpolate
+   * @{
+   */
 
 /**
- *
- * @brief  Floating-point bilinear interpolation.
- * @param[in,out] *S points to an instance of the interpolation structure.
- * @param[in] X interpolation coordinate.
- * @param[in] Y interpolation coordinate.
- * @return out interpolated value.
- */
+  *
+  * @brief  Floating-point bilinear interpolation.
+  * @param[in,out] *S points to an instance of the interpolation structure.
+  * @param[in] X interpolation coordinate.
+  * @param[in] Y interpolation coordinate.
+  * @return out interpolated value.
+  */
 
-static __INLINE float32_t arm_bilinear_interp_f32(
-    const arm_bilinear_interp_instance_f32* S, float32_t X, float32_t Y)
+static __INLINE float32_t arm_bilinear_interp_f32(const arm_bilinear_interp_instance_f32* S,
+                                                  float32_t X, float32_t Y)
 {
     float32_t out;
     float32_t f00, f01, f10, f11;
@@ -5734,22 +5672,22 @@ static __INLINE float32_t arm_bilinear_interp_f32(
 }
 
 /**
- *
- * @brief  Q31 bilinear interpolation.
- * @param[in,out] *S points to an instance of the interpolation structure.
- * @param[in] X interpolation coordinate in 12.20 format.
- * @param[in] Y interpolation coordinate in 12.20 format.
- * @return out interpolated value.
- */
+  *
+  * @brief  Q31 bilinear interpolation.
+  * @param[in,out] *S points to an instance of the interpolation structure.
+  * @param[in] X interpolation coordinate in 12.20 format.
+  * @param[in] Y interpolation coordinate in 12.20 format.
+  * @return out interpolated value.
+  */
 
 static __INLINE q31_t arm_bilinear_interp_q31(arm_bilinear_interp_instance_q31* S, q31_t X, q31_t Y)
 {
-    q31_t out; /* Temporary output */
-    q31_t acc = 0; /* output */
-    q31_t xfract, yfract; /* X, Y fractional parts */
-    q31_t x1, x2, y1, y2; /* Nearest output values */
-    int32_t rI, cI; /* Row and column indices */
-    q31_t* pYData = S->pData; /* pointer to output table values */
+    q31_t out;                   /* Temporary output */
+    q31_t acc = 0;               /* output */
+    q31_t xfract, yfract;        /* X, Y fractional parts */
+    q31_t x1, x2, y1, y2;        /* Nearest output values */
+    int32_t rI, cI;              /* Row and column indices */
+    q31_t* pYData  = S->pData;   /* pointer to output table values */
     uint32_t nCols = S->numCols; /* num of rows */
 
     /* Input is in 12.20 format */
@@ -5805,21 +5743,21 @@ static __INLINE q31_t arm_bilinear_interp_q31(arm_bilinear_interp_instance_q31* 
 }
 
 /**
- * @brief  Q15 bilinear interpolation.
- * @param[in,out] *S points to an instance of the interpolation structure.
- * @param[in] X interpolation coordinate in 12.20 format.
- * @param[in] Y interpolation coordinate in 12.20 format.
- * @return out interpolated value.
- */
+  * @brief  Q15 bilinear interpolation.
+  * @param[in,out] *S points to an instance of the interpolation structure.
+  * @param[in] X interpolation coordinate in 12.20 format.
+  * @param[in] Y interpolation coordinate in 12.20 format.
+  * @return out interpolated value.
+  */
 
 static __INLINE q15_t arm_bilinear_interp_q15(arm_bilinear_interp_instance_q15* S, q31_t X, q31_t Y)
 {
-    q63_t acc = 0; /* output */
-    q31_t out; /* Temporary output */
-    q15_t x1, x2, y1, y2; /* Nearest output values */
-    q31_t xfract, yfract; /* X, Y fractional parts */
-    int32_t rI, cI; /* Row and column indices */
-    q15_t* pYData = S->pData; /* pointer to output table values */
+    q63_t acc = 0;               /* output */
+    q31_t out;                   /* Temporary output */
+    q15_t x1, x2, y1, y2;        /* Nearest output values */
+    q31_t xfract, yfract;        /* X, Y fractional parts */
+    int32_t rI, cI;              /* Row and column indices */
+    q15_t* pYData  = S->pData;   /* pointer to output table values */
     uint32_t nCols = S->numCols; /* num of rows */
 
     /* Input is in 12.20 format */
@@ -5879,21 +5817,21 @@ static __INLINE q15_t arm_bilinear_interp_q15(arm_bilinear_interp_instance_q15* 
 }
 
 /**
- * @brief  Q7 bilinear interpolation.
- * @param[in,out] *S points to an instance of the interpolation structure.
- * @param[in] X interpolation coordinate in 12.20 format.
- * @param[in] Y interpolation coordinate in 12.20 format.
- * @return out interpolated value.
- */
+  * @brief  Q7 bilinear interpolation.
+  * @param[in,out] *S points to an instance of the interpolation structure.
+  * @param[in] X interpolation coordinate in 12.20 format.
+  * @param[in] Y interpolation coordinate in 12.20 format.
+  * @return out interpolated value.
+  */
 
 static __INLINE q7_t arm_bilinear_interp_q7(arm_bilinear_interp_instance_q7* S, q31_t X, q31_t Y)
 {
-    q63_t acc = 0; /* output */
-    q31_t out; /* Temporary output */
-    q31_t xfract, yfract; /* X, Y fractional parts */
-    q7_t x1, x2, y1, y2; /* Nearest output values */
-    int32_t rI, cI; /* Row and column indices */
-    q7_t* pYData = S->pData; /* pointer to output table values */
+    q63_t acc = 0;               /* output */
+    q31_t out;                   /* Temporary output */
+    q31_t xfract, yfract;        /* X, Y fractional parts */
+    q7_t x1, x2, y1, y2;         /* Nearest output values */
+    int32_t rI, cI;              /* Row and column indices */
+    q7_t* pYData   = S->pData;   /* pointer to output table values */
     uint32_t nCols = S->numCols; /* num of rows */
 
     /* Input is in 12.20 format */
@@ -5949,64 +5887,64 @@ static __INLINE q7_t arm_bilinear_interp_q7(arm_bilinear_interp_instance_q7* S, 
 }
 
 /**
- * @} end of BilinearInterpolate group
- */
+   * @} end of BilinearInterpolate group
+   */
 
 #if defined(__CC_ARM) //Keil \
                       //SMMLAR
-#define multAcc_32x32_keep32_R(a, x, y)                                                            \
+#define multAcc_32x32_keep32_R(a, x, y) \
     a = (q31_t)(((((q63_t)a) << 32) + ((q63_t)x * y) + 0x80000000LL) >> 32)
 
-// SMMLSR
-#define multSub_32x32_keep32_R(a, x, y)                                                            \
+//SMMLSR
+#define multSub_32x32_keep32_R(a, x, y) \
     a = (q31_t)(((((q63_t)a) << 32) - ((q63_t)x * y) + 0x80000000LL) >> 32)
 
-// SMMULR
+//SMMULR
 #define mult_32x32_keep32_R(a, x, y) a = (q31_t)(((q63_t)x * y + 0x80000000LL) >> 32)
 
-// Enter low optimization region - place directly above function definition
+//Enter low optimization region - place directly above function definition
 #define LOW_OPTIMIZATION_ENTER _Pragma("push") _Pragma("O1")
 
-// Exit low optimization region - place directly after end of function definition
+//Exit low optimization region - place directly after end of function definition
 #define LOW_OPTIMIZATION_EXIT _Pragma("pop")
 
-// Enter low optimization region - place directly above function definition
+//Enter low optimization region - place directly above function definition
 #define IAR_ONLY_LOW_OPTIMIZATION_ENTER
 
-// Exit low optimization region - place directly after end of function definition
+//Exit low optimization region - place directly after end of function definition
 #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
-#elif defined(__ICCARM__) // IAR
-// SMMLA
+#elif defined(__ICCARM__) //IAR
+//SMMLA
 #define multAcc_32x32_keep32_R(a, x, y) a += (q31_t)(((q63_t)x * y) >> 32)
 
-// SMMLS
+//SMMLS
 #define multSub_32x32_keep32_R(a, x, y) a -= (q31_t)(((q63_t)x * y) >> 32)
 
-// SMMUL
-#define mult_32x32_keep32_R(a, x, y) a = (q31_t)(((q63_t)x * y) >> 32)
+//SMMUL
+#define mult_32x32_keep32_R(a, x, y)    a = (q31_t)(((q63_t)x * y) >> 32)
 
-// Enter low optimization region - place directly above function definition
-#define LOW_OPTIMIZATION_ENTER _Pragma("optimize=low")
+//Enter low optimization region - place directly above function definition
+#define LOW_OPTIMIZATION_ENTER          _Pragma("optimize=low")
 
-// Exit low optimization region - place directly after end of function definition
+//Exit low optimization region - place directly after end of function definition
 #define LOW_OPTIMIZATION_EXIT
 
-// Enter low optimization region - place directly above function definition
+//Enter low optimization region - place directly above function definition
 #define IAR_ONLY_LOW_OPTIMIZATION_ENTER _Pragma("optimize=low")
 
-// Exit low optimization region - place directly after end of function definition
+//Exit low optimization region - place directly after end of function definition
 #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
 #elif defined(__GNUC__)
-// SMMLA
+//SMMLA
 #define multAcc_32x32_keep32_R(a, x, y) a += (q31_t)(((q63_t)x * y) >> 32)
 
-// SMMLS
+//SMMLS
 #define multSub_32x32_keep32_R(a, x, y) a -= (q31_t)(((q63_t)x * y) >> 32)
 
-// SMMUL
-#define mult_32x32_keep32_R(a, x, y) a = (q31_t)(((q63_t)x * y) >> 32)
+//SMMUL
+#define mult_32x32_keep32_R(a, x, y)    a = (q31_t)(((q63_t)x * y) >> 32)
 
 #define LOW_OPTIMIZATION_ENTER __attribute__((optimize("-O1")))
 

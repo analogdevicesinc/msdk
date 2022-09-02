@@ -34,60 +34,56 @@
  * @file    main_riscv.c
  * @brief   MNIST streaming example with the OV7692.
  *
- * @details This example uses MNIST dataset. UART1 is used to stream out the image captured from the
- * camera. The image is prepended with a header that is interpreted by the grab_image.py python
- * script.  The data from this example through the UART is in a binary format. Instructions: 1) Load
- * and execute this example. The example will initialize the camera and start capturing binary
- * output of camera frame data on PB1 press. 2) To display image run 'sudo python3 grab_image.py
- * /dev/ttyUSB0 115200' Substitute the /dev/ttyUSB0 string for the serial port on your system. The
- * python program will read in the binary data from this example and output a png image.
+ * @details This example uses MNIST dataset. UART1 is used to stream out the image captured from the camera.
+ *          The image is prepended with a header that is interpreted by the grab_image.py
+ *          python script.  The data from this example through the UART is in a binary format.
+ *          Instructions: 1) Load and execute this example. The example will initialize the camera
+ *                        and start capturing binary output of camera frame data on PB1 press.
+ *                        2) To display image run 'sudo python3 grab_image.py /dev/ttyUSB0 115200'
+ *                           Substitute the /dev/ttyUSB0 string for the serial port on your system.
+ *                           The python program will read in the binary data from this example and
+ *                           output a png image.
  */
 
 // mnist-stream_0
-// Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir demos --prefix
-// mnist-stream_0 --checkpoint-file trained/ai85-mnist.pth.tar --config-file
-// networks/mnist-chw-ai85.yaml --device MAX78000 --compact-data --mexpress --softmax
-// --display-checkpoint --riscv --riscv-flash --riscv-cache --riscv-debug --fast-fifo
-// --streaming-layer 0
+// Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir demos --prefix mnist-stream_0 --checkpoint-file trained/ai85-mnist.pth.tar --config-file networks/mnist-chw-ai85.yaml --device MAX78000 --compact-data --mexpress --softmax --display-checkpoint --riscv --riscv-flash --riscv-cache --riscv-debug --fast-fifo --streaming-layer 0
 
 // Configuring 5 layers:
-// Layer 0: 1x28x28 (streaming CHW/big data), no pooling, conv2d with kernel size 3x3, stride 1/1,
-// pad 1/1, 60x28x28 output Layer 1: 60x28x28 (HWC/little data), 2x2 max pool with stride 2/2,
-// conv2d with kernel size 3x3, stride 1/1, pad 2/2, 60x16x16 output Layer 2: 60x16x16 (HWC/little
-// data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 56x8x8
-// output Layer 3: 56x8x8 (HWC/little data), 2x2 avg pool with stride 2/2, conv2d with kernel size
-// 3x3, stride 1/1, pad 1/1, 12x4x4 output Layer 4: 12x4x4 (flattened HWC/little data), no pooling,
-// conv2d with kernel size 1x1, stride 1/1, pad 0/0, 10x1x1 output
+// Layer 0: 1x28x28 (streaming CHW/big data), no pooling, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 60x28x28 output
+// Layer 1: 60x28x28 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 2/2, 60x16x16 output
+// Layer 2: 60x16x16 (HWC/little data), 2x2 max pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 56x8x8 output
+// Layer 3: 56x8x8 (HWC/little data), 2x2 avg pool with stride 2/2, conv2d with kernel size 3x3, stride 1/1, pad 1/1, 12x4x4 output
+// Layer 4: 12x4x4 (flattened HWC/little data), no pooling, conv2d with kernel size 1x1, stride 1/1, pad 0/0, 10x1x1 output
 
-#include "board.h"
-#include "camera.h"
-#include "cameraif.h"
-#include "cameraif_regs.h"
-#include "fcr_regs.h"
-#include "gcfr_regs.h"
-#include "icc.h"
-#include "led.h"
-#include "mxc_delay.h"
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "pb.h"
-#include "sampledata.h"
+#include "mxc_delay.h"
+#include "gcfr_regs.h"
+#include "fcr_regs.h"
+#include "icc.h"
+#include "led.h"
 #include "tmr.h"
 #include "tornadocnn.h"
-#include "uart.h"
-#include "utils.h"
 #include "weights.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "sampledata.h"
+#include "pb.h"
+#include "camera.h"
+#include "utils.h"
+#include "cameraif_regs.h"
+#include "cameraif.h"
+#include "uart.h"
+#include "board.h"
 
 // Comment out USE_SAMPLEDATA to use Camera module
 //#define USE_SAMPLEDATA
 
 #define IMAGE_SIZE_X (28)
 #define IMAGE_SIZE_Y (28)
-#define CAMERA_FREQ (10 * 1000 * 1000)
+#define CAMERA_FREQ  (10 * 1000 * 1000)
 
 uint32_t camera_sampledata[196];
 uint32_t cnn_time; // Stopwatch
@@ -96,19 +92,23 @@ static uint8_t* rxdata = NULL;
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1) { }
+    while (1)
+        ;
 }
 
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12) { }
+    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
+        ;
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
 }
 
 void memcpy32(uint32_t* dst, const uint32_t* src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 #ifdef USE_SAMPLEDATA
@@ -126,23 +126,23 @@ void load_input(void)
 #endif
 
     for (i = 0; i < 196; i++) {
-        while (((*((volatile uint32_t*)0x400c0404) & 2)) != 0) { }
-        // Wait for FIFO
+        while (((*((volatile uint32_t*)0x400c0404) & 2)) != 0)
+            ;                                       // Wait for FIFO
         *((volatile uint32_t*)0x400c0410) = *in0++; // Write FIFO 0
     }
 }
 
 // Kernels:
-static const uint32_t kernels_0[] = KERNELS_0;
-static const uint32_t kernels_1[] = KERNELS_1;
-static const uint32_t kernels_2[] = KERNELS_2;
-static const uint32_t kernels_3[] = KERNELS_3;
-static const uint32_t kernels_4[] = KERNELS_4;
-static const uint32_t kernels_5[] = KERNELS_5;
-static const uint32_t kernels_6[] = KERNELS_6;
-static const uint32_t kernels_7[] = KERNELS_7;
-static const uint32_t kernels_8[] = KERNELS_8;
-static const uint32_t kernels_9[] = KERNELS_9;
+static const uint32_t kernels_0[]  = KERNELS_0;
+static const uint32_t kernels_1[]  = KERNELS_1;
+static const uint32_t kernels_2[]  = KERNELS_2;
+static const uint32_t kernels_3[]  = KERNELS_3;
+static const uint32_t kernels_4[]  = KERNELS_4;
+static const uint32_t kernels_5[]  = KERNELS_5;
+static const uint32_t kernels_6[]  = KERNELS_6;
+static const uint32_t kernels_7[]  = KERNELS_7;
+static const uint32_t kernels_8[]  = KERNELS_8;
+static const uint32_t kernels_9[]  = KERNELS_9;
 static const uint32_t kernels_10[] = KERNELS_10;
 static const uint32_t kernels_11[] = KERNELS_11;
 static const uint32_t kernels_12[] = KERNELS_12;
@@ -334,7 +334,9 @@ static const uint8_t bias_0[] = BIAS_0;
 
 void memcpy_8to32(uint32_t* dst, const uint8_t* src, size_t n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 void load_bias(void)
@@ -654,7 +656,7 @@ int cnn_load(void)
     *((volatile uint32_t*)0x50d00000) = 0x0018c809; // Enable group 3
 
 #ifdef USE_SAMPLEDATA
-    CNN_START; // Allow capture of processing time
+    CNN_START;                                      // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x00d8c809; // Master enable group 0
 
     load_input(); // Load data input
@@ -697,17 +699,17 @@ void cnn_unload(uint32_t* out_buf)
 {
     volatile uint32_t* addr;
 
-    addr = (volatile uint32_t*)0x50401000;
+    addr       = (volatile uint32_t*)0x50401000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x50409000;
+    addr       = (volatile uint32_t*)0x50409000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
-    addr = (volatile uint32_t*)0x50411000;
+    addr       = (volatile uint32_t*)0x50411000;
     *out_buf++ = *addr++;
     *out_buf++ = *addr++;
 }
@@ -729,7 +731,7 @@ int softmax_layer(void)
 void start_streaming(void)
 {
     unsigned int fifocnt = 0, i, word_cnt = 0;
-    uint32_t data, flags, rx_data_index = 0;
+    uint32_t data, flags, rx_data_index   = 0;
     uint32_t imgLen = IMAGE_SIZE_X * IMAGE_SIZE_Y * 3;
 
     uint8_t* rxbuf = rxdata;
@@ -743,7 +745,7 @@ void start_streaming(void)
     MXC_PCIF_SetThreshold(8);
     camera_start_capture_image();
 
-    CNN_START; // Allow capture of processing time
+    CNN_START;                                      // Allow capture of processing time
     *((volatile uint32_t*)0x50100000) = 0x00d8c809; // Master enable group 0
 
     while (!(MXC_PCIF->int_fl & MXC_F_CAMERAIF_INT_FL_FIFO_THRESH)) {
@@ -752,23 +754,23 @@ void start_streaming(void)
         if (!(MXC_PCIF->int_fl & MXC_F_CAMERAIF_INT_FL_IMG_DONE)) {
             if (MXC_PCIF->int_fl & MXC_F_CAMERAIF_INT_FL_FIFO_THRESH) {
                 for (i = 0; i < 8; i++) {
-                    data = MXC_PCIF->fifo_data;
+                    data                      = MXC_PCIF->fifo_data;
                     rxdata[rx_data_index + 0] = data >> 0;
                     rxdata[rx_data_index + 1] = data >> 8;
                     rxdata[rx_data_index + 2] = data >> 16;
-                    *ptr8 = (~(((data & 0xff) + (data >> 8 & 0xff) + (data >> 16)) / 3))
-                        - 128; // Convert rgb to monochrome signed data
+                    *ptr8 = (~(((data & 0xff) + (data >> 8 & 0xff) + (data >> 16)) / 3)) -
+                            128; // Convert rgb to monochrome signed data
                     ptr8++;
                     word_cnt++;
                     rx_data_index += 3;
                 }
-                flags = MXC_PCIF->int_fl;
+                flags            = MXC_PCIF->int_fl;
                 MXC_PCIF->int_fl = flags; // clear flags
             }
         } else {
             while (MXC_PCIF->int_fl & MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY) {
-                data = MXC_PCIF->fifo_data;
-                MXC_PCIF->int_fl = MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY;
+                data                      = MXC_PCIF->fifo_data;
+                MXC_PCIF->int_fl          = MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY;
                 rxdata[rx_data_index + 0] = data >> 0;
                 rxdata[rx_data_index + 1] = data >> 8;
                 rxdata[rx_data_index + 2] = data >> 16;
@@ -779,14 +781,14 @@ void start_streaming(void)
             }
         }
         // Load input data
-        if ((((*((volatile uint32_t*)0x400c0404) & 2)) == 0)
-            && (word_cnt >= (fifocnt * 4 + 4))) { // Wait for FIFO
+        if ((((*((volatile uint32_t*)0x400c0404) & 2)) == 0) &&
+            (word_cnt >= (fifocnt * 4 + 4))) {                              // Wait for FIFO
             *((volatile uint32_t*)0x400c0410) = camera_sampledata[fifocnt]; // Write FIFO
             fifocnt++;
         }
     }
 
-    flags = MXC_PCIF->int_fl;
+    flags            = MXC_PCIF->int_fl;
     MXC_PCIF->int_fl = flags;
 
     printf("Image captured.\n");
@@ -799,7 +801,7 @@ int main(void)
 {
     int i;
     int digs, tens;
-    Debug_Init(); // Set up RISCV JTAG
+    Debug_Init();             // Set up RISCV JTAG
     MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
     // Reset all domains, restore power to CNN
@@ -819,7 +821,8 @@ int main(void)
 #ifdef BOARD_FTHR_REVA
     if (Camera_Power(POWER_ON) != E_NO_ERROR) {
         printf("Failed to turn on camera.\n");
-        while (1) { }
+        while (1)
+            ;
     }
 #endif
 
@@ -849,7 +852,7 @@ int main(void)
         return ret;
     }
 
-    rxdata = (uint8_t*)malloc(IMAGE_SIZE_X * IMAGE_SIZE_Y * 3);
+    rxdata    = (uint8_t*)malloc(IMAGE_SIZE_X * IMAGE_SIZE_Y * 3);
     int frame = 0;
 #else
     memcpy32(camera_sampledata, input_0, 196);
@@ -857,7 +860,8 @@ int main(void)
 
     while (1) {
         printf("********** Press PB1 to capture an image **********\r\n");
-        while (!PB_Get(0)) { }
+        while (!PB_Get(0))
+            ;
         if (!cnn_load())
             fail();
 #ifndef USE_SAMPLEDATA
