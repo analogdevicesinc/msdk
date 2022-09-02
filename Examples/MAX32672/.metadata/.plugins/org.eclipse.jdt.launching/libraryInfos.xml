@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0" version="1.8.0_121">
+<bootpath>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\resources.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\rt.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\sunrsasign.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\jsse.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\jce.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\charsets.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\jfr.jar"/>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\ext"/>
+<entry path="C:\WINDOWS\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\Program Files\IAR Systems\Embedded Workbench 9.0\common\CMSIS-Manager\features\com.iar.cmsisagent.jre.win32_1.0.0\jre\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

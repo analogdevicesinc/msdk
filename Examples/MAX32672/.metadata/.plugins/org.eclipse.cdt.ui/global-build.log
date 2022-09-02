@@ -1,0 +1,955 @@
+11:30:41 **** Updating project ADC: project created
+Project updated successfully
+
+11:30:42 **** Updating project ADC: project refresh
+Project updated successfully
+
+11:30:43 **** Updating project ADC: project created
+Project updated successfully
+
+11:30:43 **** Updating project ADC: project refresh
+Project updated successfully
+
+13:27:00 **** Updating project AES: project created
+Project updated successfully
+
+13:27:00 **** Updating project AES: project refresh
+Project updated successfully
+
+13:27:01 **** Updating project AES: project created
+Project updated successfully
+
+13:27:01 **** Updating project AES: project refresh
+Project updated successfully
+
+13:30:53 **** Updating project Comparator: project created
+Project updated successfully
+
+13:30:54 **** Updating project Comparator: project refresh
+Project updated successfully
+
+13:30:54 **** Updating project Comparator: project created
+Project updated successfully
+
+13:30:54 **** Updating project Comparator: project refresh
+Project updated successfully
+
+13:32:06 **** Updating project CRC: project created
+Project updated successfully
+
+13:32:07 **** Updating project CRC: project refresh
+Project updated successfully
+
+13:32:07 **** Updating project CRC: project created
+Project updated successfully
+
+13:32:07 **** Updating project CRC: project refresh
+Project updated successfully
+
+13:34:01 **** Updating project DMA: project created
+Project updated successfully
+
+13:34:01 **** Updating project DMA: project refresh
+Project updated successfully
+
+13:34:01 **** Updating project DMA: project created
+Project updated successfully
+
+13:34:02 **** Updating project DMA: project refresh
+Project updated successfully
+
+13:35:08 **** Updating project Flash: project created
+Project updated successfully
+
+13:35:08 **** Updating project Flash: project refresh
+Project updated successfully
+
+13:35:08 **** Updating project Flash: project created
+Project updated successfully
+
+13:35:09 **** Updating project Flash: project refresh
+Project updated successfully
+
+13:39:43 **** Updating project GPIO: project created
+Project updated successfully
+
+13:39:44 **** Updating project GPIO: project refresh
+Project updated successfully
+
+13:39:44 **** Updating project GPIO: project created
+Project updated successfully
+
+13:39:44 **** Updating project GPIO: project refresh
+Project updated successfully
+
+13:40:28 **** Updating project Hello_World: project created
+Project updated successfully
+
+13:40:28 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+13:40:29 **** Updating project Hello_World: project created
+Project updated successfully
+
+13:40:29 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+13:43:18 **** Updating project I2C: project created
+Project updated successfully
+
+13:43:18 **** Updating project I2C: project refresh
+Project updated successfully
+
+13:43:19 **** Updating project I2C: project created
+Project updated successfully
+
+13:43:19 **** Updating project I2C: project refresh
+Project updated successfully
+
+13:46:29 **** Updating project I2S: project created
+Project updated successfully
+
+13:46:30 **** Updating project I2S: project refresh
+Project updated successfully
+
+13:46:30 **** Updating project I2S: project created
+Project updated successfully
+
+13:46:30 **** Updating project I2S: project refresh
+Project updated successfully
+
+13:47:23 **** Updating project ICC: project created
+Project updated successfully
+
+13:47:24 **** Updating project ICC: project refresh
+Project updated successfully
+
+13:47:24 **** Updating project ICC: project created
+Project updated successfully
+
+13:47:24 **** Updating project ICC: project refresh
+Project updated successfully
+
+13:47:37 **** Updating project LP: project created
+Project updated successfully
+
+13:47:38 **** Updating project LP: project refresh
+Project updated successfully
+
+13:47:38 **** Updating project LP: project created
+Project updated successfully
+
+13:47:38 **** Updating project LP: project refresh
+Project updated successfully
+
+13:48:56 **** Updating project QDEC: project created
+Project updated successfully
+
+13:48:56 **** Updating project QDEC: project refresh
+Project updated successfully
+
+13:48:57 **** Updating project QDEC: project created
+Project updated successfully
+
+13:48:57 **** Updating project QDEC: project refresh
+Project updated successfully
+
+13:50:07 **** Updating project RTC: project created
+Project updated successfully
+
+13:50:07 **** Updating project RTC: project refresh
+Project updated successfully
+
+13:50:08 **** Updating project RTC: project created
+Project updated successfully
+
+13:50:08 **** Updating project RTC: project refresh
+Project updated successfully
+
+13:50:57 **** Updating project SPI: project created
+Project updated successfully
+
+13:50:57 **** Updating project SPI: project refresh
+Project updated successfully
+
+13:50:58 **** Updating project SPI: project created
+Project updated successfully
+
+13:50:58 **** Updating project SPI: project refresh
+Project updated successfully
+
+13:51:43 **** Updating project TMR: project created
+Project updated successfully
+
+13:51:44 **** Updating project TMR: project refresh
+Project updated successfully
+
+13:51:44 **** Updating project TMR: project created
+Project updated successfully
+
+13:51:45 **** Updating project TMR: project refresh
+Project updated successfully
+
+13:52:01 **** Updating project TRNG: project created
+Project updated successfully
+
+13:52:02 **** Updating project TRNG: project refresh
+Project updated successfully
+
+13:52:02 **** Updating project TRNG: project created
+Project updated successfully
+
+13:52:02 **** Updating project TRNG: project refresh
+Project updated successfully
+
+13:52:51 **** Updating project UART: project created
+Project updated successfully
+
+13:52:52 **** Updating project UART: project refresh
+Project updated successfully
+
+13:52:52 **** Updating project UART: project created
+Project updated successfully
+
+13:52:52 **** Updating project UART: project refresh
+Project updated successfully
+
+13:53:35 **** Updating project Watchdog: project created
+Project updated successfully
+
+13:53:36 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+13:53:36 **** Updating project Watchdog: project created
+Project updated successfully
+
+13:53:36 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+14:04:40 **** Updating project Watchdog: project created
+Project updated successfully
+
+14:04:41 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+14:04:42 **** Updating project Watchdog: project created
+Project updated successfully
+
+14:04:43 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+14:10:27 **** Updating project Watchdog: Configuration file [Watchdog.rteconfig] is saved
+Project updated successfully
+
+14:10:31 **** Updating project Watchdog: Configuration file [Watchdog.rteconfig] is saved
+Project updated successfully
+
+14:22:10 **** Updating project ADC: initial project load
+Project updated successfully
+
+14:22:11 **** Updating project AES: initial project load
+Project updated successfully
+
+14:22:11 **** Updating project CRC: initial project load
+Project updated successfully
+
+14:22:12 **** Updating project Comparator: initial project load
+Project updated successfully
+
+14:22:12 **** Updating project DMA: initial project load
+Project updated successfully
+
+14:22:12 **** Updating project Flash: initial project load
+Project updated successfully
+
+14:22:13 **** Updating project GPIO: initial project load
+Project updated successfully
+
+14:22:13 **** Updating project Hello_World: initial project load
+Project updated successfully
+
+14:22:13 **** Updating project I2C: initial project load
+Project updated successfully
+
+14:22:14 **** Updating project I2S: initial project load
+Project updated successfully
+
+14:22:14 **** Updating project ICC: initial project load
+Project updated successfully
+
+14:22:14 **** Updating project LP: initial project load
+Project updated successfully
+
+14:22:15 **** Updating project QDEC: initial project load
+Project updated successfully
+
+14:22:15 **** Updating project RTC: initial project load
+Project updated successfully
+
+14:22:15 **** Updating project SPI: initial project load
+Project updated successfully
+
+14:22:15 **** Updating project TMR: initial project load
+Project updated successfully
+
+14:22:16 **** Updating project TRNG: initial project load
+Project updated successfully
+
+14:22:16 **** Updating project UART: initial project load
+Project updated successfully
+
+14:22:16 **** Updating project Watchdog: initial project load
+Project updated successfully
+
+14:22:17 **** Updating project Watchdog: project created
+Project updated successfully
+
+14:22:17 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+14:26:29 **** Updating project ADC: initial project load
+Project updated successfully
+
+14:26:30 **** Updating project AES: initial project load
+Project updated successfully
+
+14:26:30 **** Updating project CRC: initial project load
+Project updated successfully
+
+14:26:31 **** Updating project Comparator: initial project load
+Project updated successfully
+
+14:26:31 **** Updating project DMA: initial project load
+Project updated successfully
+
+14:26:31 **** Updating project Flash: initial project load
+Project updated successfully
+
+14:26:32 **** Updating project GPIO: initial project load
+Project updated successfully
+
+14:26:32 **** Updating project Hello_World: initial project load
+Project updated successfully
+
+14:26:32 **** Updating project I2C: initial project load
+Project updated successfully
+
+14:26:33 **** Updating project I2S: initial project load
+Project updated successfully
+
+14:26:33 **** Updating project ICC: initial project load
+Project updated successfully
+
+14:26:33 **** Updating project LP: initial project load
+Project updated successfully
+
+14:26:33 **** Updating project QDEC: initial project load
+Project updated successfully
+
+14:26:34 **** Updating project RTC: initial project load
+Project updated successfully
+
+14:26:34 **** Updating project SPI: initial project load
+Project updated successfully
+
+14:26:34 **** Updating project TMR: initial project load
+Project updated successfully
+
+14:26:34 **** Updating project TRNG: initial project load
+Project updated successfully
+
+14:26:35 **** Updating project UART: initial project load
+Project updated successfully
+
+14:26:35 **** Updating project Watchdog: initial project load
+Project updated successfully
+
+14:26:36 **** Updating project Watchdog: project created
+Project updated successfully
+
+14:26:36 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+14:28:23 **** Updating project ADC: initial project load
+Project updated successfully
+
+14:28:24 **** Updating project AES: initial project load
+Project updated successfully
+
+14:28:24 **** Updating project CRC: initial project load
+Project updated successfully
+
+14:28:25 **** Updating project Comparator: initial project load
+Project updated successfully
+
+14:28:25 **** Updating project DMA: initial project load
+Project updated successfully
+
+14:28:25 **** Updating project Flash: initial project load
+Project updated successfully
+
+14:28:25 **** Updating project GPIO: initial project load
+Project updated successfully
+
+14:28:26 **** Updating project Hello_World: initial project load
+Project updated successfully
+
+14:28:26 **** Updating project I2C: initial project load
+Project updated successfully
+
+14:28:26 **** Updating project I2S: initial project load
+Project updated successfully
+
+14:28:26 **** Updating project ICC: initial project load
+Project updated successfully
+
+14:28:27 **** Updating project LP: initial project load
+Project updated successfully
+
+14:28:27 **** Updating project QDEC: initial project load
+Project updated successfully
+
+14:28:27 **** Updating project RTC: initial project load
+Project updated successfully
+
+14:28:28 **** Updating project SPI: initial project load
+Project updated successfully
+
+14:28:28 **** Updating project TMR: initial project load
+Project updated successfully
+
+14:28:28 **** Updating project TRNG: initial project load
+Project updated successfully
+
+14:28:28 **** Updating project UART: initial project load
+Project updated successfully
+
+14:28:28 **** Updating project Watchdog: initial project load
+Project update failed
+Error updating RTE project: Error loading RTE configuration file 'C:/IAR_Playground/MAX32672/32672_1.4.1_v1/Watchdog/Watchdog.rteconfig' file does not exist
+
+14:29:15 **** Updating project Watchdog: project created
+Project updated successfully
+
+14:29:16 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+14:29:16 **** Updating project Watchdog: project created
+Project updated successfully
+
+14:29:16 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+09:40:40 **** Updating project ADC: initial project load
+Project updated successfully
+
+09:40:41 **** Updating project AES: initial project load
+Project updated successfully
+
+09:40:41 **** Updating project CRC: initial project load
+Project updated successfully
+
+09:40:41 **** Updating project Comparator: initial project load
+Project updated successfully
+
+09:40:42 **** Updating project DMA: initial project load
+Project updated successfully
+
+09:40:42 **** Updating project Flash: initial project load
+Project updated successfully
+
+09:40:43 **** Updating project GPIO: initial project load
+Project updated successfully
+
+09:40:43 **** Updating project Hello_World: initial project load
+Project updated successfully
+
+09:40:43 **** Updating project I2C: initial project load
+Project updated successfully
+
+09:40:43 **** Updating project I2S: initial project load
+Project updated successfully
+
+09:40:44 **** Updating project ICC: initial project load
+Project updated successfully
+
+09:40:44 **** Updating project LP: initial project load
+Project updated successfully
+
+09:40:45 **** Updating project QDEC: initial project load
+Project updated successfully
+
+09:40:45 **** Updating project RTC: initial project load
+Project updated successfully
+
+09:40:45 **** Updating project SPI: initial project load
+Project updated successfully
+
+09:40:46 **** Updating project TMR: initial project load
+Project updated successfully
+
+09:40:46 **** Updating project TRNG: initial project load
+Project updated successfully
+
+09:40:46 **** Updating project UART: initial project load
+Project updated successfully
+
+09:40:46 **** Updating project Watchdog: initial project load
+Project updated successfully
+
+09:40:47 **** Updating project ADC: project created
+Project updated successfully
+
+09:40:47 **** Updating project ADC: project refresh
+Project updated successfully
+
+09:40:48 **** Updating project AES: project created
+Project updated successfully
+
+09:40:48 **** Updating project AES: project refresh
+Project updated successfully
+
+09:40:48 **** Updating project Comparator: project created
+Project updated successfully
+
+09:40:48 **** Updating project Comparator: project refresh
+Project updated successfully
+
+09:40:48 **** Updating project CRC: project created
+Project updated successfully
+
+09:40:48 **** Updating project CRC: project refresh
+Project updated successfully
+
+09:40:49 **** Updating project DMA: project created
+Project updated successfully
+
+09:40:49 **** Updating project DMA: project refresh
+Project updated successfully
+
+09:40:50 **** Updating project Flash: project created
+Project updated successfully
+
+09:40:50 **** Updating project Flash: project refresh
+Project updated successfully
+
+09:40:51 **** Updating project GPIO: project created
+Project updated successfully
+
+09:40:51 **** Updating project GPIO: project refresh
+Project updated successfully
+
+09:40:51 **** Updating project Hello_World: project created
+Project updated successfully
+
+09:40:52 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+09:40:52 **** Updating project I2C: project created
+Project updated successfully
+
+09:40:53 **** Updating project I2C: project refresh
+Project updated successfully
+
+09:40:53 **** Updating project I2S: project created
+Project updated successfully
+
+09:40:54 **** Updating project I2S: project refresh
+Project updated successfully
+
+09:40:54 **** Updating project ICC: project created
+Project updated successfully
+
+09:40:55 **** Updating project ICC: project refresh
+Project updated successfully
+
+09:40:55 **** Updating project LP: project created
+Project updated successfully
+
+09:40:56 **** Updating project LP: project refresh
+Project updated successfully
+
+09:40:56 **** Updating project QDEC: project created
+Project updated successfully
+
+09:40:57 **** Updating project QDEC: project refresh
+Project updated successfully
+
+09:40:57 **** Updating project RTC: project created
+Project updated successfully
+
+09:40:58 **** Updating project RTC: project refresh
+Project updated successfully
+
+09:40:58 **** Updating project SPI: project created
+Project updated successfully
+
+09:40:59 **** Updating project SPI: project refresh
+Project updated successfully
+
+09:40:59 **** Updating project TMR: project created
+Project updated successfully
+
+09:41:00 **** Updating project TMR: project refresh
+Project updated successfully
+
+09:41:00 **** Updating project TRNG: project created
+Project updated successfully
+
+09:41:01 **** Updating project TRNG: project refresh
+Project updated successfully
+
+09:41:01 **** Updating project UART: project created
+Project updated successfully
+
+09:41:02 **** Updating project UART: project refresh
+Project updated successfully
+
+09:41:02 **** Updating project Watchdog: project created
+Project updated successfully
+
+09:41:03 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+09:45:51 **** Updating project ADC: initial project load
+Project updated successfully
+
+09:45:52 **** Updating project AES: initial project load
+Project updated successfully
+
+09:45:52 **** Updating project CRC: initial project load
+Project updated successfully
+
+09:45:52 **** Updating project Comparator: initial project load
+Project updated successfully
+
+09:45:53 **** Updating project DMA: initial project load
+Project updated successfully
+
+09:45:53 **** Updating project Flash: initial project load
+Project updated successfully
+
+09:45:53 **** Updating project GPIO: initial project load
+Project updated successfully
+
+09:45:54 **** Updating project Hello_World: initial project load
+Project updated successfully
+
+09:45:54 **** Updating project I2C: initial project load
+Project updated successfully
+
+09:45:54 **** Updating project I2S: initial project load
+Project updated successfully
+
+09:45:55 **** Updating project ICC: initial project load
+Project updated successfully
+
+09:45:55 **** Updating project LP: initial project load
+Project updated successfully
+
+09:45:55 **** Updating project QDEC: initial project load
+Project updated successfully
+
+09:45:56 **** Updating project RTC: initial project load
+Project updated successfully
+
+09:45:56 **** Updating project SPI: initial project load
+Project updated successfully
+
+09:45:56 **** Updating project TMR: initial project load
+Project updated successfully
+
+09:45:57 **** Updating project TRNG: initial project load
+Project updated successfully
+
+09:45:57 **** Updating project UART: initial project load
+Project updated successfully
+
+09:45:57 **** Updating project Watchdog: initial project load
+Project updated successfully
+
+09:45:57 **** Updating project ADC: project created
+Project updated successfully
+
+09:45:58 **** Updating project ADC: project refresh
+Project updated successfully
+
+09:45:58 **** Updating project AES: project created
+Project updated successfully
+
+09:45:58 **** Updating project AES: project refresh
+Project updated successfully
+
+09:45:59 **** Updating project Comparator: project created
+Project updated successfully
+
+09:45:59 **** Updating project Comparator: project refresh
+Project updated successfully
+
+09:45:59 **** Updating project CRC: project created
+Project updated successfully
+
+09:45:59 **** Updating project CRC: project refresh
+Project updated successfully
+
+09:46:00 **** Updating project DMA: project created
+Project updated successfully
+
+09:46:00 **** Updating project DMA: project refresh
+Project updated successfully
+
+09:46:01 **** Updating project Flash: project created
+Project updated successfully
+
+09:46:01 **** Updating project Flash: project refresh
+Project updated successfully
+
+09:46:01 **** Updating project GPIO: project created
+Project updated successfully
+
+09:46:01 **** Updating project GPIO: project refresh
+Project updated successfully
+
+09:46:02 **** Updating project Hello_World: project created
+Project updated successfully
+
+09:46:02 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+09:46:04 **** Updating project I2C: project created
+Project updated successfully
+
+09:46:05 **** Updating project I2C: project refresh
+Project updated successfully
+
+09:46:05 **** Updating project I2S: project created
+Project updated successfully
+
+09:46:06 **** Updating project I2S: project refresh
+Project updated successfully
+
+09:46:06 **** Updating project ICC: project created
+Project updated successfully
+
+09:46:07 **** Updating project ICC: project refresh
+Project updated successfully
+
+09:46:08 **** Updating project LP: project created
+Project updated successfully
+
+09:46:08 **** Updating project LP: project refresh
+Project updated successfully
+
+09:46:09 **** Updating project QDEC: project created
+Project updated successfully
+
+09:46:09 **** Updating project QDEC: project refresh
+Project updated successfully
+
+09:46:10 **** Updating project RTC: project created
+Project updated successfully
+
+09:46:10 **** Updating project RTC: project refresh
+Project updated successfully
+
+09:46:10 **** Updating project SPI: project created
+Project updated successfully
+
+09:46:11 **** Updating project SPI: project refresh
+Project updated successfully
+
+09:46:12 **** Updating project TMR: project created
+Project updated successfully
+
+09:46:12 **** Updating project TMR: project refresh
+Project updated successfully
+
+09:46:13 **** Updating project TRNG: project created
+Project updated successfully
+
+09:46:13 **** Updating project TRNG: project refresh
+Project updated successfully
+
+09:46:13 **** Updating project UART: project created
+Project updated successfully
+
+09:46:14 **** Updating project UART: project refresh
+Project updated successfully
+
+09:46:14 **** Updating project Watchdog: project created
+Project updated successfully
+
+09:46:15 **** Updating project Watchdog: project refresh
+Project updated successfully
+
+17:28:06 **** Updating project ADC: initial project load
+Project updated successfully
+
+17:28:08 **** Updating project AES: initial project load
+Project updated successfully
+
+17:28:09 **** Updating project CRC: initial project load
+Project updated successfully
+
+17:28:09 **** Updating project Comparator: initial project load
+Project updated successfully
+
+17:28:09 **** Updating project DMA: initial project load
+Project updated successfully
+
+17:28:09 **** Updating project Flash: initial project load
+Project updated successfully
+
+17:28:10 **** Updating project GPIO: initial project load
+Project updated successfully
+
+17:28:10 **** Updating project Hello_World: initial project load
+Project updated successfully
+
+17:28:10 **** Updating project I2C: initial project load
+Project updated successfully
+
+17:28:11 **** Updating project I2S: initial project load
+Project updated successfully
+
+17:28:12 **** Updating project ICC: initial project load
+Project updated successfully
+
+17:28:12 **** Updating project LP: initial project load
+Project updated successfully
+
+17:28:13 **** Updating project QDEC: initial project load
+Project updated successfully
+
+17:28:14 **** Updating project RTC: initial project load
+Project updated successfully
+
+17:28:14 **** Updating project SPI: initial project load
+Project updated successfully
+
+17:28:14 **** Updating project TMR: initial project load
+Project updated successfully
+
+17:28:14 **** Updating project TRNG: initial project load
+Project updated successfully
+
+17:28:15 **** Updating project UART: initial project load
+Project updated successfully
+
+17:28:15 **** Updating project Watchdog: initial project load
+Project updated successfully
+
+17:28:15 **** Updating project ADC: project created
+Project updated successfully
+
+17:28:16 **** Updating project ADC: project refresh
+Project updated successfully
+
+17:28:16 **** Updating project AES: project created
+Project updated successfully
+
+17:28:17 **** Updating project AES: project refresh
+Project updated successfully
+
+17:28:17 **** Updating project Comparator: project created
+Project updated successfully
+
+17:28:17 **** Updating project Comparator: project refresh
+Project updated successfully
+
+17:28:18 **** Updating project CRC: project created
+Project updated successfully
+
+17:28:18 **** Updating project CRC: project refresh
+Project updated successfully
+
+17:28:19 **** Updating project DMA: project created
+Project updated successfully
+
+17:28:19 **** Updating project DMA: project refresh
+Project updated successfully
+
+17:28:20 **** Updating project Flash: project created
+Project updated successfully
+
+17:28:21 **** Updating project Flash: project refresh
+Project updated successfully
+
+17:28:21 **** Updating project GPIO: project created
+Project updated successfully
+
+17:28:22 **** Updating project GPIO: project refresh
+Project updated successfully
+
+17:28:22 **** Updating project Hello_World: project created
+Project updated successfully
+
+17:28:23 **** Updating project Hello_World: project refresh
+Project updated successfully
+
+17:28:24 **** Updating project I2C: project created
+Project updated successfully
+
+17:28:24 **** Updating project I2C: project refresh
+Project updated successfully
+
+17:28:25 **** Updating project I2S: project created
+Project updated successfully
+
+17:28:26 **** Updating project I2S: project refresh
+Project updated successfully
+
+17:28:27 **** Updating project ICC: project created
+Project updated successfully
+
+17:28:28 **** Updating project ICC: project refresh
+Project updated successfully
+
+17:28:28 **** Updating project LP: project created
+Project updated successfully
+
+17:28:29 **** Updating project LP: project refresh
+Project updated successfully
+
+17:28:30 **** Updating project QDEC: project created
+Project updated successfully
+
+17:28:31 **** Updating project QDEC: project refresh
+Project updated successfully
+
+17:28:31 **** Updating project RTC: project created
+Project updated successfully
+
+17:28:32 **** Updating project RTC: project refresh
+Project updated successfully
+
+17:28:32 **** Updating project SPI: project created
+Project updated successfully
+
+17:28:33 **** Updating project SPI: project refresh
+Project updated successfully
+
+17:28:34 **** Updating project TMR: project created
+Project updated successfully
+
+17:28:35 **** Updating project TMR: project refresh
+Project updated successfully
+
+17:28:35 **** Updating project TRNG: project created
+Project updated successfully
+
+17:28:35 **** Updating project TRNG: project refresh
+Project updated successfully
+
+17:28:36 **** Updating project UART: project created
+Project updated successfully
+
+17:28:37 **** Updating project UART: project refresh
+Project updated successfully
+
+17:28:38 **** Updating project Watchdog: project created
+Project updated successfully
+
+17:28:38 **** Updating project Watchdog: project refresh
+Project updated successfully
+

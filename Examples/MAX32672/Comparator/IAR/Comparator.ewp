@@ -11,7 +11,7 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>33</version>
+                <version>34</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -70,7 +70,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>9.10.2.39304</state>
+                    <state>9.20.4.46976</state>
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
@@ -98,7 +98,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -115,7 +115,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -138,7 +138,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -199,6 +199,10 @@
                     <name>OG_32_64Device</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>BuildFilesPath</name>
+                    <state>No Secure Boot</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -210,7 +214,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32762</state>
+                    <state>TARGET=32672</state>
                     <state>TARGET_REV=0X4131</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>
@@ -677,7 +681,7 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>25</version>
+                <version>26</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -1029,6 +1033,14 @@
                     <name>IlinkDemangle</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>IlinkWrapperFileEnable</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkWrapperFile</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -1063,7 +1075,7 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>33</version>
+                <version>34</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -1150,7 +1162,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -1167,7 +1179,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -1190,7 +1202,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -1251,6 +1263,10 @@
                     <name>OG_32_64Device</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>BuildFilesPath</name>
+                    <state>Secure Boot</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -1262,7 +1278,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32762</state>
+                    <state>TARGET=32672</state>
                     <state>TARGET_REV=0X4131</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>
@@ -1713,7 +1729,7 @@
             <data>
                 <extensions></extensions>
                 <cmdline></cmdline>
-                <hasPrio>80</hasPrio>
+                <hasPrio>1</hasPrio>
                 <buildSequence>inputOutputBased</buildSequence>
             </data>
         </settings>
@@ -1729,7 +1745,7 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>25</version>
+                <version>26</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -2081,6 +2097,14 @@
                     <name>IlinkDemangle</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>IlinkWrapperFileEnable</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkWrapperFile</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -2115,7 +2139,7 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>33</version>
+                <version>34</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -2202,7 +2226,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -2219,7 +2243,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -2242,7 +2266,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -2302,6 +2326,10 @@
                 <option>
                     <name>OG_32_64Device</name>
                     <state>0</state>
+                </option>
+                <option>
+                    <name>BuildFilesPath</name>
+                    <state>Debug</state>
                 </option>
             </data>
         </settings>
@@ -2779,7 +2807,7 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>25</version>
+                <version>26</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -3131,6 +3159,14 @@
                     <name>IlinkDemangle</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>IlinkWrapperFileEnable</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkWrapperFile</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -3165,7 +3201,7 @@
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
-                <version>33</version>
+                <version>34</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -3252,7 +3288,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -3269,7 +3305,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -3292,7 +3328,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>30</version>
+                    <version>31</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -3352,6 +3388,10 @@
                 <option>
                     <name>OG_32_64Device</name>
                     <state>0</state>
+                </option>
+                <option>
+                    <name>BuildFilesPath</name>
+                    <state>Release</state>
                 </option>
             </data>
         </settings>
@@ -3830,7 +3870,7 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>25</version>
+                <version>26</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -4182,6 +4222,14 @@
                     <name>IlinkDemangle</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>IlinkWrapperFileEnable</name>
+                    <state>0</state>
+                </option>
+                <option>
+                    <name>IlinkWrapperFile</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -4215,6 +4263,100 @@
         <file>
             <name>$PROJ_DIR$\..\RTE\RTE_Components.h</name>
         </file>
+        <group>
+            <name>Maxim Maxim API _Device.DMA_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/DMA/dma_me21.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/DMA/dma_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.ADC_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/ADC/adc_me21.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/ADC/adc_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.Low Power_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/LP/lp_me21.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.Startup_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\cmain.s</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\low_level_init.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\max32672.h</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\sla_header.c</name>
+                <excluded>
+                    <configuration>No Secure Boot</configuration>
+                </excluded>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\startup_max32672.s</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\system_max32672.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.UART_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_me21.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim MAX32672 BSP _BSP.EvKit V1_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/EvKit_V1/Source/board.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/Source/led.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/Source/pb.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/Source/stdio.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.GPIO_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me21.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
+            </file>
+        </group>
         <group>
             <name>Maxim Maxim API _Device.SYS_1.4.1</name>
             <tag>CMSISPack.Component</tag>
@@ -4483,100 +4625,6 @@
                 <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/SYS/sys_me21.c</name>
             </file>
         </group>
-        <group>
-            <name>Maxim Maxim API _Device.GPIO_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me21.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim MAX32672 BSP _BSP.EvKit V1_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/EvKit_V1/Source/board.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/Source/led.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/Source/pb.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/Boards/MAX32672/Source/stdio.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.UART_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_me21.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.Startup_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\cmain.s</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\low_level_init.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\max32672.h</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\sla_header.c</name>
-                <excluded>
-                    <configuration>No Secure Boot</configuration>
-                </excluded>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\startup_max32672.s</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\RTE\Device\MAX32672_Cortex-M4\system_max32672.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.Low Power_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/LP/lp_me21.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.ADC_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/ADC/adc_me21.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/ADC/adc_revb.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.DMA_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/DMA/dma_me21.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/DMA/dma_reva.c</name>
-            </file>
-        </group>
     </group>
     <cmsisPackSettings>
         <rte>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -4596,10 +4644,13 @@
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32672/Source/pb.c" version="1.4.1"/&gt;
       &lt;file category="sourceC" deviceDependent="1" name="Libraries/Boards/MAX32672/Source/stdio.c" version="1.4.1"/&gt;
     &lt;/component&gt;
-    &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.2.0"&gt;
-      &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.5.1"/&gt;
+    &lt;component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.5.0"&gt;
+      &lt;package name="CMSIS" url="http://www.keil.com/pack/" vendor="ARM" version="5.8.0"/&gt;
       &lt;file category="doc" name="CMSIS/Documentation/Core/html/index.html"/&gt;
       &lt;file category="include" name="CMSIS/Core/Include/"/&gt;
+      &lt;file category="header" condition="TrustZone" name="CMSIS/Core/Include/tz_context.h"/&gt;
+      &lt;file attr="template" category="sourceC" condition="TZ Secure" name="CMSIS/Core/Template/ARMv8-M/main_s.c" select="Secure mode 'main' module for ARMv8-M" version="1.1.1"/&gt;
+      &lt;file attr="template" category="sourceC" condition="TZ Secure" name="CMSIS/Core/Template/ARMv8-M/tz_context.c" select="RTOS Context Management (TrustZone for ARMv8-M)" version="1.1.1"/&gt;
     &lt;/component&gt;
     &lt;component Cbundle="Maxim API" Cbundleversion="1.4.1" Cclass="Device" Cgroup="ADC" Cvendor="Maxim" Cversion="1.4.1" deviceDependent="1" versionMatchMode="fixed"&gt;
       &lt;package name="MAX32672" url="https://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.4.1"/&gt;
@@ -4645,7 +4696,6 @@
       &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/UART/" version="1.4.1"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/WDT/" version="1.4.1"/&gt;
       &lt;file category="include" deviceDependent="1" name="Libraries/PeriphDrivers/Source/CTB/" version="1.4.1"/&gt;
-      &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32672/Source/ARM/sla_header.c" version="1.4.1"/&gt;
       &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32672/Source/IAR/startup_max32672.s" version="1.4.1"/&gt;
       &lt;file attr="config" category="sourceC" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32672/Source/IAR/low_level_init.c" version="1.4.1"/&gt;
       &lt;file attr="config" category="sourceAsm" condition="Startup IAR" deviceDependent="1" name="Libraries/CMSIS/Device/Maxim/MAX32672/Source/IAR/cmain.s" version="1.4.1"/&gt;

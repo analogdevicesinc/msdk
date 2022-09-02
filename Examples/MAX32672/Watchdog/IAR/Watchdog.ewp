@@ -214,7 +214,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32762</state>
+                    <state>TARGET=32672</state>
                     <state>TARGET_REV=0X4131</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>
@@ -1278,7 +1278,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32762</state>
+                    <state>TARGET=32672</state>
                     <state>TARGET_REV=0X4131</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>
@@ -4260,16 +4260,6 @@
     <group>
         <name>CMSIS-Pack</name>
         <tag>CMSISPack.Component</tag>
-        <group>
-            <name>Maxim Maxim API _Device.WDT_1.4.1</name>
-            <tag>CMSISPack.Component</tag>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/WDT/wdt_me21.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/WDT/wdt_revb.c</name>
-            </file>
-        </group>
         <file>
             <name>$PROJ_DIR$\..\RTE\RTE_Components.h</name>
         </file>
@@ -4360,6 +4350,16 @@
             </file>
             <file>
                 <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim Maxim API _Device.WDT_1.4.1</name>
+            <tag>CMSISPack.Component</tag>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/WDT/wdt_me21.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32672#1.4.1}$\Libraries/PeriphDrivers/Source/WDT/wdt_revb.c</name>
             </file>
         </group>
         <group>

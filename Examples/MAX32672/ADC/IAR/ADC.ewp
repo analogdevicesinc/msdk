@@ -210,7 +210,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32762</state>
+                    <state>TARGET=32672</state>
                     <state>TARGET_REV=0X4131</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>
@@ -1262,7 +1262,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>TARGET=32762</state>
+                    <state>TARGET=32672</state>
                     <state>TARGET_REV=0X4131</state>
                     <state>$CMSIS_PACK_DEVICE_DEFINES$</state>
                     <state>_RTE_</state>

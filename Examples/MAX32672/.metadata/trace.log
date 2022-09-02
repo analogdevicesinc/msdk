@@ -1,0 +1,46 @@
+# !SESSION 2022-08-15 11:23:10.896
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-15 11:23:10.896 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
+| Worker-3 | 2022-08-15 11:27:45.931 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Performing pack conversion... |
+| Worker-3 | 2022-08-15 11:28:32.597 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Pack has been converted. |
+| main | 2022-08-15 14:04:40.520 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter ERROR Failed to create link to ewp file: PROJECT_LOC/IAR/Watchdog.ewp (Resource '/Watchdog/Watchdog.ewp' already exists.) |
+# !SESSION 2022-08-15 14:21:39.809
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-15 14:21:39.809 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
+# !SESSION 2022-08-15 14:26:07.827
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-15 14:26:07.827 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
+# !SESSION 2022-08-15 14:28:03.669
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-15 14:28:03.669 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
+| main | 2022-08-15 14:29:15.412 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter ERROR Failed to create link to ewp file: PROJECT_LOC/IAR/Watchdog.ewp (Resource '/Watchdog/Watchdog.ewp' already exists.) |
+# !SESSION 2022-08-16 09:40:08.752
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-16 09:40:08.752 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
+# !SESSION 2022-08-16 09:45:21.300
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-16 09:45:21.300 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
+# !SESSION 2022-08-31 17:27:32.205
+# version: 1.1
+# verbose: true
+# The following option strings are specified for this debug session:
+# 	null
+| main | 2022-08-31 17:27:32.205 | com.iar.ide.common | /debug | com.iar.ide.common.PlatformLoggerDelegate | traceFile | 74 | com.iar.cdt.arm.toolchain.cmsis.adapter INFO Using CMSIS pack repositories: http://links.iar.com/cmsis/pack/ |
