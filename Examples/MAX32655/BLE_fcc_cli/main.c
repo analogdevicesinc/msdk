@@ -45,7 +45,6 @@ TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
 mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
-
 xSemaphoreHandle rfTestMutex;
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
@@ -65,10 +64,9 @@ static uint8_t txFreqHopCh;
 
 char receivedChar;
 /* helper flags */
-bool longTestActive  = false;
-bool freqHopisActive = false;
-bool clearScreen     = false;
-bool pausePrompt     = false;
+test_t activeTest = NO_TEST;
+bool clearScreen  = false;
+bool pausePrompt  = false;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
@@ -278,7 +276,7 @@ void prompt(void)
         return;
     char str[25];
     uint8_t len = 0;
-    if (longTestActive) {
+    if (activeTest) {
         fflush(stdout);
         sprintf(str, "\n(active test) cmd:");
         len = 20;
@@ -336,11 +334,11 @@ void vCmdLineTask(void* pvParameters)
                 }
                 /*since freq hop does not allow user to see what they are typing, simply typing
                   'e' without the need to press enter willl stop the frequency hopping test */
-                else if ((char)tmp == 'e' && freqHopisActive) {
+                else if ((char)tmp == 'e' && activeTest == BLE_FHOP_TEST) {
                     LlEndTest(NULL);
                     MXC_TMR_Stop(MXC_TMR2);
-                    longTestActive  = false;
-                    freqHopisActive = false;
+                    activeTest = NO_TEST;
+
                     xSemaphoreGive(rfTestMutex);
                     prompt();
                 } else if (tmp == 0x03) {
@@ -391,7 +389,7 @@ void txTestTask(void* pvParameters)
         /* Get settings from the notification value */
         notifyCommand.allData = notifVal;
 
-        if (notifyCommand.testType == TX_TEST) {
+        if (notifyCommand.testType == BLE_TX_TEST) {
             sprintf(str,
                     "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", notifyCommand.channel);
         } else {
@@ -402,7 +400,7 @@ void txTestTask(void* pvParameters)
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
-        if (notifyCommand.testType == TX_TEST) {
+        if (notifyCommand.testType == BLE_TX_TEST) {
             res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
         } else {
             res = LlEnhancedRxTest(notifyCommand.channel, phy, 0, 0);
@@ -447,7 +445,7 @@ void sweepTestTask(void* pvParameters)
         char str[6]      = "";
         /* config txCommand to RF Task */
         txCommand.duration_ms = sweepConfig.duration_per_ch_ms;
-        txCommand.testType    = TX_TEST;
+        txCommand.testType    = BLE_TX_TEST;
         strcat(str, (const char*)getPhyStr(phy));
         for (int i = start_ch; i <= end_ch; i++) {
             APP_TRACE_INFO2("\r\n-----------------| channel %d %s |----------------------\r\n",
@@ -461,8 +459,8 @@ void sweepTestTask(void* pvParameters)
             xSemaphoreGive(rfTestMutex);
             vTaskDelay(100); /* give console time to print end of  test reuslts */
         }
-        longTestActive = false;
-        pausePrompt    = false;
+        activeTest  = NO_TEST;
+        pausePrompt = false;
         prompt();
     }
 }

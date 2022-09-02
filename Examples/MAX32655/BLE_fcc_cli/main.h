@@ -34,7 +34,9 @@ typedef enum uint8_t {
     NO_TEST,
     BLE_RX_TEST,
     BLE_TX_TEST,
-    FHOP_TEST,
+    BLE_CONST_TX,
+    BLE_SWEEP_TEST,
+    BLE_FHOP_TEST,
 } test_t;
 //used to post messages to a task via its notification parameter
 typedef union {

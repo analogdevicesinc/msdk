@@ -11,10 +11,11 @@ extern TaskHandle_t tx_task_id;
 extern TaskHandle_t cmd_task_id;
 extern TaskHandle_t sweep_task_id;
 extern TaskHandle_t help_task_id;
-extern bool longTestActive;
+
+extern test_t activeTest;
 extern bool pausePrompt;
 extern bool clearScreen;
-extern bool freqHopisActive;
+
 /*! \brief Physical layer functions. */
 extern void llc_api_set_txpower(int8_t power);
 extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
@@ -22,8 +23,6 @@ extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
 extern xSemaphoreHandle rfTestMutex;
-bool constTxisActive = false;
-CLI_Command_Definition_t registeredCommandList[10];
 
 /* helpers */
 static bool isDigit(const char* symbol, uint8_t len);
@@ -212,12 +211,14 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     BaseType_t lParameterStringLength;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    int err                      = E_NO_ERROR;
+    int err = E_NO_ERROR;
+
     static tx_config_t rfCommand = {.testType = 0xFF, .duration_ms = 0};
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        err++;
+        /* no point in doing anything else */
+        return pdFALSE;
     }
     /*if no params given and sweepConfig still has its init value */
     if (commandOnly(pcCommandString) && rfCommand.testType == 0xFF && err == E_NO_ERROR) {
@@ -255,7 +256,7 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
             }
         }
         /* check which command was called rx or tx */
-        rfCommand.testType = (memcmp(pcCommandString, "tx", 2) == 0) ? TX_TEST : RX_TEST;
+        rfCommand.testType = (memcmp(pcCommandString, "tx", 2) == 0) ? BLE_TX_TEST : BLE_RX_TEST;
 
     }
     /* if parameters were given and are not valid integers/typo  */
@@ -266,7 +267,7 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     }
 
     if (rfCommand.duration_ms == 0 && err == E_NO_ERROR) {
-        longTestActive = true;
+        activeTest = rfCommand.testType;
     }
     if (err == E_NO_ERROR) {
         xTaskNotify(tx_task_id, rfCommand.allData, eSetBits);
@@ -287,21 +288,19 @@ static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     configASSERT(pcWriteBuffer);
 
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
-    if (constTxisActive) {
+    if (activeTest == BLE_CONST_TX) {
         /* Disable constant TX */
         MXC_R_TX_CTRL     = 0x2;
         MXC_R_PATTERN_GEN = 0x48;
         PalBbDisable();
-        constTxisActive = false;
-    } else if (longTestActive) {
+    } else if (activeTest) {
         LlEndTest(NULL);
         MXC_TMR_Stop(MXC_TMR2);
     } else {
         sprintf(pcWriteBuffer, "No active test to disable\n");
     }
-    longTestActive = false;
-    longTestActive = false;
-    pausePrompt    = false;
+    activeTest  = NO_TEST;
+    pausePrompt = false;
     xSemaphoreGive(rfTestMutex);
     return pdFALSE;
 }
@@ -377,7 +376,8 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        err++;
+        /* no point in doing anything else */
+        return pdFALSE;
     }
 
     const char* channelStr =
@@ -413,8 +413,7 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
         /* Enable pattern generator, set PRBS-9 */
         MXC_R_CONST_OUPUT = 0x0;
         MXC_R_PATTERN_GEN = 0x4B;
-        longTestActive    = true;
-        constTxisActive   = true;
+        activeTest        = BLE_CONST_TX;
     } else {
         xSemaphoreGive(rfTestMutex);
     }
@@ -435,13 +434,13 @@ static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
     int err = E_NO_ERROR;
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        err++;
+        /* no point in doing anything else */
+        return pdFALSE;
     }
 
     if (err == E_NO_ERROR) {
         sprintf(pcWriteBuffer, "Starting frequency hopping\n");
-        longTestActive  = true;
-        freqHopisActive = true;
+        activeTest = BLE_FHOP_TEST;
         startFreqHopping();
     } else {
         xSemaphoreGive(rfTestMutex);
@@ -465,7 +464,8 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        err++;
+        /* no point in doing anything else */
+        return pdFALSE;
     }
 
     /*if no params given and sweepConfig still has its init value */
@@ -506,8 +506,8 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     //start sweep task
     if (err == E_NO_ERROR) {
         xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
-        longTestActive = true;
-        pausePrompt    = true;
+        activeTest  = BLE_SWEEP_TEST;
+        pausePrompt = true;
     } else {
         xSemaphoreGive(rfTestMutex);
     }
