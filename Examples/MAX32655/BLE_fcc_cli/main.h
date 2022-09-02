@@ -28,14 +28,20 @@
 #include "FreeRTOS_CLI.h"
 #include "uart.h"
 #include "mxc_delay.h"
+#include "mxc_errors.h"
 
-typedef enum { RX_TEST, TX_TEST } test_t;
+typedef enum uint8_t {
+    NO_TEST,
+    BLE_RX_TEST,
+    BLE_TX_TEST,
+    FHOP_TEST,
+} test_t;
 //used to post messages to a task via its notification parameter
 typedef union {
     struct {
         uint16_t duration_ms;
         uint8_t channel;
-        uint8_t testType;
+        test_t testType;
     };
     uint32_t allData;
 } tx_config_t;

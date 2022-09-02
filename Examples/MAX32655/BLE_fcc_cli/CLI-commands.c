@@ -212,29 +212,33 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     BaseType_t lParameterStringLength;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    int err                      = E_NO_ERROR;
     static tx_config_t rfCommand = {.testType = 0xFF, .duration_ms = 0};
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        return pdFALSE;
+        err++;
     }
     /*if no params given and sweepConfig still has its init value */
-    if (commandOnly(pcCommandString) && rfCommand.testType == 0xFF) {
+    if (commandOnly(pcCommandString) && rfCommand.testType == 0xFF && err == E_NO_ERROR) {
         sprintf(pcWriteBuffer, "You have to call the command at least once with parameters\r\n");
-        return pdFALSE;
+        err++;
     }
 
-    if (paramsValid(pcCommandString, 1)) {
+    /* if parameters given are valid integers fetch them and verify*/
+    if (paramsValid(pcCommandString, 1) && err == E_NO_ERROR) {
+        /* fetch channel parameter */
         rfCommand.channel = atoi(FreeRTOS_CLIGetParameter(
             pcCommandString,        /* The command string itself. */
             1,                      /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
+        /* verify */
         if (rfCommand.channel > 39 || rfCommand.channel < 0) {
             sprintf(pcWriteBuffer, "Bad channel parameter\r\n");
-            return pdFALSE;
+            err++;
         }
-        /* get duration parameter which is optional */
+        /* fetch duration parameter which is optional */
         temp = FreeRTOS_CLIGetParameter(
             pcCommandString,        /* The command string itself. */
             2,                      /* Return the next parameter. */
@@ -247,25 +251,29 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                 rfCommand.duration_ms = atoi(temp);
             else {
                 sprintf(pcWriteBuffer, "Bad duration parameter\r\n");
-                return pdFALSE;
+                err++;
             }
         }
         /* check which command was called rx or tx */
         rfCommand.testType = (memcmp(pcCommandString, "tx", 2) == 0) ? TX_TEST : RX_TEST;
 
     }
-    /* if parameters were given and are not valid */
-    else if (!paramsValid(pcCommandString, 1) && !commandOnly(pcCommandString)) {
+    /* if parameters were given and are not valid integers/typo  */
+    else if (!paramsValid(pcCommandString, 1) && !commandOnly(pcCommandString) &&
+             err == E_NO_ERROR) {
         sprintf(pcWriteBuffer, "Bad parameters given\r\n");
-        return pdFALSE;
+        err++;
     }
 
-    if (rfCommand.duration_ms == 0) {
+    if (rfCommand.duration_ms == 0 && err == E_NO_ERROR) {
         longTestActive = true;
     }
-
-    xTaskNotify(tx_task_id, rfCommand.allData, eSetBits);
-    pausePrompt = true;
+    if (err == E_NO_ERROR) {
+        xTaskNotify(tx_task_id, rfCommand.allData, eSetBits);
+        pausePrompt = true;
+    } else {
+        xSemaphoreGive(rfTestMutex);
+    }
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -315,22 +323,15 @@ static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  &lParameterStringLength /* Store the parameter string length. */
         );
 
-    memcmp(newPhy, "1M", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_1M) :
-        memcmp(newPhy, "1m", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_1M) :
-        memcmp(newPhy, "2M", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_2M) :
-        memcmp(newPhy, "2m", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_2M) :
-        memcmp(newPhy, "S2", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_CODED_S2) :
-        memcmp(newPhy, "s2", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_CODED_S2) :
-        memcmp(newPhy, "S8", 2) == 0 ?
-        setPhy(LL_TEST_PHY_LE_CODED_S8) :
-        memcmp(newPhy, "s8", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
-                                       sprintf(pcWriteBuffer, "Bad param\r\n");
+    memcmp(newPhy, "1M", 2) == 0 ? setPhy(LL_TEST_PHY_LE_1M) :
+    memcmp(newPhy, "1m", 2) == 0 ? setPhy(LL_TEST_PHY_LE_1M) :
+    memcmp(newPhy, "2M", 2) == 0 ? setPhy(LL_TEST_PHY_LE_2M) :
+    memcmp(newPhy, "2m", 2) == 0 ? setPhy(LL_TEST_PHY_LE_2M) :
+    memcmp(newPhy, "S2", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S2) :
+    memcmp(newPhy, "s2", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S2) :
+    memcmp(newPhy, "S8", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
+    memcmp(newPhy, "s8", 2) == 0 ? setPhy(LL_TEST_PHY_LE_CODED_S8) :
+                                   sprintf(pcWriteBuffer, "Bad param\r\n");
 
     return pdFALSE;
 }
@@ -370,12 +371,13 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    int err                    = E_NO_ERROR;
     static uint32_t channelNum = 0xFF;
     BaseType_t lParameterStringLength;
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        return pdFALSE;
+        err++;
     }
 
     const char* channelStr =
@@ -389,35 +391,33 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
             channelNum = atoi(channelStr);
         else {
             sprintf(pcWriteBuffer, "Bad parameters given\r\n");
-            return pdFALSE;
+            err++;
         }
     } else {
         if (channelNum == 0xFF) {
             sprintf(pcWriteBuffer,
                     "You have to call the command at least once with parameters\r\n");
-            return pdFALSE;
+            err++;
         }
     }
+    if (err == E_NO_ERROR) {
+        dbb_seq_select_rf_channel(channelNum);
+        //  sprintf(pcWriteBuffer, "Constant TX channel set to %d\r\n", channelNum);
+        strcat(pcWriteBuffer, "Starting TX\r\n");
+        PalBbEnable();
+        llc_api_tx_ldo_setup();
 
-    dbb_seq_select_rf_channel(channelNum);
-    //  sprintf(pcWriteBuffer, "Constant TX channel set to %d\r\n", channelNum);
-    strcat(pcWriteBuffer, "Starting TX\r\n");
-    PalBbEnable();
-    llc_api_tx_ldo_setup();
+        /* Enable constant TX */
+        MXC_R_TX_CTRL = 0x1;
 
-    /* Enable constant TX */
-    MXC_R_TX_CTRL = 0x1;
-
-    /* Enable pattern generator, set PRBS-9 */
-    MXC_R_CONST_OUPUT = 0x0;
-    MXC_R_PATTERN_GEN = 0x4B;
-
-    if (longTestActive | constTxisActive | freqHopisActive) {
-        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        return pdFALSE;
+        /* Enable pattern generator, set PRBS-9 */
+        MXC_R_CONST_OUPUT = 0x0;
+        MXC_R_PATTERN_GEN = 0x4B;
+        longTestActive    = true;
+        constTxisActive   = true;
+    } else {
+        xSemaphoreGive(rfTestMutex);
     }
-    longTestActive  = true;
-    constTxisActive = true;
 
     return pdFALSE;
 }
@@ -432,17 +432,20 @@ static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-
+    int err = E_NO_ERROR;
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        return pdFALSE;
+        err++;
     }
 
-    // TODO : validate value
-    sprintf(pcWriteBuffer, "Starting frequency hopping\n");
-    longTestActive  = true;
-    freqHopisActive = true;
-    startFreqHopping();
+    if (err == E_NO_ERROR) {
+        sprintf(pcWriteBuffer, "Starting frequency hopping\n");
+        longTestActive  = true;
+        freqHopisActive = true;
+        startFreqHopping();
+    } else {
+        xSemaphoreGive(rfTestMutex);
+    }
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -456,22 +459,24 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    int err = E_NO_ERROR;
     BaseType_t lParameterStringLength;
     static sweep_config_t sweepConfig = {.duration_per_ch_ms = 0};
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
-        return pdFALSE;
+        err++;
     }
 
     /*if no params given and sweepConfig still has its init value */
-    if (commandOnly(pcCommandString) && sweepConfig.duration_per_ch_ms == 0) {
+    if (commandOnly(pcCommandString) && (sweepConfig.duration_per_ch_ms == 0) &&
+        (err == E_NO_ERROR)) {
         sprintf(pcWriteBuffer, "You have to call the command at least once with parameters\r\n");
-        return pdFALSE;
+        err++;
     }
 
     /* save new parameters if they are valid*/
-    if (paramsValid(pcCommandString, 3)) {
+    if (paramsValid(pcCommandString, 3) && (err == E_NO_ERROR)) {
         sweepConfig.start_channel = atoi(FreeRTOS_CLIGetParameter(
             pcCommandString,        /* The command string itself. */
             1,                      /* Return the next parameter. */
@@ -492,15 +497,21 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     }
     /* if parameters were given and are not valid */
-    else if (!paramsValid(pcCommandString, 3) && !commandOnly(pcCommandString)) {
+    else if (!paramsValid(pcCommandString, 3) && !commandOnly(pcCommandString) &&
+             (err == E_NO_ERROR)) {
         sprintf(pcWriteBuffer, "Bad parameters given\r\n");
-        return pdFALSE;
+        err++;
     }
 
     //start sweep task
-    xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
-    longTestActive = true;
-    pausePrompt    = true;
+    if (err == E_NO_ERROR) {
+        xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
+        longTestActive = true;
+        pausePrompt    = true;
+    } else {
+        xSemaphoreGive(rfTestMutex);
+    }
+
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
