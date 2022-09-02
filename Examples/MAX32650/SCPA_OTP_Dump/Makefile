@@ -289,31 +289,45 @@ include $(LIBS_DIR)/libs.mk
 # This section integrates the Secure Boot Tools.  It's intended for use with
 # microcontrollers that have a secure bootloader.
 
+# Enabling SBT integration will add some special rules, such as "make sla", "make scpa", etc.
+
 # Configuration variables:
-#	SBT : Toggle SBT integration.  (Disabled by default).  Set to 1 to enable, or 0 to disable
+#	SBT : 	Toggle SBT integration.  (Disabled by default).  Set to 1 to enable, or 0
+# 			to disable
+#	MAXIM_SBT_DIR : Specify the location of the SBT tool binaries.  This defaults to
+#					Tools/SBT in the MaximSDK.  The standalone SBT installer will override
+#					this via an environment variable.
+#	TARGET_SEC : 	Specify the part number to be passed into the SBT.  This should match
+#					the secure variant part #.  The default value will depend on TARGET.
+#					For example, TARGET=MAX32650 will result in TARGET_SEC=MAX32651, and
+#					the default selection happens in Tools/SBT/SBT-config.
+#					However, if there are multiple secure part #s for the target
+#					microcontroller this variable may need to be changed.
 
 SBT ?= 0
 ifeq ($(SBT), 1)
-# Locate the SBT.  Default location is inside the Tools directory of the MSDK.
-# However, the SBT installer will override MAXIM_SBT_DIR on installation
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
 # ^ Must sanitize path for \ on Windows, since this may come from an environment
 # variable.
 
-include $(MAXIM_SBT_DIR)/SBT-config.mk
+export MAXIM_SBT_DIR # SBTs must have this environment variable defined to work
+
+include $(MAXIM_PATH)/Tools/SBT/SBT-config.mk
 
 endif
 
 # *******************************************************************************
+# Rules
+
 # Include the rules for building for this target. All other makefiles should be
 # included before this one.
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
-# SBT integration injects some additional special rules.
+# Include the rules that integrate the SBTs.  SBTs are a special case that must be
+# include after the core gcc rules to extend them.
 ifeq ($(SBT), 1)
-# Include the rules that integrate the SBTs
-include $(MAXIM_SBT_DIR)/SBT-rules.mk
+include $(MAXIM_PATH)/Tools/SBT/SBT-rules.mk
 endif
 
 all:
