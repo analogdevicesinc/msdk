@@ -3,9 +3,8 @@ BasedOnStyle: WebKit
 AllowShortBlocksOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Empty
+SortIncludes: Never
+ReflowComments: false
 ColumnLimit: '100'
-IndentWidth: '4'
-MaxEmptyLinesToKeep: '1'
-TabWidth: '4'
 UseTab: Never
 ...
