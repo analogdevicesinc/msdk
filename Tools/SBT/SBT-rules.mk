@@ -6,15 +6,11 @@
 # TODO: Description of this target
 .PHONY: sla
 sla: release
-ifneq (,$(findstring _ram,$(LINKERFILE)))
-    @echo "Not supported for _ram linkerfile!"
-else
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 	$(CA_SIGN_BUILD) -c $(TARGET_SEC) key_file=$(TEST_KEY) ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
 	@echo " "
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
 	$(BUILD_SESSION) -c $(TARGET_SEC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
-endif
 
 # The SCPA target.
 # TODO: Description of this target
