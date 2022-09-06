@@ -37,10 +37,10 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen,
                            const char* pcCommandString);
 
-static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
 
-static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString);
 
 static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
@@ -79,7 +79,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
 
         .pcCommand                   = "e", /* The command string to type. */
         .pcHelpString                = "Stops any active TX test",
-        .pxCommandInterpreter        = cmd_StopRFTest, /* The function to run. */
+        .pxCommandInterpreter        = cmd_StopBleRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
     },
@@ -109,7 +109,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
 
         .pcCommand                   = "rx", /* The command string to type. */
         .pcHelpString                = "Performs RX test on given channel",
-        .pxCommandInterpreter        = cmd_StartRFTest, /* The function to run. */
+        .pxCommandInterpreter        = cmd_StartBleRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     },
@@ -125,7 +125,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
 
         .pcCommand                   = "tx", /* The command string to type. */
         .pcHelpString                = "Performs TX test",
-        .pxCommandInterpreter        = cmd_StartRFTest, /* The function to run. */
+        .pxCommandInterpreter        = cmd_StartBleRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
     },
@@ -195,7 +195,7 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const ch
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString)
 {
     const char* temp;
@@ -269,7 +269,7 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString)
 {
     (void)pcCommandString;
