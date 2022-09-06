@@ -52,7 +52,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FILTER_REGEX_INCLUDE: .*/Libraries/PeriphDrivers/(Source|Include)/.*
+          # FILTER_REGEX_INCLUDE: .*/Libraries/PeriphDrivers/(Source|Include)/.*
           # Explicity turn off all linters except CPP
           # SuperLinter Documentation says all we need to do is turn on the ones we want 
           # and the rest will be off, but that doesn't seem to be the case in practice.
