@@ -277,15 +277,14 @@ void prompt(void)
     char str[25];
     uint8_t len = 0;
     if (activeTest) {
-        fflush(stdout);
         sprintf(str, "\n(active test) cmd:");
         len = 20;
     } else {
-        fflush(stdout);
         sprintf(str, "\ncmd:");
         len = 6;
     }
 
+    fflush(stdout);
     if (clearScreen) {
         cls();
     }
@@ -381,33 +380,33 @@ void txTestTask(void* pvParameters)
 {
     static int res    = 0xff;
     uint32_t notifVal = 0;
-    tx_config_t notifyCommand;
+    tx_config_t testConfig;
     char str[80];
     while (1) {
         /* Wait for notification to initiate TX/RX */
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
-        /* Get settings from the notification value */
-        notifyCommand.allData = notifVal;
+        /* Get test settings from the notification value */
+        testConfig.allData = notifVal;
 
-        if (notifyCommand.testType == BLE_TX_TEST) {
+        if (testConfig.testType == BLE_TX_TEST) {
             sprintf(str,
-                    "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", notifyCommand.channel);
+                    "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", testConfig.channel);
         } else {
-            sprintf(str, "Receive RF channel : %d : ", notifyCommand.channel);
+            sprintf(str, "Receive RF channel : %d : ", testConfig.channel);
         }
 
         strcat(str, (const char*)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
         /* stat test */
-        if (notifyCommand.testType == BLE_TX_TEST) {
-            res = LlEnhancedTxTest(notifyCommand.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        if (testConfig.testType == BLE_TX_TEST) {
+            res = LlEnhancedTxTest(testConfig.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
         } else {
-            res = LlEnhancedRxTest(notifyCommand.channel, phy, 0, 0);
+            res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
         }
         APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-        if (notifyCommand.duration_ms) {
-            vTaskDelay(notifyCommand.duration_ms);
+        if (testConfig.duration_ms) {
+            vTaskDelay(testConfig.duration_ms);
             LlEndTest(NULL);
             xSemaphoreGive(rfTestMutex);
         }
@@ -447,17 +446,17 @@ void sweepTestTask(void* pvParameters)
         txCommand.duration_ms = sweepConfig.duration_per_ch_ms;
         txCommand.testType    = BLE_TX_TEST;
         strcat(str, (const char*)getPhyStr(phy));
+        /* sweep channels */
         for (int i = start_ch; i <= end_ch; i++) {
             APP_TRACE_INFO2("\r\n-----------------| channel %d %s |----------------------\r\n",
 
                             ble_channels_spectrum[i], str);
             txCommand.channel = ble_channels_spectrum[i];
             res = LlEnhancedTxTest(ble_channels_spectrum[i], 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            // APP_TRACE_INFO2("Tx Transmit Ch[ %d ] : %s", ble_channels_spectrum[i], str);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
             LlEndTest(NULL);
             xSemaphoreGive(rfTestMutex);
-            vTaskDelay(100); /* give console time to print end of  test reuslts */
+            vTaskDelay(50); /* give console time to print end of  test reuslts */
         }
         activeTest  = NO_TEST;
         pausePrompt = false;

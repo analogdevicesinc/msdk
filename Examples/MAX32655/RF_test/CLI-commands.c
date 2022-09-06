@@ -15,6 +15,7 @@ extern TaskHandle_t help_task_id;
 extern test_t activeTest;
 extern bool pausePrompt;
 extern bool clearScreen;
+extern xSemaphoreHandle rfTestMutex;
 
 /*! \brief Physical layer functions. */
 extern void llc_api_set_txpower(int8_t power);
@@ -22,7 +23,6 @@ extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
 extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
-extern xSemaphoreHandle rfTestMutex;
 
 /* helpers */
 static bool isDigit(const char* symbol, uint8_t len);
@@ -174,7 +174,6 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
 	write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
-    (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
 
     /* Generate a table of task stats. */
@@ -188,13 +187,9 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 /*-----------------------------------------------------------*/
 static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const char* pcCommandString)
 {
-    /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
-    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     pausePrompt = true;
     xTaskNotify(help_task_id, 0xFF, eSetBits);
     return pdFALSE;
@@ -203,10 +198,6 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const ch
 static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString)
 {
-    /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
-    (void)xWriteBufferLen;
     const char* temp;
     BaseType_t lParameterStringLength;
     configASSERT(pcWriteBuffer);
@@ -281,9 +272,6 @@ static BaseType_t cmd_StartRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 static BaseType_t cmd_StopRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  const char* pcCommandString)
 {
-    /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);
 
