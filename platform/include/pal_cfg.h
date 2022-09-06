@@ -51,7 +51,7 @@ typedef enum
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
-void PalCfgLoadData(uint8_t cfgId, void *pBuf, uint32_t len);
+void PalCfgLoadData(uint8_t cfgId, uint8_t *pBuf, uint32_t len);
 void PalCfgSetDeviceUuid(uint8_t *pBuf);
 
 /*! \} */    /* PAL_CFG */

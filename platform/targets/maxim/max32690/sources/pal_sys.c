@@ -18,6 +18,12 @@
 /*************************************************************************************************/
 #include <string.h>
 
+#ifdef __ICCARM__  // IAR
+#include <stdlib.h>
+#pragma section="CSTACK"
+#pragma section="HEAP"
+#endif
+
 #include "pal_sys.h"
 #include "pal_led.h"
 #include "pal_rtc.h"

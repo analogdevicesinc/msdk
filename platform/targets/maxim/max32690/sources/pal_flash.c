@@ -44,8 +44,16 @@
 #define PAL_NVM_IS_SECTOR_ALIGNED(value)        (((uint32_t)(value) & \
                                                         (MXC_FLASH_PAGE_SIZE - 1)) == 0)
 
-extern uint32_t __pal_nvm_db_start__, __pal_nvm_db_end__;
-
+#if defined (__GNUC__)
+    extern uint32_t __pal_nvm_db_start__, __pal_nvm_db_end__;
+#elif defined (__CC_ARM)
+    uint32_t __pal_nvm_db_start__ =  PAL_NVM_DB_START__;
+    uint32_t __pal_nvm_db_end__   =  PAL_NVM_DB_END__; 
+#elif defined (__ICCARM__)
+    #pragma section="PAL_NVM"
+    uint32_t *__pal_nvm_db_start__   = __section_begin("PAL_NVM");
+    uint32_t *__pal_nvm_db_end__     = __section_end("PAL_NVM"); 
+#endif
 
 /**************************************************************************************************
   Functions: Initialization
@@ -90,10 +98,20 @@ void PalFlashDeInit(void)
 /*************************************************************************************************/
 PalFlashState_t PalNvmGetState(void)
 {
+#if defined (__GNUC__)	
   if(&__pal_nvm_db_start__ == &__pal_nvm_db_end__) {
     return PAL_FLASH_STATE_UNINIT;
   }
-
+#elif defined (__CC_ARM)
+  if(__pal_nvm_db_start__ == __pal_nvm_db_end__) {
+    return PAL_FLASH_STATE_UNINIT;
+  } 
+#elif defined (__ICCARM__)
+  if(__pal_nvm_db_start__ == __pal_nvm_db_end__ - 1) {
+    return PAL_FLASH_STATE_UNINIT;
+  }
+#endif
+  
   return PAL_FLASH_STATE_READY;
 }
 
@@ -106,7 +124,15 @@ PalFlashState_t PalNvmGetState(void)
 /*************************************************************************************************/
 uint32_t PalNvmGetTotalSize(void)
 {
+  
+#if defined (__GNUC__)
   return (uint32_t)(&__pal_nvm_db_end__) - (uint32_t)(&__pal_nvm_db_start__);
+#elif defined (__CC_ARM)	
+  return __pal_nvm_db_end__ - __pal_nvm_db_start__;
+#elif defined (__ICCARM__)
+  return __pal_nvm_db_end__ - __pal_nvm_db_start__ -1;
+#endif  
+  
 }
 
 /*************************************************************************************************/
@@ -148,9 +174,17 @@ void PalFlashRead(void *pBuf, uint32_t size, uint32_t srcAddr)
     return;
   }
 
+#if defined (__GNUC__)
   /* Offset the address into flash */
   srcAddr += (uint32_t)&__pal_nvm_db_start__;
-
+#elif defined (__CC_ARM)
+  /* Offset the address into flash */
+  srcAddr += (uint32_t)__pal_nvm_db_start__;
+#elif defined (__ICCARM__)
+  /* Offset the address into flash */
+  srcAddr += (uint32_t)__pal_nvm_db_start__;  
+#endif
+  
   uint32_t *src = (uint32_t*)srcAddr;
   memcpy(pBuf, src, size);
 }
@@ -173,7 +207,13 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
   }
 
   /* Offset the address into flash */
+#if defined (__GNUC__)
   dstAddr += (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  dstAddr += (uint32_t)__pal_nvm_db_start__;  
+#elif defined (__ICCARM__)
+  dstAddr += (uint32_t)__pal_nvm_db_start__;
+#endif 
   WsfCsEnter();
   MXC_FLC_Write(dstAddr, size, pBuf);
   WsfCsExit();
@@ -196,7 +236,13 @@ void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
   }
 
   /* Offset the address into flash */
+#if defined (__GNUC__)	
   startAddr += (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  startAddr += (uint32_t)__pal_nvm_db_start__;	
+#elif defined (__ICCARM__)
+  startAddr += (uint32_t)__pal_nvm_db_start__;	
+#endif 
 
   while(size) {
     WsfCsEnter();
@@ -219,9 +265,19 @@ void PalFlashEraseChip(void)
 {
   uint32_t startAddr, size;
 
+#if defined (__GNUC__)
   /* Offset the address into flash */
   startAddr = (uint32_t)&__pal_nvm_db_start__;
   size = (uint32_t)&__pal_nvm_db_end__ - (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  /* Offset the address into flash */
+  startAddr = (uint32_t)__pal_nvm_db_start__;
+  size = (uint32_t)__pal_nvm_db_end__ - (uint32_t)__pal_nvm_db_start__;
+#elif defined (__ICCARM__)
+  /* Offset the address into flash */
+  startAddr = (uint32_t)__pal_nvm_db_start__;
+  size = (uint32_t)__pal_nvm_db_end__ - (uint32_t)__pal_nvm_db_start__ -1;
+#endif 
 
   while(size) {
     WsfCsEnter();
