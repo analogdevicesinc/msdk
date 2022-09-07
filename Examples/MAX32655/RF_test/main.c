@@ -389,8 +389,7 @@ void txTestTask(void* pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            sprintf(str,
-                    "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", testConfig.channel);
+            sprintf(str, "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", testConfig.channel);
         } else {
             sprintf(str, "Receive RF channel : %d : ", testConfig.channel);
         }
@@ -468,7 +467,6 @@ void helpTask(void* pvParameters)
     uint32_t notifVal = 0;
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
-
         // clang-format off
     // printf("+---------+----------------------------------+-------------------------------------------------------+\r\n");
     // printf("| Command | parameters [optional] <required> |                      description                      |\r\n");

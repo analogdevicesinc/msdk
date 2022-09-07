@@ -38,10 +38,10 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen,
                            const char* pcCommandString);
 
 static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString);
+                                     const char* pcCommandString);
 
 static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString);
+                                    const char* pcCommandString);
 
 static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
                              const char* pcCommandString);
@@ -190,13 +190,14 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const ch
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     pausePrompt = true;
     xTaskNotify(help_task_id, 0xFF, eSetBits);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString)
+                                     const char* pcCommandString)
 {
     const char* temp;
     BaseType_t lParameterStringLength;
@@ -270,7 +271,7 @@ static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen
 }
 /*-----------------------------------------------------------*/
 static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString)
+                                    const char* pcCommandString)
 {
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);
