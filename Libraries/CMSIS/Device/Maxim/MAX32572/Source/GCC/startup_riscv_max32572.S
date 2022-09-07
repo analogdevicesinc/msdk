@@ -85,8 +85,8 @@ __isr_vector:
   jal x0, RSV22_IRQHandler    
   jal x0, RSV23_IRQHandler     
   jal x0, RSV24_IRQHandler 
-  jal x0, RSV25_IRQHandler     
-  jal x0, RSV26_IRQHandler    
+  jal x0, GPIO0_IRQHandler     
+  jal x0, GPIO1_IRQHandler    
   jal x0, RSV27_IRQHandler    
   jal x0, RSV28_IRQHandler    
   jal x0, RSV29_IRQHandler     
@@ -265,8 +265,8 @@ main_entry:
   def_irq_handler RSV22_IRQHandler     
   def_irq_handler RSV23_IRQHandler 
   def_irq_handler RSV24_IRQHandler     
-  def_irq_handler RSV25_IRQHandler    
-  def_irq_handler RSV26_IRQHandler    
+  def_irq_handler GPIO0_IRQHandler    
+  def_irq_handler GPIO1_IRQHandler    
   def_irq_handler RSV27_IRQHandler    
   def_irq_handler RSV28_IRQHandler     
   def_irq_handler RSV29_IRQHandler     

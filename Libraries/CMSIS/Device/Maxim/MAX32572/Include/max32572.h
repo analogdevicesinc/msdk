@@ -195,6 +195,7 @@ typedef enum {
     RSV110_IRQn,   /* 0x7E  0x01F8  126: Reserved */
     RSV111_IRQn,   /* 0x7F  0x01FC  127: Reserved */
 #else              // __riscv
+    HardFault_IRQn = 3, /* 0x03,3 Hardfault */
     RSV4_IRQn = 4, /* 0x04,4 Reserved */
     RSV5_IRQn,     /* 0x05,5 Reserved */
     MSRADC_IRQn,   /* 0x06,6 Magstripe DSP */
@@ -216,8 +217,8 @@ typedef enum {
     RSV22_IRQn,    /* 0x16,22 Reserved */
     RSV23_IRQn,    /* 0x17,23 Reserved */
     RSV24_IRQn,    /* 0x18,24 Reserved */
-    RSV25_IRQn,    /* 0x19,25 Reserved */
-    RSV26_IRQn,    /* 0x1A,26 Reserved */
+    GPIO0_IRQn,    /* 0x19,25 GPIO0 */
+    GPIO1_IRQn,    /* 0x1A,26 GPIO1 */
     RSV27_IRQn,    /* 0x1B,27 Reserved */
     RSV28_IRQn,    /* 0x1C,28 Reserved */
     RSV29_IRQn,    /* 0x1D,29 Reserved */
@@ -287,8 +288,12 @@ typedef enum {
 /* ==================       Device Specific Memory Section       ================== */
 /* ================================================================================ */
 
-#define MXC_ROM_MEM_BASE  0x00000000UL
-#define MXC_ROM_MEM_SIZE  0x00010000UL
+#define MXC_ROM0_MEM_BASE 0x00000000UL
+#define MXC_ROM0_MEM_SIZE 0x00010000UL
+#define MXC_ROM1_MEM_BASE 0x2006C000UL
+#define MXC_ROM1_MEM_SIZE 0x00004000UL
+#define MXC_ROM_MEM_BASE  MXC_ROM0_MEM_BASE
+#define MXC_ROM_MEM_SIZE  MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE  0x08000000UL
 #define MXC_XIP_MEM_SIZE  0x08000000UL
 #define MXC_SRAM_MEM_BASE 0x20000000UL
@@ -579,6 +584,11 @@ typedef enum {
          (p) == MXC_PT3 ? \
          3 :              \
          (p) == MXC_PT4 ? 4 : (p) == MXC_PT5 ? 5 : (p) == MXC_PT6 ? 6 : (p) == MXC_PT7 ? 7 : -1)
+
+/******************************************************************************/
+/*                                                                 Semaphores */
+#define MXC_BASE_SEMA ((uint32_t)0x4003E000UL)
+#define MXC_SEMA      ((mxc_sema_regs_t*)MXC_BASE_SEMA)
 
 /******************************************************************************/
 /*                                                             OTP Controller */
