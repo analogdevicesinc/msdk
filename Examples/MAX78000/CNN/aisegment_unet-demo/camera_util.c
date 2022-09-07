@@ -91,12 +91,6 @@ int initialize_camera(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
-    defined(CAMERA_OV5642)
-    camera_set_hmirror(0);
-    camera_set_vflip(0);
-#endif
-
     printf("Init Camera\n");
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
