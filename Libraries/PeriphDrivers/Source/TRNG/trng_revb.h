@@ -38,7 +38,7 @@
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
 
-int MXC_TRNG_RevB_Init(mxc_trng_revb_regs_t* trng);
+int MXC_TRNG_RevB_Init(void);
 void MXC_TRNG_RevB_EnableInt(mxc_trng_revb_regs_t* trng);
 void MXC_TRNG_RevB_DisableInt(mxc_trng_revb_regs_t* trng);
 int MXC_TRNG_RevB_Shutdown(void);

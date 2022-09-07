@@ -56,7 +56,7 @@ int MXC_TRNG_Init()
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
 
-    MXC_TRNG_RevB_Init((mxc_trng_revb_regs_t*)MXC_TRNG);
+    MXC_TRNG_RevB_Init();
 
     return E_NO_ERROR;
 }

@@ -55,11 +55,8 @@ static uint8_t* TRNG_data;
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
 
-int MXC_TRNG_RevB_Init(mxc_trng_revb_regs_t* trng)
+int MXC_TRNG_RevB_Init(void)
 {
-    // trng->ctrl &= ~MXC_F_TRNG_REVB_CTRL_ODHT;
-    // while(trng->status & MXC_F_TRNG_REVB_STATUS_ODHT);
-
     return E_NO_ERROR;
 }
 
