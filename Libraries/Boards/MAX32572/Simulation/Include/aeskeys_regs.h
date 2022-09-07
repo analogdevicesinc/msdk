@@ -3,8 +3,8 @@
  * @brief   Registers, Bit Masks and Bit Positions for the AES Keys Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-11-10 14:27:00 -0600 (Thu, 10 Nov 2016) $
- * $Revision: 25033 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef _AESKEYS_REGS_H_
 #define _AESKEYS_REGS_H_
