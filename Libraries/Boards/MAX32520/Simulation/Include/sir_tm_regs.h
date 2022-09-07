@@ -3,8 +3,8 @@
  * @brief   Registers, Bit Masks and Bit Positions for the SIR Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-01-24 15:24:10 -0600 (Tue, 24 Jan 2017) $
- * $Revision: 26087 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef _SIR_TM_REGS_H_
 #define _SIR_TM_REGS_H_
