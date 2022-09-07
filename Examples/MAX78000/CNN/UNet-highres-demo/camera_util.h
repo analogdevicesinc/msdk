@@ -37,21 +37,7 @@
 #define CAMERA_FREQ    (10 * 1000 * 1000)
 #define BYTE_PER_PIXEL 2
 
-#if defined(CAMERA_HM01B0)
-#define IMAGE_XRES 324 / 2
-#define IMAGE_YRES 244 / 2
-#define CAMERA_MONO
-//#define STREAM_ENABLE
-#endif
-
-#if defined(CAMERA_HM0360)
-#define IMAGE_XRES 320
-#define IMAGE_YRES 240
-#define CAMERA_MONO
-//#define STREAM_ENABLE
-#endif
-
-#if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
+#if defined(CAMERA_OV7692)
 
 #define IMAGE_XRES 352
 #define IMAGE_YRES 352
