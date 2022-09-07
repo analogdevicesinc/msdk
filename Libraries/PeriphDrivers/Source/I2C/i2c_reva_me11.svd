@@ -726,6 +726,11 @@
             <description>Transmit Lock Out Interrupt.</description>
             <bitRange>[15:15]</bitRange>
           </field>
+          <field>
+            <name>MAMI</name>
+            <description>Multiple Slave Address Match Interrupt.</description>
+            <bitRange>[19:16]</bitRange>
+          </field>
         </fields>
       </register>
       <register>
@@ -1011,6 +1016,11 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
+          </field>
+          <field>
+            <name>MAMIE</name>
+            <description>Multiple Slave Address Match Interrupt Enable.</description>
+            <bitRange>[19:16]</bitRange>
           </field>
         </fields>
       </register>
@@ -1439,6 +1449,16 @@ transaction.</description>
             <name>SLA</name>
             <description>Slave Address.</description>
             <bitRange>[9:0]</bitRange>
+          </field>
+          <field>
+            <name>SLADIS</name>
+            <description>Slave Address Disable.</description>
+            <bitRange>[10:10]</bitRange>
+          </field>
+          <field>
+            <name>SLAIDX</name>
+            <description>Slave Address Index.</description>
+            <bitRange>[14:11]</bitRange>
           </field>
           <field>
             <name>EA</name>
