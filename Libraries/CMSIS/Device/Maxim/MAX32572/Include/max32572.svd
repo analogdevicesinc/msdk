@@ -1099,78 +1099,6 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>RAM0</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM1</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM2</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM3</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>ICCXIP</name>
        <description>IcacheXIP ECC Enable.</description>
        <bitOffset>10</bitOffset>
@@ -1260,6 +1188,70 @@
        <name>rstn_voltage_sel</name>
        <description>Error! Description not Found!</description>
        <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CLKCTRL</name>
+     <description>Clock Control Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <fields>
+      <field>
+       <name>ERTCO_PD</name>
+       <description>32kHz Crystal Oscillator Power Down.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ERTCO_EN</name>
+       <description>32kHz Crystal Oscillator Enable.</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RST</name>
+     <description>Reset Register.</description>
+     <addressOffset>0x18</addressOffset>
+     <fields>
+      <field>
+       <name>RTC</name>
+       <description>Real Time Cock Reset.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RTCTRIM</name>
+     <description>RTC Trim Register.</description>
+     <addressOffset>0x1C</addressOffset>
+     <fields>
+      <field>
+       <name>TRIM_X1</name>
+       <description>RTC Trim X1</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+      <field>
+       <name>TRIM_X2</name>
+       <description>RTC TRIM X2</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LDOCTRL</name>
+     <description>LDO Control Register.</description>
+     <addressOffset>0x60</addressOffset>
+     <fields>
+      <field>
+       <name>LDO0P9_EN</name>
+       <description>LDO 0.9V Enable.</description>
+       <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
