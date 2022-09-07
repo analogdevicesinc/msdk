@@ -106,14 +106,23 @@ typedef struct {
  * @brief    ECC Enable Register
  * @{
  */
- #define MXC_F_ECC_EN_RAM_POS                           8 /**< EN_RAM Position */
- #define MXC_F_ECC_EN_RAM                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM_POS)) /**< EN_RAM Mask */
+ #define MXC_F_ECC_EN_RAM0_1_POS                        8 /**< EN_RAM0_1 Position */
+ #define MXC_F_ECC_EN_RAM0_1                            ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM0_1_POS)) /**< EN_RAM0_1 Mask */
 
- #define MXC_F_ECC_EN_ICC0_POS                          9 /**< EN_ICC0 Position */
+ #define MXC_F_ECC_EN_RAM2_POS                          9 /**< EN_RAM2 Position */
+ #define MXC_F_ECC_EN_RAM2                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM2_POS)) /**< EN_RAM2 Mask */
+
+ #define MXC_F_ECC_EN_RAM3_POS                          10 /**< EN_RAM3 Position */
+ #define MXC_F_ECC_EN_RAM3                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM3_POS)) /**< EN_RAM3 Mask */
+
+ #define MXC_F_ECC_EN_ICC0_POS                          11 /**< EN_ICC0 Position */
  #define MXC_F_ECC_EN_ICC0                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_ICC0_POS)) /**< EN_ICC0 Mask */
 
- #define MXC_F_ECC_EN_FLASH_POS                         10 /**< EN_FLASH Position */
- #define MXC_F_ECC_EN_FLASH                             ((uint32_t)(0x1UL << MXC_F_ECC_EN_FLASH_POS)) /**< EN_FLASH Mask */
+ #define MXC_F_ECC_EN_FL0_POS                           12 /**< EN_FL0 Position */
+ #define MXC_F_ECC_EN_FL0                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_FL0_POS)) /**< EN_FL0 Mask */
+
+ #define MXC_F_ECC_EN_FL1_POS                           13 /**< EN_FL1 Position */
+ #define MXC_F_ECC_EN_FL1                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_FL1_POS)) /**< EN_FL1 Mask */
 
 /**@} end of group ECC_EN_Register */
 

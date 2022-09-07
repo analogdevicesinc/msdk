@@ -147,15 +147,10 @@ int main(void)
     AES_encrypt(0, MXC_AES_256BITS);
     fail += AES_decrypt(0, MXC_AES_256BITS);
 
-    printf("\n");
-
     if (fail == 0) {
         printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
-    }
-
-    while (1) {
+        printf("\nExample Failed\n");
     }
 
     return 0;

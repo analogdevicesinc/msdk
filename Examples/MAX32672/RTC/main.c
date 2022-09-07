@@ -156,7 +156,7 @@ void printTime()
 
     subsec += sec;
 
-    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n\n", day, hr, min, subsec);
+    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f", day, hr, min, subsec);
 }
 
 // *****************************************************************************
@@ -249,4 +249,6 @@ int main(void)
             buttonPressed = 0;
         }
     }
+
+    return 0;
 }

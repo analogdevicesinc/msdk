@@ -46,6 +46,13 @@
 extern "C" {
 #endif
 
+/* 
+    Define board name:
+    Use as #if defined(BOARD_FTHR)
+    Not as #if BOARD_FTHR
+*/
+#define BOARD_FTHR 1
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
 #endif

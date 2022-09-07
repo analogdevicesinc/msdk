@@ -49,7 +49,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
 
     switch (cfg->clock) {
         case MXC_TMR_EXT_CLK:
-            clockSource = MXC_TMR_CLK0;
+            clockSource = MXC_TMR_CLK1;
             MXC_GPIO_Config(&gpio_cfg_extclk);
             break;
 
@@ -58,7 +58,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
                 return E_NOT_SUPPORTED;
             }
 
-            clockSource = MXC_TMR_CLK1;
+            clockSource = MXC_TMR_CLK2;
             MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
             break;
 
@@ -76,7 +76,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
                 return E_NOT_SUPPORTED;
             }
 
-            clockSource = MXC_TMR_CLK1;
+            clockSource = MXC_TMR_CLK2;
             MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
             break;
 
