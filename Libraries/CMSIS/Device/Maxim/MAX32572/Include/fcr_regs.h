@@ -89,10 +89,10 @@ typedef struct {
     __IO uint32_t autocal0;             /**< <tt>\b 0x04:</tt> FCR AUTOCAL0 Register */
     __IO uint32_t autocal1;             /**< <tt>\b 0x08:</tt> FCR AUTOCAL1 Register */
     __IO uint32_t autocal2;             /**< <tt>\b 0x0C:</tt> FCR AUTOCAL2 Register */
-    union {
-        __IO uint32_t urvbootaddr;      /**< <tt>\b 0x10:</tt> FCR URVBOOTADDR Register */
-        __IO uint32_t urvctrl;          /**< <tt>\b 0x10:</tt> FCR URVCTRL Register */
-    };
+    __IO uint32_t urvbootaddr;          /**< <tt>\b 0x10:</tt> FCR URVBOOTADDR Register */
+    __IO uint32_t urvctrl;              /**< <tt>\b 0x14:</tt> FCR URVCTRL Register */
+    __R  uint32_t rsv_0x18;
+    __IO uint32_t gp;                   /**< <tt>\b 0x1C:</tt> FCR GP Register */
 } mxc_fcr_regs_t;
 
 /* Register offsets for module FCR */
@@ -107,7 +107,8 @@ typedef struct {
  #define MXC_R_FCR_AUTOCAL1                 ((uint32_t)0x00000008UL) /**< Offset from FCR Base Address: <tt> 0x0008</tt> */ 
  #define MXC_R_FCR_AUTOCAL2                 ((uint32_t)0x0000000CUL) /**< Offset from FCR Base Address: <tt> 0x000C</tt> */ 
  #define MXC_R_FCR_URVBOOTADDR              ((uint32_t)0x00000010UL) /**< Offset from FCR Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_FCR_URVCTRL                  ((uint32_t)0x00000010UL) /**< Offset from FCR Base Address: <tt> 0x0010</tt> */ 
+ #define MXC_R_FCR_URVCTRL                  ((uint32_t)0x00000014UL) /**< Offset from FCR Base Address: <tt> 0x0014</tt> */ 
+ #define MXC_R_FCR_GP                       ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */ 
 /**@} end of group fcr_registers */
 
 /**
@@ -187,7 +188,7 @@ typedef struct {
 /**
  * @ingroup  fcr_registers
  * @defgroup FCR_URVBOOTADDR FCR_URVBOOTADDR
- * @brief    Register 2.
+ * @brief    Register 4.
  * @{
  */
  #define MXC_F_FCR_URVBOOTADDR_BOOTADDR_POS             0 /**< URVBOOTADDR_BOOTADDR Position */
@@ -198,7 +199,7 @@ typedef struct {
 /**
  * @ingroup  fcr_registers
  * @defgroup FCR_URVCTRL FCR_URVCTRL
- * @brief    Register 2.
+ * @brief    Register 5.
  * @{
  */
  #define MXC_F_FCR_URVCTRL_SLEEP_REQ_POS                0 /**< URVCTRL_SLEEP_REQ Position */
@@ -208,6 +209,17 @@ typedef struct {
  #define MXC_F_FCR_URVCTRL_SLEEP_ACK                    ((uint32_t)(0x1UL << MXC_F_FCR_URVCTRL_SLEEP_ACK_POS)) /**< URVCTRL_SLEEP_ACK Mask */
 
 /**@} end of group FCR_URVCTRL_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_GP FCR_GP
+ * @brief    General Purpose Register.
+ * @{
+ */
+ #define MXC_F_FCR_GP_GP_POS                            0 /**< GP_GP Position */
+ #define MXC_F_FCR_GP_GP                                ((uint32_t)(0xFFFFFFFFUL << MXC_F_FCR_GP_GP_POS)) /**< GP_GP Mask */
+
+/**@} end of group FCR_GP_Register */
 
 #ifdef __cplusplus
 }
