@@ -38,10 +38,10 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen,
                            const char* pcCommandString);
 
 static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString);
+                                     const char* pcCommandString);
 
 static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString);
+                                    const char* pcCommandString);
 
 static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
                              const char* pcCommandString);
@@ -66,7 +66,7 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
 
 /***************************| Command structures |******************************/
 /* Structure that defines the "ps" command line command. */
-static const CLI_Command_Definition_t xCommandList[] = {
+const CLI_Command_Definition_t xCommandList[] = {
     {
         .pcCommand                   = "cls", /* The command string to type. */
         .pcHelpString                = "Clears screen",
@@ -76,7 +76,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "constTx", /* The command string to type. */
-        .pcHelpString                = "Enable constant TX.",
+        .pcHelpString                = "<channel>",
         .pxCommandInterpreter        = cmd_ConstTx, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
@@ -99,16 +99,16 @@ static const CLI_Command_Definition_t xCommandList[] = {
     },
     {
 
-        .pcCommand                   = "packetlen", /* The command string to type. */
-        .pcHelpString                = "Sets packet len",
+        .pcCommand                   = "plen", /* The command string to type. */
+        .pcHelpString                = "<packet_length>",
         .pxCommandInterpreter        = cmd_SetPacketLen, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
     {
 
-        .pcCommand                   = "packettype", /* The command string to type. */
-        .pcHelpString                = "Sets packet type",
+        .pcCommand                   = "ptype", /* The command string to type. */
+        .pcHelpString                = "<packet_type>",
         .pxCommandInterpreter        = cmd_SetPacketType, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
@@ -116,7 +116,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "phy", /* The command string to type. */
-        .pcHelpString                = "Sets Phy. Param: 1M 2M S8 S2 ",
+        .pcHelpString                = "<phy>",
         .pxCommandInterpreter        = cmd_SetPhy, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
@@ -130,7 +130,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "rx", /* The command string to type. */
-        .pcHelpString                = "Performs RX test on given channel",
+        .pcHelpString                = "<channel>",
         .pxCommandInterpreter        = cmd_StartBleRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
@@ -138,7 +138,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "sweep", /* The command string to type. */
-        .pcHelpString                = "Sweeps channels at given interval ",
+        .pcHelpString                = "<start_ch> <end_ch> <ms/per_ch>",
         .pxCommandInterpreter        = cmd_Sweep, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
@@ -146,7 +146,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "tx", /* The command string to type. */
-        .pcHelpString                = "Performs TX test",
+        .pcHelpString                = "<channel> <duration>",
         .pxCommandInterpreter        = cmd_StartBleRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = -1
 
@@ -154,7 +154,7 @@ static const CLI_Command_Definition_t xCommandList[] = {
     {
 
         .pcCommand                   = "txdbm", /* The command string to type. */
-        .pcHelpString                = "Sets transmit power",
+        .pcHelpString                = "<dbm>",
         .pxCommandInterpreter        = cmd_SetTxdBm, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
@@ -213,13 +213,14 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const ch
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     pausePrompt = true;
     xTaskNotify(help_task_id, 0xFF, eSetBits);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
 static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString)
+                                     const char* pcCommandString)
 {
     const char* temp;
     BaseType_t lParameterStringLength;
@@ -293,7 +294,7 @@ static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen
 }
 /*-----------------------------------------------------------*/
 static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString)
+                                    const char* pcCommandString)
 {
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);

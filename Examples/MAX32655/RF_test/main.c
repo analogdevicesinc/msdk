@@ -79,7 +79,7 @@ extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
 extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
-
+extern const CLI_Command_Definition_t xCommandList[];
 /*************************************************************************************************/
 /*!
  *  \fn     Get PHY String.
@@ -323,11 +323,11 @@ void prompt(void)
     char str[25];
     uint8_t len = 0;
     if (activeTest) {
-        sprintf(str, "\n(active test) cmd:");
-        len = 20;
+        sprintf(str, "\r\n(active test) cmd:");
+        len = 21;
     } else {
-        sprintf(str, "\ncmd:");
-        len = 6;
+        sprintf(str, "\r\ncmd:");
+        len = 7;
     }
 
     fflush(stdout);
@@ -337,7 +337,27 @@ void prompt(void)
     //using app_trace would add newline after prompt which does not look right
     WsfBufIoWrite((const uint8_t*)str, len);
 }
-
+void printHint(uint8_t* buff)
+{
+    int i           = 0;
+    uint8_t bufflen = strlen(buff);
+    bool foundMatch = false;
+    do {
+        if (memcmp(buff, xCommandList[i].pcCommand, bufflen) == 0 && bufflen > 0) {
+            printf("\r\n%s %s", xCommandList[i].pcCommand, xCommandList[i].pcHelpString);
+            foundMatch = true;
+        }
+        i++;
+    } while (xCommandList[i].pcCommand != NULL);
+    if (foundMatch) {
+        /* print new prompt with what user had previouslly typed */
+        printf("\r\n");
+        prompt();
+        vTaskDelay(5);
+        printf("%s", buff);
+        fflush(stdout);
+    }
+}
 void vCmdLineTask(void* pvParameters)
 {
     unsigned char tmp;
@@ -373,9 +393,15 @@ void vCmdLineTask(void* pvParameters)
                     /* Backspace */
                     if (index > 0) {
                         index--;
+                        memset(&buffer[index], 0x00, 1);
                         WsfBufIoWrite((const uint8_t*)backspace, sizeof(backspace));
                     }
                     fflush(stdout);
+                } else if (tmp == 0x09)
+                /* tab hint */
+                {
+                    printHint(buffer);
+
                 }
                 /*since freq hop does not allow user to see what they are typing, simply typing
                   'e' without the need to press enter willl stop the frequency hopping test */
@@ -392,18 +418,22 @@ void vCmdLineTask(void* pvParameters)
                     APP_TRACE_INFO0("^C");
                     prompt();
                 } else if ((tmp == '\r') || (tmp == '\n')) {
-                    APP_TRACE_INFO0("\r\n");
-                    /* Null terminate for safety */
-                    buffer[index] = 0x00;
-                    /* Evaluate */
-                    do {
-                        xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
-                        for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
-                            putchar(*(output + x));
-                        }
-                    } while (xMore != pdFALSE);
+                    if (strlen(buffer) > 0) {
+                        APP_TRACE_INFO0("\r\n");
+                        /* Null terminate for safety */
+                        buffer[index] = 0x00;
+                        /* Evaluate */
+                        do {
+                            xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
+                            for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output));
+                                 x++) {
+                                putchar(*(output + x));
+                            }
+                        } while (xMore != pdFALSE);
+                    }
                     /* New prompt */
                     index = 0;
+                    memset(buffer, 0x00, 100);
                     prompt();
                 } else if (index < CMD_LINE_BUF_SIZE) {
                     putchar(tmp);
@@ -516,28 +546,31 @@ void helpTask(void* pvParameters)
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
 
         // clang-format off
-    // printf("+---------+----------------------------------+-------------------------------------------------------+\r\n");
-    // printf("| Command | parameters [optional] <required> |                      description                      |\r\n");
-    // printf("+=========+==================================+=======================================================+\r\n");
-    // printf("| cls     | N/A                              | clears the screen                                     |\r\n");
-    // printf("| constTx | <channel> : 1 - 39               | Constant TX on given channel. Channel param           |\r\n");
-    // printf("|         |                                  | is required on first command call                     |\r\n");
-    // printf("|         |                                  | subsequent calls default to last given channel        |\r\n");
-    // printf("| e       | N/A                              | Ends any active RX/TX/Constant/Freq.hop RF test       |\r\n");
-    // printf("| phy     | <symbol rate> : 1M 2M S2 S8      | Sets the PHY symbol rate. Not case sensitive 1M == 1m |\r\n");
-    // printf("| ps      | N/A                              | Display freeRTOS task stats                           |\r\n");
-    // printf("| rx      | <channel> : 1 - 39               | RX test on given channel. Channel param               |\r\n");
-    // printf("|         |                                  | is required on first command call.                    |\r\n");
-    // printf("|         |                                  | Subsequent calls default to last given channel        |\r\n");
-    // printf("| sweep   | <start ch> <end ch> <ms/per ch>  | Sweeps TX tests through a range of channels given     |\r\n");
-    // printf("|         |                                  | their order of appearance on the spectrum.            |\r\n");
-    // printf("| tx      | <channel> : 1 - 39               | TX test on given channel. Channel param               |\r\n");
-    // printf("|         |                                  | is required on first command call.                    |\r\n");
-    // printf("|         |                                  | Subsequent calls default to last given channel        |\r\n");
-    // printf("| txdbm   | <dbm> : 4.5 2 -10                | Select transmit power                                 |\r\n");
-    // printf("| help    | N/A                              | Displays this help table                              |\r\n");
-    // printf("+---------+----------------------------------+-------------------------------------------------------+\r\n");
-    // printf("\r\n");
+    
+        // printf(" Command   parameters [optional] <required>                        description                       \r\n");
+        // printf("--------- ---------------------------------- ------------------------------------------------------- \r\n");
+        // printf(" cls       N/A                                clears the screen                                      \r\n\r\n");
+        // printf(" constTx   <channel> : 1 - 39                 Constant TX on given channel. Channel param            \r\n");
+        // printf("                                              is required on first command call                      \r\n");
+        // printf("                                              subsequent calls default to last given channel         \r\n\r\n");
+        // printf(" e         N/A                                Ends any active RX/TX/Constant/Freq.hop RF test        \r\n\r\n");
+        // printf(" plen      <packet_length> : 0-255 bytes      Sets payload packet length                             \r\n\r\n");
+        // printf(" ptype     <packet_type>                      Sets payload packet type                               \r\n");
+        // printf("                                              PRBS9,PRBS15,00,FF,0F,F0,55,AA                         \r\n\r\n");
+        // printf(" phy       <symbol rate> : 1M 2M S2 S8        Sets the PHY symbol rate. Not case sensitive 1M == 1m  \r\n\r\n");
+        // printf(" ps        N/A                                Display freeRTOS task stats                            \r\n\r\n");
+        // printf(" rx        <channel> : 1 - 39                 RX test on given channel. Channel param                \r\n");
+        // printf("                                              is required on first command call.                     \r\n");
+        // printf("                                              Subsequent calls default to last given channel         \r\n\r\n");
+        // printf(" sweep     <start ch> <end ch> <ms/per ch>    Sweeps TX tests through a range of channels given      \r\n");
+        // printf("                                              their order of appearance on the spectrum.             \r\n\r\n");
+        // printf(" tx        <channel> : 1 - 39                 TX test on given channel. Channel param                \r\n");
+        // printf("                                              is required on first command call.                     \r\n");
+        // printf("                                              Subsequent calls default to last given channel         \r\n\r\n");
+        // printf(" txdbm     <dbm> : 4.5 2 -10                  Select transmit power                                  \r\n\r\n");
+        // printf(" help      N/A                                Displays this help table                               \r\n");
+
+
 
 
 
@@ -545,35 +578,40 @@ void helpTask(void* pvParameters)
     printf("│ Command │ parameters [optional] <required> │                      description                      │\r\n");
     printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
     printf("│ cls     │ N/A                              │ clears the screen                                     │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ constTx │ <channel> : 1 - 39               │ Constant TX on given channel. Channel param           │\r\n");
     printf("│         │ ex: constTx 0                    │ is required on first command call                     │\r\n");
     printf("│         │                                  │ subsequent calls default to last given channel        │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ e       │ N/A                              │ Ends any active RX/TX/Constant/Freq.hop RF test       │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
-    printf("│ phy     │ <symbol rate> : 1M 2M S2 S8      │ Sets the PHY symbol rate. Not case sensitive 1M == 1m │\r\n");
+    printf("│         │                                  │                                                       │\r\n");
+    printf("│ phy     │ <symbol_rate> : 1M 2M S2 S8      │ Sets the PHY symbol rate. Not case sensitive 1M == 1m │\r\n");
     printf("│         │ ex: phy 2M                       │                                                       │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
+    printf("│ plen    │ <packet_length>                  │ Sets payload packet length 0-255 bytes                │\r\n");
+    printf("│         │                                  │                                                       │\r\n");
+    printf("│ ptype   │ <packet_type>                    │ Sets payload packet type.                             |\r\n");
+    printf("│         │                                  │ PRBS9,PRBS15,00,FF,F0,0F,55,AA                        │\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ ps      │ N/A                              │ Display freeRTOS task stats                           │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ rx      │ <channel> <duration_ms>          │ RX test on given channel. Channel param               │\r\n");
     printf("│         │ ex: rx 0 500                     │ is required on first command call. Duration param     │\r\n");
     printf("│         │ ex: rx 1 (use prev. duration)    │ defautls to 0 which is infinite until stopped.        │\r\n");
     printf("│         │ ex: rx (use prev. ch & duration) │ Subsequent calls to rx default to last given params   │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
-    printf("│ sweep   │ <start ch> <end ch> <ms/per ch>  │ Sweeps TX tests through a range of channels given     │\r\n");
+    printf("│         │                                  │                                                       │\r\n");
+    printf("│ sweep   │ <start_ch> <end_ch> <ms/per_ch>  │ Sweeps TX tests through a range of channels given     │\r\n");
     printf("│         │ ex: sweep 0 10 500               │ their order of appearance on the spectrum.            │\r\n");
     printf("│         │ ex: sweep (use prev. params)     │ Subsequent calls to sweep uses last given params      │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ tx      │ <channel> [duration_ms]          │ TX test on given channel. Channel param               │\r\n");
     printf("│         │ ex: tx 0 500                     │ is required on first command call. Duration param     │\r\n");
     printf("│         │ ex: tx 1 (use prev. duration)    │ defautls to 0 which is infinite until stopped.        │\r\n");
     printf("│         │ ex: tx (use prev. ch & duration) │ Subsequent calls to tx default to last given params   │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ txdbm   │ <dbm> : 4.5 2 -10                │ Select transmit power                                 │\r\n");
     printf("│         │ ex: txdbm -10                    │                                                       │\r\n");
-    printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ help    │ N/A                              │ Displays this help table                              │\r\n");
     printf("└─────────┴──────────────────────────────────┴───────────────────────────────────────────────────────┘\r\n");
 
