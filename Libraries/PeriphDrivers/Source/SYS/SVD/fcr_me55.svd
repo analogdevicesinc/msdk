@@ -109,7 +109,7 @@
         </fields>
       </register>
       <register>
-        <name>AUTOCAL0</name>
+        <name>FCTRL1</name>
         <description>Register 1.</description>
         <addressOffset>0x04</addressOffset>
         <access>read-write</access>
@@ -207,7 +207,7 @@
         </fields>
       </register>
       <register>
-        <name>AUTOCAL1</name>
+        <name>FCTRL2</name>
         <description>Register 2.</description>
         <addressOffset>0x08</addressOffset>
         <access>read-write</access>
@@ -221,7 +221,7 @@
         </fields>
       </register>
       <register>
-        <name>AUTOCAL2</name>
+        <name>FCTRL3</name>
         <description>Register 3.</description>
         <addressOffset>0x0C</addressOffset>
         <access>read-write</access>
