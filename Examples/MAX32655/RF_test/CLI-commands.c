@@ -46,6 +46,12 @@ static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 static BaseType_t cmd_SetPhy(char* pcWriteBuffer, size_t xWriteBufferLen,
                              const char* pcCommandString);
 
+static BaseType_t cmd_SetPacketLen(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                   const char* pcCommandString);
+
+static BaseType_t cmd_SetPacketType(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                    const char* pcCommandString);
+
 static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
                                const char* pcCommandString);
 
@@ -89,6 +95,22 @@ static const CLI_Command_Definition_t xCommandList[] = {
         .pcHelpString                = "Starts frequency hopping",
         .pxCommandInterpreter        = cmd_EnableFreqHop, /* The function to run. */
         .cExpectedNumberOfParameters = 0
+
+    },
+    {
+
+        .pcCommand                   = "packetlen", /* The command string to type. */
+        .pcHelpString                = "Sets packet len",
+        .pxCommandInterpreter        = cmd_SetPacketLen, /* The function to run. */
+        .cExpectedNumberOfParameters = 1
+
+    },
+    {
+
+        .pcCommand                   = "packettype", /* The command string to type. */
+        .pcHelpString                = "Sets packet type",
+        .pxCommandInterpreter        = cmd_SetPacketType, /* The function to run. */
+        .cExpectedNumberOfParameters = 1
 
     },
     {
@@ -159,6 +181,7 @@ static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     clearScreen = true;
     /* There is no more data to return after this single string, so return
 	pdFALSE. */
@@ -175,7 +198,7 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 	write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);
-
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     /* Generate a table of task stats. */
     strcpy(pcWriteBuffer, pcHeader);
     vTaskList(pcWriteBuffer + strlen(pcHeader));
@@ -275,7 +298,7 @@ static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
 {
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);
-
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
     if (activeTest == BLE_CONST_TX) {
         /* Disable constant TX */
@@ -291,6 +314,66 @@ static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     activeTest  = NO_TEST;
     pausePrompt = false;
     xSemaphoreGive(rfTestMutex);
+    return pdFALSE;
+}
+/*-----------------------------------------------------------*/
+static BaseType_t cmd_SetPacketLen(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                   const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    BaseType_t lParameterStringLength;
+    uint16_t packetLen = 0;
+    const char* temp =
+        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                 1,                      /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+        );
+
+    packetLen = atoi(temp);
+    if (isDigit(temp, lParameterStringLength) && packetLen <= 255 && packetLen > 0)
+        setPacketLen(packetLen);
+    else {
+        sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
+        /* set to default */
+        setPacketLen(255);
+    }
+
+    return pdFALSE;
+}
+/*-----------------------------------------------------------*/
+static BaseType_t cmd_SetPacketType(char* pcWriteBuffer, size_t xWriteBufferLen,
+                                    const char* pcCommandString)
+{
+    /* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+    (void)xWriteBufferLen;
+    configASSERT(pcWriteBuffer);
+    memset(pcWriteBuffer, 0x00, xWriteBufferLen);
+    BaseType_t lParameterStringLength;
+
+    const char* packetType =
+        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
+                                 1,                      /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+        );
+
+    memcmp(packetType, "PRBS9", 5) == 0  ? setPacketType(LL_TEST_PKT_TYPE_PRBS9) :
+    memcmp(packetType, "PRBS15", 6) == 0 ? setPacketType(LL_TEST_PKT_TYPE_PRBS15) :
+    memcmp(packetType, "0F", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_0F) :
+    memcmp(packetType, "55", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_55) :
+    memcmp(packetType, "FF", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_FF) :
+    memcmp(packetType, "00", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_00) :
+    memcmp(packetType, "F0", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_00) :
+    memcmp(packetType, "AA", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_AA) :
+                                           sprintf(pcWriteBuffer,
+                                                   "Bad parameter, see help menu for options\r\n");
+
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/

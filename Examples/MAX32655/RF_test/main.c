@@ -60,8 +60,10 @@ static LlRtCfg_t mainLlRtCfg;
 
 static uint8_t phy = LL_PHY_LE_1M;
 static uint8_t phy_str[16];
+static uint8_t packetType_str[16];
 static uint8_t txFreqHopCh;
-
+static uint8_t packetLen  = 255;
+static uint8_t packetType = LL_TEST_PKT_TYPE_AA;
 char receivedChar;
 /* helper flags */
 test_t activeTest = NO_TEST;
@@ -111,6 +113,50 @@ static uint8_t* getPhyStr(uint8_t phy)
 
 /*************************************************************************************************/
 /*!
+ *  \fn     Get PHY String.
+ *
+ *  \brief  Convert the PHY definition to a string.
+ *
+ *  \param  phy   PHY definition.
+ *
+ *  \return Pointer to string describing the PHY.
+ */
+/*************************************************************************************************/
+
+static uint8_t* getPacketTypeStr(void)
+{
+    switch (packetType) {
+        case LL_TEST_PKT_TYPE_PRBS9:
+            memcpy(packetType_str, "PRBS9 : ", 9);
+            break;
+        case LL_TEST_PKT_TYPE_0F:
+            memcpy(packetType_str, "0x0F : ", 8);
+            break;
+        case LL_TEST_PKT_TYPE_55:
+            memcpy(packetType_str, "0x55 : ", 8);
+            break;
+        case LL_TEST_PKT_TYPE_PRBS15:
+            memcpy(packetType_str, "PRBS15 : ", 10);
+            break;
+        case LL_TEST_PKT_TYPE_FF:
+            memcpy(packetType_str, "0xFF : ", 8);
+            break;
+        case LL_TEST_PKT_TYPE_00:
+            memcpy(packetType_str, "0x00 : ", 8);
+            break;
+        case LL_TEST_PKT_TYPE_F0:
+            memcpy(packetType_str, "0xF0 : ", 8);
+            break;
+        case LL_TEST_PKT_TYPE_AA:
+        default:
+            memcpy(packetType_str, "0xAA : ", 8);
+            break;
+    }
+    return packetType_str;
+}
+
+/*************************************************************************************************/
+/*!
  *  \fn     Timer 2 interrupts handler.
  *
  *  \brief  Controls the frequency hopping.
@@ -127,7 +173,7 @@ void TMR2_IRQHandler(void)
     MXC_TMR_TO_Clear(MXC_TMR2);
 
     /* Start the next channel */
-    res = LlEnhancedTxTest(txFreqHopCh++, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+    res = LlEnhancedTxTest(txFreqHopCh++, packetLen, packetType, phy, 0);
     if (res != LL_SUCCESS)
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
 
@@ -389,9 +435,10 @@ void txTestTask(void* pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            sprintf(str, "Transmit RF channel : %d :255 bytes/pkt : 0xAA : ", testConfig.channel);
+            sprintf(str, "Transmit RF channel %d : %d bytes/pkt : ", testConfig.channel, packetLen);
+            strcat(str, (const char*)getPacketTypeStr());
         } else {
-            sprintf(str, "Receive RF channel : %d : ", testConfig.channel);
+            sprintf(str, "Receive RF channel %d : ", testConfig.channel);
         }
 
         strcat(str, (const char*)getPhyStr(phy));
@@ -399,7 +446,7 @@ void txTestTask(void* pvParameters)
 
         /* stat test */
         if (testConfig.testType == BLE_TX_TEST) {
-            res = LlEnhancedTxTest(testConfig.channel, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+            res = LlEnhancedTxTest(testConfig.channel, packetLen, packetType, phy, 0);
         } else {
             res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
         }
@@ -451,7 +498,7 @@ void sweepTestTask(void* pvParameters)
 
                             ble_channels_spectrum[i], str);
             txCommand.channel = ble_channels_spectrum[i];
-            res = LlEnhancedTxTest(ble_channels_spectrum[i], 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+            res = LlEnhancedTxTest(ble_channels_spectrum[i], packetLen, packetType, phy, 0);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
             LlEndTest(NULL);
             xSemaphoreGive(rfTestMutex);
@@ -557,6 +604,14 @@ void startFreqHopping(void)
     NVIC_EnableIRQ(TMR2_IRQn);
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
     MXC_TMR_EnableInt(MXC_TMR2);
+}
+void setPacketLen(uint8_t len)
+{
+    packetLen = len;
+}
+void setPacketType(uint8_t type)
+{
+    packetType = type;
 }
 /*************************************************************************************************/
 /*!
