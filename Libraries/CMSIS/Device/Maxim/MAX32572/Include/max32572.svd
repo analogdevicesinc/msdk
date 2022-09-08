@@ -3534,49 +3534,13 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>FLASH1_PAGE_FLIP</name>
-       <description>Flips the Flash bottom and top halves. (Depending on the total flash size, each half is either 256K or 512K). Initiating a flash page flip will cause a flush of both the data buffer on the DCODE bus and the internal instruction buffer.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>normal</name>
-         <description>Physical layout matches logical layout.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>swapped</name>
-         <description>Bottom half mapped to logical top half and vice versa.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>FLASH0_PAGE_FLIP</name>
-       <description>Flips the Flash bottom and top halves. (Depending on the total flash size, each half is either 256K or 512K). Initiating a flash page flip will cause a flush of both the data buffer on the DCODE bus and the internal instruction buffer.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>normal</name>
-         <description>Physical layout matches logical layout.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>swapped</name>
-         <description>Bottom half mapped to logical top half and vice versa.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>FPU_DIS</name>
        <description>Cortex M4 Floating Point Disable This bit is used to disable the floating-point unit of the Cortex-M4.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICC0_FLUSH</name>
+       <name>SFCC_FLUSH</name>
        <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M4. </description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -3594,38 +3558,14 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SRCC_FLUSH</name>
-       <description>Data Cache Flush. The system cache (s) will be flushed when this bit is set. </description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>normal</name>
-         <description>Normal System Cache Operation</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>flush</name>
-         <description>System Cache is flushed </description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>CCHK1</name>
-       <description>Compute CPU1 ROM1 Checksum</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>CHKRES1</name>
        <description>Result of CPU1 ROM1 Checksum.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ROMDONE</name>
-       <description>ROM Done.</description>
+       <name>CCHK1</name>
+       <description>Compute CPU1 ROM1 Checksum</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -4859,6 +4799,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
+       <name>SEMA</name>
+       <description>Semaphore Reset.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="I2C1">
        <name>I2C2</name>
        <description>I2C2 Reset.</description>
        <bitOffset>17</bitOffset>
@@ -4868,18 +4814,6 @@
        <name>UART3</name>
        <description>UART3 Reset.</description>
        <bitOffset>18</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="I2C1">
-       <name>UART4</name>
-       <description>UART4 Reset.</description>
-       <bitOffset>19</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="I2C1">
-       <name>UART5</name>
-       <description>UART5 Reset.</description>
-       <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
@@ -4986,6 +4920,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
+       <name>SEMA</name>
+       <description>Semaphore Disable.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="UART2">
        <name>SDHC</name>
        <description>SDHC Clock Disable.</description>
        <bitOffset>10</bitOffset>
@@ -5013,18 +4953,6 @@
        <name>UART3</name>
        <description>UART3 Clock Disable.</description>
        <bitOffset>22</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="UART2">
-       <name>UART4</name>
-       <description>UART4 Clock Disable.</description>
-       <bitOffset>23</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="UART2">
-       <name>UART5</name>
-       <description>UART5 Clock Disable.</description>
-       <bitOffset>24</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">

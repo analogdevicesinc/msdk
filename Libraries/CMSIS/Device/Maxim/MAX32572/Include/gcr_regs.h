@@ -161,29 +161,17 @@ typedef struct {
  #define MXC_V_GCR_SYSCTRL_SBUSARB_ROUND                ((uint32_t)0x1UL) /**< SYSCTRL_SBUSARB_ROUND Value */
  #define MXC_S_GCR_SYSCTRL_SBUSARB_ROUND                (MXC_V_GCR_SYSCTRL_SBUSARB_ROUND << MXC_F_GCR_SYSCTRL_SBUSARB_POS) /**< SYSCTRL_SBUSARB_ROUND Setting */
 
- #define MXC_F_GCR_SYSCTRL_FLASH1_PAGE_FLIP_POS         3 /**< SYSCTRL_FLASH1_PAGE_FLIP Position */
- #define MXC_F_GCR_SYSCTRL_FLASH1_PAGE_FLIP             ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_FLASH1_PAGE_FLIP_POS)) /**< SYSCTRL_FLASH1_PAGE_FLIP Mask */
-
- #define MXC_F_GCR_SYSCTRL_FLASH0_PAGE_FLIP_POS         4 /**< SYSCTRL_FLASH0_PAGE_FLIP Position */
- #define MXC_F_GCR_SYSCTRL_FLASH0_PAGE_FLIP             ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_FLASH0_PAGE_FLIP_POS)) /**< SYSCTRL_FLASH0_PAGE_FLIP Mask */
-
  #define MXC_F_GCR_SYSCTRL_FPU_DIS_POS                  5 /**< SYSCTRL_FPU_DIS Position */
  #define MXC_F_GCR_SYSCTRL_FPU_DIS                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_FPU_DIS_POS)) /**< SYSCTRL_FPU_DIS Mask */
 
- #define MXC_F_GCR_SYSCTRL_ICC0_FLUSH_POS               6 /**< SYSCTRL_ICC0_FLUSH Position */
- #define MXC_F_GCR_SYSCTRL_ICC0_FLUSH                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_ICC0_FLUSH_POS)) /**< SYSCTRL_ICC0_FLUSH Mask */
-
- #define MXC_F_GCR_SYSCTRL_SRCC_FLUSH_POS               7 /**< SYSCTRL_SRCC_FLUSH Position */
- #define MXC_F_GCR_SYSCTRL_SRCC_FLUSH                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_SRCC_FLUSH_POS)) /**< SYSCTRL_SRCC_FLUSH Mask */
-
- #define MXC_F_GCR_SYSCTRL_CCHK1_POS                    9 /**< SYSCTRL_CCHK1 Position */
- #define MXC_F_GCR_SYSCTRL_CCHK1                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK1_POS)) /**< SYSCTRL_CCHK1 Mask */
+ #define MXC_F_GCR_SYSCTRL_SFCC_FLUSH_POS               6 /**< SYSCTRL_SFCC_FLUSH Position */
+ #define MXC_F_GCR_SYSCTRL_SFCC_FLUSH                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_SFCC_FLUSH_POS)) /**< SYSCTRL_SFCC_FLUSH Mask */
 
  #define MXC_F_GCR_SYSCTRL_CHKRES1_POS                  11 /**< SYSCTRL_CHKRES1 Position */
  #define MXC_F_GCR_SYSCTRL_CHKRES1                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES1_POS)) /**< SYSCTRL_CHKRES1 Mask */
 
- #define MXC_F_GCR_SYSCTRL_ROMDONE_POS                  12 /**< SYSCTRL_ROMDONE Position */
- #define MXC_F_GCR_SYSCTRL_ROMDONE                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_ROMDONE_POS)) /**< SYSCTRL_ROMDONE Mask */
+ #define MXC_F_GCR_SYSCTRL_CCHK1_POS                    12 /**< SYSCTRL_CCHK1 Position */
+ #define MXC_F_GCR_SYSCTRL_CCHK1                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK1_POS)) /**< SYSCTRL_CCHK1 Mask */
 
  #define MXC_F_GCR_SYSCTRL_CCHK0_POS                    13 /**< SYSCTRL_CCHK0 Position */
  #define MXC_F_GCR_SYSCTRL_CCHK0                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK0_POS)) /**< SYSCTRL_CCHK0 Mask */
@@ -705,17 +693,14 @@ typedef struct {
  #define MXC_F_GCR_RST1_AC_POS                          14 /**< RST1_AC Position */
  #define MXC_F_GCR_RST1_AC                              ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AC_POS)) /**< RST1_AC Mask */
 
+ #define MXC_F_GCR_RST1_SEMA_POS                        16 /**< RST1_SEMA Position */
+ #define MXC_F_GCR_RST1_SEMA                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SEMA_POS)) /**< RST1_SEMA Mask */
+
  #define MXC_F_GCR_RST1_I2C2_POS                        17 /**< RST1_I2C2 Position */
  #define MXC_F_GCR_RST1_I2C2                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_I2C2_POS)) /**< RST1_I2C2 Mask */
 
  #define MXC_F_GCR_RST1_UART3_POS                       18 /**< RST1_UART3 Position */
  #define MXC_F_GCR_RST1_UART3                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_UART3_POS)) /**< RST1_UART3 Mask */
-
- #define MXC_F_GCR_RST1_UART4_POS                       19 /**< RST1_UART4 Position */
- #define MXC_F_GCR_RST1_UART4                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_UART4_POS)) /**< RST1_UART4 Mask */
-
- #define MXC_F_GCR_RST1_UART5_POS                       20 /**< RST1_UART5 Position */
- #define MXC_F_GCR_RST1_UART5                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_UART5_POS)) /**< RST1_UART5 Mask */
 
  #define MXC_F_GCR_RST1_SKBD_POS                        21 /**< RST1_SKBD Position */
  #define MXC_F_GCR_RST1_SKBD                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SKBD_POS)) /**< RST1_SKBD Mask */
@@ -767,6 +752,9 @@ typedef struct {
  #define MXC_F_GCR_PCLKDIS1_WDT1_POS                    5 /**< PCLKDIS1_WDT1 Position */
  #define MXC_F_GCR_PCLKDIS1_WDT1                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_WDT1_POS)) /**< PCLKDIS1_WDT1 Mask */
 
+ #define MXC_F_GCR_PCLKDIS1_SEMA_POS                    9 /**< PCLKDIS1_SEMA Position */
+ #define MXC_F_GCR_PCLKDIS1_SEMA                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SEMA_POS)) /**< PCLKDIS1_SEMA Mask */
+
  #define MXC_F_GCR_PCLKDIS1_SDHC_POS                    10 /**< PCLKDIS1_SDHC Position */
  #define MXC_F_GCR_PCLKDIS1_SDHC                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SDHC_POS)) /**< PCLKDIS1_SDHC Mask */
 
@@ -781,12 +769,6 @@ typedef struct {
 
  #define MXC_F_GCR_PCLKDIS1_UART3_POS                   22 /**< PCLKDIS1_UART3 Position */
  #define MXC_F_GCR_PCLKDIS1_UART3                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_UART3_POS)) /**< PCLKDIS1_UART3 Mask */
-
- #define MXC_F_GCR_PCLKDIS1_UART4_POS                   23 /**< PCLKDIS1_UART4 Position */
- #define MXC_F_GCR_PCLKDIS1_UART4                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_UART4_POS)) /**< PCLKDIS1_UART4 Mask */
-
- #define MXC_F_GCR_PCLKDIS1_UART5_POS                   24 /**< PCLKDIS1_UART5 Position */
- #define MXC_F_GCR_PCLKDIS1_UART5                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_UART5_POS)) /**< PCLKDIS1_UART5 Mask */
 
  #define MXC_F_GCR_PCLKDIS1_MSRADC_POS                  25 /**< PCLKDIS1_MSRADC Position */
  #define MXC_F_GCR_PCLKDIS1_MSRADC                      ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_MSRADC_POS)) /**< PCLKDIS1_MSRADC Mask */
