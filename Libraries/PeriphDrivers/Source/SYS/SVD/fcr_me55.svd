@@ -227,10 +227,16 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>DONECNT</name>
-            <description>Automatic Calibration Run Time.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>8</bitWidth>
+            <name>MSR_R1</name>
+            <description>MSR R1</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>MSR_R2</name>
+            <description>MSR R2</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>2</bitWidth>
           </field>
         </fields>
       </register>

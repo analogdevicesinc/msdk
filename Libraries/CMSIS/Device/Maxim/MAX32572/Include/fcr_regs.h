@@ -180,8 +180,11 @@ typedef struct {
  * @brief    Register 3.
  * @{
  */
- #define MXC_F_FCR_FCTRL3_DONECNT_POS                   0 /**< FCTRL3_DONECNT Position */
- #define MXC_F_FCR_FCTRL3_DONECNT                       ((uint32_t)(0xFFUL << MXC_F_FCR_FCTRL3_DONECNT_POS)) /**< FCTRL3_DONECNT Mask */
+ #define MXC_F_FCR_FCTRL3_MSR_R1_POS                    16 /**< FCTRL3_MSR_R1 Position */
+ #define MXC_F_FCR_FCTRL3_MSR_R1                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL3_MSR_R1_POS)) /**< FCTRL3_MSR_R1 Mask */
+
+ #define MXC_F_FCR_FCTRL3_MSR_R2_POS                    18 /**< FCTRL3_MSR_R2 Position */
+ #define MXC_F_FCR_FCTRL3_MSR_R2                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL3_MSR_R2_POS)) /**< FCTRL3_MSR_R2 Mask */
 
 /**@} end of group FCR_FCTRL3_Register */
 
