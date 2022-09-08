@@ -514,6 +514,7 @@ void helpTask(void* pvParameters)
     uint32_t notifVal = 0;
     while (1) {
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
+
         // clang-format off
     // printf("+---------+----------------------------------+-------------------------------------------------------+\r\n");
     // printf("| Command | parameters [optional] <required> |                      description                      |\r\n");
