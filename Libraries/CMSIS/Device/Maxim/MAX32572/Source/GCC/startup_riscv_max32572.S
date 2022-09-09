@@ -58,7 +58,6 @@ __ram_startup:
     .section .isr_vector
     .align 2
     .globl __isr_vector
-    .globl __FlashStart
 __isr_vector:
   jal x0, Reset_Handler
   jal x0, illegal_insn_handler
@@ -130,10 +129,6 @@ __isr_vector:
     .globl   Reset_Handler
     .type    Reset_Handler, %function
 Reset_Handler:
-
-  /* set start of flash in mvtec, with vectored mode */
-  la    t0, (__FlashStart + 1)
-  csrrw x0, mtvec, t0
 
   /* Initialize Stack Pointer */
   la    sp, __StackTop

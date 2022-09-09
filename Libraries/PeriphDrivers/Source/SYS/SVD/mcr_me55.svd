@@ -136,8 +136,8 @@
           <field>
             <name>RTC</name>
             <description>Real Time Cock Reset.</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>2</bitWidth>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>

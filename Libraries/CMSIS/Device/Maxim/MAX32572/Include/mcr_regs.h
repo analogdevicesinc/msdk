@@ -178,8 +178,8 @@ typedef struct {
  * @brief    Reset Register.
  * @{
  */
- #define MXC_F_MCR_RST_RTC_POS                          1 /**< RST_RTC Position */
- #define MXC_F_MCR_RST_RTC                              ((uint32_t)(0x3UL << MXC_F_MCR_RST_RTC_POS)) /**< RST_RTC Mask */
+ #define MXC_F_MCR_RST_RTC_POS                          0 /**< RST_RTC Position */
+ #define MXC_F_MCR_RST_RTC                              ((uint32_t)(0x1UL << MXC_F_MCR_RST_RTC_POS)) /**< RST_RTC Mask */
 
 /**@} end of group MCR_RST_Register */
 
