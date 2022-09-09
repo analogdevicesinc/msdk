@@ -28,6 +28,7 @@ extern void dbb_seq_tx_disable(void);
 static bool isDigit(const char* symbol, uint8_t len);
 static bool paramsValid(const char* commandstring, uint8_t numOfParams);
 static bool commandOnly(const char* commandstring);
+static isChannel(const char* commandstring, uint8_t paramIndex);
 /***************************| Command handler protoypes |******************************/
 static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
                                   const char* pcCommandString);
@@ -554,7 +555,8 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     }
 
     /* save new parameters if they are valid*/
-    if (paramsValid(pcCommandString, 3) && (err == E_NO_ERROR)) {
+    if (paramsValid(pcCommandString, 3) && (err == E_NO_ERROR) && isChannel(pcCommandString, 1) &&
+        isChannel(pcCommandString, 2) && !commandOnly(pcCommandString)) {
         sweepConfig.start_channel = atoi(FreeRTOS_CLIGetParameter(
             pcCommandString,        /* The command string itself. */
             1,                      /* Return the next parameter. */
@@ -573,10 +575,15 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
             &lParameterStringLength /* Store the parameter string length. */
             ));
 
+        if (sweepConfig.start_channel == sweepConfig.end_channel) {
+            sweepConfig.duration_per_ch_ms = 0;
+            sprintf(pcWriteBuffer, "Bad parameters given\r\n");
+            err++;
+        }
+
     }
     /* if parameters were given and are not valid */
-    else if (!paramsValid(pcCommandString, 3) && !commandOnly(pcCommandString) &&
-             (err == E_NO_ERROR)) {
+    else if (!commandOnly(pcCommandString) && (err == E_NO_ERROR)) {
         sprintf(pcWriteBuffer, "Bad parameters given\r\n");
         err++;
     }
@@ -612,7 +619,31 @@ static bool isDigit(const char* symbol, uint8_t len)
 
     return true;
 }
+static isChannel(const char* commandstring, uint8_t paramIndex)
+{
+    const char* str;
+    BaseType_t lParameterStringLength;
+    uint8_t channel;
+    /*params start at index 1*/
 
+    str = FreeRTOS_CLIGetParameter(commandstring,          /* The command string itself. */
+                                   paramIndex,             /* Return the next parameter. */
+                                   &lParameterStringLength /* Store the parameter string length. */
+    );
+    /* if param exist verify it is a digit */
+    if (str != NULL) {
+        if (!isDigit(str, lParameterStringLength)) {
+            return false;
+        }
+        channel = atoi(str);
+        if (channel < 0 || channel > 39)
+            return false;
+    } else {
+        return false;
+    }
+
+    return true;
+}
 static bool paramsValid(const char* commandstring, uint8_t numOfParams)
 {
     const char* str;
