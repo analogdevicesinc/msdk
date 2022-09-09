@@ -169,8 +169,11 @@ typedef struct {
  * @brief    Register 2.
  * @{
  */
- #define MXC_F_FCR_FCTRL2_XO_EN_DGL_POS                 3 /**< FCTRL2_XO_EN_DGL Position */
- #define MXC_F_FCR_FCTRL2_XO_EN_DGL                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL2_XO_EN_DGL_POS)) /**< FCTRL2_XO_EN_DGL Mask */
+ #define MXC_F_FCR_FCTRL2_MSR_R1_POS                    16 /**< FCTRL2_MSR_R1 Position */
+ #define MXC_F_FCR_FCTRL2_MSR_R1                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL2_MSR_R1_POS)) /**< FCTRL2_MSR_R1 Mask */
+
+ #define MXC_F_FCR_FCTRL2_MSR_R2_POS                    18 /**< FCTRL2_MSR_R2 Position */
+ #define MXC_F_FCR_FCTRL2_MSR_R2                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL2_MSR_R2_POS)) /**< FCTRL2_MSR_R2 Mask */
 
 /**@} end of group FCR_FCTRL2_Register */
 
@@ -180,11 +183,8 @@ typedef struct {
  * @brief    Register 3.
  * @{
  */
- #define MXC_F_FCR_FCTRL3_MSR_R1_POS                    16 /**< FCTRL3_MSR_R1 Position */
- #define MXC_F_FCR_FCTRL3_MSR_R1                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL3_MSR_R1_POS)) /**< FCTRL3_MSR_R1 Mask */
-
- #define MXC_F_FCR_FCTRL3_MSR_R2_POS                    18 /**< FCTRL3_MSR_R2 Position */
- #define MXC_F_FCR_FCTRL3_MSR_R2                        ((uint32_t)(0x3UL << MXC_F_FCR_FCTRL3_MSR_R2_POS)) /**< FCTRL3_MSR_R2 Mask */
+ #define MXC_F_FCR_FCTRL3_DONECNT_POS                   0 /**< FCTRL3_DONECNT Position */
+ #define MXC_F_FCR_FCTRL3_DONECNT                       ((uint32_t)(0xFFUL << MXC_F_FCR_FCTRL3_DONECNT_POS)) /**< FCTRL3_DONECNT Mask */
 
 /**@} end of group FCR_FCTRL3_Register */
 

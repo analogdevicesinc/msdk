@@ -213,20 +213,6 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>XO_EN_DGL</name>
-            <description>TBD</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FCTRL3</name>
-        <description>Register 3.</description>
-        <addressOffset>0x0C</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
             <name>MSR_R1</name>
             <description>MSR R1</description>
             <bitOffset>16</bitOffset>
@@ -237,6 +223,20 @@
             <description>MSR R2</description>
             <bitOffset>18</bitOffset>
             <bitWidth>2</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FCTRL3</name>
+        <description>Register 3.</description>
+        <addressOffset>0x0C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DONECNT</name>
+            <description>Auto-calibration Done Counter Setting.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
           </field>
         </fields>
       </register>

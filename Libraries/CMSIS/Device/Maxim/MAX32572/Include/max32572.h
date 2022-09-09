@@ -195,7 +195,7 @@ typedef enum {
     RSV110_IRQn,   /* 0x7E  0x01F8  126: Reserved */
     RSV111_IRQn,   /* 0x7F  0x01FC  127: Reserved */
 #else              // __riscv
-    HardFault_IRQn = 3, /* 0x03,3 Hardfault */
+    HardFault_IRQn = 3, /* 0x03,3 HardFault */
     RSV4_IRQn = 4, /* 0x04,4 Reserved */
     RSV5_IRQn,     /* 0x05,5 Reserved */
     MSRADC_IRQn,   /* 0x06,6 Magstripe DSP */
@@ -289,7 +289,7 @@ typedef enum {
 /* ================================================================================ */
 
 #define MXC_ROM0_MEM_BASE 0x00000000UL
-#define MXC_ROM0_MEM_SIZE 0x00010000UL
+#define MXC_ROM0_MEM_SIZE 0x00020000UL
 #define MXC_ROM1_MEM_BASE 0x2006C000UL
 #define MXC_ROM1_MEM_SIZE 0x00004000UL
 #define MXC_ROM_MEM_BASE  MXC_ROM0_MEM_BASE
