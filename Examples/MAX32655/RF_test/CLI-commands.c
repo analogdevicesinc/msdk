@@ -339,8 +339,6 @@ static BaseType_t cmd_SetPacketLen(char* pcWriteBuffer, size_t xWriteBufferLen,
         setPacketLen(packetLen);
     else {
         sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
-        /* set to default */
-        setPacketLen(255);
     }
 
     return pdFALSE;

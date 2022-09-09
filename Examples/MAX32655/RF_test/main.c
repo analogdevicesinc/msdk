@@ -127,29 +127,29 @@ static uint8_t* getPacketTypeStr(void)
 {
     switch (packetType) {
         case LL_TEST_PKT_TYPE_PRBS9:
-            memcpy(packetType_str, "PRBS9 : ", 9);
+            memcpy(packetType_str, "PRBS9", 6);
             break;
         case LL_TEST_PKT_TYPE_0F:
-            memcpy(packetType_str, "0x0F : ", 8);
+            memcpy(packetType_str, "0x0F", 5);
             break;
         case LL_TEST_PKT_TYPE_55:
-            memcpy(packetType_str, "0x55 : ", 8);
+            memcpy(packetType_str, "0x55", 5);
             break;
         case LL_TEST_PKT_TYPE_PRBS15:
-            memcpy(packetType_str, "PRBS15 : ", 10);
+            memcpy(packetType_str, "PRBS15", 7);
             break;
         case LL_TEST_PKT_TYPE_FF:
-            memcpy(packetType_str, "0xFF : ", 8);
+            memcpy(packetType_str, "0xFF", 5);
             break;
         case LL_TEST_PKT_TYPE_00:
-            memcpy(packetType_str, "0x00 : ", 8);
+            memcpy(packetType_str, "0x00", 5);
             break;
         case LL_TEST_PKT_TYPE_F0:
-            memcpy(packetType_str, "0xF0 : ", 8);
+            memcpy(packetType_str, "0xF0", 5);
             break;
         case LL_TEST_PKT_TYPE_AA:
         default:
-            memcpy(packetType_str, "0xAA : ", 8);
+            memcpy(packetType_str, "0xAA", 5);
             break;
     }
     return packetType_str;
@@ -201,7 +201,6 @@ static void processConsoleRX(uint8_t rxByte)
 {
     BaseType_t xHigherPriorityTaskWoken;
     receivedChar = rxByte;
-
     /* Wake the task */
     xHigherPriorityTaskWoken = pdFALSE;
     vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
@@ -389,7 +388,8 @@ void vCmdLineTask(void* pvParameters)
         if (async_read_req.rxCnt > 0) {
             /* Process character */
             do {
-                if (tmp == 0x08) {
+                /* 0x08 BS linux , 127 Del windows/putty */
+                if (tmp == 0x08 || tmp == 127) {
                     /* Backspace */
                     if (index > 0) {
                         index--;
@@ -470,7 +470,7 @@ void txTestTask(void* pvParameters)
         } else {
             sprintf(str, "Receive RF channel %d : ", testConfig.channel);
         }
-
+        strcat(str, " : ");
         strcat(str, (const char*)getPhyStr(phy));
         APP_TRACE_INFO1("%s", str);
 
@@ -609,7 +609,7 @@ void helpTask(void* pvParameters)
     printf("│         │ ex: tx 1 (use prev. duration)    │ defautls to 0 which is infinite until stopped.        │\r\n");
     printf("│         │ ex: tx (use prev. ch & duration) │ Subsequent calls to tx default to last given params   │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ txdbm   │ <dbm> : 4.5 2 -10                │ Select transmit power                                 │\r\n");
+    printf("│ txdbm   │ <dbm> :TODO: what is range here? │ Select transmit power                                 │\r\n");
     printf("│         │ ex: txdbm -10                    │                                                       │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ help    │ N/A                              │ Displays this help table                              │\r\n");
@@ -647,10 +647,12 @@ void startFreqHopping(void)
 void setPacketLen(uint8_t len)
 {
     packetLen = len;
+    APP_TRACE_INFO1("Packet length set to %d", len);
 }
 void setPacketType(uint8_t type)
 {
     packetType = type;
+    APP_TRACE_INFO1("Packet type set to %s", getPacketTypeStr());
 }
 /*************************************************************************************************/
 /*!
