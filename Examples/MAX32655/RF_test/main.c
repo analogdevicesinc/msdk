@@ -344,7 +344,9 @@ void printHint(uint8_t* buff)
     bool foundMatch = false;
     do {
         if (memcmp(buff, xCommandList[i].pcCommand, bufflen) == 0 && bufflen > 0) {
-            printf("\r\n%s %s", xCommandList[i].pcCommand, xCommandList[i].pcHelpString);
+            if (foundMatch == false)
+                printf("\r\n");
+            printf("\r\n> %s : %s", xCommandList[i].pcCommand, xCommandList[i].pcHelpString);
             foundMatch = true;
         }
         i++;
@@ -663,8 +665,9 @@ void setTxPower(int8_t power)
 }
 void printConfigs(void)
 {
-    printf("-----| RF Configrations |-----\r\n");
-    printf("- %s \r\n- %s \r\n- TX Power %d dbm", getPhyStr(phy), getPacketTypeStr(), txPower);
+    printf("-----| Current RF Configrations |-----\r\n");
+    printf("Phy : %s \r\nPayload packet : %s\r\nPayload length : %d \r\nTX Power : %d dbm\r\n",
+           getPhyStr(phy), getPacketTypeStr(), packetLen, txPower);
 }
 /*************************************************************************************************/
 /*!
