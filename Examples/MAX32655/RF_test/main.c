@@ -64,6 +64,7 @@ static uint8_t packetType_str[16];
 static uint8_t txFreqHopCh;
 static uint8_t packetLen  = 255;
 static uint8_t packetType = LL_TEST_PKT_TYPE_AA;
+static int8_t txPower     = 10;
 char receivedChar;
 /* helper flags */
 test_t activeTest = NO_TEST;
@@ -481,6 +482,7 @@ void txTestTask(void* pvParameters)
             res = LlEnhancedRxTest(testConfig.channel, phy, 0, 0);
         }
         APP_TRACE_INFO2("result = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+        /* if duration value was given then let the test run that amount of time and end */
         if (testConfig.duration_ms) {
             vTaskDelay(testConfig.duration_ms);
             LlEndTest(NULL);
@@ -577,11 +579,13 @@ void helpTask(void* pvParameters)
     printf("┌─────────┬──────────────────────────────────┬───────────────────────────────────────────────────────┐\r\n");
     printf("│ Command │ parameters [optional] <required> │                      description                      │\r\n");
     printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
+    printf("│ configs │ N/A                              │ Displays current RF configurations.                   │\r\n");
+    printf("│         │                                  │ Packet length,type. Tx Power. Phy                     │\r\n");
+    printf("│         │                                  │                                                       │\r\n");
     printf("│ cls     │ N/A                              │ clears the screen                                     │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ constTx │ <channel> : 1 - 39               │ Constant TX on given channel. Channel param           │\r\n");
-    printf("│         │ ex: constTx 0                    │ is required on first command call                     │\r\n");
-    printf("│         │                                  │ subsequent calls default to last given channel        │\r\n");
+    printf("│ constTx │ <channel> : 1 - 39               │ Constant TX on given channel.                         │\r\n");
+    printf("│         │ ex: constTx 0                    │                                                       │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ e       │ N/A                              │ Ends any active RX/TX/Constant/Freq.hop RF test       │\r\n");
     printf("│         │                                  │                                                       │\r\n");
@@ -595,19 +599,14 @@ void helpTask(void* pvParameters)
     printf("│         │                                  │                                                       │\r\n");
     printf("│ ps      │ N/A                              │ Display freeRTOS task stats                           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ rx      │ <channel> <duration_ms>          │ RX test on given channel. Channel param               │\r\n");
-    printf("│         │ ex: rx 0 500                     │ is required on first command call. Duration param     │\r\n");
-    printf("│         │ ex: rx 1 (use prev. duration)    │ defautls to 0 which is infinite until stopped.        │\r\n");
-    printf("│         │ ex: rx (use prev. ch & duration) │ Subsequent calls to rx default to last given params   │\r\n");
+    printf("│ rx      │ <channel> <duration_ms>          │ RX test on given channel.                             │\r\n");
+    printf("│         │ ex: rx 0 500                     │ Duration of 0 is max duration until stopped           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ sweep   │ <start_ch> <end_ch> <ms/per_ch>  │ Sweeps TX tests through a range of channels given     │\r\n");
     printf("│         │ ex: sweep 0 10 500               │ their order of appearance on the spectrum.            │\r\n");
-    printf("│         │ ex: sweep (use prev. params)     │ Subsequent calls to sweep uses last given params      │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ tx      │ <channel> [duration_ms]          │ TX test on given channel. Channel param               │\r\n");
-    printf("│         │ ex: tx 0 500                     │ is required on first command call. Duration param     │\r\n");
-    printf("│         │ ex: tx 1 (use prev. duration)    │ defautls to 0 which is infinite until stopped.        │\r\n");
-    printf("│         │ ex: tx (use prev. ch & duration) │ Subsequent calls to tx default to last given params   │\r\n");
+    printf("│ tx      │ <channel> <duration_ms>          │ TX test on given channel.                             │\r\n");
+    printf("│         │ ex: tx 0 500                     │ Duration of 0 is max duration until stopped           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ txdbm   │ <dbm> :TODO: what is range here? │ Select transmit power                                 │\r\n");
     printf("│         │ ex: txdbm -10                    │                                                       │\r\n");
@@ -653,6 +652,19 @@ void setPacketType(uint8_t type)
 {
     packetType = type;
     APP_TRACE_INFO1("Packet type set to %s", getPacketTypeStr());
+}
+void setTxPower(int8_t power)
+{
+    // TODO : validate value
+    txPower = power;
+    llc_api_set_txpower((int8_t)power);
+    LlSetAdvTxPower((int8_t)power);
+    printf("Power set to %d dBm\n", power);
+}
+void printConfigs(void)
+{
+    printf("-----| RF Configrations |-----\r\n");
+    printf("- %s \r\n- %s \r\n- TX Power %d dbm", getPhyStr(phy), getPacketTypeStr(), txPower);
 }
 /*************************************************************************************************/
 /*!

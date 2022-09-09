@@ -61,5 +61,6 @@ void setPhy(uint8_t newPhy);
 void startFreqHopping(void);
 void setPacketLen(uint8_t len);
 void setPacketType(uint8_t type);
-
+void setTxPower(int8_t power);
+void printConfigs(void);
 #endif
