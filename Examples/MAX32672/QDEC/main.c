@@ -46,7 +46,6 @@
 #include "led.h"
 #include "board.h"
 #include "qdec.h"
-#include "qdec_regs.h"
 
 /***** Definitions *****/
 #define MAXCNT_FLAG  MXC_F_QDEC_INTFL_MAXCNT
@@ -108,7 +107,8 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("\nFail to initialize QDEC. Error: %d\n", error);
         while (1) {
-        };
+            ;
+        }
     }
 
     direction = MXC_QDEC_GetDirection();
@@ -131,4 +131,6 @@ int main(void)
             MXC_Delay(MXC_DELAY_MSEC(100));
         }
     }
+
+    return 0;
 }

@@ -55,7 +55,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
             break;
 
         case MXC_TMR_32K_CLK:
-            if (tmr_id < 5) {
+            if (tmr_id < 4) {
                 return E_NOT_SUPPORTED;
             }
             clockSource = MXC_TMR_CLK2;
@@ -63,7 +63,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
             break;
 
         case MXC_TMR_80K_CLK:
-            if (tmr_id < 5) {
+            if (tmr_id < 4) {
                 return E_NOT_SUPPORTED;
             }
             clockSource = MXC_TMR_CLK3;
@@ -71,7 +71,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
             break;
 
         case MXC_TMR_8M_CLK:
-            if (tmr_id > 4) {
+            if (tmr_id > 3) {
                 return E_NOT_SUPPORTED;
             }
             clockSource = MXC_TMR_CLK2;
@@ -79,7 +79,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
             break;
 
         case MXC_TMR_32M_CLK:
-            if (tmr_id > 4) {
+            if (tmr_id > 3) {
                 return E_NOT_SUPPORTED;
             }
             clockSource = MXC_TMR_CLK3;

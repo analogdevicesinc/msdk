@@ -33,8 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   ADC demo application
- * @details Continuously monitors the ADC channels
+ * @brief   ADC comparator example
+ * @details This example demonstrates the use of the Analog Comparator
+ * 			to wake up the device from deep sleep.
  */
 
 /***** Includes *****/
@@ -46,17 +47,16 @@
 #include "mxc_pins.h"
 #include "nvic_table.h"
 #include "adc.h"
-#include "dma.h"
-#include "gpio.h"
-#include "led.h"
 #include "lp.h"
+#include "board.h"
 #include "pb.h"
-#include "tmr.h"
 #include "uart.h"
 
 /***** Definitions *****/
 
 /***** Globals *****/
+
+extern mxc_uart_regs_t* ConsoleUart;
 
 /***** Functions *****/
 
@@ -68,13 +68,15 @@ void my_isr(void)
 int main(void)
 {
     printf("********** Comparator Example **********\n");
-    printf("\nConnect the analog signal used as the positive comparator input to analog pin 7.\n");
-    printf("Connect the analog signal used as the negative comparator input to analog pin 3.\n");
+    printf("\nConnect the analog signal used as the positive comparator input to analog pin 7 "
+           "(P0.15)).\n");
+    printf("Connect the analog signal used as the negative comparator input to analog pin 3 "
+           "(P0.11).\n");
     printf("\nThe device will be placed in Deep Sleep and requires an edge transition of\n");
     printf("the comparator output to wakeup.\n\n");
 
-    printf("Press SW3 to begin.\n");
-    while (!PB_Get(0))
+    printf("Press any user push button to begin.\n");
+    while (!PB_IsPressedAny())
         ;
 
     MXC_LP_EnableComparatorWakeup(MXC_ADC_COMP_1);
@@ -86,9 +88,11 @@ int main(void)
 
     while (1) {
         printf("\nEntering sleep mode.\n");
-        while (MXC_UART_GetActive(CONSOLE_UART))
+        while (MXC_UART_GetActive(ConsoleUart))
             ;
         MXC_LP_EnterDeepSleepMode();
         printf("Waking up.\n");
     }
+
+    return 0;
 }

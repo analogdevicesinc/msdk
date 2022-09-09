@@ -128,6 +128,13 @@ void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callb
  */
 void MXC_TRNG_GenerateKey(void);
 
+/**
+ * @brief   Perform health test of the TRNG entropy source
+ * 
+ * @return  E_NOT_SUPPORTED (-17)
+ */
+int MXC_TRNG_HealthTest(void);
+
 #ifdef __cplusplus
 }
 #endif

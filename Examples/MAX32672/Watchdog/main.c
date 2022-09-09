@@ -64,30 +64,21 @@
 //UNDERFLOW
 
 /***** Globals *****/
-//use push buttons defined in board.h
-extern const mxc_gpio_cfg_t pb_pin[];
-extern const mxc_gpio_cfg_t led_pin[];
-
 static mxc_wdt_cfg_t cfg;
 
-// refers to array, do not change constants
-#define SW1 0
-#define LED 0
 /***** Functions *****/
 
-// *****************************************************************************
 void watchdogHandler()
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
     printf("\nTIMEOUT! \n");
 }
 
-// *****************************************************************************
 void WDT0_IRQHandler(void)
 {
     watchdogHandler();
 }
-// *****************************************************************************
+
 void MXC_WDT_Setup()
 {
     MXC_WDT_Disable(MXC_WDT0);
@@ -95,22 +86,14 @@ void MXC_WDT_Setup()
     MXC_WDT_Enable(MXC_WDT0);
 }
 
-void SW1_Callback()
+void blinkled(int led, int num_of_blink, unsigned int delay_ms)
 {
-    printf("\nEnabling Timeout Interrupt...\n");
-    MXC_WDT_Disable(MXC_WDT0);
-    cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-    cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
-    cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-    cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
-    MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
-    MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
-    MXC_WDT_ResetTimer(MXC_WDT0);
-    MXC_WDT_EnableReset(MXC_WDT0);
-    MXC_WDT_EnableInt(MXC_WDT0);
-    MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
-    NVIC_EnableIRQ(WDT0_IRQn);
-    MXC_WDT_Enable(MXC_WDT0);
+    for (int i = 0; i < num_of_blink; i++) {
+        LED_On(led);
+        MXC_Delay(MXC_DELAY_MSEC(delay_ms));
+        LED_Off(led);
+        MXC_Delay(MXC_DELAY_MSEC(delay_ms));
+    }
 }
 
 // *****************************************************************************
@@ -140,34 +123,33 @@ int main(void)
     printf("\nPress a button to create watchdog interrupt and reset:\n");
     printf("SW3 (P0.18)= timeout and reset program\n\n");
 
-    //Blink LED
-    MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-
     //Blink LED three times at startup
-    int numBlinks = 3;
-
-    while (numBlinks) {
-        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        numBlinks--;
-    }
+    blinkled(0, 3, 100);
 
     //Setup watchdog
     MXC_WDT_Setup();
 
-    //Push SW1 to start longer delay - shows Interrupt before the reset happens
-
     while (1) {
-        //Push SW1 to reset watchdog
-        if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
-            SW1_Callback();
-#ifdef OVERFLOW
+        //Push user push button to reset watchdog
+        if (PB_Get(0) == TRUE) {
+            printf("\nEnabling Timeout Interrupt...\n");
+            MXC_WDT_Disable(MXC_WDT0);
+            cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
+            cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
+            cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
+            cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
+            MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
+            MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
+            MXC_WDT_ResetTimer(MXC_WDT0);
+            MXC_WDT_EnableReset(MXC_WDT0);
+            MXC_WDT_EnableInt(MXC_WDT0);
+            MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
+            NVIC_EnableIRQ(WDT0_IRQn);
+            MXC_WDT_Enable(MXC_WDT0);
 
+#ifdef OVERFLOW
             while (1)
                 ;
-
 #else
             MXC_Delay(MXC_DELAY_MSEC(200));
             MXC_WDT_ResetTimer(MXC_WDT0);
@@ -175,10 +157,8 @@ int main(void)
         }
 
         //blink LED0
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
+        blinkled(0, 1, 500);
+
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
