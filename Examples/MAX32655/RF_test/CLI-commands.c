@@ -361,16 +361,24 @@ static BaseType_t cmd_SetPacketType(char* pcWriteBuffer, size_t xWriteBufferLen,
                                  &lParameterStringLength /* Store the parameter string length. */
         );
 
-    memcmp(packetType, "PRBS9", 5) == 0  ? setPacketType(LL_TEST_PKT_TYPE_PRBS9) :
+    memcmp(packetType, "PRBS9", 5) == 0 ? setPacketType(LL_TEST_PKT_TYPE_PRBS9) :
+
     memcmp(packetType, "PRBS15", 6) == 0 ? setPacketType(LL_TEST_PKT_TYPE_PRBS15) :
-    memcmp(packetType, "0F", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_0F) :
-    memcmp(packetType, "55", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_55) :
-    memcmp(packetType, "FF", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_FF) :
-    memcmp(packetType, "00", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_00) :
-    memcmp(packetType, "F0", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_00) :
-    memcmp(packetType, "AA", 2) == 0     ? setPacketType(LL_TEST_PKT_TYPE_AA) :
-                                           sprintf(pcWriteBuffer,
-                                                   "Bad parameter, see help menu for options\r\n");
+
+    memcmp(packetType, "0F", 2) == 0 ? setPacketType(LL_TEST_PKT_TYPE_0F) :
+
+    memcmp(packetType, "55", 2) == 0 ? setPacketType(LL_TEST_PKT_TYPE_55) :
+
+    memcmp(packetType, "FF", 2) == 0 ? setPacketType(LL_TEST_PKT_TYPE_FF) :
+
+    memcmp(packetType, "00", 2) == 0 ? setPacketType(LL_TEST_PKT_TYPE_00) :
+
+    memcmp(packetType, "F0", 2) == 0 ? setPacketType(LL_TEST_PKT_TYPE_00) :
+
+    memcmp(packetType, "AA", 2) == 0 ? setPacketType(LL_TEST_PKT_TYPE_AA) :
+
+                                       sprintf(pcWriteBuffer,
+                                               "Bad parameter, see help menu for options\r\n");
 
     return pdFALSE;
 }
