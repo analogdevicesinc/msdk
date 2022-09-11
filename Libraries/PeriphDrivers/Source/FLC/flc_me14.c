@@ -113,14 +113,12 @@ int MXC_FLC_ME14_GetPhysicalAddress(uint32_t addr, uint32_t* result)
         MXC_ASSERT(info_block_addr);
 
         *result = (addr & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
-        return E_NO_ERROR;
     } else if (addr >= MXC_INFO1_MEM_BASE && addr < (MXC_INFO1_MEM_BASE + MXC_INFO_MEM_SIZE)) {
         /* Prevent unintended program and erase of info block */
         static const int info_block_addr = 0;
         MXC_ASSERT(info_block_addr);
 
         *result = ((addr - MXC_INFO_MEM_SIZE) & (MXC_INFO_MEM_SIZE - 1)) + MXC_FLASH_MEM_SIZE;
-        return E_NO_ERROR;
     } else {
         return E_BAD_PARAM;
     }
