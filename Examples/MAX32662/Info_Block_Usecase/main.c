@@ -57,18 +57,18 @@
 // User infoblock area is Infoblock 1
 // Write-only area of Infoblock 1: 0x10802000 - 0x10802FFF
 // R/W area of Infoblock 1: 0x10803000 - 0x10803FFF
-#define READABLE_AREA_OFFSET        0x1000
-#define INFO_MEM_READABLE_AREA      (MXC_INFO1_MEM_BASE + READABLE_AREA_OFFSET)
+#define READABLE_AREA_OFFSET 0x1000
+#define INFO_MEM_READABLE_AREA (MXC_INFO1_MEM_BASE + READABLE_AREA_OFFSET)
 #define INFO_MEM_READABLE_AREA_SIZE (MXC_INFO1_MEM_SIZE - READABLE_AREA_OFFSET)
 
-#define INFO_MEM_USER_AREA      MXC_INFO1_MEM_BASE
+#define INFO_MEM_USER_AREA MXC_INFO1_MEM_BASE
 #define INFO_MEM_USER_AREA_SIZE MXC_INFO1_MEM_SIZE
 
 /***** Static Functions *****/
 static void dump_section(unsigned int address, unsigned int length)
 {
     unsigned int i;
-    volatile uint32_t* addr = (uint32_t*)address;
+    volatile uint32_t *addr = (uint32_t *)address;
 
     length /= 4; // on each loop print 4 bytes
 
@@ -90,10 +90,11 @@ static void dump_section(unsigned int address, unsigned int length)
 #if WITH_WRITE_TEST
 static int write_test(void)
 {
-    int ret                     = 0;
-    uint32_t test_val[]         = {0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00};
-    volatile uint32_t* addr     = (uint32_t*)INFO_MEM_READABLE_AREA;
-    volatile uint32_t* end_addr = (uint32_t*)(INFO_MEM_READABLE_AREA + INFO_MEM_READABLE_AREA_SIZE);
+    int ret = 0;
+    uint32_t test_val[] = { 0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00 };
+    volatile uint32_t *addr = (uint32_t *)INFO_MEM_READABLE_AREA;
+    volatile uint32_t *end_addr =
+        (uint32_t *)(INFO_MEM_READABLE_AREA + INFO_MEM_READABLE_AREA_SIZE);
 
     // find free slot
     while (addr < end_addr) {

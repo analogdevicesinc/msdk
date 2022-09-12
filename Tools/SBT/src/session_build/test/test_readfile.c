@@ -1229,7 +1229,8 @@ uint8_t read_s19_test_data[] = {
     0x1A, 0x69, 0x22, 0xF4, 0xE0, 0x62, 0x1A, 0x61, 0x1A, 0x69, 0x42, 0xF4, 0x40, 0x72, 0x1A, 0x61,
     0x4F, 0xF4, 0x80, 0x53, 0xC4, 0xF2, 0x03, 0x03, 0x1A, 0x69, 0x42, 0xF0, 0x01, 0x02, 0x1A, 0x61,
     0x70, 0x47, 0x1A, 0x69, 0x22, 0xF4, 0xE0, 0x62, 0x1A, 0x61, 0x1A, 0x69, 0x42, 0xF4, 0x00, 0x72,
-    0x1A, 0x61, 0xED, 0xE7, 0x4F, 0xF4, 0x00, 0x42, 0xC4, 0xF2, 0x00, 0x02, 0x4F, 0xF0, 0x80, 0x53};
+    0x1A, 0x61, 0xED, 0xE7, 0x4F, 0xF4, 0x00, 0x42, 0xC4, 0xF2, 0x00, 0x02, 0x4F, 0xF0, 0x80, 0x53
+};
 
 static int init_suite1(void)
 {
@@ -1385,17 +1386,17 @@ static void test_extension(void)
 }
 
 static CU_TestInfo tests_readfile[] = {
-    {"test of S19 file parsing", test_read_S19},
-    {"test of S19 file parsing Bad", test_read_S19_bad},
-    {"test of S19 file parsing Empty", test_read_S19_empty},
-    {"test of S19 file parsing No File", test_read_S19_nofile},
-    {"test of S19 get addr", test_get_addr_S19},
-    {"test of extension", test_extension},
+    { "test of S19 file parsing", test_read_S19 },
+    { "test of S19 file parsing Bad", test_read_S19_bad },
+    { "test of S19 file parsing Empty", test_read_S19_empty },
+    { "test of S19 file parsing No File", test_read_S19_nofile },
+    { "test of S19 get addr", test_get_addr_S19 },
+    { "test of extension", test_extension },
     CU_TEST_INFO_NULL,
 };
 
 static CU_SuiteInfo suites[] = {
-    {"Read File", init_suite1, clean_suite1, setup_suite1, teardown_suite1, tests_readfile},
+    { "Read File", init_suite1, clean_suite1, setup_suite1, teardown_suite1, tests_readfile },
     CU_SUITE_INFO_NULL,
 };
 

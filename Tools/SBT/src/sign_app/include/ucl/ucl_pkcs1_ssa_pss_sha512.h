@@ -66,8 +66,8 @@ extern "C" {
    * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
    */
 
-int ucl_pkcs1_ssa_pss_sha512_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                           ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha512_verify_digest(u8 *signature, u8 *hash, u32 hash_length,
+                                           ucl_rsa_public_key_t *keyPu, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA512 signature verification</b>.
@@ -90,8 +90,8 @@ int ucl_pkcs1_ssa_pss_sha512_verify_digest(u8* signature, u8* hash, u32 hash_len
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
  */
-int ucl_pkcs1_ssa_pss_sha512_verify(u8* signature, u8* message, u32 message_length,
-                                    ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha512_verify(u8 *signature, u8 *message, u32 message_length,
+                                    ucl_rsa_public_key_t *keyPu, u32 salt_length);
 
 /** <b>RSASSA-PSS-SHA512 signature verification</b>.
  * Signature verification using the hash function SHA512.
@@ -112,8 +112,8 @@ int ucl_pkcs1_ssa_pss_sha512_verify(u8* signature, u8* message, u32 message_leng
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
  */
-int __API__ ucl_pkcs1_ssa_pss_sha512_verify_(u8* signature, u8* message, u32 message_length,
-                                             ucl_rsa_public_key_t* keyPu, u32 salt_length,
+int __API__ ucl_pkcs1_ssa_pss_sha512_verify_(u8 *signature, u8 *message, u32 message_length,
+                                             ucl_rsa_public_key_t *keyPu, u32 salt_length,
                                              int is_digest);
 
 /*============================================================================*/
@@ -137,8 +137,8 @@ int __API__ ucl_pkcs1_ssa_pss_sha512_verify_(u8* signature, u8* message, u32 mes
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
  */
-int ucl_pkcs1_ssa_pss_sha512_sign(u8* signature, u8* message, u32 message_length,
-                                  ucl_rsa_private_key_t* keyPr, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha512_sign(u8 *signature, u8 *message, u32 message_length,
+                                  ucl_rsa_private_key_t *keyPr, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSA-SSA-PSS-SHA512 signature generation</b>.
@@ -161,8 +161,8 @@ int ucl_pkcs1_ssa_pss_sha512_sign(u8* signature, u8* message, u32 message_length
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
  */
-int ucl_pkcs1_ssa_pss_sha512_hashed_sign(u8* signature, u8* message, u32 message_length,
-                                         ucl_rsa_private_key_t* keyPr, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha512_hashed_sign(u8 *signature, u8 *message, u32 message_length,
+                                         ucl_rsa_private_key_t *keyPr, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA512 signature generation with CRT</b>.
@@ -185,8 +185,8 @@ int ucl_pkcs1_ssa_pss_sha512_hashed_sign(u8* signature, u8* message, u32 message
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
  */
-int ucl_pkcs1_ssa_pss_sha512_crt_sign(u8* signature, u8* message, u32 message_length,
-                                      ucl_rsa_crt_private_key_t* key, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha512_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                                      ucl_rsa_crt_private_key_t *key, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS-SHA512 signature generation with CRT</b>.
@@ -209,8 +209,8 @@ int ucl_pkcs1_ssa_pss_sha512_crt_sign(u8* signature, u8* message, u32 message_le
  *
  * @ingroup UCL_PKCS1V21_RSASSAPSS_SHA512
  */
-int ucl_pkcs1_ssa_pss_sha512_hashed_crt_sign(u8* signature, u8* message, u32 message_length,
-                                             ucl_rsa_crt_private_key_t* key, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sha512_hashed_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                                             ucl_rsa_crt_private_key_t *key, u32 salt_length);
 
 #ifdef __cplusplus
 }

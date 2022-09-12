@@ -64,14 +64,14 @@
 /*! WSF message event enumeration */
 enum {
     FIT_HR_TIMER_IND = FIT_MSG_START, /*! Heart rate measurement timer expired */
-    FIT_BATT_TIMER_IND,               /*! Battery measurement timer expired */
-    FIT_RUNNING_TIMER_IND             /*! Running speed and cadence measurement timer expired */
+    FIT_BATT_TIMER_IND, /*! Battery measurement timer expired */
+    FIT_RUNNING_TIMER_IND /*! Running speed and cadence measurement timer expired */
 };
 
 /*! Button press handling constants */
 #define BTN_SHORT_MS 200
-#define BTN_MED_MS   500
-#define BTN_LONG_MS  1000
+#define BTN_MED_MS 500
+#define BTN_LONG_MS 1000
 
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
@@ -94,8 +94,8 @@ typedef union {
 
 /*! configurable parameters for advertising */
 static const appAdvCfg_t fitAdvCfg = {
-    {60000, 0, 0}, /*! Advertising durations in ms */
-    {800, 0, 0}    /*! Advertising intervals in 0.625 ms units */
+    { 60000, 0, 0 }, /*! Advertising durations in ms */
+    { 800, 0, 0 } /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
@@ -106,21 +106,21 @@ static const appSlaveCfg_t fitSlaveCfg = {
 /*! configurable parameters for security */
 static const appSecCfg_t fitSecCfg = {
     DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
-    0,                                   /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK,                     /*! Responder key distribution flags */
-    FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    TRUE                                 /*! TRUE to initiate security upon connection */
+    0, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t fitUpdateCfg = {
     6000, /*! Connection idle period in ms before attempting
                                               connection parameter update; set to zero to disable */
-    640,  /*! Minimum connection interval in 1.25ms units */
-    800,  /*! Maximum connection interval in 1.25ms units */
-    0,    /*! Connection latency */
-    900,  /*! Supervision timeout in 10ms units */
-    5     /*! Number of update attempts before giving up */
+    640, /*! Minimum connection interval in 1.25ms units */
+    800, /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    900, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
 };
 
 /*! heart rate measurement configuration */
@@ -131,21 +131,21 @@ static const hrpsCfg_t fitHrpsCfg = {
 /*! battery measurement configuration */
 static const basCfg_t fitBasCfg = {
     30, /*! Battery measurement timer expiration period in seconds */
-    1,  /*! Perform battery measurement after this many timer periods */
+    1, /*! Perform battery measurement after this many timer periods */
     100 /*! Send battery level notification to peer when below this level. */
 };
 
 /*! SMP security parameter configuration */
 static const smpCfg_t fitSmpCfg = {
-    500,                 /*! 'Repeated attempts' timeout in msec */
+    500, /*! 'Repeated attempts' timeout in msec */
     SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
-    7,                   /*! Minimum encryption key length */
-    16,                  /*! Maximum encryption key length */
-    1,                   /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                   /*! Device authentication requirements */
-    64000,               /*! Maximum repeated attempts timeout in msec */
-    64000,               /*! Time msec before attemptExp decreases */
-    2                    /*! Repeated attempts multiplier exponent */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
 };
 
 /**************************************************************************************************
@@ -155,28 +155,30 @@ static const smpCfg_t fitSmpCfg = {
 /*! advertising data, discoverable mode */
 static const uint8_t fitAdvDataDisc[] = {
     /*! flags */
-    2,                        /*! length */
-    DM_ADV_TYPE_FLAGS,        /*! AD type */
+    2, /*! length */
+    DM_ADV_TYPE_FLAGS, /*! AD type */
     DM_FLAG_LE_GENERAL_DISC | /*! flags */
         DM_FLAG_LE_BREDR_NOT_SUP,
 
     /*! tx power */
-    2,                    /*! length */
+    2, /*! length */
     DM_ADV_TYPE_TX_POWER, /*! AD type */
-    0,                    /*! tx power */
+    0, /*! tx power */
 
     /*! service UUID list */
-    9,                   /*! length */
+    9, /*! length */
     DM_ADV_TYPE_16_UUID, /*! AD type */
     UINT16_TO_BYTES(ATT_UUID_HEART_RATE_SERVICE), UINT16_TO_BYTES(ATT_UUID_RUNNING_SPEED_SERVICE),
-    UINT16_TO_BYTES(ATT_UUID_DEVICE_INFO_SERVICE), UINT16_TO_BYTES(ATT_UUID_BATTERY_SERVICE)};
+    UINT16_TO_BYTES(ATT_UUID_DEVICE_INFO_SERVICE), UINT16_TO_BYTES(ATT_UUID_BATTERY_SERVICE)
+};
 
 /*! scan data, discoverable mode */
 static const uint8_t fitScanDataDisc[] = {
     /*! device name */
-    4,                      /*! length */
+    4, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'F', 'i', 't'};
+    'F', 'i', 't'
+};
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
@@ -184,20 +186,20 @@ static const uint8_t fitScanDataDisc[] = {
 
 /*! enumeration of client characteristic configuration descriptors */
 enum {
-    FIT_GATT_SC_CCC_IDX,  /*! GATT service, service changed characteristic */
-    FIT_HRS_HRM_CCC_IDX,  /*! Heart rate service, heart rate monitor characteristic */
+    FIT_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
+    FIT_HRS_HRM_CCC_IDX, /*! Heart rate service, heart rate monitor characteristic */
     FIT_BATT_LVL_CCC_IDX, /*! Battery service, battery level characteristic */
-    FIT_RSCS_SM_CCC_IDX,  /*! Runninc speed and cadence measurement characteristic */
+    FIT_RSCS_SM_CCC_IDX, /*! Runninc speed and cadence measurement characteristic */
     FIT_NUM_CCC_IDX
 };
 
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
 static const attsCccSet_t fitCccSet[FIT_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
-    {GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE}, /* FIT_GATT_SC_CCC_IDX */
-    {HRS_HRM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE},   /* FIT_HRS_HRM_CCC_IDX */
-    {BATT_LVL_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE},  /* FIT_BATT_LVL_CCC_IDX */
-    {RSCS_RSM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE}   /* FIT_RSCS_SM_CCC_IDX */
+    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* FIT_GATT_SC_CCC_IDX */
+    { HRS_HRM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* FIT_HRS_HRM_CCC_IDX */
+    { BATT_LVL_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* FIT_BATT_LVL_CCC_IDX */
+    { RSCS_RSM_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* FIT_RSCS_SM_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -225,9 +227,9 @@ static uint8_t fitHrmFlags = CH_HRM_FLAGS_VALUE_8BIT | CH_HRM_FLAGS_ENERGY_EXP;
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitDmCback(dmEvt_t* pDmEvt)
+static void fitDmCback(dmEvt_t *pDmEvt)
 {
-    dmEvt_t* pMsg;
+    dmEvt_t *pMsg;
     uint16_t len;
 
     len = DmSizeOfEvt(pDmEvt);
@@ -247,13 +249,13 @@ static void fitDmCback(dmEvt_t* pDmEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitAttCback(attEvt_t* pEvt)
+static void fitAttCback(attEvt_t *pEvt)
 {
-    attEvt_t* pMsg;
+    attEvt_t *pMsg;
 
     if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
         memcpy(pMsg, pEvt, sizeof(attEvt_t));
-        pMsg->pValue = (uint8_t*)(pMsg + 1);
+        pMsg->pValue = (uint8_t *)(pMsg + 1);
         memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
         WsfMsgSend(fitHandlerId, pMsg);
     }
@@ -268,9 +270,9 @@ static void fitAttCback(attEvt_t* pEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitCccCback(attsCccEvt_t* pEvt)
+static void fitCccCback(attsCccEvt_t *pEvt)
 {
-    attsCccEvt_t* pMsg;
+    attsCccEvt_t *pMsg;
     appDbHdl_t dbHdl;
 
     /* If CCC not set from initialization and there's a device record and currently bonded */
@@ -316,10 +318,10 @@ static void fitSendRunningSpeedMeasurement(dmConnId_t connId)
     }
 
     /* Configure and start timer to send the next measurement */
-    fitRscmTimer.msg.event  = FIT_RUNNING_TIMER_IND;
+    fitRscmTimer.msg.event = FIT_RUNNING_TIMER_IND;
     fitRscmTimer.msg.status = FIT_RSCS_SM_CCC_IDX;
-    fitRscmTimer.handlerId  = fitHandlerId;
-    fitRscmTimer.msg.param  = connId;
+    fitRscmTimer.handlerId = fitHandlerId;
+    fitRscmTimer.msg.param = connId;
 
     WsfTimerStartSec(&fitRscmTimer, fitRscmPeriod);
 }
@@ -333,7 +335,7 @@ static void fitSendRunningSpeedMeasurement(dmConnId_t connId)
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitProcCccState(fitMsg_t* pMsg)
+static void fitProcCccState(fitMsg_t *pMsg)
 {
     APP_TRACE_INFO3("ccc state ind value:%d handle:%d idx:%d", pMsg->ccc.value, pMsg->ccc.handle,
                     pMsg->ccc.idx);
@@ -379,7 +381,7 @@ static void fitProcCccState(fitMsg_t* pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitClose(fitMsg_t* pMsg)
+static void fitClose(fitMsg_t *pMsg)
 {
     /* stop heart rate measurement */
     HrpsMeasStop((dmConnId_t)pMsg->hdr.param);
@@ -401,11 +403,11 @@ static void fitClose(fitMsg_t* pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitSetup(fitMsg_t* pMsg)
+static void fitSetup(fitMsg_t *pMsg)
 {
     /* set advertising and scan response data for discoverable mode */
-    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(fitAdvDataDisc), (uint8_t*)fitAdvDataDisc);
-    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(fitScanDataDisc), (uint8_t*)fitScanDataDisc);
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(fitAdvDataDisc), (uint8_t *)fitAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(fitScanDataDisc), (uint8_t *)fitScanDataDisc);
 
     /* set advertising and scan response data for connectable mode */
     AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, NULL);
@@ -432,87 +434,87 @@ static void fitBtnCback(uint8_t btn)
     /* button actions when connected */
     if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE) {
         switch (btn) {
-            case APP_UI_BTN_1_SHORT:
-                /* increment the heart rate */
-                AppHwHrmTest(++heartRate);
-                break;
+        case APP_UI_BTN_1_SHORT:
+            /* increment the heart rate */
+            AppHwHrmTest(++heartRate);
+            break;
 
-            case APP_UI_BTN_1_MED:
-                break;
+        case APP_UI_BTN_1_MED:
+            break;
 
-            case APP_UI_BTN_1_LONG:
-                AppConnClose(connId);
-                break;
+        case APP_UI_BTN_1_LONG:
+            AppConnClose(connId);
+            break;
 
-            case APP_UI_BTN_2_SHORT:
-                /* decrement the heart rate */
-                AppHwHrmTest(--heartRate);
-                break;
+        case APP_UI_BTN_2_SHORT:
+            /* decrement the heart rate */
+            AppHwHrmTest(--heartRate);
+            break;
 
-            case APP_UI_BTN_2_MED:
-                /* Toggle HRM Sensor DET flags */
-                if (!(fitHrmFlags & (CH_HRM_FLAGS_SENSOR_DET | CH_HRM_FLAGS_SENSOR_NOT_DET))) {
-                    fitHrmFlags |= CH_HRM_FLAGS_SENSOR_DET;
-                } else if (fitHrmFlags & CH_HRM_FLAGS_SENSOR_DET) {
-                    fitHrmFlags &= ~CH_HRM_FLAGS_SENSOR_DET;
-                    fitHrmFlags |= CH_HRM_FLAGS_SENSOR_NOT_DET;
-                } else {
-                    fitHrmFlags &= ~CH_HRM_FLAGS_SENSOR_NOT_DET;
-                }
+        case APP_UI_BTN_2_MED:
+            /* Toggle HRM Sensor DET flags */
+            if (!(fitHrmFlags & (CH_HRM_FLAGS_SENSOR_DET | CH_HRM_FLAGS_SENSOR_NOT_DET))) {
+                fitHrmFlags |= CH_HRM_FLAGS_SENSOR_DET;
+            } else if (fitHrmFlags & CH_HRM_FLAGS_SENSOR_DET) {
+                fitHrmFlags &= ~CH_HRM_FLAGS_SENSOR_DET;
+                fitHrmFlags |= CH_HRM_FLAGS_SENSOR_NOT_DET;
+            } else {
+                fitHrmFlags &= ~CH_HRM_FLAGS_SENSOR_NOT_DET;
+            }
 
-                HrpsSetFlags(fitHrmFlags);
-                break;
+            HrpsSetFlags(fitHrmFlags);
+            break;
 
-            case APP_UI_BTN_2_LONG:
-                /* Toggle HRM RR Interval feature flag */
-                if (fitHrmFlags & CH_HRM_FLAGS_RR_INTERVAL) {
-                    fitHrmFlags &= ~CH_HRM_FLAGS_RR_INTERVAL;
-                } else {
-                    fitHrmFlags |= CH_HRM_FLAGS_RR_INTERVAL;
-                }
+        case APP_UI_BTN_2_LONG:
+            /* Toggle HRM RR Interval feature flag */
+            if (fitHrmFlags & CH_HRM_FLAGS_RR_INTERVAL) {
+                fitHrmFlags &= ~CH_HRM_FLAGS_RR_INTERVAL;
+            } else {
+                fitHrmFlags |= CH_HRM_FLAGS_RR_INTERVAL;
+            }
 
-                HrpsSetFlags(fitHrmFlags);
-                break;
+            HrpsSetFlags(fitHrmFlags);
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
     /* button actions when not connected */
     else {
         switch (btn) {
-            case APP_UI_BTN_1_SHORT:
-                /* start or restart advertising */
-                AppAdvStart(APP_MODE_AUTO_INIT);
-                break;
+        case APP_UI_BTN_1_SHORT:
+            /* start or restart advertising */
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            break;
 
-            case APP_UI_BTN_1_MED:
-                /* enter discoverable and bondable mode */
-                AppSetBondable(TRUE);
-                AppAdvStart(APP_MODE_DISCOVERABLE);
-                break;
+        case APP_UI_BTN_1_MED:
+            /* enter discoverable and bondable mode */
+            AppSetBondable(TRUE);
+            AppAdvStart(APP_MODE_DISCOVERABLE);
+            break;
 
-            case APP_UI_BTN_1_LONG:
-                /* clear all bonding info */
-                AppSlaveClearAllBondingInfo();
+        case APP_UI_BTN_1_LONG:
+            /* clear all bonding info */
+            AppSlaveClearAllBondingInfo();
 
-                /* restart advertising */
-                AppAdvStart(APP_MODE_AUTO_INIT);
-                break;
+            /* restart advertising */
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            break;
 
-            case APP_UI_BTN_2_SHORT:
-                /* Toggle HRM Flag for 8 and 16 bit values */
-                if (fitHrmFlags & CH_HRM_FLAGS_VALUE_16BIT) {
-                    fitHrmFlags &= ~CH_HRM_FLAGS_VALUE_16BIT;
-                } else {
-                    fitHrmFlags |= CH_HRM_FLAGS_VALUE_16BIT;
-                }
+        case APP_UI_BTN_2_SHORT:
+            /* Toggle HRM Flag for 8 and 16 bit values */
+            if (fitHrmFlags & CH_HRM_FLAGS_VALUE_16BIT) {
+                fitHrmFlags &= ~CH_HRM_FLAGS_VALUE_16BIT;
+            } else {
+                fitHrmFlags |= CH_HRM_FLAGS_VALUE_16BIT;
+            }
 
-                HrpsSetFlags(fitHrmFlags);
-                break;
+            HrpsSetFlags(fitHrmFlags);
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 }
@@ -526,106 +528,106 @@ static void fitBtnCback(uint8_t btn)
  *  \return None.
  */
 /*************************************************************************************************/
-static void fitProcMsg(fitMsg_t* pMsg)
+static void fitProcMsg(fitMsg_t *pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
 
     switch (pMsg->hdr.event) {
-        case FIT_RUNNING_TIMER_IND:
-            fitSendRunningSpeedMeasurement((dmConnId_t)pMsg->ccc.hdr.param);
-            break;
+    case FIT_RUNNING_TIMER_IND:
+        fitSendRunningSpeedMeasurement((dmConnId_t)pMsg->ccc.hdr.param);
+        break;
 
-        case FIT_HR_TIMER_IND:
-            HrpsProcMsg(&pMsg->hdr);
-            break;
+    case FIT_HR_TIMER_IND:
+        HrpsProcMsg(&pMsg->hdr);
+        break;
 
-        case FIT_BATT_TIMER_IND:
-            BasProcMsg(&pMsg->hdr);
-            break;
+    case FIT_BATT_TIMER_IND:
+        BasProcMsg(&pMsg->hdr);
+        break;
 
-        case ATTS_HANDLE_VALUE_CNF:
-            HrpsProcMsg(&pMsg->hdr);
-            BasProcMsg(&pMsg->hdr);
-            break;
+    case ATTS_HANDLE_VALUE_CNF:
+        HrpsProcMsg(&pMsg->hdr);
+        BasProcMsg(&pMsg->hdr);
+        break;
 
-        case ATTS_CCC_STATE_IND:
-            fitProcCccState(pMsg);
-            break;
+    case ATTS_CCC_STATE_IND:
+        fitProcCccState(pMsg);
+        break;
 
-        case DM_RESET_CMPL_IND:
-            AttsCalculateDbHash();
-            DmSecGenerateEccKeyReq();
-            fitSetup(pMsg);
-            uiEvent = APP_UI_RESET_CMPL;
-            break;
+    case DM_RESET_CMPL_IND:
+        AttsCalculateDbHash();
+        DmSecGenerateEccKeyReq();
+        fitSetup(pMsg);
+        uiEvent = APP_UI_RESET_CMPL;
+        break;
 
-        case DM_ADV_SET_START_IND:
-            uiEvent = APP_UI_ADV_SET_START_IND;
-            break;
+    case DM_ADV_SET_START_IND:
+        uiEvent = APP_UI_ADV_SET_START_IND;
+        break;
 
-        case DM_ADV_SET_STOP_IND:
-            uiEvent = APP_UI_ADV_SET_STOP_IND;
-            break;
+    case DM_ADV_SET_STOP_IND:
+        uiEvent = APP_UI_ADV_SET_STOP_IND;
+        break;
 
-        case DM_ADV_START_IND:
-            uiEvent = APP_UI_ADV_START;
-            break;
+    case DM_ADV_START_IND:
+        uiEvent = APP_UI_ADV_START;
+        break;
 
-        case DM_ADV_STOP_IND:
-            uiEvent = APP_UI_ADV_STOP;
-            break;
+    case DM_ADV_STOP_IND:
+        uiEvent = APP_UI_ADV_STOP;
+        break;
 
-        case DM_CONN_OPEN_IND:
-            HrpsProcMsg(&pMsg->hdr);
-            BasProcMsg(&pMsg->hdr);
-            uiEvent = APP_UI_CONN_OPEN;
-            break;
+    case DM_CONN_OPEN_IND:
+        HrpsProcMsg(&pMsg->hdr);
+        BasProcMsg(&pMsg->hdr);
+        uiEvent = APP_UI_CONN_OPEN;
+        break;
 
-        case DM_CONN_CLOSE_IND:
-            fitClose(pMsg);
-            uiEvent = APP_UI_CONN_CLOSE;
-            break;
+    case DM_CONN_CLOSE_IND:
+        fitClose(pMsg);
+        uiEvent = APP_UI_CONN_CLOSE;
+        break;
 
-        case DM_SEC_PAIR_CMPL_IND:
-            DmSecGenerateEccKeyReq();
-            uiEvent = APP_UI_SEC_PAIR_CMPL;
-            break;
+    case DM_SEC_PAIR_CMPL_IND:
+        DmSecGenerateEccKeyReq();
+        uiEvent = APP_UI_SEC_PAIR_CMPL;
+        break;
 
-        case DM_SEC_PAIR_FAIL_IND:
-            DmSecGenerateEccKeyReq();
-            uiEvent = APP_UI_SEC_PAIR_FAIL;
-            break;
+    case DM_SEC_PAIR_FAIL_IND:
+        DmSecGenerateEccKeyReq();
+        uiEvent = APP_UI_SEC_PAIR_FAIL;
+        break;
 
-        case DM_SEC_ENCRYPT_IND:
-            uiEvent = APP_UI_SEC_ENCRYPT;
-            break;
+    case DM_SEC_ENCRYPT_IND:
+        uiEvent = APP_UI_SEC_ENCRYPT;
+        break;
 
-        case DM_SEC_ENCRYPT_FAIL_IND:
-            uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
-            break;
+    case DM_SEC_ENCRYPT_FAIL_IND:
+        uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
+        break;
 
-        case DM_SEC_AUTH_REQ_IND:
-            AppHandlePasskey(&pMsg->dm.authReq);
-            break;
+    case DM_SEC_AUTH_REQ_IND:
+        AppHandlePasskey(&pMsg->dm.authReq);
+        break;
 
-        case DM_SEC_ECC_KEY_IND:
-            DmSecSetEccKey(&pMsg->dm.eccMsg.data.key);
-            break;
+    case DM_SEC_ECC_KEY_IND:
+        DmSecSetEccKey(&pMsg->dm.eccMsg.data.key);
+        break;
 
-        case DM_SEC_COMPARE_IND:
-            AppHandleNumericComparison(&pMsg->dm.cnfInd);
-            break;
+    case DM_SEC_COMPARE_IND:
+        AppHandleNumericComparison(&pMsg->dm.cnfInd);
+        break;
 
-        case DM_PRIV_CLEAR_RES_LIST_IND:
-            APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-            break;
+    case DM_PRIV_CLEAR_RES_LIST_IND:
+        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+        break;
 
-        case DM_HW_ERROR_IND:
-            uiEvent = APP_UI_HW_ERROR;
-            break;
+    case DM_HW_ERROR_IND:
+        uiEvent = APP_UI_HW_ERROR;
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (uiEvent != APP_UI_NONE) {
@@ -703,24 +705,24 @@ void FitHandlerInit(wsfHandlerId_t handlerId)
     fitHandlerId = handlerId;
 
     /* Set configuration pointers */
-    pAppAdvCfg    = (appAdvCfg_t*)&fitAdvCfg;
-    pAppSlaveCfg  = (appSlaveCfg_t*)&fitSlaveCfg;
-    pAppSecCfg    = (appSecCfg_t*)&fitSecCfg;
-    pAppUpdateCfg = (appUpdateCfg_t*)&fitUpdateCfg;
+    pAppAdvCfg = (appAdvCfg_t *)&fitAdvCfg;
+    pAppSlaveCfg = (appSlaveCfg_t *)&fitSlaveCfg;
+    pAppSecCfg = (appSecCfg_t *)&fitSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t *)&fitUpdateCfg;
 
     /* Initialize application framework */
     AppSlaveInit();
     AppServerInit();
 
     /* Set stack configuration pointers */
-    pSmpCfg = (smpCfg_t*)&fitSmpCfg;
+    pSmpCfg = (smpCfg_t *)&fitSmpCfg;
 
     /* initialize heart rate profile sensor */
-    HrpsInit(handlerId, (hrpsCfg_t*)&fitHrpsCfg);
+    HrpsInit(handlerId, (hrpsCfg_t *)&fitHrpsCfg);
     HrpsSetFlags(fitHrmFlags);
 
     /* initialize battery service server */
-    BasInit(handlerId, (basCfg_t*)&fitBasCfg);
+    BasInit(handlerId, (basCfg_t *)&fitBasCfg);
 }
 
 /*************************************************************************************************/
@@ -733,7 +735,7 @@ void FitHandlerInit(wsfHandlerId_t handlerId)
  *  \return None.
  */
 /*************************************************************************************************/
-void FitHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
+void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     if (pMsg != NULL) {
         APP_TRACE_INFO1("Fit got evt %d", pMsg->event);
@@ -746,14 +748,14 @@ void FitHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
         /* process DM messages */
         else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
             /* process advertising and connection-related messages */
-            AppSlaveProcDmMsg((dmEvt_t*)pMsg);
+            AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 
             /* process security-related messages */
-            AppSlaveSecProcDmMsg((dmEvt_t*)pMsg);
+            AppSlaveSecProcDmMsg((dmEvt_t *)pMsg);
         }
 
         /* perform profile and user interface-related operations */
-        fitProcMsg((fitMsg_t*)pMsg);
+        fitProcMsg((fitMsg_t *)pMsg);
     }
 }
 
@@ -771,7 +773,7 @@ void FitStart(void)
     DmConnRegister(DM_CLIENT_ID_APP, fitDmCback);
     AttRegister(fitAttCback);
     AttConnRegister(AppServerConnCback);
-    AttsCccRegister(FIT_NUM_CCC_IDX, (attsCccSet_t*)fitCccSet, fitCccCback);
+    AttsCccRegister(FIT_NUM_CCC_IDX, (attsCccSet_t *)fitCccSet, fitCccCback);
 
     /* Register for app framework callbacks */
     AppUiBtnRegister(fitBtnCback);

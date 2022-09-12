@@ -64,16 +64,16 @@
 #define TEXT_BOUNCE_DELAY 10
 
 /***** Definitions *****/
-#define MY_HOR_RES    128
-#define MY_VER_RES    128
+#define MY_HOR_RES 128
+#define MY_VER_RES 128
 #define DRAW_BUF_SIZE (MY_HOR_RES * MY_VER_RES) / 10
-#define LINEBUF_SIZE  (3 * MY_HOR_RES)
+#define LINEBUF_SIZE (3 * MY_HOR_RES)
 
 /***** Globals *****/
 volatile uint32_t demo_ticks;
 lv_disp_draw_buf_t disp_buf;
 lv_disp_drv_t disp_drv;
-lv_disp_t* disp;
+lv_disp_t *disp;
 lv_color_t disp_buf1[DRAW_BUF_SIZE];
 lv_color_t disp_buf2[DRAW_BUF_SIZE];
 uint8_t linebuf[LINEBUF_SIZE];
@@ -107,13 +107,11 @@ void pause_ms(uint32_t x)
     /* Counter wrap check */
     if (x < demo_ticks) {
         /* Wait until overflow */
-        while (demo_ticks > x)
-            ;
+        while (demo_ticks > x) {}
     }
 
     /* Burn CPU cycles */
-    while (x > demo_ticks)
-        ;
+    while (x > demo_ticks) {}
 
     return;
 }
@@ -124,7 +122,7 @@ void pause_ms(uint32_t x)
  * Args: 
  * Returns: 
  */
-int spi_tx(uint8_t* cmd, unsigned int cmd_len, uint8_t* data, unsigned int data_len)
+int spi_tx(uint8_t *cmd, unsigned int cmd_len, uint8_t *data, unsigned int data_len)
 {
     uint8_t spibuf[(1 + LINEBUF_SIZE) * 2], *bptr;
     unsigned int txlen;
@@ -134,7 +132,7 @@ int spi_tx(uint8_t* cmd, unsigned int cmd_len, uint8_t* data, unsigned int data_
         return E_BAD_PARAM;
     }
 
-    bptr  = spibuf;
+    bptr = spibuf;
     txlen = 0;
 
     /* The txlen++ is _not_ an error. Since the data is 9 bits, it is held in two bytes */
@@ -149,25 +147,25 @@ int spi_tx(uint8_t* cmd, unsigned int cmd_len, uint8_t* data, unsigned int data_
         txlen++;
     }
 
-    req.spi        = MXC_SPI0;
-    req.txData     = (uint8_t*)spibuf;
-    req.rxData     = NULL;
-    req.txLen      = txlen;
-    req.rxLen      = 0;
-    req.ssIdx      = 0;
+    req.spi = MXC_SPI0;
+    req.txData = (uint8_t *)spibuf;
+    req.rxData = NULL;
+    req.txLen = txlen;
+    req.rxLen = 0;
+    req.ssIdx = 0;
     req.ssDeassert = 1;
-    req.txCnt      = 0;
-    req.rxCnt      = 0;
+    req.txCnt = 0;
+    req.rxCnt = 0;
     req.completeCB = NULL;
 
     return MXC_SPI_MasterTransaction(&req);
 }
 
-static void disp_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_t* color_p)
+static void disp_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
     int32_t x, x1, x2;
     int32_t y, y1, y2;
-    uint8_t* lineptr;
+    uint8_t *lineptr;
     unsigned int len;
 
     x1 = area->x1;
@@ -177,7 +175,7 @@ static void disp_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_
 
     for (y = y1; y <= y2; y++) {
         st7735s_xyloc(y, x1);
-        len     = 0;
+        len = 0;
         lineptr = linebuf;
         for (x = x1; x <= x2; x++) {
 #if (LV_COLOR_DEPTH != 1)
@@ -203,7 +201,7 @@ static void disp_flush(lv_disp_drv_t* disp_drv, const lv_area_t* area, lv_color_
 unsigned int roll_led(void)
 {
     static unsigned int state = 0;
-    unsigned int max_state    = (1 << num_leds) - 1; /* 2^n - 1 */
+    unsigned int max_state = (1 << num_leds) - 1; /* 2^n - 1 */
     unsigned int i;
 
     if (num_leds) {
@@ -233,7 +231,7 @@ int main(void)
 
     /* Configure SysTick for 1ms rate */
     SysTick->LOAD = (SystemCoreClock / 1000);
-    SysTick->VAL  = 0;
+    SysTick->VAL = 0;
     SysTick->CTRL |=
         (SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);
     demo_ticks = 0;
@@ -264,9 +262,9 @@ int main(void)
 
     /* Initialize ST7735S controller with panel-specific sequence */
     panel.delayfn = pause_ms;
-    panel.sendfn  = spi_tx;
-    panel.regcfg  = cfaf128128b1_regcfg;
-    panel.ncfgs   = cfaf128128b1_ncfgs;
+    panel.sendfn = spi_tx;
+    panel.regcfg = cfaf128128b1_regcfg;
+    panel.ncfgs = cfaf128128b1_ncfgs;
     st7735s_init(&panel);
 
     /* LittlevGL setup */
@@ -279,9 +277,9 @@ int main(void)
     lv_disp_drv_init(&disp_drv);
     disp_drv.draw_buf = &disp_buf;
     disp_drv.flush_cb = disp_flush;
-    disp_drv.hor_res  = MY_HOR_RES;
-    disp_drv.ver_res  = MY_VER_RES;
-    disp              = lv_disp_drv_register(&disp_drv);
+    disp_drv.hor_res = MY_HOR_RES;
+    disp_drv.ver_res = MY_VER_RES;
+    disp = lv_disp_drv_register(&disp_drv);
 
     /* Generate a text label to bounce around the screen */
     label1 = lv_label_create(lv_scr_act());
@@ -311,8 +309,8 @@ int main(void)
     /* Bounce routine */
     last_tick = last_roll_tick = last_bounce_tick = lv_tick_get();
     x = y = 0;
-    incx  = 1;
-    incy  = 2;
+    incx = 1;
+    incy = 2;
     while (1) {
         /* Create the bouncing text effect */
         if ((last_bounce_tick + TEXT_BOUNCE_DELAY) < lv_tick_get()) {
@@ -335,7 +333,7 @@ int main(void)
 
         if ((last_roll_tick + 500) < lv_tick_get()) {
             last_roll_tick = lv_tick_get();
-            state          = roll_led();
+            state = roll_led();
             if (state & 1) {
                 lv_led_on(led0);
             } else {

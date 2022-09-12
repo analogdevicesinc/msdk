@@ -34,14 +34,14 @@
 
 //MAX32550 A versions definitions
 //the function ucl_get_chip_version returns one of those values for a rev A chip
-#define MAX32550_A1_CHIP  1
-#define MAX32550_A2_CHIP  2
-#define MAX32550_A3_CHIP  3
-#define MAX32550_B1_CHIP  4
-#define MAX32550_B2_CHIP  5
-#define X86_PLATFORM      6
-#define USIP_PLATFORM     7
-#define JIBE_PLATFORM     8
+#define MAX32550_A1_CHIP 1
+#define MAX32550_A2_CHIP 2
+#define MAX32550_A3_CHIP 3
+#define MAX32550_B1_CHIP 4
+#define MAX32550_B2_CHIP 5
+#define X86_PLATFORM 6
+#define USIP_PLATFORM 7
+#define JIBE_PLATFORM 8
 #define MAX32555_PLATFORM 9
 #define MAX32666_PLATFORM 10
 #define MAX32652_PLATFORM 11
@@ -51,7 +51,7 @@
 #define MAX32631_PLATFORM 15
 #define MAX32565_PLATFORM 16
 #define MAX32600_PLATFORM 17
-#define ARM_M3_PLATFORM   18
+#define ARM_M3_PLATFORM 18
 
 #define UNDEFINED_CHIP 0
 
@@ -93,7 +93,7 @@ extern "C" {
  *
  * @ingroup UCL_SYSTEM
  */
-int ucl_init(u32* buffer, u32 size);
+int ucl_init(u32 *buffer, u32 size);
 
 /** <b>Chip identification</b>.
  * chip and chip version identification

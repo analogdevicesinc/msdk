@@ -87,8 +87,8 @@ static int system_init(void)
 /*****************************************************************************/
 int main(void)
 {
-    int ret      = 0;
-    State* state = NULL;
+    int ret = 0;
+    State *state = NULL;
     int key;
     unsigned int timeout = 0;
     // cumulative time in idle condition, no any event.

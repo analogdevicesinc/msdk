@@ -65,8 +65,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_MD5
  */
-int ucl_pkcs1_ssa_pkcs1v15_md5_sign(u8* signature, u8* message, u32 message_length,
-                                    ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_md5_sign(u8 *signature, u8 *message, u32 message_length,
+                                    ucl_rsa_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-MD5 Signature Generation</b>.
@@ -87,8 +87,8 @@ int ucl_pkcs1_ssa_pkcs1v15_md5_sign(u8* signature, u8* message, u32 message_leng
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_MD5
  */
-int ucl_pkcs1_ssa_pkcs1v15_md5_hashed_sign(u8* signature, u8* message, u32 message_length,
-                                           ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_md5_hashed_sign(u8 *signature, u8 *message, u32 message_length,
+                                           ucl_rsa_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-MD5 CRT Signature Generation</b>.
@@ -110,8 +110,8 @@ int ucl_pkcs1_ssa_pkcs1v15_md5_hashed_sign(u8* signature, u8* message, u32 messa
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_MD5
  */
-int ucl_pkcs1_ssa_pkcs1v15_md5_hashed_crt_sign(u8* signature, u8* message, u32 message_length,
-                                               ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_md5_hashed_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                                               ucl_rsa_crt_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-MD5 CRT Signature Generation</b>.
@@ -132,8 +132,8 @@ int ucl_pkcs1_ssa_pkcs1v15_md5_hashed_crt_sign(u8* signature, u8* message, u32 m
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_MD5
  */
-int ucl_pkcs1_ssa_pkcs1v15_md5_crt_sign(u8* signature, u8* message, u32 message_length,
-                                        ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_md5_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                                        ucl_rsa_crt_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-MD5 Signature Verification</b>.
@@ -154,8 +154,8 @@ int ucl_pkcs1_ssa_pkcs1v15_md5_crt_sign(u8* signature, u8* message, u32 message_
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_MD5
  */
-int ucl_pkcs1_ssa_pkcs1v15_md5_verify(u8* signature, u8* message, u32 message_length,
-                                      ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_md5_verify(u8 *signature, u8 *message, u32 message_length,
+                                      ucl_rsa_public_key_t *keyPu);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-MD5 Signature Verification</b>.
@@ -176,8 +176,8 @@ int ucl_pkcs1_ssa_pkcs1v15_md5_verify(u8* signature, u8* message, u32 message_le
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_MD5
  */
-int ucl_pkcs1_ssa_pkcs1v15_md5_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                             ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_md5_verify_digest(u8 *signature, u8 *hash, u32 hash_length,
+                                             ucl_rsa_public_key_t *keyPu);
 
 #ifdef __cplusplus
 }

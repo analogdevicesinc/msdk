@@ -61,9 +61,9 @@ extern "C" {
  * @brief Enumeration type for the Cache ID Register
  */
 typedef enum {
-    ICC_INFO_RELNUM,  // Identifies the RTL release version
+    ICC_INFO_RELNUM, // Identifies the RTL release version
     ICC_INFO_PARTNUM, // Specifies the value of C_ID Port Number
-    ICC_INFO_ID       // Specifies the value of Cache ID
+    ICC_INFO_ID // Specifies the value of Cache ID
 } mxc_icc_info_t;
 
 /**
@@ -71,22 +71,22 @@ typedef enum {
  * @param   cid Enumeration type for Cache Id Register.
  * @retval  Returns the contents of Cache Id Register.
  */
-int MXC_ICC_ID(mxc_icc_regs_t* icc, mxc_icc_info_t cid);
+int MXC_ICC_ID(mxc_icc_regs_t *icc, mxc_icc_info_t cid);
 
 /**
  * @brief   Enable the instruction cache controller.
  */
-void MXC_ICC_Enable(mxc_icc_regs_t* icc);
+void MXC_ICC_Enable(mxc_icc_regs_t *icc);
 
 /**
  * @brief   Disable the instruction cache controller.
  */
-void MXC_ICC_Disable(mxc_icc_regs_t* icc);
+void MXC_ICC_Disable(mxc_icc_regs_t *icc);
 
 /**
  * @brief   Flush the instruction cache controller.
  */
-void MXC_ICC_Flush(mxc_icc_regs_t* icc);
+void MXC_ICC_Flush(mxc_icc_regs_t *icc);
 
 /**@} end of group icc */
 

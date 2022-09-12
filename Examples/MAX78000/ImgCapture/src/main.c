@@ -63,21 +63,21 @@
 
 // This describes a complete image for a standard blocking capture
 typedef struct {
-    uint8_t* raw;          // Pointer to raw img data in SRAM.
-    uint32_t imglen;       // Length of img data (in bytes)
-    uint32_t w;            // Width of the image (in pixels)
-    uint32_t h;            // Height of the image (in pixels)
-    uint8_t* pixel_format; // Pixel format string
+    uint8_t *raw; // Pointer to raw img data in SRAM.
+    uint32_t imglen; // Length of img data (in bytes)
+    uint32_t w; // Width of the image (in pixels)
+    uint32_t h; // Height of the image (in pixels)
+    uint8_t *pixel_format; // Pixel format string
 } img_data_t;
 
 // This describes a complete image for a streaming capture saved
 // to CNN data SRAM
 typedef struct {
-    uint32_t* raw;         // Pointer to raw img data in CNN data SRAM.
-    uint32_t imglen;       // Length of img data (in bytes)
-    uint32_t w;            // Width of the image (in pixels)
-    uint32_t h;            // Height of the image (in pixels)
-    uint8_t* pixel_format; // Pixel format string
+    uint32_t *raw; // Pointer to raw img data in CNN data SRAM.
+    uint32_t imglen; // Length of img data (in bytes)
+    uint32_t w; // Width of the image (in pixels)
+    uint32_t h; // Height of the image (in pixels)
+    uint8_t *pixel_format; // Pixel format string
 } cnn_img_data_t;
 
 // This contains global application settings
@@ -117,11 +117,11 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     // camera.h drivers will allocate an SRAM buffer whose size is equal to
     // width * height * bytes_per_pixel.  See camera.c for implementation details.
     printf("Configuring camera\n");
-    int ret = camera_setup(w,              // width
-                           h,              // height
-                           pixel_format,   // pixel format
+    int ret = camera_setup(w, // width
+                           h, // height
+                           pixel_format, // pixel format
                            FIFO_FOUR_BYTE, // FIFO mode (four bytes is suitable for most cases)
-                           dma_mode,   // DMA (enabling DMA will drastically decrease capture time)
+                           dma_mode, // DMA (enabling DMA will drastically decrease capture time)
                            dma_channel // Allocate the DMA channel retrieved in initialization
     );
 
@@ -140,8 +140,7 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     camera_start_capture_image();
 
     // 3. Wait until the image is fully received.
-    while (!camera_is_image_rcv())
-        ;
+    while (!camera_is_image_rcv()) {}
     int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (Took %i us)\n", elapsed_us);
 
@@ -194,7 +193,7 @@ void transmit_capture_uart(img_data_t img_data)
         // Since standard image captures are buffered into SRAM, sending them
         // over the serial port is straightforward...
         clear_serial_buffer();
-        MXC_UART_Write(Con_Uart, img_data.raw, (int*)&img_data.imglen);
+        MXC_UART_Write(Con_Uart, img_data.raw, (int *)&img_data.imglen);
 
         int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
         printf("Done! (serial transmission took %i us)\n", elapsed);
@@ -243,12 +242,12 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     // 1. Configure the camera.  This is the same as the standard blocking capture, except
     // the DMA mode is set to "STREAMING_DMA".
     printf("Configuring camera\n");
-    int ret = camera_setup(w,              // width
-                           h,              // height
-                           pixel_format,   // pixel format
+    int ret = camera_setup(w, // width
+                           h, // height
+                           pixel_format, // pixel format
                            FIFO_FOUR_BYTE, // FIFO mode
-                           STREAMING_DMA,  // Set streaming mode
-                           dma_channel     // Allocate the DMA channel retrieved in initialization
+                           STREAMING_DMA, // Set streaming mode
+                           dma_channel // Allocate the DMA channel retrieved in initialization
     );
 
     // Error check the setup function.
@@ -262,7 +261,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
     camera_get_image(NULL, &img_data.imglen, &img_data.w,
                      &img_data.h); // Retrieve info using driver function.
-    img_data.raw = (uint32_t*)
+    img_data.raw = (uint32_t *)
         CNN_QUAD0_DSRAM_START; // Manually save the destination address at the first quadrant of CNN data SRAM
 
     printf("Starting streaming capture...\n");
@@ -271,9 +270,9 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     // 3. Start streaming
     camera_start_capture_image();
 
-    uint8_t* data      = NULL;
-    int buffer_size    = camera_get_stream_buffer_size();
-    uint32_t* cnn_addr = img_data.raw; // Hard-coded to Quadrant 0 starting address
+    uint8_t *data = NULL;
+    int buffer_size = camera_get_stream_buffer_size();
+    uint32_t *cnn_addr = img_data.raw; // Hard-coded to Quadrant 0 starting address
 
     // 4. Process the incoming stream data.
     while (!camera_is_image_rcv()) {
@@ -290,7 +289,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     printf("Done! (Took %i us)\n", elapsed_us);
 
     // 7. Check for any overflow
-    stream_stat_t* stat = get_camera_stream_statistic();
+    stream_stat_t *stat = get_camera_stream_statistic();
     printf("DMA transfer count = %d\n", stat->dma_transfer_count);
     printf("OVERFLOW = %d\n", stat->overflow_count);
 
@@ -331,15 +330,15 @@ void transmit_stream_uart(cnn_img_data_t img_data)
         // Console should be ready to receive raw bytes now.
 
         clear_serial_buffer();
-        int transfer_len   = SERIAL_BUFFER_SIZE;
-        uint32_t* cnn_addr = img_data.raw;
+        int transfer_len = SERIAL_BUFFER_SIZE;
+        uint32_t *cnn_addr = img_data.raw;
 
         // Transfer the bytes out of CNN memory and into the serial buffer, then write.
         // Since the CNN data SRAM is non-contiguous, some pointer manipulation at the
         // quadrant boundaries is required.
         for (int i = 0; i < img_data.imglen; i += transfer_len) {
-            cnn_addr = read_bytes_from_cnn_sram((uint8_t*)g_serial_buffer, transfer_len, cnn_addr);
-            MXC_UART_Write(Con_Uart, (uint8_t*)g_serial_buffer, &transfer_len);
+            cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
+            MXC_UART_Write(Con_Uart, (uint8_t *)g_serial_buffer, &transfer_len);
         }
 
         int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -365,7 +364,7 @@ void transmit_stream_uart(cnn_img_data_t img_data)
     'transmit_stream_uart'.  As a result, this can be used to read an image file off
     the SD card and the console will save it as a .png on the host PC.
 ****************************************************************************/
-void save_stream_sd(cnn_img_data_t img_data, char* file)
+void save_stream_sd(cnn_img_data_t img_data, char *file)
 {
     if (img_data.raw != NULL) { // Image data will be NULL if something went wrong during streaming
 
@@ -390,7 +389,7 @@ void save_stream_sd(cnn_img_data_t img_data, char* file)
             }
         }
 
-        sd_err = f_open(&sd_file, (const TCHAR*)file, FA_WRITE | FA_CREATE_NEW);
+        sd_err = f_open(&sd_file, (const TCHAR *)file, FA_WRITE | FA_CREATE_NEW);
 
         if (sd_err != FR_OK) {
             printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
@@ -415,11 +414,11 @@ void save_stream_sd(cnn_img_data_t img_data, char* file)
             // Similar to streaming over UART, a secondary buffer is needed to
             // save the raw data to the SD card since the CNN data SRAM is non-contiguous.
             // Raw image data is written row by row.
-            uint32_t* cnn_addr = img_data.raw;
-            uint8_t* buffer    = (uint8_t*)malloc(img_data.w);
+            uint32_t *cnn_addr = img_data.raw;
+            uint8_t *buffer = (uint8_t *)malloc(img_data.w);
             for (int i = 0; i < img_data.imglen; i += img_data.w) {
                 cnn_addr = read_bytes_from_cnn_sram(buffer, img_data.w, cnn_addr);
-                sd_err   = f_write(&sd_file, buffer, img_data.w, &wrote);
+                sd_err = f_write(&sd_file, buffer, img_data.w, &wrote);
 
                 if (sd_err != FR_OK || wrote != img_data.w) {
                     printf("Failed to image data to file: %s\n", FR_ERRORS[sd_err]);
@@ -481,9 +480,9 @@ void service_console()
 
         else if (cmd == CMD_STREAM) {
             // Perform a streaming image capture with the current camera settings.
-            cnn_img_data_t img_data =
-                stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
-                           g_app_settings.pixel_format, g_app_settings.dma_channel);
+            cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                                                 g_app_settings.pixel_format,
+                                                 g_app_settings.dma_channel);
 
             transmit_stream_uart(img_data);
 
@@ -538,7 +537,7 @@ void service_console()
 
         else if (cmd == CMD_SD_CD) {
             // Change the current working directory
-            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "cd %s", b); // Parse the target directory
             sd_cd(b);
             free(b);
@@ -550,7 +549,7 @@ void service_console()
 
         else if (cmd == CMD_SD_MKDIR) {
             // Make a directory
-            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "mkdir %s", b); // Parse the directory name
             sd_mkdir(b);
             free(b);
@@ -558,7 +557,7 @@ void service_console()
 
         else if (cmd == CMD_SD_RM) {
             // Remove an item
-            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "rm %s", b); // Parse the item name
             sd_rm(b);
             free(b);
@@ -566,7 +565,7 @@ void service_console()
 
         else if (cmd == CMD_SD_TOUCH) {
             // Create a new empty file
-            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "touch %s", b); // Parse the filepath
             sd_touch(b);
             free(b);
@@ -574,7 +573,7 @@ void service_console()
 
         else if (cmd == CMD_SD_WRITE) {
             // Write a string to a file
-            char* b = (char*)malloc(SERIAL_BUFFER_SIZE);
+            char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "write %s \"%[^\"]", sd_filename,
                    b); // \"$[^\"] captures everything between two quotes ""
             sd_write_string(sd_filename, b);
@@ -583,17 +582,17 @@ void service_console()
 
         else if (cmd == CMD_SD_CAT) {
             // Print the contents of a file
-            sscanf(g_serial_buffer, "cat %s", (char*)sd_filename); // Parse the target file
+            sscanf(g_serial_buffer, "cat %s", (char *)sd_filename); // Parse the target file
             sd_cat(sd_filename);
         }
 
         else if (cmd == CMD_SD_SNAP) {
             // Stream and save an image to the SD card
-            int args = sscanf(g_serial_buffer, "snap %s", (char*)sd_filename);
+            int args = sscanf(g_serial_buffer, "snap %s", (char *)sd_filename);
 
-            cnn_img_data_t img_data =
-                stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
-                           g_app_settings.pixel_format, g_app_settings.dma_channel);
+            cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                                                 g_app_settings.pixel_format,
+                                                 g_app_settings.dma_channel);
 
             if (args == 1) {
                 save_stream_sd(img_data, sd_filename);
@@ -618,9 +617,9 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
-    g_app_settings.dma_mode     = USE_DMA;
-    g_app_settings.imgres_w     = 64;
-    g_app_settings.imgres_h     = 64;
+    g_app_settings.dma_mode = USE_DMA;
+    g_app_settings.imgres_w = 64;
+    g_app_settings.imgres_h = 64;
     g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
 
 #ifdef CAMERA_MONO
@@ -681,9 +680,9 @@ int main(void)
 #ifdef SD
         // SD card is enabled.
         if (PB_Get(0)) { // Enable image capture by pushing pushbutton 0
-            cnn_img_data_t img_data =
-                stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
-                           g_app_settings.pixel_format, g_app_settings.dma_channel);
+            cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
+                                                 g_app_settings.pixel_format,
+                                                 g_app_settings.dma_channel);
             save_stream_sd(img_data, NULL);
         }
 #endif

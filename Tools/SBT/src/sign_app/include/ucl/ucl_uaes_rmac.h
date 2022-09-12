@@ -76,7 +76,7 @@ extern "C" {
  *
  * @ingroup UCL_UAES_RMAC
  */
-int __API__ ucl_uaes_rmac(u8* rmac, u8* rand, u8* key1, u8* key2, u8* data, u32 data_bytelen);
+int __API__ ucl_uaes_rmac(u8 *rmac, u8 *rand, u8 *key1, u8 *key2, u8 *data, u32 data_bytelen);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES RMAC Init</b>.
@@ -95,7 +95,7 @@ int __API__ ucl_uaes_rmac(u8* rmac, u8* rand, u8* key1, u8* key2, u8* data, u32 
  *
  * @ingroup UCL_UAES_RMAC
  */
-int __API__ ucl_uaes_rmac_init(ucl_uaes_ctx_t* ctx, u8* key);
+int __API__ ucl_uaes_rmac_init(ucl_uaes_ctx_t *ctx, u8 *key);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES RMAC Core</b>.
@@ -116,7 +116,7 @@ int __API__ ucl_uaes_rmac_init(ucl_uaes_ctx_t* ctx, u8* key);
  *
  * @ingroup UCL_UAES_RMAC
  */
-int __API__ ucl_uaes_rmac_core(ucl_uaes_ctx_t* ctx, u8* data, u32 data_byteLen);
+int __API__ ucl_uaes_rmac_core(ucl_uaes_ctx_t *ctx, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES RMAC Finish</b>.
@@ -135,7 +135,7 @@ int __API__ ucl_uaes_rmac_core(ucl_uaes_ctx_t* ctx, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_UAES_RMAC
  */
-int __API__ ucl_uaes_rmac_finish(u8* rmac, ucl_uaes_ctx_t* ctx, u8* rand, u8* key);
+int __API__ ucl_uaes_rmac_finish(u8 *rmac, ucl_uaes_ctx_t *ctx, u8 *rand, u8 *key);
 
 #ifdef _cplusplus
 }

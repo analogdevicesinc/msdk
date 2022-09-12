@@ -67,18 +67,18 @@
 #include "uart.h"
 
 #define DELAY_IN_SEC 4
-#define USE_CONSOLE  1
+#define USE_CONSOLE 1
 
 #define USE_BUTTON 0
-#define USE_ALARM  1
+#define USE_ALARM 1
 
 #define DISABLE_GPIO 1 //it configures all GPIOs as input to save power
 
-#define DO_SLEEP     1
-#define DO_LPM       1
-#define DO_UPM       1
-#define DO_STANDBY   1
-#define DO_BACKUP    1 // will reset after wakeup`
+#define DO_SLEEP 1
+#define DO_LPM 1
+#define DO_UPM 1
+#define DO_STANDBY 1
+#define DO_BACKUP 1 // will reset after wakeup`
 #define DO_POWERDOWN 0 // will reset after wakeup
 
 #if (!(USE_BUTTON || USE_ALARM))
@@ -103,7 +103,7 @@ volatile int alarmed;
 void alarmHandler(void)
 {
     int flags = MXC_RTC->ctrl;
-    alarmed   = 1;
+    alarmed = 1;
 
     if ((flags & MXC_F_RTC_CTRL_SSEC_ALARM) >> MXC_F_RTC_CTRL_SSEC_ALARM_POS) {
         MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_SSEC_ALARM);
@@ -118,31 +118,24 @@ void setTrigger(int waitForTrigger)
 {
     alarmed = 0;
 
-    while (MXC_RTC_Init(0, 0) == E_BUSY)
-        ;
+    while (MXC_RTC_Init(0, 0) == E_BUSY) {}
 
-    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-        ;
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
-    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY)
-        ;
+    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY) {}
 
-    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-        ;
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
-    while (MXC_RTC_Start() == E_BUSY)
-        ;
+    while (MXC_RTC_Start() == E_BUSY) {}
 
     if (waitForTrigger) {
-        while (!alarmed)
-            ;
+        while (!alarmed) {}
     }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
 #endif // USE_CONSOLE
 }
@@ -150,7 +143,7 @@ void setTrigger(int waitForTrigger)
 
 #if USE_BUTTON
 volatile int buttonPressed;
-void buttonHandler(void* pb)
+void buttonHandler(void *pb)
 {
     buttonPressed = 1;
 }
@@ -162,20 +155,16 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed)
-            ;
+        while (!buttonPressed) {}
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x80000; tmp++) {
-        __NOP();
-    }
+    for (tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
 #endif // USE_CONSOLE
 }
@@ -213,8 +202,8 @@ int main(void)
     mxc_gpio_cfg_t gpios_in;
 
     // all GPIOs input with pullup
-    gpios_in.pad   = MXC_GPIO_PAD_PULL_UP;
-    gpios_in.func  = MXC_GPIO_FUNC_IN;
+    gpios_in.pad = MXC_GPIO_PAD_PULL_UP;
+    gpios_in.func = MXC_GPIO_FUNC_IN;
     gpios_in.vssel = MXC_GPIO_VSSEL_VDDIO;
 
     // PORT3 input
@@ -248,7 +237,7 @@ int main(void)
     LED_Off(LED1);
 
 #if USE_BUTTON
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
@@ -313,9 +302,9 @@ int main(void)
         LED_On(LED1);
         // power is not shown in this mode as it resets after wakeup
         MXC_LP_EnterBackupMode();
-        while (1)
-            ; // we should not come here
-#endif        // DO_BACKUP
+        while (1) {}
+// we should not come here
+#endif // DO_BACKUP
 
 #if DO_POWERDOWN
 #if USE_CONSOLE
@@ -328,9 +317,9 @@ int main(void)
         // The two GPIO3 pins are pulled down to 0 by default due to internal weak pulldown.
         // As soon as you enter PDM mode, the pin becomes a weak pull-up and causes an immidiate wakeup condition.
         // To avoid, configure P3.3 and P3.1 as input with pullup for PDM to work properly"
-        gpio_in.port  = MXC_GPIO3;
-        gpio_in.pad   = MXC_GPIO_PAD_PULL_UP;
-        gpio_in.func  = MXC_GPIO_FUNC_IN;
+        gpio_in.port = MXC_GPIO3;
+        gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
+        gpio_in.func = MXC_GPIO_FUNC_IN;
         gpio_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
         gpio_in.mask = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1;
@@ -339,8 +328,8 @@ int main(void)
         LED_On(LED1);
         // power is not shown in this mode as it resets after wakeup
         MXC_LP_EnterPowerDownMode();
-        while (1)
-            ; // we should not come here
-#endif        // DO_POWERDOWN
+        while (1) {}
+// we should not come here
+#endif // DO_POWERDOWN
     }
 }

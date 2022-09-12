@@ -74,7 +74,7 @@ extern "C" {
  *
  * @ingroup UCL_DES_ECB
  */
-int ucl_des_ecb(u8* dataOut, u8* dataIn, u8* key, u32 data_byteLen, int mode);
+int ucl_des_ecb(u8 *dataOut, u8 *dataIn, u8 *key, u32 data_byteLen, int mode);
 
 /*============================================================================*/
 /** <b>DES-ECB Init</b>.
@@ -97,7 +97,7 @@ int ucl_des_ecb(u8* dataOut, u8* dataIn, u8* key, u32 data_byteLen, int mode);
  *
  * @ingroup UCL_DES_ECB
  */
-int ucl_des_ecb_init(ucl_des_ctx_t* ctx, u8* key, int mode);
+int ucl_des_ecb_init(ucl_des_ctx_t *ctx, u8 *key, int mode);
 
 /*============================================================================*/
 /** <b>DES-ECB Core</b>.
@@ -120,7 +120,7 @@ int ucl_des_ecb_init(ucl_des_ctx_t* ctx, u8* key, int mode);
  *
  * @ingroup UCL_DES_ECB
  */
-int ucl_des_ecb_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteLen);
+int ucl_des_ecb_core(u8 *dataOut, ucl_des_ctx_t *ctx, u8 *dataIn, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>DES-ECB Finish</b>.
@@ -135,7 +135,7 @@ int ucl_des_ecb_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteL
  *
  * @ingroup UCL_DES_ECB
  */
-int ucl_des_ecb_finish(ucl_des_ctx_t* ctx);
+int ucl_des_ecb_finish(ucl_des_ctx_t *ctx);
 
 #ifdef __cplusplus
 }

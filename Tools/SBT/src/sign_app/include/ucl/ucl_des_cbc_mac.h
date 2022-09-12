@@ -73,7 +73,7 @@ extern "C" {
  *
  * @ingroup UCL_DES_CBC_MAC
  */
-int ucl_des_cbc_mac(u8* mac, u32 mac_byteLen, u8* key, u8* data, u32 data_byteLen);
+int ucl_des_cbc_mac(u8 *mac, u32 mac_byteLen, u8 *key, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>DES-CBC-MAC Init</b>.
@@ -92,7 +92,7 @@ int ucl_des_cbc_mac(u8* mac, u32 mac_byteLen, u8* key, u8* data, u32 data_byteLe
  *
  * @ingroup UCL_DES_CBC_MAC
  */
-int ucl_des_cbc_mac_init(ucl_des_ctx_t* ctx, u8* key);
+int ucl_des_cbc_mac_init(ucl_des_ctx_t *ctx, u8 *key);
 
 /*============================================================================*/
 /** <b>DES-CBC-MAC Core</b>.
@@ -113,7 +113,7 @@ int ucl_des_cbc_mac_init(ucl_des_ctx_t* ctx, u8* key);
  *
  * @ingroup UCL_DES_CBC_MAC
  */
-int ucl_des_cbc_mac_core(ucl_des_ctx_t* ctx, u8* data, u32 data_byteLen);
+int ucl_des_cbc_mac_core(ucl_des_ctx_t *ctx, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>DES-CBC-MAC Finish</b>.
@@ -133,7 +133,7 @@ int ucl_des_cbc_mac_core(ucl_des_ctx_t* ctx, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_DES_CBC_MAC
  */
-int ucl_des_cbc_mac_finish(u8* mac, u32 mac_byteLen, ucl_des_ctx_t* ctx);
+int ucl_des_cbc_mac_finish(u8 *mac, u32 mac_byteLen, ucl_des_ctx_t *ctx);
 
 #ifdef __cplusplus
 }

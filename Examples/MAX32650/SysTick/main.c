@@ -46,9 +46,9 @@
 #include "led.h"
 
 /* **** Definitions **** */
-#define USE_SYSTEM_CLK         1
+#define USE_SYSTEM_CLK 1
 #define SYSTICK_PERIOD_SYS_CLK 4800000 //40ms with 120MHz system clock
-#define SYSTICK_PERIOD_EXT_CLK 3277    //100ms with 32768Hz external RTC clock
+#define SYSTICK_PERIOD_EXT_CLK 3277 //100ms with 32768Hz external RTC clock
 
 /* **** Globals **** */
 
@@ -85,6 +85,5 @@ int main(void)
 
     LED_On(0);
 
-    while (1) {
-    }
+    while (1) {}
 }

@@ -37,12 +37,12 @@ extern "C" {
  *
  * @ingroup UCL_ECC_ECIES */
 
-int ucl_ecies_encrypt_p192r1_aes_hmac_sha256(unsigned char* rx, unsigned char* ry,
-                                             unsigned char* crypto, unsigned char* t,
-                                             unsigned int keylength, unsigned char* xG,
-                                             unsigned char* yG, unsigned char* xQ,
-                                             unsigned char* yQ, unsigned char* a, unsigned char* n,
-                                             unsigned char* p, unsigned char* m, unsigned MsgLng);
+int ucl_ecies_encrypt_p192r1_aes_hmac_sha256(unsigned char *rx, unsigned char *ry,
+                                             unsigned char *crypto, unsigned char *t,
+                                             unsigned int keylength, unsigned char *xG,
+                                             unsigned char *yG, unsigned char *xQ,
+                                             unsigned char *yQ, unsigned char *a, unsigned char *n,
+                                             unsigned char *p, unsigned char *m, unsigned MsgLng);
 /** <b>ECIES decryption</b>.
  * this function performs a ECIES AES HMAC SHA256 decryption on the P-192 curve
  * 
@@ -63,12 +63,12 @@ int ucl_ecies_encrypt_p192r1_aes_hmac_sha256(unsigned char* rx, unsigned char* r
  * @retval #UCL_ERROR           otherwise
  *
  * @ingroup UCL_ECC_ECIES */
-int ucl_ecies_decrypt_p192r1_aes_hmac_sha256(unsigned char* m, unsigned int keylength,
-                                             unsigned char* xG, unsigned char* yG, unsigned char* a,
-                                             unsigned char* n, unsigned char* p, unsigned char* d,
-                                             unsigned char* rx, unsigned char* ry,
-                                             unsigned char* crypto, int crypto_len,
-                                             unsigned char* t);
+int ucl_ecies_decrypt_p192r1_aes_hmac_sha256(unsigned char *m, unsigned int keylength,
+                                             unsigned char *xG, unsigned char *yG, unsigned char *a,
+                                             unsigned char *n, unsigned char *p, unsigned char *d,
+                                             unsigned char *rx, unsigned char *ry,
+                                             unsigned char *crypto, int crypto_len,
+                                             unsigned char *t);
 /** <b>ECIES encryption</b>.
  * this function performs a ECIES AES HMAC SHA256 encryption on the P-256 curve
  * 
@@ -90,9 +90,9 @@ int ucl_ecies_decrypt_p192r1_aes_hmac_sha256(unsigned char* m, unsigned int keyl
  *
  * @ingroup UCL_ECC_ECIES */
 
-int ucl_ecies_encrypt_p256r1_aes_hmac_sha256(u8* rx, u8* ry, u8* crypto, u8* t, u32 keylength,
-                                             u8* xG, u8* yG, u8* xQ, u8* yQ, u8* a, u8* n, u8* p,
-                                             u8* m, u32 MsgLng);
+int ucl_ecies_encrypt_p256r1_aes_hmac_sha256(u8 *rx, u8 *ry, u8 *crypto, u8 *t, u32 keylength,
+                                             u8 *xG, u8 *yG, u8 *xQ, u8 *yQ, u8 *a, u8 *n, u8 *p,
+                                             u8 *m, u32 MsgLng);
 
 /** <b>ECIES decryption</b>.
  * this function performs a ECIES AES HMAC SHA256 decryption on the P-256 curve
@@ -115,9 +115,9 @@ int ucl_ecies_encrypt_p256r1_aes_hmac_sha256(u8* rx, u8* ry, u8* crypto, u8* t, 
  *
  * @ingroup UCL_ECC_ECIES */
 
-int ucl_ecies_decrypt_p256r1_aes_hmac_sha256(u8* m, u32 keylength, u8* xG, u8* yG, u8* a, u8* n,
-                                             u8* p, u8* d, u8* rx, u8* ry, u8* crypto,
-                                             int crypto_len, u8* t);
+int ucl_ecies_decrypt_p256r1_aes_hmac_sha256(u8 *m, u32 keylength, u8 *xG, u8 *yG, u8 *a, u8 *n,
+                                             u8 *p, u8 *d, u8 *rx, u8 *ry, u8 *crypto,
+                                             int crypto_len, u8 *t);
 
 /** <b>ECIES encryption</b>.
  * this generic function performs a ECIES AES HMAC SHA256 encryption on the proposed curve
@@ -137,9 +137,9 @@ int ucl_ecies_decrypt_p256r1_aes_hmac_sha256(u8* m, u32 keylength, u8* xG, u8* y
  * @retval #UCL_ERROR           otherwise
  *
  * @ingroup UCL_ECC_ECIES */
-int ucl_ecies_encrypt_aes_hmac_sha256(ucl_type_ecc_u8_affine_point Q, u8* crypto, u8* t,
-                                      ucl_type_ecc_u8_affine_point pubkey, u8* input,
-                                      u32 inputlength, ucl_type_curve* curve_params);
+int ucl_ecies_encrypt_aes_hmac_sha256(ucl_type_ecc_u8_affine_point Q, u8 *crypto, u8 *t,
+                                      ucl_type_ecc_u8_affine_point pubkey, u8 *input,
+                                      u32 inputlength, ucl_type_curve *curve_params);
 
 /** <b>ECIES decryption</b>.
  * this generic function performs a ECIES AES HMAC SHA256 decryption on the proposed curve
@@ -159,9 +159,9 @@ int ucl_ecies_encrypt_aes_hmac_sha256(ucl_type_ecc_u8_affine_point Q, u8* crypto
  * @retval #UCL_ERROR           if the MAC verification fails
  *
  * @ingroup UCL_ECC_ECIES */
-int ucl_ecies_decrypt_aes_hmac_sha256(u8* message, u8* d, ucl_type_ecc_u8_affine_point pubkey,
-                                      u8* crypto, int cryptolength, u8* t,
-                                      ucl_type_curve* curve_params);
+int ucl_ecies_decrypt_aes_hmac_sha256(u8 *message, u8 *d, ucl_type_ecc_u8_affine_point pubkey,
+                                      u8 *crypto, int cryptolength, u8 *t,
+                                      ucl_type_curve *curve_params);
 
 #ifdef __cplusplus
 }

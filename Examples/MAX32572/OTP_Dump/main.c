@@ -54,17 +54,17 @@
 #define WITH_WRITE_TEST 0 // set it to test write test
 
 // OTP Address
-#define OTP_MAXIM_AREA      MXC_INFO0_MEM_BASE
+#define OTP_MAXIM_AREA MXC_INFO0_MEM_BASE
 #define OTP_MAXIM_AREA_SIZE MXC_INFO_MEM_SIZE
 
-#define OTP_USER_AREA      MXC_INFO1_MEM_BASE
+#define OTP_USER_AREA MXC_INFO1_MEM_BASE
 #define OTP_USER_AREA_SIZE MXC_INFO_MEM_SIZE
 
 /***** Static Functions *****/
 static void dump_section(unsigned int address, unsigned int length)
 {
     unsigned int i;
-    volatile uint32_t* addr = (uint32_t*)address;
+    volatile uint32_t *addr = (uint32_t *)address;
 
     // unlock otp to access it
     MXC_FLC_UnlockInfoBlock((uint32_t)address);
@@ -92,10 +92,10 @@ static void dump_section(unsigned int address, unsigned int length)
 #if WITH_WRITE_TEST
 static int write_test(void)
 {
-    int ret                     = 0;
-    uint32_t test_val           = 0x11223344;
-    volatile uint32_t* addr     = (uint32_t*)OTP_USER_AREA;
-    volatile uint32_t* end_addr = (uint32_t*)(OTP_USER_AREA + 1024);
+    int ret = 0;
+    uint32_t test_val = 0x11223344;
+    volatile uint32_t *addr = (uint32_t *)OTP_USER_AREA;
+    volatile uint32_t *end_addr = (uint32_t *)(OTP_USER_AREA + 1024);
 
     // unlock otp
     MXC_FLC_UnlockInfoBlock(OTP_USER_AREA);

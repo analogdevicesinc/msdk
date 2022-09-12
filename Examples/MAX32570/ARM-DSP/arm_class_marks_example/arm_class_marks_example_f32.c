@@ -107,12 +107,13 @@ const float32_t testMarks_f32[TEST_LENGTH_SAMPLES] = {
     47.000000, 55.000000, 44.000000,  40.000000, 100.000000, 94.000000, 84.000000, 37.000000,
     32.000000, 71.000000, 47.000000,  77.000000, 31.000000,  50.000000, 49.000000, 35.000000,
     63.000000, 67.000000, 40.000000,  31.000000, 29.000000,  68.000000, 61.000000, 38.000000,
-    31.000000, 28.000000, 28.000000,  76.000000, 55.000000,  33.000000, 29.000000, 39.000000};
+    31.000000, 28.000000, 28.000000,  76.000000, 55.000000,  33.000000, 29.000000, 39.000000
+};
 
 /* ----------------------------------------------------------------------
 * Number of subjects X 1
 * ------------------------------------------------------------------- */
-const float32_t testUnity_f32[4] = {1.000, 1.000, 1.000, 1.000};
+const float32_t testUnity_f32[4] = { 1.000, 1.000, 1.000, 1.000 };
 
 /* ----------------------------------------------------------------------
 ** f32 Output buffer
@@ -147,16 +148,16 @@ int32_t main()
     arm_matrix_instance_f32 dstC;
 
     /* Input and output matrices initializations */
-    arm_mat_init_f32(&srcA, numStudents, numSubjects, (float32_t*)testMarks_f32);
-    arm_mat_init_f32(&srcB, numSubjects, 1, (float32_t*)testUnity_f32);
+    arm_mat_init_f32(&srcA, numStudents, numSubjects, (float32_t *)testMarks_f32);
+    arm_mat_init_f32(&srcB, numSubjects, 1, (float32_t *)testUnity_f32);
     arm_mat_init_f32(&dstC, numStudents, 1, testOutput);
 
 #else
 
     /* Static Initializations of Input and output matrix sizes and array */
-    arm_matrix_instance_f32 srcA = {NUMSTUDENTS, NUMSUBJECTS, (float32_t*)testMarks_f32};
-    arm_matrix_instance_f32 srcB = {NUMSUBJECTS, 1, (float32_t*)testUnity_f32};
-    arm_matrix_instance_f32 dstC = {NUMSTUDENTS, 1, testOutput};
+    arm_matrix_instance_f32 srcA = { NUMSTUDENTS, NUMSUBJECTS, (float32_t *)testMarks_f32 };
+    arm_matrix_instance_f32 srcB = { NUMSUBJECTS, 1, (float32_t *)testUnity_f32 };
+    arm_matrix_instance_f32 dstC = { NUMSTUDENTS, 1, testOutput };
 
 #endif
 
@@ -195,7 +196,7 @@ int32_t main()
 #endif
 
 #if !defined(SEMIHOSTING)
-    while (1)
-        ; /* main function does not return */
+    while (1) {}
+/* main function does not return */
 #endif
 }

@@ -46,23 +46,23 @@
 #include "mxc_sys.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 /***** File Scope Variables *****/
-const uart_cfg_t uart_cfg = {UART_PARITY_DISABLE, UART_DATA_SIZE_8_BITS, UART_STOP_1,
-                             UART_FLOW_CTRL_DIS,  UART_FLOW_POL_DIS,     CONSOLE_BAUD};
+const uart_cfg_t uart_cfg = { UART_PARITY_DISABLE, UART_DATA_SIZE_8_BITS, UART_STOP_1,
+                              UART_FLOW_CTRL_DIS,  UART_FLOW_POL_DIS,     CONSOLE_BAUD };
 
 const sys_cfg_t uart_sys_cfg = {
-    MAP_A, Enable}; // There is no special system configuration parameters for UART on MAX32650
+    MAP_A, Enable
+}; // There is no special system configuration parameters for UART on MAX32650
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/

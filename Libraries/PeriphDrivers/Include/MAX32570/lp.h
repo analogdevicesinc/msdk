@@ -68,11 +68,11 @@ typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
  *
  */
 typedef enum {
-    MXC_LP_ISO  = MXC_F_GCR_PM_ISO_PD,
-    MXC_LP_IPO  = MXC_F_GCR_PM_IPO_PD,
+    MXC_LP_ISO = MXC_F_GCR_PM_ISO_PD,
+    MXC_LP_IPO = MXC_F_GCR_PM_IPO_PD,
     MXC_LP_IBRO = MXC_F_GCR_PM_IBRO_PD,
     MXC_LP_XRFO = MXC_F_GCR_PM_ERFO_PD,
-    MXC_LP_NFC  = MXC_F_GCR_PM_NFC_PD
+    MXC_LP_NFC = MXC_F_GCR_PM_NFC_PD
 } mxc_lp_cfg_ds_pd_t;
 
 /**
@@ -201,7 +201,7 @@ void MXC_LP_ClearWakeStatus(void);
  * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored. \ref mxc_gpio_cfg_t
  */
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
@@ -209,7 +209,7 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored. \ref mxc_gpio_cfg_t
  */
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.

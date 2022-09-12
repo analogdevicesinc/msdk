@@ -43,7 +43,7 @@
 #include "led.h"
 #include "tmr.h"
 
-extern volatile void const* __FlashStart_; // Defined in linker file
+extern volatile void const *__FlashStart_; // Defined in linker file
 
 int main(void)
 {
@@ -64,14 +64,13 @@ int main(void)
 
     MXC_GCR->pclkdiv &= ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL);
     MXC_GCR->pclkdiv |= MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1; // CNN clock: 100 MHz div 2
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);        // Enable CNN clock
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
     MXC_FCR->urvbootaddr = (uint32_t)&__FlashStart_; // Set RISC-V boot address
-    MXC_GCR->pclkdis1 &= ~MXC_F_GCR_PCLKDIS1_CPU1;   // Enable RISC-V clock
+    MXC_GCR->pclkdis1 &= ~MXC_F_GCR_PCLKDIS1_CPU1; // Enable RISC-V clock
 
-    for (i = 0; i < (1 << 27); i++)
-        ; // Let debugger interrupt if needed
-    while (1) {
-    } //__WFI(); // Let RISC-V run
+    for (i = 0; i < (1 << 27); i++) {}
+    // Let debugger interrupt if needed
+    while (1) {} //__WFI(); // Let RISC-V run
     return 0;
 }

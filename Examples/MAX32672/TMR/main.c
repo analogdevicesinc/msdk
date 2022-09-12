@@ -55,15 +55,15 @@
 #define CLOCK_SOURCE MXC_TMR_8M_CLK // must be mxc_tmr_clock_t
 
 // Parameters for Continuous timer
-#define OST_FREQ  1        // (Hz)
+#define OST_FREQ 1 // (Hz)
 #define OST_TIMER MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
 
-#define FREQ       1000     // (Hz)
-#define DUTY_CYCLE 50       // (%)
-#define PWM_TIMER  MXC_TMR2 // must change PWM_PORT and PWM_PIN if changed
+#define FREQ 1000 // (Hz)
+#define DUTY_CYCLE 50 // (%)
+#define PWM_TIMER MXC_TMR2 // must change PWM_PORT and PWM_PIN if changed
 
 // Parameters for Continuous timer
-#define CONT_FREQ  4        // (Hz)
+#define CONT_FREQ 4 // (Hz)
 #define CONT_TIMER MXC_TMR3 // Can be MXC_TMR0 through MXC_TMR5
 
 // Check Frequency bounds
@@ -87,7 +87,7 @@ void PWMTimer()
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, CLOCK_SOURCE, 16, FREQ);
-    unsigned int dutyTicks   = periodTicks * DUTY_CYCLE / 100;
+    unsigned int dutyTicks = periodTicks * DUTY_CYCLE / 100;
 
     /*
     Steps for configuring a timer for PWM mode:
@@ -100,11 +100,11 @@ void PWMTimer()
 
     MXC_TMR_Shutdown(PWM_TIMER);
 
-    tmr.pres    = TMR_PRES_16;
-    tmr.mode    = TMR_MODE_PWM;
-    tmr.clock   = CLOCK_SOURCE;
+    tmr.pres = TMR_PRES_16;
+    tmr.mode = TMR_MODE_PWM;
+    tmr.clock = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;
-    tmr.pol     = 1;
+    tmr.pol = 1;
 
     MXC_TMR_Init(PWM_TIMER, &tmr, true);
 
@@ -142,11 +142,11 @@ void ContinuousTimer()
 
     MXC_TMR_Shutdown(CONT_TIMER);
 
-    tmr.pres    = TMR_PRES_128;
-    tmr.mode    = TMR_MODE_CONTINUOUS;
-    tmr.clock   = CLOCK_SOURCE;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_CONTINUOUS;
+    tmr.clock = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     MXC_TMR_Init(CONT_TIMER, &tmr, true);
     MXC_TMR_EnableInt(CONT_TIMER);
@@ -179,12 +179,12 @@ void OneshotTimer()
 
     MXC_TMR_Shutdown(OST_TIMER);
 
-    tmr.pres    = TMR_PRES_128;
-    tmr.mode    = TMR_MODE_ONESHOT;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_ONESHOT;
     tmr.bitMode = TMR_BIT_MODE_16B;
-    tmr.clock   = CLOCK_SOURCE;
+    tmr.clock = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     MXC_TMR_Init(OST_TIMER, &tmr, true);
 
@@ -217,8 +217,7 @@ int main(void)
 
     printf("\nStarted Timer");
 
-    while (1)
-        ;
+    while (1) {}
 
     return 0;
 }

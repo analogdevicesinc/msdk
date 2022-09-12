@@ -63,10 +63,10 @@ extern "C" {
  * Enumeration type for setting the number Bits per Pixel for the LCD screen 
  */
 typedef enum {
-    MXC_BPP1  = MXC_S_CLCD_CTRL_BPP_BPP1,  /**< 1 Bits per Pixel.                       */
-    MXC_BPP2  = MXC_S_CLCD_CTRL_BPP_BPP2,  /**< 2 Bits per Pixel.                       */
-    MXC_BPP4  = MXC_S_CLCD_CTRL_BPP_BPP4,  /**< 4 Bits per Pixel.                       */
-    MXC_BPP8  = MXC_S_CLCD_CTRL_BPP_BPP8,  /**< 8 Bits per Pixel.                       */
+    MXC_BPP1 = MXC_S_CLCD_CTRL_BPP_BPP1, /**< 1 Bits per Pixel.                       */
+    MXC_BPP2 = MXC_S_CLCD_CTRL_BPP_BPP2, /**< 2 Bits per Pixel.                       */
+    MXC_BPP4 = MXC_S_CLCD_CTRL_BPP_BPP4, /**< 4 Bits per Pixel.                       */
+    MXC_BPP8 = MXC_S_CLCD_CTRL_BPP_BPP8, /**< 8 Bits per Pixel.                       */
     MXC_BPP16 = MXC_S_CLCD_CTRL_BPP_BPP16, /**< 16 Bits per Pixel.                      */
     MXC_BPP24 = MXC_S_CLCD_CTRL_BPP_BPP24, /**< 24 Bits per Pixel.                      */
 } mxc_clcd_bpp_t;
@@ -84,7 +84,7 @@ typedef struct mxc_clcd_cfg {
     uint32_t hfrontporch;
     uint32_t hbackporch;
     uint32_t hsyncwidth;
-    uint32_t* palette;
+    uint32_t *palette;
     uint32_t paletteSize;
     mxc_clcd_bpp_t bpp;
 } mxc_clcd_cfg_t;
@@ -96,7 +96,7 @@ typedef struct mxc_clcd_cfg {
  * @param      cfg The clcd configuration
  * @return #E_NO_ERROR if successful, appropriate error otherwise
  */
-int MXC_CLCD_Init(mxc_clcd_cfg_t* cfg);
+int MXC_CLCD_Init(mxc_clcd_cfg_t *cfg);
 
 /**
  * @brief      Shutdown CLCD module.
@@ -109,7 +109,7 @@ int MXC_CLCD_Shutdown(void);
  * @param      cfg The clcd configuration
  * @return #E_NO_ERROR if successful, appropriate error otherwise
  */
-int MXC_CLCD_ConfigPanel(mxc_clcd_cfg_t* cfg);
+int MXC_CLCD_ConfigPanel(mxc_clcd_cfg_t *cfg);
 
 /**
  * @brief      Enable CLCD  module.
@@ -128,7 +128,7 @@ int MXC_CLCD_Disable(void);
  * @param      addr The frame address
  * @return #E_NO_ERROR if successful, appropriate error otherwise
  */
-int MXC_CLCD_SetFrameAddr(void* addr);
+int MXC_CLCD_SetFrameAddr(void *addr);
 
 /**@} end of group clcd */
 

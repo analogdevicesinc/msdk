@@ -43,18 +43,18 @@
 
 /********************************* 		VARIABLES	 *************************/
 static text_t text_msg[] = {
-    {(char*)"MAG STRIPE", 10},
+    { (char *)"MAG STRIPE", 10 },
 #ifndef MN_EvKit_V1
-    {(char*)"Swipe a card", 12},
-    {(char*)"Track:", 6},
+    { (char *)"Swipe a card", 12 },
+    { (char *)"Track:", 6 },
 #else
-    {(char*)"This EvKit does not support MSR", 31}
+    { (char *)"This EvKit does not support MSR", 31 }
 #endif
 };
 
 #ifndef MN_EvKit_V1
-static area_t area_clean    = {0, 0, 0, 0};
-static area_t area_cleanMSG = {0, 0, 0, 0};
+static area_t area_clean = { 0, 0, 0, 0 };
+static area_t area_cleanMSG = { 0, 0, 0, 0 };
 
 static int after_timeout_clear_screen = 0;
 #endif
@@ -87,14 +87,14 @@ static int init(void)
 }
 
 #ifndef MN_EvKit_V1
-static int msr_process(unsigned char* msg, unsigned int msg_len)
+static int msr_process(unsigned char *msg, unsigned int msg_len)
 {
     if (msg_len > 0) {
         text_t msg_var;
 
         TFT_ClearArea(&area_clean, 0);
-        msg_var.data = (char*)msg;
-        msg_var.len  = msg_len;
+        msg_var.data = (char *)msg;
+        msg_var.len = msg_len;
         if (msg_var.len > 18) {
             msg_var.len = 18;
         }
@@ -125,26 +125,26 @@ static int time_tick(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_C: // exit
+    case KEY_C: // exit
 #ifndef MN_EvKit_V1
-            msr_stop();
+        msr_stop();
 #endif
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
     return 0;
 }
 
 #ifndef MN_EvKit_V1
-static State g_state = {"msr", init, key_process, time_tick, TICK_TIMEOUT, msr_process, NULL};
+static State g_state = { "msr", init, key_process, time_tick, TICK_TIMEOUT, msr_process, NULL };
 #else
-static State g_state = {"msr", init, key_process, NULL, 0, NULL, NULL};
+static State g_state = { "msr", init, key_process, NULL, 0, NULL, NULL };
 #endif
 
 /********************************* Public Functions **************************/
-State* get_msr_state(void)
+State *get_msr_state(void)
 {
     return &g_state;
 }

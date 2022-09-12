@@ -58,7 +58,8 @@ static uint8_t dscrc_table[] = {
     45,  115, 202, 148, 118, 40,  171, 245, 23,  73,  8,   86,  180, 234, 105, 55,  213, 139, 87,
     9,   235, 181, 54,  104, 138, 212, 149, 203, 41,  119, 244, 170, 72,  22,  233, 183, 85,  11,
     136, 214, 52,  106, 43,  117, 151, 201, 74,  20,  246, 168, 116, 42,  200, 150, 21,  75,  169,
-    247, 182, 232, 10,  84,  215, 137, 107, 53};
+    247, 182, 232, 10,  84,  215, 137, 107, 53
+};
 
 void Pass(void)
 {
@@ -70,8 +71,7 @@ void Fail(void)
 }
 void Done(void)
 {
-    while (1)
-        ;
+    while (1) {}
 }
 
 //--------------------------------------------------------------------------
@@ -150,9 +150,7 @@ int32_t ow_romid_test(uint8_t od)
     /* Check CRC8 of received ROM ID */
     setcrc8(0);
 
-    for (i = 0; i < 8; i++) {
-        crc8 = docrc8(buffer[i]);
-    }
+    for (i = 0; i < 8; i++) { crc8 = docrc8(buffer[i]); }
 
     if (crc8 != 0x00) {
         return -7;
@@ -163,16 +161,16 @@ int32_t ow_romid_test(uint8_t od)
 
 int main(void)
 {
-    pass       = 0;
-    fail       = 0;
+    pass = 0;
+    fail = 0;
     int retval = 0;
     printf("***** 1-Wire ROM (DS2401) Example *****\n");
 
     /* Initialize one wire 10us timing */
 
     mxc_owm_cfg_t owm_cfg;
-    owm_cfg.int_pu_en      = 1;
-    owm_cfg.ext_pu_mode    = MXC_OWM_EXT_PU_ACT_HIGH;
+    owm_cfg.int_pu_en = 1;
+    owm_cfg.ext_pu_mode = MXC_OWM_EXT_PU_ACT_HIGH;
     owm_cfg.long_line_mode = 0;
     // owm_cfg.overdrive_spec = MXC_OWM_OVERDRIVE_10US;
     MXC_OWM_Init(&owm_cfg);

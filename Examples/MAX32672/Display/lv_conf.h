@@ -44,11 +44,11 @@
 #define LV_MEM_SIZE (8U * 1024U) /*[bytes]*/
 
 /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
-#define LV_MEM_ADR 0                     /*0: unused*/
-#else                                    /*LV_MEM_CUSTOM*/
+#define LV_MEM_ADR 0 /*0: unused*/
+#else /*LV_MEM_CUSTOM*/
 #define LV_MEM_CUSTOM_INCLUDE <stdlib.h> /*Header for the dynamic memory function*/
-#define LV_MEM_CUSTOM_ALLOC   malloc
-#define LV_MEM_CUSTOM_FREE    free
+#define LV_MEM_CUSTOM_ALLOC malloc
+#define LV_MEM_CUSTOM_FREE free
 #define LV_MEM_CUSTOM_REALLOC realloc
 #endif /*LV_MEM_CUSTOM*/
 
@@ -72,7 +72,7 @@
 #define LV_TICK_CUSTOM_INCLUDE "Arduino.h" /*Header for the system time function*/
 #define LV_TICK_CUSTOM_SYS_TIME_EXPR \
     (millis()) /*Expression evaluating to current system time in ms*/
-#endif         /*LV_TICK_CUSTOM*/
+#endif /*LV_TICK_CUSTOM*/
 
 /*Default Dot Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
  *(Not so important, you can adjust it to modify default sizes and spaces)*/
@@ -154,14 +154,14 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_LOG_PRINTF 1
 
 /*Enable/disable LV_LOG_TRACE in modules that produces a huge number of logs*/
-#define LV_LOG_TRACE_MEM        1
-#define LV_LOG_TRACE_TIMER      1
-#define LV_LOG_TRACE_INDEV      1
-#define LV_LOG_TRACE_DISP_REFR  1
-#define LV_LOG_TRACE_EVENT      1
+#define LV_LOG_TRACE_MEM 1
+#define LV_LOG_TRACE_TIMER 1
+#define LV_LOG_TRACE_INDEV 1
+#define LV_LOG_TRACE_DISP_REFR 1
+#define LV_LOG_TRACE_EVENT 1
 #define LV_LOG_TRACE_OBJ_CREATE 1
-#define LV_LOG_TRACE_LAYOUT     1
-#define LV_LOG_TRACE_ANIM       1
+#define LV_LOG_TRACE_LAYOUT 1
+#define LV_LOG_TRACE_ANIM 1
 
 #endif /*LV_USE_LOG*/
 
@@ -177,7 +177,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_ASSERT_STYLE \
     1 /*Check if the styles are properly initialized. (Very fast, recommended)*/
 #define LV_USE_ASSERT_MEM_INTEGRITY \
-    0                       /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
+    0 /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
 #define LV_USE_ASSERT_OBJ 0 /*Check the object's type and existence (e.g. not deleted). (Slow)*/
 
 /*Add a custom handler when assert happens e.g. to restart the MCU*/
@@ -204,8 +204,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_SPRINTF_CUSTOM 0
 #if LV_SPRINTF_CUSTOM
 #define LV_SPRINTF_INCLUDE <stdio.h>
-#define lv_snprintf        snprintf
-#define lv_vsnprintf       vsnprintf
+#define lv_snprintf snprintf
+#define lv_vsnprintf vsnprintf
 #else /*LV_SPRINTF_CUSTOM*/
 #define LV_SPRINTF_USE_FLOAT 0
 #endif /*LV_SPRINTF_CUSTOM*/
@@ -217,7 +217,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_ENABLE_GC 0
 #if LV_ENABLE_GC != 0
 #define LV_GC_INCLUDE "gc.h" /*Include Garbage Collector related things*/
-#endif                       /*LV_ENABLE_GC*/
+#endif /*LV_ENABLE_GC*/
 
 /*=====================
  *  COMPILER SETTINGS
@@ -268,7 +268,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 /*Montserrat fonts with ASCII range and some symbols using bpp = 4
  *https://fonts.google.com/specimen/Montserrat*/
-#define LV_FONT_MONTSERRAT_8  0
+#define LV_FONT_MONTSERRAT_8 0
 #define LV_FONT_MONTSERRAT_10 0
 #define LV_FONT_MONTSERRAT_12 0
 #define LV_FONT_MONTSERRAT_14 1
@@ -291,13 +291,13 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FONT_MONTSERRAT_48 0
 
 /*Demonstrate special features*/
-#define LV_FONT_MONTSERRAT_12_SUBPX      0
+#define LV_FONT_MONTSERRAT_12_SUBPX 0
 #define LV_FONT_MONTSERRAT_28_COMPRESSED 0 /*bpp = 3*/
 #define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0 /*Hebrew, Arabic, Perisan letters and all their forms*/
-#define LV_FONT_SIMSUN_16_CJK            0 /*1000 most common CJK radicals*/
+#define LV_FONT_SIMSUN_16_CJK 0 /*1000 most common CJK radicals*/
 
 /*Pixel perfect monospace fonts*/
-#define LV_FONT_UNSCII_8  1
+#define LV_FONT_UNSCII_8 1
 #define LV_FONT_UNSCII_16 0
 
 /*Optionally declare custom fonts here.
@@ -445,7 +445,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
         "January", "February", "March", "April", "May", "June", "July", "August", "September", \
             "October", "November", "December"                                                  \
     }
-#define LV_USE_CALENDAR_HEADER_ARROW    1
+#define LV_USE_CALENDAR_HEADER_ARROW 1
 #define LV_USE_CALENDAR_HEADER_DROPDOWN 1
 #endif /*LV_USE_CALENDAR*/
 

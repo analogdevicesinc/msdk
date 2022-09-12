@@ -56,7 +56,7 @@ extern "C" {
  * os[0] = PC = 00 @n
  * @ingroup UCL_ECC
  */
-static u8 _infinity[1] = {0x00};
+static u8 _infinity[1] = { 0x00 };
 
 /* ========================================================================== */
 
@@ -84,7 +84,7 @@ static u8 _infinity[1] = {0x00};
  *
  * @ingroup UCL_ECC
  */
-int __API__ ucl_data_point2os(u8* os, u32 os_len, ucl_ecc_point_st* P, u32 s, u32 field, int opt);
+int __API__ ucl_data_point2os(u8 *os, u32 os_len, ucl_ecc_point_st *P, u32 s, u32 field, int opt);
 
 /** <b>Octet String to Point Conversion</b>.
  *
@@ -103,7 +103,7 @@ int __API__ ucl_data_point2os(u8* os, u32 os_len, ucl_ecc_point_st* P, u32 s, u3
  *
  * @ingroup UCL_ECC
  */
-int __API__ ucl_data_os2point(ucl_ecc_point_st* P, u8* os, u32 os_len, ucl_ecc_curve_st* e);
+int __API__ ucl_data_os2point(ucl_ecc_point_st *P, u8 *os, u32 os_len, ucl_ecc_curve_st *e);
 
 #ifdef __cplusplus
 }

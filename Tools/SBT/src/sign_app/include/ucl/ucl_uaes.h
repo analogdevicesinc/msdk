@@ -62,10 +62,10 @@ extern "C" {
 /** <b>USIP&reg; AES Interface definition </b>.
  *  @ingroup UCL_UAES */
 struct usip_aes {
-    int (*setkey)(const u8* key);            /**< Set key */
-    int (*dkeygen)(void);                    /**< Generate decryption key */
-    int (*decrypt)(u8* dataOut, u8* dataIn); /**< Decryption */
-    int (*encrypt)(u8* dataOut, u8* dataIn); /**< Encryption */
+    int (*setkey)(const u8 *key); /**< Set key */
+    int (*dkeygen)(void); /**< Generate decryption key */
+    int (*decrypt)(u8 *dataOut, u8 *dataIn); /**< Decryption */
+    int (*encrypt)(u8 *dataOut, u8 *dataIn); /**< Encryption */
 };
 
 /** <b>USIP&reg; AES Interface typedef</b>.
@@ -139,7 +139,7 @@ typedef struct ucl_uaes_ctx ucl_uaes_ctx_t;
  * @ingroup UCL_UAES
  */
 
-int ucl_uaes_setkey(const u8* key, int option);
+int ucl_uaes_setkey(const u8 *key, int option);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES Decryption</b>
@@ -157,7 +157,7 @@ int ucl_uaes_setkey(const u8* key, int option);
  *
  * @ingroup UCL_UAES
  */
-int ucl_uaes_decrypt(u8* plaintext, u8* ciphertext);
+int ucl_uaes_decrypt(u8 *plaintext, u8 *ciphertext);
 
 /*============================================================================*/
 /** <b>USIP&reg; AES Encryption</b>
@@ -175,7 +175,7 @@ int ucl_uaes_decrypt(u8* plaintext, u8* ciphertext);
  *
  * @ingroup UCL_UAES
  */
-int ucl_uaes_encrypt(u8* ciphertext, u8* plaintext);
+int ucl_uaes_encrypt(u8 *ciphertext, u8 *plaintext);
 
 #ifdef _cplusplus
 }

@@ -55,22 +55,22 @@ int hex_extended_address;
 /* -- ASCII files - format parameters -- */
 
 #define S19_ADDRESS_LEN 4
-#define S19_CRC_LEN     1
+#define S19_CRC_LEN 1
 
-#define HEX_START_CHAR                    ':'
-#define HEX_RECORD_TYPE_POS1              7
-#define HEX_RECORD_TYPE_POS2              8
-#define HEX_LINE_LEN_POS1                 1
-#define HEX_LINE_LEN_POS2                 2
-#define HEX_ADDRESS_START                 3
-#define HEX_ADDRESS_END                   6
+#define HEX_START_CHAR ':'
+#define HEX_RECORD_TYPE_POS1 7
+#define HEX_RECORD_TYPE_POS2 8
+#define HEX_LINE_LEN_POS1 1
+#define HEX_LINE_LEN_POS2 2
+#define HEX_ADDRESS_START 3
+#define HEX_ADDRESS_END 6
 #define HEX_EXTENDED_LINEAR_ADDRESS_START 9
-#define HEX_EXTENDED_LINEAR_ADDRESS_END   10
-#define HEX_DATA_START                    9
+#define HEX_EXTENDED_LINEAR_ADDRESS_END 10
+#define HEX_DATA_START 9
 
-int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t* addr)
+int read_hex_file(const char *filename, uint8_t *data, size_t *data_len, size_t *addr)
 {
-    FILE* pFile;
+    FILE *pFile;
     char line[MAX_LINE];
     unsigned int i;
     regex_t regex;
@@ -85,10 +85,10 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
     unsigned int tmp;
 
     unsigned int record_type = 0;
-    size_t current_len       = 0;
-    size_t record_len        = 0;
-    size_t record_addr       = 0;
-    size_t extended_addr     = 0;
+    size_t current_len = 0;
+    size_t record_len = 0;
+    size_t record_addr = 0;
+    size_t extended_addr = 0;
 
     if ((filename == NULL) || (strlen(filename) == 0)) {
         print_error("Invalid HEX filename\n");
@@ -134,46 +134,46 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
             return ERR_BAD_FORMAT;
         }
 
-        record_len  = strtoul(record_len_str, NULL, 16);
+        record_len = strtoul(record_len_str, NULL, 16);
         record_addr = strtoul(record_addr_str, NULL, 16);
         record_type = strtoul(record_type_str, NULL, 16);
 
         switch (record_type) {
-            case 0: /* Data */
-                if (record_len + current_len >= *data_len) {
-                    print_error("HEX file is too large\n");
-                    return ERR_FILE_TOO_LONG;
-                }
+        case 0: /* Data */
+            if (record_len + current_len >= *data_len) {
+                print_error("HEX file is too large\n");
+                return ERR_FILE_TOO_LONG;
+            }
 
-                i = 0;
-                while (EOF != sscanf(&(record_data_str[2 * i]), "%02x", &tmp)) {
-                    data[current_len + i] = (unsigned char)tmp;
-                    addr[current_len + i] = record_addr + i + extended_addr;
-                    i++;
-                }
-                current_len += i;
+            i = 0;
+            while (EOF != sscanf(&(record_data_str[2 * i]), "%02x", &tmp)) {
+                data[current_len + i] = (unsigned char)tmp;
+                addr[current_len + i] = record_addr + i + extended_addr;
+                i++;
+            }
+            current_len += i;
 
-                if (i != record_len) {
-                    print_error("HEX Reading error, Length field and data length mismatch (%d "
-                                "!= " SSIZET_FMT ") \n",
-                                i, record_len);
-                    return ERR_BAD_FORMAT;
-                }
+            if (i != record_len) {
+                print_error("HEX Reading error, Length field and data length mismatch (%d "
+                            "!= " SSIZET_FMT ") \n",
+                            i, record_len);
+                return ERR_BAD_FORMAT;
+            }
 
-                break;
-            case 1: /* End Of File : do nothing */
-                break;
-            case 2: /* Extended Segment Address : do nothing */
-                break;
-            case 3: /* Start Segment Address : do nothing */
-                break;
-            case 4: /* Extended Linear Address  */
-                extended_addr = strtoul(record_data_str, NULL, 16) * 65536;
-                break;
-            case 5: /* Start Linear Address : do nothing */
-                break;
-            default:
-                break;
+            break;
+        case 1: /* End Of File : do nothing */
+            break;
+        case 2: /* Extended Segment Address : do nothing */
+            break;
+        case 3: /* Start Segment Address : do nothing */
+            break;
+        case 4: /* Extended Linear Address  */
+            extended_addr = strtoul(record_data_str, NULL, 16) * 65536;
+            break;
+        case 5: /* Start Linear Address : do nothing */
+            break;
+        default:
+            break;
         }
     }
 
@@ -194,10 +194,10 @@ int read_hex_file(const char* filename, uint8_t* data, size_t* data_len, size_t*
     return ERR_OK;
 }
 
-int read_s19_file(const char* filename, size_t address_offset, uint8_t* data, size_t* data_len,
-                  size_t* addr)
+int read_s19_file(const char *filename, size_t address_offset, uint8_t *data, size_t *data_len,
+                  size_t *addr)
 {
-    FILE* pFile;
+    FILE *pFile;
     char line[MAX_LINE];
     unsigned int i;
     regex_t regex;
@@ -211,7 +211,7 @@ int read_s19_file(const char* filename, size_t address_offset, uint8_t* data, si
     unsigned int tmp;
 
     size_t current_len = 0;
-    size_t record_len  = 0;
+    size_t record_len = 0;
     size_t record_addr = 0;
 
     if ((filename == NULL) || (strlen(filename) == 0)) {
@@ -266,7 +266,7 @@ int read_s19_file(const char* filename, size_t address_offset, uint8_t* data, si
             return ERR_BAD_FORMAT;
         }
 
-        record_len  = strtoul(record_len_str, NULL, 16);
+        record_len = strtoul(record_len_str, NULL, 16);
         record_addr = strtoul(record_addr_str, NULL, 16);
 
         record_addr += address_offset;
@@ -310,9 +310,9 @@ int read_s19_file(const char* filename, size_t address_offset, uint8_t* data, si
     return ERR_OK;
 }
 
-int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size_t* end_addr)
+int get_start_addr_and_length_s19(const char *filename, size_t *start_addr, size_t *end_addr)
 {
-    FILE* pFile;
+    FILE *pFile;
     char line[MAX_LINE];
     regex_t regex;
     regex_t regex_discard;
@@ -321,7 +321,7 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
     char record_len_str[10];
     char record_addr_str[10];
 
-    size_t record_len  = 0;
+    size_t record_len = 0;
     size_t record_addr = 0;
 
     if ((filename == NULL) || (strlen(filename) == 0)) {
@@ -357,7 +357,7 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
     }
 
     *start_addr = SIZE_MAX;
-    *end_addr   = 0;
+    *end_addr = 0;
 
     while (fgets(line, MAX_LINE, pFile) != NULL) {
         /* This function only read S3 records */
@@ -375,7 +375,7 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
             return ERR_BAD_FORMAT;
         }
 
-        record_len  = strtoul(record_len_str, NULL, 16) - S19_ADDRESS_LEN - S19_CRC_LEN;
+        record_len = strtoul(record_len_str, NULL, 16) - S19_ADDRESS_LEN - S19_CRC_LEN;
         record_addr = strtoul(record_addr_str, NULL, 16);
 
         if (record_addr < *start_addr) {
@@ -402,11 +402,11 @@ int get_start_addr_and_length_s19(const char* filename, size_t* start_addr, size
     return ERR_OK;
 }
 
-int read_line_ascii_data(FILE* file_ptr, size_t* data_length, unsigned char* data_buffer)
+int read_line_ascii_data(FILE *file_ptr, size_t *data_length, unsigned char *data_buffer)
 {
-    char* result = NULL;
-    char* ascii_data;
-    unsigned int i   = 0;
+    char *result = NULL;
+    char *ascii_data;
+    unsigned int i = 0;
     unsigned int tmp = 0;
 
     /* Null pointer check */
@@ -418,7 +418,7 @@ int read_line_ascii_data(FILE* file_ptr, size_t* data_length, unsigned char* dat
         return ERR_BAD_PARAMETER;
     }
 
-    ascii_data = (char*)malloc(*data_length * sizeof(char) * 2 + 10);
+    ascii_data = (char *)malloc(*data_length * sizeof(char) * 2 + 10);
     if (ascii_data == NULL) {
         print_error("Unable to allocate memory");
         return ERR_MEMORY_ERROR;
@@ -443,7 +443,7 @@ int read_line_ascii_data(FILE* file_ptr, size_t* data_length, unsigned char* dat
     return ERR_OK;
 }
 
-int extension(const char* ext, const char* name)
+int extension(const char *ext, const char *name)
 {
     regex_t regex;
     int ret;
@@ -462,9 +462,9 @@ int extension(const char* ext, const char* name)
     return ((!ret) ? TRUE : FALSE);
 }
 
-int read_file_size(size_t* size, char* filename)
+int read_file_size(size_t *size, char *filename)
 {
-    FILE* pFile = NULL;
+    FILE *pFile = NULL;
 
     print_debug("Read size of file %s\n", filename);
 
@@ -485,11 +485,11 @@ int read_file_size(size_t* size, char* filename)
     return ERR_OK;
 }
 
-int read_binary_file(char* filename, u8* p_pucData, size_t* file_size)
+int read_binary_file(char *filename, u8 *p_pucData, size_t *file_size)
 {
     int i = 0;
     unsigned int result;
-    FILE* pFile = NULL;
+    FILE *pFile = NULL;
 
     print_debug("Read binary file : %s\n", filename);
 
@@ -511,9 +511,7 @@ int read_binary_file(char* filename, u8* p_pucData, size_t* file_size)
     }
 
     print_debug(SSIZET_FMT " bytes read\n", *file_size);
-    for (i = 0; i < (int)(*file_size); i++) {
-        print_d("%02x", p_pucData[i]);
-    }
+    for (i = 0; i < (int)(*file_size); i++) { print_d("%02x", p_pucData[i]); }
     print_d("\n");
 
     fclose(pFile);

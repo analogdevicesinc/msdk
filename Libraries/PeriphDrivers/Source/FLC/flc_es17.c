@@ -50,12 +50,12 @@
 #include "ctb.h"
 #include "mcr_regs.h" // For ECCEN registers.
 static void mxc_aes_init(void);
-static int mxc_encrypt_sequence(const uint8_t* pt, uint8_t* ct, uint32_t addr, int len);
+static int mxc_encrypt_sequence(const uint8_t *pt, uint8_t *ct, uint32_t addr, int len);
 
 //******************************************************************************
 void MXC_FLC_Flash_Operation(void)
 {
-    volatile uint32_t* line_addr;
+    volatile uint32_t *line_addr;
     volatile uint32_t __attribute__((unused)) line;
 
     // Clear the cache and leave the cache enable/disable state unchanged
@@ -63,14 +63,14 @@ void MXC_FLC_Flash_Operation(void)
     MXC_ICC->cache_ctrl ^= MXC_F_ICC_CACHE_CTRL_CACHE_EN;
 
     // Clear the line fill buffer
-    line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE);
-    line      = *line_addr;
-    line_addr = (uint32_t*)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
-    line      = *line_addr;
+    line_addr = (uint32_t *)(MXC_FLASH_MEM_BASE);
+    line = *line_addr;
+    line_addr = (uint32_t *)(MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE);
+    line = *line_addr;
 }
 
 //******************************************************************************
-int MXC_FLC_GetByAddress(mxc_flc_regs_t** flc, uint32_t addr)
+int MXC_FLC_GetByAddress(mxc_flc_regs_t **flc, uint32_t addr)
 {
     if (addr < MXC_FLASH1_MEM_BASE && addr >= MXC_FLASH0_MEM_BASE) {
         *flc = MXC_FLC;
@@ -88,7 +88,7 @@ int MXC_FLC_GetByAddress(mxc_flc_regs_t** flc, uint32_t addr)
 }
 
 //******************************************************************************
-int MXC_FLC_GetPhysicalAddress(uint32_t addr, uint32_t* result)
+int MXC_FLC_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 {
     if (addr < MXC_FLASH1_MEM_BASE && addr >= MXC_FLASH0_MEM_BASE) {
         *result = addr & (MXC_FLASH_MEM_SIZE - 1);
@@ -132,7 +132,7 @@ int MXC_FLC_PageErase(uint32_t address)
 {
     int err;
     uint32_t addr;
-    mxc_flc_regs_t* flc = NULL;
+    mxc_flc_regs_t *flc = NULL;
 
     // Get FLC Instance
     if ((err = MXC_FLC_GetByAddress(&flc, address)) != E_NO_ERROR) {
@@ -143,7 +143,7 @@ int MXC_FLC_PageErase(uint32_t address)
         return err;
     }
 
-    err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)flc, addr);
+    err = MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t *)flc, addr);
     // Flush the cache
     MXC_FLC_Flash_Operation();
 
@@ -154,11 +154,11 @@ int MXC_FLC_PageErase(uint32_t address)
 int MXC_FLC_MassErase(void)
 {
     int err, i;
-    mxc_flc_regs_t* flc;
+    mxc_flc_regs_t *flc;
 
     for (i = 0; i < MXC_FLC_INSTANCES; i++) {
         flc = MXC_FLC_GET_FLC(i);
-        err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*)flc);
+        err = MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t *)flc);
 
         if (err != E_NO_ERROR) {
             return err;
@@ -177,10 +177,10 @@ int MXC_FLC_MassErase(void)
 __attribute__((section(".flashprog")))
 #endif
 // make sure to disable ICC with ICC_Disable(); before Running this function
-int MXC_FLC_Write128(uint32_t address, uint32_t* data)
+int MXC_FLC_Write128(uint32_t address, uint32_t *data)
 {
     int err;
-    mxc_flc_regs_t* flc = NULL;
+    mxc_flc_regs_t *flc = NULL;
     uint32_t addr;
 
     // Address checked if it is 128-bit aligned
@@ -197,7 +197,7 @@ int MXC_FLC_Write128(uint32_t address, uint32_t* data)
         return err;
     }
 
-    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)flc, addr, data)) != E_NO_ERROR) {
+    if ((err = MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t *)flc, addr, data)) != E_NO_ERROR) {
         return err;
     }
 
@@ -216,7 +216,7 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
 {
     uint32_t addr;
     int err;
-    mxc_flc_regs_t* flc = NULL;
+    mxc_flc_regs_t *flc = NULL;
 
     // Address checked if it is byte addressable
     if (address & 0x3) {
@@ -251,13 +251,12 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
     // write 32-bits
     flc->flsh_cn |= MXC_F_FLC_REVA_CTRL_WDTH;
     // write the data
-    flc->flsh_addr    = addr;
+    flc->flsh_addr = addr;
     flc->flsh_data[0] = data;
     flc->flsh_cn |= MXC_F_FLC_FLSH_CN_WR;
 
     /* Wait until flash operation is complete */
-    while (flc->flsh_cn & (MXC_F_FLC_FLSH_CN_WR | MXC_F_FLC_FLSH_CN_ME | MXC_F_FLC_FLSH_CN_PGE))
-        ;
+    while (flc->flsh_cn & (MXC_F_FLC_FLSH_CN_WR | MXC_F_FLC_FLSH_CN_ME | MXC_F_FLC_FLSH_CN_PGE)) {}
 
     /* Lock flash */
     flc->flsh_cn &= ~MXC_F_FLC_FLSH_CN_UNLOCK;
@@ -279,13 +278,13 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
 }
 
 //******************************************************************************
-int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer)
+int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t *buffer)
 {
     return MXC_FLC_Com_Write(address, length, buffer);
 }
 
 //******************************************************************************
-void MXC_FLC_Read(int address, void* buffer, int len)
+void MXC_FLC_Read(int address, void *buffer, int len)
 {
     MXC_FLC_Com_Read(address, buffer, len);
 }
@@ -318,26 +317,26 @@ int MXC_FLC_ClearFlags(uint32_t flags)
 int MXC_FLC_UnlockInfoBlock(uint32_t address)
 {
     int err;
-    mxc_flc_regs_t* flc;
+    mxc_flc_regs_t *flc;
 
     if ((err = MXC_FLC_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
 
-    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
+    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t *)flc, address);
 }
 
 //******************************************************************************
 int MXC_FLC_LockInfoBlock(uint32_t address)
 {
     int err;
-    mxc_flc_regs_t* flc;
+    mxc_flc_regs_t *flc;
 
     if ((err = MXC_FLC_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
 
-    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t *)flc, address);
 }
 
 //******************************************************************************
@@ -347,7 +346,7 @@ int MXC_FLC_LockInfoBlock(uint32_t address)
 __attribute__((section(".flashprog")))
 #endif
 // make sure to disable ICC with ICC_Disable(); before Running this function
-int MXC_FLC_Write_Encrypted(uint32_t address, uint32_t length, uint32_t* buffer)
+int MXC_FLC_Write_Encrypted(uint32_t address, uint32_t length, uint32_t *buffer)
 {
     int err;
     uint32_t encrypted_buffer[4];
@@ -367,7 +366,7 @@ int MXC_FLC_Write_Encrypted(uint32_t address, uint32_t length, uint32_t* buffer)
 
     while (length >= 16) {
         // Encrypt 128-bits of buffer, output to encrypted_buffer
-        if ((err = mxc_encrypt_sequence((uint8_t*)buffer, (uint8_t*)encrypted_buffer, address,
+        if ((err = mxc_encrypt_sequence((uint8_t *)buffer, (uint8_t *)encrypted_buffer, address,
                                         16)) != E_NO_ERROR) {
             return err;
         }
@@ -421,7 +420,7 @@ static void mxc_aes_init(void)
 #else
 __attribute__((section(".flashprog")))
 #endif
-static int mxc_encrypt_sequence(const uint8_t* pt, uint8_t* ct, uint32_t addr, int len)
+static int mxc_encrypt_sequence(const uint8_t *pt, uint8_t *ct, uint32_t addr, int len)
 {
     uint8_t pt_buf[16];
     uint8_t ct_buf[16];
@@ -457,14 +456,13 @@ static int mxc_encrypt_sequence(const uint8_t* pt, uint8_t* ct, uint32_t addr, i
                                 (0x3 << MXC_F_CTB_CIPHER_CTRL_SRC_POS));
 
         // Copy data to start the operation
-        memcpy((void*)&MXC_CTB->crypto_din[0], (void*)(pt_buf), 16);
+        memcpy((void *)&MXC_CTB->crypto_din[0], (void *)(pt_buf), 16);
 
         // Wait until operation is complete
-        while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) {
-        }
+        while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) {}
 
         // Copy the data out
-        memcpy((void*)(ct_buf), (void*)&MXC_CTB->crypto_dout[0], 16);
+        memcpy((void *)(ct_buf), (void *)&MXC_CTB->crypto_dout[0], 16);
 
         // Put the bytes in the ct buffer
         for (i = 0; i < 16; i += 4) {
@@ -493,14 +491,14 @@ int MXC_FLC_BlockPageRead(uint32_t address)
 }
 
 //******************************************************************************
-volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
+volatile uint32_t *MXC_FLC_GetWELR(uint32_t address, uint32_t page_num)
 {
     /* MAX32520 does not support flash page read and write locks */
     return NULL;
 }
 
 //******************************************************************************
-volatile uint32_t* MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
+volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
 {
     /* MAX32520 does not support flash page read and write locks */
     return NULL;

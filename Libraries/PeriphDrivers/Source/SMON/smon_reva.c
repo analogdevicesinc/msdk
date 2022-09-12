@@ -39,7 +39,7 @@
 #include "mxc_device.h"
 #include "smon_reva.h"
 
-int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg,
+int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_reva_ext_cfg_t *cfg,
                                   uint32_t delay)
 {
     int err;
@@ -48,7 +48,7 @@ int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_
         return E_NULL_PTR;
     }
 
-    if ((err = MXC_SMON_SetSensorFrequency((mxc_smon_ext_cfg_t*)cfg)) != E_NO_ERROR) {
+    if ((err = MXC_SMON_SetSensorFrequency((mxc_smon_ext_cfg_t *)cfg)) != E_NO_ERROR) {
         return err;
     }
 
@@ -66,7 +66,7 @@ int MXC_SMON_RevA_ExtSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_
     return err;
 }
 
-int MXC_SMON_RevA_SetSensorFrequency(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg)
+int MXC_SMON_RevA_SetSensorFrequency(mxc_smon_reva_regs_t *smon, mxc_smon_reva_ext_cfg_t *cfg)
 {
     int err;
 
@@ -83,7 +83,7 @@ int MXC_SMON_RevA_SetSensorFrequency(mxc_smon_reva_regs_t* smon, mxc_smon_reva_e
     return err;
 }
 
-int MXC_SMON_RevA_SetErrorCount(mxc_smon_reva_regs_t* smon, uint8_t errorCount)
+int MXC_SMON_RevA_SetErrorCount(mxc_smon_reva_regs_t *smon, uint8_t errorCount)
 {
     int err;
 
@@ -101,7 +101,7 @@ int MXC_SMON_RevA_SetErrorCount(mxc_smon_reva_regs_t* smon, uint8_t errorCount)
     return err;
 }
 
-int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold,
+int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_reva_temp_t threshold,
                                    uint32_t delay)
 {
     int err;
@@ -119,7 +119,7 @@ int MXC_SMON_RevA_TempSensorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_tem
     return err;
 }
 
-int MXC_SMON_RevA_SetTempThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_temp_t threshold)
+int MXC_SMON_RevA_SetTempThreshold(mxc_smon_reva_regs_t *smon, mxc_smon_reva_temp_t threshold)
 {
     int err;
 
@@ -138,7 +138,7 @@ int MXC_SMON_RevA_SetTempThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_tem
     return err;
 }
 
-int MXC_SMON_RevA_VoltageMonitorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold,
+int MXC_SMON_RevA_VoltageMonitorEnable(mxc_smon_reva_regs_t *smon, mxc_smon_reva_vtm_t threshold,
                                        uint32_t delay)
 {
     int err;
@@ -156,7 +156,7 @@ int MXC_SMON_RevA_VoltageMonitorEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva
     return err;
 }
 
-int MXC_SMON_RevA_SetVTMThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_t threshold)
+int MXC_SMON_RevA_SetVTMThreshold(mxc_smon_reva_regs_t *smon, mxc_smon_reva_vtm_t threshold)
 {
     int err;
 
@@ -178,7 +178,7 @@ int MXC_SMON_RevA_SetVTMThreshold(mxc_smon_reva_regs_t* smon, mxc_smon_reva_vtm_
     return err;
 }
 
-int MXC_SMON_RevA_ActiveDieShieldEnable(mxc_smon_reva_regs_t* smon, uint32_t delay)
+int MXC_SMON_RevA_ActiveDieShieldEnable(mxc_smon_reva_regs_t *smon, uint32_t delay)
 {
     int err;
 
@@ -191,7 +191,7 @@ int MXC_SMON_RevA_ActiveDieShieldEnable(mxc_smon_reva_regs_t* smon, uint32_t del
     return err;
 }
 
-int MXC_SMON_RevA_SelfDestructByteEnable(mxc_smon_reva_regs_t* smon, mxc_smon_reva_ext_cfg_t* cfg,
+int MXC_SMON_RevA_SelfDestructByteEnable(mxc_smon_reva_regs_t *smon, mxc_smon_reva_ext_cfg_t *cfg,
                                          uint32_t delay)
 {
     int err;
@@ -204,7 +204,7 @@ int MXC_SMON_RevA_SelfDestructByteEnable(mxc_smon_reva_regs_t* smon, mxc_smon_re
 
     smon->sdbe |= cfg->data << MXC_F_SMON_REVA_SDBE_DBYTE_POS;
 
-    if ((err = MXC_SMON_ExtSensorEnable((mxc_smon_ext_cfg_t*)cfg, delay)) != E_NO_ERROR) {
+    if ((err = MXC_SMON_ExtSensorEnable((mxc_smon_ext_cfg_t *)cfg, delay)) != E_NO_ERROR) {
         return err;
     }
 
@@ -217,21 +217,21 @@ int MXC_SMON_RevA_SelfDestructByteEnable(mxc_smon_reva_regs_t* smon, mxc_smon_re
     return err;
 }
 
-void MXC_SMON_RevA_EnablePUFTrimErase(mxc_smon_reva_regs_t* smon)
+void MXC_SMON_RevA_EnablePUFTrimErase(mxc_smon_reva_regs_t *smon)
 {
     smon->intscn |= MXC_F_SMON_REVA_INTSCN_PUF_TRIM_ERASE;
 
     MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_INTSENSOR, 0);
 }
 
-void MXC_SMON_RevA_DisablePUFTrimErase(mxc_smon_reva_regs_t* smon)
+void MXC_SMON_RevA_DisablePUFTrimErase(mxc_smon_reva_regs_t *smon)
 {
     smon->intscn &= ~MXC_F_SMON_REVA_INTSCN_PUF_TRIM_ERASE;
 
     MXC_SMON_isBusy((mxc_smon_busy_t)SMON_REVA_INTSENSOR, 0);
 }
 
-int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t* smon,
+int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t *smon,
                                              mxc_smon_reva_interrupt_mode_t interruptMode,
                                              mxc_smon_reva_lowpower_mode_t lowPowerMode,
                                              uint32_t delay)
@@ -263,33 +263,32 @@ int MXC_SMON_RevA_DigitalFaultDetectorEnable(mxc_smon_reva_regs_t* smon,
     return err;
 }
 
-uint32_t MXC_SMON_RevA_GetFlags(mxc_smon_reva_regs_t* smon)
+uint32_t MXC_SMON_RevA_GetFlags(mxc_smon_reva_regs_t *smon)
 {
     return smon->secalm;
 }
 
-void MXC_SMON_RevA_ClearFlags(mxc_smon_reva_regs_t* smon, uint32_t flags)
+void MXC_SMON_RevA_ClearFlags(mxc_smon_reva_regs_t *smon, uint32_t flags)
 {
     MXC_SMON_RevA_isBusy(smon, SMON_REVA_SECALARM, 0);
     smon->secalm &= ~flags;
     MXC_SMON_RevA_isBusy(smon, SMON_REVA_SECALARM, 0);
 }
 
-void MXC_SMON_RevA_ExtSensorLock(mxc_smon_reva_regs_t* smon)
+void MXC_SMON_RevA_ExtSensorLock(mxc_smon_reva_regs_t *smon)
 {
     smon->extscn |= MXC_F_SMON_REVA_EXTSCN_LOCK;
 }
 
-void MXC_SMON_RevA_IntSensorLock(mxc_smon_reva_regs_t* smon)
+void MXC_SMON_RevA_IntSensorLock(mxc_smon_reva_regs_t *smon)
 {
     smon->intscn |= MXC_F_SMON_REVA_INTSCN_LOCK;
 }
 
-int MXC_SMON_RevA_isBusy(mxc_smon_reva_regs_t* smon, mxc_smon_reva_busy_t reg, uint32_t delay)
+int MXC_SMON_RevA_isBusy(mxc_smon_reva_regs_t *smon, mxc_smon_reva_busy_t reg, uint32_t delay)
 {
     if (delay == 0) {
-        while (smon->secst & reg)
-            ;
+        while (smon->secst & reg) {}
 
         return E_NO_ERROR;
     }

@@ -43,42 +43,41 @@
 uint32_t MXC_EMCC_ID(mxc_emcc_cache_id_t id)
 {
     switch (id) {
-        case MXC_EMCC_CACHE_ID_RELNUM:
-            return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_RELNUM) >>
-                   MXC_F_EMCC_CACHE_ID_RELNUM_POS;
-        case MXC_EMCC_CACHE_ID_PARTNUM:
-            return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_PARTNUM) >>
-                   MXC_F_EMCC_CACHE_ID_PARTNUM_POS;
-        case MXC_EMCC_CACHE_ID_CCHID:
-            return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_CCHID) >>
-                   MXC_F_EMCC_CACHE_ID_CCHID_POS;
-        default:
-            return E_BAD_PARAM;
+    case MXC_EMCC_CACHE_ID_RELNUM:
+        return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_RELNUM) >>
+               MXC_F_EMCC_CACHE_ID_RELNUM_POS;
+    case MXC_EMCC_CACHE_ID_PARTNUM:
+        return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_PARTNUM) >>
+               MXC_F_EMCC_CACHE_ID_PARTNUM_POS;
+    case MXC_EMCC_CACHE_ID_CCHID:
+        return ((MXC_EMCC->cache_id) & MXC_F_EMCC_CACHE_ID_CCHID) >> MXC_F_EMCC_CACHE_ID_CCHID_POS;
+    default:
+        return E_BAD_PARAM;
     }
 }
 
 /* ************************************************************************** */
 uint32_t MXC_EMCC_CacheSize(void)
 {
-    return MXC_SRCC_RevA_CacheSize((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    return MXC_SRCC_RevA_CacheSize((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_EMCC_MemSize(void)
 {
-    return MXC_SRCC_RevA_MemSize((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    return MXC_SRCC_RevA_MemSize((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */
 void MXC_EMCC_Enable(void)
 {
-    MXC_SRCC_RevA_Enable((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    MXC_SRCC_RevA_Enable((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */
 void MXC_EMCC_Disable(void)
 {
-    MXC_SRCC_RevA_Disable((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    MXC_SRCC_RevA_Disable((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */
@@ -97,13 +96,13 @@ void MXC_EMCC_WriteAllocEnable(void)
     portions of memory. This can "pollute" the cache with unwanted cache lines.
     To avoid this issue, the write-allocate feature is disable by default. The
     write- allocate enable bit is in CACHE_CTRL[1]. */
-    MXC_SRCC_RevA_WriteAllocateEnable((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    MXC_SRCC_RevA_WriteAllocateEnable((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */
 void MXC_EMCC_WriteAllocDisable(void)
 {
-    MXC_SRCC_RevA_WriteAllocateDisable((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    MXC_SRCC_RevA_WriteAllocateDisable((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */
@@ -132,7 +131,7 @@ uint32_t MXC_EMCC_Ready(void)
     cache is effectively in bypass mode (data fetches will come from main memory
     or from the line fill buffer). Set by hardware when the invalidate operation
     is complete and the cache is ready. */
-    return MXC_SRCC_RevA_Ready((mxc_srcc_reva_regs_t*)MXC_EMCC);
+    return MXC_SRCC_RevA_Ready((mxc_srcc_reva_regs_t *)MXC_EMCC);
 }
 
 /* ************************************************************************** */

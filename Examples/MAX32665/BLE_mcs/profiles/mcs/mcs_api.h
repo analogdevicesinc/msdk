@@ -18,8 +18,8 @@ extern "C" {
 /*! \brief Maxim custom service configurable parameters */
 typedef struct {
     wsfTimerTicks_t period; /*!< \brief Button timer expiration period in seconds */
-    uint16_t count;         /*!< \brief Perform button after this many timer periods */
-    uint8_t threshold;      /*!< \brief Send button notification to peer when below this level. */
+    uint16_t count; /*!< \brief Perform button after this many timer periods */
+    uint8_t threshold; /*!< \brief Send button notification to peer when below this level. */
 } mcsCfg_t;
 
 /*************************************************************************************************/
@@ -39,7 +39,7 @@ typedef struct {
  */
 /*************************************************************************************************/
 uint8_t McsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                      uint16_t len, uint8_t* pValue, attsAttr_t* pAttr);
+                      uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -62,7 +62,7 @@ void McsSetFeatures(uint8_t features);
  *  \return None.
  */
 /*************************************************************************************************/
-void McsInit(wsfHandlerId_t handlerId, mcsCfg_t* pCfg);
+void McsInit(wsfHandlerId_t handlerId, mcsCfg_t *pCfg);
 
 /*************************************************************************************************/
 /*!

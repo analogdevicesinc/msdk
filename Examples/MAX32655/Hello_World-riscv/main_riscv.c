@@ -44,7 +44,7 @@ int main(void)
 {
     int cnt = 0;
 
-    Debug_Init();             // Set up RISCV JTAG
+    Debug_Init(); // Set up RISCV JTAG
     MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
     printf("Hello World!\n");

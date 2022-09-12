@@ -60,19 +60,19 @@ extern "C" {
  * @brief Callback funtion for ctb
  * 
  */
-typedef void (*mxc_ctb_complete_cb_t)(void* req, int result);
+typedef void (*mxc_ctb_complete_cb_t)(void *req, int result);
 
 /**
   * @brief  Enumeration type for Crypto Toolbox features
   *
   */
 typedef enum {
-    MXC_CTB_FEATURE_DMA    = 1 << 0,
-    MXC_CTB_FEATURE_ECC    = 1 << 1,
-    MXC_CTB_FEATURE_CRC    = 1 << 2,
-    MXC_CTB_FEATURE_HASH   = 1 << 4,
+    MXC_CTB_FEATURE_DMA = 1 << 0,
+    MXC_CTB_FEATURE_ECC = 1 << 1,
+    MXC_CTB_FEATURE_CRC = 1 << 2,
+    MXC_CTB_FEATURE_HASH = 1 << 4,
     MXC_CTB_FEATURE_CIPHER = 1 << 5,
-    MXC_CTB_FEATURE_TRNG   = 1 << 6
+    MXC_CTB_FEATURE_TRNG = 1 << 6
 } mxc_ctb_features_t;
 
 /* ************************************************************************* */
@@ -84,9 +84,9 @@ typedef enum {
   *
   */
 struct _mxc_ctb_dma_req_t {
-    uint8_t* sourceBuffer;          ///< pointer to source data
-    uint8_t* destBuffer;            ///< pointer to destination buffer
-    uint32_t length;                ///< length of source data
+    uint8_t *sourceBuffer; ///< pointer to source data
+    uint8_t *destBuffer; ///< pointer to destination buffer
+    uint32_t length; ///< length of source data
     mxc_ctb_complete_cb_t callback; ///< Null callback indicates a blocking operation
 } typedef mxc_ctb_dma_req_t;
 
@@ -104,9 +104,9 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_DMA_WRITE_FIFO_CIPHER    = MXC_V_CTB_CRYPTO_CTRL_WRSRC_CIPHEROUTPUT,
+    MXC_CTB_DMA_WRITE_FIFO_CIPHER = MXC_V_CTB_CRYPTO_CTRL_WRSRC_CIPHEROUTPUT,
     MXC_CTB_DMA_WRITE_FIFO_READ_FIFO = MXC_V_CTB_CRYPTO_CTRL_WRSRC_READFIFO,
-    MXC_CTB_DMA_WRITE_FIFO_NONE      = MXC_V_CTB_CRYPTO_CTRL_WRSRC_NONE
+    MXC_CTB_DMA_WRITE_FIFO_NONE = MXC_V_CTB_CRYPTO_CTRL_WRSRC_NONE
 } mxc_ctb_dma_write_source_t;
 
 /* ************************************************************************* */
@@ -118,7 +118,7 @@ typedef enum {
   *
   */
 struct _mxc_ctb_ecc_req_t {
-    uint8_t* dataBuffer;
+    uint8_t *dataBuffer;
     uint32_t dataLen;
     uint32_t checksum;
     mxc_ctb_complete_cb_t callback;
@@ -129,7 +129,7 @@ struct _mxc_ctb_ecc_req_t {
   *
   */
 struct _mxc_ctb_crc_req_t {
-    uint8_t* dataBuffer;
+    uint8_t *dataBuffer;
     uint32_t dataLen;
     uint32_t resultCRC;
     mxc_ctb_complete_cb_t callback;
@@ -150,9 +150,9 @@ typedef enum { MXC_CTB_CRC_LSB_FIRST, MXC_CTB_CRC_MSB_FIRST } mxc_ctb_crc_bitord
   *
   */
 struct _mxc_ctb_hash_req_t {
-    uint8_t* msg;
+    uint8_t *msg;
     uint32_t len;
-    uint8_t* hash;
+    uint8_t *hash;
     mxc_ctb_complete_cb_t callback;
 } typedef mxc_ctb_hash_req_t;
 
@@ -161,12 +161,12 @@ struct _mxc_ctb_hash_req_t {
   *
   */
 typedef enum {
-    MXC_CTB_HASH_DIS    = MXC_V_CTB_HASH_CTRL_HASH_DIS,    // Disable
-    MXC_CTB_HASH_SHA1   = MXC_V_CTB_HASH_CTRL_HASH_SHA1,   // Select SHA1
+    MXC_CTB_HASH_DIS = MXC_V_CTB_HASH_CTRL_HASH_DIS, // Disable
+    MXC_CTB_HASH_SHA1 = MXC_V_CTB_HASH_CTRL_HASH_SHA1, // Select SHA1
     MXC_CTB_HASH_SHA224 = MXC_V_CTB_HASH_CTRL_HASH_SHA224, // Select SHA224
     MXC_CTB_HASH_SHA256 = MXC_V_CTB_HASH_CTRL_HASH_SHA256, // Select SHA256
     MXC_CTB_HASH_SHA384 = MXC_V_CTB_HASH_CTRL_HASH_SHA384, // Select SHA384
-    MXC_CTB_HASH_SHA512 = MXC_V_CTB_HASH_CTRL_HASH_SHA512  // Select SHA384
+    MXC_CTB_HASH_SHA512 = MXC_V_CTB_HASH_CTRL_HASH_SHA512 // Select SHA384
 } mxc_ctb_hash_func_t;
 
 /**
@@ -174,7 +174,7 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_HASH_SOURCE_INFIFO  = 0,
+    MXC_CTB_HASH_SOURCE_INFIFO = 0,
     MXC_CTB_HASH_SOURCE_OUTFIFO = 1
 } mxc_ctb_hash_source_t;
 
@@ -187,10 +187,10 @@ typedef enum {
   *
   */
 struct _mxc_ctb_cipher_req_t {
-    uint8_t* plaintext;
+    uint8_t *plaintext;
     uint32_t ptLen;
-    uint8_t* iv;
-    uint8_t* ciphertext;
+    uint8_t *iv;
+    uint8_t *ciphertext;
     mxc_ctb_complete_cb_t callback;
 } typedef mxc_ctb_cipher_req_t;
 
@@ -210,12 +210,12 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_CIPHER_DIS    = MXC_V_CTB_CIPHER_CTRL_CIPHER_DIS,    ///< Disable
+    MXC_CTB_CIPHER_DIS = MXC_V_CTB_CIPHER_CTRL_CIPHER_DIS, ///< Disable
     MXC_CTB_CIPHER_AES128 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES128, ///< Select AES-128
     MXC_CTB_CIPHER_AES192 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES192, ///< Select AES-192
     MXC_CTB_CIPHER_AES256 = MXC_V_CTB_CIPHER_CTRL_CIPHER_AES256, ///< Select AES-256
-    MXC_CTB_CIPHER_DES    = MXC_V_CTB_CIPHER_CTRL_CIPHER_DES,    ///< Select DES
-    MXC_CTB_CIPHER_TDES   = MXC_V_CTB_CIPHER_CTRL_CIPHER_TDES    ///< Select TDES
+    MXC_CTB_CIPHER_DES = MXC_V_CTB_CIPHER_CTRL_CIPHER_DES, ///< Select DES
+    MXC_CTB_CIPHER_TDES = MXC_V_CTB_CIPHER_CTRL_CIPHER_TDES ///< Select TDES
 } mxc_ctb_cipher_t;
 
 /**
@@ -370,14 +370,14 @@ mxc_ctb_dma_write_source_t MXC_CTB_DMA_GetWriteSource(void);
  *
  * @param   source    pointer to the source location
  */
-void MXC_CTB_DMA_SetSource(uint8_t* source);
+void MXC_CTB_DMA_SetSource(uint8_t *source);
 
 /**
  * @brief   Set the destination address of the DMA
  *
  * @param   dest  pointer to destination
  */
-void MXC_CTB_DMA_SetDestination(uint8_t* dest);
+void MXC_CTB_DMA_SetDestination(uint8_t *dest);
 
 /**
  * @brief   Set the source and destination addresses of the DMA
@@ -388,7 +388,7 @@ void MXC_CTB_DMA_SetDestination(uint8_t* dest);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_DMA_SetupOperation(mxc_ctb_dma_req_t* req);
+int MXC_CTB_DMA_SetupOperation(mxc_ctb_dma_req_t *req);
 
 /**
  * @brief   Start a DMA transfer defined by the request object
@@ -400,7 +400,7 @@ int MXC_CTB_DMA_SetupOperation(mxc_ctb_dma_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_DMA_DoOperation(mxc_ctb_dma_req_t* req);
+int MXC_CTB_DMA_DoOperation(mxc_ctb_dma_req_t *req);
 
 /**
  * @brief   Start a DMA transfer of fixed size
@@ -429,7 +429,7 @@ int MXC_CTB_TRNG_RandomInt(void);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_TRNG_Random(uint8_t* data, uint32_t len);
+int MXC_CTB_TRNG_Random(uint8_t *data, uint32_t len);
 
 /**
  * @brief   Get a random number of length len, do not block while generating data
@@ -440,7 +440,7 @@ int MXC_CTB_TRNG_Random(uint8_t* data, uint32_t len);
  * @param   callback  Function that will be called when all data has been generated
  *
  */
-void MXC_CTB_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_ctb_complete_cb_t callback);
+void MXC_CTB_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_ctb_complete_cb_t callback);
 
 /* ************************************************************************* */
 /* Error Correction Code (ECC) functions                                     */
@@ -484,7 +484,7 @@ uint32_t MXC_CTB_ECC_GetResult(void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_ECC_Compute(mxc_ctb_ecc_req_t* req);
+int MXC_CTB_ECC_Compute(mxc_ctb_ecc_req_t *req);
 
 /**
  * @brief   Check for single or dual bit errors in a block of data
@@ -495,7 +495,7 @@ int MXC_CTB_ECC_Compute(mxc_ctb_ecc_req_t* req);
  * @return  Positive values for 1 or 2 bit errors, respectively
  *          otherwise, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_ECC_ErrorCheck(mxc_ctb_ecc_req_t* req);
+int MXC_CTB_ECC_ErrorCheck(mxc_ctb_ecc_req_t *req);
 
 /**
  * @brief   Compute the ECC value for a block of data up to 8kB in size
@@ -505,7 +505,7 @@ int MXC_CTB_ECC_ErrorCheck(mxc_ctb_ecc_req_t* req);
  *
  * @param   req   Structure containing data for the ECC request
  */
-void MXC_CTB_ECC_ComputeAsync(mxc_ctb_ecc_req_t* req);
+void MXC_CTB_ECC_ComputeAsync(mxc_ctb_ecc_req_t *req);
 
 /**
  * @brief   Check for single or dual bit errors in a block of data
@@ -514,7 +514,7 @@ void MXC_CTB_ECC_ComputeAsync(mxc_ctb_ecc_req_t* req);
  *
  * @param   req   Structure containing data for the ECC request
  */
-void MXC_CTB_ECC_ErrorCheckAsync(mxc_ctb_ecc_req_t* req);
+void MXC_CTB_ECC_ErrorCheckAsync(mxc_ctb_ecc_req_t *req);
 
 /* ************************************************************************* */
 /* Cyclic Redundancy Check (CRC) functions                                   */
@@ -586,7 +586,7 @@ void MXC_CTB_CRC_SetFinalXORValue(uint32_t xor);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_CRC_Compute(mxc_ctb_crc_req_t* req);
+int MXC_CTB_CRC_Compute(mxc_ctb_crc_req_t *req);
 
 /**
  * @brief   Perform a CRC computation asynchronously
@@ -596,7 +596,7 @@ int MXC_CTB_CRC_Compute(mxc_ctb_crc_req_t* req);
  *
  * @param   req   Structure containing the data for calculation
  */
-void MXC_CTB_CRC_ComputeAsync(mxc_ctb_crc_req_t* req);
+void MXC_CTB_CRC_ComputeAsync(mxc_ctb_crc_req_t *req);
 
 /* ************************************************************************* */
 /* Hash functions                                                            */
@@ -659,7 +659,7 @@ int MXC_CTB_Hash_GetAutoPad(void);
  * @param   digest   buffer to store the ouctbt of the hash algorithm
  * @param   len      location to store the length of the digest
  */
-void MXC_CTB_Hash_GetResult(uint8_t* digest, int* len);
+void MXC_CTB_Hash_GetResult(uint8_t *digest, int *len);
 
 /**
  * @brief   Set the size of the data input into the hash computation
@@ -703,7 +703,7 @@ void MXC_CTB_Hash_InitializeHash(void);
  *
  * @return See \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_CTB_Hash_Compute(mxc_ctb_hash_req_t* req);
+int MXC_CTB_Hash_Compute(mxc_ctb_hash_req_t *req);
 
 /**
  * @brief   Compute a Hash Digest
@@ -712,7 +712,7 @@ int MXC_CTB_Hash_Compute(mxc_ctb_hash_req_t* req);
  *
  * @param   req   Structure containing all data needed for a hash computation
  */
-void MXC_CTB_Hash_ComputeAsync(mxc_ctb_hash_req_t* req);
+void MXC_CTB_Hash_ComputeAsync(mxc_ctb_hash_req_t *req);
 
 /* ************************************************************************* */
 /* Cipher functions                                                          */
@@ -802,7 +802,7 @@ void MXC_CTB_Cipher_SetOperation(mxc_ctb_cipher_operation_t operation);
  * @param   key   buffer containing key
  * @param   len   length of key (dependent on cipher used)
  */
-void MXC_CTB_Cipher_SetKey(uint8_t* key, uint32_t len);
+void MXC_CTB_Cipher_SetKey(uint8_t *key, uint32_t len);
 
 /**
  * @brief   Set the initial value used for cipher operations
@@ -810,7 +810,7 @@ void MXC_CTB_Cipher_SetKey(uint8_t* key, uint32_t len);
  * @param   iv   buffer containing iv
  * @param   len  length of initial value
  */
-void MXC_CTB_Cipher_SetIV(uint8_t* iv, uint32_t len);
+void MXC_CTB_Cipher_SetIV(uint8_t *iv, uint32_t len);
 
 /**
  * @brief   Get the initial value used for cipher operations
@@ -818,7 +818,7 @@ void MXC_CTB_Cipher_SetIV(uint8_t* iv, uint32_t len);
  * @param   ivOut   buffer containing iv
  * @param   len     length of buffer
  */
-void MXC_CTB_Cipher_GetIV(uint8_t* ivOut, uint32_t len);
+void MXC_CTB_Cipher_GetIV(uint8_t *ivOut, uint32_t len);
 
 /************************/
 /* High Level Functions */
@@ -832,7 +832,7 @@ void MXC_CTB_Cipher_GetIV(uint8_t* ivOut, uint32_t len);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_Cipher_Encrypt(mxc_ctb_cipher_req_t* req);
+int MXC_CTB_Cipher_Encrypt(mxc_ctb_cipher_req_t *req);
 
 /**
  * @brief   Perform a decryption using the cipher feature
@@ -842,7 +842,7 @@ int MXC_CTB_Cipher_Encrypt(mxc_ctb_cipher_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CTB_Cipher_Decrypt(mxc_ctb_cipher_req_t* req);
+int MXC_CTB_Cipher_Decrypt(mxc_ctb_cipher_req_t *req);
 
 /**
  * @brief   Perform an encryption using the cipher feature
@@ -851,7 +851,7 @@ int MXC_CTB_Cipher_Decrypt(mxc_ctb_cipher_req_t* req);
  *
  * @param   req  Structure containing data for the encryption
  */
-void MXC_CTB_Cipher_EncryptAsync(mxc_ctb_cipher_req_t* req);
+void MXC_CTB_Cipher_EncryptAsync(mxc_ctb_cipher_req_t *req);
 
 /**
  * @brief   Perform a decryption using the cipher feature
@@ -860,7 +860,7 @@ void MXC_CTB_Cipher_EncryptAsync(mxc_ctb_cipher_req_t* req);
  *
  * @param   req  Structure containing data for the decryption
  */
-void MXC_CTB_Cipher_DecryptAsync(mxc_ctb_cipher_req_t* req);
+void MXC_CTB_Cipher_DecryptAsync(mxc_ctb_cipher_req_t *req);
 
 #ifdef __cplusplus
 }

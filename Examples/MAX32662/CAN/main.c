@@ -51,9 +51,9 @@
 
 /***** Definitions *****/
 // Select one of these
-#define SYNC  1 // Use blocking send and receive
+#define SYNC 1 // Use blocking send and receive
 #define ASYNC 0 // Use non-blocking send and receive
-#define DMA   0 // Use DMA send and receive
+#define DMA 0 // Use DMA send and receive
 
 #if (!(SYNC || ASYNC || DMA))
 #error "You must select a send and receive method."
@@ -65,8 +65,8 @@
 #define MAP_B 1
 
 // Enable which functions are demonstrated
-#define SEND_CAN    1 // Demonstrates sending a standard CAN 2.0 message
-#define SEND_RTR    1 // Demonstrates sending an RTR message, disable by setting to 0
+#define SEND_CAN 1 // Demonstrates sending a standard CAN 2.0 message
+#define SEND_RTR 1 // Demonstrates sending an RTR message, disable by setting to 0
 #define RECEIVE_CAN 1 // Demonstrates receiving a CAN message (any type)
 
 /***** Globals *****/
@@ -79,7 +79,7 @@ void dma_callback(int ch, int err);
 int numBytes(uint32_t dlc, uint32_t fdf, uint32_t rtr);
 void printMsgInfo(void);
 void msgRead(void);
-void msgSend(uint32_t can_idx, mxc_can_msg_info_t* msg, uint8_t* data, uint8_t size);
+void msgSend(uint32_t can_idx, mxc_can_msg_info_t *msg, uint8_t *data, uint8_t size);
 void my_unit_cb(uint32_t can_idx, uint32_t event);
 void my_obj_cb(uint32_t can_idx, uint32_t event);
 
@@ -111,35 +111,31 @@ int main(void)
                             0x1FFFFFFF, 0); // Set receive filter to accept all extended IDs
 
     // Set bitrate
-    MXC_CAN_SetBitRate(
-        0, MXC_CAN_BITRATE_SEL_NOMINAL, 500000,
-        MXC_CAN_BIT_SEGMENTS(7, 2, 2)); // Nominal bitrate 500kHz, TSEG1 - 7, TSEG2 - 2
+    MXC_CAN_SetBitRate(0, MXC_CAN_BITRATE_SEL_NOMINAL, 500000,
+                       MXC_CAN_BIT_SEGMENTS(7, 2,
+                                            2)); // Nominal bitrate 500kHz, TSEG1 - 7, TSEG2 - 2
     if ((err = MXC_CAN_GetBitRate(0, MXC_CAN_BITRATE_SEL_NOMINAL)) != 500000) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 
     mxc_can_msg_info_t msg_tx;
     uint8_t data_tx[64];
-    for (int i = 0; i < 64; i++) {
-        data_tx[i] = i;
-    }
+    for (int i = 0; i < 64; i++) { data_tx[i] = i; }
 
     printf("Press button SW2 to begin example.\n");
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
     MXC_Delay(MXC_DELAY_MSEC(500));
 
 #if SEND_CAN
     /* Send CAN message with 6 data bytes */
     printf("\nSending standard CAN message...\n");
     msg_tx.msg_id = MXC_CAN_STANDARD_ID(0x123);
-    msg_tx.rtr    = 0;
-    msg_tx.fdf    = 0;
-    msg_tx.brs    = 0;
-    msg_tx.esi    = 0;
-    msg_tx.dlc    = 6;
+    msg_tx.rtr = 0;
+    msg_tx.fdf = 0;
+    msg_tx.brs = 0;
+    msg_tx.esi = 0;
+    msg_tx.dlc = 6;
     msgSend(0, &msg_tx, data_tx, 6);
 #endif
 
@@ -148,11 +144,11 @@ int main(void)
     printf("Sending RTR message...\n");
 
     msg_tx.msg_id = MXC_CAN_STANDARD_ID(0x456);
-    msg_tx.rtr    = 1;
-    msg_tx.fdf    = 0;
-    msg_tx.brs    = 0;
-    msg_tx.esi    = 0;
-    msg_tx.dlc    = 8;
+    msg_tx.rtr = 1;
+    msg_tx.fdf = 0;
+    msg_tx.brs = 0;
+    msg_tx.esi = 0;
+    msg_tx.dlc = 8;
     msgSend(0, &msg_tx, data_tx, 8);
 #endif // SEND_RTR
 
@@ -167,46 +163,40 @@ int main(void)
 #endif
 
     printf("\n\nExample complete.\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 // ************************************************************ Message Send ***************************************************************************
 #if (SEND_CAN || SEND_RTR || SEND_CANFD)
-void msgSend(uint32_t can_idx, mxc_can_msg_info_t* msg, uint8_t* data, uint8_t size)
+void msgSend(uint32_t can_idx, mxc_can_msg_info_t *msg, uint8_t *data, uint8_t size)
 {
     int err;
     mxc_can_req_t req;
     req.msg_info = msg;
-    req.data     = data;
-    req.data_sz  = size;
+    req.data = data;
+    req.data_sz = size;
 
 #if SYNC
     if ((err = MXC_CAN_MessageSend(0, &req)) < E_NO_ERROR) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 #elif ASYNC
     wait_for_msg = 1;
     if ((err = MXC_CAN_MessageSendAsync(0, &req)) < E_NO_ERROR) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 
-    while (wait_for_msg)
-        ;
+    while (wait_for_msg) {}
 #elif DMA
     wait_for_msg = 1;
     if ((err = MXC_CAN_MessageSendDMA(0, &req)) < E_NO_ERROR) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 
-    while (wait_for_msg)
-        ;
+    while (wait_for_msg) {}
 #endif
 }
 #endif //SEND
@@ -220,25 +210,24 @@ int numBytes(uint32_t dlc, uint32_t fdf, uint32_t rtr)
         return 0;
     } else if (dlc > 8 && fdf) { // CAN FD message with more than 8 bytes of data
         switch (dlc & 0xF) {
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-                num_bytes = 8 + (dlc & 0x7) * 4;
-                break;
-            case 13:
-                num_bytes = 32;
-                break;
-            case 14:
-                num_bytes = 48;
-                break;
-            case 15:
-                num_bytes = 64;
-                break;
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            num_bytes = 8 + (dlc & 0x7) * 4;
+            break;
+        case 13:
+            num_bytes = 32;
+            break;
+        case 14:
+            num_bytes = 48;
+            break;
+        case 15:
+            num_bytes = 64;
+            break;
         }
-    } else if (
-        dlc > 8 &&
-        !fdf) { // Normal CAN message with DLC greater than maximum number of data bytes, set to maximum
+    } else if (dlc > 8 &&
+               !fdf) { // Normal CAN message with DLC greater than maximum number of data bytes, set to maximum
         num_bytes = 8;
     } else { // Normal CAN or CAN FD message with less than or equal to 8 bytes
         num_bytes = dlc;
@@ -273,43 +262,38 @@ void msgRead()
 {
     mxc_can_req_t req;
     req.msg_info = &msg_rx;
-    req.data     = data_rx;
-    req.data_sz  = sizeof(data_rx);
+    req.data = data_rx;
+    req.data_sz = sizeof(data_rx);
 
 #if SYNC
     if (MXC_CAN_MessageRead(0, &req) < E_NO_ERROR) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 #elif ASYNC
     wait_for_msg = 1;
     if (MXC_CAN_MessageReadAsync(0, &req) < E_NO_ERROR) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 
-    while (wait_for_msg)
-        ;
+    while (wait_for_msg) {}
 #elif DMA
     //*** IMPORTANT ***: Set these fields to the expected values of the message to be received. The DMA transaction will be configured improperly if you fail to do this.
     msg_rx.msg_id = MXC_CAN_EXTENDED_ID(0x255);
-    msg_rx.rtr    = 0;
-    msg_rx.fdf    = 0;
-    msg_rx.brs    = 0;
-    msg_rx.esi    = 0;
-    msg_rx.dlc    = 8;
+    msg_rx.rtr = 0;
+    msg_rx.fdf = 0;
+    msg_rx.brs = 0;
+    msg_rx.esi = 0;
+    msg_rx.dlc = 8;
 
     wait_for_msg = 1;
     if (MXC_CAN_MessageReadDMA(0, &req, dma_callback) != E_NO_ERROR) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 
-    while (wait_for_msg)
-        ;
+    while (wait_for_msg) {}
 #endif
 }
 #endif //RECEIVE
@@ -329,8 +313,7 @@ void my_obj_cb(uint32_t can_idx, uint32_t event)
 
     if (event == MXC_CAN_OBJ_EVT_RX_OVERRUN) { // RX overrun
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 }
 
@@ -340,8 +323,7 @@ void my_unit_cb(uint32_t can_idx, uint32_t event)
     if (can_idx == 0 &&
         event != MXC_CAN_UNIT_EVT_ACTIVE) { // Any unit event except for DMA becoming active
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     }
 }
 

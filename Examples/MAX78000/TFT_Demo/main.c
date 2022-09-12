@@ -59,19 +59,19 @@
 
 #define TFT_BUFF_SIZE 32 // TFT buffer size
 
-void TFT_Print(char* str, int x, int y, int font)
+void TFT_Print(char *str, int x, int y, int font)
 {
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = 20;
+    text.len = 20;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
 void TFT_Feather_test(void)
 {
     area_t _area;
-    area_t* area;
+    area_t *area;
     char buff[TFT_BUFF_SIZE];
 
     MXC_TFT_SetRotation(ROTATE_90);
@@ -81,7 +81,7 @@ void TFT_Feather_test(void)
 
     MXC_TFT_SetBackGroundColor(RED);
 
-    area    = &_area;
+    area = &_area;
     area->x = 10;
     area->y = 10;
     area->w = 200;
@@ -121,8 +121,8 @@ void TFT_Feather_test(void)
     sprintf(buff, "Maxim Integrated");
     TFT_Print(buff, 0, 200, (int)&SansSerif19x19[0]);
 
-    while (1)
-        ; // stop here
+    while (1) {}
+    // stop here
 }
 #endif // #ifdef BOARD_FTHR_REVA
 
@@ -151,7 +151,7 @@ int main(void)
 #ifdef BOARD_EVKIT_V1
     int key;
     unsigned int start_time;
-    State* state;
+    State *state;
 
     /* Initialize RTC */
     MXC_RTC_Init(0, 0);

@@ -62,7 +62,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 
     if (callback) {
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)pb);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)pb);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_FALLING);

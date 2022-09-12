@@ -48,16 +48,16 @@
 /* IN ADDITION TO THIS HEADER, FCL WILL BE SUPPORTED AND PROVIDED IN BINARY FORM */
 /***** Definitions *****/
 
-typedef void (*mxc_tpu_complete_t)(void* req, int result);
+typedef void (*mxc_tpu_complete_t)(void *req, int result);
 
 typedef enum {
-    MXC_TPU_FEATURE_DMA    = 1 << 0,
-    MXC_TPU_FEATURE_ECC    = 1 << 1,
-    MXC_TPU_FEATURE_CRC    = 1 << 2,
-    MXC_TPU_FEATURE_MAA    = 1 << 3,
-    MXC_TPU_FEATURE_HASH   = 1 << 4,
+    MXC_TPU_FEATURE_DMA = 1 << 0,
+    MXC_TPU_FEATURE_ECC = 1 << 1,
+    MXC_TPU_FEATURE_CRC = 1 << 2,
+    MXC_TPU_FEATURE_MAA = 1 << 3,
+    MXC_TPU_FEATURE_HASH = 1 << 4,
     MXC_TPU_FEATURE_CIPHER = 1 << 5,
-    MXC_TPU_FEATURE_TRNG   = 1 << 6
+    MXC_TPU_FEATURE_TRNG = 1 << 6
 } mxc_tpu_features_t;
 
 /* ************************************************************************* */
@@ -65,8 +65,8 @@ typedef enum {
 /* ************************************************************************* */
 
 struct _mxc_tpu_dma_req_t {
-    uint8_t* sourceBuffer;
-    uint8_t* destBuffer;
+    uint8_t *sourceBuffer;
+    uint8_t *destBuffer;
     uint32_t length;
     mxc_tpu_complete_t callback; // Null callback indicates a blocking operation
 } typedef mxc_tpu_dma_req_t;
@@ -77,9 +77,9 @@ typedef enum {
 } mxc_tpu_dma_read_source_t;
 
 typedef enum {
-    MXC_TPU_DMA_WRITE_FIFO_CIPHER    = MXC_V_TPU_CTRL_WRSRC_CIPHEROUTPUT,
+    MXC_TPU_DMA_WRITE_FIFO_CIPHER = MXC_V_TPU_CTRL_WRSRC_CIPHEROUTPUT,
     MXC_TPU_DMA_WRITE_FIFO_READ_FIFO = MXC_V_TPU_CTRL_WRSRC_READFIFO,
-    MXC_TPU_DMA_WRITE_FIFO_NONE      = MXC_V_TPU_CTRL_WRSRC_NONE
+    MXC_TPU_DMA_WRITE_FIFO_NONE = MXC_V_TPU_CTRL_WRSRC_NONE
 } mxc_tpu_dma_write_source_t;
 
 /* ************************************************************************* */
@@ -87,14 +87,14 @@ typedef enum {
 /* ************************************************************************* */
 
 struct _mxc_tpu_ecc_req_t {
-    uint8_t* dataBuffer;
+    uint8_t *dataBuffer;
     uint32_t dataLen;
     uint32_t checksum;
     mxc_tpu_complete_t callback;
 } typedef mxc_tpu_ecc_req_t;
 
 struct _mxc_tpu_crc_req_t {
-    uint8_t* dataBuffer;
+    uint8_t *dataBuffer;
     uint32_t dataLen;
     uint32_t resultCRC;
     mxc_tpu_complete_t callback;
@@ -106,22 +106,22 @@ struct _mxc_tpu_crc_req_t {
 
 typedef enum {
     MXC_TPU_MAA_EXP = MXC_V_TPU_MAA_CTRL_CLC_EXP, // Select exponentiation operation
-    MXC_TPU_MAA_SQ  = MXC_V_TPU_MAA_CTRL_CLC_SQ,  // Select square operation
+    MXC_TPU_MAA_SQ = MXC_V_TPU_MAA_CTRL_CLC_SQ, // Select square operation
     MXC_TPU_MAA_MUL = MXC_V_TPU_MAA_CTRL_CLC_MUL, // Select multiplication operation
     MXC_TPU_MAA_SQMUL =
         MXC_V_TPU_MAA_CTRL_CLC_SQMUL, // Select square followed by multiplication operation
     MXC_TPU_MAA_ADD = MXC_V_TPU_MAA_CTRL_CLC_ADD, // Select add operation
     MXC_TPU_MAA_SUB = MXC_V_TPU_MAA_CTRL_CLC_SUB, // Select subtract operation
-    MXC_TPU_MAA_INV                               // Composite operation, modular exponentiation
+    MXC_TPU_MAA_INV // Composite operation, modular exponentiation
 } mxc_tpu_maa_operation_t;
 
 struct _mxc_tpu_maa_req_t {
     // All operand buffers must be as long as the word size
-    uint8_t* opA;
-    uint8_t* opB;
-    uint8_t* exponent;
-    uint8_t* modulus;
-    uint8_t* result;
+    uint8_t *opA;
+    uint8_t *opB;
+    uint8_t *exponent;
+    uint8_t *modulus;
+    uint8_t *result;
     mxc_tpu_maa_operation_t op;
     mxc_tpu_complete_t callback;
 } typedef mxc_tpu_maa_req_t;
@@ -138,23 +138,23 @@ typedef enum {
 /* ************************************************************************* */
 
 struct _mxc_tpu_hash_req_t {
-    uint8_t* msg;
+    uint8_t *msg;
     uint32_t len;
-    uint8_t* hash;
+    uint8_t *hash;
     mxc_tpu_complete_t callback;
 } typedef mxc_tpu_hash_req_t;
 
 typedef enum {
-    MXC_TPU_HASH_DIS    = MXC_V_TPU_HASH_CTRL_HASH_DIS,    // Disable
-    MXC_TPU_HASH_SHA1   = MXC_V_TPU_HASH_CTRL_HASH_SHA1,   // Select SHA1
+    MXC_TPU_HASH_DIS = MXC_V_TPU_HASH_CTRL_HASH_DIS, // Disable
+    MXC_TPU_HASH_SHA1 = MXC_V_TPU_HASH_CTRL_HASH_SHA1, // Select SHA1
     MXC_TPU_HASH_SHA224 = MXC_V_TPU_HASH_CTRL_HASH_SHA224, // Select SHA224
     MXC_TPU_HASH_SHA256 = MXC_V_TPU_HASH_CTRL_HASH_SHA256, // Select SHA256
     MXC_TPU_HASH_SHA384 = MXC_V_TPU_HASH_CTRL_HASH_SHA384, // Select SHA384
-    MXC_TPU_HASH_SHA512 = MXC_V_TPU_HASH_CTRL_HASH_SHA512  // Select SHA384
+    MXC_TPU_HASH_SHA512 = MXC_V_TPU_HASH_CTRL_HASH_SHA512 // Select SHA384
 } mxc_tpu_hash_func_t;
 
 typedef enum {
-    MXC_TPU_HASH_SOURCE_INFIFO  = 0,
+    MXC_TPU_HASH_SOURCE_INFIFO = 0,
     MXC_TPU_HASH_SOURCE_OUTFIFO = 1
 } mxc_tpu_hash_source_t;
 
@@ -163,10 +163,10 @@ typedef enum {
 /* ************************************************************************* */
 
 struct _mxc_tpu_cipher_req_t {
-    uint8_t* plaintext;
+    uint8_t *plaintext;
     uint32_t ptLen;
-    uint8_t* iv;
-    uint8_t* ciphertext;
+    uint8_t *iv;
+    uint8_t *ciphertext;
     mxc_tpu_complete_t callback;
 } typedef mxc_tpu_cipher_req_t;
 
@@ -175,16 +175,16 @@ typedef enum {
     MXC_TPU_MODE_CBC = MXC_V_TPU_CIPHER_CTRL_MODE_CBC, // Cipher Block Chaining
     MXC_TPU_MODE_CFB = MXC_V_TPU_CIPHER_CTRL_MODE_CFB, // Cipher Feedback
     MXC_TPU_MODE_CTR = MXC_V_TPU_CIPHER_CTRL_MODE_CTR, // Counter
-    MXC_TPU_MODE_OFB = /*????*/ 0                      // Output Feedback
+    MXC_TPU_MODE_OFB = /*????*/ 0 // Output Feedback
 } mxc_tpu_cipher_mode_t;
 
 typedef enum {
-    MXC_TPU_CIPHER_DIS    = MXC_V_TPU_CIPHER_CTRL_CIPHER_DIS,    // Disable
+    MXC_TPU_CIPHER_DIS = MXC_V_TPU_CIPHER_CTRL_CIPHER_DIS, // Disable
     MXC_TPU_CIPHER_AES128 = MXC_V_TPU_CIPHER_CTRL_CIPHER_AES128, // Select AES-128
     MXC_TPU_CIPHER_AES192 = MXC_V_TPU_CIPHER_CTRL_CIPHER_AES192, // Select AES-192
     MXC_TPU_CIPHER_AES256 = MXC_V_TPU_CIPHER_CTRL_CIPHER_AES256, // Select AES-256
-    MXC_TPU_CIPHER_DES    = MXC_V_TPU_CIPHER_CTRL_CIPHER_DES,    // Select DES
-    MXC_TPU_CIPHER_TDES   = MXC_V_TPU_CIPHER_CTRL_CIPHER_TDES    // Select TDES
+    MXC_TPU_CIPHER_DES = MXC_V_TPU_CIPHER_CTRL_CIPHER_DES, // Select DES
+    MXC_TPU_CIPHER_TDES = MXC_V_TPU_CIPHER_CTRL_CIPHER_TDES // Select TDES
 } mxc_tpu_cipher_t;
 
 typedef enum {
@@ -323,14 +323,14 @@ mxc_tpu_dma_write_source_t MXC_TPU_DMA_GetWriteSource(void);
  *
  * @param   source    pointer to the source location
  */
-void MXC_TPU_DMA_SetSource(uint8_t* source);
+void MXC_TPU_DMA_SetSource(uint8_t *source);
 
 /**
  * @brief   Set the destination address of the DMA
  *
  * @param   dest  pointer to destination
  */
-void MXC_TPU_DMA_SetDestination(uint8_t* dest);
+void MXC_TPU_DMA_SetDestination(uint8_t *dest);
 
 /**
  * @brief   Set the source and destination addresses of the DMA
@@ -341,7 +341,7 @@ void MXC_TPU_DMA_SetDestination(uint8_t* dest);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_DMA_SetupOperation(mxc_tpu_dma_req_t* req);
+int MXC_TPU_DMA_SetupOperation(mxc_tpu_dma_req_t *req);
 
 /**
  * @brief   Start a DMA transfer defined by the request object
@@ -353,7 +353,7 @@ int MXC_TPU_DMA_SetupOperation(mxc_tpu_dma_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_DMA_DoOperation(mxc_tpu_dma_req_t* req);
+int MXC_TPU_DMA_DoOperation(mxc_tpu_dma_req_t *req);
 
 /**
  * @brief   Start a DMA transfer of fixed size
@@ -382,7 +382,7 @@ int MXC_TPU_TRNG_RandomInt(void);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_TRNG_Random(uint8_t* data, uint32_t len);
+int MXC_TPU_TRNG_Random(uint8_t *data, uint32_t len);
 
 /**
  * @brief   Get a random number of length len, do not block while generating data
@@ -393,7 +393,7 @@ int MXC_TPU_TRNG_Random(uint8_t* data, uint32_t len);
  * @param   callback  Function that will be called when all data has been generated
  *
  */
-void MXC_TPU_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_tpu_complete_t callback);
+void MXC_TPU_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_tpu_complete_t callback);
 
 /**
  * @brief   Use the TRNG to generate an AES key and place it in the hardware key store
@@ -456,7 +456,7 @@ uint32_t MXC_TPU_ECC_GetResult(void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_ECC_Compute(mxc_tpu_ecc_req_t* req);
+int MXC_TPU_ECC_Compute(mxc_tpu_ecc_req_t *req);
 
 /**
  * @brief   Check for single or dual bit errors in a block of data
@@ -467,7 +467,7 @@ int MXC_TPU_ECC_Compute(mxc_tpu_ecc_req_t* req);
  * @return  Positive values for 1 or 2 bit errors, respectively
  *          otherwise, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_ECC_ErrorCheck(mxc_tpu_ecc_req_t* req);
+int MXC_TPU_ECC_ErrorCheck(mxc_tpu_ecc_req_t *req);
 
 /**
  * @brief   Compute the ECC value for a block of data up to 8kB in size
@@ -477,7 +477,7 @@ int MXC_TPU_ECC_ErrorCheck(mxc_tpu_ecc_req_t* req);
  *
  * @param   req   Structure containing data for the ECC request
  */
-void MXC_TPU_ECC_ComputeAsync(mxc_tpu_ecc_req_t* req);
+void MXC_TPU_ECC_ComputeAsync(mxc_tpu_ecc_req_t *req);
 
 /**
  * @brief   Check for single or dual bit errors in a block of data
@@ -486,7 +486,7 @@ void MXC_TPU_ECC_ComputeAsync(mxc_tpu_ecc_req_t* req);
  *
  * @param   req   Structure containing data for the ECC request
  */
-void MXC_TPU_ECC_ErrorCheckAsync(mxc_tpu_ecc_req_t* req);
+void MXC_TPU_ECC_ErrorCheckAsync(mxc_tpu_ecc_req_t *req);
 
 /* ************************************************************************* */
 /* Cyclic Redundancy Check (CRC) functions                                   */
@@ -544,7 +544,7 @@ uint32_t MXC_TPU_CRC_GetResult(void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_CRC_Compute(mxc_tpu_crc_req_t* req);
+int MXC_TPU_CRC_Compute(mxc_tpu_crc_req_t *req);
 
 /**
  * @brief   Perform a CRC computation asynchronously
@@ -554,7 +554,7 @@ int MXC_TPU_CRC_Compute(mxc_tpu_crc_req_t* req);
  *
  * @param   req   Structure containing the data for calculation
  */
-void MXC_TPU_CRC_ComputeAsync(mxc_tpu_crc_req_t* req);
+void MXC_TPU_CRC_ComputeAsync(mxc_tpu_crc_req_t *req);
 
 /* ************************************************************************* */
 /* Modular Arithmetic Accelerator (MAA) functions                           */
@@ -571,7 +571,7 @@ void MXC_TPU_CRC_ComputeAsync(mxc_tpu_crc_req_t* req);
  *
  * @return  Pointer to the instance in memory
  */
-uint32_t* MXC_TPU_MAA_GetAddress(int segment);
+uint32_t *MXC_TPU_MAA_GetAddress(int segment);
 
 /**
  * @brief   Set the MAA RAM Segment used for the Temporary register
@@ -715,7 +715,7 @@ int MXC_TPU_MAA_GetWordSize(void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_MAA_Compute(mxc_tpu_maa_req_t* req);
+int MXC_TPU_MAA_Compute(mxc_tpu_maa_req_t *req);
 
 /**
  * @brief   Start an MAA computation, assuming all registers are loaded
@@ -724,7 +724,7 @@ int MXC_TPU_MAA_Compute(mxc_tpu_maa_req_t* req);
  *
  * @param   req   Structure containing all the information for the computation
  */
-void MXC_TPU_MAA_ComputeAsync(mxc_tpu_maa_req_t* req);
+void MXC_TPU_MAA_ComputeAsync(mxc_tpu_maa_req_t *req);
 
 /* ************************************************************************* */
 /* Hash functions                                                            */
@@ -787,7 +787,7 @@ int MXC_TPU_Hash_GetAutoPad(void);
  * @param   digest   buffer to store the output of the hash algorithm
  * @param   len      location to store the length of the digest
  */
-void MXC_TPU_Hash_GetResult(uint8_t* digest, int* len);
+void MXC_TPU_Hash_GetResult(uint8_t *digest, int *len);
 
 /**
  * @brief   Set the size of the data input into the hash computation
@@ -831,7 +831,7 @@ void MXC_TPU_Hash_InitializeHash(void);
  *
  * @return See \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_TPU_Hash_Compute(mxc_tpu_hash_req_t* req);
+int MXC_TPU_Hash_Compute(mxc_tpu_hash_req_t *req);
 
 /**
  * @brief   Compute a Hash Digest
@@ -840,7 +840,7 @@ int MXC_TPU_Hash_Compute(mxc_tpu_hash_req_t* req);
  *
  * @param   req   Structure containing all data needed for a hash computation
  */
-void MXC_TPU_Hash_ComputeAsync(mxc_tpu_hash_req_t* req);
+void MXC_TPU_Hash_ComputeAsync(mxc_tpu_hash_req_t *req);
 
 /* ************************************************************************* */
 /* Cipher functions                                                          */
@@ -930,7 +930,7 @@ void MXC_TPU_Cipher_SetOperation(int encrypt);
  * @param   key   buffer containing key
  * @param   len   length of key (dependent on cipher used)
  */
-void MXC_TPU_Cipher_SetKey(uint8_t* key, int len);
+void MXC_TPU_Cipher_SetKey(uint8_t *key, int len);
 
 /**
  * @brief   Set the initial value used for cipher operations
@@ -938,7 +938,7 @@ void MXC_TPU_Cipher_SetKey(uint8_t* key, int len);
  * @param   iv   buffer containing iv
  * @param   len  length of initial value
  */
-void MXC_TPU_Cipher_SetIV(uint8_t* iv, int len);
+void MXC_TPU_Cipher_SetIV(uint8_t *iv, int len);
 
 /**
  * @brief   Get the initial value used for cipher operations
@@ -946,7 +946,7 @@ void MXC_TPU_Cipher_SetIV(uint8_t* iv, int len);
  * @param   iv   buffer to store the iv in
  * @param   len  length of buffer
  */
-void MXC_TPU_Cipher_GetIV(uint8_t* ivOut, int len);
+void MXC_TPU_Cipher_GetIV(uint8_t *ivOut, int len);
 
 /************************/
 /* High Level Functions */
@@ -960,7 +960,7 @@ void MXC_TPU_Cipher_GetIV(uint8_t* ivOut, int len);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_Cipher_Encrypt(mxc_tpu_cipher_req_t* req);
+int MXC_TPU_Cipher_Encrypt(mxc_tpu_cipher_req_t *req);
 
 /**
  * @brief   Perform a decryption using the cipher feature
@@ -970,7 +970,7 @@ int MXC_TPU_Cipher_Encrypt(mxc_tpu_cipher_req_t* req);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TPU_Cipher_Decrypt(mxc_tpu_cipher_req_t* req);
+int MXC_TPU_Cipher_Decrypt(mxc_tpu_cipher_req_t *req);
 
 /**
  * @brief   Perform an encryption using the cipher feature
@@ -979,7 +979,7 @@ int MXC_TPU_Cipher_Decrypt(mxc_tpu_cipher_req_t* req);
  *
  * @param   req  Structure containing data for the encryption
  */
-void MXC_TPU_Cipher_EncryptAsync(mxc_tpu_cipher_req_t* req);
+void MXC_TPU_Cipher_EncryptAsync(mxc_tpu_cipher_req_t *req);
 
 /**
  * @brief   Perform a decryption using the cipher feature
@@ -988,6 +988,6 @@ void MXC_TPU_Cipher_EncryptAsync(mxc_tpu_cipher_req_t* req);
  *
  * @param   req  Structure containing data for the decryption
  */
-void MXC_TPU_Cipher_DecryptAsync(mxc_tpu_cipher_req_t* req);
+void MXC_TPU_Cipher_DecryptAsync(mxc_tpu_cipher_req_t *req);
 
 #endif /* _TPU_H_ */

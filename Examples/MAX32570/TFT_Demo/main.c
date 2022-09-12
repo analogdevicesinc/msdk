@@ -81,7 +81,7 @@ int main(void)
 {
     int key;
     unsigned int start_time;
-    State* state;
+    State *state;
 
     system_init();
 

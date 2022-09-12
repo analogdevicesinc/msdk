@@ -52,16 +52,16 @@ volatile int wait;
 volatile int callback_result;
 volatile int counter;
 
-#define MXC_AES_DATA_LEN    (128 / 8)
+#define MXC_AES_DATA_LEN (128 / 8)
 #define MXC_AES_KEY_128_LEN (128 / 8)
 #define MXC_AES_KEY_192_LEN (192 / 8)
 #define MXC_AES_KEY_256_LEN (256 / 8)
 
 /***** Globals *****/
-unsigned int rnd_no[4] = {0};
-uint8_t var_rnd_no[16] = {0};
+unsigned int rnd_no[4] = { 0 };
+uint8_t var_rnd_no[16] = { 0 };
 
-char temp[] = {0x00, 0x00, 0x00};
+char temp[] = { 0x00, 0x00, 0x00 };
 
 /***** Globals *****/
 char result[512];
@@ -72,14 +72,14 @@ void CRYPTO_IRQHandler(void)
     MXC_CTB_Handler();
 }
 
-void Test_Callback(void* req, int result)
+void Test_Callback(void *req, int result)
 {
-    wait            = 0;
+    wait = 0;
     callback_result = result;
 }
 
 //Convert ascii to byte
-void ascii_to_byte(const char* src, char* dst, int len)
+void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
 
@@ -97,7 +97,7 @@ void ascii_to_byte(const char* src, char* dst, int len)
 }
 
 //Verify by comparing calculated to expected
-int AES_check(char* calculated, char* expected, int len)
+int AES_check(char *calculated, char *expected, int len)
 {
     int i, fail = 0;
 
@@ -121,20 +121,20 @@ int AES128_ECB_enc(int asynchronous)
 {
     printf(asynchronous ? "Test Cipher Async\n" : "Test Cipher Sync\n");
 
-    char* _key = "797f8b3d176dac5b7e34a2d539c4ef36";
+    char *_key = "797f8b3d176dac5b7e34a2d539c4ef36";
     char key[MXC_AES_KEY_128_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_128_LEN);
 
-    const char* iv_src = "";
+    const char *iv_src = "";
     char iv_dst[16];
     ascii_to_byte(iv_src, iv_dst, 16);
 
-    char* _pt = "00000000000000000000000000000000";
+    char *_pt = "00000000000000000000000000000000";
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
-                                       (uint8_t*)result, &Test_Callback};
+    mxc_ctb_cipher_req_t cipher_req = { (uint8_t *)pt, MXC_AES_DATA_LEN, (uint8_t *)iv_src,
+                                        (uint8_t *)result, &Test_Callback };
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -145,19 +145,18 @@ int AES128_ECB_enc(int asynchronous)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
 
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_AES_KEY_128_LEN);
+    MXC_CTB_Cipher_SetKey((uint8_t *)key, MXC_AES_KEY_128_LEN);
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
 
-    const char* _expected = "322FD6E503395CDB89A77AC53D2B954F";
+    const char *_expected = "322FD6E503395CDB89A77AC53D2B954F";
     char expected[MXC_AES_DATA_LEN];
     ascii_to_byte(_expected, expected, MXC_AES_DATA_LEN);
 
@@ -168,20 +167,20 @@ int AES128_ECB_dec(int asynchronous)
 {
     printf(asynchronous ? "Test Cipher Async\n" : "Test Cipher Sync\n");
 
-    char* _key = "797f8b3d176dac5b7e34a2d539c4ef36";
+    char *_key = "797f8b3d176dac5b7e34a2d539c4ef36";
     char key[MXC_AES_KEY_128_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_128_LEN);
 
-    const char* iv_src = "";
+    const char *iv_src = "";
     char iv_dst[16];
     ascii_to_byte(iv_src, iv_dst, 16);
 
-    char* _pt = "322FD6E503395CDB89A77AC53D2B954F";
+    char *_pt = "322FD6E503395CDB89A77AC53D2B954F";
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
-                                       (uint8_t*)result, &Test_Callback};
+    mxc_ctb_cipher_req_t cipher_req = { (uint8_t *)pt, MXC_AES_DATA_LEN, (uint8_t *)iv_src,
+                                        (uint8_t *)result, &Test_Callback };
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -192,19 +191,18 @@ int AES128_ECB_dec(int asynchronous)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
 
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_AES_KEY_128_LEN);
+    MXC_CTB_Cipher_SetKey((uint8_t *)key, MXC_AES_KEY_128_LEN);
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
 
-    const char* _expected = "00000000000000000000000000000000";
+    const char *_expected = "00000000000000000000000000000000";
     char expected[MXC_AES_DATA_LEN];
     ascii_to_byte(_expected, expected, MXC_AES_DATA_LEN);
 
@@ -215,20 +213,20 @@ int AES192_ECB_enc(int asynchronous)
 {
     printf(asynchronous ? "Test Cipher Async\n" : "Test Cipher Sync\n");
 
-    char* _key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f626473";
+    char *_key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f626473";
     char key[MXC_AES_KEY_192_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_192_LEN);
 
-    const char* iv_src = "";
+    const char *iv_src = "";
     char iv_dst[16];
     ascii_to_byte(iv_src, iv_dst, 16);
 
-    char* _pt = "00000000000000000000000000000000";
+    char *_pt = "00000000000000000000000000000000";
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
-                                       (uint8_t*)result, &Test_Callback};
+    mxc_ctb_cipher_req_t cipher_req = { (uint8_t *)pt, MXC_AES_DATA_LEN, (uint8_t *)iv_src,
+                                        (uint8_t *)result, &Test_Callback };
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -239,19 +237,18 @@ int AES192_ECB_enc(int asynchronous)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
 
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_AES_KEY_192_LEN);
+    MXC_CTB_Cipher_SetKey((uint8_t *)key, MXC_AES_KEY_192_LEN);
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
 
-    const char* _expected = "91D29E37E9B5B39CB2BF1AC8FD0FCFD2";
+    const char *_expected = "91D29E37E9B5B39CB2BF1AC8FD0FCFD2";
     char expected[MXC_AES_DATA_LEN];
     ascii_to_byte(_expected, expected, MXC_AES_DATA_LEN);
 
@@ -262,20 +259,20 @@ int AES192_ECB_dec(int asynchronous)
 {
     printf(asynchronous ? "Test Cipher Async\n" : "Test Cipher Sync\n");
 
-    char* _key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f626473";
+    char *_key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f626473";
     char key[MXC_AES_KEY_192_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_192_LEN);
 
-    const char* iv_src = "";
+    const char *iv_src = "";
     char iv_dst[16];
     ascii_to_byte(iv_src, iv_dst, 16);
 
-    char* _pt = "91D29E37E9B5B39CB2BF1AC8FD0FCFD2";
+    char *_pt = "91D29E37E9B5B39CB2BF1AC8FD0FCFD2";
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
-                                       (uint8_t*)result, &Test_Callback};
+    mxc_ctb_cipher_req_t cipher_req = { (uint8_t *)pt, MXC_AES_DATA_LEN, (uint8_t *)iv_src,
+                                        (uint8_t *)result, &Test_Callback };
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -286,19 +283,18 @@ int AES192_ECB_dec(int asynchronous)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
 
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_AES_KEY_192_LEN);
+    MXC_CTB_Cipher_SetKey((uint8_t *)key, MXC_AES_KEY_192_LEN);
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
 
-    const char* _expected = "00000000000000000000000000000000";
+    const char *_expected = "00000000000000000000000000000000";
     char expected[MXC_AES_DATA_LEN];
     ascii_to_byte(_expected, expected, MXC_AES_DATA_LEN);
 
@@ -309,20 +305,20 @@ int AES256_ECB_enc(int asynchronous)
 {
     printf(asynchronous ? "Test Cipher Async\n" : "Test Cipher Sync\n");
 
-    char* _key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f6264737591c5c07bf57a3e";
+    char *_key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f6264737591c5c07bf57a3e";
     char key[MXC_AES_KEY_256_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_256_LEN);
 
-    const char* iv_src = "";
+    const char *iv_src = "";
     char iv_dst[16];
     ascii_to_byte(iv_src, iv_dst, 16);
 
-    char* _pt = "00000000000000000000000000000000";
+    char *_pt = "00000000000000000000000000000000";
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
-                                       (uint8_t*)result, &Test_Callback};
+    mxc_ctb_cipher_req_t cipher_req = { (uint8_t *)pt, MXC_AES_DATA_LEN, (uint8_t *)iv_src,
+                                        (uint8_t *)result, &Test_Callback };
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -333,19 +329,18 @@ int AES256_ECB_enc(int asynchronous)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
 
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_AES_KEY_256_LEN);
+    MXC_CTB_Cipher_SetKey((uint8_t *)key, MXC_AES_KEY_256_LEN);
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_EncryptAsync(&cipher_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Cipher_Encrypt(&cipher_req);
     }
 
-    const char* _expected = "a74289fe73a4c123ca189ea1e1b49ad5";
+    const char *_expected = "a74289fe73a4c123ca189ea1e1b49ad5";
     char expected[MXC_AES_DATA_LEN];
     ascii_to_byte(_expected, expected, MXC_AES_DATA_LEN);
 
@@ -356,20 +351,20 @@ int AES256_ECB_dec(int asynchronous)
 {
     printf(asynchronous ? "Test Cipher Async\n" : "Test Cipher Sync\n");
 
-    char* _key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f6264737591c5c07bf57a3e";
+    char *_key = "797f8b3d176dac5b7e34a2d539c4ef367a16f8635f6264737591c5c07bf57a3e";
     char key[MXC_AES_KEY_256_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_256_LEN);
 
-    const char* iv_src = "";
+    const char *iv_src = "";
     char iv_dst[16];
     ascii_to_byte(iv_src, iv_dst, 16);
 
-    char* _pt = "a74289fe73a4c123ca189ea1e1b49ad5";
+    char *_pt = "a74289fe73a4c123ca189ea1e1b49ad5";
     char pt[MXC_AES_DATA_LEN];
     ascii_to_byte(_pt, pt, MXC_AES_DATA_LEN);
 
-    mxc_ctb_cipher_req_t cipher_req = {(uint8_t*)pt, MXC_AES_DATA_LEN, (uint8_t*)iv_src,
-                                       (uint8_t*)result, &Test_Callback};
+    mxc_ctb_cipher_req_t cipher_req = { (uint8_t *)pt, MXC_AES_DATA_LEN, (uint8_t *)iv_src,
+                                        (uint8_t *)result, &Test_Callback };
 
     // Reset crypto block
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
@@ -380,19 +375,18 @@ int AES256_ECB_dec(int asynchronous)
     MXC_CTB_Cipher_SetKeySource(MXC_CTB_CIPHER_KEY_SOFTWARE);
 
     // Load key into cipher key register
-    MXC_CTB_Cipher_SetKey((uint8_t*)key, MXC_AES_KEY_256_LEN);
+    MXC_CTB_Cipher_SetKey((uint8_t *)key, MXC_AES_KEY_256_LEN);
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Cipher_DecryptAsync(&cipher_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Cipher_Decrypt(&cipher_req);
     }
 
-    const char* _expected = "00000000000000000000000000000000";
+    const char *_expected = "00000000000000000000000000000000";
     char expected[MXC_AES_DATA_LEN];
     ascii_to_byte(_expected, expected, MXC_AES_DATA_LEN);
 
@@ -428,8 +422,7 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) {
-    }
+    while (1) {}
 
     return 0;
 }

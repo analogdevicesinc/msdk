@@ -34,7 +34,7 @@
 #ifndef __CAMERA_UTIL_H__
 #define __CAMERA_UTIL_H__
 
-#define CAMERA_FREQ    (10 * 1000 * 1000)
+#define CAMERA_FREQ (10 * 1000 * 1000)
 #define BYTE_PER_PIXEL 2
 
 #if defined(CAMERA_HM01B0)

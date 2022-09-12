@@ -64,9 +64,9 @@ extern "C" {
  * Enumeration type for the EMCC Cache ID Register
  */
 typedef enum {
-    EMCC_CACHE_ID_RELNUM,  // Release Number
+    EMCC_CACHE_ID_RELNUM, // Release Number
     EMCC_CACHE_ID_PARTNUM, // Part Number
-    EMCC_CACHE_ID_CCHID    // Cache ID
+    EMCC_CACHE_ID_CCHID // Cache ID
 } emcc_cache_id_t;
 
 /***** Function Prototypes *****/

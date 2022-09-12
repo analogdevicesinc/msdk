@@ -65,29 +65,29 @@ extern "C" {
  * @brief   Bitmasks for each of the RTC's Frequency.
  */
 typedef enum {
-    MXC_RTC_F_1HZ      = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ,   ///< 1Hz (Compensated)
-    MXC_RTC_F_512HZ    = MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ, ///< 512Hz (Compensated)
-    MXC_RTC_F_4KHZ     = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ,  ///< 4Khz
-    MXC_RTC_F_CLK_DIV8 = MXC_S_RTC_CTRL_SQW_SEL_CLKDIV8,   ///< Clock Divide 8
-    MXC_RTC_F_32KHZ    = 32,                               ///< 32Khz
+    MXC_RTC_F_1HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ, ///< 1Hz (Compensated)
+    MXC_RTC_F_512HZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ, ///< 512Hz (Compensated)
+    MXC_RTC_F_4KHZ = MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ, ///< 4Khz
+    MXC_RTC_F_CLK_DIV8 = MXC_S_RTC_CTRL_SQW_SEL_CLKDIV8, ///< Clock Divide 8
+    MXC_RTC_F_32KHZ = 32, ///< 32Khz
 } mxc_rtc_freq_sel_t;
 
 /**
  * @brief   Bitmasks for each of the RTC's interrupt enables.
  */
 typedef enum {
-    MXC_RTC_INT_EN_LONG  = MXC_F_RTC_CTRL_TOD_ALARM_IE,  ///< Long-interval alarm interrupt enable
+    MXC_RTC_INT_EN_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IE, ///< Long-interval alarm interrupt enable
     MXC_RTC_INT_EN_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM_IE, ///< Short-interval alarm interrupt enable
-    MXC_RTC_INT_EN_READY = MXC_F_RTC_CTRL_RDY_IE,        ///< Timer ready interrupt enable
+    MXC_RTC_INT_EN_READY = MXC_F_RTC_CTRL_RDY_IE, ///< Timer ready interrupt enable
 } mxc_rtc_int_en_t;
 
 /**
  * @brief     Bitmasks for each of the RTC's interrupt flags.
  */
 typedef enum {
-    MXC_RTC_INT_FL_LONG  = MXC_F_RTC_CTRL_TOD_ALARM_IF,  ///< Long-interval alarm interrupt flag
+    MXC_RTC_INT_FL_LONG = MXC_F_RTC_CTRL_TOD_ALARM_IF, ///< Long-interval alarm interrupt flag
     MXC_RTC_INT_FL_SHORT = MXC_F_RTC_CTRL_SSEC_ALARM_IF, ///< Short-interval alarm interrupt flag
-    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY,           ///< Timer ready interrupt flag
+    MXC_RTC_INT_FL_READY = MXC_F_RTC_CTRL_RDY, ///< Timer ready interrupt flag
 } mxc_rtc_int_fl_t;
 
 /**
@@ -194,7 +194,7 @@ int MXC_RTC_GetSecond(void);
  * @param     subsec pointer to store subseconds value
  * @retval    returns Success or Fail, see \ref MXC_Error_Codes
  */
-int MXC_RTC_GetTime(uint32_t* sec, uint32_t* subsec);
+int MXC_RTC_GetTime(uint32_t *sec, uint32_t *subsec);
 
 /**@} end of group rtc */
 #ifdef __cplusplus

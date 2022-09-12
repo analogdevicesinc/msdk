@@ -110,8 +110,8 @@ static float32_t testOutput[TEST_LENGTH_SAMPLES / 2];
 /* ------------------------------------------------------------------
 * Global variables for FFT Bin Example
 * ------------------------------------------------------------------- */
-uint32_t fftSize      = 1024;
-uint32_t ifftFlag     = 0;
+uint32_t fftSize = 1024;
+uint32_t ifftFlag = 0;
 uint32_t doBitReverse = 1;
 arm_cfft_instance_f32 varInstCfftF32;
 
@@ -147,16 +147,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 0;
     }

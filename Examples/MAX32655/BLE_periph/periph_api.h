@@ -38,7 +38,7 @@ extern "C" {
  *  \param  len      Number of bytes received.
  */
 /*************************************************************************************************/
-typedef void (*periphRxCb_t)(uint8_t* data, uint16_t len);
+typedef void (*periphRxCb_t)(uint8_t *data, uint16_t len);
 
 /**************************************************************************************************
   Function Declarations
@@ -65,7 +65,7 @@ void PeriphRegisterRXCallback(periphRxCb_t cb);
  *  \return TRUE if data send, FALSE if error.
  */
 /*************************************************************************************************/
-bool_t PeriphTXData(uint8_t* data, uint16_t len);
+bool_t PeriphTXData(uint8_t *data, uint16_t len);
 
 /*************************************************************************************************/
 /*!
@@ -97,7 +97,7 @@ void PeriphHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };

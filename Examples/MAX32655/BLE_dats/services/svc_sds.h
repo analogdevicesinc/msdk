@@ -27,8 +27,8 @@ extern "C" {
  Handle Ranges
 **************************************************************************************************/
 /*! \brief Secured Data Service */
-#define SEC_DATA_START_HDL 0x300                 /*!< \brief Start handle. */
-#define SEC_DATA_END_HDL   (SEC_DAT_MAX_HDL - 1) /*!< \brief End handle. */
+#define SEC_DATA_START_HDL 0x300 /*!< \brief Start handle. */
+#define SEC_DATA_END_HDL (SEC_DAT_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
@@ -37,10 +37,10 @@ extern "C" {
 /*! \brief Secured Service Handles */
 enum {
     SEC_DATA_SVC_HDL = SEC_DATA_START_HDL, /*!< \brief Secured Data service declaration */
-    SEC_DAT_CH_HDL,                        /*!< \brief Secured Data characteristic */
-    SEC_DAT_HDL,                           /*!< \brief Secured Data  */
+    SEC_DAT_CH_HDL, /*!< \brief Secured Data characteristic */
+    SEC_DAT_HDL, /*!< \brief Secured Data  */
     SEC_DAT_CH_CCC_HDL, /*!< \brief Secured Data client characteristic configuration */
-    SEC_DAT_MAX_HDL     /*!< \brief Maximum handle. */
+    SEC_DAT_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 

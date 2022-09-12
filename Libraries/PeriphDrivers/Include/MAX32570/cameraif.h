@@ -62,8 +62,8 @@ extern "C" {
  */
 typedef enum {
     MXC_PCIF_DATAWIDTH_8_BIT = 0, ///<
-    MXC_PCIF_DATAWIDTH_10_BIT,    ///<
-    MXC_PCIF_DATAWIDTH_12_BIT,    ///<
+    MXC_PCIF_DATAWIDTH_10_BIT, ///<
+    MXC_PCIF_DATAWIDTH_12_BIT, ///<
 } mxc_pcif_datawidth_t;
 
 /**
@@ -72,7 +72,7 @@ typedef enum {
  */
 typedef enum {
     MXC_PCIF_READMODE_SINGLE_MODE = 1, ///<
-    MXC_PCIF_READMODE_CONTINUES_MODE,  ///<
+    MXC_PCIF_READMODE_CONTINUES_MODE, ///<
 } mxc_pcif_readmode_t;
 
 /**
@@ -81,7 +81,7 @@ typedef enum {
  */
 typedef enum {
     MXC_PCIF_TIMINGSEL_HSYNC_and_VSYNC = 0, ///<
-    MXC_PCIF_TIMINGSEL_SAV_and_EAV,         ///<
+    MXC_PCIF_TIMINGSEL_SAV_and_EAV, ///<
 } mxc_pcif_timingsel_t;
 
 /* **** Function Prototypes **** */

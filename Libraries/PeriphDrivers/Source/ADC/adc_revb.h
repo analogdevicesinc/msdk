@@ -42,51 +42,51 @@
 #include "mxc_lock.h"
 #include <stdio.h>
 
-int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req);
+int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req);
 
-int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t* adc);
+int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_EnableInt(mxc_adc_revb_regs_t* adc, uint32_t flags);
+void MXC_ADC_RevB_EnableInt(mxc_adc_revb_regs_t *adc, uint32_t flags);
 
-void MXC_ADC_RevB_DisableInt(mxc_adc_revb_regs_t* adc, uint32_t flags);
+void MXC_ADC_RevB_DisableInt(mxc_adc_revb_regs_t *adc, uint32_t flags);
 
-int MXC_ADC_RevB_GetFlags(mxc_adc_revb_regs_t* adc);
+int MXC_ADC_RevB_GetFlags(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_ClearFlags(mxc_adc_revb_regs_t* adc, uint32_t flags);
+void MXC_ADC_RevB_ClearFlags(mxc_adc_revb_regs_t *adc, uint32_t flags);
 
-void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t* adc, mxc_adc_clock_t clock);
+void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock);
 
-int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t* adcq);
+int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t *adcq);
 
-int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete_cb_t callback);
+int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t *adc, mxc_adc_complete_cb_t callback);
 
-int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req,
-                                    int* data, void (*callback)(int, int));
+int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req,
+                                    int *data, void (*callback)(int, int));
 
-int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc);
+int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_EnableConversion(mxc_adc_revb_regs_t* adc);
+void MXC_ADC_RevB_EnableConversion(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_DisableConversion(mxc_adc_revb_regs_t* adc);
+void MXC_ADC_RevB_DisableConversion(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_TS_SelectEnable(mxc_adc_revb_regs_t* adc);
+void MXC_ADC_RevB_TS_SelectEnable(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_TS_SelectDisable(mxc_adc_revb_regs_t* adc);
+void MXC_ADC_RevB_TS_SelectDisable(mxc_adc_revb_regs_t *adc);
 
-int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t* adc, int* outdata);
+int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t *adc, int *outdata);
 
-uint16_t MXC_ADC_RevB_FIFO_Level(mxc_adc_revb_regs_t* adc);
+uint16_t MXC_ADC_RevB_FIFO_Level(mxc_adc_revb_regs_t *adc);
 
-int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t* adc, uint32_t fifo_threshold);
+int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t *adc, uint32_t fifo_threshold);
 
-int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t* adc, mxc_adc_avg_t avg_number);
+int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t *adc, mxc_adc_avg_t avg_number);
 
-void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t* adc);
+void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t *adc);
 
-void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req);
+void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req);
 
-int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req);
+int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req);
 
-int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t* adc, mxc_adc_chsel_t ch, uint32_t slot_num);
+int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, uint32_t slot_num);
 
 //End

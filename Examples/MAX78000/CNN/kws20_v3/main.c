@@ -49,8 +49,7 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 // 128-channel 128x1 data input (16384 bytes total / 128 bytes per channel):
@@ -122,22 +121,22 @@ void load_input(void)
 {
     // This function loads the sample data input -- replace with actual data
 
-    memcpy32((uint32_t*)0x50400000, input_0, 256);
-    memcpy32((uint32_t*)0x50408000, input_4, 256);
-    memcpy32((uint32_t*)0x50410000, input_8, 256);
-    memcpy32((uint32_t*)0x50418000, input_12, 256);
-    memcpy32((uint32_t*)0x50800000, input_16, 256);
-    memcpy32((uint32_t*)0x50808000, input_20, 256);
-    memcpy32((uint32_t*)0x50810000, input_24, 256);
-    memcpy32((uint32_t*)0x50818000, input_28, 256);
-    memcpy32((uint32_t*)0x50c00000, input_32, 256);
-    memcpy32((uint32_t*)0x50c08000, input_36, 256);
-    memcpy32((uint32_t*)0x50c10000, input_40, 256);
-    memcpy32((uint32_t*)0x50c18000, input_44, 256);
-    memcpy32((uint32_t*)0x51000000, input_48, 256);
-    memcpy32((uint32_t*)0x51008000, input_52, 256);
-    memcpy32((uint32_t*)0x51010000, input_56, 256);
-    memcpy32((uint32_t*)0x51018000, input_60, 256);
+    memcpy32((uint32_t *)0x50400000, input_0, 256);
+    memcpy32((uint32_t *)0x50408000, input_4, 256);
+    memcpy32((uint32_t *)0x50410000, input_8, 256);
+    memcpy32((uint32_t *)0x50418000, input_12, 256);
+    memcpy32((uint32_t *)0x50800000, input_16, 256);
+    memcpy32((uint32_t *)0x50808000, input_20, 256);
+    memcpy32((uint32_t *)0x50810000, input_24, 256);
+    memcpy32((uint32_t *)0x50818000, input_28, 256);
+    memcpy32((uint32_t *)0x50c00000, input_32, 256);
+    memcpy32((uint32_t *)0x50c08000, input_36, 256);
+    memcpy32((uint32_t *)0x50c10000, input_40, 256);
+    memcpy32((uint32_t *)0x50c18000, input_44, 256);
+    memcpy32((uint32_t *)0x51000000, input_48, 256);
+    memcpy32((uint32_t *)0x51008000, input_52, 256);
+    memcpy32((uint32_t *)0x51010000, input_56, 256);
+    memcpy32((uint32_t *)0x51018000, input_60, 256);
 }
 
 // Expected output of layer 8 for kws20_v3 given the sample input (known-answer test)
@@ -147,12 +146,12 @@ int check_output(void)
 {
     int i;
     uint32_t mask, len;
-    volatile uint32_t* addr;
-    const uint32_t* ptr = sample_output;
+    volatile uint32_t *addr;
+    const uint32_t *ptr = sample_output;
 
-    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
         mask = *ptr++;
-        len  = *ptr++;
+        len = *ptr++;
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
@@ -170,8 +169,8 @@ static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
 void softmax_layer(void)
 {
-    cnn_unload((uint32_t*)ml_data);
-    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t *)ml_data);
+    softmax_q17p14_q15((const q31_t *)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 int main(void)
@@ -196,16 +195,15 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
-    cnn_load_bias();    // Not used in this network
-    cnn_configure();    // Configure state machine
-    load_input();       // Load data input
-    cnn_start();        // Start CNN processing
+    cnn_load_bias(); // Not used in this network
+    cnn_configure(); // Configure state machine
+    load_input(); // Load data input
+    cnn_start(); // Start CNN processing
 
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0)
-        __WFI(); // Wait for CNN
+    while (cnn_time == 0) __WFI(); // Wait for CNN
 
     if (check_output() != CNN_OK)
         fail();

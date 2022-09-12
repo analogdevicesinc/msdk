@@ -18,25 +18,26 @@
 **************************************************************************************************/
 
 /* UUIDs */
-static const uint8_t SecDatSvcUuid[] = {ATT_UUID_SEC_DATA_SERVICE}; /*! Secured service */
-static const uint8_t SecDatChUuid[]  = {ATT_UUID_SEC_DATA};         /*! Secured data  */
+static const uint8_t SecDatSvcUuid[] = { ATT_UUID_SEC_DATA_SERVICE }; /*! Secured service */
+static const uint8_t SecDatChUuid[] = { ATT_UUID_SEC_DATA }; /*! Secured data  */
 
 /* Characteristics for discovery */
 
 /*! Secured data */
-static const attcDiscChar_t secDat = {SecDatChUuid, ATTC_SET_REQUIRED | ATTC_SET_UUID_128};
+static const attcDiscChar_t secDat = { SecDatChUuid, ATTC_SET_REQUIRED | ATTC_SET_UUID_128 };
 
 /*! Secured data descriptor */
-static const attcDiscChar_t secDatCcc = {attCliChCfgUuid, ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR};
+static const attcDiscChar_t secDatCcc = { attCliChCfgUuid,
+                                          ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t* secDatDiscCharList[] = {
-    &secDat,   /*! Secured data */
+static const attcDiscChar_t *secDatDiscCharList[] = {
+    &secDat, /*! Secured data */
     &secDatCcc /*! Secured data descriptor */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
-WSF_CT_ASSERT(SEC_HDL_LIST_LEN == ((sizeof(secDatDiscCharList) / sizeof(attcDiscChar_t*))));
+WSF_CT_ASSERT(SEC_HDL_LIST_LEN == ((sizeof(secDatDiscCharList) / sizeof(attcDiscChar_t *))));
 
 /*************************************************************************************************/
 /*!
@@ -51,8 +52,8 @@ WSF_CT_ASSERT(SEC_HDL_LIST_LEN == ((sizeof(secDatDiscCharList) / sizeof(attcDisc
  *  \return None.
  */
 /*************************************************************************************************/
-void SecDatSvcDiscover(dmConnId_t connId, uint16_t* pHdlList)
+void SecDatSvcDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-    AppDiscFindService(connId, ATT_128_UUID_LEN, (uint8_t*)SecDatSvcUuid, SEC_HDL_LIST_LEN,
-                       (attcDiscChar_t**)secDatDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_128_UUID_LEN, (uint8_t *)SecDatSvcUuid, SEC_HDL_LIST_LEN,
+                       (attcDiscChar_t **)secDatDiscCharList, pHdlList);
 }

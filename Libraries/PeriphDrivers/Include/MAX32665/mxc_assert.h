@@ -100,7 +100,7 @@ extern "C" {
  * @note       To use debug assertions, the symbol @c MXC_ASSERT_ENABLE must be
  *             defined. 
  */
-void mxc_assert(const char* expr, const char* file, int line);
+void mxc_assert(const char *expr, const char *file, int line);
 
 /**@} end of group MXC_Assertions*/
 

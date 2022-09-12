@@ -49,7 +49,7 @@ unsigned int utils_get_time_ms(void)
     unsigned int ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec    = MXC_RTC_GetSecond();
+    sec = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 
@@ -61,7 +61,7 @@ void utils_delay_ms(unsigned int ms)
     MXC_Delay(ms * 1000UL);
 }
 
-void utils_hex2char(char chr, char* msg)
+void utils_hex2char(char chr, char *msg)
 {
     int i;
     char c;

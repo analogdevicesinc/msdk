@@ -50,7 +50,7 @@
 /***** Globals *****/
 
 /***** Functions *****/
-int crc_sw(uint8_t* data, uint8_t len, uint32_t polynomial)
+int crc_sw(uint8_t *data, uint8_t len, uint32_t polynomial)
 {
     int i, j;
     uint32_t temp;
@@ -77,9 +77,9 @@ int main(void)
 {
     printf("\n***** CRC Example *****\n");
 
-    uint8_t data[] = {0x14, 0x78, 0x9C, 0xDE};
-    uint8_t len    = sizeof(data) / sizeof(uint8_t);
-    int fail       = 0;
+    uint8_t data[] = { 0x14, 0x78, 0x9C, 0xDE };
+    uint8_t len = sizeof(data) / sizeof(uint8_t);
+    int fail = 0;
 
     if (MXC_TPU_CRC_Config() != E_SUCCESS) {
         printf("Failed MXC_TPU_Crc_Config()\n");
@@ -131,6 +131,5 @@ int main(void)
         printf("Example Failed\n");
     }
 
-    while (1) {
-    }
+    while (1) {}
 }

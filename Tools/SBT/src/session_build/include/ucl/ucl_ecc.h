@@ -99,9 +99,9 @@ extern "C" {
  * @ingroup UCL_ECC
  */
 typedef struct {
-    u32* x; /**< x coordinate (affine)     */
-    u32* y; /**< y coordinate (affine)     */
-    u32* z; /**< z coordinate (projective) */
+    u32 *x; /**< x coordinate (affine)     */
+    u32 *y; /**< y coordinate (affine)     */
+    u32 *z; /**< z coordinate (projective) */
 } ucl_ecc_point_st;
 
 /** <b>Extended point</b>.
@@ -110,16 +110,16 @@ typedef struct {
  * @ingroup UCL_ECC
  */
 typedef struct {
-    u32* x;  /**< x coordinate (affine)               */
-    u32* y;  /**< y coordinate (affine)               */
-    u32* z;  /**< z coordinate (projective)           */
-    u32* az; /**< az coordinate (extended projective) */
+    u32 *x; /**< x coordinate (affine)               */
+    u32 *y; /**< y coordinate (affine)               */
+    u32 *z; /**< z coordinate (projective)           */
+    u32 *az; /**< az coordinate (extended projective) */
 } ucl_ecc_point_ext_st;
 
 struct ucl_ecc_mult_s {
     int type;
     int options;
-    ucl_ecc_point_st** mP;
+    ucl_ecc_point_st **mP;
 };
 
 typedef struct ucl_ecc_mult_s ucl_ecc_mult_t;
@@ -133,33 +133,33 @@ struct ucl_ecc_curve_s {
     u32 flags; /**< Flags defining the curve.                                */
     u32 field;
     u32 options; /**< Options                                                  */
-    u32* q;      /**< @p q is the prime order or the irreducible polynom.      */
-    u32 s;       /**< Precision of @p q                                        */
-    u32 param1;  /**< Parameter 1                                              */
-    u32* param2; /**< Parameter 2                                              */
-    int (*mult)(u32*, u32*, u32*, u32,
+    u32 *q; /**< @p q is the prime order or the irreducible polynom.      */
+    u32 s; /**< Precision of @p q                                        */
+    u32 param1; /**< Parameter 1                                              */
+    u32 *param2; /**< Parameter 2                                              */
+    int (*mult)(u32 *, u32 *, u32 *, u32,
                 u32); /**< Field multilication.                                     */
-    int (*inv)(u32*, u32*, u32*, u32, u32,
-               u32*);    /**< Field inversion.                                         */
-    u32* seed;           /**< If the curve has been randomly generated, the seed used. */
-    u32* a;              /**< Coefficient a. (could be NULL)                           */
-    u32* b;              /**< Coefficient b.                                           */
-    ucl_ecc_point_st* P; /**< The base point in affine coordinate.                     */
-    u32* n;              /**< The base point order                                     */
-    u32 h;               /**< The cofactor (the order of the curve).                   */
-    int (*add_loop)(void*, void*, void*, void*,
-                    u32*); /**< Add in loop                                              */
-    int (*sub_loop)(void*, void*, void*, void*,
-                    u32*);    /**< Sub in loop                                              */
-    int (*neg)(void*, void*); /**< Negation in projective coordinate.                       */
-    int (*add)(void*, void*, void*, void*,
-               u32*); /**< Add in projective coordinate.                            */
-    int (*kdbl)(void*, void*, void*, u32,
-                u32*); /**< Double in projective coordinate.                         */
-    int (*kconv)(void*, void*,
-                 u32);           /**< Conversion from projective to affine coordinate.         */
-    int (*begin)(void*, void*);  /**< Prepare a point to be used on this field.                */
-    int (*finish)(void*, void*); /**< To recover a point from calculus on this field.          */
+    int (*inv)(u32 *, u32 *, u32 *, u32, u32,
+               u32 *); /**< Field inversion.                                         */
+    u32 *seed; /**< If the curve has been randomly generated, the seed used. */
+    u32 *a; /**< Coefficient a. (could be NULL)                           */
+    u32 *b; /**< Coefficient b.                                           */
+    ucl_ecc_point_st *P; /**< The base point in affine coordinate.                     */
+    u32 *n; /**< The base point order                                     */
+    u32 h; /**< The cofactor (the order of the curve).                   */
+    int (*add_loop)(void *, void *, void *, void *,
+                    u32 *); /**< Add in loop                                              */
+    int (*sub_loop)(void *, void *, void *, void *,
+                    u32 *); /**< Sub in loop                                              */
+    int (*neg)(void *, void *); /**< Negation in projective coordinate.                       */
+    int (*add)(void *, void *, void *, void *,
+               u32 *); /**< Add in projective coordinate.                            */
+    int (*kdbl)(void *, void *, void *, u32,
+                u32 *); /**< Double in projective coordinate.                         */
+    int (*kconv)(void *, void *,
+                 u32); /**< Conversion from projective to affine coordinate.         */
+    int (*begin)(void *, void *); /**< Prepare a point to be used on this field.                */
+    int (*finish)(void *, void *); /**< To recover a point from calculus on this field.          */
     ucl_ecc_mult_t ecc_mult;
 };
 
@@ -189,7 +189,7 @@ typedef struct ucl_ecc_curve_s ucl_ecc_curve_st;
  *
  * @ingroup UCL_ECC
  */
-int __API__ ucl_ecc_init(ucl_ecc_curve_st* e);
+int __API__ ucl_ecc_init(ucl_ecc_curve_st *e);
 #else
 /** @defgroup UCL_ECC Elliptic Curves.
  * ECC Elliptic Curves
