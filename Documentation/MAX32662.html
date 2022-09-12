@@ -40,7 +40,7 @@
 			<ul>
 				<li id='eclipse'></li>
 				<li id='gnu-arm'></li>
-				<li id='gnu-riscv'></li>
+				<!-- This device does not have a Risc-V core <li id='gnu-riscv'></li> -->
 				<li id='mingw'></li>
 				<li id='openocd'></li>
 				<li id='sbt'></li>
@@ -122,12 +122,14 @@
 				    document.getElementById('gnu-arm')
 				);
 
+			/* This device does not have a RV core.
 			addLink('../Tools/xPack/blank.bmp',
-				    '../Tools/xPack/riscv-none-embed-gcc/README.md',
+				    '../Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/README.md',
 				    'GNU Tools for RISC-V', 
 				    'The GNU Tools for RISC-V have not been installed.', 
 				    document.getElementById('gnu-riscv')
 				);
+			*/
 
 			addLink('../Libraries/FreeRTOS/Documentation/blank.bmp',
 				    '../Libraries/FreeRTOS/readme.txt',
@@ -142,7 +144,7 @@
 				    document.getElementById('bmp-converter')
 				);
 			addLink('../Tools/SBT/docs/blank.bmp',
-				    '../Tools/SBT/docs/UG7236Rev0_MaximSDK_Secure_Boot_Tool_User_Guide_Preliminary.pdf',
+				    '../Tools/SBT/docs/UG7236Rev1_MaximSDK_Secure_Boot_Tool_User_Guide.pdf',
 				    'Secure Boot Tools', 
 				    'The secure boot tools have not been installed.', 
 				    document.getElementById('sbt')
@@ -153,10 +155,10 @@
 				    'OpenOCD has not been installed.', 
 				    document.getElementById('openocd')
 				);
-			addLink('../Tools/MinGW/msys/1.0/opt/lib/tk8.6/images/logo64.gif',
-				    'http://www.mingw.org/',
-				    'MinGW', 
-				    'The MinGW package has not been installed.', 
+			addLink('../Tools/MSYS2/msys2.ico',
+				    'https://www.msys2.org/docs/what-is-msys2/',
+				    'MSYS2 (Building Platform for Windows)', 
+				    'The MSYS2 package has not been installed.', 
 				    document.getElementById('mingw')
 				);
 	</script>
