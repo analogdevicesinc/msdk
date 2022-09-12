@@ -135,9 +135,9 @@ int main(void)
             printf("\nEnabling Timeout Interrupt...\n");
             MXC_WDT_Disable(MXC_WDT0);
             cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-            cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
+            cfg.upperIntPeriod = MXC_WDT_PERIOD_2_27;
             cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-            cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
+            cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_23;
             MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
             MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
             MXC_WDT_ResetTimer(MXC_WDT0);
@@ -148,8 +148,7 @@ int main(void)
             MXC_WDT_Enable(MXC_WDT0);
 
 #ifdef OVERFLOW
-            while (1)
-                ;
+            while (1) {}
 #else
             MXC_Delay(MXC_DELAY_MSEC(200));
             MXC_WDT_ResetTimer(MXC_WDT0);

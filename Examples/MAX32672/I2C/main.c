@@ -262,7 +262,8 @@ int main()
     }
 
     while (I2C_FLAG == 1) {
-        ;
+        {
+        }
     }
 
     printf("\n-->Result: \n");

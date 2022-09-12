@@ -278,13 +278,13 @@ int MXC_FLC_UnlockInfoBlock(uint32_t address)
 int MXC_FLC_LockInfoBlock(uint32_t address)
 {
     int err;
-    mxc_flc_regs_t* flc;
+    mxc_flc_regs_t *flc;
 
     if ((err = MXC_FLC_ME21_GetByAddress(&flc, address)) != E_NO_ERROR) {
         return err;
     }
 
-    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t *)flc, address);
 }
 
 //******************************************************************************

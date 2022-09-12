@@ -129,8 +129,7 @@ void setTrigger(int waitForTrigger)
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 #endif // USE_CONSOLE
 }
 #endif // USE_ALARM
@@ -157,8 +156,7 @@ void setTrigger(int waitForTrigger)
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 #endif // USE_CONSOLE
 }
 #endif // USE_BUTTON

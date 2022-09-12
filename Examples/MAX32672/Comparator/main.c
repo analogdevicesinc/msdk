@@ -56,7 +56,7 @@
 
 /***** Globals *****/
 
-extern mxc_uart_regs_t* ConsoleUart;
+extern mxc_uart_regs_t *ConsoleUart;
 
 /***** Functions *****/
 
@@ -76,8 +76,7 @@ int main(void)
     printf("the comparator output to wakeup.\n\n");
 
     printf("Press any user push button to begin.\n");
-    while (!PB_IsPressedAny())
-        ;
+    while (!PB_IsPressedAny()) {}
 
     MXC_LP_EnableComparatorWakeup(MXC_ADC_COMP_1);
     MXC_ADC_EnableComparator(MXC_ADC_COMP_1, MXC_ADC_CH_3, MXC_ADC_CH_7);
@@ -88,8 +87,7 @@ int main(void)
 
     while (1) {
         printf("\nEntering sleep mode.\n");
-        while (MXC_UART_GetActive(ConsoleUart))
-            ;
+        while (MXC_UART_GetActive(ConsoleUart)) {}
         MXC_LP_EnterDeepSleepMode();
         printf("Waking up.\n");
     }

@@ -107,7 +107,8 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("\nFail to initialize QDEC. Error: %d\n", error);
         while (1) {
-            ;
+            {
+            }
         }
     }
 

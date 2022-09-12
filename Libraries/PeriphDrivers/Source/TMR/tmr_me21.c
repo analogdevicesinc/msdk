@@ -48,19 +48,19 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
 
     switch (cfg->clock) {
-        case MXC_TMR_EXT_CLK:
-            clockSource = MXC_TMR_CLK1;
-            MXC_GPIO_Config(&gpio_cfg_extclk);
-            break;
+    case MXC_TMR_EXT_CLK:
+        clockSource = MXC_TMR_CLK1;
+        MXC_GPIO_Config(&gpio_cfg_extclk);
+        break;
 
     case MXC_TMR_32K_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
 
-            clockSource = MXC_TMR_CLK2;
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-            break;
+        clockSource = MXC_TMR_CLK2;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+        break;
 
     case MXC_TMR_80K_CLK:
         if (tmr_id < 4) { // Timers 0-3 do not support this clock source
@@ -76,9 +76,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
             return E_NOT_SUPPORTED;
         }
 
-            clockSource = MXC_TMR_CLK2;
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-            break;
+        clockSource = MXC_TMR_CLK2;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        break;
 
     case MXC_TMR_32M_CLK:
         if (tmr_id > 3) { // Timers 4-5 do not support this clock source

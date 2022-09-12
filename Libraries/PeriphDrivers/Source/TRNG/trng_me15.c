@@ -107,5 +107,5 @@ int MXC_TRNG_HealthTest(void)
         return E_NOT_SUPPORTED;
     }
 
-    return MXC_TRNG_RevB_HealthTest((mxc_trng_revb_regs_t*)MXC_TRNG);
+    return MXC_TRNG_RevB_HealthTest((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
