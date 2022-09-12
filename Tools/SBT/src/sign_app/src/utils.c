@@ -50,11 +50,11 @@
  * Get the number of occurrences of `needle` in `haystack`
  */
 
-size_t occurrences(const char* needle, const char* haystack)
+size_t occurrences(const char *needle, const char *haystack)
 {
-    char* pos = (char*)haystack;
-    size_t i  = 0;
-    size_t l  = strlen(needle);
+    char *pos = (char *)haystack;
+    size_t i = 0;
+    size_t l = strlen(needle);
 
     if (NULL == needle || NULL == haystack) {
         return -1;
@@ -72,9 +72,9 @@ size_t occurrences(const char* needle, const char* haystack)
     return i;
 }
 
-char* str_replace(const char* str, const char* sub, const char* replace)
+char *str_replace(const char *str, const char *sub, const char *replace)
 {
-    char* pos = (char*)str;
+    char *pos = (char *)str;
     int count = occurrences(sub, str);
 
     if (0 >= count) {
@@ -83,12 +83,12 @@ char* str_replace(const char* str, const char* sub, const char* replace)
 
     int size = (strlen(str) - (strlen(sub) * count) + strlen(replace) * count) + 1;
 
-    char* result = (char*)malloc(size);
+    char *result = (char *)malloc(size);
     if (NULL == result) {
         return NULL;
     }
     memset(result, '\0', size);
-    char* current;
+    char *current;
 
     while ((current = strstr(pos, sub))) {
         int len = current - pos;
@@ -104,10 +104,10 @@ char* str_replace(const char* str, const char* sub, const char* replace)
     return result;
 }
 
-size_t strlcpy(char* dst, const char* src, size_t dest_size)
+size_t strlcpy(char *dst, const char *src, size_t dest_size)
 {
-    const char* osrc = src;
-    size_t remain    = dest_size;
+    const char *osrc = src;
+    size_t remain = dest_size;
 
     if (dest_size != 0) {
         while (--remain != 0) {
@@ -121,14 +121,13 @@ size_t strlcpy(char* dst, const char* src, size_t dest_size)
         if (dest_size != 0) {
             *dst = '\0';
         }
-        while (*src++) {
-        };
+        while (*src++) {};
     }
 
     return (src - osrc - 1);
 }
 
-int file_exist(char* filename)
+int file_exist(char *filename)
 {
     return (access(filename, F_OK) == 0);
 }

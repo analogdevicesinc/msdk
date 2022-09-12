@@ -48,7 +48,7 @@
 //-----------------------------------------------------------------------------
 // Function declarations
 //-----------------------------------------------------------------------------
-int max9867_init(mxc_i2c_regs_t* i2c_inst, int mclk, int lrclk);
+int max9867_init(mxc_i2c_regs_t *i2c_inst, int mclk, int lrclk);
 int max9867_shutdown(void);
 int max9867_status(void);
 

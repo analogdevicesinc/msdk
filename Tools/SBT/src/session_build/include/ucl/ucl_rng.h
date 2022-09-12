@@ -60,7 +60,7 @@ extern "C" {
  *
  * @ingroup UCL_RNG
  */
-int ucl_rng_attach(int (*rng)(u8* rand, u32 rand_byteLen, int option));
+int ucl_rng_attach(int (*rng)(u8 *rand, u32 rand_byteLen, int option));
 
 /** <b>Detach</b>.
  * Detach the previously attached RNG.
@@ -80,7 +80,7 @@ int ucl_rng_detach(void);
  *
  * @ingroup UCL_RNG
  */
-void* ucl_rng_getpt(void);
+void *ucl_rng_getpt(void);
 
 /** <b>RNG Read</b>.
    * Read random octet string using the hardware RNG.
@@ -98,7 +98,7 @@ void* ucl_rng_getpt(void);
  *
  * @ingroup UCL_RNG
  */
-int ucl_lowlevel_rng_read(u8* rand, u32 rand_byteLen, int option);
+int ucl_lowlevel_rng_read(u8 *rand, u32 rand_byteLen, int option);
 
 /** <b>RNG Read</b>.
    * Read random octet string using the attached RNG.
@@ -118,7 +118,7 @@ int ucl_lowlevel_rng_read(u8* rand, u32 rand_byteLen, int option);
  *
  * @ingroup UCL_RNG
  */
-int ucl_rng_read(u8* rand, u32 rand_byteLen, int option);
+int ucl_rng_read(u8 *rand, u32 rand_byteLen, int option);
 
 /** <b>FIPS 140 RNG Read</b>.
    * Read random octet string using the attached RNG.
@@ -136,7 +136,7 @@ int ucl_rng_read(u8* rand, u32 rand_byteLen, int option);
  *
  * @ingroup UCL_RNG
  */
-int ucl_fips_rng_read(u8* rand, u32 rand_byteLen, int option);
+int ucl_fips_rng_read(u8 *rand, u32 rand_byteLen, int option);
 
 /** <b>FIPS 140 TRNG health test</b>.
    * test the TRNG health by checking the oscillators are not stuck
@@ -179,7 +179,7 @@ int ucl_fips_rng_stest(void);
  *
  * @ingroup UCL_RNG
  */
-int ucl_sha256_whitening_rng_read(u8* rand, u32 rand_byteLen);
+int ucl_sha256_whitening_rng_read(u8 *rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
    * Read random octet string using the attached RNG postprocessed with SHA-256
@@ -199,7 +199,7 @@ int ucl_sha256_whitening_rng_read(u8* rand, u32 rand_byteLen);
  *
  * @ingroup UCL_RNG
  */
-int ucl_sha256_whitening_rng_read_generic(u8* rand, u32 rand_byteLen, int option);
+int ucl_sha256_whitening_rng_read_generic(u8 *rand, u32 rand_byteLen, int option);
 /** <b>RNG Read with postprocess</b>.
    * Read random octet string using the attached RNG postprocessed with SHA-256
    * no null byte is produced
@@ -216,7 +216,7 @@ int ucl_sha256_whitening_rng_read_generic(u8* rand, u32 rand_byteLen, int option
  *
  * @ingroup UCL_RNG
  */
-int ucl_sha256_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
+int ucl_sha256_whitening_rng_read_non_zero(u8 *rand, u32 rand_byteLen);
 /** <b>RNG Read with postprocess</b>.
    * Read random octet string using the attached RNG postprocessed with SHA-256
    * the first byte is not null
@@ -233,7 +233,7 @@ int ucl_sha256_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
  *
  * @ingroup UCL_RNG
  */
-int ucl_sha256_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
+int ucl_sha256_whitening_rng_read_leading_non_zero(u8 *rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
    * Read random octet string using the attached RNG postprocessed with SM3
@@ -250,7 +250,7 @@ int ucl_sha256_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
  *
  * @ingroup UCL_RNG
  */
-int ucl_sm3_whitening_rng_read(u8* rand, u32 rand_byteLen);
+int ucl_sm3_whitening_rng_read(u8 *rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
    * Read random octet string using the attached RNG postprocessed with SM3
@@ -268,7 +268,7 @@ int ucl_sm3_whitening_rng_read(u8* rand, u32 rand_byteLen);
  *
  * @ingroup UCL_RNG
  */
-int ucl_sm3_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
+int ucl_sm3_whitening_rng_read_non_zero(u8 *rand, u32 rand_byteLen);
 /** <b>RNG Read with postprocess</b>.
    * Read random octet string using the attached RNG postprocessed with SM3
    * the first byte is not null
@@ -285,7 +285,7 @@ int ucl_sm3_whitening_rng_read_non_zero(u8* rand, u32 rand_byteLen);
  *
  * @ingroup UCL_RNG
  */
-int ucl_sm3_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
+int ucl_sm3_whitening_rng_read_leading_non_zero(u8 *rand, u32 rand_byteLen);
 
 /** <b>RNG Read with postprocess</b>.
    * EMV Unpredictable Number generation power down function
@@ -304,16 +304,16 @@ int ucl_sm3_whitening_rng_read_leading_non_zero(u8* rand, u32 rand_byteLen);
 
 //EMV specification bulletin no144, june 2014
 
-#define EMV_TVP_BYTESIZE   8
-#define EMV_TID_BYTESIZE   8
+#define EMV_TVP_BYTESIZE 8
+#define EMV_TID_BYTESIZE 8
 #define EMV_IFDSN_BYTESIZE 8
-#define EMV_RAND_BYTESIZE  8
-#define EMV_AC_BYTESIZE    8
-#define EMV_P_BYTESIZE     UCL_SHA256_HASHSIZE
-#define EMV_Q_BYTESIZE     UCL_SHA256_HASHSIZE
-#define EMV_UN_BYTESIZE    4
+#define EMV_RAND_BYTESIZE 8
+#define EMV_AC_BYTESIZE 8
+#define EMV_P_BYTESIZE UCL_SHA256_HASHSIZE
+#define EMV_Q_BYTESIZE UCL_SHA256_HASHSIZE
+#define EMV_UN_BYTESIZE 4
 
-int ucl_emv_unpredictable_number_power_down(u8* q, u8* p);
+int ucl_emv_unpredictable_number_power_down(u8 *q, u8 *p);
 
 /** <b>RNG Read</b>.
    * EMV Unpredictable Number generation per transaction P refresh
@@ -333,7 +333,7 @@ int ucl_emv_unpredictable_number_power_down(u8* q, u8* p);
  *
  * @ingroup UCL_RNG
  */
-int ucl_emv_unpredictable_number_transaction_p_refresh(u8* p, u8* tvp, u8* rand, u8* ac);
+int ucl_emv_unpredictable_number_transaction_p_refresh(u8 *p, u8 *tvp, u8 *rand, u8 *ac);
 
 /** <b>RNG Read</b>.
    * EMV Unpredictable Number generation
@@ -351,7 +351,7 @@ int ucl_emv_unpredictable_number_transaction_p_refresh(u8* p, u8* tvp, u8* rand,
  *
  * @ingroup UCL_RNG
  */
-int ucl_emv_unpredictable_number_transaction_un_generation(u8* un, u8* rand, u8* p);
+int ucl_emv_unpredictable_number_transaction_un_generation(u8 *un, u8 *rand, u8 *p);
 
 /** <b>RNG Read</b>.
   * EMV Unpredictable Number generation power down function
@@ -375,7 +375,7 @@ int ucl_emv_unpredictable_number_transaction_un_generation(u8* un, u8* rand, u8*
  *
  * @ingroup UCL_RNG
  */
-int ucl_emv_unpredictable_number_power_up(u8* q, u8* tid, u8* ifdsn, u8* tvp, u8* rand, u8* p);
+int ucl_emv_unpredictable_number_power_up(u8 *q, u8 *tid, u8 *ifdsn, u8 *tvp, u8 *rand, u8 *p);
 
 /** <b>RNG quality testing</b>.
   * TRNG quality testing

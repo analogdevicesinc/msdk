@@ -43,7 +43,7 @@
 #include "fcr_regs.h"
 #include "sema_regs.h"
 
-extern volatile void const* __FlashStart_; // Defined in linker file
+extern volatile void const *__FlashStart_; // Defined in linker file
 
 void WakeISR(void)
 {
@@ -60,7 +60,7 @@ int main(void)
 
     MXC_FCR->urvbootaddr = (uint32_t)&__FlashStart_; // Set RISC-V boot address
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR); // Enable Sempahore clock
-    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR);         // Set wakeup ISR
+    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR); // Set wakeup ISR
 
     // DO NOT DELETE THIS LINE:
     MXC_Delay(SEC(2)); // Let debugger interrupt if needed

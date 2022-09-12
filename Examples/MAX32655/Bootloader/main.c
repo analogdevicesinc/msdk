@@ -57,15 +57,14 @@
 extern uint32_t _flash0;
 extern uint32_t _flash1;
 
-#define FLASH0_START         ((uint32_t)&_flash0)
-#define FLASH1_START         ((uint32_t)&_flash1)
-#define FLASH_ERASED_WORD    0xFFFFFFFF
-#define CRC32_LEN            4
+#define FLASH0_START ((uint32_t)&_flash0)
+#define FLASH1_START ((uint32_t)&_flash1)
+#define FLASH_ERASED_WORD 0xFFFFFFFF
+#define CRC32_LEN 4
 #define EXT_FLASH_BLOCK_SIZE 224
 
-#define DELAY(loopCount)              \
-    for (i = 0; i < loopCount; i++) { \
-    }
+#define DELAY(loopCount) \
+    for (i = 0; i < loopCount; i++) {}
 
 /**************************************************************************************************
   Local Variables
@@ -115,8 +114,7 @@ void ledFailPattern(void)
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j)
-        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -131,14 +129,13 @@ uint32_t crc32_for_byte(uint32_t r)
  *  \return None.
  */
 /*************************************************************************************************/
-static uint32_t table[0x100] = {0};
-void crc32(const void* data, size_t n_bytes, uint32_t* crc)
+static uint32_t table[0x100] = { 0 };
+void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
     if (!*table)
-        for (size_t i = 0; i < 0x100; ++i)
-            table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
     for (size_t i = 0; i < n_bytes; ++i)
-        *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
+        *crc = table[(uint8_t)*crc ^ ((uint8_t *)data)[i]] ^ *crc >> 8;
 }
 
 void bootError(void)
@@ -148,7 +145,7 @@ void bootError(void)
     NVIC_SystemReset();
 }
 
-int flashPageErased(uint32_t* addr)
+int flashPageErased(uint32_t *addr)
 {
     /* Determine if this page is totally erased */
     int i;
@@ -163,7 +160,7 @@ int flashPageErased(uint32_t* addr)
 
 uint32_t findUpperLen(void)
 {
-    uint32_t* flashPagePointer = (uint32_t*)FLASH1_START;
+    uint32_t *flashPagePointer = (uint32_t *)FLASH1_START;
 
     /* Find the first erased page in the upper flash*/
     while (1) {
@@ -178,20 +175,19 @@ uint32_t findUpperLen(void)
     }
 
     /* Length is 0 */
-    if (flashPagePointer == (uint32_t*)FLASH1_START) {
+    if (flashPagePointer == (uint32_t *)FLASH1_START) {
         return 0;
     }
 
     /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {
-    }
+    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {}
     flashPagePointer += 2;
 
     /* return the starting address of the CRC, last address of the image */
     return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
-static int multiPageErase(uint8_t* address, uint32_t size)
+static int multiPageErase(uint8_t *address, uint32_t size)
 {
     int err;
     volatile uint32_t address32 = (uint32_t)address;
@@ -213,7 +209,7 @@ static int multiPageErase(uint8_t* address, uint32_t size)
     return E_NO_ERROR;
 }
 
-static int flashWrite(uint32_t* address, uint32_t* data, uint32_t len)
+static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
 {
     int err;
 
@@ -240,12 +236,12 @@ static int flashWrite(uint32_t* address, uint32_t* data, uint32_t len)
 
 uint32_t externFileOperation(externFileOp_t fileOperation)
 {
-    uint32_t internalFlashStartingAddress           = FLASH0_START;
-    uint8_t extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = {0};
-    uint32_t startingAddress                        = 0x00000000 + sizeof(fileHeader_t);
-    uint32_t fileLen                                = fileHeader.fileLen;
-    uint32_t crcResult                              = 0;
-    uint32_t err                                    = 0;
+    uint32_t internalFlashStartingAddress = FLASH0_START;
+    uint8_t extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = { 0 };
+    uint32_t startingAddress = 0x00000000 + sizeof(fileHeader_t);
+    uint32_t fileLen = fileHeader.fileLen;
+    uint32_t crcResult = 0;
+    uint32_t err = 0;
     /* Read blocks from ext flash and perform desired fileOperation */
     while (fileLen >= EXT_FLASH_BLOCK_SIZE) {
         Ext_Flash_Read(startingAddress, extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE,
@@ -253,8 +249,8 @@ uint32_t externFileOperation(externFileOp_t fileOperation)
         if (fileOperation == CALC_CRC32_OP) {
             crc32(extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE, &crcResult);
         } else if (fileOperation == COPY_FILE_OP) {
-            err += flashWrite((uint32_t*)internalFlashStartingAddress, (uint32_t*)extFlashBlockBuff,
-                              EXT_FLASH_BLOCK_SIZE);
+            err += flashWrite((uint32_t *)internalFlashStartingAddress,
+                              (uint32_t *)extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE);
             internalFlashStartingAddress += EXT_FLASH_BLOCK_SIZE;
         }
         fileLen -= EXT_FLASH_BLOCK_SIZE;
@@ -266,8 +262,8 @@ uint32_t externFileOperation(externFileOp_t fileOperation)
         if (fileOperation == CALC_CRC32_OP) {
             crc32(extFlashBlockBuff, fileLen, &crcResult);
         } else if (fileOperation == COPY_FILE_OP) {
-            err += flashWrite((uint32_t*)internalFlashStartingAddress, (uint32_t*)extFlashBlockBuff,
-                              fileLen);
+            err += flashWrite((uint32_t *)internalFlashStartingAddress,
+                              (uint32_t *)extFlashBlockBuff, fileLen);
         }
     }
     if (fileOperation == COPY_FILE_OP)
@@ -282,9 +278,9 @@ int main(void)
     volatile int i;
     DELAY(0x3FFFFF);
 
-    int err                  = 0x00000000;
+    int err = 0x00000000;
     uint32_t startingAddress = 0x00000000;
-    uint32_t crcResult       = 0x00000000;
+    uint32_t crcResult = 0x00000000;
 
     LED_Init();
     for (int led = 0; led < num_leds; led++) {
@@ -303,7 +299,7 @@ int main(void)
 
     if (err == 0) {
         /* Get header from ext flash */
-        Ext_Flash_Read(startingAddress, (uint8_t*)&fileHeader, sizeof(fileHeader_t),
+        Ext_Flash_Read(startingAddress, (uint8_t *)&fileHeader, sizeof(fileHeader_t),
                        Ext_Flash_DataLine_Quad);
 
         /* Verify header integrity */
@@ -316,7 +312,7 @@ int main(void)
                 /* Calculate how many pages the new image will occupy, +1 for remainder */
                 uint32_t pagesToErase = (fileHeader.fileLen / MXC_FLASH_PAGE_SIZE) + 1;
                 /* Erase the destination pages */
-                if (multiPageErase((uint8_t*)FLASH0_START, pagesToErase) != E_NO_ERROR) {
+                if (multiPageErase((uint8_t *)FLASH0_START, pagesToErase) != E_NO_ERROR) {
                     /* Failed to erase pages */
                     bootError();
                 }
@@ -341,8 +337,7 @@ int main(void)
     /* Boot from lower image */
     Boot_Lower();
 
-    while (1) {
-    }
+    while (1) {}
 
     return 0;
 }

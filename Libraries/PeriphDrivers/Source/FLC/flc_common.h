@@ -57,15 +57,15 @@ extern "C" {
 
 /***** Function Prototypes *****/
 
-int MXC_FLC_Com_VerifyData(uint32_t address, uint32_t length, uint32_t* data);
+int MXC_FLC_Com_VerifyData(uint32_t address, uint32_t length, uint32_t *data);
 
-int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer);
+int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t *buffer);
 
-void MXC_FLC_Com_Read(int address, void* buffer, int len);
+void MXC_FLC_Com_Read(int address, void *buffer, int len);
 
-volatile uint32_t* MXC_FLC_GetWELR(uint32_t address, uint32_t page_num);
+volatile uint32_t *MXC_FLC_GetWELR(uint32_t address, uint32_t page_num);
 
-volatile uint32_t* MXC_FLC_GetRLR(uint32_t address, uint32_t page_num);
+volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num);
 
 /**@} end of group flc */
 

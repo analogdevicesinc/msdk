@@ -63,8 +63,7 @@ void HardFault_Handler(void)
     printf("\n\nHard Fault reached\n");
     printf("Press reset to run the example again\n");
     printf("Example Complete\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 int Core1_Main(void)
@@ -79,17 +78,14 @@ int Core1_Main(void)
 
     if (err == E_BAD_STATE) {
         LED_On(0);
-        while (1)
-            ;
+        while (1) {}
     } else if (err == E_BAD_PARAM) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     LED_On(1);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 // *****************************************************************************
@@ -112,6 +108,5 @@ int main(void)
     printf("TMR3 Control Register: 0x%08x\n", invalidaddr);
 
     printf("Did not fault\n");
-    while (1)
-        ;
+    while (1) {}
 }

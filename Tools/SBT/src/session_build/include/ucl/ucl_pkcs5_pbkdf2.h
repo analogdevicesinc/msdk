@@ -109,8 +109,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS5V20_PBKDF2_HMAC_SHA1
  */
-int ucl_pkcs5_pbkdf2_hmac_sha1(u8* derived_key, u32 derived_key_byteLen, u8* password,
-                               u32 password_byteLen, u8* salt, u32 salt_byteLen, u32 count);
+int ucl_pkcs5_pbkdf2_hmac_sha1(u8 *derived_key, u32 derived_key_byteLen, u8 *password,
+                               u32 password_byteLen, u8 *salt, u32 salt_byteLen, u32 count);
 
 /** @file ucl_pkcs5_pbkdf2.h
  * @defgroup UCL_PKCS5V20_PBKDF2_HMAC_SHA1 PBKDF2 HMAC-SHA1
@@ -144,8 +144,8 @@ int ucl_pkcs5_pbkdf2_hmac_sha1(u8* derived_key, u32 derived_key_byteLen, u8* pas
  *
  * @ingroup UCL_PKCS5V20_PBKDF2_HMAC_SHA256
  */
-int ucl_pkcs5_pbkdf2_hmac_sha256(u8* derived_key, u32 derived_key_byteLen, u8* password,
-                                 u32 password_byteLen, u8* salt, u32 salt_byteLen, u32 count);
+int ucl_pkcs5_pbkdf2_hmac_sha256(u8 *derived_key, u32 derived_key_byteLen, u8 *password,
+                                 u32 password_byteLen, u8 *salt, u32 salt_byteLen, u32 count);
 
 /** <b>PBKDF2-HMAC-SHA384</b>.
  * PBKDF2 using HMAC-SHA384
@@ -169,8 +169,8 @@ int ucl_pkcs5_pbkdf2_hmac_sha256(u8* derived_key, u32 derived_key_byteLen, u8* p
  *
  * @ingroup UCL_PKCS5V20_PBKDF2_HMAC_SHA384
  */
-int ucl_pkcs5_pbkdf2_hmac_sha384(u8* derived_key, u32 derived_key_byteLen, u8* password,
-                                 u32 password_byteLen, u8* salt, u32 salt_byteLen, u32 count);
+int ucl_pkcs5_pbkdf2_hmac_sha384(u8 *derived_key, u32 derived_key_byteLen, u8 *password,
+                                 u32 password_byteLen, u8 *salt, u32 salt_byteLen, u32 count);
 
 /** <b>PBKDF2-HMAC-SHA512</b>.
  * PBKDF2 using HMAC-SHA512
@@ -194,8 +194,8 @@ int ucl_pkcs5_pbkdf2_hmac_sha384(u8* derived_key, u32 derived_key_byteLen, u8* p
  *
  * @ingroup UCL_PKCS5V20_PBKDF2_HMAC_SHA512
  */
-int ucl_pkcs5_pbkdf2_hmac_sha512(u8* derived_key, u32 derived_key_byteLen, u8* password,
-                                 u32 password_byteLen, u8* salt, u32 salt_byteLen, u32 count);
+int ucl_pkcs5_pbkdf2_hmac_sha512(u8 *derived_key, u32 derived_key_byteLen, u8 *password,
+                                 u32 password_byteLen, u8 *salt, u32 salt_byteLen, u32 count);
 
 #ifdef __cplusplus
 }

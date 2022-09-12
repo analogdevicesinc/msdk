@@ -58,75 +58,71 @@ typedef struct __attribute__((packed)) {
 
 } tsFaceIDFile;
 
-tsFaceIDFile* pDatabaseInfo = NULL;
+tsFaceIDFile *pDatabaseInfo = NULL;
 
 typedef struct __attribute__((packed)) sDistance {
     uint8_t subID;
     int32_t distance;
 } tsDistance;
 
-tsDistance* pDistance = NULL;
+tsDistance *pDistance = NULL;
 
-tsMeanDistance* pMeanDistance = NULL;
-tsMinDistance* pMinDistance   = NULL;
+tsMeanDistance *pMeanDistance = NULL;
+tsMinDistance *pMinDistance = NULL;
 
-int8_t* pClosestSubId       = NULL;
+int8_t *pClosestSubId = NULL;
 uint32_t closestSubIdBufIdx = 0;
 
-uint8_t* pMinDistanceCounter = NULL;
+uint8_t *pMinDistanceCounter = NULL;
 
 /******************************** Static Functions ***************************/
 
 /******************************** Public Functions ***************************/
 int init_database(void)
 {
-    pDatabaseInfo = (tsFaceIDFile*)embeddings;
+    pDatabaseInfo = (tsFaceIDFile *)embeddings;
 
-    pDistance = (tsDistance*)malloc(sizeof(tsDistance) * pDatabaseInfo->numberOfEmbeddings);
+    pDistance = (tsDistance *)malloc(sizeof(tsDistance) * pDatabaseInfo->numberOfEmbeddings);
 
     if (pDistance == NULL) {
         return -1;
     }
 
     pMeanDistance =
-        (tsMeanDistance*)malloc(sizeof(tsMeanDistance) * pDatabaseInfo->numberOfSubjects);
+        (tsMeanDistance *)malloc(sizeof(tsMeanDistance) * pDatabaseInfo->numberOfSubjects);
 
     if (pMeanDistance == NULL) {
         return -1;
     }
 
-    pMinDistance = (tsMinDistance*)malloc(sizeof(tsMinDistance) * 3);
+    pMinDistance = (tsMinDistance *)malloc(sizeof(tsMinDistance) * 3);
 
     if (pMinDistance == NULL) {
         return -1;
     }
 
-    pClosestSubId = (int8_t*)malloc(closest_sub_buffer_size);
+    pClosestSubId = (int8_t *)malloc(closest_sub_buffer_size);
 
     if (pClosestSubId == NULL) {
         return -1;
     }
 
-    for (int i = 0; i < closest_sub_buffer_size; ++i) {
-        pClosestSubId[i] = -1;
-    }
+    for (int i = 0; i < closest_sub_buffer_size; ++i) { pClosestSubId[i] = -1; }
 
-    pMinDistanceCounter = (uint8_t*)malloc(pDatabaseInfo->numberOfSubjects);
+    pMinDistanceCounter = (uint8_t *)malloc(pDatabaseInfo->numberOfSubjects);
 
     if (pMinDistanceCounter == NULL) {
         return -1;
     }
 
-    for (int i = 0; i < pDatabaseInfo->numberOfSubjects; ++i) {
-        pMinDistanceCounter[i] = 0;
-    }
+    for (int i = 0; i < pDatabaseInfo->numberOfSubjects; ++i) { pMinDistanceCounter[i] = 0; }
 
     return 0;
 }
 
-char* get_subject(int ID)
+char *get_subject(int ID)
 {
-    char* point = (char*)(pDatabaseInfo + 1);
+    char *point = (char *)(pDatabaseInfo + 1);
 
     if (ID == 0) {
         return point;
@@ -150,31 +146,31 @@ char* get_subject(int ID)
     return 0;
 }
 
-void get_min_dist_counter(uint8_t** counter, uint8_t* counter_len)
+void get_min_dist_counter(uint8_t **counter, uint8_t *counter_len)
 {
-    *counter     = pMinDistanceCounter;
+    *counter = pMinDistanceCounter;
     *counter_len = pDatabaseInfo->numberOfSubjects;
 }
 
-tsMinDistance* get_min_distance()
+tsMinDistance *get_min_distance()
 {
     return pMinDistance;
 }
 
-int calculate_minDistance(const uint8_t* embedding)
+int calculate_minDistance(const uint8_t *embedding)
 {
-    int8_t* theEmbedding       = (int8_t*)embedding;
-    int8_t* theEmbeddingOrigin = theEmbedding;
+    int8_t *theEmbedding = (int8_t *)embedding;
+    int8_t *theEmbeddingOrigin = theEmbedding;
 
-    tsDistance* dist         = pDistance;
-    tsMeanDistance* meanDist = pMeanDistance;
+    tsDistance *dist = pDistance;
+    tsMeanDistance *meanDist = pMeanDistance;
 
-    int8_t* pData = (int8_t*)((uint32_t)(pDatabaseInfo + 1) + pDatabaseInfo->lengthOfSubjectNames);
+    int8_t *pData = (int8_t *)((uint32_t)(pDatabaseInfo + 1) + pDatabaseInfo->lengthOfSubjectNames);
 
     // Calculate min distance for each embedding
     for (int i = 0; i < pDatabaseInfo->numberOfEmbeddings; i++) {
-        int total    = 0;
-        dist->subID  = (uint8_t)(*(pData++));
+        int total = 0;
+        dist->subID = (uint8_t)(*(pData++));
         theEmbedding = theEmbeddingOrigin;
 
         for (int j = 0; j < pDatabaseInfo->lengthOfEmbeddings; j++) {
@@ -188,8 +184,8 @@ int calculate_minDistance(const uint8_t* embedding)
     dist = pDistance;
 
     for (int i = 0; i < pDatabaseInfo->numberOfSubjects; i++) {
-        meanDist[i].subID    = i;
-        meanDist[i].number   = 0;
+        meanDist[i].subID = i;
+        meanDist[i].number = 0;
         meanDist[i].distance = 0;
     }
 
@@ -212,7 +208,7 @@ int calculate_minDistance(const uint8_t* embedding)
 #define MAX_DISTANCE 1000000
 
     for (int i = 0; i < 3; i++) {
-        pMinDistance[i].subID    = 0xFF;
+        pMinDistance[i].subID = 0xFF;
         pMinDistance[i].distance = MAX_DISTANCE;
     }
 
@@ -221,24 +217,23 @@ int calculate_minDistance(const uint8_t* embedding)
             pMinDistance[0]
                 .distance) { /* Check if current element is less than firstMin, then update first, second and third */
             pMinDistance[2].distance = pMinDistance[1].distance;
-            pMinDistance[2].subID    = pMinDistance[1].subID;
+            pMinDistance[2].subID = pMinDistance[1].subID;
             pMinDistance[1].distance = pMinDistance[0].distance;
-            pMinDistance[1].subID    = pMinDistance[0].subID;
+            pMinDistance[1].subID = pMinDistance[0].subID;
             pMinDistance[0].distance = meanDist[i].distance;
-            pMinDistance[0].subID    = meanDist[i].subID;
-        } else if (
-            meanDist[i].distance <
-            pMinDistance[1]
-                .distance) { /* Check if current element is less than secmin then update second and third */
+            pMinDistance[0].subID = meanDist[i].subID;
+        } else if (meanDist[i].distance <
+                   pMinDistance[1]
+                       .distance) { /* Check if current element is less than secmin then update second and third */
             pMinDistance[2].distance = pMinDistance[1].distance;
-            pMinDistance[2].subID    = pMinDistance[1].subID;
+            pMinDistance[2].subID = pMinDistance[1].subID;
             pMinDistance[1].distance = meanDist[i].distance;
-            pMinDistance[1].subID    = meanDist[i].subID;
+            pMinDistance[1].subID = meanDist[i].subID;
         } else if (meanDist[i].distance <
                    pMinDistance[2]
                        .distance) { /* Check if current element is less than then update third */
             pMinDistance[2].distance = meanDist[i].distance;
-            pMinDistance[2].subID    = meanDist[i].subID;
+            pMinDistance[2].subID = meanDist[i].subID;
         }
     }
 
@@ -265,9 +260,7 @@ int calculate_minDistance(const uint8_t* embedding)
 
     PR_INFO("\t");
 
-    for (int i = 0; i < closest_sub_buffer_size; ++i) {
-        PR_INFO("%d, ", pClosestSubId[i]);
-    }
+    for (int i = 0; i < closest_sub_buffer_size; ++i) { PR_INFO("%d, ", pClosestSubId[i]); }
 
     PR_INFO("\nIdx: %d, Buffer Idx: %d\n", closestSubIdBufIdx, bufferIdx);
 

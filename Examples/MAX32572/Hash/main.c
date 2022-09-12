@@ -49,16 +49,16 @@ volatile int counter;
 
 /***** Globals *****/
 
-char temp[] = {0x00, 0x00, 0x00};
+char temp[] = { 0x00, 0x00, 0x00 };
 
 void CRYPTO_IRQHandler(void)
 {
     MXC_CTB_Handler();
 }
 
-void Test_Callback(void* req, int result)
+void Test_Callback(void *req, int result)
 {
-    wait            = 0;
+    wait = 0;
     callback_result = result;
 }
 
@@ -71,7 +71,7 @@ void Test_Result(int result)
     }
 }
 
-void ascii_to_byte(const char* src, char* dst, int len)
+void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
 
@@ -109,14 +109,13 @@ void Test_Hash(int asynchronous)
     // Select the Hash Function
     MXC_CTB_Hash_SetFunction(MXC_CTB_HASH_SHA256);
 
-    mxc_ctb_hash_req_t hash_req = {sha256_msg, msgLen, destination, &Test_Callback};
+    mxc_ctb_hash_req_t hash_req = { sha256_msg, msgLen, destination, &Test_Callback };
 
     if (asynchronous) {
         wait = 1;
         MXC_CTB_Hash_ComputeAsync(&hash_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_Hash_Compute(&hash_req);
     }

@@ -63,12 +63,12 @@ int MXC_TRNG_Init()
 
 void MXC_TRNG_EnableInt()
 {
-    MXC_TRNG_RevB_EnableInt((mxc_trng_revb_regs_t*)MXC_TRNG);
+    MXC_TRNG_RevB_EnableInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
 void MXC_TRNG_DisableInt(void)
 {
-    MXC_TRNG_RevB_DisableInt((mxc_trng_revb_regs_t*)MXC_TRNG);
+    MXC_TRNG_RevB_DisableInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
 int MXC_TRNG_Shutdown(void)
@@ -82,7 +82,7 @@ int MXC_TRNG_Shutdown(void)
 
 void MXC_TRNG_Handler(void)
 {
-    MXC_TRNG_RevB_Handler((mxc_trng_revb_regs_t*)MXC_TRNG);
+    MXC_TRNG_RevB_Handler((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
 /* ************************************************************************* */
@@ -91,22 +91,22 @@ void MXC_TRNG_Handler(void)
 
 int MXC_TRNG_RandomInt(void)
 {
-    return MXC_TRNG_RevB_RandomInt((mxc_trng_revb_regs_t*)MXC_TRNG);
+    return MXC_TRNG_RevB_RandomInt((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
-int MXC_TRNG_Random(uint8_t* data, uint32_t len)
+int MXC_TRNG_Random(uint8_t *data, uint32_t len)
 {
     return MXC_TRNG_RevB_Random(data, len);
 }
 
-void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callback)
+void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callback)
 {
-    MXC_TRNG_RevB_RandomAsync((mxc_trng_revb_regs_t*)MXC_TRNG, data, len, callback);
+    MXC_TRNG_RevB_RandomAsync((mxc_trng_revb_regs_t *)MXC_TRNG, data, len, callback);
 }
 
 void MXC_TRNG_GenerateKey(void)
 {
-    MXC_TRNG_RevB_GenerateKey((mxc_trng_revb_regs_t*)MXC_TRNG);
+    MXC_TRNG_RevB_GenerateKey((mxc_trng_revb_regs_t *)MXC_TRNG);
 }
 
 int MXC_TRNG_HealthTest(void)

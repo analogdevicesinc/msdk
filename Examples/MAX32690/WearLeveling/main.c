@@ -51,16 +51,16 @@
 
 /***** Definitions *****/
 #define APP_PAGE_CNT 8 ///< Flash memory blocks reserved for the app code
-#define APP_SIZE     (MXC_FLASH_PAGE_SIZE * APP_PAGE_CNT) ///< The app code flash memory area size
-#define TESTSIZE     (MXC_FLASH_PAGE_SIZE * 8 / 4)        ///< 8 pages of 32 bit samples
+#define APP_SIZE (MXC_FLASH_PAGE_SIZE * APP_PAGE_CNT) ///< The app code flash memory area size
+#define TESTSIZE (MXC_FLASH_PAGE_SIZE * 8 / 4) ///< 8 pages of 32 bit samples
 #define TOTAL_FLASH_PAGES \
     (MXC_FLASH_MEM_SIZE / \
-     MXC_FLASH_PAGE_SIZE)          ///< Flash memory blocks reserved for internal storage
+     MXC_FLASH_PAGE_SIZE) ///< Flash memory blocks reserved for internal storage
 #define FLASH_STORAGE_START_PAGE 8 ///< Internal storage first flash memory block
-#define FLASH_STORAGE_PAGE_CNT   8 ///< Flash memory blocks reserved for the internal storage
+#define FLASH_STORAGE_PAGE_CNT 8 ///< Flash memory blocks reserved for the internal storage
 #define FLASH_STORAGE_START_ADDR \
     MXC_FLASH_PAGE_ADDR(FLASH_STORAGE_START_PAGE) ///< Internal storage start address
-#define FLASH_STORAGE_SIZE FLASH_STORAGE_PAGE_CNT* MXC_FLASH_PAGE_SIZE ///< Internal storage size
+#define FLASH_STORAGE_SIZE FLASH_STORAGE_PAGE_CNT *MXC_FLASH_PAGE_SIZE ///< Internal storage size
 
 // When set to 1 performs full storage erase and test data write
 #ifndef FULL_WRITE_TEST
@@ -83,19 +83,19 @@ uint32_t start_block =
 const struct lfs_config cfg = {
     .context = &start_block,
     // block device operations
-    .read  = flash_read,
-    .prog  = flash_write,
+    .read = flash_read,
+    .prog = flash_write,
     .erase = flash_erase,
-    .sync  = flash_sync,
+    .sync = flash_sync,
 
     // block device configuration
-    .read_size      = 1,
-    .prog_size      = 4,
-    .block_size     = MXC_FLASH_PAGE_SIZE,
-    .block_count    = FLASH_STORAGE_PAGE_CNT,
-    .cache_size     = 16,
+    .read_size = 1,
+    .prog_size = 4,
+    .block_size = MXC_FLASH_PAGE_SIZE,
+    .block_count = FLASH_STORAGE_PAGE_CNT,
+    .cache_size = 16,
     .lookahead_size = 16,
-    .block_cycles   = 500,
+    .block_cycles = 500,
 };
 
 //******************************************************************************
@@ -111,9 +111,7 @@ int main(void)
 
 #if (FULL_WRITE_TEST == 1) || (FULL_READ_TEST == 1)
     // Initializing Test Data
-    for (int i = 0; i < TESTSIZE; i++) {
-        testdata[i] = i;
-    }
+    for (int i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
 #endif
 #if FULL_WRITE_TEST == 1
     //Erase page-by-page
@@ -141,7 +139,7 @@ int main(void)
 #if FULL_READ_TEST == 1
     printf("Verifying %d 32-bit words in flash\n", TESTSIZE);
     printf("Size of testdata : %d\n", sizeof(testdata));
-    error_status = flash_verify(FLASH_STORAGE_START_ADDR, TESTSIZE, (uint8_t*)testdata);
+    error_status = flash_verify(FLASH_STORAGE_START_ADDR, TESTSIZE, (uint8_t *)testdata);
 #endif
 
 #if (FULL_WRITE_TEST == 0) && (FULL_READ_TEST == 0)
@@ -187,8 +185,7 @@ int main(void)
         printf("\nExample Succeeded\n");
     }
 
-    while (1)
-        ;
+    while (1) {}
 
     return 0;
 }

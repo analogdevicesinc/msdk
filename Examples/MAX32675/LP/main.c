@@ -64,12 +64,12 @@
 #include "nvic_table.h"
 
 #define DELAY_IN_SEC 2
-#define USE_CONSOLE  1
+#define USE_CONSOLE 1
 
-#define DO_SLEEP     1
+#define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
-#define DO_BACKUP    0
-#define DO_SHUTDOWN  0
+#define DO_BACKUP 0
+#define DO_SHUTDOWN 0
 
 #if (DO_BACKUP && DO_STORAGE)
 #error "You must select either DO_BACKUP or DO_STORAGE or neither, not both."
@@ -77,7 +77,7 @@
 
 // *****************************************************************************
 volatile int buttonPressed;
-void buttonHandler(void* pb)
+void buttonHandler(void *pb)
 {
     buttonPressed = 1;
 }
@@ -89,20 +89,16 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed)
-            ;
+        while (!buttonPressed) {}
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x80000; tmp++) {
-        __NOP();
-    }
+    for (tmp = 0; tmp < 0x80000; tmp++) { __NOP(); }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
 #endif // USE_CONSOLE
 }
@@ -174,7 +170,7 @@ int main(void)
 #endif // USE_CONSOLE
     setTrigger(1);
 
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 
     while (1) {
 #if DO_SLEEP

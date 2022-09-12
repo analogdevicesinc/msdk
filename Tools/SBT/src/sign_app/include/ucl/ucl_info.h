@@ -48,7 +48,7 @@ extern "C" {
  * @return string
  *
  * @ingroup INFO */
-const char* ucl_get_version(void);
+const char *ucl_get_version(void);
 
 /** <b>Get Copyright</b>.
  * Get the library copyright.
@@ -56,7 +56,7 @@ const char* ucl_get_version(void);
  * @return string
  *
  * @ingroup INFO */
-const char* ucl_get_copyright(void);
+const char *ucl_get_copyright(void);
 
 /** <b>Get Build Date</b>.
  * Get the library build date.
@@ -64,7 +64,7 @@ const char* ucl_get_copyright(void);
  * @return string
  *
  * @ingroup INFO */
-const char* ucl_get_build_date(void);
+const char *ucl_get_build_date(void);
 
 /** <b>Get Options</b>.
  * Get the library options.
@@ -72,7 +72,7 @@ const char* ucl_get_build_date(void);
  * @return string
  *
  * @ingroup INFO */
-const char* ucl_get_options(void);
+const char *ucl_get_options(void);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

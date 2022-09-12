@@ -58,15 +58,15 @@ extern "C" {
  * @see X9.62
  * @ingroup UCL_ECDSA */
 struct ucl_ecdsa_domain_s {
-    u8* q;     /**< q                                   */
-    u8* seed;  /**< Seed                                */
-    u8* a;     /**< a                                   */
-    u8* b;     /**< b                                   */
-    u8* G;     /**< Base point                          */
-    u32 glen;  /**< Size of the base point octect string */
-    u8* n;     /**< Order                               */
-    u8* h;     /**< Cofactor                            */
-    u32 type;  /**< Curve type                          */
+    u8 *q; /**< q                                   */
+    u8 *seed; /**< Seed                                */
+    u8 *a; /**< a                                   */
+    u8 *b; /**< b                                   */
+    u8 *G; /**< Base point                          */
+    u32 glen; /**< Size of the base point octect string */
+    u8 *n; /**< Order                               */
+    u8 *h; /**< Cofactor                            */
+    u32 type; /**< Curve type                          */
     u32 field; /**< Field type                          */
     u32 bsize; /**< bit size of field element           */
 };
@@ -80,8 +80,8 @@ typedef struct ucl_ecdsa_domain_s ucl_ecdsa_domain_st;
  * @see X9.62
  * @ingroup UCL_ECDSA */
 struct ucl_ecdsa_signature_s {
-    u8* r; /**< */
-    u8* s; /**< */
+    u8 *r; /**< */
+    u8 *s; /**< */
 };
 
 /** Type ECDSA Signature.
@@ -112,7 +112,7 @@ typedef unsigned char ucl_ecdsa_prkey_t;
  * @retval #UCL_ERROR   Domain is unvalid
  *
  * @ingroup UCL_ECDSA */
-int __API__ ucl_ecdsa_valid_domain(ucl_ecdsa_domain_st* domain);
+int __API__ ucl_ecdsa_valid_domain(ucl_ecdsa_domain_st *domain);
 
 /** <b>Tnitialization context buffer</b>.
  * Initialization a context for ECC computation.
@@ -129,7 +129,7 @@ int __API__ ucl_ecdsa_valid_domain(ucl_ecdsa_domain_st* domain);
  * @retval #UCL_OK No error occurred
  *
  * @ingroup UCL_ECDSA */
-int __API__ ucl_ecdsa_init(void** ctx, const ucl_ecdsa_domain_st* domain, u32 options, u8* buffer,
+int __API__ ucl_ecdsa_init(void **ctx, const ucl_ecdsa_domain_st *domain, u32 options, u8 *buffer,
                            u32 len);
 
 /** <b>ECDSA Key Generation</b>.
@@ -152,8 +152,8 @@ int __API__ ucl_ecdsa_init(void** ctx, const ucl_ecdsa_domain_st* domain, u32 op
  * @retval #UCL_OK No error occurred
  *
  * @ingroup UCL_ECDSA */
-int __API__ ucl_ecdsa_keygen(ucl_ecdsa_pubkey_t* pubkey, u32 publen, ucl_ecdsa_prkey_t* prkey,
-                             u32 prlen, int opt, void* ctx);
+int __API__ ucl_ecdsa_keygen(ucl_ecdsa_pubkey_t *pubkey, u32 publen, ucl_ecdsa_prkey_t *prkey,
+                             u32 prlen, int opt, void *ctx);
 
 /** <b>ECDSA Signature Generation</b>.
  * Generation of an ECDSA signature.
@@ -172,8 +172,8 @@ int __API__ ucl_ecdsa_keygen(ucl_ecdsa_pubkey_t* pubkey, u32 publen, ucl_ecdsa_p
  * @retval #UCL_OK  No error occurred
  *
  * @ingroup UCL_ECDSA */
-int __API__ ucl_ecdsa_sign(ucl_ecdsa_signature_st* signature, const u8* message, u32 len,
-                           const ucl_ecdsa_prkey_t* key, u32 klen, void* ctx);
+int __API__ ucl_ecdsa_sign(ucl_ecdsa_signature_st *signature, const u8 *message, u32 len,
+                           const ucl_ecdsa_prkey_t *key, u32 klen, void *ctx);
 
 /** <b>ECDSA Signature Verification</b>.
  * Verification of a function.
@@ -192,8 +192,8 @@ int __API__ ucl_ecdsa_sign(ucl_ecdsa_signature_st* signature, const u8* message,
  * @retval #UCL_OK No error occurred
  *
  * @ingroup UCL_ECDSA */
-int __API__ ucl_ecdsa_verify(const ucl_ecdsa_signature_st* signature, const u8* message, u32 len,
-                             const ucl_ecdsa_pubkey_t* key, u32 klen, void* ctx);
+int __API__ ucl_ecdsa_verify(const ucl_ecdsa_signature_st *signature, const u8 *message, u32 len,
+                             const ucl_ecdsa_pubkey_t *key, u32 klen, void *ctx);
 
 /* ========================================================================== */
 

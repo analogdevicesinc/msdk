@@ -50,8 +50,7 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 // 3-channel 112x112 data input (37632 bytes total / 12544 bytes per channel):
@@ -62,7 +61,7 @@ void load_input(void)
 {
     // This function loads the sample data input -- replace with actual data
 
-    memcpy32((uint32_t*)0x54860000, input_60, 12544);
+    memcpy32((uint32_t *)0x54860000, input_60, 12544);
 }
 
 // Expected output of layer 33 (l33) for imagenet given the sample input (known-answer test)
@@ -72,12 +71,12 @@ int check_output(void)
 {
     int i;
     uint32_t mask, len;
-    volatile uint32_t* addr;
-    const uint32_t* ptr = sample_output;
+    volatile uint32_t *addr;
+    const uint32_t *ptr = sample_output;
 
-    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
         mask = *ptr++;
-        len  = *ptr++;
+        len = *ptr++;
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
@@ -111,11 +110,11 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    load_input();    // Load data input
+    load_input(); // Load data input
     // CNN clock: PLL (200 MHz) div 1
     MXC_GCR->pclkdiv =
         (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL)) |
@@ -123,8 +122,7 @@ int main(void)
     cnn_start(); // Start CNN processing
 
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0)
-        __WFI(); // Wait for CNN
+    while (cnn_time == 0) __WFI(); // Wait for CNN
 
     // Switch CNN clock to PLL (200 MHz) div 4
 
@@ -133,7 +131,7 @@ int main(void)
         MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
     if (check_output() != CNN_OK)
         fail();
-    cnn_unload((uint32_t*)ml_data);
+    cnn_unload((uint32_t *)ml_data);
 
     printf("\n*** PASS ***\n\n");
 

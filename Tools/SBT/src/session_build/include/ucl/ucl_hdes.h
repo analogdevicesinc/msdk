@@ -97,7 +97,7 @@ typedef struct ucl_hdes_ctx_t ucl_hdes_ctx_t;
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes(u8* hash, u8* data, u32 data_byteLen);
+int ucl_hdes(u8 *hash, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>HDES Init</b>.
@@ -112,7 +112,7 @@ int ucl_hdes(u8* hash, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes_init(ucl_hdes_ctx_t* context);
+int ucl_hdes_init(ucl_hdes_ctx_t *context);
 
 /*============================================================================*/
 /** <b>HDES Core</b>.
@@ -133,7 +133,7 @@ int ucl_hdes_init(ucl_hdes_ctx_t* context);
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes_core(ucl_hdes_ctx_t* context, u8* data, u32 data_byteLen);
+int ucl_hdes_core(ucl_hdes_ctx_t *context, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>HDES Finish</b>.
@@ -152,7 +152,7 @@ int ucl_hdes_core(ucl_hdes_ctx_t* context, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_HDES
  */
-int ucl_hdes_finish(u8* hash, ucl_hdes_ctx_t* context);
+int ucl_hdes_finish(u8 *hash, ucl_hdes_ctx_t *context);
 
 #ifdef __cplusplus
 }

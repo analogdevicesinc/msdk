@@ -73,31 +73,32 @@ uint8_t mml_nfc_pcd_packing_buffer[MAX_PACKING_BUFFER_LEN];
  * Default NFC Analog Configuration values
  */
 mml_nfc_pcd_analog_params_matrix_t mml_nfc_pcd_analog_parameters_matrix = {
-    .fd_thresholds    = {180, 170, 140},
-    .fd_dyn_trigger_a = {125, 125, 125},
-    .fd_dyn_math_a    = {IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_trigger_b = {125, 125, 125},
-    .fd_dyn_math_b    = {IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_trigger_f = {100, 100, 100},
-    .fd_dyn_math_f    = {IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I},
-    .fd_dyn_trigger_v = {125, 125, 125},
-    .fd_dyn_math_v    = {IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I},
-    .fd_dyn_sttm_a    = {0x00000000, 0x00000000, 0x00000000},
-    .fd_dyn_stfm_a    = {0x7F000000, 0x7F000000, 0x7F000000},
-    .fd_dyn_sttm_bfv  = {0x06060606, 0x06060606, 0x06060606},
-    .fd_dyn_stfm_bfv  = {0x7F060606, 0x7F060606, 0x7F060606},
-    .fd_dyn_gain      = {12, 12, 12},
-    .fd_dyn_atten     = {0x1F, 0x1F, 0x1F}};
+    .fd_thresholds = { 180, 170, 140 },
+    .fd_dyn_trigger_a = { 125, 125, 125 },
+    .fd_dyn_math_a = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_trigger_b = { 125, 125, 125 },
+    .fd_dyn_math_b = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_trigger_f = { 100, 100, 100 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 125, 125, 125 },
+    .fd_dyn_math_v = { IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I, IQ_MATH_Q_MINUS_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x06060606, 0x06060606, 0x06060606 },
+    .fd_dyn_stfm_bfv = { 0x7F060606, 0x7F060606, 0x7F060606 },
+    .fd_dyn_gain = { 12, 12, 12 },
+    .fd_dyn_atten = { 0x1F, 0x1F, 0x1F }
+};
 
 /**
  * NFC Analog Configuration values to use for current transaction
  */
-mml_nfc_pcd_analog_params_t current_analog_parameters = {.trigger_level = 125,
-                                                         .sttm          = 0x00000000,
-                                                         .stfm          = 0x7F000000,
-                                                         .gain          = 12,
-                                                         .iq_math       = IQ_MATH_Q_MINUS_I,
-                                                         .atten         = 0x1F};
+mml_nfc_pcd_analog_params_t current_analog_parameters = { .trigger_level = 125,
+                                                          .sttm = 0x00000000,
+                                                          .stfm = 0x7F000000,
+                                                          .gain = 12,
+                                                          .iq_math = IQ_MATH_Q_MINUS_I,
+                                                          .atten = 0x1F };
 
 void mml_nfc_pcd_enter_critical(void)
 {
@@ -152,8 +153,8 @@ void mml_nfc_pcd_give_semaphore_from_isr()
 void mml_nfc_pcd_field_level_detection_callback(uint8_t protocol)
 {
     uint8_t sensed_threshold = 0;
-    uint32_t field_sensed    = 0;
-    int32_t return_status    = 0;
+    uint32_t field_sensed = 0;
+    int32_t return_status = 0;
 
     // Sweep through and identify the requested level
     for (sensed_threshold = 0; sensed_threshold < FD_THRESH_NUM_STEPS;) {
@@ -177,76 +178,76 @@ void mml_nfc_pcd_field_level_detection_callback(uint8_t protocol)
     }
 
     switch (protocol) {
-        case PROTOCOL_ISO14443A:
-            current_analog_parameters.trigger_level =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[sensed_threshold];
-            current_analog_parameters.iq_math =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a[sensed_threshold];
-            current_analog_parameters.sttm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[sensed_threshold];
-            current_analog_parameters.stfm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[sensed_threshold];
-            break;
+    case PROTOCOL_ISO14443A:
+        current_analog_parameters.trigger_level =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[sensed_threshold];
+        current_analog_parameters.iq_math =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a[sensed_threshold];
+        current_analog_parameters.sttm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[sensed_threshold];
+        current_analog_parameters.stfm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[sensed_threshold];
+        break;
 
-        case PROTOCOL_ISO14443B:
-            current_analog_parameters.trigger_level =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b[sensed_threshold];
-            current_analog_parameters.iq_math =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b[sensed_threshold];
-            current_analog_parameters.sttm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[sensed_threshold];
-            current_analog_parameters.stfm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[sensed_threshold];
-            break;
+    case PROTOCOL_ISO14443B:
+        current_analog_parameters.trigger_level =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b[sensed_threshold];
+        current_analog_parameters.iq_math =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b[sensed_threshold];
+        current_analog_parameters.sttm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[sensed_threshold];
+        current_analog_parameters.stfm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[sensed_threshold];
+        break;
 
-        case PROTOCOL_TYPE_F:
-            current_analog_parameters.trigger_level =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f[sensed_threshold];
-            current_analog_parameters.iq_math =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f[sensed_threshold];
-            current_analog_parameters.sttm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[sensed_threshold];
-            current_analog_parameters.stfm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[sensed_threshold];
-            break;
+    case PROTOCOL_TYPE_F:
+        current_analog_parameters.trigger_level =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f[sensed_threshold];
+        current_analog_parameters.iq_math =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f[sensed_threshold];
+        current_analog_parameters.sttm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[sensed_threshold];
+        current_analog_parameters.stfm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[sensed_threshold];
+        break;
 
-        case PROTOCOL_ISO15693_100_1OF4_SINGLE_HIGH:
-        case PROTOCOL_ISO15693_100_1OF4_SINGLE_LOW:
-        case PROTOCOL_ISO15693_100_1OF4_DUAL_HIGH:
-        case PROTOCOL_ISO15693_100_1OF4_DUAL_LOW:
-        case PROTOCOL_ISO15693_100_1OF256_SINGLE_HIGH:
-        case PROTOCOL_ISO15693_100_1OF256_SINGLE_LOW:
-        case PROTOCOL_ISO15693_100_1OF256_DUAL_HIGH:
-        case PROTOCOL_ISO15693_100_1OF256_DUAL_LOW:
-        case PROTOCOL_ISO15693_10_1OF4_SINGLE_HIGH:
-        case PROTOCOL_ISO15693_10_1OF4_SINGLE_LOW:
-        case PROTOCOL_ISO15693_10_1OF4_DUAL_HIGH:
-        case PROTOCOL_ISO15693_10_1OF4_DUAL_LOW:
-        case PROTOCOL_ISO15693_10_1OF256_SINGLE_HIGH:
-        case PROTOCOL_ISO15693_10_1OF256_SINGLE_LOW:
-        case PROTOCOL_ISO15693_10_1OF256_DUAL_HIGH:
-        case PROTOCOL_ISO15693_10_1OF256_DUAL_LOW:
-            current_analog_parameters.trigger_level =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v[sensed_threshold];
-            current_analog_parameters.iq_math =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v[sensed_threshold];
-            current_analog_parameters.sttm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[sensed_threshold];
-            current_analog_parameters.stfm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[sensed_threshold];
-            break;
+    case PROTOCOL_ISO15693_100_1OF4_SINGLE_HIGH:
+    case PROTOCOL_ISO15693_100_1OF4_SINGLE_LOW:
+    case PROTOCOL_ISO15693_100_1OF4_DUAL_HIGH:
+    case PROTOCOL_ISO15693_100_1OF4_DUAL_LOW:
+    case PROTOCOL_ISO15693_100_1OF256_SINGLE_HIGH:
+    case PROTOCOL_ISO15693_100_1OF256_SINGLE_LOW:
+    case PROTOCOL_ISO15693_100_1OF256_DUAL_HIGH:
+    case PROTOCOL_ISO15693_100_1OF256_DUAL_LOW:
+    case PROTOCOL_ISO15693_10_1OF4_SINGLE_HIGH:
+    case PROTOCOL_ISO15693_10_1OF4_SINGLE_LOW:
+    case PROTOCOL_ISO15693_10_1OF4_DUAL_HIGH:
+    case PROTOCOL_ISO15693_10_1OF4_DUAL_LOW:
+    case PROTOCOL_ISO15693_10_1OF256_SINGLE_HIGH:
+    case PROTOCOL_ISO15693_10_1OF256_SINGLE_LOW:
+    case PROTOCOL_ISO15693_10_1OF256_DUAL_HIGH:
+    case PROTOCOL_ISO15693_10_1OF256_DUAL_LOW:
+        current_analog_parameters.trigger_level =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v[sensed_threshold];
+        current_analog_parameters.iq_math =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v[sensed_threshold];
+        current_analog_parameters.sttm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[sensed_threshold];
+        current_analog_parameters.stfm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[sensed_threshold];
+        break;
 
-        default:
-            error("Error when setting analog configuration, MML_NFC_PCD_E_UNKNOWN_PROTOCOL\n");
-            current_analog_parameters.trigger_level =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[sensed_threshold];
-            current_analog_parameters.sttm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[sensed_threshold];
-            current_analog_parameters.stfm =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[sensed_threshold];
-            current_analog_parameters.iq_math =
-                mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a[sensed_threshold];
-            return;
+    default:
+        error("Error when setting analog configuration, MML_NFC_PCD_E_UNKNOWN_PROTOCOL\n");
+        current_analog_parameters.trigger_level =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[sensed_threshold];
+        current_analog_parameters.sttm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[sensed_threshold];
+        current_analog_parameters.stfm =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[sensed_threshold];
+        current_analog_parameters.iq_math =
+            mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a[sensed_threshold];
+        return;
     }
 
     // Implement dynamic gain
@@ -262,25 +263,25 @@ void mml_nfc_pcd_field_level_detection_callback(uint8_t protocol)
         info("Selected Atten          %3d\n", current_analog_parameters.atten);
 
         switch (current_analog_parameters.iq_math) {
-            case IQ_MATH_CH_I:
-                info("Selected IQ Math      IQ_MATH_CH_I\n");
-                break;
-            case IQ_MATH_CH_Q:
-                info("Selected IQ Math      IQ_MATH_CH_Q\n");
-                break;
-            case IQ_MATH_I_MINUS_Q:
-                info("Selected IQ Math      IQ_MATH_I_MINUS_Q\n");
-                break;
-            case IQ_MATH_Q_MINUS_I:
-                info("Selected IQ Math      IQ_MATH_Q_MINUS_I\n");
-                break;
-            case IQ_MATH_I_PLUS_Q:
-                info("Selected IQ Math      IQ_MATH_I_PLUS_Q\n");
-                break;
+        case IQ_MATH_CH_I:
+            info("Selected IQ Math      IQ_MATH_CH_I\n");
+            break;
+        case IQ_MATH_CH_Q:
+            info("Selected IQ Math      IQ_MATH_CH_Q\n");
+            break;
+        case IQ_MATH_I_MINUS_Q:
+            info("Selected IQ Math      IQ_MATH_I_MINUS_Q\n");
+            break;
+        case IQ_MATH_Q_MINUS_I:
+            info("Selected IQ Math      IQ_MATH_Q_MINUS_I\n");
+            break;
+        case IQ_MATH_I_PLUS_Q:
+            info("Selected IQ Math      IQ_MATH_I_PLUS_Q\n");
+            break;
 
-            default:
-                info("Selected IQ Math      IQ_MATH_CH_In");
-                break;
+        default:
+            info("Selected IQ Math      IQ_MATH_CH_In");
+            break;
         }
     }
 

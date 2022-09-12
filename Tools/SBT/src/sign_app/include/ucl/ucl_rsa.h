@@ -104,9 +104,9 @@ typedef struct ucl_rsa_public_key ucl_rsa_public_key_t;
 
 struct ucl_rsa_private_key {
     /** The private exponent @p d. */
-    u8* private_exponent;
+    u8 *private_exponent;
     /** The modulus @p n. */
-    u8* modulus;
+    u8 *modulus;
     /** The modulus byte length. */
     u32 modulus_length;
 };
@@ -174,7 +174,7 @@ typedef struct ucl_rsa_crt_private_key ucl_rsa_crt_private_key_t;
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_RSA
  */
-int ucl_rsa_param_gen_fips186_4(u32* n, u32* p, u32* q, u32* d, u32* e, u32 t, u32 s);
+int ucl_rsa_param_gen_fips186_4(u32 *n, u32 *p, u32 *q, u32 *d, u32 *e, u32 t, u32 s);
 
 /** <b>RSA Parameters Generation</b>.
  * it applies the method described in IEEE-1363.
@@ -201,7 +201,7 @@ int ucl_rsa_param_gen_fips186_4(u32* n, u32* p, u32* q, u32* d, u32* e, u32 t, u
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_param_gen(u32* n, u32* p, u32* q, u32* d, u32* e, u32 t, u32 s);
+int ucl_rsa_param_gen(u32 *n, u32 *p, u32 *q, u32 *d, u32 *e, u32 t, u32 s);
 
 /** <b> RSA CRT Parameters Generation</b>.
  * Generate @a p, @a q, @a n , @a dp, @a dq and @a qInv such as: @n
@@ -229,7 +229,7 @@ int ucl_rsa_param_gen(u32* n, u32* p, u32* q, u32* d, u32* e, u32 t, u32 s);
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_param_gen_legacy(u32* n, u32* p, u32* q, u32* dp, u32* dq, u32* qInv, u32* e, u32 t,
+int ucl_rsa_crt_param_gen_legacy(u32 *n, u32 *p, u32 *q, u32 *dp, u32 *dq, u32 *qInv, u32 *e, u32 t,
                                  u32 s);
 
 /** <b> RSA CRT Parameters Generation</b>.
@@ -260,8 +260,8 @@ int ucl_rsa_crt_param_gen_legacy(u32* n, u32* p, u32* q, u32* dp, u32* dq, u32* 
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_param_gen_fips186_4(u32* n, u32* d, u32* p, u32* q, u32* dp, u32* dq, u32* qInv,
-                                    u32* e, u32 t, u32 s);
+int ucl_rsa_crt_param_gen_fips186_4(u32 *n, u32 *d, u32 *p, u32 *q, u32 *dp, u32 *dq, u32 *qInv,
+                                    u32 *e, u32 t, u32 s);
 /** <b> RSA CRT Parameters Generation</b>.
  * it applies the method described in IEEE-1363.
  * Generate @a p, @a q, @a n , @a dp, @a dq and @a qInv such as: @n
@@ -289,7 +289,7 @@ int ucl_rsa_crt_param_gen_fips186_4(u32* n, u32* d, u32* p, u32* q, u32* dp, u32
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_param_gen(u32* n, u32* d, u32* p, u32* q, u32* dp, u32* dq, u32* qInv, u32* e,
+int ucl_rsa_crt_param_gen(u32 *n, u32 *d, u32 *p, u32 *q, u32 *dp, u32 *dq, u32 *qInv, u32 *e,
                           u32 t, u32 s);
 
 /** <b>RSA Parameters Generation</b>.
@@ -316,7 +316,7 @@ int ucl_rsa_crt_param_gen(u32* n, u32* d, u32* p, u32* q, u32* dp, u32* dq, u32*
  * @retval #UCL_STACK_ERROR if the stack is too small for allocating temp variables
  * @ingroup UCL_RSA
  */
-int ucl_rsa_param_generation_fips186_4(u8* n, u8* p, u8* q, u8* d, u8* e, int t,
+int ucl_rsa_param_generation_fips186_4(u8 *n, u8 *p, u8 *q, u8 *d, u8 *e, int t,
                                        int modulus_bytes_size);
 
 /** <b>RSA Parameters Generation</b>.
@@ -344,7 +344,7 @@ int ucl_rsa_param_generation_fips186_4(u8* n, u8* p, u8* q, u8* d, u8* e, int t,
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_param_generation(u8* n, u8* p, u8* q, u8* d, u8* e, int t, int modulus_bytes_size);
+int ucl_rsa_param_generation(u8 *n, u8 *p, u8 *q, u8 *d, u8 *e, int t, int modulus_bytes_size);
 
 /** <b> RSA CRT Parameters Generation</b>.
  * generate RSA keys pairs with FIPS 186-4 compliance.
@@ -376,8 +376,8 @@ int ucl_rsa_param_generation(u8* n, u8* p, u8* q, u8* d, u8* e, int t, int modul
  * @retval #UCL_INVALID_INPUT  if one of the input is the pointer #NULL
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_param_generation_fips186_4(u8* n, u8* d, u8* p, u8* q, u8* dp, u8* dq, u8* qInv,
-                                           u8* e, u32 t, u32 modulus_bytes_size);
+int ucl_rsa_crt_param_generation_fips186_4(u8 *n, u8 *d, u8 *p, u8 *q, u8 *dp, u8 *dq, u8 *qInv,
+                                           u8 *e, u32 t, u32 modulus_bytes_size);
 
 /** RSA CRT Parameters Generation
  * Generate two primes @a p & @q and calculate @f$ n = p \times q @f$ \n
@@ -404,7 +404,7 @@ int ucl_rsa_crt_param_generation_fips186_4(u8* n, u8* d, u8* p, u8* q, u8* dp, u
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_param_generation(u8* n, u8* d, u8* p, u8* q, u8* dp, u8* dq, u8* qInv, u8* e, u32 t,
+int ucl_rsa_crt_param_generation(u8 *n, u8 *d, u8 *p, u8 *q, u8 *dp, u8 *dq, u8 *qInv, u8 *e, u32 t,
                                  u32 modulusbytes_size);
 
 /** <b>Miller-Rabin Test</b>.
@@ -426,7 +426,7 @@ int ucl_rsa_crt_param_generation(u8* n, u8* d, u8* p, u8* q, u8* dp, u8* dq, u8*
  *
  * @ingroup UCL_RSA
  */
-int fpa_is_prime(u32* n, u32 s, u32 t);
+int fpa_is_prime(u32 *n, u32 s, u32 t);
 
 /** <b>prime number generation</b>.
  * prime number generation following IEEE1363 Annex A.16.11
@@ -448,7 +448,7 @@ int fpa_is_prime(u32* n, u32 s, u32 t);
  *
  * @ingroup UCL_RSA
  */
-int fpa_gen_prime(u32* p, u32* e, u32* pMin, u32* pMax, u32 s);
+int fpa_gen_prime(u32 *p, u32 *e, u32 *pMin, u32 *pMax, u32 s);
 
 /** <b>FIPS 186-4 prime number generation</b>.
  * prime number generation compliant with FIPS 186-4 appendix B3.3
@@ -471,7 +471,7 @@ int fpa_gen_prime(u32* p, u32* e, u32* pMin, u32* pMax, u32 s);
  *
  * @ingroup UCL_RSA
  */
-int fpa_gen_prime_fips186_4(u32* p, u32* e, u32 t);
+int fpa_gen_prime_fips186_4(u32 *p, u32 *e, u32 t);
 
 /** <b>RSA Primitive - Decryption</b>.
  * It's equivalent to generate a signature.
@@ -495,7 +495,7 @@ int fpa_gen_prime_fips186_4(u32* p, u32* e, u32 t);
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_decryptBlock(u32* dst, u32* src, u32* d, u32* n, u32 s);
+int ucl_rsa_decryptBlock(u32 *dst, u32 *src, u32 *d, u32 *n, u32 s);
 
 /*============================================================================*/
 /** <b>RSA Primitive - Decryption with CRT</b>.
@@ -526,8 +526,8 @@ int ucl_rsa_decryptBlock(u32* dst, u32* src, u32* d, u32* n, u32 s);
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_decryptBlock(u32* dst, u32* src, u32* dp, u32* dq, u32* p, u32* q, u32* qInv,
-                             u32* e, u32 sE, u32* n, u32 s);
+int ucl_rsa_crt_decryptBlock(u32 *dst, u32 *src, u32 *dp, u32 *dq, u32 *p, u32 *q, u32 *qInv,
+                             u32 *e, u32 sE, u32 *n, u32 s);
 
 /*============================================================================*/
 /** <b>RSA Primitive - Decryption with CRT</b>.
@@ -558,8 +558,8 @@ int ucl_rsa_crt_decryptBlock(u32* dst, u32* src, u32* dp, u32* dq, u32* p, u32* 
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_crt_decryptBlock_without_protection(u32* dst, u32* src, u32* dp, u32* dq, u32* p,
-                                                u32* q, u32* qInv, u32* e, u32 sE, u32* n, u32 s);
+int ucl_rsa_crt_decryptBlock_without_protection(u32 *dst, u32 *src, u32 *dp, u32 *dq, u32 *p,
+                                                u32 *q, u32 *qInv, u32 *e, u32 sE, u32 *n, u32 s);
 
 /** <b>RSA Primitive - Encryption</b>.
  * It's equivalent to check a signature.
@@ -584,7 +584,7 @@ int ucl_rsa_crt_decryptBlock_without_protection(u32* dst, u32* src, u32* dp, u32
  *
  * @ingroup UCL_RSA
  */
-int ucl_rsa_encryptBlock(u32* dst, u32* src, u32* e, u32 sE, u32* n, u32 s);
+int ucl_rsa_encryptBlock(u32 *dst, u32 *src, u32 *e, u32 sE, u32 *n, u32 s);
 
 /** RSA CRT Parameters re-generation
  * Generate CRT parameters @a dp, @a dq, @qInv and @n from two primes @a p & @q
@@ -605,7 +605,7 @@ int ucl_rsa_encryptBlock(u32* dst, u32* src, u32* e, u32 sE, u32* n, u32 s);
  *
  * @ingroup UCL_FPA_PRIME
  */
-int ucl_rsa_crt_parameters_legacy(u32* n, u32* dp, u32* dq, u32* qInv, u32* p, u32* q, u32* e,
+int ucl_rsa_crt_parameters_legacy(u32 *n, u32 *dp, u32 *dq, u32 *qInv, u32 *p, u32 *q, u32 *e,
                                   u32 elength, u32 nlength);
 
 /** RSA CRT Parameters re-generation
@@ -628,7 +628,7 @@ int ucl_rsa_crt_parameters_legacy(u32* n, u32* dp, u32* dq, u32* qInv, u32* p, u
  *
  * @ingroup UCL_FPA_PRIME
  */
-int ucl_rsa_crt_parameters(u32* n, u32* d, u32* dp, u32* dq, u32* qInv, u32* p, u32* q, u32* e,
+int ucl_rsa_crt_parameters(u32 *n, u32 *d, u32 *dp, u32 *dq, u32 *qInv, u32 *p, u32 *q, u32 *e,
                            u32 elength, u32 nlength);
 
 /** RSA prime numbers computation
@@ -653,7 +653,7 @@ int ucl_rsa_crt_parameters(u32* n, u32* d, u32* dp, u32* dq, u32* qInv, u32* p, 
  * @ingroup UCL_RSA
  */
 
-int ucl_rsa_recover_primes_from_secret_exponent(u8* p, u8* q, u8* n, u8* d, u8* e,
+int ucl_rsa_recover_primes_from_secret_exponent(u8 *p, u8 *q, u8 *n, u8 *d, u8 *e,
                                                 int modulus_bytes_size);
 
 #ifdef __cplusplus

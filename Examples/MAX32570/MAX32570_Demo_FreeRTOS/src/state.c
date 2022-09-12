@@ -36,7 +36,7 @@
 #include "state.h"
 
 /********************************* 		VARIABLES	 *************************/
-static State* g_state = NULL;
+static State *g_state = NULL;
 
 /********************************* Public Functions **************************/
 void state_init(void)
@@ -49,7 +49,7 @@ void state_init(void)
     state_set_current(get_home_state());
 }
 
-int state_set_current(State* state)
+int state_set_current(State *state)
 {
     if (state != g_state) {
         g_state = state;
@@ -59,7 +59,7 @@ int state_set_current(State* state)
     return 0;
 }
 
-State* state_get_current(void)
+State *state_get_current(void)
 {
     return g_state;
 }

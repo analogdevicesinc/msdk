@@ -49,7 +49,7 @@
 /* **** Globals **** */
 
 /* ************************************************************************** */
-int MXC_CLCD_Init(mxc_clcd_cfg_t* cfg)
+int MXC_CLCD_Init(mxc_clcd_cfg_t *cfg)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TFT);
 
@@ -61,13 +61,13 @@ int MXC_CLCD_Init(mxc_clcd_cfg_t* cfg)
     gpio_cfg_clcd_1.port->vssel |= gpio_cfg_clcd_1.mask;
     gpio_cfg_clcd_2.port->vssel |= gpio_cfg_clcd_2.mask;
 
-    return MXC_CLCD_RevA_Init((mxc_clcd_reva_regs_t*)MXC_CLCD, cfg);
+    return MXC_CLCD_RevA_Init((mxc_clcd_reva_regs_t *)MXC_CLCD, cfg);
 }
 
 /* ************************************************************************* */
 int MXC_CLCD_Shutdown(void)
 {
-    MXC_CLCD_RevA_Shutdown((mxc_clcd_reva_regs_t*)MXC_CLCD);
+    MXC_CLCD_RevA_Shutdown((mxc_clcd_reva_regs_t *)MXC_CLCD);
 
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TFT);
 
@@ -75,25 +75,25 @@ int MXC_CLCD_Shutdown(void)
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_ConfigPanel(mxc_clcd_cfg_t* cfg)
+int MXC_CLCD_ConfigPanel(mxc_clcd_cfg_t *cfg)
 {
-    return MXC_CLCD_RevA_ConfigPanel((mxc_clcd_reva_regs_t*)MXC_CLCD, cfg);
+    return MXC_CLCD_RevA_ConfigPanel((mxc_clcd_reva_regs_t *)MXC_CLCD, cfg);
 }
 
 /* ************************************************************************* */
 int MXC_CLCD_Enable(void)
 {
-    return MXC_CLCD_RevA_Enable((mxc_clcd_reva_regs_t*)MXC_CLCD);
+    return MXC_CLCD_RevA_Enable((mxc_clcd_reva_regs_t *)MXC_CLCD);
 }
 
 /* ************************************************************************* */
 int MXC_CLCD_Disable(void)
 {
-    return MXC_CLCD_RevA_Disable((mxc_clcd_reva_regs_t*)MXC_CLCD);
+    return MXC_CLCD_RevA_Disable((mxc_clcd_reva_regs_t *)MXC_CLCD);
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_SetFrameAddr(void* addr)
+int MXC_CLCD_SetFrameAddr(void *addr)
 {
-    return MXC_CLCD_RevA_SetFrameAddr((mxc_clcd_reva_regs_t*)MXC_CLCD, addr);
+    return MXC_CLCD_RevA_SetFrameAddr((mxc_clcd_reva_regs_t *)MXC_CLCD, addr);
 }

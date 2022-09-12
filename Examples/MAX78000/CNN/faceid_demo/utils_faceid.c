@@ -2,7 +2,7 @@
 
 uint8_t rxBuffer[DATA_SIZE_IN];
 
-int uart_write(uint8_t* data, unsigned int len)
+int uart_write(uint8_t *data, unsigned int len)
 {
     unsigned int bytes_tx_total = 0;
     unsigned int bytes_tx;
@@ -15,7 +15,7 @@ int uart_write(uint8_t* data, unsigned int len)
     return 1;
 }
 
-int uart_read(uint8_t* buffer, unsigned int len)
+int uart_read(uint8_t *buffer, unsigned int len)
 {
     unsigned int bytes_rx_total = 0;
     unsigned int bytes_rx;
@@ -48,21 +48,21 @@ int wait_for_feedback()
 void load_input(int8_t mode)
 {
     uint32_t i;
-    i                   = 0;
-    const uint32_t* in0 = input_0;
+    i = 0;
+    const uint32_t *in0 = input_0;
     uint32_t number;
     while (i < 19200 * 3) {
-        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
-            ; // Wait for FIFO 0
+        while (((*((volatile uint32_t *)0x50000004) & 1)) != 0) {}
+        // Wait for FIFO 0
         number = ((uint32_t)rxBuffer[i] << 16) | ((uint32_t)rxBuffer[i + 1] << 8) |
                  ((uint32_t)rxBuffer[i + 2]);
 
         if (mode > 0) {
-            uart_write((uint8_t*)&number, 4);
-            uart_write((uint8_t*)(in0++), 4);
+            uart_write((uint8_t *)&number, 4);
+            uart_write((uint8_t *)(in0++), 4);
         }
 
-        *((volatile uint32_t*)0x50000008) = number; // Write FIFO 0
+        *((volatile uint32_t *)0x50000008) = number; // Write FIFO 0
 
         i += 3;
     }

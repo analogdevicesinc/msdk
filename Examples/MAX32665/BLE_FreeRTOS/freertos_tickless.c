@@ -56,8 +56,8 @@
 #include "pal_bb.h"
 
 #define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
-#define MIN_WUT_TICKS 100                      /* Minimum deep sleep time, units of 32 kHz ticks */
-#define WAKEUP_US     1500                     /* Deep sleep recovery time, units of us */
+#define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
+#define WAKEUP_US 1500 /* Deep sleep recovery time, units of us */
 
 /* Minimum ticks before SysTick interrupt, units of system clock ticks.
  * Convert CPU_CLOCK_HZ to units of ticks per us 
@@ -103,8 +103,8 @@ void switchToHIRCD4(void)
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC);
     /* Disable unused clocks */
-    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY))
-        ; /* Wait for the switch to occur */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
+    /* Wait for the switch to occur */
     MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC96M_EN);
     SystemCoreClockUpdate();
 }
@@ -120,8 +120,8 @@ void switchToHIRC(void)
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC96M_EN;
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC96);
     /* Disable unused clocks */
-    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY))
-        ; /* Wait for the switch to occur */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
+    /* Wait for the switch to occur */
     MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC_EN);
     SystemCoreClockUpdate();
 }
@@ -159,19 +159,16 @@ static void deepSleep(void)
     /* Check to see if VCOREA is ready on  */
     if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
         /* Wait for VCOREB to be ready */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
-        }
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
 
         /* Move VCORE switch back to VCOREB */
-        MXC_MCR->ctrl =
-            (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
+        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
+                        (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
         /* Raise the VCORE_B voltage */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
-        }
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
         MXC_SIMO_SetVregO_B(1000);
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
-        }
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
     }
 
     MXC_LP_ICache0PowerUp();
@@ -265,7 +262,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         /* Snapshot the current WUT value with the PalBb clock */
         MXC_WUT_Store();
         preCapture = MXC_WUT_GetCount();
-        schUsec    = PalTimerGetExpTime();
+        schUsec = PalTimerGetExpTime();
 
         /* Adjust idleTicks for the time it takes to restart the BLE hardware */
         idleTicks -= ((WAKEUP_US)*configRTC_TICK_RATE_HZ / 1000000);
@@ -280,9 +277,9 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     } else {
         /* Snapshot the current WUT value */
         MXC_WUT_Edge();
-        preCapture    = MXC_WUT_GetCount();
+        preCapture = MXC_WUT_GetCount();
         bleSleepTicks = 0;
-        schUsec       = 0;
+        schUsec = 0;
     }
 
     /* Sleep for the shortest tick duration */
@@ -343,7 +340,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     /* Recalculate dsWutTicks for the FreeRTOS tick counter update */
     MXC_WUT_Edge();
     postCapture = MXC_WUT_GetCount();
-    dsWutTicks  = postCapture - preCapture;
+    dsWutTicks = postCapture - preCapture;
 
     /*
      * Advance ticks by # actually elapsed

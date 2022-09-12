@@ -51,31 +51,31 @@
 /* **** Functions **** */
 
 /* ************************************************************************** */
-void MXC_HPB_RegRead8(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegRead8(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegRead8((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegRead8((mxc_hpb_reva_regs_t *)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegWrite8(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegWrite8(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegWrite8((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegWrite8((mxc_hpb_reva_regs_t *)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegRead16(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegRead16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegRead16((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegRead16((mxc_hpb_reva_regs_t *)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RegWrite16(mxc_hpb_cfg_reg_val_t* cfg_reg_val, uint32_t base_addr, unsigned int index)
+void MXC_HPB_RegWrite16(mxc_hpb_cfg_reg_val_t *cfg_reg_val, uint32_t base_addr, unsigned int index)
 {
-    MXC_HPB_RevA_RegWrite16((mxc_hpb_reva_regs_t*)MXC_HPB, cfg_reg_val, base_addr, index);
+    MXC_HPB_RevA_RegWrite16((mxc_hpb_reva_regs_t *)MXC_HPB, cfg_reg_val, base_addr, index);
 }
 
 /* ************************************************************************** */
-int MXC_HPB_Init(mxc_hpb_mem_config_t* mem0, mxc_hpb_mem_config_t* mem1)
+int MXC_HPB_Init(mxc_hpb_mem_config_t *mem0, mxc_hpb_mem_config_t *mem1)
 {
     /* Enable HyperBus Clocks */
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_HBC);
@@ -102,23 +102,23 @@ int MXC_HPB_Init(mxc_hpb_mem_config_t* mem0, mxc_hpb_mem_config_t* mem1)
     /* Reset the controller */
     MXC_SYS_Reset_Periph(MXC_SYS_RESET_HBC);
 
-    return MXC_HPB_RevA_Init((mxc_hpb_reva_regs_t*)MXC_HPB, mem0, mem1);
+    return MXC_HPB_RevA_Init((mxc_hpb_reva_regs_t *)MXC_HPB, mem0, mem1);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_HPB_GetStatus(void)
 {
-    return MXC_HPB_RevA_GetStatus((mxc_hpb_reva_regs_t*)MXC_HPB);
+    return MXC_HPB_RevA_GetStatus((mxc_hpb_reva_regs_t *)MXC_HPB);
 }
 
 /* ************************************************************************** */
 void MXC_HPB_EnableInt(unsigned polarity)
 {
-    MXC_HPB_RevA_EnableInt((mxc_hpb_reva_regs_t*)MXC_HPB, polarity);
+    MXC_HPB_RevA_EnableInt((mxc_hpb_reva_regs_t *)MXC_HPB, polarity);
 }
 
 /* ************************************************************************** */
 unsigned MXC_HPB_GetFlag(void)
 {
-    return MXC_HPB_RevA_GetFlag((mxc_hpb_reva_regs_t*)MXC_HPB);
+    return MXC_HPB_RevA_GetFlag((mxc_hpb_reva_regs_t *)MXC_HPB);
 }

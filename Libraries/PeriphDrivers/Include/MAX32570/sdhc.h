@@ -59,8 +59,8 @@ extern "C" {
 #define MXC_SDHC_Bus_Voltage_3_0 6
 #define MXC_SDHC_Bus_Voltage_3_3 7
 
-#define MXC_SDHC_DIRECTION_CFG   0
-#define MXC_SDHC_DIRECTION_READ  1
+#define MXC_SDHC_DIRECTION_CFG 0
+#define MXC_SDHC_DIRECTION_READ 1
 #define MXC_SDHC_DIRECTION_WRITE 2
 
 /**
@@ -69,8 +69,8 @@ extern "C" {
  */
 typedef struct {
     unsigned int bus_voltage; /**< Use constants above for 1.8V, 3.0V, 3.3V. */
-    unsigned int block_gap;   /**< Set block gap register default is 0       */
-    unsigned int clk_div;     /**< Divider for SD clock                      */
+    unsigned int block_gap; /**< Set block gap register default is 0       */
+    unsigned int clk_div; /**< Divider for SD clock                      */
 } mxc_sdhc_cfg_t;
 
 /**
@@ -119,7 +119,7 @@ typedef struct {
  * @returns    #E_NO_ERROR SDHC initialized successfully, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_SDHC_Init(const mxc_sdhc_cfg_t* cfg);
+int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg);
 
 /**
  * @brief      Enable SDHC Bus Power
@@ -165,7 +165,7 @@ unsigned int MXC_SDHC_Get_Clock_Config(void);
  * @return     E_NO_ERROR, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_SDHC_SendCommand(mxc_sdhc_cmd_cfg_t* sd_cmd_cfg);
+int MXC_SDHC_SendCommand(mxc_sdhc_cmd_cfg_t *sd_cmd_cfg);
 /**
  * @brief      Send SDHC command <em>Async</em>.
  *
@@ -174,7 +174,7 @@ int MXC_SDHC_SendCommand(mxc_sdhc_cmd_cfg_t* sd_cmd_cfg);
  * @return     E_NO_ERROR, @ref MXC_Error_Codes "error" if
  *             unsuccessful.
  */
-int MXC_SDHC_SendCommandAsync(mxc_sdhc_cmd_cfg_t* sd_cmd_cfg);
+int MXC_SDHC_SendCommandAsync(mxc_sdhc_cmd_cfg_t *sd_cmd_cfg);
 
 /**
  * @brief      SDHC interrupt handler.
@@ -258,7 +258,7 @@ uint32_t MXC_SDHC_Get_Response32_Auto(void);
  * @details    This function may be used to read response
  *             type R2 (CID or CSD)
  */
-void MXC_SDHC_Get_Response128(unsigned char* response);
+void MXC_SDHC_Get_Response128(unsigned char *response);
 
 /**@} end of group sdhc */
 

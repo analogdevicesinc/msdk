@@ -54,22 +54,22 @@ void SysTick_Handler(void);
 
 /* Create a vector table to locate at zero in the ROM for handling reset and startup */
 __attribute__((section(".rom_vector"))) void (*const rom_vector[])(void) = {
-    __StackTop,            /* Top of Stack */
-    Reset_Handler,         /* Reset Handler */
-    NMI_Handler_ROM,       /* NMI Handler */
+    __StackTop, /* Top of Stack */
+    Reset_Handler, /* Reset Handler */
+    NMI_Handler_ROM, /* NMI Handler */
     HardFault_Handler_ROM, /* Hard Fault Handler */
-    MemManage_Handler,     /* MPU Fault Handler */
-    BusFault_Handler,      /* Bus Fault Handler */
-    UsageFault_Handler,    /* Usage Fault Handler */
-    0,                     /* Reserved */
-    0,                     /* Reserved */
-    0,                     /* Reserved */
-    0,                     /* Reserved */
-    SVC_Handler,           /* SVCall Handler */
-    DebugMon_Handler,      /* Debug Monitor Handler */
-    0,                     /* Reserved */
-    PendSV_Handler,        /* PendSV Handler */
-    SysTick_Handler,       /* SysTick Handler */
+    MemManage_Handler, /* MPU Fault Handler */
+    BusFault_Handler, /* Bus Fault Handler */
+    UsageFault_Handler, /* Usage Fault Handler */
+    0, /* Reserved */
+    0, /* Reserved */
+    0, /* Reserved */
+    0, /* Reserved */
+    SVC_Handler, /* SVCall Handler */
+    DebugMon_Handler, /* Debug Monitor Handler */
+    0, /* Reserved */
+    PendSV_Handler, /* PendSV Handler */
+    SysTick_Handler, /* SysTick Handler */
 };
 
 /* This is needed to handle the NMI at POR */

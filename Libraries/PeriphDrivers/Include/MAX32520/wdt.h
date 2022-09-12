@@ -85,96 +85,96 @@ typedef enum {
  * @param       wdt      Pointer to the watchdog registers
  * @return      See \ref MXC_Error_Codes for the list of error codes. 
  */
-int MXC_WDT_Init(mxc_wdt_regs_t* wdt);
+int MXC_WDT_Init(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief Shutdown the Watchdog Timer
  * @param       wdt     Pointer to the watchdog registers
  * @return      See \ref MXC_Error_Codes for the list of error codes.
  */
-int MXC_WDT_Shutdown(mxc_wdt_regs_t* wdt);
+int MXC_WDT_Shutdown(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Set the period of the watchdog interrupt.
  * @param       wdt     Pointer to watchdog registers.
  * @param       period  Enumeration of the desired watchdog period.
  */
-void MXC_WDT_SetIntPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_period_t period);
+void MXC_WDT_SetIntPeriod(mxc_wdt_regs_t *wdt, mxc_wdt_period_t period);
 
 /**
  * @brief       Set the period of the watchdog reset.
  * @param       wdt     Pointer to watchdog registers.
  * @param       period  Enumeration of the desired watchdog period.
  */
-void MXC_WDT_SetResetPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_period_t period);
+void MXC_WDT_SetResetPeriod(mxc_wdt_regs_t *wdt, mxc_wdt_period_t period);
 
 /**
  * @brief       Enable the watchdog timer.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_Enable(mxc_wdt_regs_t* wdt);
+void MXC_WDT_Enable(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Disable the watchdog timer.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_Disable(mxc_wdt_regs_t* wdt);
+void MXC_WDT_Disable(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Enable the watchdog interrupt.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_EnableInt(mxc_wdt_regs_t* wdt);
+void MXC_WDT_EnableInt(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Enable the watchdog reset.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_EnableReset(mxc_wdt_regs_t* wdt);
+void MXC_WDT_EnableReset(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Enable the watchdog interrupt.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_DisableInt(mxc_wdt_regs_t* wdt);
+void MXC_WDT_DisableInt(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Enable the watchdog reset.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_DisableReset(mxc_wdt_regs_t* wdt);
+void MXC_WDT_DisableReset(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Reset the watchdog timer.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_ResetTimer(mxc_wdt_regs_t* wdt);
+void MXC_WDT_ResetTimer(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Get the status of the reset flag.
  * @param       wdt     Pointer to watchdog registers.
  * @returns     1 if the previous reset was caused by the watchdog, 0 otherwise.
  */
-int MXC_WDT_GetResetFlag(mxc_wdt_regs_t* wdt);
+int MXC_WDT_GetResetFlag(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Clears the reset flag.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_ClearResetFlag(mxc_wdt_regs_t* wdt);
+void MXC_WDT_ClearResetFlag(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Get the status of the interrupt flag.
  * @param       wdt     Pointer to watchdog registers.
  * @returns     1 if the interrupt is pending, 0 otherwise.
  */
-int MXC_WDT_GetIntFlag(mxc_wdt_regs_t* wdt);
+int MXC_WDT_GetIntFlag(mxc_wdt_regs_t *wdt);
 
 /**
  * @brief       Clears the interrupt flag.
  * @param       wdt     Pointer to watchdog registers.
  */
-void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t* wdt);
+void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
 
 /**@} end of group wdt */
 

@@ -37,6 +37,7 @@ jobs:
       with:
         repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
         ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+        fetch-depth: 0
 
     - name: clang-format-run
       run: |

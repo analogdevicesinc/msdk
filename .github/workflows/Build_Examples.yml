@@ -27,10 +27,14 @@ jobs:
         with:
           # Update the submodules below, doing so here will convert ssh to https
           submodules: false
+          fetch-depth: 0
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
         run: |
+          # Remove local modifications
+          git scorch
+
           # Update the submodules, this will use ssh
           git submodule init
           git submodule sync

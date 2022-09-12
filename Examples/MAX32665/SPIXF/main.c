@@ -54,7 +54,7 @@
 
 /***** Definitions *****/
 
-#define EXT_FLASH_ADDR         0
+#define EXT_FLASH_ADDR 0
 #define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
 
 int fail = 0;
@@ -70,7 +70,7 @@ extern uint8_t __load_start_xip, __load_length_xip;
 // Note: This demo has not been tested under IAR and should be considered non-functional
 extern int Image$$RW_IRAM2$$Length;
 extern char Image$$RW_IRAM2$$Base[];
-uint8_t* __xip_addr;
+uint8_t *__xip_addr;
 #endif
 
 /******************************************************************************/
@@ -122,8 +122,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
     printf("External flash Initialized.\n\n");
 
@@ -135,8 +134,7 @@ int main(void)
     } else {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     int err;

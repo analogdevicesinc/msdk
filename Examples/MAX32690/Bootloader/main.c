@@ -56,10 +56,10 @@
 extern uint32_t _flash0;
 extern uint32_t _flash1;
 
-#define FLASH0_START      ((uint32_t)&_flash0)
-#define FLASH1_START      ((uint32_t)&_flash1)
+#define FLASH0_START ((uint32_t)&_flash0)
+#define FLASH1_START ((uint32_t)&_flash1)
 #define FLASH_ERASED_WORD 0xFFFFFFFF
-#define CRC32_LEN         4
+#define CRC32_LEN 4
 
 /**************************************************************************************************
   Local Variables
@@ -84,8 +84,7 @@ extern void Boot_Lower(void);
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j)
-        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -100,14 +99,13 @@ uint32_t crc32_for_byte(uint32_t r)
  *  \return None.
  */
 /*************************************************************************************************/
-static uint32_t table[0x100] = {0};
-void crc32(const void* data, size_t n_bytes, uint32_t* crc)
+static uint32_t table[0x100] = { 0 };
+void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
     if (!*table)
-        for (size_t i = 0; i < 0x100; ++i)
-            table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
     for (size_t i = 0; i < n_bytes; ++i)
-        *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
+        *crc = table[(uint8_t)*crc ^ ((uint8_t *)data)[i]] ^ *crc >> 8;
 }
 
 void bootError(void)
@@ -117,13 +115,12 @@ void bootError(void)
     volatile int i;
     for (j = 0; j < 10; j++) {
         LED_Toggle(0);
-        for (i = 0; i < 0xFFFFF; i++) {
-        }
+        for (i = 0; i < 0xFFFFF; i++) {}
     }
     NVIC_SystemReset();
 }
 
-int flashPageErased(uint32_t* addr)
+int flashPageErased(uint32_t *addr)
 {
     /* Determine if this page is totally erased */
     int i;
@@ -138,7 +135,7 @@ int flashPageErased(uint32_t* addr)
 
 uint32_t findUpperLen(void)
 {
-    uint32_t* flashPagePointer = (uint32_t*)FLASH1_START;
+    uint32_t *flashPagePointer = (uint32_t *)FLASH1_START;
 
     /* Find the first erased page in the upper flash*/
     while (1) {
@@ -153,20 +150,19 @@ uint32_t findUpperLen(void)
     }
 
     /* Length is 0 */
-    if (flashPagePointer == (uint32_t*)FLASH1_START) {
+    if (flashPagePointer == (uint32_t *)FLASH1_START) {
         return 0;
     }
 
     /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {
-    }
+    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {}
     flashPagePointer += 2;
 
     /* return the starting address of the CRC, last address of the image */
     return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
-static int multiPageErase(uint8_t* address, uint32_t size)
+static int multiPageErase(uint8_t *address, uint32_t size)
 {
     int err;
     volatile uint32_t address32 = (uint32_t)address;
@@ -188,7 +184,7 @@ static int multiPageErase(uint8_t* address, uint32_t size)
     return E_NO_ERROR;
 }
 
-static int flashWrite(uint32_t* address, uint32_t* data, uint32_t len)
+static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
 {
     int err;
 
@@ -217,8 +213,7 @@ int main(void)
 {
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFFF; i++) {
-    }
+    for (i = 0; i < 0x3FFFFF; i++) {}
 
     LED_Init();
     LED_Off(0);
@@ -235,17 +230,17 @@ int main(void)
         /* Validate the image with CRC32 */
         uint32_t crcResult = 0;
 
-        crc32((const void*)FLASH1_START, len, &crcResult);
+        crc32((const void *)FLASH1_START, len, &crcResult);
 
         /* Check the calculated digest against what was received */
-        if (crcResult == (uint32_t) * (uint32_t*)(FLASH1_START + len)) {
+        if (crcResult == (uint32_t) * (uint32_t *)(FLASH1_START + len)) {
             /* Erase the destination pages */
-            if (multiPageErase((uint8_t*)FLASH0_START, len) != E_NO_ERROR) {
+            if (multiPageErase((uint8_t *)FLASH0_START, len) != E_NO_ERROR) {
                 /* Failed to erase pages */
                 bootError();
             }
             /* Copy the new firmware image */
-            if (flashWrite((uint32_t*)FLASH0_START, (uint32_t*)FLASH1_START, len) != E_NO_ERROR) {
+            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START, len) != E_NO_ERROR) {
                 /* Failed to write new image */
                 bootError();
             } else {
@@ -253,12 +248,11 @@ int main(void)
                 int j;
                 for (j = 0; j < 10; j++) {
                     LED_Toggle(1);
-                    for (i = 0; i < 0xFFFFF; i++) {
-                    }
+                    for (i = 0; i < 0xFFFFF; i++) {}
                 }
             }
             /* Erase the update pages */
-            if (multiPageErase((uint8_t*)FLASH1_START, len) != E_NO_ERROR) {
+            if (multiPageErase((uint8_t *)FLASH1_START, len) != E_NO_ERROR) {
                 /* Failed to erase pages, continue to boot from the lower pages */
             }
         } else {
@@ -266,8 +260,7 @@ int main(void)
             int j;
             for (j = 0; j < 10; j++) {
                 LED_Toggle(0);
-                for (i = 0; i < 0xFFFFF; i++) {
-                }
+                for (i = 0; i < 0xFFFFF; i++) {}
             }
         }
     }
@@ -275,6 +268,5 @@ int main(void)
     /* Boot from lower image */
     Boot_Lower();
 
-    while (1) {
-    }
+    while (1) {}
 }

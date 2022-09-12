@@ -52,7 +52,7 @@ typedef struct {
 
 /*****************************     FUNCTIONS *********************************/
 void utils_delay_ms(unsigned int ms);
-void utils_hex_dump(const char* title, unsigned char* buf, unsigned int len);
-void utils_seconds_to_date(DateTime_t* dt, unsigned int sec);
+void utils_hex_dump(const char *title, unsigned char *buf, unsigned int len);
+void utils_seconds_to_date(DateTime_t *dt, unsigned int sec);
 
 #endif // _UTILS_H_

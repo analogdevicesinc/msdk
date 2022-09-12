@@ -49,7 +49,7 @@
 
 void process_img(void)
 {
-    uint8_t* raw;
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
 

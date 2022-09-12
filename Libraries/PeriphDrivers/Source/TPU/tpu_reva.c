@@ -49,11 +49,11 @@
 
 /* **** Functions **** */
 
-static int MXC_TPU_RevA_TRNG_Read_Status(mxc_trng_revc_regs_t* trng);
+static int MXC_TPU_RevA_TRNG_Read_Status(mxc_trng_revc_regs_t *trng);
 /* ************************************************************************ */
 /* Prevent GCC from optimimzing this function to memset */
 static void __attribute__((optimize("no-tree-loop-distribute-patterns")))
-memset32(uint32_t* dst, uint32_t value, unsigned int len)
+memset32(uint32_t *dst, uint32_t value, unsigned int len)
 {
     while (len) {
         *dst = value;
@@ -65,7 +65,7 @@ memset32(uint32_t* dst, uint32_t value, unsigned int len)
 /* ************************************************************************ */
 /* Prevent GCC from optimimzing this function to memcpy */
 static void __attribute__((optimize("no-tree-loop-distribute-patterns")))
-memcpy32(uint32_t* dst, uint32_t* src, unsigned int len)
+memcpy32(uint32_t *dst, uint32_t *src, unsigned int len)
 {
     while (len) {
         *dst = *src;
@@ -80,7 +80,7 @@ memcpy32(uint32_t* dst, uint32_t* src, unsigned int len)
 /* ************************************************************************* */
 
 // *********************************** Function to Clear all Done Flags ***************************************
-void MXC_TPU_RevA_Clear_Done_Flags(mxc_tpu_reva_regs_t* tpu)
+void MXC_TPU_RevA_Clear_Done_Flags(mxc_tpu_reva_regs_t *tpu)
 {
     // Clear all done flags
     tpu->ctrl |= MXC_F_TPU_REVA_CTRL_DMA_DONE | MXC_F_TPU_REVA_CTRL_GLS_DONE |
@@ -89,14 +89,14 @@ void MXC_TPU_RevA_Clear_Done_Flags(mxc_tpu_reva_regs_t* tpu)
 }
 
 // ************************************** Function to Clear Crypto Register ************************************
-void MXC_TPU_RevA_Reset(mxc_tpu_reva_regs_t* tpu)
+void MXC_TPU_RevA_Reset(mxc_tpu_reva_regs_t *tpu)
 {
     MXC_TPU_Init(MXC_SYS_PERIPH_CLOCK_TPU);
 
     // Reset Crypto Accelerator
     tpu->ctrl = MXC_F_TPU_REVA_CTRL_RST;
 
-    memset32((uint32_t*)tpu, 0, sizeof(mxc_tpu_reva_regs_t));
+    memset32((uint32_t *)tpu, 0, sizeof(mxc_tpu_reva_regs_t));
 
     // Set the legacy bit so done bits are W1C.
     tpu->ctrl |= MXC_F_TPU_REVA_CTRL_FLAG_MODE;
@@ -109,7 +109,7 @@ void MXC_TPU_RevA_Reset(mxc_tpu_reva_regs_t* tpu)
 /* ************************************************************************* */
 
 // ************************************ Function to Configure CRC Algorithm ****************************************
-int MXC_TPU_RevA_CRC_Config(mxc_tpu_reva_regs_t* tpu)
+int MXC_TPU_RevA_CRC_Config(mxc_tpu_reva_regs_t *tpu)
 {
     // Reset Crypto Block
     MXC_TPU_Reset();
@@ -124,8 +124,8 @@ int MXC_TPU_RevA_CRC_Config(mxc_tpu_reva_regs_t* tpu)
 }
 
 // ************************************* Function to Generate CRC value *******************************************
-int MXC_TPU_RevA_CRC(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len, uint32_t poly,
-                     uint32_t* crc)
+int MXC_TPU_RevA_CRC(mxc_tpu_reva_regs_t *tpu, const uint8_t *src, uint32_t len, uint32_t poly,
+                     uint32_t *crc)
 {
     int err;
 
@@ -152,12 +152,10 @@ int MXC_TPU_RevA_CRC(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len,
     tpu->dma_cnt = len;
 
     // Wait for dma done flag
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {
-    }
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {}
 
     // Wait until operation is complete
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {
-    }
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {}
 
     // Clear gls done flag
     tpu->ctrl |= MXC_F_TPU_REVA_CTRL_GLS_DONE;
@@ -169,7 +167,7 @@ int MXC_TPU_RevA_CRC(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len,
 }
 
 // ************************************ Function to Configure HAM Algorithm ****************************************
-int MXC_TPU_RevA_Ham_Config(mxc_tpu_reva_regs_t* tpu)
+int MXC_TPU_RevA_Ham_Config(mxc_tpu_reva_regs_t *tpu)
 {
     // Reset Crypto Block
     MXC_TPU_Reset();
@@ -181,8 +179,7 @@ int MXC_TPU_RevA_Ham_Config(mxc_tpu_reva_regs_t* tpu)
 
     // Reset hamming code
     tpu->crc_ctrl = MXC_F_TPU_REVA_CRC_CTRL_HRST;
-    while (tpu->crc_ctrl & MXC_F_TPU_REVA_CRC_CTRL_HRST) {
-    }
+    while (tpu->crc_ctrl & MXC_F_TPU_REVA_CRC_CTRL_HRST) {}
 
     // Enable Hamming code
     tpu->crc_ctrl |= MXC_F_TPU_REVA_CRC_CTRL_HAM;
@@ -194,7 +191,7 @@ int MXC_TPU_RevA_Ham_Config(mxc_tpu_reva_regs_t* tpu)
 }
 
 // ************************************* Function to Generate ECC value *******************************************
-int MXC_TPU_RevA_Ham(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len, uint32_t* ecc)
+int MXC_TPU_RevA_Ham(mxc_tpu_reva_regs_t *tpu, const uint8_t *src, uint32_t len, uint32_t *ecc)
 {
     int err;
 
@@ -218,12 +215,10 @@ int MXC_TPU_RevA_Ham(mxc_tpu_reva_regs_t* tpu, const uint8_t* src, uint32_t len,
     tpu->dma_cnt = len;
 
     // Wait until operation is complete
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {
-    }
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_GLS_DONE)) {}
 
     // Wait for dma done flag
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {
-    }
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_DMA_DONE)) {}
 
     // Clear gls done flag
     tpu->ctrl |= MXC_F_TPU_REVA_CTRL_GLS_DONE;
@@ -243,7 +238,7 @@ unsigned int MXC_TPU_RevA_Cipher_GetLength(mxc_tpu_ciphersel_t cipher, unsigned 
 {
     unsigned int numBlocks, block_size;
     block_size = MXC_TPU_Cipher_Get_Block_Size(cipher);
-    numBlocks  = data_size / block_size;
+    numBlocks = data_size / block_size;
     if ((data_size % block_size) > 0) {
         numBlocks++;
     }
@@ -252,7 +247,7 @@ unsigned int MXC_TPU_RevA_Cipher_GetLength(mxc_tpu_ciphersel_t cipher, unsigned 
 }
 
 // ************************ Function to Enable Encrypt/Decrypt Cipher Operation *******************************
-void MXC_TPU_RevA_Cipher_EncDecSelect(mxc_tpu_reva_regs_t* tpu, int enc)
+void MXC_TPU_RevA_Cipher_EncDecSelect(mxc_tpu_reva_regs_t *tpu, int enc)
 {
     // Enable Encryption/Decryption Operation
     if (enc) {
@@ -263,7 +258,7 @@ void MXC_TPU_RevA_Cipher_EncDecSelect(mxc_tpu_reva_regs_t* tpu, int enc)
 }
 
 // ******************************* Function to Configure Cipher Operation *************************************
-int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t* tpu, mxc_tpu_reva_modesel_t mode,
+int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_modesel_t mode,
                                mxc_tpu_reva_ciphersel_t cipher)
 {
     // Reset crypto block
@@ -280,9 +275,9 @@ int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t* tpu, mxc_tpu_reva_modesel_t 
 }
 
 // ************************************ Function to Test Cipher Algorithm ***********************************
-int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t* tpu, const char* src, const char* iv,
-                                    const char* key, mxc_tpu_ciphersel_t cipher,
-                                    mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t *tpu, const char *src, const char *iv,
+                                    const char *key, mxc_tpu_ciphersel_t cipher,
+                                    mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     unsigned int keyLength, dataLength, numBlocks, i;
 
@@ -298,31 +293,29 @@ int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t* tpu, const char* src, c
 
     numBlocks = MXC_TPU_Cipher_GetLength(cipher, data_size);
 
-    keyLength  = MXC_TPU_Cipher_Get_Key_Size(cipher);
+    keyLength = MXC_TPU_Cipher_Get_Key_Size(cipher);
     dataLength = MXC_TPU_Cipher_Get_Block_Size(cipher);
 
     // Load key into cipher key register
-    memcpy32((void*)&tpu->cipher_key[0], (void*)key, keyLength);
+    memcpy32((void *)&tpu->cipher_key[0], (void *)key, keyLength);
 
     // Load Initial Vector if necessary
     if (mode != MXC_TPU_MODE_ECB) {
-        memcpy32((void*)&tpu->cipher_init[0], (void*)iv, dataLength);
+        memcpy32((void *)&tpu->cipher_init[0], (void *)iv, dataLength);
     }
 
     for (i = 0; i < numBlocks; i++) {
         // Wait until ready for data
-        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY)) {
-        }
+        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY)) {}
 
         // Load plaintext into data in register to start the operation
-        memcpy32((void*)&tpu->data_in[0], (void*)src, dataLength);
+        memcpy32((void *)&tpu->data_in[0], (void *)src, dataLength);
 
         // Wait until operation is complete
-        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_CPH_DONE)) {
-        }
+        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_CPH_DONE)) {}
 
         // Copy data out
-        memcpy32((void*)outptr, (void*)&tpu->data_out[0], dataLength);
+        memcpy32((void *)outptr, (void *)&tpu->data_out[0], dataLength);
 
         src += dataLength;
         outptr += dataLength;
@@ -334,8 +327,8 @@ int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t* tpu, const char* src, c
     return E_SUCCESS;
 }
 
-int MXC_TPU_RevA_Cipher_DES_Encrypt(const char* plaintext, const char* iv, const char* key,
-                                    mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_RevA_Cipher_DES_Encrypt(const char *plaintext, const char *iv, const char *key,
+                                    mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     // Enable cipher encrypt/decrypt process
     MXC_TPU_Cipher_EncDecSelect(1);
@@ -345,8 +338,8 @@ int MXC_TPU_RevA_Cipher_DES_Encrypt(const char* plaintext, const char* iv, const
         plaintext, iv, key, (mxc_tpu_ciphersel_t)MXC_TPU_REVA_CIPHER_DES, mode, data_size, outptr);
 }
 
-int MXC_TPU_RevA_Cipher_DES_Decrypt(const char* ciphertext, const char* iv, const char* key,
-                                    mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_RevA_Cipher_DES_Decrypt(const char *ciphertext, const char *iv, const char *key,
+                                    mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     // Enable cipher encrypt/decrypt process
     MXC_TPU_Cipher_EncDecSelect(0);
@@ -356,8 +349,8 @@ int MXC_TPU_RevA_Cipher_DES_Decrypt(const char* ciphertext, const char* iv, cons
         ciphertext, iv, key, (mxc_tpu_ciphersel_t)MXC_TPU_REVA_CIPHER_DES, mode, data_size, outptr);
 }
 
-int MXC_TPU_RevA_Cipher_TDES_Encrypt(const char* plaintext, const char* iv, const char* key,
-                                     mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_RevA_Cipher_TDES_Encrypt(const char *plaintext, const char *iv, const char *key,
+                                     mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     // Enable cipher encrypt/decrypt process
     MXC_TPU_Cipher_EncDecSelect(1);
@@ -367,8 +360,8 @@ int MXC_TPU_RevA_Cipher_TDES_Encrypt(const char* plaintext, const char* iv, cons
         plaintext, iv, key, (mxc_tpu_ciphersel_t)MXC_TPU_REVA_CIPHER_TDES, mode, data_size, outptr);
 }
 
-int MXC_TPU_RevA_Cipher_TDES_Decrypt(const char* ciphertext, const char* iv, const char* key,
-                                     mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_RevA_Cipher_TDES_Decrypt(const char *ciphertext, const char *iv, const char *key,
+                                     mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     // Enable cipher encrypt/decrypt process
     MXC_TPU_Cipher_EncDecSelect(0);
@@ -379,9 +372,9 @@ int MXC_TPU_RevA_Cipher_TDES_Decrypt(const char* ciphertext, const char* iv, con
                                       data_size, outptr);
 }
 
-int MXC_TPU_RevA_Cipher_AES_Encrypt(const char* plaintext, const char* iv, const char* key,
+int MXC_TPU_RevA_Cipher_AES_Encrypt(const char *plaintext, const char *iv, const char *key,
                                     mxc_tpu_ciphersel_t cipher, mxc_tpu_modesel_t mode,
-                                    unsigned int data_size, char* outptr)
+                                    unsigned int data_size, char *outptr)
 {
     if ((cipher != MXC_TPU_CIPHER_AES128) && (cipher != MXC_TPU_CIPHER_AES192) &&
         (cipher != MXC_TPU_CIPHER_AES256)) {
@@ -395,9 +388,9 @@ int MXC_TPU_RevA_Cipher_AES_Encrypt(const char* plaintext, const char* iv, const
     return MXC_TPU_Cipher_DoOperation(plaintext, iv, key, cipher, mode, data_size, outptr);
 }
 
-int MXC_TPU_RevA_Cipher_AES_Decrypt(const char* ciphertext, const char* iv, const char* key,
+int MXC_TPU_RevA_Cipher_AES_Decrypt(const char *ciphertext, const char *iv, const char *key,
                                     mxc_tpu_ciphersel_t cipher, mxc_tpu_modesel_t mode,
-                                    unsigned int data_size, char* outptr)
+                                    unsigned int data_size, char *outptr)
 {
     if ((cipher != MXC_TPU_CIPHER_AES128) && (cipher != MXC_TPU_CIPHER_AES192) &&
         (cipher != MXC_TPU_CIPHER_AES256)) {
@@ -415,7 +408,7 @@ int MXC_TPU_RevA_Cipher_AES_Decrypt(const char* ciphertext, const char* iv, cons
 /* Hash functions                                                            */
 /* ************************************************************************* */
 
-void MXC_TPU_RevA_Hash_SHA_Size(unsigned int* blocks, unsigned int* length, unsigned int* lbyte,
+void MXC_TPU_RevA_Hash_SHA_Size(unsigned int *blocks, unsigned int *length, unsigned int *lbyte,
                                 mxc_tpu_hashfunsel_t fun)
 {
     unsigned block_size_sha = MXC_TPU_Hash_Get_Block_Size_SHA(fun);
@@ -423,7 +416,7 @@ void MXC_TPU_RevA_Hash_SHA_Size(unsigned int* blocks, unsigned int* length, unsi
     if (*blocks == 0) {
         // Special case for 0 length message
         *blocks = 1;
-        *lbyte  = 1;
+        *lbyte = 1;
     } else {
         // Get size of last block of data
         *lbyte = ((*length) - (((*blocks) - 1) * block_size_sha));
@@ -431,7 +424,7 @@ void MXC_TPU_RevA_Hash_SHA_Size(unsigned int* blocks, unsigned int* length, unsi
 }
 
 // ********************************** Function to Configure SHA Algorithm *************************************
-int MXC_TPU_RevA_Hash_Config(mxc_tpu_reva_regs_t* tpu, mxc_tpu_hashfunsel_t func)
+int MXC_TPU_RevA_Hash_Config(mxc_tpu_reva_regs_t *tpu, mxc_tpu_hashfunsel_t func)
 {
     int funcInt = (int)func;
     if ((funcInt < (int)MXC_V_TPU_REVA_HASH_CTRL_HASH_DIS) ||
@@ -449,15 +442,14 @@ int MXC_TPU_RevA_Hash_Config(mxc_tpu_reva_regs_t* tpu, mxc_tpu_hashfunsel_t func
     tpu->hash_ctrl |= MXC_F_TPU_REVA_HASH_CTRL_INIT;
 
     // Wait until operation is complete
-    while (tpu->hash_ctrl & MXC_F_TPU_REVA_HASH_CTRL_INIT) {
-    }
+    while (tpu->hash_ctrl & MXC_F_TPU_REVA_HASH_CTRL_INIT) {}
 
     return E_SUCCESS;
 }
 
 // ************************************ Function to test SHA Algorithm ****************************************
-int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_hashfunsel_t fun,
-                          unsigned int byteLen, char* digest)
+int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t *tpu, const char *msg, mxc_tpu_hashfunsel_t fun,
+                          unsigned int byteLen, char *digest)
 {
     unsigned int last_byte = 0;
     unsigned int block, word, numBlocks, block_size_sha, dgst_size;
@@ -478,7 +470,7 @@ int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_has
         return err;
     }
     block_size_sha = MXC_TPU_Hash_Get_Block_Size_SHA(fun);
-    dgst_size      = MXC_TPU_Hash_Get_Dgst_Size(fun);
+    dgst_size = MXC_TPU_Hash_Get_Dgst_Size(fun);
     // Write message size
     tpu->hash_msg_sz[0] = byteLen;
 
@@ -494,8 +486,7 @@ int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_has
         if (block != numBlocks - 1) {
             for (i = block * block_size_sha, word = 0; word < block_size_sha; word += 4) {
                 // Wait until ready for data
-                while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY))
-                    ;
+                while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY)) {}
 
                 tpu->data_in[0] = (uint32_t)(msg[word + i]) | ((uint32_t)(msg[word + 1 + i]) << 8) |
                                   ((uint32_t)(msg[word + 2 + i]) << 16) |
@@ -511,8 +502,7 @@ int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_has
             // Process the last block
             for (word = 0; word < last_byte; word += 4) {
                 // Wait until ready for data
-                while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY))
-                    ;
+                while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_RDY)) {}
 
                 // Send data to the crypto data register
                 if (last_byte >= (word + 4)) {
@@ -534,15 +524,14 @@ int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_has
         }
 
         // Wait until operation is complete
-        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_HSH_DONE)) {
-        }
+        while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_HSH_DONE)) {}
     }
 
     // Clear the done flags
     MXC_TPU_RevA_Clear_Done_Flags(tpu);
 
     // Get the msg digest
-    memcpy((uint32_t*)digest, (uint32_t*)&tpu->hash_digest[0], dgst_size);
+    memcpy((uint32_t *)digest, (uint32_t *)&tpu->hash_digest[0], dgst_size);
 
     return E_SUCCESS;
 }
@@ -551,7 +540,7 @@ int MXC_TPU_RevA_Hash_SHA(mxc_tpu_reva_regs_t* tpu, const char* msg, mxc_tpu_has
 /* True Random Number Generator (TRNG) functions                             */
 /* ************************************************************************* */
 
-static int MXC_TPU_RevA_TRNG_Read_Status(mxc_trng_revc_regs_t* trng)
+static int MXC_TPU_RevA_TRNG_Read_Status(mxc_trng_revc_regs_t *trng)
 {
     //  Check if a random number is ready to be read
     if (trng->st & MXC_F_TRNG_REVC_ST_RND_RDY) {
@@ -562,58 +551,55 @@ static int MXC_TPU_RevA_TRNG_Read_Status(mxc_trng_revc_regs_t* trng)
     }
 }
 
-uint8_t MXC_TPU_RevA_TRNG_Read8BIT(mxc_trng_revc_regs_t* trng)
+uint8_t MXC_TPU_RevA_TRNG_Read8BIT(mxc_trng_revc_regs_t *trng)
 {
     //  Wait for TRNG to be ready
-    while (MXC_TPU_RevA_TRNG_Read_Status(trng) != E_NO_ERROR)
-        ;
+    while (MXC_TPU_RevA_TRNG_Read_Status(trng) != E_NO_ERROR) {}
 
     return ((uint8_t)(trng->data & 0xFF));
-    ;
+    {
+    }
 }
 
-uint16_t MXC_TPU_RevA_TRNG_Read16BIT(mxc_trng_revc_regs_t* trng)
+uint16_t MXC_TPU_RevA_TRNG_Read16BIT(mxc_trng_revc_regs_t *trng)
 {
     //  Wait for TRNG to be ready
-    while (MXC_TPU_RevA_TRNG_Read_Status(trng) != E_NO_ERROR)
-        ;
+    while (MXC_TPU_RevA_TRNG_Read_Status(trng) != E_NO_ERROR) {}
 
     return ((uint16_t)(trng->data & 0xFFFF));
 }
 
-uint32_t MXC_TPU_RevA_TRNG_Read32BIT(mxc_trng_revc_regs_t* trng)
+uint32_t MXC_TPU_RevA_TRNG_Read32BIT(mxc_trng_revc_regs_t *trng)
 {
     //   Wait for TRNG to be ready
-    while (MXC_TPU_RevA_TRNG_Read_Status(trng) != E_NO_ERROR)
-        ;
+    while (MXC_TPU_RevA_TRNG_Read_Status(trng) != E_NO_ERROR) {}
 
     return ((uint32_t)trng->data);
 }
 
-void MXC_TPU_RevA_TRNG_Read(mxc_trng_revc_regs_t* trng, uint8_t* data, int len)
+void MXC_TPU_RevA_TRNG_Read(mxc_trng_revc_regs_t *trng, uint8_t *data, int len)
 {
     int i = 0;
     uint32_t temp;
 
     while (len >= 4) {
-        temp = MXC_TPU_TRNG_Read32BIT((mxc_trng_regs_t*)trng);
+        temp = MXC_TPU_TRNG_Read32BIT((mxc_trng_regs_t *)trng);
         memcpy(&data[i], &temp, 4);
         i += 4;
         len -= 4;
     }
     while (len) {
-        data[i++] = MXC_TPU_TRNG_Read8BIT((mxc_trng_regs_t*)trng);
+        data[i++] = MXC_TPU_TRNG_Read8BIT((mxc_trng_regs_t *)trng);
         len--;
     }
 }
 
-void MXC_TPU_RevA_TRNG_Generate_AES(mxc_trng_revc_regs_t* trng)
+void MXC_TPU_RevA_TRNG_Generate_AES(mxc_trng_revc_regs_t *trng)
 {
     // Start key generation
     trng->cn |= MXC_F_TRNG_REVC_CN_AESKG_MEU;
     // Field will be auto-set to 0 while key generation is in progress.  Wait for it to complete.
-    while ((trng->st & MXC_F_TRNG_REVC_ST_AESKGD_MEU_S) == 0)
-        ;
+    while ((trng->st & MXC_F_TRNG_REVC_ST_AESKGD_MEU_S) == 0) {}
 }
 
 /* ************************************************************************* */
@@ -632,34 +618,34 @@ int exponent = 0;
 #define MAA_M (MXC_BASE_TPU + 0x600) // MAA_M memory offset
 
 // Define a pointer pointing to different MAA memory location
-volatile unsigned int* maa_a = (volatile unsigned int*)MAA_A;
-volatile unsigned int* maa_b = (volatile unsigned int*)MAA_B;
-volatile unsigned int* maa_r = (volatile unsigned int*)MAA_R;
-volatile unsigned int* maa_t = (volatile unsigned int*)MAA_T;
-volatile unsigned int* maa_e = (volatile unsigned int*)MAA_E;
-volatile unsigned int* maa_m = (volatile unsigned int*)MAA_M;
+volatile unsigned int *maa_a = (volatile unsigned int *)MAA_A;
+volatile unsigned int *maa_b = (volatile unsigned int *)MAA_B;
+volatile unsigned int *maa_r = (volatile unsigned int *)MAA_R;
+volatile unsigned int *maa_t = (volatile unsigned int *)MAA_T;
+volatile unsigned int *maa_e = (volatile unsigned int *)MAA_E;
+volatile unsigned int *maa_m = (volatile unsigned int *)MAA_M;
 
 /* **** Functions **** */
 void MXC_TPU_RevA_MAA_Mem_Clear(void)
 {
     // Initialize MAA memory
-    memset((uint32_t*)MAA_A, 0, MAA_MAX_SIZE);
-    memset((uint32_t*)MAA_B, 0, MAA_MAX_SIZE);
-    memset((uint32_t*)MAA_R, 0, MAA_MAX_SIZE);
-    memset((uint32_t*)MAA_T, 0, MAA_MAX_SIZE);
-    memset((uint32_t*)MAA_E, 0, MAA_MAX_SIZE);
-    memset((uint32_t*)MAA_M, 0, MAA_MAX_SIZE);
+    memset((uint32_t *)MAA_A, 0, MAA_MAX_SIZE);
+    memset((uint32_t *)MAA_B, 0, MAA_MAX_SIZE);
+    memset((uint32_t *)MAA_R, 0, MAA_MAX_SIZE);
+    memset((uint32_t *)MAA_T, 0, MAA_MAX_SIZE);
+    memset((uint32_t *)MAA_E, 0, MAA_MAX_SIZE);
+    memset((uint32_t *)MAA_M, 0, MAA_MAX_SIZE);
 }
 
-void MXC_TPU_RevA_MAA_Reset(mxc_tpu_reva_regs_t* tpu)
+void MXC_TPU_RevA_MAA_Reset(mxc_tpu_reva_regs_t *tpu)
 {
     // Reset Crypto Accelerator
     tpu->ctrl = MXC_F_TPU_REVA_CTRL_RST;
-    memset((uint32_t*)tpu, 0, sizeof(mxc_tpu_reva_regs_t));
+    memset((uint32_t *)tpu, 0, sizeof(mxc_tpu_reva_regs_t));
     MXC_TPU_MAA_Mem_Clear();
 }
 
-int MXC_TPU_RevA_MAA_Init(mxc_tpu_reva_regs_t* tpu, unsigned int size)
+int MXC_TPU_RevA_MAA_Init(mxc_tpu_reva_regs_t *tpu, unsigned int size)
 {
     int err;
 
@@ -695,8 +681,8 @@ int MXC_TPU_RevA_MAA_Init(mxc_tpu_reva_regs_t* tpu, unsigned int size)
     return E_SUCCESS;
 }
 
-int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t* tpu, mxc_tpu_maa_clcsel_t clc, char* multiplier,
-                             char* multiplicand, char* exp, char* mod, int* result,
+int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t *tpu, mxc_tpu_maa_clcsel_t clc, char *multiplier,
+                             char *multiplicand, char *exp, char *mod, int *result,
                              unsigned int len)
 {
     unsigned i;
@@ -725,11 +711,11 @@ int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t* tpu, mxc_tpu_maa_clcsel_t clc,
 
     // Copy operands into the memory
     if (clc == MXC_TPU_MAA_EXP) {
-        memcpy((void*)MAA_E, (uint32_t*)exp, len);
+        memcpy((void *)MAA_E, (uint32_t *)exp, len);
     }
-    memcpy((void*)MAA_A, (uint32_t*)multiplier, len);
-    memcpy((void*)MAA_B, (uint32_t*)multiplicand, len);
-    memcpy((void*)MAA_M, (uint32_t*)mod, len);
+    memcpy((void *)MAA_A, (uint32_t *)multiplier, len);
+    memcpy((void *)MAA_B, (uint32_t *)multiplicand, len);
+    memcpy((void *)MAA_M, (uint32_t *)mod, len);
 
     // Start MAA
     MXC_SETFIELD(tpu->maa_ctrl, MXC_F_TPU_REVA_MAA_CTRL_CLC, clc);
@@ -741,8 +727,7 @@ int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t* tpu, mxc_tpu_maa_clcsel_t clc,
     }
 
     // Wait until operation is complete
-    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_MAA_DONE))
-        ;
+    while (!(tpu->ctrl & MXC_F_TPU_REVA_CTRL_MAA_DONE)) {}
 
     // load the output buffer
     for (i = 0; i < (len / 4); i++) {

@@ -57,12 +57,12 @@
 // #define MASTERDMA
 
 /***** Definitions *****/
-#define DATA_LEN   100    // Words
+#define DATA_LEN 100 // Words
 #define DATA_VALUE 0xA5A5 // This is for master mode only...
-#define VALUE      0xFFFF
-#define SPI_SPEED  100000 // Bit Rate
+#define VALUE 0xFFFF
+#define SPI_SPEED 100000 // Bit Rate
 
-#define SPI     MXC_SPI1
+#define SPI MXC_SPI1
 #define SPI_IRQ SPI1_IRQn
 
 /***** Globals *****/
@@ -88,7 +88,7 @@ void DMA1_IRQHandler(void)
     DMA_FLAG = 1;
 }
 
-void SPI_Callback(mxc_spi_req_t* req, int error)
+void SPI_Callback(mxc_spi_req_t *req, int error)
 {
     SPI_FLAG = error;
 }
@@ -112,32 +112,29 @@ int main(void)
             continue;
         }
 
-        for (j = 0; j < DATA_LEN; j++) {
-            tx_data[j] = DATA_VALUE;
-        }
+        for (j = 0; j < DATA_LEN; j++) { tx_data[j] = DATA_VALUE; }
 
         // Configure the peripheral
         if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED) != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
 
-            while (1) {
-            }
+            while (1) {}
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         //SPI Request
-        req.spi        = SPI;
-        req.txData     = (uint8_t*)tx_data;
-        req.rxData     = (uint8_t*)rx_data;
-        req.txLen      = DATA_LEN;
-        req.rxLen      = DATA_LEN;
-        req.ssIdx      = 0;
+        req.spi = SPI;
+        req.txData = (uint8_t *)tx_data;
+        req.rxData = (uint8_t *)rx_data;
+        req.txLen = DATA_LEN;
+        req.rxLen = DATA_LEN;
+        req.ssIdx = 0;
         req.ssDeassert = 1;
-        req.txCnt      = 0;
-        req.rxCnt      = 0;
+        req.txCnt = 0;
+        req.rxCnt = 0;
         req.completeCB = (spi_complete_cb_t)SPI_Callback;
-        SPI_FLAG       = 1;
+        SPI_FLAG = 1;
 
         retVal = MXC_SPI_SetDataSize(SPI, i);
         if (retVal != E_NO_ERROR) {
@@ -160,8 +157,7 @@ int main(void)
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 
-        while (SPI_FLAG == 1)
-            ;
+        while (SPI_FLAG == 1) {}
 #endif
 
 #ifdef MASTERDMA
@@ -172,8 +168,7 @@ int main(void)
         NVIC_EnableIRQ(DMA1_IRQn);
         MXC_SPI_MasterTransactionDMA(&req);
 
-        while (DMA_FLAG == 0)
-            ;
+        while (DMA_FLAG == 0) {}
         DMA_FLAG = 0;
 #endif
 

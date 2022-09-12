@@ -45,27 +45,27 @@ static void display_page1(void);
 static void display_page2(void);
 static void display_page3(void);
 
-static ScreenFunc info_screens[] = {display_page1, display_page2, display_page3};
-static int screen_index          = 0;
+static ScreenFunc info_screens[] = { display_page1, display_page2, display_page3 };
+static int screen_index = 0;
 
 static text_t text_msg[] = {
-    {(char*)"INFORMATION", 11},
-    {(char*)"Scroll through pages", 20},
+    { (char *)"INFORMATION", 11 },
+    { (char *)"Scroll through pages", 20 },
     // pages 1
-    {(char*)"Cortex M4 @ 150MHz", 18},
-    {(char*)"1MB Flash, 760KB SRAM", 21},
-    {(char*)"TFT, ISO7816 PHY, MSR", 21},
+    { (char *)"Cortex M4 @ 150MHz", 18 },
+    { (char *)"1MB Flash, 760KB SRAM", 21 },
+    { (char *)"TFT, ISO7816 PHY, MSR", 21 },
     // pages 2
-    {(char*)"6 dynamic sensor pairs", 22},
-    {(char*)"Hardware crypto blocks", 22},
-    {(char*)"ECDSA Bootloader", 16},
+    { (char *)"6 dynamic sensor pairs", 22 },
+    { (char *)"Hardware crypto blocks", 22 },
+    { (char *)"ECDSA Bootloader", 16 },
     // pages 3
-    {(char*)"EMV-L1 stack", 12},
-    {(char*)"Cryptographic library", 21},
-    {(char*)"FreeRTOS OS", 11},
+    { (char *)"EMV-L1 stack", 12 },
+    { (char *)"Cryptographic library", 21 },
+    { (char *)"FreeRTOS OS", 11 },
 };
 
-static area_t area_cleanMSG = {0, 70, 320, 115};
+static area_t area_cleanMSG = { 0, 70, 320, 115 };
 
 /********************************* Static Functions **************************/
 static void display_page1(void)
@@ -139,32 +139,32 @@ static int init(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_A:
-            if (--screen_index < 0) {
-                screen_index = (ARRAY_SIZE(info_screens) - 1);
-            }
-            info_screens[screen_index]();
-            break;
-        case KEY_B:
-            if (++screen_index >= (int)ARRAY_SIZE(info_screens)) {
-                screen_index = 0;
-            }
-            info_screens[screen_index]();
-            break;
-        case KEY_C:
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+    case KEY_A:
+        if (--screen_index < 0) {
+            screen_index = (ARRAY_SIZE(info_screens) - 1);
+        }
+        info_screens[screen_index]();
+        break;
+    case KEY_B:
+        if (++screen_index >= (int)ARRAY_SIZE(info_screens)) {
+            screen_index = 0;
+        }
+        info_screens[screen_index]();
+        break;
+    case KEY_C:
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
 
     return 0;
 }
 
-static State g_state = {"info", init, key_process, NULL, 0};
+static State g_state = { "info", init, key_process, NULL, 0 };
 
 /********************************* Public Functions **************************/
-State* get_info_state(void)
+State *get_info_state(void)
 {
     return &g_state;
 }

@@ -67,7 +67,7 @@ extern "C" {
 
 /*  CMSIS CM4 definitions */
 #define __CM4_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
-#define __CM4_CMSIS_VERSION_SUB  (0x20) /*!< [15:0]  CMSIS HAL sub version    */
+#define __CM4_CMSIS_VERSION_SUB (0x20) /*!< [15:0]  CMSIS HAL sub version    */
 #define __CM4_CMSIS_VERSION             \
     ((__CM4_CMSIS_VERSION_MAIN << 16) | \
      __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
@@ -216,7 +216,7 @@ extern "C" {
 #else
 #define __I volatile const /*!< Defines 'read only' permissions                 */
 #endif
-#define __O  volatile /*!< Defines 'write only' permissions                */
+#define __O volatile /*!< Defines 'write only' permissions                */
 #define __IO volatile /*!< Defines 'read / write' permissions              */
 
 /*@} end of group Cortex_M4 */
@@ -299,47 +299,47 @@ __attribute__((always_inline)) __STATIC_INLINE void __WFI(void)
  * @brief Structure type to access the GCR Registers.
  */
 typedef struct {
-    __IO uint32_t irq0_enable;        /**< <tt>\b 0x00:<\tt> */
-    __IO uint32_t irq0_pending;       /**< <tt>\b 0x04:<\tt>  */
-    __IO uint32_t irq0_set_pending;   /**< <tt>\b 0x08:<\tt>  */
+    __IO uint32_t irq0_enable; /**< <tt>\b 0x00:<\tt> */
+    __IO uint32_t irq0_pending; /**< <tt>\b 0x04:<\tt>  */
+    __IO uint32_t irq0_set_pending; /**< <tt>\b 0x08:<\tt>  */
     __IO uint32_t irq0_clear_pending; /**< <tt>\b 0x0c:<\tt>  */
-    __IO uint32_t irq1_enable;        /**< <tt>\b 0x10:<\tt> */
-    __IO uint32_t irq1_pending;       /**< <tt>\b 0x14:<\tt>  */
-    __IO uint32_t irq1_set_pending;   /**< <tt>\b 0x18:<\tt>  */
+    __IO uint32_t irq1_enable; /**< <tt>\b 0x10:<\tt> */
+    __IO uint32_t irq1_pending; /**< <tt>\b 0x14:<\tt>  */
+    __IO uint32_t irq1_set_pending; /**< <tt>\b 0x18:<\tt>  */
     __IO uint32_t irq1_clear_pending; /**< <tt>\b 0x1c:<\tt>  */
 } mxc_intr_regs_t;
 
 typedef struct {
-    __IO uint32_t event0_enable;        /**< <tt>\b 0x20:<\tt>*/
-    __IO uint32_t event0_pending;       /**< <tt>\b 0x24:<\tt> */
-    __IO uint32_t event0_set_pending;   /**< <tt>\b 0x28:<\tt> */
+    __IO uint32_t event0_enable; /**< <tt>\b 0x20:<\tt>*/
+    __IO uint32_t event0_pending; /**< <tt>\b 0x24:<\tt> */
+    __IO uint32_t event0_set_pending; /**< <tt>\b 0x28:<\tt> */
     __IO uint32_t event0_clear_pending; /**< <tt>\b 0x2C:<\tt> */
-    __IO uint32_t event1_enable;        /**< <tt>\b 0x30:<\tt>*/
-    __IO uint32_t event1_pending;       /**< <tt>\b 0x34:<\tt> */
-    __IO uint32_t event1_set_pending;   /**< <tt>\b 0x38:<\tt> */
+    __IO uint32_t event1_enable; /**< <tt>\b 0x30:<\tt>*/
+    __IO uint32_t event1_pending; /**< <tt>\b 0x34:<\tt> */
+    __IO uint32_t event1_set_pending; /**< <tt>\b 0x38:<\tt> */
     __IO uint32_t event1_clear_pending; /**< <tt>\b 0x3C:<\tt> */
 } mxc_event_regs_t;
 
 typedef struct {
-    __IO uint32_t sleep_ctrl;   /**< <tt>\b 0x40:<\tt>  */
+    __IO uint32_t sleep_ctrl; /**< <tt>\b 0x40:<\tt>  */
     __IO uint32_t sleep_status; /**< <tt>\b 0x44:<\tt>  */
 } mxc_sleep_regs_t;
 
 /* Software Triggered Interrupt Register Definitions */
-#define NVIC_STIR_INTID_Pos 0                                /*!< STIR: INTLINESNUM Position */
+#define NVIC_STIR_INTID_Pos 0 /*!< STIR: INTLINESNUM Position */
 #define NVIC_STIR_INTID_Msk (0x1FFUL << NVIC_STIR_INTID_Pos) /*!< STIR: INTLINESNUM Mask */
 
 /*@} end of group CMSIS_NVIC */
 
 #define MXC_BASE_INTR ((uint32_t)0xE5070000UL)
 //#define MXC_BASE_INTR                   ((uint32_t)0xE5000000UL)
-#define MXC_INTR       ((mxc_intr_regs_t*)MXC_BASE_INTR)
+#define MXC_INTR ((mxc_intr_regs_t *)MXC_BASE_INTR)
 #define MXC_BASE_EVENT ((uint32_t)0xE5070020UL)
 //#define MXC_BASE_EVENT                  ((uint32_t)0xE5000020UL)
-#define MXC_EVENT      ((mxc_event_regs_t*)MXC_BASE_EVENT)
+#define MXC_EVENT ((mxc_event_regs_t *)MXC_BASE_EVENT)
 #define MXC_BASE_SLEEP ((uint32_t)0xE5070040UL)
 //#define MXC_BASE_SLEEP                  ((uint32_t)0xE5000040UL)
-#define MXC_SLEEP ((mxc_sleep_regs_t*)MXC_BASE_SLEEP)
+#define MXC_SLEEP ((mxc_sleep_regs_t *)MXC_BASE_SLEEP)
 
 /*******************************************************************************
  *                Hardware Abstraction Layer

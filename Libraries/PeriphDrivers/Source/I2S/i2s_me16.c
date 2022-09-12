@@ -44,7 +44,7 @@
 #include "i2s_reva.h"
 #include "i2s_regs.h"
 
-int MXC_I2S_Init(mxc_i2s_req_t* req)
+int MXC_I2S_Init(mxc_i2s_req_t *req)
 {
     MXC_I2S_Shutdown();
 
@@ -65,7 +65,7 @@ int MXC_I2S_Shutdown(void)
     return E_NO_ERROR;
 }
 
-int MXC_I2S_ConfigData(mxc_i2s_req_t* req)
+int MXC_I2S_ConfigData(mxc_i2s_req_t *req)
 {
     return MXC_I2S_RevA_ConfigData(req);
 }
@@ -102,17 +102,18 @@ int MXC_I2S_SetFrequency(mxc_i2s_ch_mode_t mode, uint16_t clkdiv)
 
 int MXC_I2S_SetSampleRate(uint32_t smpl_rate, mxc_i2s_wsize_t smpl_sz)
 {
-    return MXC_I2S_RevA_SetSampleRate((mxc_i2s_reva_regs_t*)MXC_I2S, smpl_rate, smpl_sz, ERFO_FREQ);
+    return MXC_I2S_RevA_SetSampleRate((mxc_i2s_reva_regs_t *)MXC_I2S, smpl_rate, smpl_sz,
+                                      ERFO_FREQ);
 }
 
 int MXC_I2S_GetSampleRate(void)
 {
-    return MXC_I2S_RevA_GetSampleRate((mxc_i2s_reva_regs_t*)MXC_I2S, ERFO_FREQ);
+    return MXC_I2S_RevA_GetSampleRate((mxc_i2s_reva_regs_t *)MXC_I2S, ERFO_FREQ);
 }
 
 int MXC_I2S_CalculateClockDiv(uint32_t smpl_rate, mxc_i2s_wsize_t smpl_sz)
 {
-    return MXC_I2S_RevA_CalculateClockDiv((mxc_i2s_reva_regs_t*)MXC_I2S, smpl_rate, smpl_sz,
+    return MXC_I2S_RevA_CalculateClockDiv((mxc_i2s_reva_regs_t *)MXC_I2S, smpl_rate, smpl_sz,
                                           ERFO_FREQ);
 }
 
@@ -121,14 +122,14 @@ void MXC_I2S_Flush(void)
     MXC_I2S_RevA_Flush();
 }
 
-int MXC_I2S_FillTXFIFO(void* txData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt)
+int MXC_I2S_FillTXFIFO(void *txData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt)
 {
-    return MXC_I2S_RevA_FillTXFIFO((mxc_i2s_reva_regs_t*)MXC_I2S, txData, wordSize, len, smpl_cnt);
+    return MXC_I2S_RevA_FillTXFIFO((mxc_i2s_reva_regs_t *)MXC_I2S, txData, wordSize, len, smpl_cnt);
 }
 
-int MXC_I2S_ReadRXFIFO(void* rxData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt)
+int MXC_I2S_ReadRXFIFO(void *rxData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt)
 {
-    return MXC_I2S_RevA_ReadRXFIFO((mxc_i2s_reva_regs_t*)MXC_I2S, rxData, wordSize, len, smpl_cnt);
+    return MXC_I2S_RevA_ReadRXFIFO((mxc_i2s_reva_regs_t *)MXC_I2S, rxData, wordSize, len, smpl_cnt);
 }
 
 void MXC_I2S_EnableInt(uint32_t flags)
@@ -151,29 +152,29 @@ void MXC_I2S_ClearFlags(uint32_t flags)
     MXC_I2S_RevA_ClearFlags(flags);
 }
 
-int MXC_I2S_Transaction(mxc_i2s_req_t* i2s_req)
+int MXC_I2S_Transaction(mxc_i2s_req_t *i2s_req)
 {
-    return MXC_I2S_RevA_Transaction((mxc_i2s_reva_regs_t*)MXC_I2S, i2s_req);
+    return MXC_I2S_RevA_Transaction((mxc_i2s_reva_regs_t *)MXC_I2S, i2s_req);
 }
 
-int MXC_I2S_TransactionAsync(mxc_i2s_req_t* i2s_req)
+int MXC_I2S_TransactionAsync(mxc_i2s_req_t *i2s_req)
 {
-    return MXC_I2S_RevA_TransactionAsync((mxc_i2s_reva_regs_t*)MXC_I2S, i2s_req);
+    return MXC_I2S_RevA_TransactionAsync((mxc_i2s_reva_regs_t *)MXC_I2S, i2s_req);
 }
 
-int MXC_I2S_TXDMAConfig(void* src_addr, int len)
+int MXC_I2S_TXDMAConfig(void *src_addr, int len)
 {
     return MXC_I2S_RevA_TXDMAConfig(src_addr, len);
 }
 
-int MXC_I2S_RXDMAConfig(void* dest_addr, int len)
+int MXC_I2S_RXDMAConfig(void *dest_addr, int len)
 {
     return MXC_I2S_RevA_RXDMAConfig(dest_addr, len);
 }
 
 void MXC_I2S_Handler(void)
 {
-    MXC_I2S_RevA_Handler((mxc_i2s_reva_regs_t*)MXC_I2S);
+    MXC_I2S_RevA_Handler((mxc_i2s_reva_regs_t *)MXC_I2S);
 }
 
 void MXC_I2S_RegisterDMACallback(void (*callback)(int, int))

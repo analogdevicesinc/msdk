@@ -51,29 +51,29 @@ __weak void SystemCoreClockUpdate(void)
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     switch (clk_src) {
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-            base_freq = EXTCLK_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
-            base_freq = INRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-            base_freq = IPO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-            base_freq = IBRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
-            base_freq = ISO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
-            base_freq = ERTCO_FREQ;
-            break;
-        default:
-            // Codes 001 and 111 are reserved.
-            // This code should never execute, however, initialize to safe value.
-            base_freq = HIRC_FREQ;
-            break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+        base_freq = EXTCLK_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
+        base_freq = INRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
+        base_freq = IPO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
+        base_freq = IBRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
+        base_freq = ISO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
+        base_freq = ERTCO_FREQ;
+        break;
+    default:
+        // Codes 001 and 111 are reserved.
+        // This code should never execute, however, initialize to safe value.
+        base_freq = HIRC_FREQ;
+        break;
     }
 
     div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;

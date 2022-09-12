@@ -46,7 +46,7 @@ extern "C" {
    * @param[out] pDst       points to the Q31 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_float_to_q31(const float32_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_float_to_q31(const float32_t *pSrc, q31_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Converts the elements of the floating-point vector to Q15 vector.
@@ -54,7 +54,7 @@ void arm_float_to_q31(const float32_t* pSrc, q31_t* pDst, uint32_t blockSize);
    * @param[out] pDst       points to the Q15 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_float_to_q15(const float32_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_float_to_q15(const float32_t *pSrc, q15_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Converts the elements of the floating-point vector to Q7 vector.
@@ -62,7 +62,7 @@ void arm_float_to_q15(const float32_t* pSrc, q15_t* pDst, uint32_t blockSize);
    * @param[out] pDst       points to the Q7 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_float_to_q7(const float32_t* pSrc, q7_t* pDst, uint32_t blockSize);
+void arm_float_to_q7(const float32_t *pSrc, q7_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q31 vector to floating-point vector.
@@ -70,7 +70,7 @@ void arm_float_to_q7(const float32_t* pSrc, q7_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q31_to_float(const q31_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_q31_to_float(const q31_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q31 vector to Q15 vector.
@@ -78,7 +78,7 @@ void arm_q31_to_float(const q31_t* pSrc, float32_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q31_to_q15(const q31_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_q31_to_q15(const q31_t *pSrc, q15_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q31 vector to Q7 vector.
@@ -86,7 +86,7 @@ void arm_q31_to_q15(const q31_t* pSrc, q15_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q31_to_q7(const q31_t* pSrc, q7_t* pDst, uint32_t blockSize);
+void arm_q31_to_q7(const q31_t *pSrc, q7_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q15 vector to floating-point vector.
@@ -94,7 +94,7 @@ void arm_q31_to_q7(const q31_t* pSrc, q7_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q15_to_float(const q15_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_q15_to_float(const q15_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q15 vector to Q31 vector.
@@ -102,7 +102,7 @@ void arm_q15_to_float(const q15_t* pSrc, float32_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q15_to_q31(const q15_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_q15_to_q31(const q15_t *pSrc, q31_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q15 vector to Q7 vector.
@@ -110,7 +110,7 @@ void arm_q15_to_q31(const q15_t* pSrc, q31_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q15_to_q7(const q15_t* pSrc, q7_t* pDst, uint32_t blockSize);
+void arm_q15_to_q7(const q15_t *pSrc, q7_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q7 vector to floating-point vector.
@@ -118,7 +118,7 @@ void arm_q15_to_q7(const q15_t* pSrc, q7_t* pDst, uint32_t blockSize);
    * @param[out] pDst       is output pointer
    * @param[in]  blockSize  is the number of samples to process
    */
-void arm_q7_to_float(const q7_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_q7_to_float(const q7_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q7 vector to Q31 vector.
@@ -126,7 +126,7 @@ void arm_q7_to_float(const q7_t* pSrc, float32_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_q7_to_q31(const q7_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_q7_to_q31(const q7_t *pSrc, q31_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Converts the elements of the Q7 vector to Q15 vector.
@@ -134,7 +134,7 @@ void arm_q7_to_q31(const q7_t* pSrc, q31_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_q7_to_q15(const q7_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_q7_to_q15(const q7_t *pSrc, q15_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Struct for specifying sorting algorithm
@@ -178,7 +178,7 @@ typedef struct {
    * @param[out] pDst       points to the block of output data.
    * @param[in]  blockSize  number of samples to process.
    */
-void arm_sort_f32(const arm_sort_instance_f32* S, float32_t* pSrc, float32_t* pDst,
+void arm_sort_f32(const arm_sort_instance_f32 *S, float32_t *pSrc, float32_t *pDst,
                   uint32_t blockSize);
 
 /**
@@ -186,14 +186,14 @@ void arm_sort_f32(const arm_sort_instance_f32* S, float32_t* pSrc, float32_t* pD
    * @param[in]      alg          Selected algorithm.
    * @param[in]      dir          Sorting order.
    */
-void arm_sort_init_f32(arm_sort_instance_f32* S, arm_sort_alg alg, arm_sort_dir dir);
+void arm_sort_init_f32(arm_sort_instance_f32 *S, arm_sort_alg alg, arm_sort_dir dir);
 
 /**
    * @brief Instance structure for the sorting algorithms.
    */
 typedef struct {
-    arm_sort_dir dir;  /**< Sorting order (direction)  */
-    float32_t* buffer; /**< Working buffer */
+    arm_sort_dir dir; /**< Sorting order (direction)  */
+    float32_t *buffer; /**< Working buffer */
 } arm_merge_sort_instance_f32;
 
 /**
@@ -202,7 +202,7 @@ typedef struct {
    * @param[out]     pDst       points to the block of output data
    * @param[in]      blockSize  number of samples to process.
    */
-void arm_merge_sort_f32(const arm_merge_sort_instance_f32* S, float32_t* pSrc, float32_t* pDst,
+void arm_merge_sort_f32(const arm_merge_sort_instance_f32 *S, float32_t *pSrc, float32_t *pDst,
                         uint32_t blockSize);
 
 /**
@@ -210,7 +210,7 @@ void arm_merge_sort_f32(const arm_merge_sort_instance_f32* S, float32_t* pSrc, f
    * @param[in]      dir          Sorting order.
    * @param[in]      buffer       Working buffer.
    */
-void arm_merge_sort_init_f32(arm_merge_sort_instance_f32* S, arm_sort_dir dir, float32_t* buffer);
+void arm_merge_sort_init_f32(arm_merge_sort_instance_f32 *S, arm_sort_dir dir, float32_t *buffer);
 
 /**
    * @brief  Copies the elements of a floating-point vector.
@@ -218,7 +218,7 @@ void arm_merge_sort_init_f32(arm_merge_sort_instance_f32* S, arm_sort_dir dir, f
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_copy_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_copy_f32(const float32_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Copies the elements of a floating-point vector.
@@ -226,7 +226,7 @@ void arm_copy_f32(const float32_t* pSrc, float32_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_copy_f64(const float64_t* pSrc, float64_t* pDst, uint32_t blockSize);
+void arm_copy_f64(const float64_t *pSrc, float64_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Copies the elements of a Q7 vector.
@@ -234,7 +234,7 @@ void arm_copy_f64(const float64_t* pSrc, float64_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_copy_q7(const q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
+void arm_copy_q7(const q7_t *pSrc, q7_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Copies the elements of a Q15 vector.
@@ -242,7 +242,7 @@ void arm_copy_q7(const q7_t* pSrc, q7_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_copy_q15(const q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_copy_q15(const q15_t *pSrc, q15_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Copies the elements of a Q31 vector.
@@ -250,7 +250,7 @@ void arm_copy_q15(const q15_t* pSrc, q15_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_copy_q31(const q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
+void arm_copy_q31(const q31_t *pSrc, q31_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Fills a constant value into a floating-point vector.
@@ -258,7 +258,7 @@ void arm_copy_q31(const q31_t* pSrc, q31_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_fill_f32(float32_t value, float32_t* pDst, uint32_t blockSize);
+void arm_fill_f32(float32_t value, float32_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Fills a constant value into a floating-point vector.
@@ -266,7 +266,7 @@ void arm_fill_f32(float32_t value, float32_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_fill_f64(float64_t value, float64_t* pDst, uint32_t blockSize);
+void arm_fill_f64(float64_t value, float64_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Fills a constant value into a Q7 vector.
@@ -274,7 +274,7 @@ void arm_fill_f64(float64_t value, float64_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_fill_q7(q7_t value, q7_t* pDst, uint32_t blockSize);
+void arm_fill_q7(q7_t value, q7_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Fills a constant value into a Q15 vector.
@@ -282,7 +282,7 @@ void arm_fill_q7(q7_t value, q7_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_fill_q15(q15_t value, q15_t* pDst, uint32_t blockSize);
+void arm_fill_q15(q15_t value, q15_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Fills a constant value into a Q31 vector.
@@ -290,7 +290,7 @@ void arm_fill_q15(q15_t value, q15_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_fill_q31(q31_t value, q31_t* pDst, uint32_t blockSize);
+void arm_fill_q31(q31_t value, q31_t *pDst, uint32_t blockSize);
 
 /**
  * @brief Weighted sum
@@ -302,7 +302,7 @@ void arm_fill_q31(q31_t value, q31_t* pDst, uint32_t blockSize);
  * @return Weighted sum
  *
  */
-float32_t arm_weighted_sum_f32(const float32_t* in, const float32_t* weigths, uint32_t blockSize);
+float32_t arm_weighted_sum_f32(const float32_t *in, const float32_t *weigths, uint32_t blockSize);
 
 /**
  * @brief Barycenter
@@ -316,7 +316,7 @@ float32_t arm_weighted_sum_f32(const float32_t* in, const float32_t* weigths, ui
  * @return       None
  *
  */
-void arm_barycenter_f32(const float32_t* in, const float32_t* weights, float32_t* out,
+void arm_barycenter_f32(const float32_t *in, const float32_t *weights, float32_t *out,
                         uint32_t nbVectors, uint32_t vecDim);
 
 #ifdef __cplusplus

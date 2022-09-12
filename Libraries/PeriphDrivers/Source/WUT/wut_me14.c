@@ -65,123 +65,123 @@ static mxc_wut_complete_cb_t cb_async;
 void MXC_WUT_Init(mxc_wut_pres_t pres)
 {
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_XTAL32K);
-    MXC_WUT_RevA_Init((mxc_wut_reva_regs_t*)MXC_WUT, pres);
+    MXC_WUT_RevA_Init((mxc_wut_reva_regs_t *)MXC_WUT, pres);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_Shutdown(void)
 {
-    MXC_WUT_RevA_Shutdown((mxc_wut_reva_regs_t*)MXC_WUT);
+    MXC_WUT_RevA_Shutdown((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_Enable(void)
 {
-    MXC_WUT_RevA_Enable((mxc_wut_reva_regs_t*)MXC_WUT);
+    MXC_WUT_RevA_Enable((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_Disable(void)
 {
-    MXC_WUT_RevA_Disable((mxc_wut_reva_regs_t*)MXC_WUT);
+    MXC_WUT_RevA_Disable((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Config(const mxc_wut_cfg_t* cfg)
+void MXC_WUT_Config(const mxc_wut_cfg_t *cfg)
 {
-    MXC_WUT_RevA_Config((mxc_wut_reva_regs_t*)MXC_WUT, (mxc_wut_reva_cfg_t*)cfg);
+    MXC_WUT_RevA_Config((mxc_wut_reva_regs_t *)MXC_WUT, (mxc_wut_reva_cfg_t *)cfg);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_WUT_GetCompare(void)
 {
-    return MXC_WUT_RevA_GetCompare((mxc_wut_reva_regs_t*)MXC_WUT);
+    return MXC_WUT_RevA_GetCompare((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_WUT_GetCapture(void)
 {
-    return MXC_WUT_RevA_GetCapture((mxc_wut_reva_regs_t*)MXC_WUT);
+    return MXC_WUT_RevA_GetCapture((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************* */
 uint32_t MXC_WUT_GetCount(void)
 {
-    return MXC_WUT_RevA_GetCount((mxc_wut_reva_regs_t*)MXC_WUT);
+    return MXC_WUT_RevA_GetCount((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************* */
 void MXC_WUT_IntClear(void)
 {
-    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t*)MXC_WUT);
+    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************* */
 uint32_t MXC_WUT_IntStatus(void)
 {
-    return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t*)MXC_WUT);
+    return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************* */
 void MXC_WUT_SetCompare(uint32_t cmp_cnt)
 {
-    MXC_WUT_RevA_SetCompare((mxc_wut_reva_regs_t*)MXC_WUT, cmp_cnt);
+    MXC_WUT_RevA_SetCompare((mxc_wut_reva_regs_t *)MXC_WUT, cmp_cnt);
 }
 
 /* ************************************************************************* */
 void MXC_WUT_SetCount(uint32_t cnt)
 {
-    MXC_WUT_RevA_SetCount((mxc_wut_reva_regs_t*)MXC_WUT, cnt);
+    MXC_WUT_RevA_SetCount((mxc_wut_reva_regs_t *)MXC_WUT, cnt);
 }
 
 /* ************************************************************************* */
-int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t* ticks)
+int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t *ticks)
 {
-    return MXC_WUT_RevA_GetTicks((mxc_wut_reva_regs_t*)MXC_WUT, XTAL32K_FREQ, time, units, ticks);
+    return MXC_WUT_RevA_GetTicks((mxc_wut_reva_regs_t *)MXC_WUT, XTAL32K_FREQ, time, units, ticks);
 }
 
 /* ************************************************************************* */
-int MXC_WUT_GetTime(uint32_t ticks, uint32_t* time, mxc_wut_unit_t* units)
+int MXC_WUT_GetTime(uint32_t ticks, uint32_t *time, mxc_wut_unit_t *units)
 {
-    return MXC_WUT_RevA_GetTime((mxc_wut_reva_regs_t*)MXC_WUT, XTAL32K_FREQ, ticks, time,
-                                (mxc_wut_reva_unit_t*)units);
+    return MXC_WUT_RevA_GetTime((mxc_wut_reva_regs_t *)MXC_WUT, XTAL32K_FREQ, ticks, time,
+                                (mxc_wut_reva_unit_t *)units);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_Edge(void)
 {
-    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t*)MXC_WUT);
+    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_Store(void)
 {
-    MXC_WUT_RevA_Store((mxc_wut_reva_regs_t*)MXC_WUT);
+    MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_RestoreBBClock(uint32_t dbbFreq)
 {
-    MXC_WUT_RevA_RestoreBBClock((mxc_wut_reva_regs_t*)MXC_WUT, dbbFreq, XTAL32K_FREQ);
+    MXC_WUT_RevA_RestoreBBClock((mxc_wut_reva_regs_t *)MXC_WUT, dbbFreq, XTAL32K_FREQ);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_WUT_GetSleepTicks(void)
 {
-    return MXC_WUT_RevA_GetSleepTicks((mxc_wut_reva_regs_t*)MXC_WUT);
+    return MXC_WUT_RevA_GetSleepTicks((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
 /* ************************************************************************** */
 void MXC_WUT_Delay_MS(uint32_t waitMs)
 {
-    MXC_WUT_RevA_Delay_MS((mxc_wut_reva_regs_t*)MXC_WUT, waitMs, XTAL32K_FREQ);
+    MXC_WUT_RevA_Delay_MS((mxc_wut_reva_regs_t *)MXC_WUT, waitMs, XTAL32K_FREQ);
 }
 
 /* ************************************************************************** */
-static void MXC_WUT_GetWUTSync(uint32_t* wutCnt, uint32_t* snapshot)
+static void MXC_WUT_GetWUTSync(uint32_t *wutCnt, uint32_t *snapshot)
 {
-    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t*)MXC_WUT);
-    *wutCnt   = MXC_WUT->cnt;
+    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
+    *wutCnt = MXC_WUT->cnt;
     *snapshot = MXC_WUT->snapshot;
 }
 
@@ -254,13 +254,13 @@ int MXC_WUT_Handler(void)
     /* Store the snapshot */
     MXC_WUT_GetWUTSync(&wutCnt1, &snapshot1);
     snapTicks = snapshot1 - snapshot0_async;
-    wutTicks  = wutCnt1 - wutCnt0_async;
+    wutTicks = wutCnt1 - wutCnt0_async;
 
     /* Calculate the ideal number of DBB ticks in WUT_TRIM_TICKS */
     calcTicks = ((uint64_t)wutTicks * (uint64_t)BB_CLK_RATE_HZ) / (uint64_t)32768;
 
     trimComplete = 0;
-    trimValue    = (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >> MXC_F_TRIMSIR_RTC_RTCX1_POS;
+    trimValue = (MXC_TRIMSIR->rtc & MXC_F_TRIMSIR_RTC_RTCX1) >> MXC_F_TRIMSIR_RTC_RTCX1_POS;
 
     if (snapTicks > calcTicks) {
         /* See if we're closer to the calculated value */
@@ -305,7 +305,7 @@ int MXC_WUT_Handler(void)
     } else {
         /* Just right */
         bestTrim_async = trimValue;
-        trimComplete   = 1;
+        trimComplete = 1;
     }
 
     if (trimComplete) {
@@ -316,7 +316,7 @@ int MXC_WUT_Handler(void)
 
         /* Call the callback */
         if (cb_async != NULL) {
-            cbTemp   = cb_async;
+            cbTemp = cb_async;
             cb_async = NULL;
             cbTemp(E_NO_ERROR);
         }
@@ -352,7 +352,7 @@ int MXC_WUT_TrimCrystal(void)
     }
     do {
         for (i = 0; i < (WUT_TRIM_TICKS - 1); i++) {
-            MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t*)MXC_WUT);
+            MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
         }
     } while (MXC_WUT_Handler() != E_NO_ERROR);
 
