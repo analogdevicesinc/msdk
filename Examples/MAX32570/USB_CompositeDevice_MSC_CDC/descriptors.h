@@ -45,32 +45,32 @@ MXC_USB_device_descriptor_t __attribute__((aligned(4))) composite_device_descrip
     0x01, /* bDescriptorType = Device          */
     0x0200,
     /* bcdUSB USB spec rev (BCD)         */ ///
-    0xEF,   /* bDeviceClass = code specified by interface descriptors        */
-    0x02,   /* bDeviceSubClass = code specified by interface descriptors     */
-    0x01,   /* bDeviceProtocol = code specified by interface descriptors     */
-    0x40,   /* bMaxPacketSize0 is 64 bytes       */
+    0xEF, /* bDeviceClass = code specified by interface descriptors        */
+    0x02, /* bDeviceSubClass = code specified by interface descriptors     */
+    0x01, /* bDeviceProtocol = code specified by interface descriptors     */
+    0x40, /* bMaxPacketSize0 is 64 bytes       */
     0x0B6A, /* idVendor (Maxim Integrated)       */
     0x003C,
     /* idProduct                         */ ///
-    0x0100,                                 /* bcdDevice                         */
-    0x01,                                   /* iManufacturer Descriptor ID       */
-    0x02,                                   /* iProduct Descriptor ID            */
-    0x00,                                   /* iSerialNumber Descriptor ID       */
-    0x01                                    /* bNumConfigurations                */
+    0x0100, /* bcdDevice                         */
+    0x01, /* iManufacturer Descriptor ID       */
+    0x02, /* iProduct Descriptor ID            */
+    0x00, /* iSerialNumber Descriptor ID       */
+    0x01 /* bNumConfigurations                */
 };
 
 /* Device qualifier needed for high-speed operation */
 MXC_USB_device_qualifier_descriptor_t __attribute__((aligned(4)))
 composite_device_qualifier_descriptor = {
-    0x0A,   /* bLength = 10                       */
-    0x06,   /* bDescriptorType = Device Qualifier */
+    0x0A, /* bLength = 10                       */
+    0x06, /* bDescriptorType = Device Qualifier */
     0x0200, /* bcdUSB USB spec rev (BCD)          */
-    0xEF,   /* bDeviceClass = Unspecified         */
-    0x02,   /* bDeviceSubClass                    */
-    0x01,   /* bDeviceProtocol                    */
-    0x40,   /* bMaxPacketSize0 is 64 bytes        */
-    0x01,   /* bNumConfigurations                 */
-    0x00    /* Reserved, must be 0                */
+    0xEF, /* bDeviceClass = Unspecified         */
+    0x02, /* bDeviceSubClass                    */
+    0x01, /* bDeviceProtocol                    */
+    0x40, /* bMaxPacketSize0 is 64 bytes        */
+    0x01, /* bNumConfigurations                 */
+    0x00 /* Reserved, must be 0                */
 };
 
 __attribute__((aligned(4))) struct __attribute__((packed)) {
@@ -96,11 +96,11 @@ __attribute__((aligned(4))) struct __attribute__((packed)) {
 
 composite_config_descriptor = {
     {
-        0x09,                                         /*  bLength                          */
-        0x02,                                         /*  bDescriptorType = Config         */
-        0x0062,                                       /*  wTotalLength(L/H) = 98 bytes     */
-        0x03,                                         /*  bNumInterfaces                   */
-        0x01,                                         /*  bConfigurationValue              */
+        0x09, /*  bLength                          */
+        0x02, /*  bDescriptorType = Config         */
+        0x0062, /*  wTotalLength(L/H) = 98 bytes     */
+        0x03, /*  bNumInterfaces                   */
+        0x01, /*  bConfigurationValue              */
         0x02, /*  iConfiguration                   */ ///
         0xE0, /*  bmAttributes (bus-powered, remote wakeup) */
         0x01, /*  MaxPower is 100ma (units are 2ma/bit) */
@@ -120,21 +120,21 @@ composite_config_descriptor = {
     },
     {
         /*  OUT Endpoint 1 (Descriptor #1) */
-        0x07,   /*  bLength                          */
-        0x05,   /*  bDescriptorType (Endpoint)       */
-        0x01,   /*  bEndpointAddress (EP1-OUT)       */
-        0x02,   /*  bmAttributes (bulk)              */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x01, /*  bEndpointAddress (EP1-OUT)       */
+        0x02, /*  bmAttributes (bulk)              */
         0x0040, /*  wMaxPacketSize                   */
-        0x00,   /*  bInterval (N/A)                  */
+        0x00, /*  bInterval (N/A)                  */
     },
     {
         /*  IN Endpoint 2 (Descriptor #2) */
-        0x07,   /*  bLength                          */
-        0x05,   /*  bDescriptorType (Endpoint)       */
-        0x82,   /*  bEndpointAddress (EP2-IN)        */
-        0x02,   /*  bmAttributes (bulk)              */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x82, /*  bEndpointAddress (EP2-IN)        */
+        0x02, /*  bmAttributes (bulk)              */
         0x0040, /*  wMaxPacketSize                   */
-        0x00    /*  bInterval (N/A)                  */
+        0x00 /*  bInterval (N/A)                  */
     },
     /********** Interface Association Descriptor **********/
     {
@@ -162,9 +162,9 @@ composite_config_descriptor = {
     },
     {
         /*  Header Functional Descriptor */
-        0x05,       /*  bFunctionalLength = 5           */
-        0x24,       /*  bDescriptorType                 */
-        0x00,       /*  bDescriptorSubtype              */
+        0x05, /*  bFunctionalLength = 5           */
+        0x24, /*  bDescriptorType                 */
+        0x00, /*  bDescriptorSubtype              */
         0x10, 0x01, /*  bcdCDC                          */
     },
     {
@@ -192,12 +192,12 @@ composite_config_descriptor = {
     },
     {
         /*  IN Endpoint 3 (Descriptor #1) */
-        0x07,   /*  bLength                          */
-        0x05,   /*  bDescriptorType (Endpoint)       */
-        0x84,   /*  bEndpointAddress (EP3-IN)        */
-        0x03,   /*  bmAttributes (interrupt)         */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x84, /*  bEndpointAddress (EP3-IN)        */
+        0x03, /*  bmAttributes (interrupt)         */
         0x0040, /*  wMaxPacketSize                   */
-        0xff,   /*  bInterval (milliseconds)         */
+        0xff, /*  bInterval (milliseconds)         */
     },
     {
         /*  Second Interface Descriptor For Data Interface */
@@ -213,21 +213,21 @@ composite_config_descriptor = {
     },
     {
         /*  OUT Endpoint 1 (Descriptor #2) */
-        0x07,   /*  bLength                          */
-        0x05,   /*  bDescriptorType (Endpoint)       */
-        0x05,   /*  bEndpointAddress (EP1-OUT)       */
-        0x02,   /*  bmAttributes (bulk)              */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x05, /*  bEndpointAddress (EP1-OUT)       */
+        0x02, /*  bmAttributes (bulk)              */
         0x0040, /*  wMaxPacketSize                   */
-        0x00,   /*  bInterval (N/A)                  */
+        0x00, /*  bInterval (N/A)                  */
     },
     {
         /*  IN Endpoint 2 (Descriptor #3) */
-        0x07,   /*  bLength                          */
-        0x05,   /*  bDescriptorType (Endpoint)       */
-        0x83,   /*  bEndpointAddress (EP2-IN)        */
-        0x02,   /*  bmAttributes (bulk)              */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x83, /*  bEndpointAddress (EP2-IN)        */
+        0x02, /*  bmAttributes (bulk)              */
         0x0040, /*  wMaxPacketSize                   */
-        0x00,   /*  bInterval (N/A)                  */
+        0x00, /*  bInterval (N/A)                  */
     },
 };
 
@@ -253,12 +253,12 @@ __attribute__((aligned(4))) uint8_t report_descriptor[] = {
     0x75, 0x08, /*    Report Size = 8                 */
     0x95, 0x01, /*    Report Count = 1                */
     0x81, 0x00, /*   Input(Data,Variable,Array)       */
-    0xc0        /*  End Collection                    */
+    0xc0 /*  End Collection                    */
 };
 
 __attribute__((aligned(4))) uint8_t lang_id_desc[] = {
-    0x04,      /* bLength */
-    0x03,      /* bDescriptorType */
+    0x04, /* bLength */
+    0x03, /* bDescriptorType */
     0x09, 0x04 /* bString = wLANGID (see usb_20.pdf 9.6.7 String) */
 };
 
@@ -277,10 +277,10 @@ __attribute__((aligned(4))) uint8_t prod_id_desc[] = {
     'e',  0,   ' ', 0,   'D', 0,   'e', 0,   'v', 0,   'i', 0,   'c', 0,   'e', 0,
 };
 
-__attribute__((aligned(4))) uint8_t serial_id_desc[] = {0x14, /* bLength */
-                                                        0x03, /* bDescriptorType */
-                                                        '0',  0, '0', 0, '0', 0, '0', 0, '0', 0,
-                                                        '0',  0, '0', 0, '0', 0, '1', 0};
+__attribute__((aligned(4))) uint8_t serial_id_desc[] = { 0x14, /* bLength */
+                                                         0x03, /* bDescriptorType */
+                                                         '0',  0, '0', 0, '0', 0, '0', 0, '0', 0,
+                                                         '0',  0, '0', 0, '0', 0, '1', 0 };
 
 __attribute__((aligned(4))) uint8_t cdcacm_func_desc[] = {
     0x20, /* bLength */

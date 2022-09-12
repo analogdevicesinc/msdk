@@ -67,22 +67,22 @@
 #define FALSE 0
 #endif
 
-#define USE_COLOR   1
-#define MAX_FRAME   102400
+#define USE_COLOR 1
+#define MAX_FRAME 102400
 #define MAX_SEGMENT 102400
-#define MAX_DATA    102400
+#define MAX_DATA 102400
 
-#define MAX_PARAMS              4
-#define MAX_EXTRA_PARAMS        10
-#define MAX_SCP_SCRIPT_LINE     20
-#define MAX_TAB                 100
-#define MAX_FLASH_MB            1023
-#define MAX_CHUNK_SIZE          102400
+#define MAX_PARAMS 4
+#define MAX_EXTRA_PARAMS 10
+#define MAX_SCP_SCRIPT_LINE 20
+#define MAX_TAB 100
+#define MAX_FLASH_MB 1023
+#define MAX_CHUNK_SIZE 102400
 #define SCP_LITE_MAX_CHUNK_SIZE 40960
-#define ANGELA_MAX_CHUNK_SIZE   15354
-#define PAOLA_MAX_CHUNK_SIZE    MAX_CHUNK_SIZE
+#define ANGELA_MAX_CHUNK_SIZE 15354
+#define PAOLA_MAX_CHUNK_SIZE MAX_CHUNK_SIZE
 #define MAXQ1852_MAX_CHUNK_SIZE 1856
-#define FLORA_MAX_CHUNK_SIZE    4094
+#define FLORA_MAX_CHUNK_SIZE 4094
 
 /**
  *		Cryptography information
@@ -91,17 +91,17 @@
 #define MAX_RSA_LENGTH 512
 
 /* byte length of the CRK public exponent */
-#define RSA_2048_MODULUS_LEN    256
-#define RSA_4096_MODULUS_LEN    512
+#define RSA_2048_MODULUS_LEN 256
+#define RSA_4096_MODULUS_LEN 512
 #define RSA_PUBLIC_EXPONENT_LEN 4
-#define RSA_2048_SIGNATURE_LEN  RSA_2048_MODULUS_LEN
-#define RSA_4096_SIGNATURE_LEN  RSA_4096_MODULUS_LEN
+#define RSA_2048_SIGNATURE_LEN RSA_2048_MODULUS_LEN
+#define RSA_4096_SIGNATURE_LEN RSA_4096_MODULUS_LEN
 
 /* ECDSA256 so signature is 2*32=64 bytes */
 #define MAX_ECDSA 64
 
 /* byte length of the CRK public exponent */
-#define ECDSA_MODULUS_LEN   32
+#define ECDSA_MODULUS_LEN 32
 #define ECDSA_SIGNATURE_LEN (2 * ECDSA_MODULUS_LEN)
 
 #define SECTOR_SIZE 4096
@@ -172,9 +172,9 @@ typedef enum {
 } error_t;
 
 typedef struct {
-    char* name;
+    char *name;
     option_type_t type;
-    void* ptr;
+    void *ptr;
     int min;
     int max;
 } config_option_t;
@@ -182,14 +182,14 @@ typedef struct {
 type_config_struct config_g;
 u8 verbose;
 
-extern const char* mode_name[];
-extern const char* pp_name[];
+extern const char *mode_name[];
+extern const char *pp_name[];
 
 #ifdef _MAXIM_HSM
 CK_SESSION_HANDLE session;
 #endif /* _MAXIM_HSM */
 
-size_t* addr_g;
-FILE* fp_g;
+size_t *addr_g;
+FILE *fp_g;
 
 #endif /* __SESSION_BUILD_H__ */

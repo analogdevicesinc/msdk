@@ -36,8 +36,8 @@
 
 // bitmaps id
 #define ADI_Logo_RGB_Solid_small_256_bmp 0
-#define logo_white_bg_darkgrey_bmp       1
-#define ADI_256_bmp                      2
+#define logo_white_bg_darkgrey_bmp 1
+#define ADI_256_bmp 2
 
 // fonts id
 #define urw_gothic_12_grey_bg_white 0

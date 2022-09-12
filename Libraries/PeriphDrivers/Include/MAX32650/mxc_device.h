@@ -46,9 +46,9 @@
 #endif
 
 // Create a string definition for the TARGET
-#define STRING_ARG(arg)   #arg
+#define STRING_ARG(arg) #arg
 #define STRING_NAME(name) STRING_ARG(name)
-#define TARGET_NAME       STRING_NAME(TARGET)
+#define TARGET_NAME STRING_NAME(TARGET)
 
 // Define which revisions of the IP we are using
 #ifndef TARGET_REV
@@ -57,7 +57,7 @@
 
 #if (TARGET_REV == 0x4131)
 // A1
-#define MXC_TMR_REV  0
+#define MXC_TMR_REV 0
 #define MXC_UART_REV 0
 #else
 

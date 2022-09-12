@@ -59,19 +59,19 @@
 // #define MASTERDMA
 
 /***** Definitions *****/
-#define DATA_LEN   100    // Words
+#define DATA_LEN 100 // Words
 #define DATA_VALUE 0xA5A5 // This is for master mode only...
-#define VALUE      0xFFFF
-#define SPI_SPEED  100000 // Bit Rate
+#define VALUE 0xFFFF
+#define SPI_SPEED 100000 // Bit Rate
 
 #ifdef BOARD_EVKIT_V1
 #define SPI_INSTANCE_NUM 0
-#define SPI              MXC_SPI1
-#define SPI_IRQ          SPI1_IRQn
+#define SPI MXC_SPI1
+#define SPI_IRQ SPI1_IRQn
 #else
 #define SPI_INSTANCE_NUM 1
-#define SPI              MXC_SPI0
-#define SPI_IRQ          SPI0_IRQn
+#define SPI MXC_SPI0
+#define SPI_IRQ SPI0_IRQn
 #endif
 
 /***** Globals *****/
@@ -97,7 +97,7 @@ void DMA1_IRQHandler(void)
     DMA_FLAG = 1;
 }
 
-void SPI_Callback(mxc_spi_req_t* req, int error)
+void SPI_Callback(mxc_spi_req_t *req, int error)
 {
     SPI_FLAG = error;
 }
@@ -121,13 +121,13 @@ int main(void)
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
 
     spi_pins.clock = TRUE;
-    spi_pins.miso  = TRUE;
-    spi_pins.mosi  = TRUE;
+    spi_pins.miso = TRUE;
+    spi_pins.mosi = TRUE;
     spi_pins.sdio2 = FALSE;
     spi_pins.sdio3 = FALSE;
-    spi_pins.ss0   = TRUE;
-    spi_pins.ss1   = FALSE;
-    spi_pins.ss2   = FALSE;
+    spi_pins.ss0 = TRUE;
+    spi_pins.ss1 = FALSE;
+    spi_pins.ss2 = FALSE;
 
 #ifdef MASTERSYNC
     printf("Performing blocking (synchronous) transactions...\n");
@@ -149,40 +149,36 @@ int main(void)
             continue;
         }
 
-        for (j = 0; j < DATA_LEN; j++) {
-            tx_data[j] = DATA_VALUE;
-        }
+        for (j = 0; j < DATA_LEN; j++) { tx_data[j] = DATA_VALUE; }
 
         // Configure the peripheral
         if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins) != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
 
-            while (1) {
-            }
+            while (1) {}
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         //SPI Request
-        req.spi        = SPI;
-        req.txData     = (uint8_t*)tx_data;
-        req.rxData     = (uint8_t*)rx_data;
-        req.txLen      = DATA_LEN;
-        req.rxLen      = DATA_LEN;
-        req.ssIdx      = 0;
+        req.spi = SPI;
+        req.txData = (uint8_t *)tx_data;
+        req.rxData = (uint8_t *)rx_data;
+        req.txLen = DATA_LEN;
+        req.rxLen = DATA_LEN;
+        req.ssIdx = 0;
         req.ssDeassert = 1;
-        req.txCnt      = 0;
-        req.rxCnt      = 0;
+        req.txCnt = 0;
+        req.rxCnt = 0;
         req.completeCB = (spi_complete_cb_t)SPI_Callback;
-        SPI_FLAG       = 1;
+        SPI_FLAG = 1;
 
         retVal = MXC_SPI_SetDataSize(SPI, i);
 
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
 
-            while (1) {
-            }
+            while (1) {}
         }
 
         retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
@@ -190,8 +186,7 @@ int main(void)
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
 
-            while (1) {
-            }
+            while (1) {}
         }
 
 #ifdef MASTERSYNC
@@ -202,8 +197,7 @@ int main(void)
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 
-        while (SPI_FLAG == 1)
-            ;
+        while (SPI_FLAG == 1) {}
 
 #endif
 
@@ -215,8 +209,7 @@ int main(void)
         NVIC_EnableIRQ(DMA1_IRQn);
         MXC_SPI_MasterTransactionDMA(&req);
 
-        while (DMA_FLAG == 0)
-            ;
+        while (DMA_FLAG == 0) {}
 
         DMA_FLAG = 0;
 #endif
@@ -249,8 +242,7 @@ int main(void)
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
 
-            while (1) {
-            }
+            while (1) {}
         } else {
             printf("-->%2d Bits Transaction Successful\n", i);
         }
@@ -260,8 +252,7 @@ int main(void)
         if (retVal != E_NO_ERROR) {
             printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
 
-            while (1) {
-            }
+            while (1) {}
         }
     }
 

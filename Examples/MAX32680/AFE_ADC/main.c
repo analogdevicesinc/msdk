@@ -49,13 +49,13 @@
 
 /***** Definitions *****/
 #define ADC_CONVERSIONS_PER_SECOND 50
-#define ADC_SAMPLE_RATE_120SPS     7
-#define ADC_CH0                    0
-#define ADC_CH1                    1
-#define ADC_CH2                    2
-#define ADC_CH3                    3
-#define GPIO_OUT                   3
-#define DATA_READY_INT             2
+#define ADC_SAMPLE_RATE_120SPS 7
+#define ADC_CH0 0
+#define ADC_CH1 1
+#define ADC_CH2 2
+#define ADC_CH3 3
+#define GPIO_OUT 3
+#define DATA_READY_INT 2
 
 /***** Globals *****/
 
@@ -65,7 +65,7 @@
 int main(void)
 {
     MXC_Delay(MXC_DELAY_SEC(1));
-    uint32_t read_val  = 0;
+    uint32_t read_val = 0;
     uint64_t avg_adc_0 = 0;
     uint64_t avg_adc_1 = 0;
 

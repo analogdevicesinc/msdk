@@ -61,13 +61,13 @@
 
 // The GPIO pin used for ADXL343 interrupt.
 #define ADXL343_IRQ_PORT MXC_GPIO0
-#define ADXL343_IRQ_PIN  MXC_GPIO_PIN_19
+#define ADXL343_IRQ_PIN MXC_GPIO_PIN_19
 
-static mxc_gpio_cfg_t adxl343_irq_cfg = {.port  = ADXL343_IRQ_PORT,
-                                         .mask  = ADXL343_IRQ_PIN,
-                                         .pad   = MXC_GPIO_PAD_NONE,
-                                         .func  = MXC_GPIO_FUNC_IN,
-                                         .vssel = MXC_GPIO_VSSEL_VDDIOH};
+static mxc_gpio_cfg_t adxl343_irq_cfg = { .port = ADXL343_IRQ_PORT,
+                                          .mask = ADXL343_IRQ_PIN,
+                                          .pad = MXC_GPIO_PAD_NONE,
+                                          .func = MXC_GPIO_FUNC_IN,
+                                          .vssel = MXC_GPIO_VSSEL_VDDIOH };
 
 // Flag shared between interrupt handler and differed work service loop
 static volatile bool axis_data_ready = false;
@@ -75,7 +75,7 @@ static volatile bool axis_data_ready = false;
 /*
   Print message and blink LEDs until reset.
 */
-void blink_halt(char* msg)
+void blink_halt(char *msg)
 {
     puts(msg);
     puts("Reset to restart application.");
@@ -91,7 +91,7 @@ void blink_halt(char* msg)
 
   Set global data ready flag.
 */
-void adxl343_handler(void* cbdata)
+void adxl343_handler(void *cbdata)
 {
     (void)cbdata;
 
@@ -107,7 +107,7 @@ int adxl343_config(void)
 {
     int result;
     int16_t tmp[3];
-    int8_t axis_offsets[3] = {-2, -2, 7}; // Device specific offset calibration values
+    int8_t axis_offsets[3] = { -2, -2, 7 }; // Device specific offset calibration values
 
     MXC_GPIO_Config(&adxl343_irq_cfg);
     MXC_GPIO_RegisterCallback(&adxl343_irq_cfg, adxl343_handler, NULL);

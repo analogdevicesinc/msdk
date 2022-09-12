@@ -49,8 +49,7 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 // 48-channel 48x48 data input (110592 bytes total / 2304 bytes per channel):
@@ -94,18 +93,18 @@ void load_input(void)
 {
     // This function loads the sample data input -- replace with actual data
 
-    memcpy32((uint32_t*)0x50400700, input_0, 2304);
-    memcpy32((uint32_t*)0x50408700, input_4, 2304);
-    memcpy32((uint32_t*)0x50410700, input_8, 2304);
-    memcpy32((uint32_t*)0x50418700, input_12, 2304);
-    memcpy32((uint32_t*)0x50800700, input_16, 2304);
-    memcpy32((uint32_t*)0x50808700, input_20, 2304);
-    memcpy32((uint32_t*)0x50810700, input_24, 2304);
-    memcpy32((uint32_t*)0x50818700, input_28, 2304);
-    memcpy32((uint32_t*)0x50c00700, input_32, 2304);
-    memcpy32((uint32_t*)0x50c08700, input_36, 2304);
-    memcpy32((uint32_t*)0x50c10700, input_40, 2304);
-    memcpy32((uint32_t*)0x50c18700, input_44, 2304);
+    memcpy32((uint32_t *)0x50400700, input_0, 2304);
+    memcpy32((uint32_t *)0x50408700, input_4, 2304);
+    memcpy32((uint32_t *)0x50410700, input_8, 2304);
+    memcpy32((uint32_t *)0x50418700, input_12, 2304);
+    memcpy32((uint32_t *)0x50800700, input_16, 2304);
+    memcpy32((uint32_t *)0x50808700, input_20, 2304);
+    memcpy32((uint32_t *)0x50810700, input_24, 2304);
+    memcpy32((uint32_t *)0x50818700, input_28, 2304);
+    memcpy32((uint32_t *)0x50c00700, input_32, 2304);
+    memcpy32((uint32_t *)0x50c08700, input_36, 2304);
+    memcpy32((uint32_t *)0x50c10700, input_40, 2304);
+    memcpy32((uint32_t *)0x50c18700, input_44, 2304);
 }
 
 // Truncated further checks...
@@ -116,12 +115,12 @@ int check_output(void)
 {
     int i;
     uint32_t mask, len;
-    volatile uint32_t* addr;
-    const uint32_t* ptr = sample_output;
+    volatile uint32_t *addr;
+    const uint32_t *ptr = sample_output;
 
-    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
         mask = *ptr++;
-        len  = *ptr++;
+        len = *ptr++;
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
@@ -152,16 +151,15 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    load_input();    // Load data input
-    cnn_start();     // Start CNN processing
+    load_input(); // Load data input
+    cnn_start(); // Start CNN processing
 
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0)
-        __WFI(); // Wait for CNN
+    while (cnn_time == 0) __WFI(); // Wait for CNN
 
     if (check_output() != CNN_OK)
         fail();

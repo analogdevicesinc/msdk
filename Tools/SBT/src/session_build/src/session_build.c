@@ -71,63 +71,64 @@
 #endif
 
 config_option_t config_option[] = {
-    {"flash_size_mb", OT_INT, &config_g.flash_mb, 0, 0},
-    {"usn", OT_USN, &config_g.usn, USN_LEN, 0},
-    {"key_file", OT_FILE, &config_g.keyfile, 0, 0},
+    { "flash_size_mb", OT_INT, &config_g.flash_mb, 0, 0 },
+    { "usn", OT_USN, &config_g.usn, USN_LEN, 0 },
+    { "key_file", OT_FILE, &config_g.keyfile, 0, 0 },
     /* Legacy */
-    {"ecdsa_file", OT_FILE, &config_g.keyfile, 0, 0},
-    {"rsa_file", OT_FILE, &config_g.keyfile, 0, 0},
+    { "ecdsa_file", OT_FILE, &config_g.keyfile, 0, 0 },
+    { "rsa_file", OT_FILE, &config_g.keyfile, 0, 0 },
 
 #ifdef _MAXIM_HSM
-    {"hsm", OT_YESNO, &config_g.hsm, 0, 0},
-    {"hsm_key_name", OT_STRING, &config_g.HSM_KeyLabel, 0, 0},
-    {"hsm_thales_dll", OT_FILE, &config_g.hsm_thales_dll, 0, 0},
-    {"hsm_slot_nb", OT_INT, &config_g.hsm_slot_nb, 0, 0},
+    { "hsm", OT_YESNO, &config_g.hsm, 0, 0 },
+    { "hsm_key_name", OT_STRING, &config_g.HSM_KeyLabel, 0, 0 },
+    { "hsm_thales_dll", OT_FILE, &config_g.hsm_thales_dll, 0, 0 },
+    { "hsm_slot_nb", OT_INT, &config_g.hsm_slot_nb, 0, 0 },
 #endif
 
-    {"verbose", OT_INT, &verbose, 0, 0},
+    { "verbose", OT_INT, &verbose, 0, 0 },
 
-    {"session_mode", OT_SESSION_MODE, &config_g.session_mode, 0, 0},
-    {"pp", OT_PP, &config_g.pp, 0, 0},
-    {"script_file", OT_FILE, config_g.script_file, 0, 0},
-    {"output_file", OT_FILE, config_g.output_file, 0, 0},
-    {"output_dir", OT_FILE, config_g.output_dir, 0, 0},
+    { "session_mode", OT_SESSION_MODE, &config_g.session_mode, 0, 0 },
+    { "pp", OT_PP, &config_g.pp, 0, 0 },
+    { "script_file", OT_FILE, config_g.script_file, 0, 0 },
+    { "output_file", OT_FILE, config_g.output_file, 0, 0 },
+    { "output_dir", OT_FILE, config_g.output_dir, 0, 0 },
 
-    {"chunk_size", OT_INT, &config_g.chunk_size, 0, 0},
-    {"transaction_id", OT_INT, &config_g.msp_1852_tr_id, 0, 0},
-    {"addr_offset", OT_LONGHEX, &config_g.address_offset, 0, 0},
-    {0, 0, 0, 0, 0},
+    { "chunk_size", OT_INT, &config_g.chunk_size, 0, 0 },
+    { "transaction_id", OT_INT, &config_g.msp_1852_tr_id, 0, 0 },
+    { "addr_offset", OT_LONGHEX, &config_g.address_offset, 0, 0 },
+    { 0, 0, 0, 0, 0 },
 };
 
 static const int mode[MAX_SCP_COMMAND] = {
-    [COMMAND_WRITE_FILE]  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_ONLY]  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_ERASE_DATA]  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_FILE] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_ONLY] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_ERASE_DATA] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
     [COMMAND_VERIFY_FILE] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_RSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_CRK]   = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_CRK] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
     [COMMAND_REWRITE_CRK] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_OTP]   = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_WRITE_TIMEOUT]              = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_KILL_CHIP]                  = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_KILL_CHIP2]                 = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
-    [COMMAND_EXECUTE_CODE]               = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_OTP] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_WRITE_TIMEOUT] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_KILL_CHIP] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_KILL_CHIP2] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
+    [COMMAND_EXECUTE_CODE] = SCP_PAOLA_MSK + SCP_ANGELA_ECDSA_MSK + SCP_FLORA_RSA_MSK,
     [COMMAND_MAXQ1852_LOAD_CUSTOMER_KEY] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_CUSTOMER_KEY]                    = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ACTIVATE_CUSTOMER_KEY]                  = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ERASE_CODE_FLASH_AREA]                  = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS]                  = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_LOAD_CODE]                              = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_LOAD_FILE]                              = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_LOAD_DATA]                              = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_FILE]                            = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_CODE]                            = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_DATA]                            = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_WRITE_REGISTER]                         = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_READ_REGISTER]                          = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_ENGAGE_PLLO]                            = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_CUSTOMER_KEY] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ACTIVATE_CUSTOMER_KEY] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ERASE_CODE_FLASH_AREA] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ERASE_ALL_FLASH_AREAS] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_LOAD_CODE] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_LOAD_FILE] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_LOAD_DATA] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_FILE] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_CODE] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_VERIFY_DATA] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_WRITE_REGISTER] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_READ_REGISTER] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_MAXQ1852_ENGAGE_PLLO] = MSP_MAXQ1852_ECDSA_MSK,
     [COMMAND_MAXQ1852_GENERATE_APPLICATION_STARTUP_SIGNATURE] = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_MAXQ1852_VERIFY_APPLICATION_STARTUP_SIGNATURE]   = MSP_MAXQ1852_ECDSA_MSK,
-    [COMMAND_SCP_LITE_LOAD_RAM]                               = SCP_LITE_ECDSA};
+    [COMMAND_MAXQ1852_VERIFY_APPLICATION_STARTUP_SIGNATURE] = MSP_MAXQ1852_ECDSA_MSK,
+    [COMMAND_SCP_LITE_LOAD_RAM] = SCP_LITE_ECDSA
+};
 
 uint32_t ucl_buffer_g[4096];
 
@@ -157,10 +158,10 @@ int init_crypto(void)
     return ERR_OK;
 }
 
-int parse_store_option(const char* name, const char* value)
+int parse_store_option(const char *name, const char *value)
 {
     unsigned int i = 0;
-    int result     = 0;
+    int result = 0;
 
     while (config_option[i].name != 0) {
         if (strcmp(config_option[i].name, name) == 0) {
@@ -174,7 +175,7 @@ int parse_store_option(const char* name, const char* value)
     return ERR_OK;
 }
 
-int load_args(int argc, char** argv, int start_index)
+int load_args(int argc, char **argv, int start_index)
 {
     int k;
     int extra_arg_idx = 0;
@@ -324,19 +325,17 @@ static int load_keys(void)
 int load_default_config(void)
 {
     int i;
-    u8 usn_default[]      = {0x04, 0x00, 0x43, 0x47, 0x1f, 0xd2, 0x03, 0x08,
-                        0x0c, 0x07, 0x00, 0x00, 0x7f, 0x24, 0xea, 0x2f};
+    u8 usn_default[] = { 0x04, 0x00, 0x43, 0x47, 0x1f, 0xd2, 0x03, 0x08,
+                         0x0c, 0x07, 0x00, 0x00, 0x7f, 0x24, 0xea, 0x2f };
     config_g.session_mode = SCP_RSA;
     /* default config */
     config_g.pp = SCP_PP_RSA;
     /* flash size is 32MB */
-    config_g.flash_mb       = 32;
+    config_g.flash_mb = 32;
     config_g.address_offset = 0;
-    config_g.chunk_size     = 1024;
+    config_g.chunk_size = 1024;
 
-    for (i = 0; i < USN_LEN; i++) {
-        config_g.usn[i] = usn_default[i];
-    }
+    for (i = 0; i < USN_LEN; i++) { config_g.usn[i] = usn_default[i]; }
 
     sprintf(config_g.script_file, "script.txt");
     sprintf(config_g.output_file, "session.txt");
@@ -344,7 +343,7 @@ int load_default_config(void)
     return ERR_OK;
 }
 
-static int handler_configfile(void* user, const char* section, const char* name, const char* value)
+static int handler_configfile(void *user, const char *section, const char *name, const char *value)
 {
     UNUSED_PARAMETER(user);
     UNUSED_PARAMETER(section);
@@ -380,9 +379,7 @@ void display_config(void)
     print_d("\tAddress offset: %08x\n", config_g.address_offset);
 
     print_d("\tUSN:");
-    for (i = 0; i < 16; i++) {
-        print_d("%02x", config_g.usn[i]);
-    }
+    for (i = 0; i < 16; i++) { print_d("%02x", config_g.usn[i]); }
     print_d("\n");
 
 #ifdef _MAXIM_HSM
@@ -428,10 +425,10 @@ int check_parameters(void)
     return ERR_OK;
 }
 
-static int handler(void* user, const char* section, const char* name, const char* value)
+static int handler(void *user, const char *section, const char *name, const char *value)
 {
-    char* chip = (char*)user;
-    char* new_str;
+    char *chip = (char *)user;
+    char *new_str;
     if (strcmp(section, chip) == 0) {
         new_str = str_replace(value, "%MAXIM_SBT_DIR%", config_g.fullpath);
         parse_store_option(name, new_str);
@@ -444,13 +441,13 @@ static int handler(void* user, const char* section, const char* name, const char
     return 1;
 }
 
-int load_device_config(char* device_name)
+int load_device_config(char *device_name)
 {
     char device_ini_path[500];
 
     print_debug("Retrieve Config for default device \n");
     if (strcmp(device_name, "") == 0) {
-        char* default_device = getenv("MAXIM_SBT_DEVICE");
+        char *default_device = getenv("MAXIM_SBT_DEVICE");
         if (default_device == NULL) {
             return ERR_OK;
         }
@@ -458,7 +455,7 @@ int load_device_config(char* device_name)
     }
     print_debug("Default device : %s \n", device_name);
 
-    char* envpath = getenv("MAXIM_SBT_DIR");
+    char *envpath = getenv("MAXIM_SBT_DIR");
     if (envpath == NULL) {
         return ERR_NO_DEFAULT_CONFIG_DIR;
     }
@@ -478,7 +475,7 @@ int load_device_config(char* device_name)
     return ERR_OK;
 }
 
-int parse_script(script_cmd_list_t** script, size_t* list_length)
+int parse_script(script_cmd_list_t **script, size_t *list_length)
 {
     if (MSP_MAXQ1852_ECDSA == config_g.session_mode) {
         return ERR_OK;
@@ -491,7 +488,7 @@ int parse_script(script_cmd_list_t** script, size_t* list_length)
     return parse_scp_script(config_g.script_file, script, list_length);
 }
 
-int process(script_cmd_list_t* script, size_t list_length)
+int process(script_cmd_list_t *script, size_t list_length)
 {
     /* dynamic allocation of *addr, which contains the addresses of meaningful binary file bytes */
     addr_g = malloc(sizeof(size_t) * 1024 * 1024 * config_g.flash_mb);
@@ -620,14 +617,14 @@ void print_version(void)
     print_i("\t - UCL Version: %s (%s)\n", ucl_get_version(), ucl_get_build_date());
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     int result;
     char c;
     char default_device[MAX_STRING] = "";
     char output_name[MAX_STRING + 5];
-    verbose                   = 3;
-    script_cmd_list_t* script = NULL;
+    verbose = 3;
+    script_cmd_list_t *script = NULL;
     size_t list_length;
 
 #ifdef __WIN
@@ -639,31 +636,31 @@ int main(int argc, char** argv)
 
     while ((c = getopt(argc, argv, "dhvc:")) != -1) {
         switch (c) {
-            case 'c':
-                strcpy(default_device, optarg);
-                break;
-            case 'h':
-                print_help();
-                return ERR_OK;
-                break;
-            case 'v':
-                print_version();
-                return ERR_OK;
-                break;
-            case 'd':
-                verbose = 5;
-                break;
-            case '?':
-                if (optopt == 'c') {
-                    fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-                } else if (isprint(optopt)) {
-                    fprintf(stderr, "Unknown option `-%c'.\n", optopt);
-                } else {
-                    fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-                }
-                return 1;
-            default:
-                abort();
+        case 'c':
+            strcpy(default_device, optarg);
+            break;
+        case 'h':
+            print_help();
+            return ERR_OK;
+            break;
+        case 'v':
+            print_version();
+            return ERR_OK;
+            break;
+        case 'd':
+            verbose = 5;
+            break;
+        case '?':
+            if (optopt == 'c') {
+                fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+            } else if (isprint(optopt)) {
+                fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+            } else {
+                fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+            }
+            return 1;
+        default:
+            abort();
         }
     }
     print_info("SBL/SCP packets builder v%d.%d.%d (%s %s) (c)Maxim Integrated 2006-2018\n", MAJV,

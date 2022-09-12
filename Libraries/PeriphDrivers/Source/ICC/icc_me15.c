@@ -44,17 +44,17 @@
 
 int MXC_ICC_ID(mxc_icc_info_t cid)
 {
-    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t*)MXC_ICC, cid);
+    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)MXC_ICC, cid);
 }
 
 void MXC_ICC_Enable(void)
 {
-    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t*)MXC_ICC);
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC);
 }
 
 void MXC_ICC_Disable(void)
 {
-    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t*)MXC_ICC);
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC);
 }
 
 void MXC_ICC_Flush(void)

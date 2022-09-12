@@ -149,7 +149,7 @@ static void _lv_gpu_nxp_pxp_run(void)
     if (xSemaphoreTake(s_pxpIdle, portMAX_DELAY) != pdTRUE) {
         LV_LOG_ERROR("xSemaphoreTake error. Task halted.");
         for (;;)
-            ;
+{}
     }
 #else
     while (s_pxpIdle == false) {

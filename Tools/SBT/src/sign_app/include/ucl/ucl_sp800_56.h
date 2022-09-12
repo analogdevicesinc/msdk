@@ -45,7 +45,7 @@ extern "C" {
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_SP80056 */
-int ucl_sp800_56_ecc_cdh(u8* z, u8* dU, u8* xV, u8* yV, u32 configuration);
+int ucl_sp800_56_ecc_cdh(u8 *z, u8 *dU, u8 *xV, u8 *yV, u32 configuration);
 
 /** <b>secret key derivation</b>.
  * this function represents the concatenation KDF, Key Derivation Function, as described in the
@@ -65,8 +65,8 @@ int ucl_sp800_56_ecc_cdh(u8* z, u8* dU, u8* xV, u8* yV, u32 configuration);
  *
  * limitation: the OtherInfo length is expressed in bits but is a multiple of 8 (so bytes).
  * @ingroup UCL_ECC_SP80056 */
-int ucl_sp800_56_concat_kdf(u8* derivedkeyingmaterial, u32 keydatalen, u8* z, u32 zbytelength,
-                            u8* otherinfo, u32 otherinfobitlength, u32 configuration);
+int ucl_sp800_56_concat_kdf(u8 *derivedkeyingmaterial, u32 keydatalen, u8 *z, u32 zbytelength,
+                            u8 *otherinfo, u32 otherinfobitlength, u32 configuration);
 
 /** <b>derived key material computation and ephemeral key generation</b>.
  * this function computes the derived key material and generates the U ephemeral key
@@ -91,8 +91,8 @@ int ucl_sp800_56_concat_kdf(u8* derivedkeyingmaterial, u32 keydatalen, u8* z, u3
  *
  * limitation: the OtherInfo length is expressed in bits but is a multiple of 8 (so bytes).
  * @ingroup UCL_ECC_SP80056 */
-int ucl_sp800_56_eum_ecc_cdh(u8* derivedkeyingmaterial, u32 keydatalen, u8* dU, u8* xU, u8* yU,
-                             u8* xV, u8* yV, u8* otherinfo, u32 otherinfobitlength,
+int ucl_sp800_56_eum_ecc_cdh(u8 *derivedkeyingmaterial, u32 keydatalen, u8 *dU, u8 *xU, u8 *yU,
+                             u8 *xV, u8 *yV, u8 *otherinfo, u32 otherinfobitlength,
                              u32 configuration);
 
 /** <b>shared secret computation</b>.
@@ -111,8 +111,8 @@ int ucl_sp800_56_eum_ecc_cdh(u8* derivedkeyingmaterial, u32 keydatalen, u8* dU, 
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_SP80056 */
-int ucl_ecc_sp800_56_ecc_cdh(u8* z, u8* dU, ucl_type_ecc_u8_affine_point V,
-                             ucl_type_curve* curve_params);
+int ucl_ecc_sp800_56_ecc_cdh(u8 *z, u8 *dU, ucl_type_ecc_u8_affine_point V,
+                             ucl_type_curve *curve_params);
 
 /** <b>derived key material computation and ephemeral key generation</b>.
  * this function computes the derived key material and generates the U ephemeral key
@@ -136,10 +136,10 @@ int ucl_ecc_sp800_56_ecc_cdh(u8* z, u8* dU, ucl_type_ecc_u8_affine_point V,
  *
  * limitation: the OtherInfo length is expressed in bits but is a multiple of 8 (so bytes).
  * @ingroup UCL_ECC_SP80056 */
-int ucl_ecc_sp800_56_eum_ecc_cdh(u8* derivedkeyingmaterial, u32 keydatalen, u8* dU,
+int ucl_ecc_sp800_56_eum_ecc_cdh(u8 *derivedkeyingmaterial, u32 keydatalen, u8 *dU,
                                  ucl_type_ecc_u8_affine_point U, ucl_type_ecc_u8_affine_point V,
-                                 u8* otherinfo, u32 otherinfobitlength,
-                                 ucl_type_curve* curve_params, u32 configuration);
+                                 u8 *otherinfo, u32 otherinfobitlength,
+                                 ucl_type_curve *curve_params, u32 configuration);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

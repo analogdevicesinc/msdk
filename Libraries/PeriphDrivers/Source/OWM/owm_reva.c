@@ -48,30 +48,30 @@ static int LastDiscrepancy;
 static int LastDeviceFlag;
 
 /* **** Functions **** */
-static uint8_t CalculateCRC8(uint8_t* data, int len);
+static uint8_t CalculateCRC8(uint8_t *data, int len);
 static uint8_t update_crc8(uint8_t crc, uint8_t value);
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_Init(mxc_owm_reva_regs_t* owm, const mxc_owm_cfg_t* cfg)
+int MXC_OWM_RevA_Init(mxc_owm_reva_regs_t *owm, const mxc_owm_cfg_t *cfg)
 {
     uint32_t ext_pu_en = 0;
 
     // Select the PU mode and polarity based on cfg input
     switch (cfg->ext_pu_mode) {
-        case MXC_OWM_EXT_PU_ACT_HIGH:
-            ext_pu_en = 1; // EXT_PULLUP_MODE_USED;
-            break;
+    case MXC_OWM_EXT_PU_ACT_HIGH:
+        ext_pu_en = 1; // EXT_PULLUP_MODE_USED;
+        break;
 
-        case MXC_OWM_EXT_PU_ACT_LOW:
-            ext_pu_en = 1; // EXT_PULLUP_MODE_USED;
-            break;
+    case MXC_OWM_EXT_PU_ACT_LOW:
+        ext_pu_en = 1; // EXT_PULLUP_MODE_USED;
+        break;
 
-        case MXC_OWM_EXT_PU_UNUSED:
-            ext_pu_en = 0; // EXT_PULLUP_MODE_UNUSED;
-            break;
+    case MXC_OWM_EXT_PU_UNUSED:
+        ext_pu_en = 0; // EXT_PULLUP_MODE_UNUSED;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Set owm internal clock divider
@@ -98,7 +98,7 @@ int MXC_OWM_RevA_Init(mxc_owm_reva_regs_t* owm, const mxc_owm_cfg_t* cfg)
 }
 
 /* ************************************************************************* */
-void MXC_OWM_RevA_Shutdown(mxc_owm_reva_regs_t* owm)
+void MXC_OWM_RevA_Shutdown(mxc_owm_reva_regs_t *owm)
 {
     // Disable and clear interrupts
     owm->inten = 0;
@@ -106,30 +106,30 @@ void MXC_OWM_RevA_Shutdown(mxc_owm_reva_regs_t* owm)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_Reset(mxc_owm_reva_regs_t* owm)
+int MXC_OWM_RevA_Reset(mxc_owm_reva_regs_t *owm)
 {
-    owm->intfl = MXC_F_OWM_REVA_INTFL_OW_RESET_DONE;           // Clear the reset flag
+    owm->intfl = MXC_F_OWM_REVA_INTFL_OW_RESET_DONE; // Clear the reset flag
     owm->ctrl_stat |= MXC_F_OWM_REVA_CTRL_STAT_START_OW_RESET; // Generate a reset pulse
 
-    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_OW_RESET_DONE) == 0)
-        ; // Wait for reset time slot to complete
+    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_OW_RESET_DONE) == 0) {}
+    // Wait for reset time slot to complete
 
     return MXC_OWM_GetPresenceDetect(); // Return presence pulse detect status
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_TouchByte(mxc_owm_reva_regs_t* owm, uint8_t data)
+int MXC_OWM_RevA_TouchByte(mxc_owm_reva_regs_t *owm, uint8_t data)
 {
     owm->cfg &= ~MXC_F_OWM_REVA_CFG_SINGLE_BIT_MODE; // Set to 8 bit mode
     owm->intfl = (MXC_F_OWM_REVA_INTFL_TX_DATA_EMPTY | MXC_F_OWM_REVA_INTEN_LINE_SHORT |
                   MXC_F_OWM_REVA_INTFL_RX_DATA_READY); // Clear the flags
-    owm->data  = (data << MXC_F_OWM_REVA_DATA_TX_RX_POS) & MXC_F_OWM_REVA_DATA_TX_RX; // Write data
+    owm->data = (data << MXC_F_OWM_REVA_DATA_TX_RX_POS) & MXC_F_OWM_REVA_DATA_TX_RX; // Write data
 
-    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_TX_DATA_EMPTY) == 0)
-        ; // Wait for data to be sent
+    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_TX_DATA_EMPTY) == 0) {}
+    // Wait for data to be sent
 
-    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_RX_DATA_READY) == 0)
-        ; // Wait for data to be read
+    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_RX_DATA_READY) == 0) {}
+    // Wait for data to be read
 
     // Check error flag
     if (owm->intfl & MXC_F_OWM_REVA_INTEN_LINE_SHORT) {
@@ -154,18 +154,18 @@ int MXC_OWM_RevA_ReadByte(void)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_TouchBit(mxc_owm_reva_regs_t* owm, uint8_t bit)
+int MXC_OWM_RevA_TouchBit(mxc_owm_reva_regs_t *owm, uint8_t bit)
 {
     owm->cfg |= MXC_F_OWM_REVA_CFG_SINGLE_BIT_MODE; // Set to 1 bit mode
     owm->intfl = (MXC_F_OWM_REVA_INTFL_TX_DATA_EMPTY | MXC_F_OWM_REVA_INTEN_LINE_SHORT |
                   MXC_F_OWM_REVA_INTFL_RX_DATA_READY); // Clear the flags
-    owm->data  = (bit << MXC_F_OWM_REVA_DATA_TX_RX_POS) & MXC_F_OWM_REVA_DATA_TX_RX; // Write data
+    owm->data = (bit << MXC_F_OWM_REVA_DATA_TX_RX_POS) & MXC_F_OWM_REVA_DATA_TX_RX; // Write data
 
-    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_TX_DATA_EMPTY) == 0)
-        ; // Wait for data to be sent
+    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_TX_DATA_EMPTY) == 0) {}
+    // Wait for data to be sent
 
-    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_RX_DATA_READY) == 0)
-        ; // Wait for data to be read
+    while ((owm->intfl & MXC_F_OWM_REVA_INTFL_RX_DATA_READY) == 0) {}
+    // Wait for data to be read
 
     // Check error flag
     if (owm->intfl & MXC_F_OWM_REVA_INTEN_LINE_SHORT) {
@@ -190,7 +190,7 @@ int MXC_OWM_RevA_ReadBit(void)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_Write(mxc_owm_reva_regs_t* owm, uint8_t* data, int len)
+int MXC_OWM_RevA_Write(mxc_owm_reva_regs_t *owm, uint8_t *data, int len)
 {
     int num = 0;
 
@@ -209,7 +209,7 @@ int MXC_OWM_RevA_Write(mxc_owm_reva_regs_t* owm, uint8_t* data, int len)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_Read(mxc_owm_reva_regs_t* owm, uint8_t* data, int len)
+int MXC_OWM_RevA_Read(mxc_owm_reva_regs_t *owm, uint8_t *data, int len)
 {
     int num = 0;
 
@@ -226,7 +226,7 @@ int MXC_OWM_RevA_Read(mxc_owm_reva_regs_t* owm, uint8_t* data, int len)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_ReadROM(uint8_t* ROMCode)
+int MXC_OWM_RevA_ReadROM(uint8_t *ROMCode)
 {
     int num_read;
 
@@ -254,7 +254,7 @@ int MXC_OWM_RevA_ReadROM(uint8_t* ROMCode)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_MatchROM(uint8_t* ROMCode)
+int MXC_OWM_RevA_MatchROM(uint8_t *ROMCode)
 {
     int num_wrote;
 
@@ -282,7 +282,7 @@ int MXC_OWM_RevA_MatchROM(uint8_t* ROMCode)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_ODMatchROM(mxc_owm_reva_regs_t* owm, uint8_t* ROMCode)
+int MXC_OWM_RevA_ODMatchROM(mxc_owm_reva_regs_t *owm, uint8_t *ROMCode)
 {
     int num_wrote;
 
@@ -329,7 +329,7 @@ int MXC_OWM_RevA_SkipROM(void)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_ODSkipROM(mxc_owm_reva_regs_t* owm)
+int MXC_OWM_RevA_ODSkipROM(mxc_owm_reva_regs_t *owm)
 {
     // Set to standard speed
     owm->cfg &= ~(MXC_F_OWM_REVA_CFG_OVERDRIVE);
@@ -366,10 +366,10 @@ int MXC_OWM_RevA_Resume(void)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_SearchROM(mxc_owm_reva_regs_t* owm, int newSearch, uint8_t* ROMCode)
+int MXC_OWM_RevA_SearchROM(mxc_owm_reva_regs_t *owm, int newSearch, uint8_t *ROMCode)
 {
-    int nibble_start_bit    = 1;
-    int rom_byte_number     = 0;
+    int nibble_start_bit = 1;
+    int rom_byte_number = 0;
     uint8_t rom_nibble_mask = 0x0F;
     uint8_t search_direction;
     int readValue;
@@ -387,14 +387,14 @@ int MXC_OWM_RevA_SearchROM(mxc_owm_reva_regs_t* owm, int newSearch, uint8_t* ROM
     if (newSearch) {
         // Reset all global variables to start search from beginning
         LastDiscrepancy = 0;
-        LastDeviceFlag  = 0;
+        LastDeviceFlag = 0;
     }
 
     // Check if the last call was the last device
     if (LastDeviceFlag) {
         // Reset the search
         LastDiscrepancy = 0;
-        LastDeviceFlag  = 0;
+        LastDeviceFlag = 0;
         return search_result;
     }
 
@@ -499,27 +499,27 @@ int MXC_OWM_RevA_SearchROM(mxc_owm_reva_regs_t* owm, int newSearch, uint8_t* ROM
     // If no device found then reset counters so next 'search' will be like a first
     if (!search_result || !ROMCode[0]) {
         LastDiscrepancy = 0;
-        LastDeviceFlag  = 0;
-        search_result   = 0;
+        LastDeviceFlag = 0;
+        search_result = 0;
     }
 
     return search_result;
 }
 
 /* ************************************************************************* */
-void MXC_OWM_RevA_ClearFlags(mxc_owm_reva_regs_t* owm, uint32_t mask)
+void MXC_OWM_RevA_ClearFlags(mxc_owm_reva_regs_t *owm, uint32_t mask)
 {
     owm->intfl = mask;
 }
 
 /* ************************************************************************* */
-unsigned MXC_OWM_RevA_GetFlags(mxc_owm_reva_regs_t* owm)
+unsigned MXC_OWM_RevA_GetFlags(mxc_owm_reva_regs_t *owm)
 {
     return (owm->intfl);
 }
 
 /* ************************************************************************* */
-void MXC_OWM_RevA_SetExtPullup(mxc_owm_reva_regs_t* owm, int enable)
+void MXC_OWM_RevA_SetExtPullup(mxc_owm_reva_regs_t *owm, int enable)
 {
     if (enable) {
         owm->cfg |= MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
@@ -529,7 +529,7 @@ void MXC_OWM_RevA_SetExtPullup(mxc_owm_reva_regs_t* owm, int enable)
 }
 
 /* ************************************************************************* */
-void MXC_OWM_RevA_SetOverdrive(mxc_owm_reva_regs_t* owm, int enable)
+void MXC_OWM_RevA_SetOverdrive(mxc_owm_reva_regs_t *owm, int enable)
 {
     if (enable) {
         owm->cfg |= MXC_F_OWM_REVA_CFG_OVERDRIVE;
@@ -539,19 +539,19 @@ void MXC_OWM_RevA_SetOverdrive(mxc_owm_reva_regs_t* owm, int enable)
 }
 
 /* ************************************************************************* */
-void MXC_OWM_RevA_EnableInt(mxc_owm_reva_regs_t* owm, int flags)
+void MXC_OWM_RevA_EnableInt(mxc_owm_reva_regs_t *owm, int flags)
 {
     owm->inten |= flags;
 }
 
 /* ************************************************************************* */
-void MXC_OWM_RevA_DisableInt(mxc_owm_reva_regs_t* owm, int flags)
+void MXC_OWM_RevA_DisableInt(mxc_owm_reva_regs_t *owm, int flags)
 {
     owm->inten &= ~flags;
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_SetForcePresenceDetect(mxc_owm_reva_regs_t* owm, int enable)
+int MXC_OWM_RevA_SetForcePresenceDetect(mxc_owm_reva_regs_t *owm, int enable)
 {
     MXC_SETFIELD(owm->cfg, MXC_F_OWM_REVA_CFG_FORCE_PRES_DET,
                  enable << MXC_F_OWM_REVA_CFG_FORCE_PRES_DET_POS);
@@ -559,7 +559,7 @@ int MXC_OWM_RevA_SetForcePresenceDetect(mxc_owm_reva_regs_t* owm, int enable)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_SetInternalPullup(mxc_owm_reva_regs_t* owm, int enable)
+int MXC_OWM_RevA_SetInternalPullup(mxc_owm_reva_regs_t *owm, int enable)
 {
     MXC_SETFIELD(owm->cfg, MXC_F_OWM_REVA_CFG_INT_PULLUP_ENABLE,
                  enable << MXC_F_OWM_REVA_CFG_INT_PULLUP_ENABLE_POS);
@@ -567,30 +567,30 @@ int MXC_OWM_RevA_SetInternalPullup(mxc_owm_reva_regs_t* owm, int enable)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_SetExternalPullup(mxc_owm_reva_regs_t* owm, mxc_owm_ext_pu_t ext_pu_mode)
+int MXC_OWM_RevA_SetExternalPullup(mxc_owm_reva_regs_t *owm, mxc_owm_ext_pu_t ext_pu_mode)
 {
     switch (ext_pu_mode) {
-        case MXC_OWM_EXT_PU_ACT_HIGH:
-            owm->cfg |= MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
-            owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_MODE;
-            break;
+    case MXC_OWM_EXT_PU_ACT_HIGH:
+        owm->cfg |= MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
+        owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_MODE;
+        break;
 
-        case MXC_OWM_EXT_PU_ACT_LOW:
-            owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
-            owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_MODE;
-            break;
+    case MXC_OWM_EXT_PU_ACT_LOW:
+        owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
+        owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_MODE;
+        break;
 
-        case MXC_OWM_EXT_PU_UNUSED:
-            owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
-            owm->cfg |= MXC_F_OWM_REVA_CFG_EXT_PULLUP_MODE;
-            break;
+    case MXC_OWM_EXT_PU_UNUSED:
+        owm->cfg &= ~MXC_F_OWM_REVA_CFG_EXT_PULLUP_ENABLE;
+        owm->cfg |= MXC_F_OWM_REVA_CFG_EXT_PULLUP_MODE;
+        break;
     }
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_SystemClockUpdated(mxc_owm_reva_regs_t* owm)
+int MXC_OWM_RevA_SystemClockUpdated(mxc_owm_reva_regs_t *owm)
 {
     uint32_t mxc_owm_clk, clk_div = 0;
 
@@ -614,14 +614,14 @@ int MXC_OWM_RevA_SystemClockUpdated(mxc_owm_reva_regs_t* owm)
     }
 
     // Set clk divisor
-    owm->clk_div_1us =
-        (clk_div << MXC_F_OWM_REVA_CLK_DIV_1US_DIVISOR_POS) & MXC_F_OWM_REVA_CLK_DIV_1US_DIVISOR;
+    owm->clk_div_1us = (clk_div << MXC_F_OWM_REVA_CLK_DIV_1US_DIVISOR_POS) &
+                       MXC_F_OWM_REVA_CLK_DIV_1US_DIVISOR;
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************ */
-int MXC_OWM_RevA_SetSearchROMAccelerator(mxc_owm_reva_regs_t* owm, int enable)
+int MXC_OWM_RevA_SetSearchROMAccelerator(mxc_owm_reva_regs_t *owm, int enable)
 {
     MXC_SETFIELD(owm->ctrl_stat, MXC_F_OWM_REVA_CTRL_STAT_SRA_MODE,
                  enable << MXC_F_OWM_REVA_CTRL_STAT_SRA_MODE_POS);
@@ -629,7 +629,7 @@ int MXC_OWM_RevA_SetSearchROMAccelerator(mxc_owm_reva_regs_t* owm, int enable)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_BitBang_Init(mxc_owm_reva_regs_t* owm, int initialState)
+int MXC_OWM_RevA_BitBang_Init(mxc_owm_reva_regs_t *owm, int initialState)
 {
     owm->cfg |= MXC_F_OWM_REVA_CFG_BIT_BANG_EN;
 
@@ -640,13 +640,13 @@ int MXC_OWM_RevA_BitBang_Init(mxc_owm_reva_regs_t* owm, int initialState)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_BitBang_Read(mxc_owm_reva_regs_t* owm)
+int MXC_OWM_RevA_BitBang_Read(mxc_owm_reva_regs_t *owm)
 {
     return !!(owm->ctrl_stat & MXC_F_OWM_REVA_CTRL_STAT_BIT_BANG_OE);
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_BitBang_Write(mxc_owm_reva_regs_t* owm, int state)
+int MXC_OWM_RevA_BitBang_Write(mxc_owm_reva_regs_t *owm, int state)
 {
     MXC_SETFIELD(owm->ctrl_stat, MXC_F_OWM_REVA_CTRL_STAT_BIT_BANG_OE,
                  state << MXC_F_OWM_REVA_CTRL_STAT_BIT_BANG_OE_POS);
@@ -654,21 +654,19 @@ int MXC_OWM_RevA_BitBang_Write(mxc_owm_reva_regs_t* owm, int state)
 }
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_BitBang_Disable(mxc_owm_reva_regs_t* owm)
+int MXC_OWM_RevA_BitBang_Disable(mxc_owm_reva_regs_t *owm)
 {
     owm->cfg &= ~MXC_F_OWM_REVA_CFG_BIT_BANG_EN;
     return E_NO_ERROR;
 }
 
 /* ************************************************************************* */
-static uint8_t CalculateCRC8(uint8_t* data, int len)
+static uint8_t CalculateCRC8(uint8_t *data, int len)
 {
     int i;
     uint8_t crc = 0;
 
-    for (i = 0; i < len; i++) {
-        crc = update_crc8(crc, data[i]);
-    }
+    for (i = 0; i < len; i++) { crc = update_crc8(crc, data[i]); }
 
     return crc;
 }
@@ -680,11 +678,11 @@ static uint8_t update_crc8(uint8_t crc, uint8_t val)
 
     for (inc = 0; inc < 8; inc++) {
         tmp = (uint8_t)(crc << 7); // Save X7 bit value
-        crc >>= 1;                 // Shift crc
+        crc >>= 1; // Shift crc
 
         if (((tmp >> 7) ^ (val & 0x01)) == 1) { // If X7 xor X8(input data)
-            crc ^= 0x8c;                        // XOR crc with X4 and X5, X1 = X7^X8
-            crc |= 0x80;                        // Carry
+            crc ^= 0x8c; // XOR crc with X4 and X5, X1 = X7^X8
+            crc |= 0x80; // Carry
         }
 
         val >>= 1;

@@ -48,28 +48,28 @@
 #include "log.h"
 
 u8 who;
-char* source[2] = {"host", "bl"};
-FILE* fp_packetlist_g;
+char *source[2] = { "host", "bl" };
+FILE *fp_packetlist_g;
 int compteur_g = 0;
 
 static char params[MAX_PARAMS][MAX_STRING];
 static int nb_params;
 
-const char* mode_name[] = {"",
-                           "",
-                           "",
-                           "",
-                           "SCP_FLORA_RSA",
-                           "",
-                           "MSP_MAXQ1852_ECDSA",
-                           "SCP_ECDSA",
-                           "SCP_LITE_ECDSA",
-                           "SCP_PAOLA",
-                           NULL};
+const char *mode_name[] = { "",
+                            "",
+                            "",
+                            "",
+                            "SCP_FLORA_RSA",
+                            "",
+                            "MSP_MAXQ1852_ECDSA",
+                            "SCP_ECDSA",
+                            "SCP_LITE_ECDSA",
+                            "SCP_PAOLA",
+                            NULL };
 
-const char* pp_name[] = {"", "", "", "", "", "", "", "", "RSA_4096", "RSA_2048", "ECDSA", NULL};
+const char *pp_name[] = { "", "", "", "", "", "", "", "", "RSA_4096", "RSA_2048", "ECDSA", NULL };
 
-void display_frame(uint8_t* frame, size_t frame_size)
+void display_frame(uint8_t *frame, size_t frame_size)
 {
     unsigned int i;
     if (frame_size != 0) {
@@ -121,9 +121,9 @@ int close_packetlist_file(void)
     return fclose(fp_packetlist_g);
 }
 
-int write_packet(uint8_t* frame, size_t frame_size, const char* name_file)
+int write_packet(uint8_t *frame, size_t frame_size, const char *name_file)
 {
-    FILE* pFile;
+    FILE *pFile;
     char filename[MAX_STRING];
 
     if (strcmp(config_g.output_dir, "") != 0) {
@@ -152,7 +152,7 @@ int write_packet(uint8_t* frame, size_t frame_size, const char* name_file)
     return ERR_OK;
 }
 
-int packet_send(uint8_t* frame, size_t frame_size, const char* message, const char* name_file)
+int packet_send(uint8_t *frame, size_t frame_size, const char *message, const char *name_file)
 {
     int result;
 
@@ -167,7 +167,7 @@ int packet_send(uint8_t* frame, size_t frame_size, const char* message, const ch
     return ERR_OK;
 }
 
-int replace_extra_params(char* param)
+int replace_extra_params(char *param)
 {
     regex_t regex;
     regmatch_t rm[2];
@@ -186,7 +186,7 @@ int replace_extra_params(char* param)
     if (!ret) {
         memcpy(value_str, &param[rm[1].rm_so], 1);
         value_str[1] = '\0';
-        idx          = strtol(value_str, NULL, 10) - 1;
+        idx = strtol(value_str, NULL, 10) - 1;
         strcpy(param, config_g.extra_param[idx]);
     } else {
         return ERR_INVALID_OPTION_FORMAT;
@@ -195,15 +195,13 @@ int replace_extra_params(char* param)
     return ERR_OK;
 }
 
-int process_command(char* line)
+int process_command(char *line)
 {
     int i, j, k, l;
     int found_l;
     char loline[MAX_STRING];
 
-    for (i = 0; i < (int)strlen(line); i++) {
-        loline[i] = (char)tolower((int)line[i]);
-    }
+    for (i = 0; i < (int)strlen(line); i++) { loline[i] = (char)tolower((int)line[i]); }
 
     /* parse every command */
     for (found_l = 0, i = 0; i < MAX_SCP_COMMAND; i++) {
@@ -218,9 +216,7 @@ int process_command(char* line)
             /* while not eol */
             while (j < (int)strlen(line) - 1) {
                 /* while space, go on */
-                while (' ' == line[j]) {
-                    j++;
-                }
+                while (' ' == line[j]) { j++; }
                 /* if not eol */
                 if (j == (int)strlen(line) - 1) {
                     break;
@@ -239,9 +235,7 @@ int process_command(char* line)
                 k++;
                 /* display param */
                 print_debug("params[%d]:", nb_params);
-                for (l = 0; l < k - 1; l++) {
-                    print_d("%c", params[nb_params][l]);
-                }
+                for (l = 0; l < k - 1; l++) { print_d("%c", params[nb_params][l]); }
                 print_d("\n");
 
                 replace_extra_params(params[nb_params]);

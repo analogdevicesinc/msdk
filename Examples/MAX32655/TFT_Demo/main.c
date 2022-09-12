@@ -67,7 +67,7 @@ int main(void)
 
     int key;
     unsigned int start_time;
-    State* state;
+    State *state;
 
     /* Initialize RTC */
     MXC_RTC_Init(0, 0);

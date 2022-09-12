@@ -64,7 +64,7 @@ extern "C" {
  *
  * @ingroup UCL_HMAC_RIPEMD160
  */
-int ucl_hmac_ripemd160(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+int ucl_hmac_ripemd160(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen, u8 *key,
                        u32 key_byteLen);
 
 /*============================================================================*/
@@ -81,7 +81,7 @@ int ucl_hmac_ripemd160(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLe
  *
  * @ingroup UCL_HMAC_RIPEMD160
  */
-int ucl_hmac_ripemd160_init(ucl_ripemd160_ctx_t* context, u8* key, u32 key_byteLen);
+int ucl_hmac_ripemd160_init(ucl_ripemd160_ctx_t *context, u8 *key, u32 key_byteLen);
 
 /*============================================================================*/
 /** <b>The core of RIPEMD160 </b>.
@@ -100,7 +100,7 @@ int ucl_hmac_ripemd160_init(ucl_ripemd160_ctx_t* context, u8* key, u32 key_byteL
  *
  * @ingroup UCL_HMAC_RIPEMD160
  */
-int ucl_hmac_ripemd160_core(ucl_ripemd160_ctx_t* context, u8* data, u32 byteLen);
+int ucl_hmac_ripemd160_core(ucl_ripemd160_ctx_t *context, u8 *data, u32 byteLen);
 
 /*============================================================================*/
 /** <b>Finish the process of RIPEMD160</b>.
@@ -122,7 +122,7 @@ int ucl_hmac_ripemd160_core(ucl_ripemd160_ctx_t* context, u8* data, u32 byteLen)
  *
  * @ingroup UCL_HMAC_RIPEMD160
  */
-int ucl_hmac_ripemd160_finish(u8* mac, u32 mac_byteLen, ucl_ripemd160_ctx_t* context, u8* key,
+int ucl_hmac_ripemd160_finish(u8 *mac, u32 mac_byteLen, ucl_ripemd160_ctx_t *context, u8 *key,
                               u32 key_byteLen);
 
 #ifdef __cplusplus

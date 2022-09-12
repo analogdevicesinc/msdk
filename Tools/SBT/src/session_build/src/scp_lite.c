@@ -48,7 +48,7 @@
 #include "ecdsa.h"
 #include <log.h>
 
-int scp_lite_cmd(const uint8_t* data, size_t data_len, const uint8_t* address)
+int scp_lite_cmd(const uint8_t *data, size_t data_len, const uint8_t *address)
 {
     unsigned int i;
     int result;
@@ -60,25 +60,17 @@ int scp_lite_cmd(const uint8_t* data, size_t data_len, const uint8_t* address)
     payload[ipayload++] = SCP_LITE_SYNC2;
 
     /* Destination Address */
-    for (i = 0; i < 4; i++) {
-        payload[ipayload++] = address[i];
-    }
+    for (i = 0; i < 4; i++) { payload[ipayload++] = address[i]; }
 
     /* Payload Length */
-    for (i = 4; i != 0; i--) {
-        payload[ipayload++] = (data_len >> (8 * (i - 1))) & 255;
-    }
+    for (i = 4; i != 0; i--) { payload[ipayload++] = (data_len >> (8 * (i - 1))) & 255; }
 
     /* Payload */
-    for (i = 0; i < data_len; i++) {
-        payload[ipayload++] = data[i];
-    }
+    for (i = 0; i < data_len; i++) { payload[ipayload++] = data[i]; }
 
     ASSERT_OK(ecdsa_sign(payload, ipayload, signature, config_g.ecdsaKey));
 
-    for (i = 0; i < ECDSA_MODULUS_LEN * 2; i++) {
-        payload[ipayload++] = signature[i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN * 2; i++) { payload[ipayload++] = signature[i]; }
 
     return packet_send(payload, ipayload, "scp-lite-load-ram", "scp_lite_load_mem");
 }
@@ -100,7 +92,7 @@ int scp_lite_response(void)
                        "scp_lite_load_ram_response");
 }
 
-int scp_lite_load_ram(char* ptr_address_offset, const char* sfilename)
+int scp_lite_load_ram(char *ptr_address_offset, const char *sfilename)
 {
     int result;
     int i;
@@ -108,7 +100,7 @@ int scp_lite_load_ram(char* ptr_address_offset, const char* sfilename)
     uint8_t address[4];
 
     size_t data_len = sizeof(u8) * 1024 * 1024 * config_g.flash_mb;
-    uint8_t* data   = malloc(data_len);
+    uint8_t *data = malloc(data_len);
     if (NULL == data) {
         print_error("Unable to allocate memory for binary data (%dMB requested)\n",
                     config_g.flash_mb);
@@ -143,12 +135,12 @@ int scp_lite_load_ram(char* ptr_address_offset, const char* sfilename)
 static char params[MAX_PARAMS][MAX_STRING];
 static int nb_params;
 
-int process_script_scp_lite_ecdsa(const char* filename)
+int process_script_scp_lite_ecdsa(const char *filename)
 {
     char line[MAX_STRING];
     int command;
     int result;
-    FILE* fpscript;
+    FILE *fpscript;
 
     fpscript = fopen(filename, "r");
     if (fpscript == NULL) {
@@ -170,19 +162,19 @@ int process_script_scp_lite_ecdsa(const char* filename)
         print_debug("command=%s\n", idf_scp_cmd[command].name);
 
         switch (command) {
-            case COMMAND_SCP_LITE_LOAD_RAM:
+        case COMMAND_SCP_LITE_LOAD_RAM:
 
-                if (2 == nb_params) {
-                    ASSERT_OK(scp_lite_load_ram(params[0], params[1]));
-                } else {
-                    print_error("Incorrect format for load-ram command: load-ram\n");
-                    return ERR_BAD_PARAMETER;
-                }
-                break;
-            case COMMAND_UNKNOWN:
-            default:
-                print_error("Command <%s> is not supported or Unknown\n", line);
-                return ERR_CMD_UNKNOWN;
+            if (2 == nb_params) {
+                ASSERT_OK(scp_lite_load_ram(params[0], params[1]));
+            } else {
+                print_error("Incorrect format for load-ram command: load-ram\n");
+                return ERR_BAD_PARAMETER;
+            }
+            break;
+        case COMMAND_UNKNOWN:
+        default:
+            print_error("Command <%s> is not supported or Unknown\n", line);
+            return ERR_CMD_UNKNOWN;
         }
     }
 

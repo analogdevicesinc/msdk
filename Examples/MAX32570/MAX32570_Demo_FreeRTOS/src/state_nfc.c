@@ -48,17 +48,17 @@
 
 /********************************* 		VARIABLES	 *************************/
 static text_t text_msg[] = {
-    {(char*)"NFC", 3},
+    { (char *)"NFC", 3 },
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-    {(char*)"Place card near target", 22},
+    { (char *)"Place card near target", 22 },
 #else
-    {(char*)"This EvKit does not support NFC", 31}
+    { (char *)"This EvKit does not support NFC", 31 }
 #endif
 };
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-static area_t area_clean              = {0, 0, 0, 0};
-static area_t area_clean_1            = {0, 0, 0, 0};
+static area_t area_clean = { 0, 0, 0, 0 };
+static area_t area_clean_1 = { 0, 0, 0, 0 };
 static int after_timeout_clear_screen = 0;
 #endif
 
@@ -90,7 +90,7 @@ static int init(void)
 }
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-static int nfc_process(unsigned char* msg, unsigned int msg_len)
+static int nfc_process(unsigned char *msg, unsigned int msg_len)
 {
     if (msg_len > 0) {
         text_t msg_var;
@@ -110,8 +110,8 @@ static int nfc_process(unsigned char* msg, unsigned int msg_len)
 
         if (k == msg_len) {
             // Single line to show
-            msg_var.data = (char*)msg;
-            msg_var.len  = msg_len;
+            msg_var.data = (char *)msg;
+            msg_var.len = msg_len;
 
             if (msg_var.len > 24) {
                 msg_var.len = 24;
@@ -120,12 +120,12 @@ static int nfc_process(unsigned char* msg, unsigned int msg_len)
 
         } else {
             // Show 2 lines, MAX
-            msg_var.data = (char*)msg;
-            msg_var.len  = k;
+            msg_var.data = (char *)msg;
+            msg_var.len = k;
 
             k++; // skip past \n
-            msg_var_1.data = (char*)(msg + k);
-            msg_var_1.len  = msg_len - k;
+            msg_var_1.data = (char *)(msg + k);
+            msg_var_1.len = msg_len - k;
 
             if (msg_var.len > 24) {
                 msg_var.len = 24;
@@ -163,27 +163,27 @@ static int time_tick(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_C: // exit
+    case KEY_C: // exit
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-            nfc_disable_polling();
+        nfc_disable_polling();
 #endif
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
 
     return 0;
 }
 
 #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
-static State g_state = {"nfc", init, key_process, time_tick, TICK_TIMEOUT, NULL, nfc_process};
+static State g_state = { "nfc", init, key_process, time_tick, TICK_TIMEOUT, NULL, nfc_process };
 #else
-static State g_state = {"nfc", init, key_process, NULL, 0, NULL, NULL};
+static State g_state = { "nfc", init, key_process, NULL, 0, NULL, NULL };
 #endif
 
 /********************************* Public Functions **************************/
-State* get_nfc_state(void)
+State *get_nfc_state(void)
 {
     return &g_state;
 }

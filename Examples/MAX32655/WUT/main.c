@@ -71,7 +71,7 @@ int main(void)
     MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
 
     // config structure for one shot timer to trigger in a number of ticks
-    cfg.mode    = MXC_WUT_MODE_ONESHOT;
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
 
     // Init WUT
@@ -90,8 +90,7 @@ int main(void)
             MXC_WUT_Enable();
 
             // wait until UART transmit
-            while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-                ;
+            while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
             MXC_LP_EnterSleepMode();
 

@@ -38,14 +38,14 @@
 #define __CONFIG_H__
 
 #define VERBOSE_LEVEL 4
-#define USE_COLOR     1
+#define USE_COLOR 1
 
-#define MAXLINE           512
-#define MAX_LINE          512
+#define MAXLINE 512
+#define MAX_LINE 512
 #define ECDSA_MODULUS_LEN 32
-#define MAX_STRING        10240
-#define MAX_FLASH         32 * 1024 * 1024
-#define MAX_RSA_LENGTH    512
+#define MAX_STRING 10240
+#define MAX_FLASH 32 * 1024 * 1024
+#define MAX_RSA_LENGTH 512
 
 uint8_t verbose;
 

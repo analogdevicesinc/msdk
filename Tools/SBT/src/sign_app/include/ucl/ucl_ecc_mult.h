@@ -82,8 +82,8 @@ extern "C" {
  *
  * @ingroup UCL_ECC_MULT
  */
-int __API__ ucl_ecc_mult_unknown(ucl_ecc_point_st* R, ucl_ecc_point_st* P, ucl_ecc_curve_st* e,
-                                 u32* k, u32 sk, int opt);
+int __API__ ucl_ecc_mult_unknown(ucl_ecc_point_st *R, ucl_ecc_point_st *P, ucl_ecc_curve_st *e,
+                                 u32 *k, u32 sk, int opt);
 
 /* ========================================================================== */
 /** <b>Fixed-Point Multiplication Precomputation</b>.
@@ -104,8 +104,8 @@ int __API__ ucl_ecc_mult_unknown(ucl_ecc_point_st* R, ucl_ecc_point_st* P, ucl_e
  *
  * @ingroup UCL_ECC_MULT
  */
-int __API__ ucl_ecc_mult_fixed_precomp(ucl_ecc_point_st*** mP, u32 w, ucl_ecc_point_st* P,
-                                       ucl_ecc_curve_st* e);
+int __API__ ucl_ecc_mult_fixed_precomp(ucl_ecc_point_st ***mP, u32 w, ucl_ecc_point_st *P,
+                                       ucl_ecc_curve_st *e);
 
 /* ========================================================================== */
 /** <b>Fixed-Point Multiplication</b>.
@@ -130,8 +130,8 @@ int __API__ ucl_ecc_mult_fixed_precomp(ucl_ecc_point_st*** mP, u32 w, ucl_ecc_po
  *
  * @ingroup UCL_ECC_MULT
  */
-int __API__ ucl_ecc_mult_fixed(ucl_ecc_point_st* R, ucl_ecc_point_st** mP, u32 w, u32* k, u32 sk,
-                               ucl_ecc_curve_st* e);
+int __API__ ucl_ecc_mult_fixed(ucl_ecc_point_st *R, ucl_ecc_point_st **mP, u32 w, u32 *k, u32 sk,
+                               ucl_ecc_curve_st *e);
 
 #ifdef __cplusplus
 }

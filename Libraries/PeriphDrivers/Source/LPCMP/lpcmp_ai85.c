@@ -43,27 +43,27 @@
 #include "lpcmp_regs.h"
 #include "lpcmp_reva.h"
 
-static int init                                     = 0;
-static const mxc_lpcmp_ctrl_reg_t lpcmp_ctrl_regs[] = {&MXC_MCR->cmp_ctrl, &MXC_LPCMP->ctrl[0],
-                                                       &MXC_LPCMP->ctrl[1], &MXC_LPCMP->ctrl[2]};
+static int init = 0;
+static const mxc_lpcmp_ctrl_reg_t lpcmp_ctrl_regs[] = { &MXC_MCR->cmp_ctrl, &MXC_LPCMP->ctrl[0],
+                                                        &MXC_LPCMP->ctrl[1], &MXC_LPCMP->ctrl[2] };
 
 static void initGPIOForComp(mxc_lpcmp_cmpsel_t cmp)
 {
     switch (cmp) {
-        case MXC_LPCMP_CMP0:
-            MXC_GPIO_Config(&gpio_cfg_cmp0);
-            break;
-        case MXC_LPCMP_CMP1:
-            MXC_GPIO_Config(&gpio_cfg_cmp1);
-            break;
-        case MXC_LPCMP_CMP2:
-            MXC_GPIO_Config(&gpio_cfg_cmp2);
-            break;
-        case MXC_LPCMP_CMP3:
-            MXC_GPIO_Config(&gpio_cfg_cmp3);
-            break;
-        default:
-            break;
+    case MXC_LPCMP_CMP0:
+        MXC_GPIO_Config(&gpio_cfg_cmp0);
+        break;
+    case MXC_LPCMP_CMP1:
+        MXC_GPIO_Config(&gpio_cfg_cmp1);
+        break;
+    case MXC_LPCMP_CMP2:
+        MXC_GPIO_Config(&gpio_cfg_cmp2);
+        break;
+    case MXC_LPCMP_CMP3:
+        MXC_GPIO_Config(&gpio_cfg_cmp3);
+        break;
+    default:
+        break;
     }
 }
 

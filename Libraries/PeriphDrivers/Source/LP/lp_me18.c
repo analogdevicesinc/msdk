@@ -96,8 +96,8 @@ void MXC_LP_EnterBackupMode(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
 
-    while (1)
-        ; // Should never reach this line - device will jump to backup vector on exit from background mode.
+    while (1) {}
+    // Should never reach this line - device will jump to backup vector on exit from background mode.
 }
 
 void MXC_LP_EnterPowerDownMode(void)
@@ -105,8 +105,8 @@ void MXC_LP_EnterPowerDownMode(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_POWERDOWN;
 
-    while (1)
-        ; // Should never reach this line - device will reset on exit from shutdown mode.
+    while (1) {}
+    // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
@@ -138,50 +138,50 @@ void MXC_LP_ClearWakeStatus(void)
     MXC_PWRSEQ->lpwkst1 = 0xFFFFFFFF;
     MXC_PWRSEQ->lpwkst2 = 0xFFFFFFFF;
     MXC_PWRSEQ->lpwkst3 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lppwst  = 0xFFFFFFFF;
+    MXC_PWRSEQ->lppwst = 0xFFFFFFFF;
 }
 
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIO_WE;
 
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case MXC_GPIO_PORT_0:
-            MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_1:
-            MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_2:
-            MXC_PWRSEQ->lpwken2 |= wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_3:
-            MXC_PWRSEQ->lpwken3 |= wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_4:
-            MXC_PWRSEQ->lpwken4 |= wu_pins->mask;
-            break;
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_2:
+        MXC_PWRSEQ->lpwken2 |= wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_3:
+        MXC_PWRSEQ->lpwken3 |= wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_4:
+        MXC_PWRSEQ->lpwken4 |= wu_pins->mask;
+        break;
     }
 }
 
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
 {
     switch (1 << MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case MXC_GPIO_PORT_0:
-            MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_1:
-            MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_2:
-            MXC_PWRSEQ->lpwken2 &= ~wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_3:
-            MXC_PWRSEQ->lpwken3 &= ~wu_pins->mask;
-            break;
-        case MXC_GPIO_PORT_4:
-            MXC_PWRSEQ->lpwken4 &= ~wu_pins->mask;
-            break;
+    case MXC_GPIO_PORT_0:
+        MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_1:
+        MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_2:
+        MXC_PWRSEQ->lpwken2 &= ~wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_3:
+        MXC_PWRSEQ->lpwken3 &= ~wu_pins->mask;
+        break;
+    case MXC_GPIO_PORT_4:
+        MXC_PWRSEQ->lpwken4 &= ~wu_pins->mask;
+        break;
     }
 
     if (MXC_PWRSEQ->lpwken4 == 0 && MXC_PWRSEQ->lpwken3 == 0 && MXC_PWRSEQ->lpwken2 == 0 &&
@@ -200,7 +200,7 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_RTC_WE;
 }
 
-void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr)
+void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t *tmr)
 {
     MXC_ASSERT(MXC_TMR_GET_IDX(tmr) > 3);
 
@@ -211,7 +211,7 @@ void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr)
     }
 }
 
-void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr)
+void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t *tmr)
 {
     MXC_ASSERT(MXC_TMR_GET_IDX(tmr) > 3);
 
@@ -259,12 +259,12 @@ void MXC_LP_EnableCANWakeup(uint32_t can_idx)
     MXC_ASSERT(can_idx < MXC_CAN_INSTANCES);
 
     switch (can_idx) {
-        case 0:
-            MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_CAN0;
-            break;
-        case 1:
-            MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_CAN1;
-            break;
+    case 0:
+        MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_CAN0;
+        break;
+    case 1:
+        MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_CAN1;
+        break;
     }
 }
 
@@ -273,12 +273,12 @@ void MXC_LP_DisableCANWakeup(uint32_t can_idx)
     MXC_ASSERT(can_idx < MXC_CAN_INSTANCES);
 
     switch (can_idx) {
-        case 0:
-            MXC_PWRSEQ->lppwen &= ~MXC_F_PWRSEQ_LPPWEN_CAN0;
-            break;
-        case 1:
-            MXC_PWRSEQ->lppwen &= ~MXC_F_PWRSEQ_LPPWEN_CAN1;
-            break;
+    case 0:
+        MXC_PWRSEQ->lppwen &= ~MXC_F_PWRSEQ_LPPWEN_CAN0;
+        break;
+    case 1:
+        MXC_PWRSEQ->lppwen &= ~MXC_F_PWRSEQ_LPPWEN_CAN1;
+        break;
     }
 }
 

@@ -64,7 +64,7 @@ int MXC_RPU_RevA_Allow(mxc_rpu_device_t periph, uint32_t allow_mask)
     }
 
     // Add the register offset (periph) to the RPU base address to get the register address
-    uint32_t* access_control_reg = (uint32_t*)(MXC_BASE_RPU + (uint32_t)periph);
+    uint32_t *access_control_reg = (uint32_t *)(MXC_BASE_RPU + (uint32_t)periph);
 
     // Read-Modify-Write the register to enable access to bus masters specified in the mask
     *access_control_reg = (~allow_mask) & *access_control_reg;
@@ -85,7 +85,7 @@ int MXC_RPU_RevA_Disallow(mxc_rpu_device_t periph, uint32_t disallow_mask)
     }
 
     // Add the register offset (periph) to the RPU Base Address to get the register address
-    uint32_t* access_control_reg = (uint32_t*)(MXC_BASE_RPU + (uint32_t)periph);
+    uint32_t *access_control_reg = (uint32_t *)(MXC_BASE_RPU + (uint32_t)periph);
 
     // Read-Modify-Write the register to disable access to bus masters specified in the mask
     *access_control_reg = disallow_mask | *access_control_reg;

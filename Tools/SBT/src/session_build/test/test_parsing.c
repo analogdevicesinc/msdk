@@ -46,7 +46,7 @@
 #include <ecdsa.h>
 
 /* Pointer to the file used by the tests. */
-static FILE* temp_file = NULL;
+static FILE *temp_file = NULL;
 
 /* The suite initialization function.
  * Opens the temporary file used by the tests.

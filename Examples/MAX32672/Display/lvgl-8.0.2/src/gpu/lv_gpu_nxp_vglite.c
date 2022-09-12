@@ -125,7 +125,8 @@ static lv_res_t _lv_gpu_nxp_vglite_check_blit(lv_gpu_nxp_vglite_blit_info_t* bli
         if (cond) {                    \
             PRINT("%s. STOP!\n", txt); \
             for (;;)                   \
-                ;                      \
+{}
+                     \
         }                              \
     } while (0)
 

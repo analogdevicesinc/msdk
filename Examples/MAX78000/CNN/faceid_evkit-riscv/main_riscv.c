@@ -61,8 +61,8 @@
 
 __attribute__((section(
     ".shared__at__mailbox"))) volatile uint32_t mail_box[ARM_MAILBOX_SIZE + RISCV_MAILBOX_SIZE];
-volatile uint32_t* arm_mail_box   = &mail_box[0];
-volatile uint32_t* riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
+volatile uint32_t *arm_mail_box = &mail_box[0];
+volatile uint32_t *riscv_mail_box = &mail_box[ARM_MAILBOX_SIZE];
 
 extern int start_faceid(void);
 

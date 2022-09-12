@@ -95,7 +95,7 @@ static int write_enable()
 }
 
 /* ************************************************************************* */
-static int inline read_reg(uint8_t cmd, uint8_t* buf)
+static int inline read_reg(uint8_t cmd, uint8_t *buf)
 {
     // Send the command
     if (MX25_Board_Write(&cmd, 1, 0, MXC_SPIXF_WIDTH_1) != E_NO_ERROR) {
@@ -111,7 +111,7 @@ static int inline read_reg(uint8_t cmd, uint8_t* buf)
 }
 
 /* ************************************************************************* */
-static int inline write_reg(uint8_t* buf, unsigned len)
+static int inline write_reg(uint8_t *buf, unsigned len)
 {
     if (write_enable() != 0) {
         return E_BAD_STATE;
@@ -192,8 +192,7 @@ int MX25_Quad(int enable)
 
     MX25_Read_SR(&pre_buf);
 
-    while (flash_busy()) {
-    }
+    while (flash_busy()) {}
 
     if (enable) {
         pre_buf |= MX25_QE_MASK;
@@ -207,13 +206,11 @@ int MX25_Quad(int enable)
 
     MX25_Write_SR(pre_buf);
 
-    while (flash_busy()) {
-    }
+    while (flash_busy()) {}
 
     MX25_Read_SR(&post_buf);
 
-    while (flash_busy()) {
-    }
+    while (flash_busy()) {}
 
     if (enable) {
         if (!(post_buf & MX25_QE_MASK)) {
@@ -248,8 +245,7 @@ int MX25_Write_Protect(int enable)
 
     MX25_Write_SR(pre_buf);
 
-    while (flash_busy()) {
-    }
+    while (flash_busy()) {}
 
     MX25_Read_SR(&post_buf);
 
@@ -267,7 +263,7 @@ int MX25_Write_Protect(int enable)
 }
 
 /* ************************************************************************* */
-int MX25_Read(uint32_t address, uint8_t* rx_buf, uint32_t rx_len, mxc_spixf_width_t width)
+int MX25_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, mxc_spixf_width_t width)
 {
     uint8_t cmd[4];
 
@@ -335,13 +331,13 @@ int MX25_Read(uint32_t address, uint8_t* rx_buf, uint32_t rx_len, mxc_spixf_widt
 }
 
 /* ************************************************************************* */
-int MX25_Program_Page(uint32_t address, uint8_t* tx_buf, uint32_t tx_len, mxc_spixf_width_t width)
+int MX25_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len, mxc_spixf_width_t width)
 {
     int timeout = 0;
     uint8_t cmd[4];
     unsigned len;
     uint32_t next_page;
-    uint8_t* pWrite_Data;
+    uint8_t *pWrite_Data;
 
     if (flash_busy()) {
         return E_BUSY;
@@ -413,7 +409,7 @@ int MX25_Program_Page(uint32_t address, uint8_t* tx_buf, uint32_t tx_len, mxc_sp
 
         // if there is more to write
         if (tx_len > 0) {
-            address += len;     // calculate new starting flash_address
+            address += len; // calculate new starting flash_address
             pWrite_Data += len; // and source data address
         }
 
@@ -477,18 +473,18 @@ int MX25_Erase(uint32_t address, MX25_Erase_t size)
     }
 
     switch (size) {
-        case MX25_Erase_4K:
-        default:
-            cmd[0] = MX25_CMD_4K_ERASE;
-            break;
+    case MX25_Erase_4K:
+    default:
+        cmd[0] = MX25_CMD_4K_ERASE;
+        break;
 
-        case MX25_Erase_32K:
-            cmd[0] = MX25_CMD_32K_ERASE;
-            break;
+    case MX25_Erase_32K:
+        cmd[0] = MX25_CMD_32K_ERASE;
+        break;
 
-        case MX25_Erase_64K:
-            cmd[0] = MX25_CMD_64K_ERASE;
-            break;
+    case MX25_Erase_64K:
+        cmd[0] = MX25_CMD_64K_ERASE;
+        break;
     }
 
     cmd[1] = (address >> 16) & 0xFF;
@@ -512,7 +508,7 @@ int MX25_Erase(uint32_t address, MX25_Erase_t size)
 }
 
 /* ************************************************************************* */
-int MX25_Read_SR(uint8_t* buf)
+int MX25_Read_SR(uint8_t *buf)
 {
     uint8_t cmd = MX25_CMD_READ_SR;
 
@@ -522,7 +518,7 @@ int MX25_Read_SR(uint8_t* buf)
 /* ************************************************************************* */
 int MX25_Write_SR(uint8_t value)
 {
-    uint8_t cmd[2] = {MX25_CMD_WRITE_SR, value};
+    uint8_t cmd[2] = { MX25_CMD_WRITE_SR, value };
 
     return write_reg(cmd, 2);
 }

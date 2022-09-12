@@ -45,7 +45,7 @@
 /* Control/Configuration Functions                                           */
 /* ************************************************************************* */
 
-int MXC_EMAC_Init(mxc_emac_config_t* config)
+int MXC_EMAC_Init(mxc_emac_config_t *config)
 {
     if (!config) {
         return E_NULL_PTR;
@@ -55,15 +55,15 @@ int MXC_EMAC_Init(mxc_emac_config_t* config)
     MXC_GPIO_Config(&gpio_cfg_emac_P2a);
     MXC_GPIO_Config(&gpio_cfg_emac_P2b);
 
-    return MXC_EMAC_RevA_Init((mxc_emac_reva_config_t*)config);
+    return MXC_EMAC_RevA_Init((mxc_emac_reva_config_t *)config);
 }
 
-int MXC_EMAC_SetConfiguration(mxc_emac_config_t* config)
+int MXC_EMAC_SetConfiguration(mxc_emac_config_t *config)
 {
-    return MXC_EMAC_RevA_SetConfiguration((mxc_emac_reva_config_t*)config);
+    return MXC_EMAC_RevA_SetConfiguration((mxc_emac_reva_config_t *)config);
 }
 
-int MXC_EMAC_SetHwAddr(unsigned char* enetaddr)
+int MXC_EMAC_SetHwAddr(unsigned char *enetaddr)
 {
     return MXC_EMAC_RevA_SetHwAddr(enetaddr);
 }
@@ -99,17 +99,17 @@ int MXC_EMAC_ReadLinkStatus(void)
 /* ************************************************************************* */
 /* Transaction-Level Functions                                               */
 /* ************************************************************************* */
-int MXC_EMAC_SendSync(const void* packet, unsigned int length)
+int MXC_EMAC_SendSync(const void *packet, unsigned int length)
 {
     return MXC_EMAC_RevA_SendSync(packet, length);
 }
 
-int MXC_EMAC_SendAsync(const void* packet, unsigned int length)
+int MXC_EMAC_SendAsync(const void *packet, unsigned int length)
 {
     return MXC_EMAC_RevA_SendAsync(packet, length);
 }
 
-int MXC_EMAC_Recv(void* rx_buff, unsigned int max_len)
+int MXC_EMAC_Recv(void *rx_buff, unsigned int max_len)
 {
     return MXC_EMAC_RevA_Recv(rx_buff, max_len);
 }

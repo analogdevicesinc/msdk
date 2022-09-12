@@ -61,7 +61,7 @@ static LlRtCfg_t mainLlRtCfg;
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
 
@@ -94,10 +94,10 @@ static void mainWsfInit(void)
     /* +12 for message headroom, +4 for header. */
     const uint16_t aclBufSize = 12 + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-    wsfBufPoolDesc_t poolDesc[] = {{16, 8},
-                                   {32, 4},
-                                   {128, mainLlRtCfg.maxAdvReports},
-                                   {aclBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs}};
+    wsfBufPoolDesc_t poolDesc[] = { { 16, 8 },
+                                    { 32, 4 },
+                                    { 128, mainLlRtCfg.maxAdvReports },
+                                    { aclBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs } };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -164,13 +164,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
-                           .wlSizeCfg    = 4,
-                           .rlSizeCfg    = 4,
-                           .plSizeCfg    = 4,
-                           .pLlRtCfg     = &mainLlRtCfg,
-                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
-                           .freeMemAvail = WsfHeapCountAvailable()};
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+                            .wlSizeCfg = 4,
+                            .rlSizeCfg = 4,
+                            .plSizeCfg = 4,
+                            .pLlRtCfg = &mainLlRtCfg,
+                            .pFreeMem = WsfHeapGetFreeStartAddress(),
+                            .freeMemAvail = WsfHeapCountAvailable() };
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
@@ -178,7 +178,7 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
-    LlSetBdAddr((uint8_t*)&bdAddr);
+    LlSetBdAddr((uint8_t *)&bdAddr);
     LlSetAdvTxPower(DEFAULT_TX_POWER);
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);

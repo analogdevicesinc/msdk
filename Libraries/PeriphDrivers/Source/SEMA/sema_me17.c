@@ -42,32 +42,32 @@
 int MXC_SEMA_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR);
-    return MXC_SEMA_RevA_Init((mxc_sema_reva_regs_t*)MXC_SEMA);
+    return MXC_SEMA_RevA_Init((mxc_sema_reva_regs_t *)MXC_SEMA);
 }
 
 int MXC_SEMA_InitBoxes(void)
 {
-    return MXC_SEMA_RevA_InitBoxes((mxc_sema_reva_regs_t*)MXC_SEMA);
+    return MXC_SEMA_RevA_InitBoxes((mxc_sema_reva_regs_t *)MXC_SEMA);
 }
 
 int MXC_SEMA_GetSema(unsigned sema)
 {
-    return MXC_SEMA_RevA_GetSema((mxc_sema_reva_regs_t*)MXC_SEMA, sema);
+    return MXC_SEMA_RevA_GetSema((mxc_sema_reva_regs_t *)MXC_SEMA, sema);
 }
 
 int MXC_SEMA_CheckSema(unsigned sema)
 {
-    return MXC_SEMA_RevA_CheckSema((mxc_sema_reva_regs_t*)MXC_SEMA, sema);
+    return MXC_SEMA_RevA_CheckSema((mxc_sema_reva_regs_t *)MXC_SEMA, sema);
 }
 
 uint32_t MXC_SEMA_Status(void)
 {
-    return MXC_SEMA_RevA_Status((mxc_sema_reva_regs_t*)MXC_SEMA);
+    return MXC_SEMA_RevA_Status((mxc_sema_reva_regs_t *)MXC_SEMA);
 }
 
 void MXC_SEMA_FreeSema(unsigned sema)
 {
-    MXC_SEMA_RevA_FreeSema((mxc_sema_reva_regs_t*)MXC_SEMA, sema);
+    MXC_SEMA_RevA_FreeSema((mxc_sema_reva_regs_t *)MXC_SEMA, sema);
 }
 
 int MXC_SEMA_Shutdown(void)
@@ -75,27 +75,27 @@ int MXC_SEMA_Shutdown(void)
     return E_NO_ERROR;
 }
 
-int MXC_SEMA_ReadBox(uint8_t* data, unsigned len)
+int MXC_SEMA_ReadBox(uint8_t *data, unsigned len)
 {
-    return MXC_SEMA_RevA_ReadBox((mxc_sema_reva_regs_t*)MXC_SEMA, data, len);
+    return MXC_SEMA_RevA_ReadBox((mxc_sema_reva_regs_t *)MXC_SEMA, data, len);
 }
 
-int MXC_SEMA_WriteBox(const uint8_t* data, unsigned len)
+int MXC_SEMA_WriteBox(const uint8_t *data, unsigned len)
 {
-    return MXC_SEMA_RevA_WriteBox((mxc_sema_reva_regs_t*)MXC_SEMA, data, len);
+    return MXC_SEMA_RevA_WriteBox((mxc_sema_reva_regs_t *)MXC_SEMA, data, len);
 }
 
 int MXC_SEMA_Handler(void)
 {
-    return MXC_SEMA_RevA_Handler((mxc_sema_reva_regs_t*)MXC_SEMA);
+    return MXC_SEMA_RevA_Handler((mxc_sema_reva_regs_t *)MXC_SEMA);
 }
 
-int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t* data, unsigned len)
+int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t *data, unsigned len)
 {
-    return MXC_SEMA_RevA_ReadBoxAsync((mxc_sema_reva_regs_t*)MXC_SEMA, cb, data, len);
+    return MXC_SEMA_RevA_ReadBoxAsync((mxc_sema_reva_regs_t *)MXC_SEMA, cb, data, len);
 }
 
-int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t* data, unsigned len)
+int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t *data, unsigned len)
 {
-    return MXC_SEMA_RevA_WriteBoxAsync((mxc_sema_reva_regs_t*)MXC_SEMA, cb, data, len);
+    return MXC_SEMA_RevA_WriteBoxAsync((mxc_sema_reva_regs_t *)MXC_SEMA, cb, data, len);
 }

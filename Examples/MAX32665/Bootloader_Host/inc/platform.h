@@ -43,13 +43,13 @@
 /******************************* Public Functions ****************************/
 // i2c
 int plt_i2c_init(void);
-int plt_i2c_write(unsigned char* src, unsigned int len);
-int plt_i2c_read(unsigned char* dst, unsigned int len);
+int plt_i2c_write(unsigned char *src, unsigned int len);
+int plt_i2c_read(unsigned char *dst, unsigned int len);
 
 // spi
 int plt_spi_init(void);
-int plt_spi_write(unsigned char* src, unsigned int len);
-int plt_spi_read(unsigned char* dst, unsigned int len);
+int plt_spi_write(unsigned char *src, unsigned int len);
+int plt_spi_read(unsigned char *dst, unsigned int len);
 
 // gpio
 int plt_gpio_init(void);

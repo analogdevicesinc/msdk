@@ -503,7 +503,7 @@ LV_ATTRIBUTE_FAST_MEM static void lv_draw_map(const lv_area_t* map_area, const l
                 trans_dsc.cfg.src   = map_p;
                 trans_dsc.cfg.src_w = map_w;
                 trans_dsc.cfg.src_h = lv_area_get_height(map_area);
-                ;
+{}
                 trans_dsc.cfg.cf        = cf;
                 trans_dsc.cfg.pivot_x   = draw_dsc->pivot.x;
                 trans_dsc.cfg.pivot_y   = draw_dsc->pivot.y;

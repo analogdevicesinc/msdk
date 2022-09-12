@@ -60,8 +60,8 @@ extern "C" {
  * @{
  */
 
-#define xstr(s)             str(s)
-#define str(s)              #s
+#define xstr(s) str(s)
+#define str(s) #s
 #define MXC_SKBD_VERS_MAJOR <VERSMAJ>
 #define MXC_SKBD_VERS_MINOR <VERSMIN>
 #define MXC_SKBD_VERS_PATCH <VERSPAT>
@@ -79,16 +79,16 @@ extern "C" {
  */
 typedef enum {
     MXC_SKBD_ERR_MIN = MXC_KEYPAD_BASE_ERR,
-    MXC_SKBD_ERR_NOT_INITIALIZED,           ///< Error Code: Keypad not initialized
-    MXC_SKBD_ERR_ALREAD_INITIALIZED,        ///< Error Code: Keypad already initialized
-    MXC_SKBD_ERR_INVALID_OPERATION,         ///< Error Code: Invalid keypad operation
-    MXC_SKBD_ERR_OUT_OF_RANGE,              ///< Error Code: Invalid parameter or value
-    MXC_SKBD_ERR_OVERRUN,                   ///< Error Code: Keypad Over run error
-    MXC_SKBD_ERR_IRQ,                       ///< Error Code: IRQ setup error
-    MXC_SKBD_ERR_IRQ_NULL,                  ///< Error Code: NULL IRQ handler
+    MXC_SKBD_ERR_NOT_INITIALIZED, ///< Error Code: Keypad not initialized
+    MXC_SKBD_ERR_ALREAD_INITIALIZED, ///< Error Code: Keypad already initialized
+    MXC_SKBD_ERR_INVALID_OPERATION, ///< Error Code: Invalid keypad operation
+    MXC_SKBD_ERR_OUT_OF_RANGE, ///< Error Code: Invalid parameter or value
+    MXC_SKBD_ERR_OVERRUN, ///< Error Code: Keypad Over run error
+    MXC_SKBD_ERR_IRQ, ///< Error Code: IRQ setup error
+    MXC_SKBD_ERR_IRQ_NULL, ///< Error Code: NULL IRQ handler
     MXC_SKBD_ERR_INVALID_PIN_CONFIGURATION, ///< Error Code: One or more keypad I/O pins are overlapped or  input/output pin configurations are invalid
-    MXC_SKBD_ERR_BUSY,                      ///< Error Code: Keypad is busy
-    MXC_SKBD_ERR_UNKNOWN,                   ///< Error Code: Generic error for unknown behavior
+    MXC_SKBD_ERR_BUSY, ///< Error Code: Keypad is busy
+    MXC_SKBD_ERR_UNKNOWN, ///< Error Code: Generic error for unknown behavior
     MXC_SKBD_ERR_MAX = MXC_SKBD_ERR_UNKNOWN
 } mxc_skbd_errors_t;
 
@@ -97,10 +97,10 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_STATE_MIN             = 0,
+    MXC_SKBD_STATE_MIN = 0,
     MXC_SKBD_STATE_NOT_INITIALIZED = MXC_SKBD_STATE_MIN, ///< State not initialized
-    MXC_SKBD_STATE_INITIALIZED,                          ///< State initialized
-    MXC_SKBD_STATE_CLOSED,                               ///< State closed
+    MXC_SKBD_STATE_INITIALIZED, ///< State initialized
+    MXC_SKBD_STATE_CLOSED, ///< State closed
     MXC_SKBD_STATE_MAX = MXC_SKBD_STATE_CLOSED,
     MXC_SKBD_STATE_COUNT
 } mxc_skbd_state_t;
@@ -110,9 +110,9 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_EVENT_PUSH    = MXC_F_SKBD_INTEN_PUSH,    ///< Push Event
+    MXC_SKBD_EVENT_PUSH = MXC_F_SKBD_INTEN_PUSH, ///< Push Event
     MXC_SKBD_EVENT_RELEASE = MXC_F_SKBD_INTEN_RELEASE, ///< Release Event
-    MXC_SKBD_EVENT_OVERRUN = MXC_F_SKBD_INTEN_OVERRUN  ///< Overrun Event
+    MXC_SKBD_EVENT_OVERRUN = MXC_F_SKBD_INTEN_OVERRUN ///< Overrun Event
 } mxc_skbd_events_t;
 
 /**
@@ -120,9 +120,9 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_INTERRUPT_STATUS_PUSHIS    = MXC_F_SKBD_INTFL_PUSH,    ///< Push Interupt flag
+    MXC_SKBD_INTERRUPT_STATUS_PUSHIS = MXC_F_SKBD_INTFL_PUSH, ///< Push Interupt flag
     MXC_SKBD_INTERRUPT_STATUS_RELEASEIS = MXC_F_SKBD_INTFL_RELEASE, ///< Release Interupt flag
-    MXC_SKBD_INTERRUPT_STATUS_OVERIS    = MXC_F_SKBD_INTFL_OVERRUN  ///< Overrun Interupt flag
+    MXC_SKBD_INTERRUPT_STATUS_OVERIS = MXC_F_SKBD_INTFL_OVERRUN ///< Overrun Interupt flag
 } mxc_interrupt_status_t;
 
 /**
@@ -153,11 +153,11 @@ typedef void (*irq_handler_t)(void);
  *
  */
 typedef struct {
-    unsigned short ioselect;   ///< I/O pin direction selection for the corresponding keypad pins
-    unsigned int reg_erase;    ///< key register erase flag on key is released
-    int outputs;               ///< Specifies the keypad pins to be configured as output
-    int inputs;                ///< Specifies the keypad pins to be configured as input
-    uint32_t debounce;         ///< Keypad Debouncing Time
+    unsigned short ioselect; ///< I/O pin direction selection for the corresponding keypad pins
+    unsigned int reg_erase; ///< key register erase flag on key is released
+    int outputs; ///< Specifies the keypad pins to be configured as output
+    int inputs; ///< Specifies the keypad pins to be configured as input
+    uint32_t debounce; ///< Keypad Debouncing Time
     irq_handler_t irq_handler; ///< IRQ handler
 } mxc_skbd_config_t;
 
@@ -166,10 +166,10 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned int first_init;   ///< 1 - initialize
-    unsigned int irq;          ///< Interrupt request(IRQ) number
+    unsigned int first_init; ///< 1 - initialize
+    unsigned int irq; ///< Interrupt request(IRQ) number
     irq_handler_t irq_handler; ///< IRQ handler
-    mxc_skbd_state_t state;    ///< keypad initialization state
+    mxc_skbd_state_t state; ///< keypad initialization state
 } mxc_skbd_req_t;
 
 /**
@@ -194,7 +194,7 @@ typedef struct {
  *
  * @return  const char*
  */
-const char* MXC_SKBD_GetVersion(void);
+const char *MXC_SKBD_GetVersion(void);
 
 /**
  * @brief   Configure Keypad interrupt
@@ -243,14 +243,14 @@ int MXC_SKBD_ClearInterruptStatus(unsigned int status);
  * @param   [in] status                             Interrupt status to clear
  * @retval  int                                     see \ref mxc_skbd_errors_t for a list of return codes
  */
-int MXC_SKBD_InterruptStatus(unsigned int* status);
+int MXC_SKBD_InterruptStatus(unsigned int *status);
 
 /**
  * @brief   Function to read the key scan codes
  * @param   [in] keys                               Pointer on the keyboard Key's scan codes
  * @retval  int                                     see \ref mxc_skbd_errors_t for a list of return codes
  */
-int MXC_SKBD_ReadKeys(mxc_skbd_keys_t* keys);
+int MXC_SKBD_ReadKeys(mxc_skbd_keys_t *keys);
 
 /**
  * @brief   Function to close the keypad
@@ -265,4 +265,4 @@ int MXC_SKBD_Close(void);
 #endif
 
 #endif /* _SKBD_H_ */
-       /******************************************************************************/
+/******************************************************************************/

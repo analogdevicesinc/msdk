@@ -62,7 +62,7 @@
                  //UNDERFLOW
 
 #define RESET_PERIOD MXC_WDT_PERIOD_2_28
-#define INT_PERIOD   MXC_WDT_PERIOD_2_27
+#define INT_PERIOD MXC_WDT_PERIOD_2_27
 
 // refers to array, do not change constants
 #define SW2 0
@@ -141,14 +141,11 @@ int main(void)
     while (1) {
         //Push SW1 to see interrupt and reset handlers
         if (PB_Get(SW2) != 0) {
-            while (intCnt == 0)
-                ;
+            while (intCnt == 0) {}
             printf("WDT Timer restored in interrupt handler before reset.\n");
-            while (intCnt == 1)
-                ;
+            while (intCnt == 1) {}
             printf("WDT Timer not restored in interrupt handler. Device will reset shortly.\n");
-            while (1)
-                ;
+            while (1) {}
         }
 
         //blink LED0

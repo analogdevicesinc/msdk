@@ -54,17 +54,17 @@
 #define WITH_WRITE_TEST 0 // set it to test write test
 
 // Memory Address
-#define INFO_MEM_MAXIM_AREA      MXC_INFO_MEM_BASE
+#define INFO_MEM_MAXIM_AREA MXC_INFO_MEM_BASE
 #define INFO_MEM_MAXIM_AREA_SIZE 1024
 
-#define INFO_MEM_USER_AREA      (MXC_INFO_MEM_BASE + 1024)
+#define INFO_MEM_USER_AREA (MXC_INFO_MEM_BASE + 1024)
 #define INFO_MEM_USER_AREA_SIZE (MXC_INFO_MEM_SIZE - 1024)
 
 /***** Static Functions *****/
 static void dump_section(unsigned int address, unsigned int length)
 {
     unsigned int i;
-    volatile uint32_t* addr = (uint32_t*)address;
+    volatile uint32_t *addr = (uint32_t *)address;
 
     // unlock to access it
     MXC_FLC_UnlockInfoBlock((uint32_t)address);
@@ -92,10 +92,10 @@ static void dump_section(unsigned int address, unsigned int length)
 #if WITH_WRITE_TEST
 static int write_test(void)
 {
-    int ret                     = 0;
-    uint32_t test_val[]         = {0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00};
-    volatile uint32_t* addr     = (uint32_t*)INFO_MEM_USER_AREA;
-    volatile uint32_t* end_addr = (uint32_t*)(INFO_MEM_USER_AREA + INFO_MEM_USER_AREA_SIZE);
+    int ret = 0;
+    uint32_t test_val[] = { 0x11223344, 0x55667788, 0x99AABBCC, 0xDDEEFF00 };
+    volatile uint32_t *addr = (uint32_t *)INFO_MEM_USER_AREA;
+    volatile uint32_t *end_addr = (uint32_t *)(INFO_MEM_USER_AREA + INFO_MEM_USER_AREA_SIZE);
 
     // unlock to access it
     MXC_FLC_UnlockInfoBlock(INFO_MEM_USER_AREA);

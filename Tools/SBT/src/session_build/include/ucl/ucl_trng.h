@@ -78,7 +78,7 @@ extern "C" {
  *
  * @ingroup UCL_TRNG
  */
-int ucl_trng_read(u8* rand, u32 rand_byteLen, int option);
+int ucl_trng_read(u8 *rand, u32 rand_byteLen, int option);
 
 #ifdef __cplusplus
 }

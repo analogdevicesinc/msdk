@@ -58,8 +58,8 @@ extern "C" {
  *
  */
 /**@{*/
-#define MCS_START_HDL 0x1500            /*!< \brief Start handle. */
-#define MCS_END_HDL   (MCS_MAX_HDL - 1) /*!< \brief End handle. */
+#define MCS_START_HDL 0x1500 /*!< \brief Start handle. */
+#define MCS_END_HDL (MCS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
@@ -68,16 +68,16 @@ extern "C" {
 /*! \brief Maxim custom Service Handles */
 enum {
     MCS_SVC_HDL = MCS_START_HDL, /*!< \brief Maxim custom service declaration */
-    MCS_BUTTON_CH_HDL,           /*!< \brief Button characteristic */
-    MCS_BUTTON_HDL,              /*!< \brief Button*/
-    MCS_BUTTON_CH_CCC_HDL,       /*!< \brief Button CCCD*/
-    MCS_R_CH_HDL,                /*!< \brief R characteristic */
-    MCS_R_HDL,                   /*!< \brief R*/
-    MCS_G_CH_HDL,                /*!< \brief G characteristic */
-    MCS_G_HDL,                   /*!< \brief G*/
-    MCS_B_CH_HDL,                /*!< \brief B characteristic */
-    MCS_B_HDL,                   /*!< \brief B*/
-    MCS_MAX_HDL                  /*!< \brief Maximum handle. */
+    MCS_BUTTON_CH_HDL, /*!< \brief Button characteristic */
+    MCS_BUTTON_HDL, /*!< \brief Button*/
+    MCS_BUTTON_CH_CCC_HDL, /*!< \brief Button CCCD*/
+    MCS_R_CH_HDL, /*!< \brief R characteristic */
+    MCS_R_HDL, /*!< \brief R*/
+    MCS_G_CH_HDL, /*!< \brief G characteristic */
+    MCS_G_HDL, /*!< \brief G*/
+    MCS_B_CH_HDL, /*!< \brief B characteristic */
+    MCS_B_HDL, /*!< \brief B*/
+    MCS_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 

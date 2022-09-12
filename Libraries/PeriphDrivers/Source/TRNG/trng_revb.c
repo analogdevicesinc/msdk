@@ -49,7 +49,7 @@
 static mxc_trng_complete_t MXC_TRNG_Callback;
 
 static uint32_t TRNG_count, TRNG_maxLength;
-static uint8_t* TRNG_data;
+static uint8_t *TRNG_data;
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
@@ -60,12 +60,12 @@ int MXC_TRNG_RevB_Init(void)
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_RevB_EnableInt(mxc_trng_revb_regs_t* trng)
+void MXC_TRNG_RevB_EnableInt(mxc_trng_revb_regs_t *trng)
 {
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_RND_IE;
 }
 
-void MXC_TRNG_RevB_DisableInt(mxc_trng_revb_regs_t* trng)
+void MXC_TRNG_RevB_DisableInt(mxc_trng_revb_regs_t *trng)
 {
     trng->ctrl &= ~MXC_F_TRNG_REVB_CTRL_RND_IE;
 }
@@ -75,7 +75,7 @@ int MXC_TRNG_RevB_Shutdown(void)
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t* trng)
+void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t *trng)
 {
     uint32_t temp;
     mxc_trng_complete_t cb;
@@ -88,10 +88,10 @@ void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t* trng)
     temp = trng->data;
 
     if ((TRNG_count + 3) < TRNG_maxLength) {
-        memcpy(&(TRNG_data[TRNG_count]), (uint8_t*)(&temp), 4);
+        memcpy(&(TRNG_data[TRNG_count]), (uint8_t *)(&temp), 4);
         TRNG_count += 4;
     } else {
-        memcpy(&(TRNG_data[TRNG_count]), (uint8_t*)(&temp), TRNG_maxLength & 0x03);
+        memcpy(&(TRNG_data[TRNG_count]), (uint8_t *)(&temp), TRNG_maxLength & 0x03);
         TRNG_count += (TRNG_maxLength & 0x03);
     }
 
@@ -105,15 +105,14 @@ void MXC_TRNG_RevB_Handler(mxc_trng_revb_regs_t* trng)
 /* True Random Number Generator(TRNG) functions                             */
 /* ************************************************************************* */
 
-int MXC_TRNG_RevB_RandomInt(mxc_trng_revb_regs_t* trng)
+int MXC_TRNG_RevB_RandomInt(mxc_trng_revb_regs_t *trng)
 {
-    while (!(trng->status & MXC_F_TRNG_REVB_STATUS_RDY))
-        ;
+    while (!(trng->status & MXC_F_TRNG_REVB_STATUS_RDY)) {}
 
     return (int)trng->data;
 }
 
-int MXC_TRNG_RevB_Random(uint8_t* data, uint32_t len)
+int MXC_TRNG_RevB_Random(uint8_t *data, uint32_t len)
 {
     unsigned int i, temp;
 
@@ -123,18 +122,18 @@ int MXC_TRNG_RevB_Random(uint8_t* data, uint32_t len)
 
     for (i = 0; (i + 3) < len; i += 4) {
         temp = MXC_TRNG_RandomInt();
-        memcpy(&(data[i]), (uint8_t*)(&temp), 4);
+        memcpy(&(data[i]), (uint8_t *)(&temp), 4);
     }
 
     if (len & 0x03) {
         temp = MXC_TRNG_RandomInt();
-        memcpy(&(data[i]), (uint8_t*)(&temp), len & 0x03);
+        memcpy(&(data[i]), (uint8_t *)(&temp), len & 0x03);
     }
 
     return E_NO_ERROR;
 }
 
-void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t* trng, uint8_t* data, uint32_t len,
+void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t *trng, uint8_t *data, uint32_t len,
                                mxc_trng_complete_t callback)
 {
     MXC_ASSERT(data && callback);
@@ -143,39 +142,36 @@ void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t* trng, uint8_t* data, uint32
         return;
     }
 
-    TRNG_data         = data;
-    TRNG_count        = 0;
-    TRNG_maxLength    = len;
+    TRNG_data = data;
+    TRNG_count = 0;
+    TRNG_maxLength = len;
     MXC_TRNG_Callback = callback;
 
     // Enable interrupts
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_RND_IE;
 }
 
-void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t* trng)
+void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t *trng)
 {
     /*Generate AES Key */
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_AESKG_USR;
 
-    while (trng->ctrl & MXC_F_TRNG_REVB_CTRL_AESKG_USR)
-        ;
+    while (trng->ctrl & MXC_F_TRNG_REVB_CTRL_AESKG_USR) {}
 }
 
-int MXC_TRNG_RevB_HealthTest(mxc_trng_revb_regs_t* trng)
+int MXC_TRNG_RevB_HealthTest(mxc_trng_revb_regs_t *trng)
 {
     /* Clear on-going test if necessary */
     if (trng->ctrl & MXC_F_TRNG_REVB_CTRL_ODHT) {
         trng->ctrl &= ~MXC_F_TRNG_REVB_CTRL_ODHT;
-        while (trng->status & MXC_F_TRNG_REVB_STATUS_ODHT)
-            ;
+        while (trng->status & MXC_F_TRNG_REVB_STATUS_ODHT) {}
     }
 
     /* Start on-demand health test */
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_ODHT;
 
     /* Wait for test to finish */
-    while (trng->status & MXC_F_TRNG_REVB_STATUS_ODHT)
-        ;
+    while (trng->status & MXC_F_TRNG_REVB_STATUS_ODHT) {}
 
     /* Check results of test */
     if (trng->status & MXC_F_TRNG_REVB_STATUS_HT) {

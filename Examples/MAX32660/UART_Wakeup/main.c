@@ -56,9 +56,9 @@
 #define RXBUF_SIZE 100
 
 /***** Globals *****/
-mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 char rxBuf[RXBUF_SIZE];
-volatile int cnt     = 0;
+volatile int cnt = 0;
 volatile bool crRecv = false;
 
 /***** Functions *****/
@@ -72,11 +72,11 @@ void UART1_Handler(void)
 
         while ((ConsoleUART->stat &
                 MXC_F_UART_STAT_RX_NUM)) { //Continue to read characters until receive buffer empty
-            if (cnt >= RXBUF_SIZE) {       //Prevent buffer overflow
+            if (cnt >= RXBUF_SIZE) { //Prevent buffer overflow
                 cnt = 0;
             } else {
                 rxBuf[cnt] = (char)MXC_UART_ReadCharacter(ConsoleUART); //Read character
-                if (rxBuf[cnt] == '\r') {                               //Last character received?
+                if (rxBuf[cnt] == '\r') { //Last character received?
                     crRecv = true;
                 }
                 cnt++;
@@ -100,8 +100,7 @@ int main(void)
     printf("strings to be processed correctly.\n");
 
     printf("\nPress PB1 to begin the demo.\n");
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
 
     /* Configure serial character interrupts */
     NVIC_ClearPendingIRQ(UART1_IRQn);
@@ -116,8 +115,7 @@ int main(void)
 
     /* Put device in DeepSleep operating mode */
     printf("Now entering deep sleep mode. Send any character string to wake up the device.\n\n");
-    while (MXC_UART_Busy(ConsoleUART))
-        ;
+    while (MXC_UART_Busy(ConsoleUART)) {}
     MXC_LP_ClearWakeStatus();
     MXC_LP_EnterDeepSleepMode();
 
@@ -128,8 +126,7 @@ int main(void)
 
             if (!strcmp(rxBuf, "sleep\r")) { //If "sleep\r" received, go back to sleep
                 printf("Going back to deep sleep.\n");
-                while (MXC_UART_Busy(ConsoleUART))
-                    ;
+                while (MXC_UART_Busy(ConsoleUART)) {}
                 LED_Off(0);
                 MXC_LP_ClearWakeStatus();
                 MXC_LP_EnterDeepSleepMode();
@@ -138,14 +135,13 @@ int main(void)
             }
 
             crRecv = false;
-            cnt    = 0;
+            cnt = 0;
             memset(rxBuf, 0x0, RXBUF_SIZE * sizeof(char));
         }
     }
 
     printf("Example complete!");
-    while (MXC_UART_Busy(ConsoleUART))
-        ;
+    while (MXC_UART_Busy(ConsoleUART)) {}
 
     return 0;
 }

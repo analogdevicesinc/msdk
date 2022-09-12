@@ -52,7 +52,7 @@
 
 static mxc_qdec_cb_t async_callback;
 
-int MXC_QDEC_RevA_Init(mxc_qdec_reva_regs_t* qdec, mxc_qdec_req_t* req)
+int MXC_QDEC_RevA_Init(mxc_qdec_reva_regs_t *qdec, mxc_qdec_req_t *req)
 {
     // Disable QDEC to configure
     qdec->ctrl &= ~MXC_F_QDEC_REVA_CTRL_EN;
@@ -122,7 +122,7 @@ int MXC_QDEC_RevA_Init(mxc_qdec_reva_regs_t* qdec, mxc_qdec_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_QDEC_RevA_Shutdown(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_Shutdown(mxc_qdec_reva_regs_t *qdec)
 {
     qdec->ctrl &= ~MXC_F_QDEC_REVA_CTRL_EN;
 
@@ -131,14 +131,14 @@ int MXC_QDEC_RevA_Shutdown(mxc_qdec_reva_regs_t* qdec)
     qdec->intfl = QDEC_IF_MASK;
 
     // Clear registers
-    qdec->ctrl    = 0;
-    qdec->maxcnt  = 0xFFFFFFFF;
+    qdec->ctrl = 0;
+    qdec->maxcnt = 0xFFFFFFFF;
     qdec->initial = 0;
 
     return E_NO_ERROR;
 }
 
-void MXC_QDEC_RevA_EnableInt(mxc_qdec_reva_regs_t* qdec, uint32_t flags)
+void MXC_QDEC_RevA_EnableInt(mxc_qdec_reva_regs_t *qdec, uint32_t flags)
 {
     int save_state = qdec->ctrl;
 
@@ -152,7 +152,7 @@ void MXC_QDEC_RevA_EnableInt(mxc_qdec_reva_regs_t* qdec, uint32_t flags)
     qdec->ctrl = save_state;
 }
 
-void MXC_QDEC_RevA_DisableInt(mxc_qdec_reva_regs_t* qdec, uint32_t flags)
+void MXC_QDEC_RevA_DisableInt(mxc_qdec_reva_regs_t *qdec, uint32_t flags)
 {
     int save_state = qdec->ctrl;
 
@@ -164,18 +164,18 @@ void MXC_QDEC_RevA_DisableInt(mxc_qdec_reva_regs_t* qdec, uint32_t flags)
     qdec->ctrl = save_state;
 }
 
-int MXC_QDEC_RevA_GetFlags(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetFlags(mxc_qdec_reva_regs_t *qdec)
 {
     return (qdec->intfl & QDEC_IF_MASK);
 }
 
-void MXC_QDEC_RevA_ClearFlags(mxc_qdec_reva_regs_t* qdec, uint32_t flags)
+void MXC_QDEC_RevA_ClearFlags(mxc_qdec_reva_regs_t *qdec, uint32_t flags)
 {
     // Write 1 to clear flags
     qdec->intfl |= (flags & QDEC_IF_MASK);
 }
 
-void MXC_QDEC_RevA_SetMaxCount(mxc_qdec_reva_regs_t* qdec, uint32_t maxCount)
+void MXC_QDEC_RevA_SetMaxCount(mxc_qdec_reva_regs_t *qdec, uint32_t maxCount)
 {
     int save_state = qdec->ctrl;
 
@@ -187,12 +187,12 @@ void MXC_QDEC_RevA_SetMaxCount(mxc_qdec_reva_regs_t* qdec, uint32_t maxCount)
     qdec->ctrl = save_state;
 }
 
-int MXC_QDEC_RevA_GetMaxCount(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetMaxCount(mxc_qdec_reva_regs_t *qdec)
 {
     return qdec->maxcnt;
 }
 
-void MXC_QDEC_RevA_SetInitial(mxc_qdec_reva_regs_t* qdec, uint32_t initial)
+void MXC_QDEC_RevA_SetInitial(mxc_qdec_reva_regs_t *qdec, uint32_t initial)
 {
     int save_state = qdec->ctrl;
 
@@ -204,12 +204,12 @@ void MXC_QDEC_RevA_SetInitial(mxc_qdec_reva_regs_t* qdec, uint32_t initial)
     qdec->ctrl = save_state;
 }
 
-int MXC_QDEC_RevA_GetInitial(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetInitial(mxc_qdec_reva_regs_t *qdec)
 {
     return qdec->initial;
 }
 
-void MXC_QDEC_RevA_SetCompare(mxc_qdec_reva_regs_t* qdec, uint32_t compare)
+void MXC_QDEC_RevA_SetCompare(mxc_qdec_reva_regs_t *qdec, uint32_t compare)
 {
     int save_state = qdec->ctrl;
 
@@ -221,27 +221,27 @@ void MXC_QDEC_RevA_SetCompare(mxc_qdec_reva_regs_t* qdec, uint32_t compare)
     qdec->ctrl = save_state;
 }
 
-int MXC_QDEC_RevA_GetCompare(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetCompare(mxc_qdec_reva_regs_t *qdec)
 {
     return qdec->compare;
 }
 
-int MXC_QDEC_RevA_GetIndex(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetIndex(mxc_qdec_reva_regs_t *qdec)
 {
     return qdec->index;
 }
 
-int MXC_QDEC_RevA_GetCapture(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetCapture(mxc_qdec_reva_regs_t *qdec)
 {
     return qdec->capture;
 }
 
-int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t *qdec)
 {
     uint32_t flags;
 
     // Clear Flags
-    flags       = MXC_QDEC_GetFlags();
+    flags = MXC_QDEC_GetFlags();
     qdec->intfl = flags;
 
     if (async_callback != NULL) {
@@ -252,12 +252,12 @@ int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t* qdec)
 }
 
 // ************************************* Function to Read QDEC Data *******************************************
-int MXC_QDEC_RevA_GetPosition(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetPosition(mxc_qdec_reva_regs_t *qdec)
 {
     return qdec->position;
 }
 
-int MXC_QDEC_RevA_GetDirection(mxc_qdec_reva_regs_t* qdec)
+int MXC_QDEC_RevA_GetDirection(mxc_qdec_reva_regs_t *qdec)
 {
     return (qdec->status & MXC_F_QDEC_REVA_STATUS_DIR);
 }

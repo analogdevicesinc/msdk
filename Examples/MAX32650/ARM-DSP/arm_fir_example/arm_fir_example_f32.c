@@ -140,7 +140,7 @@ this example is not giving better SNR ...
 
 */
 #define SNR_THRESHOLD_F32 75.0f
-#define BLOCK_SIZE        32
+#define BLOCK_SIZE 32
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 /* Must be a multiple of 16 */
@@ -187,14 +187,16 @@ const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = {
     +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f,
     -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
     +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f,
-    -0.0018225230f, 0.0f,           0.0f,           0.0f};
+    -0.0018225230f, 0.0f,           0.0f,           0.0f
+};
 #else
 const float32_t firCoeffs32[NUM_TAPS_ARRAY_SIZE] = {
     -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f, +0.0080754303f, +0.0085302217f,
     -0.0000000000f, -0.0173976984f, -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f,
     +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f, +0.1522061835f, +0.0676308395f,
     +0.0000000000f, -0.0333591565f, -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
-    +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f, -0.0018225230f};
+    +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f, -0.0018225230f
+};
 #endif
 
 /* ------------------------------------------------------------------
@@ -218,11 +220,11 @@ int main(void)
     float32_t *inputF32, *outputF32;
 
     /* Initialize input and output buffer pointers */
-    inputF32  = &testInput_f32_1kHz_15kHz[0];
+    inputF32 = &testInput_f32_1kHz_15kHz[0];
     outputF32 = &testOutput[0];
 
     /* Call FIR init function to initialize the instance structure. */
-    arm_fir_init_f32(&S, NUM_TAPS, (float32_t*)&firCoeffs32[0], &firStateF32[0], blockSize);
+    arm_fir_init_f32(&S, NUM_TAPS, (float32_t *)&firCoeffs32[0], &firStateF32[0], blockSize);
 
     /* ----------------------------------------------------------------------
   ** Call the FIR process function for every blockSize samples
@@ -245,16 +247,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 0;
     }

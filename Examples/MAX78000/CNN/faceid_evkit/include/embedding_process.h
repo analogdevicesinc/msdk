@@ -59,11 +59,11 @@ typedef struct __attribute__((packed)) sMinDistance {
 
 int init_database(void);
 
-char* get_subject(int ID);
+char *get_subject(int ID);
 
-int calculate_minDistance(const uint8_t* embedding);
+int calculate_minDistance(const uint8_t *embedding);
 
-void get_min_dist_counter(uint8_t** counter, uint8_t* counter_len);
-tsMinDistance* get_min_distance();
+void get_min_dist_counter(uint8_t **counter, uint8_t *counter_len);
+tsMinDistance *get_min_distance();
 
 #endif // _EMBEDDINGS_PROCESS_H_

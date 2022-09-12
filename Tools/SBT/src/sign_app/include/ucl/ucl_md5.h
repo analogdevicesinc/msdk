@@ -69,8 +69,8 @@ extern "C" {
  * @ingroup UCL_MD5
  */
 struct ucl_md5_ctx {
-    u32 state[4];  /**< Intermediate and then final hash */
-    u32 count[2];  /**< Counter in bits                  */
+    u32 state[4]; /**< Intermediate and then final hash */
+    u32 count[2]; /**< Counter in bits                  */
     u8 buffer[64]; /**< Buffer                           */
 };
 
@@ -97,7 +97,7 @@ typedef struct ucl_md5_ctx ucl_md5_ctx_t;
  * @ingroup UCL_MD5
  */
 #define UCL_MD5_HASHW32SIZE 5
-#define UCL_MD5             13
+#define UCL_MD5 13
 
 /*============================================================================*/
 /** <b>MD5</b>.
@@ -116,7 +116,7 @@ typedef struct ucl_md5_ctx ucl_md5_ctx_t;
  *
  * @ingroup UCL_MD5
  */
-int ucl_md5(u8* hash, u8* data, u32 data_byteLen);
+int ucl_md5(u8 *hash, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>MD5 Init</b>.
@@ -131,7 +131,7 @@ int ucl_md5(u8* hash, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_MD5
  */
-int ucl_md5_init(ucl_md5_ctx_t* context);
+int ucl_md5_init(ucl_md5_ctx_t *context);
 
 /*============================================================================*/
 /** <b>MD5 Core</b>.
@@ -151,7 +151,7 @@ int ucl_md5_init(ucl_md5_ctx_t* context);
  *
  * @ingroup UCL_MD5
  */
-int ucl_md5_core(ucl_md5_ctx_t* context, u8* data, u32 data_byteLen);
+int ucl_md5_core(ucl_md5_ctx_t *context, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>MD5 Finish</b>.
@@ -172,7 +172,7 @@ int ucl_md5_core(ucl_md5_ctx_t* context, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_MD5
  */
-int ucl_md5_finish(u8* hash, ucl_md5_ctx_t* context);
+int ucl_md5_finish(u8 *hash, ucl_md5_ctx_t *context);
 
 #ifdef __cplusplus
 }

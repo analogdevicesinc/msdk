@@ -66,8 +66,8 @@ extern "C" {
 	 * @ingroup UCL_PKCS1V21_RSASSAPSS
 	 */
 
-int ucl_pkcs1_ssa_pss_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                    ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_verify_digest(u8 *signature, u8 *hash, u32 hash_length,
+                                    ucl_rsa_public_key_t *keyPu, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS signature verification</b>.
@@ -90,8 +90,8 @@ int ucl_pkcs1_ssa_pss_verify_digest(u8* signature, u8* hash, u32 hash_length,
 	 *
 	 * @ingroup UCL_PKCS1V21_RSASSAPSS
 	 */
-int ucl_pkcs1_ssa_pss_verify(u8* signature, u8* message, u32 message_length,
-                             ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_verify(u8 *signature, u8 *message, u32 message_length,
+                             ucl_rsa_public_key_t *keyPu, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS signature verification</b>.
@@ -114,8 +114,8 @@ int ucl_pkcs1_ssa_pss_verify(u8* signature, u8* message, u32 message_length,
 	 *
 	 * @ingroup UCL_PKCS1V21_RSASSAPSS
 	 */
-int ucl_pkcs1_ssa_pss_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                    ucl_rsa_public_key_t* keyPu, u32 salt_length);
+int ucl_pkcs1_ssa_pss_verify_digest(u8 *signature, u8 *hash, u32 hash_length,
+                                    ucl_rsa_public_key_t *keyPu, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSA-SSA-PSS signature generation</b>.
@@ -137,8 +137,8 @@ int ucl_pkcs1_ssa_pss_verify_digest(u8* signature, u8* hash, u32 hash_length,
 	 *
 	 * @ingroup UCL_PKCS1V21_RSASSAPSS
 	 */
-int ucl_pkcs1_ssa_pss_sign(u8* signature, u8* message, u32 message_length,
-                           ucl_rsa_private_key_t* keyPr, u32 salt_length);
+int ucl_pkcs1_ssa_pss_sign(u8 *signature, u8 *message, u32 message_length,
+                           ucl_rsa_private_key_t *keyPr, u32 salt_length);
 
 /*============================================================================*/
 /** <b>RSASSA-PSS signature generation with CRT</b>.
@@ -160,8 +160,8 @@ int ucl_pkcs1_ssa_pss_sign(u8* signature, u8* message, u32 message_length,
 	 *
 	 * @ingroup UCL_PKCS1V21_RSASSAPSS
 	 */
-int ucl_pkcs1_ssa_pss_crt_sign(u8* signature, u8* message, u32 message_length,
-                               ucl_rsa_crt_private_key_t* key, u32 salt_length);
+int ucl_pkcs1_ssa_pss_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                               ucl_rsa_crt_private_key_t *key, u32 salt_length);
 
 #ifdef __cplusplus
 }

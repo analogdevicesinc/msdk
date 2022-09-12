@@ -77,7 +77,7 @@ int PB_Init(void);
  * @param      pb    Pointer to the push button index that triggered the
  *                   callback.
  */
-typedef void (*pb_callback)(void* pb);
+typedef void (*pb_callback)(void *pb);
 
 /**
  * @brief      Register or Unregister a callback handler for events on the @p pb push button.

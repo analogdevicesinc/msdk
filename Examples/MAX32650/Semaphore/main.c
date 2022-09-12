@@ -58,7 +58,7 @@ volatile int B_active = 0;
 int shared_variable = 0;
 
 /***** Functions *****/
-static void PB_AWrites(void* idx)
+static void PB_AWrites(void *idx)
 {
     int retval;
     //First check if A is already writing
@@ -97,7 +97,7 @@ static void PB_AWrites(void* idx)
     return;
 }
 
-static void PB_BWrites(void* idx)
+static void PB_BWrites(void *idx)
 {
     int retval;
     //First check if B is already writing
@@ -168,6 +168,5 @@ int main(void)
     PB_RegisterCallback(SW2, PB_BWrites);
 
     printf("\nExample running.\n");
-    while (1)
-        ;
+    while (1) {}
 }
