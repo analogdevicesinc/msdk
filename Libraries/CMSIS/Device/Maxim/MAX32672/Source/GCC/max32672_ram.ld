@@ -37,7 +37,7 @@
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB ROM */
     FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 1024K /* 1024kB "FLASH" */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 200K /* 200kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 200K /* 160kB with ECC (200kB SRAM) */
 }
 
 SECTIONS {
@@ -47,7 +47,7 @@ SECTIONS {
         KEEP(*(.isr_vector))
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
-	*(.flashprog*)      /* Flash program */
+        *(.flashprog*)      /* Flash program */
 
         KEEP(*(.init))
         KEEP(*(.fini))

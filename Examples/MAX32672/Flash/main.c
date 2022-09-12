@@ -47,9 +47,8 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
-
+#include "ecc_regs.h"
 /***** Definitions *****/
 #define TESTSIZE 8192 //2 pages worth so we can do erase functions
 
@@ -156,6 +155,13 @@ void FLC1_IRQHandler(void)
 //******************************************************************************
 void flash_init(void)
 {
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_ICC0;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_FL0;
+    MXC_ECC->en &= ~MXC_F_ECC_EN_FL1;
+
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
     MXC_FLC0->clkdiv = 24;
@@ -353,7 +359,10 @@ int main(void)
     int error_status;
 
     /* Note: This example must execute out of RAM, due to MXC_FLC_MassErase() call, below */
-    printf("\n\n***** Flash Control Example *****\n");
+    printf("\n\n***** Flash Control Example (ECC disabled) *****\n");
+    printf("This example demonstrates the basic functions of the Flash Controller: \n");
+    printf("mass erase, page erase, and write.\n");
+
     NVIC_SetRAM();
     // Initialize the Flash
     flash_init();
@@ -418,12 +427,10 @@ int main(void)
 
     MXC_ICC_Enable();
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
+        printf("\nExample Failed\n");
     }
-
-    while (1) {}
 
     return 0;
 }

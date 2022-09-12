@@ -185,7 +185,5 @@ int main(void)
         printf("\nExample Succeeded\n");
     }
 
-    while (1) {}
-
     return 0;
 }

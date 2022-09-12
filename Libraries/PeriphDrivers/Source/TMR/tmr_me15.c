@@ -54,37 +54,37 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
-    case MXC_TMR_32K_CLK:
-        if (tmr_id < 5) {
-            return E_NOT_SUPPORTED;
-        }
-        clockSource = MXC_TMR_CLK2;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        break;
+        case MXC_TMR_32K_CLK:
+            if (tmr_id < 4) {
+                return E_NOT_SUPPORTED;
+            }
+            clockSource = MXC_TMR_CLK2;
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+            break;
 
-    case MXC_TMR_80K_CLK:
-        if (tmr_id < 5) {
-            return E_NOT_SUPPORTED;
-        }
-        clockSource = MXC_TMR_CLK3;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-        break;
+        case MXC_TMR_80K_CLK:
+            if (tmr_id < 4) {
+                return E_NOT_SUPPORTED;
+            }
+            clockSource = MXC_TMR_CLK3;
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+            break;
 
-    case MXC_TMR_8M_CLK:
-        if (tmr_id > 4) {
-            return E_NOT_SUPPORTED;
-        }
-        clockSource = MXC_TMR_CLK2;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        break;
+        case MXC_TMR_8M_CLK:
+            if (tmr_id > 3) {
+                return E_NOT_SUPPORTED;
+            }
+            clockSource = MXC_TMR_CLK2;
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+            break;
 
-    case MXC_TMR_32M_CLK:
-        if (tmr_id > 4) {
-            return E_NOT_SUPPORTED;
-        }
-        clockSource = MXC_TMR_CLK3;
-        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        break;
+        case MXC_TMR_32M_CLK:
+            if (tmr_id > 3) {
+                return E_NOT_SUPPORTED;
+            }
+            clockSource = MXC_TMR_CLK3;
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+            break;
 
     default:
         break;

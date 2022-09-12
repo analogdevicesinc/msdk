@@ -112,8 +112,7 @@ void printTime()
     min = sec / SECS_PER_MIN;
     sec -= min * SECS_PER_MIN;
 
-    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%02d\n\n", day, hr, min,
-           sec); // Print current time
+    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%02d", day, hr, min, sec);
 }
 
 // *****************************************************************************
@@ -188,4 +187,6 @@ int main(void)
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
     MXC_LP_EnterBackupMode(); // Enter a backup mode
+
+    return 0;
 }

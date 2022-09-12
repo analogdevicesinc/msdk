@@ -229,8 +229,15 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
         return err;
     }
 
-    if (MXC_ECC->en & MXC_F_ECC_EN_FLASH) {
-        return E_BAD_STATE;
+    // Ensure ECC is disabled for the respective flash bank
+    if (address < MXC_FLASH0_MEM_BASE + MXC_FLASH_MEM_SIZE) {
+        if (MXC_ECC->en & MXC_F_ECC_EN_FL0) {
+            return E_BAD_STATE;
+        }
+    } else if (address < MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE) {
+        if (MXC_ECC->en & MXC_F_ECC_EN_FL1) {
+            return E_BAD_STATE;
+        }
     }
 
     err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t *)flc, address, data, addr);
@@ -270,7 +277,14 @@ int MXC_FLC_UnlockInfoBlock(uint32_t address)
 //******************************************************************************
 int MXC_FLC_LockInfoBlock(uint32_t address)
 {
-    return E_NOT_SUPPORTED;
+    int err;
+    mxc_flc_regs_t* flc;
+
+    if ((err = MXC_FLC_ME21_GetByAddress(&flc, address)) != E_NO_ERROR) {
+        return err;
+    }
+
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
 }
 
 //******************************************************************************

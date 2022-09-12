@@ -617,9 +617,9 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
-    g_app_settings.dma_mode = USE_DMA;
-    g_app_settings.imgres_w = 64;
-    g_app_settings.imgres_h = 64;
+    g_app_settings.dma_mode     = USE_DMA;
+    g_app_settings.imgres_w     = IMAGE_XRES;
+    g_app_settings.imgres_h     = IMAGE_YRES;
     g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
 
 #ifdef CAMERA_MONO
@@ -660,7 +660,7 @@ int main(void)
     }
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_HM0360_MONO) || \
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
     defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
