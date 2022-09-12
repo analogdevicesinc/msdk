@@ -20,12 +20,12 @@
             <name>ADDR</name>
             <description>Address of the OTP 32 bit value.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>9</bitWidth>
+            <bitWidth>16</bitWidth>
           </field>
           <field>
             <name>READ</name>
             <description>Read Operation. Setting this bit starts a read operation from the OTP.</description>
-            <bitOffset>10</bitOffset>
+            <bitOffset>24</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
@@ -43,7 +43,7 @@
           <field>
             <name>WRITE</name>
             <description>Program Operation. Setting this bit starts a write operation from the OTP location specified in the ADDR field.</description>
-            <bitOffset>11</bitOffset>
+            <bitOffset>25</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -72,10 +72,10 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RDY</name>
-            <description>OTP Status</description>
+            <name>HCLKDIV</name>
+            <description>Clock Divider. The input clock, HCLK, is divided for generating OTP pwr on and down timing signals.</description>
             <bitOffset>16</bitOffset>
-            <bitWidth>1</bitWidth>
+            <bitWidth>6</bitWidth>
           </field>
         </fields>
       </register>
@@ -119,6 +119,12 @@
             <name>UNLOCK3</name>
             <description>Unlock3 Flag. This bit indicates that 3 words unlock process is complete.</description>
             <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWR_RDY</name>
+            <description>OTP Power On Status.</description>
+            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

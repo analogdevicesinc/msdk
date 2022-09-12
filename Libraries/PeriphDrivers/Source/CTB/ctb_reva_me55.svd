@@ -837,20 +837,6 @@
         </fields>
       </register>
       <register>
-        <name>MAA_MAWS</name>
-        <description>MAA Word Size Register.</description>
-        <addressOffset>0xD0</addressOffset>
-        <resetValue>0x0</resetValue>
-        <fields>
-          <field>
-            <name>SIZE</name>
-            <description>MAA Word Size.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
         <name>AAD_LENGTH[%s]</name>
@@ -892,6 +878,20 @@
           <field>
             <name>LENGTH</name>
             <description>TAG/MIC output for AES GCM and CCM operations.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MAA_MAWS</name>
+        <description>MAA Word Size Register.</description>
+        <addressOffset>0xF0</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>SIZE</name>
+            <description>MAA Word Size.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>

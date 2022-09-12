@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the PTG Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _PTG_REGS_H_
 #define _PTG_REGS_H_
@@ -92,6 +91,8 @@ typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x000C:</tt> PTG INTEN Register */
     __O  uint32_t safe_en;              /**< <tt>\b 0x0010:</tt> PTG SAFE_EN Register */
     __O  uint32_t safe_dis;             /**< <tt>\b 0x0014:</tt> PTG SAFE_DIS Register */
+    __IO uint32_t intfl;                /**< <tt>\b 0x0018:</tt> PTG INTFL Register */
+    __IO uint32_t inten;                /**< <tt>\b 0x001C:</tt> PTG INTEN Register */
 } mxc_ptg_regs_t;
 
 /* Register offsets for module PTG */
@@ -107,6 +108,8 @@ typedef struct {
  #define MXC_R_PTG_INTEN                    ((uint32_t)0x0000000CUL) /**< Offset from PTG Base Address: <tt> 0x000C</tt> */ 
  #define MXC_R_PTG_SAFE_EN                  ((uint32_t)0x00000010UL) /**< Offset from PTG Base Address: <tt> 0x0010</tt> */ 
  #define MXC_R_PTG_SAFE_DIS                 ((uint32_t)0x00000014UL) /**< Offset from PTG Base Address: <tt> 0x0014</tt> */ 
+ #define MXC_R_PTG_INTFL                    ((uint32_t)0x00000018UL) /**< Offset from PTG Base Address: <tt> 0x0018</tt> */ 
+ #define MXC_R_PTG_INTEN                    ((uint32_t)0x0000001CUL) /**< Offset from PTG Base Address: <tt> 0x001C</tt> */ 
 /**@} end of group ptg_registers */
 
 /**
@@ -300,6 +303,70 @@ typedef struct {
  #define MXC_F_PTG_SAFE_DIS_PT7                         ((uint32_t)(0x1UL << MXC_F_PTG_SAFE_DIS_PT7_POS)) /**< SAFE_DIS_PT7 Mask */
 
 /**@} end of group PTG_SAFE_DIS_Register */
+
+/**
+ * @ingroup  ptg_registers
+ * @defgroup PTG_INTFL PTG_INTFL
+ * @brief    Pulse Train Ready Interrupt Flags
+ * @{
+ */
+ #define MXC_F_PTG_INTFL_PT0_POS                        0 /**< INTFL_PT0 Position */
+ #define MXC_F_PTG_INTFL_PT0                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT0_POS)) /**< INTFL_PT0 Mask */
+
+ #define MXC_F_PTG_INTFL_PT1_POS                        1 /**< INTFL_PT1 Position */
+ #define MXC_F_PTG_INTFL_PT1                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT1_POS)) /**< INTFL_PT1 Mask */
+
+ #define MXC_F_PTG_INTFL_PT2_POS                        2 /**< INTFL_PT2 Position */
+ #define MXC_F_PTG_INTFL_PT2                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT2_POS)) /**< INTFL_PT2 Mask */
+
+ #define MXC_F_PTG_INTFL_PT3_POS                        3 /**< INTFL_PT3 Position */
+ #define MXC_F_PTG_INTFL_PT3                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT3_POS)) /**< INTFL_PT3 Mask */
+
+ #define MXC_F_PTG_INTFL_PT4_POS                        4 /**< INTFL_PT4 Position */
+ #define MXC_F_PTG_INTFL_PT4                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT4_POS)) /**< INTFL_PT4 Mask */
+
+ #define MXC_F_PTG_INTFL_PT5_POS                        5 /**< INTFL_PT5 Position */
+ #define MXC_F_PTG_INTFL_PT5                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT5_POS)) /**< INTFL_PT5 Mask */
+
+ #define MXC_F_PTG_INTFL_PT6_POS                        6 /**< INTFL_PT6 Position */
+ #define MXC_F_PTG_INTFL_PT6                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT6_POS)) /**< INTFL_PT6 Mask */
+
+ #define MXC_F_PTG_INTFL_PT7_POS                        7 /**< INTFL_PT7 Position */
+ #define MXC_F_PTG_INTFL_PT7                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT7_POS)) /**< INTFL_PT7 Mask */
+
+/**@} end of group PTG_INTFL_Register */
+
+/**
+ * @ingroup  ptg_registers
+ * @defgroup PTG_INTEN PTG_INTEN
+ * @brief    Pulse Train Ready Interrupt Enable/Disable
+ * @{
+ */
+ #define MXC_F_PTG_INTEN_PT0_POS                        0 /**< INTEN_PT0 Position */
+ #define MXC_F_PTG_INTEN_PT0                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT0_POS)) /**< INTEN_PT0 Mask */
+
+ #define MXC_F_PTG_INTEN_PT1_POS                        1 /**< INTEN_PT1 Position */
+ #define MXC_F_PTG_INTEN_PT1                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT1_POS)) /**< INTEN_PT1 Mask */
+
+ #define MXC_F_PTG_INTEN_PT2_POS                        2 /**< INTEN_PT2 Position */
+ #define MXC_F_PTG_INTEN_PT2                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT2_POS)) /**< INTEN_PT2 Mask */
+
+ #define MXC_F_PTG_INTEN_PT3_POS                        3 /**< INTEN_PT3 Position */
+ #define MXC_F_PTG_INTEN_PT3                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT3_POS)) /**< INTEN_PT3 Mask */
+
+ #define MXC_F_PTG_INTEN_PT4_POS                        4 /**< INTEN_PT4 Position */
+ #define MXC_F_PTG_INTEN_PT4                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT4_POS)) /**< INTEN_PT4 Mask */
+
+ #define MXC_F_PTG_INTEN_PT5_POS                        5 /**< INTEN_PT5 Position */
+ #define MXC_F_PTG_INTEN_PT5                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT5_POS)) /**< INTEN_PT5 Mask */
+
+ #define MXC_F_PTG_INTEN_PT6_POS                        6 /**< INTEN_PT6 Position */
+ #define MXC_F_PTG_INTEN_PT6                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT6_POS)) /**< INTEN_PT6 Mask */
+
+ #define MXC_F_PTG_INTEN_PT7_POS                        7 /**< INTEN_PT7 Position */
+ #define MXC_F_PTG_INTEN_PT7                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT7_POS)) /**< INTEN_PT7 Mask */
+
+/**@} end of group PTG_INTEN_Register */
 
 #ifdef __cplusplus
 }

@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the CTB Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _CTB_REGS_H_
 #define _CTB_REGS_H_
@@ -104,13 +103,11 @@ typedef struct {
     __O  uint32_t cipher_key[8];        /**< <tt>\b 0x60:</tt> CTB CIPHER_KEY Register */
     __IO uint32_t hash_digest[16];      /**< <tt>\b 0x80:</tt> CTB HASH_DIGEST Register */
     __IO uint32_t hash_msg_sz[4];       /**< <tt>\b 0xC0:</tt> CTB HASH_MSG_SZ Register */
-  union{
-    __IO uint32_t maa_maws;             /**< <tt>\b 0xD0:</tt> CTB MAA_MAWS Register */
     __IO uint32_t aad_length[2];        /**< <tt>\b 0xD0:</tt> CTB AAD_LENGTH Register */
-  };
     __IO uint32_t pld_length[2];        /**< <tt>\b 0xD8:</tt> CTB PLD_LENGTH Register */
     __IO uint32_t tagmic[4];            /**< <tt>\b 0xE0:</tt> CTB TAGMIC Register */
-    __R  uint32_t rsv_0xf0_0xff[4];
+    __IO uint32_t maa_maws;             /**< <tt>\b 0xF0:</tt> CTB MAA_MAWS Register */
+    __R  uint32_t rsv_0xf4_0xff[3];
     __IO uint32_t sca_ctrl0;            /**< <tt>\b 0x100:</tt> CTB SCA_CTRL0 Register */
     __IO uint32_t sca_ctrl1;            /**< <tt>\b 0x104:</tt> CTB SCA_CTRL1 Register */
     __IO uint32_t sca_stat;             /**< <tt>\b 0x108:</tt> CTB SCA_STAT Register */
@@ -151,10 +148,10 @@ typedef struct {
  #define MXC_R_CTB_CIPHER_KEY               ((uint32_t)0x00000060UL) /**< Offset from CTB Base Address: <tt> 0x0060</tt> */ 
  #define MXC_R_CTB_HASH_DIGEST              ((uint32_t)0x00000080UL) /**< Offset from CTB Base Address: <tt> 0x0080</tt> */ 
  #define MXC_R_CTB_HASH_MSG_SZ              ((uint32_t)0x000000C0UL) /**< Offset from CTB Base Address: <tt> 0x00C0</tt> */ 
- #define MXC_R_CTB_MAA_MAWS                 ((uint32_t)0x000000D0UL) /**< Offset from CTB Base Address: <tt> 0x00D0</tt> */ 
  #define MXC_R_CTB_AAD_LENGTH               ((uint32_t)0x000000D0UL) /**< Offset from CTB Base Address: <tt> 0x00D0</tt> */ 
  #define MXC_R_CTB_PLD_LENGTH               ((uint32_t)0x000000D8UL) /**< Offset from CTB Base Address: <tt> 0x00D8</tt> */ 
  #define MXC_R_CTB_TAGMIC                   ((uint32_t)0x000000E0UL) /**< Offset from CTB Base Address: <tt> 0x00E0</tt> */ 
+ #define MXC_R_CTB_MAA_MAWS                 ((uint32_t)0x000000F0UL) /**< Offset from CTB Base Address: <tt> 0x00F0</tt> */ 
  #define MXC_R_CTB_SCA_CTRL0                ((uint32_t)0x00000100UL) /**< Offset from CTB Base Address: <tt> 0x0100</tt> */ 
  #define MXC_R_CTB_SCA_CTRL1                ((uint32_t)0x00000104UL) /**< Offset from CTB Base Address: <tt> 0x0104</tt> */ 
  #define MXC_R_CTB_SCA_STAT                 ((uint32_t)0x00000108UL) /**< Offset from CTB Base Address: <tt> 0x0108</tt> */ 
@@ -530,17 +527,6 @@ typedef struct {
 
 /**
  * @ingroup  ctb_registers
- * @defgroup CTB_MAA_MAWS CTB_MAA_MAWS
- * @brief    MAA Word Size Register.
- * @{
- */
- #define MXC_F_CTB_MAA_MAWS_SIZE_POS                    0 /**< MAA_MAWS_SIZE Position */
- #define MXC_F_CTB_MAA_MAWS_SIZE                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_MAA_MAWS_SIZE_POS)) /**< MAA_MAWS_SIZE Mask */
-
-/**@} end of group CTB_MAA_MAWS_Register */
-
-/**
- * @ingroup  ctb_registers
  * @defgroup CTB_AAD_LENGTH CTB_AAD_LENGTH
  * @brief    AAD Length Registers.
  * @{
@@ -571,6 +557,17 @@ typedef struct {
  #define MXC_F_CTB_TAGMIC_LENGTH                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_TAGMIC_LENGTH_POS)) /**< TAGMIC_LENGTH Mask */
 
 /**@} end of group CTB_TAGMIC_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_MAA_MAWS CTB_MAA_MAWS
+ * @brief    MAA Word Size Register.
+ * @{
+ */
+ #define MXC_F_CTB_MAA_MAWS_SIZE_POS                    0 /**< MAA_MAWS_SIZE Position */
+ #define MXC_F_CTB_MAA_MAWS_SIZE                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_MAA_MAWS_SIZE_POS)) /**< MAA_MAWS_SIZE Mask */
+
+/**@} end of group CTB_MAA_MAWS_Register */
 
 /**
  * @ingroup  ctb_registers

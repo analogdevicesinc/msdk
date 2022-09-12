@@ -119,12 +119,12 @@ typedef struct {
  * @{
  */
  #define MXC_F_OTP_CTRL_ADDR_POS                        0 /**< CTRL_ADDR Position */
- #define MXC_F_OTP_CTRL_ADDR                            ((uint32_t)(0x1FFUL << MXC_F_OTP_CTRL_ADDR_POS)) /**< CTRL_ADDR Mask */
+ #define MXC_F_OTP_CTRL_ADDR                            ((uint32_t)(0xFFFFUL << MXC_F_OTP_CTRL_ADDR_POS)) /**< CTRL_ADDR Mask */
 
- #define MXC_F_OTP_CTRL_READ_POS                        10 /**< CTRL_READ Position */
+ #define MXC_F_OTP_CTRL_READ_POS                        24 /**< CTRL_READ Position */
  #define MXC_F_OTP_CTRL_READ                            ((uint32_t)(0x1UL << MXC_F_OTP_CTRL_READ_POS)) /**< CTRL_READ Mask */
 
- #define MXC_F_OTP_CTRL_WRITE_POS                       11 /**< CTRL_WRITE Position */
+ #define MXC_F_OTP_CTRL_WRITE_POS                       25 /**< CTRL_WRITE Position */
  #define MXC_F_OTP_CTRL_WRITE                           ((uint32_t)(0x1UL << MXC_F_OTP_CTRL_WRITE_POS)) /**< CTRL_WRITE Mask */
 
 /**@} end of group OTP_CTRL_Register */
@@ -144,8 +144,8 @@ typedef struct {
  #define MXC_F_OTP_CLKDIV_PD_POS                        9 /**< CLKDIV_PD Position */
  #define MXC_F_OTP_CLKDIV_PD                            ((uint32_t)(0x1UL << MXC_F_OTP_CLKDIV_PD_POS)) /**< CLKDIV_PD Mask */
 
- #define MXC_F_OTP_CLKDIV_RDY_POS                       16 /**< CLKDIV_RDY Position */
- #define MXC_F_OTP_CLKDIV_RDY                           ((uint32_t)(0x1UL << MXC_F_OTP_CLKDIV_RDY_POS)) /**< CLKDIV_RDY Mask */
+ #define MXC_F_OTP_CLKDIV_HCLKDIV_POS                   16 /**< CLKDIV_HCLKDIV Position */
+ #define MXC_F_OTP_CLKDIV_HCLKDIV                       ((uint32_t)(0x3FUL << MXC_F_OTP_CLKDIV_HCLKDIV_POS)) /**< CLKDIV_HCLKDIV Mask */
 
 /**@} end of group OTP_CLKDIV_Register */
 
@@ -179,6 +179,9 @@ typedef struct {
 
  #define MXC_F_OTP_STATUS_UNLOCK3_POS                   9 /**< STATUS_UNLOCK3 Position */
  #define MXC_F_OTP_STATUS_UNLOCK3                       ((uint32_t)(0x1UL << MXC_F_OTP_STATUS_UNLOCK3_POS)) /**< STATUS_UNLOCK3 Mask */
+
+ #define MXC_F_OTP_STATUS_PWR_RDY_POS                   16 /**< STATUS_PWR_RDY Position */
+ #define MXC_F_OTP_STATUS_PWR_RDY                       ((uint32_t)(0x1UL << MXC_F_OTP_STATUS_PWR_RDY_POS)) /**< STATUS_PWR_RDY Mask */
 
 /**@} end of group OTP_STATUS_Register */
 
