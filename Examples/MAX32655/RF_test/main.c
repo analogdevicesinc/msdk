@@ -25,14 +25,11 @@
 /**************************************************************************************************
   Definitions
 **************************************************************************************************/
-
-/*! \brief UART TX buffer size */
+/*! UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
-
-#define FREQ_HOP_PERIOD_US 20000
-
-/* FreeRTOS*************************************************************/
-/* Array sizes */
+#define FREQ_HOP_PERIOD_US                 20000
+#define HISTORY_MEMORY_LENGTH              10
+/* FreeRTOS */
 #define CMD_LINE_BUF_SIZE 100
 #define OUTPUT_BUF_SIZE   512
 #define CONSOLE_UART      0 //EvKit/FTHR
@@ -43,19 +40,18 @@ TaskHandle_t wfs_task_id;
 TaskHandle_t sweep_task_id;
 TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */
-void vRegisterCLICommands(void);
-mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 xSemaphoreHandle rfTestMutex;
-/* Enables/disables tick-less mode */
-unsigned int disable_tickless = 1;
+
+mxc_uart_regs_t* ConsoleUART  = MXC_UART_GET_UART(CONSOLE_UART);
+unsigned int disable_tickless = 1; /* Enables/disables tick-less mode */
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
-/*! \brief  Persistent BB runtime configuration. */
+/*  Persistent BB runtime configuration. */
 static BbRtCfg_t mainBbRtCfg;
 
-/*! \brief  Persistent LL runtime configuration. */
+/* Persistent LL runtime configuration. */
 static LlRtCfg_t mainLlRtCfg;
 
 static uint8_t phy = LL_PHY_LE_1M;
@@ -65,22 +61,36 @@ static uint8_t txFreqHopCh;
 static uint8_t packetLen  = 255;
 static uint8_t packetType = LL_TEST_PKT_TYPE_AA;
 static int8_t txPower     = 10;
+/* UART RX */
+char inputBuffer[CMD_LINE_BUF_SIZE]; /* Buffer for input */
+unsigned int bufferIndex;            /* Index into buffer */
 char receivedChar;
-/* helper flags */
+/* CLI */
+uint8_t backspace[] = "\x08 \x08";
+enum { UP_ARROW, DOWN_ARROW, RIGHT_ARROW, LEFT_ARROW };
+/* History */
+cmd_history_t cmd_history[HISTORY_MEMORY_LENGTH];
+static uint32_t escCounter         = 0;
+static uint8_t keyBoardSequence[3] = {0};
+queue_t historyQueue;
+uint32_t historyCounter = 0;
+int queuePointer        = -1;
+/* Prompt */
 test_t activeTest = NO_TEST;
 bool clearScreen  = false;
 bool pausePrompt  = false;
+
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
-
-/*! \brief Physical layer functions. */
+/* Physical layer functions. */
 extern void llc_api_set_txpower(int8_t power);
 extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
 extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
 extern const CLI_Command_Definition_t xCommandList[];
+void vRegisterCLICommands(void);
 /*************************************************************************************************/
 /*!
  *  \fn     Get PHY String.
@@ -111,7 +121,6 @@ static uint8_t* getPhyStr(uint8_t phy)
     }
     return phy_str;
 }
-
 /*************************************************************************************************/
 /*!
  *  \fn     Get PHY String.
@@ -123,7 +132,6 @@ static uint8_t* getPhyStr(uint8_t phy)
  *  \return Pointer to string describing the PHY.
  */
 /*************************************************************************************************/
-
 static uint8_t* getPacketTypeStr(void)
 {
     switch (packetType) {
@@ -155,7 +163,6 @@ static uint8_t* getPacketTypeStr(void)
     }
     return packetType_str;
 }
-
 /*************************************************************************************************/
 /*!
  *  \fn     Timer 2 interrupts handler.
@@ -186,7 +193,160 @@ void TMR2_IRQHandler(void)
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
     MXC_TMR_EnableInt(MXC_TMR2);
 }
+/*************************************************************************************************/
 
+uint8_t processEscSequence(uint8_t* seq)
+{
+    uint8_t arrows[4][3] = {
+
+        {27, 91, 65}, /* up arrow */
+
+        {27, 91, 66}, /* down arrow */
+
+        {27, 91, 67}, /* left arrow */
+
+        {27, 91, 68}, /* right arrow */
+
+    };
+    //uint8_t downArrow[4] = {c '\0'};
+    uint8_t retVal = 0;
+    int status     = 0;
+
+    /*arrows*/
+    for (int k = 0; k < 4; k++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (seq[j] == arrows[k][i]) {
+                    retVal++;
+                    break;
+                }
+            }
+        }
+
+        if (retVal == 3)
+            return k;
+        else
+            retVal = 0;
+    }
+
+    return 0xFF;
+}
+/*************************************************************************************************/
+void historyEnquue(queue_t* q, const uint8_t* cmd)
+{
+    /* clear command history slot of any previous data */
+    memset(&q->command[q->head].cmd, 0x00, CMD_LINE_BUF_SIZE);
+    /* copy new command histroy */
+    memcpy(&q->command[q->head], cmd, strlen(cmd));
+    q->command[q->head].length = strlen(cmd);
+
+    /* update head, and push tail up if we have looped back around */
+    q->head = (q->head + 1) % HISTORY_MEMORY_LENGTH;
+    if (q->head == q->tail) {
+        q->tail = (q->tail + 1) % HISTORY_MEMORY_LENGTH;
+    }
+    memset(&q->command[q->head].cmd, 0x00, CMD_LINE_BUF_SIZE);
+    /* update pointer */
+    queuePointer = historyQueue.head;
+}
+/*************************************************************************************************/
+void printHistory(bool upArrow)
+{
+    uint8_t numCharsToDelete = strlen(inputBuffer);
+
+    updateQueuePointer(&historyQueue, upArrow);
+    /* no history yet */
+    if (queuePointer < 0)
+        return;
+    /* send backspace to delete any currently typed text */
+    if (numCharsToDelete) {
+        for (int i = 0; i < numCharsToDelete; i++)
+            printf("%s", backspace);
+    }
+    /* copy history into inputBuffer */
+    memset(inputBuffer, 0x00, 100);
+    memcpy(inputBuffer, historyQueue.command[queuePointer].cmd,
+           strlen(historyQueue.command[queuePointer].cmd));
+    printf("%s", inputBuffer);
+    bufferIndex = strlen(inputBuffer);
+
+    fflush(stdout);
+}
+/*************************************************************************************************/
+void updateQueuePointer(queue_t* q, bool upArrow)
+{
+    if (upArrow) {
+        /* empty queue or reached tail already */
+        if (q->head == q->tail || queuePointer == q->tail)
+            return;
+        if (queuePointer == 0)
+            queuePointer = HISTORY_MEMORY_LENGTH - 1;
+        else
+
+            queuePointer = (queuePointer - 1) % HISTORY_MEMORY_LENGTH;
+
+    } else {
+        /* empty queue or reached head already */
+        if (q->head == q->tail || queuePointer == q->head)
+            return;
+        queuePointer = (queuePointer + 1) % HISTORY_MEMORY_LENGTH;
+    }
+}
+/*************************************************************************************************/
+void cls(void)
+{
+    char str[7];
+    // TODO check clear on putty
+    sprintf(str, "\033[2J");
+    WsfBufIoWrite((const uint8_t*)str, 5);
+    clearScreen = false;
+}
+/*************************************************************************************************/
+void prompt(void)
+{
+    if (pausePrompt)
+        return;
+    char str[25];
+    uint8_t len = 0;
+    if (activeTest) {
+        sprintf(str, "\r\n(active test) cmd:");
+        len = 21;
+    } else {
+        sprintf(str, "\r\ncmd:");
+        len = 7;
+    }
+
+    fflush(stdout);
+    if (clearScreen) {
+        cls();
+    }
+    //using app_trace would add newline after prompt which does not look right
+    WsfBufIoWrite((const uint8_t*)str, len);
+}
+/*************************************************************************************************/
+void printHint(uint8_t* buff)
+{
+    int i           = 0;
+    uint8_t bufflen = strlen(buff);
+    bool foundMatch = false;
+    do {
+        if (memcmp(buff, xCommandList[i].pcCommand, bufflen) == 0 && bufflen > 0) {
+            if (foundMatch == false)
+                printf("\r\n");
+            printf("\r\n> %s : %s", xCommandList[i].pcCommand, xCommandList[i].pcHelpString);
+            foundMatch = true;
+        }
+        i++;
+    } while (xCommandList[i].pcCommand != NULL);
+    if (foundMatch) {
+        /* print new prompt with what user had previouslly typed */
+        printf("\r\n");
+        prompt();
+        vTaskDelay(5);
+        printf("%s", buff);
+        fflush(stdout);
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \fn     Process the Console RX
@@ -200,14 +360,24 @@ void TMR2_IRQHandler(void)
 /*************************************************************************************************/
 static void processConsoleRX(uint8_t rxByte)
 {
+    static uint32_t i = 0;
+    static uint32_t x = 0;
+
     BaseType_t xHigherPriorityTaskWoken;
-    receivedChar = rxByte;
+    // static uint8_t keyBoardSequence[3] = {0};
+    receivedChar              = rxByte;
+    keyBoardSequence[i++ % 3] = rxByte;
+
+    // TODO put all of this in command line task
+    /* if received esc character start escape sequence counter */
+    if (rxByte == 27)
+        escCounter++;
+
     /* Wake the task */
     xHigherPriorityTaskWoken = pdFALSE;
     vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  Load runtime configuration.
@@ -235,7 +405,6 @@ static void mainLoadConfiguration(void)
     */
     mainBbRtCfg.clkPpm = 20;
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  Initialize WSF.
@@ -277,7 +446,6 @@ static void mainWsfInit(void)
     WsfTraceEnable(TRUE);
 #endif
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  Check and service tokens (Trace and sniffer).
@@ -307,72 +475,17 @@ static bool_t mainCheckServiceTokens(void)
 
     return eventPending;
 }
-//*********************|  Freertos |***********************************
-void cls(void)
-{
-    char str[7];
-    // TODO check clear on putty
-    sprintf(str, "\033[2J");
-    WsfBufIoWrite((const uint8_t*)str, 5);
-    clearScreen = false;
-}
-void prompt(void)
-{
-    if (pausePrompt)
-        return;
-    char str[25];
-    uint8_t len = 0;
-    if (activeTest) {
-        sprintf(str, "\r\n(active test) cmd:");
-        len = 21;
-    } else {
-        sprintf(str, "\r\ncmd:");
-        len = 7;
-    }
-
-    fflush(stdout);
-    if (clearScreen) {
-        cls();
-    }
-    //using app_trace would add newline after prompt which does not look right
-    WsfBufIoWrite((const uint8_t*)str, len);
-}
-void printHint(uint8_t* buff)
-{
-    int i           = 0;
-    uint8_t bufflen = strlen(buff);
-    bool foundMatch = false;
-    do {
-        if (memcmp(buff, xCommandList[i].pcCommand, bufflen) == 0 && bufflen > 0) {
-            if (foundMatch == false)
-                printf("\r\n");
-            printf("\r\n> %s : %s", xCommandList[i].pcCommand, xCommandList[i].pcHelpString);
-            foundMatch = true;
-        }
-        i++;
-    } while (xCommandList[i].pcCommand != NULL);
-    if (foundMatch) {
-        /* print new prompt with what user had previouslly typed */
-        printf("\r\n");
-        prompt();
-        vTaskDelay(5);
-        printf("%s", buff);
-        fflush(stdout);
-    }
-}
+/*************************************************************************************************/
 void vCmdLineTask(void* pvParameters)
 {
     unsigned char tmp;
-    unsigned int index; /* Index into buffer */
     unsigned int x;
     int uartReadLen;
-    char buffer[CMD_LINE_BUF_SIZE]; /* Buffer for input */
-    char output[OUTPUT_BUF_SIZE];   /* Buffer for output */
+    char output[OUTPUT_BUF_SIZE]; /* Buffer for output */
     BaseType_t xMore;
     mxc_uart_req_t async_read_req;
-    uint8_t backspace[] = "\x08 \x08";
-    memset(buffer, 0, CMD_LINE_BUF_SIZE);
-    index = 0;
+    memset(inputBuffer, 0, CMD_LINE_BUF_SIZE);
+    bufferIndex = 0;
 
     /* Register available CLI commands */
     vRegisterCLICommands();
@@ -383,78 +496,120 @@ void vCmdLineTask(void* pvParameters)
     pausePrompt = true;
     xTaskNotify(help_task_id, 0xFF, eSetBits);
 
+    memset(cmd_history, 0, sizeof(cmd_history_t) * HISTORY_MEMORY_LENGTH);
+    historyQueue.head = 0;
+    historyQueue.tail = 0;
     while (1) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         tmp = receivedChar;
         /* Check that we have a valid character */
-        if (async_read_req.rxCnt > 0) {
-            /* Process character */
-            do {
-                /* 0x08 BS linux , 127 Del windows/putty */
-                if (tmp == 0x08 || tmp == 127) {
-                    /* Backspace */
-                    if (index > 0) {
-                        index--;
-                        memset(&buffer[index], 0x00, 1);
-                        WsfBufIoWrite((const uint8_t*)backspace, sizeof(backspace));
-                    }
-                    fflush(stdout);
-                } else if (tmp == 0x09)
-                /* tab hint */
-                {
-                    printHint(buffer);
+        if (escCounter > 0 && escCounter < 4) {
+            switch (processEscSequence(keyBoardSequence)) {
+                case UP_ARROW:
+                    memset(keyBoardSequence, 0, 3);
+                    escCounter = 0;
+                    printHistory(true);
+                    break;
 
-                }
-                /*since freq hop does not allow user to see what they are typing, simply typing
+                case DOWN_ARROW:
+                    memset(keyBoardSequence, 0, 3);
+                    escCounter = 0;
+                    printHistory(false);
+                    break;
+
+                case LEFT_ARROW:
+                    memset(keyBoardSequence, 0, 3);
+                    escCounter = 0;
+                    //printf("Left\r\n");
+                    break;
+
+                case RIGHT_ARROW:
+                    memset(keyBoardSequence, 0, 3);
+                    escCounter = 0;
+                    //printf("RIGHT\r\n");
+                    break;
+
+                default:
+                    escCounter++;
+                    break;
+            }
+        } else {
+            escCounter = 0;
+            if (async_read_req.rxCnt > 0) {
+                /* Process character */
+                do {
+                    /* 0x08 BS linux , 127 Del windows/putty */
+                    if (tmp == 0x08 || tmp == 127) {
+                        /* Backspace */
+                        if (bufferIndex > 0) {
+                            bufferIndex--;
+                            memset(&inputBuffer[bufferIndex], 0x00, 1);
+                            WsfBufIoWrite((const uint8_t*)backspace, sizeof(backspace));
+                        }
+                        fflush(stdout);
+                    } else if (tmp == 0x09)
+                    /* tab hint */
+                    {
+                        printHint(inputBuffer);
+
+                    }
+                    /*since freq hop does not allow user to see what they are typing, simply typing
                   'e' without the need to press enter willl stop the frequency hopping test */
-                else if ((char)tmp == 'e' && activeTest == BLE_FHOP_TEST) {
-                    LlEndTest(NULL);
-                    MXC_TMR_Stop(MXC_TMR2);
-                    activeTest = NO_TEST;
+                    else if ((char)tmp == 'e' && activeTest == BLE_FHOP_TEST) {
+                        LlEndTest(NULL);
+                        MXC_TMR_Stop(MXC_TMR2);
+                        activeTest = NO_TEST;
 
-                    xSemaphoreGive(rfTestMutex);
-                    prompt();
-                } else if (tmp == 0x03) {
-                    /* ^C abort */
-                    index = 0;
-                    APP_TRACE_INFO0("^C");
-                    prompt();
-                } else if ((tmp == '\r') || (tmp == '\n')) {
-                    if (strlen(buffer) > 0) {
-                        APP_TRACE_INFO0("\r\n");
-                        /* Null terminate for safety */
-                        buffer[index] = 0x00;
-                        /* Evaluate */
-                        do {
-                            xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
-                            for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output));
-                                 x++) {
-                                putchar(*(output + x));
-                            }
-                        } while (xMore != pdFALSE);
+                        xSemaphoreGive(rfTestMutex);
+                        prompt();
+                    } else if (tmp == 0x03) {
+                        /* ^C abort */
+                        bufferIndex = 0;
+                        APP_TRACE_INFO0("^C");
+                        prompt();
+                    } else if ((tmp == '\r') || (tmp == '\n')) {
+                        queuePointer = historyQueue.head;
+                        if (strlen(inputBuffer) > 0) {
+                            APP_TRACE_INFO0("\r\n");
+                            /* Null terminate for safety */
+                            inputBuffer[bufferIndex] = 0x00;
+                            /* save to history */
+                            historyEnquue(&historyQueue, inputBuffer);
+                            /* Evaluate */
+                            do {
+                                xMore = FreeRTOS_CLIProcessCommand(inputBuffer, output,
+                                                                   OUTPUT_BUF_SIZE);
+                                for (x = 0;
+                                     x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output));
+                                     x++) {
+                                    putchar(*(output + x));
+                                }
+                            } while (xMore != pdFALSE);
+                        }
+                        /* New prompt */
+                        bufferIndex = 0;
+                        memset(inputBuffer, 0x00, 100);
+                        prompt();
+                    } else if (bufferIndex < CMD_LINE_BUF_SIZE) {
+                        putchar(tmp);
+                        inputBuffer[bufferIndex++] = tmp;
+                        fflush(stdout);
+
+                    } else {
+                        /* Throw away data and beep terminal */
+                        putchar(0x07);
+                        fflush(stdout);
                     }
-                    /* New prompt */
-                    index = 0;
-                    memset(buffer, 0x00, 100);
-                    prompt();
-                } else if (index < CMD_LINE_BUF_SIZE) {
-                    putchar(tmp);
-                    buffer[index++] = tmp;
-                    fflush(stdout);
-
-                } else {
-                    /* Throw away data and beep terminal */
-                    putchar(0x07);
-                    fflush(stdout);
-                }
-                uartReadLen = 1;
-                /* If more characters are ready, process them here */
-            } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
-                     (MXC_UART_Read(ConsoleUART, (uint8_t*)&tmp, &uartReadLen) == 0));
+                    uartReadLen = 1;
+                    /* If more characters are ready, process them here */
+                } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
+                         (MXC_UART_Read(ConsoleUART, (uint8_t*)&tmp, &uartReadLen) == 0));
+            }
         }
     }
 }
+/*************************************************************************************************/
 void txTestTask(void* pvParameters)
 {
     static int res    = 0xff;
@@ -495,6 +650,7 @@ void txTestTask(void* pvParameters)
         prompt();
     }
 }
+/*************************************************************************************************/
 void sweepTestTask(void* pvParameters)
 {
     int res = 0xff;
@@ -543,6 +699,7 @@ void sweepTestTask(void* pvParameters)
         prompt();
     }
 }
+/*************************************************************************************************/
 void helpTask(void* pvParameters)
 {
     uint32_t notifVal = 0;
@@ -550,34 +707,6 @@ void helpTask(void* pvParameters)
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
 
         // clang-format off
-    
-        // printf(" Command   parameters [optional] <required>                        description                       \r\n");
-        // printf("--------- ---------------------------------- ------------------------------------------------------- \r\n");
-        // printf(" cls       N/A                                clears the screen                                      \r\n\r\n");
-        // printf(" constTx   <channel> : 1 - 39                 Constant TX on given channel. Channel param            \r\n");
-        // printf("                                              is required on first command call                      \r\n");
-        // printf("                                              subsequent calls default to last given channel         \r\n\r\n");
-        // printf(" e         N/A                                Ends any active RX/TX/Constant/Freq.hop RF test        \r\n\r\n");
-        // printf(" plen      <packet_length> : 0-255 bytes      Sets payload packet length                             \r\n\r\n");
-        // printf(" ptype     <packet_type>                      Sets payload packet type                               \r\n");
-        // printf("                                              PRBS9,PRBS15,00,FF,0F,F0,55,AA                         \r\n\r\n");
-        // printf(" phy       <symbol rate> : 1M 2M S2 S8        Sets the PHY symbol rate. Not case sensitive 1M == 1m  \r\n\r\n");
-        // printf(" ps        N/A                                Display freeRTOS task stats                            \r\n\r\n");
-        // printf(" rx        <channel> : 1 - 39                 RX test on given channel. Channel param                \r\n");
-        // printf("                                              is required on first command call.                     \r\n");
-        // printf("                                              Subsequent calls default to last given channel         \r\n\r\n");
-        // printf(" sweep     <start ch> <end ch> <ms/per ch>    Sweeps TX tests through a range of channels given      \r\n");
-        // printf("                                              their order of appearance on the spectrum.             \r\n\r\n");
-        // printf(" tx        <channel> : 1 - 39                 TX test on given channel. Channel param                \r\n");
-        // printf("                                              is required on first command call.                     \r\n");
-        // printf("                                              Subsequent calls default to last given channel         \r\n\r\n");
-        // printf(" txdbm     <dbm> : 4.5 2 -10                  Select transmit power                                  \r\n\r\n");
-        // printf(" help      N/A                                Displays this help table                               \r\n");
-
-
-
-
-
     printf("┌─────────┬──────────────────────────────────┬───────────────────────────────────────────────────────┐\r\n");
     printf("│ Command │ parameters [optional] <required> │                      description                      │\r\n");
     printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
@@ -615,19 +744,20 @@ void helpTask(void* pvParameters)
     printf("│         │                                  │                                                       │\r\n");
     printf("│ help    │ N/A                              │ Displays this help table                              │\r\n");
     printf("└─────────┴──────────────────────────────────┴───────────────────────────────────────────────────────┘\r\n");
-
         // clang-format on
 
         pausePrompt = false;
         prompt();
     }
 }
+/*************************************************************************************************/
 void wfsLoop(void* pvParameters)
 {
     while (1) {
         WsfOsEnterMainLoop();
     }
 }
+/*************************************************************************************************/
 void setPhy(uint8_t newPhy)
 {
     phy          = newPhy;
@@ -639,22 +769,25 @@ void setPhy(uint8_t newPhy)
                                                    "");
     APP_TRACE_INFO1("%s", str);
 }
+/*************************************************************************************************/
 void startFreqHopping(void)
 {
     NVIC_EnableIRQ(TMR2_IRQn);
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
     MXC_TMR_EnableInt(MXC_TMR2);
-}
+} /*************************************************************************************************/
 void setPacketLen(uint8_t len)
 {
     packetLen = len;
     APP_TRACE_INFO1("Packet length set to %d", len);
 }
+/*************************************************************************************************/
 void setPacketType(uint8_t type)
 {
     packetType = type;
     APP_TRACE_INFO1("Packet type set to %s", getPacketTypeStr());
 }
+/*************************************************************************************************/
 void setTxPower(int8_t power)
 {
     // TODO : validate value
@@ -663,6 +796,7 @@ void setTxPower(int8_t power)
     LlSetAdvTxPower((int8_t)power);
     printf("Power set to %d dBm\n", power);
 }
+/*************************************************************************************************/
 void printConfigs(void)
 {
     printf("-----| Current RF Configrations |-----\r\n");
@@ -717,8 +851,8 @@ int main(void)
         }
     }
     xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
-                configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                tskIDLE_PRIORITY + 1, &cmd_task_id);
+                1024 + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL, tskIDLE_PRIORITY + 1,
+                &cmd_task_id);
     // TX tranismit test task
     xTaskCreate(txTestTask, (const char*)"Tx Task", 1024, NULL, tskIDLE_PRIORITY + 1, &tx_task_id);
 

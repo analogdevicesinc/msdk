@@ -38,7 +38,7 @@ typedef enum uint8_t {
     BLE_SWEEP_TEST,
     BLE_FHOP_TEST,
 } test_t;
-//used to post messages to a task via its notification parameter
+
 typedef union {
     struct {
         uint16_t duration_ms;
@@ -56,6 +56,16 @@ typedef union {
     };
     uint32_t allData;
 } sweep_config_t;
+
+typedef struct {
+    uint8_t cmd[100];
+    uint8_t length;
+} cmd_history_t;
+
+typedef struct {
+    cmd_history_t command[10];
+    uint8_t head, tail;
+} queue_t;
 
 void setPhy(uint8_t newPhy);
 void startFreqHopping(void);
