@@ -394,7 +394,7 @@
         </fields>
       </register>
       <register>
-        <name>INTFL</name>
+        <name>READY_INTFL</name>
         <description>Pulse Train Ready Interrupt Flags</description>
         <addressOffset>0x0018</addressOffset>
         <access>read-write</access>
@@ -458,7 +458,7 @@
         </fields>
       </register>
       <register>
-        <name>INTEN</name>
+        <name>READY_INTEN</name>
         <description>Pulse Train Ready Interrupt Enable/Disable</description>
         <addressOffset>0x001C</addressOffset>
         <access>read-write</access>
