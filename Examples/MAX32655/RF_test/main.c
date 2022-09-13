@@ -48,7 +48,7 @@ unsigned int disable_tickless = 1; /* Enables/disables tick-less mode */
   Global Variables
 **************************************************************************************************/
 
-/*  Persistent BB runtime configuration. */
+/* Persistent BB runtime configuration. */
 static BbRtCfg_t mainBbRtCfg;
 
 /* Persistent LL runtime configuration. */
@@ -194,7 +194,16 @@ void TMR2_IRQHandler(void)
     MXC_TMR_EnableInt(MXC_TMR2);
 }
 /*************************************************************************************************/
-
+/*!
+ *  \fn     processEscSequence.
+ *
+ *  \brief  Compares keyboard sequence to ansi escape codes.
+ *
+ *  \param  seq keyboard sequence.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
 uint8_t processEscSequence(uint8_t* seq)
 {
     uint8_t arrows[4][3] = {
@@ -232,7 +241,18 @@ uint8_t processEscSequence(uint8_t* seq)
     return 0xFF;
 }
 /*************************************************************************************************/
-void historyEnquue(queue_t* q, const uint8_t* cmd)
+/*!
+ *  \fn     cmdHistoryAdd.
+ *
+ *  \brief  adds latest command to command history buffer
+ *
+ *  \param  q pointer to the circular buffer holding command history 
+ *  \param  cmd pointer to the command string to be added 
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void cmdHistoryAdd(queue_t* q, const uint8_t* cmd)
 {
     /* clear command history slot of any previous data */
     memset(&q->command[q->head].cmd, 0x00, CMD_LINE_BUF_SIZE);
@@ -249,6 +269,16 @@ void historyEnquue(queue_t* q, const uint8_t* cmd)
     /* update pointer */
     queuePointer = historyQueue.head;
 }
+/*************************************************************************************************/
+/*!
+ *  \fn     printHistory.
+ *
+ *  \brief  prints previously typed commands
+ *
+ *  \param  upArrow flag used to upated the queuePoniter delimiting which command to print
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void printHistory(bool upArrow)
 {
@@ -273,6 +303,18 @@ void printHistory(bool upArrow)
     fflush(stdout);
 }
 /*************************************************************************************************/
+/*!
+ *  \fn     updateQueuePointer.
+ *
+ *  \brief  Updates an internal marker pointing to historical command to be printed
+ * 
+ *  \param  q pointer to the circular buffer holding command history 
+ * 
+ *  \param  upArrow flag used to upated the queuePoniter delimiting which command to print
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
 void updateQueuePointer(queue_t* q, bool upArrow)
 {
     if (upArrow) {
@@ -293,6 +335,14 @@ void updateQueuePointer(queue_t* q, bool upArrow)
     }
 }
 /*************************************************************************************************/
+/*!
+ *  \fn     cls
+ *
+ *  \brief  Clears screen
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
 void cls(void)
 {
     char str[7];
@@ -301,6 +351,14 @@ void cls(void)
     WsfBufIoWrite((const uint8_t*)str, 5);
     clearScreen = false;
 }
+/*************************************************************************************************/
+/*!
+ *  \fn     prompt
+ *
+ *  \brief  Prints prompt to screen, indicates if a test is active
+ *
+ *  \return None.
+ */
 /*************************************************************************************************/
 void prompt(void)
 {
@@ -323,6 +381,16 @@ void prompt(void)
     //using app_trace would add newline after prompt which does not look right
     WsfBufIoWrite((const uint8_t*)str, len);
 }
+/*************************************************************************************************/
+/*!
+ *  \fn     printHint
+ *
+ *  \brief  Prints the help string of any command matching the current inputbuffer
+ * 
+ *  \param  buff pointer to the inputbuffer
+ * 
+ *  \return None.
+ */
 /*************************************************************************************************/
 void printHint(uint8_t* buff)
 {
@@ -581,7 +649,7 @@ void vCmdLineTask(void* pvParameters)
                         if (strlen(inputBuffer) > 0) {
                             APP_TRACE_INFO0("\r\n");
                             /* save to history */
-                            historyEnquue(&historyQueue, inputBuffer);
+                            cmdHistoryAdd(&historyQueue, inputBuffer);
                             /* Evaluate */
                             do {
                                 xMore = FreeRTOS_CLIProcessCommand(inputBuffer, output,

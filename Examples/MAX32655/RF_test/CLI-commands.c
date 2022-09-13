@@ -39,7 +39,7 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen,
                            const char* pcCommandString);
 
-static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                      const char* pcCommandString);
 
 static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
@@ -118,7 +118,7 @@ const CLI_Command_Definition_t xCommandList[] = {
 
         .pcCommand                   = "rx", /* The command string to type. */
         .pcHelpString                = "<channel> <phy> <duartion>",
-        .pxCommandInterpreter        = cmd_StartBleRFTest, /* The function to run. */
+        .pxCommandInterpreter        = cmd_StartBleRXTest, /* The function to run. */
         .cExpectedNumberOfParameters = 3
 
     },
@@ -317,7 +317,7 @@ static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen
     }
     return pdFALSE;
 }
-static BaseType_t cmd_StartBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
+static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
                                      const char* pcCommandString)
 {
     const char* temp;
