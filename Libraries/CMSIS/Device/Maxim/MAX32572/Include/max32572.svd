@@ -7942,6 +7942,33 @@
        <description>Clock Divider. The input clock, PCLK, is divided for generating OTP timing signals.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>6</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>DIV2</name>
+         <description>Divide by 2</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>DIV4</name>
+         <description>Divide by 4</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>DIV8</name>
+         <description>Divide by 8</description>
+         <value>7</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>DIV16</name>
+         <description>Divide by 16</description>
+         <value>15</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>DIV32</name>
+         <description>Divide by 32</description>
+         <value>31</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>SPWE</name>
@@ -14574,12 +14601,6 @@
      <resetValue>0x00000003</resetValue>
      <fields>
       <field>
-       <name>ODHT</name>
-       <description>Start On-Demand health test.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>RND_IE</name>
        <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
        <bitOffset>1</bitOffset>
@@ -14598,21 +14619,9 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>HEALTH_EN</name>
-       <description>Enable IRQ generation when a health test fails.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>AESKG_USR</name>
+       <name>KEYGEN</name>
        <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
        <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>AESKG_SYS</name>
-       <description>AESKG_SYS.</description>
-       <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -14645,36 +14654,6 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
-      </field>
-      <field>
-       <name>ODHT</name>
-       <description>On-Demand health test status.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>HT</name>
-       <description>Health test status.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>SRCFAIL</name>
-       <description>Entropy source has failed.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>AESKGD</name>
-       <description>AESKGD.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>LD_CNT</name>
-       <description>LD_CNT.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>8</bitWidth>
       </field>
      </fields>
     </register>

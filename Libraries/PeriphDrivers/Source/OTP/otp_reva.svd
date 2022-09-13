@@ -58,6 +58,33 @@
             <description>Clock Divider. The input clock, PCLK, is divided for generating OTP timing signals.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>6</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DIV2</name>
+                <description>Divide by 2</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV4</name>
+                <description>Divide by 4</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV8</name>
+                <description>Divide by 8</description>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV16</name>
+                <description>Divide by 16</description>
+                <value>15</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV32</name>
+                <description>Divide by 32</description>
+                <value>31</value>
+              </enumeratedValue>
+            </enumeratedValues>
           </field>
           <field>
             <name>SPWE</name>

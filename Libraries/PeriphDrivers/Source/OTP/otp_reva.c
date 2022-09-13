@@ -36,56 +36,77 @@
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_errors.h"
+#include "mxc_sys.h"
 #include "otp.h"
 #include "otp_reva.h"
 
 /* **** Functions **** */
-int MXC_OTP_RevA_CheckUnlockMode(mxc_otp_reva_regs_t *otp)
+
+int MXC_OTP_RevA_Init(mxc_otp_reva_regs_t *otp, mxc_otp_clkdiv_t pclkdiv)
 {
-    return 0;
+    MXC_SETFIELD(otp->clkdiv, MXC_F_OTP_REVA_CLKDIV_CLKDIV, (pclkdiv << MXC_F_OTP_CLKDIV_CLKDIV_POS)); 
+
+    return E_NO_ERROR;
+}
+
+int MXC_OTP_RevA_IsLocked(mxc_otp_reva_regs_t *otp)
+{
+    return !(otp->status & MXC_F_OTP_REVA_STATUS_UNLOCK1);
 }
 
 void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t *otp)
 {
-    otp->actrl1 = 0x3A7F5CA3;
-    otp->actrl1 = 0xA1E34F20;
-    otp->actrl1 = 0x9608B2C1;
+    otp->actrl0 = 0xBEEFBA55;
 }
 
 void MXC_OTP_RevA_Lock(mxc_otp_reva_regs_t *otp)
 {
-    otp->actrl1 = 0;
-}
-
-void MXC_OTP_RevA_UnlockUserBlock(mxc_otp_reva_regs_t *otp)
-{
-    otp->actrl0 = 0xBEEFBA55;
-}
-
-void MXC_OTP_RevA_LockUserBlock(mxc_otp_reva_regs_t *otp)
-{
     otp->actrl0 = 0;
 }
 
-int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data)
+int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size)
 {
-    // Check address range and mode access (unlocked).
-    if (otp->status & MXC_F_OTP_REVA_STATUS_UNLOCK3) {
-        // Sys and User Block (0-2k)
-        if (addr > MXC_OTP_MEM_SIZE) {
-            return E_BAD_PARAM;
+    int i;
+    int error;
+
+    // Don't write out of accessible user block space.
+    if (addr > (MXC_OTP_MEM_BASE + MXC_OTP_MEM_SIZE)) {
+        return E_BAD_PARAM;
+    }
+
+    if ((addr + size) > (MXC_OTP_MEM_BASE + MXC_OTP_MEM_SIZE)) {
+        return E_BAD_PARAM;
+    }
+
+    if (MXC_OTP_IsLocked()) {
+        MXC_OTP_Unlock();
+    }
+
+    for (i = 0; i < size; i++) {
+        error = MXC_OTP_Write32(addr + i, data[i]);
+        if (error != E_NO_ERROR) {
+            MXC_OTP_Lock();
+            return error;
         }
-    } else if (otp->status & MXC_F_OTP_REVA_STATUS_UNLOCK1) {
-        // User block only (1k-2k)
-        if ((addr < (MXC_OTP_MEM_SIZE / 2)) || (addr > MXC_OTP_MEM_SIZE)) {
-            return E_BAD_PARAM;
-        }
-    } else {
-        // OTP not unlocked
+    }
+
+    MXC_OTP_Lock();
+
+    return E_NO_ERROR;
+}
+
+int MXC_OTP_RevA_Write32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data)
+{
+    // Make sure OTP memory is unlocked.
+    if(MXC_OTP_IsLocked()) {
         return E_BAD_STATE;
     }
 
-    // TODO: Check if order of writing data and address matters.
+    // Check address range.
+    if (addr > (MXC_OTP_MEM_BASE + MXC_OTP_MEM_SIZE)) {
+        return E_BAD_PARAM;
+    }
+
     otp->wdata = data;
 
     MXC_SETFIELD(otp->ctrl, MXC_F_OTP_REVA_CTRL_ADDR, (addr << MXC_F_OTP_REVA_CTRL_ADDR_POS));
@@ -103,12 +124,12 @@ int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data)
     return E_NO_ERROR;
 }
 
-int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size)
+int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size)
 {
     int i;
     int error;
 
-    // Don't write out of accessible block space.
+    // Don't read out of accessible block space.
     if (addr > MXC_OTP_MEM_SIZE) {
         return E_BAD_PARAM;
     }
@@ -117,33 +138,19 @@ int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *d
         return E_BAD_PARAM;
     }
 
-    MXC_OTP_Unlock();
-
     for (i = 0; i < size; i++) {
-        error = MXC_OTP_Write(addr + i, data[i]);
+        error = MXC_OTP_Read32(addr + i, data + i);
         if (error != E_NO_ERROR) {
-            MXC_OTP_Lock();
             return error;
         }
     }
 
-    MXC_OTP_Lock();
-
     return E_NO_ERROR;
 }
 
-int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
+int MXC_OTP_RevA_Read32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
 {
     // User block (1k-2k) is readable in normal mode (without unlocking).
-    // Check for address range and appropriate read access.
-    if (addr < (MXC_OTP_MEM_SIZE / 2)) {
-        if (!(otp->status & MXC_F_OTP_REVA_STATUS_UNLOCK3)) {
-            return E_BAD_STATE;
-        }
-    } else if (addr > MXC_OTP_MEM_SIZE) {
-        return E_BAD_PARAM;
-    }
-
     MXC_SETFIELD(otp->ctrl, MXC_F_OTP_REVA_CTRL_ADDR, (addr << MXC_F_OTP_REVA_CTRL_ADDR_POS));
 
     // Start Read Operation
@@ -161,31 +168,3 @@ int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
     return E_NO_ERROR;
 }
 
-int MXC_OTP_RevA_MultiRead(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size)
-{
-    int i;
-    int error;
-
-    // Don't read out of accessible block space.
-    if (addr > MXC_OTP_MEM_SIZE) {
-        return E_BAD_PARAM;
-    }
-
-    if ((addr + size) > MXC_OTP_MEM_SIZE) {
-        return E_BAD_PARAM;
-    }
-
-    MXC_OTP_Unlock();
-
-    for (i = 0; i < size; i++) {
-        error = MXC_OTP_Read(addr + i, data + i);
-        if (error != E_NO_ERROR) {
-            MXC_OTP_Lock();
-            return error;
-        }
-    }
-
-    MXC_OTP_Lock();
-
-    return E_NO_ERROR;
-}

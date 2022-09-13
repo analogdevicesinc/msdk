@@ -4,37 +4,37 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _OTP_REVA_REGS_H_
 #define _OTP_REVA_REGS_H_
@@ -119,12 +119,12 @@ typedef struct {
  * @{
  */
  #define MXC_F_OTP_REVA_CTRL_ADDR_POS                   0 /**< CTRL_ADDR Position */
- #define MXC_F_OTP_REVA_CTRL_ADDR                       ((uint32_t)(0x1FFUL << MXC_F_OTP_REVA_CTRL_ADDR_POS)) /**< CTRL_ADDR Mask */
+ #define MXC_F_OTP_REVA_CTRL_ADDR                       ((uint32_t)(0xFFFFUL << MXC_F_OTP_REVA_CTRL_ADDR_POS)) /**< CTRL_ADDR Mask */
 
- #define MXC_F_OTP_REVA_CTRL_READ_POS                   10 /**< CTRL_READ Position */
+ #define MXC_F_OTP_REVA_CTRL_READ_POS                   24 /**< CTRL_READ Position */
  #define MXC_F_OTP_REVA_CTRL_READ                       ((uint32_t)(0x1UL << MXC_F_OTP_REVA_CTRL_READ_POS)) /**< CTRL_READ Mask */
 
- #define MXC_F_OTP_REVA_CTRL_WRITE_POS                  11 /**< CTRL_WRITE Position */
+ #define MXC_F_OTP_REVA_CTRL_WRITE_POS                  25 /**< CTRL_WRITE Position */
  #define MXC_F_OTP_REVA_CTRL_WRITE                      ((uint32_t)(0x1UL << MXC_F_OTP_REVA_CTRL_WRITE_POS)) /**< CTRL_WRITE Mask */
 
 /**@} end of group OTP_REVA_CTRL_Register */
@@ -137,6 +137,16 @@ typedef struct {
  */
  #define MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS               0 /**< CLKDIV_CLKDIV Position */
  #define MXC_F_OTP_REVA_CLKDIV_CLKDIV                   ((uint32_t)(0x3FUL << MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS)) /**< CLKDIV_CLKDIV Mask */
+ #define MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV2              ((uint32_t)0x1UL) /**< CLKDIV_CLKDIV_DIV2 Value */
+ #define MXC_S_OTP_REVA_CLKDIV_CLKDIV_DIV2              (MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV2 << MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS) /**< CLKDIV_CLKDIV_DIV2 Setting */
+ #define MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV4              ((uint32_t)0x3UL) /**< CLKDIV_CLKDIV_DIV4 Value */
+ #define MXC_S_OTP_REVA_CLKDIV_CLKDIV_DIV4              (MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV4 << MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS) /**< CLKDIV_CLKDIV_DIV4 Setting */
+ #define MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV8              ((uint32_t)0x7UL) /**< CLKDIV_CLKDIV_DIV8 Value */
+ #define MXC_S_OTP_REVA_CLKDIV_CLKDIV_DIV8              (MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV8 << MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS) /**< CLKDIV_CLKDIV_DIV8 Setting */
+ #define MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV16             ((uint32_t)0xFUL) /**< CLKDIV_CLKDIV_DIV16 Value */
+ #define MXC_S_OTP_REVA_CLKDIV_CLKDIV_DIV16             (MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV16 << MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS) /**< CLKDIV_CLKDIV_DIV16 Setting */
+ #define MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV32             ((uint32_t)0x1FUL) /**< CLKDIV_CLKDIV_DIV32 Value */
+ #define MXC_S_OTP_REVA_CLKDIV_CLKDIV_DIV32             (MXC_V_OTP_REVA_CLKDIV_CLKDIV_DIV32 << MXC_F_OTP_REVA_CLKDIV_CLKDIV_POS) /**< CLKDIV_CLKDIV_DIV32 Setting */
 
  #define MXC_F_OTP_REVA_CLKDIV_SPWE_POS                 8 /**< CLKDIV_SPWE Position */
  #define MXC_F_OTP_REVA_CLKDIV_SPWE                     ((uint32_t)(0x1UL << MXC_F_OTP_REVA_CLKDIV_SPWE_POS)) /**< CLKDIV_SPWE Mask */
@@ -144,8 +154,8 @@ typedef struct {
  #define MXC_F_OTP_REVA_CLKDIV_PD_POS                   9 /**< CLKDIV_PD Position */
  #define MXC_F_OTP_REVA_CLKDIV_PD                       ((uint32_t)(0x1UL << MXC_F_OTP_REVA_CLKDIV_PD_POS)) /**< CLKDIV_PD Mask */
 
- #define MXC_F_OTP_REVA_CLKDIV_RDY_POS                  16 /**< CLKDIV_RDY Position */
- #define MXC_F_OTP_REVA_CLKDIV_RDY                      ((uint32_t)(0x1UL << MXC_F_OTP_REVA_CLKDIV_RDY_POS)) /**< CLKDIV_RDY Mask */
+ #define MXC_F_OTP_REVA_CLKDIV_HCLKDIV_POS              16 /**< CLKDIV_HCLKDIV Position */
+ #define MXC_F_OTP_REVA_CLKDIV_HCLKDIV                  ((uint32_t)(0x3FUL << MXC_F_OTP_REVA_CLKDIV_HCLKDIV_POS)) /**< CLKDIV_HCLKDIV Mask */
 
 /**@} end of group OTP_REVA_CLKDIV_Register */
 
@@ -179,6 +189,9 @@ typedef struct {
 
  #define MXC_F_OTP_REVA_STATUS_UNLOCK3_POS              9 /**< STATUS_UNLOCK3 Position */
  #define MXC_F_OTP_REVA_STATUS_UNLOCK3                  ((uint32_t)(0x1UL << MXC_F_OTP_REVA_STATUS_UNLOCK3_POS)) /**< STATUS_UNLOCK3 Mask */
+
+ #define MXC_F_OTP_REVA_STATUS_PWR_RDY_POS              16 /**< STATUS_PWR_RDY Position */
+ #define MXC_F_OTP_REVA_STATUS_PWR_RDY                  ((uint32_t)(0x1UL << MXC_F_OTP_REVA_STATUS_PWR_RDY_POS)) /**< STATUS_PWR_RDY Mask */
 
 /**@} end of group OTP_REVA_STATUS_Register */
 

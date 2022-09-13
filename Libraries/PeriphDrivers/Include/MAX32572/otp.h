@@ -56,6 +56,20 @@ extern "C" {
  */
 
 /**
+ * @brief      OTP Controller Clock Divider values.
+ * 
+ * @note       There is no divide by 1 -> defaults to divide by 16.
+ *             Default reset value of CLKDIV.pclkdiv is 0 -> divide by 16. 
+ */
+typedef enum {
+    MXC_OTP_CLK_DIV2 = MXC_V_OTP_CLKDIV_CLKDIV_DIV2, ///< Divide input clock by 2
+    MXC_OTP_CLK_DIV4 = MXC_V_OTP_CLKDIV_CLKDIV_DIV4, ///< Divide input clock by 4
+    MXC_OTP_CLK_DIV8 = MXC_V_OTP_CLKDIV_CLKDIV_DIV8, ///< Divide input clock by 8
+    MXC_OTP_CLK_DIV16 = MXC_V_OTP_CLKDIV_CLKDIV_DIV16, ///< Divide input clock by 16
+    MXC_OTP_CLK_DIV32 = MXC_V_OTP_CLKDIV_CLKDIV_DIV32, ///< Divide input clock by 32
+} mxc_otp_clkdiv_t;
+
+/**
  * @brief      Enumeration type for the OTP R/W Operations.
  */
 typedef enum { MXC_OTP_READ_OP, MXC_OTP_WRITE_OP } mxc_otp_op_t;
@@ -64,40 +78,29 @@ typedef enum { MXC_OTP_READ_OP, MXC_OTP_WRITE_OP } mxc_otp_op_t;
 
 /**
  * @brief      Initializes the OTP Controller.
+ * 
+ * @param      pclkdiv   Desired peripheral clock divider.
+ * 
+ * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-void MXC_OTP_Init(void);
+int MXC_OTP_Init(mxc_otp_clkdiv_t pclkdiv);
 
 /**
- * @brief      Unlocks the OTP system and user blocks (0-2k).
+ * @brief      Checks whether the OTP user block is locked/unlocked.
+ * 
+ * @return     (0) for Unlocked, (1) for Locked.
+ */
+int MXC_OTP_IsLocked(void);
+
+/**
+ * @brief      Unlocks the OTP user blocks (1-2k). Enables user block OTP program ability.
  */
 void MXC_OTP_Unlock(void);
 
 /**
- * @brief      Locks the OTP system and user blocks (0-2k).
+ * @brief      Locks the OTP user blocks (1-2k). Disables user block OTP program ability.
  */
 void MXC_OTP_Lock(void);
-
-/**
- * @brief      Unlocks the OTP user blocks (1k-2k). Enables user block OTP program ability.
- */
-void MXC_OTP_UnlockUserBlock(void);
-
-/**
- * @brief      Locks the OTP user blocks (1k-2k). Disables user block OTP program ability.
- */
-void MXC_OTP_LockUserBlock(void);
-
-/**
- * @brief      Write data at specified address in OTP memory.
- * @note       The OTP block where address is located should be unlocked before running
- *             this write function. This function doesn't lock the block after a write.
- *
- * @param      addr    Location to write data in OTP memory.
- * @param      data    32-bit Data value to write in memory.
- *
- * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
- */
-int MXC_OTP_Write(uint16_t addr, uint32_t data);
 
 /**
  * @brief      Consecutively write multiple 32-bit values starting at specified address
@@ -110,20 +113,19 @@ int MXC_OTP_Write(uint16_t addr, uint32_t data);
  * 
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_OTP_MultiWrite(uint16_t addr, uint32_t *data, uint16_t size);
+int MXC_OTP_Write(uint16_t addr, uint32_t *data, uint16_t size);
 
 /**
- * @brief      Read data at specified address in OTP memory.
+ * @brief      Write data at specified address in OTP memory.
  * @note       The OTP block where address is located should be unlocked before running
- *             this read function. This function doesn't lock the block after reading.
- *             User block (1k-2k) is readable in normal mode.
+ *             this write function. This function doesn't lock the block after a write.
  *
- * @param      addr    Location to read data in OTP memory.
- * @param      data    Pointer to store 32-bit value from OTP block.
+ * @param      addr    Location to write data in OTP memory.
+ * @param      data    32-bit Data value to write in memory.
  *
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_OTP_Read(uint16_t addr, uint32_t *data);
+int MXC_OTP_Write32(uint16_t addr, uint32_t data);
 
 /**
  * @brief      Consecutively read multiple 32-bit values starting at specified address
@@ -136,7 +138,20 @@ int MXC_OTP_Read(uint16_t addr, uint32_t *data);
  * 
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_OTP_MultiRead(uint16_t addr, uint32_t *data, uint16_t size);
+int MXC_OTP_Read(uint16_t addr, uint32_t *data, uint16_t size);
+
+/**
+ * @brief      Read data at specified address in OTP memory.
+ * @note       The OTP block where address is located should be unlocked before running
+ *             this read function. This function doesn't lock the block after reading.
+ *             User block (1k-2k) is readable in normal mode.
+ *
+ * @param      addr    Location to read data in OTP memory.
+ * @param      data    Pointer to store 32-bit value from OTP block.
+ *
+ * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
+ */
+int MXC_OTP_Read32(uint16_t addr, uint32_t *data);
 
 /**@} end of group otp*/
 
