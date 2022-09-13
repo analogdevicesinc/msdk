@@ -48,7 +48,7 @@ int MXC_OTP_Init(mxc_otp_clkdiv_t pclkdiv)
     int lowest_pclkdiv_dec;
 
     // Divide by 16 is default divider value.
-    if(pclkdiv < MXC_OTP_CLK_DIV2 || pclkdiv > MXC_OTP_CLK_DIV32) {
+    if (pclkdiv < MXC_OTP_CLK_DIV2 || pclkdiv > MXC_OTP_CLK_DIV32) {
         pclkdiv = MXC_OTP_CLK_DIV16;
     }
 
@@ -65,7 +65,7 @@ int MXC_OTP_Init(mxc_otp_clkdiv_t pclkdiv)
 
     // Do not truncate down if equation above doesn't perfectly divide out.
     lowest_pclkdiv_dec = (100 * PeripheralClock / 2500000) - lowest_pclkdiv_int;
-    if(lowest_pclkdiv_dec > 0) {
+    if (lowest_pclkdiv_dec > 0) {
         lowest_pclkdiv_int += 1;
     }
 
@@ -76,7 +76,7 @@ int MXC_OTP_Init(mxc_otp_clkdiv_t pclkdiv)
         return E_BAD_PARAM;
     }
 
-    return MXC_OTP_RevA_Init((mxc_otp_reva_regs_t *) MXC_OTP, pclkdiv);
+    return MXC_OTP_RevA_Init((mxc_otp_reva_regs_t *)MXC_OTP, pclkdiv);
 }
 
 int MXC_OTP_IsLocked(void)

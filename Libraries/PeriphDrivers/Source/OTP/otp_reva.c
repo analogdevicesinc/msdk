@@ -44,7 +44,8 @@
 
 int MXC_OTP_RevA_Init(mxc_otp_reva_regs_t *otp, mxc_otp_clkdiv_t pclkdiv)
 {
-    MXC_SETFIELD(otp->clkdiv, MXC_F_OTP_REVA_CLKDIV_CLKDIV, (pclkdiv << MXC_F_OTP_CLKDIV_CLKDIV_POS)); 
+    MXC_SETFIELD(otp->clkdiv, MXC_F_OTP_REVA_CLKDIV_CLKDIV,
+                 (pclkdiv << MXC_F_OTP_CLKDIV_CLKDIV_POS));
 
     return E_NO_ERROR;
 }
@@ -98,7 +99,7 @@ int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, 
 int MXC_OTP_RevA_Write32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data)
 {
     // Make sure OTP memory is unlocked.
-    if(MXC_OTP_IsLocked()) {
+    if (MXC_OTP_IsLocked()) {
         return E_BAD_STATE;
     }
 
@@ -167,4 +168,3 @@ int MXC_OTP_RevA_Read32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
 
     return E_NO_ERROR;
 }
-
