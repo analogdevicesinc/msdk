@@ -7,7 +7,9 @@
 # part numbers.  TARGET_SEC can be used to point the SBTs
 # to the correct variant. 
 ifeq "$(TARGET_UC)" "MAX32650"
-TARGET_SEC?=MAX32651
+TARGET_SEC ?= MAX32651
+else
+TARGET_SEC ?= $(TARGET_UC)
 endif
 
 # Locate the SBT binaries.
