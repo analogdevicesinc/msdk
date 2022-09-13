@@ -6,8 +6,8 @@
 # "make sla" will generate a .sbin file, and then generate scp packets
 # using the "build_scp_session" tool.
 .PHONY: sla
-sla: release
-	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
+sla: all
+	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
 	$(CA_SIGN_BUILD) -c $(TARGET_SEC) key_file=$(TEST_KEY) ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
 	@echo " "
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
@@ -20,7 +20,7 @@ sla: release
 # some special modifications are made to the srec file and scp packets.
 # It depends on an "scp_script.txt" file
 .PHONY:scpa
-scpa: release
+scpa: all
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 	@echo " "
 	arm-none-eabi-objcopy -O srec -j .text -j .data -j.scpa_header -j.scpa_init -j.scpa_ops --srec-forceS3 --srec-len=128 $(BUILD_DIR)/$(PROJECT).elf  $(BUILD_DIR)/$(PROJECT).srec
