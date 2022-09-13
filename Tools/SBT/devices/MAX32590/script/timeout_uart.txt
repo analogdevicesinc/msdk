@@ -1,1 +1,25 @@
 write-timeout 0 %PARAM_1%
+#---------------------------------     Explanation          ----------------------------
+#		
+#	write-timeout Code TimeoutValue
+#
+# ------------------------------|-------------------------------------------------------|
+# 	  Code  --> Peripheral      |      Timeout 	 ---> 	PARAM_1 (HEX and Little-endian)	|
+# ------------------------------|-------------------------------------------------------|
+#		0 	--> UART 			|		 250 ms	 --->	FA00		(0x00FA ==  250)    |
+#		U 	--> USB             |   	 500 ms	 --->	F401     	(0x01F4 ==  500)    |
+#		V 	--> VBUS            |  		1000 ms	 --->	E803        (0x03E8 == 1000)    |
+#   	E 	--> Ethernet        | 		2000 ms	 --->	D007        (0x07D0 == 2000)    |
+#   	S 	--> SPI				|                                                       |
+# ------------------------------|-------------------------------------------------------|
+#
+#  Examples: 
+#			Below command will set UART timeout to 250 ms:    
+# 				write-timeout 0 FA00
+#
+#			Below command will set USB timeout to 500 ms:    
+# 				write-timeout U F401
+#
+#			Below command will set SPI timeout to 1000 ms:    
+# 				write-timeout S E803
+#

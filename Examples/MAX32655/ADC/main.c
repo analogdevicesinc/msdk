@@ -60,10 +60,10 @@ uint8_t overflow;
 /***** Functions *****/
 
 #ifdef USE_INTERRUPTS
-void adc_complete_cb(void* req, int adcRead)
+void adc_complete_cb(void *req, int adcRead)
 {
     overflow = (adcRead == E_OVERFLOW ? 1 : 0);
-    adc_val  = adcRead;
+    adc_val = adcRead;
     adc_done = 1;
     return;
 }
@@ -81,8 +81,7 @@ int main(void)
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
@@ -106,10 +105,9 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) {};
 #else
-        adc_val  = MXC_ADC_StartConversion(MXC_ADC_CH_0);
+        adc_val = MXC_ADC_StartConversion(MXC_ADC_CH_0);
         overflow = (adc_val == E_OVERFLOW ? 1 : 0);
 #endif
 

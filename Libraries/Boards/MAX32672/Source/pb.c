@@ -62,7 +62,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 
     if (callback) {
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)pb);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)pb);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_FALLING);
@@ -113,4 +113,17 @@ int PB_Get(unsigned int pb)
 {
     MXC_ASSERT(pb < num_pbs);
     return !MXC_GPIO_InGet(pb_pin[pb].port, pb_pin[pb].mask);
+}
+
+int PB_IsPressedAny(void)
+{
+    int i = 0;
+
+    for (i = 0; i < num_pbs; i++) {
+        if (PB_Get(i)) {
+            return 1; // pressed
+        }
+    }
+
+    return 0; // not pressed
 }

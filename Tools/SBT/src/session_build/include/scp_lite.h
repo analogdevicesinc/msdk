@@ -48,7 +48,7 @@ extern "C" {
  * @param address
  * @return ERR_OK if success otherwise error code
  */
-int scp_lite_cmd(const uint8_t* data, size_t data_len, const uint8_t* address);
+int scp_lite_cmd(const uint8_t *data, size_t data_len, const uint8_t *address);
 
 /**
  * Format and generate a SCP-lite response
@@ -62,7 +62,7 @@ int scp_lite_response(void);
  * @param sfilename
  * @return ERR_OK if success otherwise error code
  */
-int scp_lite_load_ram(char* ptr_address_offset, const char* sfilename);
+int scp_lite_load_ram(char *ptr_address_offset, const char *sfilename);
 
 /**
  * Process an SCP-lite script

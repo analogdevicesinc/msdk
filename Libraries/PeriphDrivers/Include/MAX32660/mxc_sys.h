@@ -48,20 +48,20 @@ extern "C" {
 
 /** @brief System reset0 and reset1 enumeration. Used in MXC_SYS_PeriphReset0 function */
 typedef enum {
-    MXC_SYS_RESET0_DMA    = MXC_F_GCR_RST0_DMA_POS,    /**< Reset DMA */
-    MXC_SYS_RESET0_WDT0   = MXC_F_GCR_RST0_WDT0_POS,   /**< Reset WDT */
-    MXC_SYS_RESET0_GPIO0  = MXC_F_GCR_RST0_GPIO0_POS,  /**< Reset GPIO0 */
+    MXC_SYS_RESET0_DMA = MXC_F_GCR_RST0_DMA_POS, /**< Reset DMA */
+    MXC_SYS_RESET0_WDT0 = MXC_F_GCR_RST0_WDT0_POS, /**< Reset WDT */
+    MXC_SYS_RESET0_GPIO0 = MXC_F_GCR_RST0_GPIO0_POS, /**< Reset GPIO0 */
     MXC_SYS_RESET0_TIMER0 = MXC_F_GCR_RST0_TIMER0_POS, /**< Reset TIMER0 */
     MXC_SYS_RESET0_TIMER1 = MXC_F_GCR_RST0_TIMER1_POS, /**< Reset TIMER1 */
     MXC_SYS_RESET0_TIMER2 = MXC_F_GCR_RST0_TIMER2_POS, /**< Reset TIMER2 */
-    MXC_SYS_RESET0_UART0  = MXC_F_GCR_RST0_UART0_POS,  /**< Reset UART0 */
-    MXC_SYS_RESET0_UART1  = MXC_F_GCR_RST0_UART1_POS,  /**< Reset UART1 */
-    MXC_SYS_RESET0_SPI0   = MXC_F_GCR_RST0_SPI0_POS,   /**< Reset SPI0 */
-    MXC_SYS_RESET0_SPI1   = MXC_F_GCR_RST0_SPI1_POS,   /**< Reset SPI1 */
-    MXC_SYS_RESET0_I2C0   = MXC_F_GCR_RST0_I2C0_POS,   /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC    = MXC_F_GCR_RST0_RTC_POS,    /**< Reset RTC */
-    MXC_SYS_RESET0_SRST   = MXC_F_GCR_RST0_SOFT_POS,   /**< Soft reset */
-    MXC_SYS_RESET0_PRST   = MXC_F_GCR_RST0_PERIPH_POS, /**< Peripheral reset */
+    MXC_SYS_RESET0_UART0 = MXC_F_GCR_RST0_UART0_POS, /**< Reset UART0 */
+    MXC_SYS_RESET0_UART1 = MXC_F_GCR_RST0_UART1_POS, /**< Reset UART1 */
+    MXC_SYS_RESET0_SPI0 = MXC_F_GCR_RST0_SPI0_POS, /**< Reset SPI0 */
+    MXC_SYS_RESET0_SPI1 = MXC_F_GCR_RST0_SPI1_POS, /**< Reset SPI1 */
+    MXC_SYS_RESET0_I2C0 = MXC_F_GCR_RST0_I2C0_POS, /**< Reset I2C0 */
+    MXC_SYS_RESET0_RTC = MXC_F_GCR_RST0_RTC_POS, /**< Reset RTC */
+    MXC_SYS_RESET0_SRST = MXC_F_GCR_RST0_SOFT_POS, /**< Soft reset */
+    MXC_SYS_RESET0_PRST = MXC_F_GCR_RST0_PERIPH_POS, /**< Peripheral reset */
     MXC_SYS_RESET0_SYSTEM = MXC_F_GCR_RST0_SYSTEM_POS, /**< System reset */
     /* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */
     MXC_SYS_RESET1_I2C1 = (MXC_F_GCR_RST1_I2C1_POS + 32), /**< Reset I2C1 */
@@ -101,8 +101,8 @@ typedef enum {
 /** @brief Enumeration to select System Clock source */
 typedef enum {
     MXC_SYS_CLOCK_NANORING = MXC_V_GCR_CLK_CTRL_CLKSEL_NANORING, /**< 8KHz nanoring on MAX32660 */
-    MXC_SYS_CLOCK_HFXIN    = MXC_V_GCR_CLK_CTRL_CLKSEL_HFXIN,    /**< 32KHz on MAX32660 */
-    MXC_SYS_CLOCK_HFXIN_DIGITAL = 0x9,                           /**< External Clock Input*/
+    MXC_SYS_CLOCK_HFXIN = MXC_V_GCR_CLK_CTRL_CLKSEL_HFXIN, /**< 32KHz on MAX32660 */
+    MXC_SYS_CLOCK_HFXIN_DIGITAL = 0x9, /**< External Clock Input*/
     MXC_SYS_CLOCK_HIRC = MXC_V_GCR_CLK_CTRL_CLKSEL_HIRC, /**< High Frequency Internal Oscillator */
 } mxc_sys_system_clock_t;
 
@@ -117,7 +117,7 @@ typedef enum {
  * @param part    Which USN part you want (0, 1, 2)
  * @returns       E_NO_ERROR if everything is successful.
  */
-int MXC_SYS_GetUSN(uint8_t* usn, int len, int part);
+int MXC_SYS_GetUSN(uint8_t *usn, int len, int part);
 
 /**
  * @brief Determines if the selected peripheral clock is enabled.

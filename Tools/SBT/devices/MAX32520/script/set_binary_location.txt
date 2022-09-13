@@ -1,0 +1,5 @@
+# Write SLA binary offset (set to 0x1000C000, internal flash) (offset 0x1168)
+#		6811 -> offset
+#	00C00010 -> addr
+# 	    0001 -> boot source
+write-otp 6811 00C000100001

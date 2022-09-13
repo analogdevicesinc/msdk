@@ -45,7 +45,7 @@
 
 extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = 0;
-uint8_t ChipRevision     = 0;
+uint8_t ChipRevision = 0;
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -133,11 +133,9 @@ __weak void SystemInit(void)
 
     // Flush and enable instruction cache
     MXC_ICC->invalidate = 1;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
-        ;
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY)) {}
     MXC_ICC->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_ENABLE;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
-        ;
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY)) {}
 
     /* Shutdown all peripheral clocks initially.  They will be re-enabled by each periph's init function. */
     /* GPIO Clocks are left enabled */

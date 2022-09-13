@@ -54,8 +54,8 @@
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024
-#define UART0     MXC_UART0
-#define UART1     MXC_UART1
+#define UART0 MXC_UART0
+#define UART1 MXC_UART1
 
 /***** Globals *****/
 volatile int READ_FLAG;
@@ -75,7 +75,7 @@ void UART1_Handler(void)
 }
 #endif
 
-void readCallback(mxc_uart_req_t* req, int error)
+void readCallback(mxc_uart_req_t *req, int error)
 {
     READ_FLAG = error;
 }
@@ -96,13 +96,10 @@ int main(void)
     printf("\n-->Test Length \t: %d bytes\n\n", BUFF_SIZE);
 
     // Print everything out
-    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {
-    }
+    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {}
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) {
-        TxData[i] = i;
-    }
+    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
     memset(RxData, 0x0, BUFF_SIZE);
 
 #ifdef DMA
@@ -120,37 +117,34 @@ int main(void)
     if ((error = MXC_UART_Init(UART0, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {
-        }
+        while (1) {}
     }
 
     if ((error = MXC_UART_Init(UART1, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {
-        }
+        while (1) {}
     }
 
     printf("-->UART Initialized\n\n");
-    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {
-    }
+    while (!(UART1->stat & MXC_F_UART_STAT_TX_EMPTY)) {}
 
     mxc_uart_req_t read_req;
-    read_req.uart     = UART1;
-    read_req.rxData   = RxData;
-    read_req.rxLen    = BUFF_SIZE;
-    read_req.txLen    = 0;
+    read_req.uart = UART1;
+    read_req.rxData = RxData;
+    read_req.rxLen = BUFF_SIZE;
+    read_req.txLen = 0;
     read_req.callback = readCallback;
 
     mxc_uart_req_t write_req;
-    write_req.uart     = UART0;
-    write_req.txData   = TxData;
-    write_req.txLen    = BUFF_SIZE;
-    write_req.rxLen    = 0;
+    write_req.uart = UART0;
+    write_req.txData = TxData;
+    write_req.txLen = BUFF_SIZE;
+    write_req.rxLen = 0;
     write_req.callback = NULL;
 
     READ_FLAG = 1;
-    DMA_FLAG  = 1;
+    DMA_FLAG = 1;
 
 #ifdef DMA
     error = MXC_UART_TransactionDMA(&read_req);
@@ -161,8 +155,7 @@ int main(void)
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while (1) {
-        }
+        while (1) {}
     }
 
 #ifdef DMA
@@ -174,16 +167,13 @@ int main(void)
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while (1) {
-        }
+        while (1) {}
     }
 
 #ifdef DMA
-    while (DMA_FLAG) {
-    }
+    while (DMA_FLAG) {}
 #else
-    while (READ_FLAG) {
-    }
+    while (READ_FLAG) {}
     if (READ_FLAG != E_NO_ERROR) {
         printf("-->Error with UART_ReadAsync callback; %d\n", READ_FLAG);
         fail++;
@@ -212,4 +202,6 @@ int main(void)
         LED_Off(0);
         MXC_Delay(500000); // 500ms
     }
+
+    return 0;
 }

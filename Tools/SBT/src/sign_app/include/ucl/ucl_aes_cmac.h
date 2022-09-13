@@ -34,7 +34,7 @@ extern "C" {
  *
  * @ingroup UCL_CMAC_AES
 */
-int ucl_aes_subkey_generation(u8* k1, u8* k2, u8* key, u32 keylen);
+int ucl_aes_subkey_generation(u8 *k1, u8 *k2, u8 *key, u32 keylen);
 
 /** <b>AES-CMAC</b>.
  * AES CMAC tag computation
@@ -59,7 +59,7 @@ int ucl_aes_subkey_generation(u8* k1, u8* k2, u8* key, u32 keylen);
  * tlen is expressed in number of bytes
  * len is expressed in number of bytes
  * @ingroup UCL_CMAC_AES */
-int ucl_aes_cmac_compute(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen);
+int ucl_aes_cmac_compute(u8 *t, int tlen, u8 *src, u32 len, u8 *key, u32 keylen);
 
 /** <b>AES-CMAC</b>.
  * AES CMAC tag verification
@@ -85,7 +85,7 @@ int ucl_aes_cmac_compute(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen)
  * len is expressed in number of bytes
  * @ingroup UCL_CMAC_AES
 */
-int ucl_aes_cmac_verify(u8* t, int tlen, u8* src, u32 len, u8* key, u32 keylen);
+int ucl_aes_cmac_verify(u8 *t, int tlen, u8 *src, u32 len, u8 *key, u32 keylen);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

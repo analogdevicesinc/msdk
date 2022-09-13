@@ -51,7 +51,7 @@ typedef int (*Keypad_process)(unsigned int key);
 typedef int (*Time_Tick)(void);
 
 typedef struct _State {
-    char* name;
+    char *name;
     Init_func init;
     Keypad_process prcss_key;
     Time_Tick tick;
@@ -63,17 +63,17 @@ extern int xAnimLock;
 
 /**********************************		FUNCTIONS   **************************/
 void state_init(void);
-State* state_get_current(void);
-int state_set_current(State* state);
+State *state_get_current(void);
+int state_set_current(State *state);
 
 // states
-State* get_home_state(void);
-State* get_smartcard_state(void);
-State* get_msr_state(void);
-State* get_keypad_state(void);
-State* get_nfc_state(void);
-State* get_slide_state(void);
-State* get_info_state(void);
-State* get_idle_state(void);
+State *get_home_state(void);
+State *get_smartcard_state(void);
+State *get_msr_state(void);
+State *get_keypad_state(void);
+State *get_nfc_state(void);
+State *get_slide_state(void);
+State *get_info_state(void);
+State *get_idle_state(void);
 
 #endif // _STATE_H_

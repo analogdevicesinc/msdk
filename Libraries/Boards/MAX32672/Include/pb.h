@@ -76,7 +76,7 @@ int PB_Init(void);
  * @param      pb    Pointer to the push button index that triggered the
  *                   callback.
  */
-typedef void (*pb_callback)(void* pb);
+typedef void (*pb_callback)(void *pb);
 
 /**
  * @brief      Register or Unregister a callback handler for events on the @p pb push button.
@@ -120,6 +120,15 @@ void PB_IntClear(unsigned int pb);
  * @retval     FALSE  The button is not pressed.
  */
 int PB_Get(unsigned int pb);
+
+/**
+ * @brief      Check all push buttons state.
+ * 
+ * @retval     TRUE   if any button is pressed.
+ * @retval     FALSE  if no any button is not pressed.
+ */
+int PB_IsPressedAny(void);
+
 /**@}*/
 #ifdef __cplusplus
 }

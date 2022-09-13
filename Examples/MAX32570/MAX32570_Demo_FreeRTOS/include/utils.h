@@ -43,6 +43,6 @@
 unsigned int utils_get_time_ms(void);
 unsigned int utils_get_time_tick(void);
 void utils_delay_ms(unsigned int ms);
-void utils_hex2char(char chr, char* msg);
+void utils_hex2char(char chr, char *msg);
 
 #endif // _UTILS_H_

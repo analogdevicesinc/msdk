@@ -126,8 +126,7 @@ int main(void)
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_28);
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
-            while (1)
-                ;
+            while (1) {}
         }
 
         //Push SW2 to start longer delay - shows Interrupt before the reset happens
@@ -138,8 +137,7 @@ int main(void)
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
-            while (1)
-                ;
+            while (1) {}
         }
 
         //blink LED0

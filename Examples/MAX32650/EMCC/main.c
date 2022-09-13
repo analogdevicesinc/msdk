@@ -51,25 +51,25 @@
 
 /* **** Definitions **** */
 // RAM Vendor Specific Commands
-#define A1024_READ  0x03
+#define A1024_READ 0x03
 #define A1024_WRITE 0x02
-#define A1024_EQIO  0x38
+#define A1024_EQIO 0x38
 
 // RAM Vendor Specific Values
-#define BUFFER_SIZE   512
+#define BUFFER_SIZE 512
 #define A1024_ADDRESS 0x80000000
-#define ITERATIONS    100
+#define ITERATIONS 100
 
 /* **** Globals **** */
 int s, ss;
 
 mxc_spixr_cfg_t init_cfg = {
-    0x08,                /* Number of bits per character     */
+    0x08, /* Number of bits per character     */
     MXC_SPIXR_QUAD_SDIO, /* SPI Data Width                   */
-    0x04,                /* num of system clocks between SS active & first serial clock edge     */
-    0x08,                /* num of system clocks between last serial clock edge and ss inactive  */
-    0x10,                /* num of system clocks between transactions (read / write)             */
-    0x1,                 /* Baud freq                        */
+    0x04, /* num of system clocks between SS active & first serial clock edge     */
+    0x08, /* num of system clocks between last serial clock edge and ss inactive  */
+    0x10, /* num of system clocks between transactions (read / write)             */
+    0x1, /* Baud freq                        */
 };
 
 /* **** Functions **** */
@@ -95,14 +95,13 @@ void setup(void)
     // Setup to communicate in quad mode
     MXC_SPIXR_SendCommand(&quad_cmd, 1, 1);
     // Wait until quad cmd is sent
-    while (MXC_SPIXR_Busy())
-        ;
+    while (MXC_SPIXR_Busy()) {}
 
     MXC_SPIXR->ctrl3 &= ~MXC_F_SPIXR_CTRL3_DATA_WIDTH;
     MXC_SPIXR->ctrl3 |= MXC_S_SPIXR_CTRL3_DATA_WIDTH_QUAD;
     MXC_SPIXR->ctrl3 &= ~MXC_F_SPIXR_CTRL3_THREE_WIRE;
 
-    MXC_SPIXR->dma       = 0x00; /* Disable the FIFOs for transparent operation  */
+    MXC_SPIXR->dma = 0x00; /* Disable the FIFOs for transparent operation  */
     MXC_SPIXR->xmem_ctrl = (0x01 << MXC_F_SPIXR_XMEM_CTRL_XMEM_DCLKS_POS) |
                            (A1024_READ << MXC_F_SPIXR_XMEM_CTRL_XMEM_RD_CMD_POS) |
                            (A1024_WRITE << MXC_F_SPIXR_XMEM_CTRL_XMEM_WR_CMD_POS) |
@@ -129,8 +128,10 @@ void test_function(void)
 {
     // Defining Variable(s) to write & store data to RAM
     uint8_t write_buffer[BUFFER_SIZE], read_buffer[BUFFER_SIZE];
-    uint8_t* address = (uint8_t*)A1024_ADDRESS;
-    ; /* Variable to store address of RAM */
+    uint8_t *address = (uint8_t *)A1024_ADDRESS;
+    {
+    }
+    /* Variable to store address of RAM */
     int temp, i;
 
     // Configure the SPID
@@ -139,7 +140,7 @@ void test_function(void)
     // Initialize & write pseudo-random data to be written to the RAM
     srand(0);
     for (i = 0; i < BUFFER_SIZE; i++) {
-        temp            = rand();
+        temp = rand();
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = temp;
@@ -148,9 +149,7 @@ void test_function(void)
     start_timer();
     for (temp = 0; temp < ITERATIONS; temp++) {
         // Read data from RAM
-        for (i = 0; i < BUFFER_SIZE; i++) {
-            read_buffer[i] = *(address + i);
-        }
+        for (i = 0; i < BUFFER_SIZE; i++) { read_buffer[i] = *(address + i); }
 
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
@@ -180,6 +179,5 @@ int main(void)
     test_function();
 
     printf("Example complete.\n");
-    while (1) {
-    }
+    while (1) {}
 }

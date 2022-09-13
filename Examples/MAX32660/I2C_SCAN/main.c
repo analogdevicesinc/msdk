@@ -2,7 +2,7 @@
  * @file        main.c
  * @brief       I2C Scanner Example
  * @details     This example uses the I2C Master to found addresses of the I2C Slave devices 
- *              connected to the bus. You must connect the pull-up jumpers (JP21 and JP22) 
+ *              connected to the bus. You must connect the pull-up resistor on the line
  *              to the proper I/O voltage.
  */
 
@@ -46,32 +46,24 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 
 /***** Definitions *****/
 #define I2C_MASTER MXC_I2C0 // SCL P0_8; SDA P0_9
-#define I2C_FREQ   100000   // 100kHZ
+#define I2C_FREQ 100000 // 100kHZ
 
-typedef enum { FAILED, PASSED } test_t;
-
-/***** Globals *****/
-uint8_t counter = 0;
-
-// *****************************************************************************
 int main()
 {
+    uint8_t counter = 0;
+
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
     printf("\nsame bus as I2C0 (SCL - P0.8, SDA - P0.9).");
 
-    int error;
-
     //Setup the I2CM
-    error = MXC_I2C_Init(I2C_MASTER, 1, 0);
-    if (error != E_NO_ERROR) {
+    if (E_NO_ERROR != MXC_I2C_Init(I2C_MASTER, 1, 0)) {
         printf("-->Failed master\n");
-        return FAILED;
+        return -1;
     } else {
         printf("\n-->I2C Master Initialization Complete\n");
     }
@@ -79,20 +71,21 @@ int main()
     printf("-->Scanning started\n");
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
     mxc_i2c_req_t reqMaster;
-    reqMaster.i2c      = I2C_MASTER;
-    reqMaster.addr     = 0;
-    reqMaster.tx_buf   = NULL;
-    reqMaster.tx_len   = 0;
-    reqMaster.rx_buf   = NULL;
-    reqMaster.rx_len   = 0;
-    reqMaster.restart  = 0;
+    reqMaster.i2c = I2C_MASTER;
+    reqMaster.addr = 0;
+    reqMaster.tx_buf = NULL;
+    reqMaster.tx_len = 0;
+    reqMaster.rx_buf = NULL;
+    reqMaster.rx_len = 0;
+    reqMaster.restart = 0;
     reqMaster.callback = NULL;
 
     for (uint8_t address = 8; address < 120; address++) {
-        reqMaster.addr = address;
         printf(".");
+        fflush(0);
 
-        if ((MXC_I2C_MasterTransaction(&reqMaster)) == 0) {
+        reqMaster.addr = address;
+        if (E_NO_ERROR == MXC_I2C_MasterTransaction(&reqMaster)) {
             printf("\nFound slave ID %03d; 0x%02X\n", address, address);
             counter++;
         }
@@ -100,4 +93,6 @@ int main()
     }
 
     printf("\n-->Scan finished. %d devices found\n", counter);
+
+    return 0;
 }

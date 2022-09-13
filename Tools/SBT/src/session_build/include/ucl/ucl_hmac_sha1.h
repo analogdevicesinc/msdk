@@ -65,7 +65,7 @@ extern "C" {
  *
  * @ingroup UCL_HMAC_SHA1
  */
-int ucl_hmac_sha1(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+int ucl_hmac_sha1(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen, u8 *key,
                   u32 key_byteLen);
 
 /** <b>The initialisation of HMAC-SHA1</b>.
@@ -81,7 +81,7 @@ int ucl_hmac_sha1(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8
  *
  * @ingroup UCL_HMAC_SHA1
  */
-int ucl_hmac_sha1_init(ucl_sha1_ctx_t* context, u8* key, u32 key_byteLen);
+int ucl_hmac_sha1_init(ucl_sha1_ctx_t *context, u8 *key, u32 key_byteLen);
 
 /** <b>The core of SHA1 </b>.
  *
@@ -99,7 +99,7 @@ int ucl_hmac_sha1_init(ucl_sha1_ctx_t* context, u8* key, u32 key_byteLen);
  *
  * @ingroup UCL_HMAC_SHA1
  */
-int ucl_hmac_sha1_core(ucl_sha1_ctx_t* context, u8* data, u32 byteLen);
+int ucl_hmac_sha1_core(ucl_sha1_ctx_t *context, u8 *data, u32 byteLen);
 
 /** <b>Finish the process of SHA1</b>.
  *
@@ -120,7 +120,7 @@ int ucl_hmac_sha1_core(ucl_sha1_ctx_t* context, u8* data, u32 byteLen);
  *
  * @ingroup UCL_HMAC_SHA1
  */
-int ucl_hmac_sha1_finish(u8* mac, u32 mac_byteLen, ucl_sha1_ctx_t* context, u8* key,
+int ucl_hmac_sha1_finish(u8 *mac, u32 mac_byteLen, ucl_sha1_ctx_t *context, u8 *key,
                          u32 key_byteLen);
 
 #ifdef __cplusplus

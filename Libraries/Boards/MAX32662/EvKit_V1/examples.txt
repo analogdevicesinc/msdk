@@ -13,6 +13,7 @@ Info_Block_Usecase
 LP
 RTC
 RTC_Backup
+SCPA_OTP_Dump
 SPI
 TMR
 TRNG

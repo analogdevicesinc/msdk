@@ -66,36 +66,36 @@
 
 #define IMAGE_SIZE_X (80)
 #define IMAGE_SIZE_Y (80)
-#define CAMERA_FREQ  (10 * 1000 * 1000)
+#define CAMERA_FREQ (10 * 1000 * 1000)
 
-#define MIRROR        0
+#define MIRROR 0
 #define TFT_BUFF_SIZE 50 // TFT buffer size
 
 // Select overlay method
 //#define USE_ALPHA  // enable to use alpha, disable to use op
 
 #define ALPHA 0.35 // alpha value for overlaid mask
-#define OP    0.95 // opacity for overlaid mask (if alpha method is not used)
+#define OP 0.95 // opacity for overlaid mask (if alpha method is not used)
 
 #ifdef BOARD_EVKIT_V1
 int image_bitmap_1 = ADI_256_bmp;
 int image_bitmap_2 = logo_white_bg_darkgrey_bmp;
-int font_1         = urw_gothic_12_white_bg_grey;
-int font_2         = urw_gothic_13_white_bg_grey;
+int font_1 = urw_gothic_12_white_bg_grey;
+int font_2 = urw_gothic_13_white_bg_grey;
 #endif
 #ifdef BOARD_FTHR_REVA
 #undef USE_SPIDATA // only supported in evkit
 int image_bitmap_1 = (int)&img_1_rgb565[0];
 int image_bitmap_2 = (int)&logo_rgb565[0];
-int font_1         = (int)&SansSerif16x16[0];
-int font_2         = (int)&SansSerif16x16[0];
+int font_1 = (int)&SansSerif16x16[0];
+int font_2 = (int)&SansSerif16x16[0];
 #endif
 
 #define FT4222_CLK 60000000
-#define DATA_LEN   4 * IMAGE_SIZE_X* IMAGE_SIZE_Y
-#define SPI_REGS   MXC_SPI1
-#define SPI_IRQ    SPI1_IRQn
-#define SPI_SPEED  FT4222_CLK / 8 // Must match the SPI clock in python script
+#define DATA_LEN 4 * IMAGE_SIZE_X *IMAGE_SIZE_Y
+#define SPI_REGS MXC_SPI1
+#define SPI_IRQ SPI1_IRQn
+#define SPI_SPEED FT4222_CLK / 8 // Must match the SPI clock in python script
 
 static int32_t ml_data32[(CNN_NUM_OUTPUTS + 3) / 4];
 volatile uint32_t cnn_time; // Stopwatch
@@ -105,13 +105,13 @@ volatile uint32_t cnn_time; // Stopwatch
 #ifdef USE_SAMPLEDATA //Sample DATA
 static const uint32_t input_buffer[] = SAMPLE_INPUT_0;
 #pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
-uint32_t* input = input_buffer;
+uint32_t *input = input_buffer;
 
 #elif defined(USE_SPIDATA) // SPI data
 static uint32_t input_buffer[IMAGE_SIZE_X * IMAGE_SIZE_Y];
-uint32_t* input        = input_buffer;
-uint8_t* rx_data       = (uint8_t*)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
-uint8_t tx_data[1]     = {'X'};
+uint32_t *input = input_buffer;
+uint8_t *rx_data = (uint8_t *)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
+uint8_t tx_data[1] = { 'X' };
 volatile bool SPI_FLAG = false;
 
 static void spi_enable_interrupts(uint32_t mask)
@@ -131,34 +131,31 @@ static void spi_init(void)
     mxc_spi_pins_t spi_pins;
 
     spi_pins.clock = TRUE;
-    spi_pins.miso  = TRUE;
-    spi_pins.mosi  = TRUE;
-    spi_pins.ss0   = TRUE;
-    spi_pins.ss1   = FALSE;
-    spi_pins.ss2   = FALSE;
+    spi_pins.miso = TRUE;
+    spi_pins.mosi = TRUE;
+    spi_pins.ss0 = TRUE;
+    spi_pins.ss1 = FALSE;
+    spi_pins.ss2 = FALSE;
     spi_pins.sdio2 = FALSE;
     spi_pins.sdio3 = FALSE;
 
     retVal = MXC_SPI_Init(SPI_REGS, 0, 0, 0, 0, SPI_SPEED, spi_pins);
     if (retVal != E_NO_ERROR) {
         printf("SPI Slave Initialization Error\n");
-        while (1)
-            ;
+        while (1) {}
     }
     retVal = MXC_SPI_SetDataSize(SPI_REGS, 8); // 8 bits per character
 
     if (retVal != E_NO_ERROR) {
         printf("SPI SET DATASIZE ERROR: %d\n", retVal);
-        while (1)
-            ;
+        while (1) {}
     }
 
     retVal = MXC_SPI_SetWidth(SPI_REGS, SPI_WIDTH_STANDARD);
 
     if (retVal != E_NO_ERROR) {
         printf("SPI SET WIDTH ERROR: %d\n", retVal);
-        while (1)
-            ;
+        while (1) {}
     }
 
     spi_enable_interrupts(MXC_F_SPI_INTEN_SSA);
@@ -178,15 +175,14 @@ void SPI1_IRQHandler(void)
 
 #else // Camera
 static uint32_t input_buffer[IMAGE_SIZE_X * IMAGE_SIZE_Y];
-uint32_t* input  = input_buffer;
-uint8_t* rx_data = (uint8_t*)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
+uint32_t *input = input_buffer;
+uint8_t *rx_data = (uint8_t *)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
 #endif
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 int8_t unsigned_to_signed(uint8_t val)
@@ -199,7 +195,7 @@ void load_input(void)
 #ifdef USE_SAMPLEDATA
     // This function loads the sample data input -- replace with actual data
 
-    memcpy32((uint32_t*)0x50408000, input, 6400);
+    memcpy32((uint32_t *)0x50408000, input, 6400);
 
 #elif defined(USE_SPIDATA)
     // This function loads the input data from SPI
@@ -208,12 +204,12 @@ void load_input(void)
     mxc_spi_req_t req;
 
     // SPI transaction request
-    req.spi    = SPI_REGS;
-    req.txData = (uint8_t*)tx_data;
-    req.rxData = (uint8_t*)rx_data;
-    req.txLen  = 1;
-    req.rxLen  = DATA_LEN;
-    req.ssIdx  = 0;
+    req.spi = SPI_REGS;
+    req.txData = (uint8_t *)tx_data;
+    req.rxData = (uint8_t *)rx_data;
+    req.txLen = 1;
+    req.rxLen = DATA_LEN;
+    req.ssIdx = 0;
 
     // Blocking SPI transaction
     retVal = MXC_SPI_SlaveTransaction(&req);
@@ -221,24 +217,21 @@ void load_input(void)
     if (retVal != E_NO_ERROR) {
         printf("SPI Transaction failed!\n");
     } else {
-        for (i = 0; i < DATA_LEN; i++) {
-            rx_data[i] = unsigned_to_signed(rx_data[i]);
-        }
+        for (i = 0; i < DATA_LEN; i++) { rx_data[i] = unsigned_to_signed(rx_data[i]); }
 
-        memcpy32((uint32_t*)0x50408000, input, 6400);
+        memcpy32((uint32_t *)0x50408000, input, 6400);
     }
 #else // Camera
 
-    uint8_t* frame_buffer;
-    uint8_t* buffer;
+    uint8_t *frame_buffer;
+    uint8_t *buffer;
     uint32_t imgLen;
     uint32_t w, h, x, y;
     uint8_t r, g, b;
     int i = 0;
 
     camera_start_capture_image();
-    while (!camera_is_image_rcv())
-        ;
+    while (!camera_is_image_rcv()) {}
 
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
     buffer = frame_buffer;
@@ -261,18 +254,18 @@ void load_input(void)
 
     // printf("r:%d g:%d b:%d  input:%x\r\n",r,g,b, input[i-1]);
 
-    memcpy32((uint32_t*)0x50408000, input, 6400);
+    memcpy32((uint32_t *)0x50408000, input, 6400);
 
 #endif
 }
 
 /* **************************************************************************** */
-void TFT_Print(char* str, int x, int y, int font, int length)
+void TFT_Print(char *str, int x, int y, int font, int length)
 {
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = length;
+    text.len = length;
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
@@ -280,8 +273,7 @@ void TFT_Print(char* str, int x, int y, int font, int length)
 /* **************************************************************************** */
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
-        ;
+    while ((*((volatile uint32_t *)0x50100000) & (1 << 12)) != 1 << 12) {}
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
 }
@@ -298,7 +290,7 @@ static uint8_t signed_to_unsigned(int8_t val)
     return val + 128;
 }
 
-void show_image(uint32_t* image, int32_t* ml, uint32_t xcord, uint32_t ycord, uint32_t scale,
+void show_image(uint32_t *image, int32_t *ml, uint32_t xcord, uint32_t ycord, uint32_t scale,
                 uint32_t mask, uint32_t mirror)
 {
     uint32_t i;
@@ -310,9 +302,9 @@ void show_image(uint32_t* image, int32_t* ml, uint32_t xcord, uint32_t ycord, ui
     int8_t rr, gg, bb, uu;
     uint32_t x, y;
     uint32_t color;
-    int32_t max        = 0;
+    int32_t max = 0;
     uint32_t max_index = 0;
-    int8_t* ml_data8   = (int8_t*)ml;
+    int8_t *ml_data8 = (int8_t *)ml;
 
     x = xcord;
     y = ycord;
@@ -321,7 +313,7 @@ void show_image(uint32_t* image, int32_t* ml, uint32_t xcord, uint32_t ycord, ui
         x = xcord + IMAGE_SIZE_X;
 
     for (i = 0; i < IMAGE_SIZE_X * IMAGE_SIZE_Y - 1; i++) {
-        max       = -256; // smaller than -128
+        max = -256; // smaller than -128
         max_index = 0;
 
         b = signed_to_unsigned(((image[i] >> 16) & 0xFF));
@@ -338,19 +330,19 @@ void show_image(uint32_t* image, int32_t* ml, uint32_t xcord, uint32_t ycord, ui
             //printf("[%d] %d  %d  %d  %d \n",i,rr, bb, gg, uu);
 
             if (rr > max) {
-                max       = rr;
+                max = rr;
                 max_index = 0;
             }
             if (gg > max) {
-                max       = gg;
+                max = gg;
                 max_index = 1;
             }
             if (bb > max) {
-                max       = bb;
+                max = bb;
                 max_index = 2;
             }
             if (uu > max) {
-                max       = uu;
+                max = uu;
                 max_index = 3;
             }
 
@@ -358,58 +350,61 @@ void show_image(uint32_t* image, int32_t* ml, uint32_t xcord, uint32_t ycord, ui
             // display only mask if image is null, otherwise overlay
             switch (max_index) {
 #ifdef USE_ALPHA // overlay using alpha value
-                case 0:
-                    r = mask + ALPHA * (r - mask) * (image != NULL);
-                    g = (ALPHA * g) * (image != NULL);
-                    b = (ALPHA * b) * (image != NULL);
-                    break;
-                case 1:
-                    r = (ALPHA * r) * (image != NULL);
-                    g = mask + ALPHA * (g - mask) * (image != NULL);
-                    b = (ALPHA * b) * (image != NULL);
-                    break;
-                case 2:
-                    r = (ALPHA * r) * (image != NULL);
-                    g = (ALPHA * g) * (image != NULL);
-                    b = mask + ALPHA * (b - mask) * (image != NULL);
-                    break;
-                case 3:
-                    r = (ALPHA * r) * (image != NULL);
-                    g = (ALPHA * g) * (image != NULL);
-                    b = (ALPHA * b) * (image != NULL);
-                    break;
+            case 0:
+                r = mask + ALPHA * (r - mask) * (image != NULL);
+                g = (ALPHA * g) * (image != NULL);
+                b = (ALPHA * b) * (image != NULL);
+                break;
+            case 1:
+                r = (ALPHA * r) * (image != NULL);
+                g = mask + ALPHA * (g - mask) * (image != NULL);
+                b = (ALPHA * b) * (image != NULL);
+                break;
+            case 2:
+                r = (ALPHA * r) * (image != NULL);
+                g = (ALPHA * g) * (image != NULL);
+                b = mask + ALPHA * (b - mask) * (image != NULL);
+                break;
+            case 3:
+                r = (ALPHA * r) * (image != NULL);
+                g = (ALPHA * g) * (image != NULL);
+                b = (ALPHA * b) * (image != NULL);
+                break;
 
 #else // overlay using OP
-                case 0:
-                    r = mask;
-                    g = (g * OP) * (image != NULL);
-                    b = (b * OP) * (image != NULL);
-                    break;
-                case 1:
-                    r = (r * OP) * (image != NULL);
-                    ;
-                    g = mask;
-                    b = (b * OP) * (image != NULL);
-                    ;
-                    break;
-                case 2:
-                    r = (r * OP) * (image != NULL);
-                    ;
-                    g = (g * OP) * (image != NULL);
-                    ;
-                    b = mask;
-                    break;
-                case 3:
-                    r = BLACK_COLOR;
-                    g = BLACK_COLOR;
-                    b = BLACK_COLOR;
-                    break;
+            case 0:
+                r = mask;
+                g = (g * OP) * (image != NULL);
+                b = (b * OP) * (image != NULL);
+                break;
+            case 1:
+                r = (r * OP) * (image != NULL);
+                {
+                }
+                g = mask;
+                b = (b * OP) * (image != NULL);
+                {
+                }
+                break;
+            case 2:
+                r = (r * OP) * (image != NULL);
+                {
+                }
+                g = (g * OP) * (image != NULL);
+                {
+                }
+                b = mask;
+                break;
+            case 3:
+                r = BLACK_COLOR;
+                g = BLACK_COLOR;
+                b = BLACK_COLOR;
+                break;
 #endif
 
-                default:
-                    printf("ERROR");
-                    while (1)
-                        ;
+            default:
+                printf("ERROR");
+                while (1) {}
             }
         }
 #ifdef BOARD_EVKIT_V1
@@ -470,7 +465,7 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = MXC_GPIO2;
     gpio_out.mask = MXC_GPIO_PIN_5;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -522,14 +517,13 @@ int main(void)
     TFT_Print(buff, 5, 170, font_1, sprintf(buff, "Foliage(green), Unknown(black)  "));
 
     TFT_Print(buff, 30, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO START    "));
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
 
 #if defined(USE_SPIDATA)
@@ -562,10 +556,9 @@ int main(void)
 
         LED_On(LED1);
         cnn_start(); // Start CNN processing
-        while (cnn_time == 0)
-            __WFI(); // Wait for CNN
+        while (cnn_time == 0) __WFI(); // Wait for CNN
         LED_Off(LED1);
-        cnn_unload((uint32_t*)ml_data32);
+        cnn_unload((uint32_t *)ml_data32);
 
         // show mask
         show_image(NULL, ml_data32, 120, 80, 1, 0xf0, MIRROR);
@@ -581,8 +574,7 @@ int main(void)
 #if !defined(USE_SPIDATA)
 
         TFT_Print(buff, 20, 212, font_1, sprintf(buff, "PRESS PB1(SW1) TO CONTINUE "));
-        while (!PB_Get(0))
-            ;
+        while (!PB_Get(0)) {}
 #else
         SPI_FLAG = false;
         spi_clear_interrupts(MXC_F_SPI_INTFL_SSA);

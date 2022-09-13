@@ -457,7 +457,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __RBIT(uint32_t value)
     \param [in]    ptr  Pointer to data
     \return             value of type uint8_t at (*ptr)
  */
-__attribute__((always_inline)) __STATIC_INLINE uint8_t __LDREXB(volatile uint8_t* addr)
+__attribute__((always_inline)) __STATIC_INLINE uint8_t __LDREXB(volatile uint8_t *addr)
 {
     uint32_t result;
 
@@ -479,7 +479,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint8_t __LDREXB(volatile uint8_t
     \param [in]    ptr  Pointer to data
     \return        value of type uint16_t at (*ptr)
  */
-__attribute__((always_inline)) __STATIC_INLINE uint16_t __LDREXH(volatile uint16_t* addr)
+__attribute__((always_inline)) __STATIC_INLINE uint16_t __LDREXH(volatile uint16_t *addr)
 {
     uint32_t result;
 
@@ -501,7 +501,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint16_t __LDREXH(volatile uint16
     \param [in]    ptr  Pointer to data
     \return        value of type uint32_t at (*ptr)
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __LDREXW(volatile uint32_t* addr)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t __LDREXW(volatile uint32_t *addr)
 {
     uint32_t result;
 
@@ -519,7 +519,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __LDREXW(volatile uint32
     \return          1  Function failed
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXB(uint8_t value,
-                                                                 volatile uint8_t* addr)
+                                                                 volatile uint8_t *addr)
 {
     uint32_t result;
 
@@ -537,7 +537,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXB(uint8_t value,
     \return          1  Function failed
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXH(uint16_t value,
-                                                                 volatile uint16_t* addr)
+                                                                 volatile uint16_t *addr)
 {
     uint32_t result;
 
@@ -555,7 +555,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXH(uint16_t value,
     \return          1  Function failed
  */
 __attribute__((always_inline)) __STATIC_INLINE uint32_t __STREXW(uint32_t value,
-                                                                 volatile uint32_t* addr)
+                                                                 volatile uint32_t *addr)
 {
     uint32_t result;
 

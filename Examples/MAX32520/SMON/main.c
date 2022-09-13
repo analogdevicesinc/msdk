@@ -60,10 +60,10 @@ int main(void)
     printf("\n***********Security Monitor***********\n");
     printf("\nPull the ext sensor jumper to set off the alarm that the sensor has been tampered "
            "with. \n");
-    flags              = MXC_SMON_GetFlags();
-    flags              = flags & MXC_F_SMON_SECALM_EXTSTAT0;
-    mxc_gpio_cfg_t ext = {MXC_GPIO1, (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9), MXC_GPIO_FUNC_ALT1,
-                          MXC_GPIO_PAD_PULL_DOWN, MXC_GPIO_VSSEL_VDDIO};
+    flags = MXC_SMON_GetFlags();
+    flags = flags & MXC_F_SMON_SECALM_EXTSTAT0;
+    mxc_gpio_cfg_t ext = { MXC_GPIO1, (MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9), MXC_GPIO_FUNC_ALT1,
+                           MXC_GPIO_PAD_PULL_DOWN, MXC_GPIO_VSSEL_VDDIO };
     MXC_GPIO_Config(&ext);
 
     MXC_SMON_Init();
@@ -76,9 +76,9 @@ int main(void)
 
     mxc_smon_ext_cfg_t cfg;
     cfg.sensorNumber = SMON_EXTSENSOR_0;
-    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
-    cfg.errorCount   = 2;
+    cfg.clockDivide = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
+    cfg.errorCount = 2;
     MXC_SMON_ExtSensorEnable(&cfg, 5000);
 
     while (!(flags)) {
@@ -93,6 +93,5 @@ int main(void)
 
     printf("Example Successful\n");
 
-    while (1)
-        ;
+    return 0;
 }

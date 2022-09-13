@@ -54,7 +54,7 @@
 #define TA_DEFAULT_VALUE (0x00)
 
 #define ISO14443_3A_ANTICOLLISION_CT_VALUE 0x88
-#define TYPE_A_SAK_14443_4_SUPPORT         0x20
+#define TYPE_A_SAK_14443_4_SUPPORT 0x20
 
 #define ATQA_LEN 2
 
@@ -77,7 +77,7 @@ typedef struct {
     uint8_t TA;
     TB_t TB;
     uint8_t TC;
-    uint8_t* PTk;
+    uint8_t *PTk;
 } ATS_t;
 
 /**
@@ -94,7 +94,7 @@ uint8_t get_last_sak()
 /*
    new version the PCD shall not examine the ATQ RFU bits,only check b5~b8 of byte2
  */
-static int32_t check_atq(uint8_t* atq, uint32_t* uid_level)
+static int32_t check_atq(uint8_t *atq, uint32_t *uid_level)
 {
     if ((atq[0] & 0xC0) == 0x00) {
         *uid_level = UID_LEVEL_1; // single size UID
@@ -126,10 +126,10 @@ int32_t iso_14443_3a_polling()
     return iso_14443_3a_polling_response(NULL, &void_len);
 }
 
-int32_t iso_14443_3a_polling_response(uint8_t* atqa_resp, int32_t* atqa_resp_len)
+int32_t iso_14443_3a_polling_response(uint8_t *atqa_resp, int32_t *atqa_resp_len)
 {
     int32_t ret;
-    uint8_t* atq = GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
 
     ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq, WAKEUP_NOTRETRY);
 
@@ -159,12 +159,12 @@ int32_t iso_14443_3a_collision_detect()
     return iso_14443_3a_collision_detect_response(NULL, &void_len, NULL, &void_len, NULL);
 }
 
-int32_t iso_14443_3a_collision_detect_response(uint8_t* atqa_resp, int32_t* atqa_resp_len,
-                                               uint8_t* uid_resp, int32_t* uid_resp_len,
-                                               uint8_t* sak_resp)
+int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa_resp_len,
+                                               uint8_t *uid_resp, int32_t *uid_resp_len,
+                                               uint8_t *sak_resp)
 {
-    uint8_t* atq = GetCommonBuffer();
-    uint8_t* uid = GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
+    uint8_t *uid = GetCommonBuffer();
     uint32_t uid_level;
     int32_t status = ISO14443_3_ERR_OTHER;
 
@@ -316,16 +316,16 @@ int32_t iso_14443_3a_active()
     return iso_14443_3a_active_response(NULL, &void_len);
 }
 
-int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len)
+int32_t iso_14443_3a_active_response(uint8_t *ats_resp, int32_t *ats_resp_len)
 {
     int32_t status = ISO14443_3_ERR_OTHER;
-    uint8_t fsci   = FSCI_DEFAULT_VALUE;
+    uint8_t fsci = FSCI_DEFAULT_VALUE;
     uint8_t cid = 0, nad = 0;
-    uint8_t* ats = GetCommonBuffer();
+    uint8_t *ats = GetCommonBuffer();
     uint32_t ats_len;
     uint8_t fwi = FWI_DEFAULT_VALUE, sfgi = SFGI_DEFAULT_VALUE;
     uint32_t sfgi_fc = 0;
-    ATS_t* pats      = (ATS_t*)ats;
+    ATS_t *pats = (ATS_t *)ats;
 
     status = iso_14443_3a_cmd_rats(FSDI_DEFAULT_VALUE, cid, ats, &ats_len);
 
@@ -364,7 +364,7 @@ int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len)
         }
 
         if (pats->T0.has_tb) {
-            fwi  = pats->TB.fwi <= FWI_MAX_VALUE ? pats->TB.fwi : FWI_DEFAULT_VALUE;
+            fwi = pats->TB.fwi <= FWI_MAX_VALUE ? pats->TB.fwi : FWI_DEFAULT_VALUE;
             sfgi = pats->TB.sfgi <= SFGI_MAX_VALUE ? pats->TB.sfgi : SFGI_DEFAULT_VALUE;
         }
 
@@ -394,7 +394,7 @@ int32_t iso_14443_3a_remove()
 {
     int32_t loop = 0;
     int32_t ret;
-    uint8_t* atq = GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
 
     nfc_reset();
 

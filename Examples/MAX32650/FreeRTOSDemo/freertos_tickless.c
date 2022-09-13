@@ -53,9 +53,9 @@
 #include "rtc.h"
 #include "pwrseq_regs.h"
 
-#define RTC_RATIO     (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
-#define MAX_SNOOZE    0xFF
-#define MIN_SYSTICK   2
+#define RTC_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
+#define MAX_SNOOZE 0xFF
+#define MIN_SYSTICK 2
 #define MIN_RTC_TICKS 5
 
 static uint32_t residual = 0;
@@ -85,7 +85,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     volatile uint32_t rtc_ticks, rtc_ss_val;
     volatile uint32_t actual_ticks;
     volatile uint32_t pre_capture, post_capture;
-    mxc_gpio_cfg_t uart_rx_pin = {MXC_GPIO2, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE};
+    mxc_gpio_cfg_t uart_rx_pin = { MXC_GPIO2, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_IN,
+                                   MXC_GPIO_PAD_NONE };
 
     /* Example:
    *
@@ -159,8 +160,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     MXC_GPIO_DisableInt(uart_rx_pin.port, uart_rx_pin.mask);
 
     /* Snapshot the current RTC value */
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_READY))
-        ;
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_READY)) {}
     post_capture = MXC_RTC->ssec;
 
     /* Dermine wake cause */

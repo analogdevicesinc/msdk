@@ -65,8 +65,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA1
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha1_sign(u8* signature, u8* message, u32 message_length,
-                                     ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha1_sign(u8 *signature, u8 *message, u32 message_length,
+                                     ucl_rsa_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA1 Signature Generation</b>.
@@ -87,8 +87,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha1_sign(u8* signature, u8* message, u32 message_len
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA1
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha1_hashed_sign(u8* signature, u8* message, u32 message_length,
-                                            ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha1_hashed_sign(u8 *signature, u8 *message, u32 message_length,
+                                            ucl_rsa_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA1 CRT Signature Generation</b>.
@@ -110,8 +110,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha1_hashed_sign(u8* signature, u8* message, u32 mess
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA1
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha1_hashed_crt_sign(u8* signature, u8* message, u32 message_length,
-                                                ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha1_hashed_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                                                ucl_rsa_crt_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA1 CRT Signature Generation</b>.
@@ -133,8 +133,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha1_hashed_crt_sign(u8* signature, u8* message, u32 
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA1
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha1_crt_sign(u8* signature, u8* message, u32 message_length,
-                                         ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_ssa_pkcs1v15_sha1_crt_sign(u8 *signature, u8 *message, u32 message_length,
+                                         ucl_rsa_crt_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA1 Signature Verification</b>.
@@ -155,8 +155,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha1_crt_sign(u8* signature, u8* message, u32 message
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA1
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha1_verify(u8* signature, u8* message, u32 message_length,
-                                       ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_sha1_verify(u8 *signature, u8 *message, u32 message_length,
+                                       ucl_rsa_public_key_t *keyPu);
 
 /*============================================================================*/
 /** <b>RSASSA-PKCS1V15-SHA1 Signature Verification</b>.
@@ -177,8 +177,8 @@ int ucl_pkcs1_ssa_pkcs1v15_sha1_verify(u8* signature, u8* message, u32 message_l
  *
  * @ingroup UCL_PKCS1V21_SSA_PKCSV15_SHA1
  */
-int ucl_pkcs1_ssa_pkcs1v15_sha1_verify_digest(u8* signature, u8* hash, u32 hash_length,
-                                              ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_ssa_pkcs1v15_sha1_verify_digest(u8 *signature, u8 *hash, u32 hash_length,
+                                              ucl_rsa_public_key_t *keyPu);
 
 /** <b>RSAEMSA-PKCS1V15-SHA1 Encoding</b>.
  * Encoding using hash function SHA1.
@@ -198,7 +198,7 @@ int ucl_pkcs1_ssa_pkcs1v15_sha1_verify_digest(u8* signature, u8* hash, u32 hash_
  *
  * @ingroup UCL_RSA_SSA_PKCS1V15_SHA1
  */
-int __API__ ucl_pkcs1_emsa_pkcs1v15_sha1_encode(u8* EM, u8* M, u32 M_length, u32 k);
+int __API__ ucl_pkcs1_emsa_pkcs1v15_sha1_encode(u8 *EM, u8 *M, u32 M_length, u32 k);
 
 /** <b>RSAEMSA-PKCS1V15-SHA1 Verification</b>.
  * Verification using hash function SHA1.
@@ -218,7 +218,7 @@ int __API__ ucl_pkcs1_emsa_pkcs1v15_sha1_encode(u8* EM, u8* M, u32 M_length, u32
  *
  * @ingroup UCL_RSA_SSA_PKCS1V15_SHA1
  */
-int __API__ ucl_pkcs1_emsa_pkcs1v15_sha1_verify(u8* EM, u8* M, u32 M_length, u32 k);
+int __API__ ucl_pkcs1_emsa_pkcs1v15_sha1_verify(u8 *EM, u8 *M, u32 M_length, u32 k);
 
 #ifdef __cplusplus
 }

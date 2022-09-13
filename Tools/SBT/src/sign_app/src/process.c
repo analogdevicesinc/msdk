@@ -45,7 +45,7 @@
 #include <ca_sign_build.h>
 #include <maxim_c_utils.h>
 
-int parse_datahex(unsigned char* ptr, const char* str, int length)
+int parse_datahex(unsigned char *ptr, const char *str, int length)
 {
     regex_t regex;
     regmatch_t rm[2];
@@ -68,7 +68,7 @@ int parse_datahex(unsigned char* ptr, const char* str, int length)
         for (i = 0; i < length * 2; i++) {
             memcpy(value_str, &str[rm[1].rm_so + i * 2], 2);
             value_str[3] = '\0';
-            ptr[i]       = strtoul(value_str, NULL, 16);
+            ptr[i] = strtoul(value_str, NULL, 16);
         }
 
     } else {
@@ -81,7 +81,7 @@ int parse_datahex(unsigned char* ptr, const char* str, int length)
     return ERR_OK;
 }
 
-int parse_longhex(unsigned int* ptr, const char* str)
+int parse_longhex(unsigned int *ptr, const char *str)
 {
     regex_t regex;
     regmatch_t rm[2];
@@ -99,7 +99,7 @@ int parse_longhex(unsigned int* ptr, const char* str)
     if (!ret) {
         memcpy(value_str, &str[rm[1].rm_so], 8);
         value_str[8] = '\0';
-        *ptr         = strtoul(value_str, NULL, 16);
+        *ptr = strtoul(value_str, NULL, 16);
     } else {
         regfree(&regex);
         print_warn("Bad formated 4 bytes hex parameter \n");
@@ -110,7 +110,7 @@ int parse_longhex(unsigned int* ptr, const char* str)
     return ERR_OK;
 }
 
-int parse_hex(unsigned int* ptr, const char* str)
+int parse_hex(unsigned int *ptr, const char *str)
 {
     regex_t regex;
     regmatch_t rm[2];
@@ -129,7 +129,7 @@ int parse_hex(unsigned int* ptr, const char* str)
     if (!ret) {
         memcpy(value_str, &str[rm[1].rm_so], 2);
         value_str[3] = '\0';
-        *ptr         = strtoul(value_str, NULL, 16);
+        *ptr = strtoul(value_str, NULL, 16);
     } else {
         print_warn("Bad formated 1 byte hex parameter \n");
         return ERR_INVALID_OPTION_FORMAT;
@@ -138,7 +138,7 @@ int parse_hex(unsigned int* ptr, const char* str)
     return ERR_OK;
 }
 
-int parse_yesno(unsigned char* ptr, const char* str)
+int parse_yesno(unsigned char *ptr, const char *str)
 {
     regex_t regex;
     int ret;
@@ -170,7 +170,7 @@ int parse_yesno(unsigned char* ptr, const char* str)
     return ERR_OK;
 }
 
-int parse_int(unsigned int* ptr, const char* str)
+int parse_int(unsigned int *ptr, const char *str)
 {
     regex_t regex;
     regmatch_t rm[2];
@@ -188,7 +188,7 @@ int parse_int(unsigned int* ptr, const char* str)
     if (!ret) {
         memcpy(value_str, &str[rm[1].rm_so], rm[1].rm_eo - rm[1].rm_so);
         value_str[rm[1].rm_eo - rm[1].rm_so] = '\0';
-        *ptr                                 = strtoul(value_str, NULL, 10);
+        *ptr = strtoul(value_str, NULL, 10);
     } else {
         print_warn("Bad formated int parameter \n");
         return ERR_INVALID_OPTION_FORMAT;
@@ -197,7 +197,7 @@ int parse_int(unsigned int* ptr, const char* str)
     return ERR_OK;
 }
 
-int parse_string(char* ptr, const char* str)
+int parse_string(char *ptr, const char *str)
 {
     regex_t regex;
     regmatch_t rm[2];
@@ -222,7 +222,7 @@ int parse_string(char* ptr, const char* str)
     return ERR_OK;
 }
 
-int parse_algo(unsigned char* ptr, const char* str)
+int parse_algo(unsigned char *ptr, const char *str)
 {
     char strptr[MAX_STRING];
     unsigned int i = 0;
@@ -242,7 +242,7 @@ int parse_algo(unsigned char* ptr, const char* str)
     return ERR_INVALID_OPTION_FORMAT;
 }
 
-int parse_bootmethod(bootmethod_t* ptr, const char* str)
+int parse_bootmethod(bootmethod_t *ptr, const char *str)
 {
     regex_t regex;
     int ret;
@@ -273,41 +273,41 @@ int parse_bootmethod(bootmethod_t* ptr, const char* str)
     return ERR_OK;
 }
 
-int parse_store(option_type_t type, void* ptr, const char* value, int min)
+int parse_store(option_type_t type, void *ptr, const char *value, int min)
 {
     int result;
 
     switch (type) {
-        case OT_FILE:
-            ASSERT_OK(parse_string(ptr, value));
-            break;
-        case OT_HEX:
-            ASSERT_OK(parse_hex(ptr, value));
-            break;
-        case OT_INT:
-            ASSERT_OK(parse_int(ptr, value));
-            break;
-        case OT_LONGHEX:
-            ASSERT_OK(parse_longhex(ptr, value));
-            break;
-        case OT_DATAHEX:
-            ASSERT_OK(parse_datahex(ptr, value, min));
-            break;
-        case OT_STRING:
-            ASSERT_OK(parse_string(ptr, value));
-            break;
-        case OT_YESNO:
-            ASSERT_OK(parse_yesno(ptr, value));
-            break;
-        case OT_ALGO:
-            ASSERT_OK(parse_algo(ptr, value));
-            break;
-        case OT_BOOTMETHOD:
-            ASSERT_OK(parse_bootmethod(ptr, value));
-            break;
-        default:
-            print_error("Unknown parse type\n");
-            return ERR_INTERNAL_ERROR;
+    case OT_FILE:
+        ASSERT_OK(parse_string(ptr, value));
+        break;
+    case OT_HEX:
+        ASSERT_OK(parse_hex(ptr, value));
+        break;
+    case OT_INT:
+        ASSERT_OK(parse_int(ptr, value));
+        break;
+    case OT_LONGHEX:
+        ASSERT_OK(parse_longhex(ptr, value));
+        break;
+    case OT_DATAHEX:
+        ASSERT_OK(parse_datahex(ptr, value, min));
+        break;
+    case OT_STRING:
+        ASSERT_OK(parse_string(ptr, value));
+        break;
+    case OT_YESNO:
+        ASSERT_OK(parse_yesno(ptr, value));
+        break;
+    case OT_ALGO:
+        ASSERT_OK(parse_algo(ptr, value));
+        break;
+    case OT_BOOTMETHOD:
+        ASSERT_OK(parse_bootmethod(ptr, value));
+        break;
+    default:
+        print_error("Unknown parse type\n");
+        return ERR_INTERNAL_ERROR;
     }
 
     return ERR_OK;

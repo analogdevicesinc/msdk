@@ -58,7 +58,7 @@ extern "C" {
  *
  */
 
-float16_t arm_euclidean_distance_f16(const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_euclidean_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Bray-Curtis distance between two vectors
@@ -68,7 +68,7 @@ float16_t arm_euclidean_distance_f16(const float16_t* pA, const float16_t* pB, u
  * @return distance
  *
  */
-float16_t arm_braycurtis_distance_f16(const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_braycurtis_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Canberra distance between two vectors
@@ -83,7 +83,7 @@ float16_t arm_braycurtis_distance_f16(const float16_t* pA, const float16_t* pB, 
  * @return distance
  *
  */
-float16_t arm_canberra_distance_f16(const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_canberra_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Chebyshev distance between two vectors
@@ -93,7 +93,7 @@ float16_t arm_canberra_distance_f16(const float16_t* pA, const float16_t* pB, ui
  * @return distance
  *
  */
-float16_t arm_chebyshev_distance_f16(const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_chebyshev_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Cityblock (Manhattan) distance between two vectors
@@ -103,7 +103,7 @@ float16_t arm_chebyshev_distance_f16(const float16_t* pA, const float16_t* pB, u
  * @return distance
  *
  */
-float16_t arm_cityblock_distance_f16(const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_cityblock_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Correlation distance between two vectors
@@ -116,7 +116,7 @@ float16_t arm_cityblock_distance_f16(const float16_t* pA, const float16_t* pB, u
  * @return distance
  *
  */
-float16_t arm_correlation_distance_f16(float16_t* pA, float16_t* pB, uint32_t blockSize);
+float16_t arm_correlation_distance_f16(float16_t *pA, float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Cosine distance between two vectors
@@ -128,7 +128,7 @@ float16_t arm_correlation_distance_f16(float16_t* pA, float16_t* pB, uint32_t bl
  *
  */
 
-float16_t arm_cosine_distance_f16(const float16_t* pA, const float16_t* pB, uint32_t blockSize);
+float16_t arm_cosine_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Jensen-Shannon distance between two vectors
@@ -150,7 +150,7 @@ float16_t arm_cosine_distance_f16(const float16_t* pA, const float16_t* pB, uint
  *
  */
 
-float16_t arm_jensenshannon_distance_f16(const float16_t* pA, const float16_t* pB,
+float16_t arm_jensenshannon_distance_f16(const float16_t *pA, const float16_t *pB,
                                          uint32_t blockSize);
 
 /**
@@ -164,7 +164,7 @@ float16_t arm_jensenshannon_distance_f16(const float16_t* pA, const float16_t* p
  *
  */
 
-float16_t arm_minkowski_distance_f16(const float16_t* pA, const float16_t* pB, int32_t order,
+float16_t arm_minkowski_distance_f16(const float16_t *pA, const float16_t *pB, int32_t order,
                                      uint32_t blockSize);
 
 #endif /*defined(ARM_FLOAT16_SUPPORTED)*/

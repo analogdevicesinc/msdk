@@ -75,7 +75,7 @@ void seqnuminit(void);
  * @retval #ISO14443_3_ERR_SUCCESS for a successful transmission or other error code for a failure
  * @retval #ISO14443_3_ERR_PROTOCOL for a protocol error.
  */
-int32_t SendAPDU(uint8_t* capdu, int32_t capdu_len, uint8_t* rapdu, int32_t* rapdu_len);
+int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rapdu_len);
 
 /** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_PART4 */
 

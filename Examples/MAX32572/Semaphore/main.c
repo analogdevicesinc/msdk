@@ -208,16 +208,16 @@ int main(void)
 
         if (key > 0) {
             switch (key) {
-                case KEY_1:
-                    PB_AWrites();
-                    break;
+            case KEY_1:
+                PB_AWrites();
+                break;
 
-                case KEY_2:
-                    PB_BWrites();
-                    break;
+            case KEY_2:
+                PB_BWrites();
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
         }
     }

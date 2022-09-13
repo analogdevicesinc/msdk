@@ -69,22 +69,22 @@
 
 #define HEADER_SYNC_LEN 8
 
-#define HEADER_VERSION_LEN                4
-#define HEADER_APPLICATION_VERSION_LEN    4
-#define HEADER_LOAD_ADDRESS_LEN           4
-#define HEADER_JUMP_ADDRESS_LEN           4
-#define HEADER_BINARY_LEN                 4
-#define HEADER_ARGV_LEN                   4
-#define HEADER_SR_PAPD_LEN                1
-#define HEADER_SR_PRFSH_LEN               4
-#define HEADER_SR_PCFG_LEN                4
-#define HEADER_SR_PEXT_LEN                1
-#define HEADER_DMC_GCFG_LEN               4
-#define HEADER_DMC_CLK_LEN                1
-#define HEADER_UCI_KSRC_CONFIGENCINT_LEN  1
+#define HEADER_VERSION_LEN 4
+#define HEADER_APPLICATION_VERSION_LEN 4
+#define HEADER_LOAD_ADDRESS_LEN 4
+#define HEADER_JUMP_ADDRESS_LEN 4
+#define HEADER_BINARY_LEN 4
+#define HEADER_ARGV_LEN 4
+#define HEADER_SR_PAPD_LEN 1
+#define HEADER_SR_PRFSH_LEN 4
+#define HEADER_SR_PCFG_LEN 4
+#define HEADER_SR_PEXT_LEN 1
+#define HEADER_DMC_GCFG_LEN 4
+#define HEADER_DMC_CLK_LEN 1
+#define HEADER_UCI_KSRC_CONFIGENCINT_LEN 1
 #define HEADER_UCI0_AC1R_START_OFFSET_LEN 4
-#define HEADER_UCI0_AC1R_END_OFFSET_LEN   4
-#define HEADER_UCI0_DDR_R0_LEN            4
+#define HEADER_UCI0_AC1R_END_OFFSET_LEN 4
+#define HEADER_UCI0_DDR_R0_LEN 4
 
 #define FLORA_HEADER_LEN                                                                        \
     HEADER_SYNC_LEN + HEADER_VERSION_LEN + HEADER_LOAD_ADDRESS_LEN + HEADER_JUMP_ADDRESS_LEN +  \
@@ -153,9 +153,9 @@ CK_SESSION_HANDLE session;
 #endif /* _MAXIM_HSM */
 
 typedef struct {
-    char* name;
+    char *name;
     option_type_t type;
-    void* ptr;
+    void *ptr;
     int min;
     int max;
 } config_option_t;
@@ -183,6 +183,6 @@ typedef enum {
     ERR_UCL_INIT
 } error_t;
 
-extern const char* algo_name[];
+extern const char *algo_name[];
 
 #endif /* __CA_SIGN_BUILD__ */

@@ -71,7 +71,7 @@ void FitHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void FitHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };

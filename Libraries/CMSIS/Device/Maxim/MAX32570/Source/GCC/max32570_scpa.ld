@@ -1,0 +1,276 @@
+/*******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ *
+ ******************************************************************************/
+ /* Allocate space if SDMA_SIZE is defined at the start of SRAM*/
+SRAM_START  = 0x20000000;
+SRAM_SIZE   = 760 * 1024;
+SRAM_END	= SRAM_START + SRAM_SIZE;
+
+/* SHARED start point */
+SHARED_REGION_START  = SRAM_START;
+SHARED_REGION_SIZE   = DEFINED(MSR_SDMA_SIZE) ? 512 : 0;
+SHARED_REGION_END    = SHARED_REGION_START + SHARED_REGION_SIZE;
+
+/* SDMA start point */
+MSR_SDMA_REGION_START = SHARED_REGION_END;
+MSR_SDMA_REGION_SIZE  = DEFINED(MSR_SDMA_SIZE) ? MSR_SDMA_SIZE : 0;
+MSR_SDMA_REGION_END   = MSR_SDMA_REGION_START + MSR_SDMA_REGION_SIZE;
+
+/* Remaining SRAM */
+SRAM_ADDR  	= MSR_SDMA_REGION_END;
+SRAM_LEN	= SRAM_END - MSR_SDMA_REGION_END;
+ 
+MEMORY {
+    SPIX (rx)  		: ORIGIN = 0x08000000, 				LENGTH = 128M
+    HEADER (rx)		: ORIGIN = 0x10000000, 				LENGTH = 0x200     /* 256B SLA Header, start on next page */
+    FLASH (rx) 		: ORIGIN = 0x10000200, 				LENGTH = 0x0FFE00  /* Remainder of 1MB flash */
+    SHARED (rwx)   	: ORIGIN = SHARED_REGION_START,    	LENGTH = SHARED_REGION_SIZE
+    MSR_SDMA (rwx) 	: ORIGIN = MSR_SDMA_REGION_START,  	LENGTH = MSR_SDMA_REGION_SIZE
+    SRAM (rwx) 		: ORIGIN = SRAM_ADDR,  				LENGTH = SRAM_LEN
+    SPID (r)   		: ORIGIN = 0x80000000, 				LENGTH = 512M
+}
+
+/*
+ * The '__stack' definition is required by crt0, do not remove it.
+ */
+__stack = ORIGIN(SRAM) + LENGTH(SRAM);
+
+_estack = __stack; 	
+
+/*
+ * Default stack sizes.
+ * These are used by the startup in order to allocate stacks 
+ * for the different modes.
+ */
+
+__Main_Stack_Size = 1024 ;
+
+PROVIDE ( _Main_Stack_Size = __Main_Stack_Size ) ;
+
+__Main_Stack_Limit = __stack  - __Main_Stack_Size ;
+
+/* "PROVIDE" allows to easily override these values from an 
+ * object file or the command line. */
+PROVIDE ( _Main_Stack_Limit = __Main_Stack_Limit ) ;
+
+/*
+ * There will be a link error if there is not this amount of 
+ * RAM free at the end. 
+ */
+_Minimum_Stack_Size = 256 ;
+
+/*
+ * Default heap definitions.
+ * The heap start immediately after the last statically allocated 
+ * .sbss/.noinit section, and extends up to the main stack limit.
+ */
+PROVIDE ( _Heap_Begin = _end_noinit ) ;
+PROVIDE ( _Heap_Limit = __stack - __Main_Stack_Size ) ;
+
+PROVIDE ( __HeapBase = _Heap_Begin ) ;
+PROVIDE ( __HeapLimit = _Heap_Limit ) ;
+
+/* 
+ * The entry point is informative, for debuggers and simulators,
+ * since the Cortex-M vector points to it anyway.
+ */
+ENTRY(Reset_Handler)
+
+/* Sections Definitions */
+SECTIONS {
+  	__scpa_start = 0x2000fe10;
+
+	.scpa_header __scpa_start : ALIGN(4)
+    {
+        FILL(0xFF)
+        KEEP(*(.scpa_header .scpa_header.*)) /* Header for ROM code */ 
+    } >SRAM 
+
+	.scpa_init : ALIGN(4)
+    {
+        FILL(0xFF)
+        __bss_magic__ = .;
+		KEEP(*(.scpa_init))
+    } >SRAM 
+    
+	.scpa_ops : ALIGN(4)
+    {
+        FILL(0xFF)
+ 		KEEP(*(.scpa_ops)) 
+    } >SRAM 
+
+    /*
+     * The program code is stored in the .text section, 
+     * which goes to FLASH.
+     */
+    .text : ALIGN(4)
+    {
+        *(.text .text.*)			                    /* all remaining code */
+        *(.rodata .rodata.* .constdata .constdata.*)    /* read-only data (constants) */
+        *(.flashprog*)                                  /* Flash program */
+        
+        *(vtable)					                    /* C++ virtual tables */
+
+		KEEP(*(.eh_frame*))
+
+		/*
+		 * Stub sections generated by the linker, to glue together 
+		 * ARM and Thumb code. .glue_7 is used for ARM code calling 
+		 * Thumb code, and .glue_7t is used for Thumb code calling 
+		 * ARM code. Apparently always generated by the linker, for some
+		 * architectures, so better leave them here.
+		 */
+        *(.glue_7)
+        *(.glue_7t)
+
+    } >SRAM 
+
+    .data :
+    {
+        _data = ALIGN(., 4);
+        *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
+        
+        /* These array sections are used by __libc_init_array to call static C++ constructors */
+        . = ALIGN(4);
+        /* preinit data */
+        PROVIDE_HIDDEN (__preinit_array_start = .);
+        KEEP(*(.preinit_array))
+        PROVIDE_HIDDEN (__preinit_array_end = .);
+
+        . = ALIGN(4);
+        /* init data */
+        PROVIDE_HIDDEN (__init_array_start = .);
+        KEEP(*(SORT(.init_array.*)))
+        KEEP(*(.init_array))
+        PROVIDE_HIDDEN (__init_array_end = .);
+
+        . = ALIGN(4);
+        /* finit data */
+        PROVIDE_HIDDEN (__fini_array_start = .);
+        KEEP(*(SORT(.fini_array.*)))
+        KEEP(*(.fini_array))
+        PROVIDE_HIDDEN (__fini_array_end = .);
+
+        _edata = ALIGN(., 4);
+    } > SRAM 
+    
+    /* The primary uninitialised data section. */
+    .bss :
+    {
+        . = ALIGN(4);
+        __bss_start__ = . ;
+        _bss = .;
+        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
+        *(COMMON)
+        _ebss = ALIGN(., 4) ;
+        __bss_end__ = . ;
+    } > SRAM
+
+    /*
+     * The uninitialised data sections. NOLOAD is used to avoid
+     * the "section `.bss' type changed to PROGBITS" warning
+     */
+    .noinit (NOLOAD) : ALIGN(4)
+    {
+        _noinit = .;
+        *(.noinit .noinit.*) 
+         . = ALIGN(4) ;
+        _end_noinit = .;   
+    } > SRAM
+    
+    /* Mandatory to be word aligned, _sbrk assumes this */
+    PROVIDE ( end = _end_noinit ); /* was _ebss */
+    PROVIDE ( _end = _end_noinit );
+    PROVIDE ( __end = _end_noinit );
+    PROVIDE ( __end__ = _end_noinit );
+    
+    /*
+     * Used for validation only, do not allocate anything here!
+     *
+     * This is just to check that there is enough RAM left for the Main
+     * stack. It should generate an error if it's full.
+     */
+    ._check_stack : ALIGN(4)
+    {
+        . = . + _Minimum_Stack_Size ;
+    } >SRAM
+    
+    /* After that there are only debugging sections. */
+    
+    /* This can remove the debugging information from the standard libraries */    
+    /* 
+    DISCARD :
+    {
+     libc.a ( * )
+     libm.a ( * )
+     libgcc.a ( * )
+     }
+     */
+  
+    /* Stabs debugging sections.  */
+    .stab          0 : { *(.stab) }
+    .stabstr       0 : { *(.stabstr) }
+    .stab.excl     0 : { *(.stab.excl) }
+    .stab.exclstr  0 : { *(.stab.exclstr) }
+    .stab.index    0 : { *(.stab.index) }
+    .stab.indexstr 0 : { *(.stab.indexstr) }
+    .comment       0 : { *(.comment) }
+    /*
+     * DWARF debug sections.
+     * Symbols in the DWARF debugging sections are relative to the beginning
+     * of the section so we begin them at 0.  
+     */
+    /* DWARF 1 */
+    .debug          0 : { *(.debug) }
+    .line           0 : { *(.line) }
+    /* GNU DWARF 1 extensions */
+    .debug_srcinfo  0 : { *(.debug_srcinfo) }
+    .debug_sfnames  0 : { *(.debug_sfnames) }
+    /* DWARF 1.1 and DWARF 2 */
+    .debug_aranges  0 : { *(.debug_aranges) }
+    .debug_pubnames 0 : { *(.debug_pubnames) }
+    /* DWARF 2 */
+    .debug_info     0 : { *(.debug_info .gnu.linkonce.wi.*) }
+    .debug_abbrev   0 : { *(.debug_abbrev) }
+    .debug_line     0 : { *(.debug_line) }
+    .debug_frame    0 : { *(.debug_frame) }
+    .debug_str      0 : { *(.debug_str) }
+    .debug_loc      0 : { *(.debug_loc) }
+    .debug_macinfo  0 : { *(.debug_macinfo) }
+    /* SGI/MIPS DWARF 2 extensions */
+    .debug_weaknames 0 : { *(.debug_weaknames) }
+    .debug_funcnames 0 : { *(.debug_funcnames) }
+    .debug_typenames 0 : { *(.debug_typenames) }
+    .debug_varnames  0 : { *(.debug_varnames) }  
+}

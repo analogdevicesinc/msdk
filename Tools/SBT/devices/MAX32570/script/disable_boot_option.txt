@@ -1,0 +1,13 @@
+#
+# Deactivate boot option Eth/USB/SPI/UART
+#	Offset Address	
+#		Peripheral  	Offset (little endian)
+#		----------------------
+#		Ethernet 	= 	7000
+# 		USB 	 	= 	8000
+#		SPI		 	= 	9000
+# 		UART 	 	= 	A000
+#       ----------------------
+# 	Deactivation value	= A5A55A5A00000000000000000000	
+#
+write-otp 8000 A5A55A5A00000000000000000000

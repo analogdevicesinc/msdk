@@ -58,25 +58,25 @@
 #include <maxim_c_utils.h>
 #include <log.h>
 
-int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned char* signature,
+int ecdsa_sign(const unsigned char *input, unsigned int input_size, unsigned char *signature,
                ecdsa_key_t key)
 {
     /* message */
-    uint8_t msg3[] = {'a', 'b', 'c'};
+    uint8_t msg3[] = { 'a', 'b', 'c' };
     /* public key */
-    uint8_t xq3[] = {0x24, 0x42, 0xA5, 0xCC, 0x0E, 0xCD, 0x01, 0x5F, 0xA3, 0xCA, 0x31,
-                     0xDC, 0x8E, 0x2B, 0xBC, 0x70, 0xBF, 0x42, 0xD6, 0x0C, 0xBC, 0xA2,
-                     0x00, 0x85, 0xE0, 0x82, 0x2C, 0xB0, 0x42, 0x35, 0xE9, 0x70};
-    uint8_t yq3[] = {0x6F, 0xC9, 0x8B, 0xD7, 0xE5, 0x02, 0x11, 0xA4, 0xA2, 0x71, 0x02,
-                     0xFA, 0x35, 0x49, 0xDF, 0x79, 0xEB, 0xCB, 0x4B, 0xF2, 0x46, 0xB8,
-                     0x09, 0x45, 0xCD, 0xDF, 0xE7, 0xD5, 0x09, 0xBB, 0xFD, 0x7D};
+    uint8_t xq3[] = { 0x24, 0x42, 0xA5, 0xCC, 0x0E, 0xCD, 0x01, 0x5F, 0xA3, 0xCA, 0x31,
+                      0xDC, 0x8E, 0x2B, 0xBC, 0x70, 0xBF, 0x42, 0xD6, 0x0C, 0xBC, 0xA2,
+                      0x00, 0x85, 0xE0, 0x82, 0x2C, 0xB0, 0x42, 0x35, 0xE9, 0x70 };
+    uint8_t yq3[] = { 0x6F, 0xC9, 0x8B, 0xD7, 0xE5, 0x02, 0x11, 0xA4, 0xA2, 0x71, 0x02,
+                      0xFA, 0x35, 0x49, 0xDF, 0x79, 0xEB, 0xCB, 0x4B, 0xF2, 0x46, 0xB8,
+                      0x09, 0x45, 0xCD, 0xDF, 0xE7, 0xD5, 0x09, 0xBB, 0xFD, 0x7D };
     /* signature for the message above */
-    uint8_t r3[] = {0xCB, 0x28, 0xE0, 0x99, 0x9B, 0x9C, 0x77, 0x15, 0xFD, 0x0A, 0x80,
-                    0xD8, 0xE4, 0x7A, 0x77, 0x07, 0x97, 0x16, 0xCB, 0xBF, 0x91, 0x7D,
-                    0xD7, 0x2E, 0x97, 0x56, 0x6E, 0xA1, 0xC0, 0x66, 0x95, 0x7C};
-    uint8_t s3[] = {0x86, 0xFA, 0x3B, 0xB4, 0xE2, 0x6C, 0xAD, 0x5B, 0xF9, 0x0B, 0x7F,
-                    0x81, 0x89, 0x92, 0x56, 0xCE, 0x75, 0x94, 0xBB, 0x1E, 0xA0, 0xC8,
-                    0x92, 0x12, 0x74, 0x8B, 0xFF, 0x3B, 0x3D, 0x5B, 0x03, 0x15};
+    uint8_t r3[] = { 0xCB, 0x28, 0xE0, 0x99, 0x9B, 0x9C, 0x77, 0x15, 0xFD, 0x0A, 0x80,
+                     0xD8, 0xE4, 0x7A, 0x77, 0x07, 0x97, 0x16, 0xCB, 0xBF, 0x91, 0x7D,
+                     0xD7, 0x2E, 0x97, 0x56, 0x6E, 0xA1, 0xC0, 0x66, 0x95, 0x7C };
+    uint8_t s3[] = { 0x86, 0xFA, 0x3B, 0xB4, 0xE2, 0x6C, 0xAD, 0x5B, 0xF9, 0x0B, 0x7F,
+                     0x81, 0x89, 0x92, 0x56, 0xCE, 0x75, 0x94, 0xBB, 0x1E, 0xA0, 0xC8,
+                     0x92, 0x12, 0x74, 0x8B, 0xFF, 0x3B, 0x3D, 0x5B, 0x03, 0x15 };
 
     unsigned int i;
     int resu;
@@ -86,8 +86,8 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
                         (UCL_SHA256 << UCL_HASH_SHIFT) ^
                         (UCL_NO_PRECOMP << UCL_PRECOMP_TRICK_SHIFT);
 
-    ucl_type_ecc_u8_affine_point Q3 = {.x = xq3, .y = yq3};
-    ucl_type_ecdsa_signature RS3    = {.r = r3, .s = s3};
+    ucl_type_ecc_u8_affine_point Q3 = { .x = xq3, .y = yq3 };
+    ucl_type_ecdsa_signature RS3 = { .r = r3, .s = s3 };
 
 #ifdef _MAXIM_HSM
     long unsigned int l_iSignatureLength = 128;
@@ -124,7 +124,7 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 
 #ifdef _MAXIM_HSM
     if (key.in_hsm) {
-        resu = ucl_sha256(hash, (unsigned char*)input, input_size);
+        resu = ucl_sha256(hash, (unsigned char *)input, input_size);
         resu = HSM_SignECDSA(session, hash, UCL_SHA256_HASHSIZE, signature, &l_iSignatureLength,
                              key.HSM_Objkey);
 
@@ -145,7 +145,7 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 #endif /* _MAXIM_HSM */
     {
         resu = ucl_ecdsa_signature(ucl_signature, key.ecdsa_privkey, &ucl_sha256,
-                                   (unsigned char*)input, input_size, &secp256r1, configuration);
+                                   (unsigned char *)input, input_size, &secp256r1, configuration);
 
         if (resu != UCL_OK) {
             print_error("ECDSA-P256r1-SHA256 SIGNATURE COMPUTATION TEST-1 NOK %d \n", resu);
@@ -163,7 +163,8 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 #endif /* _MAXIM_HSM */
     {
         resu = ucl_ecdsa_verification(key.ecdsa_pubkey, ucl_signature, &ucl_sha256,
-                                      (unsigned char*)input, input_size, &secp256r1, configuration);
+                                      (unsigned char *)input, input_size, &secp256r1,
+                                      configuration);
 
         if (resu != UCL_OK) {
             print_error("ECDSA-P256r1-SHA256 Signature Verification Failed (%d) \n", resu);
@@ -173,28 +174,20 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
 
     print_debug("Payload(%d):", input_size);
 
-    for (i = 0; i < input_size; i++) {
-        print_d("%02x", input[i]);
-    }
+    for (i = 0; i < input_size; i++) { print_d("%02x", input[i]); }
     print_d("\n");
 
     print_debug("Signature:\n");
     print_d("\tr:");
 
-    for (i = 0; i < 32; i++) {
-        print_d("%02x", ucl_signature.r[i]);
-    }
+    for (i = 0; i < 32; i++) { print_d("%02x", ucl_signature.r[i]); }
     print_d("\n");
 
     print_d("\ts:");
-    for (i = 0; i < 32; i++) {
-        print_d("%02x", ucl_signature.s[i]);
-    }
+    for (i = 0; i < 32; i++) { print_d("%02x", ucl_signature.s[i]); }
     print_d("\n");
 
-    for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
-        signature[i] = ucl_signature.r[i];
-    }
+    for (i = 0; i < ECDSA_MODULUS_LEN; i++) { signature[i] = ucl_signature.r[i]; }
 
     for (i = 0; i < ECDSA_MODULUS_LEN; i++) {
         signature[ECDSA_MODULUS_LEN + i] = ucl_signature.s[i];
@@ -203,9 +196,9 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
     return ERR_OK;
 }
 
-int read_file_ecdsa_keypair(ecdsa_key_t* key, char* filename)
+int read_file_ecdsa_keypair(ecdsa_key_t *key, char *filename)
 {
-    FILE* pFile;
+    FILE *pFile;
     int result = 0;
     unsigned char tmp_buffer[ECDSA_MODULUS_LEN];
     size_t buffer_length = ECDSA_MODULUS_LEN;
@@ -300,9 +293,9 @@ int read_file_ecdsa_keypair(ecdsa_key_t* key, char* filename)
     return ERR_OK;
 }
 
-int read_file_signed_ecdsa_publickey(u8* x, u8* y, u8* r, u8* s, size_t size, const char* filename)
+int read_file_signed_ecdsa_publickey(u8 *x, u8 *y, u8 *r, u8 *s, size_t size, const char *filename)
 {
-    FILE* pFile;
+    FILE *pFile;
     unsigned int i;
     int result;
     unsigned char tmp_buffer[MAX_RSA_LENGTH];
@@ -376,28 +369,20 @@ int read_file_signed_ecdsa_publickey(u8* x, u8* y, u8* r, u8* s, size_t size, co
 
     print_debug("Public Key:\n");
     print_d("\tX:\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", x[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", x[i]); }
     print_d("\n");
 
     print_d("\tY:\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", y[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", y[i]); }
     print_d("\n");
 
     print_debug("Public Key Signature:\n");
     print_d("\tr :\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", r[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", r[i]); }
     print_d("\n");
 
     print_d("\ts :\t");
-    for (i = 0; i < size; i++) {
-        print_d("%02x", s[i]);
-    }
+    for (i = 0; i < size; i++) { print_d("%02x", s[i]); }
     print_d("\n");
 
     fclose(pFile);
@@ -417,28 +402,22 @@ void print_ecdsaKey(ecdsa_key_t key)
 #endif /* _MAXIM_HSM */
     {
         print_d("\tX:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
-            print_d("%02x", key.ecdsa_pubkey.x[i]);
-        }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_pubkey.x[i]); }
         print_d("\n");
 
         print_d("\tY:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
-            print_d("%02x", key.ecdsa_pubkey.y[i]);
-        }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_pubkey.y[i]); }
         print_d("\n");
 
         print_d("\tD:\t");
-        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) {
-            print_d("%02x", key.ecdsa_privkey[i]);
-        }
+        for (i = 0; i < ECDSA_BLOCK_SIZE; i++) { print_d("%02x", key.ecdsa_privkey[i]); }
         print_d("\n");
     }
 }
 
 #ifdef _MAXIM_HSM
 
-int load_HSM_ecdsa_key(ecdsa_key_t* key, char* keyname)
+int load_HSM_ecdsa_key(ecdsa_key_t *key, char *keyname)
 {
     CK_RV rv = ERR_OK;
 

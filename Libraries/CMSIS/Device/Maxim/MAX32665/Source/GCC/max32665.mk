@@ -68,7 +68,9 @@ endif
 
 # Add target specific CMSIS source files
 ifneq (${MAKECMDGOALS},lib)
+ifneq (${MAKECMDGOALS},scpa)
 SRCS += ${STARTUPFILE}
+endif
 SRCS += backup_max32665.S
 SRCS += heap.c
 SRCS += system_max32665.c

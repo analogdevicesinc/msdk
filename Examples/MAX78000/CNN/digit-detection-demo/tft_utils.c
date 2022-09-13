@@ -42,6 +42,7 @@
 #include "rtc.h"
 #include "uart.h"
 #include "tft_utils.h"
+#include "example_config.h"
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
@@ -53,74 +54,23 @@ static int font = (int)&SansSerif16x16[0];
 
 static text_t label_text[] = {
     // info
-    {(char*)"One", 3},  {(char*)"Two", 3},  {(char*)"Three", 5}, {(char*)"Four", 4},
-    {(char*)"Five", 4}, {(char*)"Six", 3},  {(char*)"Seven", 5}, {(char*)"Eight", 5},
-    {(char*)"Nine", 4}, {(char*)"Zero", 4},
+    { (char *)"One", 3 },  { (char *)"Two", 3 },  { (char *)"Three", 5 }, { (char *)"Four", 4 },
+    { (char *)"Five", 4 }, { (char *)"Six", 3 },  { (char *)"Seven", 5 }, { (char *)"Eight", 5 },
+    { (char *)"Nine", 4 }, { (char *)"Zero", 4 },
 };
 #endif
 
-uint8_t signed_to_unsigned(int8_t val)
-{
-    uint8_t value;
-
-    if (val < 0) {
-        value = ~val + 1;
-        return (128 - value);
-    }
-
-    return val + 128;
-}
-
-#ifdef TFT_ENABLE
-void show_image(uint32_t* image, uint32_t xcord, uint32_t ycord, uint32_t scale, uint32_t w,
-                uint32_t h)
-{
-    int r, g, b;
-    uint32_t i, x, y;
-    uint32_t color;
-
-    x = xcord;
-    y = ycord;
-
-    for (i = 0; i < (w * h); i++) {
-        b = signed_to_unsigned(((image[i] >> 16) & 0xFF));
-        g = signed_to_unsigned(((image[i] >> 8) & 0xFF));
-        r = signed_to_unsigned(((image[i] >> 0) & 0xFF));
-        // b = (image[i] >> 16) & 0xFF;
-        // g = (image[i] >>  8) & 0xFF;
-        // r = (image[i] >>  0) & 0xFF;
-#ifdef BOARD_EVKIT_V1
-        color =
-            (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
-#endif
-#ifdef BOARD_FTHR_REVA
-        // Convert to RGB565
-        color = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
-#endif
-
-        MXC_TFT_WritePixel(x * scale, y * scale, scale, scale, color);
-
-        x += 1;
-
-        if (x >= (w + xcord)) {
-            x = xcord;
-            y += 1;
-        }
-    }
-}
-#endif
-
-void TFT_Print(char* str, int x, int y, int font, int length)
+void TFT_Print(char *str, int x, int y, int font, int length)
 {
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = length;
+    text.len = length;
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
-void draw_obj_rect(float* xy, int class_idx, uint32_t w, uint32_t h, uint8_t scale)
+void draw_obj_rect(float *xy, int class_idx, uint32_t w, uint32_t h, uint8_t scale)
 {
 #ifdef TFT_ENABLE
     int r = 0, g = 0, b = 0;

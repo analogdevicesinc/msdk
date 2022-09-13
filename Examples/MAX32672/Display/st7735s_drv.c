@@ -62,7 +62,7 @@ int st7735s_pixel(uint32_t x, uint32_t y, uint32_t z)
     return panel_cfg.sendfn(tx_data, 1, tx_data + 1, 3);
 }
 
-int st7735s_write_pixels(uint8_t* data, unsigned int len)
+int st7735s_write_pixels(uint8_t *data, unsigned int len)
 {
     uint8_t cmd = ST7735S_RAMWR;
 
@@ -95,10 +95,10 @@ int st7735s_xyloc(uint8_t row, uint8_t col)
     return panel_cfg.sendfn(tx_data, 1, tx_data + 1, 4);
 }
 
-int st7735s_init(st7735s_cfg_t* cfg)
+int st7735s_init(st7735s_cfg_t *cfg)
 {
     unsigned int i;
-    st7735s_regcfg_t* rc;
+    st7735s_regcfg_t *rc;
 
     if (cfg == NULL) {
         return -1;
@@ -111,7 +111,7 @@ int st7735s_init(st7735s_cfg_t* cfg)
     cfg->delayfn(500);
 
     /* Step through the register configuration */
-    i  = cfg->ncfgs;
+    i = cfg->ncfgs;
     rc = cfg->regcfg;
 
     while (i != 0) {

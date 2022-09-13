@@ -76,9 +76,9 @@ typedef enum {
     MXC_SYS_RESET0_PRST  = MXC_F_GCR_RST0_PERIPH_POS, /**< Peripheral reset */
     MXC_SYS_RESET0_SYS   = MXC_F_GCR_RST0_SYS_POS,    /**< System reset */
     /* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */
-    MXC_SYS_RESET1_I2C1    = (MXC_F_GCR_RST1_I2C1_POS + 32),    /**< Reset I2C1 */
-    MXC_SYS_RESET1_PT      = (MXC_F_GCR_RST1_PT_POS + 32),      /**< Reset PT */
-    MXC_SYS_RESET1_SPIXIP  = (MXC_F_GCR_RST1_SPIXIP_POS + 32),  /**< Reset SPIXIP */
+    MXC_SYS_RESET1_I2C1 = (MXC_F_GCR_RST1_I2C1_POS + 32), /**< Reset I2C1 */
+    MXC_SYS_RESET1_PT = (MXC_F_GCR_RST1_PT_POS + 32), /**< Reset PT */
+    MXC_SYS_RESET1_SPIXIP = (MXC_F_GCR_RST1_SPIXIP_POS + 32), /**< Reset SPIXIP */
     MXC_SYS_RESET1_SPIXIPM = (MXC_F_GCR_RST1_SPIXIPM_POS + 32), /**< Reset SPIXIPM */
     MXC_SYS_RESET1_SDHC    = (MXC_F_GCR_RST1_SDHC_POS + 32),    /**< Reset SDHC */
     MXC_SYS_RESET1_WDT1    = (MXC_F_GCR_RST1_WDT1_POS + 32),    /**< Reset WDT1 */
@@ -187,16 +187,16 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_IPO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
-    MXC_SYS_CLOCK_IBRO  = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
-    MXC_SYS_CLOCK_ISO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO,
-    MXC_SYS_CLOCK_ERFO  = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
-    MXC_SYS_CLOCK_INRO  = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
+    MXC_SYS_CLOCK_IPO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
+    MXC_SYS_CLOCK_IBRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
+    MXC_SYS_CLOCK_ISO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO,
+    MXC_SYS_CLOCK_ERFO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
+    MXC_SYS_CLOCK_INRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
     MXC_SYS_CLOCK_ERTCO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
 } mxc_sys_system_clock_t;
 
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
-#define MXC_SYS_CTB_CLK    1 // Enable CTB CLK
+#define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
 /***** Function Prototypes *****/
 
@@ -278,7 +278,7 @@ uint8_t MXC_SYS_GetRev(void);
  * @param      len          length of the USN buffer
  * @returns    #E_NO_ERROR if everything is successful.
  */
-int MXC_SYS_GetUSN(uint8_t* serialNumber, int len);
+int MXC_SYS_GetUSN(uint8_t *serialNumber, int len);
 
 #ifdef __cplusplus
 }

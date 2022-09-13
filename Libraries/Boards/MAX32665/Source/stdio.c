@@ -69,10 +69,10 @@ int g_readChar = 0;
 
 /* Defines - Compiler Specific */
 #if defined(__ICCARM__)
-#define STDIN_FILENO  0 // Defines that are not included in the DLIB.
+#define STDIN_FILENO 0 // Defines that are not included in the DLIB.
 #define STDOUT_FILENO 1
 #define STDERR_FILENO 2
-#define EBADF         -1
+#define EBADF -1
 #endif /* __ICCARM__ */
 
 #include "mxc_device.h"
@@ -87,7 +87,7 @@ int g_readChar = 0;
  * GNUC requires all functions below. IAR & KEIL only use read and write.
  */
 #if defined(__GNUC__)
-int _open(const char* name, int flags, int mode)
+int _open(const char *name, int flags, int mode)
 {
     return -1;
 }
@@ -103,7 +103,7 @@ int _lseek(int file, off_t offset, int whence)
 {
     return -1;
 }
-int _fstat(int file, struct stat* st)
+int _fstat(int file, struct stat *st)
 {
     return -1;
 }
@@ -114,38 +114,38 @@ int _fstat(int file, struct stat* st)
 #if defined(__ICCARM__) || defined(__GNUC__)
 
 #if defined(__GNUC__) // GNUC _read function prototype
-int _read(int file, char* ptr, int len)
+int _read(int file, char *ptr, int len)
 {
     int n;
 #elif defined(__ICCARM__) // IAR Compiler _read function prototype
-int __read(int file, unsigned char* ptr, size_t len)
+int __read(int file, unsigned char *ptr, size_t len)
 {
     size_t n;
-#endif                    /*  */
+#endif /*  */
 
     int num = 0; // count of number received.
 
     switch (file) {
-        case STDIN_FILENO:
-            for (n = 0; n < len; n++) {
-                *ptr = MXC_UART_ReadCharacter(MXC_UARTn); // read a byte.
-                MXC_UART_WriteCharacter(MXC_UARTn, *ptr); // echo the byte.
-                if (*ptr == '\r') {                       // check for end of line.
-                    *ptr = '\n';
-                    num++;
-                    ptr++;
+    case STDIN_FILENO:
+        for (n = 0; n < len; n++) {
+            *ptr = MXC_UART_ReadCharacter(MXC_UARTn); // read a byte.
+            MXC_UART_WriteCharacter(MXC_UARTn, *ptr); // echo the byte.
+            if (*ptr == '\r') { // check for end of line.
+                *ptr = '\n';
+                num++;
+                ptr++;
 
-                    break;
-                } else {
-                    ptr++;
-                    num++;
-                }
+                break;
+            } else {
+                ptr++;
+                num++;
             }
+        }
 
-            break;
-        default:
-            errno = EBADF;
-            return -1;
+        break;
+    default:
+        errno = EBADF;
+        return -1;
     }
     return num;
 }
@@ -153,37 +153,35 @@ int __read(int file, unsigned char* ptr, size_t len)
 /* newlib/libc printf() will eventually call write() to get the data to the stdout */
 #if defined(__GNUC__)
 // GNUC _write function prototype
-int _write(int file, char* ptr, int len)
+int _write(int file, char *ptr, int len)
 {
     int n;
 #elif defined(__ICCARM__) // IAR Compiler _read function prototype
 // IAR EW _write function prototype
-int __write(int file, const unsigned char* ptr, size_t len)
+int __write(int file, const unsigned char *ptr, size_t len)
 {
     size_t n;
-#endif                    /* __GNUC__ */
+#endif /* __GNUC__ */
 
     switch (file) {
-        case STDOUT_FILENO:
-        case STDERR_FILENO:
-            // This function should be as fast as possible
-            // So we'll forgo the UART driver for now
-            for (n = 0; n < len; n++) {
-                if (*ptr == '\n') {
-                    // Wait until there's room in the FIFO
-                    while (MXC_UARTn->status & MXC_F_UART_STATUS_TX_FULL)
-                        ;
-                    MXC_UARTn->fifo = '\r';
-                }
+    case STDOUT_FILENO:
+    case STDERR_FILENO:
+        // This function should be as fast as possible
+        // So we'll forgo the UART driver for now
+        for (n = 0; n < len; n++) {
+            if (*ptr == '\n') {
                 // Wait until there's room in the FIFO
-                while (MXC_UARTn->status & MXC_F_UART_STATUS_TX_FULL)
-                    ;
-                MXC_UARTn->fifo = *ptr++;
+                while (MXC_UARTn->status & MXC_F_UART_STATUS_TX_FULL) {}
+                MXC_UARTn->fifo = '\r';
             }
-            break;
-        default:
-            errno = EBADF;
-            return -1;
+            // Wait until there's room in the FIFO
+            while (MXC_UARTn->status & MXC_F_UART_STATUS_TX_FULL) {}
+            MXC_UARTn->fifo = *ptr++;
+        }
+        break;
+    default:
+        errno = EBADF;
+        return -1;
     }
 
     return len;
@@ -193,7 +191,7 @@ int __write(int file, const unsigned char* ptr, size_t len)
 
 /* Handle Keil/ARM Compiler which uses fputc and fgetc for stdio */
 #if defined(__CC_ARM)
-int fputc(int c, FILE* f)
+int fputc(int c, FILE *f)
 {
     if (c != '\n') {
         MXC_UART_WriteCharacter(MXC_UARTn, c);
@@ -205,7 +203,7 @@ int fputc(int c, FILE* f)
     return 0;
 }
 
-int __backspace(FILE* f)
+int __backspace(FILE *f)
 {
     if (g_readChar)
         return g_lastChar;
@@ -213,7 +211,7 @@ int __backspace(FILE* f)
         return EOF;
 }
 
-int fgetc(FILE* f)
+int fgetc(FILE *f)
 {
     g_lastChar = (int)MXC_UART_ReadCharacter(
         MXC_UARTn); /* Read the byte and save it to global for backspace */
@@ -221,7 +219,7 @@ int fgetc(FILE* f)
     return g_lastChar;
 }
 
-int ferror(FILE* f)
+int ferror(FILE *f)
 {
     g_readChar = 0;
     return EOF;
@@ -239,8 +237,7 @@ void _ttywrch(int c)
 
 void _sys_exit(int return_code)
 {
-    while (1) {
-    }
+    while (1) {}
 }
 
 #endif /* __CC_ARM  */

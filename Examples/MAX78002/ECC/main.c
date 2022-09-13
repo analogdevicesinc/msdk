@@ -50,7 +50,7 @@
 
 /***** Definitions *****/
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 /***** Globals *****/
 volatile uint32_t badData;
@@ -66,7 +66,7 @@ uint32_t ramTop = (MXC_SRAM_MEM_BASE + 32768);
 
 void ECC_IRQHandler(void)
 {
-    eccErr  = MXC_GCR->eccerr;
+    eccErr = MXC_GCR->eccerr;
     eccDErr = MXC_GCR->eccced;
     eccAddr = MXC_GCR->eccaddr;
     eccFlag = 1;
@@ -79,7 +79,7 @@ void ECC_IRQHandler(void)
 int main(void)
 {
     unsigned int i, test_fail, test_pass;
-    volatile uint32_t* cursor;
+    volatile uint32_t *cursor;
 
     test_fail = test_pass = 0;
 
@@ -101,7 +101,7 @@ int main(void)
     eccFlag = 0;
 
     for (i = MXC_SRAM_MEM_BASE; i < ramTop - sizeof(uint32_t); i += sizeof(uint32_t)) {
-        cursor = (uint32_t*)i;
+        cursor = (uint32_t *)i;
         (volatile uint32_t) * cursor; // Force a read of the memory
 
         if (eccFlag) {
@@ -115,7 +115,7 @@ int main(void)
     eccFlag = 0;
 
     for (i = MXC_SRAM_MEM_BASE; i < ramTop - sizeof(uint32_t); i += sizeof(uint32_t)) {
-        cursor = (uint32_t*)i;
+        cursor = (uint32_t *)i;
         (volatile uint32_t) * cursor; // Force a read of the memory
 
         if (eccFlag) {
@@ -184,6 +184,5 @@ int main(void)
            test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
-    while (1)
-        ;
+    while (1) {}
 }

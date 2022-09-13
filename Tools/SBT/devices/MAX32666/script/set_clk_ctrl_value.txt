@@ -1,0 +1,10 @@
+#
+#---------------------------------     Explanation          ----------------------------
+# MAX32666 defaults to the 60MHz internal oscillator (system HCLK divided by 2, so output frequency is 30MHz).
+# To USB works properly it requres >30MHz HCLK clock, below configuration set AHB bus clock to 60MHz to meet USB criteria
+#
+#
+# MAX32666 Write CLKCN0 Value
+# Write CLKCN_WRITE_0_VALUE at 0x19a0 to 0x6404a008
+#
+write-otp A019 08a0046400000000000000000000

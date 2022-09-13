@@ -35,18 +35,12 @@
  * @file    main.c
  * @brief   Demonstrates a watchdog timer in run mode
  *
- * @details When the program starts LED3 blinks three times and stops.
+ * @details When the program starts LED0 blinks three times and stops.
  *          Then LED0 start blinking continuously.
  *          Open a terminal program to see interrupt messages.
  *
  *          SW2: Push SW2 to trigger a watchdog reset. This will reset the watchdog before
  *               the wait period has expired and trigger an interrupt.
- *
- *          SW3: Push SW3 to trigger a delay and see LED0 stop blinking momentarily.
- *               This delay long enough for the timeout period to expire and trigger an interrupt.
- *
- *          SW3: Push SW3 to trigger a longer delay and see the program restart by blinking LED3 three times.
- *               This delay is long enough for the reset period to expire and trigger a reset.
  */
 
 /***** Includes *****/
@@ -68,7 +62,7 @@
                  //UNDERFLOW
 
 #define RESET_PERIOD MXC_WDT_PERIOD_2_28
-#define INT_PERIOD   MXC_WDT_PERIOD_2_27
+#define INT_PERIOD MXC_WDT_PERIOD_2_27
 
 // refers to array, do not change constants
 #define SW2 0
@@ -147,14 +141,11 @@ int main(void)
     while (1) {
         //Push SW1 to see interrupt and reset handlers
         if (PB_Get(SW2) != 0) {
-            while (intCnt == 0)
-                ;
+            while (intCnt == 0) {}
             printf("WDT Timer restored in interrupt handler before reset.\n");
-            while (intCnt == 1)
-                ;
+            while (intCnt == 1) {}
             printf("WDT Timer not restored in interrupt handler. Device will reset shortly.\n");
-            while (1)
-                ;
+            while (1) {}
         }
 
         //blink LED0

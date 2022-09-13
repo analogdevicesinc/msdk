@@ -52,13 +52,13 @@
 /***** Definitions *****/
 
 // Parameters for PWM output
-#define FREQ       200      // (Hz)
-#define DUTY_CYCLE 75       // (%)
-#define PWM_TIMER  MXC_TMR0 // must change PWM_PORT and PWM_PIN if changed
+#define FREQ 200 // (Hz)
+#define DUTY_CYCLE 75 // (%)
+#define PWM_TIMER MXC_TMR0 // must change PWM_PORT and PWM_PIN if changed
 
 // Parameters for Continuous timer
-#define INTERVAL_TIME_CONT 1        // (s) will toggle after every interval
-#define CONT_TIMER         MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
+#define INTERVAL_TIME_CONT 1 // (s) will toggle after every interval
+#define CONT_TIMER MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
 
 // Check Frequency bounds
 #if (FREQ == 0)
@@ -81,7 +81,7 @@ void PWMTimer()
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = PeripheralClock / FREQ;
-    unsigned int dutyTicks   = periodTicks * DUTY_CYCLE / 100;
+    unsigned int dutyTicks = periodTicks * DUTY_CYCLE / 100;
 
     /*
     Steps for configuring a timer for PWM mode:
@@ -94,10 +94,10 @@ void PWMTimer()
 
     MXC_TMR_Shutdown(PWM_TIMER);
 
-    tmr.pres    = TMR_PRES_1;
-    tmr.mode    = TMR_MODE_PWM;
+    tmr.pres = TMR_PRES_1;
+    tmr.mode = TMR_MODE_PWM;
     tmr.cmp_cnt = periodTicks;
-    tmr.pol     = 1;
+    tmr.pol = 1;
 
     MXC_TMR_Init(PWM_TIMER, &tmr);
 
@@ -115,7 +115,7 @@ void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
-    MXC_GPIO_OutToggle(led_pin[0].port, led_pin[0].mask);
+    MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
 }
 
 void ContinuousTimer()
@@ -135,10 +135,10 @@ void ContinuousTimer()
 
     MXC_TMR_Shutdown(CONT_TIMER);
 
-    tmr.pres    = TMR_PRES_4;
-    tmr.mode    = TMR_MODE_CONTINUOUS;
+    tmr.pres = TMR_PRES_4;
+    tmr.mode = TMR_MODE_CONTINUOUS;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     MXC_TMR_Init(CONT_TIMER, &tmr);
 
@@ -155,7 +155,8 @@ int main(void)
     printf("\n************************** Timer Example **************************\n\n");
     printf("1. A continuous mode timer is used to create an interrupt every %d sec.\n",
            INTERVAL_TIME_CONT);
-    printf("   LED0 (Port 1.06) will toggle each time the interrupt occurs.\n\n");
+    // LED pins are defined in board.c file
+    printf("   LED1 will toggle each time the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 1.0.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
 

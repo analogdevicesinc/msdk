@@ -75,9 +75,9 @@ volatile uint32_t isr_flags;
 
 int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
-    uint32_t* ptr;
+    uint32_t *ptr;
 
-    for (ptr = (uint32_t*)startaddr; ptr < (uint32_t*)(startaddr + length); ptr++) {
+    for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
         }
@@ -136,19 +136,19 @@ void flash_init(void)
     generate interrupts of its own (as shown in this example), 
     in which case use #2 for the FLC ISRs.
     */
-    NVIC_SetRAM();                                  // Execute ISRs out of SRAM
+    NVIC_SetRAM(); // Execute ISRs out of SRAM
     MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
-    NVIC_EnableIRQ(FLC0_IRQn);                      // Enable interrupt
+    NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
     __enable_irq();
 
     // Clear and enable flash programming interrupts
     MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE);
     isr_flags = 0;
-    isr_cnt   = 0;
+    isr_cnt = 0;
 }
 
 //******************************************************************************
-int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
+int flash_erase(uint32_t start, uint32_t end, uint32_t *buffer, unsigned length)
 {
     int retval;
     uint32_t start_align, start_len, end_align, end_len, i;
@@ -157,9 +157,9 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
 
     // Align start and end on page boundaries, calculate length of data to buffer
     start_align = start - (start % MXC_FLASH_PAGE_SIZE);
-    start_len   = (start % MXC_FLASH_PAGE_SIZE);
-    end_align   = end - (end % MXC_FLASH_PAGE_SIZE);
-    end_len     = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
+    start_len = (start % MXC_FLASH_PAGE_SIZE);
+    end_align = end - (end % MXC_FLASH_PAGE_SIZE);
+    end_len = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
 
     // Make sure the length of buffer is sufficient
     if ((length < start_len) || (length < end_len)) {
@@ -173,8 +173,8 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
         }
 
         // Buffer first page data and last page data, erase and write
-        memcpy(buffer, (void*)start_align, start_len);
-        memcpy(&buffer[start_len], (void*)end, end_len);
+        memcpy(buffer, (void *)start_align, start_len);
+        memcpy(&buffer[start_len], (void *)end, end_len);
         retval = MXC_FLC_PageErase(start_align);
 
         if (retval != E_NO_ERROR) {
@@ -197,7 +197,7 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
     }
 
     // Buffer, erase, and write the data in the first page
-    memcpy(buffer, (void*)start_align, start_len);
+    memcpy(buffer, (void *)start_align, start_len);
     retval = MXC_FLC_PageErase(start_align);
 
     if (retval != E_NO_ERROR) {
@@ -211,7 +211,7 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t* buffer, unsigned length)
     }
 
     // Buffer, erase, and write the data in the last page
-    memcpy(buffer, (void*)end, end_len);
+    memcpy(buffer, (void *)end, end_len);
     retval = MXC_FLC_PageErase(end_align);
 
     if (retval != E_NO_ERROR) {
@@ -258,8 +258,7 @@ ADDR: 0x%x to ADDR: 0x%x\n",
 #endif
 #endif
 
-    while (!PB_Get(0)) {
-    }
+    while (!PB_Get(0)) {}
 
     // Initialize the Flash (see notes in 'flash_init' definition)
     flash_init();
@@ -316,7 +315,7 @@ ADDR: 0x%x to ADDR: 0x%x\n",
         code start to bleed into each other...
         */
         uint32_t testval = i;
-        error            = MXC_FLC_Write32(testaddr, testval);
+        error = MXC_FLC_Write32(testaddr, testval);
         if (error != E_NO_ERROR) {
             printf("Failure writing 0x%x to ADDR: 0x%x with error code %i\n", i, testaddr, error);
             return 1;
@@ -355,9 +354,9 @@ ADDR: 0x%x to ADDR: 0x%x\n",
     printf("Done!\n");
 
     // Erase all of page 2.
-    int page            = 2;
+    int page = 2;
     uint32_t erase_addr = MXC_FLASH_MEM_BASE + (page * MXC_FLASH_PAGE_SIZE);
-    error               = MXC_FLC_PageErase(erase_addr);
+    error = MXC_FLC_PageErase(erase_addr);
 
     if (error) {
         printf("Failed to erase page %i (ADDR: 0x%x) with error code %i\n", page, erase_addr,
@@ -377,7 +376,7 @@ ADDR: 0x%x to ADDR: 0x%x\n",
     // Erase partial pages or wide range of pages and keep the data on the page not inbetween start and end.
     // In this case erase part of pages 1 and 2
     start = (MXC_FLASH_MEM_BASE + 0x80);
-    end   = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
+    end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
     printf("Testing partial erasure between pages 1 (ADDR: 0x%x) and 2 (ADDR: 0x%x)...\n", start,
            end);
 

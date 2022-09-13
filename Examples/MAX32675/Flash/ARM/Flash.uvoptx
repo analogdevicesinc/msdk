@@ -10,7 +10,7 @@
     <aExt>*.s*; *.src; *.a*</aExt>
     <oExt>*.obj; *.o</oExt>
     <lExt>*.lib</lExt>
-    <tExt>*.txt; *.h; *.inc</tExt>
+    <tExt>*.txt; *.h; *.inc; *.md</tExt>
     <pExt>*.plm</pExt>
     <CppX>*.cpp</CppX>
     <nMigrate>0</nMigrate>
@@ -113,7 +113,7 @@
         <tDllPa></tDllPa>
         <tDlgDll></tDlgDll>
         <tDlgPa></tDlgPa>
-        <tIfile>.\MAX32670_RAM.ini</tIfile>
+        <tIfile>.\MAX32675_RAM.ini</tIfile>
         <pMon>BIN\CMSIS_AGDI.dll</pMon>
       </DebugOpt>
       <TargetDriverDllRegistry>
@@ -140,7 +140,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>CMSIS_AGDI</Key>
-          <Name>-X"CMSIS-DAP v1" -U040900010edc805e0000000000000000 -O1007 -S10 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO23 -FD20000000 -FC3000 -FN1 -FF0MAX32670.FLM -FS010000000 -FL05FFFF -FP0($$Device:MAX32670$Flash\MAX32670.FLM)</Name>
+          <Name>-X"CMSIS-DAP v1" -U0409170241ffcce80000000000000000 -O999 -S10 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO23 -FD20000000 -FC3000 -FN1 -FF0MAX32675.FLM -FS010000000 -FL05FFFF -FP0($$Device:MAX32675$Flash\MAX32675.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -154,16 +154,16 @@
           <Type>0</Type>
           <LineNumber>210</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>536872400</Address>
+          <Address>536872444</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</Filename>
+          <Filename>RTE\Device\MAX32675_Cortex-M4\startup_max32675.s</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Flash\RTE/Device/MAX32670_Cortex-M4/startup_max32670.s\210</Expression>
+          <Expression>\\Flash\RTE/Device/MAX32675_Cortex-M4/startup_max32675.s\210</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>
@@ -180,7 +180,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>
@@ -277,14 +277,6 @@
   <Group>
     <GroupName>::Device</GroupName>
     <tvExp>1</tvExp>
-    <tvExpOptDlg>0</tvExpOptDlg>
-    <cbSel>0</cbSel>
-    <RteFlg>1</RteFlg>
-  </Group>
-
-  <Group>
-    <GroupName>::Target Rev</GroupName>
-    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>1</RteFlg>

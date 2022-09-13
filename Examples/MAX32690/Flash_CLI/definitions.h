@@ -17,8 +17,8 @@
 #define FLASH_STORAGE_START_ADDR \
     MXC_FLASH_PAGE_ADDR(FLASH_STORAGE_PAGE_NO) ///< Internal storage start address
 
-int flash_write(uint32_t startaddr, uint32_t length, uint32_t* data);
-int flash_read(uint32_t startaddr, uint32_t length, uint8_t* data);
+int flash_write(uint32_t startaddr, uint32_t length, uint32_t *data);
+int flash_read(uint32_t startaddr, uint32_t length, uint8_t *data);
 int check_erased(uint32_t startaddr, uint32_t length);
-uint32_t calculate_crc(uint32_t* array, uint32_t length);
+uint32_t calculate_crc(uint32_t *array, uint32_t length);
 #endif // DEFINITIONS_H

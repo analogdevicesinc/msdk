@@ -18,7 +18,7 @@
  *
  * @ingroup UCL_SHA
  */
-int ucl_sha(u8* hash, u8* data, u32 data_byteLen, int algo);
+int ucl_sha(u8 *hash, u8 *data, u32 data_byteLen, int algo);
 
 /*============================================================================*/
 /** <b>SHA Init</b>.
@@ -53,7 +53,7 @@ int ucl_sha_init(int algo);
  *
  * @ingroup UCL_SHA
  */
-int ucl_sha_core(u8* data, u32 data_byteLen);
+int ucl_sha_core(u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA Finish</b>.
@@ -73,4 +73,4 @@ int ucl_sha_core(u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA
  */
-int ucl_sha_finish(u8* hash);
+int ucl_sha_finish(u8 *hash);

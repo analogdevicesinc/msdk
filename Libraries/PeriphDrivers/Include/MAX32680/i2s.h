@@ -58,8 +58,8 @@ extern "C" {
 
 /** @brief I2S stereo mode select */
 typedef enum {
-    MXC_I2S_STEREO        = 0,
-    MXC_I2S_MONO_LEFT_CH  = 2,
+    MXC_I2S_STEREO = 0,
+    MXC_I2S_MONO_LEFT_CH = 2,
     MXC_I2S_MONO_RIGHT_CH = 3
 } mxc_i2s_stereo_t;
 
@@ -106,9 +106,9 @@ typedef struct {
     mxc_i2s_polarity_t wsPolarity;
     mxc_i2s_samplesize_t sampleSize;
     uint16_t clkdiv;
-    void* rawData;
-    void* txData;
-    void* rxData;
+    void *rawData;
+    void *txData;
+    void *rxData;
     uint32_t length;
 } mxc_i2s_req_t;
 
@@ -120,7 +120,7 @@ typedef struct {
  * @param   req           see \ref mxc_i2s_req_t I2S Request Struct 
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2S_Init(mxc_i2s_req_t* req);
+int MXC_I2S_Init(mxc_i2s_req_t *req);
 
 /**
  * @brief   Release I2S, clear configuration and flush FIFOs
@@ -135,7 +135,7 @@ int MXC_I2S_Shutdown(void);
  * @param   req           see \ref mxc_i2s_req_t I2S Request Struct 
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.   
  */
-int MXC_I2S_ConfigData(mxc_i2s_req_t* req);
+int MXC_I2S_ConfigData(mxc_i2s_req_t *req);
 
 /**
  * @brief   Enable TX channel
@@ -190,7 +190,7 @@ void MXC_I2S_Flush(void);
  * 
  * @returns If successful the number of samples successfuly written to the FIFO. Otherwise, an error code. See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2S_FillTXFIFO(void* txData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt);
+int MXC_I2S_FillTXFIFO(void *txData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt);
 
 /**
  * @brief   Read audio samples from I2S receive buffer
@@ -202,7 +202,7 @@ int MXC_I2S_FillTXFIFO(void* txData, mxc_i2s_wsize_t wordSize, int len, int smpl
  * 
  * @returns If successful, the number of samples actually read from the buffer. Otherwise, an error code. See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2S_ReadRXFIFO(void* rxData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt);
+int MXC_I2S_ReadRXFIFO(void *rxData, mxc_i2s_wsize_t wordSize, int len, int smpl_cnt);
 
 /**
  * @brief   Enable Interrupts
@@ -239,7 +239,7 @@ void MXC_I2S_ClearFlags(uint32_t flags);
  * 
  * @returns If successful, E_NO_ERROR. Otherwise, an error code. See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2S_Transaction(mxc_i2s_req_t* i2s_req);
+int MXC_I2S_Transaction(mxc_i2s_req_t *i2s_req);
 
 /**
  * @brief   Sets up an asynchronous I2S transaction.
@@ -248,7 +248,7 @@ int MXC_I2S_Transaction(mxc_i2s_req_t* i2s_req);
  * 
  * @returns If successful, E_NO_ERROR. Otherwise, an error code. See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2S_TransactionAsync(mxc_i2s_req_t* i2s_req);
+int MXC_I2S_TransactionAsync(mxc_i2s_req_t *i2s_req);
 
 /**
  * @brief   Configure TX DMA transaction
@@ -256,7 +256,7 @@ int MXC_I2S_TransactionAsync(mxc_i2s_req_t* i2s_req);
  * @param   src_addr    source address of data
  * @param   len         length od the data to be transmitted    
  */
-int MXC_I2S_TXDMAConfig(void* src_addr, int len);
+int MXC_I2S_TXDMAConfig(void *src_addr, int len);
 
 /**
  * @brief   Configure RX DMA transaction
@@ -264,7 +264,7 @@ int MXC_I2S_TXDMAConfig(void* src_addr, int len);
  * @param   dest_addr   destination address
  * @param   len         length of the data to be received
  */
-int MXC_I2S_RXDMAConfig(void* dest_addr, int len);
+int MXC_I2S_RXDMAConfig(void *dest_addr, int len);
 
 /**
  * @brief   Handler for asynchronous I2S transactions. 

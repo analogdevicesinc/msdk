@@ -672,6 +672,21 @@ class BLE_hci:
         phy="%0.2X"%int(args.phy)
         self.send_command("01342004"+channel+packetLength+payload+phy)
 
+    ## txTestVS function.
+     #
+     # Sends a vendor specific HCI command for the transmitter test.
+    ################################################################################
+    def txTestVSFunc(self, args):
+        channel="%0.2X"%int(args.channel)
+        packetLength="%0.2X"%int(args.packetLength)
+        payload="%0.2X"%int(args.payload)
+        phy="%0.2X"%int(args.phy)
+
+        numPackets = "%0.2X"%(int(args.numPackets) & 0xFF)
+        numPackets+= "%0.2X"%((int(args.numPackets) & 0xFF00) >> 8)
+
+        self.send_command("0103FF06"+channel+packetLength+payload+phy+numPackets)
+
     ## rxTest function.
      #
      # Sends HCI command for the receiver test.
@@ -1033,6 +1048,38 @@ if __name__ == '__main__':
         default: 0
     """)
     txTest_parser.set_defaults(func=ble_hci.txTestFunc)
+
+    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['tx'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
+    txTestVS_parser.add_argument('-c', '--channel', default="0", help="TX test channel, 0-39, default: 0")
+    txTestVS_parser.add_argument('--phy', default="1", help=
+    """TX test PHY
+        1: 1M
+        2: 2M
+        3: S8
+        4: S2
+        default: 1M
+    """)
+    txTestVS_parser.add_argument('-p','--payload', default="0", help=
+    """TX test Payload
+        0: PRBS9
+        1: 11110000
+        2: 10101010
+        3: PRBS15
+        4: 11111111
+        5: 00000000
+        6: 00001111
+        7: 01010101
+        default: PRBS9
+    """)
+    txTestVS_parser.add_argument('-pl', '--packetLength', default="0", help=
+    """"TX packet length, number of bytes per packet, 0-255
+        default: 0
+    """)
+    txTestVS_parser.add_argument('-np', '--numPackets', default="0", help=
+    """"Number of packets to TX, 2 bytes hex, 0 equals inf.
+        default: 0
+    """)
+    txTestVS_parser.set_defaults(func=ble_hci.txTestVSFunc)
 
     rxTest_parser = subparsers.add_parser('rxTest', aliases=['rx'], help="Execute the receiver test")
     rxTest_parser.add_argument('-c', '--channel', default="0", help="RX test channel, 0-39, default: 0")

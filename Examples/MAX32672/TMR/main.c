@@ -34,8 +34,9 @@
 /**
  * @file    main.c
  * @brief   Timer example
- * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on 3.7
- *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
+ * @details PWM Timer        - Outputs a PWM signal (1KHz, 50% duty cycle) on P0.5
+ *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 250ms)
+ *          One shoot Timer  - Outputs: Toggle LED1 after  1s
  */
 
 /***** Includes *****/
@@ -55,15 +56,15 @@
 #define CLOCK_SOURCE MXC_TMR_8M_CLK // must be mxc_tmr_clock_t
 
 // Parameters for Continuous timer
-#define OST_FREQ  1        // (Hz)
+#define OST_FREQ 1 // (Hz)
 #define OST_TIMER MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
 
-#define FREQ       1000     // (Hz)
-#define DUTY_CYCLE 50       // (%)
-#define PWM_TIMER  MXC_TMR2 // must change PWM_PORT and PWM_PIN if changed
+#define FREQ 1000 // (Hz)
+#define DUTY_CYCLE 50 // (%)
+#define PWM_TIMER MXC_TMR2 // must change PWM_PORT and PWM_PIN if changed
 
 // Parameters for Continuous timer
-#define CONT_FREQ  4        // (Hz)
+#define CONT_FREQ 4 // (Hz)
 #define CONT_TIMER MXC_TMR3 // Can be MXC_TMR0 through MXC_TMR5
 
 // Check Frequency bounds
@@ -78,6 +79,10 @@
 #error "Duty Cycle must be between 0 and 100."
 #endif
 
+// led pins are defined in board.c file
+#define LED0 0 // P0.22 on EvKit, P0.2 on FTHR board
+#define LED1 1 // P0.23 on EvKit, P0.3 on FTHR board
+
 /***** Globals *****/
 
 /***** Functions *****/
@@ -87,7 +92,7 @@ void PWMTimer()
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, CLOCK_SOURCE, 16, FREQ);
-    unsigned int dutyTicks   = periodTicks * DUTY_CYCLE / 100;
+    unsigned int dutyTicks = periodTicks * DUTY_CYCLE / 100;
 
     /*
     Steps for configuring a timer for PWM mode:
@@ -100,11 +105,11 @@ void PWMTimer()
 
     MXC_TMR_Shutdown(PWM_TIMER);
 
-    tmr.pres    = TMR_PRES_16;
-    tmr.mode    = TMR_MODE_PWM;
-    tmr.clock   = CLOCK_SOURCE;
+    tmr.pres = TMR_PRES_16;
+    tmr.mode = TMR_MODE_PWM;
+    tmr.clock = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;
-    tmr.pol     = 1;
+    tmr.pol = 1;
 
     MXC_TMR_Init(PWM_TIMER, &tmr, true);
 
@@ -122,7 +127,7 @@ void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
-    MXC_GPIO_OutToggle(led_pin[0].port, led_pin[0].mask);
+    LED_Toggle(LED0);
 }
 
 void ContinuousTimer()
@@ -142,11 +147,11 @@ void ContinuousTimer()
 
     MXC_TMR_Shutdown(CONT_TIMER);
 
-    tmr.pres    = TMR_PRES_128;
-    tmr.mode    = TMR_MODE_CONTINUOUS;
-    tmr.clock   = CLOCK_SOURCE;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_CONTINUOUS;
+    tmr.clock = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     MXC_TMR_Init(CONT_TIMER, &tmr, true);
     MXC_TMR_EnableInt(CONT_TIMER);
@@ -159,7 +164,7 @@ void OneshotTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(OST_TIMER);
-    MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
+    LED_Toggle(LED1);
 }
 
 void OneshotTimer()
@@ -179,12 +184,12 @@ void OneshotTimer()
 
     MXC_TMR_Shutdown(OST_TIMER);
 
-    tmr.pres    = TMR_PRES_128;
-    tmr.mode    = TMR_MODE_ONESHOT;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_ONESHOT;
     tmr.bitMode = TMR_BIT_MODE_16B;
-    tmr.clock   = CLOCK_SOURCE;
+    tmr.clock = CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     MXC_TMR_Init(OST_TIMER, &tmr, true);
 
@@ -194,17 +199,16 @@ void OneshotTimer()
 // *****************************************************************************
 int main(void)
 {
-    //Exact timer operations can be found in tmr_utils.c
-
     printf("\n************************** Timer Example **************************\n\n");
     printf("1. A continuous mode timer is used to create an interrupt at freq of %d Hz.\n",
            CONT_FREQ);
-    printf("   LED0 (Port 0.22) will toggle each time the interrupt occurs.\n\n");
+    printf("   LED0 will toggle each time the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 0.5.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
     printf("3. Timer 1 is configured as 16-bit timer used in oneshot mode\n");
     printf("   which is used to create an interrupt at freq of %d Hz.\n", OST_FREQ);
-    printf("   LED1 (Port 0.23) will toggle when the interrupt occurs.\n\n");
+    printf("   LED1 will toggle when the interrupt occurs.\n\n");
+
     PWMTimer();
 
     MXC_NVIC_SetVector(TMR3_IRQn, ContinuousTimerHandler);
@@ -215,10 +219,9 @@ int main(void)
     NVIC_EnableIRQ(TMR1_IRQn);
     OneshotTimer();
 
-    printf("\nStarted Timer");
+    printf("Started Timer\n");
 
-    while (1)
-        ;
+    while (1) {}
 
     return 0;
 }

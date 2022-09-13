@@ -54,8 +54,8 @@ int PB_Init(void)
     // Enable pushbutton inputs
     for (i = 0; i < num_pbs; i++) {
         if (MXC_GPIO_GET_IDX(pb_pin[i].port) == 4) {
-            MXC_MCR->gpio4_ctrl &= ~MXC_F_MCR_GPIO4_CTRL_P40_OE;
-            MXC_MCR->gpio4_ctrl |= MXC_F_MCR_GPIO4_CTRL_P40_PE;
+            MXC_MCR->gpio4_ctrl &= ~(MXC_F_MCR_GPIO4_CTRL_P40_OE | MXC_F_MCR_GPIO4_CTRL_P40_PE);
+            MXC_MCR->gpio4_ctrl |= MXC_F_MCR_GPIO4_CTRL_P40_DO;
         } else if (MXC_GPIO_Config(&pb_pin[i]) != E_NO_ERROR) {
             retval = E_UNKNOWN;
         }
@@ -63,7 +63,7 @@ int PB_Init(void)
 
     /* Initialize the GPIO4 callback state */
     gpio4_callback = NULL;
-    gpio4_pb       = -1;
+    gpio4_pb = -1;
 
     return retval;
 }
@@ -75,16 +75,18 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 
     if (callback) {
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
-            NVIC_EnableIRQ(GPIOWAKE_IRQn);
-
             /* Save the GPIO4 callback and pb index */
             gpio4_callback = callback;
-            gpio4_pb       = pb;
+            gpio4_pb = pb;
+
+            MXC_PWRSEQ->lpwken4 |= pb_pin[pb].mask;
+            NVIC_EnableIRQ(GPIOWAKE_IRQn);
+
             return E_NO_ERROR;
         }
 
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)pb);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)pb);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_FALLING);
@@ -92,11 +94,12 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
         NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
     } else {
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
-            NVIC_DisableIRQ(GPIOWAKE_IRQn);
-
             /* Clear the GPIO4 callback and pb index */
             gpio4_callback = NULL;
-            gpio4_pb       = -1;
+            gpio4_pb = -1;
+
+            NVIC_DisableIRQ(GPIOWAKE_IRQn);
+            MXC_PWRSEQ->lpwken4 &= ~pb_pin[pb].mask;
 
             return E_NO_ERROR;
         }
@@ -117,13 +120,15 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
             /* Save the GPIO4 callback and pb index */
             gpio4_callback = callback;
-            gpio4_pb       = pb;
+            gpio4_pb = pb;
 
+            MXC_PWRSEQ->lpwken4 |= pb_pin[pb].mask;
             NVIC_EnableIRQ(GPIOWAKE_IRQn);
+
             return E_NO_ERROR;
         }
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)pb);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)pb);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_BOTH);
@@ -131,11 +136,12 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
         NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
     } else {
         if (MXC_GPIO_GET_IDX(pb_pin[pb].port) == 4) {
-            NVIC_DisableIRQ(GPIOWAKE_IRQn);
-
             /* Clear the GPIO4 callback and pb index */
             gpio4_callback = NULL;
-            gpio4_pb       = -1;
+            gpio4_pb = -1;
+
+            NVIC_DisableIRQ(GPIOWAKE_IRQn);
+            MXC_PWRSEQ->lpwken4 &= ~pb_pin[pb].mask;
 
             return E_NO_ERROR;
         }
@@ -181,7 +187,7 @@ void GPIOWAKE_IRQHandler(void)
 
     /* Call the saved callback if available */
     if (gpio4_callback != NULL) {
-        gpio4_callback((void*)&pb_pin[gpio4_pb]);
+        gpio4_callback((void *)&pb_pin[gpio4_pb]);
     }
 }
 

@@ -52,32 +52,32 @@
 #define configCPU_CLOCK_HZ ((unsigned long)SystemCoreClock)
 
 #define configUSE_TICKLESS_IDLE 0
-#define configTICK_RATE_HZ      ((portTickType)1000)
+#define configTICK_RATE_HZ ((portTickType)1000)
 
 #define configTOTAL_HEAP_SIZE ((size_t)(26 * 1024))
 
 #define configMINIMAL_STACK_SIZE ((unsigned short)128)
 
-#define configMAX_PRIORITIES   5
-#define configUSE_PREEMPTION   0
-#define configUSE_IDLE_HOOK    0
-#define configUSE_TICK_HOOK    0
-#define configUSE_CO_ROUTINES  0
+#define configMAX_PRIORITIES 5
+#define configUSE_PREEMPTION 0
+#define configUSE_IDLE_HOOK 0
+#define configUSE_TICK_HOOK 0
+#define configUSE_CO_ROUTINES 0
 #define configUSE_16_BIT_TICKS 0
-#define configUSE_MUTEXES      1
+#define configUSE_MUTEXES 1
 
 /* Run time and task stats gathering related definitions. */
-#define configUSE_TRACE_FACILITY             1
+#define configUSE_TRACE_FACILITY 1
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
-#define INCLUDE_vTaskPrioritySet  0
-#define INCLUDE_vTaskDelete       0
-#define INCLUDE_vTaskSuspend      1
-#define INCLUDE_vTaskDelayUntil   1
+#define INCLUDE_vTaskPrioritySet 0
+#define INCLUDE_vTaskDelete 0
+#define INCLUDE_vTaskSuspend 1
+#define INCLUDE_vTaskDelayUntil 1
 #define INCLUDE_uxTaskPriorityGet 0
-#define INCLUDE_vTaskDelay        1
+#define INCLUDE_vTaskDelay 1
 
 /* # of priority bits (configured in hardware) is provided by CMSIS */
 #define configPRIO_BITS __NVIC_PRIO_BITS
@@ -89,16 +89,16 @@ to exclude the API function. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY ((unsigned char)5 << (8 - configPRIO_BITS))
 
 /* Alias the default handler names to match CMSIS weak symbols */
-#define vPortSVCHandler     SVC_Handler
-#define xPortPendSVHandler  PendSV_Handler
+#define vPortSVCHandler SVC_Handler
+#define xPortPendSVHandler PendSV_Handler
 #define xPortSysTickHandler SysTick_Handler
 
 #ifdef configUSE_TICKLESS_IDLE
 #define configRTC_TICK_RATE_HZ ((portTickType)4096)
 /* Provide routines for tickless idle pre- and post- processing */
-void vPreSleepProcessing(unsigned long*);
+void vPreSleepProcessing(unsigned long *);
 void vPostSleepProcessing(unsigned long);
-#define configPRE_SLEEP_PROCESSING(idletime)  vPreSleepProcessing(&idletime);
+#define configPRE_SLEEP_PROCESSING(idletime) vPreSleepProcessing(&idletime);
 #define configPOST_SLEEP_PROCESSING(idletime) vPostSleepProcessing(idletime);
 #endif
 

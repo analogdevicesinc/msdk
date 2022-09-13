@@ -55,7 +55,7 @@
 #define KEY_F 'F'
 // Contact EMV keys
 #define KEY_CARD_INSERTED 0xE0
-#define KEY_CARD_REMOVED  0xE1
+#define KEY_CARD_REMOVED 0xE1
 
 /*****************************     FUNCTIONS *********************************/
 int keypad_init(void);

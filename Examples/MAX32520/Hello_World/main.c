@@ -57,7 +57,7 @@ int main(void)
 {
     int count = 0;
     printf("\n***********Hello World!***********\n");
-    printf("\nLED1 on P1.6 toggles every 500 ms\n");
+    printf("\nLED1 toggles every 500 ms\n"); //LED pins are defined in board.c file
 
     while (1) {
         LED_On(0);

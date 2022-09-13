@@ -51,44 +51,50 @@
 #define AFE_SPI_PORT MXC_SPI1
 #endif
 
-#define AFE_SPI_BAUD        100000 // Can only run up to PCLK speed
-#define AFE_SPI_BIT_WIDTH   8
-#define AFE_SPI_SSEL_PIN    1
+#define AFE_SPI_BAUD 100000 // Can only run up to PCLK speed
+#define AFE_SPI_BIT_WIDTH 8
+#define AFE_SPI_SSEL_PIN 1
 #define AFE_SPI_ADDRESS_LEN 1
 
 // AFE Trim Storage Defines
 //#define DUMP_TRIM_DATA
 
 #if (TARGET != MAX32675 || TARGET_NUM == 32675)
-#define AFE_TRIM_OTP_OFFSET_LOW  0x280
+#define AFE_TRIM_OTP_OFFSET_LOW 0x280
 #define AFE_TRIM_OTP_OFFSET_HIGH 0x288
 #elif (TARGET != MAX32680 || TARGET_NUM == 32680)
-#define AFE_TRIM_OTP_OFFSET_LOW  0x0E10
+#define AFE_TRIM_OTP_OFFSET_LOW 0x0E10
 #define AFE_TRIM_OTP_OFFSET_HIGH 0x0E18
 #endif
 
-#define AFE_TRIM0_ADC0_MASK      0x7FFFF
+#define AFE_TRIM0_ADC0_MASK 0x7FFFF
 #define AFE_TRIM0_ADC0_BIT_WIDTH 19
 
-#define AFE_TRIM1_ADC0_MASK      0x3FFF
+#define AFE_TRIM1_ADC0_MASK 0x3FFF
 #define AFE_TRIM1_ADC0_BIT_WIDTH 14
 
-#define AFE_TRIM_DAC_MASK      0x0FFFF
+#define AFE_TRIM_DAC_MASK 0x0FFFF
 #define AFE_TRIM_DAC_BIT_WIDTH 16
 
-#define AFE_TRIM_ANA_MASK      0x7FFF
-#define AFE_TRIM_ANA_BIT_WIDTH 15
+#define AFE_TRIM_ANA_ADC0_MASK 0x7FFF
+#define AFE_TRIM_ANA_ADC0_BIT_WIDTH 15
 
-#define AFE_TRIM0_ADC1_MASK      0x7FFFF
+#define AFE_TRIM0_ADC1_MASK 0x7FFFF
 #define AFE_TRIM0_ADC1_BIT_WIDTH 19
 
-#define AFE_TRIM1_ADC1_MASK      0x3FFF
+#define AFE_TRIM1_ADC1_MASK 0x3FFF
 #define AFE_TRIM1_ADC1_BIT_WIDTH 14
 
-#define AFE_TRIM_HART_MASK      0x0FFFFF
+#define AFE_TRIM_HART_MASK 0x0FFFFF
 #define AFE_TRIM_HART_BIT_WIDTH 20
 
-#define AFE_TRIM_VREF_MASK      0x7FF
+// NOTE: These two bits are embedded inside the HART trim
+#define AFE_TRIM_ANA_ADC1_MASK 0x060
+#define AFE_TRIM_ANA_ADC1_BIT_WIDTH 2
+#define AFE_TRIM_ANA_ADC1_OFFSET_1 5 // bit position in HART trim
+#define AFE_TRIM_ANA_ADC1_OFFSET_2 10 // bit position in ANA TRIM ADC1
+
+#define AFE_TRIM_VREF_MASK 0x7FF
 #define AFE_TRIM_VREF_BIT_WIDTH 11
 
 // Largest Possible AFE SPI transaction (BYTES): Address 1, Max Data 4, CRC 2
@@ -96,39 +102,42 @@
 
 /***** Globals *****/
 uint8_t afe_data[AFE_SPI_MAX_DATA_LEN];
-mxc_spi_regs_t* pSPIm = AFE_SPI_PORT;
-int check_done        = 0;
+mxc_spi_regs_t *pSPIm = AFE_SPI_PORT;
+int check_done = 0;
 
 typedef struct {
     uint32_t adc_trim0_adc0;
     uint32_t adc_trim0_adc1;
     uint32_t adc_trim1_adc0;
     uint32_t adc_trim1_adc1;
-    uint32_t ana_trim;
+    uint32_t ana_trim_adc0;
     uint32_t vref_trim;
     uint32_t hart_trim;
+    uint32_t ana_trim_adc1;
     uint32_t dac_trim;
 } trim_data_t;
 
 trim_data_t trim_data;
 
-uint32_t current_register_bank  = 0;
+uint32_t current_register_bank = 0;
 uint32_t adc0_conversion_active = 0;
 uint32_t adc1_conversion_active = 0;
 
 #if (TARGET != MAX32675 || TARGET_NUM == 32675)
 static mxc_gpio_cfg_t gpio_cfg_spi0 = {
     MXC_GPIO0, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5),
-    MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE};
+    MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE
+};
 #elif (TARGET != MAX32680 || TARGET_NUM == 32680)
 static mxc_gpio_cfg_t gpio_cfg_spi1 = {
     MXC_GPIO0, (MXC_GPIO_PIN_20 | MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23),
-    MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE};
+    MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE
+};
 #endif
 
 /***** Private Prototypes *****/
 static int raw_afe_write_register(uint8_t reg_address, uint32_t value, uint8_t reg_length);
-static int raw_afe_read_register(uint8_t reg_address, uint32_t* value, uint8_t reg_length);
+static int raw_afe_read_register(uint8_t reg_address, uint32_t *value, uint8_t reg_length);
 
 /***** Functions *****/
 static int afe_spi_setup(void)
@@ -188,7 +197,7 @@ static int afe_spi_setup(void)
 
 // This function block until transceive is completed
 // TODO: Consider checking for timeout
-static int afe_spi_transceive(uint8_t* data, int byte_length)
+static int afe_spi_transceive(uint8_t *data, int byte_length)
 {
     int i = 0;
 
@@ -196,12 +205,10 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
         return E_OVERFLOW;
     }
 
-    while (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) {
-    }
+    while (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) {}
 
     if (check_done) {
-        while (!(pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE))
-            ;
+        while (!(pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
     }
 
     check_done = 1;
@@ -209,8 +216,7 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
     pSPIm->intfl = pSPIm->intfl;
     pSPIm->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
 
-    while (pSPIm->dma & (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH))
-        ;
+    while (pSPIm->dma & (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH)) {}
 
     pSPIm->ctrl1 = ((((byte_length) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS)) |
                     (byte_length << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS));
@@ -220,17 +226,14 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
     //
     // Transmit the data
     //
-    for (i = 0; i < byte_length; i++) {
-        pSPIm->fifo8[0] = data[i];
-    }
+    for (i = 0; i < byte_length; i++) { pSPIm->fifo8[0] = data[i]; }
 
     //
     // Receive the data
     //
     for (i = 0; i < byte_length; i++) {
         // Wait for data to be available
-        while (!(pSPIm->dma & MXC_F_SPI_DMA_RX_LVL))
-            ;
+        while (!(pSPIm->dma & MXC_F_SPI_DMA_RX_LVL)) {}
 
         data[i] = pSPIm->fifo8[0];
     }
@@ -240,7 +243,7 @@ static int afe_spi_transceive(uint8_t* data, int byte_length)
 
 int afe_setup(void)
 {
-    int retval        = 0;
+    int retval = 0;
     uint32_t read_val = 0;
 
     retval = afe_spi_setup();
@@ -268,7 +271,7 @@ int afe_setup(void)
 
 static int raw_afe_write_register(uint8_t reg_address, uint32_t value, uint8_t reg_length)
 {
-    int i      = 0;
+    int i = 0;
     int retval = 0;
 
     int txLen = AFE_SPI_ADDRESS_LEN + reg_length;
@@ -293,11 +296,11 @@ static int raw_afe_write_register(uint8_t reg_address, uint32_t value, uint8_t r
     return retval;
 }
 
-static int raw_afe_read_register(uint8_t reg_address, uint32_t* value, uint8_t reg_length)
+static int raw_afe_read_register(uint8_t reg_address, uint32_t *value, uint8_t reg_length)
 {
-    int i      = 0;
+    int i = 0;
     int retval = 0;
-    int txLen  = AFE_SPI_ADDRESS_LEN + reg_length;
+    int txLen = AFE_SPI_ADDRESS_LEN + reg_length;
 
     // First comes address
     // AFE requires bit 7 of byte 0 SET to indicate read command
@@ -326,7 +329,7 @@ static int raw_afe_read_register(uint8_t reg_address, uint32_t* value, uint8_t r
 static int afe_bank_select(uint8_t bank_num)
 {
     uint32_t read_val = 0;
-    int retval        = 0;
+    int retval = 0;
 
     // First, No need to check for current bank if we are already in it.
     if (current_register_bank == bank_num) {
@@ -386,10 +389,10 @@ static int afe_bank_select(uint8_t bank_num)
 
 int afe_write_register(uint32_t target_reg, uint32_t value)
 {
-    uint8_t reg_bank    = 0;
+    uint8_t reg_bank = 0;
     uint8_t reg_address = 0;
-    uint8_t reg_length  = 0;
-    int retval          = 0;
+    uint8_t reg_length = 0;
+    int retval = 0;
 
     //
     // Parse register parameters from register offset
@@ -399,8 +402,8 @@ int afe_write_register(uint32_t target_reg, uint32_t value)
     // Address Bits 23&24 are MSB address bits, which must be written into ana_src_sel[1:0] as bank select
     // Bottom byte of address encodes the register width in bytes 1 - 4 (8bits to 32bits)
 
-    reg_length  = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
-    reg_bank    = (target_reg & AFE_REG_ADDR_BANK) >> AFE_REG_ADDR_BANK_POS;
+    reg_length = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
+    reg_bank = (target_reg & AFE_REG_ADDR_BANK) >> AFE_REG_ADDR_BANK_POS;
     reg_address = (target_reg & AFE_REG_ADDR) >> AFE_REG_ADDR_POS;
 
     retval = afe_bank_select(reg_bank);
@@ -418,12 +421,12 @@ int afe_write_register(uint32_t target_reg, uint32_t value)
     return retval;
 }
 
-int afe_read_register(uint32_t target_reg, uint32_t* value)
+int afe_read_register(uint32_t target_reg, uint32_t *value)
 {
-    uint8_t reg_bank    = 0;
+    uint8_t reg_bank = 0;
     uint8_t reg_address = 0;
-    uint8_t reg_length  = 0;
-    int retval          = 0;
+    uint8_t reg_length = 0;
+    int retval = 0;
 
     //
     // Parse register parameters from register offset
@@ -433,8 +436,8 @@ int afe_read_register(uint32_t target_reg, uint32_t* value)
     // Address Bits 23&24 are MSB address bits, which must be written into ana_src_sel[1:0] as bank select
     // Bottom byte of address encodes the register width in bytes 1 - 4 (8bits to 32bits)
 
-    reg_length  = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
-    reg_bank    = (target_reg & AFE_REG_ADDR_BANK) >> AFE_REG_ADDR_BANK_POS;
+    reg_length = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
+    reg_bank = (target_reg & AFE_REG_ADDR_BANK) >> AFE_REG_ADDR_BANK_POS;
     reg_address = (target_reg & AFE_REG_ADDR) >> AFE_REG_ADDR_POS;
 
     retval = afe_bank_select(reg_bank);
@@ -456,7 +459,7 @@ int afe_load_trims(void)
 {
     int retval = 0;
     uint8_t info_buf[INFOBLOCK_LINE_SIZE];
-    uint64_t afe_trim_low  = 0;
+    uint64_t afe_trim_low = 0;
     uint64_t afe_trim_high = 0;
 #ifdef DUMP_TRIM_DATA
     uint32_t read_val = 0;
@@ -501,7 +504,7 @@ int afe_load_trims(void)
     trim_data.dac_trim = afe_trim_low & AFE_TRIM_DAC_MASK;
     afe_trim_low >>= AFE_TRIM_DAC_BIT_WIDTH;
 
-    trim_data.ana_trim = afe_trim_low & AFE_TRIM_ANA_MASK;
+    trim_data.ana_trim_adc0 = afe_trim_low & AFE_TRIM_ANA_ADC0_MASK;
 
     // afe_trim_high
     trim_data.adc_trim0_adc1 = afe_trim_high & AFE_TRIM0_ADC1_MASK;
@@ -510,7 +513,14 @@ int afe_load_trims(void)
     trim_data.adc_trim1_adc1 = afe_trim_high & AFE_TRIM1_ADC1_MASK;
     afe_trim_high >>= AFE_TRIM1_ADC1_BIT_WIDTH;
 
+    // Now got to take care of the ANA_TRIM_ADC1 which is embedded inside the HART trim
+    trim_data.ana_trim_adc1 = afe_trim_high & AFE_TRIM_ANA_ADC1_MASK;
+    trim_data.ana_trim_adc1 >>= AFE_TRIM_ANA_ADC1_OFFSET_1;
+    trim_data.ana_trim_adc1 <<= AFE_TRIM_ANA_ADC1_OFFSET_2;
+
     trim_data.hart_trim = afe_trim_high & AFE_TRIM_HART_MASK;
+    // Force the embedded ANA trim to zeros.
+    trim_data.hart_trim &= ~AFE_TRIM_ANA_ADC1_MASK;
     afe_trim_high >>= AFE_TRIM_HART_BIT_WIDTH;
 
     trim_data.vref_trim = afe_trim_high & AFE_TRIM_VREF_MASK;
@@ -526,11 +536,12 @@ int afe_load_trims(void)
     printf("ADC0 adc trim 0: %08X\n", trim_data.adc_trim0_adc0);
     printf("ADC0 adc trim 1: %08X\n", trim_data.adc_trim1_adc0);
     printf("DAC trim: %08X\n", trim_data.dac_trim);
-    printf("ANA trim: %08X\n", trim_data.ana_trim);
+    printf("ANA ADC0 trim: %08X\n", trim_data.ana_trim_adc0);
 
     printf("ADC1 adc trim 0: %08X\n", trim_data.adc_trim0_adc1);
     printf("ADC1 adc trim 1: %08X\n", trim_data.adc_trim1_adc1);
     printf("HART trim: %08X\n", trim_data.hart_trim);
+    printf("ANA ADC1 trim: %08X\n", trim_data.ana_trim_adc1);
     printf("VREF trim: %08X\n", trim_data.vref_trim);
 #endif
 
@@ -599,7 +610,7 @@ int afe_load_trims(void)
     printf("DAC trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, &read_val);
-    printf("ANA trim: %08X\n", read_val);
+    printf("ANA ADC0 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ONE_ADC_TRIM0, &read_val);
     printf("ADC1 adc trim 0: %08X\n", read_val);
@@ -609,6 +620,9 @@ int afe_load_trims(void)
 
     afe_read_register(MXC_R_AFE_HART_TRIM, &read_val);
     printf("HART trim: %08X\n", read_val);
+
+    afe_read_register(MXC_R_AFE_ADC_ONE_ANA_TRIM, &read_val);
+    printf("ANA ADC1 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_DAC_VREF_TRIM, &read_val);
     printf("VREF trim: %08X\n", read_val);
@@ -630,7 +644,7 @@ int afe_load_trims(void)
     if (retval != E_NO_ERROR) {
         return retval;
     }
-    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, trim_data.ana_trim);
+    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, trim_data.ana_trim_adc0);
     if (retval != E_NO_ERROR) {
         return retval;
     }
@@ -643,6 +657,10 @@ int afe_load_trims(void)
         return retval;
     }
     retval = afe_write_register(MXC_R_AFE_HART_TRIM, trim_data.hart_trim);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+    retval = afe_write_register(MXC_R_AFE_ADC_ONE_ANA_TRIM, trim_data.ana_trim_adc1);
     if (retval != E_NO_ERROR) {
         return retval;
     }
@@ -666,7 +684,7 @@ int afe_load_trims(void)
     printf("DAC trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ZERO_ANA_TRIM, &read_val);
-    printf("ANA trim: %08X\n", read_val);
+    printf("ANA ADC0 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_ADC_ONE_ADC_TRIM0, &read_val);
     printf("ADC1 adc trim 0: %08X\n", read_val);
@@ -676,6 +694,9 @@ int afe_load_trims(void)
 
     afe_read_register(MXC_R_AFE_HART_TRIM, &read_val);
     printf("HART trim: %08X\n", read_val);
+
+    afe_read_register(MXC_R_AFE_ADC_ONE_ANA_TRIM, &read_val);
+    printf("ANA ADC1 trim: %08X\n", read_val);
 
     afe_read_register(MXC_R_AFE_DAC_VREF_TRIM, &read_val);
     printf("VREF trim: %08X\n", read_val);
@@ -693,8 +714,8 @@ int afe_load_trims(void)
 
 void afe_dump_registers(uint32_t reg_bank)
 {
-    uint32_t reg_add  = 0;
-    uint32_t reg_len  = 0;
+    uint32_t reg_add = 0;
+    uint32_t reg_len = 0;
     uint32_t read_val = 0;
 
     if (reg_bank == AFE_ADC0_BANK) {

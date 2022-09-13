@@ -82,20 +82,20 @@
 
 #include "mxc_errors.h"
 
-static char* getParamString(const char* commandString, size_t paramNo)
+static char *getParamString(const char *commandString, size_t paramNo)
 {
     BaseType_t length;
-    const char* param = FreeRTOS_CLIGetParameter(commandString, paramNo, &length);
+    const char *param = FreeRTOS_CLIGetParameter(commandString, paramNo, &length);
     if (!param)
         return NULL;
-    char* buff = (char*)pvPortMalloc(length + 1);
+    char *buff = (char *)pvPortMalloc(length + 1);
     strncpy(buff, param, length);
     buff[length] = 0;
     return buff;
 }
 
-static BaseType_t prvEraseCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString);
+static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char *pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
@@ -103,13 +103,13 @@ a time. */
 static const CLI_Command_Definition_t xEraseCommand = {
     "erase", "\r\nerase: \r\n Erases page in flash being operated on\r\n",
     prvEraseCommand, /* The function to run. */
-    0                /* The user can enter any number of commands. */
+    0 /* The user can enter any number of commands. */
 };
 
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvWriteCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString);
+static BaseType_t prvWriteCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char *pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
@@ -120,13 +120,13 @@ static const CLI_Command_Definition_t xWriteCommand = {
     "in the flash page\n specified by \"word offset\" (e.g. word offset=3 -> address offset=0xC,\n "
     "word offset=4 -> address offset=0x10)\r\n",
     prvWriteCommand, /* The function to run. */
-    2                /* The user can enter any number of commands. */
+    2 /* The user can enter any number of commands. */
 };
 
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvReadCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString);
+static BaseType_t prvReadCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char *pcCommandString);
 
 /* Structure that defines the "echo_parameters" command line command.  This
 takes a variable number of parameters that the command simply echos back one at
@@ -137,7 +137,7 @@ static const CLI_Command_Definition_t xReadCommand = {
     "word in the flash page\n specified by \"word offset\" (e.g. word offset=3 -> address "
     "offset=0xC,\n word offset=4 -> address offset=0x10)\r\n",
     prvReadCommand, /* The function to run. */
-    2               /* The user can enter any number of commands. */
+    2 /* The user can enter any number of commands. */
 };
 
 /*-----------------------------------------------------------*/
@@ -151,8 +151,8 @@ void vRegisterCLICommands(void)
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvEraseCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString)
+static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
   write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -176,8 +176,8 @@ static BaseType_t prvEraseCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvWriteCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString)
+static BaseType_t prvWriteCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
   write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -190,13 +190,11 @@ static BaseType_t prvWriteCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     /* Obtain the parameter string. */
     pcParameterOffset = getParamString(pcCommandString, 1);
-    pcParameterText   = getParamString(pcCommandString, 2);
+    pcParameterText = getParamString(pcCommandString, 2);
 
-    int offset     = atoi(pcParameterOffset);
-    uint32_t* data = (uint32_t*)pvPortMalloc(strlen(pcParameterText) * 4);
-    for (int i = 0; i < strlen(pcParameterText); i++) {
-        data[i] = (uint32_t)pcParameterText[i];
-    }
+    int offset = atoi(pcParameterOffset);
+    uint32_t *data = (uint32_t *)pvPortMalloc(strlen(pcParameterText) * 4);
+    for (int i = 0; i < strlen(pcParameterText); i++) { data[i] = (uint32_t)pcParameterText[i]; }
     portENTER_CRITICAL();
     int retval = flash_write(FLASH_STORAGE_START_ADDR + offset * 4, strlen(pcParameterText), data);
     portEXIT_CRITICAL();
@@ -213,8 +211,8 @@ static BaseType_t prvWriteCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvReadCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                 const char* pcCommandString)
+static BaseType_t prvReadCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
   write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -229,9 +227,9 @@ static BaseType_t prvReadCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
     pcParameterOffset = getParamString(pcCommandString, 1);
     pcParameterLength = getParamString(pcCommandString, 2);
 
-    int offset    = atoi(pcParameterOffset);
-    int length    = atoi(pcParameterLength);
-    uint8_t* data = (uint8_t*)pvPortMalloc(length);
+    int offset = atoi(pcParameterOffset);
+    int length = atoi(pcParameterLength);
+    uint8_t *data = (uint8_t *)pvPortMalloc(length);
 
     int retval = flash_read(FLASH_STORAGE_START_ADDR + offset * 4, length, data);
     if (retval != E_NO_ERROR) {
@@ -240,7 +238,7 @@ static BaseType_t prvReadCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
     } else {
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
         sprintf(pcWriteBuffer, "Success: \r\n");
-        strncat(pcWriteBuffer, (char*)data, length);
+        strncat(pcWriteBuffer, (char *)data, length);
         strcat(pcWriteBuffer, "\r\n");
     }
     vPortFree(data);

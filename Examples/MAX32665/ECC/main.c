@@ -51,7 +51,7 @@
 
 /***** Definitions *****/
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 /***** Globals *****/
 volatile uint32_t badData;
@@ -67,30 +67,30 @@ uint32_t ramTop = (MXC_SRAM_MEM_BASE + (MXC_SRAM_MEM_SIZE * 0.8));
 
 void ECC_IRQHandler(void)
 {
-    eccErr  = MXC_GCR->ecc_er;
+    eccErr = MXC_GCR->ecc_er;
     eccDErr = MXC_GCR->ecc_ced;
     eccAddr = MXC_GCR->ecc_errad;
     eccFlag = 1;
 
-    MXC_GCR->ecc_er  = eccErr;
+    MXC_GCR->ecc_er = eccErr;
     MXC_GCR->ecc_ced = eccDErr;
 }
 
 void clear_ram(void)
 {
     extern uint32_t _ebss; // end of bss section, it is defined in linker file
-    uint32_t* ptr;
+    uint32_t *ptr;
     uint32_t sysram0_end = 0x20007fff; // end of SRAM0
 
     // clear SRAM0 (after bss section)
-    for (ptr = (uint32_t*)&_ebss; (uint32_t)ptr < sysram0_end; ptr++) {
-        *ptr = 0;
-    }
+    for (ptr = (uint32_t *)&_ebss; (uint32_t)ptr < sysram0_end; ptr++) { *ptr = 0; }
 
     // clear SRAM1, SRAM2, ... SRAM6
     MXC_GCR->memzcn |= 0x3E;
     while (MXC_GCR->memzcn & 0x3E) {
-        ; // wait until clear done
+        {
+        }
+        // wait until clear done
     }
 }
 
@@ -98,7 +98,7 @@ void clear_ram(void)
 int main(void)
 {
     unsigned int i, test_fail, test_pass;
-    volatile uint32_t* cursor;
+    volatile uint32_t *cursor;
 
     test_fail = test_pass = 0;
 
@@ -116,7 +116,7 @@ int main(void)
     clear_ram();
 
     // Clear all ECC Errors -- write-1-to-clear
-    MXC_GCR->ecc_er  = (volatile uint32_t)MXC_GCR->ecc_er;
+    MXC_GCR->ecc_er = (volatile uint32_t)MXC_GCR->ecc_er;
     MXC_GCR->ecc_ced = (volatile uint32_t)MXC_GCR->ecc_ced;
 
     // Enable interrupts for ECC errors
@@ -132,7 +132,7 @@ int main(void)
     eccFlag = 0;
 
     for (i = MXC_SRAM_MEM_BASE; i < ramTop - sizeof(uint32_t); i += sizeof(uint32_t)) {
-        cursor = (uint32_t*)i;
+        cursor = (uint32_t *)i;
         // Force a read of the location.
         (volatile uint32_t) * cursor;
 
@@ -202,6 +202,7 @@ int main(void)
     printf("Example Complete\n");
 
     while (1) {
-        ;
+        {
+        }
     }
 }

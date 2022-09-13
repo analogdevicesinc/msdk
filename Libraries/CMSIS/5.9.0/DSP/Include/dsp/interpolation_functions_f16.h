@@ -39,10 +39,10 @@ extern "C" {
 #if defined(ARM_FLOAT16_SUPPORTED)
 
 typedef struct {
-    uint32_t nValues;   /**< nValues */
-    float16_t x1;       /**< x1 */
+    uint32_t nValues; /**< nValues */
+    float16_t x1; /**< x1 */
     float16_t xSpacing; /**< xSpacing */
-    float16_t* pYData;  /**< pointer to the table of Y values */
+    float16_t *pYData; /**< pointer to the table of Y values */
 } arm_linear_interp_instance_f16;
 
 /**
@@ -51,7 +51,7 @@ typedef struct {
 typedef struct {
     uint16_t numRows; /**< number of rows in the data table. */
     uint16_t numCols; /**< number of columns in the data table. */
-    float16_t* pData; /**< points to the data table. */
+    float16_t *pData; /**< points to the data table. */
 } arm_bilinear_interp_instance_f16;
 
 /**
@@ -66,7 +66,7 @@ typedef struct {
    * @return y processed output sample.
    *
    */
-float16_t arm_linear_interp_f16(arm_linear_interp_instance_f16* S, float16_t x);
+float16_t arm_linear_interp_f16(arm_linear_interp_instance_f16 *S, float16_t x);
 
 /**
    * @} end of LinearInterpolate group
@@ -84,7 +84,7 @@ float16_t arm_linear_interp_f16(arm_linear_interp_instance_f16* S, float16_t x);
   * @param[in]     Y  interpolation coordinate.
   * @return out interpolated value.
   */
-float16_t arm_bilinear_interp_f16(const arm_bilinear_interp_instance_f16* S, float16_t X,
+float16_t arm_bilinear_interp_f16(const arm_bilinear_interp_instance_f16 *S, float16_t X,
                                   float16_t Y);
 
 /**

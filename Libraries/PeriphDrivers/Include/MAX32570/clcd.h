@@ -82,19 +82,19 @@ typedef enum {
  *          CLCD and prepare it for outputting data to the screen.
  */
 typedef struct clcd_cfg {
-    uint32_t Width;           ///< The visible width of the display in pixels
-    uint32_t Height;          ///< The visible height of the display in pixels
-    uint32_t ClkFreq;         ///< The requested bit clock frequency in Hz
-    uint32_t VertFrontPorch;  ///< The vertical front porch size in lines
-    uint32_t VertBackPorch;   ///< The vertical back porch size in lines
+    uint32_t Width; ///< The visible width of the display in pixels
+    uint32_t Height; ///< The visible height of the display in pixels
+    uint32_t ClkFreq; ///< The requested bit clock frequency in Hz
+    uint32_t VertFrontPorch; ///< The vertical front porch size in lines
+    uint32_t VertBackPorch; ///< The vertical back porch size in lines
     uint32_t VSYNCPulseWidth; ///< The width of the VSYNC pulse in line clocks
     uint32_t HorizFrontPorch; ///< The horizontal front porch size in lines
-    uint32_t HorizBackPorch;  ///< The horizontal back porch size in lines
+    uint32_t HorizBackPorch; ///< The horizontal back porch size in lines
     uint32_t HSYNCPulseWidth; ///< The width of the HSYNC pulse in bit clocks
-    uint32_t* palette;        ///< Pointer to the color palette data (used for bpp < 16)
-    uint32_t paletteSize;     ///< Size of the color palette data (must be 768 bytes)
-    uint32_t bpp;             ///< Number of bits per pixel (see users guide for values)
-    void* frameBuffer;        ///< Pointer to the frame buffer, this must remain allocated
+    uint32_t *palette; ///< Pointer to the color palette data (used for bpp < 16)
+    uint32_t paletteSize; ///< Size of the color palette data (must be 768 bytes)
+    uint32_t bpp; ///< Number of bits per pixel (see users guide for values)
+    void *frameBuffer; ///< Pointer to the frame buffer, this must remain allocated
     ///< the entire time the CLCD is in use, unless the frameBuffer
     ///< pointer is changed with CLCD_SetFrameBuffer
 } mxc_clcd_cfg_t;
@@ -147,7 +147,7 @@ int MXC_CLCD_GetFrequency(void);
  *
  * @param   addr Pointer to the new framebuffer
  */
-void MXC_CLCD_SetFrameAddr(void* addr);
+void MXC_CLCD_SetFrameAddr(void *addr);
 
 /**
  * @brief   Get CLCD frame buffer address.
@@ -155,7 +155,7 @@ void MXC_CLCD_SetFrameAddr(void* addr);
  *
  * @return  Pointer to the framebuffer
  */
-void* MXC_CLCD_GetFrameAddr(void);
+void *MXC_CLCD_GetFrameAddr(void);
 
 /**
  * @brief   Set CLCD Color Palette
@@ -166,7 +166,7 @@ void* MXC_CLCD_GetFrameAddr(void);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_CLCD_SetColorPalette(uint32_t* palette);
+int MXC_CLCD_SetColorPalette(uint32_t *palette);
 
 /**
  * @brief   Get the status of power to the display
@@ -380,7 +380,7 @@ int MXC_CLCD_GetHSYNCWidth(void);
  * @brief   Configure CLCD frame module.
  * @return  #E_NO_ERROR if successful, appropriate error otherwise
  */
-int MXC_CLCD_Config(mxc_clcd_cfg_t* clcd_cfg);
+int MXC_CLCD_Config(mxc_clcd_cfg_t *clcd_cfg);
 
 /**@} end of group clcd */
 

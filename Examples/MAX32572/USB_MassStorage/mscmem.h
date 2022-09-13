@@ -50,7 +50,7 @@ int mscmem_Start(void);
 int mscmem_Stop(void);
 int mscmem_Ready();
 uint32_t mscmem_Size(void);
-int mscmem_Read(uint32_t lba, uint8_t* buffer);
-int mscmem_Write(uint32_t lba, uint8_t* buffer);
+int mscmem_Read(uint32_t lba, uint8_t *buffer);
+int mscmem_Write(uint32_t lba, uint8_t *buffer);
 
 #endif /* __MSC_MEM_H__ */

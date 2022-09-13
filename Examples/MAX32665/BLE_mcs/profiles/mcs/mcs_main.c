@@ -44,8 +44,8 @@
 
 /*! \brief Connection control block */
 typedef struct {
-    dmConnId_t connId;       /*! \brief Connection ID */
-    bool_t mcsToSend;        /*! \brief mcs measurement ready to be sent on this channel */
+    dmConnId_t connId; /*! \brief Connection ID */
+    bool_t mcsToSend; /*! \brief mcs measurement ready to be sent on this channel */
     uint8_t sentMcsBtnState; /*! \brief value of last sent mcs button state */
 } mcsConn_t;
 
@@ -53,10 +53,10 @@ typedef struct {
 static struct {
     mcsConn_t conn[DM_CONN_MAX]; /*! \brief connection control block */
     wsfTimer_t btnStateChkTimer; /*! \brief periodic check timer */
-    mcsCfg_t cfg;                /*! \brief configurable parameters */
-    uint16_t currCount;          /*! \brief current measurement period count */
-    bool_t txReady;              /*! \brief TRUE if ready to send notifications */
-    uint8_t btnState;            /*! \brief value of last button state */
+    mcsCfg_t cfg; /*! \brief configurable parameters */
+    uint16_t currCount; /*! \brief current measurement period count */
+    bool_t txReady; /*! \brief TRUE if ready to send notifications */
+    uint8_t btnState; /*! \brief value of last button state */
 } mcsCb;
 
 /*************************************************************************************************/
@@ -68,7 +68,7 @@ static struct {
 /*************************************************************************************************/
 static bool_t mcsNoConnActive(void)
 {
-    mcsConn_t* pConn = mcsCb.conn;
+    mcsConn_t *pConn = mcsCb.conn;
     uint8_t i;
 
     for (i = 0; i < DM_CONN_MAX; i++, pConn++) {
@@ -88,24 +88,24 @@ static bool_t mcsNoConnActive(void)
  */
 /*************************************************************************************************/
 uint8_t McsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                      uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
+                      uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-    AttsSetAttr(handle, sizeof(*pValue), (uint8_t*)pValue);
+    AttsSetAttr(handle, sizeof(*pValue), (uint8_t *)pValue);
     /* Turn LED on if non-zero value was written */
     bool on = *pValue != 0;
 
     /* Get LED ID */
     uint8_t ch = 0;
     switch (handle) {
-        case MCS_R_HDL:
-            ch = LED_RED;
-            break;
-        case MCS_B_HDL:
-            ch = LED_BLUE;
-            break;
-        case MCS_G_HDL:
-            ch = LED_GREEN;
-            break;
+    case MCS_R_HDL:
+        ch = LED_RED;
+        break;
+    case MCS_B_HDL:
+        ch = LED_BLUE;
+        break;
+    case MCS_G_HDL:
+        ch = LED_GREEN;
+        break;
     }
 
     if (on)
@@ -126,11 +126,11 @@ uint8_t McsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uin
 void McsSetFeatures(uint8_t features)
 {
     AttsSetAttr(MCS_BUTTON_HDL, sizeof(features),
-                (uint8_t*)&features);    /*Setting mcsButtonVal characteristic value */
+                (uint8_t *)&features); /*Setting mcsButtonVal characteristic value */
     dmConnId_t connId = AppConnIsOpen(); /*Getting connected */
     if (connId != DM_CONN_ID_NONE) {
         AttsHandleValueNtf(connId, MCS_BUTTON_HDL, sizeof(features),
-                           (uint8_t*)&features); /*Send notify */
+                           (uint8_t *)&features); /*Send notify */
     }
 }
 
@@ -144,10 +144,10 @@ void McsSetFeatures(uint8_t features)
  *  \return None.
  */
 /*************************************************************************************************/
-void McsInit(wsfHandlerId_t handlerId, mcsCfg_t* pCfg)
+void McsInit(wsfHandlerId_t handlerId, mcsCfg_t *pCfg)
 {
     mcsCb.btnStateChkTimer.handlerId = handlerId;
-    mcsCb.cfg                        = *pCfg;
+    mcsCb.cfg = *pCfg;
 
     /* De-init the PAL LEDs so we can control them here */
     PalLedDeInit();
@@ -170,17 +170,17 @@ void McsButtonCheckStart(dmConnId_t connId, uint8_t timerEvt, uint8_t mcsCccIdx,
     /* if this is first connection */
     if (mcsNoConnActive()) {
         /* initialize control block */
-        mcsCb.btnStateChkTimer.msg.event  = timerEvt;
+        mcsCb.btnStateChkTimer.msg.event = timerEvt;
         mcsCb.btnStateChkTimer.msg.status = mcsCccIdx;
-        mcsCb.btnState                    = btnState;
-        mcsCb.currCount                   = mcsCb.cfg.count;
+        mcsCb.btnState = btnState;
+        mcsCb.currCount = mcsCb.cfg.count;
 
         /* start timer */
         WsfTimerStartSec(&mcsCb.btnStateChkTimer, mcsCb.cfg.period);
     }
 
     /* set conn id and last sent button level */
-    mcsCb.conn[connId - 1].connId          = connId;
+    mcsCb.conn[connId - 1].connId = connId;
     mcsCb.conn[connId - 1].sentMcsBtnState = btnState;
 }
 
@@ -196,7 +196,7 @@ void McsButtonCheckStart(dmConnId_t connId, uint8_t timerEvt, uint8_t mcsCccIdx,
 void McsButtonCheckStop(dmConnId_t connId)
 {
     /* clear connection */
-    mcsCb.conn[connId - 1].connId    = DM_CONN_ID_NONE;
+    mcsCb.conn[connId - 1].connId = DM_CONN_ID_NONE;
     mcsCb.conn[connId - 1].mcsToSend = FALSE;
 
     /* if no remaining connections */

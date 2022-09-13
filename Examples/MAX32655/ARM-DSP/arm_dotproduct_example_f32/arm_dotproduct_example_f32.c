@@ -93,7 +93,7 @@
 * Defines each of the tests performed
 * ------------------------------------------------------------------- */
 #define MAX_BLOCKSIZE 32
-#define DELTA         (0.000001f)
+#define DELTA (0.000001f)
 
 /* ----------------------------------------------------------------------
 * Test input data for Floating point Dot Product example for 32-blockSize
@@ -110,7 +110,8 @@ float32_t srcA_buf_f32[MAX_BLOCKSIZE] = {
     1.0667682113591888,  0.0592814605236053,  -0.0956484054836690, -0.8323494636500225,
     0.2944108163926404,  -1.3361818579378040, 0.7143245518189522,  1.6235620644462707,
     -0.6917757017022868, 0.8579966728282626,  1.2540014216025324,  -1.5937295764474768,
-    -1.4409644319010200, 0.5711476236581780,  -0.3998855777153632, 0.6899973754643451};
+    -1.4409644319010200, 0.5711476236581780,  -0.3998855777153632, 0.6899973754643451
+};
 
 /* ----------------------------------------------------------------------
 ** Test input data of srcB for blockSize 32
@@ -123,7 +124,8 @@ float32_t srcB_buf_f32[MAX_BLOCKSIZE] = {
     2.1343209047321410,  1.4358467535865909,  -0.9173023332875400, -1.1060770780029008,
     0.8105708062681296,  0.6985430696369063,  -0.4015827425012831, 1.2687512030669628,
     -0.7836083053674872, 0.2132664971465569,  0.7878984786088954,  0.8966819356782295,
-    -0.1869172943544062, 1.0131816724341454,  0.2484350696132857,  0.0596083377937976};
+    -0.1869172943544062, 1.0131816724341454,  0.2484350696132857,  0.0596083377937976
+};
 
 /* Reference dot product output */
 float32_t refDotProdOut = 5.9273644806352142;
@@ -132,13 +134,13 @@ float32_t refDotProdOut = 5.9273644806352142;
 * Declare Global variables
 * ------------------------------------------------------------------- */
 float32_t multOutput[MAX_BLOCKSIZE]; /* Intermediate output */
-float32_t testOutput;                /* Final ouput */
+float32_t testOutput; /* Final ouput */
 
 arm_status status; /* Status of the example */
 
 int main(void)
 {
-    uint32_t i;     /* Loop counter */
+    uint32_t i; /* Loop counter */
     float32_t diff; /* Difference between reference and test outputs */
 
     /* Multiplication of two input buffers */
@@ -160,16 +162,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 0;
     }

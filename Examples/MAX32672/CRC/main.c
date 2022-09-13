@@ -48,7 +48,7 @@
 #include "dma.h"
 
 /***** Definitions *****/
-#define POLY  0xEDB88320
+#define POLY 0xEDB88320
 #define CHECK 0xDEBB20E3
 /***** Globals *****/
 volatile int wait;
@@ -61,9 +61,9 @@ void CTB_IRQHandler(void)
     MXC_CTB_Handler();
 }
 
-void Test_Callback(void* req, int result)
+void Test_Callback(void *req, int result)
 {
-    wait            = 0;
+    wait = 0;
     callback_result = result;
 }
 
@@ -83,16 +83,14 @@ void Test_CRC(int asynchronous)
 
     printf(asynchronous ? "Test CRC Async\n" : "Test CRC Sync\n");
 
-    for (i = 0; i < 100; i++) {
-        array[i] = i;
-    }
+    for (i = 0; i < 100; i++) { array[i] = i; }
 
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
 
     // Load CRC polynomial into crc polynomial register
     MXC_CTB_CRC_SetPoly(POLY);
 
-    mxc_ctb_crc_req_t crc_req = {(uint8_t*)&array, 400, 0, &Test_Callback};
+    mxc_ctb_crc_req_t crc_req = { (uint8_t *)&array, 400, 0, &Test_Callback };
 
     MXC_CTB_EnableInt();
 
@@ -100,8 +98,7 @@ void Test_CRC(int asynchronous)
         wait = 1;
         MXC_CTB_CRC_ComputeAsync(&crc_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_CRC_Compute(&crc_req);
     }
@@ -114,8 +111,7 @@ void Test_CRC(int asynchronous)
         wait = 1;
         MXC_CTB_CRC_ComputeAsync(&crc_req);
 
-        while (wait)
-            ;
+        while (wait) {}
     } else {
         MXC_CTB_CRC_Compute(&crc_req);
     }
@@ -132,6 +128,5 @@ int main(void)
     NVIC_EnableIRQ(CRYPTO_IRQn);
     Test_CRC(1);
 
-    while (1) {
-    }
+    return 0;
 }

@@ -166,7 +166,7 @@ void MXC_LP_DisableSysRAM0LightSleep(void);
  * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
@@ -174,7 +174,7 @@ void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.

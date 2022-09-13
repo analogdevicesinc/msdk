@@ -66,13 +66,7 @@
 #include "tft_ili9341.h"
 #endif
 
-// SELECT THE FOLLOWING BUILD OPTION
-// Comment this if using camera
-//#define USE_SAMPLEDATA        // shows the sample data
-
-#define CAMERA_FREQ   (10 * 1000 * 1000)
-#define MIRROR        0
-#define TFT_BUFF_SIZE 50 // TFT buffer size
+#include "example_config.h"
 
 #ifdef BOARD_EVKIT_V1
 int font = urw_gothic_12_grey_bg_white;
@@ -86,38 +80,33 @@ volatile uint32_t cnn_time; // Stopwatch
 // HWC 74x74, channels 0 to 2
 #ifdef USE_SAMPLEDATA //Sample DATA
 static uint32_t input_buffer[] = SAMPLE_INPUT_0;
-uint32_t* input                = input_buffer;
-#else // Camera
-static uint32_t input_buffer[IMAGE_SIZE_X * IMAGE_SIZE_Y];
-uint32_t* input  = input_buffer;
-uint8_t* rx_data = (uint8_t*)input_buffer; //[IMAGE_SIZE_X*IMAGE_SIZE_Y*3];
+uint32_t *input = input_buffer;
 #endif
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 void load_input(void)
 {
 #ifdef USE_SAMPLEDATA
     // This function loads the sample data input -- replace with actual data
-    memcpy32((uint32_t*)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
+    memcpy32((uint32_t *)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
 #else // Camera
-    uint8_t* frame_buffer;
-    uint8_t* buffer;
+    uint8_t *frame_buffer;
+    uint8_t *buffer;
     uint32_t imgLen;
     uint32_t w, h, x, y;
     uint8_t r, g, b;
-    int i = 0;
+    uint32_t *cnn_mem = (uint32_t *)0x50402000;
+    uint32_t color;
 
     camera_start_capture_image();
 
-    while (!camera_is_image_rcv())
-        ;
+    while (!camera_is_image_rcv()) {}
 
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
     buffer = frame_buffer;
@@ -131,23 +120,29 @@ void load_input(void)
             b = *buffer++;
             buffer++; // skip msb=0x00
             // change the range from [0,255] to [-128,127] and store in buffer for CNN
-            input[i] = ((b << 16) | (g << 8) | r) ^ 0x00808080;
-            //printf("r:%d g:%d b:%d  input:%x\r\n",r,g,b, input[i]);
+            *cnn_mem++ = ((b << 16) | (g << 8) | r) ^ 0x00808080;
 
-            i++;
+            // display on TFT
+#ifdef TFT_ENABLE
+#ifdef BOARD_EVKIT_V1
+            color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) |
+                     (r & 0xF8));
+#endif
+#ifdef BOARD_FTHR_REVA
+            // Convert to RGB565
+            color = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+#endif
+            MXC_TFT_WritePixel(x * IMG_SCALE, y * IMG_SCALE, IMG_SCALE, IMG_SCALE, color);
+#endif
         }
     }
-
-    //printf("r:%d g:%d b:%d  input:%x\r\n",r,g,b, input[i-1]);
-    memcpy32((uint32_t*)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
 
 #endif
 }
 
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
-        ;
+    while ((*((volatile uint32_t *)0x50100000) & (1 << 12)) != 1 << 12) {}
 
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -183,7 +178,7 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = MXC_GPIO2;
     gpio_out.mask = MXC_GPIO_PIN_5;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -238,7 +233,7 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
 
     while (1) {
@@ -249,12 +244,7 @@ int main(void)
         cnn_init(); // Bring state machine into consistent state
         cnn_load_bias();
         cnn_configure(); // Configure state machine
-        load_input();    // Load data input
-
-#ifdef TFT_ENABLE
-        // Show original image
-        show_image(input, 0, 0, IMG_SCALE, IMAGE_SIZE_X, IMAGE_SIZE_Y);
-#endif
+        load_input(); // Load data input
 
         LED_On(LED1);
         cnn_start(); // Start CNN processing

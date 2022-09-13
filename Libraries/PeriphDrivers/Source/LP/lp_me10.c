@@ -49,7 +49,7 @@ void MXC_LP_ClearWakeStatus(void)
     MXC_PWRSEQ->gpio1_wk_fl = 0xFFFFFFFF;
     MXC_PWRSEQ->gpio2_wk_fl = 0xFFFFFFFF;
     MXC_PWRSEQ->gpio3_wk_fl = 0xFFFFFFFF;
-    MXC_PWRSEQ->usb_wk_fl   = 0xFFFFFFFF;
+    MXC_PWRSEQ->usb_wk_fl = 0xFFFFFFFF;
 }
 
 /* ************************************************************************** */
@@ -523,41 +523,41 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
 }
 
 /* ************************************************************************** */
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
 {
     MXC_GCR->pmr |= MXC_F_GCR_PMR_GPIOWKEN;
     switch (MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case 0:
-            MXC_PWRSEQ->gpio0_wk_en |= wu_pins->mask;
-            break;
-        case 1:
-            MXC_PWRSEQ->gpio1_wk_en |= wu_pins->mask;
-            break;
-        case 2:
-            MXC_PWRSEQ->gpio2_wk_en |= wu_pins->mask;
-            break;
-        case 3:
-            MXC_PWRSEQ->gpio3_wk_en |= wu_pins->mask;
-            break;
+    case 0:
+        MXC_PWRSEQ->gpio0_wk_en |= wu_pins->mask;
+        break;
+    case 1:
+        MXC_PWRSEQ->gpio1_wk_en |= wu_pins->mask;
+        break;
+    case 2:
+        MXC_PWRSEQ->gpio2_wk_en |= wu_pins->mask;
+        break;
+    case 3:
+        MXC_PWRSEQ->gpio3_wk_en |= wu_pins->mask;
+        break;
     }
 }
 
 /* ************************************************************************** */
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins)
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
 {
     switch (MXC_GPIO_GET_IDX(wu_pins->port)) {
-        case 0:
-            MXC_PWRSEQ->gpio0_wk_en &= ~wu_pins->mask;
-            break;
-        case 1:
-            MXC_PWRSEQ->gpio1_wk_en &= ~wu_pins->mask;
-            break;
-        case 2:
-            MXC_PWRSEQ->gpio2_wk_en &= ~wu_pins->mask;
-            break;
-        case 3:
-            MXC_PWRSEQ->gpio3_wk_en &= ~wu_pins->mask;
-            break;
+    case 0:
+        MXC_PWRSEQ->gpio0_wk_en &= ~wu_pins->mask;
+        break;
+    case 1:
+        MXC_PWRSEQ->gpio1_wk_en &= ~wu_pins->mask;
+        break;
+    case 2:
+        MXC_PWRSEQ->gpio2_wk_en &= ~wu_pins->mask;
+        break;
+    case 3:
+        MXC_PWRSEQ->gpio3_wk_en &= ~wu_pins->mask;
+        break;
     }
 
     if ((MXC_PWRSEQ->gpio0_wk_en == 0) && (MXC_PWRSEQ->gpio1_wk_en == 0) &&
@@ -581,11 +581,11 @@ void MXC_LP_EnterSleepMode(void)
 /* ************************************************************************** */
 void MXC_LP_EnterBackgroundMode(void)
 {
-    int restoreSysClock    = 0;
-    int restoreHBClock     = 0;
+    int restoreSysClock = 0;
+    int restoreHBClock = 0;
     int restoreSCacheClock = 0;
-    int restoreSPIXClock   = 0;
-    uint32_t lpcn          = 0;
+    int restoreSPIXClock = 0;
+    uint32_t lpcn = 0;
     MXC_LP_ClearWakeStatus();
 
     //make sure power monitors are in reset mode.
@@ -648,11 +648,11 @@ void MXC_LP_EnterBackgroundMode(void)
 /* ************************************************************************** */
 void MXC_LP_EnterDeepSleepMode(void)
 {
-    int restoreHIRC        = 0;
-    int restoreHBClock     = 0;
+    int restoreHIRC = 0;
+    int restoreHBClock = 0;
     int restoreSCacheClock = 0;
-    int restoreSPIXClock   = 0;
-    uint32_t lpcn          = 0;
+    int restoreSPIXClock = 0;
+    uint32_t lpcn = 0;
 
     MXC_LP_ClearWakeStatus();
 
@@ -716,6 +716,5 @@ void MXC_LP_EnterBackupMode(void)
 
     MXC_GCR->pmr &= ~MXC_F_GCR_PMR_MODE;
     MXC_GCR->pmr |= MXC_S_GCR_PMR_MODE_BACKUP;
-    while (1)
-        ;
+    while (1) {}
 }

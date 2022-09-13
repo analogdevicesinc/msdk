@@ -43,21 +43,21 @@
 #define MSR_SDMA_INSTANCE (0)
 
 #if MSR_SDMA_INSTANCE == 0
-#define MSR_SDMA         MXC_SDMA0
-#define MSR_SDMA_IRQn    HA0_IRQn
+#define MSR_SDMA MXC_SDMA0
+#define MSR_SDMA_IRQn HA0_IRQn
 #define SDMAx_IRQHandler HA0_IRQHandler
-#define CLK_DIS_SDMAxD   MXC_SYS_PERIPH_CLOCK_HA0
+#define CLK_DIS_SDMAxD MXC_SYS_PERIPH_CLOCK_HA0
 #else
-#define MSR_SDMA         MXC_SDMA1
-#define MSR_SDMA_IRQn    HA1_IRQn //SDMA1_IRQn
+#define MSR_SDMA MXC_SDMA1
+#define MSR_SDMA_IRQn HA1_IRQn //SDMA1_IRQn
 #define SDMAx_IRQHandler HA1_IRQHandler
-#define CLK_DIS_SDMAxD   MXC_SYS_PERIPH_CLOCK_HA1
+#define CLK_DIS_SDMAxD MXC_SYS_PERIPH_CLOCK_HA1
 #endif
 
 /* Global swipe statistics data */
-static int Processed          = 0;
-static int Discarded          = 0;
-static int Discarded_track[3] = {0, 0, 0};
+static int Processed = 0;
+static int Discarded = 0;
+static int Discarded_track[3] = { 0, 0, 0 };
 
 /* SDMA Code */
 extern unsigned char msr_sdma_code[];
@@ -66,21 +66,21 @@ extern unsigned char msr_sdma_code[];
 static volatile uint32_t sdma_irq_flag;
 
 /* SHARED section layout */
-volatile uint32_t* msr_version              = (uint32_t*)0x20000000;
-volatile uint16_t* msr_ctrl_ptr             = (uint16_t*)0x20000004;
-volatile uint16_t* adc9_err_ptr             = (uint16_t*)0x20000006;
-volatile uint32_t* swipe_timeout_sec_ptr    = (uint32_t*)0x20000008;
-volatile mcr_decoded_track_t* decoded_track = (mcr_decoded_track_t*)0x2000000C;
+volatile uint32_t *msr_version = (uint32_t *)0x20000000;
+volatile uint16_t *msr_ctrl_ptr = (uint16_t *)0x20000004;
+volatile uint16_t *adc9_err_ptr = (uint16_t *)0x20000006;
+volatile uint32_t *swipe_timeout_sec_ptr = (uint32_t *)0x20000008;
+volatile mcr_decoded_track_t *decoded_track = (mcr_decoded_track_t *)0x2000000C;
 
-#define msr_version       (*msr_version)
-#define msr_ctrl          (*msr_ctrl_ptr)
-#define adc9_err          (*adc9_err_ptr)
+#define msr_version (*msr_version)
+#define msr_ctrl (*msr_ctrl_ptr)
+#define adc9_err (*adc9_err_ptr)
 #define swipe_timeout_sec (*swipe_timeout_sec_ptr)
 
 void SDMAx_IRQHandler(void)
 {
     MSR_SDMA->irq_flag = 1;
-    sdma_irq_flag      = 1;
+    sdma_irq_flag = 1;
 }
 
 /* This will start MSR SDMA */
@@ -106,7 +106,8 @@ static void start_msr_sdma(void)
     MSR_SDMA->ctrl |= MXC_F_SDMA_CTRL_EN;
     /* Wait for the SDMA to finish re-initialization */
     while (!MSR_SDMA->irq_flag) {
-        ;
+        {
+        }
     }
     /* Clear irq_flag */
     MSR_SDMA->irq_flag = 1;
@@ -219,29 +220,30 @@ int main(void)
 
         printf("\nWaiting for swipe ...\n");
 
-        msr_ctrl      = GETSWIPE_BUSY; /* signal to SDMA to get swipe data */
+        msr_ctrl = GETSWIPE_BUSY; /* signal to SDMA to get swipe data */
         sdma_irq_flag = 0;
         while (!sdma_irq_flag) {
-            ;
+            {
+            }
         }
 
         /* check exit code */
         switch (msr_ctrl) {
-            case GETSWIPE_OK:
-                ProcessSwipe(); /* Print Swipe results */
-                break;
-            case GETSWIPE_ADCERR:
-                /* report ADC errors */
-                if (adc9_err & ADCERR_OVERRUN)
-                    printf("Error: ADC9 overrun\r\n");
-                else if (adc9_err & ADCERR_SHIFT)
-                    printf("Error: ADC9 channels shifted\r\n");
-                else if (adc9_err & ADCERR_INCOMPLETE)
-                    printf("Error: ADC9 conversion incomplete\r\n");
-                break;
-            case GETSWIPE_TIMO: /* Timeout: no swipe */
-                printf("No swipe for %d seconds\r\n", swipe_timeout_sec);
-                break;
+        case GETSWIPE_OK:
+            ProcessSwipe(); /* Print Swipe results */
+            break;
+        case GETSWIPE_ADCERR:
+            /* report ADC errors */
+            if (adc9_err & ADCERR_OVERRUN)
+                printf("Error: ADC9 overrun\r\n");
+            else if (adc9_err & ADCERR_SHIFT)
+                printf("Error: ADC9 channels shifted\r\n");
+            else if (adc9_err & ADCERR_INCOMPLETE)
+                printf("Error: ADC9 conversion incomplete\r\n");
+            break;
+        case GETSWIPE_TIMO: /* Timeout: no swipe */
+            printf("No swipe for %d seconds\r\n", swipe_timeout_sec);
+            break;
         }
 
         //

@@ -68,43 +68,43 @@ extern "C" {
 
 #define MX25_WIP_MASK 0x01 /**< Status Register                */
 #define MX25_WEL_MASK 0x02 /**< Write Enable Latch mask        */
-#define MX25_QE_MASK  0x40 /**< Quad-SPI enable mask           */
-#define MX25_WP_MASK  0x80 /**< Write protect enable mask      */
+#define MX25_QE_MASK 0x40 /**< Quad-SPI enable mask           */
+#define MX25_WP_MASK 0x80 /**< Write protect enable mask      */
 
 #define MX25_DEVICE_SIZE 0x8000000
-#define MX25_PAGE_SIZE   256
+#define MX25_PAGE_SIZE 256
 /**
  * @ingroup mx25_driver
  * @defgroup MX25_Commands MX25 SPI Command Definitions
  * @{
  */
-#define MX25_CMD_RST_EN    0x66 /**< Reset Enable                   */
-#define MX25_CMD_RST_MEM   0x99 /**< Reset Memory                   */
-#define MX25_CMD_ID        0x9F /**< ID                             */
-#define MX25_CMD_WRITE_EN  0x06 /**< Write Enable                   */
+#define MX25_CMD_RST_EN 0x66 /**< Reset Enable                   */
+#define MX25_CMD_RST_MEM 0x99 /**< Reset Memory                   */
+#define MX25_CMD_ID 0x9F /**< ID                             */
+#define MX25_CMD_WRITE_EN 0x06 /**< Write Enable                   */
 #define MX25_CMD_WRITE_DIS 0x04 /**< Write Disable                  */
 
-#define MX25_CMD_READ  0x0B /**< Read                           */
+#define MX25_CMD_READ 0x0B /**< Read                           */
 #define MX25_CMD_DREAD 0xBB /**< Dual SPI Read                  */
 #define MX25_CMD_QREAD 0xEB /**< Quad SPI Read                  */
-#define MX25_CMD_HPM   0xA3 /**< Hardware Protection Mode       */
+#define MX25_CMD_HPM 0xA3 /**< Hardware Protection Mode       */
 
-#define MX25_CMD_READ_SR  0x05 /**< Read Status Register           */
+#define MX25_CMD_READ_SR 0x05 /**< Read Status Register           */
 #define MX25_CMD_WRITE_SR 0x01 /**< Write Status Register          */
 
-#define MX25_CMD_PPROG     0x02 /**< Page Program                       */
+#define MX25_CMD_PPROG 0x02 /**< Page Program                       */
 #define MX25_CMD_QUAD_PROG 0X38 /**< Quad (4 x I/O) Page Program        */
 
-#define MX25_CMD_4K_ERASE   0x20 /**< Page Erase                     */
-#define MX25_CMD_32K_ERASE  0x52 /**< Sector Type 2 (32KB) Erase     */
-#define MX25_CMD_64K_ERASE  0xD8 /**< Sector Type 3 (64KB) Erase     */
+#define MX25_CMD_4K_ERASE 0x20 /**< Page Erase                     */
+#define MX25_CMD_32K_ERASE 0x52 /**< Sector Type 2 (32KB) Erase     */
+#define MX25_CMD_64K_ERASE 0xD8 /**< Sector Type 3 (64KB) Erase     */
 #define MX25_CMD_BULK_ERASE 0xC7 /**< Bulk Erase                     */
 /**@} end of group mx25_commands */
 /**
  * Enumeration type to select the size for an Erase command.
  */
 typedef enum {
-    MX25_Erase_4K,  /**< 4KB Sector Erase  */
+    MX25_Erase_4K, /**< 4KB Sector Erase  */
     MX25_Erase_32K, /**< 32KB Block Erase */
     MX25_Erase_64K, /**< 64KB Block Erase */
 } MX25_Erase_t;
@@ -150,7 +150,7 @@ int MX25_Quad(int enable);
  * @retval     0         Success
  * @retval     Non-zero  Error condition
  */
-int MX25_Read(uint32_t address, uint8_t* rx_buf, uint32_t rx_len, mxc_spixf_width_t width);
+int MX25_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, mxc_spixf_width_t width);
 
 /**
  * @brief enable write protection
@@ -172,7 +172,7 @@ int MX25_Write_Protect(int enable);
  * @retval     0         Success
  * @retval     Non-zero  Error condition
  */
-int MX25_Program_Page(uint32_t address, uint8_t* tx_buf, uint32_t tx_len, mxc_spixf_width_t width);
+int MX25_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len, mxc_spixf_width_t width);
 
 /**
  * @brief      Bulk erase the MX25 flash memory.
@@ -195,7 +195,7 @@ int MX25_Erase(uint32_t address, MX25_Erase_t size);
  * @brief      Read status register.
  * @param      buf   Pointer to store the value of the status register.
  */
-int MX25_Read_SR(uint8_t* buf);
+int MX25_Read_SR(uint8_t *buf);
 
 /**
  * @brief      Write status register

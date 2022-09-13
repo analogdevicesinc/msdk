@@ -44,30 +44,30 @@
 #include "keypad.h"
 
 // KB stand for Keyboard
-#define INPUT_DEVICE_PC_KB    1 // use PC    keyboard as input device
+#define INPUT_DEVICE_PC_KB 1 // use PC    keyboard as input device
 #define INPUT_DEVICE_EvKit_KB 2 // use EvKit keyboard as input device
 
 //
 #define INPUT_DEVICE INPUT_DEVICE_PC_KB
 
 #if INPUT_DEVICE == INPUT_DEVICE_EvKit_KB
-#define KEY_ENTER  'B'
+#define KEY_ENTER 'B'
 #define KEY_ENTER2 'C'
 #define KEY_CANCEL 'F'
 #elif INPUT_DEVICE == INPUT_DEVICE_PC_KB
-#define KEY_ENTER  '\n'
+#define KEY_ENTER '\n'
 #define KEY_ENTER2 '\r'
 #define KEY_CANCEL 27 //ESC
 #endif
 
 #if INPUT_DEVICE == INPUT_DEVICE_EvKit_KB
 
-static mxc_skbd_keys_t g_keys  = {0, 0, 0, 0};
+static mxc_skbd_keys_t g_keys = { 0, 0, 0, 0 };
 static volatile int is_pressed = 0;
 
 /* keys mapping on the keyboard */
-static unsigned char keyboard_map[16] = {'F', 'E', 'D', 'C', '3', '6', '9', 'B',
-                                         '2', '5', '8', '0', '1', '4', '7', 'A'};
+static unsigned char keyboard_map[16] = { 'F', 'E', 'D', 'C', '3', '6', '9', 'B',
+                                          '2', '5', '8', '0', '1', '4', '7', 'A' };
 
 static void keypadHandler(void)
 {
@@ -100,7 +100,7 @@ int kb_get_key(void)
     volatile unsigned int in;
     volatile unsigned int out;
     volatile unsigned int i;
-    unsigned short* key;
+    unsigned short *key;
 
     int pressed_key = 0;
 
@@ -108,7 +108,7 @@ int kb_get_key(void)
         key = &g_keys.key0;
 
         for (i = 0; i < 4; i++) {
-            in  = 0x0f & *key;
+            in = 0x0f & *key;
             out = (0xf0 & *key) >> 4;
 
             if (*key) {
@@ -140,11 +140,11 @@ int kb_init(void)
 #if INPUT_DEVICE == INPUT_DEVICE_EvKit_KB
     mxc_skbd_config_t skb_cfg;
 
-    skb_cfg.inputs      = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
-    skb_cfg.outputs     = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
-    skb_cfg.debounce    = MXC_V_SKBD_CTRL1_DBTM_TIME10MS;
+    skb_cfg.inputs = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
+    skb_cfg.outputs = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
+    skb_cfg.debounce = MXC_V_SKBD_CTRL1_DBTM_TIME10MS;
     skb_cfg.irq_handler = (irq_handler_t)keypadHandler;
-    skb_cfg.reg_erase   = 1;
+    skb_cfg.reg_erase = 1;
 
     MXC_SKBD_PreInit();
 
@@ -198,7 +198,7 @@ int kb_read_num(unsigned int timeout)
     return num;
 }
 
-int kb_select_from_list_xcol(const char* title, const char** items, int nb_items, int nb_col)
+int kb_select_from_list_xcol(const char *title, const char **items, int nb_items, int nb_col)
 {
     int i, k;
     int selected = 0;

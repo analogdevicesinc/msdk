@@ -42,7 +42,6 @@
 #include <stdint.h>
 #include "mxc_device.h"
 #include "led.h"
-#include "board.h"
 #include "mxc_delay.h"
 
 /***** Definitions *****/

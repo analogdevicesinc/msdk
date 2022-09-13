@@ -102,7 +102,7 @@ int MXC_FLC_PageErase(uint32_t address);
  * @param[in]  len      The length of the buffer
  *
  */
-void MXC_FLC_Read(int address, void* buffer, int len);
+void MXC_FLC_Read(int address, void *buffer, int len);
 
 /**
  * @brief      Writes data to flash.
@@ -113,7 +113,7 @@ void MXC_FLC_Read(int address, void* buffer, int len);
  * @return     #E_NO_ERROR If function is successful.
  * @note       make sure to disable ICC with ICC_Disable(); before Running this function
  */
-int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer);
+int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t *buffer);
 
 /**
  * @brief      Writes 32 bits of data to flash.
@@ -133,20 +133,20 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data);
  * @return     #E_NO_ERROR If function is successful.
  * @note       make sure to disable ICC with ICC_Disable(); before Running this function
  */
-int MXC_FLC_Write128(uint32_t address, uint32_t* data);
+int MXC_FLC_Write128(uint32_t address, uint32_t *data);
 
 /**
  * @brief      Set FLC Instance used for Interrupts functions.
  * @note       Default is set to MXC_FLC0 if you don't run this.
  * @param      flc   Pointer to FLC instance.
  */
-void MXC_FLC_SetFLCInt(mxc_flc_regs_t* flc);
+void MXC_FLC_SetFLCInt(mxc_flc_regs_t *flc);
 
 /**
  * @brief      Receive the currently set FLC instances used for Interrupts.
  * @return     Pointer to set FLC instance.
  */
-mxc_flc_regs_t* MXC_FLC_GetFLCInt(void);
+mxc_flc_regs_t *MXC_FLC_GetFLCInt(void);
 
 /**
  * @brief      Enable flash interrupts

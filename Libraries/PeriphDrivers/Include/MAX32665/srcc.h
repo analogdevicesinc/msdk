@@ -60,9 +60,9 @@ extern "C" {
  * @brief   Enumeration type for the SRCC Cache ID Register
  */
 typedef enum {
-    SRCC_CACHE_ID_RELNUM,  ///< Release Number
+    SRCC_CACHE_ID_RELNUM, ///< Release Number
     SRCC_CACHE_ID_PARTNUM, ///< Part Number
-    SRCC_CACHE_ID_CCHID    ///< Cache ID
+    SRCC_CACHE_ID_CCHID ///< Cache ID
 } mxc_srcc_cache_id_t;
 
 /***** Function Prototypes *****/

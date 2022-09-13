@@ -91,7 +91,7 @@
 
 void process_img(void)
 {
-    uint8_t* raw;
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
 
@@ -133,7 +133,7 @@ int main(void)
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
 
-    mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 
     if ((ret = MXC_UART_Init(ConsoleUart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return ret;

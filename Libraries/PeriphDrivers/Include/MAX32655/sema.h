@@ -111,7 +111,7 @@ int MXC_SEMA_InitBoxes(void);
  * @param     len   Number of bytes to read from the mailbox.
  * @return    #E_NO_ERROR if data read properly.
  */
-int MXC_SEMA_ReadBox(uint8_t* data, unsigned len);
+int MXC_SEMA_ReadBox(uint8_t *data, unsigned len);
 
 /**
  * @brief     Write to the mailbox
@@ -120,7 +120,7 @@ int MXC_SEMA_ReadBox(uint8_t* data, unsigned len);
  * @param     len   Number of bytes to write to the mailbox.
  * @return    #E_NO_ERROR if data written properly.
  */
-int MXC_SEMA_WriteBox(const uint8_t* data, unsigned len);
+int MXC_SEMA_WriteBox(const uint8_t *data, unsigned len);
 
 /**
  * @brief     Semaphore interrupt handler
@@ -136,7 +136,7 @@ int MXC_SEMA_Handler(void);
  * @param     len   Number of bytes to read from the mailbox.
  * @return    #E_NO_ERROR if data read properly.
  */
-int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t* data, unsigned len);
+int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t *data, unsigned len);
 
 /**
  * @brief     Write asynchronously to the mailbox
@@ -145,7 +145,7 @@ int MXC_SEMA_ReadBoxAsync(mxc_sema_complete_cb_t cb, uint8_t* data, unsigned len
  * @param     len   Number of bytes to write to the mailbox.
  * @return    #E_NO_ERROR if data written properly.
  */
-int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t* data, unsigned len);
+int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t *data, unsigned len);
 
 /**@} end of group sema */
 

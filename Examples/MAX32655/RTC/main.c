@@ -57,9 +57,9 @@
 
 /***** Definitions *****/
 #define LED_ALARM 0
-#define LED_TODA  1
+#define LED_TODA 1
 
-#define TIME_OF_DAY_SEC  10
+#define TIME_OF_DAY_SEC 10
 #define SUBSECOND_MSEC_0 250
 #define SUBSECOND_MSEC_1 500
 
@@ -68,7 +68,7 @@
           1000)) /* Converts a time in milleseconds to the equivalent RSSA register value. */
 
 #define SECS_PER_MIN 60
-#define SECS_PER_HR  (60 * SECS_PER_MIN)
+#define SECS_PER_HR (60 * SECS_PER_MIN)
 #define SECS_PER_DAY (24 * SECS_PER_HR)
 
 /***** Globals *****/
@@ -91,8 +91,7 @@ void RTC_IRQHandler(void)
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM);
         LED_Toggle(LED_TODA);
 
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
         /* Set a new alarm TIME_OF_DAY_SEC seconds from current time. */
         /* Don't need to check busy here as it was checked in MXC_RTC_DisableInt() */
@@ -102,8 +101,7 @@ void RTC_IRQHandler(void)
             /* Handle Error */
         }
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
         // Toggle the sub-second alarm interval.
         if (ss_interval == SUBSECOND_MSEC_0) {
@@ -112,15 +110,13 @@ void RTC_IRQHandler(void)
             ss_interval = SUBSECOND_MSEC_0;
         }
 
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY) {}
 
         if (MXC_RTC_SetSubsecondAlarm(MSEC_TO_RSSA(ss_interval)) != E_NO_ERROR) {
             /* Handle Error */
         }
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY) {}
     }
 
     return;
@@ -168,26 +164,22 @@ int main(void)
     volatile int i;
 
     /* Delay to prevent bricks */
-    for (i = 0; i < 0xFFFFFF; i++)
-        ;
+    for (i = 0; i < 0xFFFFFF; i++) {}
 
     /* Set the system clock to the 32 MHz clock for the RTC trim */
     /* Enable 32 MHz clock if not already enabled */
     if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {
         /* Power VREGO_D */
         MXC_SIMO->vrego_d = (0x3c << MXC_F_SIMO_VREGO_D_VSETD_POS);
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {
-        }
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
 
         /* Restore btleldoctrl setting */
         MXC_GCR->btleldoctrl = 0x3055;
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {
-        }
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
 
         /* Enable 32Mhz oscillator */
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
-        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {
-        }
+        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {}
     }
 
     /* Switch the system clock to the 32 MHz oscillator */
@@ -220,16 +212,14 @@ int main(void)
         printf("Failed RTC Initialization\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     if (MXC_RTC_Start() != E_NO_ERROR) {
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("RTC started\n");
@@ -264,8 +254,7 @@ int main(void)
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {
@@ -280,8 +269,7 @@ int main(void)
         printf("Failed RTC_SetSubsecondAlarm\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_SSEC_ALARM_IE) == E_BUSY) {
@@ -292,8 +280,7 @@ int main(void)
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     while (1) {

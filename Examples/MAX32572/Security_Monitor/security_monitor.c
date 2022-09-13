@@ -47,17 +47,17 @@
 
 /****************************       DEFINES     ******************************/
 // CHIPPER Key type, BB: Battery Backed key
-#define BB_KEY   0
+#define BB_KEY 0
 #define USER_KEY 1
 
-static unsigned int* nvsram_region0 = (unsigned int*)0x20100000;
-static unsigned int* nvsram_region1 = (unsigned int*)0x20100080;
-static unsigned int* nvsram_region2 = (unsigned int*)0x20100100;
-static unsigned int* nvsram_region3 = (unsigned int*)0x20100180;
-static unsigned int* nvsram_region4 = (unsigned int*)0x20100200;
-static unsigned int* nvsram_region5 = (unsigned int*)0x20100280;
-static unsigned int* nvsram_region6 = (unsigned int*)0x20100300;
-static unsigned int* nvsram_region7 = (unsigned int*)0x20100380;
+static unsigned int *nvsram_region0 = (unsigned int *)0x20100000;
+static unsigned int *nvsram_region1 = (unsigned int *)0x20100080;
+static unsigned int *nvsram_region2 = (unsigned int *)0x20100100;
+static unsigned int *nvsram_region3 = (unsigned int *)0x20100180;
+static unsigned int *nvsram_region4 = (unsigned int *)0x20100200;
+static unsigned int *nvsram_region5 = (unsigned int *)0x20100280;
+static unsigned int *nvsram_region6 = (unsigned int *)0x20100300;
+static unsigned int *nvsram_region7 = (unsigned int *)0x20100380;
 
 /**************************** Static Functions *******************************/
 void NMI_Handler(void)
@@ -80,7 +80,7 @@ void NMI_Handler(void)
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SYS);
 }
 
-void get_aes_result(unsigned int* data, int enc, int chipper_key)
+void get_aes_result(unsigned int *data, int enc, int chipper_key)
 {
     /* Clear CPH_DONE */
     MXC_CTB->crypto_ctrl = 0;
@@ -106,8 +106,7 @@ void get_aes_result(unsigned int* data, int enc, int chipper_key)
     MXC_CTB->crypto_din[3] = data[3];
 
     /* Poll to wait for AES completion */
-    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE))
-        ;
+    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_CPH_DONE)) {}
 
     /* Clear CPH_DONE */
     MXC_CTB->crypto_ctrl = 0;
@@ -120,7 +119,7 @@ void get_aes_result(unsigned int* data, int enc, int chipper_key)
 
 static void set_nvsram(void)
 {
-    const char* str;
+    const char *str;
 
     str = "TEST LINE 012345";
     memcpy(nvsram_region0, str, strlen(str));
@@ -142,14 +141,14 @@ static void set_nvsram(void)
     return;
 }
 
-static void dump_nvsram(char* title)
+static void dump_nvsram(char *title)
 {
     int i, k;
-    unsigned char buf[16] = {0};
+    unsigned char buf[16] = { 0 };
     unsigned char byt;
     unsigned int nb_regions = 8;
-    unsigned int* regions[] = {nvsram_region0, nvsram_region1, nvsram_region2, nvsram_region3,
-                               nvsram_region4, nvsram_region5, nvsram_region6, nvsram_region7};
+    unsigned int *regions[] = { nvsram_region0, nvsram_region1, nvsram_region2, nvsram_region3,
+                                nvsram_region4, nvsram_region5, nvsram_region6, nvsram_region7 };
 
     if (title) {
         printf("%s\n", title);
@@ -198,10 +197,10 @@ int smon_check_aes_key(void)
     data[2] = 0x59fa4c88;
     data[3] = 0x2e2b34ca;
 
-    utils_hex_dump("\nPlain Text:", (unsigned char*)data, 16);
+    utils_hex_dump("\nPlain Text:", (unsigned char *)data, 16);
 
     get_aes_result(data, 0, BB_KEY);
-    utils_hex_dump("AES DEC Result:", (unsigned char*)data, 16);
+    utils_hex_dump("AES DEC Result:", (unsigned char *)data, 16);
 
     /* if keywipe has been performed, the secure AES key is 0x0000000...000 */
     if ((data[3] == 0) && (data[2] == 0) && (data[1] == 0) && (data[0] == 0)) {
@@ -241,15 +240,13 @@ int smon_start_rtc(void)
     MXC_RTC_Start();
 
     /* Wait for the busy flag */
-    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1)
-        ;
+    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1) {}
 
     /* Read back RTC control register */
     printf("\nRTC control register: 0x%08x", (unsigned int)MXC_RTC->ctrl);
 
     /* Wait for the busy flag */
-    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1)
-        ;
+    while (((MXC_RTC->ctrl >> MXC_F_RTC_CTRL_BUSY_POS) & 0x1) == 1) {}
 
     printf("\nRTC second register: 0x%08x", (unsigned int)MXC_RTC->sec);
 
@@ -301,8 +298,8 @@ int smon_set_int_sensors(void)
     MXC_SMON->intscn = MXC_F_SMON_INTSCN_LOCK | MXC_F_SMON_INTSCN_SHIELD_EN |
                        MXC_F_SMON_INTSCN_TEMP_EN | MXC_F_SMON_INTSCN_VBAT_EN;
 #else
-    MXC_SMON->intscn =
-        MXC_F_SMON_INTSCN_SHIELD_EN | MXC_F_SMON_INTSCN_TEMP_EN | MXC_F_SMON_INTSCN_VBAT_EN;
+    MXC_SMON->intscn = MXC_F_SMON_INTSCN_SHIELD_EN | MXC_F_SMON_INTSCN_TEMP_EN |
+                       MXC_F_SMON_INTSCN_VBAT_EN;
 #endif
 
     printf("\nAll Internal Sensors Activated\n");
@@ -312,12 +309,12 @@ int smon_set_int_sensors(void)
 
 int load_user_chipper_key(void)
 {
-    unsigned int result       = 0;
+    unsigned int result = 0;
     unsigned char aes_key[32] = {
         1, 2, 3, 4, 5, 6,
     };
-    unsigned int* ptr;
-    unsigned int* ptr_key_register = (unsigned int*)AES_BASE;
+    unsigned int *ptr;
+    unsigned int *ptr_key_register = (unsigned int *)AES_BASE;
 
     /*
      *
@@ -327,7 +324,7 @@ int load_user_chipper_key(void)
      */
     // generate_random()
 
-    ptr = (unsigned int*)&aes_key[0];
+    ptr = (unsigned int *)&aes_key[0];
 
     /* Load aes_key */
     *ptr_key_register++ = ptr[0];
@@ -337,7 +334,7 @@ int load_user_chipper_key(void)
     *ptr_key_register++ = ptr[4];
     *ptr_key_register++ = ptr[5];
     *ptr_key_register++ = ptr[6];
-    *ptr_key_register   = ptr[7];
+    *ptr_key_register = ptr[7];
 
     return result;
 }
@@ -389,8 +386,7 @@ int smon_load_aes_key(void)
     MXC_CTB->crypto_ctrl |= MXC_F_CTB_CRYPTO_CTRL_RST;
 
     // wait until ready
-    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_RDY))
-        ;
+    while (!(MXC_CTB->crypto_ctrl & MXC_F_CTB_CRYPTO_CTRL_RDY)) {}
 
     if (MXC_SMON->secdiag & MXC_F_SMON_SECDIAG_AESKT) {
         printf("\nAES Key has been transferred to battery backed location\n");

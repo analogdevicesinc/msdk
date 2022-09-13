@@ -64,7 +64,7 @@ __attribute__((weak)) float __powisf2(float a, int b);
  *
  */
 
-float32_t arm_euclidean_distance_f32(const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_euclidean_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Euclidean distance between two vectors
@@ -75,7 +75,7 @@ float32_t arm_euclidean_distance_f32(const float32_t* pA, const float32_t* pB, u
  *
  */
 
-float64_t arm_euclidean_distance_f64(const float64_t* pA, const float64_t* pB, uint32_t blockSize);
+float64_t arm_euclidean_distance_f64(const float64_t *pA, const float64_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Bray-Curtis distance between two vectors
@@ -85,7 +85,7 @@ float64_t arm_euclidean_distance_f64(const float64_t* pA, const float64_t* pB, u
  * @return distance
  *
  */
-float32_t arm_braycurtis_distance_f32(const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_braycurtis_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Canberra distance between two vectors
@@ -100,7 +100,7 @@ float32_t arm_braycurtis_distance_f32(const float32_t* pA, const float32_t* pB, 
  * @return distance
  *
  */
-float32_t arm_canberra_distance_f32(const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_canberra_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Chebyshev distance between two vectors
@@ -110,7 +110,7 @@ float32_t arm_canberra_distance_f32(const float32_t* pA, const float32_t* pB, ui
  * @return distance
  *
  */
-float32_t arm_chebyshev_distance_f32(const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_chebyshev_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Chebyshev distance between two vectors
@@ -120,7 +120,7 @@ float32_t arm_chebyshev_distance_f32(const float32_t* pA, const float32_t* pB, u
  * @return distance
  *
  */
-float64_t arm_chebyshev_distance_f64(const float64_t* pA, const float64_t* pB, uint32_t blockSize);
+float64_t arm_chebyshev_distance_f64(const float64_t *pA, const float64_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Cityblock (Manhattan) distance between two vectors
@@ -130,7 +130,7 @@ float64_t arm_chebyshev_distance_f64(const float64_t* pA, const float64_t* pB, u
  * @return distance
  *
  */
-float32_t arm_cityblock_distance_f32(const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_cityblock_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Cityblock (Manhattan) distance between two vectors
@@ -140,7 +140,7 @@ float32_t arm_cityblock_distance_f32(const float32_t* pA, const float32_t* pB, u
  * @return distance
  *
  */
-float64_t arm_cityblock_distance_f64(const float64_t* pA, const float64_t* pB, uint32_t blockSize);
+float64_t arm_cityblock_distance_f64(const float64_t *pA, const float64_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Correlation distance between two vectors
@@ -153,7 +153,7 @@ float64_t arm_cityblock_distance_f64(const float64_t* pA, const float64_t* pB, u
  * @return distance
  *
  */
-float32_t arm_correlation_distance_f32(float32_t* pA, float32_t* pB, uint32_t blockSize);
+float32_t arm_correlation_distance_f32(float32_t *pA, float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Cosine distance between two vectors
@@ -165,7 +165,7 @@ float32_t arm_correlation_distance_f32(float32_t* pA, float32_t* pB, uint32_t bl
  *
  */
 
-float32_t arm_cosine_distance_f32(const float32_t* pA, const float32_t* pB, uint32_t blockSize);
+float32_t arm_cosine_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Cosine distance between two vectors
@@ -177,7 +177,7 @@ float32_t arm_cosine_distance_f32(const float32_t* pA, const float32_t* pB, uint
  *
  */
 
-float64_t arm_cosine_distance_f64(const float64_t* pA, const float64_t* pB, uint32_t blockSize);
+float64_t arm_cosine_distance_f64(const float64_t *pA, const float64_t *pB, uint32_t blockSize);
 
 /**
  * @brief        Jensen-Shannon distance between two vectors
@@ -199,7 +199,7 @@ float64_t arm_cosine_distance_f64(const float64_t* pA, const float64_t* pB, uint
  *
  */
 
-float32_t arm_jensenshannon_distance_f32(const float32_t* pA, const float32_t* pB,
+float32_t arm_jensenshannon_distance_f32(const float32_t *pA, const float32_t *pB,
                                          uint32_t blockSize);
 
 /**
@@ -213,7 +213,7 @@ float32_t arm_jensenshannon_distance_f32(const float32_t* pA, const float32_t* p
  *
  */
 
-float32_t arm_minkowski_distance_f32(const float32_t* pA, const float32_t* pB, int32_t order,
+float32_t arm_minkowski_distance_f32(const float32_t *pA, const float32_t *pB, int32_t order,
                                      uint32_t blockSize);
 
 /**
@@ -227,7 +227,7 @@ float32_t arm_minkowski_distance_f32(const float32_t* pA, const float32_t* pB, i
  *
  */
 
-float32_t arm_dice_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_dice_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 /**
  * @brief        Hamming distance between two vectors
@@ -239,7 +239,7 @@ float32_t arm_dice_distance(const uint32_t* pA, const uint32_t* pB, uint32_t num
  *
  */
 
-float32_t arm_hamming_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_hamming_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 /**
  * @brief        Jaccard distance between two vectors
@@ -251,7 +251,7 @@ float32_t arm_hamming_distance(const uint32_t* pA, const uint32_t* pB, uint32_t 
  *
  */
 
-float32_t arm_jaccard_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_jaccard_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 /**
  * @brief        Kulsinski distance between two vectors
@@ -263,7 +263,7 @@ float32_t arm_jaccard_distance(const uint32_t* pA, const uint32_t* pB, uint32_t 
  *
  */
 
-float32_t arm_kulsinski_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_kulsinski_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 /**
  * @brief        Roger Stanimoto distance between two vectors
@@ -275,7 +275,7 @@ float32_t arm_kulsinski_distance(const uint32_t* pA, const uint32_t* pB, uint32_
  *
  */
 
-float32_t arm_rogerstanimoto_distance(const uint32_t* pA, const uint32_t* pB,
+float32_t arm_rogerstanimoto_distance(const uint32_t *pA, const uint32_t *pB,
                                       uint32_t numberOfBools);
 
 /**
@@ -288,7 +288,7 @@ float32_t arm_rogerstanimoto_distance(const uint32_t* pA, const uint32_t* pB,
  *
  */
 
-float32_t arm_russellrao_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_russellrao_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 /**
  * @brief        Sokal-Michener distance between two vectors
@@ -300,7 +300,7 @@ float32_t arm_russellrao_distance(const uint32_t* pA, const uint32_t* pB, uint32
  *
  */
 
-float32_t arm_sokalmichener_distance(const uint32_t* pA, const uint32_t* pB,
+float32_t arm_sokalmichener_distance(const uint32_t *pA, const uint32_t *pB,
                                      uint32_t numberOfBools);
 
 /**
@@ -313,7 +313,7 @@ float32_t arm_sokalmichener_distance(const uint32_t* pA, const uint32_t* pB,
  *
  */
 
-float32_t arm_sokalsneath_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_sokalsneath_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 /**
  * @brief        Yule distance between two vectors
@@ -325,7 +325,7 @@ float32_t arm_sokalsneath_distance(const uint32_t* pA, const uint32_t* pB, uint3
  *
  */
 
-float32_t arm_yule_distance(const uint32_t* pA, const uint32_t* pB, uint32_t numberOfBools);
+float32_t arm_yule_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools);
 
 #ifdef __cplusplus
 }

@@ -78,8 +78,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
-                                  ucl_rsa_public_key_t* keyPu);
+int ucl_pkcs1_es_pkcs1v15_encrypt(u8 *output, u8 *input, u32 input_length,
+                                  ucl_rsa_public_key_t *keyPu);
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 decryption</b>.
@@ -108,8 +108,8 @@ int ucl_pkcs1_es_pkcs1v15_encrypt(u8* output, u8* input, u32 input_length,
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
-                                  ucl_rsa_private_key_t* keyPr);
+int ucl_pkcs1_es_pkcs1v15_decrypt(u8 *output, u32 *output_length, u8 *input,
+                                  ucl_rsa_private_key_t *keyPr);
 
 /*============================================================================*/
 /** <b>RSAES-PKCS1V15 decryption with CRT</b>.
@@ -136,8 +136,8 @@ int ucl_pkcs1_es_pkcs1v15_decrypt(u8* output, u32* output_length, u8* input,
  *
  * @ingroup UCL_PKCS1V21_RSAESPKCS1V15
  */
-int ucl_pkcs1_es_pkcs1v15_crt_decrypt(u8* output, u32* output_length, u8* input,
-                                      ucl_rsa_crt_private_key_t* keyPr);
+int ucl_pkcs1_es_pkcs1v15_crt_decrypt(u8 *output, u32 *output_length, u8 *input,
+                                      ucl_rsa_crt_private_key_t *keyPr);
 
 #ifdef __cplusplus
 }

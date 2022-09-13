@@ -69,9 +69,9 @@
 extern "C" {
 #endif
 
-_HSM_LIBIMPEXP_ char* CALL HSM_GetVersion(void);
+_HSM_LIBIMPEXP_ char *CALL HSM_GetVersion(void);
 
-_HSM_LIBIMPEXP_ char* CALL HSM_GetBuildDate(void);
+_HSM_LIBIMPEXP_ char *CALL HSM_GetBuildDate(void);
 
 /**
 	  * @brief Perform Token login in order to open a session
@@ -88,7 +88,7 @@ _HSM_LIBIMPEXP_ CK_RV CALL HSM_Login(CK_SESSION_HANDLE_PTR session, CK_ULONG slo
 	  * @param obj object handler for the found key
 	  * @retval rv
 	  */
-_HSM_LIBIMPEXP_ CK_RV CALL HSM_FindKey(CK_SESSION_HANDLE session, const char* keyName,
+_HSM_LIBIMPEXP_ CK_RV CALL HSM_FindKey(CK_SESSION_HANDLE session, const char *keyName,
                                        CK_BBOOL private, CK_OBJECT_HANDLE_PTR obj);
 
 /**
@@ -96,7 +96,7 @@ _HSM_LIBIMPEXP_ CK_RV CALL HSM_FindKey(CK_SESSION_HANDLE session, const char* ke
 	  * @param path path of Thales cknfast DLL
 	  * @retval rv
 	  */
-_HSM_LIBIMPEXP_ CK_RV CALL HSM_InitDLL(char* path);
+_HSM_LIBIMPEXP_ CK_RV CALL HSM_InitDLL(char *path);
 
 /**
 	  * @brief Close the HSM Session
@@ -129,7 +129,7 @@ _HSM_LIBIMPEXP_ CK_RV CALL HSM_ListKey(CK_SESSION_HANDLE session);
 	  *
 	  */
 _HSM_LIBIMPEXP_ CK_RV CALL HSM_GenerateHMACSHA256Key(CK_SESSION_HANDLE session,
-                                                     const char* keyName);
+                                                     const char *keyName);
 
 /**
 	  * @brief Sign Data with SHA-256 HMAC Algorithm

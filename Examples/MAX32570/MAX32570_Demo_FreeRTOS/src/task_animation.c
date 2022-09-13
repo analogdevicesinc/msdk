@@ -62,7 +62,8 @@ static const int logo_maxim_data[] = {
     maxim_logo_only_small_021_bmp, maxim_logo_only_small_022_bmp, maxim_logo_only_small_023_bmp,
     maxim_logo_only_small_024_bmp, maxim_logo_only_small_025_bmp, maxim_logo_only_small_026_bmp,
     maxim_logo_only_small_027_bmp, maxim_logo_only_small_028_bmp, maxim_logo_only_small_029_bmp,
-    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp};
+    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp
+};
 
 static volatile int g_animation_status = 0;
 static xSemaphoreHandle xAnimLock;
@@ -82,7 +83,7 @@ void logo_animation_stop(void)
     g_animation_status = 0;
 }
 
-void vAnimTask(void* pvParameters)
+void vAnimTask(void *pvParameters)
 {
     (void)pvParameters;
     int nb = 0;
@@ -91,7 +92,8 @@ void vAnimTask(void* pvParameters)
 
     for (;;) {
         while (xSemaphoreTake(xAnimLock, 0xFFFF) != pdTRUE) {
-            ;
+            {
+            }
         }
 
         while (g_animation_status) {

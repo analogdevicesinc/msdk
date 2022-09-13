@@ -97,8 +97,10 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
+// Match image dimensions to the selected camera and capture mode.
+// These definitions, including "CAMERA_MONO", come from board.mk
+
 #if defined(CAMERA_HM01B0)
-#define CAMERA_MONO
 
 #ifdef STREAM_ENABLE
 #define IMAGE_XRES 324 / 2
@@ -111,8 +113,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#if defined(CAMERA_HM0360) || defined(CAMERA_PAG7920)
-#define CAMERA_MONO
+#if defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || defined(CAMERA_PAG7920)
 
 #ifdef STREAM_ENABLE
 #define IMAGE_XRES 320
@@ -156,7 +157,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 void process_img(void)
 {
-    uint8_t* raw;
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
 
@@ -181,7 +182,7 @@ void process_img(void)
 
 #else // #ifndef STREAM_ENABLE
     // STREAM mode
-    uint8_t* data = NULL;
+    uint8_t *data = NULL;
     // send image line by line to PC, or TFT
 #ifndef ENABLE_TFT
     // initialize the communication by providing image format and size
@@ -215,15 +216,14 @@ void process_img(void)
         release_camera_stream_buffer();
     }
 
-    stream_stat_t* stat = get_camera_stream_statistic();
+    stream_stat_t *stat = get_camera_stream_statistic();
 
     //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
     //printf("OVERFLOW = %d\n", stat->overflow_count);
     if (stat->overflow_count > 0) {
         LED_On(LED_RED); // Turn on red LED if overflow detected
 
-        while (1)
-            ;
+        while (1) {}
     }
 
 #endif //#ifndef STREAM_ENABLE
@@ -248,7 +248,7 @@ int main(void)
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
 
-    mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 
     if ((ret = MXC_UART_Init(ConsoleUart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return ret;
@@ -271,7 +271,8 @@ int main(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_OV5642)
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
+    defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
 #endif
@@ -345,8 +346,7 @@ int main(void)
     // Start capturing a first camera image frame.
     printf("Starting\n");
 #ifdef BUTTON
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
 #endif
     camera_start_capture_image();
 
@@ -362,8 +362,7 @@ int main(void)
             // Prepare for another frame capture.
             LED_Toggle(LED_GREEN);
 #ifdef BUTTON
-            while (!PB_Get(0))
-                ;
+            while (!PB_Get(0)) {}
 #endif
             camera_start_capture_image();
         }

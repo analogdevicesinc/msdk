@@ -97,9 +97,9 @@ void start_timer(void)
 //Stop current timer and print elapsed time
 int stop_timer(void)
 {
-    int time_elapsed   = MXC_TMR_SW_Stop(MXC_TMR0);
-    unsigned int sec   = time_elapsed / 1000000;
-    unsigned int mili  = (time_elapsed - (sec * 1000000)) / 1000;
+    int time_elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    unsigned int sec = time_elapsed / 1000000;
+    unsigned int mili = (time_elapsed - (sec * 1000000)) / 1000;
     unsigned int micro = time_elapsed - (sec * 1000000) - (mili * 1000);
     printf("Time Elapsed: %d.%d%d Seconds\n", sec, mili, micro);
     return time_elapsed;
@@ -108,7 +108,7 @@ int stop_timer(void)
 // *****************************************************************************
 int main(void)
 {
-    int fail          = 0;
+    int fail = 0;
     int time_elapsed1 = 0;
     int time_elapsed2 = 0;
 
@@ -151,14 +151,11 @@ int main(void)
         fail += 1;
     }
 
-    printf("\n\n");
-
     if (fail == 0) {
-        printf("EXAMPLE SUCCEEDED\n");
+        printf("\nEXAMPLE SUCCEEDED\n");
     } else {
-        printf("EXAMPLE FAILED\n");
+        printf("\nEXAMPLE FAILED\n");
     }
 
-    while (1) {
-    }
+    return 0;
 }
