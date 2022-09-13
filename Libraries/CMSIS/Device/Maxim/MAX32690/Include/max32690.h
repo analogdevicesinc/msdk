@@ -189,8 +189,8 @@ typedef enum {
     CAN0_IRQn,               /* 0x7B  0x01EC  123: CAN0 */
     CAN1_IRQn,               /* 0x7C  0x01F0  124: CAN1 */
     WUT1_IRQn,               /* 0x7D  0x01F4  125: Wake up timer 1 */
-    RSV111_IRQn,             /* 0x7E  0x01F8  126: Reserved */
-    RSV112_IRQn,             /* 0x7F  0x01FC  127: Reserved */
+    RSV110_IRQn,             /* 0x7E  0x01F8  126: Reserved */
+    RSV111_IRQn,             /* 0x7F  0x01FC  127: Reserved */
 #else                        // __riscv
     HardFault_IRQn = 3,      /* 0x03,3 HardFault */
     PF_IRQn        = 4,      /* 0x04,4 PFW | SYSFAULT | CM4 */
