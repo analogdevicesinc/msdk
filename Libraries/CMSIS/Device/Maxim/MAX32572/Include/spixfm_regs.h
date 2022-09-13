@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the SPIXFM Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _SPIXFM_REGS_H_
 #define _SPIXFM_REGS_H_
@@ -96,6 +95,7 @@ typedef struct {
     __IO uint32_t memsecctrl;           /**< <tt>\b 0x20:</tt> SPIXFM MEMSECCTRL Register */
     __IO uint32_t busidle;              /**< <tt>\b 0x24:</tt> SPIXFM BUSIDLE Register */
     __IO uint32_t authoffset;           /**< <tt>\b 0x28:</tt> SPIXFM AUTHOFFSET Register */
+    __IO uint32_t sck_bypass;           /**< <tt>\b 0x2C:</tt> SPIXFM SCK_BYPASS Register */
 } mxc_spixfm_regs_t;
 
 /* Register offsets for module SPIXFM */
@@ -114,6 +114,7 @@ typedef struct {
  #define MXC_R_SPIXFM_MEMSECCTRL            ((uint32_t)0x00000020UL) /**< Offset from SPIXFM Base Address: <tt> 0x0020</tt> */ 
  #define MXC_R_SPIXFM_BUSIDLE               ((uint32_t)0x00000024UL) /**< Offset from SPIXFM Base Address: <tt> 0x0024</tt> */ 
  #define MXC_R_SPIXFM_AUTHOFFSET            ((uint32_t)0x00000028UL) /**< Offset from SPIXFM Base Address: <tt> 0x0028</tt> */ 
+ #define MXC_R_SPIXFM_SCK_BYPASS            ((uint32_t)0x0000002CUL) /**< Offset from SPIXFM Base Address: <tt> 0x002C</tt> */ 
 /**@} end of group spixfm_registers */
 
 /**
@@ -316,6 +317,17 @@ typedef struct {
  #define MXC_F_SPIXFM_BUSIDLE_BUSIDLE                   ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_BUSIDLE_BUSIDLE_POS)) /**< BUSIDLE_BUSIDLE Mask */
 
 /**@} end of group SPIXFM_BUSIDLE_Register */
+
+/**
+ * @ingroup  spixfm_registers
+ * @defgroup SPIXFM_SCK_BYPASS SPIXFM_SCK_BYPASS
+ * @brief    SCK Pin Bypass Register.
+ * @{
+ */
+ #define MXC_F_SPIXFM_SCK_BYPASS_BYPASS_EN_POS          0 /**< SCK_BYPASS_BYPASS_EN Position */
+ #define MXC_F_SPIXFM_SCK_BYPASS_BYPASS_EN              ((uint32_t)(0x1UL << MXC_F_SPIXFM_SCK_BYPASS_BYPASS_EN_POS)) /**< SCK_BYPASS_BYPASS_EN Mask */
+
+/**@} end of group SPIXFM_SCK_BYPASS_Register */
 
 #ifdef __cplusplus
 }

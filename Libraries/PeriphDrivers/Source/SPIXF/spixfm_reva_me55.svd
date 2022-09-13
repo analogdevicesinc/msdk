@@ -530,6 +530,19 @@
         <description>Auth Offset</description>
         <addressOffset>0x28</addressOffset>
       </register>
+      <register>
+        <name>SCK_BYPASS</name>
+        <description>SCK Pin Bypass Register.</description>
+        <addressOffset>0x2C</addressOffset>
+        <fields>
+          <field>
+            <name>BYPASS_EN</name>
+            <description>Enable bypass.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
   <!-- SPIXFM:
