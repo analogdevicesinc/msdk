@@ -279,7 +279,7 @@ void oobRxCback(void)
 static void datsSendData(dmConnId_t connId)
 {
     uint8_t str[] = "hello back";
-    volatile uint8_t x = 0;
+    volatile uint8_t x = 200;
     if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
         /* send notification */
         AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
