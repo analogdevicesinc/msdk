@@ -136,7 +136,7 @@ void MXC_SPIXR_DMATXFIFOEnable(void)
 /* ************************************************************************* */
 void MXC_SPIXR_DMATXFIFODisable(void)
 {
-    MXC_SPIXR_RevA_DmaTXFIFODisable((mxc_spixr_reva_regs_t*)MXC_SPIXR);
+    MXC_SPIXR_RevA_DmaTXFIFODisable((mxc_spixr_reva_regs_t *)MXC_SPIXR);
 }
 
 /* ************************************************************************* */
@@ -190,7 +190,7 @@ void MXC_SPIXR_ThreeWireModeEnable(void)
 /* ************************************************************************* */
 void MXC_SPIXR_ThreeWireModeDisable(void)
 {
-    MXC_SPIXR_RevA_ThreeWireModeDisable((mxc_spixr_reva_regs_t*)MXC_SPIXR);
+    MXC_SPIXR_RevA_ThreeWireModeDisable((mxc_spixr_reva_regs_t *)MXC_SPIXR);
 }
 
 /* ************************************************************************* */

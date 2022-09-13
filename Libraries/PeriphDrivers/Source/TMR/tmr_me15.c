@@ -281,9 +281,9 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             clockFrequency = IBRO_FREQ;
             break;
 
-            case MXC_TMR_32M_CLK:
-                clockFrequency = ERFO_FREQ;
-                break;
+        case MXC_TMR_32M_CLK:
+            clockFrequency = ERFO_FREQ;
+            break;
 
         default:
             break;

@@ -503,7 +503,7 @@ void MXC_ADC_TriggerConfig(mxc_adc_conversion_req_t *req);
  *
  * @return  None.
  */
-void MXC_ADC_ConversionModeConfig(mxc_adc_conversion_req_t* req);
+void MXC_ADC_ConversionModeConfig(mxc_adc_conversion_req_t *req);
 
 /**
  * @brief   Set Sample Delay before Continuous Mode Conversion Restart.

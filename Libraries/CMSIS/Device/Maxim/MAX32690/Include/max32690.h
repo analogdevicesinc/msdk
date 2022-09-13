@@ -132,109 +132,109 @@ typedef enum {
     BTLE_RX_AES_IRQn, /* 0x42  0x0108  66: BTLE RX AES Done */
     BTLE_INV_APB_ADDR_IRQn, /* 0x43  0x010C  67: BTLE Invalid APB Address*/
     BTLE_IQ_DATA_VALID_IRQn, /* 0x44  0x0110  68: BTLE IQ Data Valid */
-    WUT0_IRQn,               /* 0x45  0x0114  69: Wakeup Timer 0 */
-    GPIOWAKE_IRQn,           /* 0x46  0x0118  70: GPIO and AIN Wakeup */
-    RSV55_IRQn,              /* 0x47  0x011C  71: Reserved */
-    SPI3_IRQn,               /* 0x48  0x0120  72: SPI3 */
-    WDT1_IRQn,               /* 0x49  0x0124  73: LP Watchdog */
-    GPIO3_IRQn,              /* 0x4A  0x0128  74: GPIO3 */
-    PT_IRQn,                 /* 0x4B  0x012C  75: Pulse Train */
-    RSV60_IRQn,              /* 0x4C  0x0130  76: Reserved */
-    HPB_IRQn,                /* 0x4D  0x0134  77: Hyperbus */
-    I2C2_IRQn,               /* 0x4E  0x0138  78: I2C2 */
-    RISCV_IRQn,              /* 0x4F  0x013C  79: RISC-V */
-    RSV64_IRQn,              /* 0x50  0x0140  80: Reserved */
-    RSV65_IRQn,              /* 0x51  0x0144  81: Reserved */
-    RSV66_IRQn,              /* 0x52  0x0148  82: Reserved */
-    OWM_IRQn,                /* 0x53  0x014C  83: One Wire Master */
-    DMA4_IRQn,               /* 0x54  0x0150  84: DMA4 */
-    DMA5_IRQn,               /* 0x55  0x0154  85: DMA5 */
-    DMA6_IRQn,               /* 0x56  0x0158  86: DMA6 */
-    DMA7_IRQn,               /* 0x57  0x015C  87: DMA7 */
-    DMA8_IRQn,               /* 0x58  0x0160  88: DMA8 */
-    DMA9_IRQn,               /* 0x59  0x0164  89: DMA9 */
-    DMA10_IRQn,              /* 0x5A  0x0168  90: DMA10 */
-    DMA11_IRQn,              /* 0x5B  0x016C  91: DMA11 */
-    DMA12_IRQn,              /* 0x5C  0x0170  92: DMA12 */
-    DMA13_IRQn,              /* 0x5D  0x0174  93: DMA13 */
-    DMA14_IRQn,              /* 0x5E  0x0178  94: DMA14 */
-    DMA15_IRQn,              /* 0x5F  0x017C  95: DMA15 */
-    USBDMA_IRQn,             /* 0x60  0x0180  96: USB DMA */
-    RSV81_IRQn,              /* 0x61  0x0184  97: Reserved */
-    ECC_IRQn,                /* 0x62  0x0188  98: ECC */
-    RSV83_IRQn,              /* 0x63  0x018C  99: Reserved */
-    RSV84_IRQn,              /* 0x64  0x0190 100: Resevred */
-    SCA_IRQn,                /* 0x65  0x0194 101: SCA Crypto Accelerator */
-    RSV86_IRQn,              /* 0x66  0x0198 102: Reserved */
-    FLC1_IRQn,               /* 0x67  0x019C 103: Flash Controller 1 */
-    UART3_IRQn,              /* 0x68  0x01A0 104: UART 3 (LP) */
-    RSV89_IRQn,              /* 0x69  0x01A4 105: Reserved */
-    RSV90_IRQn,              /* 0x6A  0x01A8 106: Reserved */
-    RSV91_IRQn,              /* 0x6B  0x01AC 107: Reserved */
-    RSV92_IRQn,              /* 0x6C  0x01B0 108: Reserved */
-    RSV93_IRQn,              /* 0x6D  0x01B4 109: Reserved */
-    RSV94_IRQn,              /* 0x6E  0x01B8 110: Reserved */
-    PUF_IRQn,                /* 0x6F  0x01BC 111: Physically Uncloneable Function */
-    RSV96_IRQn,              /* 0x70  0x01C0 112: Reserved */
-    RSV97_IRQn,              /* 0x71  0x01C4 113: Reserved */
-    RSV98_IRQn,              /* 0x72  0x01C8 114: Reserved */
-    I2S_IRQn,                /* 0x73  0x01CC 115: I2S */
-    RSV100_IRQn,             /* 0x74  0x01D0 116: Reserved */
-    RSV101_IRQn,             /* 0x75  0x01D4 117: Reserved */
-    RSV102_IRQn,             /* 0x76  0x01D8 118: Reserved */
-    LPCMP_IRQn,              /* 0x77  0x01Dc 119: LP Comparator */
-    RSV104_IRQn,             /* 0x78  0x01E0  120: Reserved */
-    SPI4_IRQn,               /* 0x79  0x01E4  121: SPI4 */
-    RSV106_IRQn,             /* 0x7A  0x01E8  122: Reserved */
-    CAN0_IRQn,               /* 0x7B  0x01EC  123: CAN0 */
-    CAN1_IRQn,               /* 0x7C  0x01F0  124: CAN1 */
-    WUT1_IRQn,               /* 0x7D  0x01F4  125: Wake up timer 1 */
-    RSV110_IRQn,             /* 0x7E  0x01F8  126: Reserved */
-    RSV111_IRQn,             /* 0x7F  0x01FC  127: Reserved */
-#else                        // __riscv
-    HardFault_IRQn = 3,      /* 0x03,3 HardFault */
-    PF_IRQn        = 4,      /* 0x04,4 PFW | SYSFAULT | CM4 */
-    WDT0_IRQn,               /* 0x05,5 Watchdog 0 */
-    GPIOWAKE_IRQn = 6,       /* 0x06,6 GPIO Wakeup */
-    AINComp_IRQn  = 6,       /* 0x06,6 Analog In Comparator */
-    RTC_IRQn,                /* 0x07,7 RTC */
-    TMR0_IRQn,               /* 0x08,8 Timer 0 */
-    TMR1_IRQn,               /* 0x09,9 Timer 1 */
-    TMR2_IRQn,               /* 0x0A,10 Timer 2 */
-    TMR3_IRQn,               /* 0x0B,11 Timer 3 */
-    TMR4_IRQn,               /* 0x0C,12 Timer 4 (LP) */
-    TMR5_IRQn,               /* 0x0D,13 Timer 5 (LP) */
-    I2C0_IRQn,               /* 0x0E,14 I2C0 */
-    UART0_IRQn,              /* 0x0F,15 UART 0 */
-    CM4_IRQn,                /* 0x10,16 CM4 */
-    I2C1_IRQn,               /* 0x11,17 I2C1 */
-    UART1_IRQn,              /* 0x12,18 UART 1 */
-    UART2_IRQn,              /* 0x13,19 UART 2 */
-    I2C2_IRQn,               /* 0x14,20 I2C2 */
-    UART3_IRQn,              /* 0x15,21 LPUART */
-    SPI0_IRQn,               /* 0x16,22 SPI0 */
-    WUT0_IRQn,               /* 0x17,23 WUT0 */
-    FLC1_IRQn,               /* 0x18,24 Flash Controller 1 */
-    GPIO0_IRQn,              /* 0x19,25 GPIO0 */
-    GPIO1_IRQn,              /* 0x1A,26 GPIO1 */
-    GPIO3_IRQn,              /* 0x1B,27 GPIO3 (LP) */
-    DMA0_IRQn,               /* 0x1C,28 DMA0 */
-    DMA1_IRQn,               /* 0x1D,29 DMA1 */
-    DMA2_IRQn,               /* 0x1E,30 DMA2 */
-    DMA3_IRQn,               /* 0x1F,31 DMA3 */
-    BTLE_TX_DONE_IRQn,       /* 0x20,32 Reserved */
-    BTLE_RX_RCVD_IRQn,       /* 0x21,33 Reserved */
-    BTLE_RX_ENG_DET_IRQn,    /* 0x22,34 Reserved */
-    BTLE_SFD_DET_IRQn,       /* 0x23,35 Reserved */
-    BTLE_SFD_TO_IRQn,        /* 0x24,36 Reserved */
-    BTLE_GP_EVENT_IRQn,      /* 0x25,37 Reserved */
-    BTLE_CFO_IRQn,           /* 0x26,38 Reserved */
-    BTLE_SIG_DET_IRQn,       /* 0x27,39 Reserved */
-    BTLE_AGC_EVENT_IRQn,     /* 0x28,40 Reserved */
-    BTLE_RFFE_SPIM_IRQn,     /* 0x29,41 Reserved */
-    BTLE_TX_AES_IRQn,        /* 0x2A,42 Reserved */
-    BTLE_RX_AES_IRQn,        /* 0x2B,43 Reserved */
-    BTLE_INV_APB_ADDR_IRQn,  /* 0x2C,44 Reserved */
+    WUT0_IRQn, /* 0x45  0x0114  69: Wakeup Timer 0 */
+    GPIOWAKE_IRQn, /* 0x46  0x0118  70: GPIO and AIN Wakeup */
+    RSV55_IRQn, /* 0x47  0x011C  71: Reserved */
+    SPI3_IRQn, /* 0x48  0x0120  72: SPI3 */
+    WDT1_IRQn, /* 0x49  0x0124  73: LP Watchdog */
+    GPIO3_IRQn, /* 0x4A  0x0128  74: GPIO3 */
+    PT_IRQn, /* 0x4B  0x012C  75: Pulse Train */
+    RSV60_IRQn, /* 0x4C  0x0130  76: Reserved */
+    HPB_IRQn, /* 0x4D  0x0134  77: Hyperbus */
+    I2C2_IRQn, /* 0x4E  0x0138  78: I2C2 */
+    RISCV_IRQn, /* 0x4F  0x013C  79: RISC-V */
+    RSV64_IRQn, /* 0x50  0x0140  80: Reserved */
+    RSV65_IRQn, /* 0x51  0x0144  81: Reserved */
+    RSV66_IRQn, /* 0x52  0x0148  82: Reserved */
+    OWM_IRQn, /* 0x53  0x014C  83: One Wire Master */
+    DMA4_IRQn, /* 0x54  0x0150  84: DMA4 */
+    DMA5_IRQn, /* 0x55  0x0154  85: DMA5 */
+    DMA6_IRQn, /* 0x56  0x0158  86: DMA6 */
+    DMA7_IRQn, /* 0x57  0x015C  87: DMA7 */
+    DMA8_IRQn, /* 0x58  0x0160  88: DMA8 */
+    DMA9_IRQn, /* 0x59  0x0164  89: DMA9 */
+    DMA10_IRQn, /* 0x5A  0x0168  90: DMA10 */
+    DMA11_IRQn, /* 0x5B  0x016C  91: DMA11 */
+    DMA12_IRQn, /* 0x5C  0x0170  92: DMA12 */
+    DMA13_IRQn, /* 0x5D  0x0174  93: DMA13 */
+    DMA14_IRQn, /* 0x5E  0x0178  94: DMA14 */
+    DMA15_IRQn, /* 0x5F  0x017C  95: DMA15 */
+    USBDMA_IRQn, /* 0x60  0x0180  96: USB DMA */
+    RSV81_IRQn, /* 0x61  0x0184  97: Reserved */
+    ECC_IRQn, /* 0x62  0x0188  98: ECC */
+    RSV83_IRQn, /* 0x63  0x018C  99: Reserved */
+    RSV84_IRQn, /* 0x64  0x0190 100: Resevred */
+    SCA_IRQn, /* 0x65  0x0194 101: SCA Crypto Accelerator */
+    RSV86_IRQn, /* 0x66  0x0198 102: Reserved */
+    FLC1_IRQn, /* 0x67  0x019C 103: Flash Controller 1 */
+    UART3_IRQn, /* 0x68  0x01A0 104: UART 3 (LP) */
+    RSV89_IRQn, /* 0x69  0x01A4 105: Reserved */
+    RSV90_IRQn, /* 0x6A  0x01A8 106: Reserved */
+    RSV91_IRQn, /* 0x6B  0x01AC 107: Reserved */
+    RSV92_IRQn, /* 0x6C  0x01B0 108: Reserved */
+    RSV93_IRQn, /* 0x6D  0x01B4 109: Reserved */
+    RSV94_IRQn, /* 0x6E  0x01B8 110: Reserved */
+    PUF_IRQn, /* 0x6F  0x01BC 111: Physically Uncloneable Function */
+    RSV96_IRQn, /* 0x70  0x01C0 112: Reserved */
+    RSV97_IRQn, /* 0x71  0x01C4 113: Reserved */
+    RSV98_IRQn, /* 0x72  0x01C8 114: Reserved */
+    I2S_IRQn, /* 0x73  0x01CC 115: I2S */
+    RSV100_IRQn, /* 0x74  0x01D0 116: Reserved */
+    RSV101_IRQn, /* 0x75  0x01D4 117: Reserved */
+    RSV102_IRQn, /* 0x76  0x01D8 118: Reserved */
+    LPCMP_IRQn, /* 0x77  0x01Dc 119: LP Comparator */
+    RSV104_IRQn, /* 0x78  0x01E0  120: Reserved */
+    SPI4_IRQn, /* 0x79  0x01E4  121: SPI4 */
+    RSV106_IRQn, /* 0x7A  0x01E8  122: Reserved */
+    CAN0_IRQn, /* 0x7B  0x01EC  123: CAN0 */
+    CAN1_IRQn, /* 0x7C  0x01F0  124: CAN1 */
+    WUT1_IRQn, /* 0x7D  0x01F4  125: Wake up timer 1 */
+    RSV110_IRQn, /* 0x7E  0x01F8  126: Reserved */
+    RSV111_IRQn, /* 0x7F  0x01FC  127: Reserved */
+#else // __riscv
+    HardFault_IRQn = 3, /* 0x03,3 HardFault */
+    PF_IRQn = 4, /* 0x04,4 PFW | SYSFAULT | CM4 */
+    WDT0_IRQn, /* 0x05,5 Watchdog 0 */
+    GPIOWAKE_IRQn = 6, /* 0x06,6 GPIO Wakeup */
+    AINComp_IRQn = 6, /* 0x06,6 Analog In Comparator */
+    RTC_IRQn, /* 0x07,7 RTC */
+    TMR0_IRQn, /* 0x08,8 Timer 0 */
+    TMR1_IRQn, /* 0x09,9 Timer 1 */
+    TMR2_IRQn, /* 0x0A,10 Timer 2 */
+    TMR3_IRQn, /* 0x0B,11 Timer 3 */
+    TMR4_IRQn, /* 0x0C,12 Timer 4 (LP) */
+    TMR5_IRQn, /* 0x0D,13 Timer 5 (LP) */
+    I2C0_IRQn, /* 0x0E,14 I2C0 */
+    UART0_IRQn, /* 0x0F,15 UART 0 */
+    CM4_IRQn, /* 0x10,16 CM4 */
+    I2C1_IRQn, /* 0x11,17 I2C1 */
+    UART1_IRQn, /* 0x12,18 UART 1 */
+    UART2_IRQn, /* 0x13,19 UART 2 */
+    I2C2_IRQn, /* 0x14,20 I2C2 */
+    UART3_IRQn, /* 0x15,21 LPUART */
+    SPI0_IRQn, /* 0x16,22 SPI0 */
+    WUT0_IRQn, /* 0x17,23 WUT0 */
+    FLC1_IRQn, /* 0x18,24 Flash Controller 1 */
+    GPIO0_IRQn, /* 0x19,25 GPIO0 */
+    GPIO1_IRQn, /* 0x1A,26 GPIO1 */
+    GPIO3_IRQn, /* 0x1B,27 GPIO3 (LP) */
+    DMA0_IRQn, /* 0x1C,28 DMA0 */
+    DMA1_IRQn, /* 0x1D,29 DMA1 */
+    DMA2_IRQn, /* 0x1E,30 DMA2 */
+    DMA3_IRQn, /* 0x1F,31 DMA3 */
+    BTLE_TX_DONE_IRQn, /* 0x20,32 Reserved */
+    BTLE_RX_RCVD_IRQn, /* 0x21,33 Reserved */
+    BTLE_RX_ENG_DET_IRQn, /* 0x22,34 Reserved */
+    BTLE_SFD_DET_IRQn, /* 0x23,35 Reserved */
+    BTLE_SFD_TO_IRQn, /* 0x24,36 Reserved */
+    BTLE_GP_EVENT_IRQn, /* 0x25,37 Reserved */
+    BTLE_CFO_IRQn, /* 0x26,38 Reserved */
+    BTLE_SIG_DET_IRQn, /* 0x27,39 Reserved */
+    BTLE_AGC_EVENT_IRQn, /* 0x28,40 Reserved */
+    BTLE_RFFE_SPIM_IRQn, /* 0x29,41 Reserved */
+    BTLE_TX_AES_IRQn, /* 0x2A,42 Reserved */
+    BTLE_RX_AES_IRQn, /* 0x2B,43 Reserved */
+    BTLE_INV_APB_ADDR_IRQn, /* 0x2C,44 Reserved */
     BTLE_IQ_DATA_VALID_IRQn, /* 0x2D,45 Reserved */
     DMA4_15_IRQn, /* 0x2E,46 DMA4 - 15  */
     TRNG_IRQn, /* 0x2F,47 True Random Number Generator */

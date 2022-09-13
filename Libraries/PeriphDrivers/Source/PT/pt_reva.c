@@ -139,7 +139,7 @@ void MXC_PT_RevA_SetPattern(unsigned pts, uint32_t pattern)
         pt = 1 << i;
 
         if (pts & pt) {
-            temp = (mxc_pt_reva_regs_t*)MXC_PT_GET_PT(i);
+            temp = (mxc_pt_reva_regs_t *)MXC_PT_GET_PT(i);
             MXC_ASSERT(temp);
             temp->train = pattern;
         }

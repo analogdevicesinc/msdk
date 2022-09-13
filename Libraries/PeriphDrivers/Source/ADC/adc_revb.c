@@ -268,7 +268,7 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t *adc)
                                               MXC_F_ADC_REVB_INTFL_CONV_DONE |
                                               MXC_F_ADC_REVB_INTEN_FIFO_LVL));
 
-                MXC_FreeLock((uint32_t*)&async_callback);
+                MXC_FreeLock((uint32_t *)&async_callback);
             }
         }
 
@@ -369,7 +369,7 @@ void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req
     }
 }
 
-void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req)
+void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
     if (req->mode == MXC_ADC_ATOMIC_CONV) {
         adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_CNV_MODE;
@@ -378,7 +378,7 @@ void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t* adc, mxc_adc_convers
     }
 }
 
-int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t* adc, int delay)
+int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
 {
     if (delay > 0x0FFFF) {
         return E_BAD_PARAM;
@@ -390,7 +390,7 @@ int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t* adc, int delay)
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req)
+int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
     if (req->num_slots >= MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
