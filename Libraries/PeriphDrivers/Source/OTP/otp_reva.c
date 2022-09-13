@@ -40,34 +40,34 @@
 #include "otp_reva.h"
 
 /* **** Functions **** */
-int MXC_OTP_RevA_CheckUnlockMode(mxc_otp_reva_regs_t* otp)
+int MXC_OTP_RevA_CheckUnlockMode(mxc_otp_reva_regs_t *otp)
 {
     return 0;
 }
 
-void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t* otp)
+void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t *otp)
 {
     otp->actrl1 = 0x3A7F5CA3;
     otp->actrl1 = 0xA1E34F20;
     otp->actrl1 = 0x9608B2C1;
 }
 
-void MXC_OTP_RevA_Lock(mxc_otp_reva_regs_t* otp)
+void MXC_OTP_RevA_Lock(mxc_otp_reva_regs_t *otp)
 {
     otp->actrl1 = 0;
 }
 
-void MXC_OTP_RevA_UnlockUserBlock(mxc_otp_reva_regs_t* otp)
+void MXC_OTP_RevA_UnlockUserBlock(mxc_otp_reva_regs_t *otp)
 {
     otp->actrl0 = 0xBEEFBA55;
 }
 
-void MXC_OTP_RevA_LockUserBlock(mxc_otp_reva_regs_t* otp)
+void MXC_OTP_RevA_LockUserBlock(mxc_otp_reva_regs_t *otp)
 {
     otp->actrl0 = 0;
 }
 
-int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t data)
+int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data)
 {
     // Check address range and mode access (unlocked).
     if (otp->status & MXC_F_OTP_REVA_STATUS_UNLOCK3) {
@@ -94,8 +94,7 @@ int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t data)
     otp->ctrl |= MXC_F_OTP_REVA_CTRL_WRITE;
 
     // Wait until operation is complete then verify it hasn't failed
-    while (otp->status & MXC_F_OTP_REVA_STATUS_BUSY)
-        ;
+    while (otp->status & MXC_F_OTP_REVA_STATUS_BUSY) {}
 
     if (otp->status & MXC_F_OTP_REVA_STATUS_FAIL) {
         return E_BAD_STATE;
@@ -104,7 +103,7 @@ int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t data)
     return E_NO_ERROR;
 }
 
-int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data, uint16_t size)
+int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size)
 {
     int i;
     int error;
@@ -133,7 +132,7 @@ int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* d
     return E_NO_ERROR;
 }
 
-int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data)
+int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
 {
     // User block (1k-2k) is readable in normal mode (without unlocking).
     // Check for address range and appropriate read access.
@@ -151,8 +150,7 @@ int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data)
     otp->ctrl |= MXC_F_OTP_REVA_CTRL_READ;
 
     // Wait until operation is complete then verify it hasn't failed
-    while (otp->status & MXC_F_OTP_REVA_STATUS_BUSY)
-        ;
+    while (otp->status & MXC_F_OTP_REVA_STATUS_BUSY) {}
 
     if (otp->status & MXC_F_OTP_REVA_STATUS_FAIL) {
         return E_BAD_STATE;
@@ -163,7 +161,7 @@ int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data)
     return E_NO_ERROR;
 }
 
-int MXC_OTP_RevA_MultiRead(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data, uint16_t size)
+int MXC_OTP_RevA_MultiRead(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size)
 {
     int i;
     int error;

@@ -110,7 +110,7 @@ int MXC_OTP_Write(uint16_t addr, uint32_t data);
  * 
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_OTP_MultiWrite(uint16_t addr, uint32_t* data, uint16_t size);
+int MXC_OTP_MultiWrite(uint16_t addr, uint32_t *data, uint16_t size);
 
 /**
  * @brief      Read data at specified address in OTP memory.
@@ -123,7 +123,7 @@ int MXC_OTP_MultiWrite(uint16_t addr, uint32_t* data, uint16_t size);
  *
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_OTP_Read(uint16_t addr, uint32_t* data);
+int MXC_OTP_Read(uint16_t addr, uint32_t *data);
 
 /**
  * @brief      Consecutively read multiple 32-bit values starting at specified address
@@ -136,7 +136,7 @@ int MXC_OTP_Read(uint16_t addr, uint32_t* data);
  * 
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_OTP_MultiRead(uint16_t addr, uint32_t* data, uint16_t size);
+int MXC_OTP_MultiRead(uint16_t addr, uint32_t *data, uint16_t size);
 
 /**@} end of group otp*/
 

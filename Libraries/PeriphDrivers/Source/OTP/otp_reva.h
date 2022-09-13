@@ -41,21 +41,21 @@ extern "C" {
 
 /* **** Function Prototypes **** */
 
-void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t* otp);
+void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t *otp);
 
-void MXC_OTP_RevA_Lock(mxc_otp_reva_regs_t* otp);
+void MXC_OTP_RevA_Lock(mxc_otp_reva_regs_t *otp);
 
-void MXC_OTP_RevA_UnlockUserBlock(mxc_otp_reva_regs_t* otp);
+void MXC_OTP_RevA_UnlockUserBlock(mxc_otp_reva_regs_t *otp);
 
-void MXC_OTP_RevA_LockUserBlock(mxc_otp_reva_regs_t* otp);
+void MXC_OTP_RevA_LockUserBlock(mxc_otp_reva_regs_t *otp);
 
-int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t data);
+int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data);
 
-int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data, uint16_t size);
+int MXC_OTP_RevA_MultiWrite(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size);
 
-int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data);
+int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data);
 
-int MXC_OTP_RevA_MultiRead(mxc_otp_reva_regs_t* otp, uint16_t addr, uint32_t* data, uint16_t size);
+int MXC_OTP_RevA_MultiRead(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size);
 
 /**@} end of group otp */
 

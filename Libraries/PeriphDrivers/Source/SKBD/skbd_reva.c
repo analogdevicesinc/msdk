@@ -217,7 +217,7 @@ int MXC_SKBD_RevA_Close(void)
     NVIC_DisableIRQ(SKB_IRQn);
 #endif
 
-    mxc_skbd_req.state      = MXC_SKBD_REVA_STATE_CLOSED;
+    mxc_skbd_req.state = MXC_SKBD_REVA_STATE_CLOSED;
     mxc_skbd_req.first_init = 0;
     return E_NO_ERROR;
 }

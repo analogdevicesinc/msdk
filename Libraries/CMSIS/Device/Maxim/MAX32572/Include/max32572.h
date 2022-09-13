@@ -82,181 +82,181 @@ typedef enum {
     /*                         ||||  table offset address                          */
     /*                         vvvv  vvvvvv                                        */
 
-    PF_IRQn = 0,   /* 0x10  0x0040  16: Power Fail */
-    WDT0_IRQn,     /* 0x11  0x0044  17: Watchdog 0 */
-    USB_IRQn,      /* 0x12  0x0048  18: USB */
-    RTC_IRQn,      /* 0x13  0x004C  19: RTC */
-    TRNG_IRQn,     /* 0x14  0x0050  20: True Random Number Generator */
-    TMR0_IRQn,     /* 0x15  0x0054  21: Timer 0 */
-    TMR1_IRQn,     /* 0x16  0x0058  22: Timer 1 */
-    TMR2_IRQn,     /* 0x17  0x005C  23: Timer 2 */
-    TMR3_IRQn,     /* 0x18  0x0060  24: Timer 3 */
-    TMR4_IRQn,     /* 0x19  0x0064  25: Timer 4 */
-    TMR5_IRQn,     /* 0x1A  0x0068  26: Timer 5 */
-    SC0_IRQn,      /* 0x1B  0x006C  27: Smart Card 0 */
-    RSV12_IRQn,    /* 0x1C  0x0070  28: Reserved */
-    I2C0_IRQn,     /* 0x1D  0x0074  29: I2C0 */
-    UART0_IRQn,    /* 0x1E  0x0078  30: UART 0 */
-    UART1_IRQn,    /* 0x1F  0x007C  31: UART 1 */
-    SPI0_IRQn,     /* 0x20  0x0080  32: SPI0 */
-    SPI1_IRQn,     /* 0x21  0x0084  33: SPI1 */
-    RSV18_IRQn,    /* 0x22  0x0088  34: Reserved */
-    SKB_IRQn,      /* 0x23  0x008C  35: Secure Keypad */
-    ADC_IRQn,      /* 0x24  0x0090  36: ADC */
-    RSV21_IRQn,    /* 0x25  0x0094  37: Reserved */
-    MSRADC_IRQn,   /* 0x26  0x0098  38: Magstripe DSP */
-    RSV23_IRQn,    /* 0x27  0x009C  39: Reserved */
-    GPIO0_IRQn,    /* 0x28  0x00A0  40: GPIO0 */
-    GPIO1_IRQn,    /* 0x29  0x00A4  41: GPIO1 */
-    RSV26_IRQn,    /* 0x2A  0x00A8  42: Reserved */
-    CRYPTO_IRQn,   /* 0x2B  0x00AC  43: Crypto */
-    DMA0_IRQn,     /* 0x2C  0x00B0  44: DMA0 */
-    DMA1_IRQn,     /* 0x2D  0x00B4  45: DMA1 */
-    DMA2_IRQn,     /* 0x2E  0x00B8  46: DMA2 */
-    DMA3_IRQn,     /* 0x2F  0x00BC  47: DMA3 */
-    RSV32_IRQn,    /* 0x30  0x00C0  48: Reserved */
-    RSV33_IRQn,    /* 0x31  0x00C4  49: Reserved */
-    UART2_IRQn,    /* 0x32  0x00C8  50: UART 2 */
-    RSV35_IRQn,    /* 0x33  0x00CC  51: Reserved */
-    I2C1_IRQn,     /* 0x34  0x00D0  52: I2C1 */
-    SC1_IRQn,      /* 0x35  0x00D4  53: Smart Card 1 */
-    SPIXFC_IRQn,   /* 0x36  0x00D8  54: SPI execute in place */
-    RSV39_IRQn,    /* 0x37  0x00DC  55: Reserved */
-    RSV40_IRQn,    /* 0x38  0x00E0  56: Reserved */
-    RSV41_IRQn,    /* 0x39  0x00E4  57: Reserved */
-    RSV42_IRQn,    /* 0x3A  0x00E8  58: Reserved */
-    RSV43_IRQn,    /* 0x3B  0x00EC  59: Reserved */
-    RSV44_IRQn,    /* 0x3C  0x00F0  60: Reserved */
-    RSV45_IRQn,    /* 0x3D  0x00F4  61: Reserved */
-    RSV46_IRQn,    /* 0x3E  0x00F8  62: Reserved */
-    RSV47_IRQn,    /* 0x3F  0x00FC  63: Reserved */
-    RSV48_IRQn,    /* 0x40  0x0100  64: Reserved */
-    RSV49_IRQn,    /* 0x41  0x0104  65: Reserved */
-    RSV50_IRQn,    /* 0x42  0x0108  66: Reserved */
-    RSV51_IRQn,    /* 0x43  0x010C  67: Reserved */
-    RSV52_IRQn,    /* 0x44  0x0110  68: Reserved */
-    RSV53_IRQn,    /* 0x45  0x0114  69: Reserved */
+    PF_IRQn = 0, /* 0x10  0x0040  16: Power Fail */
+    WDT0_IRQn, /* 0x11  0x0044  17: Watchdog 0 */
+    USB_IRQn, /* 0x12  0x0048  18: USB */
+    RTC_IRQn, /* 0x13  0x004C  19: RTC */
+    TRNG_IRQn, /* 0x14  0x0050  20: True Random Number Generator */
+    TMR0_IRQn, /* 0x15  0x0054  21: Timer 0 */
+    TMR1_IRQn, /* 0x16  0x0058  22: Timer 1 */
+    TMR2_IRQn, /* 0x17  0x005C  23: Timer 2 */
+    TMR3_IRQn, /* 0x18  0x0060  24: Timer 3 */
+    TMR4_IRQn, /* 0x19  0x0064  25: Timer 4 */
+    TMR5_IRQn, /* 0x1A  0x0068  26: Timer 5 */
+    SC0_IRQn, /* 0x1B  0x006C  27: Smart Card 0 */
+    RSV12_IRQn, /* 0x1C  0x0070  28: Reserved */
+    I2C0_IRQn, /* 0x1D  0x0074  29: I2C0 */
+    UART0_IRQn, /* 0x1E  0x0078  30: UART 0 */
+    UART1_IRQn, /* 0x1F  0x007C  31: UART 1 */
+    SPI0_IRQn, /* 0x20  0x0080  32: SPI0 */
+    SPI1_IRQn, /* 0x21  0x0084  33: SPI1 */
+    RSV18_IRQn, /* 0x22  0x0088  34: Reserved */
+    SKB_IRQn, /* 0x23  0x008C  35: Secure Keypad */
+    ADC_IRQn, /* 0x24  0x0090  36: ADC */
+    RSV21_IRQn, /* 0x25  0x0094  37: Reserved */
+    MSRADC_IRQn, /* 0x26  0x0098  38: Magstripe DSP */
+    RSV23_IRQn, /* 0x27  0x009C  39: Reserved */
+    GPIO0_IRQn, /* 0x28  0x00A0  40: GPIO0 */
+    GPIO1_IRQn, /* 0x29  0x00A4  41: GPIO1 */
+    RSV26_IRQn, /* 0x2A  0x00A8  42: Reserved */
+    CRYPTO_IRQn, /* 0x2B  0x00AC  43: Crypto */
+    DMA0_IRQn, /* 0x2C  0x00B0  44: DMA0 */
+    DMA1_IRQn, /* 0x2D  0x00B4  45: DMA1 */
+    DMA2_IRQn, /* 0x2E  0x00B8  46: DMA2 */
+    DMA3_IRQn, /* 0x2F  0x00BC  47: DMA3 */
+    RSV32_IRQn, /* 0x30  0x00C0  48: Reserved */
+    RSV33_IRQn, /* 0x31  0x00C4  49: Reserved */
+    UART2_IRQn, /* 0x32  0x00C8  50: UART 2 */
+    RSV35_IRQn, /* 0x33  0x00CC  51: Reserved */
+    I2C1_IRQn, /* 0x34  0x00D0  52: I2C1 */
+    SC1_IRQn, /* 0x35  0x00D4  53: Smart Card 1 */
+    SPIXFC_IRQn, /* 0x36  0x00D8  54: SPI execute in place */
+    RSV39_IRQn, /* 0x37  0x00DC  55: Reserved */
+    RSV40_IRQn, /* 0x38  0x00E0  56: Reserved */
+    RSV41_IRQn, /* 0x39  0x00E4  57: Reserved */
+    RSV42_IRQn, /* 0x3A  0x00E8  58: Reserved */
+    RSV43_IRQn, /* 0x3B  0x00EC  59: Reserved */
+    RSV44_IRQn, /* 0x3C  0x00F0  60: Reserved */
+    RSV45_IRQn, /* 0x3D  0x00F4  61: Reserved */
+    RSV46_IRQn, /* 0x3E  0x00F8  62: Reserved */
+    RSV47_IRQn, /* 0x3F  0x00FC  63: Reserved */
+    RSV48_IRQn, /* 0x40  0x0100  64: Reserved */
+    RSV49_IRQn, /* 0x41  0x0104  65: Reserved */
+    RSV50_IRQn, /* 0x42  0x0108  66: Reserved */
+    RSV51_IRQn, /* 0x43  0x010C  67: Reserved */
+    RSV52_IRQn, /* 0x44  0x0110  68: Reserved */
+    RSV53_IRQn, /* 0x45  0x0114  69: Reserved */
     GPIOWAKE_IRQn, /* 0x46  0x0118  70: GPIO Wakeup */
-    RSV55_IRQn,    /* 0x47  0x011C  71: Reserved */
-    SPI2_IRQn,     /* 0x48  0x0120  72: SPI2 */
-    WDT1_IRQn,     /* 0x49  0x0124  73: Watchdog 1 */
-    RSV58_IRQn,    /* 0x4A  0x0128  74: Reserved */
-    PT_IRQn,       /* 0x4B  0x012C  75: Pulse train */
-    RSV60_IRQn,    /* 0x4C  0x0130  76: Reserved */
-    RSV61_IRQn,    /* 0x4D  0x0134  77: Reserved */
-    RSV62_IRQn,    /* 0x4E  0x0138  78: Reserved */
-    RISCV_IRQn,    /* 0x4F  0x013C  79: RISCV */
-    RSV64_IRQn,    /* 0x50  0x0140  80: Reserved */
-    RSV65_IRQn,    /* 0x51  0x0144  81: Reserved */
-    RSV66_IRQn,    /* 0x52  0x0148  82: Reserved */
-    RSV67_IRQn,    /* 0x53  0x014C  83: Reserved */
-    DMA4_IRQn,     /* 0x54  0x0150  84: DMA4 */
-    DMA5_IRQn,     /* 0x55  0x0154  85: DMA5 */
-    DMA6_IRQn,     /* 0x56  0x0158  86: DMA6 */
-    DMA7_IRQn,     /* 0x57  0x015C  87: DMA7 */
-    DMA8_IRQn,     /* 0x58  0x0160  88: DMA8 */
-    DMA9_IRQn,     /* 0x59  0x0164  89: DMA9 */
-    DMA10_IRQn,    /* 0x5A  0x0168  90: DMA10 */
-    DMA11_IRQn,    /* 0x5B  0x016C  91: DMA11 */
-    DMA12_IRQn,    /* 0x5C  0x0170  92: DMA12 */
-    DMA13_IRQn,    /* 0x5D  0x0174  93: DMA13 */
-    DMA14_IRQn,    /* 0x5E  0x0178  94: DMA14 */
-    DMA15_IRQn,    /* 0x5F  0x017C  95: DMA15 */
-    USBDMA_IRQn,   /* 0x60  0x0180  96: USB DMA */
-    RSV81_IRQn,    /* 0x61  0x0184  97: Reserved */
-    ECC_IRQn,      /* 0x62  0x0188  98: Error Correction */
-    RSV83_IRQn,    /* 0x63  0x018C  99: Reserved */
-    RSV84_IRQn,    /* 0x64  0x0190  100: Reserved */
-    SCA_IRQn,      /* 0x65  0x0194  101: SCA Crypto Accelerator */
-    RSV86_IRQn,    /* 0x66  0x0198  102: Reserved */
-    RSV87_IRQn,    /* 0x67  0x019C  103: Reserved */
-    UART3_IRQn,    /* 0x68  0x01A0  104: UART 3 */
-    RSV89_IRQn,    /* 0x69  0x01A4  105: Reserved */
-    RSV90_IRQn,    /* 0x6A  0x01A8  106: Reserved */
-    RSV91_IRQn,    /* 0x6B  0x01AC  107: Reserved */
-    RSV92_IRQn,    /* 0x6C  0x01B0  108: Reserved */
-    HTMR0_IRQn,    /* 0x6D  0x01B4  109: HTimer0 */
-    HTMR1_IRQn,    /* 0x6E  0x01B8  110: HTimer1 */
-    RSV95_IRQn,    /* 0x6F  0x01BC  111: Reserved */
-    RSV96_IRQn,    /* 0x70  0x01C0  112: Reserved */
-    RSV97_IRQn,    /* 0x71  0x01C4  113: Reserved */
-    RSV98_IRQn,    /* 0x72  0x01C8  114: Reserved */
-    RSV99_IRQn,    /* 0x73  0x01CC  115: Reserved */
-    RSV100_IRQn,   /* 0x74  0x01D0  116: Reserved */
-    RSV101_IRQn,   /* 0x75  0x01D4  117: Reserved */
-    RSV102_IRQn,   /* 0x76  0x01D8  118: Reserved */
-    RSV103_IRQn,   /* 0x77  0x01DC  119: Reserved */
-    RSV104_IRQn,   /* 0x78  0x01E0  120: Reserved */
-    RSV105_IRQn,   /* 0x79  0x01E4  121: Reserved */
-    RSV106_IRQn,   /* 0x7A  0x01E8  122: Reserved */
-    RSV107_IRQn,   /* 0x7B  0x01EC  123: Reserved */
-    RSV108_IRQn,   /* 0x7C  0x01F0  124: Reserved */
-    RSV109_IRQn,   /* 0x7D  0x01F4  125: Reserved */
-    RSV110_IRQn,   /* 0x7E  0x01F8  126: Reserved */
-    RSV111_IRQn,   /* 0x7F  0x01FC  127: Reserved */
-#else              // __riscv
+    RSV55_IRQn, /* 0x47  0x011C  71: Reserved */
+    SPI2_IRQn, /* 0x48  0x0120  72: SPI2 */
+    WDT1_IRQn, /* 0x49  0x0124  73: Watchdog 1 */
+    RSV58_IRQn, /* 0x4A  0x0128  74: Reserved */
+    PT_IRQn, /* 0x4B  0x012C  75: Pulse train */
+    RSV60_IRQn, /* 0x4C  0x0130  76: Reserved */
+    RSV61_IRQn, /* 0x4D  0x0134  77: Reserved */
+    RSV62_IRQn, /* 0x4E  0x0138  78: Reserved */
+    RISCV_IRQn, /* 0x4F  0x013C  79: RISCV */
+    RSV64_IRQn, /* 0x50  0x0140  80: Reserved */
+    RSV65_IRQn, /* 0x51  0x0144  81: Reserved */
+    RSV66_IRQn, /* 0x52  0x0148  82: Reserved */
+    RSV67_IRQn, /* 0x53  0x014C  83: Reserved */
+    DMA4_IRQn, /* 0x54  0x0150  84: DMA4 */
+    DMA5_IRQn, /* 0x55  0x0154  85: DMA5 */
+    DMA6_IRQn, /* 0x56  0x0158  86: DMA6 */
+    DMA7_IRQn, /* 0x57  0x015C  87: DMA7 */
+    DMA8_IRQn, /* 0x58  0x0160  88: DMA8 */
+    DMA9_IRQn, /* 0x59  0x0164  89: DMA9 */
+    DMA10_IRQn, /* 0x5A  0x0168  90: DMA10 */
+    DMA11_IRQn, /* 0x5B  0x016C  91: DMA11 */
+    DMA12_IRQn, /* 0x5C  0x0170  92: DMA12 */
+    DMA13_IRQn, /* 0x5D  0x0174  93: DMA13 */
+    DMA14_IRQn, /* 0x5E  0x0178  94: DMA14 */
+    DMA15_IRQn, /* 0x5F  0x017C  95: DMA15 */
+    USBDMA_IRQn, /* 0x60  0x0180  96: USB DMA */
+    RSV81_IRQn, /* 0x61  0x0184  97: Reserved */
+    ECC_IRQn, /* 0x62  0x0188  98: Error Correction */
+    RSV83_IRQn, /* 0x63  0x018C  99: Reserved */
+    RSV84_IRQn, /* 0x64  0x0190  100: Reserved */
+    SCA_IRQn, /* 0x65  0x0194  101: SCA Crypto Accelerator */
+    RSV86_IRQn, /* 0x66  0x0198  102: Reserved */
+    RSV87_IRQn, /* 0x67  0x019C  103: Reserved */
+    UART3_IRQn, /* 0x68  0x01A0  104: UART 3 */
+    RSV89_IRQn, /* 0x69  0x01A4  105: Reserved */
+    RSV90_IRQn, /* 0x6A  0x01A8  106: Reserved */
+    RSV91_IRQn, /* 0x6B  0x01AC  107: Reserved */
+    RSV92_IRQn, /* 0x6C  0x01B0  108: Reserved */
+    HTMR0_IRQn, /* 0x6D  0x01B4  109: HTimer0 */
+    HTMR1_IRQn, /* 0x6E  0x01B8  110: HTimer1 */
+    RSV95_IRQn, /* 0x6F  0x01BC  111: Reserved */
+    RSV96_IRQn, /* 0x70  0x01C0  112: Reserved */
+    RSV97_IRQn, /* 0x71  0x01C4  113: Reserved */
+    RSV98_IRQn, /* 0x72  0x01C8  114: Reserved */
+    RSV99_IRQn, /* 0x73  0x01CC  115: Reserved */
+    RSV100_IRQn, /* 0x74  0x01D0  116: Reserved */
+    RSV101_IRQn, /* 0x75  0x01D4  117: Reserved */
+    RSV102_IRQn, /* 0x76  0x01D8  118: Reserved */
+    RSV103_IRQn, /* 0x77  0x01DC  119: Reserved */
+    RSV104_IRQn, /* 0x78  0x01E0  120: Reserved */
+    RSV105_IRQn, /* 0x79  0x01E4  121: Reserved */
+    RSV106_IRQn, /* 0x7A  0x01E8  122: Reserved */
+    RSV107_IRQn, /* 0x7B  0x01EC  123: Reserved */
+    RSV108_IRQn, /* 0x7C  0x01F0  124: Reserved */
+    RSV109_IRQn, /* 0x7D  0x01F4  125: Reserved */
+    RSV110_IRQn, /* 0x7E  0x01F8  126: Reserved */
+    RSV111_IRQn, /* 0x7F  0x01FC  127: Reserved */
+#else // __riscv
     HardFault_IRQn = 3, /* 0x03,3 HardFault */
-    RSV4_IRQn      = 4, /* 0x04,4 Reserved */
-    RSV5_IRQn,          /* 0x05,5 Reserved */
-    MSRADC_IRQn,        /* 0x06,6 Magstripe DSP */
-    RSV7_IRQn,          /* 0x07,7 Reserved */
-    RSV8_IRQn,          /* 0x08,8 Reserved */
-    RSV9_IRQn,          /* 0x09,9 Reserved */
-    RSV10_IRQn,         /* 0x0A,10 Reserved */
-    RSV11_IRQn,         /* 0x0B,11 Reserved */
-    RSV12_IRQn,         /* 0x0C,12 Reserved */
-    TMR5_IRQn,          /* 0x0D,13 Timer 5 */
-    RSV14_IRQn,         /* 0x0E,14 Reserved */
-    RSV15_IRQn,         /* 0x0F,15 Reserved */
-    CM4_IRQn,           /* 0x10,16 CM4 */
-    RSV17_IRQn,         /* 0x11,17 Reserved */
-    RSV18_IRQn,         /* 0x12,18 Reserved */
-    RSV19_IRQn,         /* 0x13,19 Reserved */
-    RSV20_IRQn,         /* 0x14,20 Reserved */
-    RSV21_IRQn,         /* 0x15,21 Reserved */
-    RSV22_IRQn,         /* 0x16,22 Reserved */
-    RSV23_IRQn,         /* 0x17,23 Reserved */
-    RSV24_IRQn,         /* 0x18,24 Reserved */
-    GPIO0_IRQn,         /* 0x19,25 GPIO0 */
-    GPIO1_IRQn,         /* 0x1A,26 GPIO1 */
-    RSV27_IRQn,         /* 0x1B,27 Reserved */
-    RSV28_IRQn,         /* 0x1C,28 Reserved */
-    RSV29_IRQn,         /* 0x1D,29 Reserved */
-    RSV30_IRQn,         /* 0x1E,30 Reserved */
-    RSV31_IRQn,         /* 0x1F,31 Reserved */
-    RSV32_IRQn,         /* 0x20,32 Reserved */
-    RSV33_IRQn,         /* 0x21,33 Reserved */
-    RSV34_IRQn,         /* 0x22,34 Reserved */
-    RSV35_IRQn,         /* 0x23,35 Reserved */
-    RSV36_IRQn,         /* 0x24,36 Reserved */
-    RSV37_IRQn,         /* 0x25,37 Reserved */
-    RSV38_IRQn,         /* 0x26,38 Reserved */
-    RSV39_IRQn,         /* 0x27,39 Reserved */
-    RSV40_IRQn,         /* 0x28,40 Reserved */
-    RSV41_IRQn,         /* 0x29,41 Reserved */
-    RSV42_IRQn,         /* 0x2A,42 Reserved */
-    RSV43_IRQn,         /* 0x2B,43 Reserved */
-    RSV44_IRQn,         /* 0x2C,44 Reserved */
-    RSV45_IRQn,         /* 0x2D,45 Reserved */
-    RSV46_IRQn,         /* 0x2E,46 Reserved */
-    RSV47_IRQn,         /* 0x2F,47 Reserved */
-    RSV48_IRQn,         /* 0x30,48 Reserved */
-    RSV49_IRQn,         /* 0x31,49 Reserved */
-    RSV50_IRQn,         /* 0x32,50 Reserved */
-    RSV51_IRQn,         /* 0x33,51 Reserved */
-    RSV52_IRQn,         /* 0x34,52 Reserved */
-    RSV53_IRQn,         /* 0x35,53 Reserved */
-    RSV54_IRQn,         /* 0x36,54 Reserved */
-    RSV55_IRQn,         /* 0x37,55 Reserved */
-    RSV56_IRQn,         /* 0x38,56 Reserved */
-    RSV57_IRQn,         /* 0x39,57 Reserved */
-    RSV58_IRQn,         /* 0x3A,58 Reserved */
-    RSV59_IRQn,         /* 0x3B,59 Reserved */
-    RSV60_IRQn,         /* 0x3C,60 Reserved */
-    RSV61_IRQn,         /* 0x3D,61 Reserved */
-    RSV62_IRQn,         /* 0x3E,62 Reserved */
-    RSV63_IRQn,         /* 0x3F,63 Reserved */
-#endif             // __riscv
+    RSV4_IRQn = 4, /* 0x04,4 Reserved */
+    RSV5_IRQn, /* 0x05,5 Reserved */
+    MSRADC_IRQn, /* 0x06,6 Magstripe DSP */
+    RSV7_IRQn, /* 0x07,7 Reserved */
+    RSV8_IRQn, /* 0x08,8 Reserved */
+    RSV9_IRQn, /* 0x09,9 Reserved */
+    RSV10_IRQn, /* 0x0A,10 Reserved */
+    RSV11_IRQn, /* 0x0B,11 Reserved */
+    RSV12_IRQn, /* 0x0C,12 Reserved */
+    TMR5_IRQn, /* 0x0D,13 Timer 5 */
+    RSV14_IRQn, /* 0x0E,14 Reserved */
+    RSV15_IRQn, /* 0x0F,15 Reserved */
+    CM4_IRQn, /* 0x10,16 CM4 */
+    RSV17_IRQn, /* 0x11,17 Reserved */
+    RSV18_IRQn, /* 0x12,18 Reserved */
+    RSV19_IRQn, /* 0x13,19 Reserved */
+    RSV20_IRQn, /* 0x14,20 Reserved */
+    RSV21_IRQn, /* 0x15,21 Reserved */
+    RSV22_IRQn, /* 0x16,22 Reserved */
+    RSV23_IRQn, /* 0x17,23 Reserved */
+    RSV24_IRQn, /* 0x18,24 Reserved */
+    GPIO0_IRQn, /* 0x19,25 GPIO0 */
+    GPIO1_IRQn, /* 0x1A,26 GPIO1 */
+    RSV27_IRQn, /* 0x1B,27 Reserved */
+    RSV28_IRQn, /* 0x1C,28 Reserved */
+    RSV29_IRQn, /* 0x1D,29 Reserved */
+    RSV30_IRQn, /* 0x1E,30 Reserved */
+    RSV31_IRQn, /* 0x1F,31 Reserved */
+    RSV32_IRQn, /* 0x20,32 Reserved */
+    RSV33_IRQn, /* 0x21,33 Reserved */
+    RSV34_IRQn, /* 0x22,34 Reserved */
+    RSV35_IRQn, /* 0x23,35 Reserved */
+    RSV36_IRQn, /* 0x24,36 Reserved */
+    RSV37_IRQn, /* 0x25,37 Reserved */
+    RSV38_IRQn, /* 0x26,38 Reserved */
+    RSV39_IRQn, /* 0x27,39 Reserved */
+    RSV40_IRQn, /* 0x28,40 Reserved */
+    RSV41_IRQn, /* 0x29,41 Reserved */
+    RSV42_IRQn, /* 0x2A,42 Reserved */
+    RSV43_IRQn, /* 0x2B,43 Reserved */
+    RSV44_IRQn, /* 0x2C,44 Reserved */
+    RSV45_IRQn, /* 0x2D,45 Reserved */
+    RSV46_IRQn, /* 0x2E,46 Reserved */
+    RSV47_IRQn, /* 0x2F,47 Reserved */
+    RSV48_IRQn, /* 0x30,48 Reserved */
+    RSV49_IRQn, /* 0x31,49 Reserved */
+    RSV50_IRQn, /* 0x32,50 Reserved */
+    RSV51_IRQn, /* 0x33,51 Reserved */
+    RSV52_IRQn, /* 0x34,52 Reserved */
+    RSV53_IRQn, /* 0x35,53 Reserved */
+    RSV54_IRQn, /* 0x36,54 Reserved */
+    RSV55_IRQn, /* 0x37,55 Reserved */
+    RSV56_IRQn, /* 0x38,56 Reserved */
+    RSV57_IRQn, /* 0x39,57 Reserved */
+    RSV58_IRQn, /* 0x3A,58 Reserved */
+    RSV59_IRQn, /* 0x3B,59 Reserved */
+    RSV60_IRQn, /* 0x3C,60 Reserved */
+    RSV61_IRQn, /* 0x3D,61 Reserved */
+    RSV62_IRQn, /* 0x3E,62 Reserved */
+    RSV63_IRQn, /* 0x3F,63 Reserved */
+#endif // __riscv
     MXC_IRQ_EXT_COUNT
 } IRQn_Type;
 
@@ -292,14 +292,14 @@ typedef enum {
 #define MXC_ROM0_MEM_SIZE 0x00020000UL
 #define MXC_ROM1_MEM_BASE 0x2006C000UL
 #define MXC_ROM1_MEM_SIZE 0x00004000UL
-#define MXC_ROM_MEM_BASE  MXC_ROM0_MEM_BASE
-#define MXC_ROM_MEM_SIZE  MXC_ROM0_MEM_SIZE
-#define MXC_XIP_MEM_BASE  0x08000000UL
-#define MXC_XIP_MEM_SIZE  0x08000000UL
+#define MXC_ROM_MEM_BASE MXC_ROM0_MEM_BASE
+#define MXC_ROM_MEM_SIZE MXC_ROM0_MEM_SIZE
+#define MXC_XIP_MEM_BASE 0x08000000UL
+#define MXC_XIP_MEM_SIZE 0x08000000UL
 #define MXC_SRAM_MEM_BASE 0x20000000UL
 #define MXC_SRAM_MEM_SIZE 0x0006C000UL
-#define MXC_OTP_MEM_BASE  0x400C0000UL
-#define MXC_OTP_MEM_SIZE  0x00000800UL
+#define MXC_OTP_MEM_BASE 0x400C0000UL
+#define MXC_OTP_MEM_SIZE 0x00000800UL
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */
@@ -374,7 +374,7 @@ typedef enum {
 #define MXC_BASE_GPIO0 ((uint32_t)0x40008000UL)
 #define MXC_GPIO0 ((mxc_gpio_regs_t *)MXC_BASE_GPIO0)
 #define MXC_BASE_GPIO1 ((uint32_t)0x40009000UL)
-#define MXC_GPIO1      ((mxc_gpio_regs_t*)MXC_BASE_GPIO1)
+#define MXC_GPIO1 ((mxc_gpio_regs_t *)MXC_BASE_GPIO1)
 
 #define MXC_GPIO_GET_IDX(p) ((p) == MXC_GPIO0 ? 0 : (p) == MXC_GPIO1 ? 1 : -1)
 
@@ -588,12 +588,12 @@ typedef enum {
 /******************************************************************************/
 /*                                                                 Semaphores */
 #define MXC_BASE_SEMA ((uint32_t)0x4003E000UL)
-#define MXC_SEMA      ((mxc_sema_regs_t*)MXC_BASE_SEMA)
+#define MXC_SEMA ((mxc_sema_regs_t *)MXC_BASE_SEMA)
 
 /******************************************************************************/
 /*                                                             OTP Controller */
 #define MXC_BASE_OTP ((uint32_t)0x40041000UL)
-#define MXC_OTP      ((mxc_otp_regs_t*)MXC_BASE_OTP)
+#define MXC_OTP ((mxc_otp_regs_t *)MXC_BASE_OTP)
 
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
@@ -629,14 +629,14 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        SPI */
-#define MXC_SPI_INSTANCES    (3)
+#define MXC_SPI_INSTANCES (3)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH (32)
 
 #define MXC_BASE_SPI0 ((uint32_t)0x40046000UL)
 #define MXC_SPI0 ((mxc_spi_regs_t *)MXC_BASE_SPI0)
 #define MXC_BASE_SPI1 ((uint32_t)0x40047000UL)
-#define MXC_SPI1      ((mxc_spi_regs_t*)MXC_BASE_SPI1)
+#define MXC_SPI1 ((mxc_spi_regs_t *)MXC_BASE_SPI1)
 #define MXC_BASE_SPI2 ((uint32_t)0x400BE000UL)
 #define MXC_SPI2 ((mxc_spi_regs_t *)MXC_BASE_SPI2)
 

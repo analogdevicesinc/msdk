@@ -49,40 +49,40 @@ void MXC_OTP_Init(void)
 
 void MXC_OTP_Unlock(void)
 {
-    MXC_OTP_RevA_Unlock((mxc_otp_reva_regs_t*)MXC_OTP);
+    MXC_OTP_RevA_Unlock((mxc_otp_reva_regs_t *)MXC_OTP);
 }
 
 void MXC_OTP_Lock(void)
 {
-    MXC_OTP_RevA_Lock((mxc_otp_reva_regs_t*)MXC_OTP);
+    MXC_OTP_RevA_Lock((mxc_otp_reva_regs_t *)MXC_OTP);
 }
 
 void MXC_OTP_UnlockUserBlock(void)
 {
-    MXC_OTP_RevA_UnlockUserBlock((mxc_otp_reva_regs_t*)MXC_OTP);
+    MXC_OTP_RevA_UnlockUserBlock((mxc_otp_reva_regs_t *)MXC_OTP);
 }
 
 void MXC_OTP_LockUserBlock(void)
 {
-    MXC_OTP_RevA_LockUserBlock((mxc_otp_reva_regs_t*)MXC_OTP);
+    MXC_OTP_RevA_LockUserBlock((mxc_otp_reva_regs_t *)MXC_OTP);
 }
 
 int MXC_OTP_Write(uint16_t addr, uint32_t data)
 {
-    return MXC_OTP_RevA_Write((mxc_otp_reva_regs_t*)MXC_OTP, addr, data);
+    return MXC_OTP_RevA_Write((mxc_otp_reva_regs_t *)MXC_OTP, addr, data);
 }
 
-int MXC_OTP_MultiWrite(uint16_t addr, uint32_t* data, uint16_t size)
+int MXC_OTP_MultiWrite(uint16_t addr, uint32_t *data, uint16_t size)
 {
-    return MXC_OTP_RevA_MultiWrite((mxc_otp_reva_regs_t*)MXC_OTP, addr, data, size);
+    return MXC_OTP_RevA_MultiWrite((mxc_otp_reva_regs_t *)MXC_OTP, addr, data, size);
 }
 
-int MXC_OTP_Read(uint16_t addr, uint32_t* data)
+int MXC_OTP_Read(uint16_t addr, uint32_t *data)
 {
-    return MXC_OTP_RevA_Read((mxc_otp_reva_regs_t*)MXC_OTP, addr, data);
+    return MXC_OTP_RevA_Read((mxc_otp_reva_regs_t *)MXC_OTP, addr, data);
 }
 
-int MXC_OTP_MultiRead(uint16_t addr, uint32_t* data, uint16_t size)
+int MXC_OTP_MultiRead(uint16_t addr, uint32_t *data, uint16_t size)
 {
-    return MXC_OTP_RevA_MultiRead((mxc_otp_reva_regs_t*)MXC_OTP, addr, data, size);
+    return MXC_OTP_RevA_MultiRead((mxc_otp_reva_regs_t *)MXC_OTP, addr, data, size);
 }
