@@ -41,6 +41,10 @@ jobs:
         run: |
           # Remove local modifications
           git scorch
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
 
           BLE_FILES_CHANGED=0
           
