@@ -203,9 +203,9 @@ uint8_t processEscSequence(uint8_t* seq)
 
         {27, 91, 66}, /* down arrow */
 
-        {27, 91, 67}, /* left arrow */
+        {27, 91, 67}, /* right arrow */
 
-        {27, 91, 68}, /* right arrow */
+        {27, 91, 68}, /* left arrow */
 
     };
     //uint8_t downArrow[4] = {c '\0'};
@@ -518,16 +518,24 @@ void vCmdLineTask(void* pvParameters)
                     printHistory(false);
                     break;
 
-                case LEFT_ARROW:
-                    memset(keyBoardSequence, 0, 3);
-                    escCounter = 0;
-                    //printf("Left\r\n");
-                    break;
-
                 case RIGHT_ARROW:
                     memset(keyBoardSequence, 0, 3);
+                    uint8_t right[] = "\x1b\x5b\x43";
+                    if (bufferIndex < strlen(inputBuffer)) {
+                        WsfBufIoWrite((const uint8_t*)right, sizeof(right));
+                        bufferIndex++;
+                    }
                     escCounter = 0;
-                    //printf("RIGHT\r\n");
+
+                    break;
+                case LEFT_ARROW:
+                    memset(keyBoardSequence, 0, 3);
+                    escCounter     = 0;
+                    uint8_t left[] = "\x1b\x5b\x44";
+                    if (bufferIndex > 0) {
+                        WsfBufIoWrite((const uint8_t*)left, sizeof(left));
+                        bufferIndex--;
+                    }
                     break;
 
                 default:
@@ -572,8 +580,6 @@ void vCmdLineTask(void* pvParameters)
                         queuePointer = historyQueue.head;
                         if (strlen(inputBuffer) > 0) {
                             APP_TRACE_INFO0("\r\n");
-                            /* Null terminate for safety */
-                            inputBuffer[bufferIndex] = 0x00;
                             /* save to history */
                             historyEnquue(&historyQueue, inputBuffer);
                             /* Evaluate */
@@ -710,9 +716,6 @@ void helpTask(void* pvParameters)
     printf("┌─────────┬──────────────────────────────────┬───────────────────────────────────────────────────────┐\r\n");
     printf("│ Command │ parameters [optional] <required> │                      description                      │\r\n");
     printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
-    printf("│ configs │ N/A                              │ Displays current RF configurations.                   │\r\n");
-    printf("│         │                                  │ Packet length,type. Tx Power. Phy                     │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
     printf("│ cls     │ N/A                              │ clears the screen                                     │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ constTx │ <channel> : 1 - 39               │ Constant TX on given channel.                         │\r\n");
@@ -720,26 +723,23 @@ void helpTask(void* pvParameters)
     printf("│         │                                  │                                                       │\r\n");
     printf("│ e       │ N/A                              │ Ends any active RX/TX/Constant/Freq.hop RF test       │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ phy     │ <symbol_rate> : 1M 2M S2 S8      │ Sets the PHY symbol rate. Not case sensitive 1M == 1m │\r\n");
-    printf("│         │ ex: phy 2M                       │                                                       │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ plen    │ <packet_length>                  │ Sets payload packet length 0-255 bytes                │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
-    printf("│ ptype   │ <packet_type>                    │ Sets payload packet type.                             |\r\n");
-    printf("│         │                                  │ PRBS9,PRBS15,00,FF,F0,0F,55,AA                        │\r\n");
-    printf("│         │                                  │                                                       │\r\n");
     printf("│ ps      │ N/A                              │ Display freeRTOS task stats                           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ rx      │ <channel> <duration_ms>          │ RX test on given channel.                             │\r\n");
-    printf("│         │ ex: rx 0 500                     │ Duration of 0 is max duration until stopped           │\r\n");
+    printf("│ rx      │ <channel> <phy> <duration_ms>    │ RX test on given channel.                             │\r\n");
+    printf("│         │ ex: rx 0 2M 500                  │ Duration of 0 is max duration until stopped           │\r\n");
+    printf("│         │                                  │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n");
+    printf("│         │                                  │ (duaration in ms: 0 65535 )                           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ sweep   │ <start_ch> <end_ch> <ms/per_ch>  │ Sweeps TX tests through a range of channels given     │\r\n");
     printf("│         │ ex: sweep 0 10 500               │ their order of appearance on the spectrum.            │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ tx      │ <channel> <duration_ms>          │ TX test on given channel.                             │\r\n");
-    printf("│         │ ex: tx 0 500                     │ Duration of 0 is max duration until stopped           │\r\n");
+    printf("│ tx      │ <channel> <packet_len>           │ TX test on given channel.                             │\r\n");
+    printf("│         │ <packet_type> <phy> <duartion>   │ Duration of 0 is max duration until stopped           │\r\n");
+    printf("│         │ ex: tx 0 255 FF 2M 1000          │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n");
+    printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
+    printf("│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ txdbm   │ <dbm> :TODO: what is range here? │ Select transmit power                                 │\r\n");
+    printf("│ dbm     │ <dbm> :TODO: what is range here? │ Select transmit power                                 │\r\n");
     printf("│         │ ex: txdbm -10                    │                                                       │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ help    │ N/A                              │ Displays this help table                              │\r\n");
@@ -761,7 +761,7 @@ void wfsLoop(void* pvParameters)
 void setPhy(uint8_t newPhy)
 {
     phy          = newPhy;
-    char str[20] = "Phy now set to ";
+    char str[20] = "> Phy now set to ";
     strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
                 (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
                 (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
@@ -779,13 +779,13 @@ void startFreqHopping(void)
 void setPacketLen(uint8_t len)
 {
     packetLen = len;
-    APP_TRACE_INFO1("Packet length set to %d", len);
+    APP_TRACE_INFO1("> Packet length set to %d", len);
 }
 /*************************************************************************************************/
 void setPacketType(uint8_t type)
 {
     packetType = type;
-    APP_TRACE_INFO1("Packet type set to %s", getPacketTypeStr());
+    APP_TRACE_INFO1("> Packet type set to %s", getPacketTypeStr());
 }
 /*************************************************************************************************/
 void setTxPower(int8_t power)
@@ -794,7 +794,7 @@ void setTxPower(int8_t power)
     txPower = power;
     llc_api_set_txpower((int8_t)power);
     LlSetAdvTxPower((int8_t)power);
-    printf("Power set to %d dBm\n", power);
+    printf("> Power set to %d dBm\n", power);
 }
 /*************************************************************************************************/
 void printConfigs(void)
