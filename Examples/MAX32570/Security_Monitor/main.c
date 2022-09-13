@@ -43,25 +43,26 @@
 #include "security_monitor.h"
 
 typedef struct {
-    const char* name;
+    const char *name;
     int (*callback)(void);
-    const char* detail;
+    const char *detail;
 } list_t;
 
 static list_t list[] = {
-    {"Check AES Key", smon_check_aes_key, "Can be used to check Battery Backed key status"},
-    {"Check RTC Status", smon_rtc_status,
-     "Is used to check whether RTC is running or not. When battery being removed RTC will stop."},
-    {"Start RTC", smon_start_rtc, "To start RTC"},
-    {"Set Ext Sensors", smon_set_ext_sensors, "To activated external sensors"},
-    {"Set Int Sensors", smon_set_int_sensors, "To activated internal sensors"},
-    {"Load AES Crypto Key", smon_load_aes_key, "To create and load Battery Backed key"},
-    {"Check Tamper", smon_check_tamper, "To check tamper status"},
-    {"Get Tamper Time", smon_check_tamper_time, "To read tamper time if it is exist"},
-    {"Clear Tamper", smon_clear_tamper, "To clear tamper"},
-    {"Clear Tamper Time", smon_clear_tamper_time, "To clear tamper time"},
-    {"Set KeyWipe", smon_secalm_keywipe, "To manually remove secret keys"},
-    {"Create DRS", smon_create_DRS, "To manually create DRS"}};
+    { "Check AES Key", smon_check_aes_key, "Can be used to check Battery Backed key status" },
+    { "Check RTC Status", smon_rtc_status,
+      "Is used to check whether RTC is running or not. When battery being removed RTC will stop." },
+    { "Start RTC", smon_start_rtc, "To start RTC" },
+    { "Set Ext Sensors", smon_set_ext_sensors, "To activated external sensors" },
+    { "Set Int Sensors", smon_set_int_sensors, "To activated internal sensors" },
+    { "Load AES Crypto Key", smon_load_aes_key, "To create and load Battery Backed key" },
+    { "Check Tamper", smon_check_tamper, "To check tamper status" },
+    { "Get Tamper Time", smon_check_tamper_time, "To read tamper time if it is exist" },
+    { "Clear Tamper", smon_clear_tamper, "To clear tamper" },
+    { "Clear Tamper Time", smon_clear_tamper_time, "To clear tamper time" },
+    { "Set KeyWipe", smon_secalm_keywipe, "To manually remove secret keys" },
+    { "Create DRS", smon_create_DRS, "To manually create DRS" }
+};
 
 static int system_init(void)
 {
@@ -80,7 +81,7 @@ int main(void)
 {
     int ret = 0;
     int i;
-    const char* items[32];
+    const char *items[32];
     int nb_of_items = sizeof(list) / sizeof(list[0]);
 
     ret = system_init();
@@ -108,9 +109,7 @@ int main(void)
     printf("\nInput device can be EvKit keypad or PC Keyboard (Default). To change it please check "
            "keypad.c file\n");
 
-    for (i = 0; i < nb_of_items; i++) {
-        items[i] = list[i].name;
-    }
+    for (i = 0; i < nb_of_items; i++) { items[i] = list[i].name; }
 
     // test loop
     while (1) {

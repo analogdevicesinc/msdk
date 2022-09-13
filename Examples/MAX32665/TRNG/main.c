@@ -49,20 +49,20 @@
 
 /***** Definitions *****/
 #define TRNG_32BIT_RND_NO 4
-#define LEN               16 //User specified length for random number
+#define LEN 16 //User specified length for random number
 
-#define MXC_AES_DATA_LEN    (128 / 8)
+#define MXC_AES_DATA_LEN (128 / 8)
 #define MXC_AES_KEY_128_LEN (128 / 8)
 
 /***** Globals *****/
-unsigned int rnd_no[TRNG_32BIT_RND_NO] = {0};
-uint8_t var_rnd_no[LEN]                = {0};
+unsigned int rnd_no[TRNG_32BIT_RND_NO] = { 0 };
+uint8_t var_rnd_no[LEN] = { 0 };
 
 char aes_result[512];
-char temp[] = {0x00, 0x00, 0x00};
+char temp[] = { 0x00, 0x00, 0x00 };
 
 /***** Functions *****/
-void ascii_to_byte(const char* src, char* dst, int len)
+void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
     for (i = 0; i < len; ++i) {
@@ -76,13 +76,11 @@ void ascii_to_byte(const char* src, char* dst, int len)
     }
 }
 
-void print(char* stuff)
+void print(char *stuff)
 {
     int i, j, size = 4;
     for (i = 0; i < 4; ++i) {
-        for (j = 0; j < 4; ++j) {
-            printf("0x%x ", stuff[i * size + j]);
-        }
+        for (j = 0; j < 4; ++j) { printf("0x%x ", stuff[i * size + j]); }
         printf("\n");
     }
     return;
@@ -109,16 +107,14 @@ int main(void)
 
     //AES Application using random IV from TRNG peripheral
     printf("AES Application\n");
-    const char* _key = "10a58869d74be5a374cf867cfb473859";
+    const char *_key = "10a58869d74be5a374cf867cfb473859";
     char key[MXC_AES_KEY_128_LEN];
     ascii_to_byte(_key, key, MXC_AES_KEY_128_LEN);
 
     char iv[MXC_AES_KEY_128_LEN];
-    for (i = 0; i < LEN; ++i) {
-        iv[i] = var_rnd_no[i];
-    }
+    for (i = 0; i < LEN; ++i) { iv[i] = var_rnd_no[i]; }
 
-    const char* _msg = "00000000000000000000000000000000";
+    const char *_msg = "00000000000000000000000000000000";
     char msg[MXC_AES_DATA_LEN];
     ascii_to_byte(_msg, msg, MXC_AES_DATA_LEN);
 

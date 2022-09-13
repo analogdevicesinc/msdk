@@ -55,8 +55,8 @@
 
 /* **** Definitions **** */
 #define IRAM_BUFFER_SIZE 0x00012C00
-#define PANEL_WIDTH      320
-#define PANEL_HEIGHT     240
+#define PANEL_WIDTH 320
+#define PANEL_HEIGHT 240
 
 /* **** Globals **** */
 uint8_t framebuffer[IRAM_BUFFER_SIZE + ((PANEL_WIDTH * PANEL_HEIGHT * LOGO_BPP) >> 3) + 31];
@@ -69,35 +69,35 @@ uint8_t framebuffer[IRAM_BUFFER_SIZE + ((PANEL_WIDTH * PANEL_HEIGHT * LOGO_BPP) 
  */
 void display_logo(void)
 {
-    unsigned char* source;
-    unsigned char* dest;
+    unsigned char *source;
+    unsigned char *dest;
     int xoffs;
     int yoffs;
     unsigned int i;
     volatile uint32_t base_addr = 0;
     mxc_clcd_cfg_t panel; /**! Panel configuration structure */
 
-    panel.width       = PANEL_WIDTH;  /**! Set the size of the panel in pixels */
-    panel.height      = PANEL_HEIGHT; /**! Set the width of the panel in pixels */
-    panel.frequency   = 6400000;      /**! minimum panel supported frequency */
-    panel.vfrontporch = 2;            /**! the vertical front porch for the display */
-    panel.vbackporch  = 2;            /**! the vertical back porch for the display */
-    panel.vsyncwidth  = 10;
+    panel.width = PANEL_WIDTH; /**! Set the size of the panel in pixels */
+    panel.height = PANEL_HEIGHT; /**! Set the width of the panel in pixels */
+    panel.frequency = 6400000; /**! minimum panel supported frequency */
+    panel.vfrontporch = 2; /**! the vertical front porch for the display */
+    panel.vbackporch = 2; /**! the vertical back porch for the display */
+    panel.vsyncwidth = 10;
     panel.hfrontporch = 12; /**! Set the horizontal front porch width */
-    panel.hbackporch  = 2;  /**! Set the horizontal back porch width */
-    panel.hsyncwidth  = 70; /**! Set the horizontal sync width */
-    panel.palette     = palette;
+    panel.hbackporch = 2; /**! Set the horizontal back porch width */
+    panel.hsyncwidth = 70; /**! Set the horizontal sync width */
+    panel.palette = palette;
     panel.paletteSize = sizeof(palette) / sizeof(uint32_t); /** set the palette size in words */
 
     /** Enable the CLCD panel based on the number of bits per pixel */
     switch (LOGO_BPP) {
-        case 1:
-            panel.bpp = MXC_BPP1;
-            break;
-        case 8:
-        default:
-            panel.bpp = MXC_BPP8;
-            break;
+    case 1:
+        panel.bpp = MXC_BPP1;
+        break;
+    case 8:
+    default:
+        panel.bpp = MXC_BPP8;
+        break;
     }
 
     /** Init and config CLCD */
@@ -107,14 +107,14 @@ void display_logo(void)
     base_addr = ((unsigned int)framebuffer + 31) & ~0x1f;
 
     /** Clear to background color */
-    memset((void*)base_addr, 0, (panel.width * panel.height * LOGO_BPP) >> 3);
+    memset((void *)base_addr, 0, (panel.width * panel.height * LOGO_BPP) >> 3);
 
     /** Center logo in frame buffer */
     xoffs = (panel.width - LOGO_W) >> 1;
     yoffs = (panel.height - LOGO_H) >> 1;
 
     source = image;
-    dest   = (unsigned char*)(base_addr + (((panel.width * yoffs + xoffs) * LOGO_BPP) >> 3));
+    dest = (unsigned char *)(base_addr + (((panel.width * yoffs + xoffs) * LOGO_BPP) >> 3));
     /** Copy the image to the frame buffer */
     for (i = 0; i < LOGO_H; i++) {
         memcpy(dest, source, (LOGO_W * LOGO_BPP) >> 3);
@@ -123,7 +123,7 @@ void display_logo(void)
     }
 
     /** Set image to Maxim logo */
-    MXC_CLCD_SetFrameAddr((void*)base_addr);
+    MXC_CLCD_SetFrameAddr((void *)base_addr);
 
     /** Enable the CLCD to display the image */
     MXC_CLCD_Enable();
@@ -132,7 +132,7 @@ void display_logo(void)
     MXC_Delay(MXC_DELAY_SEC(3));
 
     /** Set image to all gray on the display */
-    memset((void*)base_addr, 0, (panel.width * panel.height * LOGO_BPP) >> 3);
+    memset((void *)base_addr, 0, (panel.width * panel.height * LOGO_BPP) >> 3);
 }
 
 /**

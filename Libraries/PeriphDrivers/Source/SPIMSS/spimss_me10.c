@@ -45,7 +45,7 @@
 /* **** Functions **** */
 
 /* ************************************************************************** */
-int MXC_SPIMSS_Init(mxc_spimss_regs_t* spi, unsigned mode, unsigned freq)
+int MXC_SPIMSS_Init(mxc_spimss_regs_t *spi, unsigned mode, unsigned freq)
 {
     if (mode > 3) {
         return E_BAD_PARAM;
@@ -65,47 +65,48 @@ int MXC_SPIMSS_Init(mxc_spimss_regs_t* spi, unsigned mode, unsigned freq)
         return E_NO_DEVICE;
     }
 
-    return MXC_SPIMSS_RevA_Init((mxc_spimss_reva_regs_t*)spi, mode, freq);
+    return MXC_SPIMSS_RevA_Init((mxc_spimss_reva_regs_t *)spi, mode, freq);
 }
 /* ************************************************************************* */
-int MXC_SPIMSS_Shutdown(mxc_spimss_regs_t* spi)
+int MXC_SPIMSS_Shutdown(mxc_spimss_regs_t *spi)
 {
-    MXC_SPIMSS_RevA_Shutdown((mxc_spimss_reva_regs_t*)spi);
+    MXC_SPIMSS_RevA_Shutdown((mxc_spimss_reva_regs_t *)spi);
 
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2S);
     return E_NO_ERROR;
 }
 /* ************************************************************************** */
-void MXC_SPIMSS_Handler(mxc_spimss_regs_t* spi) // From the IRQ
+void MXC_SPIMSS_Handler(mxc_spimss_regs_t *spi) // From the IRQ
 {
-    MXC_SPIMSS_RevA_Handler((mxc_spimss_reva_regs_t*)spi);
+    MXC_SPIMSS_RevA_Handler((mxc_spimss_reva_regs_t *)spi);
 }
 
 /* ************************************************************************** */
-int MXC_SPIMSS_MasterTrans(mxc_spimss_regs_t* spi, mxc_spimss_req_t* req)
+int MXC_SPIMSS_MasterTrans(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 {
-    return MXC_SPIMSS_RevA_MasterTrans((mxc_spimss_reva_regs_t*)spi, (spimss_reva_req_t*)req);
+    return MXC_SPIMSS_RevA_MasterTrans((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t *)req);
 }
 
 /* ************************************************************************** */
-int MXC_SPIMSS_SlaveTrans(mxc_spimss_regs_t* spi, mxc_spimss_req_t* req)
+int MXC_SPIMSS_SlaveTrans(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 {
-    return MXC_SPIMSS_RevA_SlaveTrans((mxc_spimss_reva_regs_t*)spi, (spimss_reva_req_t*)req);
+    return MXC_SPIMSS_RevA_SlaveTrans((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t *)req);
 }
 
 /* ************************************************************************** */
-int MXC_SPIMSS_MasterTransAsync(mxc_spimss_regs_t* spi, mxc_spimss_req_t* req)
+int MXC_SPIMSS_MasterTransAsync(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 {
-    return MXC_SPIMSS_RevA_MasterTransAsync((mxc_spimss_reva_regs_t*)spi, (spimss_reva_req_t*)req);
+    return MXC_SPIMSS_RevA_MasterTransAsync((mxc_spimss_reva_regs_t *)spi,
+                                            (spimss_reva_req_t *)req);
 }
 
 /* ************************************************************************** */
-int MXC_SPIMSS_SlaveTransAsync(mxc_spimss_regs_t* spi, mxc_spimss_req_t* req)
+int MXC_SPIMSS_SlaveTransAsync(mxc_spimss_regs_t *spi, mxc_spimss_req_t *req)
 {
-    return MXC_SPIMSS_RevA_SlaveTransAsync((mxc_spimss_reva_regs_t*)spi, (spimss_reva_req_t*)req);
+    return MXC_SPIMSS_RevA_SlaveTransAsync((mxc_spimss_reva_regs_t *)spi, (spimss_reva_req_t *)req);
 }
 /* ************************************************************************* */
-int MXC_SPIMSS_AbortAsync(mxc_spimss_req_t* req)
+int MXC_SPIMSS_AbortAsync(mxc_spimss_req_t *req)
 {
-    return MXC_SPIMSS_RevA_AbortAsync((spimss_reva_req_t*)req);
+    return MXC_SPIMSS_RevA_AbortAsync((spimss_reva_req_t *)req);
 }

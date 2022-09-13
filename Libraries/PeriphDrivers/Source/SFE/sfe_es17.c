@@ -61,25 +61,25 @@ int MXC_SFE_Shutdown(void)
 
 int MXC_SFE_ReadEnable(void)
 {
-    return MXC_SFE_RevA_ReadEnable((mxc_sfe_reva_regs_t*)MXC_SFE);
+    return MXC_SFE_RevA_ReadEnable((mxc_sfe_reva_regs_t *)MXC_SFE);
 }
 
 int MXC_SFE_WriteEnable(void)
 {
-    return MXC_SFE_RevA_WriteEnable((mxc_sfe_reva_regs_t*)MXC_SFE);
+    return MXC_SFE_RevA_WriteEnable((mxc_sfe_reva_regs_t *)MXC_SFE);
 }
 
 int MXC_SFE_SetFlashAddress(uint32_t baseAdd, uint32_t topAdd)
 {
-    return MXC_SFE_RevA_SetFlashAddress((mxc_sfe_reva_regs_t*)MXC_SFE, baseAdd, topAdd);
+    return MXC_SFE_RevA_SetFlashAddress((mxc_sfe_reva_regs_t *)MXC_SFE, baseAdd, topAdd);
 }
 
 int MXC_SFE_SetRAMAddress(uint32_t baseAdd, uint32_t topAdd)
 {
-    return MXC_SFE_RevA_SetRAMAddress((mxc_sfe_reva_regs_t*)MXC_SFE, baseAdd, topAdd);
+    return MXC_SFE_RevA_SetRAMAddress((mxc_sfe_reva_regs_t *)MXC_SFE, baseAdd, topAdd);
 }
 
 int MXC_SFE_SetHostAddress(uint32_t RAMAdd, uint32_t FLASHAdd)
 {
-    return MXC_SFE_RevA_SetHostAddress((mxc_sfe_reva_regs_t*)MXC_SFE, RAMAdd, FLASHAdd);
+    return MXC_SFE_RevA_SetHostAddress((mxc_sfe_reva_regs_t *)MXC_SFE, RAMAdd, FLASHAdd);
 }

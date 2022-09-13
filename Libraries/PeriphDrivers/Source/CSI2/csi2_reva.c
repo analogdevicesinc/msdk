@@ -69,7 +69,7 @@
 
 /* **** Globals **** */
 
-volatile static uint8_t* rx_data = NULL;
+volatile static uint8_t *rx_data = NULL;
 volatile static uint32_t rx_data_index;
 volatile static uint32_t dphy_rdy;
 volatile static uint32_t frame_end_cnt;
@@ -86,9 +86,9 @@ volatile static mxc_csi2_reva_fifo_trig_t fifo_int_trig;
 volatile static mxc_csi2_ahbwait_t ahbwait_en;
 
 typedef struct {
-    mxc_csi2_req_t* req;
-    mxc_csi2_ctrl_cfg_t* ctrl_cfg;
-    mxc_csi2_vfifo_cfg_t* vfifo_cfg;
+    mxc_csi2_req_t *req;
+    mxc_csi2_ctrl_cfg_t *ctrl_cfg;
+    mxc_csi2_vfifo_cfg_t *vfifo_cfg;
     int dma_channel;
 } csi2_reva_req_state_t;
 
@@ -100,27 +100,27 @@ csi2_reva_req_state_t csi2_state;
 /* Global Control/Configuration Functions */
 /******************************************/
 
-int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t* csi2, mxc_csi2_req_t* req,
-                       mxc_csi2_ctrl_cfg_t* ctrl_cfg, mxc_csi2_vfifo_cfg_t* vfifo_cfg)
+int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req,
+                       mxc_csi2_ctrl_cfg_t *ctrl_cfg, mxc_csi2_vfifo_cfg_t *vfifo_cfg)
 {
     int error;
 
-    dphy_rdy      = 0;
-    line_cnt      = 0;
+    dphy_rdy = 0;
+    line_cnt = 0;
     frame_end_cnt = 0;
 
-    csi2_state.req       = req;
-    csi2_state.ctrl_cfg  = ctrl_cfg;
+    csi2_state.req = req;
+    csi2_state.ctrl_cfg = ctrl_cfg;
     csi2_state.vfifo_cfg = vfifo_cfg;
 
-    rx_data       = (uint8_t*)(req->img_addr);
+    rx_data = (uint8_t *)(req->img_addr);
     rx_data_index = 0;
 
     // Convert respective pixel bit number to bytes
     frame_byte_num = ((req->bits_per_pixel_odd + req->bits_per_pixel_even) * req->pixels_per_line *
                       req->lines_per_frame) >>
                      4;
-    odd_line_byte_num  = (req->bits_per_pixel_odd * req->pixels_per_line) >> 3;
+    odd_line_byte_num = (req->bits_per_pixel_odd * req->pixels_per_line) >> 3;
     even_line_byte_num = (req->bits_per_pixel_even * req->pixels_per_line) >> 3;
 
     // Presetting with even line byte number as default
@@ -141,7 +141,7 @@ int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t* csi2, mxc_csi2_req_t* req,
 
     // Configure VFIFO
     csi2->vfifo_pixel_num = req->pixels_per_line;
-    csi2->vfifo_line_num  = req->lines_per_frame;
+    csi2->vfifo_line_num = req->lines_per_frame;
 
     error = MXC_CSI2_VFIFO_Config(vfifo_cfg);
     if (error != E_NO_ERROR) {
@@ -156,7 +156,7 @@ int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t* csi2, mxc_csi2_req_t* req,
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_Shutdown(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_Shutdown(mxc_csi2_reva_regs_t *csi2)
 {
     int error;
 
@@ -177,13 +177,13 @@ int MXC_CSI2_RevA_Shutdown(mxc_csi2_reva_regs_t* csi2)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t* csi2, int num_data_lanes)
+int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes)
 {
     int i;
     int enable_dlanes;
 
-    dphy_rdy      = 0;
-    line_cnt      = 0;
+    dphy_rdy = 0;
+    line_cnt = 0;
     frame_end_cnt = 0;
 
     MXC_CSI2_CTRL_ClearFlags(0xFFFFFFFF);
@@ -201,9 +201,7 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t* csi2, int num_data_lanes)
 
     // This function assumes configured data lanes are used sequentially (e.g. x2 data lanes = data lane0 and lane1).
     enable_dlanes = 0;
-    for (i = 0; i < num_data_lanes; i++) {
-        enable_dlanes |= (1 << i);
-    }
+    for (i = 0; i < num_data_lanes; i++) { enable_dlanes |= (1 << i); }
 
     csi2->cfg_data_lane_en = enable_dlanes;
 
@@ -213,7 +211,7 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t* csi2, int num_data_lanes)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
 {
     int error;
 
@@ -232,7 +230,7 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t* csi2)
     csi2->dphy_rst_n = 0x00;
 
     // Enable CSI2 lanes
-    csi2->cfg_clk_lane_en  = 0;
+    csi2->cfg_clk_lane_en = 0;
     csi2->cfg_data_lane_en = 0;
 
     return E_NO_ERROR;
@@ -245,14 +243,14 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
     int dma_byte_cnt;
     int dlane_stop_inten;
 
-    mxc_csi2_req_t* req         = csi2_state.req;
-    mxc_csi2_vfifo_cfg_t* vfifo = csi2_state.vfifo_cfg;
+    mxc_csi2_req_t *req = csi2_state.req;
+    mxc_csi2_vfifo_cfg_t *vfifo = csi2_state.vfifo_cfg;
 
     // Convert respective pixel bit number to bytes
     frame_byte_num = ((req->bits_per_pixel_odd + req->bits_per_pixel_even) * req->pixels_per_line *
                       req->lines_per_frame) >>
                      4;
-    odd_line_byte_num  = (req->bits_per_pixel_odd * req->pixels_per_line) >> 3;
+    odd_line_byte_num = (req->bits_per_pixel_odd * req->pixels_per_line) >> 3;
     even_line_byte_num = (req->bits_per_pixel_even * req->pixels_per_line) >> 3;
 
     // Select lower line byte number (Odd line)
@@ -273,9 +271,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
 
     // Enable Stop State interrupts for all used data lanes
     dlane_stop_inten = 0;
-    for (i = 0; i < num_data_lanes; i++) {
-        dlane_stop_inten |= (1 << i);
-    }
+    for (i = 0; i < num_data_lanes; i++) { dlane_stop_inten |= (1 << i); }
 
     dlane_stop_inten <<= MXC_F_CSI2_RX_EINT_PPI_IE_DL0STOP_POS;
     MXC_CSI2_PPI_EnableInt(dlane_stop_inten);
@@ -288,7 +284,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t* csi2, mxc_csi2_lane_src_t* src)
+int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src)
 {
     if (src == NULL) {
         return E_BAD_PARAM;
@@ -303,7 +299,7 @@ int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t* csi2, mxc_csi2_lane_sr
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_GetLaneCtrlSource(mxc_csi2_reva_regs_t* csi2, mxc_csi2_lane_src_t* src)
+int MXC_CSI2_RevA_GetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src)
 {
     if (src == NULL) {
         return E_BAD_PARAM;
@@ -318,16 +314,16 @@ int MXC_CSI2_RevA_GetLaneCtrlSource(mxc_csi2_reva_regs_t* csi2, mxc_csi2_lane_sr
     return E_NO_ERROR;
 }
 
-void MXC_CSI2_RevA_GetImageDetails(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h)
+void MXC_CSI2_RevA_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h)
 {
-    *img    = (uint8_t*)csi2_state.req->img_addr;
+    *img = (uint8_t *)csi2_state.req->img_addr;
     *imgLen = frame_byte_num;
 
     *w = csi2_state.req->pixels_per_line;
     *h = csi2_state.req->lines_per_frame;
 }
 
-int MXC_CSI2_RevA_Callback(mxc_csi2_req_t* req, int retVal)
+int MXC_CSI2_RevA_Callback(mxc_csi2_req_t *req, int retVal)
 {
     if (req == NULL) {
         return E_BAD_PARAM;
@@ -340,13 +336,13 @@ int MXC_CSI2_RevA_Callback(mxc_csi2_req_t* req, int retVal)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_Handler(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_Handler(mxc_csi2_reva_regs_t *csi2)
 {
     uint32_t ctrl_flags, vfifo_flags, ppi_flags;
-    mxc_csi2_req_t* req = csi2_state.req;
+    mxc_csi2_req_t *req = csi2_state.req;
 
-    ctrl_flags  = MXC_CSI2_CTRL_GetFlags();
-    ppi_flags   = MXC_CSI2_PPI_GetFlags();
+    ctrl_flags = MXC_CSI2_CTRL_GetFlags();
+    ppi_flags = MXC_CSI2_PPI_GetFlags();
     vfifo_flags = MXC_CSI2_VFIFO_GetFlags();
 
     // Clear Flags
@@ -418,7 +414,7 @@ int MXC_CSI2_RevA_Handler(mxc_csi2_reva_regs_t* csi2)
 /* CSI2 RX Controller Functions */
 /********************************/
 
-int MXC_CSI2_RevA_CTRL_Config(mxc_csi2_reva_regs_t* csi2, mxc_csi2_ctrl_cfg_t* cfg)
+int MXC_CSI2_RevA_CTRL_Config(mxc_csi2_reva_regs_t *csi2, mxc_csi2_ctrl_cfg_t *cfg)
 {
     // Set Power Ready
     csi2->aon_power_ready_n &= ~0x01;
@@ -455,7 +451,7 @@ int MXC_CSI2_RevA_CTRL_Config(mxc_csi2_reva_regs_t* csi2, mxc_csi2_ctrl_cfg_t* c
     return E_NO_ERROR;
 }
 
-void MXC_CSI2_RevA_CTRL_EnableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
+void MXC_CSI2_RevA_CTRL_EnableInt(mxc_csi2_reva_regs_t *csi2, uint32_t mask)
 {
     // Clear flags before enabling
     csi2->rx_eint_ctrl_if |= mask;
@@ -463,17 +459,17 @@ void MXC_CSI2_RevA_CTRL_EnableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
     csi2->rx_eint_ctrl_ie |= mask;
 }
 
-void MXC_CSI2_RevA_CTRL_DisableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
+void MXC_CSI2_RevA_CTRL_DisableInt(mxc_csi2_reva_regs_t *csi2, uint32_t mask)
 {
     csi2->rx_eint_ctrl_ie &= ~mask;
 }
 
-int MXC_CSI2_RevA_CTRL_GetFlags(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_CTRL_GetFlags(mxc_csi2_reva_regs_t *csi2)
 {
     return (csi2->rx_eint_ctrl_if);
 }
 
-void MXC_CSI2_RevA_CTRL_ClearFlags(mxc_csi2_reva_regs_t* csi2, uint32_t flags)
+void MXC_CSI2_RevA_CTRL_ClearFlags(mxc_csi2_reva_regs_t *csi2, uint32_t flags)
 {
     csi2->rx_eint_ctrl_if |= flags;
 }
@@ -482,7 +478,7 @@ void MXC_CSI2_RevA_CTRL_ClearFlags(mxc_csi2_reva_regs_t* csi2, uint32_t flags)
 /* CSI2 VFIFO Functions */
 /************************/
 
-int MXC_CSI2_RevA_VFIFO_Config(mxc_csi2_reva_regs_t* csi2, mxc_csi2_vfifo_cfg_t* cfg)
+int MXC_CSI2_RevA_VFIFO_Config(mxc_csi2_reva_regs_t *csi2, mxc_csi2_vfifo_cfg_t *cfg)
 {
     int error;
 
@@ -549,7 +545,7 @@ int MXC_CSI2_RevA_VFIFO_Config(mxc_csi2_reva_regs_t* csi2, mxc_csi2_vfifo_cfg_t*
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_VFIFO_ProcessRAWtoRGB(mxc_csi2_reva_regs_t* csi2, mxc_csi2_req_t* req)
+int MXC_CSI2_RevA_VFIFO_ProcessRAWtoRGB(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req)
 {
     int error;
 
@@ -582,7 +578,7 @@ int MXC_CSI2_RevA_VFIFO_ProcessRAWtoRGB(mxc_csi2_reva_regs_t* csi2, mxc_csi2_req
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_VFIFO_NextFIFOTrigMode(mxc_csi2_reva_regs_t* csi2, uint8_t ff_not_empty,
+int MXC_CSI2_RevA_VFIFO_NextFIFOTrigMode(mxc_csi2_reva_regs_t *csi2, uint8_t ff_not_empty,
                                          uint8_t ff_abv_thd, uint8_t ff_full)
 {
     // Disable FIFO-related interrupts and clear FIFO trigger detection mode before switching
@@ -591,60 +587,60 @@ int MXC_CSI2_RevA_VFIFO_NextFIFOTrigMode(mxc_csi2_reva_regs_t* csi2, uint8_t ff_
 
     // Set to next FIFO trigger if applicable
     switch (fifo_int_trig) {
-        case MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY:
-            if (ff_abv_thd) {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_ABV_THD;
-            } else if (ff_full) {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_FULL;
-            } else {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY;
-            }
-            break;
+    case MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY:
+        if (ff_abv_thd) {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_ABV_THD;
+        } else if (ff_full) {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_FULL;
+        } else {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY;
+        }
+        break;
 
-        case MXC_CSI2_REVA_FF_TRIG_ABV_THD:
-            if (ff_full) {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_FULL;
-            } else if (ff_not_empty) {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY;
-            } else {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_ABV_THD;
-            }
-            break;
+    case MXC_CSI2_REVA_FF_TRIG_ABV_THD:
+        if (ff_full) {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_FULL;
+        } else if (ff_not_empty) {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY;
+        } else {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_ABV_THD;
+        }
+        break;
 
-        case MXC_CSI2_REVA_FF_TRIG_FULL:
-            if (ff_not_empty) {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY;
-            } else if (ff_abv_thd) {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_ABV_THD;
-            } else {
-                fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_FULL;
-            }
-            break;
+    case MXC_CSI2_REVA_FF_TRIG_FULL:
+        if (ff_not_empty) {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY;
+        } else if (ff_abv_thd) {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_ABV_THD;
+        } else {
+            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_FULL;
+        }
+        break;
 
-        default:
-            fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NO_TRIGGER;
-            break;
+    default:
+        fifo_int_trig = MXC_CSI2_REVA_FF_TRIG_NO_TRIGGER;
+        break;
     }
 
     // Set new burst length and ahbwait parameters if applicable
     switch (fifo_int_trig) {
-        case MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY:
-            fifo_burst_size = bits_per_pixel >> 1;
-            ahbwait_en      = MXC_CSI2_AHBWAIT_ENABLE;
-            break;
+    case MXC_CSI2_REVA_FF_TRIG_NOT_EMPTY:
+        fifo_burst_size = bits_per_pixel >> 1;
+        ahbwait_en = MXC_CSI2_AHBWAIT_ENABLE;
+        break;
 
-        case MXC_CSI2_REVA_FF_TRIG_ABV_THD:
-            fifo_burst_size = csi2_state.vfifo_cfg->rx_thd;
-            ahbwait_en      = MXC_CSI2_AHBWAIT_DISABLE;
-            break;
+    case MXC_CSI2_REVA_FF_TRIG_ABV_THD:
+        fifo_burst_size = csi2_state.vfifo_cfg->rx_thd;
+        ahbwait_en = MXC_CSI2_AHBWAIT_DISABLE;
+        break;
 
-        case MXC_CSI2_REVA_FF_TRIG_FULL:
-            fifo_burst_size = 64; // Max burst size
-            ahbwait_en      = MXC_CSI2_AHBWAIT_DISABLE;
-            break;
+    case MXC_CSI2_REVA_FF_TRIG_FULL:
+        fifo_burst_size = 64; // Max burst size
+        ahbwait_en = MXC_CSI2_AHBWAIT_DISABLE;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Update new configurations for next FIFO read
@@ -654,7 +650,7 @@ int MXC_CSI2_RevA_VFIFO_NextFIFOTrigMode(mxc_csi2_reva_regs_t* csi2, uint8_t ff_
     return E_NO_ERROR;
 }
 
-void MXC_CSI2_RevA_VFIFO_EnableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask, uint32_t edge)
+void MXC_CSI2_RevA_VFIFO_EnableInt(mxc_csi2_reva_regs_t *csi2, uint32_t mask, uint32_t edge)
 {
     // Clear flags before enabling
     csi2->rx_eint_vff_if |= mask;
@@ -665,7 +661,7 @@ void MXC_CSI2_RevA_VFIFO_EnableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask, ui
     MXC_CSI2_VFIFO_ChangeIntMode(mask, edge);
 }
 
-void MXC_CSI2_RevA_VFIFO_ChangeIntMode(mxc_csi2_reva_regs_t* csi2, uint32_t mask, uint32_t edge)
+void MXC_CSI2_RevA_VFIFO_ChangeIntMode(mxc_csi2_reva_regs_t *csi2, uint32_t mask, uint32_t edge)
 {
     // Edge Triggered Mode
     if (edge && (mask & MXC_CSI2_REVA_VFIFO_FIFOINT_EN)) {
@@ -681,36 +677,36 @@ void MXC_CSI2_RevA_VFIFO_ChangeIntMode(mxc_csi2_reva_regs_t* csi2, uint32_t mask
     }
 }
 
-void MXC_CSI2_RevA_VFIFO_DisableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
+void MXC_CSI2_RevA_VFIFO_DisableInt(mxc_csi2_reva_regs_t *csi2, uint32_t mask)
 {
     csi2->rx_eint_vff_ie &= ~mask;
 }
 
-int MXC_CSI2_RevA_VFIFO_GetFlags(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_VFIFO_GetFlags(mxc_csi2_reva_regs_t *csi2)
 {
     return (csi2->rx_eint_vff_if);
 }
 
-void MXC_CSI2_RevA_VFIFO_ClearFlags(mxc_csi2_reva_regs_t* csi2, uint32_t flags)
+void MXC_CSI2_RevA_VFIFO_ClearFlags(mxc_csi2_reva_regs_t *csi2, uint32_t flags)
 {
     csi2->rx_eint_vff_if |= flags;
 }
 
-int MXC_CSI2_RevA_VFIFO_Enable(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_VFIFO_Enable(mxc_csi2_reva_regs_t *csi2)
 {
     csi2->vfifo_ctrl |= MXC_F_CSI2_REVA_VFIFO_CTRL_FIFOEN;
 
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_VFIFO_Disable(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_VFIFO_Disable(mxc_csi2_reva_regs_t *csi2)
 {
     csi2->vfifo_ctrl &= ~MXC_F_CSI2_REVA_VFIFO_CTRL_FIFOEN;
 
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_VFIFO_SetPayloadType(mxc_csi2_reva_regs_t* csi2, mxc_csi2_payload0_t payload0,
+int MXC_CSI2_RevA_VFIFO_SetPayloadType(mxc_csi2_reva_regs_t *csi2, mxc_csi2_payload0_t payload0,
                                        mxc_csi2_payload1_t payload1)
 {
     // Need to set one Payload data type
@@ -724,8 +720,8 @@ int MXC_CSI2_RevA_VFIFO_SetPayloadType(mxc_csi2_reva_regs_t* csi2, mxc_csi2_payl
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_VFIFO_GetPayloadType(mxc_csi2_reva_regs_t* csi2, uint32_t* payload0,
-                                       uint32_t* payload1)
+int MXC_CSI2_RevA_VFIFO_GetPayloadType(mxc_csi2_reva_regs_t *csi2, uint32_t *payload0,
+                                       uint32_t *payload1)
 {
     if (payload0 == NULL || payload1 == NULL) {
         return E_NULL_PTR;
@@ -737,7 +733,7 @@ int MXC_CSI2_RevA_VFIFO_GetPayloadType(mxc_csi2_reva_regs_t* csi2, uint32_t* pay
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_VFIFO_SetDMAMode(mxc_csi2_reva_regs_t* csi2, mxc_csi2_dma_mode_t dma_mode)
+int MXC_CSI2_RevA_VFIFO_SetDMAMode(mxc_csi2_reva_regs_t *csi2, mxc_csi2_dma_mode_t dma_mode)
 {
     // Check for valid DMA Mode
     if (dma_mode < MXC_CSI2_DMA_NO_DMA || dma_mode > MXC_CSI2_DMA_FIFO_FULL) {
@@ -749,41 +745,41 @@ int MXC_CSI2_RevA_VFIFO_SetDMAMode(mxc_csi2_reva_regs_t* csi2, mxc_csi2_dma_mode
     return E_NO_ERROR;
 }
 
-mxc_csi2_dma_mode_t MXC_CSI2_RevA_VFIFO_GetDMAMode(mxc_csi2_reva_regs_t* csi2)
+mxc_csi2_dma_mode_t MXC_CSI2_RevA_VFIFO_GetDMAMode(mxc_csi2_reva_regs_t *csi2)
 {
     int dma_mode;
     mxc_csi2_dma_mode_t result;
 
     dma_mode = csi2->vfifo_cfg0 & MXC_F_CSI2_REVA_VFIFO_CFG0_DMAMODE;
     switch (dma_mode) {
-        // No DMA
-        case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_NO_DMA:
-            result = MXC_CSI2_DMA_NO_DMA;
-            break;
+    // No DMA
+    case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_NO_DMA:
+        result = MXC_CSI2_DMA_NO_DMA;
+        break;
 
-        // DMA Request
-        case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_DMA_REQ:
-            result = MXC_CSI2_DMA_SEND_REQUEST;
-            break;
+    // DMA Request
+    case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_DMA_REQ:
+        result = MXC_CSI2_DMA_SEND_REQUEST;
+        break;
 
-        // FIFO Above Threshold
-        case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_FIFO_THD:
-            result = MXC_CSI2_DMA_FIFO_ABV_THD;
-            break;
+    // FIFO Above Threshold
+    case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_FIFO_THD:
+        result = MXC_CSI2_DMA_FIFO_ABV_THD;
+        break;
 
-        // FIFO Full
-        case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_FIFO_FULL:
-            result = MXC_CSI2_DMA_FIFO_FULL;
-            break;
+    // FIFO Full
+    case MXC_S_CSI2_REVA_VFIFO_CFG0_DMAMODE_FIFO_FULL:
+        result = MXC_CSI2_DMA_FIFO_FULL;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     return result;
 }
 
-int MXC_CSI2_RevA_VFIFO_SetRGBType(mxc_csi2_reva_regs_t* csi2, mxc_csi2_rgb_type_t rgb_type)
+int MXC_CSI2_RevA_VFIFO_SetRGBType(mxc_csi2_reva_regs_t *csi2, mxc_csi2_rgb_type_t rgb_type)
 {
     // Check for valid RGB Type
     if (rgb_type < MXC_CSI2_TYPE_RGB444 || rgb_type > MXC_CSI2_TYPE_RGB888) {
@@ -795,7 +791,7 @@ int MXC_CSI2_RevA_VFIFO_SetRGBType(mxc_csi2_reva_regs_t* csi2, mxc_csi2_rgb_type
     return E_NO_ERROR;
 }
 
-mxc_csi2_rgb_type_t MXC_CSI2_RevA_VFIFO_GetRGBType(mxc_csi2_reva_regs_t* csi2)
+mxc_csi2_rgb_type_t MXC_CSI2_RevA_VFIFO_GetRGBType(mxc_csi2_reva_regs_t *csi2)
 {
     int rgb_type;
     mxc_csi2_rgb_type_t result;
@@ -803,39 +799,39 @@ mxc_csi2_rgb_type_t MXC_CSI2_RevA_VFIFO_GetRGBType(mxc_csi2_reva_regs_t* csi2)
     rgb_type = csi2->vfifo_raw_ctrl & MXC_F_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP;
 
     switch (rgb_type) {
-        // RGB444
-        case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB444:
-            result = MXC_CSI2_TYPE_RGB444;
-            break;
+    // RGB444
+    case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB444:
+        result = MXC_CSI2_TYPE_RGB444;
+        break;
 
-        // RGB555
-        case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB555:
-            result = MXC_CSI2_TYPE_RGB555;
-            break;
+    // RGB555
+    case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB555:
+        result = MXC_CSI2_TYPE_RGB555;
+        break;
 
-        // RGB565
-        case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB565:
-            result = MXC_CSI2_TYPE_RGB565;
-            break;
+    // RGB565
+    case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB565:
+        result = MXC_CSI2_TYPE_RGB565;
+        break;
 
-        // RGB666
-        case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB666:
-            result = MXC_CSI2_TYPE_RGB666;
-            break;
+    // RGB666
+    case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGB666:
+        result = MXC_CSI2_TYPE_RGB666;
+        break;
 
-        // RGB888
-        case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGG888:
-            result = MXC_CSI2_TYPE_RGB888;
-            break;
+    // RGB888
+    case MXC_S_CSI2_REVA_VFIFO_RAW_CTRL_RGB_TYP_RGG888:
+        result = MXC_CSI2_TYPE_RGB888;
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     return result;
 }
 
-int MXC_CSI2_RevA_VFIFO_SetRAWFormat(mxc_csi2_reva_regs_t* csi2, mxc_csi2_raw_format_t raw_format)
+int MXC_CSI2_RevA_VFIFO_SetRAWFormat(mxc_csi2_reva_regs_t *csi2, mxc_csi2_raw_format_t raw_format)
 {
     // Check for valid format
     if (raw_format < MXC_CSI2_FORMAT_RGRG_GBGB || raw_format > MXC_CSI2_FORMAT_BGBG_GRGR) {
@@ -847,7 +843,7 @@ int MXC_CSI2_RevA_VFIFO_SetRAWFormat(mxc_csi2_reva_regs_t* csi2, mxc_csi2_raw_fo
     return E_NO_ERROR;
 }
 
-mxc_csi2_raw_format_t MXC_CSI2_RevA_VFIFO_GetRAWFormat(mxc_csi2_reva_regs_t* csi2)
+mxc_csi2_raw_format_t MXC_CSI2_RevA_VFIFO_GetRAWFormat(mxc_csi2_reva_regs_t *csi2)
 {
     int raw_format;
     mxc_csi2_raw_format_t result;
@@ -856,39 +852,39 @@ mxc_csi2_raw_format_t MXC_CSI2_RevA_VFIFO_GetRAWFormat(mxc_csi2_reva_regs_t* csi
                  MXC_F_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_POS;
 
     switch (raw_format) {
-        // RGRG_GBGB
-        case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_RGRG_GBGB:
-            result = MXC_CSI2_FORMAT_RGRG_GBGB;
-            break;
+    // RGRG_GBGB
+    case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_RGRG_GBGB:
+        result = MXC_CSI2_FORMAT_RGRG_GBGB;
+        break;
 
-        // GRGR_BGBG
-        case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_GRGR_BGBG:
-            result = MXC_CSI2_FORMAT_GRGR_BGBG;
-            break;
+    // GRGR_BGBG
+    case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_GRGR_BGBG:
+        result = MXC_CSI2_FORMAT_GRGR_BGBG;
+        break;
 
-        // GBGB_RGRG
-        case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_GBGB_RGRG:
-            result = MXC_CSI2_FORMAT_GBGB_RGRG;
-            break;
+    // GBGB_RGRG
+    case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_GBGB_RGRG:
+        result = MXC_CSI2_FORMAT_GBGB_RGRG;
+        break;
 
-        // BGBG_GRGR
-        case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_BGBG_GRGR:
-            result = MXC_CSI2_FORMAT_BGBG_GRGR;
-            break;
+    // BGBG_GRGR
+    case MXC_V_CSI2_REVA_VFIFO_RAW_CTRL_RAW_FMT_BGBG_GRGR:
+        result = MXC_CSI2_FORMAT_BGBG_GRGR;
+        break;
 
-        default:
-            return E_BAD_STATE;
+    default:
+        return E_BAD_STATE;
     }
 
     return result;
 }
 
-int MXC_CSI2_RevA_VFIFO_GetFIFOEntityCount(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_VFIFO_GetFIFOEntityCount(mxc_csi2_reva_regs_t *csi2)
 {
     return ((csi2->vfifo_sts & MXC_F_CSI2_VFIFO_STS_FELT) >> MXC_F_CSI2_VFIFO_STS_FELT_POS);
 }
 
-void MXC_CSI2_RevA_VFIFO_SetAHBWait(mxc_csi2_reva_regs_t* csi2, mxc_csi2_ahbwait_t wait_en)
+void MXC_CSI2_RevA_VFIFO_SetAHBWait(mxc_csi2_reva_regs_t *csi2, mxc_csi2_ahbwait_t wait_en)
 {
     // Enable AHB Wait
     if (wait_en) {
@@ -910,7 +906,7 @@ void MXC_CSI2_RevA_VFIFO_SetAHBWait(mxc_csi2_reva_regs_t* csi2, mxc_csi2_ahbwait
     }
 }
 
-mxc_csi2_ahbwait_t MXC_CSI2_RevA_VFIFO_GetAHBWait(mxc_csi2_reva_regs_t* csi2)
+mxc_csi2_ahbwait_t MXC_CSI2_RevA_VFIFO_GetAHBWait(mxc_csi2_reva_regs_t *csi2)
 {
     int ahbwait;
 
@@ -928,7 +924,7 @@ mxc_csi2_ahbwait_t MXC_CSI2_RevA_VFIFO_GetAHBWait(mxc_csi2_reva_regs_t* csi2)
 /* CSI2 PHY Protocol Interface (PPI) Functions */
 /***********************************************/
 
-void MXC_CSI2_RevA_PPI_EnableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
+void MXC_CSI2_RevA_PPI_EnableInt(mxc_csi2_reva_regs_t *csi2, uint32_t mask)
 {
     // Clear flags before enabling
     csi2->rx_eint_ppi_if |= mask;
@@ -936,17 +932,17 @@ void MXC_CSI2_RevA_PPI_EnableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
     csi2->rx_eint_ppi_ie |= mask;
 }
 
-void MXC_CSI2_RevA_PPI_DisableInt(mxc_csi2_reva_regs_t* csi2, uint32_t mask)
+void MXC_CSI2_RevA_PPI_DisableInt(mxc_csi2_reva_regs_t *csi2, uint32_t mask)
 {
     csi2->rx_eint_ppi_ie &= ~mask;
 }
 
-int MXC_CSI2_RevA_PPI_GetFlags(mxc_csi2_reva_regs_t* csi2)
+int MXC_CSI2_RevA_PPI_GetFlags(mxc_csi2_reva_regs_t *csi2)
 {
     return (csi2->rx_eint_ppi_if);
 }
 
-void MXC_CSI2_RevA_PPI_ClearFlags(mxc_csi2_reva_regs_t* csi2, uint32_t flags)
+void MXC_CSI2_RevA_PPI_ClearFlags(mxc_csi2_reva_regs_t *csi2, uint32_t flags)
 {
     csi2->rx_eint_ppi_if |= flags;
 }
@@ -962,31 +958,31 @@ int MXC_CSI2_RevA_PPI_Stop(void)
 /* CSI2 DMA - Used for all features */
 /************************************/
 
-int MXC_CSI2_RevA_DMA_Config(uint8_t* dst_addr, uint32_t byte_cnt, uint32_t burst_size)
+int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
 {
     int error;
     uint8_t channel;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = {0, 0, 0, 0, 0, 0};
+    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
 
-    channel                = MXC_DMA_AcquireChannel();
+    channel = MXC_DMA_AcquireChannel();
     csi2_state.dma_channel = channel;
 
-    config.reqsel    = MXC_DMA_REQUEST_CSI2RX;
-    config.ch        = channel;
-    config.srcwd     = MXC_DMA_WIDTH_WORD;
-    config.dstwd     = MXC_DMA_WIDTH_WORD;
+    config.reqsel = MXC_DMA_REQUEST_CSI2RX;
+    config.ch = channel;
+    config.srcwd = MXC_DMA_WIDTH_WORD;
+    config.dstwd = MXC_DMA_WIDTH_WORD;
     config.srcinc_en = 0;
     config.dstinc_en = 1;
 
-    advConfig.ch         = channel;
+    advConfig.ch = channel;
     advConfig.burst_size = burst_size;
 
-    srcdst.ch     = channel;
+    srcdst.ch = channel;
     srcdst.source = MXC_CSI2_FIFO;
-    srcdst.dest   = dst_addr;
-    srcdst.len    = byte_cnt;
+    srcdst.dest = dst_addr;
+    srcdst.len = byte_cnt;
 
     error = MXC_DMA_ConfigChannel(config, srcdst);
     if (error != E_NO_ERROR) {
@@ -1036,10 +1032,10 @@ int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void)
     return frame_end_cnt;
 }
 
-void MXC_CSI2_RevA_DMA_Callback(mxc_dma_reva_regs_t* dma, int a, int b)
+void MXC_CSI2_RevA_DMA_Callback(mxc_dma_reva_regs_t *dma, int a, int b)
 {
-    mxc_csi2_req_t* req      = csi2_state.req;
-    uint32_t dma_channel     = csi2_state.dma_channel;
+    mxc_csi2_req_t *req = csi2_state.req;
+    uint32_t dma_channel = csi2_state.dma_channel;
     uint32_t dma_whole_frame = csi2_state.vfifo_cfg->dma_whole_frame;
 
     // Clear CTZ Status Flag

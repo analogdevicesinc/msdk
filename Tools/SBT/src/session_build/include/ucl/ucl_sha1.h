@@ -96,7 +96,7 @@ typedef struct ucl_sha1_ctx ucl_sha1_ctx_t;
  *
  * @ingroup UCL_SHA1
  */
-#define UCL_SHA1          0
+#define UCL_SHA1 0
 #define UCL_SHA1_HASHSIZE 20
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA1.
@@ -122,7 +122,7 @@ typedef struct ucl_sha1_ctx ucl_sha1_ctx_t;
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1(u8* hash, u8* data, u32 data_byteLen);
+int ucl_sha1(u8 *hash, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA1 Init</b>.
@@ -137,7 +137,7 @@ int ucl_sha1(u8* hash, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1_init(ucl_sha1_ctx_t* context);
+int ucl_sha1_init(ucl_sha1_ctx_t *context);
 
 /*============================================================================*/
 /** <b>SHA1 Core</b>.
@@ -157,7 +157,7 @@ int ucl_sha1_init(ucl_sha1_ctx_t* context);
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1_core(ucl_sha1_ctx_t* context, u8* data, u32 data_byteLen);
+int ucl_sha1_core(ucl_sha1_ctx_t *context, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA1 Finish</b>.
@@ -178,7 +178,7 @@ int ucl_sha1_core(ucl_sha1_ctx_t* context, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA1
  */
-int ucl_sha1_finish(u8* hash, ucl_sha1_ctx_t* context);
+int ucl_sha1_finish(u8 *hash, ucl_sha1_ctx_t *context);
 
 #ifdef __cplusplus
 }

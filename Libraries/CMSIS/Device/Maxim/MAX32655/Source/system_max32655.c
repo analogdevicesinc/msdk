@@ -55,32 +55,32 @@ __weak void SystemCoreClockUpdate(void)
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     switch (clk_src) {
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-            base_freq = EXTCLK_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERFO:
-            base_freq = ERFO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
-            base_freq = INRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-            base_freq = IPO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
-            base_freq = ISO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-            base_freq = IBRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
-            base_freq = ERTCO_FREQ;
-            break;
-        default:
-            // Codes 001 and 111 are reserved.
-            // This code should never execute, however, initialize to safe value.
-            base_freq = HIRC_FREQ;
-            break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+        base_freq = EXTCLK_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERFO:
+        base_freq = ERFO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
+        base_freq = INRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
+        base_freq = IPO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
+        base_freq = ISO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
+        base_freq = IBRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
+        base_freq = ERTCO_FREQ;
+        break;
+    default:
+        // Codes 001 and 111 are reserved.
+        // This code should never execute, however, initialize to safe value.
+        base_freq = HIRC_FREQ;
+        break;
     }
 
     // Get the clock divider
@@ -105,12 +105,9 @@ __weak int PreInit(void)
     MXC_GCR->clkctrl = (MXC_GCR->clkctrl & ~(MXC_F_GCR_CLKCTRL_SYSCLK_DIV)) |
                        (MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128);
 
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {
-    }
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
-    }
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {}
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
 
     /* Restore system clock divider */
     MXC_GCR->clkctrl = (MXC_GCR->clkctrl & ~(MXC_F_GCR_CLKCTRL_SYSCLK_DIV)) | (psc);
@@ -125,9 +122,7 @@ __weak int Board_Init(void)
     return 0;
 }
 
-__weak void PalSysInit(void)
-{
-}
+__weak void PalSysInit(void) {}
 
 /* This function is called just before control is transferred to main().
  *
@@ -159,14 +154,11 @@ __weak void SystemInit(void)
 
     /* Setup the SIMO voltages */
     MXC_SIMO_SetVregO_A(1750);
-    while (MXC_SIMO_GetOutReadyA() != E_NO_ERROR) {
-    }
+    while (MXC_SIMO_GetOutReadyA() != E_NO_ERROR) {}
     MXC_SIMO_SetVregO_B(1100);
-    while (MXC_SIMO_GetOutReadyB() != E_NO_ERROR) {
-    }
+    while (MXC_SIMO_GetOutReadyB() != E_NO_ERROR) {}
     MXC_SIMO_SetVregO_C(1100);
-    while (MXC_SIMO_GetOutReadyC() != E_NO_ERROR) {
-    }
+    while (MXC_SIMO_GetOutReadyC() != E_NO_ERROR) {}
 
     /* Change system clock source to the main high-speed clock */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
@@ -196,7 +188,6 @@ void $Sub$$__main_after_scatterload(void)
 {
     SystemInit();
     $Super$$__main_after_scatterload();
-    while (1)
-        ;
+    while (1) {}
 }
 #endif /* __CC_ARM */

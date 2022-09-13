@@ -38,11 +38,11 @@
 #include <stdint.h>
 #include <string.h>
 
-int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry)
+int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len, uint8_t doretry)
 {
     uint8_t tx_buf[100];
     int32_t tx_len;
-    uint8_t* rx_buf;
+    uint8_t *rx_buf;
     uint32_t rx_len;
     int32_t ret;
     uint8_t retry = doretry ? 3 : 1;
@@ -50,7 +50,7 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
     tx_buf[0] = 0x05;
     tx_buf[1] = 0x00;
     tx_buf[2] = 0x08;
-    tx_len    = 3;
+    tx_len = 3;
 
     rx_buf = atq;
 
@@ -63,7 +63,7 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
                 rx_buf[0] != ISO3B_ATQB_BYTE1) {
                 ret = ISO14443_3_ERR_PROTOCOL;
             } else {
-                ret      = ISO14443_3_ERR_SUCCESS;
+                ret = ISO14443_3_ERR_SUCCESS;
                 *atq_len = rx_len;
             }
         }
@@ -78,9 +78,9 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t* atq, int32_t* atq_len, uint8_t doretry
     return ret;
 }
 
-int32_t iso_14443_3b_cmd_attrib(uint8_t* pupi, uint8_t para1, uint8_t para2, uint8_t para3,
-                                uint8_t para4, uint8_t* inf, uint32_t* inf_len, uint32_t timeout,
-                                uint8_t* attrib_resp, int32_t* attrib_resp_len)
+int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1, uint8_t para2, uint8_t para3,
+                                uint8_t para4, uint8_t *inf, uint32_t *inf_len, uint32_t timeout,
+                                uint8_t *attrib_resp, int32_t *attrib_resp_len)
 {
     uint8_t tx_buf[256];
     int32_t tx_len = 0;
@@ -135,7 +135,7 @@ int32_t iso_14443_3b_cmd_attrib(uint8_t* pupi, uint8_t para1, uint8_t para2, uin
     return ret;
 }
 
-int32_t iso_14443_3b_cmd_halt(uint8_t* pupi)
+int32_t iso_14443_3b_cmd_halt(uint8_t *pupi)
 {
     uint8_t tx_buf[20];
     int32_t tx_len;

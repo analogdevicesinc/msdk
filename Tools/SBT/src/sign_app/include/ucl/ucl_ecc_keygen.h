@@ -35,8 +35,8 @@ extern "C" {
  * @retval #UCL_STACK_ERROR if the UCL stack has a problem
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_generic(ucl_type_ecc_u8_affine_point Q, u8* d,
-                                  ucl_type_curve* curve_params);
+int ucl_ecc_keygeneration_generic(ucl_type_ecc_u8_affine_point Q, u8 *d,
+                                  ucl_type_curve *curve_params);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-160
  * using the API introduced in the UCL 2.4.9
@@ -51,7 +51,7 @@ int ucl_ecc_keygeneration_generic(ucl_type_ecc_u8_affine_point Q, u8* d,
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p160r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p160r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-192
  * using the API introduced in the UCL 2.4.9
@@ -66,7 +66,7 @@ int ucl_ecc_keygeneration_p160r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p192r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p192r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-224
  * using the API introduced in the UCL 2.4.9
@@ -81,7 +81,7 @@ int ucl_ecc_keygeneration_p192r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p224r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p224r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-256
  * using the API introduced in the UCL 2.4.9
@@ -96,7 +96,7 @@ int ucl_ecc_keygeneration_p224r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p256r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p256r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-384
  * using the API introduced in the UCL 2.4.9
@@ -111,7 +111,7 @@ int ucl_ecc_keygeneration_p256r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p384r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p384r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-521
  * using the API introduced in the UCL 2.4.9
@@ -126,7 +126,7 @@ int ucl_ecc_keygeneration_p384r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p521r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p521r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve Brainpool P-256
  * using the API introduced in the UCL 2.4.9
@@ -141,7 +141,7 @@ int ucl_ecc_keygeneration_p521r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_bp256r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_bp256r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve Brainpool P-384
  * using the API introduced in the UCL 2.4.9
@@ -156,7 +156,7 @@ int ucl_ecc_keygeneration_bp256r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_bp384r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_bp384r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve Brainpool P-512
@@ -172,7 +172,7 @@ int ucl_ecc_keygeneration_bp384r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_bp512r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_bp512r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-160
@@ -187,7 +187,7 @@ int ucl_ecc_keygeneration_bp512r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_p521r1(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_p521r1(ucl_type_ecc_u8_affine_point Q, u8 *d);
 /** <b>ECC SM2 DSA key Generation</b>.
  * this function generates a public/private keypair on the chinese standard curve SM2 FP256
  * using the API introduced in the UCL 2.4.9
@@ -202,7 +202,7 @@ int ucl_ecc_keygeneration_p521r1(ucl_type_ecc_u8_affine_point Q, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygeneration_sm2fp256(ucl_type_ecc_u8_affine_point Q, u8* d);
+int ucl_ecc_keygeneration_sm2fp256(ucl_type_ecc_u8_affine_point Q, u8 *d);
 
 int ucl_ecc_point_on_curve_p160r1(ucl_type_ecc_u8_affine_point Q);
 /** <b>ECDSA point verification</b>.
@@ -333,7 +333,7 @@ int ucl_ecc_point_on_curve_bp512r1(ucl_type_ecc_u8_affine_point Q);
  * @ingroup UCL_ECC_KEYGEN */
 int ucl_ecc_point_on_curve_sm2fp256(ucl_type_ecc_u8_affine_point Q);
 
-int ucl_ecc_keygen_generic(u8* xr, u8* yr, u8* d, int curve);
+int ucl_ecc_keygen_generic(u8 *xr, u8 *yr, u8 *d, int curve);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-160
  *
@@ -348,7 +348,7 @@ int ucl_ecc_keygen_generic(u8* xr, u8* yr, u8* d, int curve);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_p160r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_p160r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-192
  *
@@ -363,7 +363,7 @@ int ucl_ecc_keygen_p160r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_p192r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_p192r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-224
  *
@@ -378,7 +378,7 @@ int ucl_ecc_keygen_p192r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_p224r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_p224r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-256
  *
@@ -393,7 +393,7 @@ int ucl_ecc_keygen_p224r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_p256r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_p256r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-384
  *
@@ -408,7 +408,7 @@ int ucl_ecc_keygen_p256r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_p384r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_p384r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve BP-256
  *
@@ -423,7 +423,7 @@ int ucl_ecc_keygen_p384r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_bp256r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_bp256r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve BP-384
  *
@@ -438,7 +438,7 @@ int ucl_ecc_keygen_bp256r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_bp384r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_bp384r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve BP-512
  *
@@ -453,7 +453,7 @@ int ucl_ecc_keygen_bp384r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_bp512r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_bp512r1(u8 *xr, u8 *yr, u8 *d);
 /** <b>ECDSA key Generation</b>.
  * this function generates a public/private keypair on the curve P-521
  *
@@ -468,7 +468,7 @@ int ucl_ecc_keygen_bp512r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_OUTPUT  if one of the outputs is the pointer NULL
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_keygen_p521r1(u8* xr, u8* yr, u8* d);
+int ucl_ecc_keygen_p521r1(u8 *xr, u8 *yr, u8 *d);
 
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-160
@@ -485,7 +485,7 @@ int ucl_ecc_keygen_p521r1(u8* xr, u8* yr, u8* d);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_p160r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_p160r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-192
  *
@@ -501,7 +501,7 @@ int ucl_ecc_on_curve_p160r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_p192r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_p192r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-224
  *
@@ -517,7 +517,7 @@ int ucl_ecc_on_curve_p192r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_p224r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_p224r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-256
  *
@@ -533,7 +533,7 @@ int ucl_ecc_on_curve_p224r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_p256r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_p256r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve BP-256
  *
@@ -549,7 +549,7 @@ int ucl_ecc_on_curve_p256r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_bp256r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_bp256r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-384
  *
@@ -565,7 +565,7 @@ int ucl_ecc_on_curve_bp256r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_p384r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_p384r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve BP-384
  *
@@ -581,7 +581,7 @@ int ucl_ecc_on_curve_p384r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_bp384r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_bp384r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve BP-512
  *
@@ -597,7 +597,7 @@ int ucl_ecc_on_curve_bp384r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_bp512r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_bp512r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 /** <b>ECDSA point verification</b>.
  * this function checks whether or not a point is on the curve P-521
  *
@@ -613,10 +613,10 @@ int ucl_ecc_on_curve_bp512r1(u8* x, u8* y, u8* a, u8* b, u8* p);
  * @retval #UCL_INVALID_INPUT in case of erroneous input parameters,
  *
  * @ingroup UCL_ECC_KEYGEN */
-int ucl_ecc_on_curve_p521r1(u8* x, u8* y, u8* a, u8* b, u8* p);
+int ucl_ecc_on_curve_p521r1(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p);
 
-int ucl_ecc_on_curve_generic(u8* x, u8* y, u8* a, u8* b, u8* p, int curve);
-int ucl_ecc_point_on_curve_generic(ucl_type_ecc_u8_affine_point Q, ucl_type_curve* curve_params);
+int ucl_ecc_on_curve_generic(u8 *x, u8 *y, u8 *a, u8 *b, u8 *p, int curve);
+int ucl_ecc_point_on_curve_generic(ucl_type_ecc_u8_affine_point Q, ucl_type_curve *curve_params);
 
 #ifdef __cplusplus
 }

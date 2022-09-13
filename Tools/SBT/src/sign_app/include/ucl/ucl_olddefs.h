@@ -51,26 +51,26 @@
  */
 #define BYTE unsigned char
 
-#define ucl_3des_ctx_type            ucl_3des_ctx_t
-#define ucl_des_ctx_type             ucl_des_ctx_t
-#define ucl_tdes_ctx_type            ucl_tdes_ctx_t
-#define ucl_sha1_ctx_type            ucl_sha1_ctx_t
-#define ucl_sha256_ctx_type          ucl_sha256_ctx_t
-#define ucl_md5_ctx_type             ucl_md5_ctx_t
-#define ucl_hdes_ctx_type            ucl_hdes_ctx_t
-#define ucl_rsa_public_key_type      ucl_rsa_public_key_t
-#define ucl_rsa_private_key_type     ucl_rsa_private_key_t
+#define ucl_3des_ctx_type ucl_3des_ctx_t
+#define ucl_des_ctx_type ucl_des_ctx_t
+#define ucl_tdes_ctx_type ucl_tdes_ctx_t
+#define ucl_sha1_ctx_type ucl_sha1_ctx_t
+#define ucl_sha256_ctx_type ucl_sha256_ctx_t
+#define ucl_md5_ctx_type ucl_md5_ctx_t
+#define ucl_hdes_ctx_type ucl_hdes_ctx_t
+#define ucl_rsa_public_key_type ucl_rsa_public_key_t
+#define ucl_rsa_private_key_type ucl_rsa_private_key_t
 #define ucl_rsa_crt_private_key_type ucl_rsa_crt_private_key_t
 
-#define ucl_3des_ctx_t            ucl_3des_ctx_t
-#define ucl_des_ctx_t             ucl_des_ctx_t
-#define ucl_tdes_ctx_t            ucl_tdes_ctx_t
-#define ucl_sha1_ctx_t            ucl_sha1_ctx_t
-#define ucl_sha256_ctx_t          ucl_sha256_ctx_t
-#define ucl_md5_ctx_t             ucl_md5_ctx_t
-#define ucl_hdes_ctx_t            ucl_hdes_ctx_t
-#define ucl_rsa_public_key_t      ucl_rsa_public_key_t
-#define ucl_rsa_private_key_t     ucl_rsa_private_key_t
+#define ucl_3des_ctx_t ucl_3des_ctx_t
+#define ucl_des_ctx_t ucl_des_ctx_t
+#define ucl_tdes_ctx_t ucl_tdes_ctx_t
+#define ucl_sha1_ctx_t ucl_sha1_ctx_t
+#define ucl_sha256_ctx_t ucl_sha256_ctx_t
+#define ucl_md5_ctx_t ucl_md5_ctx_t
+#define ucl_hdes_ctx_t ucl_hdes_ctx_t
+#define ucl_rsa_public_key_t ucl_rsa_public_key_t
+#define ucl_rsa_private_key_t ucl_rsa_private_key_t
 #define ucl_rsa_crt_private_key_t ucl_rsa_crt_private_key_t
 
 #endif /*_UCL_OLDDEFS_H_*/

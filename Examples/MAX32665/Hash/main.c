@@ -47,7 +47,7 @@
 
 /***** Globals *****/
 
-char temp[] = {0x00, 0x00, 0x00};
+char temp[] = { 0x00, 0x00, 0x00 };
 
 void Test_Result(int result)
 {
@@ -57,7 +57,7 @@ void Test_Result(int result)
         printf("   Passed  \n\n");
 }
 
-void ascii_to_byte(const char* src, char* dst, int len)
+void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
     for (i = 0; i < len; ++i) {
@@ -93,7 +93,7 @@ void Test_Hash(void)
     // Select the Hash Function
     MXC_TPU_Hash_Config(MXC_TPU_HASH_SHA256);
 
-    MXC_TPU_Hash_SHA((char*)sha256_msg, MXC_TPU_HASH_SHA256, msgLen, (char*)destination);
+    MXC_TPU_Hash_SHA((char *)sha256_msg, MXC_TPU_HASH_SHA256, msgLen, (char *)destination);
 
     Test_Result(memcmp(sha256_result, destination, 32));
 

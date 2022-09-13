@@ -51,13 +51,13 @@ int MXC_DMA_Init(void)
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_DMA);
     }
 
-    return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t*)MXC_DMA);
+    return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 /* ************************************************************************* */
 int MXC_DMA_AcquireChannel(void)
 {
-    return MXC_DMA_RevA_AcquireChannel((mxc_dma_reva_regs_t*)MXC_DMA);
+    return MXC_DMA_RevA_AcquireChannel((mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 /* ************************************************************************* */
@@ -85,7 +85,7 @@ int MXC_DMA_SetSrcDst(mxc_dma_srcdst_t srcdst)
 }
 
 /* ************************************************************************* */
-int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t* srcdst)
+int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t *srcdst)
 {
     return MXC_DMA_RevA_GetSrcDst(srcdst);
 }
@@ -97,7 +97,7 @@ int MXC_DMA_SetSrcReload(mxc_dma_srcdst_t srcdstReload)
 }
 
 /* ************************************************************************* */
-int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t* srcdstReload)
+int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t *srcdstReload)
 {
     return MXC_DMA_RevA_GetSrcReload(srcdstReload);
 }
@@ -141,13 +141,13 @@ int MXC_DMA_ChannelClearFlags(int ch, int flags)
 /* ************************************************************************* */
 int MXC_DMA_EnableInt(int ch)
 {
-    return MXC_DMA_RevA_EnableInt((mxc_dma_reva_regs_t*)MXC_DMA, ch);
+    return MXC_DMA_RevA_EnableInt((mxc_dma_reva_regs_t *)MXC_DMA, ch);
 }
 
 /* ************************************************************************* */
 int MXC_DMA_DisableInt(int ch)
 {
-    return MXC_DMA_RevA_DisableInt((mxc_dma_reva_regs_t*)MXC_DMA, ch);
+    return MXC_DMA_RevA_DisableInt((mxc_dma_reva_regs_t *)MXC_DMA, ch);
 }
 
 /* ************************************************************************* */
@@ -163,7 +163,7 @@ int MXC_DMA_Stop(int ch)
 }
 
 /* ************************************************************************* */
-mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch)
+mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch)
 {
     return MXC_DMA_RevA_GetCHRegs(ch);
 }
@@ -171,18 +171,18 @@ mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch)
 /* ************************************************************************* */
 void MXC_DMA_Handler(void)
 {
-    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t*)MXC_DMA);
+    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 /* ************************************************************************* */
-int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
+int MXC_DMA_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t callback)
 {
-    return MXC_DMA_RevA_MemCpy((mxc_dma_reva_regs_t*)MXC_DMA, dest, src, len, callback);
+    return MXC_DMA_RevA_MemCpy((mxc_dma_reva_regs_t *)MXC_DMA, dest, src, len, callback);
 }
 
 /* ************************************************************************* */
 int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
                        mxc_dma_trans_chain_t callback)
 {
-    return MXC_DMA_RevA_DoTransfer((mxc_dma_reva_regs_t*)MXC_DMA, config, firstSrcDst, callback);
+    return MXC_DMA_RevA_DoTransfer((mxc_dma_reva_regs_t *)MXC_DMA, config, firstSrcDst, callback);
 }

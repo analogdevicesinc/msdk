@@ -205,7 +205,7 @@ int main(void)
 {
     /* TFT_Demo Example */
     int key;
-    State* state;
+    State *state;
     int ret = 0;
     int slaveAddress;
     int id;
@@ -225,10 +225,10 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init();         // Bring CNN state machine into consistent state
+    cnn_init(); // Bring CNN state machine into consistent state
     cnn_load_weights(); // Load CNN kernels
-    cnn_load_bias();    // Load CNN bias
-    cnn_configure();    // Configure CNN state machine
+    cnn_load_bias(); // Load CNN bias
+    cnn_configure(); // Configure CNN state machine
 
     if (init_database() < 0) {
         PR_ERR("Could not initialize the database");
@@ -330,7 +330,7 @@ int main(void)
     MXC_WUT_GetTicks(500, MXC_WUT_UNIT_MILLISEC, &ticks_1);
     MXC_WUT_GetTicks(100, MXC_WUT_UNIT_MILLISEC, &ticks_2);
     /* Configure structure for one shot timer to trigger in a number of ticks */
-    cfg.mode    = MXC_WUT_MODE_ONESHOT;
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks_1;
     /* Init WakeUp Timer */
     MXC_WUT_Init(MXC_WUT_PRES_1);
@@ -347,7 +347,7 @@ int main(void)
 #endif
 
     while (1) { //TFT Demo
-                /* Get current screen state */
+        /* Get current screen state */
         state = state_get_current();
 #ifdef TS_ENABLE
         /* Check pressed touch screen key */

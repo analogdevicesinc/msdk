@@ -64,7 +64,7 @@ __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t data)
     }
 
     uint32_t count = 0U;
-    uint32_t mask  = 0x80000000U;
+    uint32_t mask = 0x80000000U;
 
     while ((data & mask) == 0U) {
         count += 1U;

@@ -80,35 +80,33 @@ volatile uint32_t cnn_time; // Stopwatch
 // HWC 74x74, channels 0 to 2
 #ifdef USE_SAMPLEDATA //Sample DATA
 static uint32_t input_buffer[] = SAMPLE_INPUT_0;
-uint32_t* input                = input_buffer;
+uint32_t *input = input_buffer;
 #endif
 
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 void load_input(void)
 {
 #ifdef USE_SAMPLEDATA
     // This function loads the sample data input -- replace with actual data
-    memcpy32((uint32_t*)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
+    memcpy32((uint32_t *)0x50402000, input, IMAGE_SIZE_X * IMAGE_SIZE_Y);
 #else // Camera
-    uint8_t* frame_buffer;
-    uint8_t* buffer;
+    uint8_t *frame_buffer;
+    uint8_t *buffer;
     uint32_t imgLen;
     uint32_t w, h, x, y;
     uint8_t r, g, b;
-    uint32_t* cnn_mem = (uint32_t*)0x50402000;
+    uint32_t *cnn_mem = (uint32_t *)0x50402000;
     uint32_t color;
 
     camera_start_capture_image();
 
-    while (!camera_is_image_rcv())
-        ;
+    while (!camera_is_image_rcv()) {}
 
     camera_get_image(&frame_buffer, &imgLen, &w, &h);
     buffer = frame_buffer;
@@ -144,8 +142,7 @@ void load_input(void)
 
 void cnn_wait(void)
 {
-    while ((*((volatile uint32_t*)0x50100000) & (1 << 12)) != 1 << 12)
-        ;
+    while ((*((volatile uint32_t *)0x50100000) & (1 << 12)) != 1 << 12) {}
 
     CNN_COMPLETE; // Signal that processing is complete
     cnn_time = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -181,7 +178,7 @@ int main(void)
     mxc_gpio_cfg_t gpio_out;
     gpio_out.port = MXC_GPIO2;
     gpio_out.mask = MXC_GPIO_PIN_5;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
@@ -236,7 +233,7 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
 
     while (1) {
@@ -247,7 +244,7 @@ int main(void)
         cnn_init(); // Bring state machine into consistent state
         cnn_load_bias();
         cnn_configure(); // Configure state machine
-        load_input();    // Load data input
+        load_input(); // Load data input
 
         LED_On(LED1);
         cnn_start(); // Start CNN processing

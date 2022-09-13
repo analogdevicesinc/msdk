@@ -46,12 +46,12 @@
 #define __extern
 #endif
 
-__extern CK_C_OpenSession pC_OpenSession;   // Function pointer
+__extern CK_C_OpenSession pC_OpenSession; // Function pointer
 __extern CK_C_CloseSession pC_CloseSession; // Function pointer
-__extern CK_C_Initialize pC_Initialize;     // Function pointer
-__extern CK_C_Finalize pC_Finalize;         // Function pointer
-__extern CK_C_GetSlotList pC_GetSlotList;   // Function pointer
-__extern CK_C_GetSlotInfo pC_GetSlotInfo;   // Function pointer
+__extern CK_C_Initialize pC_Initialize; // Function pointer
+__extern CK_C_Finalize pC_Finalize; // Function pointer
+__extern CK_C_GetSlotList pC_GetSlotList; // Function pointer
+__extern CK_C_GetSlotInfo pC_GetSlotInfo; // Function pointer
 
 __extern CK_C_GetTokenInfo pC_GetTokenInfo;
 __extern CK_C_WaitForSlotEvent pC_WaitForSlotEvent;

@@ -51,7 +51,7 @@ int MXC_ADC_Init(void)
     //turn on charge pump enable (chip specific)
     MXC_ADC->ctrl |= MXC_F_ADC_CTRL_CHGPUMP_PWR;
 
-    return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t*)MXC_ADC);
+    return MXC_ADC_RevA_Init((mxc_adc_reva_regs_t *)MXC_ADC);
 }
 
 int MXC_ADC_Shutdown(void)
@@ -59,7 +59,7 @@ int MXC_ADC_Shutdown(void)
     // Disable ADC Charge Pump (chip specific)
     MXC_ADC->ctrl &= ~MXC_F_ADC_CTRL_CHGPUMP_PWR;
 
-    MXC_ADC_RevA_Shutdown((mxc_adc_reva_regs_t*)MXC_ADC);
+    MXC_ADC_RevA_Shutdown((mxc_adc_reva_regs_t *)MXC_ADC);
 
     //Disable ADC peripheral clock
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ADC);
@@ -69,27 +69,27 @@ int MXC_ADC_Shutdown(void)
 
 int MXC_ADC_Busy(void)
 {
-    return MXC_ADC_RevA_Busy((mxc_adc_reva_regs_t*)MXC_ADC);
+    return MXC_ADC_RevA_Busy((mxc_adc_reva_regs_t *)MXC_ADC);
 }
 
 void MXC_ADC_EnableInt(uint32_t flags)
 {
-    MXC_ADC_RevA_EnableInt((mxc_adc_reva_regs_t*)MXC_ADC, flags);
+    MXC_ADC_RevA_EnableInt((mxc_adc_reva_regs_t *)MXC_ADC, flags);
 }
 
 void MXC_ADC_DisableInt(uint32_t flags)
 {
-    MXC_ADC_RevA_DisableInt((mxc_adc_reva_regs_t*)MXC_ADC, flags);
+    MXC_ADC_RevA_DisableInt((mxc_adc_reva_regs_t *)MXC_ADC, flags);
 }
 
 int MXC_ADC_GetFlags(void)
 {
-    return MXC_ADC_RevA_GetFlags((mxc_adc_reva_regs_t*)MXC_ADC);
+    return MXC_ADC_RevA_GetFlags((mxc_adc_reva_regs_t *)MXC_ADC);
 }
 
 void MXC_ADC_ClearFlags(uint32_t flags)
 {
-    MXC_ADC_RevA_ClearFlags((mxc_adc_reva_regs_t*)MXC_ADC, flags);
+    MXC_ADC_RevA_ClearFlags((mxc_adc_reva_regs_t *)MXC_ADC, flags);
 }
 
 int MXC_ADC_SetConversionSpeed(uint32_t hz)
@@ -116,7 +116,7 @@ int MXC_ADC_SetConversionSpeed(uint32_t hz)
     MXC_GCR->pclkdiv |= (divider << MXC_F_GCR_PCLKDIV_ADCFRQ_POS);
 
     //enable clock
-    MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t*)MXC_ADC, hz);
+    MXC_ADC_RevA_SetConversionSpeed((mxc_adc_reva_regs_t *)MXC_ADC, hz);
 
     return E_NO_ERROR;
 }
@@ -130,52 +130,52 @@ int MXC_ADC_GetConversionSpeed(void)
 
 void MXC_ADC_SetDataAlignment(int msbJustify)
 {
-    MXC_ADC_RevA_SetDataAlignment((mxc_adc_reva_regs_t*)MXC_ADC, msbJustify);
+    MXC_ADC_RevA_SetDataAlignment((mxc_adc_reva_regs_t *)MXC_ADC, msbJustify);
 }
 
 void MXC_ADC_SetExtScale(mxc_adc_scale_t scale)
 {
-    MXC_ADC_RevA_SetExtScale((mxc_adc_reva_regs_t*)MXC_ADC, scale);
+    MXC_ADC_RevA_SetExtScale((mxc_adc_reva_regs_t *)MXC_ADC, scale);
 }
 
 void MXC_ADC_EnableMonitor(mxc_adc_monitor_t monitor)
 {
-    MXC_ADC_RevA_EnableMonitor((mxc_adc_reva_regs_t*)MXC_ADC, monitor);
+    MXC_ADC_RevA_EnableMonitor((mxc_adc_reva_regs_t *)MXC_ADC, monitor);
 }
 
 void MXC_ADC_DisableMonitor(mxc_adc_monitor_t monitor)
 {
-    MXC_ADC_RevA_DisableMonitor((mxc_adc_reva_regs_t*)MXC_ADC, monitor);
+    MXC_ADC_RevA_DisableMonitor((mxc_adc_reva_regs_t *)MXC_ADC, monitor);
 }
 
 void MXC_ADC_SetMonitorHighThreshold(mxc_adc_monitor_t monitor, uint32_t threshold)
 {
-    MXC_ADC_RevA_SetMonitorHighThreshold((mxc_adc_reva_regs_t*)MXC_ADC, monitor, threshold);
+    MXC_ADC_RevA_SetMonitorHighThreshold((mxc_adc_reva_regs_t *)MXC_ADC, monitor, threshold);
 }
 
 int MXC_ADC_GetMonitorHighThreshold(mxc_adc_monitor_t monitor)
 {
-    return MXC_ADC_RevA_GetMonitorHighThreshold((mxc_adc_reva_regs_t*)MXC_ADC, monitor);
+    return MXC_ADC_RevA_GetMonitorHighThreshold((mxc_adc_reva_regs_t *)MXC_ADC, monitor);
 }
 
 void MXC_ADC_SetMonitorLowThreshold(mxc_adc_monitor_t monitor, uint32_t threshold)
 {
-    MXC_ADC_RevA_SetMonitorLowThreshold((mxc_adc_reva_regs_t*)MXC_ADC, monitor, threshold);
+    MXC_ADC_RevA_SetMonitorLowThreshold((mxc_adc_reva_regs_t *)MXC_ADC, monitor, threshold);
 }
 
 int MXC_ADC_GetMonitorLowThreshold(mxc_adc_monitor_t monitor)
 {
-    return MXC_ADC_RevA_GetMonitorLowThreshold((mxc_adc_reva_regs_t*)MXC_ADC, monitor);
+    return MXC_ADC_RevA_GetMonitorLowThreshold((mxc_adc_reva_regs_t *)MXC_ADC, monitor);
 }
 
 void MXC_ADC_SetMonitorChannel(mxc_adc_monitor_t monitor, mxc_adc_chsel_t channel)
 {
-    MXC_ADC_RevA_SetMonitorChannel((mxc_adc_reva_regs_t*)MXC_ADC, monitor, channel);
+    MXC_ADC_RevA_SetMonitorChannel((mxc_adc_reva_regs_t *)MXC_ADC, monitor, channel);
 }
 
 int MXC_ADC_GetMonitorChannel(mxc_adc_monitor_t monitor)
 {
-    return MXC_ADC_RevA_GetMonitorChannel((mxc_adc_reva_regs_t*)MXC_ADC, monitor);
+    return MXC_ADC_RevA_GetMonitorChannel((mxc_adc_reva_regs_t *)MXC_ADC, monitor);
 }
 
 void MXC_ADC_EnableMonitorAsync(mxc_adc_monitor_t monitor, mxc_adc_monitor_cb_t callback)
@@ -190,46 +190,46 @@ void MXC_ADC_DisableMonitorAsync(mxc_adc_monitor_t monitor)
 
 int MXC_ADC_StartConversion(mxc_adc_chsel_t channel)
 {
-    return MXC_ADC_RevA_StartConversion((mxc_adc_reva_regs_t*)MXC_ADC, channel);
+    return MXC_ADC_RevA_StartConversion((mxc_adc_reva_regs_t *)MXC_ADC, channel);
 }
 
 int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t callback)
 {
-    return MXC_ADC_RevA_StartConversionAsync((mxc_adc_reva_regs_t*)MXC_ADC, channel, callback);
+    return MXC_ADC_RevA_StartConversionAsync((mxc_adc_reva_regs_t *)MXC_ADC, channel, callback);
 }
 
-int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*callback)(int, int))
+int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t *data, void (*callback)(int, int))
 {
-    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*)MXC_ADC, channel, MXC_DMA, data,
+    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t *)MXC_ADC, channel, MXC_DMA, data,
                                            callback);
 }
 
 int MXC_ADC_Handler(void)
 {
-    return MXC_ADC_RevA_Handler((mxc_adc_reva_regs_t*)MXC_ADC);
+    return MXC_ADC_RevA_Handler((mxc_adc_reva_regs_t *)MXC_ADC);
 }
 
-int MXC_ADC_Convert(mxc_adc_conversion_req_t* req)
+int MXC_ADC_Convert(mxc_adc_conversion_req_t *req)
 {
-    return MXC_ADC_RevA_Convert((mxc_adc_reva_regs_t*)MXC_ADC, req);
+    return MXC_ADC_RevA_Convert((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 
-int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t* req)
+int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t *req)
 {
-    return MXC_ADC_RevA_ConvertAsync((mxc_adc_reva_regs_t*)MXC_ADC, req);
+    return MXC_ADC_RevA_ConvertAsync((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 
 void MXC_ADC_Monitor(mxc_adc_monitor_req_t req)
 {
-    MXC_ADC_RevA_Monitor((mxc_adc_reva_regs_t*)MXC_ADC, req);
+    MXC_ADC_RevA_Monitor((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 
 void MXC_ADC_MonitorAsync(mxc_adc_monitor_req_t req)
 {
-    MXC_ADC_RevA_MonitorAsync((mxc_adc_reva_regs_t*)MXC_ADC, req);
+    MXC_ADC_RevA_MonitorAsync((mxc_adc_reva_regs_t *)MXC_ADC, req);
 }
 
-int MXC_ADC_GetData(uint16_t* outdata)
+int MXC_ADC_GetData(uint16_t *outdata)
 {
-    return MXC_ADC_RevA_GetData((mxc_adc_reva_regs_t*)MXC_ADC, outdata);
+    return MXC_ADC_RevA_GetData((mxc_adc_reva_regs_t *)MXC_ADC, outdata);
 }

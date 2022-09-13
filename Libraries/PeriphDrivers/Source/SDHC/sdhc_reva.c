@@ -49,10 +49,10 @@ mxc_sdhc_callback_fn sdhc_callback = NULL;
 
 /* **** Functions **** */
 static void MXC_SDHC_FreeCallback(int error);
-static int MXC_SDHC_TransSetup(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* sd_cmd_cfg);
+static int MXC_SDHC_TransSetup(mxc_sdhc_reva_regs_t *sdhc, mxc_sdhc_cmd_cfg_t *sd_cmd_cfg);
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_Set_Clock_Config(mxc_sdhc_reva_regs_t* sdhc, unsigned int clk_div)
+void MXC_SDHC_RevA_Set_Clock_Config(mxc_sdhc_reva_regs_t *sdhc, unsigned int clk_div)
 {
     sdhc->clk_cn = 0;
     /* clk_div is split across two fields in the register.  Break it up accordingly */
@@ -60,14 +60,13 @@ void MXC_SDHC_RevA_Set_Clock_Config(mxc_sdhc_reva_regs_t* sdhc, unsigned int clk
     sdhc->clk_cn |= ((clk_div & 0x300) >> 8) << MXC_F_SDHC_REVA_CLK_CN_UPPER_SDCLK_FREQ_SEL_POS;
     sdhc->clk_cn |= MXC_F_SDHC_REVA_CLK_CN_INTERNAL_CLK_EN;
 
-    while (!(sdhc->clk_cn & MXC_F_SDHC_REVA_CLK_CN_INTERNAL_CLK_STABLE))
-        ;
+    while (!(sdhc->clk_cn & MXC_F_SDHC_REVA_CLK_CN_INTERNAL_CLK_STABLE)) {}
 
     sdhc->clk_cn |= MXC_F_SDHC_REVA_CLK_CN_SD_CLK_EN;
 }
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_RevA_Get_Clock_Config(mxc_sdhc_reva_regs_t* sdhc)
+unsigned int MXC_SDHC_RevA_Get_Clock_Config(mxc_sdhc_reva_regs_t *sdhc)
 {
     /* clk_div is split across two fields in the register.  Build it up accordingly */
     return ((((sdhc->clk_cn >> MXC_F_SDHC_REVA_CLK_CN_UPPER_SDCLK_FREQ_SEL_POS) << 8) & 0x300) |
@@ -75,7 +74,7 @@ unsigned int MXC_SDHC_RevA_Get_Clock_Config(mxc_sdhc_reva_regs_t* sdhc)
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_RevA_Init(mxc_sdhc_reva_regs_t* sdhc, const mxc_sdhc_cfg_t* cfg)
+int MXC_SDHC_RevA_Init(mxc_sdhc_reva_regs_t *sdhc, const mxc_sdhc_cfg_t *cfg)
 {
     MXC_ASSERT(cfg);
 
@@ -100,31 +99,31 @@ int MXC_SDHC_RevA_Init(mxc_sdhc_reva_regs_t* sdhc, const mxc_sdhc_cfg_t* cfg)
 
     /* Note: This only enables bits to show up in the int_stat register */
     /* The int_signal register is really what you want to generate interrupts out of the IP block */
-    sdhc->int_en    = 0xffff;
+    sdhc->int_en = 0xffff;
     sdhc->er_int_en = 0xffff;
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_PowerUp(mxc_sdhc_reva_regs_t* sdhc)
+void MXC_SDHC_RevA_PowerUp(mxc_sdhc_reva_regs_t *sdhc)
 {
     sdhc->pwr |= MXC_F_SDHC_REVA_PWR_BUS_POWER;
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_PowerDown(mxc_sdhc_reva_regs_t* sdhc)
+void MXC_SDHC_RevA_PowerDown(mxc_sdhc_reva_regs_t *sdhc)
 {
     sdhc->pwr &= ~MXC_F_SDHC_REVA_PWR_BUS_POWER;
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_RevA_Shutdown(mxc_sdhc_reva_regs_t* sdhc)
+int MXC_SDHC_RevA_Shutdown(mxc_sdhc_reva_regs_t *sdhc)
 {
     /* Disable and clear interrupts */
-    sdhc->int_en      = 0;
-    sdhc->er_int_en   = 0;
-    sdhc->int_stat    = sdhc->int_stat;
+    sdhc->int_en = 0;
+    sdhc->er_int_en = 0;
+    sdhc->int_stat = sdhc->int_stat;
     sdhc->er_int_stat = sdhc->er_int_stat;
 
     if (sdhc_callback != NULL) {
@@ -135,7 +134,7 @@ int MXC_SDHC_RevA_Shutdown(mxc_sdhc_reva_regs_t* sdhc)
 }
 
 /* ************************************************************************** */
-static int MXC_SDHC_TransSetup(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* sd_cmd_cfg)
+static int MXC_SDHC_TransSetup(mxc_sdhc_reva_regs_t *sdhc, mxc_sdhc_cmd_cfg_t *sd_cmd_cfg)
 {
     if (!MXC_SDHC_Card_Inserted()) {
         return E_NO_DEVICE;
@@ -161,13 +160,13 @@ static int MXC_SDHC_TransSetup(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* s
     sdhc->host_cn_1 = hc1;
 
     /* Clear all flags */
-    sdhc->int_stat    = sdhc->int_stat;
+    sdhc->int_stat = sdhc->int_stat;
     sdhc->er_int_stat = sdhc->er_int_stat;
 
     /* Set up Transfer registers */
     if (sd_cmd_cfg->direction != MXC_SDHC_DIRECTION_CFG) {
         sdhc->trans = 0;
-        sdhc->sdma  = sd_cmd_cfg->sdma;
+        sdhc->sdma = sd_cmd_cfg->sdma;
 
         if (sd_cmd_cfg->dma) {
             sdhc->trans |= MXC_F_SDHC_REVA_TRANS_DMA_EN;
@@ -193,14 +192,14 @@ static int MXC_SDHC_TransSetup(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* s
 
     } else {
         sdhc->trans = 0;
-        sdhc->sdma  = 0;
+        sdhc->sdma = 0;
     }
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_RevA_SendCommand(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* sd_cmd_cfg)
+int MXC_SDHC_RevA_SendCommand(mxc_sdhc_reva_regs_t *sdhc, mxc_sdhc_cmd_cfg_t *sd_cmd_cfg)
 {
     int err;
 
@@ -215,12 +214,10 @@ int MXC_SDHC_RevA_SendCommand(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* sd
     if (sd_cmd_cfg->direction == MXC_SDHC_DIRECTION_CFG) {
         /* No data transfer, just command */
         while (!(sdhc->int_stat & MXC_F_SDHC_REVA_INT_STAT_CMD_COMP) &&
-               !(sdhc->int_stat & MXC_F_SDHC_REVA_INT_STAT_ERR_INTR))
-            ;
+               !(sdhc->int_stat & MXC_F_SDHC_REVA_INT_STAT_ERR_INTR)) {}
     } else {
         while (!(sdhc->int_stat & MXC_F_SDHC_REVA_INT_STAT_TRANS_COMP) &&
-               !(sdhc->int_stat & MXC_F_SDHC_REVA_INT_STAT_ERR_INTR))
-            ;
+               !(sdhc->int_stat & MXC_F_SDHC_REVA_INT_STAT_ERR_INTR)) {}
     }
 
     /* Determine if transfer was successful or not */
@@ -237,7 +234,7 @@ int MXC_SDHC_RevA_SendCommand(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* sd
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_RevA_SendCommandAsync(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_t* sd_cmd_cfg)
+int MXC_SDHC_RevA_SendCommandAsync(mxc_sdhc_reva_regs_t *sdhc, mxc_sdhc_cmd_cfg_t *sd_cmd_cfg)
 {
     int err;
 
@@ -260,10 +257,10 @@ int MXC_SDHC_RevA_SendCommandAsync(mxc_sdhc_reva_regs_t* sdhc, mxc_sdhc_cmd_cfg_
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_Handler(mxc_sdhc_reva_regs_t* sdhc)
+void MXC_SDHC_RevA_Handler(mxc_sdhc_reva_regs_t *sdhc)
 {
     int signal = sdhc->int_signal;
-    int flag   = MXC_SDHC_GetFlags() & signal;
+    int flag = MXC_SDHC_GetFlags() & signal;
 
     // Need to check if there is anything to do in case this function is called
     //  in a polling fashion instead of from the interrupt handler.
@@ -295,100 +292,98 @@ void MXC_SDHC_RevA_Handler(mxc_sdhc_reva_regs_t* sdhc)
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_ClearFlags(mxc_sdhc_reva_regs_t* sdhc, uint32_t mask)
+void MXC_SDHC_RevA_ClearFlags(mxc_sdhc_reva_regs_t *sdhc, uint32_t mask)
 {
     sdhc->int_stat = mask;
 }
 
 /* ************************************************************************** */
-unsigned MXC_SDHC_RevA_GetFlags(mxc_sdhc_reva_regs_t* sdhc)
+unsigned MXC_SDHC_RevA_GetFlags(mxc_sdhc_reva_regs_t *sdhc)
 {
     return sdhc->int_stat;
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_RevA_Card_Inserted(mxc_sdhc_reva_regs_t* sdhc)
+int MXC_SDHC_RevA_Card_Inserted(mxc_sdhc_reva_regs_t *sdhc)
 {
     unsigned int detect, inserted, stable;
 
-    detect   = !!(sdhc->present & MXC_F_SDHC_REVA_PRESENT_CARD_DETECT);
+    detect = !!(sdhc->present & MXC_F_SDHC_REVA_PRESENT_CARD_DETECT);
     inserted = !!(sdhc->present & MXC_F_SDHC_REVA_PRESENT_CARD_INSERTED);
-    stable   = !!(sdhc->present & MXC_F_SDHC_REVA_PRESENT_CARD_STATE);
+    stable = !!(sdhc->present & MXC_F_SDHC_REVA_PRESENT_CARD_STATE);
 
     return (detect & inserted & stable);
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_Reset(mxc_sdhc_reva_regs_t* sdhc)
+void MXC_SDHC_RevA_Reset(mxc_sdhc_reva_regs_t *sdhc)
 {
     sdhc->sw_reset = MXC_F_SDHC_REVA_SW_RESET_RESET_ALL;
 
     /* Reset takes non-zero time, so wait for completion */
-    while (sdhc->sw_reset & MXC_F_SDHC_REVA_SW_RESET_RESET_ALL)
-        ;
+    while (sdhc->sw_reset & MXC_F_SDHC_REVA_SW_RESET_RESET_ALL) {}
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_Reset_CMD_DAT(mxc_sdhc_reva_regs_t* sdhc)
+void MXC_SDHC_RevA_Reset_CMD_DAT(mxc_sdhc_reva_regs_t *sdhc)
 {
     sdhc->sw_reset = MXC_F_SDHC_REVA_SW_RESET_RESET_CMD | MXC_F_SDHC_REVA_SW_RESET_RESET_DAT;
 
     /* Reset takes non-zero time, so wait for completion */
     while (sdhc->sw_reset &
-           (MXC_F_SDHC_REVA_SW_RESET_RESET_CMD | MXC_F_SDHC_REVA_SW_RESET_RESET_DAT))
-        ;
+           (MXC_F_SDHC_REVA_SW_RESET_RESET_CMD | MXC_F_SDHC_REVA_SW_RESET_RESET_DAT)) {}
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_RevA_Card_Busy(mxc_sdhc_reva_regs_t* sdhc)
+int MXC_SDHC_RevA_Card_Busy(mxc_sdhc_reva_regs_t *sdhc)
 {
     /* Response type 1b uses the DAT[0] line low to indicate busy */
     return (!((sdhc->present >> MXC_F_SDHC_REVA_PRESENT_DAT_SIGNAL_LEVEL_POS) & 1));
 }
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_RevA_Get_Host_Cn_1(mxc_sdhc_reva_regs_t* sdhc)
+unsigned int MXC_SDHC_RevA_Get_Host_Cn_1(mxc_sdhc_reva_regs_t *sdhc)
 {
     return sdhc->host_cn_1;
 }
 
 /* ************************************************************************** */
-uint32_t MXC_SDHC_RevA_Get_Response32(mxc_sdhc_reva_regs_t* sdhc)
+uint32_t MXC_SDHC_RevA_Get_Response32(mxc_sdhc_reva_regs_t *sdhc)
 {
     return sdhc->resp[0];
 }
 
 /* ************************************************************************** */
-uint32_t MXC_SDHC_RevA_Get_Response32_Auto(mxc_sdhc_reva_regs_t* sdhc)
+uint32_t MXC_SDHC_RevA_Get_Response32_Auto(mxc_sdhc_reva_regs_t *sdhc)
 {
     /* The response for auto commands get set at idx 3 */
     return sdhc->resp[3];
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_RevA_Get_Response128(mxc_sdhc_reva_regs_t* sdhc, unsigned char* response)
+void MXC_SDHC_RevA_Get_Response128(mxc_sdhc_reva_regs_t *sdhc, unsigned char *response)
 {
     uint32_t tmp;
 
-    tmp         = sdhc->resp[0];
+    tmp = sdhc->resp[0];
     response[0] = tmp;
     response[1] = tmp >> 8;
     response[2] = tmp >> 16;
     response[3] = tmp >> 24;
 
-    tmp         = sdhc->resp[1];
+    tmp = sdhc->resp[1];
     response[4] = tmp;
     response[5] = tmp >> 8;
     response[6] = tmp >> 16;
     response[7] = tmp >> 24;
 
-    tmp          = sdhc->resp[2];
-    response[8]  = tmp;
-    response[9]  = tmp >> 8;
+    tmp = sdhc->resp[2];
+    response[8] = tmp;
+    response[9] = tmp >> 8;
     response[10] = tmp >> 16;
     response[11] = tmp >> 24;
 
-    tmp          = sdhc->resp[3];
+    tmp = sdhc->resp[3];
     response[12] = tmp;
     response[13] = tmp >> 8;
     response[14] = tmp >> 16;

@@ -52,15 +52,15 @@
 #define MSR_SDMA_INSTANCE (0)
 
 #if MSR_SDMA_INSTANCE == 0
-#define MSR_SDMA         MXC_SDMA0
-#define MSR_SDMA_IRQn    HA0_IRQn
+#define MSR_SDMA MXC_SDMA0
+#define MSR_SDMA_IRQn HA0_IRQn
 #define SDMAx_IRQHandler HA0_IRQHandler
-#define CLK_DIS_SDMAxD   MXC_SYS_PERIPH_CLOCK_HA0
+#define CLK_DIS_SDMAxD MXC_SYS_PERIPH_CLOCK_HA0
 #else
-#define MSR_SDMA         MXC_SDMA1
-#define MSR_SDMA_IRQn    HA1_IRQn //SDMA1_IRQn
+#define MSR_SDMA MXC_SDMA1
+#define MSR_SDMA_IRQn HA1_IRQn //SDMA1_IRQn
 #define SDMAx_IRQHandler HA1_IRQHandler
-#define CLK_DIS_SDMAxD   MXC_SYS_PERIPH_CLOCK_HA1
+#define CLK_DIS_SDMAxD MXC_SYS_PERIPH_CLOCK_HA1
 #endif
 
 //
@@ -78,14 +78,14 @@ static volatile uint32_t sdma_irq_flag;
 
 /* SHARED section layout */
 //static volatile uint32_t 			 *msr_version  			= (uint32_t *)0x20000000;
-static volatile uint16_t* msr_ctrl_ptr = (uint16_t*)0x20000004;
+static volatile uint16_t *msr_ctrl_ptr = (uint16_t *)0x20000004;
 //static volatile uint16_t 			 *adc9_err_ptr 			= (uint16_t *)0x20000006;
-static volatile uint32_t* swipe_timeout_sec_ptr    = (uint32_t*)0x20000008;
-static volatile mcr_decoded_track_t* decoded_track = (mcr_decoded_track_t*)0x2000000C;
+static volatile uint32_t *swipe_timeout_sec_ptr = (uint32_t *)0x20000008;
+static volatile mcr_decoded_track_t *decoded_track = (mcr_decoded_track_t *)0x2000000C;
 
-#define msr_version       (*msr_version)
-#define msr_ctrl          (*msr_ctrl_ptr)
-#define adc9_err          (*adc9_err_ptr)
+#define msr_version (*msr_version)
+#define msr_ctrl (*msr_ctrl_ptr)
+#define adc9_err (*adc9_err_ptr)
 #define swipe_timeout_sec (*swipe_timeout_sec_ptr)
 
 extern xQueueHandle xQueueMain;
@@ -96,11 +96,11 @@ static volatile int g_msr_active_polling = 0;
 void SDMAx_IRQHandler(void)
 {
     MSR_SDMA->irq_flag = 1; /* Clear irq_flag */
-    sdma_irq_flag      = 1; // set int flag
+    sdma_irq_flag = 1; // set int flag
 }
 
 /* This will print decoded swipe data */
-static void process_swipe(int tidx, char* msg, int* msg_len)
+static void process_swipe(int tidx, char *msg, int *msg_len)
 {
     if (decoded_track[tidx].error_code != MCR_ERR_OK) {
         if (decoded_track[tidx].error_code & MCR_ERR_BAD_LEN) {
@@ -134,7 +134,7 @@ static void process_swipe(int tidx, char* msg, int* msg_len)
     } else {
         memcpy(msg, "<<< ", 4);
     }
-    memcpy(&msg[4], (char*)decoded_track[tidx].data, decoded_track[tidx].len);
+    memcpy(&msg[4], (char *)decoded_track[tidx].data, decoded_track[tidx].len);
     *msg_len = decoded_track[tidx].len + 4;
 
     return;
@@ -162,7 +162,8 @@ static void start_msr_sdma(void)
     MSR_SDMA->ctrl |= MXC_F_SDMA_CTRL_EN;
     /* Wait for the SDMA to finish re-initialization */
     while (!MSR_SDMA->irq_flag) {
-        ;
+        {
+        }
     }
     /* Clear irq_flag */
     MSR_SDMA->irq_flag = 1;
@@ -205,25 +206,26 @@ void msr_stop(void)
     xSemaphoreTake(xMSRLock, 0);
 }
 
-void vGetMSRTask(void* pvParameters)
+void vGetMSRTask(void *pvParameters)
 {
     (void)pvParameters;
 
     message_t msgMSR;
 
-    msgMSR.pcType     = 'M'; // it is msr message
-    swipe_timeout_sec = 30;  /* Set swipe timeout */
+    msgMSR.pcType = 'M'; // it is msr message
+    swipe_timeout_sec = 30; /* Set swipe timeout */
 
     xMSRLock = xSemaphoreCreateBinary();
     while (1) {
         while (xSemaphoreTake(xMSRLock, 0xFFFF) != pdTRUE) {
-            ;
+            {
+            }
         }
 
         start_msr_sdma();
         do {
             msgMSR.len = 0;
-            msr_ctrl   = GETSWIPE_BUSY; /* signal to SDMA to get swipe data */
+            msr_ctrl = GETSWIPE_BUSY; /* signal to SDMA to get swipe data */
 
             sdma_irq_flag = 0;
             while (!sdma_irq_flag) {
@@ -235,12 +237,12 @@ void vGetMSRTask(void* pvParameters)
             if (g_msr_active_polling) {
                 /* check exit code */
                 switch (msr_ctrl) {
-                    case GETSWIPE_OK:
-                        process_swipe(1, (char*)msgMSR.pcMessage,
-                                      &msgMSR.len); /* Print Swipe results */
-                        break;
-                    case GETSWIPE_ADCERR:
-                        /* ADC errors */
+                case GETSWIPE_OK:
+                    process_swipe(1, (char *)msgMSR.pcMessage,
+                                  &msgMSR.len); /* Print Swipe results */
+                    break;
+                case GETSWIPE_ADCERR:
+                    /* ADC errors */
 #if 0
 						if( adc9_err & ADCERR_OVERRUN) {
 							COPY_MESSAGE("Err = ADC9 overrun",  msgMSR.pcMessage, msgMSR.len);
@@ -252,10 +254,10 @@ void vGetMSRTask(void* pvParameters)
 							COPY_MESSAGE("Err = ADC9 conversion incomplete",  msgMSR.pcMessage, msgMSR.len);
 						}
 #endif
-                        break;
-                    case GETSWIPE_TIMO:
-                        /* Timeout: no swipe */
-                        break;
+                    break;
+                case GETSWIPE_TIMO:
+                    /* Timeout: no swipe */
+                    break;
                 }
 
                 if (msgMSR.len) {

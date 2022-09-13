@@ -15,7 +15,7 @@
 // ^ Uncomment this to use static sample data.
 // ^ Comment this out to use live camera data.
 
-#define CAMERA_FREQ   (10 * 1000 * 1000)
+#define CAMERA_FREQ (10 * 1000 * 1000)
 #define TFT_BUFF_SIZE 50 // TFT buffer size
 
 #define IMAGE_SIZE_X 74

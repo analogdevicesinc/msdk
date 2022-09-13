@@ -76,7 +76,7 @@ void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_handler)(void))
 
 uint32_t MXC_NVIC_GetVector(IRQn_Type irqn)
 {
-    uint32_t* vectors = (uint32_t*)SCB->VTOR;
+    uint32_t *vectors = (uint32_t *)SCB->VTOR;
     return vectors[(int32_t)irqn + NVIC_USER_IRQ_OFFSET];
 }
 #endif // !__riscv

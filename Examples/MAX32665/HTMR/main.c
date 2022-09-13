@@ -142,8 +142,7 @@ int main(void)
 
     if (MXC_HTMR_Init(MXC_HTMR0, 0, 0) != E_NO_ERROR) {
         printf("Failed HTMR Initialization.\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     if (MXC_HTMR_SetShortAlarm(MXC_HTMR0, 0xFFC7BFFF) != E_NO_ERROR) {

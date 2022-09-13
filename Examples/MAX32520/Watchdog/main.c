@@ -124,8 +124,7 @@ int main(void)
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
 
-            while (1)
-                ;
+            while (1) {}
         }
 
         //blink LED0

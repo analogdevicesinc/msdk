@@ -74,8 +74,8 @@ extern "C" {
  *
  * @ingroup UCL_PKCS1V21_OAEP_SHA256
  */
-int ucl_pkcs1_es_oaep_sha256_encrypt(u8* output, u8* input, u32 input_length,
-                                     ucl_rsa_public_key_t* keyPu, u8* optional_label,
+int ucl_pkcs1_es_oaep_sha256_encrypt(u8 *output, u8 *input, u32 input_length,
+                                     ucl_rsa_public_key_t *keyPu, u8 *optional_label,
                                      u32 optional_label_length);
 
 /*============================================================================*/
@@ -101,8 +101,8 @@ int ucl_pkcs1_es_oaep_sha256_encrypt(u8* output, u8* input, u32 input_length,
  *
  * @ingroup UCL_PKCS1V21_OAEP_SHA256
  */
-int ucl_pkcs1_es_oaep_sha256_decrypt(u8* output, u32* output_length, u8* input,
-                                     ucl_rsa_private_key_t* keyPr, u8* optional_label,
+int ucl_pkcs1_es_oaep_sha256_decrypt(u8 *output, u32 *output_length, u8 *input,
+                                     ucl_rsa_private_key_t *keyPr, u8 *optional_label,
                                      u32 optional_label_length);
 
 /*============================================================================*/
@@ -129,8 +129,8 @@ int ucl_pkcs1_es_oaep_sha256_decrypt(u8* output, u32* output_length, u8* input,
  *
  * @ingroup UCL_PKCS1V21_OAEP_SHA256
  */
-int ucl_pkcs1_es_oaep_sha256_crt_decrypt(u8* output, u32* output_length, u8* input,
-                                         ucl_rsa_crt_private_key_t* key, u8* optional_label,
+int ucl_pkcs1_es_oaep_sha256_crt_decrypt(u8 *output, u32 *output_length, u8 *input,
+                                         ucl_rsa_crt_private_key_t *key, u8 *optional_label,
                                          u32 optional_label_length);
 
 #ifdef __cplusplus

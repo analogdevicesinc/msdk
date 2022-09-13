@@ -69,7 +69,7 @@ typedef struct {
  * @param key ECDSA key to sign the data
  * @return ERR_OK if success otherwise error code
  */
-int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned char* signature,
+int ecdsa_sign(const unsigned char *input, unsigned int input_size, unsigned char *signature,
                ecdsa_key_t key);
 
 /**
@@ -78,7 +78,7 @@ int ecdsa_sign(const unsigned char* input, unsigned int input_size, unsigned cha
  * @param filename name of the file to read the data
  * @return ERR_OK if success otherwise error code
  */
-int read_file_ecdsa_keypair(ecdsa_key_t* key, char* filename);
+int read_file_ecdsa_keypair(ecdsa_key_t *key, char *filename);
 
 /**
  * Read an signed ECDSA public key
@@ -90,7 +90,7 @@ int read_file_ecdsa_keypair(ecdsa_key_t* key, char* filename);
  * @param filename name of the file to read the data
  * @return ERR_OK if success otherwise error code
  */
-int read_file_signed_ecdsa_publickey(u8* x, u8* y, u8* r, u8* s, size_t size, const char* filename);
+int read_file_signed_ecdsa_publickey(u8 *x, u8 *y, u8 *r, u8 *s, size_t size, const char *filename);
 
 /**
  * Print ECDSA key component
@@ -105,7 +105,7 @@ void print_ecdsaKey(ecdsa_key_t key);
  * @param keyname Name of the key to load
  * @return ERR_OK if success otherwise error code
  */
-int load_HSM_ecdsa_key(ecdsa_key_t* key, char* keyname);
+int load_HSM_ecdsa_key(ecdsa_key_t *key, char *keyname);
 #endif /* _MAXIM_HSM */
 
 #ifdef __cplusplus

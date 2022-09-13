@@ -50,7 +50,7 @@
 #define MXC_DES_DATA_LEN \
     (64 /                \
      8) /**< Number of bytes in an DES plaintext or cyphertext block, which are always 64-bits long. */
-#define MXC_DES_KEY_LEN  (64 / 8)  /**< Number of bytes in a TDES key. */
+#define MXC_DES_KEY_LEN (64 / 8) /**< Number of bytes in a TDES key. */
 #define MXC_TDES_KEY_LEN (192 / 8) /**< Number of bytes in a TDES key. */
 
 /* **** Globals **** */
@@ -58,7 +58,7 @@ char result[512];
 
 /* **** Functions **** */
 /* Convert ascii to byte */
-void ascii_to_byte(const char* src, char* dst, int len)
+void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
     int val;
@@ -78,7 +78,7 @@ void ascii_to_byte(const char* src, char* dst, int len)
 }
 
 /* Verify by comparing calculated to expected */
-void DES_check(char* calculated, char* expected, int len)
+void DES_check(char *calculated, char *expected, int len)
 {
     int i, fail = 0;
 
@@ -99,13 +99,13 @@ void DES_check(char* calculated, char* expected, int len)
 
 void DES_ECB_enc(void)
 {
-    char* xkey = "2f5d4b8c12a4a9c1";
+    char *xkey = "2f5d4b8c12a4a9c1";
     char key[MXC_DES_KEY_LEN];
-    char* iv_src = "";
+    char *iv_src = "";
     char iv_dst[MXC_DES_DATA_LEN];
-    char* xmsg = "0000000000000000";
+    char *xmsg = "0000000000000000";
     char msg[MXC_DES_DATA_LEN];
-    char* xexpected = "20597b6decaf7166";
+    char *xexpected = "20597b6decaf7166";
     char expected[MXC_DES_DATA_LEN];
 
     ascii_to_byte(xkey, key, MXC_DES_KEY_LEN);
@@ -123,13 +123,13 @@ void DES_ECB_enc(void)
 
 void DES_ECB_dec(void)
 {
-    char* xkey = "00c3de5446614d35";
+    char *xkey = "00c3de5446614d35";
     char key[MXC_DES_KEY_LEN];
-    char* iv_src = "";
+    char *iv_src = "";
     char iv_dst[MXC_DES_DATA_LEN];
-    char* xct = "d940635dcb8148ae";
+    char *xct = "d940635dcb8148ae";
     char ct[MXC_DES_DATA_LEN];
-    char* xexpected = "0000000000000000";
+    char *xexpected = "0000000000000000";
     char expected[MXC_DES_DATA_LEN];
 
     ascii_to_byte(xkey, key, MXC_DES_KEY_LEN);
@@ -149,13 +149,13 @@ void DES_ECB_dec(void)
 
 void TDES_ECB_enc(void)
 {
-    char* xkey = "0fb5b906471296bc1ab269585e1c99dcf10dd7b047cdee29";
+    char *xkey = "0fb5b906471296bc1ab269585e1c99dcf10dd7b047cdee29";
     char key[MXC_TDES_KEY_LEN];
-    char* iv_src = "";
+    char *iv_src = "";
     char iv_dst[MXC_DES_DATA_LEN];
-    char* xpt = "0000000000000000";
+    char *xpt = "0000000000000000";
     char pt[MXC_DES_DATA_LEN];
-    char* xexpected = "d05ef547adf0db98";
+    char *xexpected = "d05ef547adf0db98";
     char expected[MXC_DES_DATA_LEN];
 
     ascii_to_byte(xkey, key, MXC_TDES_KEY_LEN);
@@ -175,13 +175,13 @@ void TDES_ECB_enc(void)
 
 void TDES_ECB_dec(void)
 {
-    char* xkey = "2e0a67fe76bc3d3c1081c45a48784f49c876033acc85f69c";
+    char *xkey = "2e0a67fe76bc3d3c1081c45a48784f49c876033acc85f69c";
     char key[MXC_TDES_KEY_LEN];
-    char* iv_src = "";
+    char *iv_src = "";
     char iv_dst[MXC_DES_DATA_LEN];
-    char* xct = "2a78627595b42376";
+    char *xct = "2a78627595b42376";
     char ct[MXC_DES_DATA_LEN];
-    char* xexpected = "0000000000000000";
+    char *xexpected = "0000000000000000";
     char expected[MXC_DES_DATA_LEN];
 
     ascii_to_byte(xkey, key, MXC_TDES_KEY_LEN);
@@ -212,6 +212,5 @@ int main(void)
     TDES_ECB_dec();
 
     printf("\nExample complete.\n");
-    while (1) {
-    }
+    while (1) {}
 }

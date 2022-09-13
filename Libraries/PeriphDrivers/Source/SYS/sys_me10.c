@@ -143,22 +143,22 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
     }
 
     switch (clock) {
-        case MXC_SYS_CLOCK_CRYPTO:
-            MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
-            break;
-        case MXC_SYS_CLOCK_NANORING: //Always enabled
-            break;
-        case MXC_SYS_CLOCK_HIRC96:
-            MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_HIRC96_EN;
-            break;
-        case MXC_SYS_CLOCK_HIRC8:
-            MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_HIRC8_EN;
-            break;
-        case MXC_SYS_CLOCK_X32K:
-            MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_X32K_EN;
-            break;
-        default:
-            return E_BAD_PARAM;
+    case MXC_SYS_CLOCK_CRYPTO:
+        MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
+        break;
+    case MXC_SYS_CLOCK_NANORING: //Always enabled
+        break;
+    case MXC_SYS_CLOCK_HIRC96:
+        MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_HIRC96_EN;
+        break;
+    case MXC_SYS_CLOCK_HIRC8:
+        MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_HIRC8_EN;
+        break;
+    case MXC_SYS_CLOCK_X32K:
+        MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLK_CTRL_X32K_EN;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -172,22 +172,22 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
 {
     switch (clock) {
-        case MXC_SYS_CLOCK_CRYPTO:
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
-            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_CRYPTO_RDY);
-        case MXC_SYS_CLOCK_NANORING: //Always enabled
-            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_NANORING_RDY);
-        case MXC_SYS_CLOCK_HIRC96:
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC96_EN;
-            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC96_RDY);
-        case MXC_SYS_CLOCK_HIRC8:
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC8_EN;
-            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC8_RDY);
-        case MXC_SYS_CLOCK_X32K:
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
-            return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY);
-        default:
-            return E_BAD_PARAM;
+    case MXC_SYS_CLOCK_CRYPTO:
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
+        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_CRYPTO_RDY);
+    case MXC_SYS_CLOCK_NANORING: //Always enabled
+        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_NANORING_RDY);
+    case MXC_SYS_CLOCK_HIRC96:
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC96_EN;
+        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC96_RDY);
+    case MXC_SYS_CLOCK_HIRC8:
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC8_EN;
+        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC8_RDY);
+    case MXC_SYS_CLOCK_X32K:
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
+        return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY);
+    default:
+        return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
@@ -202,76 +202,75 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     current_clock = MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_SYSOSC_SEL;
 
     switch (clock) {
-        case MXC_SYS_CLOCK_CRYPTO:
-            // Enable CRYPTO clock
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
+    case MXC_SYS_CLOCK_CRYPTO:
+        // Enable CRYPTO clock
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
 
-            // Check if CRYPTO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_CRYPTO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+        // Check if CRYPTO clock is ready
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_CRYPTO_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-            // Set CRYPTO clock as System Clock
-            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
-                         MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_CRYPTO);
+        // Set CRYPTO clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
+                     MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_CRYPTO);
 
-            break;
-        case MXC_SYS_CLOCK_NANORING:
-            // Check if NANORING clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_NANORING_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+        break;
+    case MXC_SYS_CLOCK_NANORING:
+        // Check if NANORING clock is ready
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_NANORING_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-            // Set NANORING clock as System Clock
-            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
-                         MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_NANORING);
+        // Set NANORING clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
+                     MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_NANORING);
 
-            break;
-        case MXC_SYS_CLOCK_HIRC96:
-            // Enable HIRC96 clock
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC96_EN;
+        break;
+    case MXC_SYS_CLOCK_HIRC96:
+        // Enable HIRC96 clock
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC96_EN;
 
-            // Check if HIRC96 clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC96_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+        // Check if HIRC96 clock is ready
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC96_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-            // Set HIRC96 clock as System Clock
-            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
-                         MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC96);
+        // Set HIRC96 clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
+                     MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC96);
 
-            break;
-        case MXC_SYS_CLOCK_HIRC8:
-            // Enable HIRC8 clock
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC8_EN;
+        break;
+    case MXC_SYS_CLOCK_HIRC8:
+        // Enable HIRC8 clock
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_HIRC8_EN;
 
-            // Check if HIRC8 clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC8_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+        // Check if HIRC8 clock is ready
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_HIRC8_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-            // Set HIRC8 clock as System Clock
-            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
-                         MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC8);
+        // Set HIRC8 clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
+                     MXC_S_GCR_CLK_CTRL_SYSOSC_SEL_HIRC8);
 
-            break;
-        case MXC_SYS_CLOCK_HFXIN:
-        case MXC_SYS_CLOCK_X32K:
-            // Enable 32k Oscillator
-            MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
+        break;
+    case MXC_SYS_CLOCK_HFXIN:
+    case MXC_SYS_CLOCK_X32K:
+        // Enable 32k Oscillator
+        MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_X32K_EN;
 
-            // Check if 32k clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+        // Check if 32k clock is ready
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_X32K_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-            // Set 32k clock as System Clock
-            MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL,
-                         MXC_F_GCR_CLK_CTRL_X32K_RDY);
+        // Set 32k clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_SYSOSC_SEL, MXC_F_GCR_CLK_CTRL_X32K_RDY);
 
-            break;
-        default:
-            return E_BAD_PARAM;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Wait for system clock to be ready
@@ -284,31 +283,31 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
     // Disable other clocks
     switch (clock) {
-        case MXC_SYS_CLOCK_CRYPTO:
-            MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_HIRC96_EN |
-                                   MXC_F_GCR_CLK_CTRL_HIRC8_EN);
-            break;
+    case MXC_SYS_CLOCK_CRYPTO:
+        MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_HIRC96_EN |
+                               MXC_F_GCR_CLK_CTRL_HIRC8_EN);
+        break;
 
-        case MXC_SYS_CLOCK_NANORING:
-            MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_CRYPTO_EN |
-                                   MXC_F_GCR_CLK_CTRL_HIRC96_EN | MXC_F_GCR_CLK_CTRL_HIRC8_EN);
-            break;
+    case MXC_SYS_CLOCK_NANORING:
+        MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_CRYPTO_EN |
+                               MXC_F_GCR_CLK_CTRL_HIRC96_EN | MXC_F_GCR_CLK_CTRL_HIRC8_EN);
+        break;
 
-        case MXC_SYS_CLOCK_HIRC96:
-            MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_CRYPTO_EN |
-                                   MXC_F_GCR_CLK_CTRL_HIRC8_EN);
-            break;
+    case MXC_SYS_CLOCK_HIRC96:
+        MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_CRYPTO_EN |
+                               MXC_F_GCR_CLK_CTRL_HIRC8_EN);
+        break;
 
-        case MXC_SYS_CLOCK_HIRC8:
-            MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_CRYPTO_EN |
-                                   MXC_F_GCR_CLK_CTRL_HIRC96_EN);
-            break;
+    case MXC_SYS_CLOCK_HIRC8:
+        MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_X32K_EN | MXC_F_GCR_CLK_CTRL_CRYPTO_EN |
+                               MXC_F_GCR_CLK_CTRL_HIRC96_EN);
+        break;
 
-        case MXC_SYS_CLOCK_HFXIN:
-        case MXC_SYS_CLOCK_X32K:
-            MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_CRYPTO_EN | MXC_F_GCR_CLK_CTRL_HIRC96_EN |
-                                   MXC_F_GCR_CLK_CTRL_HIRC8_EN);
-            break;
+    case MXC_SYS_CLOCK_HFXIN:
+    case MXC_SYS_CLOCK_X32K:
+        MXC_GCR->clk_ctrl &= ~(MXC_F_GCR_CLK_CTRL_CRYPTO_EN | MXC_F_GCR_CLK_CTRL_HIRC96_EN |
+                               MXC_F_GCR_CLK_CTRL_HIRC8_EN);
+        break;
     }
 
     // Update the system core clock
@@ -350,12 +349,10 @@ int MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
     if (reset > 31) {
         reset -= 32;
         MXC_GCR->rst1 = (1 << reset);
-        while (MXC_GCR->rst1 != 0x0) {
-        }
+        while (MXC_GCR->rst1 != 0x0) {}
     } else {
         MXC_GCR->rst0 = (1 << reset);
-        while (MXC_GCR->rst0 != 0x0) {
-        }
+        while (MXC_GCR->rst0 != 0x0) {}
     }
 
     return E_NO_ERROR;
@@ -375,7 +372,7 @@ uint8_t MXC_SYS_GetRev(void)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_GetUSN(uint8_t* serialNumber, int len)
+int MXC_SYS_GetUSN(uint8_t *serialNumber, int len)
 {
     if (len != 13) {
         return E_BAD_PARAM;
@@ -384,12 +381,12 @@ int MXC_SYS_GetUSN(uint8_t* serialNumber, int len)
     uint32_t infoblock[6];
 
     MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
-    infoblock[0] = *(uint32_t*)0x10800000;
-    infoblock[1] = *(uint32_t*)0x10800004;
-    infoblock[2] = *(uint32_t*)0x10800008;
-    infoblock[3] = *(uint32_t*)0x1080000C;
-    infoblock[4] = *(uint32_t*)0x10800010;
-    infoblock[5] = *(uint32_t*)0x10800014;
+    infoblock[0] = *(uint32_t *)0x10800000;
+    infoblock[1] = *(uint32_t *)0x10800004;
+    infoblock[2] = *(uint32_t *)0x10800008;
+    infoblock[3] = *(uint32_t *)0x1080000C;
+    infoblock[4] = *(uint32_t *)0x10800010;
+    infoblock[5] = *(uint32_t *)0x10800014;
     MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     serialNumber[0] = (infoblock[0] & 0x007F8000) >> 15;
@@ -403,7 +400,7 @@ int MXC_SYS_GetUSN(uint8_t* serialNumber, int len)
     serialNumber[7] = (infoblock[2] & 0x7F800000) >> 23;
     serialNumber[8] = (infoblock[2] & 0x80000000) >> 31;
     serialNumber[8] |= (infoblock[3] & 0x0000007F) << 1;
-    serialNumber[9]  = (infoblock[3] & 0x00007F80) >> 7;
+    serialNumber[9] = (infoblock[3] & 0x00007F80) >> 7;
     serialNumber[10] = (infoblock[3] & 0x007F8000) >> 15;
     serialNumber[11] = (infoblock[3] & 0x7F800000) >> 23;
     serialNumber[12] = (infoblock[4] & 0x007F8000) >> 15;
@@ -412,7 +409,7 @@ int MXC_SYS_GetUSN(uint8_t* serialNumber, int len)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_SCACHE_Init(const mxc_sys_cfg_scache_t* sys_cfg)
+int MXC_SYS_SCACHE_Init(const mxc_sys_cfg_scache_t *sys_cfg)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SCACHE);
 
@@ -428,7 +425,7 @@ int MXC_SYS_SCACHE_Shutdown(void)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_USBHS_Init(const mxc_sys_cfg_usbhs_t* sys_cfg)
+int MXC_SYS_USBHS_Init(const mxc_sys_cfg_usbhs_t *sys_cfg)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_USB);
 
@@ -444,7 +441,7 @@ int MXC_SYS_USBHS_Shutdown(void)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_SysTick_Config(uint32_t ticks, int clk_src, mxc_tmr_regs_t* tmr)
+int MXC_SYS_SysTick_Config(uint32_t ticks, int clk_src, mxc_tmr_regs_t *tmr)
 {
     if (ticks == 0)
         return E_BAD_PARAM;
@@ -502,8 +499,8 @@ int MXC_SYS_SysTick_Delay(uint32_t ticks)
     if (!(SysTick->CTRL & SysTick_CTRL_ENABLE_Msk)) {
         /* Save current state in case it's disabled but already configured, restore at return.*/
         reload = SysTick->LOAD;
-        value  = SysTick->VAL;
-        ctrl   = SysTick->CTRL;
+        value = SysTick->VAL;
+        ctrl = SysTick->CTRL;
 
         /* get the number of ticks less than max RELOAD. */
         num_remain = ticks % SysTick_LOAD_RELOAD_Msk;
@@ -532,7 +529,7 @@ int MXC_SYS_SysTick_Delay(uint32_t ticks)
         /* Now handle the remainder of ticks */
         if (num_remain) {
             SysTick->LOAD = num_remain;
-            SysTick->VAL  = 0;
+            SysTick->VAL = 0;
             SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
             /* wait for countflag to get set */
             do {
@@ -544,7 +541,7 @@ int MXC_SYS_SysTick_Delay(uint32_t ticks)
 
         /* restore original state of SysTick and return */
         SysTick->LOAD = reload;
-        SysTick->VAL  = value;
+        SysTick->VAL = value;
         SysTick->CTRL = ctrl;
 
         return E_NO_ERROR;

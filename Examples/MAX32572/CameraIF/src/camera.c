@@ -49,29 +49,29 @@
 /*******************************      DEFINES      ***************************/
 #define USE_DMA 0 // set it for dma read mode
 
-#define FIFO_THRES_HOLD        4
+#define FIFO_THRES_HOLD 4
 #define CAMERAIF_DATA_BUS_WITH MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT
 
 /******************************** Static Functions ***************************/
-static unsigned int g_framesize  = (unsigned int)FRAMESIZE_VGA;
+static unsigned int g_framesize = (unsigned int)FRAMESIZE_VGA;
 static pixformat_t g_pixelformat = PIXFORMAT_YUV422;
 
 static uint8_t rx_data[512 * 384 + 2]; // +2 for manage overflow
 static volatile uint32_t rx_data_index = 0;
-static volatile uint32_t g_is_img_rcv  = 0;
-static int g_total_img_size            = 0;
+static volatile uint32_t g_is_img_rcv = 0;
+static int g_total_img_size = 0;
 
 static camera_t camera;
-extern int sensor_register(camera_t* camera);
+extern int sensor_register(camera_t *camera);
 
 const int resolution[][2] = {
     /* Special resolutions */
-    {512, 384}, /* SP       */
+    { 512, 384 }, /* SP       */
     // C/SIF Resolutions
-    {352, 288}, /* CIF       */
+    { 352, 288 }, /* CIF       */
     // VGA Resolutions
-    {320, 240}, /* QVGA      */
-    {640, 480}, /* VGA       */
+    { 320, 240 }, /* QVGA      */
+    { 640, 480 }, /* VGA       */
 };
 
 //----------------------------------------
@@ -91,22 +91,22 @@ void camera_irq_handler(void)
 
         if ((rx_data_index + 8) <= g_total_img_size) {
             // 1
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
 
             // 2
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
 
             // 3
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
 
             // 4
-            data                     = MXC_PCIF->fifo_data;
+            data = MXC_PCIF->fifo_data;
             rx_data[rx_data_index++] = data;
             rx_data[rx_data_index++] = data >> 16;
         }
@@ -123,9 +123,7 @@ void camera_irq_handler(void)
             int i;
             rx_data_index = g_total_img_size / 2;
 
-            for (i = 0; i < rx_data_index; i++) {
-                rx_data[i] = rx_data[i * 2];
-            }
+            for (i = 0; i < rx_data_index; i++) { rx_data[i] = rx_data[i * 2]; }
         } else {
             rx_data_index = g_total_img_size;
         }
@@ -135,7 +133,7 @@ void camera_irq_handler(void)
 
     // clear flags, tmp flag is used to pass coverity check
     unsigned int flags = MXC_PCIF->int_fl;
-    MXC_PCIF->int_fl   = flags; // clear flags
+    MXC_PCIF->int_fl = flags; // clear flags
 }
 
 #if USE_DMA
@@ -269,7 +267,7 @@ int camera_start_campture_image(void)
     setup_dma();
 #endif
     // clear flag
-    g_is_img_rcv  = 0;
+    g_is_img_rcv = 0;
     rx_data_index = 0;
     MXC_PCIF_Start(MXC_PCIF_READMODE_SINGLE_MODE);
 
@@ -281,20 +279,20 @@ int camera_is_image_rcv(void)
     return (g_is_img_rcv) ? 1 : 0;
 }
 
-uint8_t* camera_get_pixel_format(void)
+uint8_t *camera_get_pixel_format(void)
 {
     if (g_pixelformat == PIXFORMAT_GRAYSCALE) {
-        return (uint8_t*)"GRAYSCALE";
+        return (uint8_t *)"GRAYSCALE";
     } else if (g_pixelformat == PIXFORMAT_RGB565) {
-        return (uint8_t*)"RGB565";
+        return (uint8_t *)"RGB565";
     } else {
-        return (uint8_t*)"YUV422";
+        return (uint8_t *)"YUV422";
     }
 }
 
-void camera_get_image(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h)
+void camera_get_image(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h)
 {
-    *img    = (uint8_t*)rx_data;
+    *img = (uint8_t *)rx_data;
     *imgLen = rx_data_index;
 
     *w = resolution[g_framesize][0];

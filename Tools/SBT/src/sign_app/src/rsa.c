@@ -55,14 +55,14 @@
 #include "read_file.h"
 #include "rsa.h"
 
-int ucl_pkcs1_emsa_pss_sha256_encode(u8* EM, u8* M, u32 M_length, u32 salt_length, u32 k,
+int ucl_pkcs1_emsa_pss_sha256_encode(u8 *EM, u8 *M, u32 M_length, u32 salt_length, u32 k,
                                      int offset);
 
-int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, rsa_key_t key)
+int rsa_sign(const uint8_t *input, unsigned int input_size, uint8_t *signature, rsa_key_t key)
 {
     unsigned int i = 0;
-    int err        = 0;
-    int sl         = 0; /* salt length is 0 */
+    int err = 0;
+    int sl = 0; /* salt length is 0 */
 
 #ifdef _MAXIM_HSM
     long unsigned int l_iSignatureLength = key.keyPr.modulus_length;
@@ -78,18 +78,18 @@ int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, 
     if (key.in_hsm) {
         print_debug("Using HSM\n");
 
-        ucl_data_os2int((uint32_t*)EncodedMessage, key.keyPr.modulus_length / 4, key.keyPu.modulus,
+        ucl_data_os2int((uint32_t *)EncodedMessage, key.keyPr.modulus_length / 4, key.keyPu.modulus,
                         key.keyPr.modulus_length);
 
-        tmp      = ((u32*)(EncodedMessage))[(key.keyPr.modulus_length / 4) - 1];
+        tmp = ((u32 *)(EncodedMessage))[(key.keyPr.modulus_length / 4) - 1];
         lastbyte = (u8)(tmp >> 24);
-        offset   = 9;
+        offset = 9;
         while (0 != lastbyte) {
             lastbyte >>= 1;
             offset--;
         }
 
-        err = ucl_pkcs1_emsa_pss_sha256_encode(EncodedMessage, (uint8_t*)input, input_size, sl,
+        err = ucl_pkcs1_emsa_pss_sha256_encode(EncodedMessage, (uint8_t *)input, input_size, sl,
                                                key.keyPr.modulus_length, offset);
         if (err != UCL_OK) {
             print_error("on ucl_pkcs1_emsa_pss_sha256_encode (%d)\n", err);
@@ -107,7 +107,8 @@ int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, 
     } else
 #endif /* _MAXIM_HSM */
     {
-        err = ucl_pkcs1_ssa_pss_sha256_sign(signature, (uint8_t*)input, input_size, &key.keyPr, sl);
+        err =
+            ucl_pkcs1_ssa_pss_sha256_sign(signature, (uint8_t *)input, input_size, &key.keyPr, sl);
 
         if (err != UCL_OK) {
             print_error("rsa pkcs1 sha256 sign (%d) %d %d\n", err, input_size, sl);
@@ -115,7 +116,7 @@ int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, 
         }
     }
 
-    err = ucl_pkcs1_ssa_pss_sha256_verify(signature, (uint8_t*)input, input_size, &key.keyPu, sl);
+    err = ucl_pkcs1_ssa_pss_sha256_verify(signature, (uint8_t *)input, input_size, &key.keyPu, sl);
 
     if (err != UCL_OK) {
         print_error("in verify signature (%d)\n", err);
@@ -125,20 +126,18 @@ int rsa_sign(const uint8_t* input, unsigned int input_size, uint8_t* signature, 
     print_debug("Signature verification OK\n");
 
     print_debug("Signature :\n\t");
-    for (i = 0; i < key.keyPr.modulus_length; i++) {
-        print_d("%02x", signature[i]);
-    }
+    for (i = 0; i < key.keyPr.modulus_length; i++) { print_d("%02x", signature[i]); }
     print_d("\n");
 
     return ERR_OK;
 }
 
-int read_file_signed_rsa_publickey(uint8_t* modulus, size_t* modulus_len, uint8_t* public_exponent,
-                                   size_t public_exponent_len, uint8_t* signature,
-                                   size_t* signature_len, const char* filename)
+int read_file_signed_rsa_publickey(uint8_t *modulus, size_t *modulus_len, uint8_t *public_exponent,
+                                   size_t public_exponent_len, uint8_t *signature,
+                                   size_t *signature_len, const char *filename)
 
 {
-    FILE* pFile;
+    FILE *pFile;
     unsigned int i;
     int result;
     unsigned char tmp_buffer[MAX_RSA_LENGTH];
@@ -200,22 +199,16 @@ int read_file_signed_rsa_publickey(uint8_t* modulus, size_t* modulus_len, uint8_
 
     print_debug("\tModulus Length: " SSIZET_FMT " bits\n", *modulus_len * 8);
     print_debug("\tModulus :\n\t");
-    for (i = 0; i < *modulus_len; i++) {
-        print_d("%02x", modulus[i]);
-    }
+    for (i = 0; i < *modulus_len; i++) { print_d("%02x", modulus[i]); }
     print_d("\n");
 
     print_debug("\tPublic Exponent :\n\t");
-    for (i = 0; i < public_exponent_len; i++) {
-        print_d("%02x", public_exponent[i]);
-    }
+    for (i = 0; i < public_exponent_len; i++) { print_d("%02x", public_exponent[i]); }
     print_d("\n");
 
     print_debug("\tSignature Length: " SSIZET_FMT " bits\n", *signature_len * 8);
     print_debug("\tSignature :\n\t");
-    for (i = 0; i < *signature_len; i++) {
-        print_d("%02x", signature[i]);
-    }
+    for (i = 0; i < *signature_len; i++) { print_d("%02x", signature[i]); }
     print_d("\n");
 
     fclose(pFile);
@@ -225,7 +218,7 @@ int read_file_signed_rsa_publickey(uint8_t* modulus, size_t* modulus_len, uint8_
 
 #ifdef _MAXIM_HSM
 
-int load_HSM_rsa_key(rsa_key_t* rsaKey, char* keyname)
+int load_HSM_rsa_key(rsa_key_t *rsaKey, char *keyname)
 {
     CK_RV rv = ERR_OK;
 
@@ -239,15 +232,15 @@ int load_HSM_rsa_key(rsa_key_t* rsaKey, char* keyname)
     }
 
     rv = HSM_GetRSAPublicKey(session, rsaKey->HSM_Objkey, rsaKey->keyPu.modulus,
-                             (long unsigned int*)&(rsaKey->keyPu.modulus_length),
+                             (long unsigned int *)&(rsaKey->keyPu.modulus_length),
                              rsaKey->keyPu.public_exponent,
-                             (long unsigned int*)&(rsaKey->keyPu.public_exponent_length));
+                             (long unsigned int *)&(rsaKey->keyPu.public_exponent_length));
     if (rv != 0) {
         HSM_pError(rv);
         print_error("Unable to found RSA public key in HSM\n");
         return rv;
     }
-    rsaKey->in_hsm               = TRUE;
+    rsaKey->in_hsm = TRUE;
     rsaKey->keyPr.modulus_length = rsaKey->keyPu.modulus_length;
     print_rsakey(*rsaKey);
 
@@ -255,10 +248,10 @@ int load_HSM_rsa_key(rsa_key_t* rsaKey, char* keyname)
 }
 #endif /* _MAXIM_HSM */
 
-int read_file_rsa_keypair(rsa_key_t* rsaKey, char* filename)
+int read_file_rsa_keypair(rsa_key_t *rsaKey, char *filename)
 {
-    FILE* pFile = NULL;
-    int result  = 0;
+    FILE *pFile = NULL;
+    int result = 0;
     unsigned char tmp_buffer[MAX_RSA_LENGTH];
     size_t buffer_length = MAX_RSA_LENGTH;
 
@@ -281,7 +274,7 @@ int read_file_rsa_keypair(rsa_key_t* rsaKey, char* filename)
     }
 
     /* Allocate memory for private key (UCL constraint) */
-    rsaKey->keyPr.modulus          = malloc(MAX_RSA_LENGTH);
+    rsaKey->keyPr.modulus = malloc(MAX_RSA_LENGTH);
     rsaKey->keyPr.private_exponent = malloc(MAX_RSA_LENGTH);
 
     if (rsaKey->keyPr.modulus == NULL || rsaKey->keyPr.private_exponent == NULL) {
@@ -358,9 +351,7 @@ void print_rsakey(rsa_key_t key)
     {
         print_debug("\tModulus Length: %d bits\n", key.keyPu.modulus_length * 8);
         print_debug("\tModulus :\n\t");
-        for (i = 0; i < key.keyPu.modulus_length; i++) {
-            print_d("%02x", key.keyPu.modulus[i]);
-        }
+        for (i = 0; i < key.keyPu.modulus_length; i++) { print_d("%02x", key.keyPu.modulus[i]); }
         print_d("\n");
 
         print_debug("\tPrivate Exponent :\n\t");

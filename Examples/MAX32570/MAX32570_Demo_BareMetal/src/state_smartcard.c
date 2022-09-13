@@ -48,17 +48,17 @@
 /*******************************	Function Prototypes	   ********************/
 
 /********************************* 		VARIABLES	 *************************/
-static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = {0};
+static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = { 0 };
 
 static text_t text_msg[] = {
-    {(char*)input_buf, 0}, {(char*)"Insert a card", 13}, {(char*)"SMARTCARD", 9},
-    {(char*)"Smart", 5},   {(char*)"card", 4},           {(char*)"ATR:", 4},
+    { (char *)input_buf, 0 }, { (char *)"Insert a card", 13 }, { (char *)"SMARTCARD", 9 },
+    { (char *)"Smart", 5 },   { (char *)"card", 4 },           { (char *)"ATR:", 4 },
 };
 
-static text_t* text_line = &text_msg[0];
+static text_t *text_line = &text_msg[0];
 
-area_t sm_area_clean    = {0, 0, 0, 0};
-area_t sm_area_cleanMSG = {0, 0, 0, 0};
+area_t sm_area_clean = { 0, 0, 0, 0 };
+area_t sm_area_cleanMSG = { 0, 0, 0, 0 };
 
 //
 static uint32_t g_card_last_status = ICC_ERR_REMOVED;
@@ -102,19 +102,19 @@ static int init(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_A:
-            break;
-        case KEY_B:
-            break;
-        case KEY_C: // exit
-            state_set_current(get_home_state());
-            break;
-        case KEY_CARD_INSERTED:
-            break;
-        case KEY_CARD_REMOVED:
-            break;
-        default:
-            break;
+    case KEY_A:
+        break;
+    case KEY_B:
+        break;
+    case KEY_C: // exit
+        state_set_current(get_home_state());
+        break;
+    case KEY_CARD_INSERTED:
+        break;
+    case KEY_CARD_REMOVED:
+        break;
+    default:
+        break;
     }
 
     return 0;
@@ -142,10 +142,10 @@ static int time_tick(void)
     return 0;
 }
 
-static State g_state = {"smartcard", init, key_process, time_tick, 10};
+static State g_state = { "smartcard", init, key_process, time_tick, 10 };
 
 /********************************* Public Functions **************************/
-State* get_smartcard_state(void)
+State *get_smartcard_state(void)
 {
     return &g_state;
 }

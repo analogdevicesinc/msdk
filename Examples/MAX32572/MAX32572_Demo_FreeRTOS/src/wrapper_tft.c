@@ -103,7 +103,7 @@ void TFT_ShowImage(int x0, int y0, int id)
 #endif
 }
 
-void TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
+void TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
 {
 #if TFT_LOCK_WITH_MUTEX
     __disable_irq();
@@ -119,7 +119,7 @@ void TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
 #endif
 }
 
-void TFT_ClearArea(area_t* area, int color)
+void TFT_ClearArea(area_t *area, int color)
 {
 #if TFT_LOCK_WITH_MUTEX
     __disable_irq();

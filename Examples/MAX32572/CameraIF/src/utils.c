@@ -60,14 +60,14 @@ unsigned int utils_get_time_ms(void)
     unsigned int ms;
 
     subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec    = MXC_RTC_GetSecond();
+    sec = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 
     return ms;
 }
 
-void utils_hexDump(const char* title, unsigned char* buf, unsigned int len)
+void utils_hexDump(const char *title, unsigned char *buf, unsigned int len)
 {
     unsigned int i;
 
@@ -88,13 +88,13 @@ void utils_hexDump(const char* title, unsigned char* buf, unsigned int len)
     printf("\n");
 }
 
-int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat)
+int utils_send_img_to_pc(uint8_t *img, uint32_t imgLen, int w, int h, uint8_t *pixelformat)
 {
     int len;
 
     // start
     len = 5;
-    MXC_UART_Write(DEBUG_COMPORT, (uint8_t*)"*STR*", &len);
+    MXC_UART_Write(DEBUG_COMPORT, (uint8_t *)"*STR*", &len);
 
     // w
     MXC_UART_WriteCharacter(DEBUG_COMPORT, (w >> 8) & 0xff); // high byte
@@ -104,15 +104,15 @@ int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* p
     MXC_UART_WriteCharacter(DEBUG_COMPORT, (h >> 0) & 0xff); // low byte
 
     // format
-    len = strlen((char*)pixelformat);
+    len = strlen((char *)pixelformat);
     MXC_UART_WriteCharacter(DEBUG_COMPORT, len & 0xff);
     MXC_UART_Write(DEBUG_COMPORT, pixelformat, &len);
 
     // imagelen
     MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 24) & 0xff); // high byte
     MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 16) & 0xff); // low byte
-    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 8) & 0xff);  // low byte
-    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 0) & 0xff);  // low byte
+    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 8) & 0xff); // low byte
+    MXC_UART_WriteCharacter(DEBUG_COMPORT, (imgLen >> 0) & 0xff); // low byte
 
     while (imgLen) {
         len = imgLen;

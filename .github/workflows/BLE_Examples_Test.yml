@@ -33,11 +33,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          submodules: false 
+          submodules: false
+          fetch-depth: 0
 
       # Runs a set of commands using the runners shell
       - name: Build all BLE examples
         run: |
+          # Remove local modifications
+          git scorch
+
           BLE_FILES_CHANGED=0
           
           # Check for changes made to these files

@@ -74,7 +74,7 @@ uint32_t WdxsFileGetVerifiedLength(void);
  *  \return None.
  */
 /*************************************************************************************************/
-void initHeader(fileHeader_t* header);
+void initHeader(fileHeader_t *header);
 /*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus

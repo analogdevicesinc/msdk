@@ -47,22 +47,22 @@ static abort_check_callback_t abort_callback_function = NULL;
 
 static ATSConfig_t ATScfg = {
     .Pro_Type = PROTOCOL_ISO14443A,
-    .FSCI     = FSCI_DEFAULT_VALUE,
-    .FWI      = FWI_DEFAULT_VALUE,
-    .SFGI     = SFGI_DEFAULT_VALUE,
+    .FSCI = FSCI_DEFAULT_VALUE,
+    .FWI = FWI_DEFAULT_VALUE,
+    .SFGI = SFGI_DEFAULT_VALUE,
 };
 
-void get_ats(ATSConfig_t* cfg)
+void get_ats(ATSConfig_t *cfg)
 {
-    memcpy((uint8_t*)cfg, (uint8_t*)&ATScfg, sizeof(ATSConfig_t));
+    memcpy((uint8_t *)cfg, (uint8_t *)&ATScfg, sizeof(ATSConfig_t));
 }
 
 void set_ats(uint8_t pro_type, uint8_t fsci, uint8_t fwi, uint8_t sfgi, uint8_t nad, uint8_t cid)
 {
     ATScfg.Pro_Type = pro_type;
-    ATScfg.FSCI     = fsci;
-    ATScfg.FWI      = fwi;
-    ATScfg.SFGI     = sfgi;
+    ATScfg.FSCI = fsci;
+    ATScfg.FWI = fwi;
+    ATScfg.SFGI = sfgi;
 
     ATScfg.NAD_support = nad;
     ATScfg.CID_support = cid;
@@ -115,7 +115,7 @@ int32_t nfc_reset(void)
     return 0;
 }
 
-void hexdump(int32_t dbg_level, uint8_t* buf, int32_t len, int32_t send)
+void hexdump(int32_t dbg_level, uint8_t *buf, int32_t len, int32_t send)
 {
     int i;
 
@@ -149,53 +149,53 @@ void set_abort_check_callback(abort_check_callback_t abort_callback)
 static int32_t convert_status_codes(int32_t rf_status)
 {
     switch (rf_status) {
-        case MML_NFC_PCD_E_SUCCESS:
-            return ISO14443_3_ERR_SUCCESS;
+    case MML_NFC_PCD_E_SUCCESS:
+        return ISO14443_3_ERR_SUCCESS;
 
-        case MML_NFC_PCD_E_TIMEOUT:
-        case MML_NFC_PCD_E_TX_TIMEOUT:
-        case MML_NFC_PCD_E_TO_EMD:
-        case MML_NFC_PCD_E_TO_PART_RX:
-        case MML_NFC_PCD_E_HARD_TO:
-            return ISO14443_3_ERR_TIMEOUT;
+    case MML_NFC_PCD_E_TIMEOUT:
+    case MML_NFC_PCD_E_TX_TIMEOUT:
+    case MML_NFC_PCD_E_TO_EMD:
+    case MML_NFC_PCD_E_TO_PART_RX:
+    case MML_NFC_PCD_E_HARD_TO:
+        return ISO14443_3_ERR_TIMEOUT;
 
-        case MML_NFC_PCD_E_PARITY:
-        case MML_NFC_PCD_E_INVALID_CRC:
-        case MML_NFC_PCD_E_PROTOCOL:
-        case MML_NFC_PCD_E_RX_EGT:
-        case MML_NFC_PCD_E_A_INV_BIT_LEN:
-        case MML_NFC_PCD_E_B_NOT_ENF_SAMP:
-        case MML_NFC_PCD_E_B_TR1_INVALID:
-        case MML_NFC_PCD_E_B_SOS_0S_INVALID:
-        case MML_NFC_PCD_E_B_SOS_1S_INVALID:
-        case MML_NFC_PCD_E_B_START_BIT:
-        case MML_NFC_PCD_E_B_STOP_BIT:
-        case MML_NFC_PCD_E_B_INCOMPLETE_BYTE:
-        case MML_NFC_PCD_E_B_EGT_EXCEEDED:
-        case MML_NFC_PCD_E_F_INV_BIT_LEN:
-        case MML_NFC_PCD_E_NO_RX_DATA:
-        case MML_NFC_PCD_E_B_NO_SOS:
-        case MML_NFC_PCD_E_B_BAD_SOS:
-        case MML_NFC_PCD_E_B_SUB_DROP_DATA:
-        case MML_NFC_PCD_E_B_SUB_DROP_SOS:
-        case MML_NFC_PCD_E_B_ILL_PHZ_CHANGE:
-        case MML_NFC_PCD_E_B_NON_01_PATTERN:
-        case MML_NFC_PCD_E_A_BAD_SOF:
-        case MML_NFC_PCD_E_B_BAD_EOF:
-        case MML_NFC_PCD_E_NOT_ENF_BITS:
-            return ISO14443_3_ERR_TRANSMISSION;
+    case MML_NFC_PCD_E_PARITY:
+    case MML_NFC_PCD_E_INVALID_CRC:
+    case MML_NFC_PCD_E_PROTOCOL:
+    case MML_NFC_PCD_E_RX_EGT:
+    case MML_NFC_PCD_E_A_INV_BIT_LEN:
+    case MML_NFC_PCD_E_B_NOT_ENF_SAMP:
+    case MML_NFC_PCD_E_B_TR1_INVALID:
+    case MML_NFC_PCD_E_B_SOS_0S_INVALID:
+    case MML_NFC_PCD_E_B_SOS_1S_INVALID:
+    case MML_NFC_PCD_E_B_START_BIT:
+    case MML_NFC_PCD_E_B_STOP_BIT:
+    case MML_NFC_PCD_E_B_INCOMPLETE_BYTE:
+    case MML_NFC_PCD_E_B_EGT_EXCEEDED:
+    case MML_NFC_PCD_E_F_INV_BIT_LEN:
+    case MML_NFC_PCD_E_NO_RX_DATA:
+    case MML_NFC_PCD_E_B_NO_SOS:
+    case MML_NFC_PCD_E_B_BAD_SOS:
+    case MML_NFC_PCD_E_B_SUB_DROP_DATA:
+    case MML_NFC_PCD_E_B_SUB_DROP_SOS:
+    case MML_NFC_PCD_E_B_ILL_PHZ_CHANGE:
+    case MML_NFC_PCD_E_B_NON_01_PATTERN:
+    case MML_NFC_PCD_E_A_BAD_SOF:
+    case MML_NFC_PCD_E_B_BAD_EOF:
+    case MML_NFC_PCD_E_NOT_ENF_BITS:
+        return ISO14443_3_ERR_TRANSMISSION;
 
-        case MML_NFC_PCD_E_COLLISION:
-        case MML_NFC_PCD_E_A_CONT_MOD_COL:
-        case MML_NFC_PCD_E_F_SOF_COL:
-        case MML_NFC_PCD_E_F_PART_SYNC_COL:
-            return ISO14443_3_ERR_COLLISION;
+    case MML_NFC_PCD_E_COLLISION:
+    case MML_NFC_PCD_E_A_CONT_MOD_COL:
+    case MML_NFC_PCD_E_F_SOF_COL:
+    case MML_NFC_PCD_E_F_PART_SYNC_COL:
+        return ISO14443_3_ERR_COLLISION;
 
-        case MML_NFC_PCD_E_EARLY_RESPONSE:
-            return ISO14443_3_ERR_EARLY_RESPONSE;
+    case MML_NFC_PCD_E_EARLY_RESPONSE:
+        return ISO14443_3_ERR_EARLY_RESPONSE;
 
-        default:
-            return ISO14443_3_ERR_OTHER;
+    default:
+        return ISO14443_3_ERR_OTHER;
     }
 }
 
@@ -216,21 +216,21 @@ static uint32_t pad_for_crystal_margin(uint32_t counts_to_pad)
     return counts_to_pad + (count_margin * CRYSTAL_PPM_MARGIN_MULTIPLIER);
 }
 
-int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t* tx_buf, uint32_t tx_len,
-                           uint8_t* rx_buf, uint32_t* rx_len, uint32_t timeout)
+int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t *tx_buf, uint32_t tx_len,
+                           uint8_t *rx_buf, uint32_t *rx_len, uint32_t timeout)
 
 {
     int32_t status = MML_NFC_PCD_E_SUCCESS;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol  = protocol;
+    trans_params.protocol = protocol;
     trans_params.frametype = frametype;
-    trans_params.tx_buf    = tx_buf;
-    trans_params.tx_len    = tx_len;
-    trans_params.rx_buf    = rx_buf;
-    trans_params.rx_len    = rx_len;
-    trans_params.timeout   = timeout;
+    trans_params.tx_buf = tx_buf;
+    trans_params.tx_len = tx_len;
+    trans_params.rx_buf = rx_buf;
+    trans_params.rx_len = rx_len;
+    trans_params.timeout = timeout;
 
     if ((trans_params.timeout != ISO14443_FWT_A_ACT) &&
         (trans_params.timeout != ISO14443_FWT_ATQB)) {
@@ -240,33 +240,33 @@ int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t* tx_buf,
 
     // New for CSP3.3.0 RF Driver requires us to specify the early limit time
     switch (protocol) {
-        case PROTOCOL_ISO14443A:
-            trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
+    case PROTOCOL_ISO14443A:
+        trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
 
-            // Verify that applying extra margin will not overflow or underflow the parameters
-            // If it will do not apply them
-            if (trans_params.early_limit > ISO14443_FDT_A_EXTRA_MARGIN) {
-                trans_params.early_limit -= ISO14443_FDT_A_EXTRA_MARGIN;
-            }
+        // Verify that applying extra margin will not overflow or underflow the parameters
+        // If it will do not apply them
+        if (trans_params.early_limit > ISO14443_FDT_A_EXTRA_MARGIN) {
+            trans_params.early_limit -= ISO14443_FDT_A_EXTRA_MARGIN;
+        }
 
-            if ((UINT32_MAX - ISO14443_FDT_A_EXTRA_MARGIN) > trans_params.timeout) {
-                trans_params.timeout += ISO14443_FDT_A_EXTRA_MARGIN;
-            }
-            break;
+        if ((UINT32_MAX - ISO14443_FDT_A_EXTRA_MARGIN) > trans_params.timeout) {
+            trans_params.timeout += ISO14443_FDT_A_EXTRA_MARGIN;
+        }
+        break;
 
-        case PROTOCOL_ISO14443B:
-            trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
-            if (trans_params.early_limit > ISO14443_FDT_B_EXTRA_MARGIN) {
-                trans_params.early_limit -= ISO14443_FDT_B_EXTRA_MARGIN;
-            }
+    case PROTOCOL_ISO14443B:
+        trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
+        if (trans_params.early_limit > ISO14443_FDT_B_EXTRA_MARGIN) {
+            trans_params.early_limit -= ISO14443_FDT_B_EXTRA_MARGIN;
+        }
 
-            if ((UINT32_MAX - ISO14443_FDT_B_EXTRA_MARGIN) > trans_params.timeout) {
-                trans_params.timeout += ISO14443_FDT_B_EXTRA_MARGIN;
-            }
-            break;
+        if ((UINT32_MAX - ISO14443_FDT_B_EXTRA_MARGIN) > trans_params.timeout) {
+            trans_params.timeout += ISO14443_FDT_B_EXTRA_MARGIN;
+        }
+        break;
 
-        default:
-            return ISO14443_3_ERR_OTHER;
+    default:
+        return ISO14443_3_ERR_OTHER;
     }
 
     // New in CSP 3.3.0
@@ -279,7 +279,7 @@ int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t* tx_buf,
     // and wait times can be several million counts.  Therefore, it is safer to pad with
     // extra margin on these times as they grow large.
     trans_params.delay_till_send = pad_for_crystal_margin(g_delay_till_send);
-    trans_params.timeout         = pad_for_crystal_margin(trans_params.timeout);
+    trans_params.timeout = pad_for_crystal_margin(trans_params.timeout);
 
     // FDT PCD min delay is 6780fc this works out to 500us
     // The RF driver now handles these inter-packet delays via the delay_till_send parameter

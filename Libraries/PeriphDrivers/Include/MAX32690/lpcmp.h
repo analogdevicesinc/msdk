@@ -76,7 +76,7 @@ typedef enum {
 /**
  * @brief Typedef for pointer to comparator control register(s)
  */
-typedef volatile uint32_t* mxc_lpcmp_ctrl_reg_t;
+typedef volatile uint32_t *mxc_lpcmp_ctrl_reg_t;
 
 /**
  * @brief enables comparator

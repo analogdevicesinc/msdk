@@ -44,7 +44,7 @@
 #include "htmr_reva.h"
 
 /* ****** Functions ****** */
-int MXC_HTMR_Init(mxc_htmr_regs_t* htmr, uint32_t longInterval, uint8_t shortInterval)
+int MXC_HTMR_Init(mxc_htmr_regs_t *htmr, uint32_t longInterval, uint8_t shortInterval)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
@@ -62,60 +62,60 @@ int MXC_HTMR_Init(mxc_htmr_regs_t* htmr, uint32_t longInterval, uint8_t shortInt
         return E_BAD_PARAM;
     }
 
-    return MXC_HTMR_RevA_Init((mxc_htmr_reva_regs_t*)htmr, longInterval, shortInterval);
+    return MXC_HTMR_RevA_Init((mxc_htmr_reva_regs_t *)htmr, longInterval, shortInterval);
 }
 
-int MXC_HTMR_Start(mxc_htmr_regs_t* htmr)
+int MXC_HTMR_Start(mxc_htmr_regs_t *htmr)
 {
-    return MXC_HTMR_RevA_Start((mxc_htmr_reva_regs_t*)htmr);
+    return MXC_HTMR_RevA_Start((mxc_htmr_reva_regs_t *)htmr);
 }
 
-int MXC_HTMR_Stop(mxc_htmr_regs_t* htmr)
+int MXC_HTMR_Stop(mxc_htmr_regs_t *htmr)
 {
-    return MXC_HTMR_RevA_Stop((mxc_htmr_reva_regs_t*)htmr);
+    return MXC_HTMR_RevA_Stop((mxc_htmr_reva_regs_t *)htmr);
 }
 
-int MXC_HTMR_GetShortCount(mxc_htmr_regs_t* htmr)
+int MXC_HTMR_GetShortCount(mxc_htmr_regs_t *htmr)
 {
-    return MXC_HTMR_RevA_GetShortCount((mxc_htmr_reva_regs_t*)htmr);
+    return MXC_HTMR_RevA_GetShortCount((mxc_htmr_reva_regs_t *)htmr);
 }
 
-int MXC_HTMR_GetLongCount(mxc_htmr_regs_t* htmr)
+int MXC_HTMR_GetLongCount(mxc_htmr_regs_t *htmr)
 {
-    return MXC_HTMR_RevA_GetLongCount((mxc_htmr_reva_regs_t*)htmr);
+    return MXC_HTMR_RevA_GetLongCount((mxc_htmr_reva_regs_t *)htmr);
 }
 
-int MXC_HTMR_SetLongAlarm(mxc_htmr_regs_t* htmr, uint32_t interval)
+int MXC_HTMR_SetLongAlarm(mxc_htmr_regs_t *htmr, uint32_t interval)
 {
-    return MXC_HTMR_RevA_SetLongAlarm((mxc_htmr_reva_regs_t*)htmr, interval);
+    return MXC_HTMR_RevA_SetLongAlarm((mxc_htmr_reva_regs_t *)htmr, interval);
 }
 
-int MXC_HTMR_SetShortAlarm(mxc_htmr_regs_t* htmr, uint32_t interval)
+int MXC_HTMR_SetShortAlarm(mxc_htmr_regs_t *htmr, uint32_t interval)
 {
-    return MXC_HTMR_RevA_SetShortAlarm((mxc_htmr_reva_regs_t*)htmr, interval);
+    return MXC_HTMR_RevA_SetShortAlarm((mxc_htmr_reva_regs_t *)htmr, interval);
 }
 
-int MXC_HTMR_CheckBusy(mxc_htmr_regs_t* htmr)
+int MXC_HTMR_CheckBusy(mxc_htmr_regs_t *htmr)
 {
-    return MXC_HTMR_RevA_CheckBusy((mxc_htmr_reva_regs_t*)htmr);
+    return MXC_HTMR_RevA_CheckBusy((mxc_htmr_reva_regs_t *)htmr);
 }
 
-int MXC_HTMR_GetFlags(mxc_htmr_regs_t* htmr)
+int MXC_HTMR_GetFlags(mxc_htmr_regs_t *htmr)
 {
-    return MXC_HTMR_RevA_GetFlags((mxc_htmr_reva_regs_t*)htmr);
+    return MXC_HTMR_RevA_GetFlags((mxc_htmr_reva_regs_t *)htmr);
 }
 
-int MXC_HTMR_ClearFlags(mxc_htmr_regs_t* htmr, int flags)
+int MXC_HTMR_ClearFlags(mxc_htmr_regs_t *htmr, int flags)
 {
-    return MXC_HTMR_RevA_ClearFlags((mxc_htmr_reva_regs_t*)htmr, flags);
+    return MXC_HTMR_RevA_ClearFlags((mxc_htmr_reva_regs_t *)htmr, flags);
 }
 
-int MXC_HTMR_EnableInt(mxc_htmr_regs_t* htmr, uint32_t mask)
+int MXC_HTMR_EnableInt(mxc_htmr_regs_t *htmr, uint32_t mask)
 {
-    return MXC_HTMR_RevA_EnableInt((mxc_htmr_reva_regs_t*)htmr, mask);
+    return MXC_HTMR_RevA_EnableInt((mxc_htmr_reva_regs_t *)htmr, mask);
 }
 
-int MXC_HTMR_DisableInt(mxc_htmr_regs_t* htmr, uint32_t mask)
+int MXC_HTMR_DisableInt(mxc_htmr_regs_t *htmr, uint32_t mask)
 {
-    return MXC_HTMR_RevA_DisableInt((mxc_htmr_reva_regs_t*)htmr, mask);
+    return MXC_HTMR_RevA_DisableInt((mxc_htmr_reva_regs_t *)htmr, mask);
 }

@@ -53,7 +53,7 @@ extern "C" {
    * @param[out] pDst        points to the output vector
    * @param[in]  numSamples  number of complex samples in each vector
    */
-void arm_cmplx_conj_f32(const float32_t* pSrc, float32_t* pDst, uint32_t numSamples);
+void arm_cmplx_conj_f32(const float32_t *pSrc, float32_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q31 complex conjugate.
@@ -61,7 +61,7 @@ void arm_cmplx_conj_f32(const float32_t* pSrc, float32_t* pDst, uint32_t numSamp
    * @param[out] pDst        points to the output vector
    * @param[in]  numSamples  number of complex samples in each vector
    */
-void arm_cmplx_conj_q31(const q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
+void arm_cmplx_conj_q31(const q31_t *pSrc, q31_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q15 complex conjugate.
@@ -69,7 +69,7 @@ void arm_cmplx_conj_q31(const q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
    * @param[out] pDst        points to the output vector
    * @param[in]  numSamples  number of complex samples in each vector
    */
-void arm_cmplx_conj_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
+void arm_cmplx_conj_q15(const q15_t *pSrc, q15_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Floating-point complex magnitude squared
@@ -77,7 +77,7 @@ void arm_cmplx_conj_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_squared_f32(const float32_t* pSrc, float32_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_squared_f32(const float32_t *pSrc, float32_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Floating-point complex magnitude squared
@@ -85,7 +85,7 @@ void arm_cmplx_mag_squared_f32(const float32_t* pSrc, float32_t* pDst, uint32_t 
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_squared_f64(const float64_t* pSrc, float64_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_squared_f64(const float64_t *pSrc, float64_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q31 complex magnitude squared
@@ -93,7 +93,7 @@ void arm_cmplx_mag_squared_f64(const float64_t* pSrc, float64_t* pDst, uint32_t 
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_squared_q31(const q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_squared_q31(const q31_t *pSrc, q31_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q15 complex magnitude squared
@@ -101,7 +101,7 @@ void arm_cmplx_mag_squared_q31(const q31_t* pSrc, q31_t* pDst, uint32_t numSampl
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_squared_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_squared_q15(const q15_t *pSrc, q15_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Floating-point complex magnitude
@@ -109,7 +109,7 @@ void arm_cmplx_mag_squared_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSampl
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_f32(const float32_t* pSrc, float32_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_f32(const float32_t *pSrc, float32_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Floating-point complex magnitude
@@ -117,7 +117,7 @@ void arm_cmplx_mag_f32(const float32_t* pSrc, float32_t* pDst, uint32_t numSampl
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_f64(const float64_t* pSrc, float64_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_f64(const float64_t *pSrc, float64_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q31 complex magnitude
@@ -125,7 +125,7 @@ void arm_cmplx_mag_f64(const float64_t* pSrc, float64_t* pDst, uint32_t numSampl
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_q31(const q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_q31(const q31_t *pSrc, q31_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q15 complex magnitude
@@ -133,7 +133,7 @@ void arm_cmplx_mag_q31(const q31_t* pSrc, q31_t* pDst, uint32_t numSamples);
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_q15(const q15_t *pSrc, q15_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q15 complex magnitude
@@ -141,7 +141,7 @@ void arm_cmplx_mag_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
    * @param[out] pDst        points to the real output vector
    * @param[in]  numSamples  number of complex samples in the input vector
    */
-void arm_cmplx_mag_fast_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples);
+void arm_cmplx_mag_fast_q15(const q15_t *pSrc, q15_t *pDst, uint32_t numSamples);
 
 /**
    * @brief  Q15 complex dot product
@@ -151,8 +151,8 @@ void arm_cmplx_mag_fast_q15(const q15_t* pSrc, q15_t* pDst, uint32_t numSamples)
    * @param[out] realResult  real part of the result returned here
    * @param[out] imagResult  imaginary part of the result returned here
    */
-void arm_cmplx_dot_prod_q15(const q15_t* pSrcA, const q15_t* pSrcB, uint32_t numSamples,
-                            q31_t* realResult, q31_t* imagResult);
+void arm_cmplx_dot_prod_q15(const q15_t *pSrcA, const q15_t *pSrcB, uint32_t numSamples,
+                            q31_t *realResult, q31_t *imagResult);
 
 /**
    * @brief  Q31 complex dot product
@@ -162,8 +162,8 @@ void arm_cmplx_dot_prod_q15(const q15_t* pSrcA, const q15_t* pSrcB, uint32_t num
    * @param[out] realResult  real part of the result returned here
    * @param[out] imagResult  imaginary part of the result returned here
    */
-void arm_cmplx_dot_prod_q31(const q31_t* pSrcA, const q31_t* pSrcB, uint32_t numSamples,
-                            q63_t* realResult, q63_t* imagResult);
+void arm_cmplx_dot_prod_q31(const q31_t *pSrcA, const q31_t *pSrcB, uint32_t numSamples,
+                            q63_t *realResult, q63_t *imagResult);
 
 /**
    * @brief  Floating-point complex dot product
@@ -173,8 +173,8 @@ void arm_cmplx_dot_prod_q31(const q31_t* pSrcA, const q31_t* pSrcB, uint32_t num
    * @param[out] realResult  real part of the result returned here
    * @param[out] imagResult  imaginary part of the result returned here
    */
-void arm_cmplx_dot_prod_f32(const float32_t* pSrcA, const float32_t* pSrcB, uint32_t numSamples,
-                            float32_t* realResult, float32_t* imagResult);
+void arm_cmplx_dot_prod_f32(const float32_t *pSrcA, const float32_t *pSrcB, uint32_t numSamples,
+                            float32_t *realResult, float32_t *imagResult);
 
 /**
    * @brief  Q15 complex-by-real multiplication
@@ -183,7 +183,7 @@ void arm_cmplx_dot_prod_f32(const float32_t* pSrcA, const float32_t* pSrcB, uint
    * @param[out] pCmplxDst   points to the complex output vector
    * @param[in]  numSamples  number of samples in each vector
    */
-void arm_cmplx_mult_real_q15(const q15_t* pSrcCmplx, const q15_t* pSrcReal, q15_t* pCmplxDst,
+void arm_cmplx_mult_real_q15(const q15_t *pSrcCmplx, const q15_t *pSrcReal, q15_t *pCmplxDst,
                              uint32_t numSamples);
 
 /**
@@ -193,7 +193,7 @@ void arm_cmplx_mult_real_q15(const q15_t* pSrcCmplx, const q15_t* pSrcReal, q15_
    * @param[out] pCmplxDst   points to the complex output vector
    * @param[in]  numSamples  number of samples in each vector
    */
-void arm_cmplx_mult_real_q31(const q31_t* pSrcCmplx, const q31_t* pSrcReal, q31_t* pCmplxDst,
+void arm_cmplx_mult_real_q31(const q31_t *pSrcCmplx, const q31_t *pSrcReal, q31_t *pCmplxDst,
                              uint32_t numSamples);
 
 /**
@@ -203,8 +203,8 @@ void arm_cmplx_mult_real_q31(const q31_t* pSrcCmplx, const q31_t* pSrcReal, q31_
    * @param[out] pCmplxDst   points to the complex output vector
    * @param[in]  numSamples  number of samples in each vector
    */
-void arm_cmplx_mult_real_f32(const float32_t* pSrcCmplx, const float32_t* pSrcReal,
-                             float32_t* pCmplxDst, uint32_t numSamples);
+void arm_cmplx_mult_real_f32(const float32_t *pSrcCmplx, const float32_t *pSrcReal,
+                             float32_t *pCmplxDst, uint32_t numSamples);
 
 /**
    * @brief  Q15 complex-by-complex multiplication
@@ -213,7 +213,7 @@ void arm_cmplx_mult_real_f32(const float32_t* pSrcCmplx, const float32_t* pSrcRe
    * @param[out] pDst        points to the output vector
    * @param[in]  numSamples  number of complex samples in each vector
    */
-void arm_cmplx_mult_cmplx_q15(const q15_t* pSrcA, const q15_t* pSrcB, q15_t* pDst,
+void arm_cmplx_mult_cmplx_q15(const q15_t *pSrcA, const q15_t *pSrcB, q15_t *pDst,
                               uint32_t numSamples);
 
 /**
@@ -223,7 +223,7 @@ void arm_cmplx_mult_cmplx_q15(const q15_t* pSrcA, const q15_t* pSrcB, q15_t* pDs
    * @param[out] pDst        points to the output vector
    * @param[in]  numSamples  number of complex samples in each vector
    */
-void arm_cmplx_mult_cmplx_q31(const q31_t* pSrcA, const q31_t* pSrcB, q31_t* pDst,
+void arm_cmplx_mult_cmplx_q31(const q31_t *pSrcA, const q31_t *pSrcB, q31_t *pDst,
                               uint32_t numSamples);
 
 /**
@@ -233,7 +233,7 @@ void arm_cmplx_mult_cmplx_q31(const q31_t* pSrcA, const q31_t* pSrcB, q31_t* pDs
    * @param[out] pDst        points to the output vector
    * @param[in]  numSamples  number of complex samples in each vector
    */
-void arm_cmplx_mult_cmplx_f32(const float32_t* pSrcA, const float32_t* pSrcB, float32_t* pDst,
+void arm_cmplx_mult_cmplx_f32(const float32_t *pSrcA, const float32_t *pSrcB, float32_t *pDst,
                               uint32_t numSamples);
 
 /**
@@ -243,7 +243,7 @@ void arm_cmplx_mult_cmplx_f32(const float32_t* pSrcA, const float32_t* pSrcB, fl
  * @param[out] pDst        points to the output vector
  * @param[in]  numSamples  number of complex samples in each vector
  */
-void arm_cmplx_mult_cmplx_f64(const float64_t* pSrcA, const float64_t* pSrcB, float64_t* pDst,
+void arm_cmplx_mult_cmplx_f64(const float64_t *pSrcA, const float64_t *pSrcB, float64_t *pDst,
                               uint32_t numSamples);
 
 #ifdef __cplusplus

@@ -47,8 +47,7 @@ void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 // 3-channel 64x64 data input (12288 bytes total / 4096 bytes per channel):
@@ -65,19 +64,19 @@ void load_input(void)
 {
     // This function loads the sample data input -- replace with actual data
 
-    memcpy32((uint32_t*)0x50400000, input_0, 1024);
-    memcpy32((uint32_t*)0x50800000, input_16, 1024);
-    memcpy32((uint32_t*)0x50c00000, input_32, 1024);
+    memcpy32((uint32_t *)0x50400000, input_0, 1024);
+    memcpy32((uint32_t *)0x50800000, input_16, 1024);
+    memcpy32((uint32_t *)0x50c00000, input_32, 1024);
 }
 
 // Expected output of layer 6 for asl given the sample input
 int check_output(void)
 {
-    if ((*((volatile uint32_t*)0x50401000)) != 0xfffec932) {
+    if ((*((volatile uint32_t *)0x50401000)) != 0xfffec932) {
         return CNN_FAIL; // 0,0,0
     }
 
-    if ((*((volatile uint32_t*)0x50401004)) != 0x0001355b) {
+    if ((*((volatile uint32_t *)0x50401004)) != 0x0001355b) {
         return CNN_FAIL; // 0,0,1
     }
 
@@ -90,8 +89,8 @@ static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
 void softmax_layer(void)
 {
-    cnn_unload((uint32_t*)ml_data);
-    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t *)ml_data);
+    softmax_q17p14_q15((const q31_t *)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 int main(void)
@@ -116,12 +115,12 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    load_input();    // Load data input
-    cnn_start();     // Start CNN processing
+    load_input(); // Load data input
+    cnn_start(); // Start CNN processing
 
     while (cnn_time == 0) {
         __WFI(); // Wait for CNN

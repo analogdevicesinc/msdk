@@ -50,10 +50,10 @@
 #include "pb.h"
 #include "led.h"
 
-#define WUT_RATIO      (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
+#define WUT_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
 #define MAX_WUT_SNOOZE (5 * configRTC_TICK_RATE_HZ)
-#define MIN_SYSTICK    2
-#define MIN_WUT_TICKS  50
+#define MIN_SYSTICK 2
+#define MIN_WUT_TICKS 50
 
 static uint32_t wutSnooze = 0;
 static int wutSnoozeValid = 0;
@@ -80,7 +80,7 @@ __attribute__((weak)) int freertos_permit_tickless(void)
  */
 void wutHitSnooze(void)
 {
-    wutSnooze      = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
+    wutSnooze = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
     wutSnoozeValid = 1;
 }
 

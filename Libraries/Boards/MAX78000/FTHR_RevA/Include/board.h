@@ -57,33 +57,33 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define SCCB_SCL_PORT MXC_GPIO0       /// SCCB clock port
-#define SCCB_SCL_PIN  MXC_GPIO_PIN_30 /// SCCB clock pin
-#define SCCB_SDA_PORT MXC_GPIO0       /// SCCB data port
-#define SCCB_SDA_PIN  MXC_GPIO_PIN_31 /// SCCB data pin
+#define SCCB_SCL_PORT MXC_GPIO0 /// SCCB clock port
+#define SCCB_SCL_PIN MXC_GPIO_PIN_30 /// SCCB clock pin
+#define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
+#define SCCB_SDA_PIN MXC_GPIO_PIN_31 /// SCCB data pin
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
+#define LED1 0
 #define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
+#define LED2 1
 #define LED_GREEN LED2
 
 /**
  *  A reference to LED2 (BLUE LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED3     2
+#define LED3 2
 #define LED_BLUE LED3
 
 /**
@@ -127,7 +127,7 @@ int Debug_Init(void);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 #define POWER_OFF 0
-#define POWER_ON  1
+#define POWER_ON 1
 int Microphone_Power(int on);
 
 /**
@@ -157,7 +157,7 @@ int SD_Power(int on);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-void SD_Get_Connections(mxc_spi_regs_t** spi, mxc_gpio_regs_t** ssPort, int* ssPin);
+void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssPin);
 
 #ifdef __cplusplus
 }

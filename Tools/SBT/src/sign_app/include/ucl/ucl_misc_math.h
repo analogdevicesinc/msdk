@@ -72,7 +72,7 @@ extern "C" {
  *
  * @ingroup UCL_MISC_MATH
  */
-int ucl_misc_div64by32(u32* ptQ1, u32* ptQ0, u32* ptR, u32 a1, u32 a0, u32 b);
+int ucl_misc_div64by32(u32 *ptQ1, u32 *ptQ0, u32 *ptR, u32 a1, u32 a0, u32 b);
 
 /*============================================================================*/
 /** <b>Increment a 64-bit word by a 32-bit word </b>.
@@ -86,7 +86,7 @@ int ucl_misc_div64by32(u32* ptQ1, u32* ptQ0, u32* ptR, u32 a1, u32 a0, u32 b);
  *
  * @ingroup UCL_MISC_MATH
  */
-int ucl_misc_incW64byW32(u32* b, u32 a);
+int ucl_misc_incW64byW32(u32 *b, u32 a);
 
 #ifdef __cplusplus
 }

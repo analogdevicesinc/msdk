@@ -46,7 +46,7 @@ extern "C" {
  * @param frame packet
  * @param frame_size packet size
  */
-void display_frame(uint8_t* frame, size_t frame_size);
+void display_frame(uint8_t *frame, size_t frame_size);
 
 /**
  * Change current side to HOST
@@ -83,7 +83,7 @@ int close_packetlist_file(void);
  * @param name_file file name to write of the packet file
  * @return
  */
-int write_packet(uint8_t* frame, size_t frame_size, const char* name_file);
+int write_packet(uint8_t *frame, size_t frame_size, const char *name_file);
 
 /**
  * Generate an SCP packet ( write to file and display )
@@ -93,21 +93,21 @@ int write_packet(uint8_t* frame, size_t frame_size, const char* name_file);
  * @param name_file file name to write of the packet file
  * @return
  */
-int packet_send(uint8_t* frame, size_t frame_size, const char* message, const char* name_file);
+int packet_send(uint8_t *frame, size_t frame_size, const char *message, const char *name_file);
 
 /**
  * Replace EXTRA_PARAM tag in the provided parameter
  * @param param line to replace extra param tag
  * @return
  */
-int replace_extra_params(char* param);
+int replace_extra_params(char *param);
 
 /**
  * DEPRECATED Process script line
  * @param line line to process
  * @return
  */
-int process_command(char* line);
+int process_command(char *line);
 
 #ifdef __cplusplus
 }

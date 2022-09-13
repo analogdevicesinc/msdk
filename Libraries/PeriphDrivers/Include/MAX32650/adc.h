@@ -58,17 +58,17 @@ extern "C" {
  * @{
  */
 // Macros to select ADC channels
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0        ((uint32_t)(0x00000000UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1        ((uint32_t)(0x00000001UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN2        ((uint32_t)(0x00000002UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN3        ((uint32_t)(0x00000003UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0_DIV_5  ((uint32_t)(0x00000004UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1_DIV_5  ((uint32_t)(0x00000005UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDB_DIV_4  ((uint32_t)(0x00000006UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDA        ((uint32_t)(0x00000007UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VCORE       ((uint32_t)(0x00000008UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VRTC_DIV_2  ((uint32_t)(0x00000009UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDIO_DIV4  ((uint32_t)(0x0000000BUL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0 ((uint32_t)(0x00000000UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1 ((uint32_t)(0x00000001UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN2 ((uint32_t)(0x00000002UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN3 ((uint32_t)(0x00000003UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0_DIV_5 ((uint32_t)(0x00000004UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1_DIV_5 ((uint32_t)(0x00000005UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDB_DIV_4 ((uint32_t)(0x00000006UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDA ((uint32_t)(0x00000007UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VCORE ((uint32_t)(0x00000008UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VRTC_DIV_2 ((uint32_t)(0x00000009UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDIO_DIV4 ((uint32_t)(0x0000000BUL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VDDIOH_DIV4 ((uint32_t)(0x0000000CUL))
 
 /***************************************************************************************************************
@@ -78,17 +78,17 @@ extern "C" {
   * Enumeration type for the ADC Input Channels
   */
 typedef enum {
-    MXC_ADC_CH_0           = MXC_V_ADC_CTRL_CH_SEL_AIN0,        // Select Channel 0
-    MXC_ADC_CH_1           = MXC_V_ADC_CTRL_CH_SEL_AIN1,        // Select Channel 1
-    MXC_ADC_CH_2           = MXC_V_ADC_CTRL_CH_SEL_AIN2,        // Select Channel 2
-    MXC_ADC_CH_3           = MXC_V_ADC_CTRL_CH_SEL_AIN3,        // Select Channel 3
-    MXC_ADC_CH_0_DIV_5     = MXC_V_ADC_CTRL_CH_SEL_AIN0_DIV5,   // Channel 0 divided by 5
-    MXC_ADC_CH_1_DIV_5     = MXC_V_ADC_CTRL_CH_SEL_AIN1_DIV5,   // Channel 1 divided by 5
-    MXC_ADC_CH_VDDB_DIV_4  = MXC_V_ADC_CTRL_CH_SEL_VDDB_DIV4,   // VDDB divided by 4
-    MXC_ADC_CH_VDDA        = MXC_V_ADC_CTRL_CH_SEL_VDDA,        // VDDA input select
-    MXC_ADC_CH_VCORE       = MXC_V_ADC_CTRL_CH_SEL_VCORE,       // VCORE input select
-    MXC_ADC_CH_VRTC_DIV_2  = MXC_V_ADC_CTRL_CH_SEL_VRTC_DIV2,   // VRTC divided by 2
-    MXC_ADC_CH_VDDIO_DIV4  = MXC_V_ADC_CTRL_CH_SEL_VDDIO_DIV4,  // VDDIO divided by 4
+    MXC_ADC_CH_0 = MXC_V_ADC_CTRL_CH_SEL_AIN0, // Select Channel 0
+    MXC_ADC_CH_1 = MXC_V_ADC_CTRL_CH_SEL_AIN1, // Select Channel 1
+    MXC_ADC_CH_2 = MXC_V_ADC_CTRL_CH_SEL_AIN2, // Select Channel 2
+    MXC_ADC_CH_3 = MXC_V_ADC_CTRL_CH_SEL_AIN3, // Select Channel 3
+    MXC_ADC_CH_0_DIV_5 = MXC_V_ADC_CTRL_CH_SEL_AIN0_DIV5, // Channel 0 divided by 5
+    MXC_ADC_CH_1_DIV_5 = MXC_V_ADC_CTRL_CH_SEL_AIN1_DIV5, // Channel 1 divided by 5
+    MXC_ADC_CH_VDDB_DIV_4 = MXC_V_ADC_CTRL_CH_SEL_VDDB_DIV4, // VDDB divided by 4
+    MXC_ADC_CH_VDDA = MXC_V_ADC_CTRL_CH_SEL_VDDA, // VDDA input select
+    MXC_ADC_CH_VCORE = MXC_V_ADC_CTRL_CH_SEL_VCORE, // VCORE input select
+    MXC_ADC_CH_VRTC_DIV_2 = MXC_V_ADC_CTRL_CH_SEL_VRTC_DIV2, // VRTC divided by 2
+    MXC_ADC_CH_VDDIO_DIV4 = MXC_V_ADC_CTRL_CH_SEL_VDDIO_DIV4, // VDDIO divided by 4
     MXC_ADC_CH_VDDIOH_DIV4 = MXC_V_ADC_CTRL_CH_SEL_VDDIOH_DIV4, // VDDIOH divided by 4
 } mxc_adc_chsel_t;
 
@@ -111,32 +111,32 @@ typedef enum {
  */
 typedef enum {
     MXC_ADC_SCALE_2X, ///< ADC Scale by 2x
-    MXC_ADC_SCALE_1,  ///< ADC Scale by 1x (no scaling)
-    MXC_ADC_SCALE_2,  ///< ADC Scale by 1/2
+    MXC_ADC_SCALE_1, ///< ADC Scale by 1x (no scaling)
+    MXC_ADC_SCALE_2, ///< ADC Scale by 1/2
 } mxc_adc_scale_t;
 
 /**
  * @brief   Callback used when a conversion event is complete
  *
  */
-typedef void (*mxc_adc_complete_cb_t)(void* req, int error);
+typedef void (*mxc_adc_complete_cb_t)(void *req, int error);
 
 /**
  * @brief   Callback used when a monitor detects that a channel has reached a limit
  *
  */
-typedef void (*mxc_adc_monitor_cb_t)(void* req, int error);
+typedef void (*mxc_adc_monitor_cb_t)(void *req, int error);
 
 /**
  * @brief   Used to set up a monitor to watch a channel
  *
  */
 typedef struct {
-    mxc_adc_monitor_t monitor;     ///< Monitor to use
-    mxc_adc_scale_t scale;         ///< Channel scale to use (if external channel)
-    mxc_adc_chsel_t channel;       ///< Channel to use
-    int lowThreshold;              ///< Low Threshold for monitor (RAW ADC counts)
-    int highThreshold;             ///< High Threshold for monitor (RAW ADC counts)
+    mxc_adc_monitor_t monitor; ///< Monitor to use
+    mxc_adc_scale_t scale; ///< Channel scale to use (if external channel)
+    mxc_adc_chsel_t channel; ///< Channel to use
+    int lowThreshold; ///< Low Threshold for monitor (RAW ADC counts)
+    int highThreshold; ///< High Threshold for monitor (RAW ADC counts)
     mxc_adc_monitor_cb_t callback; ///< Function to call when the channel crosses threshold
 } mxc_adc_monitor_req_t;
 
@@ -145,9 +145,9 @@ typedef struct {
  *
  */
 typedef struct {
-    mxc_adc_chsel_t channel;        ///< Channel to use
-    mxc_adc_scale_t scale;          ///< Channel scale to use (if external channel)
-    int rawADCValue;                ///< Result of the conversion
+    mxc_adc_chsel_t channel; ///< Channel to use
+    mxc_adc_scale_t scale; ///< Channel scale to use (if external channel)
+    int rawADCValue; ///< Result of the conversion
     mxc_adc_complete_cb_t callback; ///< Function to call when callback is complete
 } mxc_adc_conversion_req_t;
 
@@ -354,7 +354,7 @@ int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t 
  *
  * @return  Raw conversion value, or \ref MXC_Error_Codes for error.
  */
-int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*callback)(int, int));
+int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t *data, void (*callback)(int, int));
 
 /**
  * @brief      Call this function from the ADC ISR when using Async API
@@ -372,7 +372,7 @@ int MXC_ADC_Handler(void);
  *
  * @return     \ref MXC_Error_Codes for error.
  */
-int MXC_ADC_Convert(mxc_adc_conversion_req_t* req);
+int MXC_ADC_Convert(mxc_adc_conversion_req_t *req);
 
 /**
  * @brief      Perform a conversion on a specific channel
@@ -383,7 +383,7 @@ int MXC_ADC_Convert(mxc_adc_conversion_req_t* req);
  *
  * @return     return E_NO_ERROR OR E_BUSY
  */
-int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t* req);
+int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t *req);
 
 /**
  * @brief   Monitor a specific channel for an out of range event
@@ -407,7 +407,7 @@ void MXC_ADC_MonitorAsync(mxc_adc_monitor_req_t req);
  * @return     #E_OVERFLOW   ADC overflow error
  * @return     #E_NO_ERROR   Data returned in \p outdata parameter
  */
-int MXC_ADC_GetData(uint16_t* outdata);
+int MXC_ADC_GetData(uint16_t *outdata);
 
 /**@} end of group adc */
 

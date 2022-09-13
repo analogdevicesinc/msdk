@@ -100,8 +100,8 @@ typedef struct aes_ccm {
  *
  * @ingroup UCL_CCM_AES
  */
-int ucl_aes_ccm_encrypt(u8* c, u8* U, int M, int L, u8* msg, int msg_len, u8* aad, int aad_len,
-                        u8* nonce, u8* key, int keylen);
+int ucl_aes_ccm_encrypt(u8 *c, u8 *U, int M, int L, u8 *msg, int msg_len, u8 *aad, int aad_len,
+                        u8 *nonce, u8 *key, int keylen);
 
 /** <b>AES-CCM</b>.
  * Initialize AES CCM encryption.
@@ -132,8 +132,8 @@ int ucl_aes_ccm_encrypt(u8* c, u8* U, int M, int L, u8* msg, int msg_len, u8* aa
  * @ingroup UCL_CCM_AES
  */
 
-int ucl_aes_ccm_encrypt_init(aes_ccm_t* ctxt, int M, int L, int msg_len, u8* aad, int aad_len,
-                             u8* nonce, u8* key, int keylen);
+int ucl_aes_ccm_encrypt_init(aes_ccm_t *ctxt, int M, int L, int msg_len, u8 *aad, int aad_len,
+                             u8 *nonce, u8 *key, int keylen);
 
 /** <b>AES-CCM</b>.
  * AES CCM encryption core computation.
@@ -154,7 +154,7 @@ int ucl_aes_ccm_encrypt_init(aes_ccm_t* ctxt, int M, int L, int msg_len, u8* aad
  *
  * @ingroup UCL_CCM_AES
  */
-int ucl_aes_ccm_encrypt_core(u8* c, aes_ccm_t* ctxt, u8* msg, int msg_len);
+int ucl_aes_ccm_encrypt_core(u8 *c, aes_ccm_t *ctxt, u8 *msg, int msg_len);
 
 /** <b>AES-CCM</b>.
  *  AES CCM encryption final step
@@ -171,7 +171,7 @@ int ucl_aes_ccm_encrypt_core(u8* c, aes_ccm_t* ctxt, u8* msg, int msg_len);
  * @ingroup UCL_CCM_AES
  */
 
-int ucl_aes_ccm_encrypt_finish(u8* U, aes_ccm_t* ctxt);
+int ucl_aes_ccm_encrypt_finish(u8 *U, aes_ccm_t *ctxt);
 
 /** <b>AES-CCM</b>.
  * Decrypt with AES in CCM (Counter with CBC-MAC) mode.
@@ -202,8 +202,8 @@ int ucl_aes_ccm_encrypt_finish(u8* U, aes_ccm_t* ctxt);
  * @ingroup UCL_CCM_AES
  */
 
-int ucl_aes_ccm_decrypt(u8* msg, int M, int L, u8* c, int c_len, u8* U, u8* aad, int aad_len,
-                        u8* nonce, u8* key, int keylen);
+int ucl_aes_ccm_decrypt(u8 *msg, int M, int L, u8 *c, int c_len, u8 *U, u8 *aad, int aad_len,
+                        u8 *nonce, u8 *key, int keylen);
 
 /** <b>AES-CCM</b>.
  * Initialize AES CCM decryption.
@@ -236,8 +236,8 @@ int ucl_aes_ccm_decrypt(u8* msg, int M, int L, u8* c, int c_len, u8* U, u8* aad,
  * @ingroup UCL_CCM_AES
  */
 
-int ucl_aes_ccm_decrypt_init(aes_ccm_t* ctxt, int M, int L, int c_len, u8* U, u8* aad, int aad_len,
-                             u8* nonce, u8* key, int keylen);
+int ucl_aes_ccm_decrypt_init(aes_ccm_t *ctxt, int M, int L, int c_len, u8 *U, u8 *aad, int aad_len,
+                             u8 *nonce, u8 *key, int keylen);
 /** <b>AES-CCM</b>.
  * AES CCM decryption core computation.
  * Requirements:
@@ -257,7 +257,7 @@ int ucl_aes_ccm_decrypt_init(aes_ccm_t* ctxt, int M, int L, int c_len, u8* U, u8
  *
  * @ingroup UCL_CCM_AES
  */
-int ucl_aes_ccm_decrypt_core(u8* msg, aes_ccm_t* ctxt, u8* c, int c_len);
+int ucl_aes_ccm_decrypt_core(u8 *msg, aes_ccm_t *ctxt, u8 *c, int c_len);
 
 /** <b>AES-CCM</b>.
  *  AES CCM decryption final step
@@ -273,7 +273,7 @@ int ucl_aes_ccm_decrypt_core(u8* msg, aes_ccm_t* ctxt, u8* c, int c_len);
  *
  * @ingroup UCL_CCM_AES
  */
-int ucl_aes_ccm_decrypt_finish(aes_ccm_t* ctxt);
+int ucl_aes_ccm_decrypt_finish(aes_ccm_t *ctxt);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */
