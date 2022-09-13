@@ -424,7 +424,12 @@ void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma)
                 }
 
                 MXC_DMA_ChannelClearFlags(i, MXC_DMA_RevA_ChannelGetFlags(i));
-                break;
+
+                // Handle all channels in case multiple channels triggerred
+                //  intterupt around the same time.
+                if (dma->intfl == 0) {
+                    break;
+                }
             }
         }
     }
