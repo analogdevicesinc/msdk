@@ -5,9 +5,11 @@
 # Set the default secure target.  Different microcontrollers
 # may have different secure variants, each with their own
 # part numbers.  TARGET_SEC can be used to point the SBTs
-# to the correct variant. 
+# to the correct variant.
+SLA_LINKER = 0
 ifeq "$(TARGET_UC)" "MAX32650"
 TARGET_SEC ?= MAX32651
+SLA_LINKER = 1
 else
 TARGET_SEC ?= $(TARGET_UC)
 endif
@@ -38,7 +40,11 @@ ifeq ($(MAKECMDGOALS),sla)
 PROJ_CFLAGS += -D__SLA_FWK__
 SRCS += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/sla_header.c
 # ^ Include the SLA C file for the device.
+ifeq ($(SLA_LINKER),1)
 LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla.ld
+else
+LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
+endif
 $(warning Overriding LINKERFILE to $(LINKERFILE))
 endif
 
