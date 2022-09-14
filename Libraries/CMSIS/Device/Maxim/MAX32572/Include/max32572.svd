@@ -6289,6 +6289,106 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>TRIM</name>
+     <description>HTimer Trim Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <resetMask>0x00000000</resetMask>
+     <fields>
+      <field>
+       <name>TRIM</name>
+       <description>HTMR Trim. This register contains the 2's complement value that specifies the trim resolution. Each increment or decrement of the bit adds or subtracts 1ppm at each 4KHz clock value, with a maximum correction of +/- 127ppm.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+      <field>
+       <name>VBAT_HTMR</name>
+       <description>VBAT HTimer Value. When HTMR is running off of VBAT, this field is incremented every 32 seconds.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>24</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>OSCCTRL</name>
+     <description>HTimer Oscillator Control Register.</description>
+     <addressOffset>0x18</addressOffset>
+     <resetMask>0x00000000</resetMask>
+     <fields>
+      <field>
+       <name>FILTER_EN</name>
+       <description>Enable Filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>IBIAS Select.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>2x</name>
+         <description>2x</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>4x</name>
+         <description>4x</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>HTMR Hysteresis Enable.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>HTMR IBIAS Enable.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>BYPASS</name>
+       <description>HTMR Crystal Bypass</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>SQW_32K</name>
+       <description>HTMR 32kHz Square Wave Output</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--HTMR High Speed Timer Module.-->
