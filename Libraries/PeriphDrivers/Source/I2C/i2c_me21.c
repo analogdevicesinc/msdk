@@ -86,7 +86,7 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
     }
 
     // Zero indexed
-    if (idx > (MXC_I2C_NUM_TARGET_ADDR-1)) {
+    if (idx > (MXC_I2C_NUM_TARGET_ADDR - 1)) {
         return E_NOT_SUPPORTED;
     }
 
