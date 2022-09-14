@@ -42,16 +42,10 @@ LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla
 $(warning Overriding LINKERFILE to $(LINKERFILE))
 endif
 
-ifeq ($(MAKECMDGOALS),ram)
-PROJ_CFLAGS += -D__RAM_FWK__
-LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_ram.ld
-$(warning Overriding LINKERFILE to use $(LINKERFILE))
-endif
-
+ifeq ($(MAKECMDGOALS), scpa)
 SCPA_MEM_BASE_ADDR ?= 0xC0000000
 SCPA_MEM_SIZE ?= 1024
 
-ifeq ($(MAKECMDGOALS), scpa)
 PROJ_CFLAGS += -D__SCPA_FWK__
 PROJ_CFLAGS += -DSCPA_MEM_BASE_ADDR=$(SCPA_MEM_BASE_ADDR) -DSCPA_MEM_SIZE=$(SCPA_MEM_SIZE)
 LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_scpa.ld
