@@ -107,20 +107,20 @@ typedef struct {
     __IO uint32_t pld_length[2];        /**< <tt>\b 0xD8:</tt> CTB PLD_LENGTH Register */
     __IO uint32_t tagmic[4];            /**< <tt>\b 0xE0:</tt> CTB TAGMIC Register */
     __IO uint32_t maa_maws;             /**< <tt>\b 0xF0:</tt> CTB MAA_MAWS Register */
-    __R  uint32_t rsv_0xf4_0xff[3];
-    __IO uint32_t sca_ctrl0;            /**< <tt>\b 0x100:</tt> CTB SCA_CTRL0 Register */
-    __IO uint32_t sca_ctrl1;            /**< <tt>\b 0x104:</tt> CTB SCA_CTRL1 Register */
-    __IO uint32_t sca_stat;             /**< <tt>\b 0x108:</tt> CTB SCA_STAT Register */
-    __IO uint32_t sca_ppx_addr;         /**< <tt>\b 0x10C:</tt> CTB SCA_PPX_ADDR Register */
-    __IO uint32_t sca_ppy_addr;         /**< <tt>\b 0x110:</tt> CTB SCA_PPY_ADDR Register */
-    __IO uint32_t sca_ppz_addr;         /**< <tt>\b 0x114:</tt> CTB SCA_PPZ_ADDR Register */
-    __IO uint32_t sca_pqx_addr;         /**< <tt>\b 0x118:</tt> CTB SCA_PQX_ADDR Register */
-    __IO uint32_t sca_pqy_addr;         /**< <tt>\b 0x11C:</tt> CTB SCA_PQY_ADDR Register */
-    __IO uint32_t sca_pqz_addr;         /**< <tt>\b 0x120:</tt> CTB SCA_PQZ_ADDR Register */
-    __IO uint32_t sca_rdsa_addr;        /**< <tt>\b 0x124:</tt> CTB SCA_RDSA_ADDR Register */
-    __IO uint32_t sca_res_addr;         /**< <tt>\b 0x128:</tt> CTB SCA_RES_ADDR Register */
-    __IO uint32_t sca_op_buff_addr;     /**< <tt>\b 0x12C:</tt> CTB SCA_OP_BUFF_ADDR Register */
-    __IO uint32_t sca_moddata;          /**< <tt>\b 0x130:</tt> CTB SCA_MODDATA Register */
+    __R  uint32_t rsv_0xf4_0x6ff[387];
+    __IO uint32_t sca_ctrl0;            /**< <tt>\b 0x700:</tt> CTB SCA_CTRL0 Register */
+    __IO uint32_t sca_ctrl1;            /**< <tt>\b 0x704:</tt> CTB SCA_CTRL1 Register */
+    __IO uint32_t sca_stat;             /**< <tt>\b 0x708:</tt> CTB SCA_STAT Register */
+    __IO uint32_t sca_ppx_addr;         /**< <tt>\b 0x70C:</tt> CTB SCA_PPX_ADDR Register */
+    __IO uint32_t sca_ppy_addr;         /**< <tt>\b 0x710:</tt> CTB SCA_PPY_ADDR Register */
+    __IO uint32_t sca_ppz_addr;         /**< <tt>\b 0x714:</tt> CTB SCA_PPZ_ADDR Register */
+    __IO uint32_t sca_pqx_addr;         /**< <tt>\b 0x718:</tt> CTB SCA_PQX_ADDR Register */
+    __IO uint32_t sca_pqy_addr;         /**< <tt>\b 0x71C:</tt> CTB SCA_PQY_ADDR Register */
+    __IO uint32_t sca_pqz_addr;         /**< <tt>\b 0x720:</tt> CTB SCA_PQZ_ADDR Register */
+    __IO uint32_t sca_rdsa_addr;        /**< <tt>\b 0x724:</tt> CTB SCA_RDSA_ADDR Register */
+    __IO uint32_t sca_res_addr;         /**< <tt>\b 0x728:</tt> CTB SCA_RES_ADDR Register */
+    __IO uint32_t sca_op_buff_addr;     /**< <tt>\b 0x72C:</tt> CTB SCA_OP_BUFF_ADDR Register */
+    __IO uint32_t sca_moddata;          /**< <tt>\b 0x730:</tt> CTB SCA_MODDATA Register */
 } mxc_ctb_regs_t;
 
 /* Register offsets for module CTB */
@@ -152,19 +152,19 @@ typedef struct {
  #define MXC_R_CTB_PLD_LENGTH               ((uint32_t)0x000000D8UL) /**< Offset from CTB Base Address: <tt> 0x00D8</tt> */ 
  #define MXC_R_CTB_TAGMIC                   ((uint32_t)0x000000E0UL) /**< Offset from CTB Base Address: <tt> 0x00E0</tt> */ 
  #define MXC_R_CTB_MAA_MAWS                 ((uint32_t)0x000000F0UL) /**< Offset from CTB Base Address: <tt> 0x00F0</tt> */ 
- #define MXC_R_CTB_SCA_CTRL0                ((uint32_t)0x00000100UL) /**< Offset from CTB Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_CTB_SCA_CTRL1                ((uint32_t)0x00000104UL) /**< Offset from CTB Base Address: <tt> 0x0104</tt> */ 
- #define MXC_R_CTB_SCA_STAT                 ((uint32_t)0x00000108UL) /**< Offset from CTB Base Address: <tt> 0x0108</tt> */ 
- #define MXC_R_CTB_SCA_PPX_ADDR             ((uint32_t)0x0000010CUL) /**< Offset from CTB Base Address: <tt> 0x010C</tt> */ 
- #define MXC_R_CTB_SCA_PPY_ADDR             ((uint32_t)0x00000110UL) /**< Offset from CTB Base Address: <tt> 0x0110</tt> */ 
- #define MXC_R_CTB_SCA_PPZ_ADDR             ((uint32_t)0x00000114UL) /**< Offset from CTB Base Address: <tt> 0x0114</tt> */ 
- #define MXC_R_CTB_SCA_PQX_ADDR             ((uint32_t)0x00000118UL) /**< Offset from CTB Base Address: <tt> 0x0118</tt> */ 
- #define MXC_R_CTB_SCA_PQY_ADDR             ((uint32_t)0x0000011CUL) /**< Offset from CTB Base Address: <tt> 0x011C</tt> */ 
- #define MXC_R_CTB_SCA_PQZ_ADDR             ((uint32_t)0x00000120UL) /**< Offset from CTB Base Address: <tt> 0x0120</tt> */ 
- #define MXC_R_CTB_SCA_RDSA_ADDR            ((uint32_t)0x00000124UL) /**< Offset from CTB Base Address: <tt> 0x0124</tt> */ 
- #define MXC_R_CTB_SCA_RES_ADDR             ((uint32_t)0x00000128UL) /**< Offset from CTB Base Address: <tt> 0x0128</tt> */ 
- #define MXC_R_CTB_SCA_OP_BUFF_ADDR         ((uint32_t)0x0000012CUL) /**< Offset from CTB Base Address: <tt> 0x012C</tt> */ 
- #define MXC_R_CTB_SCA_MODDATA              ((uint32_t)0x00000130UL) /**< Offset from CTB Base Address: <tt> 0x0130</tt> */ 
+ #define MXC_R_CTB_SCA_CTRL0                ((uint32_t)0x00000700UL) /**< Offset from CTB Base Address: <tt> 0x0700</tt> */ 
+ #define MXC_R_CTB_SCA_CTRL1                ((uint32_t)0x00000704UL) /**< Offset from CTB Base Address: <tt> 0x0704</tt> */ 
+ #define MXC_R_CTB_SCA_STAT                 ((uint32_t)0x00000708UL) /**< Offset from CTB Base Address: <tt> 0x0708</tt> */ 
+ #define MXC_R_CTB_SCA_PPX_ADDR             ((uint32_t)0x0000070CUL) /**< Offset from CTB Base Address: <tt> 0x070C</tt> */ 
+ #define MXC_R_CTB_SCA_PPY_ADDR             ((uint32_t)0x00000710UL) /**< Offset from CTB Base Address: <tt> 0x0710</tt> */ 
+ #define MXC_R_CTB_SCA_PPZ_ADDR             ((uint32_t)0x00000714UL) /**< Offset from CTB Base Address: <tt> 0x0714</tt> */ 
+ #define MXC_R_CTB_SCA_PQX_ADDR             ((uint32_t)0x00000718UL) /**< Offset from CTB Base Address: <tt> 0x0718</tt> */ 
+ #define MXC_R_CTB_SCA_PQY_ADDR             ((uint32_t)0x0000071CUL) /**< Offset from CTB Base Address: <tt> 0x071C</tt> */ 
+ #define MXC_R_CTB_SCA_PQZ_ADDR             ((uint32_t)0x00000720UL) /**< Offset from CTB Base Address: <tt> 0x0720</tt> */ 
+ #define MXC_R_CTB_SCA_RDSA_ADDR            ((uint32_t)0x00000724UL) /**< Offset from CTB Base Address: <tt> 0x0724</tt> */ 
+ #define MXC_R_CTB_SCA_RES_ADDR             ((uint32_t)0x00000728UL) /**< Offset from CTB Base Address: <tt> 0x0728</tt> */ 
+ #define MXC_R_CTB_SCA_OP_BUFF_ADDR         ((uint32_t)0x0000072CUL) /**< Offset from CTB Base Address: <tt> 0x072C</tt> */ 
+ #define MXC_R_CTB_SCA_MODDATA              ((uint32_t)0x00000730UL) /**< Offset from CTB Base Address: <tt> 0x0730</tt> */ 
 /**@} end of group ctb_registers */
 
 /**

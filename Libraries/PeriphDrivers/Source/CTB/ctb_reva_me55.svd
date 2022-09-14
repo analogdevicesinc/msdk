@@ -900,7 +900,7 @@
       <register>
         <name>SCA_CTRL0</name>
         <description>SCA Control 0 Register.</description>
-        <addressOffset>0x100</addressOffset>
+        <addressOffset>0x700</addressOffset>
         <fields>
           <field>
             <name>STC</name>
@@ -973,7 +973,7 @@
       <register>
         <name>SCA_CTRL1</name>
         <description>SCA Advanced Control Register.</description>
-        <addressOffset>0x104</addressOffset>
+        <addressOffset>0x704</addressOffset>
         <fields>
           <field>
             <name>MAN</name>
@@ -1022,7 +1022,7 @@
       <register>
         <name>SCA_STAT</name>
         <description>SCA Status Register.</description>
-        <addressOffset>0x108</addressOffset>
+        <addressOffset>0x708</addressOffset>
         <fields>
           <field>
             <name>BUSY</name>
@@ -1095,7 +1095,7 @@
       <register>
         <name>SCA_PPX_ADDR</name>
         <description>PPX Coordinate Data Pointer Register.</description>
-        <addressOffset>0x10C</addressOffset>
+        <addressOffset>0x70C</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1109,7 +1109,7 @@
       <register>
         <name>SCA_PPY_ADDR</name>
         <description>PPY Coordinate Data Pointer Register.</description>
-        <addressOffset>0x110</addressOffset>
+        <addressOffset>0x710</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1123,7 +1123,7 @@
       <register>
         <name>SCA_PPZ_ADDR</name>
         <description>PPZ Coordinate Data Pointer Register.</description>
-        <addressOffset>0x114</addressOffset>
+        <addressOffset>0x714</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1137,7 +1137,7 @@
       <register>
         <name>SCA_PQX_ADDR</name>
         <description>PQX Coordinate Data Pointer Register.</description>
-        <addressOffset>0x118</addressOffset>
+        <addressOffset>0x718</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1151,7 +1151,7 @@
       <register>
         <name>SCA_PQY_ADDR</name>
         <description>PQY Coordinate Data Pointer Register.</description>
-        <addressOffset>0x11C</addressOffset>
+        <addressOffset>0x71C</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1165,7 +1165,7 @@
       <register>
         <name>SCA_PQZ_ADDR</name>
         <description>PQZ Coordinate Data Pointer Register.</description>
-        <addressOffset>0x120</addressOffset>
+        <addressOffset>0x720</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1179,7 +1179,7 @@
       <register>
         <name>SCA_RDSA_ADDR</name>
         <description>SCA RDSA Address Register.</description>
-        <addressOffset>0x124</addressOffset>
+        <addressOffset>0x724</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1193,7 +1193,7 @@
       <register>
         <name>SCA_RES_ADDR</name>
         <description>SCA Result Address Register.</description>
-        <addressOffset>0x128</addressOffset>
+        <addressOffset>0x728</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1207,7 +1207,7 @@
       <register>
         <name>SCA_OP_BUFF_ADDR</name>
         <description>SCA Operation Buffer Address Register.</description>
-        <addressOffset>0x12C</addressOffset>
+        <addressOffset>0x72C</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>
@@ -1221,7 +1221,7 @@
       <register>
         <name>SCA_MODDATA</name>
         <description>SCA Modulo Data Input Register.</description>
-        <addressOffset>0x130</addressOffset>
+        <addressOffset>0x730</addressOffset>
         <resetValue>0x0</resetValue>
         <fields>
           <field>

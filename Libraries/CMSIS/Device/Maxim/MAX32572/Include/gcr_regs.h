@@ -592,8 +592,14 @@ typedef struct {
  #define MXC_F_GCR_MEMCTRL_USBLS_EN_POS                 28 /**< MEMCTRL_USBLS_EN Position */
  #define MXC_F_GCR_MEMCTRL_USBLS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_USBLS_EN_POS)) /**< MEMCTRL_USBLS_EN Mask */
 
- #define MXC_F_GCR_MEMCTRL_ROMLS_EN_POS                 29 /**< MEMCTRL_ROMLS_EN Position */
- #define MXC_F_GCR_MEMCTRL_ROMLS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROMLS_EN_POS)) /**< MEMCTRL_ROMLS_EN Mask */
+ #define MXC_F_GCR_MEMCTRL_ROM0LS_EN_POS                29 /**< MEMCTRL_ROM0LS_EN Position */
+ #define MXC_F_GCR_MEMCTRL_ROM0LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM0LS_EN_POS)) /**< MEMCTRL_ROM0LS_EN Mask */
+
+ #define MXC_F_GCR_MEMCTRL_ROM1LS_EN_POS                30 /**< MEMCTRL_ROM1LS_EN Position */
+ #define MXC_F_GCR_MEMCTRL_ROM1LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM1LS_EN_POS)) /**< MEMCTRL_ROM1LS_EN Mask */
+
+ #define MXC_F_GCR_MEMCTRL_MAALS_EN_POS                 31 /**< MEMCTRL_MAALS_EN Position */
+ #define MXC_F_GCR_MEMCTRL_MAALS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_MAALS_EN_POS)) /**< MEMCTRL_MAALS_EN Mask */
 
 /**@} end of group GCR_MEMCTRL_Register */
 

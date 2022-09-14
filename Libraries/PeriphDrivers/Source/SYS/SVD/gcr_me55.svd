@@ -1089,9 +1089,21 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
-            <name>ROMLS_EN</name>
-            <description>ROM Light Sleep Mode.</description>
+            <name>ROM0LS_EN</name>
+            <description>ROM0 Light Sleep Mode.</description>
             <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>ROM1LS_EN</name>
+            <description>ROM1 Light Sleep Mode.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>MAALS_EN</name>
+            <description>MAA Light Sleep Mode.</description>
+            <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

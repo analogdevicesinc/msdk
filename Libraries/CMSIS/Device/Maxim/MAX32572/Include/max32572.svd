@@ -2165,7 +2165,7 @@
     <register>
      <name>SCA_CTRL0</name>
      <description>SCA Control 0 Register.</description>
-     <addressOffset>0x100</addressOffset>
+     <addressOffset>0x700</addressOffset>
      <fields>
       <field>
        <name>STC</name>
@@ -2238,7 +2238,7 @@
     <register>
      <name>SCA_CTRL1</name>
      <description>SCA Advanced Control Register.</description>
-     <addressOffset>0x104</addressOffset>
+     <addressOffset>0x704</addressOffset>
      <fields>
       <field>
        <name>MAN</name>
@@ -2287,7 +2287,7 @@
     <register>
      <name>SCA_STAT</name>
      <description>SCA Status Register.</description>
-     <addressOffset>0x108</addressOffset>
+     <addressOffset>0x708</addressOffset>
      <fields>
       <field>
        <name>BUSY</name>
@@ -2360,7 +2360,7 @@
     <register>
      <name>SCA_PPX_ADDR</name>
      <description>PPX Coordinate Data Pointer Register.</description>
-     <addressOffset>0x10C</addressOffset>
+     <addressOffset>0x70C</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2374,7 +2374,7 @@
     <register>
      <name>SCA_PPY_ADDR</name>
      <description>PPY Coordinate Data Pointer Register.</description>
-     <addressOffset>0x110</addressOffset>
+     <addressOffset>0x710</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2388,7 +2388,7 @@
     <register>
      <name>SCA_PPZ_ADDR</name>
      <description>PPZ Coordinate Data Pointer Register.</description>
-     <addressOffset>0x114</addressOffset>
+     <addressOffset>0x714</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2402,7 +2402,7 @@
     <register>
      <name>SCA_PQX_ADDR</name>
      <description>PQX Coordinate Data Pointer Register.</description>
-     <addressOffset>0x118</addressOffset>
+     <addressOffset>0x718</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2416,7 +2416,7 @@
     <register>
      <name>SCA_PQY_ADDR</name>
      <description>PQY Coordinate Data Pointer Register.</description>
-     <addressOffset>0x11C</addressOffset>
+     <addressOffset>0x71C</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2430,7 +2430,7 @@
     <register>
      <name>SCA_PQZ_ADDR</name>
      <description>PQZ Coordinate Data Pointer Register.</description>
-     <addressOffset>0x120</addressOffset>
+     <addressOffset>0x720</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2444,7 +2444,7 @@
     <register>
      <name>SCA_RDSA_ADDR</name>
      <description>SCA RDSA Address Register.</description>
-     <addressOffset>0x124</addressOffset>
+     <addressOffset>0x724</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2458,7 +2458,7 @@
     <register>
      <name>SCA_RES_ADDR</name>
      <description>SCA Result Address Register.</description>
-     <addressOffset>0x128</addressOffset>
+     <addressOffset>0x728</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2472,7 +2472,7 @@
     <register>
      <name>SCA_OP_BUFF_ADDR</name>
      <description>SCA Operation Buffer Address Register.</description>
-     <addressOffset>0x12C</addressOffset>
+     <addressOffset>0x72C</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -2486,7 +2486,7 @@
     <register>
      <name>SCA_MODDATA</name>
      <description>SCA Modulo Data Input Register.</description>
-     <addressOffset>0x130</addressOffset>
+     <addressOffset>0x730</addressOffset>
      <resetValue>0x0</resetValue>
      <fields>
       <field>
@@ -4581,9 +4581,21 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="RAM0LS_EN">
-       <name>ROMLS_EN</name>
-       <description>ROM Light Sleep Mode.</description>
+       <name>ROM0LS_EN</name>
+       <description>ROM0 Light Sleep Mode.</description>
        <bitOffset>29</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="RAM0LS_EN">
+       <name>ROM1LS_EN</name>
+       <description>ROM1 Light Sleep Mode.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="RAM0LS_EN">
+       <name>MAALS_EN</name>
+       <description>MAA Light Sleep Mode.</description>
+       <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -17635,5 +17647,151 @@
    </registers>
   </peripheral>
 <!--SKBD Secure Keyboard-->
+  <peripheral>
+   <name>SEMA</name>
+   <description>The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
+                                     The peripheral contains eight semaphores that can be atomically set and cleared. It is left to the discretion of the software
+                                     architect to decide how and when the semaphores are used and how they are allocated. Existing hardware does not have to be
+                                     
+                                     modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.</description>
+   <baseAddress>0x4003E000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x1000</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <dim>8</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>SEMAPHORES[%s]</name>
+     <description>Read to test and set, returns prior value. Write 0 to clear semaphore.</description>
+     <addressOffset>0x00</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>sema</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>irq0</name>
+     <description>Semaphore IRQ0 register.</description>
+     <addressOffset>0x40</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>en</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>cm4_irq</name>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>mail0</name>
+     <description>Semaphore Mailbox 0 register.</description>
+     <addressOffset>0x44</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>data</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>irq1</name>
+     <description>Semaphore IRQ1 register.</description>
+     <addressOffset>0x48</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>en</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>rv32_irq</name>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>mail1</name>
+     <description>Semaphore Mailbox 1 register.</description>
+     <addressOffset>0x4C</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>data</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>status</name>
+     <description>Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.</description>
+     <addressOffset>0x100</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>status0</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status1</name>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status2</name>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status3</name>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status4</name>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status5</name>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status6</name>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>status7</name>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--SEMA The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
+                                     The peripheral contains eight semaphores that can be atomically set and cleared. It is left to the discretion of the software
+                                     architect to decide how and when the semaphores are used and how they are allocated. Existing hardware does not have to be
+                                     
+                                     modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.-->
  </peripherals>
 </device>
