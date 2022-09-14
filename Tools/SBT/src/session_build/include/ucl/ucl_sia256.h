@@ -93,7 +93,7 @@ typedef struct ucl_sia256_ctx ucl_sia256_ctx_t;
  *
  * @ingroup UCL_SIA256
  */
-#define UCL_SIA256          6
+#define UCL_SIA256 6
 #define UCL_SIA256_HASHSIZE 32
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SIA256.
@@ -119,7 +119,7 @@ typedef struct ucl_sia256_ctx ucl_sia256_ctx_t;
  *
  * @ingroup UCL_SIA256
  */
-int __API__ ucl_sia256(u8* hash, u8* data, u32 data_byteLen);
+int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SIA256 Init</b>.
@@ -134,7 +134,7 @@ int __API__ ucl_sia256(u8* hash, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_SIA256
  */
-int __API__ ucl_sia256_init(ucl_sia256_ctx_t* context);
+int __API__ ucl_sia256_init(ucl_sia256_ctx_t *context);
 
 /*============================================================================*/
 /** <b>SIA256 Core</b>.
@@ -154,7 +154,7 @@ int __API__ ucl_sia256_init(ucl_sia256_ctx_t* context);
  *
  * @ingroup UCL_SIA256
  */
-int __API__ ucl_sia256_core(ucl_sia256_ctx_t* context, u8* data, u32 data_byteLen);
+int __API__ ucl_sia256_core(ucl_sia256_ctx_t *context, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SIA256 Finish</b>.
@@ -175,7 +175,7 @@ int __API__ ucl_sia256_core(ucl_sia256_ctx_t* context, u8* data, u32 data_byteLe
  *
  * @ingroup UCL_SIA256
  */
-int __API__ ucl_sia256_finish(u8* hash, ucl_sia256_ctx_t* context);
+int __API__ ucl_sia256_finish(u8 *hash, ucl_sia256_ctx_t *context);
 
 #ifdef __cplusplus
 }

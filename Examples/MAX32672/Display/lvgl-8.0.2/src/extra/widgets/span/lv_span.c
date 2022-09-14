@@ -735,7 +735,7 @@ static void lv_draw_span(lv_obj_t* obj, const lv_area_t* coords, const lv_area_t
     /* init draw variable */
     lv_text_flag_t txt_flag = LV_TEXT_FLAG_NONE;
     lv_coord_t line_space   = lv_obj_get_style_text_line_space(obj, LV_PART_MAIN);
-    ;
+{}
     lv_coord_t max_width = lv_area_get_width(coords);
     lv_coord_t max_w     = max_width - spans->indent; /* first line need minus indent */
 

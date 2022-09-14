@@ -40,12 +40,12 @@
 // Barcode Decoder include
 #include "zbar.h"
 
-static zbar_image_scanner_t* image_scanner = NULL;
+static zbar_image_scanner_t *image_scanner = NULL;
 
 static int is_barcode_find = 0;
 
 /**************************** Static Functions *******************************/
-static void print_exec_time(const char* msg, unsigned int t_end, unsigned int t_start)
+static void print_exec_time(const char *msg, unsigned int t_end, unsigned int t_start)
 {
     printf("%s", msg);
 
@@ -59,10 +59,10 @@ static void print_exec_time(const char* msg, unsigned int t_end, unsigned int t_
 
 static void process_img(void)
 {
-    uint8_t* raw;
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
-    zbar_image_t* image;
+    zbar_image_t *image;
     unsigned int start_time;
     unsigned int end_time;
 
@@ -80,7 +80,7 @@ static void process_img(void)
 
     /* wrap image data */
     image = zbar_image_create();
-    zbar_image_set_format(image, *(int*)"Y800");
+    zbar_image_set_format(image, *(int *)"Y800");
     zbar_image_set_size(image, w, h);
     zbar_image_set_data(image, raw, w * h, zbar_image_free_data);
 
@@ -88,12 +88,12 @@ static void process_img(void)
     zbar_scan_image(image_scanner, image);
 
     /* extract results */
-    const zbar_symbol_t* symbol = zbar_image_first_symbol(image);
+    const zbar_symbol_t *symbol = zbar_image_first_symbol(image);
 
     for (; symbol; symbol = zbar_symbol_next(symbol)) {
         /* do something useful with results */
         zbar_symbol_type_t typ = zbar_symbol_get_type(symbol);
-        const char* data       = zbar_symbol_get_data(symbol);
+        const char *data = zbar_symbol_get_data(symbol);
         printf("decoded %s symbol \"%s\"\n", zbar_get_symbol_name(typ), data);
         is_barcode_find = 1;
     }

@@ -67,7 +67,7 @@ typedef struct _i2c_req_t mxc_i2c_req_t;
  * @return  0 if the byte should not be acknowledged (NACK), non-zero to
  *          acknowledge the byte.
  */
-typedef int (*mxc_i2c_getAck_t)(mxc_i2c_regs_t* i2c, unsigned char byte);
+typedef int (*mxc_i2c_getAck_t)(mxc_i2c_regs_t *i2c, unsigned char byte);
 
 /**
  * @brief   The callback routine used by the MXC_I2C_MasterTransactionAsync()
@@ -78,7 +78,7 @@ typedef int (*mxc_i2c_getAck_t)(mxc_i2c_regs_t* i2c, unsigned char byte);
  *                      transmitted is not acknowledged, negative if error.
  *                      See \ref MXC_Error_Codes for the list of error codes.
  */
-typedef void (*mxc_i2c_complete_cb_t)(mxc_i2c_req_t* req, int result);
+typedef void (*mxc_i2c_complete_cb_t)(mxc_i2c_req_t *req, int result);
 
 /**
  * @brief   The callback routine used by the I2C Read/Write FIFO DMA
@@ -98,15 +98,15 @@ typedef void (*mxc_i2c_dma_complete_cb_t)(int len, int result);
  * MXC_I2C_MasterTransactionAsync() functions.
  */
 struct _i2c_req_t {
-    mxc_i2c_regs_t* i2c; ///< Pointer to I2C registers (selects the
+    mxc_i2c_regs_t *i2c; ///< Pointer to I2C registers (selects the
     ///< I2C block used.)
-    unsigned int addr;     ///< The 7-bit or 10-bit address of the slave.
-    unsigned char* tx_buf; ///< The buffer containing the bytes to write.
-    unsigned int tx_len;   ///< The number of bytes to write. On return
+    unsigned int addr; ///< The 7-bit or 10-bit address of the slave.
+    unsigned char *tx_buf; ///< The buffer containing the bytes to write.
+    unsigned int tx_len; ///< The number of bytes to write. On return
     ///< from the function, this will be set to
     ///< the number of bytes actually transmitted.
-    unsigned char* rx_buf; ///< The buffer to read the data into.
-    unsigned int rx_len;   ///< The number of bytes to read.  On return
+    unsigned char *rx_buf; ///< The buffer to read the data into.
+    unsigned int rx_len; ///< The number of bytes to read.  On return
     ///< from the function, this will be set to
     ///< the number of bytes actually received.
     int restart; ///< Controls whether the transaction is
@@ -141,7 +141,7 @@ typedef enum {
     MXC_I2C_EVT_TX_THRESH, ///< The transmit FIFO contains fewer bytes than its
     ///< threshold level.
     MXC_I2C_EVT_TRANS_COMP, ///< The transaction has ended.
-    MXC_I2C_EVT_UNDERFLOW,  ///< The master has attempted a read when the
+    MXC_I2C_EVT_UNDERFLOW, ///< The master has attempted a read when the
     ///< transmit FIFO was empty.
     MXC_I2C_EVT_OVERFLOW, ///< The master has written data when the receive
     ///< FIFO was already full.
@@ -163,10 +163,10 @@ typedef enum {
  *          non-zero to not acknowledge.  The return value is ignored for all
  *          other event types.
  */
-typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event,
-                                       void* data);
+typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event,
+                                       void *data);
 
-#define MXC_I2C_STD_MODE   100000
+#define MXC_I2C_STD_MODE 100000
 #define MXC_I2C_FAST_SPEED 400000
 
 /***** Function Prototypes *****/
@@ -189,7 +189,7 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_Init(mxc_i2c_regs_t* i2c, int masterMode, unsigned int slaveAddr);
+int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr);
 
 /**
  * @brief   Set slave address for I2C instances acting as slaves on the bus.
@@ -203,7 +203,7 @@ int MXC_I2C_Init(mxc_i2c_regs_t* i2c, int masterMode, unsigned int slaveAddr);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t* i2c, unsigned int slaveAddr, int idx);
+int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx);
 
 /**
  * @brief   Disable and shutdown I2C peripheral.
@@ -212,7 +212,7 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t* i2c, unsigned int slaveAddr, int idx);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c);
+int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Set the frequency of the I2C interface.
@@ -223,7 +223,7 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c);
  * @return  Negative if error, otherwise actual speed set. See \ref
  *          MXC_Error_Codes for the list of error return codes.
  */
-int MXC_I2C_SetFrequency(mxc_i2c_regs_t* i2c, unsigned int hz);
+int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz);
 
 /**
  * @brief   Get the frequency of the I2C interface.
@@ -232,7 +232,7 @@ int MXC_I2C_SetFrequency(mxc_i2c_regs_t* i2c, unsigned int hz);
  *
  * @return  The I2C bus frequency in Hertz
  */
-unsigned int MXC_I2C_GetFrequency(mxc_i2c_regs_t* i2c);
+unsigned int MXC_I2C_GetFrequency(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Checks if the given I2C bus can be placed in sleep more.
@@ -246,7 +246,7 @@ unsigned int MXC_I2C_GetFrequency(mxc_i2c_regs_t* i2c);
  * @return  #E_NO_ERROR if ready, and non-zero if busy or error. See \ref
  *          MXC_Error_Codes for the list of error return codes.
  */
-int MXC_I2C_ReadyForSleep(mxc_i2c_regs_t* i2c);
+int MXC_I2C_ReadyForSleep(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Enables or disables clock stretching by the slave.
@@ -259,7 +259,7 @@ int MXC_I2C_ReadyForSleep(mxc_i2c_regs_t* i2c);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_SetClockStretching(mxc_i2c_regs_t* i2c, int enable);
+int MXC_I2C_SetClockStretching(mxc_i2c_regs_t *i2c, int enable);
 
 /**
  * @brief   Determines if clock stretching has been enabled.
@@ -268,7 +268,7 @@ int MXC_I2C_SetClockStretching(mxc_i2c_regs_t* i2c, int enable);
  *
  * @return  Zero if clock stretching is disabled, non-zero otherwise
  */
-int MXC_I2C_GetClockStretching(mxc_i2c_regs_t* i2c);
+int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */
@@ -285,7 +285,7 @@ int MXC_I2C_GetClockStretching(mxc_i2c_regs_t* i2c);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_Start(mxc_i2c_regs_t* i2c);
+int MXC_I2C_Start(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Generate a stop condition on the I2C bus.
@@ -294,7 +294,7 @@ int MXC_I2C_Start(mxc_i2c_regs_t* i2c);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_Stop(mxc_i2c_regs_t* i2c);
+int MXC_I2C_Stop(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Write a single byte to the I2C bus.
@@ -311,7 +311,7 @@ int MXC_I2C_Stop(mxc_i2c_regs_t* i2c);
  * @return  0 if byte is acknowledged, 1 if not acknowledged, negative if
  *          error. See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_I2C_WriteByte(mxc_i2c_regs_t* i2c, unsigned char byte);
+int MXC_I2C_WriteByte(mxc_i2c_regs_t *i2c, unsigned char byte);
 
 /**
  * @brief   Read a single byte from the I2C bus.
@@ -327,7 +327,7 @@ int MXC_I2C_WriteByte(mxc_i2c_regs_t* i2c, unsigned char byte);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_ReadByte(mxc_i2c_regs_t* i2c, unsigned char* byte, int ack);
+int MXC_I2C_ReadByte(mxc_i2c_regs_t *i2c, unsigned char *byte, int ack);
 
 /**
  * @brief   Read a single byte from the I2C bus.
@@ -351,7 +351,7 @@ int MXC_I2C_ReadByte(mxc_i2c_regs_t* i2c, unsigned char* byte, int ack);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_ReadByteInteractive(mxc_i2c_regs_t* i2c, unsigned char* byte, mxc_i2c_getAck_t getAck);
+int MXC_I2C_ReadByteInteractive(mxc_i2c_regs_t *i2c, unsigned char *byte, mxc_i2c_getAck_t getAck);
 
 /**
  * @brief   Write multiple bytes to the I2C bus.
@@ -370,7 +370,7 @@ int MXC_I2C_ReadByteInteractive(mxc_i2c_regs_t* i2c, unsigned char* byte, mxc_i2
  *          acknowledged, negative if error. See \ref MXC_Error_Codes for the
  *          list of error return codes.
  */
-int MXC_I2C_Write(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len);
+int MXC_I2C_Write(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int *len);
 
 /**
  * @brief   Read multiple bytes from the I2C bus.
@@ -389,7 +389,7 @@ int MXC_I2C_Write(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_Read(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len, int ack);
+int MXC_I2C_Read(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int *len, int ack);
 
 /**
  * @brief   Unloads bytes from the receive FIFO.
@@ -400,7 +400,7 @@ int MXC_I2C_Read(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len, i
  *
  * @return  The number of bytes actually read.
  */
-int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsigned int len);
+int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsigned int len);
 
 /**
  * @brief   Unloads bytes from the receive FIFO using DMA for longer reads.
@@ -414,7 +414,7 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsig
  *
  * @return  See \ref MXC_Error_Codes for a list of return values.
  */
-int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
+int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int len,
                           mxc_i2c_dma_complete_cb_t callback);
 
 /**
@@ -424,7 +424,7 @@ int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned in
  *
  * @return  The number of bytes available.
  */
-int MXC_I2C_GetRXFIFOAvailable(mxc_i2c_regs_t* i2c);
+int MXC_I2C_GetRXFIFOAvailable(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Loads bytes into the transmit FIFO.
@@ -435,7 +435,7 @@ int MXC_I2C_GetRXFIFOAvailable(mxc_i2c_regs_t* i2c);
  *
  * @return  The number of bytes actually written.
  */
-int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsigned int len);
+int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsigned int len);
 
 /**
  * @brief   Loads bytes into the transmit FIFO using DMA for longer writes.
@@ -448,7 +448,7 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsi
  *
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
-int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int len,
+int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int len,
                            mxc_i2c_dma_complete_cb_t callback);
 
 /**
@@ -458,21 +458,21 @@ int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned i
  *
  * @return  The number of bytes available.
  */
-int MXC_I2C_GetTXFIFOAvailable(mxc_i2c_regs_t* i2c);
+int MXC_I2C_GetTXFIFOAvailable(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Removes and discards all bytes currently in the receive FIFO.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_ClearRXFIFO(mxc_i2c_regs_t* i2c);
+void MXC_I2C_ClearRXFIFO(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Removes and discards all bytes currently in the transmit FIFO.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_ClearTXFIFO(mxc_i2c_regs_t* i2c);
+void MXC_I2C_ClearTXFIFO(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Get the presently set interrupt flags.
@@ -483,7 +483,7 @@ void MXC_I2C_ClearTXFIFO(mxc_i2c_regs_t* i2c);
  *
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
-int MXC_I2C_GetFlags(mxc_i2c_regs_t* i2c, unsigned int* flags0, unsigned int* flags1);
+int MXC_I2C_GetFlags(mxc_i2c_regs_t *i2c, unsigned int *flags0, unsigned int *flags1);
 
 /**
  * @brief   Clears the Interrupt Flags.
@@ -492,7 +492,7 @@ int MXC_I2C_GetFlags(mxc_i2c_regs_t* i2c, unsigned int* flags0, unsigned int* fl
  * @param   flags0      Flags to clear in interrupt register intfl0.
  * @param   flags1      Flags to clear in interrupt register intfl1.
  */
-void MXC_I2C_ClearFlags(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1);
+void MXC_I2C_ClearFlags(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1);
 
 /**
  * @brief   Enable Interrupts.
@@ -501,7 +501,7 @@ void MXC_I2C_ClearFlags(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int f
  * @param   flags0      Interrupts to be enabled in int->en0
  * @param   flags1      Interrupts to be enabled in int->en1
  */
-void MXC_I2C_EnableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1);
+void MXC_I2C_EnableInt(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1);
 
 /**
  * @brief   Disable Interrupts.
@@ -510,7 +510,7 @@ void MXC_I2C_EnableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int fl
  * @param   flags0      Interrupts to be disabled in int->en0
  * @param   flags1      Interrupts to be disabled in int->en1
  */
-void MXC_I2C_DisableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1);
+void MXC_I2C_DisableInt(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1);
 
 /**
  * @brief   Enables the slave preload mode
@@ -520,28 +520,28 @@ void MXC_I2C_DisableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int f
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_EnablePreload(mxc_i2c_regs_t* i2c);
+void MXC_I2C_EnablePreload(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Disable the slave preload mode
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_DisablePreload(mxc_i2c_regs_t* i2c);
+void MXC_I2C_DisablePreload(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Enables the slave to respond to the general call address
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_EnableGeneralCall(mxc_i2c_regs_t* i2c);
+void MXC_I2C_EnableGeneralCall(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Prevents the slave from responding to the general call address
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t* i2c);
+void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Set the I2C Timeout
@@ -553,7 +553,7 @@ void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t* i2c);
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   timeout     Timeout in uS
  */
-void MXC_I2C_SetTimeout(mxc_i2c_regs_t* i2c, unsigned int timeout);
+void MXC_I2C_SetTimeout(mxc_i2c_regs_t *i2c, unsigned int timeout);
 
 /**
  * @brief   Get the current I2C timeout
@@ -562,7 +562,7 @@ void MXC_I2C_SetTimeout(mxc_i2c_regs_t* i2c, unsigned int timeout);
  *
  * @return  The current timeout in uS
  */
-unsigned int MXC_I2C_GetTimeout(mxc_i2c_regs_t* i2c);
+unsigned int MXC_I2C_GetTimeout(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Attempts to recover the I2C bus, ensuring the I2C lines are idle.
@@ -588,7 +588,7 @@ unsigned int MXC_I2C_GetTimeout(mxc_i2c_regs_t* i2c);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_Recover(mxc_i2c_regs_t* i2c, unsigned int retries);
+int MXC_I2C_Recover(mxc_i2c_regs_t *i2c, unsigned int retries);
 
 /* ************************************************************************* */
 /* Transaction level functions                                               */
@@ -615,7 +615,7 @@ int MXC_I2C_Recover(mxc_i2c_regs_t* i2c, unsigned int retries);
  *          acknowledged, negative if error. See \ref MXC_Error_Codes for the
  *          list of error return codes.
  */
-int MXC_I2C_MasterTransaction(mxc_i2c_req_t* req);
+int MXC_I2C_MasterTransaction(mxc_i2c_req_t *req);
 
 /**
  * @brief   Performs a non-blocking I2C Master transaction.
@@ -642,7 +642,7 @@ int MXC_I2C_MasterTransaction(mxc_i2c_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t* req);
+int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t *req);
 
 /**
  * @brief   Performs a non-blocking I2C Master transaction using DMA for reduced time
@@ -670,7 +670,7 @@ int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_MasterTransactionDMA(mxc_i2c_req_t* req);
+int MXC_I2C_MasterTransactionDMA(mxc_i2c_req_t *req);
 
 /**
  * @brief   Performs a blocking I2C Slave transaction.
@@ -710,7 +710,7 @@ int MXC_I2C_MasterTransactionDMA(mxc_i2c_req_t* req);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callback);
+int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t callback);
 
 /**
  * @brief   Performs a non-blocking I2C Slave transaction.
@@ -753,7 +753,7 @@ int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callba
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_SlaveTransactionAsync(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callback);
+int MXC_I2C_SlaveTransactionAsync(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t callback);
 
 /**
  * @brief   Set the receive threshold level.
@@ -776,7 +776,7 @@ int MXC_I2C_SlaveTransactionAsync(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t c
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_SetRXThreshold(mxc_i2c_regs_t* i2c, unsigned int numBytes);
+int MXC_I2C_SetRXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes);
 
 /**
  * @brief   Get the current receive threshold level.
@@ -785,7 +785,7 @@ int MXC_I2C_SetRXThreshold(mxc_i2c_regs_t* i2c, unsigned int numBytes);
  *
  * @return  The receive threshold value (in bytes).
  */
-unsigned int MXC_I2C_GetRXThreshold(mxc_i2c_regs_t* i2c);
+unsigned int MXC_I2C_GetRXThreshold(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Set the transmit threshold level.
@@ -809,7 +809,7 @@ unsigned int MXC_I2C_GetRXThreshold(mxc_i2c_regs_t* i2c);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t* i2c, unsigned int numBytes);
+int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes);
 
 /**
  * @brief   Get the current transmit threshold level.
@@ -818,7 +818,7 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t* i2c, unsigned int numBytes);
  *
  * @return  The transmit threshold value (in bytes).
  */
-unsigned int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t* i2c);
+unsigned int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Abort any asynchronous requests in progress.
@@ -829,7 +829,7 @@ unsigned int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t* i2c);
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_AbortAsync(mxc_i2c_regs_t* i2c);
+void MXC_I2C_AbortAsync(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   The processing function for asynchronous transactions.
@@ -840,7 +840,7 @@ void MXC_I2C_AbortAsync(mxc_i2c_regs_t* i2c);
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  */
-void MXC_I2C_AsyncHandler(mxc_i2c_regs_t* i2c);
+void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   The processing function for DMA transactions.

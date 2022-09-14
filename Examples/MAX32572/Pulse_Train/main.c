@@ -69,11 +69,11 @@ void ContinuousPulseTrain(void)
 
     //setup PT configuration
     mxc_pt_cfg_t ptConfig;
-    ptConfig.channel   = 4; //PT4
-    ptConfig.bps       = 2; //bit rate
-    ptConfig.ptLength  = 5; //bits
-    ptConfig.pattern   = 0x16;
-    ptConfig.loop      = 0; //continuous loop
+    ptConfig.channel = 4; //PT4
+    ptConfig.bps = 2; //bit rate
+    ptConfig.ptLength = 5; //bits
+    ptConfig.pattern = 0x16;
+    ptConfig.loop = 0; //continuous loop
     ptConfig.loopDelay = 0;
 
     MXC_PT_Config(&ptConfig);
@@ -88,7 +88,7 @@ void SquareWave(void)
     //Setup GPIO to PT output function
     //GPIO P0.12 uses PT3
 
-    uint32_t freq = 10;            //Hz
+    uint32_t freq = 10; //Hz
     MXC_PT_SqrWaveConfig(3, freq); //PT3
 
     //start PT3
@@ -105,14 +105,13 @@ int main(void)
     printf("\nConnect external LEDS to see the demo.\n");
     printf("LED0 to P0.13 and LED1 to P0.12");
 
-    NVIC_EnableIRQ(PT_IRQn);      //enabled default interrupt handler
-    MXC_PT_EnableInt(ALL_PT);     //enabled interrupts for all PT
+    NVIC_EnableIRQ(PT_IRQn); //enabled default interrupt handler
+    MXC_PT_EnableInt(ALL_PT); //enabled interrupts for all PT
     MXC_PT_Init(MXC_PT_CLK_DIV1); //initialize pulse trains
 
     //configure and start pulse trains
     ContinuousPulseTrain();
     SquareWave();
 
-    while (1) {
-    }
+    while (1) {}
 }

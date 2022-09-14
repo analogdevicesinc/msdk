@@ -38,10 +38,10 @@
 #define __LOG_H__
 
 #define LOG_L_SUCCESS 1
-#define LOG_L_ERROR   1
-#define LOG_L_WARN    2
-#define LOG_L_INFO    3
-#define LOG_L_DEBUG   4
+#define LOG_L_ERROR 1
+#define LOG_L_WARN 2
+#define LOG_L_INFO 3
+#define LOG_L_DEBUG 4
 
 #ifdef __WIN
 
@@ -69,13 +69,13 @@ short bg_color_g;
 
 #else /* WINDOWS */
 
-#define RED   "\e[5m\e[1m\x1B[31m"
-#define GRN   "\e[1m\x1B[32m"
-#define YEL   "\e[1m\x1B[33m"
-#define BLU   "\e[1m\x1B[34m"
-#define MAG   "\e[1m\x1B[35m"
-#define CYN   "\e[1m\x1B[36m"
-#define WHT   "\e[1m\x1B[37m"
+#define RED "\e[5m\e[1m\x1B[31m"
+#define GRN "\e[1m\x1B[32m"
+#define YEL "\e[1m\x1B[33m"
+#define BLU "\e[1m\x1B[34m"
+#define MAG "\e[1m\x1B[35m"
+#define CYN "\e[1m\x1B[36m"
+#define WHT "\e[1m\x1B[37m"
 #define RESET "\x1B[0m"
 
 #define set_color(COL)   \
@@ -92,10 +92,10 @@ short bg_color_g;
 #endif
 
 #define print_success(...) print_lvl(LOG_L_SUCCESS, "SUCCESS", GRN, __VA_ARGS__)
-#define print_info(...)    print_lvl(LOG_L_INFO, "INFO", BLU, __VA_ARGS__)
-#define print_warn(...)    print_lvl(LOG_L_WARN, "WARNING", YEL, __VA_ARGS__)
-#define print_debug(...)   print_lvl(LOG_L_DEBUG, "DEBUG", WHT, __VA_ARGS__)
-#define print_error(...)   print_lvl(LOG_L_ERROR, "ERROR", RED, __VA_ARGS__)
+#define print_info(...) print_lvl(LOG_L_INFO, "INFO", BLU, __VA_ARGS__)
+#define print_warn(...) print_lvl(LOG_L_WARN, "WARNING", YEL, __VA_ARGS__)
+#define print_debug(...) print_lvl(LOG_L_DEBUG, "DEBUG", WHT, __VA_ARGS__)
+#define print_error(...) print_lvl(LOG_L_ERROR, "ERROR", RED, __VA_ARGS__)
 
 #define print_lvl(LVL, LVL_STR, COLR, ...) \
     do {                                   \

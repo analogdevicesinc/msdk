@@ -65,6 +65,5 @@ int main(void)
     MXC_SYS_RISCVRun();
 
     /* Enter LPM */
-    while (1) {
-    }
+    while (1) {}
 }

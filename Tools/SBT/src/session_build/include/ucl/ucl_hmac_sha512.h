@@ -64,7 +64,7 @@ extern "C" {
  *
  * @ingroup UCL_HMAC_SHA512
  */
-int ucl_hmac_sha512(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+int ucl_hmac_sha512(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen, u8 *key,
                     u32 key_byteLen);
 
 /** <b>The initialisation of HMAC-SHA512</b>.
@@ -80,7 +80,7 @@ int ucl_hmac_sha512(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, 
  *
  * @ingroup UCL_HMAC_SHA512
  */
-int ucl_hmac_sha512_init(ucl_sha512_ctx_t* context, u8* key, u32 key_byteLen);
+int ucl_hmac_sha512_init(ucl_sha512_ctx_t *context, u8 *key, u32 key_byteLen);
 
 /** <b>The core of SHA512 </b>.
  *
@@ -98,7 +98,7 @@ int ucl_hmac_sha512_init(ucl_sha512_ctx_t* context, u8* key, u32 key_byteLen);
  *
  * @ingroup UCL_HMAC_SHA512
  */
-int ucl_hmac_sha512_core(ucl_sha512_ctx_t* context, u8* data, u32 byteLen);
+int ucl_hmac_sha512_core(ucl_sha512_ctx_t *context, u8 *data, u32 byteLen);
 
 /** <b>Finish the process of SHA512</b>.
  *
@@ -119,7 +119,7 @@ int ucl_hmac_sha512_core(ucl_sha512_ctx_t* context, u8* data, u32 byteLen);
  *
  * @ingroup UCL_HMAC_SHA512
  */
-int ucl_hmac_sha512_finish(u8* mac, u32 mac_byteLen, ucl_sha512_ctx_t* context, u8* key,
+int ucl_hmac_sha512_finish(u8 *mac, u32 mac_byteLen, ucl_sha512_ctx_t *context, u8 *key,
                            u32 key_byteLen);
 
 #ifdef __cplusplus

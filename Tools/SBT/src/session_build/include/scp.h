@@ -49,7 +49,7 @@ extern "C" {
  * @param msg  Debug message  - Packet name
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int data_link(ctl_code_t ctl_code, const uint8_t* payload_l, uint16_t payload_len, const char* msg);
+int data_link(ctl_code_t ctl_code, const uint8_t *payload_l, uint16_t payload_len, const char *msg);
 
 /**
  * Generate an SCP Connection request packet
@@ -107,14 +107,14 @@ int dump(void);
  * @param msg Debug message  - Packet name
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int session_layer(session_cmd_t cmd, const uint8_t* data, uint16_t data_len, const char* msg);
+int session_layer(session_cmd_t cmd, const uint8_t *data, uint16_t data_len, const char *msg);
 
 /**
  * Generate a generic SCP response packet
  * @param msg
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int generic_response(char* msg);
+int generic_response(char *msg);
 
 /**
  * Perform an SCP Hello request operation
@@ -133,7 +133,7 @@ int hello_reply(void);
  * @param signaturefile File of the CRK signed by the MRK
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int write_crk(char* signaturefile);
+int write_crk(char *signaturefile);
 
 /**
  * Perform an SCP rewrite CRK operation
@@ -141,7 +141,7 @@ int write_crk(char* signaturefile);
  * @param newsignaturefile File of the new CRK signed by the MRK
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int rewrite_crk(const char* oldsignaturefile, const char* newsignaturefile);
+int rewrite_crk(const char *oldsignaturefile, const char *newsignaturefile);
 
 /**
  * Perform an SCP erase operation
@@ -149,7 +149,7 @@ int rewrite_crk(const char* oldsignaturefile, const char* newsignaturefile);
  * @param address_offset Address Offset
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int del_mem(char* sfilename, size_t address_offset);
+int del_mem(char *sfilename, size_t address_offset);
 
 /**
  * Perform an SCP write operation
@@ -158,7 +158,7 @@ int del_mem(char* sfilename, size_t address_offset);
  * @param data_addr Address where to write the data
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int write_mem(const uint8_t* data, size_t data_len, size_t data_addr);
+int write_mem(const uint8_t *data, size_t data_len, size_t data_addr);
 
 /**
  * Perform an SCP verify operation
@@ -167,7 +167,7 @@ int write_mem(const uint8_t* data, size_t data_len, size_t data_addr);
  * @param data_addr Address where to verify the data
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int verify_data(const uint8_t* data, size_t data_len, size_t data_addr);
+int verify_data(const uint8_t *data, size_t data_len, size_t data_addr);
 
 /**
  * Perform an SCP erase operation
@@ -191,7 +191,7 @@ int write_timeout(scp_target_t timeout_target_char, size_t timeout_value);
  * @param param_value Parameter value
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int write_params(scp_target_t param_target_char, const uint8_t* param_value);
+int write_params(scp_target_t param_target_char, const uint8_t *param_value);
 
 /**
  * Perform an SCP write stimulus operation
@@ -241,7 +241,7 @@ int write_app_version(size_t version);
  * @param data_length data length
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int write_otp(size_t offset, const uint8_t* data, size_t data_length);
+int write_otp(size_t offset, const uint8_t *data, size_t data_length);
 
 /**
  * Perform an SCP erase and write operation with the data in a file
@@ -249,7 +249,7 @@ int write_otp(size_t offset, const uint8_t* data, size_t data_length);
  * @param address_offset address offset
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int write_file(char* sfilename, size_t address_offset);
+int write_file(char *sfilename, size_t address_offset);
 
 /**
  * Perform an SCP write operation with the data in a file
@@ -257,7 +257,7 @@ int write_file(char* sfilename, size_t address_offset);
  * @param address_offset address offset
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int write_only(char* sfilename, size_t address_offset);
+int write_only(char *sfilename, size_t address_offset);
 
 /**
  * Perform an SCP verify operation with the data in a file
@@ -266,7 +266,7 @@ int write_only(char* sfilename, size_t address_offset);
  * @param b_dump Include or not dump packet
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int verify_file(char* sfilename, size_t address_offset, char b_dump);
+int verify_file(char *sfilename, size_t address_offset, char b_dump);
 
 /**
  * Parse a SCP script and store all operation in an array to be processed later
@@ -275,7 +275,7 @@ int verify_file(char* sfilename, size_t address_offset, char b_dump);
  * @param list_length number of operations
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int parse_scp_script(const char* filename, script_cmd_list_t** script, size_t* list_length);
+int parse_scp_script(const char *filename, script_cmd_list_t **script, size_t *list_length);
 
 /**
  * Process SCP operation
@@ -283,7 +283,7 @@ int parse_scp_script(const char* filename, script_cmd_list_t** script, size_t* l
  * @param list_length number of operation
  * @return ERR_OK if OK, and error_code otherwise.
  */
-int process_script(script_cmd_list_t* script, size_t list_length);
+int process_script(script_cmd_list_t *script, size_t list_length);
 
 #ifdef __cplusplus
 }

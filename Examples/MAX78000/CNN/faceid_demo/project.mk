@@ -13,5 +13,6 @@
 
 # Add your config here!
 
-
+$(info Note: This project is designed and tested for the OV7692 only.)
+override CAMERA=OV7692
 

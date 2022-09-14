@@ -94,9 +94,9 @@ extern "C" {
  * @ingroup UCL_3DES
  */
 struct ucl_3des_ctx {
-    int mode;                                                 /**< Ciphering Mode.*/
-    u8 memory[8];                                             /**< Intermediate state.*/
-    u32 index;                                                /**< index.*/
+    int mode; /**< Ciphering Mode.*/
+    u8 memory[8]; /**< Intermediate state.*/
+    u32 index; /**< index.*/
     u32 subKeys[UCL_3DES_KEYNUMBER * UCL_DES_NB_SUBKEYS * 2]; /**< 3DES Sub-keys.
                                                             * @see UCL_3DES_KEYNUMBER
                                                             * @see UCL_DES_NB_SUBKEYS
@@ -129,9 +129,9 @@ typedef struct ucl_3des_ctx ucl_3des_ctx_t;
  *
  * @ingroup UCL_3DES
  */
-int ucl_3des(u8* dst, u8* src, u8* key, int mode);
+int ucl_3des(u8 *dst, u8 *src, u8 *key, int mode);
 
-void tdes_eee_ks(u32* subKeys, u8* key, int mode);
+void tdes_eee_ks(u32 *subKeys, u8 *key, int mode);
 
 #ifdef __cplusplus
 }

@@ -45,8 +45,8 @@
 
 /* **** Definitions **** */
 #define HTMR_CTRL_RESET_DEFAULT (0x8000UL)
-#define BUSY_TIMEOUT            (10000) // Timeout counts for the Busy bit
-#define ASYNC_MODE              (htmr->ctrl & MXC_F_HTMR_REVA_CTRL_ACRE)
+#define BUSY_TIMEOUT (10000) // Timeout counts for the Busy bit
+#define ASYNC_MODE (htmr->ctrl & MXC_F_HTMR_REVA_CTRL_ACRE)
 
 #define MXC_HTMR_ALL_INT_FLAGS \
     (MXC_F_HTMR_REVA_CTRL_RDY | MXC_F_HTMR_REVA_CTRL_ALDF | MXC_F_HTMR_REVA_CTRL_ALSF)
@@ -54,43 +54,43 @@
     (MXC_F_HTMR_REVA_CTRL_RDYE | MXC_F_HTMR_REVA_CTRL_ADE | MXC_F_HTMR_REVA_CTRL_ASE)
 
 /* ***** Functions ***** */
-int MXC_HTMR_RevA_Init(mxc_htmr_reva_regs_t* htmr, uint32_t sec, uint8_t ssec)
+int MXC_HTMR_RevA_Init(mxc_htmr_reva_regs_t *htmr, uint32_t sec, uint8_t ssec)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
     }
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl = MXC_F_HTMR_REVA_CTRL_WE; //  Allow Writes
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl = HTMR_CTRL_RESET_DEFAULT; // Start with a Clean Register
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl |= MXC_F_HTMR_REVA_CTRL_WE; // Set Write Enable, allow writing to reg.
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ssec = ssec;
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->sec = sec;
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
@@ -105,26 +105,26 @@ int MXC_HTMR_RevA_Init(mxc_htmr_reva_regs_t* htmr, uint32_t sec, uint8_t ssec)
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_Start(mxc_htmr_reva_regs_t* htmr)
+int MXC_HTMR_RevA_Start(mxc_htmr_reva_regs_t *htmr)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
     }
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl |= MXC_F_HTMR_REVA_CTRL_WE; // Allow writing to registers
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     // Can only write if WE=1 and BUSY=0
     htmr->ctrl |= MXC_F_HTMR_REVA_CTRL_HTEN; // setting RTCE = 1
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
@@ -133,26 +133,26 @@ int MXC_HTMR_RevA_Start(mxc_htmr_reva_regs_t* htmr)
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_Stop(mxc_htmr_reva_regs_t* htmr)
+int MXC_HTMR_RevA_Stop(mxc_htmr_reva_regs_t *htmr)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
     }
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl |= MXC_F_HTMR_REVA_CTRL_WE; // Allow writing to registers
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     // Can only write if WE=1 and BUSY=0
     htmr->ctrl &= ~MXC_F_HTMR_REVA_CTRL_HTEN; // setting RTCE = 0
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
@@ -161,7 +161,7 @@ int MXC_HTMR_RevA_Stop(mxc_htmr_reva_regs_t* htmr)
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_GetShortCount(mxc_htmr_reva_regs_t* htmr)
+int MXC_HTMR_RevA_GetShortCount(mxc_htmr_reva_regs_t *htmr)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
@@ -169,7 +169,7 @@ int MXC_HTMR_RevA_GetShortCount(mxc_htmr_reva_regs_t* htmr)
 
     // Don't bother calling CheckBusy() if we're in async mode
     if (!ASYNC_MODE) {
-        if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+        if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
             return E_BUSY;
         }
     }
@@ -177,7 +177,7 @@ int MXC_HTMR_RevA_GetShortCount(mxc_htmr_reva_regs_t* htmr)
     return htmr->ssec;
 }
 
-int MXC_HTMR_RevA_GetLongCount(mxc_htmr_reva_regs_t* htmr)
+int MXC_HTMR_RevA_GetLongCount(mxc_htmr_reva_regs_t *htmr)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
@@ -185,7 +185,7 @@ int MXC_HTMR_RevA_GetLongCount(mxc_htmr_reva_regs_t* htmr)
 
     // Don't bother calling CheckBusy() if we're in async mode
     if (!ASYNC_MODE) {
-        if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+        if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
             return E_BUSY;
         }
     }
@@ -193,50 +193,50 @@ int MXC_HTMR_RevA_GetLongCount(mxc_htmr_reva_regs_t* htmr)
     return htmr->sec;
 }
 
-int MXC_HTMR_RevA_SetLongAlarm(mxc_htmr_reva_regs_t* htmr, uint32_t ras)
+int MXC_HTMR_RevA_SetLongAlarm(mxc_htmr_reva_regs_t *htmr, uint32_t ras)
 {
     // compare with maximum value
     if (ras > 0xFFFFF) {
         return E_BAD_PARAM;
     }
 
-    if (MXC_HTMR_DisableInt((mxc_htmr_regs_t*)htmr, MXC_F_HTMR_REVA_CTRL_ADE) == E_BUSY) {
+    if (MXC_HTMR_DisableInt((mxc_htmr_regs_t *)htmr, MXC_F_HTMR_REVA_CTRL_ADE) == E_BUSY) {
         return E_BUSY;
     }
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ras = (ras << MXC_F_HTMR_RAS_RAS_POS) & MXC_F_HTMR_RAS_RAS;
 
-    if (MXC_HTMR_EnableInt((mxc_htmr_regs_t*)htmr, MXC_F_HTMR_REVA_CTRL_ADE) == E_BUSY) {
+    if (MXC_HTMR_EnableInt((mxc_htmr_regs_t *)htmr, MXC_F_HTMR_REVA_CTRL_ADE) == E_BUSY) {
         return E_BUSY;
     }
 
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_SetShortAlarm(mxc_htmr_reva_regs_t* htmr, uint32_t rssa)
+int MXC_HTMR_RevA_SetShortAlarm(mxc_htmr_reva_regs_t *htmr, uint32_t rssa)
 {
-    if (MXC_HTMR_DisableInt((mxc_htmr_regs_t*)htmr, MXC_F_HTMR_REVA_CTRL_ASE) == E_BUSY) {
+    if (MXC_HTMR_DisableInt((mxc_htmr_regs_t *)htmr, MXC_F_HTMR_REVA_CTRL_ASE) == E_BUSY) {
         return E_BUSY;
     }
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->rssa = (rssa << MXC_F_HTMR_RSSA_RSSA_POS) & MXC_F_HTMR_RSSA_RSSA;
 
-    if (MXC_HTMR_EnableInt((mxc_htmr_regs_t*)htmr, MXC_F_HTMR_REVA_CTRL_ASE) == E_BUSY) {
+    if (MXC_HTMR_EnableInt((mxc_htmr_regs_t *)htmr, MXC_F_HTMR_REVA_CTRL_ASE) == E_BUSY) {
         return E_BUSY;
     }
 
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_CheckBusy(mxc_htmr_reva_regs_t* htmr)
+int MXC_HTMR_RevA_CheckBusy(mxc_htmr_reva_regs_t *htmr)
 {
     MXC_DelayAsync(MXC_DELAY_USEC(BUSY_TIMEOUT), NULL);
 
@@ -251,7 +251,7 @@ int MXC_HTMR_RevA_CheckBusy(mxc_htmr_reva_regs_t* htmr)
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_GetFlags(mxc_htmr_reva_regs_t* htmr)
+int MXC_HTMR_RevA_GetFlags(mxc_htmr_reva_regs_t *htmr)
 {
     if (htmr == NULL) {
         return E_NULL_PTR;
@@ -260,9 +260,9 @@ int MXC_HTMR_RevA_GetFlags(mxc_htmr_reva_regs_t* htmr)
     return htmr->ctrl & MXC_HTMR_ALL_INT_FLAGS;
 }
 
-int MXC_HTMR_RevA_ClearFlags(mxc_htmr_reva_regs_t* htmr, int flags)
+int MXC_HTMR_RevA_ClearFlags(mxc_htmr_reva_regs_t *htmr, int flags)
 {
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
@@ -271,30 +271,30 @@ int MXC_HTMR_RevA_ClearFlags(mxc_htmr_reva_regs_t* htmr, int flags)
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_EnableInt(mxc_htmr_reva_regs_t* htmr, uint32_t mask)
+int MXC_HTMR_RevA_EnableInt(mxc_htmr_reva_regs_t *htmr, uint32_t mask)
 {
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl |= (mask & MXC_HTMR_ALL_INT_ENABLES); // Disable Long Interval Interrupt
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     return E_SUCCESS;
 }
 
-int MXC_HTMR_RevA_DisableInt(mxc_htmr_reva_regs_t* htmr, uint32_t mask)
+int MXC_HTMR_RevA_DisableInt(mxc_htmr_reva_regs_t *htmr, uint32_t mask)
 {
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 
     htmr->ctrl &= ~(mask & MXC_HTMR_ALL_INT_ENABLES); // Disable Long Interval Interrupt
 
-    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t*)htmr)) {
+    if (MXC_HTMR_CheckBusy((mxc_htmr_regs_t *)htmr)) {
         return E_BUSY;
     }
 

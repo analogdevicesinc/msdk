@@ -58,9 +58,9 @@ extern "C" {
   *
   */
 typedef struct _mxc_crc_req_t {
-    uint32_t* dataBuffer; ///< Pointer to the data
-    uint32_t dataLen;     ///< Length of the data
-    uint32_t resultCRC;   ///< Calculated CRC value
+    uint32_t *dataBuffer; ///< Pointer to the data
+    uint32_t dataLen; ///< Length of the data
+    uint32_t resultCRC; ///< Calculated CRC value
 } mxc_crc_req_t;
 
 /** 
@@ -160,7 +160,7 @@ uint32_t MXC_CRC_GetResult(void);
  *
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CRC_Compute(mxc_crc_req_t* req);
+int MXC_CRC_Compute(mxc_crc_req_t *req);
 
 /**
  * @brief   Perform a CRC computation using DMA
@@ -172,7 +172,7 @@ int MXC_CRC_Compute(mxc_crc_req_t* req);
  * 
  * @return  see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CRC_ComputeAsync(mxc_crc_req_t* req);
+int MXC_CRC_ComputeAsync(mxc_crc_req_t *req);
 
 #ifdef __cplusplus
 }

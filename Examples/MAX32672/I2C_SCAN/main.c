@@ -83,13 +83,13 @@ int main()
     printf("-->Scanning started\n");
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
     mxc_i2c_req_t reqMaster;
-    reqMaster.i2c      = I2C_MASTER;
-    reqMaster.addr     = 0;
-    reqMaster.tx_buf   = NULL;
-    reqMaster.tx_len   = 0;
-    reqMaster.rx_buf   = NULL;
-    reqMaster.rx_len   = 0;
-    reqMaster.restart  = 0;
+    reqMaster.i2c = I2C_MASTER;
+    reqMaster.addr = 0;
+    reqMaster.tx_buf = NULL;
+    reqMaster.tx_len = 0;
+    reqMaster.rx_buf = NULL;
+    reqMaster.rx_len = 0;
+    reqMaster.restart = 0;
     reqMaster.callback = NULL;
 
     for (uint8_t address = 8; address < 120; address++) {

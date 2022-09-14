@@ -98,7 +98,7 @@ typedef struct ucl_sha256_ctx ucl_sha224_ctx_t;
  *
  * @ingroup UCL_SHA224
  */
-#define UCL_SHA224          2
+#define UCL_SHA224 2
 #define UCL_SHA224_HASHSIZE 28
 /** <b>Hash size</b>.
  * 32-bits word size of the output of SHA224.
@@ -124,7 +124,7 @@ typedef struct ucl_sha256_ctx ucl_sha224_ctx_t;
  *
  * @ingroup UCL_SHA224
  */
-int ucl_sha224(u8* hash, u8* data, u32 data_byteLen);
+int ucl_sha224(u8 *hash, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA224 Init</b>.
@@ -139,7 +139,7 @@ int ucl_sha224(u8* hash, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA224
  */
-int ucl_sha224_init(ucl_sha224_ctx_t* context);
+int ucl_sha224_init(ucl_sha224_ctx_t *context);
 
 /*============================================================================*/
 /** <b>SHA224 Core</b>.
@@ -159,7 +159,7 @@ int ucl_sha224_init(ucl_sha224_ctx_t* context);
  *
  * @ingroup UCL_SHA224
  */
-int ucl_sha224_core(ucl_sha224_ctx_t* context, u8* data, u32 data_byteLen);
+int ucl_sha224_core(ucl_sha224_ctx_t *context, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SHA224 Finish</b>.
@@ -180,15 +180,15 @@ int ucl_sha224_core(ucl_sha224_ctx_t* context, u8* data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA224
  */
-int ucl_sha224_finish(u8* hash, ucl_sha224_ctx_t* context);
+int ucl_sha224_finish(u8 *hash, ucl_sha224_ctx_t *context);
 
 void sha224_stone(u32 hash[8], u32 stone[16]);
 
-int ucl_hmac_sha224(u8* mac, u32 mac_byteLen, u8* message, u32 message_byteLen, u8* key,
+int ucl_hmac_sha224(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen, u8 *key,
                     u32 key_byteLen);
-int ucl_hmac_sha224_init(ucl_sha224_ctx_t* context, u8* key, u32 key_byteLen);
-int ucl_hmac_sha224_core(ucl_sha224_ctx_t* context, u8* data, u32 byteLen);
-int ucl_hmac_sha224_finish(u8* mac, u32 mac_byteLen, ucl_sha224_ctx_t* context, u8* key,
+int ucl_hmac_sha224_init(ucl_sha224_ctx_t *context, u8 *key, u32 key_byteLen);
+int ucl_hmac_sha224_core(ucl_sha224_ctx_t *context, u8 *data, u32 byteLen);
+int ucl_hmac_sha224_finish(u8 *mac, u32 mac_byteLen, ucl_sha224_ctx_t *context, u8 *key,
                            u32 key_byteLen);
 #ifdef __cplusplus
 }

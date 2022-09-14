@@ -44,11 +44,11 @@
 #define _LOGO_H_
 
 /** Color palette for the image */
-uint32_t logo_palette[] = {0x6F6D69, 0x76746F, 0x2BB5A4, 0x8A8984, 0x9C9B97, 0xCED17A,
-                           0xC3C3BE, 0xE8E9BF, 0xE2E4E1, 0xFDFFFC, 0xFFFFFF};
+uint32_t logo_palette[] = { 0x6F6D69, 0x76746F, 0x2BB5A4, 0x8A8984, 0x9C9B97, 0xCED17A,
+                            0xC3C3BE, 0xE8E9BF, 0xE2E4E1, 0xFDFFFC, 0xFFFFFF };
 
 /** Bitmap info for the image */
-bitmap_info_t logo_info = {280, 81, (unsigned char*)logo_palette, 8};
+bitmap_info_t logo_info = { 280, 81, (unsigned char *)logo_palette, 8 };
 
 /** The Maxim logo for display on the CLCD */
 unsigned char logo_image[] = {
@@ -760,5 +760,6 @@ unsigned char logo_image[] = {
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9};
+    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
+};
 #endif /** _LOGO_H_ */

@@ -55,7 +55,7 @@ typedef struct {
 } area_t;
 
 typedef struct {
-    char* data;
+    char *data;
     int len;
 } text_t;
 
@@ -87,7 +87,7 @@ void MXC_TFT_ClearScreen(void);
  * @param      area   Location and size of rectangle
  * @param      color  Palette index of rectangle color
  */
-void MXC_TFT_FillRect(area_t* area, int color);
+void MXC_TFT_FillRect(area_t *area, int color);
 
 /**
  * @brief      Draw a bitmap
@@ -117,7 +117,7 @@ int MXC_TFT_SetPalette(int img_id);
  *
  * @param      area   Location of printf outputs
  */
-void MXC_TFT_ConfigPrintf(area_t* area);
+void MXC_TFT_ConfigPrintf(area_t *area);
 
 /**
  * @brief       Change font
@@ -132,7 +132,7 @@ void MXC_TFT_SetFont(int font_id);
  * @param      format  Char array formatted like printf
  *             NOTE: up to 3 additional arguments are supported
  */
-void MXC_TFT_Printf(const char* format, ...);
+void MXC_TFT_Printf(const char *format, ...);
 
 /**
  * @brief      Reset cursor to top left corner of printf bounds
@@ -149,7 +149,7 @@ void MXC_TFT_ResetCursor(void);
  * @param       str             String which will be display
  * @param       area            Location of printf outputs
  */
-void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t* str, area_t* area);
+void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t *str, area_t *area);
 
 /**
  * @brief      Print string with current font
@@ -160,7 +160,7 @@ void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t* str, area_t* area);
  * @param       str             String which will be display
  * @param       area            Location of printf outputs
  */
-void MXC_TFT_Print(int x0, int y0, text_t* str, area_t* area);
+void MXC_TFT_Print(int x0, int y0, text_t *str, area_t *area);
 
 /**
  * @brief       Celar area on display
@@ -168,6 +168,6 @@ void MXC_TFT_Print(int x0, int y0, text_t* str, area_t* area);
  * @param       area            Location on display
  * @param       color           Palette index of rectangle color
  */
-void MXC_TFT_ClearArea(area_t* area, int color);
+void MXC_TFT_ClearArea(area_t *area, int color);
 
 #endif /* _TFT_H_ */

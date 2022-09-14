@@ -43,7 +43,7 @@
 /* **** Definitions **** */
 
 /* **** Functions **** */
-int MXC_TMR_RevC_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+int MXC_TMR_RevC_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -57,61 +57,61 @@ int MXC_TMR_RevC_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
 
     // Set the prescaler
     switch (cfg->pres) {
-        case TMR_PRES_1:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_1);
-            break;
+    case TMR_PRES_1:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_1);
+        break;
 
-        case TMR_PRES_2:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_2);
-            break;
+    case TMR_PRES_2:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_2);
+        break;
 
-        case TMR_PRES_4:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_4);
-            break;
+    case TMR_PRES_4:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_4);
+        break;
 
-        case TMR_PRES_8:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_8);
-            break;
+    case TMR_PRES_8:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_8);
+        break;
 
-        case TMR_PRES_16:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_16);
-            break;
+    case TMR_PRES_16:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_16);
+        break;
 
-        case TMR_PRES_32:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_32);
-            break;
+    case TMR_PRES_32:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_32);
+        break;
 
-        case TMR_PRES_64:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_64);
-            break;
+    case TMR_PRES_64:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_64);
+        break;
 
-        case TMR_PRES_128:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_128);
-            break;
+    case TMR_PRES_128:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_128);
+        break;
 
-        case TMR_PRES_256:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_256);
-            break;
+    case TMR_PRES_256:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_256);
+        break;
 
-        case TMR_PRES_512:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_512);
-            break;
+    case TMR_PRES_512:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_512);
+        break;
 
-        case TMR_PRES_1024:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_1024);
-            break;
+    case TMR_PRES_1024:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_1024);
+        break;
 
-        case TMR_PRES_2048:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_2048);
-            break;
+    case TMR_PRES_2048:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_2048);
+        break;
 
-        case TMR_PRES_4096:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_4096);
-            break;
+    case TMR_PRES_4096:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_4096);
+        break;
 
-        case TMR_PRES_8192:
-            tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_8192);
-            break;
+    case TMR_PRES_8192:
+        tmr->cn |= (MXC_S_TMR_CN_PRES_DIV_BY_8192);
+        break;
     }
 
     MXC_TMR_RevC_ConfigGeneric(tmr, cfg);
@@ -119,7 +119,7 @@ int MXC_TMR_RevC_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
     return E_NO_ERROR;
 }
 
-void MXC_TMR_RevC_ConfigGeneric(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+void MXC_TMR_RevC_ConfigGeneric(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -136,7 +136,7 @@ void MXC_TMR_RevC_ConfigGeneric(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
     tmr->cmp = (cfg->cmp_cnt);
 }
 
-void MXC_TMR_RevC_Shutdown(mxc_tmr_regs_t* tmr)
+void MXC_TMR_RevC_Shutdown(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -145,7 +145,7 @@ void MXC_TMR_RevC_Shutdown(mxc_tmr_regs_t* tmr)
     tmr->cn = 0;
 }
 
-void MXC_TMR_RevC_Start(mxc_tmr_regs_t* tmr)
+void MXC_TMR_RevC_Start(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -153,7 +153,7 @@ void MXC_TMR_RevC_Start(mxc_tmr_regs_t* tmr)
     tmr->cn |= MXC_F_TMR_CN_TEN;
 }
 
-void MXC_TMR_RevC_Stop(mxc_tmr_regs_t* tmr)
+void MXC_TMR_RevC_Stop(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -161,7 +161,7 @@ void MXC_TMR_RevC_Stop(mxc_tmr_regs_t* tmr)
     tmr->cn &= ~MXC_F_TMR_CN_TEN;
 }
 
-int MXC_TMR_RevC_SetPWM(mxc_tmr_regs_t* tmr, uint32_t pwm)
+int MXC_TMR_RevC_SetPWM(mxc_tmr_regs_t *tmr, uint32_t pwm)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -170,15 +170,14 @@ int MXC_TMR_RevC_SetPWM(mxc_tmr_regs_t* tmr, uint32_t pwm)
         return E_BAD_PARAM;
     }
 
-    while (tmr->cnt >= pwm)
-        ;
+    while (tmr->cnt >= pwm) {}
 
     tmr->pwm = pwm;
 
     return E_NO_ERROR;
 }
 
-uint32_t MXC_TMR_RevC_GetCompare(mxc_tmr_regs_t* tmr)
+uint32_t MXC_TMR_RevC_GetCompare(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -186,7 +185,7 @@ uint32_t MXC_TMR_RevC_GetCompare(mxc_tmr_regs_t* tmr)
     return tmr->cmp;
 }
 
-uint32_t MXC_TMR_RevC_GetCapture(mxc_tmr_regs_t* tmr)
+uint32_t MXC_TMR_RevC_GetCapture(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -194,7 +193,7 @@ uint32_t MXC_TMR_RevC_GetCapture(mxc_tmr_regs_t* tmr)
     return tmr->pwm; //check this
 }
 
-uint32_t MXC_TMR_RevC_GetCount(mxc_tmr_regs_t* tmr)
+uint32_t MXC_TMR_RevC_GetCount(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -202,7 +201,7 @@ uint32_t MXC_TMR_RevC_GetCount(mxc_tmr_regs_t* tmr)
     return tmr->cnt;
 }
 
-uint32_t MXC_TMR_RevC_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
+uint32_t MXC_TMR_RevC_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
                                 uint32_t frequency)
 {
     uint32_t periodTicks;
@@ -210,26 +209,26 @@ uint32_t MXC_TMR_RevC_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint
     MXC_ASSERT(tmr_id >= 0);
 
     switch (clock) {
-        case MXC_TMR_EXT_CLK:
-            periodTicks = 32768 / (frequency * prescalar);
-            break;
+    case MXC_TMR_EXT_CLK:
+        periodTicks = 32768 / (frequency * prescalar);
+        break;
 
-        case MXC_TMR_HFIO_CLK:
-            periodTicks = PeripheralClock / (frequency * prescalar);
-            break;
+    case MXC_TMR_HFIO_CLK:
+        periodTicks = PeripheralClock / (frequency * prescalar);
+        break;
 
-        case MXC_TMR_NANORING_CLK:
-            periodTicks = 8000 / (frequency * prescalar);
-            break;
+    case MXC_TMR_NANORING_CLK:
+        periodTicks = 8000 / (frequency * prescalar);
+        break;
 
-        default:
-            return E_BAD_PARAM;
-            break;
+    default:
+        return E_BAD_PARAM;
+        break;
     }
     return periodTicks;
 }
 
-void MXC_TMR_RevC_ClearFlags(mxc_tmr_regs_t* tmr)
+void MXC_TMR_RevC_ClearFlags(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -237,7 +236,7 @@ void MXC_TMR_RevC_ClearFlags(mxc_tmr_regs_t* tmr)
     tmr->intr = 1;
 }
 
-uint32_t MXC_TMR_RevC_GetFlags(mxc_tmr_regs_t* tmr)
+uint32_t MXC_TMR_RevC_GetFlags(mxc_tmr_regs_t *tmr)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -245,7 +244,7 @@ uint32_t MXC_TMR_RevC_GetFlags(mxc_tmr_regs_t* tmr)
     return tmr->intr;
 }
 
-void MXC_TMR_RevC_SetCompare(mxc_tmr_regs_t* tmr, uint32_t cmp_cnt)
+void MXC_TMR_RevC_SetCompare(mxc_tmr_regs_t *tmr, uint32_t cmp_cnt)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -253,7 +252,7 @@ void MXC_TMR_RevC_SetCompare(mxc_tmr_regs_t* tmr, uint32_t cmp_cnt)
     tmr->cmp = cmp_cnt;
 }
 
-void MXC_TMR_RevC_SetCount(mxc_tmr_regs_t* tmr, uint32_t cnt)
+void MXC_TMR_RevC_SetCount(mxc_tmr_regs_t *tmr, uint32_t cnt)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
@@ -261,11 +260,11 @@ void MXC_TMR_RevC_SetCount(mxc_tmr_regs_t* tmr, uint32_t cnt)
     tmr->cnt = cnt;
 }
 
-void MXC_TMR_RevC_TO_Start(mxc_tmr_regs_t* tmr, unsigned long us)
+void MXC_TMR_RevC_TO_Start(mxc_tmr_regs_t *tmr, unsigned long us)
 {
     uint64_t ticks;
     int clk_shift = 0;
-    int tmr_id    = MXC_TMR_GET_IDX(tmr);
+    int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
     if (us == 0) {
@@ -285,11 +284,11 @@ void MXC_TMR_RevC_TO_Start(mxc_tmr_regs_t* tmr, unsigned long us)
     mxc_tmr_cfg_t cfg;
 
     // Initialize the timer in one-shot mode
-    cfg.pres    = prescale;
-    cfg.clock   = MXC_TMR_HFIO_CLK;
-    cfg.mode    = TMR_MODE_ONESHOT;
+    cfg.pres = prescale;
+    cfg.clock = MXC_TMR_HFIO_CLK;
+    cfg.mode = TMR_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
-    cfg.pol     = 0;
+    cfg.pol = 0;
 
     MXC_TMR_Stop(tmr);
     MXC_TMR_Init(tmr, &cfg);
@@ -297,20 +296,20 @@ void MXC_TMR_RevC_TO_Start(mxc_tmr_regs_t* tmr, unsigned long us)
     MXC_TMR_Start(tmr);
 }
 
-int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mxc_tmr_unit_t* units)
+int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t *tmr, uint32_t ticks, uint32_t *time, mxc_tmr_unit_t *units)
 {
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
-    uint64_t temp_time  = 0;
+    uint64_t temp_time = 0;
     uint32_t timerClock = PeripheralClock;
-    uint32_t prescale   = (((tmr->cn & MXC_F_TMR_CN_PRES) >> MXC_F_TMR_CN_PRES_POS) |
+    uint32_t prescale = (((tmr->cn & MXC_F_TMR_CN_PRES) >> MXC_F_TMR_CN_PRES_POS) |
                          ((((tmr->cn & MXC_F_TMR_CN_PRES3) >> (MXC_F_TMR_CN_PRES3_POS)) << 3)));
 
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
@@ -318,7 +317,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mx
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
@@ -326,7 +325,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mx
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
@@ -334,7 +333,7 @@ int MXC_TMR_RevC_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mx
     temp_time = (uint64_t)ticks * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_SEC;
         return E_NO_ERROR;
     }

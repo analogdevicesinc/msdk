@@ -115,6 +115,6 @@ void ucl_clear_mgf1_hash_function(void);
 
 int ucl_get_mgf1_hash_function(void);
 
-int ucl_pkcs1_mgf1_hash(u8* mask, u32 mask_length, u8* mgf_seed, u32 mgf_seed_length,
+int ucl_pkcs1_mgf1_hash(u8 *mask, u32 mask_length, u8 *mgf_seed, u32 mgf_seed_length,
                         int hash_identifier);
 #endif //PKCS1_MGF1_H_

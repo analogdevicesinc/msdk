@@ -56,11 +56,11 @@
 #include "descriptors.h"
 
 /***** Definitions *****/
-#define EVENT_ENUM_COMP   MAXUSB_NUM_EVENTS
+#define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS
 #define EVENT_REMOTE_WAKE (EVENT_ENUM_COMP + 1)
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 /***** Global Data *****/
 int remoteWake;
@@ -69,13 +69,13 @@ volatile int suspended;
 volatile unsigned int evtFlags;
 
 /***** Function Prototypes *****/
-static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata);
-static int setfeatureCallback(MXC_USB_SetupPkt* sud, void* cbdata);
-static int clrfeatureCallback(MXC_USB_SetupPkt* sud, void* cbdata);
-static int eventCallback(maxusb_event_t evt, void* data);
+static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata);
+static int setfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata);
+static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata);
+static int eventCallback(maxusb_event_t evt, void *data);
 static void usbAppSleep(void);
 static void usbAppWakeup(void);
-static void buttonCallback(void* pb);
+static void buttonCallback(void *pb);
 void usDelay(unsigned int usec);
 int usbStartupCallback();
 int usbShutdownCallback();
@@ -83,7 +83,7 @@ int usbShutdownCallback();
 const mxc_gpio_cfg_t hid_sw[] = {
     // Even though SW2 in EVK defined at Port 4.0 but this goes not have GPIO interrupt
     // Using P0.7 for SW2. Connect Port 4.0 to Port 0.7.
-    {MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 
 /******************************************************************************/
@@ -103,7 +103,7 @@ int Hid_SW_RegisterCallback(unsigned int pb, pb_callback callback)
 {
     if (callback) {
         // Register callback
-        MXC_GPIO_RegisterCallback(&hid_sw[pb], callback, (void*)pb);
+        MXC_GPIO_RegisterCallback(&hid_sw[pb], callback, (void *)pb);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&hid_sw[pb], MXC_GPIO_INT_FALLING);
@@ -140,35 +140,33 @@ int main(void)
 
     /* Initialize state */
     configured = 0;
-    suspended  = 0;
-    evtFlags   = 0;
+    suspended = 0;
+    evtFlags = 0;
     remoteWake = 0;
 
     /* Start out in full speed */
-    usb_opts.enable_hs         = 0;
-    usb_opts.delay_us          = usDelay; /* Function which will be used for delays */
-    usb_opts.init_callback     = usbStartupCallback;
+    usb_opts.enable_hs = 0;
+    usb_opts.delay_us = usDelay; /* Function which will be used for delays */
+    usb_opts.init_callback = usbStartupCallback;
     usb_opts.shutdown_callback = usbShutdownCallback;
 
     /* Initialize the usb module */
     if (MXC_USB_Init(&usb_opts) != 0) {
         printf("MXC_USB_Init() failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Initialize the enumeration module */
     if (enum_init() != 0) {
         printf("enum_init() failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Register enumeration data */
-    enum_register_descriptor(ENUM_DESC_DEVICE, (uint8_t*)&device_descriptor, 0);
-    enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t*)&config_descriptor, 0);
+    enum_register_descriptor(ENUM_DESC_DEVICE, (uint8_t *)&device_descriptor, 0);
+    enum_register_descriptor(ENUM_DESC_CONFIG, (uint8_t *)&config_descriptor, 0);
     enum_register_descriptor(ENUM_DESC_STRING, lang_id_desc, 0);
     enum_register_descriptor(ENUM_DESC_STRING, mfg_id_desc, 1);
     enum_register_descriptor(ENUM_DESC_STRING, prod_id_desc, 2);
@@ -186,8 +184,7 @@ int main(void)
                     report_descriptor) != 0) {
         printf("hidkbd_init() failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Register callbacks */
@@ -198,8 +195,7 @@ int main(void)
     if (Hid_SW_RegisterCallback(0, buttonCallback) != E_NO_ERROR) {
         printf("HID_SW_RegisterCallback() failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Start with USB in low power mode */
@@ -284,12 +280,12 @@ static void usbAppWakeup(void)
 }
 
 /******************************************************************************/
-static void buttonCallback(void* pb)
+static void buttonCallback(void *pb)
 {
     static const uint8_t chars[] = "Maxim Integrated\n";
-    static int i                 = 0;
-    int count                    = 0;
-    int button_pressed           = 0;
+    static int i = 0;
+    int count = 0;
+    int button_pressed = 0;
 
     //determine if interrupt triggered by bounce or a true button press
     while (HID_SW_Get(0) && !button_pressed) {
@@ -322,7 +318,7 @@ static void buttonCallback(void* pb)
 }
 
 /******************************************************************************/
-static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
+static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     /* Confirm the configuration value */
     if (sud->wValue == config_descriptor.config_descriptor.bConfigurationValue) {
@@ -339,7 +335,7 @@ static int setconfigCallback(MXC_USB_SetupPkt* sud, void* cbdata)
 }
 
 /******************************************************************************/
-static int setfeatureCallback(MXC_USB_SetupPkt* sud, void* cbdata)
+static int setfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     if (sud->wValue == FEAT_REMOTE_WAKE) {
         remoteWake = 1;
@@ -352,7 +348,7 @@ static int setfeatureCallback(MXC_USB_SetupPkt* sud, void* cbdata)
 }
 
 /******************************************************************************/
-static int clrfeatureCallback(MXC_USB_SetupPkt* sud, void* cbdata)
+static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     if (sud->wValue == FEAT_REMOTE_WAKE) {
         remoteWake = 0;
@@ -365,50 +361,50 @@ static int clrfeatureCallback(MXC_USB_SetupPkt* sud, void* cbdata)
 }
 
 /******************************************************************************/
-static int eventCallback(maxusb_event_t evt, void* data)
+static int eventCallback(maxusb_event_t evt, void *data)
 {
     /* Set event flag */
     MXC_SETBIT(&evtFlags, evt);
 
     switch (evt) {
-        case MAXUSB_EVENT_NOVBUS:
-            MXC_USB_EventDisable(MAXUSB_EVENT_BRST);
-            MXC_USB_EventDisable(MAXUSB_EVENT_SUSP);
-            MXC_USB_EventDisable(MAXUSB_EVENT_DPACT);
-            MXC_USB_Disconnect();
-            configured = 0;
-            enum_clearconfig();
-            hidkbd_deconfigure();
-            usbAppSleep();
-            break;
+    case MAXUSB_EVENT_NOVBUS:
+        MXC_USB_EventDisable(MAXUSB_EVENT_BRST);
+        MXC_USB_EventDisable(MAXUSB_EVENT_SUSP);
+        MXC_USB_EventDisable(MAXUSB_EVENT_DPACT);
+        MXC_USB_Disconnect();
+        configured = 0;
+        enum_clearconfig();
+        hidkbd_deconfigure();
+        usbAppSleep();
+        break;
 
-        case MAXUSB_EVENT_VBUS:
-            MXC_USB_EventClear(MAXUSB_EVENT_BRST);
-            MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
-            MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
-            MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
-            MXC_USB_Connect();
-            usbAppSleep();
-            break;
+    case MAXUSB_EVENT_VBUS:
+        MXC_USB_EventClear(MAXUSB_EVENT_BRST);
+        MXC_USB_EventEnable(MAXUSB_EVENT_BRST, eventCallback, NULL);
+        MXC_USB_EventClear(MAXUSB_EVENT_SUSP);
+        MXC_USB_EventEnable(MAXUSB_EVENT_SUSP, eventCallback, NULL);
+        MXC_USB_Connect();
+        usbAppSleep();
+        break;
 
-        case MAXUSB_EVENT_BRST:
-            usbAppWakeup();
-            enum_clearconfig();
-            hidkbd_deconfigure();
-            configured = 0;
-            suspended  = 0;
-            break;
+    case MAXUSB_EVENT_BRST:
+        usbAppWakeup();
+        enum_clearconfig();
+        hidkbd_deconfigure();
+        configured = 0;
+        suspended = 0;
+        break;
 
-        case MAXUSB_EVENT_SUSP:
-            usbAppSleep();
-            break;
+    case MAXUSB_EVENT_SUSP:
+        usbAppSleep();
+        break;
 
-        case MAXUSB_EVENT_DPACT:
-            usbAppWakeup();
-            break;
+    case MAXUSB_EVENT_DPACT:
+        usbAppWakeup();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     return 0;

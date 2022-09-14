@@ -55,32 +55,32 @@ int MXC_SKBD_Init(mxc_skbd_config_t config)
     // MXC_GPIO_Config(&gpio_cfg_kbd_P1);
     MXC_GPIO_Config(&gpio_cfg_kbd_P2);
 
-    return MXC_SKBD_RevA_Init((mxc_skbd_reva_regs_t*)MXC_SKBD, config);
+    return MXC_SKBD_RevA_Init((mxc_skbd_reva_regs_t *)MXC_SKBD, config);
 }
 
 int MXC_SKBD_EnableInterruptEvents(unsigned int events)
 {
-    return MXC_SKBD_RevA_EnableInterruptEvents((mxc_skbd_reva_regs_t*)MXC_SKBD, events);
+    return MXC_SKBD_RevA_EnableInterruptEvents((mxc_skbd_reva_regs_t *)MXC_SKBD, events);
 }
 
 int MXC_SKBD_DisableInterruptEvents(unsigned int events)
 {
-    return MXC_SKBD_RevA_DisableInterruptEvents((mxc_skbd_reva_regs_t*)MXC_SKBD, events);
+    return MXC_SKBD_RevA_DisableInterruptEvents((mxc_skbd_reva_regs_t *)MXC_SKBD, events);
 }
 
 int MXC_SKBD_ClearInterruptStatus(unsigned int status)
 {
-    return MXC_SKBD_RevA_ClearInterruptStatus((mxc_skbd_reva_regs_t*)MXC_SKBD, status);
+    return MXC_SKBD_RevA_ClearInterruptStatus((mxc_skbd_reva_regs_t *)MXC_SKBD, status);
 }
 
-int MXC_SKBD_InterruptStatus(unsigned int* status)
+int MXC_SKBD_InterruptStatus(unsigned int *status)
 {
-    return MXC_SKBD_RevA_InterruptStatus((mxc_skbd_reva_regs_t*)MXC_SKBD, status);
+    return MXC_SKBD_RevA_InterruptStatus((mxc_skbd_reva_regs_t *)MXC_SKBD, status);
 }
 
-int MXC_SKBD_ReadKeys(mxc_skbd_keys_t* keys)
+int MXC_SKBD_ReadKeys(mxc_skbd_keys_t *keys)
 {
-    return MXC_SKBD_RevA_ReadKeys((mxc_skbd_reva_regs_t*)MXC_SKBD, (mxc_skbd_reva_keys_t*)keys);
+    return MXC_SKBD_RevA_ReadKeys((mxc_skbd_reva_regs_t *)MXC_SKBD, (mxc_skbd_reva_keys_t *)keys);
 }
 
 int MXC_SKBD_Close(void)
@@ -89,13 +89,12 @@ int MXC_SKBD_Close(void)
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_KBD);
 
     /* Wait until SKBD reset completes */
-    while (MXC_F_GCR_RST1_KBD & MXC_GCR->rst1)
-        ;
+    while (MXC_F_GCR_RST1_KBD & MXC_GCR->rst1) {}
 
     return MXC_SKBD_RevA_Close();
 }
 
-const char* MXC_SKBD_GetVersion(void)
+const char *MXC_SKBD_GetVersion(void)
 {
     return MXC_SKBD_REVA_VERSION_STRING;
 }

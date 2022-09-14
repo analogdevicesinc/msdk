@@ -49,7 +49,7 @@
 /* **** Functions **** */
 
 /* ************************************************************************** */
-int MXC_WDT_Init(mxc_wdt_regs_t* wdt)
+int MXC_WDT_Init(mxc_wdt_regs_t *wdt)
 {
     if (wdt == MXC_WDT0) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_WDT);
@@ -63,7 +63,7 @@ int MXC_WDT_Init(mxc_wdt_regs_t* wdt)
 }
 
 /* ************************************************************************** */
-int MXC_WDT_Shutdown(mxc_wdt_regs_t* wdt)
+int MXC_WDT_Shutdown(mxc_wdt_regs_t *wdt)
 {
     if (wdt == MXC_WDT0) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_WDT);
@@ -77,80 +77,80 @@ int MXC_WDT_Shutdown(mxc_wdt_regs_t* wdt)
 }
 
 /* ************************************************************************** */
-void MXC_WDT_SetIntPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_period_t period)
+void MXC_WDT_SetIntPeriod(mxc_wdt_regs_t *wdt, mxc_wdt_period_t period)
 {
-    MXC_WDT_RevA_SetIntPeriod((mxc_wdt_reva_regs_t*)wdt, period);
+    MXC_WDT_RevA_SetIntPeriod((mxc_wdt_reva_regs_t *)wdt, period);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_SetResetPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_period_t period)
+void MXC_WDT_SetResetPeriod(mxc_wdt_regs_t *wdt, mxc_wdt_period_t period)
 {
-    MXC_WDT_RevA_SetResetPeriod((mxc_wdt_reva_regs_t*)wdt, period);
+    MXC_WDT_RevA_SetResetPeriod((mxc_wdt_reva_regs_t *)wdt, period);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_Enable(mxc_wdt_regs_t* wdt)
+void MXC_WDT_Enable(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_Enable((mxc_wdt_reva_regs_t*)wdt);
+    MXC_WDT_RevA_Enable((mxc_wdt_reva_regs_t *)wdt);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_Disable(mxc_wdt_regs_t* wdt)
+void MXC_WDT_Disable(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_Disable((mxc_wdt_reva_regs_t*)wdt);
+    MXC_WDT_RevA_Disable((mxc_wdt_reva_regs_t *)wdt);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_EnableInt(mxc_wdt_regs_t* wdt)
+void MXC_WDT_EnableInt(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_EnableInt((mxc_wdt_reva_regs_t*)wdt, MXC_WDT_REVA_ENABLE);
+    MXC_WDT_RevA_EnableInt((mxc_wdt_reva_regs_t *)wdt, MXC_WDT_REVA_ENABLE);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_EnableReset(mxc_wdt_regs_t* wdt)
+void MXC_WDT_EnableReset(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_EnableReset((mxc_wdt_reva_regs_t*)wdt, MXC_WDT_REVA_ENABLE);
+    MXC_WDT_RevA_EnableReset((mxc_wdt_reva_regs_t *)wdt, MXC_WDT_REVA_ENABLE);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_DisableInt(mxc_wdt_regs_t* wdt)
+void MXC_WDT_DisableInt(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_EnableInt((mxc_wdt_reva_regs_t*)wdt, MXC_WDT_REVA_DISABLE);
+    MXC_WDT_RevA_EnableInt((mxc_wdt_reva_regs_t *)wdt, MXC_WDT_REVA_DISABLE);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_DisableReset(mxc_wdt_regs_t* wdt)
+void MXC_WDT_DisableReset(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_EnableReset((mxc_wdt_reva_regs_t*)wdt, MXC_WDT_REVA_DISABLE);
+    MXC_WDT_RevA_EnableReset((mxc_wdt_reva_regs_t *)wdt, MXC_WDT_REVA_DISABLE);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_ResetTimer(mxc_wdt_regs_t* wdt)
+void MXC_WDT_ResetTimer(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_ResetTimer((mxc_wdt_reva_regs_t*)wdt);
+    MXC_WDT_RevA_ResetTimer((mxc_wdt_reva_regs_t *)wdt);
 }
 
 /* ************************************************************************** */
 
-int MXC_WDT_GetResetFlag(mxc_wdt_regs_t* wdt)
+int MXC_WDT_GetResetFlag(mxc_wdt_regs_t *wdt)
 {
-    return MXC_WDT_RevA_GetResetFlag((mxc_wdt_reva_regs_t*)wdt);
+    return MXC_WDT_RevA_GetResetFlag((mxc_wdt_reva_regs_t *)wdt);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_ClearResetFlag(mxc_wdt_regs_t* wdt)
+void MXC_WDT_ClearResetFlag(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_ClearResetFlag((mxc_wdt_reva_regs_t*)wdt);
+    MXC_WDT_RevA_ClearResetFlag((mxc_wdt_reva_regs_t *)wdt);
 }
 
 /* ************************************************************************** */
-int MXC_WDT_GetIntFlag(mxc_wdt_regs_t* wdt)
+int MXC_WDT_GetIntFlag(mxc_wdt_regs_t *wdt)
 {
-    return MXC_WDT_RevA_GetIntFlag((mxc_wdt_reva_regs_t*)wdt);
+    return MXC_WDT_RevA_GetIntFlag((mxc_wdt_reva_regs_t *)wdt);
 }
 
 /* ************************************************************************** */
-void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t* wdt)
+void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt)
 {
-    MXC_WDT_RevA_ClearIntFlag((mxc_wdt_reva_regs_t*)wdt);
+    MXC_WDT_RevA_ClearIntFlag((mxc_wdt_reva_regs_t *)wdt);
 }

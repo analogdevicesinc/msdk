@@ -60,7 +60,7 @@ int hex(char c1, char c2);
  * @param replace
  * @return
  */
-char* str_replace(const char* str, const char* sub, const char* replace);
+char *str_replace(const char *str, const char *sub, const char *replace);
 
 /**
  *
@@ -69,16 +69,16 @@ char* str_replace(const char* str, const char* sub, const char* replace);
  * @param dest_size
  * @return
  */
-size_t strlcpy(char* dst, const char* src, size_t dest_size);
+size_t strlcpy(char *dst, const char *src, size_t dest_size);
 
 /**
  * Test if a file existe
  * @param filename
  * @return TRUE is the file exist and FALSE if not
  */
-int file_exist(char* filename);
+int file_exist(char *filename);
 
-int make_dir(char* dirname);
+int make_dir(char *dirname);
 
 #ifdef __cplusplus
 }

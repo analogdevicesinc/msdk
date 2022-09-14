@@ -113,7 +113,7 @@ int MXC_RTC_GetSecond(void)
     return MXC_RTC_RevA_GetSecond();
 }
 
-int MXC_RTC_GetTime(uint32_t* sec, uint32_t* subsec)
+int MXC_RTC_GetTime(uint32_t *sec, uint32_t *subsec)
 {
     return MXC_RTC_RevA_GetTime(sec, subsec);
 }

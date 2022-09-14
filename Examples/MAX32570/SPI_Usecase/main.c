@@ -53,7 +53,7 @@
 /******************************* 	 Variables    ****************************/
 
 /******************************* Static Functions ****************************/
-static void hex_dump(const char* title, unsigned char* buf, unsigned int len)
+static void hex_dump(const char *title, unsigned char *buf, unsigned int len)
 {
     unsigned int i;
 
@@ -74,9 +74,9 @@ int main(void)
 {
     int ret = 0;
     unsigned int i;
-    unsigned char tx_buff[TEST_BUFF_SIZE]       = {0};
-    unsigned char rx_buff[TEST_BUFF_SIZE]       = {0};
-    unsigned char expect_packet[TEST_BUFF_SIZE] = {0};
+    unsigned char tx_buff[TEST_BUFF_SIZE] = { 0 };
+    unsigned char rx_buff[TEST_BUFF_SIZE] = { 0 };
+    unsigned char expect_packet[TEST_BUFF_SIZE] = { 0 };
     unsigned int len;
 
     printf("---------------------------------------------------------------------------------------"
@@ -101,7 +101,7 @@ int main(void)
            "--------\n\n");
 
     for (i = 0; i < TEST_BUFF_SIZE; i++) {
-        tx_buff[i]       = i + 1;
+        tx_buff[i] = i + 1;
         expect_packet[i] = 0xFF - i;
     }
 

@@ -49,8 +49,7 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 // Data input: HWC 3x128x128 (49152 bytes total / 16384 bytes per channel):
@@ -60,13 +59,13 @@ void load_input(void)
     // This function loads the sample data input -- replace with actual data
 
     int i;
-    const uint32_t* in0 = input_0;
+    const uint32_t *in0 = input_0;
 
     for (i = 0; i < 16384; i++) {
         // Remove the following line if there is no risk that the source would overrun the FIFO:
-        while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
-            ;                                       // Wait for FIFO 0
-        *((volatile uint32_t*)0x50000008) = *in0++; // Write FIFO 0
+        while (((*((volatile uint32_t *)0x50000004) & 1)) != 0) {}
+        // Wait for FIFO 0
+        *((volatile uint32_t *)0x50000008) = *in0++; // Write FIFO 0
     }
 }
 
@@ -77,12 +76,12 @@ int check_output(void)
 {
     int i;
     uint32_t mask, len;
-    volatile uint32_t* addr;
-    const uint32_t* ptr = sample_output;
+    volatile uint32_t *addr;
+    const uint32_t *ptr = sample_output;
 
-    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
         mask = *ptr++;
-        len  = *ptr++;
+        len = *ptr++;
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
@@ -100,8 +99,8 @@ static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
 void softmax_layer(void)
 {
-    cnn_unload((uint32_t*)ml_data);
-    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t *)ml_data);
+    softmax_q17p14_q15((const q31_t *)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 int main(void)
@@ -126,16 +125,15 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    cnn_start();     // Start CNN processing
-    load_input();    // Load data input via FIFO
+    cnn_start(); // Start CNN processing
+    load_input(); // Load data input via FIFO
 
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
-    while (cnn_time == 0)
-        __WFI(); // Wait for CNN
+    while (cnn_time == 0) __WFI(); // Wait for CNN
 
     if (check_output() != CNN_OK)
         fail();

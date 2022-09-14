@@ -51,8 +51,7 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1)
-        ;
+    while (1) {}
 }
 
 // 1-channel 28x28 data input (784 bytes / 196 32-bit words):
@@ -63,7 +62,7 @@ void load_input(void)
 {
     // This function loads the sample data input -- replace with actual data
 
-    memcpy32((uint32_t*)0x50400000, input_0, 196);
+    memcpy32((uint32_t *)0x50400000, input_0, 196);
 }
 
 // Expected output of layer 4 for mnist-riscv given the sample input (known-answer test)
@@ -73,12 +72,12 @@ int check_output(void)
 {
     int i;
     uint32_t mask, len;
-    volatile uint32_t* addr;
-    const uint32_t* ptr = sample_output;
+    volatile uint32_t *addr;
+    const uint32_t *ptr = sample_output;
 
-    while ((addr = (volatile uint32_t*)*ptr++) != 0) {
+    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
         mask = *ptr++;
-        len  = *ptr++;
+        len = *ptr++;
         for (i = 0; i < len; i++)
             if ((*addr++ & mask) != *ptr++) {
                 printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
@@ -96,8 +95,8 @@ static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
 void softmax_layer(void)
 {
-    cnn_unload((uint32_t*)ml_data);
-    softmax_q17p14_q15((const q31_t*)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
+    cnn_unload((uint32_t *)ml_data);
+    softmax_q17p14_q15((const q31_t *)ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 }
 
 int main(void)
@@ -105,7 +104,7 @@ int main(void)
     int i;
     int digs, tens;
 
-    Debug_Init();             // Set up RISCV JTAG
+    Debug_Init(); // Set up RISCV JTAG
     MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
@@ -114,15 +113,14 @@ int main(void)
 
     printf("\n*** CNN Inference Test ***\n");
 
-    cnn_init();         // Bring state machine into consistent state
+    cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-    load_input();    // Load data input
-    cnn_start();     // Start CNN processing
+    load_input(); // Load data input
+    cnn_start(); // Start CNN processing
 
-    while (cnn_time == 0)
-        asm volatile("wfi"); // Wait for CNN
+    while (cnn_time == 0) asm volatile("wfi"); // Wait for CNN
 
     if (check_output() != CNN_OK)
         fail();

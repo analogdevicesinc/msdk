@@ -50,8 +50,7 @@ int MXC_TPU_Init(mxc_sys_periph_clock_t clock)
     if (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_CRYPTO_EN)) {
         MXC_GCR->clk_ctrl |= MXC_F_GCR_CLK_CTRL_CRYPTO_EN;
 
-        while (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_CRYPTO_RDY))
-            ;
+        while (!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLK_CTRL_CRYPTO_RDY)) {}
     }
 
     if (clock == MXC_SYS_PERIPH_CLOCK_TPU) {
@@ -75,7 +74,7 @@ int MXC_TPU_Shutdown(mxc_sys_periph_clock_t clock)
 
 void MXC_TPU_Reset(void)
 {
-    MXC_TPU_RevA_Reset((mxc_tpu_reva_regs_t*)MXC_TPU);
+    MXC_TPU_RevA_Reset((mxc_tpu_reva_regs_t *)MXC_TPU);
 }
 
 /* ************************************************************************* */
@@ -84,22 +83,22 @@ void MXC_TPU_Reset(void)
 
 int MXC_TPU_CRC_Config(void)
 {
-    return MXC_TPU_RevA_CRC_Config((mxc_tpu_reva_regs_t*)MXC_TPU);
+    return MXC_TPU_RevA_CRC_Config((mxc_tpu_reva_regs_t *)MXC_TPU);
 }
 
-int MXC_TPU_CRC(const uint8_t* src, uint32_t len, uint32_t poly, uint32_t* crc)
+int MXC_TPU_CRC(const uint8_t *src, uint32_t len, uint32_t poly, uint32_t *crc)
 {
-    return MXC_TPU_RevA_CRC((mxc_tpu_reva_regs_t*)MXC_TPU, src, len, poly, crc);
+    return MXC_TPU_RevA_CRC((mxc_tpu_reva_regs_t *)MXC_TPU, src, len, poly, crc);
 }
 
 int MXC_TPU_Ham_Config(void)
 {
-    return MXC_TPU_RevA_Ham_Config((mxc_tpu_reva_regs_t*)MXC_TPU);
+    return MXC_TPU_RevA_Ham_Config((mxc_tpu_reva_regs_t *)MXC_TPU);
 }
 
-int MXC_TPU_Ham(const uint8_t* src, uint32_t len, uint32_t* ecc)
+int MXC_TPU_Ham(const uint8_t *src, uint32_t len, uint32_t *ecc)
 {
-    return MXC_TPU_RevA_Ham((mxc_tpu_reva_regs_t*)MXC_TPU, src, len, ecc);
+    return MXC_TPU_RevA_Ham((mxc_tpu_reva_regs_t *)MXC_TPU, src, len, ecc);
 }
 
 /* ************************************************************************* */
@@ -110,18 +109,18 @@ unsigned int MXC_TPU_Cipher_Get_Key_Size(mxc_tpu_ciphersel_t cipher)
 {
     // Key size indexed by 'opsel'
     switch (cipher) {
-        case MXC_TPU_CIPHER_DIS:
-            return 0;
-        case MXC_TPU_CIPHER_AES128:
-            return 16;
-        case MXC_TPU_CIPHER_AES192:
-            return 24;
-        case MXC_TPU_CIPHER_AES256:
-            return 32;
-        case MXC_TPU_CIPHER_DES:
-            return 8;
-        case MXC_TPU_CIPHER_TDEA:
-            return 24;
+    case MXC_TPU_CIPHER_DIS:
+        return 0;
+    case MXC_TPU_CIPHER_AES128:
+        return 16;
+    case MXC_TPU_CIPHER_AES192:
+        return 24;
+    case MXC_TPU_CIPHER_AES256:
+        return 32;
+    case MXC_TPU_CIPHER_DES:
+        return 8;
+    case MXC_TPU_CIPHER_TDEA:
+        return 24;
     }
     // if returns this bad param was passed in or disable.
     return 0;
@@ -130,18 +129,18 @@ unsigned int MXC_TPU_Cipher_Get_Key_Size(mxc_tpu_ciphersel_t cipher)
 unsigned int MXC_TPU_Cipher_Get_Block_Size(mxc_tpu_ciphersel_t cipher)
 {
     switch (cipher) {
-        case MXC_TPU_CIPHER_DIS:
-            return 0;
-        case MXC_TPU_CIPHER_AES128:
-            return AES_DATA_LEN;
-        case MXC_TPU_CIPHER_AES192:
-            return AES_DATA_LEN;
-        case MXC_TPU_CIPHER_AES256:
-            return AES_DATA_LEN;
-        case MXC_TPU_CIPHER_DES:
-            return DES_DATA_LEN;
-        case MXC_TPU_CIPHER_TDEA:
-            return DES_DATA_LEN;
+    case MXC_TPU_CIPHER_DIS:
+        return 0;
+    case MXC_TPU_CIPHER_AES128:
+        return AES_DATA_LEN;
+    case MXC_TPU_CIPHER_AES192:
+        return AES_DATA_LEN;
+    case MXC_TPU_CIPHER_AES256:
+        return AES_DATA_LEN;
+    case MXC_TPU_CIPHER_DES:
+        return DES_DATA_LEN;
+    case MXC_TPU_CIPHER_TDEA:
+        return DES_DATA_LEN;
     }
     // if returns this bad param was passed in or disable.
     return 0;
@@ -154,57 +153,57 @@ unsigned int MXC_TPU_Cipher_GetLength(mxc_tpu_ciphersel_t cipher, unsigned int d
 
 void MXC_TPU_Cipher_EncDecSelect(int enc)
 {
-    MXC_TPU_RevA_Cipher_EncDecSelect((mxc_tpu_reva_regs_t*)MXC_TPU, enc);
+    MXC_TPU_RevA_Cipher_EncDecSelect((mxc_tpu_reva_regs_t *)MXC_TPU, enc);
 }
 
 int MXC_TPU_Cipher_Config(mxc_tpu_modesel_t mode, mxc_tpu_ciphersel_t cipher)
 {
-    return MXC_TPU_RevA_Cipher_Config((mxc_tpu_reva_regs_t*)MXC_TPU, (mxc_tpu_reva_modesel_t)mode,
+    return MXC_TPU_RevA_Cipher_Config((mxc_tpu_reva_regs_t *)MXC_TPU, (mxc_tpu_reva_modesel_t)mode,
                                       (mxc_tpu_reva_ciphersel_t)cipher);
 }
 
-int MXC_TPU_Cipher_DoOperation(const char* src, const char* iv, const char* key,
+int MXC_TPU_Cipher_DoOperation(const char *src, const char *iv, const char *key,
                                mxc_tpu_ciphersel_t cipher, mxc_tpu_modesel_t mode,
-                               unsigned int data_size, char* outptr)
+                               unsigned int data_size, char *outptr)
 {
-    return MXC_TPU_RevA_Cipher_DoOperation((mxc_tpu_reva_regs_t*)MXC_TPU, src, iv, key, cipher,
+    return MXC_TPU_RevA_Cipher_DoOperation((mxc_tpu_reva_regs_t *)MXC_TPU, src, iv, key, cipher,
                                            mode, data_size, outptr);
 }
 
-int MXC_TPU_Cipher_DES_Encrypt(const char* plaintext, const char* iv, const char* key,
-                               mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_Cipher_DES_Encrypt(const char *plaintext, const char *iv, const char *key,
+                               mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     return MXC_TPU_RevA_Cipher_DES_Encrypt(plaintext, iv, key, mode, data_size, outptr);
 }
 
-int MXC_TPU_Cipher_DES_Decrypt(const char* ciphertext, const char* iv, const char* key,
-                               mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_Cipher_DES_Decrypt(const char *ciphertext, const char *iv, const char *key,
+                               mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     return MXC_TPU_RevA_Cipher_DES_Decrypt(ciphertext, iv, key, mode, data_size, outptr);
 }
 
-int MXC_TPU_Cipher_TDES_Encrypt(const char* plaintext, const char* iv, const char* key,
-                                mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_Cipher_TDES_Encrypt(const char *plaintext, const char *iv, const char *key,
+                                mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     return MXC_TPU_RevA_Cipher_TDES_Encrypt(plaintext, iv, key, mode, data_size, outptr);
 }
 
-int MXC_TPU_Cipher_TDES_Decrypt(const char* ciphertext, const char* iv, const char* key,
-                                mxc_tpu_modesel_t mode, unsigned int data_size, char* outptr)
+int MXC_TPU_Cipher_TDES_Decrypt(const char *ciphertext, const char *iv, const char *key,
+                                mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     return MXC_TPU_RevA_Cipher_TDES_Decrypt(ciphertext, iv, key, mode, data_size, outptr);
 }
 
-int MXC_TPU_Cipher_AES_Encrypt(const char* plaintext, const char* iv, const char* key,
+int MXC_TPU_Cipher_AES_Encrypt(const char *plaintext, const char *iv, const char *key,
                                mxc_tpu_ciphersel_t cipher, mxc_tpu_modesel_t mode,
-                               unsigned int data_size, char* outptr)
+                               unsigned int data_size, char *outptr)
 {
     return MXC_TPU_RevA_Cipher_AES_Encrypt(plaintext, iv, key, cipher, mode, data_size, outptr);
 }
 
-int MXC_TPU_Cipher_AES_Decrypt(const char* ciphertext, const char* iv, const char* key,
+int MXC_TPU_Cipher_AES_Decrypt(const char *ciphertext, const char *iv, const char *key,
                                mxc_tpu_ciphersel_t cipher, mxc_tpu_modesel_t mode,
-                               unsigned int data_size, char* outptr)
+                               unsigned int data_size, char *outptr)
 {
     return MXC_TPU_RevA_Cipher_AES_Decrypt(ciphertext, iv, key, cipher, mode, data_size, outptr);
 }
@@ -217,18 +216,18 @@ unsigned int MXC_TPU_Hash_Get_Block_Size_SHA(mxc_tpu_hashfunsel_t func)
 {
     // Block size in bytes indexed by hash function
     switch (func) {
-        case MXC_TPU_HASH_DIS:
-            return 0;
-        case MXC_TPU_HASH_SHA1:
-            return 64;
-        case MXC_TPU_HASH_SHA224:
-            return 64;
-        case MXC_TPU_HASH_SHA256:
-            return 64;
-        case MXC_TPU_HASH_SHA384:
-            return 128;
-        case MXC_TPU_HASH_SHA512:
-            return 128;
+    case MXC_TPU_HASH_DIS:
+        return 0;
+    case MXC_TPU_HASH_SHA1:
+        return 64;
+    case MXC_TPU_HASH_SHA224:
+        return 64;
+    case MXC_TPU_HASH_SHA256:
+        return 64;
+    case MXC_TPU_HASH_SHA384:
+        return 128;
+    case MXC_TPU_HASH_SHA512:
+        return 128;
     }
     // if returns this bad param was passed in or disable.
     return 0;
@@ -238,24 +237,24 @@ unsigned int MXC_TPU_Hash_Get_Dgst_Size(mxc_tpu_hashfunsel_t func)
 {
     // Digest length in bytes indexed by hash function
     switch (func) {
-        case MXC_TPU_HASH_DIS:
-            return 0;
-        case MXC_TPU_HASH_SHA1:
-            return 20;
-        case MXC_TPU_HASH_SHA224:
-            return 28;
-        case MXC_TPU_HASH_SHA256:
-            return 32;
-        case MXC_TPU_HASH_SHA384:
-            return 48;
-        case MXC_TPU_HASH_SHA512:
-            return 64;
+    case MXC_TPU_HASH_DIS:
+        return 0;
+    case MXC_TPU_HASH_SHA1:
+        return 20;
+    case MXC_TPU_HASH_SHA224:
+        return 28;
+    case MXC_TPU_HASH_SHA256:
+        return 32;
+    case MXC_TPU_HASH_SHA384:
+        return 48;
+    case MXC_TPU_HASH_SHA512:
+        return 64;
     }
     // if returns this bad param was passed in or disable.
     return 0;
 }
 
-void MXC_TPU_Hash_SHA_Size(unsigned int* blocks, unsigned int* length, unsigned int* lbyte,
+void MXC_TPU_Hash_SHA_Size(unsigned int *blocks, unsigned int *length, unsigned int *lbyte,
                            mxc_tpu_hashfunsel_t fun)
 {
     MXC_TPU_RevA_Hash_SHA_Size(blocks, length, lbyte, fun);
@@ -263,43 +262,43 @@ void MXC_TPU_Hash_SHA_Size(unsigned int* blocks, unsigned int* length, unsigned 
 
 int MXC_TPU_Hash_Config(mxc_tpu_hashfunsel_t func)
 {
-    return MXC_TPU_RevA_Hash_Config((mxc_tpu_reva_regs_t*)MXC_TPU, func);
+    return MXC_TPU_RevA_Hash_Config((mxc_tpu_reva_regs_t *)MXC_TPU, func);
 }
 
-int MXC_TPU_Hash_SHA(const char* msg, mxc_tpu_hashfunsel_t fun, unsigned int byteLen, char* digest)
+int MXC_TPU_Hash_SHA(const char *msg, mxc_tpu_hashfunsel_t fun, unsigned int byteLen, char *digest)
 {
-    return MXC_TPU_RevA_Hash_SHA((mxc_tpu_reva_regs_t*)MXC_TPU, msg, fun, byteLen, digest);
+    return MXC_TPU_RevA_Hash_SHA((mxc_tpu_reva_regs_t *)MXC_TPU, msg, fun, byteLen, digest);
 }
 
 /* ************************************************************************* */
 /* True Random Number Generator (TRNG) functions                             */
 /* ************************************************************************* */
 
-uint8_t MXC_TPU_TRNG_Read8BIT(mxc_trng_regs_t* trng)
+uint8_t MXC_TPU_TRNG_Read8BIT(mxc_trng_regs_t *trng)
 {
     uint8_t rand_val;
     MXC_TRNG_Random(&rand_val, 1);
     return rand_val;
 }
 
-uint16_t MXC_TPU_TRNG_Read16BIT(mxc_trng_regs_t* trng)
+uint16_t MXC_TPU_TRNG_Read16BIT(mxc_trng_regs_t *trng)
 {
     uint16_t rand_val;
-    MXC_TRNG_Random((uint8_t*)&rand_val, 2);
+    MXC_TRNG_Random((uint8_t *)&rand_val, 2);
     return rand_val;
 }
 
-uint32_t MXC_TPU_TRNG_Read32BIT(mxc_trng_regs_t* trng)
+uint32_t MXC_TPU_TRNG_Read32BIT(mxc_trng_regs_t *trng)
 {
     return MXC_TRNG_RandomInt();
 }
 
-void MXC_TPU_TRNG_Read(mxc_trng_regs_t* trng, uint8_t* data, int len)
+void MXC_TPU_TRNG_Read(mxc_trng_regs_t *trng, uint8_t *data, int len)
 {
     MXC_TRNG_Random(data, len);
 }
 
-void MXC_TPU_TRNG_Generate_AES(mxc_trng_regs_t* trng)
+void MXC_TPU_TRNG_Generate_AES(mxc_trng_regs_t *trng)
 {
     MXC_TRNG_GenerateKey();
 }
@@ -315,12 +314,12 @@ void MXC_TPU_MAA_Mem_Clear(void)
 
 void MXC_TPU_MAA_Reset(void)
 {
-    MXC_TPU_RevA_MAA_Reset((mxc_tpu_reva_regs_t*)MXC_TPU);
+    MXC_TPU_RevA_MAA_Reset((mxc_tpu_reva_regs_t *)MXC_TPU);
 }
 
 int MXC_TPU_MAA_Init(unsigned int size)
 {
-    return MXC_TPU_RevA_MAA_Init((mxc_tpu_reva_regs_t*)MXC_TPU, size);
+    return MXC_TPU_RevA_MAA_Init((mxc_tpu_reva_regs_t *)MXC_TPU, size);
 }
 
 int MXC_TPU_MAA_Shutdown(void)
@@ -328,9 +327,9 @@ int MXC_TPU_MAA_Shutdown(void)
     return MXC_TPU_Shutdown(MXC_SYS_PERIPH_CLOCK_TPU);
 }
 
-int MXC_TPU_MAA_Compute(mxc_tpu_maa_clcsel_t clc, char* multiplier, char* multiplicand, char* exp,
-                        char* mod, int* result, unsigned int len)
+int MXC_TPU_MAA_Compute(mxc_tpu_maa_clcsel_t clc, char *multiplier, char *multiplicand, char *exp,
+                        char *mod, int *result, unsigned int len)
 {
-    return MXC_TPU_RevA_MAA_Compute((mxc_tpu_reva_regs_t*)MXC_TPU, clc, multiplier, multiplicand,
+    return MXC_TPU_RevA_MAA_Compute((mxc_tpu_reva_regs_t *)MXC_TPU, clc, multiplier, multiplicand,
                                     exp, mod, result, len);
 }

@@ -51,8 +51,8 @@ typedef struct {
     uint8_t channelRX;
     uint8_t channelTX;
     uint32_t remain;
-    uint32_t* inputText;
-    uint32_t* outputText;
+    uint32_t *inputText;
+    uint32_t *outputText;
 } mxc_aes_revb_dma_req_t;
 
 static mxc_aes_revb_dma_req_t dma_state;
@@ -63,9 +63,9 @@ static mxc_aes_revb_dma_req_t dma_state;
 
 /* Prevent GCC from optimimzing this function to memcpy */
 static void __attribute__((optimize("no-tree-loop-distribute-patterns")))
-memcpy32r(uint32_t* dst, const uint32_t* src, unsigned int len)
+memcpy32r(uint32_t *dst, const uint32_t *src, unsigned int len)
 {
-    uint32_t* dstr = dst + (len / 4) - 1;
+    uint32_t *dstr = dst + (len / 4) - 1;
     while (len) {
         *dstr = SWAP_BYTES(*src);
         dstr--;
@@ -74,32 +74,30 @@ memcpy32r(uint32_t* dst, const uint32_t* src, unsigned int len)
     }
 }
 
-int MXC_AES_RevB_Init(mxc_aes_revb_regs_t* aes)
+int MXC_AES_RevB_Init(mxc_aes_revb_regs_t *aes)
 {
     aes->ctrl = 0x00;
 
-    while (MXC_AES_RevB_IsBusy(aes) != E_NO_ERROR)
-        ;
+    while (MXC_AES_RevB_IsBusy(aes) != E_NO_ERROR) {}
 
     aes->ctrl |= MXC_F_AES_REVB_CTRL_EN;
 
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_Shutdown(mxc_aes_revb_regs_t* aes)
+int MXC_AES_RevB_Shutdown(mxc_aes_revb_regs_t *aes)
 {
     MXC_AES_RevB_FlushInputFIFO(aes);
     MXC_AES_RevB_FlushOutputFIFO(aes);
 
-    while (MXC_AES_RevB_IsBusy(aes) != E_NO_ERROR)
-        ;
+    while (MXC_AES_RevB_IsBusy(aes) != E_NO_ERROR) {}
 
     aes->ctrl = 0x00;
 
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_IsBusy(mxc_aes_revb_regs_t* aes)
+int MXC_AES_RevB_IsBusy(mxc_aes_revb_regs_t *aes)
 {
     if (aes->status & MXC_F_AES_REVB_STATUS_BUSY) {
         return E_BUSY;
@@ -108,63 +106,59 @@ int MXC_AES_RevB_IsBusy(mxc_aes_revb_regs_t* aes)
     return E_NO_ERROR;
 }
 
-void MXC_AES_RevB_SetKeySize(mxc_aes_revb_regs_t* aes, mxc_aes_revb_keys_t key)
+void MXC_AES_RevB_SetKeySize(mxc_aes_revb_regs_t *aes, mxc_aes_revb_keys_t key)
 {
-    while (MXC_AES_IsBusy() != E_NO_ERROR)
-        ;
+    while (MXC_AES_IsBusy() != E_NO_ERROR) {}
     aes->ctrl |= key;
 }
 
-mxc_aes_keys_t MXC_AES_RevB_GetKeySize(mxc_aes_revb_regs_t* aes)
+mxc_aes_keys_t MXC_AES_RevB_GetKeySize(mxc_aes_revb_regs_t *aes)
 {
     return (aes->ctrl & MXC_F_AES_REVB_CTRL_KEY_SIZE);
 }
 
-void MXC_AES_RevB_FlushInputFIFO(mxc_aes_revb_regs_t* aes)
+void MXC_AES_RevB_FlushInputFIFO(mxc_aes_revb_regs_t *aes)
 {
-    while (MXC_AES_IsBusy() != E_NO_ERROR)
-        ;
+    while (MXC_AES_IsBusy() != E_NO_ERROR) {}
     aes->ctrl |= MXC_F_AES_REVB_CTRL_INPUT_FLUSH;
 }
 
-void MXC_AES_RevB_FlushOutputFIFO(mxc_aes_revb_regs_t* aes)
+void MXC_AES_RevB_FlushOutputFIFO(mxc_aes_revb_regs_t *aes)
 {
-    while (MXC_AES_IsBusy() != E_NO_ERROR)
-        ;
+    while (MXC_AES_IsBusy() != E_NO_ERROR) {}
     aes->ctrl |= MXC_F_AES_REVB_CTRL_OUTPUT_FLUSH;
 }
 
-void MXC_AES_RevB_Start(mxc_aes_revb_regs_t* aes)
+void MXC_AES_RevB_Start(mxc_aes_revb_regs_t *aes)
 {
-    while (MXC_AES_IsBusy() != E_NO_ERROR)
-        ;
+    while (MXC_AES_IsBusy() != E_NO_ERROR) {}
     aes->ctrl |= MXC_F_AES_REVB_CTRL_START;
 }
 
-void MXC_AES_RevB_EnableInt(mxc_aes_revb_regs_t* aes, uint32_t interrupt)
+void MXC_AES_RevB_EnableInt(mxc_aes_revb_regs_t *aes, uint32_t interrupt)
 {
     aes->inten |= (interrupt & (MXC_F_AES_REVB_INTEN_DONE | MXC_F_AES_REVB_INTEN_KEY_CHANGE |
                                 MXC_F_AES_REVB_INTEN_KEY_ZERO | MXC_F_AES_REVB_INTEN_OV));
 }
 
-void MXC_AES_RevB_DisableInt(mxc_aes_revb_regs_t* aes, uint32_t interrupt)
+void MXC_AES_RevB_DisableInt(mxc_aes_revb_regs_t *aes, uint32_t interrupt)
 {
     aes->inten &= ~(interrupt & (MXC_F_AES_REVB_INTEN_DONE | MXC_F_AES_REVB_INTEN_KEY_CHANGE |
                                  MXC_F_AES_REVB_INTEN_KEY_ZERO | MXC_F_AES_REVB_INTEN_OV));
 }
 
-uint32_t MXC_AES_RevB_GetFlags(mxc_aes_revb_regs_t* aes)
+uint32_t MXC_AES_RevB_GetFlags(mxc_aes_revb_regs_t *aes)
 {
     return aes->intfl;
 }
 
-void MXC_AES_RevB_ClearFlags(mxc_aes_revb_regs_t* aes, uint32_t flags)
+void MXC_AES_RevB_ClearFlags(mxc_aes_revb_regs_t *aes, uint32_t flags)
 {
     aes->intfl = (flags & (MXC_F_AES_REVB_INTFL_DONE | MXC_F_AES_REVB_INTFL_KEY_CHANGE |
                            MXC_F_AES_REVB_INTFL_KEY_ZERO | MXC_F_AES_REVB_INTFL_OV));
 }
 
-int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
+int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
 {
     int i;
     int remain;
@@ -188,24 +182,20 @@ int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
 
     MXC_AES_RevB_SetKeySize(aes, req->keySize);
 
-    while (MXC_AES_IsBusy() != E_NO_ERROR)
-        ;
+    while (MXC_AES_IsBusy() != E_NO_ERROR) {}
 
     MXC_SETFIELD(aes->ctrl, MXC_F_AES_REVB_CTRL_TYPE,
                  req->encryption << MXC_F_AES_REVB_CTRL_TYPE_POS);
 
     while (remain / 4) {
-        for (i = 0; i < 4; i++) {
-            aes->fifo = SWAP_BYTES(req->inputData[3 - i]);
-        }
+        for (i = 0; i < 4; i++) { aes->fifo = SWAP_BYTES(req->inputData[3 - i]); }
         req->inputData += 4;
 
-        while (!(aes->intfl & MXC_F_AES_REVB_INTFL_DONE))
-            ;
+        while (!(aes->intfl & MXC_F_AES_REVB_INTFL_DONE)) {}
         aes->intfl |= MXC_F_AES_REVB_INTFL_DONE;
 
         for (i = 0; i < 4; i++) {
-            uint32_t tmp           = aes->fifo;
+            uint32_t tmp = aes->fifo;
             req->resultData[3 - i] = SWAP_BYTES(tmp);
         }
         req->resultData += 4;
@@ -214,22 +204,17 @@ int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
     }
 
     if (remain % 4) {
-        for (i = 0; i < remain; i++) {
-            aes->fifo = SWAP_BYTES(req->inputData[remain - 1 - i]);
-        }
+        for (i = 0; i < remain; i++) { aes->fifo = SWAP_BYTES(req->inputData[remain - 1 - i]); }
         req->inputData += remain;
 
         // Pad last block with 0's
-        for (i = remain; i < 4; i++) {
-            aes->fifo = 0;
-        }
+        for (i = remain; i < 4; i++) { aes->fifo = 0; }
 
-        while (!(aes->intfl & MXC_F_AES_REVB_INTFL_DONE))
-            ;
+        while (!(aes->intfl & MXC_F_AES_REVB_INTFL_DONE)) {}
         aes->intfl |= MXC_F_AES_REVB_INTFL_DONE;
 
         for (i = 0; i < 4; i++) {
-            uint32_t tmp           = aes->fifo;
+            uint32_t tmp = aes->fifo;
             req->resultData[3 - i] = SWAP_BYTES(tmp);
         }
         req->resultData += 4;
@@ -237,17 +222,17 @@ int MXC_AES_RevB_Generic(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_Encrypt(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
+int MXC_AES_RevB_Encrypt(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
 {
     return MXC_AES_RevB_Generic(aes, req);
 }
 
-int MXC_AES_RevB_Decrypt(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
+int MXC_AES_RevB_Decrypt(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
 {
     return MXC_AES_RevB_Generic(aes, req);
 }
 
-int MXC_AES_RevB_TXDMAConfig(void* src_addr, int len)
+int MXC_AES_RevB_TXDMAConfig(void *src_addr, int len)
 {
     uint8_t channel;
     mxc_dma_config_t config;
@@ -263,7 +248,7 @@ int MXC_AES_RevB_TXDMAConfig(void* src_addr, int len)
 
     MXC_DMA_Init();
 
-    channel             = MXC_DMA_AcquireChannel();
+    channel = MXC_DMA_AcquireChannel();
     dma_state.channelTX = channel;
 
     config.reqsel = MXC_DMA_REQUEST_AESTX;
@@ -276,7 +261,7 @@ int MXC_AES_RevB_TXDMAConfig(void* src_addr, int len)
     config.srcinc_en = 1;
     config.dstinc_en = 0;
 
-    srcdst.ch     = channel;
+    srcdst.ch = channel;
     srcdst.source = src_addr;
 
     if (dma_state.enc == 1) {
@@ -298,7 +283,7 @@ int MXC_AES_RevB_TXDMAConfig(void* src_addr, int len)
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_RXDMAConfig(void* dest_addr, int len)
+int MXC_AES_RevB_RXDMAConfig(void *dest_addr, int len)
 {
     if (dest_addr == NULL) {
         return E_NULL_PTR;
@@ -314,7 +299,7 @@ int MXC_AES_RevB_RXDMAConfig(void* dest_addr, int len)
 
     MXC_DMA_Init();
 
-    channel             = MXC_DMA_AcquireChannel();
+    channel = MXC_DMA_AcquireChannel();
     dma_state.channelRX = channel;
 
     config.reqsel = MXC_DMA_REQUEST_AESRX;
@@ -327,7 +312,7 @@ int MXC_AES_RevB_RXDMAConfig(void* dest_addr, int len)
     config.srcinc_en = 0;
     config.dstinc_en = 1;
 
-    srcdst.ch   = channel;
+    srcdst.ch = channel;
     srcdst.dest = dest_addr;
 
     if (dma_state.enc == 0) {
@@ -349,7 +334,7 @@ int MXC_AES_RevB_RXDMAConfig(void* dest_addr, int len)
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req, uint8_t enc)
+int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req, uint8_t enc)
 {
     if (req == NULL) {
         return E_NULL_PTR;
@@ -372,9 +357,9 @@ int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req,
     MXC_SETFIELD(aes->ctrl, MXC_F_AES_REVB_CTRL_TYPE,
                  req->encryption << MXC_F_AES_REVB_CTRL_TYPE_POS);
 
-    dma_state.enc        = enc;
-    dma_state.remain     = req->length;
-    dma_state.inputText  = req->inputData;
+    dma_state.enc = enc;
+    dma_state.remain = req->length;
+    dma_state.inputText = req->inputData;
     dma_state.outputText = req->resultData;
 
     aes->ctrl |= MXC_F_AES_REVB_CTRL_DMA_RX_EN; //Enable AES DMA
@@ -387,12 +372,12 @@ int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req,
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_EncryptAsync(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
+int MXC_AES_RevB_EncryptAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
 {
     return MXC_AES_RevB_GenericAsync(aes, req, 0);
 }
 
-int MXC_AES_RevB_DecryptAsync(mxc_aes_revb_regs_t* aes, mxc_aes_revb_req_t* req)
+int MXC_AES_RevB_DecryptAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req)
 {
     return MXC_AES_RevB_GenericAsync(aes, req, 1);
 }
@@ -421,7 +406,7 @@ void MXC_AES_RevB_DMACallback(int ch, int error)
     }
 }
 
-void MXC_AES_RevB_SetExtKey(mxc_aes_key_revb_regs_t* aeskey, const void* key, mxc_aes_keys_t len)
+void MXC_AES_RevB_SetExtKey(mxc_aes_key_revb_regs_t *aeskey, const void *key, mxc_aes_keys_t len)
 {
     int numBytes;
 
@@ -434,5 +419,5 @@ void MXC_AES_RevB_SetExtKey(mxc_aes_key_revb_regs_t* aeskey, const void* key, mx
     }
 
     /* TODO: Figure out if this is the correct byte ordering */
-    memcpy32r((void*)&(aeskey->aes_key0), key, numBytes);
+    memcpy32r((void *)&(aeskey->aes_key0), key, numBytes);
 }

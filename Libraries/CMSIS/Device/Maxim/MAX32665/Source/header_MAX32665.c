@@ -29,16 +29,16 @@ typedef enum {
 
 typedef struct {
     enum_magic_t MagicHigh; //> SLA Header magic
-    enum_magic_t MagicLow;  //> SLA Header magic
+    enum_magic_t MagicLow; //> SLA Header magic
 } magic_t;
 
 typedef struct {
     magic_t Magic;
     enum_rom_version_t RomVersion; //> ROM version
-    unsigned int LoadAddr;         //> Relocation address.
-    unsigned int SLA_CodeSize;     //> SLA code size in bytes
-    unsigned int* JumpAddr;        //> Rom code will jump at this address
-    unsigned int ArgSize;          //> Size of the Argument
+    unsigned int LoadAddr; //> Relocation address.
+    unsigned int SLA_CodeSize; //> SLA code size in bytes
+    unsigned int *JumpAddr; //> Rom code will jump at this address
+    unsigned int ArgSize; //> Size of the Argument
     unsigned int AppVersionNumber; //> Version of this application
 } flash_app_header_t;
 
@@ -81,34 +81,34 @@ typedef enum {
 
 typedef struct {
     enum_magic_t MagicHigh; //> SLA Header magic
-    enum_magic_t MagicLow;  //> SLA Header magic
+    enum_magic_t MagicLow; //> SLA Header magic
 } magic_t;
 
-typedef int (*__scpa_write_t)(unsigned int dest, unsigned int length, unsigned char* p_src);
+typedef int (*__scpa_write_t)(unsigned int dest, unsigned int length, unsigned char *p_src);
 typedef int (*__scpa_erase_t)(unsigned int dest, unsigned int length);
 
 /** Generic Plugin Operations */
 typedef struct {
-    __scpa_write_t write;   //> Write to memory
+    __scpa_write_t write; //> Write to memory
     __scpa_write_t compare; //> Compare memory data
-    __scpa_erase_t erase;   //> Erase memory
+    __scpa_erase_t erase; //> Erase memory
 } scpa_ops_t;
 
 typedef struct {
     magic_t Magic;
     enum_rom_version_t RomVersion; //> ROM version
-    unsigned int mem_base_addr;    //> Base address of memory targetted by applet
-    unsigned int mem_size;         //> Size of this memory
-    scpa_ops_t ops;                //> Operations of the SCP Applet
+    unsigned int mem_base_addr; //> Base address of memory targetted by applet
+    unsigned int mem_size; //> Size of this memory
+    scpa_ops_t ops; //> Operations of the SCP Applet
 } scpa_header_t;
 
-int start_scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src);
-int start_scpa_compare(unsigned int dest, unsigned int length, unsigned char* p_src);
+int start_scpa_write(unsigned int dest, unsigned int length, unsigned char *p_src);
+int start_scpa_compare(unsigned int dest, unsigned int length, unsigned char *p_src);
 int start_scpa_erase(unsigned int dest, unsigned int length);
 
-int __attribute__((weak)) scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src);
+int __attribute__((weak)) scpa_write(unsigned int dest, unsigned int length, unsigned char *p_src);
 int __attribute__((weak))
-scpa_compare(unsigned int dest, unsigned int length, unsigned char* p_src);
+scpa_compare(unsigned int dest, unsigned int length, unsigned char *p_src);
 int __attribute__((weak)) scpa_erase(unsigned int dest, unsigned int length);
 
 extern unsigned int __bss_start__;
@@ -152,32 +152,32 @@ const scpa_header_t scpa_header = {
 };
 
 int __attribute__((section(".scpa_ops")))
-start_scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src)
+start_scpa_write(unsigned int dest, unsigned int length, unsigned char *p_src)
 {
     volatile unsigned int bss_size =
         (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
-    volatile unsigned char* p_bss  = (volatile unsigned char*)&__bss_start__;
-    volatile unsigned int* p_magic = (volatile unsigned int*)&__bss_magic__;
+    volatile unsigned char *p_bss = (volatile unsigned char *)&__bss_start__;
+    volatile unsigned int *p_magic = (volatile unsigned int *)&__bss_magic__;
 
     // Automatic Code for bss init
     if (*p_magic == 0xABADCAFE) {
-        memset((void*)p_bss, 0x00, bss_size);
+        memset((void *)p_bss, 0x00, bss_size);
         *p_magic = 0x0;
     }
     return scpa_write(dest, length, p_src);
 }
 
 int __attribute__((section(".scpa_ops")))
-start_scpa_compare(unsigned int dest, unsigned int length, unsigned char* p_src)
+start_scpa_compare(unsigned int dest, unsigned int length, unsigned char *p_src)
 {
     volatile unsigned int bss_size =
         (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
-    volatile unsigned char* p_bss  = (volatile unsigned char*)&__bss_start__;
-    volatile unsigned int* p_magic = (volatile unsigned int*)&__bss_magic__;
+    volatile unsigned char *p_bss = (volatile unsigned char *)&__bss_start__;
+    volatile unsigned int *p_magic = (volatile unsigned int *)&__bss_magic__;
 
     // Automatic Code for bss init
     if (*p_magic == 0xABADCAFE) {
-        memset((void*)p_bss, 0x00, bss_size);
+        memset((void *)p_bss, 0x00, bss_size);
         *p_magic = 0x0;
     }
     return scpa_compare(dest, length, p_src);
@@ -187,19 +187,19 @@ int __attribute__((section(".scpa_ops"))) start_scpa_erase(unsigned int dest, un
 {
     volatile unsigned int bss_size =
         (volatile unsigned int)&__bss_end__ - (volatile unsigned int)&__bss_start__;
-    volatile unsigned char* p_bss  = (volatile unsigned char*)&__bss_start__;
-    volatile unsigned int* p_magic = (volatile unsigned int*)&__bss_magic__;
+    volatile unsigned char *p_bss = (volatile unsigned char *)&__bss_start__;
+    volatile unsigned int *p_magic = (volatile unsigned int *)&__bss_magic__;
 
     // Automatic Code for bss init
     if ((*p_magic == 0xABADCAFE)) {
-        memset((void*)p_bss, 0x00, bss_size);
+        memset((void *)p_bss, 0x00, bss_size);
         *p_magic = 0x0;
     }
     return scpa_erase(dest, length);
 }
 
 int __attribute__((section(".scpa_ops")))
-scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src)
+scpa_write(unsigned int dest, unsigned int length, unsigned char *p_src)
 {
     (void)dest;
     (void)length;
@@ -208,7 +208,7 @@ scpa_write(unsigned int dest, unsigned int length, unsigned char* p_src)
 }
 
 int __attribute__((section(".scpa_ops")))
-scpa_compare(unsigned int dest, unsigned int length, unsigned char* p_src)
+scpa_compare(unsigned int dest, unsigned int length, unsigned char *p_src)
 {
     (void)dest;
     (void)length;
@@ -223,8 +223,6 @@ int __attribute__((section(".scpa_ops"))) scpa_erase(unsigned int dest, unsigned
     return 0;
 }
 
-void Reset_Handler(void)
-{
-}
+void Reset_Handler(void) {}
 
 #endif //__SCPA_FWK__

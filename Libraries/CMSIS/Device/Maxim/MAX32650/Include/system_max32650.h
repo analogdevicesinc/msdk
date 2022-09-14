@@ -79,7 +79,7 @@ extern "C" {
 #endif
 
 extern uint32_t SystemCoreClock; /*!< System Clock Frequency (Core Clock)  */
-extern uint8_t ChipRevision;     /*!< System Clock Frequency (Core Clock)  */
+extern uint8_t ChipRevision; /*!< System Clock Frequency (Core Clock)  */
 #ifndef PeripheralClock
 #define PeripheralClock (SystemCoreClock / 2) /*!< Peripheral Clock Frequency */
 #endif

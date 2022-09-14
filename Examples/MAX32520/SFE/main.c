@@ -57,12 +57,12 @@
 //Erase Commands
 #define FLASH_PAGE_ERASE 0x55
 
-#define RAM_SBA   0x20020000
+#define RAM_SBA 0x20020000
 #define FLASH_SBA 0x10000000
-#define RAM_STA   0x20048000
+#define RAM_STA 0x20048000
 #define FLASH_STA 0x10008000
 
-#define RAM_HOST_SBA   0x00330000
+#define RAM_HOST_SBA 0x00330000
 #define FLASH_HOST_SBA 0x00990000
 
 #define FLASH_WRITE_SBA 0x20020008
@@ -72,19 +72,19 @@
 int isr_cnt;
 int isr_flags;
 uint32_t flashAddr;
-uint32_t* data;
+uint32_t *data;
 uint32_t length;
-uint32_t* eraseCmd = (uint32_t*)FLASH_ERASE_SBA;
-uint32_t* writeCmd = (uint32_t*)FLASH_WRITE_SBA;
+uint32_t *eraseCmd = (uint32_t *)FLASH_ERASE_SBA;
+uint32_t *writeCmd = (uint32_t *)FLASH_WRITE_SBA;
 
 /* ***** Functions ***** */
 
 //******************************************************************************
-int Flash_Verify(uint32_t address, uint32_t length, uint8_t* data)
+int Flash_Verify(uint32_t address, uint32_t length, uint8_t *data)
 {
-    volatile uint8_t* ptr;
+    volatile uint8_t *ptr;
 
-    for (ptr = (uint8_t*)address; ptr < (uint8_t*)(address + length); ptr++, data++) {
+    for (ptr = (uint8_t *)address; ptr < (uint8_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
                    (unsigned int)*data);
@@ -98,9 +98,9 @@ int Flash_Verify(uint32_t address, uint32_t length, uint8_t* data)
 //******************************************************************************
 int Flash_CheckErased(uint32_t startaddr)
 {
-    uint32_t* ptr;
+    uint32_t *ptr;
 
-    for (ptr = (uint32_t*)startaddr; ptr < (uint32_t*)(startaddr + 4096); ptr++) {
+    for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + 4096); ptr++) {
         if (*ptr != 0xFFFFFFFF) {
             return 0;
         }
@@ -113,7 +113,7 @@ int Flash_CheckErased(uint32_t startaddr)
 void Flash_Write()
 {
     int fail = 0;
-    int i    = 0;
+    int i = 0;
 
     MXC_ICC_Disable();
 
@@ -121,7 +121,7 @@ void Flash_Write()
         // Clear and enable flash programming interrupts
 
         isr_flags = 0;
-        isr_cnt   = 0;
+        isr_cnt = 0;
 
         // Write a word
         if (MXC_FLC_Write32(flashAddr, *data) != E_NO_ERROR) {
@@ -131,7 +131,7 @@ void Flash_Write()
         }
 
         // Verify that word is written properly
-        if (Flash_Verify(flashAddr, 4, (uint8_t*)data) != E_NO_ERROR) {
+        if (Flash_Verify(flashAddr, 4, (uint8_t *)data) != E_NO_ERROR) {
             printf("\nWord is not written properly.\n");
             fail += 1;
             // break;
@@ -175,7 +175,7 @@ void FLC0_IRQHandler(void)
 }
 
 //******************************************************************************
-void Flash_InterruptEN(mxc_flc_regs_t* regs)
+void Flash_InterruptEN(mxc_flc_regs_t *regs)
 {
     regs->flsh_int = (MXC_F_FLC_FLSH_INT_DONEIE | MXC_F_FLC_FLSH_INT_AFIE);
 }
@@ -191,7 +191,7 @@ void Flash_CommandCheck()
         flashAddr = (flashAddr - FLASH_HOST_SBA) + (FLASH_SBA);
         printf("\n\nFlash Address: %x", flashAddr);
         printf("\nErasing the Page\n");
-        eraseCmd  = (uint32_t*)FLASH_ERASE_SBA;
+        eraseCmd = (uint32_t *)FLASH_ERASE_SBA;
         *eraseCmd = 0x00;
 
         int error_status = MXC_FLC_PageErase(flashAddr);
@@ -220,10 +220,10 @@ void Flash_CommandCheck()
         printf("\n\nFlash Address: %x", flashAddr);
         length = (*writeCmd++) / 4;
         printf("\nWriting %d 32-bit words to flash\n", length);
-        data      = writeCmd;
-        writeCmd  = (uint32_t*)FLASH_WRITE_SBA;
+        data = writeCmd;
+        writeCmd = (uint32_t *)FLASH_WRITE_SBA;
         *writeCmd = 0x00;
-        isErased  = 0;
+        isErased = 0;
         Flash_Write();
     }
 }
@@ -257,9 +257,7 @@ int main(void)
     Flash_InterruptEN(MXC_FLC0);
 
     isr_flags = 0;
-    isr_cnt   = 0;
+    isr_cnt = 0;
 
-    while (1) {
-        Flash_CommandCheck();
-    }
+    while (1) { Flash_CommandCheck(); }
 }

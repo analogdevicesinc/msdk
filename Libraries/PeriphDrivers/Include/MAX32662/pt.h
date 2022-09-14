@@ -70,7 +70,7 @@ extern "C" {
  */
 typedef struct {
     unsigned channel; /**< PT Channel to use */
-    uint32_t bps;     /**< pulse train bit rate */
+    uint32_t bps; /**< pulse train bit rate */
     uint32_t pattern; /**< Output pattern to shift out, starts at LSB */
     uint8_t
         ptLength; /**< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ... */
@@ -120,7 +120,7 @@ void MXC_PT_Shutdown(uint32_t pts);
  * @return     #E_NO_ERROR if everything is successful, @ref MXC_Error_Codes
  *             "error" if unsuccessful.
  */
-int MXC_PT_Config(mxc_pt_cfg_t* cfg);
+int MXC_PT_Config(mxc_pt_cfg_t *cfg);
 
 /**
  * @brief      Configures the pulse train in the square wave mode.

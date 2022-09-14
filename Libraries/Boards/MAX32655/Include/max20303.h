@@ -45,7 +45,7 @@ extern "C" {
  * @retval     #E_NO_ERROR   Intialization successful.
  * @retval     "Error Code"  @ref MXC_Error_Codes "Error Code" if unsuccessful.
  */
-int max20303_init(mxc_i2c_regs_t* i2c_inst);
+int max20303_init(mxc_i2c_regs_t *i2c_inst);
 
 /**
  * @brief      Set state of specified LED.

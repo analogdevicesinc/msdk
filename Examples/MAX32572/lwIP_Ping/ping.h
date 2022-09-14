@@ -42,7 +42,7 @@
 #define PING_USE_SOCKETS LWIP_SOCKET
 #endif
 
-void ping_init(const ip_addr_t* ping_addr);
+void ping_init(const ip_addr_t *ping_addr);
 
 #if !PING_USE_SOCKETS
 void ping_send_now(void);

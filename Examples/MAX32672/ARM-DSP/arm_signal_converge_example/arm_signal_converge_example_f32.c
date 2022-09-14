@@ -117,11 +117,11 @@
 * ------------------------------------------------------------------- */
 
 #define TEST_LENGTH_SAMPLES 1536
-#define NUMTAPS             32
-#define BLOCKSIZE           32
-#define DELTA_ERROR         0.00009f
-#define DELTA_COEFF         0.0001f
-#define MU                  0.5f
+#define NUMTAPS 32
+#define BLOCKSIZE 32
+#define DELTA_ERROR 0.00009f
+#define DELTA_COEFF 0.0001f
+#define MU 0.5f
 
 #define NUMFRAMES (TEST_LENGTH_SAMPLES / BLOCKSIZE)
 
@@ -154,9 +154,9 @@ arm_status test_signal_converge_example(void);
 /* ----------------------------------------------------------------------
 * Internal functions
 * ------------------------------------------------------------------- */
-arm_status test_signal_converge(float32_t* err_signal, uint32_t blockSize);
+arm_status test_signal_converge(float32_t *err_signal, uint32_t blockSize);
 
-void getinput(float32_t* input, uint32_t fr_cnt, uint32_t blockSize);
+void getinput(float32_t *input, uint32_t fr_cnt, uint32_t blockSize);
 
 /* ----------------------------------------------------------------------
 * External Declarations for FIR F32 module Test
@@ -190,7 +190,7 @@ int main(void)
     arm_lms_norm_init_f32(&lmsNorm_instance, NUMTAPS, lmsNormCoeff_f32, lmsStateF32, MU, BLOCKSIZE);
 
     /* Initialize the FIR data structure */
-    arm_fir_init_f32(&LPF_instance, NUMTAPS, (float32_t*)FIRCoeff_f32, firStateF32, BLOCKSIZE);
+    arm_fir_init_f32(&LPF_instance, NUMTAPS, (float32_t *)FIRCoeff_f32, firStateF32, BLOCKSIZE);
 
     /* ----------------------------------------------------------------------
   * Loop over the frames of data and execute each of the processing
@@ -208,11 +208,11 @@ int main(void)
 
         arm_lms_norm_f32(
             &lmsNorm_instance, /* LMSNorm instance */
-            wire1,             /* Input signal */
-            wire2,             /* Reference Signal */
-            wire3,             /* Converged Signal */
-            err_signal,        /* Error Signal, this will become small as the signal converges */
-            BLOCKSIZE);        /* BlockSize */
+            wire1, /* Input signal */
+            wire2, /* Reference Signal */
+            wire3, /* Converged Signal */
+            err_signal, /* Error Signal, this will become small as the signal converges */
+            BLOCKSIZE); /* BlockSize */
 
         /* apply overall gain */
         arm_scale_f32(wire3, 5, wire3, BLOCKSIZE); /* in-place buffer */
@@ -235,7 +235,7 @@ int main(void)
   * Test whether the filter coefficients have converged.
   * ------------------------------------------------------------------- */
 
-    arm_sub_f32((float32_t*)FIRCoeff_f32, lmsNormCoeff_f32, lmsNormCoeff_f32, NUMTAPS);
+    arm_sub_f32((float32_t *)FIRCoeff_f32, lmsNormCoeff_f32, lmsNormCoeff_f32, NUMTAPS);
 
     arm_abs_f32(lmsNormCoeff_f32, lmsNormCoeff_f32, NUMTAPS);
     arm_min_f32(lmsNormCoeff_f32, NUMTAPS, &minValue, &index);
@@ -246,16 +246,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 0;
     }

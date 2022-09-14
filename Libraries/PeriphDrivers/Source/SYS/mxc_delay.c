@@ -73,9 +73,7 @@ int MXC_DelayCheck(void)
     return E_NOT_SUPPORTED;
 }
 
-void MXC_DelayAbort(void)
-{
-}
+void MXC_DelayAbort(void) {}
 
 #else
 
@@ -127,10 +125,10 @@ static void MXC_DelayInit(unsigned long us)
     // If the SysTick is not running, configure and start it
     if (!(SysTick->CTRL & SysTick_CTRL_ENABLE_Msk)) {
         SysTick->LOAD = SysTick_LOAD_RELOAD_Msk;
-        SysTick->VAL  = SysTick_VAL_CURRENT_Msk;
+        SysTick->VAL = SysTick_VAL_CURRENT_Msk;
         SysTick->CTRL = SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_CLKSOURCE_Msk;
-        starttick     = SysTick_VAL_CURRENT_Msk;
-        reload        = SysTick_LOAD_RELOAD_Msk + 1;
+        starttick = SysTick_VAL_CURRENT_Msk;
+        reload = SysTick_LOAD_RELOAD_Msk + 1;
     } else {
         reload = SysTick->LOAD + 1; // get the current reload value
     }
@@ -216,7 +214,7 @@ void MXC_DelayAbort(void)
     }
 
     SysTick->CTRL = ctrl_save;
-    overflows     = -1;
+    overflows = -1;
 }
 
 /* ************************************************************************** */
@@ -246,8 +244,7 @@ int MXC_Delay(unsigned long us)
     }
 
     // Wait for the counter value
-    while (SysTick->VAL > endtick)
-        ;
+    while (SysTick->VAL > endtick) {}
 
     MXC_DelayAbort();
     return E_NO_ERROR;

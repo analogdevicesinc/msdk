@@ -47,10 +47,10 @@
 
 #ifdef __WIN
 
-#define SSIZET_FMT  "%Id"
+#define SSIZET_FMT "%Id"
 #define SSIZET_XFMT "%Ix"
 #else
-#define SSIZET_FMT  "%zd"
+#define SSIZET_FMT "%zd"
 #define SSIZET_XFMT "%zx"
 #endif
 

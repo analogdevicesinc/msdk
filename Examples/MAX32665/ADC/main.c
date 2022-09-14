@@ -57,7 +57,7 @@ volatile unsigned int adc_done = 0;
 /* **** Functions **** */
 
 #ifdef USE_INTERRUPTS
-void adc_complete_cb(void* req, int error)
+void adc_complete_cb(void *req, int error)
 {
     adc_done = 1;
     return;
@@ -80,8 +80,7 @@ int main(void)
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     // Configure Inputs as ADC inputs
@@ -110,8 +109,7 @@ int main(void)
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
-        while (!adc_done)
-            ;
+        while (!adc_done) {}
 #else
         MXC_ADC_StartConversion(MXC_ADC_CH_0);
 #endif
@@ -121,8 +119,7 @@ int main(void)
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_1, adc_complete_cb);
-        while (!adc_done)
-            ;
+        while (!adc_done) {}
 #else
         MXC_ADC_StartConversion(MXC_ADC_CH_1);
 #endif
@@ -132,8 +129,7 @@ int main(void)
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_2, adc_complete_cb);
-        while (!adc_done)
-            ;
+        while (!adc_done) {}
 #else
         MXC_ADC_StartConversion(MXC_ADC_CH_2);
 #endif
@@ -143,28 +139,27 @@ int main(void)
 #ifdef USE_INTERRUPTS
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_3, adc_complete_cb);
-        while (!adc_done)
-            ;
+        while (!adc_done) {}
 #else
         MXC_ADC_StartConversion(MXC_ADC_CH_3);
 #endif
         overflow[3] = (MXC_ADC_GetData(&adc_val[3]) == E_OVERFLOW ? 1 : 0);
 
         /* Display results on OLED display, display asterisk if overflow */
-        snprintf((char*)fmtstr, 40, "0: 0x%04x%s 2: 0x%04x%s", adc_val[0], overflow[0] ? "*" : " ",
+        snprintf((char *)fmtstr, 40, "0: 0x%04x%s 2: 0x%04x%s", adc_val[0], overflow[0] ? "*" : " ",
                  adc_val[2], overflow[2] ? "*" : " ");
         printf("%s\n", fmtstr);
 
-        snprintf((char*)fmtstr, 40, "1: 0x%04x%s 3: 0x%04x%s", adc_val[1], overflow[1] ? "*" : " ",
+        snprintf((char *)fmtstr, 40, "1: 0x%04x%s 3: 0x%04x%s", adc_val[1], overflow[1] ? "*" : " ",
                  adc_val[3], overflow[3] ? "*" : " ");
         printf("%s\n", fmtstr);
         /* Determine if programmable limits on AIN1 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
-            snprintf((char*)fmtstr, 40, " %s Limit on AIN0 ",
+            snprintf((char *)fmtstr, 40, " %s Limit on AIN0 ",
                      (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
         } else {
-            snprintf((char*)fmtstr, 40, "                   ");
+            snprintf((char *)fmtstr, 40, "                   ");
         }
         printf("%s\n", fmtstr);
 

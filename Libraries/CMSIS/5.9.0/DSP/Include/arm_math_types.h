@@ -63,18 +63,18 @@ extern "C" {
 #if defined(_MSC_VER)
 #include <stdint.h>
 #define __STATIC_FORCEINLINE static __forceinline
-#define __STATIC_INLINE      static __inline
-#define __ALIGNED(x)         __declspec(align(x))
+#define __STATIC_INLINE static __inline
+#define __ALIGNED(x) __declspec(align(x))
 #elif defined(__APPLE_CC__)
 #include <stdint.h>
-#define __ALIGNED(x)         __attribute__((aligned(x)))
+#define __ALIGNED(x) __attribute__((aligned(x)))
 #define __STATIC_FORCEINLINE static inline __attribute__((always_inline))
-#define __STATIC_INLINE      static inline
+#define __STATIC_INLINE static inline
 #elif defined(__GNUC_PYTHON__)
 #include <stdint.h>
-#define __ALIGNED(x)         __attribute__((aligned(x)))
+#define __ALIGNED(x) __attribute__((aligned(x)))
 #define __STATIC_FORCEINLINE static inline __attribute__((always_inline))
-#define __STATIC_INLINE      static inline
+#define __STATIC_INLINE static inline
 
 #else
 #include "cmsis_compiler.h"
@@ -544,17 +544,17 @@ typedef int8x16_t status8x8_t;
 
 #define Q31_MAX ((q31_t)(0x7FFFFFFFL))
 #define Q15_MAX ((q15_t)(0x7FFF))
-#define Q7_MAX  ((q7_t)(0x7F))
+#define Q7_MAX ((q7_t)(0x7F))
 #define Q31_MIN ((q31_t)(0x80000000L))
 #define Q15_MIN ((q15_t)(0x8000))
-#define Q7_MIN  ((q7_t)(0x80))
+#define Q7_MIN ((q7_t)(0x80))
 
 #define Q31_ABSMAX ((q31_t)(0x7FFFFFFFL))
 #define Q15_ABSMAX ((q15_t)(0x7FFF))
-#define Q7_ABSMAX  ((q7_t)(0x7F))
+#define Q7_ABSMAX ((q7_t)(0x7F))
 #define Q31_ABSMIN ((q31_t)0)
 #define Q15_ABSMIN ((q15_t)0)
-#define Q7_ABSMIN  ((q7_t)0)
+#define Q7_ABSMIN ((q7_t)0)
 
 /* Dimension C vector space */
 #define CMPLX_DIM 2
@@ -564,13 +564,13 @@ typedef int8x16_t status8x8_t;
    */
 
 typedef enum {
-    ARM_MATH_SUCCESS        = 0,  /**< No error */
+    ARM_MATH_SUCCESS = 0, /**< No error */
     ARM_MATH_ARGUMENT_ERROR = -1, /**< One or more arguments are incorrect */
-    ARM_MATH_LENGTH_ERROR   = -2, /**< Length of data buffer is incorrect */
-    ARM_MATH_SIZE_MISMATCH  = -3, /**< Size of matrices is not compatible with the operation */
-    ARM_MATH_NANINF         = -4, /**< Not-a-number (NaN) or infinity is generated */
-    ARM_MATH_SINGULAR       = -5, /**< Input matrix is singular and cannot be inverted */
-    ARM_MATH_TEST_FAILURE   = -6, /**< Test Failed */
+    ARM_MATH_LENGTH_ERROR = -2, /**< Length of data buffer is incorrect */
+    ARM_MATH_SIZE_MISMATCH = -3, /**< Size of matrices is not compatible with the operation */
+    ARM_MATH_NANINF = -4, /**< Not-a-number (NaN) or infinity is generated */
+    ARM_MATH_SINGULAR = -5, /**< Input matrix is singular and cannot be inverted */
+    ARM_MATH_TEST_FAILURE = -6, /**< Test Failed */
     ARM_MATH_DECOMPOSITION_FAILURE = -7 /**< Decomposition Failed */
 } arm_status;
 

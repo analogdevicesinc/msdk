@@ -48,7 +48,7 @@
 #include "qdec.h"
 
 /***** Definitions *****/
-#define MAXCNT_FLAG  MXC_F_QDEC_INTFL_MAXCNT
+#define MAXCNT_FLAG MXC_F_QDEC_INTFL_MAXCNT
 #define COMPARE_FLAG MXC_F_QDEC_INTFL_COMPARE
 
 /***** Globals *****/
@@ -90,15 +90,15 @@ int main(void)
     printf("Direction: 1 - Clockwise\n\n");
 
     // QDEC request
-    req.mode    = MXC_QDEC_X2_MODE;
-    req.swap    = MXC_QDEC_SWAP_CW_A_LEADS_B;
-    req.sample  = MXC_QDEC_FILTER_2_SAMPLES;
-    req.clkdiv  = MXC_QDEC_CLKDIV_8;
-    req.sticky  = MXC_QDEC_STICKY_PULSE;
-    req.rst     = MXC_QDEC_RST_ON_MAXCNT;
-    req.func    = MXC_QDEC_COMPARE;
+    req.mode = MXC_QDEC_X2_MODE;
+    req.swap = MXC_QDEC_SWAP_CW_A_LEADS_B;
+    req.sample = MXC_QDEC_FILTER_2_SAMPLES;
+    req.clkdiv = MXC_QDEC_CLKDIV_8;
+    req.sticky = MXC_QDEC_STICKY_PULSE;
+    req.rst = MXC_QDEC_RST_ON_MAXCNT;
+    req.func = MXC_QDEC_COMPARE;
     req.initial = 0;
-    req.maxcnt  = 255;
+    req.maxcnt = 255;
     req.compare = 128;
 
     NVIC_EnableIRQ(QDEC_IRQn);
@@ -107,17 +107,18 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("\nFail to initialize QDEC. Error: %d\n", error);
         while (1) {
-            ;
+            {
+            }
         }
     }
 
     direction = MXC_QDEC_GetDirection();
-    position  = MXC_QDEC_GetPosition();
+    position = MXC_QDEC_GetPosition();
     printf("Position: %d  -  Direction: %d\n", position, direction);
 
     while (1) {
         newDirection = MXC_QDEC_GetDirection();
-        newPosition  = MXC_QDEC_GetPosition();
+        newPosition = MXC_QDEC_GetPosition();
 
         if (position != newPosition || direction != newDirection) {
             if (direction != newDirection) {
@@ -125,7 +126,7 @@ int main(void)
             }
 
             direction = newDirection;
-            position  = newPosition;
+            position = newPosition;
             printf("Position: %d  -  Direction: %d\n", position, direction);
 
             MXC_Delay(MXC_DELAY_MSEC(100));

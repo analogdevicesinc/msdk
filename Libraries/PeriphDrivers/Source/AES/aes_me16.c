@@ -125,47 +125,47 @@ void MXC_AES_ClearFlags(uint32_t flags)
     MXC_AES_RevB_ClearFlags(flags);
 }
 
-int MXC_AES_Generic(mxc_aes_req_t* req)
+int MXC_AES_Generic(mxc_aes_req_t *req)
 {
     return MXC_AES_RevB_Generic(req);
 }
 
-int MXC_AES_Encrypt(mxc_aes_req_t* req)
+int MXC_AES_Encrypt(mxc_aes_req_t *req)
 {
     return MXC_AES_RevB_Encrypt(req);
 }
 
-int MXC_AES_Decrypt(mxc_aes_req_t* req)
+int MXC_AES_Decrypt(mxc_aes_req_t *req)
 {
     return MXC_AES_RevB_Decrypt(req);
 }
 
-int MXC_AES_TXDMAConfig(void* src_addr, int len)
+int MXC_AES_TXDMAConfig(void *src_addr, int len)
 {
     return MXC_AES_RevB_TXDMAConfig(src_addr, len);
 }
 
-int MXC_AES_RXDMAConfig(void* dest_addr, int len)
+int MXC_AES_RXDMAConfig(void *dest_addr, int len)
 {
     return MXC_AES_RevB_RXDMAConfig(dest_addr, len);
 }
 
-int MXC_AES_GenericAsync(mxc_aes_req_t* req, uint8_t enc)
+int MXC_AES_GenericAsync(mxc_aes_req_t *req, uint8_t enc)
 {
     return MXC_AES_RevB_GenericAsync(req, enc);
 }
 
-int MXC_AES_EncryptAsync(mxc_aes_req_t* req)
+int MXC_AES_EncryptAsync(mxc_aes_req_t *req)
 {
     return MXC_AES_RevB_EncryptAsync(req);
 }
 
-int MXC_AES_DecryptAsync(mxc_aes_req_t* req)
+int MXC_AES_DecryptAsync(mxc_aes_req_t *req)
 {
     return MXC_AES_RevB_DecryptAsync(req);
 }
 
-void MXC_AES_SetExtKey(const void* key, mxc_aes_keys_t len)
+void MXC_AES_SetExtKey(const void *key, mxc_aes_keys_t len)
 {
     return MXC_AES_RevB_SetExtKey(key, len);
 }

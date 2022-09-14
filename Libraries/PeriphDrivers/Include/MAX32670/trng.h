@@ -53,7 +53,7 @@ extern "C" {
  */
 
 /***** Function Prototypes *****/
-typedef void (*mxc_trng_complete_t)(void* req, int result);
+typedef void (*mxc_trng_complete_t)(void *req, int result);
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
@@ -110,7 +110,7 @@ int MXC_TRNG_RandomInt(void);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TRNG_Random(uint8_t* data, uint32_t len);
+int MXC_TRNG_Random(uint8_t *data, uint32_t len);
 
 /**
  * @brief   Get a random number of length len, do not block while generating data
@@ -121,12 +121,21 @@ int MXC_TRNG_Random(uint8_t* data, uint32_t len);
  * @param   callback  Function that will be called when all data has been generated
  *
  */
-void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callback);
+void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callback);
 
 /**
  * @brief   Generate an AES key and transfer to the AES block
  */
 void MXC_TRNG_GenerateKey(void);
+
+/**
+ * @brief   Perform health test of the TRNG entropy source
+ * 
+ * @return  If test fails the function will return E_BAD_STATE (-7), otherwise it will return E_NO_ERROR.
+ * 
+ * @warning MAX32670 with Rev. A Silicon does not support health tests. (Check MXC_GCR->revision to see which revision your chip is.)
+ */
+int MXC_TRNG_HealthTest(void);
 
 #ifdef __cplusplus
 }

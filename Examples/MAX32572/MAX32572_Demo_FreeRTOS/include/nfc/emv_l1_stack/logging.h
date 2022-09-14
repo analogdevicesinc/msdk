@@ -104,7 +104,7 @@ extern "C" {
         x) /**< Same as @ref DBG_LVL_INF plus TX buffer contents, and RF Driver response status */
 #define full_debug(x...) \
     do_log(DBG_LVL_FDB, x) /**< Same as @ref DBG_LVL_DBG plus RX buffer contents */
-/** @} */                  /* @defgroup NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS */
+/** @} */ /* @defgroup NFC_PCD_EMV_LVL1_STACK_LOGGING_MACROS */
 
 /**
  * @brief Controls the logging level for the L1 Stack

@@ -74,7 +74,7 @@ extern "C" {
  *
  * @ingroup UCL_CBC_DES
  */
-int ucl_des_cbc(u8* dataOut, u8* dataIn, u8* key, u8* IV, u32 data_byteLen, int mode);
+int ucl_des_cbc(u8 *dataOut, u8 *dataIn, u8 *key, u8 *IV, u32 data_byteLen, int mode);
 
 /*============================================================================*/
 /** <b>DES-CBC Init</b>.
@@ -98,7 +98,7 @@ int ucl_des_cbc(u8* dataOut, u8* dataIn, u8* key, u8* IV, u32 data_byteLen, int 
  *
  * @ingroup UCL_CBC_DES
  */
-int ucl_des_cbc_init(ucl_des_ctx_t* ctx, u8* key, u8* IV, int mode);
+int ucl_des_cbc_init(ucl_des_ctx_t *ctx, u8 *key, u8 *IV, int mode);
 
 /*============================================================================*/
 /** <b>DES-CBC Core</b>.
@@ -121,7 +121,7 @@ int ucl_des_cbc_init(ucl_des_ctx_t* ctx, u8* key, u8* IV, int mode);
  *
  * @ingroup UCL_CBC_DES
  */
-int ucl_des_cbc_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteLen);
+int ucl_des_cbc_core(u8 *dataOut, ucl_des_ctx_t *ctx, u8 *dataIn, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>DES-CBC Finish</b>.
@@ -136,7 +136,7 @@ int ucl_des_cbc_core(u8* dataOut, ucl_des_ctx_t* ctx, u8* dataIn, u32 data_byteL
  *
  * @ingroup UCL_CBC_DES
  */
-int ucl_des_cbc_finish(ucl_des_ctx_t* ctx);
+int ucl_des_cbc_finish(ucl_des_ctx_t *ctx);
 
 #ifdef __cplusplus
 }
