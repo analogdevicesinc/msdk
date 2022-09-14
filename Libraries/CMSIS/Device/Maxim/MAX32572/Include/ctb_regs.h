@@ -584,6 +584,9 @@ typedef struct {
  #define MXC_F_CTB_SCA_CTRL0_ABORT_POS                  2 /**< SCA_CTRL0_ABORT Position */
  #define MXC_F_CTB_SCA_CTRL0_ABORT                      ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL0_ABORT_POS)) /**< SCA_CTRL0_ABORT Mask */
 
+ #define MXC_F_CTB_SCA_CTRL0_AFFJAC_POS                 3 /**< SCA_CTRL0_AFFJAC Position */
+ #define MXC_F_CTB_SCA_CTRL0_AFFJAC                     ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL0_AFFJAC_POS)) /**< SCA_CTRL0_AFFJAC Mask */
+
  #define MXC_F_CTB_SCA_CTRL0_ERMEM_POS                  4 /**< SCA_CTRL0_ERMEM Position */
  #define MXC_F_CTB_SCA_CTRL0_ERMEM                      ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL0_ERMEM_POS)) /**< SCA_CTRL0_ERMEM Mask */
 

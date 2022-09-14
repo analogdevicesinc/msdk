@@ -933,6 +933,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>AFFJAC</name>
+            <description>Select Affine or Jacobi Coordinates.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>ERMEM</name>
             <description>Erase Cryptographic Memory.</description>
             <bitOffset>4</bitOffset>
