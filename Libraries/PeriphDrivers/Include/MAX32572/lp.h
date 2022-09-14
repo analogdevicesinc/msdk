@@ -284,6 +284,11 @@ void MXC_LP_SysRam3LightSleepEnable(void);
 void MXC_LP_ICacheXIPLightSleepEnable(void);
 
 /**
+ * @brief Enable Icache 0 in light sleep
+ */
+void MXC_LP_ICache0LightSleepEnable(void);
+
+/**
  * @brief Enable Crypto in light sleep
  */
 void MXC_LP_CryptoLightSleepEnable(void);
@@ -296,7 +301,12 @@ void MXC_LP_USBFIFOLightSleepEnable(void);
 /**
  * @brief Enable ROM 0 in light sleep
  */
-void MXC_LP_ROMLightSleepEnable(void);
+void MXC_LP_ROM0LightSleepEnable(void);
+
+/**
+ * @brief Enable ROM 1 in light sleep
+ */
+void MXC_LP_ROM1LightSleepEnable(void);
 
 /**
  * @brief Disable System Ram 0 in light sleep
@@ -341,7 +351,12 @@ void MXC_LP_USBFIFOLightSleepDisable(void);
 /**
  * @brief Disable ROM 0 in light sleep
  */
-void MXC_LP_ROMLightSleepDisable(void);
+void MXC_LP_ROM0LightSleepDisable(void);
+
+/**
+ * @brief Disable ROM 1 in light sleep
+ */
+void MXC_LP_ROM1LightSleepDisable(void);
 
 /**
  * @brief Shutdown System Ram 0

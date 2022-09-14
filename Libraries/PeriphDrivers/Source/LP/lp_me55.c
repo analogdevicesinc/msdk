@@ -303,9 +303,14 @@ void MXC_LP_USBFIFOLightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_USBLS_EN;
 }
 
-void MXC_LP_ROMLightSleepEnable(void)
+void MXC_LP_ROM0LightSleepEnable(void)
 {
-    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM0LS_EN;
+}
+
+void MXC_LP_ROM1LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM1LS_EN;
 }
 
 void MXC_LP_SysRam0LightSleepDisable(void)
@@ -348,9 +353,14 @@ void MXC_LP_USBFIFOLightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_USBLS_EN;
 }
 
-void MXC_LP_ROMLightSleepDisable(void)
+void MXC_LP_ROM0LightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROMLS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM0LS_EN;
+}
+
+void MXC_LP_ROM1LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM1LS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)

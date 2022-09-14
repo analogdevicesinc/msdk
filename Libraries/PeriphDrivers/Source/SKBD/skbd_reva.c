@@ -46,17 +46,17 @@
 /* ***** SKBD context info ***** */
 static mxc_skbd_reva_req_t mxc_skbd_req;
 
+#ifndef __unsupported_riscv
 static void SKBD_RevA_IRQHandler(void)
 {
     if (mxc_skbd_req.irq_handler) {
         mxc_skbd_req.irq_handler();
     }
 
-#ifndef __unsupported_riscv
     /* Acknowledge interrupt at platform level */
     NVIC_ClearPendingIRQ(SKB_IRQn);
-#endif
 }
+#endif
 
 int MXC_SKBD_RevA_PreInit(void)
 {
