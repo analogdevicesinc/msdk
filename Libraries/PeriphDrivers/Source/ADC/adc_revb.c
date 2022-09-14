@@ -380,7 +380,7 @@ void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t *adc, mxc_adc_convers
 
 int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
 {
-    if (delay > 0x0FFFF) {
+    if (delay > MXC_F_ADC_REVB_RESTART_CNT) {
         return E_BAD_PARAM;
     }
 

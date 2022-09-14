@@ -360,7 +360,7 @@ typedef enum {
 /******************************************************************************/
 /*                                                                        I2C */
 #define MXC_I2C_INSTANCES (3)
-#define MXC_I2C_NUM_CONTROLLER_ADDR (4)
+#define MXC_I2C_NUM_TARGET_ADDR (4)
 
 #define MXC_BASE_I2C0 ((uint32_t)0x4001D000UL)
 #define MXC_I2C0 ((mxc_i2c_regs_t *)MXC_BASE_I2C0)
