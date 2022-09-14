@@ -10,7 +10,7 @@ sla: all
 	@echo " "
 	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
 	@echo " "
-	$(CA_SIGN_BUILD) -c $(TARGET_SEC) key_file=$(TEST_KEY) ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
+	$(CA_SIGN_BUILD) -c $(TARGET_SEC) key_file=$(TEST_KEY) algo=$(ALGO) ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
 	@echo " "
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
 	@echo " "

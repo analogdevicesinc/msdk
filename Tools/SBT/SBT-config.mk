@@ -10,9 +10,16 @@ SLA_LINKER = 0
 ifeq "$(TARGET_UC)" "MAX32650"
 TARGET_SEC ?= MAX32651
 SLA_LINKER = 1
-else
-TARGET_SEC ?= $(TARGET_UC)
+# MAX32650 uses _sla linkerfile
+endif 
+ifeq "$(TARGET_UC)" "MAX32520"
+ALGO ?= ecdsa
+# MAX32520 uses ecdsa key by default
 endif
+
+# Fallback defaults
+TARGET_SEC ?= $(TARGET_UC)
+ALGO ?= rsa
 
 # Locate the SBT binaries.
 CA_SIGN_BUILD = $(MAXIM_SBT_DIR)/bin/sign_app
