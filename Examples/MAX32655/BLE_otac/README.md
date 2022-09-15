@@ -238,19 +238,19 @@ __medium__ press is between 200 and 500 ms
 __long__ press is between 500 and 1000 ms  
 __extra long__ press is greater than 1000 ms  
 
-### When connected
-1. Button 1 short: On/Off scanning  
-2. Button 1 medium: Cycle through the connection index  
-3. Button 1 long: Drop selected connection  
-4. Button 1 extra long: Toggle PHY 
-5. Button 2 short: Discover file space on the peer device.
-6. Button 2 medium: Start the update transfer.
-7. Button 2 long: Verify the transfer.
-8. Button 2 extra long: Command the peer to disconnect and reset.
-
-### When disconnected
-1. Button 1 short press: On/Off scanning
-2. Button 1 medium press: Cycle through the connection index
-3. Button 1 long press: Clear all bonding info
-4. Button 1 extra long press: Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled
-5. Button 2 extra long press: Enable device privacy -- start generating local RPAs every 15 minutes
+Table: Button and operations
+| Connection Status | Button Press        | Operation                                                    |
+| ----------------- | ------------------- | ------------------------------------------------------------ |
+| Connected         | Button 1 short      | On/Off scanning                                              |
+|                   | Button 1 medium     | Cycle through the connection index                           |
+|                   | Button 1 long       | Drop selected connection                                     |
+|                   | Button 1 extra long | Toggle PHY                                                   |
+|                   | Button 2 short      | Discover file space on the peer device                       |
+|                   | Button 2 medium     | Start the update transfer                                    |
+|                   | Button 2 long       | Verify the transfer                                          |
+|                   | Button 2 extra long | Command the peer to disconnect and reset                     |
+| Disconnected      | Button 1 short      | On/Off scanning                                              |
+|                   | Button 1 medium     | Cycle through the connection index                           |
+|                   | Button 1 long       | Clear all bonding info                                       |
+|                   | Button 1 extra long | Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled |
+|                   | Button 2 extra long | Enable device privacy -- start generating local RPAs every 15 minutes |

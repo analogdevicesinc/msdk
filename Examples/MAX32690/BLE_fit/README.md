@@ -146,17 +146,17 @@ __medium__ press is between 200 and 500 ms
 __long__ press is between 500 and 1000 ms  
 __extra long__ press is greater than 1000 ms  
 
-### When disconnected
-1. Button 1 short: Start/Stop scanning
-2. Button 1 medium: Enter discoverable and bondable mode
-3. Button 1 long: Clear all bonding info
-4. Button 2 short: Toggle HRM flag for 8 and 16 bit values
-
-### When connected
-1. Button 1 short: Increment the heart rate
-2. Button 1 long: Close the connection
-3. Button 2 short: Decrement the heart rate
-4. Button 2 medium: Toggle HRM DET flags
-5. Button 2 long: Toggle HRM RR Interval feature flag
+Table: Button and operations
+| Connection Status | Button Press        | Operation                               |
+| ----------------- | ------------------- | --------------------------------------- |
+| Disconnected      | Button 1 short      | Start/Stop scanning                     |
+|                   | Button 1 medium     | Enter discoverable and bondable mode    |
+|                   | Button 1 long       | Clear all bonding info                  |
+|                   | Button 2 short      | Toggle HRM flag for 8 and 16 bit values |
+| Connected         | Button 1 short      | Increment the heart rate                |
+|                   | Button 1 long       | Close the connection                    |
+|                   | Button 2 short      | Decrement the heart rate                |
+|                   | Button 2 medium     | Toggle HRM DET flags                    |
+|                   | Button 2 long       | Toggle HRM RR Interval feature flag     |
 
 

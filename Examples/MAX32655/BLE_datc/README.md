@@ -2,6 +2,12 @@
 
 Bluetooth data client that scans for and connects to advertisers with the name of "DATS".
 
+BLE roles are split into pre-connection and post-connection. In pre-connection, at startup a device is either a peripheral (like a Fitbit or smart watch) or a central (like a smartphone or PC). In post-connection (after a BLE connection has been established), devices can be either a client or a server.
+
+![BLE roels](../../../Documentation/Images/BLE_roles.PNG)
+
+In this application, the datc is a proprietary data client supporting proprietary profile and plays a master role. It has an auto connect feature which scans for a matching proprietary data transfer slave application (Example project BLE_dats) and then automatically connects to it.
+
 # Usage
 
 ## LEDs
@@ -561,18 +567,18 @@ __medium__      : press is between 200 and 500 ms
 __long__        : press is between 500 and 1000 ms  
 __extra long__  : press is greater than 1000 ms  
 
-### When disconnected
-1. Button 1 short: Start/Stop scanning
-2. Button 1 medium: Cycle through the connection index (select connection)
-3. Button 1 long: Clear all bonding info
-4. Button 1 extra long: Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled
-5. Button 2 extra long: Enable device privacy -- start generating local RPAs every 15 minutes
-
-### When connected
-1. Button 1 short: Start/Stop scanning
-2. Button 1 medium: Cycle through connection index (select connection)
-3. Button 1 long: Close selected connection  
-4. Button 2 short: Request PHY change (1M-2M-S2-S8) Only for BLE5 version.
-5. Button 2 medium : Send secure message to peer
-6. Button 2 long: Send short message to peer  
-7. Button 2 extra long: Start data transfer speed test
+Table: Button operations
+| Connection Status | Button Press        | Operation                                                    |
+| ----------------- | ------------------- | ------------------------------------------------------------ |
+| Disconnected      | Button 1 short      | Start/Stop scanning                                          |
+|                   | Button 1 medium     | Cycle through the connection index (select connection)       |
+|                   | Button 1 long       | Clear all bonding info                                       |
+|                   | Button 1 extra long | Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled |
+|                   | Button 2 extra long | Enable device privacy -- start generating local RPAs every 15 minutes |
+| Connected         | Button 1 short      | Start/Stop scanning                                          |
+|                   | Button 1 medium     | Cycle through connection index (select connection)           |
+|                   | Button 1 long       | Close selected connection                                    |
+|                   | Button 2 short      | Request PHY change (1M-2M-S2-S8) Only for BLE5 version       |
+|                   | Button 2 medium     | Send secure message to peer                                  |
+|                   | Button 2 long       | Send short message to peer                                   |
+|                   | Button 2 extra long | Start data transfer speed test                               |

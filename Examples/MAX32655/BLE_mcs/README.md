@@ -175,12 +175,16 @@ __medium__ press is between 200 and 500 ms
 __long__ press is between 500 and 1000 ms  
 __extra long__ press is greater than 1000 ms  
 
-### When connected
-1. Button 1 short press:      set McsButton = 0x02
-2. Button 1 medium press:     set McsButton = 0x03
-3. Button 1 long press:       set McsButton = 0x04
-4. Button 1 extra long press: set McsButton = 0x05
-5. Button 2 short press:      set McsButton = 0x07
-6. Button 2 medium press:     set McsButton = 0x08
-7. Button 2 long press:       set McsButton = 0x09
-8. Button 2 extra long press: set McsButton = 0x0A
+Table: Button and operations
+| Connection Status | Button Press        | Operation            |
+| ----------------- | ------------------- | -------------------- |
+| Connected         | Button 1 short      | set McsButton = 0x02 |
+|                   | Button 1 medium     | set McsButton = 0x03 |
+|                   | Button 1 long       | set McsButton = 0x04 |
+|                   | Button 1 extra long | set McsButton = 0x05 |
+|                   | Button 2 short      | set McsButton = 0x07 |
+|                   | Button 2 medium     | set McsButton = 0x08 |
+|                   | Button 2 long       | set McsButton = 0x09 |
+|                   | Button 2 extra long | set McsButton = 0x0A |
+
+

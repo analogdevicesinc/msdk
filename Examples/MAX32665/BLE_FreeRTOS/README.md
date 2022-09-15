@@ -138,12 +138,12 @@ __medium__ press is between 200 and 500 ms
 __long__ press is between 500 and 1000 ms  
 __extra long__ press is greater than 1000 ms  
 
-### When disconnected
-1. Button 1 short press: Start advertising
-2. Button 1 medium press: Enter bondable mode
-3. Button 1 long press: Clear all bonding info
-4. Button 1 extra long press: Show version info
-5. Button 2 short press: Stop advertising
-
-### When connected
-1. Button 2 short press: Change PHY (1M-2M-Coded_S2-Coded_S8)
+Table: Button and operations
+| Connection Status | Button Press        | Operation                            |
+| ----------------- | ------------------- | ------------------------------------ |
+| Disconnected      | Button 1 short      | Start advertising                    |
+|                   | Button 1 medium     | Enter bondable mode                  |
+|                   | Button 1 long       | Clear all bonding info               |
+|                   | Button 1 extra long | Show version info                    |
+|                   | Button 2 short      | Stop advertising                     |
+| Connected         | Button 2 short      | Change PHY (1M-2M-Coded_S2-Coded_S8) |
