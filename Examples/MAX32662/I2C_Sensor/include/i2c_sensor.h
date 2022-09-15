@@ -7,8 +7,8 @@
 #include "i2c.h"
 
 /******************************* Definitions *******************************/
-#define SET_BIT(cmd, bit)   cmd |= (1 << bit)
-#define GET_BIT(cmd, bit)   cmd&(1 << bit)
+#define SET_BIT(cmd, bit) cmd |= (1 << bit)
+#define GET_BIT(cmd, bit) cmd &(1 << bit)
 #define CLEAR_BIT(cmd, bit) cmd &= ~(1 << bit)
 
 /******************************* Type Definitions *******************************/
@@ -16,8 +16,8 @@
  * @brief Structure with sensor function pointers
  */
 typedef struct {
-    int (*init)(mxc_i2c_regs_t* i2c, uint8_t addr);
-    int (*read)(void* buf);
+    int (*init)(mxc_i2c_regs_t *i2c, uint8_t addr);
+    int (*read)(void *buf);
 } mxc_i2c_sensor_driver_t;
 
 /******************************* Functions *******************************/
@@ -31,7 +31,7 @@ typedef struct {
  * @param rxSize number of bytes to read
  * @return int transaction result
  */
-int i2c_transfer(mxc_i2c_req_t* req, uint8_t* txData, int txSize, uint8_t* rxData, int rxSize);
+int i2c_transfer(mxc_i2c_req_t *req, uint8_t *txData, int txSize, uint8_t *rxData, int rxSize);
 
 /**
  * @brief I2C data write
@@ -41,7 +41,7 @@ int i2c_transfer(mxc_i2c_req_t* req, uint8_t* txData, int txSize, uint8_t* rxDat
  * @param txSize number of bytes to write
  * @return int transaction result
  */
-int i2c_write(mxc_i2c_req_t* req, uint8_t* txData, int txSize);
+int i2c_write(mxc_i2c_req_t *req, uint8_t *txData, int txSize);
 
 /**
  * @brief I2C data read
@@ -52,6 +52,6 @@ int i2c_write(mxc_i2c_req_t* req, uint8_t* txData, int txSize);
  * @param rxSize number of bytes to read
  * @return int transaction result
  */
-int i2c_read(mxc_i2c_req_t* req, uint8_t* txData, uint8_t* rxData, int rxSize);
+int i2c_read(mxc_i2c_req_t *req, uint8_t *txData, uint8_t *rxData, int rxSize);
 
 #endif /* I2C_SENSOR_H */
