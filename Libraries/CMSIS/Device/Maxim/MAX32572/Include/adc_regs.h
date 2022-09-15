@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the ADC Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _ADC_REGS_H_
 #define _ADC_REGS_H_
@@ -91,6 +90,7 @@ typedef struct {
     __IO uint32_t data;                 /**< <tt>\b 0x0008:</tt> ADC DATA Register */
     __IO uint32_t intr;                 /**< <tt>\b 0x000C:</tt> ADC INTR Register */
     __IO uint32_t limit[4];             /**< <tt>\b 0x0010:</tt> ADC LIMIT Register */
+    __IO uint32_t deccnt;               /**< <tt>\b 0x0020:</tt> ADC DECCNT Register */
 } mxc_adc_regs_t;
 
 /* Register offsets for module ADC */
@@ -105,6 +105,7 @@ typedef struct {
  #define MXC_R_ADC_DATA                     ((uint32_t)0x00000008UL) /**< Offset from ADC Base Address: <tt> 0x0008</tt> */ 
  #define MXC_R_ADC_INTR                     ((uint32_t)0x0000000CUL) /**< Offset from ADC Base Address: <tt> 0x000C</tt> */ 
  #define MXC_R_ADC_LIMIT                    ((uint32_t)0x00000010UL) /**< Offset from ADC Base Address: <tt> 0x0010</tt> */ 
+ #define MXC_R_ADC_DECCNT                   ((uint32_t)0x00000020UL) /**< Offset from ADC Base Address: <tt> 0x0020</tt> */ 
 /**@} end of group adc_registers */
 
 /**
@@ -278,6 +279,17 @@ typedef struct {
  #define MXC_F_ADC_LIMIT_CH_HI_LIMIT_EN                 ((uint32_t)(0x1UL << MXC_F_ADC_LIMIT_CH_HI_LIMIT_EN_POS)) /**< LIMIT_CH_HI_LIMIT_EN Mask */
 
 /**@} end of group ADC_LIMIT_Register */
+
+/**
+ * @ingroup  adc_registers
+ * @defgroup ADC_DECCNT ADC_DECCNT
+ * @brief    ADC Decimation Count.
+ * @{
+ */
+ #define MXC_F_ADC_DECCNT_DELAY_POS                     31 /**< DECCNT_DELAY Position */
+ #define MXC_F_ADC_DECCNT_DELAY                         ((uint32_t)(0x0UL << MXC_F_ADC_DECCNT_DELAY_POS)) /**< DECCNT_DELAY Mask */
+
+/**@} end of group ADC_DECCNT_Register */
 
 #ifdef __cplusplus
 }

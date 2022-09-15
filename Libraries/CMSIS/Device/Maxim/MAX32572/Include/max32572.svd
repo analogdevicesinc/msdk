@@ -358,6 +358,20 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>DECCNT</name>
+     <description>ADC Decimation Count.</description>
+     <addressOffset>0x0020</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>DELAY</name>
+       <description>Delay.</description>
+       <bitRange>[0:31]</bitRange>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--ADC 10-bit Analog to Digital Converter-->
@@ -14732,6 +14746,12 @@
      <resetValue>0x00000003</resetValue>
      <fields>
       <field>
+       <name>OD_HEALTH</name>
+       <description>Start On-Demand health test.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>RND_IE</name>
        <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
        <bitOffset>1</bitOffset>
@@ -14750,9 +14770,45 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>KEYGEN</name>
+       <name>HEALTH_IE</name>
+       <description>Enable IRQ generation when a health test fails.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AES_KEYGEN</name>
        <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
-       <bitOffset>3</bitOffset>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OD_ROMON</name>
+       <description>On Demain Ring Oscillator Monitor Test.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OD_EE</name>
+       <description>On Demand Entropy Estimator Test.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_EE_FOE</name>
+       <description>Ring Oscillator Monitors and Entropy Estimator Freeze on Error.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_EE_FOD</name>
+       <description>Ring Oscillator Monitors and Entropy Estimator Freeze on Done.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>EBLS</name>
+       <description>Entropy Bit Load Select.</description>
+       <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -14761,11 +14817,46 @@
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field>
+       <name>TERO_CNT</name>
+       <description>Get TERO Count.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>EE_DONE_IE</name>
+       <description>Entropy Estimator Done Interrupt Enable.</description>
+       <bitOffset>23</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_DIS</name>
+       <description>Ring Oscillator Monitor Disable.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>RO_0</name>
+         <description>RO 0</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RO_1</name>
+         <description>RO 1</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RO_2</name>
+         <description>RO 2</description>
+         <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
      </fields>
     </register>
     <register>
      <name>STATUS</name>
-     <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
+     <description>TRNG Status Register,</description>
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
@@ -14786,17 +14877,365 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>OD_HEALTH</name>
+       <description>On-Demand health test status.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HEALTH</name>
+       <description>Health test status.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SRCFAIL</name>
+       <description>Entropy source has failed.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AES_KEYGEN</name>
+       <description>AES Key Generation Status.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OD_ROMON</name>
+       <description>On Demand Ring Oscillator Monitor Status.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OD_EE</name>
+       <description>On Demand Entropy Estimator Status.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PP_ERR</name>
+       <description>Post Process Error.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_0_ERR</name>
+       <description>Ring Oscillator Monitor 0 Error.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_1_ERR</name>
+       <description>Ring Oscillator Monitor 1 Error.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_2_ERR</name>
+       <description>Ring Oscillator Monitor 2 Error.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>EE_THD_ERR</name>
+       <description>Entropy Estimator Threshold Error.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>EE_OOB_ERR</name>
+       <description>Entropy Estimator Out of Bounds Error.</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>EE_LOCK_ERR</name>
+       <description>Entropy Estimator Out of Bounds Error.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TERO_CNT_RDY</name>
+       <description>TERO Count Ready.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RC_ERR</name>
+       <description>Repeition Count Error.</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AP_ERR</name>
+       <description>Adaptive Proportion Error.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DATA_DONE</name>
+       <description>DATA Register has been loaded with at least 32 new entropy bits.</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DATA_NIST_DONE</name>
+       <description>DATA NIST Register has been loaded with at least 32 new entropy bits.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HEALTH_DONE</name>
+       <description>Health Test Done.</description>
+       <bitOffset>21</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_DONE</name>
+       <description>Ring Oscillaotr Monitor Test Done.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>EE_DONE</name>
+       <description>Entropy Estimator Test Done.</description>
+       <bitOffset>23</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
      <name>DATA</name>
-     <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
+     <description>TRNG Random Data Register.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-only</access>
      <fields>
       <field>
        <name>DATA</name>
-       <description>Data. The content of this register is valid only when RNG_IS =1. When TNRG is disabled, read returns 0x0000 0000.</description>
+       <description>Data.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ROMON_A</name>
+     <description>Ring Oscillator Monitor A Register.</description>
+     <addressOffset>0x0C</addressOffset>
+     <fields>
+      <field>
+       <name>ROMON_0_LCNT</name>
+       <description>RO_0 Monitor Last Ring Oscillaotr Count.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>9</bitWidth>
+      </field>
+      <field>
+       <name>ROMON_1_LCNT</name>
+       <description>RO_1 Monitor Last Ring Oscillaotr Count.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>9</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ROMON_B</name>
+     <description>Ring Oscillator Monitor A Register.</description>
+     <addressOffset>0x10</addressOffset>
+     <fields>
+      <field>
+       <name>ROMON_2_LCNT</name>
+       <description>RO_2 Monitor Last Ring Oscillaotr Count.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>9</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_A</name>
+     <description>Entropy Estimator A Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <fields>
+      <field>
+       <name>CURR_RIPL_CNT</name>
+       <description>Current Ripple Counter Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>17</bitWidth>
+      </field>
+      <field>
+       <name>EOP</name>
+       <description>End of Pair Indicator.</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ACC_SAMP_CNT</name>
+       <description>Accumulator Sample Counter.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>12</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_B</name>
+     <description>Entropy Estimator B Register.</description>
+     <addressOffset>0x18</addressOffset>
+     <fields>
+      <field>
+       <name>LAST_RIPL_CNT</name>
+       <description>Last Ripple Counter Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>17</bitWidth>
+      </field>
+      <field>
+       <name>EOP</name>
+       <description>End of Pair Indicator.</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ACC_SAMP_CNT</name>
+       <description>Accumulator Sample Counter.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>12</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_C</name>
+     <description>Entropy Estimator C Register.</description>
+     <addressOffset>0x1C</addressOffset>
+     <fields>
+      <field>
+       <name>ACC</name>
+       <description>Entropy Estimator Accumulator Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_D</name>
+     <description>Entropy Estimator D Register.</description>
+     <addressOffset>0x20</addressOffset>
+     <fields>
+      <field>
+       <name>ACC</name>
+       <description>Entropy Estimator Accumulator Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+      <field>
+       <name>ACC_SAMP_CNT</name>
+       <description>Accumulator Sample Counter.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>15</bitWidth>
+      </field>
+      <field>
+       <name>EOP</name>
+       <description>End of Pair Indicator.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_E</name>
+     <description>Entropy Estimator E Register.</description>
+     <addressOffset>0x24</addressOffset>
+     <fields>
+      <field>
+       <name>ACC_SAMP_CNT</name>
+       <description>Accumulator Sample Counter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>15</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_F</name>
+     <description>Entropy Estimator F Register.</description>
+     <addressOffset>0x28</addressOffset>
+     <fields>
+      <field>
+       <name>REP_CNT</name>
+       <description>Entropy Estimator Repetition Count</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_G</name>
+     <description>Entropy Estimator G Register.</description>
+     <addressOffset>0x2C</addressOffset>
+     <fields>
+      <field>
+       <name>CURR_RIPL_CNT</name>
+       <description>Current Ripple Counter Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>15</bitWidth>
+      </field>
+      <field>
+       <name>EOP_CURR</name>
+       <description>End of Pair Indicator.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LAST_RIPL_CNT</name>
+       <description>Last Ripple Counter Value.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>15</bitWidth>
+      </field>
+      <field>
+       <name>EOP_LAST</name>
+       <description>End of Pair Indicator.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_H</name>
+     <description>Entropy Estimator H Register.</description>
+     <addressOffset>0x30</addressOffset>
+     <fields>
+      <field>
+       <name>ACC_SAMP</name>
+       <description>Accumulator Sample Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>EE_I</name>
+     <description>Entropy Estimator I Register.</description>
+     <addressOffset>0x34</addressOffset>
+     <fields>
+      <field>
+       <name>ACC_SAMP</name>
+       <description>Accumulator Sample Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+      <field>
+       <name>ACC_SAMP_CNT</name>
+       <description>Accumulator Sample Counter.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>DATA_NIST</name>
+     <description>DATA NIST Register.</description>
+     <addressOffset>0x38</addressOffset>
+     <fields>
+      <field>
+       <name>DATA_NIST</name>
+       <description>Output of the NIST LFSR.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
       </field>
