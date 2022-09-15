@@ -1,30 +1,30 @@
 #include "max31889_driver.h"
 
 /******************************* MAX31889 Register addresses *******************************/
-#define MAX31889_STATUS_REG        0x00 //Status register
-#define MAX31889_INTERRUPT_REG     0x01 //Interrupt register
-#define MAX31889_FIFO_WR_PTR_REG   0x04 //FIFO write pointer register
-#define MAX31889_FIFO_RD_PTR_REG   0x05 //FIFO read pointer register
-#define MAX31889_FIFO_OF_CTR_REG   0x06 //FIFO overflow counter register
+#define MAX31889_STATUS_REG 0x00 //Status register
+#define MAX31889_INTERRUPT_REG 0x01 //Interrupt register
+#define MAX31889_FIFO_WR_PTR_REG 0x04 //FIFO write pointer register
+#define MAX31889_FIFO_RD_PTR_REG 0x05 //FIFO read pointer register
+#define MAX31889_FIFO_OF_CTR_REG 0x06 //FIFO overflow counter register
 #define MAX31889_FIFO_DATA_CTR_REG 0x07 //FIFO data counter register
-#define MAX31889_FIFO_DATA_REG     0x08 //FIFO data register
-#define MAX31889_FIFO_CONF1_REG    0x09 //FIFO configuration register 1
-#define MAX31889_FIFO_CONF2_REG    0x0A //FIFO configuration register 2
-#define MAX31889_SYS_CTRL_REG      0x0C //System control register
-#define MAX31889_ALARM_HI_MSB_REG  0x10 //Alarm temperature high threshold MSB register
-#define MAX31889_ALARM_HI_LSB_REG  0x11 //Alarm temperature high threshold LSB register
-#define MAX31889_ALARM_LO_MSB_REG  0x12 //Alarm temperature low threshold MSB register
-#define MAX31889_ALARM_LO_LSB_REG  0x13 //Alarm temperature low threshold LSB register
-#define MAX31889_SENSOR_SETUP_REG  0x14 //Temperature sensor setup register
-#define MAX31889_GPIO_SETUP_REG    0x20 //GPIO setup register
-#define MAX31889_GPIO_CTRL_REG     0x21 //GPIO control register
-#define MAX31889_ROM_ID1_REG       0x31 //Factory ROM1 register
-#define MAX31889_ROM_ID2_REG       0x32 //Factory ROM2 register
-#define MAX31889_ROM_ID3_REG       0x33 //Factory ROM3 register
-#define MAX31889_ROM_ID4_REG       0x34 //Factory ROM4 register
-#define MAX31889_ROM_ID5_REG       0x35 //Factory ROM5 register
-#define MAX31889_ROM_ID6_REG       0x36 //Factory ROM6 register
-#define MAX31889_PART_ID_REG       0xFF //Part identifier register
+#define MAX31889_FIFO_DATA_REG 0x08 //FIFO data register
+#define MAX31889_FIFO_CONF1_REG 0x09 //FIFO configuration register 1
+#define MAX31889_FIFO_CONF2_REG 0x0A //FIFO configuration register 2
+#define MAX31889_SYS_CTRL_REG 0x0C //System control register
+#define MAX31889_ALARM_HI_MSB_REG 0x10 //Alarm temperature high threshold MSB register
+#define MAX31889_ALARM_HI_LSB_REG 0x11 //Alarm temperature high threshold LSB register
+#define MAX31889_ALARM_LO_MSB_REG 0x12 //Alarm temperature low threshold MSB register
+#define MAX31889_ALARM_LO_LSB_REG 0x13 //Alarm temperature low threshold LSB register
+#define MAX31889_SENSOR_SETUP_REG 0x14 //Temperature sensor setup register
+#define MAX31889_GPIO_SETUP_REG 0x20 //GPIO setup register
+#define MAX31889_GPIO_CTRL_REG 0x21 //GPIO control register
+#define MAX31889_ROM_ID1_REG 0x31 //Factory ROM1 register
+#define MAX31889_ROM_ID2_REG 0x32 //Factory ROM2 register
+#define MAX31889_ROM_ID3_REG 0x33 //Factory ROM3 register
+#define MAX31889_ROM_ID4_REG 0x34 //Factory ROM4 register
+#define MAX31889_ROM_ID5_REG 0x35 //Factory ROM5 register
+#define MAX31889_ROM_ID6_REG 0x36 //Factory ROM6 register
+#define MAX31889_PART_ID_REG 0xFF //Part identifier register
 
 /******************************* Bit definitions *******************************/
 /* System Control Bits */
@@ -32,9 +32,9 @@
 
 /* Interrrupt Registers*/
 #define MAX31889_TEMP_RDY_BIT 0
-#define MAX31889_TEMP_HI_BIT  1
-#define MAX31889_TEMP_LO_BIT  2
-#define MAX31889_A_FULL_BIT   7
+#define MAX31889_TEMP_HI_BIT 1
+#define MAX31889_TEMP_LO_BIT 2
+#define MAX31889_A_FULL_BIT 7
 
 /* Sensor Setup Register */
 #define MAX31889_CONV_START_BIT 0
@@ -43,10 +43,10 @@
 #define MAX31889_FIFO_MASK 0x1F
 
 /* FIFO Configuartion Register 2 */
-#define MAX31889_FIFO_RO_BIT       1
-#define MAX31889_A_FULL_TYPE_BIT   2
+#define MAX31889_FIFO_RO_BIT 1
+#define MAX31889_A_FULL_TYPE_BIT 2
 #define MAX31889_FIFO_STAT_CLR_BIT 3
-#define MAX31889_FLUSH_FIFO_BIT    4
+#define MAX31889_FLUSH_FIFO_BIT 4
 
 /* GPIO Setup Register */
 #define MAX31889_GPIO0_MODE0_BIT 0
@@ -64,7 +64,7 @@
 /******************************* Type Definitions *******************************/
 typedef enum {
     MAX31889_GPIO_Mode_HiZ = 0, ///< Digital input (HiZ)
-    MAX31889_GPIO_Mode_OD  = 1, ///< Digital output (open-drain)
+    MAX31889_GPIO_Mode_OD = 1, ///< Digital output (open-drain)
     MAX31889_GPIO_Mode_IPD = 2, ///< Digital Input with 1MOhm pulldown.
     MAX31889_GPIO_Mode_INT_Conv =
         3 ///< INTB (GPIO0) open-drain output or Convert Temperature Input (GPIO1)
@@ -104,7 +104,7 @@ uint8_t max31889_set_gpio_mode(MAX31889_GPIO_Mode_t gpio0_mode, MAX31889_GPIO_Mo
     return gpio_setup_reg;
 }
 
-float max31889_convert_to_temp(uint8_t* reading)
+float max31889_convert_to_temp(uint8_t *reading)
 {
     return 0.005f * (reading[1] + ((uint16_t)reading[0] << 8));
 }
@@ -116,7 +116,7 @@ int max31889_configure_sensor(void)
     uint8_t id = 0;
 
     // Read sensor ID
-    reg[0]   = MAX31889_PART_ID_REG;
+    reg[0] = MAX31889_PART_ID_REG;
     ret_code = i2c_read(&req, &reg[0], &id, 1);
     if (ret_code != E_NO_ERROR) {
         return ret_code;
@@ -142,15 +142,15 @@ int max31889_configure_sensor(void)
 
 int max31889_conversion(void)
 {
-    int ret_code      = E_NO_ERROR;
+    int ret_code = E_NO_ERROR;
     uint8_t setup_reg = 0xC0; // Bits 6 and 7 are reserved, should always be written as 1
 
     // Set conversion start bit
     SET_BIT(setup_reg, MAX31889_CONV_START_BIT);
 
     // Set MAX31889 sensor setup register
-    uint8_t reg[] = {MAX31889_SENSOR_SETUP_REG, setup_reg};
-    ret_code      = i2c_write(&req, reg, 2);
+    uint8_t reg[] = { MAX31889_SENSOR_SETUP_REG, setup_reg };
+    ret_code = i2c_write(&req, reg, 2);
     if (ret_code != E_NO_ERROR) {
         return ret_code;
     }
@@ -172,7 +172,7 @@ int max31889_conversion(void)
     return E_TIME_OUT;
 }
 
-int max318889_read_temperature(float* temp)
+int max318889_read_temperature(float *temp)
 {
     int ret_code = E_NO_ERROR;
     uint8_t reg[2];
@@ -193,7 +193,7 @@ int max318889_read_temperature(float* temp)
     // Check FIFO status
     if (GET_BIT(status, MAX31889_A_FULL_BIT)) {
         // FIFO overflow occurred. Read the lost readings count
-        reg[0]   = MAX31889_FIFO_OF_CTR_REG;
+        reg[0] = MAX31889_FIFO_OF_CTR_REG;
         ret_code = i2c_read(&req, &reg[0], &ov_cnt, 1);
         if (ret_code != E_NO_ERROR) {
             return ret_code;
@@ -219,7 +219,7 @@ int max318889_read_temperature(float* temp)
     // Check whether conversion is finished
     if (GET_BIT(status, MAX31889_TEMP_RDY_BIT)) {
         // Temperature reading is 16 bit (2-byte) value
-        reg[0]   = MAX31889_FIFO_DATA_REG;
+        reg[0] = MAX31889_FIFO_DATA_REG;
         ret_code = i2c_read(&req, &reg[0], tr, 2);
         if (ret_code != E_NO_ERROR) {
             return ret_code;
@@ -235,23 +235,23 @@ int max318889_read_temperature(float* temp)
     return ret_code;
 }
 
-int max31889_init(mxc_i2c_regs_t* i2c, uint8_t addr)
+int max31889_init(mxc_i2c_regs_t *i2c, uint8_t addr)
 {
     int err = E_NO_ERROR;
 
-    req.i2c      = i2c;
-    req.addr     = addr;
-    req.tx_buf   = NULL;
-    req.tx_len   = 0;
-    req.rx_buf   = NULL;
-    req.rx_len   = 0;
-    req.restart  = 0;
+    req.i2c = i2c;
+    req.addr = addr;
+    req.tx_buf = NULL;
+    req.tx_len = 0;
+    req.rx_buf = NULL;
+    req.rx_len = 0;
+    req.restart = 0;
     req.callback = NULL;
 
     // Read sensor ID
     uint8_t reg = MAX31889_PART_ID_REG;
-    uint8_t id  = 0;
-    err         = i2c_read(&req, &reg, &id, 1);
+    uint8_t id = 0;
+    err = i2c_read(&req, &reg, &id, 1);
     if (err != E_NO_ERROR) {
         return err;
     }
@@ -269,8 +269,8 @@ int max31889_init(mxc_i2c_regs_t* i2c, uint8_t addr)
     MXC_Delay(100);
 
     // Set MAX31889 gpio_register
-    uint8_t gpio_setup_reg[] = {MAX31889_GPIO_SETUP_REG, gpio_reg};
-    err                      = i2c_write(&req, gpio_setup_reg, 2);
+    uint8_t gpio_setup_reg[] = { MAX31889_GPIO_SETUP_REG, gpio_reg };
+    err = i2c_write(&req, gpio_setup_reg, 2);
     if (err != E_NO_ERROR) {
         printf("I2C sensor configure failed\n");
         return err;
@@ -279,7 +279,7 @@ int max31889_init(mxc_i2c_regs_t* i2c, uint8_t addr)
     return E_NO_ERROR;
 }
 
-int max31889_read(void* buff)
+int max31889_read(void *buff)
 {
     int err = E_NO_ERROR;
 
@@ -290,11 +290,11 @@ int max31889_read(void* buff)
     }
 
     // Read conversion result
-    return max318889_read_temperature((float*)buff);
+    return max318889_read_temperature((float *)buff);
 }
 
-void max31889_get_gpio_mode(uint8_t gpio_setup_reg, MAX31889_GPIO_Mode_t* gpio0_mode,
-                            MAX31889_GPIO_Mode_t* gpio1_mode)
+void max31889_get_gpio_mode(uint8_t gpio_setup_reg, MAX31889_GPIO_Mode_t *gpio0_mode,
+                            MAX31889_GPIO_Mode_t *gpio1_mode)
 {
     *gpio0_mode = (MAX31889_GPIO_Mode_t)(gpio_setup_reg & 0x03);
     *gpio1_mode = (MAX31889_GPIO_Mode_t)((gpio_setup_reg & 0xC0) >> 6);

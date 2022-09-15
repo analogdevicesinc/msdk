@@ -48,7 +48,7 @@
 
 /***** Definitions *****/
 #define I2C_MASTER MXC_I2C1_BUS0 ///< I2C instance
-#define I2C_FREQ   100000   ///< I2C clock frequency
+#define I2C_FREQ 100000 ///< I2C clock frequency
 
 // *****************************************************************************
 int main(void)

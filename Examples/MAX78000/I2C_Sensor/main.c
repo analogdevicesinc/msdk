@@ -54,7 +54,7 @@
 #define I2C_MASTER MXC_I2C1 ///< I2C instance (Featherboard)
 #endif
 
-#define I2C_FREQ   100000   ///< I2C clock frequency
+#define I2C_FREQ 100000 ///< I2C clock frequency
 
 // *****************************************************************************
 int main(void)
