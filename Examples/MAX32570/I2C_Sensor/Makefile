@@ -71,7 +71,7 @@ TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 endif
 
 # Default board.
-BOARD ?= EvKit_V1
+BOARD ?= MN_EvKit_V1
 
 # *******************************************************************************
 # Locate the MaximSDK
