@@ -54,7 +54,7 @@
 /******************************************************************************/
 /* Definitions */
 /******************************************************************************/
-#define I2C_BUS MXC_I2C1 // SCL P0_14; SDA P0_15
+#define I2C_BUS MXC_I2C1_BUS0 // SCL P0_14; SDA P0_15
 #define RX_BUF_LEN 100
 #define TX_BUF_LEN 2
 #define BUSY_WAIT_TIME_MS 5
