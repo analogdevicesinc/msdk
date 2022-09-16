@@ -359,6 +359,32 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>GPIO0</name>
+        <description>General Purpose Register 0.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>ALL</name>
+            <description>Mask of all of the pins on the port.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GPIO1</name>
+        <description>General Purpose Register 1.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>ALL</name>
+            <description>Mask of all of the pins on the port.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
 </device>

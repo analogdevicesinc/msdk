@@ -1309,6 +1309,16 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
+          <field>
+            <name>MST_CODE</name>
+            <description>Master Code.</description>
+            <bitRange>[8:10]</bitRange>
+          </field>
+          <field>
+            <name>MST_ACK_IGN</name>
+            <description>Master Acknowledge Ignore.</description>
+            <bitRange>[12:12]</bitRange>
+          </field>
         </fields>
       </register>
       <register>

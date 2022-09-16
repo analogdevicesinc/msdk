@@ -54,7 +54,7 @@
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>CLKDIV</name>
+            <name>PCLKDIV</name>
             <description>Clock Divider. The input clock, PCLK, is divided for generating OTP timing signals.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>6</bitWidth>

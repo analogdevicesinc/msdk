@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the SMON Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _SMON_REGS_H_
 #define _SMON_REGS_H_
@@ -343,11 +342,11 @@ typedef struct {
  #define MXC_F_SMON_SECDIAG_DYNS_FL_POS                 7 /**< SECDIAG_DYNS_FL Position */
  #define MXC_F_SMON_SECDIAG_DYNS_FL                     ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_DYNS_FL_POS)) /**< SECDIAG_DYNS_FL Mask */
 
- #define MXC_F_SMON_SECDIAG_AESKT_POS                   8 /**< SECDIAG_AESKT Position */
- #define MXC_F_SMON_SECDIAG_AESKT                       ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_AESKT_POS)) /**< SECDIAG_AESKT Mask */
+ #define MXC_F_SMON_SECDIAG_AESKT_MEU_POS               8 /**< SECDIAG_AESKT_MEU Position */
+ #define MXC_F_SMON_SECDIAG_AESKT_MEU                   ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_AESKT_MEU_POS)) /**< SECDIAG_AESKT_MEU Mask */
 
- #define MXC_F_SMON_SECDIAG_AESKT_MDU_POS               9 /**< SECDIAG_AESKT_MDU Position */
- #define MXC_F_SMON_SECDIAG_AESKT_MDU                   ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_AESKT_MDU_POS)) /**< SECDIAG_AESKT_MDU Mask */
+ #define MXC_F_SMON_SECDIAG_AESKT_MEMPROT_XIP_POS       9 /**< SECDIAG_AESKT_MEMPROT_XIP Position */
+ #define MXC_F_SMON_SECDIAG_AESKT_MEMPROT_XIP           ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_AESKT_MEMPROT_XIP_POS)) /**< SECDIAG_AESKT_MEMPROT_XIP Mask */
 
  #define MXC_F_SMON_SECDIAG_KEY0_ZERO_POS               10 /**< SECDIAG_KEY0_ZERO Position */
  #define MXC_F_SMON_SECDIAG_KEY0_ZERO                   ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_KEY0_ZERO_POS)) /**< SECDIAG_KEY0_ZERO Mask */

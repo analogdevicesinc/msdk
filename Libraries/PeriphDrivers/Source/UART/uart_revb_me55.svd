@@ -261,9 +261,21 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>TX_OB</name>
+            <description>Enable Interrupt For TX FIFO when only one byte is remaining.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>TX_HE</name>
             <description>Enable Interrupt For TX FIFO has half empty</description>
             <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_FULL</name>
+            <description>Enable Interrupt when RX FIFO is full.</description>
+            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -304,9 +316,21 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>TX_OB</name>
+            <description>Flag for interrupt when TX FIFO has only one byte is remaining.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>TX_HE</name>
             <description>Flag for interrupt when TX FIFO is half empty</description>
             <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX_FULL</name>
+            <description>Flag for interrupt when RX FIFO is full.</description>
+            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
