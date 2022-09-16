@@ -36,7 +36,6 @@
 #include <stdlib.h>
 #include "max32572.h"
 #include "gcr_regs.h"
-#include "icc.h"
 
 uint32_t SystemCoreClock;
 
@@ -119,8 +118,6 @@ void __enable_irq(void)
 __weak void SystemInit(void)
 {
     SystemCoreClockUpdate();
-
-    MXC_ICC_Enable(MXC_ICC1);
 
     __enable_irq();
 

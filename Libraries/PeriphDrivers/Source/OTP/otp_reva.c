@@ -44,8 +44,8 @@
 
 int MXC_OTP_RevA_Init(mxc_otp_reva_regs_t *otp, mxc_otp_clkdiv_t pclkdiv)
 {
-    MXC_SETFIELD(otp->clkdiv, MXC_F_OTP_REVA_CLKDIV_CLKDIV,
-                 (pclkdiv << MXC_F_OTP_CLKDIV_CLKDIV_POS));
+    MXC_SETFIELD(otp->clkdiv, MXC_F_OTP_REVA_CLKDIV_PCLKDIV,
+                 (pclkdiv << MXC_F_OTP_CLKDIV_PCLKDIV_POS));
 
     return E_NO_ERROR;
 }
