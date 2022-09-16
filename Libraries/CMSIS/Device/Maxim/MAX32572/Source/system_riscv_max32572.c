@@ -34,7 +34,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "max32690.h"
+#include "max32572.h"
 #include "gcr_regs.h"
 #include "icc.h"
 
@@ -50,6 +50,9 @@ __weak void SystemCoreClockUpdate(void)
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
         base_freq = EXTCLK_FREQ;
         break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ITO:
+        base_freq = ITO_FREQ;
+        break;    
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
         base_freq = INRO_FREQ;
         break;
