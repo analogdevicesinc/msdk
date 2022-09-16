@@ -62,11 +62,11 @@ extern "C" {
  *             Default reset value of CLKDIV.pclkdiv is 0 -> divide by 16. 
  */
 typedef enum {
-    MXC_OTP_CLK_DIV2 = MXC_V_OTP_CLKDIV_CLKDIV_DIV2, ///< Divide input clock by 2
-    MXC_OTP_CLK_DIV4 = MXC_V_OTP_CLKDIV_CLKDIV_DIV4, ///< Divide input clock by 4
-    MXC_OTP_CLK_DIV8 = MXC_V_OTP_CLKDIV_CLKDIV_DIV8, ///< Divide input clock by 8
-    MXC_OTP_CLK_DIV16 = MXC_V_OTP_CLKDIV_CLKDIV_DIV16, ///< Divide input clock by 16
-    MXC_OTP_CLK_DIV32 = MXC_V_OTP_CLKDIV_CLKDIV_DIV32, ///< Divide input clock by 32
+    MXC_OTP_CLK_DIV2 = MXC_V_OTP_CLKDIV_PCLKDIV_DIV2, ///< Divide input clock by 2
+    MXC_OTP_CLK_DIV4 = MXC_V_OTP_CLKDIV_PCLKDIV_DIV4, ///< Divide input clock by 4
+    MXC_OTP_CLK_DIV8 = MXC_V_OTP_CLKDIV_PCLKDIV_DIV8, ///< Divide input clock by 8
+    MXC_OTP_CLK_DIV16 = MXC_V_OTP_CLKDIV_PCLKDIV_DIV16, ///< Divide input clock by 16
+    MXC_OTP_CLK_DIV32 = MXC_V_OTP_CLKDIV_PCLKDIV_DIV32, ///< Divide input clock by 32
 } mxc_otp_clkdiv_t;
 
 /**
