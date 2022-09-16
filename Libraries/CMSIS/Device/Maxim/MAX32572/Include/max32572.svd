@@ -7721,11 +7721,11 @@
       <field>
        <name>MST_CODE</name>
        <description>Master Code.</description>
-       <bitRange>[8:10]</bitRange>
+       <bitRange>[10:8]</bitRange>
       </field>
       <field>
-       <name>MST_ACK_IGN</name>
-       <description>Master Acknowledge Ignore.</description>
+       <name>MST_IGN_ACK</name>
+       <description>Master Ignore Acknowledge.</description>
        <bitRange>[12:12]</bitRange>
       </field>
      </fields>

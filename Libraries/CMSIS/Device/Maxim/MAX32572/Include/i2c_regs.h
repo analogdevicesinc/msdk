@@ -510,11 +510,11 @@ typedef struct {
  #define MXC_F_I2C_MSTCTRL_EX_ADDR_EN_POS               7 /**< MSTCTRL_EX_ADDR_EN Position */
  #define MXC_F_I2C_MSTCTRL_EX_ADDR_EN                   ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_EX_ADDR_EN_POS)) /**< MSTCTRL_EX_ADDR_EN Mask */
 
- #define MXC_F_I2C_MSTCTRL_MST_CODE_POS                 10 /**< MSTCTRL_MST_CODE Position */
- #define MXC_F_I2C_MSTCTRL_MST_CODE                     ((uint32_t)(0x0UL << MXC_F_I2C_MSTCTRL_MST_CODE_POS)) /**< MSTCTRL_MST_CODE Mask */
+ #define MXC_F_I2C_MSTCTRL_MST_CODE_POS                 8 /**< MSTCTRL_MST_CODE Position */
+ #define MXC_F_I2C_MSTCTRL_MST_CODE                     ((uint32_t)(0x7UL << MXC_F_I2C_MSTCTRL_MST_CODE_POS)) /**< MSTCTRL_MST_CODE Mask */
 
- #define MXC_F_I2C_MSTCTRL_MST_ACK_IGN_POS              12 /**< MSTCTRL_MST_ACK_IGN Position */
- #define MXC_F_I2C_MSTCTRL_MST_ACK_IGN                  ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_MST_ACK_IGN_POS)) /**< MSTCTRL_MST_ACK_IGN Mask */
+ #define MXC_F_I2C_MSTCTRL_MST_IGN_ACK_POS              12 /**< MSTCTRL_MST_IGN_ACK Position */
+ #define MXC_F_I2C_MSTCTRL_MST_IGN_ACK                  ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_MST_IGN_ACK_POS)) /**< MSTCTRL_MST_IGN_ACK Mask */
 
 /**@} end of group I2C_MSTCTRL_Register */
 
