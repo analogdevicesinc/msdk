@@ -52,7 +52,7 @@ __weak void SystemCoreClockUpdate(void)
         break;
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ITO:
         base_freq = ITO_FREQ;
-        break;    
+        break;
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
         base_freq = INRO_FREQ;
         break;
