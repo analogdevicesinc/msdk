@@ -1,2 +1,0 @@
-#load-ram syntax: load-ram <hexa loading address> <s19 filename, base address=0>
-load-ram 000000 file.s19
