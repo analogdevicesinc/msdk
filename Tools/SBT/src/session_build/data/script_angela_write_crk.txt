@@ -1,1 +1,0 @@
-write-crk crk_ecdsa_angela_test.pub.sign

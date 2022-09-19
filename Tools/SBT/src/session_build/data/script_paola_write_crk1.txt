@@ -1,1 +1,0 @@
-write-crk crk1_paola_test.pub.sign
