@@ -1,4 +1,0 @@
-write-file ../../examples/vmlinux_signed.s19
-read-configuration
-write-blpk 0102030405060708090A0B0C0D0E0F00
-write-fak 0102030405060708090A0B0C0D0E0F00
