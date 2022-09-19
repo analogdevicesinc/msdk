@@ -11,5 +11,4 @@
 
 # **********************************************************
 
-override BOARD=EvKit_V1
-$(warning This project requires a pushbutton.  Therefore, it is only compatible with the MAX32520-KIT.)
+# Add your config here!
