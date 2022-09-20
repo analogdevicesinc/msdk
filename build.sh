@@ -10,12 +10,14 @@ if [ $# -lt 1 ]; then
 	echo "              build: To build NFC example"
 	echo "              doc  : To generate doxygen documentation"
 	echo "              clean: To clean generated files and create fresh setup"
-	echo "<float_type>: (optional) hard or soft"
+	echo "<float_type>: (optional) hard or soft should be used for build only"
+	echo "<doc_version>:(optional) vX.Y.Z, should be used for doc only"
 	exit 1
 fi
 
 operation=$1
 fp_type=$2
+doc_version=$2
 
 root_dir=$(pwd)
 
@@ -73,10 +75,12 @@ case "$operation" in
 		
 		cd ./Examples/MAX32570/$example/Internal_Only
 		 
-			gittag=`git describe --abbrev=0 --tags`
-			gittag=${gittag%%-*}
+			gittag=$(doc_version)
+			
+			#gittag=`git describe --abbrev=0 --tags`
+			#gittag=${gittag%%-*}
 
-			echo "Current tag: $gittag"
+			#echo "Current tag: $gittag"
 
 			out_dir="DoxyOutput"
 			file_name="NFC_PCD_CSP"
