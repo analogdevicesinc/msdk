@@ -5,7 +5,7 @@ By the applet user can implement several kinds of needs. In this example OTP con
 by applet mechanism. 
 This example will generate .srec file. Then generate SCP (Secure Communication Protocol) package. 
 
-Before build example please set correct silicon (A1, A2...) version you have in MakeFile as below <br />
+Before build example please set correct silicon (A1, A2...) version you have in [project.mk](project.mk) as below <br />
  PROJ_CFLAGS+=-DMAX32570_A1
 
 1. Build the example with scpa configuration ("make scpa")      <br />
