@@ -85,8 +85,6 @@ IPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
 VPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
 SRCS += FreeRTOS_CLI.c
 
-$(info $(RTOS_CONFIG_DIR))
-
 # Include the FreeRTOS library
 include $(LIBS_DIR)/FreeRTOS/freertos.mk
 endif
