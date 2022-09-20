@@ -5,9 +5,9 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-#BOARD=FTHR_RevA
+#BOARD=MAX32520FTHR
 # ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
+# project build for the "MAX32520FTHR" board.
 
 # **********************************************************
 
