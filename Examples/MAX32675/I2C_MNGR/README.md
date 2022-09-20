@@ -11,9 +11,9 @@ You may change the configuration of each EEPROM's I2C transaction parameters (sl
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED0 EN).
 -   Close jumper JP2 (LED1 EN).
--	Connect P0.6 on header JH1 to the SCL line of the I2C Bus.
--	Connect P0.7 on header JH1 to the SDA line of the I2C Bus.
-- 	Connect two EEPROM IC's to the I2C Bus.
+-   Connect P0.6 on header JH1 to the SCL line of the I2C Bus.
+-   Connect P0.7 on header JH1 to the SDA line of the I2C Bus.
+-   Connect two EEPROM IC's to the I2C Bus.
 
 ## Expected Output
 

@@ -10,9 +10,9 @@ You may change the configuration of each EEPROM's I2C transaction parameters (sl
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Install headers JP7(RX\_EN) and JP8(TX\_EN).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--	Connect P0.6 on header J1 to the SCL line of the I2C Bus.
--	Connect P0.9 on header J7 to the SDA line of the I2C Bus.
-- 	Connect two EEPROM IC's to the I2C Bus.
+-   Connect P0.6 on header J1 to the SCL line of the I2C Bus.
+-   Connect P0.9 on header J7 to the SDA line of the I2C Bus.
+-   Connect two EEPROM IC's to the I2C Bus.
 
 ## Expected Output
 
