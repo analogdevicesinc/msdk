@@ -13,5 +13,4 @@
 
 # Add your config here!
 
-
-
+LINKERFILE ?= $(TARGET_LC)_ram.ld
