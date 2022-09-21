@@ -10,5 +10,11 @@
 # Enable CORDIO library
 LIB_CORDIO = 1
 
+# Cordio library options
+STANDBY_ENABLED = 0
+
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
+
+# Use local linkerfile
+LINKERFILE = ota.ld
