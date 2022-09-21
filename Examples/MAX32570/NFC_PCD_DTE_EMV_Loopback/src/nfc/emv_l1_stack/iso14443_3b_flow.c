@@ -44,17 +44,16 @@
 typedef struct {
     uint8_t bit_rate;
 
-    uint8_t pro_type:4;
-    uint8_t fsci:4;
+    uint8_t pro_type : 4;
+    uint8_t fsci : 4;
 
-    uint8_t fo:2;
-    uint8_t adc:2;
-    uint8_t fwi:4;
+    uint8_t fo : 2;
+    uint8_t adc : 2;
+    uint8_t fwi : 4;
 
-    uint8_t rfu:4;
-    uint8_t sfgi:4;
+    uint8_t rfu : 4;
+    uint8_t sfgi : 4;
 } PROINFO_t;
-
 
 typedef struct {
     uint8_t atqb_f;
@@ -63,9 +62,7 @@ typedef struct {
     PROINFO_t proinfo;
 } ATQB_t;
 
-
 static ATQB_t GAtqb;
-
 
 int32_t iso_14443_3b_polling(void)
 {
@@ -74,14 +71,13 @@ int32_t iso_14443_3b_polling(void)
     return iso_14443_3b_polling_response(NULL, &void_len);
 }
 
-
 int32_t iso_14443_3b_polling_response(uint8_t *atqb_resp, int32_t *atqb_resp_len)
 {
-    uint8_t *atq=GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
     int32_t atq_len;
     int32_t ret;
 
-    ret = iso_14443_3b_cmd_req_wup(atq, &atq_len , WAKEUP_NOTRETRY);
+    ret = iso_14443_3b_cmd_req_wup(atq, &atq_len, WAKEUP_NOTRETRY);
 
     if (ret == ISO14443_3_ERR_ABORTED) {
         return ret;
@@ -93,7 +89,7 @@ int32_t iso_14443_3b_polling_response(uint8_t *atqb_resp, int32_t *atqb_resp_len
     }
 
     // If atqb_resp exists, copy in the ATQB
-    if ( atqb_resp ) {
+    if (atqb_resp) {
         memcpy(atqb_resp, atq, atq_len);
         *atqb_resp_len = atq_len;
     }
@@ -103,14 +99,13 @@ int32_t iso_14443_3b_polling_response(uint8_t *atqb_resp, int32_t *atqb_resp_len
 
 static void set_atqb(ATQB_t *patqb)
 {
-    memcpy(&GAtqb,patqb,sizeof(ATQB_t));
+    memcpy(&GAtqb, patqb, sizeof(ATQB_t));
 }
 
 static void get_atqb(ATQB_t *patqb)
 {
-    memcpy(patqb,&GAtqb,sizeof(ATQB_t));
+    memcpy(patqb, &GAtqb, sizeof(ATQB_t));
 }
-
 
 int32_t iso_14443_3b_collision_detect(void)
 {
@@ -119,53 +114,51 @@ int32_t iso_14443_3b_collision_detect(void)
     return iso_14443_3b_collision_detect_response(NULL, &void_len);
 }
 
-
 int32_t iso_14443_3b_collision_detect_response(uint8_t *atqb_resp, int32_t *atqb_resp_len)
 {
-    uint8_t *atqb=GetCommonBuffer();
+    uint8_t *atqb = GetCommonBuffer();
     int32_t atqb_len;
 
-    uint8_t fsci=FSCI_DEFAULT_VALUE;
-    uint8_t fwi=FWI_DEFAULT_VALUE;
-    uint8_t sfgi=SFGI_DEFAULT_VALUE;
-    uint8_t nad=0,cid=0;                        /*we don't support nad&cid in default*/
+    uint8_t fsci = FSCI_DEFAULT_VALUE;
+    uint8_t fwi = FWI_DEFAULT_VALUE;
+    uint8_t sfgi = SFGI_DEFAULT_VALUE;
+    uint8_t nad = 0, cid = 0; /*we don't support nad&cid in default*/
 
-    ATQB_t *patqb=(ATQB_t*)atqb;
+    ATQB_t *patqb = (ATQB_t *)atqb;
     int32_t ret;
 
-    ret = iso_14443_3b_cmd_req_wup(atqb, &atqb_len,WAKEUP_DORETRY);
+    ret = iso_14443_3b_cmd_req_wup(atqb, &atqb_len, WAKEUP_DORETRY);
 
     if (ret != ISO14443_3_ERR_SUCCESS)
         return ret;
 
     // If atqb_resp exists, copy in the ATQB
-    if ( atqb_resp ) {
+    if (atqb_resp) {
         memcpy(atqb_resp, atqb, atqb_len);
         *atqb_resp_len = atqb_len;
     }
 
-    fsci=patqb->proinfo.fsci<=FSCI_MAX_VALUE?patqb->proinfo.fsci:FSCI_MAX_VALUE;
-    fwi=patqb->proinfo.fwi<=FWI_MAX_VALUE?patqb->proinfo.fwi:FWI_DEFAULT_VALUE;
+    fsci = patqb->proinfo.fsci <= FSCI_MAX_VALUE ? patqb->proinfo.fsci : FSCI_MAX_VALUE;
+    fwi = patqb->proinfo.fwi <= FWI_MAX_VALUE ? patqb->proinfo.fwi : FWI_DEFAULT_VALUE;
 
-    if(atqb_len == ISO3B_ATQB_MAXLEN)
-        sfgi=patqb->proinfo.sfgi<=SFGI_MAX_VALUE?patqb->proinfo.sfgi:SFGI_DEFAULT_VALUE;
+    if (atqb_len == ISO3B_ATQB_MAXLEN)
+        sfgi = patqb->proinfo.sfgi <= SFGI_MAX_VALUE ? patqb->proinfo.sfgi : SFGI_DEFAULT_VALUE;
 
     /**check protocol type  B4 must be 0*/
-    if(patqb->proinfo.pro_type&0x08)
+    if (patqb->proinfo.pro_type & 0x08)
         return ISO14443_3_ERR_PROTOCOL;
 
     /*FO,CID NAD support*/
-    if(patqb->proinfo.fo&0x01)
-        cid=1;
-    if(patqb->proinfo.fo&0x02)
-        nad=1;
+    if (patqb->proinfo.fo & 0x01)
+        cid = 1;
+    if (patqb->proinfo.fo & 0x02)
+        nad = 1;
 
     set_atqb(patqb);
-    set_ats(PROTOCOL_ISO14443B,fsci,fwi,sfgi,nad,cid);
+    set_ats(PROTOCOL_ISO14443B, fsci, fwi, sfgi, nad, cid);
 
     return ISO14443_3_ERR_SUCCESS;
 }
-
 
 int32_t iso_14443_3b_active(void)
 {
@@ -173,7 +166,6 @@ int32_t iso_14443_3b_active(void)
 
     return iso_14443_3b_active_response(NULL, &void_len);
 }
-
 
 int32_t iso_14443_3b_active_response(uint8_t *attrib_resp, int32_t *attrib_resp_len)
 {
@@ -185,23 +177,25 @@ int32_t iso_14443_3b_active_response(uint8_t *attrib_resp, int32_t *attrib_resp_
     get_atqb(&atqb);
     get_ats(&ats);
 
-
     /* 6.3.2.10 PCD must disregard the value of bits b4-b2 of Protocol_Type */
-    ret = iso_14443_3b_cmd_attrib(atqb.pupi, 0x00, FSDI_DEFAULT_VALUE, (atqb.proinfo.pro_type & PROTOCOL_DISREGARD_BITS), 0x00, NULL, NULL,(4096*(1 << ats.FWI) + ISO14443_FWT_DELTA), attrib_resp, attrib_resp_len);
+    ret = iso_14443_3b_cmd_attrib(atqb.pupi, 0x00, FSDI_DEFAULT_VALUE,
+                                  (atqb.proinfo.pro_type & PROTOCOL_DISREGARD_BITS), 0x00, NULL,
+                                  NULL, (4096 * (1 << ats.FWI) + ISO14443_FWT_DELTA), attrib_resp,
+                                  attrib_resp_len);
 
     if (ret == ISO14443_3_ERR_ABORTED) {
         return ret;
     }
 
-    if ( (ret != ISO14443_3_ERR_SUCCESS) && (ret != ISO14443_3_ERR_CONTAINS_HIGH_INF)) {
+    if ((ret != ISO14443_3_ERR_SUCCESS) && (ret != ISO14443_3_ERR_CONTAINS_HIGH_INF)) {
         return ISO14443_3_ERR_CMD;
     }
 
     seqnuminit();
 
     //SFGI delay = 256x16x2^sfgi + 384x2^sfgi
-    if(ats.SFGI){
-        sfgi_fc = 4480*(1 << ats.SFGI);
+    if (ats.SFGI) {
+        sfgi_fc = 4480 * (1 << ats.SFGI);
 
         nfc_set_delay_till_next_send_fc(sfgi_fc);
 
@@ -210,18 +204,17 @@ int32_t iso_14443_3b_active_response(uint8_t *attrib_resp, int32_t *attrib_resp_
     return ret;
 }
 
-
 int32_t iso_14443_3b_remove(void)
 {
     int32_t loop = 0;
     int32_t ret;
-    uint8_t *atq=GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
     int32_t atq_len;
 
     nfc_reset();
 
-    while(loop < 3) {
-        ret = iso_14443_3b_cmd_req_wup(atq, &atq_len,WAKEUP_NOTRETRY);
+    while (loop < 3) {
+        ret = iso_14443_3b_cmd_req_wup(atq, &atq_len, WAKEUP_NOTRETRY);
 
         if (ret == ISO14443_3_ERR_ABORTED) {
             return ret;
@@ -232,7 +225,7 @@ int32_t iso_14443_3b_remove(void)
 
             loop = 0;
         } else {
-            loop ++;
+            loop++;
 
             // EMV 2.6b case TB311, now enforces a minimum retransmission time of 3ms
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_ATQB);
@@ -241,4 +234,3 @@ int32_t iso_14443_3b_remove(void)
 
     return ISO14443_3_ERR_SUCCESS;
 }
-

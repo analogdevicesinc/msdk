@@ -38,74 +38,65 @@
 #include "mml_nfc_pcd_port.h"
 #include "logging.h"
 
-uint8_t gcommonbuffer[MAX_BUFFER_LEN];  //use for read data from picc.
+uint8_t gcommonbuffer[MAX_BUFFER_LEN]; //use for read data from picc.
 
 // The default delay between a reception from PICC and a new transmit from PCD
 uint32_t g_delay_till_send = ISO14443_FDT_MIN;
 
 static abort_check_callback_t abort_callback_function = NULL;
 
-static ATSConfig_t ATScfg={
-    .Pro_Type=PROTOCOL_ISO14443A,
-    .FSCI=FSCI_DEFAULT_VALUE,
-    .FWI=FWI_DEFAULT_VALUE,
-    .SFGI=SFGI_DEFAULT_VALUE,
+static ATSConfig_t ATScfg = {
+    .Pro_Type = PROTOCOL_ISO14443A,
+    .FSCI = FSCI_DEFAULT_VALUE,
+    .FWI = FWI_DEFAULT_VALUE,
+    .SFGI = SFGI_DEFAULT_VALUE,
 };
-
 
 void get_ats(ATSConfig_t *cfg)
 {
-    memcpy((uint8_t*)cfg,(uint8_t*)&ATScfg,sizeof(ATSConfig_t));
+    memcpy((uint8_t *)cfg, (uint8_t *)&ATScfg, sizeof(ATSConfig_t));
 }
 
-
-void set_ats(uint8_t pro_type,uint8_t fsci,uint8_t fwi,uint8_t sfgi,uint8_t nad,uint8_t cid)
+void set_ats(uint8_t pro_type, uint8_t fsci, uint8_t fwi, uint8_t sfgi, uint8_t nad, uint8_t cid)
 {
-    ATScfg.Pro_Type=pro_type;
-    ATScfg.FSCI=fsci;
-    ATScfg.FWI=fwi;
-    ATScfg.SFGI=sfgi;
+    ATScfg.Pro_Type = pro_type;
+    ATScfg.FSCI = fsci;
+    ATScfg.FWI = fwi;
+    ATScfg.SFGI = sfgi;
 
-    ATScfg.NAD_support=nad;
-    ATScfg.CID_support=cid;
+    ATScfg.NAD_support = nad;
+    ATScfg.CID_support = cid;
 }
-
 
 void nfc_yield_ms(uint32_t yield_ms)
 {
     mml_nfc_pcd_task_sleep(yield_ms);
 }
 
-
 void nfc_set_delay_till_next_send_fc(uint32_t delay)
 {
     g_delay_till_send = delay;
 }
-
 
 void nfc_block_for_us(uint32_t block_us)
 {
     mml_nfc_pcd_block_for_us(block_us);
 }
 
-
 void poweron_operatingfield(void)
 {
     mml_nfc_pcd_field_on();
 }
-
 
 void poweroff_operatingfield(void)
 {
     mml_nfc_pcd_field_off();
 }
 
-
 void nfc_pcd_reset_wait(void)
 {
     mml_nfc_pcd_smart_yield_us(TRESET_US);
 }
-
 
 int32_t nfc_reset(void)
 {
@@ -124,15 +115,14 @@ int32_t nfc_reset(void)
     return 0;
 }
 
-
 void hexdump(int32_t dbg_level, uint8_t *buf, int32_t len, int32_t send)
 {
     int i;
 
-    do_log(dbg_level, "[%03d]%s\n      ",len,send?"-->":"<--");
-    for(i=0; i<len; i++) {
-        do_log(dbg_level, "%02X ",buf[i]);
-        if ( ((i+1)%16 == 0) && (i<(len-1)) )
+    do_log(dbg_level, "[%03d]%s\n      ", len, send ? "-->" : "<--");
+    for (i = 0; i < len; i++) {
+        do_log(dbg_level, "%02X ", buf[i]);
+        if (((i + 1) % 16 == 0) && (i < (len - 1)))
             do_log(dbg_level, "\n      ");
     }
     do_log(dbg_level, "\n");
@@ -158,7 +148,7 @@ void set_abort_check_callback(abort_check_callback_t abort_callback)
 
 static int32_t convert_status_codes(int32_t rf_status)
 {
-    switch (rf_status){
+    switch (rf_status) {
     case MML_NFC_PCD_E_SUCCESS:
         return ISO14443_3_ERR_SUCCESS;
 
@@ -219,38 +209,31 @@ static uint32_t pad_for_crystal_margin(uint32_t counts_to_pad)
 
     // Per ARM Data book, unsigned divide instruction takes 2-12 cycles.
     // This is probably fast enough for our purposes.
-    if ( counts_to_pad > CRYSTAL_PPM_MARGIN_DIVISOR) {
+    if (counts_to_pad > CRYSTAL_PPM_MARGIN_DIVISOR) {
         count_margin = counts_to_pad / CRYSTAL_PPM_MARGIN_DIVISOR;
     }
 
     return counts_to_pad + (count_margin * CRYSTAL_PPM_MARGIN_MULTIPLIER);
 }
 
-
-int32_t nfc_pcd_transceive(
-        uint8_t     protocol,
-        uint8_t     frametype,
-        uint8_t     *tx_buf,
-        uint32_t    tx_len,
-        uint8_t     *rx_buf,
-        uint32_t    *rx_len,
-        uint32_t    timeout
-        )
+int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t *tx_buf, uint32_t tx_len,
+                           uint8_t *rx_buf, uint32_t *rx_len, uint32_t timeout)
 
 {
     int32_t status = MML_NFC_PCD_E_SUCCESS;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = protocol;
-    trans_params.frametype         = frametype;
-    trans_params.tx_buf            = tx_buf;
-    trans_params.tx_len            = tx_len;
-    trans_params.rx_buf            = rx_buf;
-    trans_params.rx_len            = rx_len;
-    trans_params.timeout		   = timeout;
+    trans_params.protocol = protocol;
+    trans_params.frametype = frametype;
+    trans_params.tx_buf = tx_buf;
+    trans_params.tx_len = tx_len;
+    trans_params.rx_buf = rx_buf;
+    trans_params.rx_len = rx_len;
+    trans_params.timeout = timeout;
 
-    if ((trans_params.timeout != ISO14443_FWT_A_ACT) && (trans_params.timeout != ISO14443_FWT_ATQB)) {
+    if ((trans_params.timeout != ISO14443_FWT_A_ACT) &&
+        (trans_params.timeout != ISO14443_FWT_ATQB)) {
         debug("RF_TO: %d\n", trans_params.timeout);
         debug("RF_FT: %d\n", frametype);
     }
@@ -295,16 +278,13 @@ int32_t nfc_pcd_transceive(
     // only amounts to a small number of nanoseconds.  However, some of the negotiated delays
     // and wait times can be several million counts.  Therefore, it is safer to pad with
     // extra margin on these times as they grow large.
-    trans_params.delay_till_send   = pad_for_crystal_margin(g_delay_till_send);
-    trans_params.timeout           = pad_for_crystal_margin(trans_params.timeout);
-
+    trans_params.delay_till_send = pad_for_crystal_margin(g_delay_till_send);
+    trans_params.timeout = pad_for_crystal_margin(trans_params.timeout);
 
     // FDT PCD min delay is 6780fc this works out to 500us
     // The RF driver now handles these inter-packet delays via the delay_till_send parameter
 
-
     status = mml_nfc_pcd_transceive(trans_params);
-
 
     // Reset the delay_till_send for next transaction, unless overridden before
     // This simplifies inter packet delay handling, as usually, we only need to

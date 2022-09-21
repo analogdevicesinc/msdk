@@ -56,25 +56,23 @@
 #include "bitmap.h"
 #include <mml_nfc_pcd_rf_driver.h>
 
-
 static int setup_display(void)
 {
-	// init TFT
- 	MXC_TFT_Init();
+    // init TFT
+    MXC_TFT_Init();
 
-	// show image
+    // show image
     MXC_TFT_ShowImage(11, 7, logo_white_bg_white_bmp);
 
     // set up font
     MXC_TFT_SetFont(urw_gothic_13_grey_bg_white);
 
     // Set print area
-    area_t print = {20, 50, 300, 80};
+    area_t print = { 20, 50, 300, 80 };
     MXC_TFT_ConfigPrintf(&print);
 
     return 0;
 }
-
 
 int main(void)
 {
@@ -94,12 +92,11 @@ int main(void)
     printf("Maxim MAX32570 DTE\n\n");
     fflush(0);
 
-	result = mml_nfc_pcd_init();
+    result = mml_nfc_pcd_init();
 
-	if (result != MML_NFC_PCD_E_SUCCESS) {
-	    printf("Failed to initialize NFC block.  Error: %d\n", result);
-	}
-    else {
+    if (result != MML_NFC_PCD_E_SUCCESS) {
+        printf("Failed to initialize NFC block.  Error: %d\n", result);
+    } else {
         emvl1_main_loop();
     }
 
