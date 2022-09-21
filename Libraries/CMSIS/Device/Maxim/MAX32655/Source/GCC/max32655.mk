@@ -90,16 +90,16 @@ endif
 # RISC-V Loader - compile a project for the RISC-V core
 # and link it into the same executable as the ARM code
 # Configuration Variables:
-# - RISCV_LOADER : Set to 1 to enable the RISC-V loader, 0 to disable.  Ex: RISCV_LOADER=1
+# - RISCV_LOAD : Set to 1 to enable the RISC-V loader, 0 to disable.  Ex: RISCV_LOAD=1
 # - RISCV_APP : Sets the directory of the project
 # 				to compile for the RISC-V core.
 #				Defaults to "Hello_World".
 #				Absolute paths are recommended, but
 #				relative paths will also work.
 #
-# Ex:  "make RISCV_LOADER=1 RISCV_APP=../GPIO"
+# Ex:  "make RISCV_LOAD=1 RISCV_APP=../GPIO"
 ################################################################################
-ifeq ($(RISCV_LOADER),1)
+ifeq ($(RISCV_LOAD),1)
 
 LOADER_SCRIPT := $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/riscv-loader.S
 
@@ -124,8 +124,8 @@ PROJ_OBJS = ${RISCV_APP_OBJ}
 rvapp: $(RISCV_APP_BIN)
 
 $(RISCV_APP_BIN):
-	$(MAKE) -C ${RISCV_APP} BUILD_DIR=$(RISCV_BUILD_DIR) RISCV_CORE=1 RISCV_LOADER=0 PROJECT=riscv
-	$(MAKE) -C ${RISCV_APP} BUILD_DIR=$(RISCV_BUILD_DIR) $(RISCV_APP_BIN) RISCV_CORE=1 RISCV_LOADER=0
+	$(MAKE) -C ${RISCV_APP} BUILD_DIR=$(RISCV_BUILD_DIR) RISCV_CORE=1 RISCV_LOAD=0 PROJECT=riscv
+	$(MAKE) -C ${RISCV_APP} BUILD_DIR=$(RISCV_BUILD_DIR) $(RISCV_APP_BIN) RISCV_CORE=1 RISCV_LOAD=0
 
 .PHONY: rvobj
 rvobj: $(RISCV_APP_OBJ)
