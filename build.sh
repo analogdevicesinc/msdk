@@ -23,7 +23,7 @@ root_dir=$(pwd)
 
 example="NFC_PCD_DTE_EMV_Loopback"
 
-export PATH="/c/MaximSDK/Tools/GNUTools/bin:/c/MaximSDK/Tools/MinGW/msys/1.0/bin:$PATH"
+export PATH="/c/MaximSDK/Tools/GNUTools/10.3/bin:/c/MaximSDK/Tools/MSYS2/usr/bin:$PATH"
 
 #
 #	Decide Operation
@@ -41,7 +41,7 @@ case "$operation" in
 		cp ${root_dir}/Tools/SBT/bin/sign_app.exe ${root_dir}/Tools/SBT/bin/sign_app
 
 		cd ./Examples/MAX32570/$example/
-			make ECLIPSE=1 MFLOAT_FLAGS=${fp_type}
+			make MFLOAT_ABI=${fp_type}
 			echo " "
 		cd $root_dir
 		
@@ -52,7 +52,7 @@ case "$operation" in
 		echo "------- Clean START : $example  -------"
 		
 		cd ./Examples/MAX32570/$example/
-			make ECLIPSE=1 clean
+			make clean
 			rm -rf ${root_dir}/Libraries/NFC/*/*.a
 			
 			# remove doxy files
