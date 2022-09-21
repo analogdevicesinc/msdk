@@ -67,12 +67,12 @@ extern "C" {
   *
   * @{
   */
-#define PUPI_SIZE           (4)         /**< Length of PUPI Pseudo-Unique PICC Identifier */
+#define PUPI_SIZE (4) /**< Length of PUPI Pseudo-Unique PICC Identifier */
 
-#define ISO3B_ATQB_MINLEN       12      /**< Min allowed number of bytes in ATQB response */
-#define ISO3B_ATQB_MAXLEN       13      /**< Max allowed number of bytes in ATQB response */
+#define ISO3B_ATQB_MINLEN 12 /**< Min allowed number of bytes in ATQB response */
+#define ISO3B_ATQB_MAXLEN 13 /**< Max allowed number of bytes in ATQB response */
 
-#define ISO3B_ATQB_BYTE1        0x50    /**< ATQB byte 1 should always be this, used for error checks */
+#define ISO3B_ATQB_BYTE1 0x50 /**< ATQB byte 1 should always be this, used for error checks */
 /** @} */ /* End of @defgroup NFC_PCD_EMV_LVL1_TYPEB_ENUM_DEFINES */
 
 /**
@@ -89,7 +89,7 @@ extern "C" {
  * @retval #ISO14443_3_ERR_PROTOCOL
  * @retval #ISO14443_3_ERR_TIMEOUT No proper response seen within the timeout
  */
-int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len ,uint8_t doretry);
+int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len, uint8_t doretry);
 
 /**
  * @brief Sends ATTRIB command, and captures response
@@ -121,10 +121,9 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len ,uint8_t doretry
  * @retval  #ISO14443_3_ERR_TIMEOUT No response seen within timeout
  * @retval  #ISO14443_3_ERR_EARLY_RESPONSE Response from PICC comes too soon after the ATTRIB command is sent
  */
-int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1,
-        uint8_t para2, uint8_t para3, uint8_t para4, uint8_t *inf,
-        uint32_t *inf_len, uint32_t timeout, uint8_t *attrib_resp,
-        int32_t *attrib_resp_len);
+int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1, uint8_t para2, uint8_t para3,
+                                uint8_t para4, uint8_t *inf, uint32_t *inf_len, uint32_t timeout,
+                                uint8_t *attrib_resp, int32_t *attrib_resp_len);
 
 /**
  * @brief Halt PICC

@@ -79,7 +79,7 @@ extern "C" {
  * ATQ, Anticollision, ATTRIB, Selection, ATS etc.
  */
 #define LOG_ACTIVATION_RESPONSES
-/** @} *//* @defgroup POLLING_CONFIG */
+/** @} */ /* @defgroup POLLING_CONFIG */
 
 /**
  * @defgroup POLLING_DELAYS EMV Polling Timeout Values
@@ -88,8 +88,8 @@ extern "C" {
  *
  * @{
  */
-#define TIMEOUT_POWEROFF_MS     15   /**< Milliseconds to delay for a power off procedure */
-/** @} *//* @defgroup POLLING_DELAYS */
+#define TIMEOUT_POWEROFF_MS 15 /**< Milliseconds to delay for a power off procedure */
+/** @} */ /* @defgroup POLLING_DELAYS */
 
 /**
  * @defgroup LOOPBACK_RAPDUS EMV Loopback Procedure Requests
@@ -98,10 +98,10 @@ extern "C" {
  *
  * @{
  */
-#define REMOVALPROCEDURE    0x70 /**< RAPDU signaling a request for removal procedure */
-#define POWEROFFPROCEDURE   0x72 /**< RAPDU signaling a request for poweroff procedure */
-#define RESETPROCEDURE      0x80 /**< RAPDU signaling a request for reset procedure */
-/** @} *//* @defgroup LOOPBACK_RAPDUS */
+#define REMOVALPROCEDURE 0x70 /**< RAPDU signaling a request for removal procedure */
+#define POWEROFFPROCEDURE 0x72 /**< RAPDU signaling a request for poweroff procedure */
+#define RESETPROCEDURE 0x80 /**< RAPDU signaling a request for reset procedure */
+/** @} */ /* @defgroup LOOPBACK_RAPDUS */
 
 /**
  * @defgroup POLLING_RESPONSES EMV Polling Return Values
@@ -110,21 +110,25 @@ extern "C" {
  *
  * @{
  */
-#define TYPE_A_READY                0x0A /**< Type A card found and activated */
-#define TYPE_B_READY                0x0B /**< Type B card found and activated */
-#define TYPE_A_NON_ISO14443_4_READY 0x1A /**< Type A card found but not compliant with Half Duplex Block Transport */
-#define TYPE_B_NON_ISO14443_4_READY 0x1B /**< Type B card found but not compliant with Half Duplex Block Transport */
-#define NO_CARD_FOUND               0xFF /**< Polled for all supported technologies, but no support card found */
-#define CARD_FOUND_WITH_ERROR       0xFE /**< Found a card but failed to activate due communications error or unsupported card */
-#define COLLISION_DETECTED          0xFD /**< Card or cards found, but failed to activate due to collision */
-#define POLLING_TERMINATED          0x01 /**< Polling terminated by call back function @ref callback_check_for_loop_termination_t */
-#define EXCHANGE_COMPLETE           0x00 /**< EMV L1 Exchange finished, Card found */
-/** @} *//* @defgroup POLLING_RESPONSES */
+#define TYPE_A_READY 0x0A /**< Type A card found and activated */
+#define TYPE_B_READY 0x0B /**< Type B card found and activated */
+#define TYPE_A_NON_ISO14443_4_READY \
+    0x1A /**< Type A card found but not compliant with Half Duplex Block Transport */
+#define TYPE_B_NON_ISO14443_4_READY \
+    0x1B /**< Type B card found but not compliant with Half Duplex Block Transport */
+#define NO_CARD_FOUND 0xFF /**< Polled for all supported technologies, but no support card found */
+#define CARD_FOUND_WITH_ERROR \
+    0xFE /**< Found a card but failed to activate due communications error or unsupported card */
+#define COLLISION_DETECTED 0xFD /**< Card or cards found, but failed to activate due to collision */
+#define POLLING_TERMINATED \
+    0x01 /**< Polling terminated by call back function @ref callback_check_for_loop_termination_t */
+#define EXCHANGE_COMPLETE 0x00 /**< EMV L1 Exchange finished, Card found */
+/** @} */ /* @defgroup POLLING_RESPONSES */
 
 /** uid of last card found during polling */
 typedef struct {
-    uint8_t uid[15];  /**< uid of last card found during polling */
-    uint32_t uid_length;  /**< Length of last uid found during polling */
+    uint8_t uid[15]; /**< uid of last card found during polling */
+    uint32_t uid_length; /**< Length of last uid found during polling */
 } uid_storage_t;
 
 /**
@@ -137,7 +141,7 @@ typedef struct {
 extern uint8_t rapdu[261]; /**< Shared RAPDU buffer */
 extern int32_t rapdulen; /**< Length of current RAPDU in the shared buffer */
 extern int32_t rapdu_displayed; /**< Display flag, used to satisfy required EMV DTE logging */
-/** @} *//* @defgroup GLOBAL_RAPDU_VARS */
+/** @} */ /* @defgroup GLOBAL_RAPDU_VARS */
 
 /**
  * Polling termination callback function definition
@@ -203,7 +207,7 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
  */
 uid_storage_t get_stored_uid(void);
 
-/** @} *//* @defgroup EMV_POLLING_AND_LOOPBACK */
+/** @} */ /* @defgroup EMV_POLLING_AND_LOOPBACK */
 
 #ifdef __cplusplus
 }

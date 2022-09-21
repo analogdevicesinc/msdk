@@ -38,15 +38,14 @@
 #include <stdint.h>
 #include <string.h>
 
-
-int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len ,uint8_t doretry)
+int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len, uint8_t doretry)
 {
     uint8_t tx_buf[100];
     int32_t tx_len;
     uint8_t *rx_buf;
     uint32_t rx_len;
     int32_t ret;
-    uint8_t retry=doretry?3:1;
+    uint8_t retry = doretry ? 3 : 1;
 
     tx_buf[0] = 0x05;
     tx_buf[1] = 0x00;
@@ -56,10 +55,12 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len ,uint8_t doretry
     rx_buf = atq;
 
     do {
-        ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf, &rx_len, ISO14443_FWT_ATQB);
+        ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf,
+                                 &rx_len, ISO14443_FWT_ATQB);
 
         if (ret == ISO14443_3_ERR_SUCCESS) {
-            if ((rx_len != ISO3B_ATQB_MINLEN && rx_len != ISO3B_ATQB_MAXLEN) || rx_buf[0]!=ISO3B_ATQB_BYTE1) {
+            if ((rx_len != ISO3B_ATQB_MINLEN && rx_len != ISO3B_ATQB_MAXLEN) ||
+                rx_buf[0] != ISO3B_ATQB_BYTE1) {
                 ret = ISO14443_3_ERR_PROTOCOL;
             } else {
                 ret = ISO14443_3_ERR_SUCCESS;
@@ -68,31 +69,29 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len ,uint8_t doretry
         }
 
         // EMV 2.6b case TB311, now enforces a minimum retransmission time of 3ms
-        if ( (retry > 1) && ret==ISO14443_3_ERR_TIMEOUT ) {
+        if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_ATQB);
         }
 
-    } while(--retry && ret==ISO14443_3_ERR_TIMEOUT);
+    } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
 }
 
-
-int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1,
-                                uint8_t para2, uint8_t para3, uint8_t para4, uint8_t *inf,
-                                uint32_t *inf_len , uint32_t timeout, uint8_t *attrib_resp,
-                                int32_t *attrib_resp_len)
+int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1, uint8_t para2, uint8_t para3,
+                                uint8_t para4, uint8_t *inf, uint32_t *inf_len, uint32_t timeout,
+                                uint8_t *attrib_resp, int32_t *attrib_resp_len)
 {
     uint8_t tx_buf[256];
-    int32_t tx_len=0;
+    int32_t tx_len = 0;
     uint8_t rx_buf[256];
     uint32_t rx_len;
     int32_t ret;
-    uint8_t retry=3;
+    uint8_t retry = 3;
 
     tx_buf[tx_len++] = 0x1d;
     memcpy(tx_buf + tx_len, pupi, PUPI_SIZE);
-    tx_len+=PUPI_SIZE;
+    tx_len += PUPI_SIZE;
 
     tx_buf[tx_len++] = para1;
     tx_buf[tx_len++] = para2;
@@ -105,11 +104,10 @@ int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1,
     }
 
     do {
-        ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf, &rx_len, timeout);
-
+        ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf,
+                                 &rx_len, timeout);
 
         if (ret == ISO14443_3_ERR_SUCCESS) {
-
             // If we have a non NULL buffer to save it, copy in the raw ATTRIB_RESPONSE
             if (attrib_resp) {
                 memcpy(attrib_resp, rx_buf, rx_len);
@@ -117,8 +115,8 @@ int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1,
             }
 
             /*CID value should be 0*/
-            if((rx_buf[0]&0x0f) != para4)
-                ret=ISO14443_3_ERR_PROTOCOL;
+            if ((rx_buf[0] & 0x0f) != para4)
+                ret = ISO14443_3_ERR_PROTOCOL;
 
             /*disregard MBLI*/
 
@@ -128,16 +126,14 @@ int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1,
         }
 
         // EMV 2.6b case TB305, TB3012, now enforces a minimum retransmission time of 3ms
-        if ( (retry > 1) && (ret==ISO14443_3_ERR_TIMEOUT || ret==ISO14443_3_ERR_COLLISION) ) {
+        if ((retry > 1) && (ret == ISO14443_3_ERR_TIMEOUT || ret == ISO14443_3_ERR_COLLISION)) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + timeout);
         }
 
-    } while( --retry && (ret==ISO14443_3_ERR_TIMEOUT || ret==ISO14443_3_ERR_COLLISION) );
-
+    } while (--retry && (ret == ISO14443_3_ERR_TIMEOUT || ret == ISO14443_3_ERR_COLLISION));
 
     return ret;
 }
-
 
 int32_t iso_14443_3b_cmd_halt(uint8_t *pupi)
 {
@@ -151,7 +147,8 @@ int32_t iso_14443_3b_cmd_halt(uint8_t *pupi)
     memcpy(tx_buf + 1, pupi, 4);
     tx_len = 5;
 
-    ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf, &rx_len, ISO14443_FWT_DEFAULT);
+    ret = nfc_pcd_transceive(PROTOCOL_ISO14443B, FT_STANDARD_CRC_EMD, tx_buf, tx_len, rx_buf,
+                             &rx_len, ISO14443_FWT_DEFAULT);
 
     if (ret == ISO14443_3_ERR_SUCCESS) {
         if (rx_len != 1 || rx_buf[0] != 0x00) {
@@ -162,5 +159,3 @@ int32_t iso_14443_3b_cmd_halt(uint8_t *pupi)
     }
     return ret;
 }
-
-

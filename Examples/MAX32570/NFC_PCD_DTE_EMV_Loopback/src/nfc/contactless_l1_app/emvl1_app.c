@@ -54,85 +54,99 @@
 #include <uart.h>
 #include <mml_nfc_pcd_rf_driver.h>
 
-#define FIELD_LOAD_DELAY_MS         		100
-#define KEYPRESS_RETURN_DELAY_MS    		25
+#define FIELD_LOAD_DELAY_MS 100
+#define KEYPRESS_RETURN_DELAY_MS 25
 #define LOW_POWER_INTER_POLLING_DELAY_MS 400
 
-#define TIMEOUT_TRANSAC_US  509
-#define PAUSE_TRANSAC_MS    95
+#define TIMEOUT_TRANSAC_US 509
+#define PAUSE_TRANSAC_MS 95
 
-#define REMOVALPROCEDURE    0x70
-#define POWEROFFPROCEDURE   0x72
+#define REMOVALPROCEDURE 0x70
+#define POWEROFFPROCEDURE 0x72
 
-#define RESETPROCEDURE      0x80
+#define RESETPROCEDURE 0x80
 
-#define TYPE_A_READY        0x0A
-#define TYPE_B_READY        0x0B
+#define TYPE_A_READY 0x0A
+#define TYPE_B_READY 0x0B
 
 #define MATRIX_HORIZONTAL_NUM_TICKS 27
 
-#define BASIC_LOW_POWER_POLLING							1
-#define FIELD_LEVEL_THRESHOLD_LOW_POWER_POLLING			2
-#define ADVANCED_FIELD_LEVEL_THRESHOLD_LOW_POWER_POLLING	3
+#define BASIC_LOW_POWER_POLLING 1
+#define FIELD_LEVEL_THRESHOLD_LOW_POWER_POLLING 2
+#define ADVANCED_FIELD_LEVEL_THRESHOLD_LOW_POWER_POLLING 3
 
-#define PCD_HW_VER  "2.0"
-#define PCD_SW_VER  "4.2.0"
+#define PCD_HW_VER "2.0"
+#define PCD_SW_VER "4.2.0"
 #define PCD_FW_SUM "c14b161e313baed353e0c06d241388feecea362e"
 
 // Per Sony Whitepaper: Card Technical Note for Software Development
 //   the Guard Time after transmission of Command Packet Data to when the Reader should
 //   be ready to receive preamble is (42 x 64 - 16)/fc ~197us
-#define FDT_F_PICC_MIN_TOLERANCE_EARLY  ((42 * 64) - 16)
+#define FDT_F_PICC_MIN_TOLERANCE_EARLY ((42 * 64) - 16)
 
 /******************************   	TYPE DEFINES	**************************/
-typedef struct
-{
-	uint8_t rapdu[261];
-	int32_t rapdu_len;
-	uint8_t aid_bin[50];
-	int32_t aid_bin_len;
-	char    application_label[50];
-	int32_t application_label_len;
+typedef struct {
+    uint8_t rapdu[261];
+    int32_t rapdu_len;
+    uint8_t aid_bin[50];
+    int32_t aid_bin_len;
+    char application_label[50];
+    int32_t application_label_len;
 } ppse_response_t;
 
 mml_nfc_pcd_analog_params_matrix_t custom_antenna_matrix = {
     //                                    0                  1                  2                  3                  4                  5                  6                  7                  8                  9
-    .fd_thresholds    = {               242,               228,               220,               215,               205,               180,               150,               140,               140,               140 },
-    .fd_dyn_trigger_a = {                30,                30,                30,                40,                40,                80,                40,               100,               120,               120 },
-    .fd_dyn_math_a    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_Q,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_trigger_b = {                40,                40,                40,                40,                40,                50,                50,                50,                50,                50 },
-    .fd_dyn_math_b    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_trigger_f = {                40,                35,                25,                25,                25,                25,                25,                25,                25,                25 },
-    .fd_dyn_math_f    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_trigger_v = {                40,                35,                25,                25,                25,                25,                25,                25,                25,                25 },
-    .fd_dyn_math_v    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_sttm_a    = {        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000 },
-    .fd_dyn_stfm_a    = {        0x7F000000,        0x7F000000,        0x7F000000,        0x7F000000,        0x7F037F03,        0x7F000000,        0x7F000000,        0x7F000000,        0x7F000000,        0x7F000000 },
-    .fd_dyn_sttm_bfv  = {        0x0B0B0B0B,        0x0B0B0B0B,        0x09090909,        0x09090909,        0x08090A0B,        0x08080808,        0x07070707,        0x07070707,        0x07070707,        0x07070707 },
-    .fd_dyn_stfm_bfv  = {        0x7F090909,        0x7F1A1409,        0x7F070707,        0x7F070707,        0x7F500A06,        0x7F555006,        0x7F050505,        0x7F050505,        0x7F050505,        0x7F050505 },
-    .fd_dyn_gain      = {                12,                12,                12,                12,                12,                12,                12,                12,                12,                12 },
-    .fd_dyn_atten     = {                31,                31,                31,                31,                31,                31,                31,                31,                31,                31 },
+    .fd_thresholds = { 242, 228, 220, 215, 205, 180, 150, 140, 140, 140 },
+    .fd_dyn_trigger_a = { 30, 30, 30, 40, 40, 80, 40, 100, 120, 120 },
+    .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_Q, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_b = { 40, 40, 40, 40, 40, 50, 50, 50, 50, 50 },
+    .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                       0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x7F037F03, 0x7F000000,
+                       0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x0B0B0B0B, 0x0B0B0B0B, 0x09090909, 0x09090909, 0x08090A0B, 0x08080808,
+                         0x07070707, 0x07070707, 0x07070707, 0x07070707 },
+    .fd_dyn_stfm_bfv = { 0x7F090909, 0x7F1A1409, 0x7F070707, 0x7F070707, 0x7F500A06, 0x7F555006,
+                         0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
+    .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
+    .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
 };
 
 mml_nfc_pcd_analog_params_matrix_t evkit_antenna_65x65_matrix = {
     //                                    0                  1                  2                  3                  4                  5                  6                  7                  8                  9
-    .fd_thresholds    = {               215,               190,               165,               140,               110,               100,                70,                70,                70,                70 },
-    .fd_dyn_trigger_a = {                20,                20,                40,                50,               100,               100,               110,               110,               110,               110 },
-    .fd_dyn_math_a    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_Q,      IQ_MATH_CH_Q,      IQ_MATH_CH_Q,      IQ_MATH_CH_Q,      IQ_MATH_CH_Q },
-    .fd_dyn_trigger_b = {                20,                20,                50,                50,                50,                50,                50,                50,                50,                50 },
-    .fd_dyn_math_b    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_trigger_f = {                40,                35,                25,                25,                25,                25,                25,                25,                25,                25 },
-    .fd_dyn_math_f    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_trigger_v = {                40,                35,                25,                25,                25,                25,                25,                25,                25,                25 },
-    .fd_dyn_math_v    = {      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I,      IQ_MATH_CH_I },
-    .fd_dyn_sttm_a    = {        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000,        0x00000000 },
-    .fd_dyn_stfm_a    = {        0x7F000000,        0x7F000000,        0x7F000000,        0x7F000000,        0x07020702,        0x07020702,        0x7F000000,        0x7F000000,        0x7F000000,        0x7F000000 },
-    .fd_dyn_sttm_bfv  = {        0x0C0C0C0C,        0x0A0A0A0A,        0x09090909,        0x08080808,        0x07070707,        0x03040506,        0x07070707,        0x07070707,        0x07070707,        0x07070707 },
-    .fd_dyn_stfm_bfv  = {        0x7F0C0C0C,        0x7F0A0A0A,        0x7F090909,        0x7F080808,        0x7F070707,        0x06050403,        0x7F050505,        0x7F050505,        0x7F050505,        0x7F050505 },
-    .fd_dyn_gain      = {                12,                12,                12,                12,                12,                12,                12,                12,                12,                12 },
-    .fd_dyn_atten     = {                31,                31,                31,                31,                31,                31,                31,                31,                31,                31 },
+    .fd_thresholds = { 215, 190, 165, 140, 110, 100, 70, 70, 70, 70 },
+    .fd_dyn_trigger_a = { 20, 20, 40, 50, 100, 100, 110, 110, 110, 110 },
+    .fd_dyn_math_a = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q, IQ_MATH_CH_Q },
+    .fd_dyn_trigger_b = { 20, 20, 50, 50, 50, 50, 50, 50, 50, 50 },
+    .fd_dyn_math_b = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_f = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_f = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_trigger_v = { 40, 35, 25, 25, 25, 25, 25, 25, 25, 25 },
+    .fd_dyn_math_v = { IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I,
+                       IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I, IQ_MATH_CH_I },
+    .fd_dyn_sttm_a = { 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
+                       0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    .fd_dyn_stfm_a = { 0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000, 0x07020702, 0x07020702,
+                       0x7F000000, 0x7F000000, 0x7F000000, 0x7F000000 },
+    .fd_dyn_sttm_bfv = { 0x0C0C0C0C, 0x0A0A0A0A, 0x09090909, 0x08080808, 0x07070707, 0x03040506,
+                         0x07070707, 0x07070707, 0x07070707, 0x07070707 },
+    .fd_dyn_stfm_bfv = { 0x7F0C0C0C, 0x7F0A0A0A, 0x7F090909, 0x7F080808, 0x7F070707, 0x06050403,
+                         0x7F050505, 0x7F050505, 0x7F050505, 0x7F050505 },
+    .fd_dyn_gain = { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 },
+    .fd_dyn_atten = { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
 };
-
 
 uint8_t dte_buffer[280];
 
@@ -142,14 +156,13 @@ char input_buffer[32];
 int32_t key_has_been_pressed(void);
 uint8_t get_key_press_no_echo(void);
 
-
 // TODO: remove when replaced by mxc_sys subroutine
 int32_t trim_ro_to_rtc(void)
 {
-#define NBB_BASE        0x40000800
-#define NBBFCR1_OFF     0x04
+#define NBB_BASE 0x40000800
+#define NBBFCR1_OFF 0x04
 
-    volatile uint32_t* nbbfcr1_reg = (volatile uint32_t*) (NBB_BASE + NBBFCR1_OFF);
+    volatile uint32_t *nbbfcr1_reg = (volatile uint32_t *)(NBB_BASE + NBBFCR1_OFF);
 
     // Need the 32Khz crystal enabled to do this trim
     int ret_val = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
@@ -184,14 +197,13 @@ int32_t trim_ro_to_rtc(void)
     return E_SUCCESS;
 }
 
-
 void clear_screen(void)
 {
     printf("\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n");
 }
 
-uint8_t get_key_press(void) {
-
+uint8_t get_key_press(void)
+{
     int32_t status = 0;
     uint8_t key_press = 0;
 
@@ -199,7 +211,7 @@ uint8_t get_key_press(void) {
     do {
         mml_nfc_pcd_task_sleep(FIELD_LOAD_DELAY_MS);
         status = MXC_UART_GetRXFIFOAvailable(MXC_UART0);
-    } while ( status < 1 );
+    } while (status < 1);
 
     key_press = MXC_UART_ReadCharacter(MXC_UART0);
 
@@ -209,8 +221,8 @@ uint8_t get_key_press(void) {
     return key_press;
 }
 
-uint8_t get_key_press_no_echo(void) {
-
+uint8_t get_key_press_no_echo(void)
+{
     int32_t status = 0;
     uint8_t key_press = 0;
 
@@ -218,14 +230,15 @@ uint8_t get_key_press_no_echo(void) {
     do {
         mml_nfc_pcd_task_sleep(FIELD_LOAD_DELAY_MS);
         status = MXC_UART_GetRXFIFOAvailable(MXC_UART0);
-    } while ( status < 1 );
+    } while (status < 1);
 
     key_press = MXC_UART_ReadCharacter(MXC_UART0);
 
     return key_press;
 }
 
-int32_t key_has_been_pressed(void) {
+int32_t key_has_been_pressed(void)
+{
     int32_t status = 0;
 
     status = MXC_UART_GetRXFIFOAvailable(MXC_UART0);
@@ -240,36 +253,36 @@ int32_t key_has_been_pressed(void) {
     return 0;
 }
 
-int32_t dte_get_input_string(char *input_string) {
+int32_t dte_get_input_string(char *input_string)
+{
     uint8_t key_press = 0;
     int32_t char_count = 0;
 
     while (1) {
-            key_press = get_key_press();
+        key_press = get_key_press();
 
-            if ( (key_press == '\n') || (key_press == '\r') ) {
-                break;
-            }
+        if ((key_press == '\n') || (key_press == '\r')) {
+            break;
+        }
 
-            if ((key_press == ' ') && (char_count == 0)) {
-                continue; // ignore leading spaces
-            }
+        if ((key_press == ' ') && (char_count == 0)) {
+            continue; // ignore leading spaces
+        }
 
-            if ((key_press == '\b') && (char_count > 0)) {
-                // backspace, back up one character
-                // NOTE: we sent the terminal one backspace already
-                // but now we want to clear out the character, so put ' ' and then another '\b'
-                printf(" \b");
-                char_count-- ;
-                continue;
-            }
+        if ((key_press == '\b') && (char_count > 0)) {
+            // backspace, back up one character
+            // NOTE: we sent the terminal one backspace already
+            // but now we want to clear out the character, so put ' ' and then another '\b'
+            printf(" \b");
+            char_count--;
+            continue;
+        }
 
-            input_string[char_count++] = key_press;
+        input_string[char_count++] = key_press;
     }
 
     // Null terminate the string
     input_string[char_count] = 0x00;
-
 
     return char_count;
 }
@@ -280,7 +293,6 @@ int32_t dte_get_int_val_raw(int32_t exp_char_count, int32_t min_val)
     int32_t input_int = 0;
 
     while (1) {
-
         char_count = dte_get_input_string(input_buffer);
 
         if (char_count > exp_char_count) {
@@ -304,7 +316,6 @@ int32_t dte_get_int_val_raw(int32_t exp_char_count, int32_t min_val)
     return input_int;
 }
 
-
 int32_t dte_get_int_val(char name[], int32_t exp_char_count, int32_t min_val, int32_t max_val)
 {
     int32_t new_value = 0;
@@ -314,7 +325,7 @@ int32_t dte_get_int_val(char name[], int32_t exp_char_count, int32_t min_val, in
 
     new_value = dte_get_int_val_raw(exp_char_count, min_val);
 
-    if ( (new_value < min_val) || (new_value > max_val) ) {
+    if ((new_value < min_val) || (new_value > max_val)) {
         printf("Value not in allowed range try again\n");
         return -1;
     }
@@ -323,7 +334,6 @@ int32_t dte_get_int_val(char name[], int32_t exp_char_count, int32_t min_val, in
 
     return new_value;
 }
-
 
 int32_t dte_get_math_val(char name[])
 {
@@ -340,10 +350,9 @@ int32_t dte_get_math_val(char name[])
 
         new_value = dte_get_int_val_raw(1, 1);
 
-        if ( (new_value < 1) || (new_value > 5) ) {
+        if ((new_value < 1) || (new_value > 5)) {
             printf("Selection not in allowed range try again\n");
-        }
-        else {
+        } else {
             break;
         }
     }
@@ -373,7 +382,6 @@ int32_t dte_get_math_val(char name[])
     }
 }
 
-
 // Binary search provides accurate fd level using less samples, faster
 //
 // Note, that FD range is 256 steps, from 0 to 255
@@ -381,10 +389,10 @@ int32_t dte_get_math_val(char name[])
 // and even value and each step size must be even until the final
 // step of 1.
 
-#define NUM_FD_LEVELS			256
-#define MAX_FD_LEVEL    		(NUM_FD_LEVELS - 1)
-#define INITIAL_TEST_LEVEL		(NUM_FD_LEVELS / 2)
-#define INITIAL_STEP_SIZE		(NUM_FD_LEVELS / 4)
+#define NUM_FD_LEVELS 256
+#define MAX_FD_LEVEL (NUM_FD_LEVELS - 1)
+#define INITIAL_TEST_LEVEL (NUM_FD_LEVELS / 2)
+#define INITIAL_STEP_SIZE (NUM_FD_LEVELS / 4)
 
 int32_t mml_nfc_pcd_binary_search_fd_level(uint8_t *test_level)
 {
@@ -399,7 +407,6 @@ int32_t mml_nfc_pcd_binary_search_fd_level(uint8_t *test_level)
     //
 
     for (step_size = INITIAL_STEP_SIZE; step_size > 0; step_size >>= 1) {
-
         // To avoid 1 code offset need to use even numbers
         return_status = mml_nfc_pcd_detect_loading(*test_level, &field_sensed);
 
@@ -411,8 +418,7 @@ int32_t mml_nfc_pcd_binary_search_fd_level(uint8_t *test_level)
         // If Field is detected then we need to raise the level
         if (field_sensed) {
             *test_level += step_size;
-        }
-        else {
+        } else {
             // if NO Field detected then we need to lower the level
             *test_level -= step_size;
         }
@@ -420,7 +426,6 @@ int32_t mml_nfc_pcd_binary_search_fd_level(uint8_t *test_level)
 
     return return_status;
 }
-
 
 void show_current_field_loading_level(void)
 {
@@ -444,8 +449,9 @@ void show_current_field_loading_level(void)
 
         // Sweep through and identify the requested level
         for (sensed_threshold = 0; sensed_threshold < FD_THRESH_NUM_STEPS;) {
-
-            mml_nfc_pcd_detect_loading(mml_nfc_pcd_analog_parameters_matrix.fd_thresholds[sensed_threshold], &field_sensed);
+            mml_nfc_pcd_detect_loading(
+                mml_nfc_pcd_analog_parameters_matrix.fd_thresholds[sensed_threshold],
+                &field_sensed);
 
             if (field_sensed) {
                 break;
@@ -467,8 +473,8 @@ void show_current_field_loading_level(void)
     }
 }
 
-void dte_antenna_selection(void) {
-
+void dte_antenna_selection(void)
+{
     while (1) {
         clear_screen();
 
@@ -541,19 +547,12 @@ void print_matrix_header(void)
 {
     int i;
     printf("\nStep Index:                 ");
-    for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
-        printf("%8d | ", i);
-    }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("%8d | ", i); }
     printf("\n");
-    for (i=0; i<MATRIX_HORIZONTAL_NUM_TICKS; i++) {
-        printf("-");
-    }
-    for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
-        printf("-----------");
-    }
+    for (i = 0; i < MATRIX_HORIZONTAL_NUM_TICKS; i++) { printf("-"); }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("-----------"); }
     printf("\n");
 }
-
 
 void get_analog_math_value(uint8_t val_array[], char name[])
 {
@@ -567,7 +566,8 @@ void get_analog_math_value(uint8_t val_array[], char name[])
 
     while (1) {
         key_press = get_key_press();
-        if ( ((key_press >= '0') && (key_press <= ((FD_THRESH_NUM_STEPS-1) + '0'))) || (key_press == 'A') || (key_press == 'a') ) {
+        if (((key_press >= '0') && (key_press <= ((FD_THRESH_NUM_STEPS - 1) + '0'))) ||
+            (key_press == 'A') || (key_press == 'a')) {
             break;
         }
 
@@ -575,13 +575,11 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         printf("=> ");
     }
 
-    if ( (key_press == 'A') || (key_press == 'a') ) {
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+    if ((key_press == 'A') || (key_press == 'a')) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j=0; j<FD_THRESH_NUM_STEPS; j++) {
-                print_comb_math(val_array[j]);
-            }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -590,14 +588,11 @@ void get_analog_math_value(uint8_t val_array[], char name[])
 
             val_array[i] = new_val;
         }
-    }
-    else {
+    } else {
         i = key_press - '0';
         print_matrix_header();
         printf("%s", name);
-        for (j=0; j<FD_THRESH_NUM_STEPS; j++) {
-            print_comb_math(val_array[j]);
-        }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -607,7 +602,6 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         val_array[i] = new_val;
     }
 }
-
 
 void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
 {
@@ -622,7 +616,8 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
 
     while (1) {
         key_press = get_key_press();
-        if ( ((key_press >= '0') && (key_press <= ((FD_THRESH_NUM_STEPS-1) + '0'))) || (key_press == 'A') || (key_press == 'a') ) {
+        if (((key_press >= '0') && (key_press <= ((FD_THRESH_NUM_STEPS - 1) + '0'))) ||
+            (key_press == 'A') || (key_press == 'a')) {
             break;
         }
 
@@ -630,13 +625,11 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
         printf("=> ");
     }
 
-    if ( (key_press == 'A') || (key_press == 'a') ) {
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+    if ((key_press == 'A') || (key_press == 'a')) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j=0; j<FD_THRESH_NUM_STEPS; j++) {
-                printf("%08X | ", val_array[j]);
-            }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -650,16 +643,13 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
 
             val_array[i] = new_val;
         }
-    }
-    else {
+    } else {
         i = key_press - '0';
 
         print_matrix_header();
 
         printf("%s", name);
-        for (j=0; j<FD_THRESH_NUM_STEPS; j++) {
-            printf("%08X | ", val_array[j]);
-        }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -675,8 +665,8 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
     }
 }
 
-
-void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_count, int32_t min_val, int32_t max_val)
+void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_count,
+                             int32_t min_val, int32_t max_val)
 {
     int i, j;
     int new_val = 0;
@@ -688,7 +678,8 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
 
     while (1) {
         key_press = get_key_press();
-        if ( ((key_press >= '0') && (key_press <= ((FD_THRESH_NUM_STEPS-1) + '0'))) || (key_press == 'A') || (key_press == 'a') ) {
+        if (((key_press >= '0') && (key_press <= ((FD_THRESH_NUM_STEPS - 1) + '0'))) ||
+            (key_press == 'A') || (key_press == 'a')) {
             break;
         }
 
@@ -696,13 +687,11 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
         printf("=> ");
     }
 
-    if ( (key_press == 'A') || (key_press == 'a') ) {
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+    if ((key_press == 'A') || (key_press == 'a')) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_matrix_header();
             printf("%s", name);
-            for (j=0; j<FD_THRESH_NUM_STEPS; j++) {
-                printf("     %3d | ", val_array[j]);
-            }
+            for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
             printf("\n");
 
             sprintf(val_string, "value for index %d", i);
@@ -713,16 +702,13 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
 
             val_array[i] = new_val;
         }
-    }
-    else {
+    } else {
         i = key_press - '0';
 
         print_matrix_header();
 
         printf("%s", name);
-        for (j=0; j<FD_THRESH_NUM_STEPS; j++) {
-            printf("     %3d | ", val_array[j]);
-        }
+        for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
         printf("\n");
 
         sprintf(val_string, "value for index %d", i);
@@ -735,12 +721,11 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
     }
 }
 
-
-void force_rf_settings_update(void) {
-
+void force_rf_settings_update(void)
+{
     // We will use a dummy transaction to force the actual config update
     int32_t tx_buffer_len = 1;
-    uint8_t tx_buffer[1] = {0x00};
+    uint8_t tx_buffer[1] = { 0x00 };
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
@@ -749,14 +734,14 @@ void force_rf_settings_update(void) {
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.frametype         = FT_STANDARD_CRC_NO_EMD;
-    trans_params.tx_buf            = tx_buffer;
-    trans_params.tx_len            = tx_buffer_len;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
-    trans_params.early_limit       = 4000;
-    trans_params.timeout           = 5000;
-    trans_params.delay_till_send   = 3000;
+    trans_params.frametype = FT_STANDARD_CRC_NO_EMD;
+    trans_params.tx_buf = tx_buffer;
+    trans_params.tx_len = tx_buffer_len;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
+    trans_params.early_limit = 4000;
+    trans_params.timeout = 5000;
+    trans_params.delay_till_send = 3000;
 
     while (1) {
         printf("\n\nUpdate and set RF config for which protocol?\n\n");
@@ -863,8 +848,7 @@ void force_rf_settings_update(void) {
             printf("Error during attempt to set RF for protocol: %d\n", status);
             printf("Press any key to continue...\n");
             get_key_press_no_echo();
-        }
-        else {
+        } else {
             printf("RF config set\n");
             printf("Press any key to continue...\n");
             get_key_press_no_echo();
@@ -880,13 +864,10 @@ void print_analog_matrix_index(char name[])
 
     printf("%s", name);
 
-    for (; i < FD_THRESH_NUM_STEPS; i++) {
-        printf("%19d", i);
-    }
+    for (; i < FD_THRESH_NUM_STEPS; i++) { printf("%19d", i); }
 
     printf("\n");
 }
-
 
 void print_analog_matrix_value(char name[], uint8_t val_array[])
 {
@@ -894,15 +875,13 @@ void print_analog_matrix_value(char name[], uint8_t val_array[])
 
     printf("%s", name);
 
-    for (; i < FD_THRESH_NUM_STEPS; i++) {
-        printf("%18d,", val_array[i]);
-    }
+    for (; i < FD_THRESH_NUM_STEPS; i++) { printf("%18d,", val_array[i]); }
 
     // Delete last comma, add bracket
     printf("\b },\n");
 }
 
-char* get_comb_math_for_struct_string(uint8_t iq_math)
+char *get_comb_math_for_struct_string(uint8_t iq_math)
 {
     switch (iq_math) {
     case IQ_MATH_CH_I:
@@ -930,7 +909,6 @@ char* get_comb_math_for_struct_string(uint8_t iq_math)
     }
 }
 
-
 void print_analog_matrix_mathv(char name[], uint8_t val_array[])
 {
     int i = 0;
@@ -945,21 +923,17 @@ void print_analog_matrix_mathv(char name[], uint8_t val_array[])
     printf("\b },\n");
 }
 
-
 void print_analog_matrix_hex_v(char name[], uint32_t val_array[])
 {
     int i = 0;
 
     printf("%s", name);
 
-    for (; i < FD_THRESH_NUM_STEPS; i++) {
-        printf("        0x%08X,", val_array[i]);
-    }
+    for (; i < FD_THRESH_NUM_STEPS; i++) { printf("        0x%08X,", val_array[i]); }
 
     // Delete last comma, add bracket
     printf("\b },\n");
 }
-
 
 void print_analog_matrix_as_c_structure(void)
 {
@@ -970,39 +944,54 @@ void print_analog_matrix_as_c_structure(void)
     print_analog_matrix_index("    //                  ");
 
     // Thresholds
-    print_analog_matrix_value("    .fd_thresholds    = {", mml_nfc_pcd_analog_parameters_matrix.fd_thresholds);
+    print_analog_matrix_value("    .fd_thresholds    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_thresholds);
 
     // Type A
-    print_analog_matrix_value("    .fd_dyn_trigger_a = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a);
-    print_analog_matrix_mathv("    .fd_dyn_math_a    = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a);
+    print_analog_matrix_value("    .fd_dyn_trigger_a = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a);
+    print_analog_matrix_mathv("    .fd_dyn_math_a    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a);
 
     // Type B
-    print_analog_matrix_value("    .fd_dyn_trigger_b = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b);
-    print_analog_matrix_mathv("    .fd_dyn_math_b    = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b);
+    print_analog_matrix_value("    .fd_dyn_trigger_b = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b);
+    print_analog_matrix_mathv("    .fd_dyn_math_b    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b);
 
     // Type F
-    print_analog_matrix_value("    .fd_dyn_trigger_f = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f);
-    print_analog_matrix_mathv("    .fd_dyn_math_f    = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f);
+    print_analog_matrix_value("    .fd_dyn_trigger_f = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f);
+    print_analog_matrix_mathv("    .fd_dyn_math_f    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f);
 
     // Type V
-    print_analog_matrix_value("    .fd_dyn_trigger_v = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v);
-    print_analog_matrix_mathv("    .fd_dyn_math_v    = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v);
+    print_analog_matrix_value("    .fd_dyn_trigger_v = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v);
+    print_analog_matrix_mathv("    .fd_dyn_math_v    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v);
 
     // STTM_A
-    print_analog_matrix_hex_v("    .fd_dyn_sttm_a    = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a);
+    print_analog_matrix_hex_v("    .fd_dyn_sttm_a    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a);
     // STFM_A
-    print_analog_matrix_hex_v("    .fd_dyn_stfm_a    = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a);
+    print_analog_matrix_hex_v("    .fd_dyn_stfm_a    = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a);
 
     // STTM_BVF
-    print_analog_matrix_hex_v("    .fd_dyn_sttm_bfv  = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv);
+    print_analog_matrix_hex_v("    .fd_dyn_sttm_bfv  = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv);
     // STFM_BVF
-    print_analog_matrix_hex_v("    .fd_dyn_stfm_bfv  = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv);
+    print_analog_matrix_hex_v("    .fd_dyn_stfm_bfv  = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv);
 
     // Gain
-    print_analog_matrix_value("    .fd_dyn_gain      = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain);
+    print_analog_matrix_value("    .fd_dyn_gain      = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain);
 
     // Attenuation
-    print_analog_matrix_value("    .fd_dyn_atten     = {", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten);
+    print_analog_matrix_value("    .fd_dyn_atten     = {",
+                              mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten);
 
     // Add final bracket
     printf("};\n\n");
@@ -1011,17 +1000,12 @@ void print_analog_matrix_as_c_structure(void)
     get_key_press_no_echo();
 }
 
-
 void print_matrix_spacer(void)
 {
     int i = 0;
 
-    for (i=0; i<27; i++) {
-        printf("-");
-    }
-    for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
-        printf("-----------");
-    }
+    for (i = 0; i < 27; i++) { printf("-"); }
+    for (i = 0; i < FD_THRESH_NUM_STEPS; i++) { printf("-----------"); }
     printf("\n");
 }
 
@@ -1036,7 +1020,7 @@ void dte_analog_settings()
         print_matrix_header();
 
         printf("FD Thresholds:              ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_thresholds[i]);
         }
         printf("\n");
@@ -1044,22 +1028,22 @@ void dte_analog_settings()
         print_matrix_spacer();
 
         printf("FD Dynamic Combiner Math A: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_comb_math(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a[i]);
         }
         printf("\n");
         printf("FD Dynamic Combiner Math B: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_comb_math(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b[i]);
         }
         printf("\n");
         printf("FD Dynamic Combiner Math F: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_comb_math(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f[i]);
         }
         printf("\n");
         printf("FD Dynamic Combiner Math V: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             print_comb_math(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v[i]);
         }
 
@@ -1067,22 +1051,22 @@ void dte_analog_settings()
 
         printf("\n");
         printf("FD Dynamic STTM_A:          ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a[i]);
         }
         printf("\n");
         printf("FD Dynamic STFM_A:          ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a[i]);
         }
         printf("\n");
         printf("FD Dynamic STTM_BFV:        ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv[i]);
         }
         printf("\n");
         printf("FD Dynamic STFM_BFV:        ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%08X | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv[i]);
         }
 
@@ -1090,17 +1074,17 @@ void dte_analog_settings()
 
         printf("\n");
         printf("FD Dynamic Trigger Level A: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a[i]);
         }
         printf("\n");
         printf("FD Dynamic Trigger Level B: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b[i]);
         }
         printf("\n");
         printf("FD Dynamic Trigger Level F: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f[i]);
         }
 
@@ -1108,17 +1092,17 @@ void dte_analog_settings()
 
         printf("\n");
         printf("FD Dynamic Trigger Level V: ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v[i]);
         }
         printf("\n");
         printf("FD Dynamic Gain:            ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain[i]);
         }
         printf("\n");
         printf("FD Dynamic Attenuation:     ");
-        for (i=0; i<FD_THRESH_NUM_STEPS; i++) {
+        for (i = 0; i < FD_THRESH_NUM_STEPS; i++) {
             printf("%8d | ", mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten[i]);
         }
         printf("\n");
@@ -1163,69 +1147,84 @@ void dte_analog_settings()
         switch (get_key_press()) {
             // FD Thresholds
         case '1':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_thresholds,       "FD Thresholds               ", 3, 0, 255);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_thresholds,
+                                    "FD Thresholds               ", 3, 0, 255);
             break;
             // FD Dynamic STTM_A
         case '6':
-            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a,   "FD Dynamic STTM_A:          ");
+            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_a,
+                                        "FD Dynamic STTM_A:          ");
             break;
             // FD Dynamic STFM_A
         case '7':
-            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a,   "FD Dynamic STFM_A           ");
+            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_a,
+                                        "FD Dynamic STFM_A           ");
             break;
             // FD Dynamic STTM_BFV
         case '8':
-            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv, "FD Dynamic STTM_BVF         ");
+            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_sttm_bfv,
+                                        "FD Dynamic STTM_BVF         ");
             break;
             // FD Dynamic STFM_BFV
         case '9':
-            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv, "FD Dynamic STFM_BVF         ");
+            get_hex_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_stfm_bfv,
+                                        "FD Dynamic STFM_BVF         ");
             break;
             // FD Dynamic Trigger A
         case 'A':
         case 'a':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a,   "FD Dynamic Trigger A        ", 3, 0, 127);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_a,
+                                    "FD Dynamic Trigger A        ", 3, 0, 127);
             break;
             // FD Dynamic Math A
         case '2':
-            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a,        "FD Dynamic Combiner Math A  ");
+            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_a,
+                                  "FD Dynamic Combiner Math A  ");
             break;
             // FD Dynamic Trigger B
         case 'B':
         case 'b':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b,   "FD Dynamic Trigger B        ", 3, 0, 127);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_b,
+                                    "FD Dynamic Trigger B        ", 3, 0, 127);
             break;
             // FD Dynamic Math B
         case '3':
-            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b,        "FD Dynamic Combiner Math B  ");
+            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_b,
+                                  "FD Dynamic Combiner Math B  ");
             break;
             // FD Dynamic Trigger F
         case 'F':
         case 'f':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f,    "FD Dynamic Trigger F        ", 3, 0, 127);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_f,
+                                    "FD Dynamic Trigger F        ", 3, 0, 127);
             break;
             // FD Dynamic Math F
         case '4':
-            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f,        "FD Dynamic Combiner Math F  ");
+            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_f,
+                                  "FD Dynamic Combiner Math F  ");
             break;
             // FD Dynamic Trigger V
         case 'V':
         case 'v':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v,    "FD Dynamic Trigger V        ", 3, 0, 127);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_trigger_v,
+                                    "FD Dynamic Trigger V        ", 3, 0, 127);
             break;
             // FD Dynamic Math V
         case '5':
-            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v,        "FD Dynamic Combiner Math V  ");
+            get_analog_math_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_math_v,
+                                  "FD Dynamic Combiner Math V  ");
             break;
             // FD Dynamic Gain
         case 'G':
         case 'g':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain,         "FD Dynamic Gain             ", 2, 0, 12);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_gain,
+                                    "FD Dynamic Gain             ", 2, 0, 12);
             break;
             // FD Dynamic Attenuation
         case 'R':
         case 'r':
-            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten,        "FD Dynamic Attenuation      ", 2, 0, 0x1F);
+            get_analog_matrix_value(mml_nfc_pcd_analog_parameters_matrix.fd_dyn_atten,
+                                    "FD Dynamic Attenuation      ", 2, 0, 0x1F);
             break;
             // FD Display
         case 'T':
@@ -1256,8 +1255,8 @@ void dte_analog_settings()
     } // End of while 1
 }
 
-void dte_settings(void) {
-
+void dte_settings(void)
+{
     while (1) {
         clear_screen();
 
@@ -1359,11 +1358,11 @@ void dte_get_loop_params(int32_t *num_loops)
         while (char_count < 5) {
             key_press = get_key_press();
 
-            if ( (key_press == '\n') || (key_press == '\r') ) {
+            if ((key_press == '\n') || (key_press == '\r')) {
                 break;
             }
 
-            if ( (key_press < '0') || (key_press > '9') ) {
+            if ((key_press < '0') || (key_press > '9')) {
                 printf("\nInvalid digit, only 0-9 allowed.\n");
                 printf("Press any key to retry...\n");
                 get_key_press_no_echo();
@@ -1392,7 +1391,7 @@ void dte_get_loop_params(int32_t *num_loops)
         temp_count += (loop_input[char_count] - '0') * i;
     }
 
-    if ( (temp_count < 0) || (temp_count > 9999) ) {
+    if ((temp_count < 0) || (temp_count > 9999)) {
         printf("Not an allowed number of loops, not changing\n");
         printf("Press any key to retry...\n");
         get_key_press_no_echo();
@@ -1408,14 +1407,15 @@ void dte_get_loop_params(int32_t *num_loops)
     return;
 }
 
-void dte_do_analog_polling(int32_t num_loops) {
-
+void dte_do_analog_polling(int32_t num_loops)
+{
     int32_t i;
 
     printf("\nAnalog Loop Back Mode\n");
-    printf("\n!Test will loop for %ld times or until any key is pressed to stop test!\n\n", num_loops);
+    printf("\n!Test will loop for %ld times or until any key is pressed to stop test!\n\n",
+           num_loops);
 
-    for (i = 0;(i < num_loops) || (num_loops == 0); i++) {
+    for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
         printf("\nAnalogue %ld", i);
 
         if (g_logging_level > DBG_LVL_LOG) {
@@ -1435,19 +1435,19 @@ void dte_do_analog_polling(int32_t num_loops) {
     get_key_press_no_echo();
 }
 
-
-static int32_t do_ppse(ppse_response_t* resp)
+static int32_t do_ppse(ppse_response_t *resp)
 {
     int32_t ret;
-    uint8_t capdu[261]= {0x00,0xA4,0x04,0x00,0x0E,'2','P','A','Y','.','S','Y','S','.','D','D','F','0','1',0x00};
-    int32_t capdulen=20;
+    uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
+    int32_t capdulen = 20;
 
     logging("CAPDU ");
     hexdump(DBG_LVL_LOG, capdu, capdulen, 1);
 
-    ret=SendAPDU(capdu,capdulen,resp->rapdu,&resp->rapdu_len);
+    ret = SendAPDU(capdu, capdulen, resp->rapdu, &resp->rapdu_len);
 
-    if(ret) {
+    if (ret) {
         switch (ret) {
         case ISO14443_3_ERR_PROTOCOL:
         case ISO14443_3_ERR_TIMEOUT:
@@ -1456,7 +1456,7 @@ static int32_t do_ppse(ppse_response_t* resp)
         }
     }
 
-    if(resp->rapdu_len<=2) {
+    if (resp->rapdu_len <= 2) {
         // 2 bytes should be wrong case.
         warning("Short APDU: %d\n", resp->rapdu_len);
         return RESETPROCEDURE;
@@ -1468,208 +1468,208 @@ static int32_t do_ppse(ppse_response_t* resp)
     return ret;
 }
 
-
-static int32_t aid_lookup(ppse_response_t* resp)
+static int32_t aid_lookup(ppse_response_t *resp)
 {
     // VISA
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x03}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x03 }, 5) == 0) {
         strncpy(resp->application_label, "VISA", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x03, 0x10, 0x10}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x03, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "VISA", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x98, 0x08, 0x48}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x98, 0x08, 0x48 }, 7) == 0) {
         strncpy(resp->application_label, "VISA", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Master card
-    if ( memcmp(resp->aid_bin, (uint8_t[]){0xA0, 0x00, 0x00, 0x00, 0x04}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (uint8_t[]){ 0xA0, 0x00, 0x00, 0x00, 0x04 }, 5) == 0) {
         strncpy(resp->application_label, "Master Card", 50);
         resp->application_label_len = 11;
         return ISO14443_3_ERR_SUCCESS;
     }
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x05}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x05 }, 5) == 0) {
         strncpy(resp->application_label, "Master Card", 50);
         resp->application_label_len = 11;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // American express
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x25}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x25 }, 5) == 0) {
         strncpy(resp->application_label, "American Express", 50);
         resp->application_label_len = 16;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // CB
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x42}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x42 }, 5) == 0) {
         strncpy(resp->application_label, "CB", 50);
         resp->application_label_len = 3;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // LINK
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x29}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x29 }, 5) == 0) {
         strncpy(resp->application_label, "LINK", 50);
         resp->application_label_len = 5;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // JCB
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x65}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x65 }, 5) == 0) {
         strncpy(resp->application_label, "JCB", 50);
         resp->application_label_len = 4;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Dankort
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Dankort", 50);
         resp->application_label_len = 8;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // CoGeBan
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x41, 0x00, 0x01}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x01, 0x41, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "Banrisul", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Discover
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x52, 0x30, 0x10}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x01, 0x52, 0x30, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Discover", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Banrisul
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x54}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x01, 0x54 }, 5) == 0) {
         strncpy(resp->application_label, "Banrisul", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Saudi Payments Network
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x02, 0x28}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x02, 0x28 }, 5) == 0) {
         strncpy(resp->application_label, "Saudi Payments Network", 50);
         resp->application_label_len = 22;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Interac
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x02, 0x77}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x02, 0x77 }, 5) == 0) {
         strncpy(resp->application_label, "Interac", 50);
         resp->application_label_len = 8;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Discover Card
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x24}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x03, 0x24 }, 5) == 0) {
         strncpy(resp->application_label, "Discover Card", 50);
         resp->application_label_len = 14;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // UnionPay
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x33}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x03, 0x33 }, 5) == 0) {
         strncpy(resp->application_label, "UnionPay", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Euro Alliance of Payment Schemes
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x59}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x03, 0x59 }, 5) == 0) {
         strncpy(resp->application_label, "Euro Alliance", 50);
         resp->application_label_len = 13;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Verve
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x71}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x03, 0x71 }, 5) == 0) {
         strncpy(resp->application_label, "Verve", 50);
         resp->application_label_len = 6;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // The Exchange Network ATM Network
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x39}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x04, 0x39 }, 5) == 0) {
         strncpy(resp->application_label, "Exchange Network ATM", 50);
         resp->application_label_len = 20;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Rupay
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x05, 0x24, 0x10, 0x10}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x05, 0x24, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Rupay", 50);
         resp->application_label_len = 6;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // ???100
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x32, 0x00, 0x01}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x04, 0x32, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "???100", 50);
         resp->application_label_len = 7;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // ZKA
-    if ( memcmp(resp->aid_bin, (char[]){0xD2, 0x76, 0x00, 0x00, 0x25, 0x45, 0x50, 0x01, 0x00}, 9) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xD2, 0x76, 0x00, 0x00, 0x25, 0x45, 0x50, 0x01, 0x00 },
+               9) == 0) {
         strncpy(resp->application_label, "ZKA", 50);
         resp->application_label_len = 4;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Bankaxept
-    if ( memcmp(resp->aid_bin, (char[]){0xD5, 0x78, 0x00, 0x00, 0x02, 0x10, 0x10}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xD5, 0x78, 0x00, 0x00, 0x02, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "Bankaxept", 50);
         resp->application_label_len = 10;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // BRADESCO
-    if ( memcmp(resp->aid_bin, (char[]){0xF0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x01}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xF0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "BRADESCO", 50);
         resp->application_label_len = 9;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Midland
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x00, 0x24, 0x01}, 6) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x00, 0x24, 0x01 }, 6) == 0) {
         strncpy(resp->application_label, "Midland", 50);
         resp->application_label_len = 8;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // PBS
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x01, 0x21, 0x10, 0x10 }, 7) == 0) {
         strncpy(resp->application_label, "PBS", 50);
         resp->application_label_len = 4;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // eTranzact
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x54}, 5) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x04, 0x54 }, 5) == 0) {
         strncpy(resp->application_label, "eTranzact", 50);
         resp->application_label_len = 10;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // Google
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x04, 0x76, 0x6C}, 6) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x04, 0x76, 0x6C }, 6) == 0) {
         strncpy(resp->application_label, "Google", 50);
         resp->application_label_len = 7;
         return ISO14443_3_ERR_SUCCESS;
     }
 
     // InterSwitch
-    if ( memcmp(resp->aid_bin, (char[]){0xA0, 0x00, 0x00, 0x03, 0x71, 0x00, 0x01}, 7) == 0 ) {
+    if (memcmp(resp->aid_bin, (char[]){ 0xA0, 0x00, 0x00, 0x03, 0x71, 0x00, 0x01 }, 7) == 0) {
         strncpy(resp->application_label, "InterSwitch", 50);
         resp->application_label_len = 12;
         return ISO14443_3_ERR_SUCCESS;
@@ -1678,18 +1678,17 @@ static int32_t aid_lookup(ppse_response_t* resp)
     return -1;
 }
 
-
-#define FCI_TEMPLATE                0x6F
-#define DEDICATED_FILE_TEMPLATE     0x84
-#define FCI_PROPRIETARY_TEMPLATE    0xA5
+#define FCI_TEMPLATE 0x6F
+#define DEDICATED_FILE_TEMPLATE 0x84
+#define FCI_PROPRIETARY_TEMPLATE 0xA5
 #define FCI_ISSUER_DISCRETIONARY_B0 0xBF
 #define FCI_ISSUER_DISCRETIONARY_B1 0x0C
-#define APPLICATION_TEMPLATE        0x61
-#define APPLICATION_IDENTIFIER      0x4F
-#define APPLICATION_LABEL           0x50
+#define APPLICATION_TEMPLATE 0x61
+#define APPLICATION_IDENTIFIER 0x4F
+#define APPLICATION_LABEL 0x50
 
 // Inspect ppse response, if valid, lookup Application ID
-static int32_t parse_ppse_response(ppse_response_t* resp)
+static int32_t parse_ppse_response(ppse_response_t *resp)
 {
     int32_t index = 0;
     int32_t i = 0;
@@ -1700,7 +1699,7 @@ static int32_t parse_ppse_response(ppse_response_t* resp)
     }
 
     // Check for SW success 0x9000
-    if ( (resp->rapdu[resp->rapdu_len-1] != 0x00) || (resp->rapdu[resp->rapdu_len-2] != 0x90) ) {
+    if ((resp->rapdu[resp->rapdu_len - 1] != 0x00) || (resp->rapdu[resp->rapdu_len - 2] != 0x90)) {
         return ISO14443_3_ERR_PROTOCOL;
     }
 
@@ -1744,7 +1743,7 @@ static int32_t parse_ppse_response(ppse_response_t* resp)
     }
 
     // If we have enough data for this we are good to go to get our data
-    if ( ((index-1) + fci_prop_len) >= resp->rapdu_len) {
+    if (((index - 1) + fci_prop_len) >= resp->rapdu_len) {
         return ISO14443_3_ERR_PROTOCOL;
     }
 
@@ -1804,8 +1803,7 @@ static int32_t parse_ppse_response(ppse_response_t* resp)
     }
 
     // Also need binary version to match to card AID
-    for (i = 0; i<resp->aid_bin_len; i++) {
-
+    for (i = 0; i < resp->aid_bin_len; i++) {
         resp->aid_bin[i] = resp->rapdu[index++];
 
         if (index >= resp->rapdu_len) {
@@ -1836,7 +1834,7 @@ static int32_t parse_ppse_response(ppse_response_t* resp)
     }
 
     // OK.  Copy the Label into the buffer
-    for (i=0; i<resp->application_label_len; i++) {
+    for (i = 0; i < resp->application_label_len; i++) {
         resp->application_label[i] = resp->rapdu[index++];
 
         if (index >= resp->rapdu_len) {
@@ -1849,8 +1847,8 @@ static int32_t parse_ppse_response(ppse_response_t* resp)
 
 uint32_t successful_read_count = 0;
 
-void print_aid(void) {
-
+void print_aid(void)
+{
     int k = 0;
     int status = 0;
     ppse_response_t card_response;
@@ -1870,31 +1868,28 @@ void print_aid(void) {
 
             info("- AID: ");
             // print in the AID (convert from HEX to ASCII)
-            for (k=0; k < card_response.aid_bin_len; k++) {
-                    // Note, using pointer math for offset here
+            for (k = 0; k < card_response.aid_bin_len; k++) {
+                // Note, using pointer math for offset here
                 info("%02X ", card_response.aid_bin[k]);
             }
 
             info(" Label: ");
 
             // Print Application Label
-            for (k=0; k < card_response.application_label_len; k++) {
+            for (k = 0; k < card_response.application_label_len; k++) {
                 printf("%c", card_response.application_label[k]);
             }
 
             printf("\n");
-        }
-        else {
+        } else {
             poweroff_operatingfield();
             debug("Unknown Card\n");
         }
-    }
-    else {
+    } else {
         poweroff_operatingfield();
         debug("Card does not handle PPSE\n");
     }
 }
-
 
 int32_t emvl1_low_power_poll_for_card(void)
 {
@@ -1924,7 +1919,6 @@ int32_t emvl1_low_power_poll_for_card(void)
     } else if (type_a == 0 && type_b == 0) {
         return NO_CARD_FOUND;
     } else if (type_a == 1) {
-
         nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
         ret = iso_14443_3a_collision_detect();
 
@@ -1943,12 +1937,11 @@ int32_t emvl1_low_power_poll_for_card(void)
             if (ret == ISO14443_3_ERR_NON_ISO14443_4_CARD) {
                 return TYPE_A_NON_ISO14443_4_READY;
             }
-             //Type A collision
+            //Type A collision
             warning("A coll fail: 0x%X\n", ret);
             return COLLISION_DETECTED;
         }
     } else if (type_b == 1) {
-
         nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
         ret = iso_14443_3a_polling();
 
@@ -1962,13 +1955,11 @@ int32_t emvl1_low_power_poll_for_card(void)
         ret = iso_14443_3b_collision_detect();
 
         if (ret == ISO14443_3_ERR_SUCCESS) {
-
             ret = iso_14443_3b_active();
             if (ret == ISO14443_3_ERR_SUCCESS) {
                 // Got a Type B Card ready for APDUs
                 return TYPE_B_READY;
-            }
-            else {
+            } else {
                 //Active  type B failed
                 warning("B active fail: 0x%x\n", ret);
                 return CARD_FOUND_WITH_ERROR;
@@ -1987,10 +1978,9 @@ int32_t emvl1_low_power_poll_for_card(void)
     return ret;
 }
 
-
-#define EMV_POLLING_ONE_LOOP_ONLY	1
-int32_t emvl1_high_power_process_card() {
-
+#define EMV_POLLING_ONE_LOOP_ONLY 1
+int32_t emvl1_high_power_process_card()
+{
     int status = 0;
 
     status = emvl1_poll_for_card(EMV_POLLING_ONE_LOOP_ONLY);
@@ -2032,9 +2022,8 @@ int32_t emvl1_high_power_process_card() {
     return status;
 }
 
-
-int32_t emvl1_low_power_process_card() {
-
+int32_t emvl1_low_power_process_card()
+{
     int status = 0;
 
     poweron_operatingfield();
@@ -2084,13 +2073,13 @@ int32_t emvl1_low_power_process_card() {
 }
 
 #define FIELD_LEVEL_CAL_SAMPLES 10
-#define FIELD_LEVEL_CAL_HYS		0
+#define FIELD_LEVEL_CAL_HYS 0
 
 uint32_t calibrate_empty_field_level(void)
 {
-	uint32_t i = 0;
-	uint8_t level = 0;
-	uint32_t cal_level = 0;
+    uint32_t i = 0;
+    uint8_t level = 0;
+    uint32_t cal_level = 0;
 
     poweron_operatingfield();
 
@@ -2110,7 +2099,7 @@ uint32_t calibrate_empty_field_level(void)
 
     printf("Calibrated Field Level Pres Detect: %d\n", cal_level);
 
-    return (uint8_t) cal_level;
+    return (uint8_t)cal_level;
 }
 
 int32_t quick_card_presence_check(uint8_t cal_level, uint32_t lpp_type)
@@ -2124,7 +2113,6 @@ int32_t quick_card_presence_check(uint8_t cal_level, uint32_t lpp_type)
     int32_t return_status = 0;
 
     switch (lpp_type) {
-
     case BASIC_LOW_POWER_POLLING:
         // Basic Low Power Polling, we send WUPA and WUPB every time
         // we wake to check for cards
@@ -2153,7 +2141,6 @@ int32_t quick_card_presence_check(uint8_t cal_level, uint32_t lpp_type)
         break;
     }
 
-
     if (return_status != MML_NFC_PCD_E_SUCCESS) {
         error("Failed to detect_loading: %d\n", return_status);
         return 1; // In case of a sensing failure, go ahead and try polling
@@ -2161,14 +2148,12 @@ int32_t quick_card_presence_check(uint8_t cal_level, uint32_t lpp_type)
 
     if (field_sensed) {
         // This means the field is above our wake threshold
-    		return 0;
-    }
-    else {
-        // Field is below wake threshold, time to check for cards 
+        return 0;
+    } else {
+        // Field is below wake threshold, time to check for cards
         return 1;
     }
 }
-
 
 void dte_do_low_power_polling(int32_t num_loops, uint32_t lpp_type)
 {
@@ -2178,7 +2163,8 @@ void dte_do_low_power_polling(int32_t num_loops, uint32_t lpp_type)
     poweroff_operatingfield();
 
     printf("\nLow Power Polling Mode\n");
-    printf("\n!Test will loop for %ld times or until any key is pressed to stop test!\n\n", num_loops);
+    printf("\n!Test will loop for %ld times or until any key is pressed to stop test!\n\n",
+           num_loops);
 
     // Disable logging for lowest practical power
     // more representative of actual polling
@@ -2189,7 +2175,6 @@ void dte_do_low_power_polling(int32_t num_loops, uint32_t lpp_type)
     presence_detect_threshold = calibrate_empty_field_level();
 
     for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
-
         // How long to delay between polling attempts
         mml_nfc_pcd_task_sleep(LOW_POWER_INTER_POLLING_DELAY_MS);
 
@@ -2209,7 +2194,6 @@ void dte_do_low_power_polling(int32_t num_loops, uint32_t lpp_type)
     get_key_press_no_echo();
 }
 
-
 void dte_do_high_power_polling(int32_t num_loops)
 {
     int32_t i;
@@ -2217,17 +2201,17 @@ void dte_do_high_power_polling(int32_t num_loops)
     poweroff_operatingfield();
 
     printf("\nLow Power Polling Mode\n");
-    printf("\n!Test will loop for %ld times or until any key is pressed to stop test!\n\n", num_loops);
+    printf("\n!Test will loop for %ld times or until any key is pressed to stop test!\n\n",
+           num_loops);
 
     // Disable logging for lowest practical power
     // more representative of actual polling
     printf("\nSetting logging level to none.\n");
     g_logging_level = DBG_LVL_NON;
 
-    poweron_operatingfield();  // Turn it on and leave it on
+    poweron_operatingfield(); // Turn it on and leave it on
 
     for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
-
         mml_nfc_pcd_task_sleep(1);
 
         if (key_has_been_pressed()) {
@@ -2241,8 +2225,6 @@ void dte_do_high_power_polling(int32_t num_loops)
     printf("Press any key to continue...\n");
     get_key_press_no_echo();
 }
-
-
 
 void low_power_polling(void)
 {
@@ -2307,13 +2289,11 @@ void low_power_polling(void)
     }
 }
 
-
-void dte_do_reset(int32_t num_loops) {
-
+void dte_do_reset(int32_t num_loops)
+{
     int32_t i;
 
-    for (i = 0;(i < num_loops) || (num_loops == 0); i++) {
-
+    for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
         if (key_has_been_pressed()) {
             break;
         }
@@ -2326,12 +2306,12 @@ void dte_do_reset(int32_t num_loops) {
     get_key_press_no_echo();
 }
 
-void dte_do_wupa(int32_t num_loops) {
+void dte_do_wupa(int32_t num_loops)
+{
     int32_t i;
     int32_t ret = 0;
 
     for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
-
         if (key_has_been_pressed()) {
             break;
         }
@@ -2352,12 +2332,12 @@ void dte_do_wupa(int32_t num_loops) {
     get_key_press_no_echo();
 }
 
-void dte_do_rats(int32_t num_loops) {
+void dte_do_rats(int32_t num_loops)
+{
     int32_t i;
     int32_t ret = 0;
 
-    for (i = 0;(i < num_loops) || (num_loops == 0); i++) {
-
+    for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
         if (key_has_been_pressed()) {
             break;
         }
@@ -2394,13 +2374,13 @@ void dte_do_rats(int32_t num_loops) {
     get_key_press_no_echo();
 }
 
-void dte_do_wupb(int32_t num_loops) {
+void dte_do_wupb(int32_t num_loops)
+{
     int32_t i;
     int32_t ret = 0;
     int32_t atq_len = 0;
 
-    for (i = 0;(i < num_loops) || (num_loops == 0); i++) {
-
+    for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
         if (key_has_been_pressed()) {
             break;
         }
@@ -2421,12 +2401,12 @@ void dte_do_wupb(int32_t num_loops) {
     get_key_press_no_echo();
 }
 
-void dte_do_attrib(int32_t num_loops) {
+void dte_do_attrib(int32_t num_loops)
+{
     int32_t i;
     int32_t ret = 0;
 
-    for (i = 0;(i < num_loops) || (num_loops == 0); i++) {
-
+    for (i = 0; (i < num_loops) || (num_loops == 0); i++) {
         if (key_has_been_pressed()) {
             break;
         }
@@ -2459,46 +2439,40 @@ void dte_do_attrib(int32_t num_loops) {
         }
 
         printf("ATTRIB RESP <-\n");
-
     }
     printf("Press any key to continue...\n");
     get_key_press_no_echo();
 }
 
-uint32_t decode_pbm_type(uint8_t sak) {
-
+uint32_t decode_pbm_type(uint8_t sak)
+{
     if (sak & 0x08) {
         // Bit 4 == 1
         if (sak & 0x10) {
             // Bit 5 == 1
             return PBM_4K;
-        }
-        else {
+        } else {
             // Bit 5 == 0
             if (sak & 0x01) {
                 // Bit 1 == 1
                 return PBM_MINI;
-            }
-            else {
+            } else {
                 // Bit 1 == 0
                 return PBM_1K;
             }
         }
-    }
-    else {
+    } else {
         // Bit 4 == 0
         if (sak & 0x10) {
             // Bit 5 == 1
             if (sak & 0x01) {
                 // Bit 1 == 1
                 return PBM_PLUS_4K_SL2;
-            }
-            else {
+            } else {
                 // Bit 1 == 0
                 return PBM_PLUS_2K_SL2;
             }
-        }
-        else {
+        } else {
             // Bit 5 == 0
             if (sak & 0x20) {
                 // Bit 6 == 1
@@ -2506,8 +2480,7 @@ uint32_t decode_pbm_type(uint8_t sak) {
                 // Is must therefore be compliant, so we should not be here
                 // Do nothing
                 return PBM_TYPE_UNKNOWN;
-            }
-            else {
+            } else {
                 // Bit 6 == 0
                 return PBM_UL;
             }
@@ -2521,16 +2494,16 @@ int32_t pbm_create_value_block(uint8_t block_num, uint32_t value)
 {
     uint8_t val_blk_buffer[16];
 
-    val_blk_buffer[0]  = (value >> 0) & 0xFF;
-    val_blk_buffer[1]  = (value >> 8) & 0xFF;
-    val_blk_buffer[2]  = (value >> 16) & 0xFF;
-    val_blk_buffer[3]  = (value >> 24) & 0xFF;
-    val_blk_buffer[4]  = ~val_blk_buffer[0];
-    val_blk_buffer[5]  = ~val_blk_buffer[1];
-    val_blk_buffer[6]  = ~val_blk_buffer[2];
-    val_blk_buffer[7]  = ~val_blk_buffer[3];
-    val_blk_buffer[8]  = val_blk_buffer[0];
-    val_blk_buffer[9]  = val_blk_buffer[1];
+    val_blk_buffer[0] = (value >> 0) & 0xFF;
+    val_blk_buffer[1] = (value >> 8) & 0xFF;
+    val_blk_buffer[2] = (value >> 16) & 0xFF;
+    val_blk_buffer[3] = (value >> 24) & 0xFF;
+    val_blk_buffer[4] = ~val_blk_buffer[0];
+    val_blk_buffer[5] = ~val_blk_buffer[1];
+    val_blk_buffer[6] = ~val_blk_buffer[2];
+    val_blk_buffer[7] = ~val_blk_buffer[3];
+    val_blk_buffer[8] = val_blk_buffer[0];
+    val_blk_buffer[9] = val_blk_buffer[1];
     val_blk_buffer[10] = val_blk_buffer[2];
     val_blk_buffer[11] = val_blk_buffer[3];
 
@@ -2546,17 +2519,16 @@ int32_t pbm_create_value_block(uint8_t block_num, uint32_t value)
 // Decode working time specified by ATQC
 void show_response_time(uint8_t PMm_val, int32_t n)
 {
-    int32_t T_us    = 302;
-    int32_t A       = PMm_val & 0x7;
-    int32_t B       = (PMm_val >> 3) & 0x7;
-    int32_t E       = (PMm_val >> 6) & 0x3;
-    int32_t time    = 0;
+    int32_t T_us = 302;
+    int32_t A = PMm_val & 0x7;
+    int32_t B = (PMm_val >> 3) & 0x7;
+    int32_t E = (PMm_val >> 6) & 0x3;
+    int32_t time = 0;
 
-    time = T_us * ((B+1)*n + (A+1)) * pow(4, E);
+    time = T_us * ((B + 1) * n + (A + 1)) * pow(4, E);
 
     printf("%ldus\n", time);
 }
-
 
 void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params, int32_t do_reset)
 {
@@ -2570,8 +2542,7 @@ void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params, int32_t do_rese
     poweron_operatingfield();
     mml_nfc_pcd_task_sleep(10);
 
-    while(1)  {
-
+    while (1) {
         if (key_has_been_pressed()) {
             poweroff_operatingfield();
             break;
@@ -2584,8 +2555,7 @@ void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params, int32_t do_rese
             printf("o");
             passed++;
             row_passed++;
-        }
-        else {
+        } else {
             printf(".");
         }
 
@@ -2593,8 +2563,8 @@ void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params, int32_t do_rese
             nfc_reset();
         }
 
-        if ( sent%50 == 0 ) {
-            printf("  [ %2ld/ 50] %3ld%%\n", row_passed, ((row_passed*100)/50));
+        if (sent % 50 == 0) {
+            printf("  [ %2ld/ 50] %3ld%%\n", row_passed, ((row_passed * 100) / 50));
             row_passed = 0;
         }
 
@@ -2604,35 +2574,36 @@ void raw_loop_test(mml_nfc_pcd_transceive_params_t trans_params, int32_t do_rese
     }
 
     nfc_reset();
-    printf("\n\n(TOTAL) [%4ld/%4ld].... %3ld.%02ld%%\n\n", passed, sent, ((passed*100)/sent), (((passed*10000)/sent)-(((passed*100)/sent)*100)));
+    printf("\n\n(TOTAL) [%4ld/%4ld].... %3ld.%02ld%%\n\n", passed, sent, ((passed * 100) / sent),
+           (((passed * 10000) / sent) - (((passed * 100) / sent) * 100)));
     poweroff_operatingfield();
 }
 
 void type_a_loop_test(void)
 {
-    uint8_t send_buffer_wupa[1] = {0x52};
+    uint8_t send_buffer_wupa[1] = { 0x52 };
     int32_t send_len_wupa = 1;
 
-    uint8_t *receive_buffer=GetCommonBuffer();
+    uint8_t *receive_buffer = GetCommonBuffer();
     uint32_t receive_len;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = PROTOCOL_ISO14443A;
-    trans_params.frametype         = FT_SHORT_NO_CRC_NO_EMD;
-    trans_params.tx_buf            = send_buffer_wupa;
-    trans_params.tx_len            = send_len_wupa;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
+    trans_params.protocol = PROTOCOL_ISO14443A;
+    trans_params.frametype = FT_SHORT_NO_CRC_NO_EMD;
+    trans_params.tx_buf = send_buffer_wupa;
+    trans_params.tx_len = send_len_wupa;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
 
     // Loop test resets after every command, so we must enforce our powerup delay (5ms)
     // 5ms / (1/13560000) => 5ms / 73.746ns = 67,800fc
-    trans_params.delay_till_send   = 67800;
+    trans_params.delay_till_send = 67800;
 
     // Using same timeout as Type F loop test: 200ms instead of the normal ISO14443_FWT_ATQB
     // 200ms / (1/13560000) => 200ms / 73.746ns = 2,712,000fc
-    trans_params.timeout            = 2712000;
-    trans_params.early_limit        = ISO14443_FDT_A_EARLY_LIMIT;
+    trans_params.timeout = 2712000;
+    trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
 
     printf("\n\nSending 1000 WUPA, with 200ms timeout\n\n");
     raw_loop_test(trans_params, 1);
@@ -2640,52 +2611,51 @@ void type_a_loop_test(void)
 
 void type_b_loop_test(void)
 {
-    uint8_t send_buffer_wupb[3] = {0x05, 0x00, 0x08};
+    uint8_t send_buffer_wupb[3] = { 0x05, 0x00, 0x08 };
     int32_t send_len_wupb = 3;
 
-    uint8_t *receive_buffer=GetCommonBuffer();
+    uint8_t *receive_buffer = GetCommonBuffer();
     uint32_t receive_len;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = PROTOCOL_ISO14443B;
-    trans_params.frametype         = FT_STANDARD_CRC_EMD;
-    trans_params.tx_buf            = send_buffer_wupb;
-    trans_params.tx_len            = send_len_wupb;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
+    trans_params.protocol = PROTOCOL_ISO14443B;
+    trans_params.frametype = FT_STANDARD_CRC_EMD;
+    trans_params.tx_buf = send_buffer_wupb;
+    trans_params.tx_len = send_len_wupb;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
 
     // Loop test resets after every command, so we must enforce our powerup delay (5ms)
     // 5ms / (1/13560000) => 5ms / 73.746ns = 67,800fc
-    trans_params.delay_till_send   = 67800;
+    trans_params.delay_till_send = 67800;
 
     // Using same timeout as Type F loop test: 200ms instead of the normal ISO14443_FWT_ATQB
     // 200ms / (1/13560000) => 200ms / 73.746ns = 2,712,000
-    trans_params.timeout            = 2712000;
-    trans_params.early_limit        = ISO14443_FDT_B_PICC_MIN;
+    trans_params.timeout = 2712000;
+    trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
 
     printf("\n\nSending 1000 WUPB, with 200ms timeout\n\n");
     raw_loop_test(trans_params, 1);
 }
 
-
 void type_f_loop_test(void)
 {
     int32_t reqc_buf_len = 6;
-    uint8_t reqc_buf[6] = {0x06, 0x00, 0xFF, 0xFF, 0x00, 0x00};
+    uint8_t reqc_buf[6] = { 0x06, 0x00, 0xFF, 0xFF, 0x00, 0x00 };
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = PROTOCOL_TYPE_F;
-    trans_params.frametype         = FT_STANDARD_CRC_NO_EMD;
-    trans_params.tx_buf            = reqc_buf;
-    trans_params.tx_len            = reqc_buf_len;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
-    trans_params.delay_till_send   = ISO14443_FDT_MIN;
+    trans_params.protocol = PROTOCOL_TYPE_F;
+    trans_params.frametype = FT_STANDARD_CRC_NO_EMD;
+    trans_params.tx_buf = reqc_buf;
+    trans_params.tx_len = reqc_buf_len;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
+    trans_params.delay_till_send = ISO14443_FDT_MIN;
 
     // ATQC should start in Slot 0, This should happen by the time detailed below.  Currently using Trfw
     // from ISO18092 section 11.1.1, RF Waiting Time, as the margin for detection of ATQC.  Alternatively,
@@ -2698,49 +2668,48 @@ void type_f_loop_test(void)
     //
     // For RW_RW_Kiteisyo polling loop test, timeout desired is 200ms
     // 200ms / (1/13560000) => 200ms / 73.746ns = 2,712,000
-    trans_params.timeout            = 2712000;
+    trans_params.timeout = 2712000;
 
     // Per Sony Whitepaper: Card Technical Note for Software Development
     //   the Guard Time after transmission of Command Packet Data to when the Reader should
     //   be ready to receive preamble is (42 x 64 - 16)/fc ~197us
-    trans_params.early_limit        = FDT_F_PICC_MIN_TOLERANCE_EARLY;
+    trans_params.early_limit = FDT_F_PICC_MIN_TOLERANCE_EARLY;
 
     printf("\n\nSending 1000 REQC, with 200ms timeout\n\n");
     raw_loop_test(trans_params, 0);
 }
 
-
-#define ATQC_LEN                    18
-#define ATQC_LEN_OFFSET             0
-#define ATQC_COMMAND_CODE           1
-#define ATQC_COMMAND_CODE_OFFSET    1
-#define ATQC_NFCID2_OFFSET          2
-#define ATQC_NFCID2_LEN             8
-#define ATQC_PAD_OFFSET             10
-#define ATQC_PAD_LEN                8
-#define ATQC_ID_COD_BYTE_1_OFFSET   10
-#define ATQC_ID_COD_BYTE_2_OFFSET   11
-#define ATQC_RESPONSE_TIME_OFFSET   12
+#define ATQC_LEN 18
+#define ATQC_LEN_OFFSET 0
+#define ATQC_COMMAND_CODE 1
+#define ATQC_COMMAND_CODE_OFFSET 1
+#define ATQC_NFCID2_OFFSET 2
+#define ATQC_NFCID2_LEN 8
+#define ATQC_PAD_OFFSET 10
+#define ATQC_PAD_LEN 8
+#define ATQC_ID_COD_BYTE_1_OFFSET 10
+#define ATQC_ID_COD_BYTE_2_OFFSET 11
+#define ATQC_RESPONSE_TIME_OFFSET 12
 
 void type_f_commands(void)
 {
     int32_t response = 0;
 
     int32_t reqc_buf_len = 6;
-    uint8_t reqc_buf[6] = {0x06, 0x00, 0xFF, 0xFF, 0x00, 0x00};
+    uint8_t reqc_buf[6] = { 0x06, 0x00, 0xFF, 0xFF, 0x00, 0x00 };
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = PROTOCOL_TYPE_F;
-    trans_params.frametype         = FT_STANDARD_CRC_NO_EMD;
-    trans_params.tx_buf            = reqc_buf;
-    trans_params.tx_len            = reqc_buf_len;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
-    trans_params.delay_till_send   = ISO14443_FDT_MIN;
+    trans_params.protocol = PROTOCOL_TYPE_F;
+    trans_params.frametype = FT_STANDARD_CRC_NO_EMD;
+    trans_params.tx_buf = reqc_buf;
+    trans_params.tx_len = reqc_buf_len;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
+    trans_params.delay_till_send = ISO14443_FDT_MIN;
 
     // ATQC should start in Slot 0, This should happen by the time detailed below.  Currently using Trfw
     // from ISO18092 section 11.1.1, RF Waiting Time, as the margin for detection of ATQC.  Alternatively,
@@ -2750,12 +2719,12 @@ void type_f_commands(void)
     //
     // Td = (512 * 64fc = 32768), Time to LEN (T2len) =  (8 * 8 * 64fc = 4096), Trfw = (512fc)
     // Td + T2len + Trfw => 32768 + 4096 + 512 => 37367
-    trans_params.timeout            = 37367;
+    trans_params.timeout = 37367;
 
     // Per Sony Whitepaper: Card Technical Note for Software Development
     //   the Guard Time after transmission of Command Packet Data to when the Reader should
     //   be ready to receive preamble is (42 x 64 - 16)/fc ~197us
-    trans_params.early_limit        = FDT_F_PICC_MIN_TOLERANCE_EARLY;
+    trans_params.early_limit = FDT_F_PICC_MIN_TOLERANCE_EARLY;
 
     while (1) {
         clear_screen();
@@ -2777,23 +2746,23 @@ void type_f_commands(void)
             printf("\n\n");
 
             if (response == MML_NFC_PCD_E_SUCCESS) {
-                printf("Got a response, length in bytes: %ld\n" , receive_len);
+                printf("Got a response, length in bytes: %ld\n", receive_len);
 
                 hexdump(DBG_LVL_NON, receive_buffer, receive_len, 1);
 
                 printf("ATQC breakdown:\n\n");
 
                 if (receive_buffer[ATQC_LEN_OFFSET] != ATQC_LEN) {
-                    printf("ATQC length invalid, expected: %d got: %d\n", ATQC_LEN, receive_buffer[ATQC_LEN_OFFSET]);
-                }
-                else {
+                    printf("ATQC length invalid, expected: %d got: %d\n", ATQC_LEN,
+                           receive_buffer[ATQC_LEN_OFFSET]);
+                } else {
                     printf("ATQC Length valid\n");
                 }
 
                 if (receive_buffer[ATQC_COMMAND_CODE_OFFSET] != ATQC_COMMAND_CODE) {
-                    printf("ATQC Command Code invalid, expected: %d got: %d\n", ATQC_COMMAND_CODE, receive_buffer[ATQC_COMMAND_CODE_OFFSET]);
-                }
-                else {
+                    printf("ATQC Command Code invalid, expected: %d got: %d\n", ATQC_COMMAND_CODE,
+                           receive_buffer[ATQC_COMMAND_CODE_OFFSET]);
+                } else {
                     printf("ATQC Command Code valid\n");
                 }
 
@@ -2803,26 +2772,23 @@ void type_f_commands(void)
                 printf("PAD (PMm): ");
                 hexdump(DBG_LVL_NON, &receive_buffer[ATQC_PAD_OFFSET], ATQC_PAD_LEN, 1);
 
-                printf("    IC Code: 0x%02X%02X\n", receive_buffer[ATQC_ID_COD_BYTE_1_OFFSET], receive_buffer[ATQC_ID_COD_BYTE_2_OFFSET]);
+                printf("    IC Code: 0x%02X%02X\n", receive_buffer[ATQC_ID_COD_BYTE_1_OFFSET],
+                       receive_buffer[ATQC_ID_COD_BYTE_2_OFFSET]);
                 printf("Request Service Command (Per Service [n]): ");
                 show_response_time(receive_buffer[ATQC_RESPONSE_TIME_OFFSET], 1);
             } // if (response == MML_NFC_PCD_E_SUCCESS)
             else {
                 printf("Invalid Response: ");
 
-                if ( response == MML_NFC_PCD_E_TIMEOUT ) {
-                        printf("Timeout (No card found)\n");
-                }
-                else if ( response == MML_NFC_PCD_E_COLLISION ) {
+                if (response == MML_NFC_PCD_E_TIMEOUT) {
+                    printf("Timeout (No card found)\n");
+                } else if (response == MML_NFC_PCD_E_COLLISION) {
                     printf("Collision Error\n");
-                }
-                else if ( response == MML_NFC_PCD_E_PROTOCOL ) {
+                } else if (response == MML_NFC_PCD_E_PROTOCOL) {
                     printf("Protocol Error\n");
-                }
-                else if ( response == MML_NFC_PCD_E_BAD_PARAM ) {
+                } else if (response == MML_NFC_PCD_E_BAD_PARAM) {
                     printf("Bad Parameter\n");
-                }
-                else {
+                } else {
                     printf("Un-Decoded error code: %ld\n", response);
                 }
             }
@@ -2866,20 +2832,19 @@ void type_v_inventory_test(mml_nfc_pcd_transceive_params_t trans_params)
     printf("\n\n");
 
     if (response == MML_NFC_PCD_E_SUCCESS) {
-
         if (*trans_params.rx_len == 10) {
-            printf("Got a response, length in bytes: %ld\n" , *trans_params.rx_len);
+            printf("Got a response, length in bytes: %ld\n", *trans_params.rx_len);
 
             hexdump(DBG_LVL_NON, trans_params.rx_buf, *trans_params.rx_len, 1);
 
-            if(trans_params.rx_buf[0] & 0x1) {
+            if (trans_params.rx_buf[0] & 0x1) {
                 printf("Card Reported Error\n");
                 poweroff_operatingfield();
                 printf("Press any key to continue...\n");
                 get_key_press();
                 return;
             }
-            if(trans_params.rx_buf[0] & 0xFE) {
+            if (trans_params.rx_buf[0] & 0xFE) {
                 printf("Unsupported Flags\n");
                 poweroff_operatingfield();
                 printf("Press any key to continue...\n");
@@ -2888,66 +2853,59 @@ void type_v_inventory_test(mml_nfc_pcd_transceive_params_t trans_params)
             }
             printf("DSFID: 0x%02x\n", trans_params.rx_buf[1]);
             printf("UID Is : ");
-            for(int i = 0; i < 8; i++) {
-                v_uid[i] =  trans_params.rx_buf[i+2];
+            for (int i = 0; i < 8; i++) {
+                v_uid[i] = trans_params.rx_buf[i + 2];
                 printf("0x%02x ", v_uid[i]);
             }
 
             printf("\n");
-        }
-        else {
-            printf("Apparently, we have success. However, expect 10 bytes but only got: %d\n", *trans_params.rx_len);
+        } else {
+            printf("Apparently, we have success. However, expect 10 bytes but only got: %d\n",
+                   *trans_params.rx_len);
             printf("Received data");
             hexdump(DBG_LVL_NON, trans_params.rx_buf, *trans_params.rx_len, 1);
         }
 
-    }
-    else {
+    } else {
         printf("Invalid Response: ");
 
-        if ( response == MML_NFC_PCD_E_TIMEOUT ) {
+        if (response == MML_NFC_PCD_E_TIMEOUT) {
             printf("Timeout (No card found)\n");
-        }
-        else if ( response == MML_NFC_PCD_E_COLLISION ) {
+        } else if (response == MML_NFC_PCD_E_COLLISION) {
             printf("Collision Error\n");
-        }
-        else if ( response == MML_NFC_PCD_E_PROTOCOL ) {
+        } else if (response == MML_NFC_PCD_E_PROTOCOL) {
             printf("Protocol Error\n");
-        }
-        else if ( response == MML_NFC_PCD_E_BAD_PARAM ) {
+        } else if (response == MML_NFC_PCD_E_BAD_PARAM) {
             printf("Bad Parameter\n");
-        }
-        else if ( response == MML_NFC_PCD_E_INVALID_CRC ) {
+        } else if (response == MML_NFC_PCD_E_INVALID_CRC) {
             printf("Bad CRC\n");
-        }
-        else {
+        } else {
             printf("Un-Decoded error code: %ld\n", response);
         }
     }
     poweroff_operatingfield();
     printf("Press any key to continue...\n");
     get_key_press();
-
 }
 
 void type_v_commands(void)
 {
     int32_t inventory_buf_len = 3;
-    uint8_t inventory_buf[3] = {0x26, 0x01, 0x00}; // Flags, Inventory OpCode, Optional AFI
+    uint8_t inventory_buf[3] = { 0x26, 0x01, 0x00 }; // Flags, Inventory OpCode, Optional AFI
 
     uint8_t receive_buffer[256];
     uint32_t receive_len = 0;
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.frametype         = FT_STANDARD_CRC_NO_EMD;
-    trans_params.tx_buf            = inventory_buf;
-    trans_params.tx_len            = inventory_buf_len;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
-    trans_params.delay_till_send   = ISO14443_FDT_MIN;
-    trans_params.early_limit       = ISO15693_FDT_VICC_MIN;
-    trans_params.timeout           = ISO15693_FWT_ACTIVATION;
+    trans_params.frametype = FT_STANDARD_CRC_NO_EMD;
+    trans_params.tx_buf = inventory_buf;
+    trans_params.tx_len = inventory_buf_len;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
+    trans_params.delay_till_send = ISO14443_FDT_MIN;
+    trans_params.early_limit = ISO15693_FDT_VICC_MIN;
+    trans_params.timeout = ISO15693_FWT_ACTIVATION;
 
     while (1) {
         clear_screen();
@@ -3107,7 +3065,7 @@ void type_v_commands(void)
         case 'L':
         case 'l':
             // TODO: Implement
-//            type_v_loop_test();
+            //            type_v_loop_test();
             printf("TBD....\n");
             printf("Press any key to continue...\n");
             get_key_press();
@@ -3115,10 +3073,11 @@ void type_v_commands(void)
         case 'T':
         case 't':
             printf("\nCRC Test\n");
-            uint8_t crc_test_buf[4] = {0x01, 0x02, 0x03, 0x04};
+            uint8_t crc_test_buf[4] = { 0x01, 0x02, 0x03, 0x04 };
             uint8_t crc1 = 0;
             uint8_t crc2 = 0;
-            mml_nfc_pcd_compute_crc(PROTOCOL_ISO15693_100_1OF4_SINGLE_HIGH, crc_test_buf, 4, &crc2, &crc1);
+            mml_nfc_pcd_compute_crc(PROTOCOL_ISO15693_100_1OF4_SINGLE_HIGH, crc_test_buf, 4, &crc2,
+                                    &crc1);
             printf("Input: 1,2,3,4\n");
             printf("CRC: 0x%0X%0X\n", crc1, crc2);
             printf("Press any key to continue...\n");
@@ -3147,7 +3106,7 @@ void pbm_commands(void)
     int32_t uid_start = 0;
     int32_t uid_end = 0;
     int32_t status = 0;
-    uid_storage_t uid_store = { { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, 0};
+    uid_storage_t uid_store = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0 };
     uint32_t uid = 0;
     // Default PBM Key
     uint64_t current_key = 0xFFFFFFFFFFFFll;
@@ -3162,18 +3121,20 @@ void pbm_commands(void)
         clear_screen();
 
         printf("PBM Command Menu\n\n");
-        printf("Current UID: 0x%08lX, Current Block: %d, INC/DEC Value: %ld\n", uid, current_block_num, current_value_num);
-        printf("\nPOLLING AND AUTHENTICATE COMMANDS\n") ;
+        printf("Current UID: 0x%08lX, Current Block: %d, INC/DEC Value: %ld\n", uid,
+               current_block_num, current_value_num);
+        printf("\nPOLLING AND AUTHENTICATE COMMANDS\n");
         printf("(P) Poll for PBM Cards          (H) Halt\n");
         printf("(A) Authenticate Block          (X) Re-Authenticate Block\n");
-        printf("\nGENERIC BLOCK COMMANDS [%d]\n", current_block_num) ;
+        printf("\nGENERIC BLOCK COMMANDS [%d]\n", current_block_num);
         printf("(B) Change Current Block        (F) Erase Block (Fill with 0x00s)\n");
         printf("(R) Read Block                  (W) Write Block\n");
-        printf("\nVALUE BLOCK COMMANDS\n") ;
-        printf("(V) Create Value Block          (C) Change Value amount [%ld]\n", current_value_num);
+        printf("\nVALUE BLOCK COMMANDS\n");
+        printf("(V) Create Value Block          (C) Change Value amount [%ld]\n",
+               current_value_num);
         printf("(D) Decrement Value Block       (I) Increment Value Block\n");
         printf("(S) Restore Value Block         (T) Transfer Value Block\n");
-        printf("\nKEY COMMANDS\n") ;
+        printf("\nKEY COMMANDS\n");
         printf("(K) Write trailer to use KEY_B  (L) Authenticate with B\n");
         printf("(M) Re-Authenticate with B\n");
         printf("\n(E) Exit back to main menu\n");
@@ -3193,8 +3154,7 @@ void pbm_commands(void)
             status = 0;
 
             poweron_operatingfield();
-            while ( status != TYPE_A_NON_ISO14443_4_READY ) {
-
+            while (status != TYPE_A_NON_ISO14443_4_READY) {
                 status = emvl1_poll_for_card(1);
 
                 if (key_has_been_pressed()) {
@@ -3204,7 +3164,7 @@ void pbm_commands(void)
                 }
             }
 
-            if ( status == TYPE_A_NON_ISO14443_4_READY ) {
+            if (status == TYPE_A_NON_ISO14443_4_READY) {
                 // NOTE: The stored UID contains the BCC as well
                 uid_store = get_stored_uid();
 
@@ -3212,17 +3172,15 @@ void pbm_commands(void)
                 if (uid_store.uid_length == 5) {
                     uid_start = 0;
                     uid_end = 4;
-                }
-                else if (uid_store.uid_length == 10 ) {
+                } else if (uid_store.uid_length == 10) {
                     uid_start = 5;
                     uid_end = 9;
-                }
-                else if (uid_store.uid_length == 15 ) {
+                } else if (uid_store.uid_length == 15) {
                     uid_start = 10;
                     uid_end = 14;
-                }
-                else {
-                    printf("Invalid UID detected, should be length of 5, 10, or 15 including the BCC\n");
+                } else {
+                    printf(
+                        "Invalid UID detected, should be length of 5, 10, or 15 including the BCC\n");
                     break;
                 }
 
@@ -3235,26 +3193,20 @@ void pbm_commands(void)
 
                 pbm_type = decode_pbm_type(get_last_sak());
 
-                if ( pbm_type == PBM_UL ) {
+                if (pbm_type == PBM_UL) {
                     printf("Found Transport Classic UL\n");
-                }
-                else if ( pbm_type == PBM_MINI ) {
+                } else if (pbm_type == PBM_MINI) {
                     printf("Found Transport Classic MINI\n");
-                }
-                else if ( pbm_type == PBM_1K ) {
+                } else if (pbm_type == PBM_1K) {
                     printf("Found Transport Classic 1K\n");
-                }
-                else if ( pbm_type == PBM_4K ) {
+                } else if (pbm_type == PBM_4K) {
                     printf("Found Transport Classic 4K\n");
-                }
-                else if ( pbm_type == PBM_PLUS_2K_SL2 ) {
+                } else if (pbm_type == PBM_PLUS_2K_SL2) {
                     printf("Found Transport Classic PLUS 2K SL2\n");
-                }
-                else if ( pbm_type == PBM_PLUS_4K_SL2 ) {
+                } else if (pbm_type == PBM_PLUS_4K_SL2) {
                     printf("Found Transport Classic PLUS 4K SL2\n");
                 }
-            }
-            else {
+            } else {
                 printf("No potential cards found\n");
             }
 
@@ -3275,12 +3227,12 @@ void pbm_commands(void)
                 break;
             }
 
-            status = pbm_authenticate_block(uid, current_block_num, current_key, PBM_KEY_A, FIRST_TIME_AUTH);
+            status = pbm_authenticate_block(uid, current_block_num, current_key, PBM_KEY_A,
+                                            FIRST_TIME_AUTH);
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to authenticate. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Authentication for block %d successful.\n", current_block_num);
             }
 
@@ -3296,12 +3248,11 @@ void pbm_commands(void)
 
             new_val = dte_get_int_val("Pbm Block", 3, 0, 256);
 
-            if ( (new_val < 0) || (new_val > 256) ) {
+            if ((new_val < 0) || (new_val > 256)) {
                 printf("\nInvalid selection try again.\n");
                 printf("Press any key to retry...\n");
                 get_key_press_no_echo();
-            }
-            else {
+            } else {
                 current_block_num = (uint8_t)new_val;
             }
             break;
@@ -3315,8 +3266,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to read block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successful read block. Data:");
 
                 hexdump(DBG_LVL_NON, data_buffer, 16, 1);
@@ -3331,9 +3281,7 @@ void pbm_commands(void)
             // this uses current_block_num (set by 'B')
             printf("\nWrite Block: %d\n", current_block_num);
 
-            for (i = 0; i < 8; i++) {
-                data_buffer[i] = 0;
-            }
+            for (i = 0; i < 8; i++) { data_buffer[i] = 0; }
 
             data_buffer[8] = 0xDE;
             data_buffer[9] = 0xAD;
@@ -3348,8 +3296,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to Write block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully wrote block.\n");
             }
 
@@ -3365,8 +3312,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to Halt. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully Halted.\n");
             }
 
@@ -3384,8 +3330,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to create value block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully Created Value Block.\n");
             }
 
@@ -3405,12 +3350,12 @@ void pbm_commands(void)
                 break;
             }
 
-            status = pbm_authenticate_block(uid, current_block_num, current_key, PBM_KEY_A, ALREADY_AUTHORIZED_AUTH);
+            status = pbm_authenticate_block(uid, current_block_num, current_key, PBM_KEY_A,
+                                            ALREADY_AUTHORIZED_AUTH);
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to re-authenticate. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Re-Authentication for block %d successful.\n", current_block_num);
             }
 
@@ -3427,8 +3372,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to decrement block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully decremented Block.\n");
             }
 
@@ -3445,8 +3389,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to increment block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully incremented Block.\n");
             }
 
@@ -3463,8 +3406,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to restore block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully restored Block.\n");
             }
 
@@ -3481,8 +3423,7 @@ void pbm_commands(void)
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to transfer block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully transfered Block.\n");
             }
 
@@ -3497,12 +3438,11 @@ void pbm_commands(void)
 
             new_val = dte_get_int_val("Pbm Value", 10, 0, 0x7FFFFFF);
 
-            if ( (new_val < 0) || (new_val > 0x7FFFFFFF) ) {
+            if ((new_val < 0) || (new_val > 0x7FFFFFFF)) {
                 printf("\nInvalid selection try again.\n");
                 printf("Press any key to retry...\n");
                 get_key_press_no_echo();
-            }
-            else {
+            } else {
                 current_value_num = new_val;
             }
 
@@ -3511,60 +3451,57 @@ void pbm_commands(void)
         case 'k':
             printf("\nWrite Trailer for Key B: %d\n", current_block_num);
 
-                for (i = 0; i < 8; i++) {
-                    data_buffer[i] = 0;
-                }
+            for (i = 0; i < 8; i++) { data_buffer[i] = 0; }
 
-                // Key A
-                data_buffer[0] = (current_key >> 40) & 0xFF;
-                data_buffer[1] = (current_key >> 32) & 0xFF;
-                data_buffer[2] = (current_key >> 24) & 0xFF;
-                data_buffer[3] = (current_key >> 16) & 0xFF;
-                data_buffer[4] = (current_key >>  8) & 0xFF;
-                data_buffer[5] = (current_key >>  0) & 0xFF;
+            // Key A
+            data_buffer[0] = (current_key >> 40) & 0xFF;
+            data_buffer[1] = (current_key >> 32) & 0xFF;
+            data_buffer[2] = (current_key >> 24) & 0xFF;
+            data_buffer[3] = (current_key >> 16) & 0xFF;
+            data_buffer[4] = (current_key >> 8) & 0xFF;
+            data_buffer[5] = (current_key >> 0) & 0xFF;
 
-                // KEY A will remain the only key to write trailer C1-3 of b001
-                // DISALLOWED.  If B can be read it CANNOT serve for auth.  Auth will pass but all memory accesses will fail
-                //  So, we need to use another mode, so use b100, Key B can write both a and b, but A and B can write Access
-                // KEY B will have SOLE Write permission for block 2 of current sector (where trailer is block 3) C1-3 of b100
-                // C10, C11, C20, C21, C30, C31 will remain 0, so Transport Configuration (Key A or B has full access)
-                // /C2      /C1
-                //  C1      /C3
-                //  C3       C2
-                // 7654     3210    BITS
-                // 1111     0011    0xF3
-                // 1100     1111    0xCF
-                // 0000     0000    0x00
-                //
+            // KEY A will remain the only key to write trailer C1-3 of b001
+            // DISALLOWED.  If B can be read it CANNOT serve for auth.  Auth will pass but all memory accesses will fail
+            //  So, we need to use another mode, so use b100, Key B can write both a and b, but A and B can write Access
+            // KEY B will have SOLE Write permission for block 2 of current sector (where trailer is block 3) C1-3 of b100
+            // C10, C11, C20, C21, C30, C31 will remain 0, so Transport Configuration (Key A or B has full access)
+            // /C2      /C1
+            //  C1      /C3
+            //  C3       C2
+            // 7654     3210    BITS
+            // 1111     0011    0xF3
+            // 1100     1111    0xCF
+            // 0000     0000    0x00
+            //
 #define KEYB_TEST
 #ifdef KEYB_TEST
-                data_buffer[6] = 0xF3;
-                data_buffer[7] = 0xCF;
-                data_buffer[8] = 0x00;
+            data_buffer[6] = 0xF3;
+            data_buffer[7] = 0xCF;
+            data_buffer[8] = 0x00;
 #else
-                data_buffer[6] = 0xFF;
-                data_buffer[7] = 0x07;
-                data_buffer[8] = 0x80;
+            data_buffer[6] = 0xFF;
+            data_buffer[7] = 0x07;
+            data_buffer[8] = 0x80;
 #endif
 
-                data_buffer[9] = 0xAD; // User data
+            data_buffer[9] = 0xAD; // User data
 
-                // Key B
-                data_buffer[10] = (current_key_b >> 40) & 0xFF;
-                data_buffer[11] = (current_key_b >> 32) & 0xFF;
-                data_buffer[12] = (current_key_b >> 24) & 0xFF;
-                data_buffer[13] = (current_key_b >> 16) & 0xFF;
-                data_buffer[14] = (current_key_b >>  8) & 0xFF;
-                data_buffer[15] = (current_key_b >>  0) & 0xFF;
+            // Key B
+            data_buffer[10] = (current_key_b >> 40) & 0xFF;
+            data_buffer[11] = (current_key_b >> 32) & 0xFF;
+            data_buffer[12] = (current_key_b >> 24) & 0xFF;
+            data_buffer[13] = (current_key_b >> 16) & 0xFF;
+            data_buffer[14] = (current_key_b >> 8) & 0xFF;
+            data_buffer[15] = (current_key_b >> 0) & 0xFF;
 
-                status = pbm_write_block(current_block_num, data_buffer);
+            status = pbm_write_block(current_block_num, data_buffer);
 
-                if (status != PBM_SUCCESS) {
-                    printf("Failed to Write block. Error: %ld\n", status);
-                }
-                else {
-                    printf("Successfully wrote block.\n");
-                }
+            if (status != PBM_SUCCESS) {
+                printf("Failed to Write block. Error: %ld\n", status);
+            } else {
+                printf("Successfully wrote block.\n");
+            }
 
             printf("Press any key to continue...\n");
             get_key_press_no_echo();
@@ -3581,12 +3518,12 @@ void pbm_commands(void)
                 break;
             }
 
-            status = pbm_authenticate_block(uid, current_block_num, current_key_b, PBM_KEY_B, FIRST_TIME_AUTH);
+            status = pbm_authenticate_block(uid, current_block_num, current_key_b, PBM_KEY_B,
+                                            FIRST_TIME_AUTH);
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to authenticate. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Authentication for block %d successful.\n", current_block_num);
             }
 
@@ -3605,12 +3542,12 @@ void pbm_commands(void)
                 break;
             }
 
-            status = pbm_authenticate_block(uid, current_block_num, current_key_b, PBM_KEY_B, ALREADY_AUTHORIZED_AUTH);
+            status = pbm_authenticate_block(uid, current_block_num, current_key_b, PBM_KEY_B,
+                                            ALREADY_AUTHORIZED_AUTH);
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to re-authenticate. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Re-Authentication for block %d successful.\n", current_block_num);
             }
 
@@ -3622,16 +3559,13 @@ void pbm_commands(void)
             // erase a block by filling with all 0
             printf("\nErase Block (Fill with 0x00s)\n: %d\n", current_block_num);
 
-            for (i = 0; i < 16; i++) {
-                data_buffer[i] = 0;
-            }
+            for (i = 0; i < 16; i++) { data_buffer[i] = 0; }
 
             status = pbm_write_block(current_block_num, data_buffer);
 
             if (status != PBM_SUCCESS) {
                 printf("Failed to Erase block. Error: %ld\n", status);
-            }
-            else {
+            } else {
                 printf("Successfully Erased block.\n");
             }
 
@@ -3659,24 +3593,27 @@ void pbm_commands(void)
 
 int32_t singleemvl1transac_a(callback_check_for_loop_termination_t callback)
 {
-    uint8_t send_buffer_wupa[1] = {0x52};
+    uint8_t send_buffer_wupa[1] = { 0x52 };
     int32_t send_len_wupa = 1;
-    uint8_t send_buffer_hlta[2] = {0x50, 0x00};
+    uint8_t send_buffer_hlta[2] = { 0x50, 0x00 };
     int32_t send_len_hlta = 2;
-    uint8_t send_buffer_wupb[3] = {0x05, 0x00, 0x08};
+    uint8_t send_buffer_wupb[3] = { 0x05, 0x00, 0x08 };
     int32_t send_len_wupb = 3;
-    uint8_t send_buffer_anticol[2] = {0x93, 0x20};
+    uint8_t send_buffer_anticol[2] = { 0x93, 0x20 };
     int32_t send_len_anticol = 2;
-    uint8_t send_buffer_sel[7] = {0x93, 0x70, 0x27, 0xe9, 0x3b, 0x11, 0xe4};
+    uint8_t send_buffer_sel[7] = { 0x93, 0x70, 0x27, 0xe9, 0x3b, 0x11, 0xe4 };
     int32_t send_len_sel = 7;
-    uint8_t send_buffer_rats[2] = {0xe0, 0x80};
+    uint8_t send_buffer_rats[2] = { 0xe0, 0x80 };
     int32_t send_len_rats = 2;
-    uint8_t send_buffer_iblock1[21] = {0x02, 0x00, 0xA4, 0x04, 0x00, 0x0E, 0x32, 0x50, 0x41, 0x59, 0x2E, 0x53, 0x59, 0x53, 0x2E, 0x44, 0x44, 0x46, 0x30, 0x31, 0x00};
+    uint8_t send_buffer_iblock1[21] = { 0x02, 0x00, 0xA4, 0x04, 0x00, 0x0E, 0x32,
+                                        0x50, 0x41, 0x59, 0x2E, 0x53, 0x59, 0x53,
+                                        0x2E, 0x44, 0x44, 0x46, 0x30, 0x31, 0x00 };
     int32_t send_len_iblock1 = 21;
-    uint8_t send_buffer_iblock2[19] = {0x03, 0x00, 0xA4, 0x04, 0x00, 0x0C, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x00};
+    uint8_t send_buffer_iblock2[19] = { 0x03, 0x00, 0xA4, 0x04, 0x00, 0x0C, 0x01, 0x02, 0x03, 0x04,
+                                        0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x00 };
     int32_t send_len_iblock2 = 19;
 
-    uint8_t *receive_buffer=GetCommonBuffer();
+    uint8_t *receive_buffer = GetCommonBuffer();
     uint32_t receive_len;
 
     // If callback for early termination exists, call it
@@ -3690,76 +3627,76 @@ int32_t singleemvl1transac_a(callback_check_for_loop_termination_t callback)
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = PROTOCOL_ISO14443A;
-    trans_params.frametype         = FT_SHORT_NO_CRC_NO_EMD;
-    trans_params.tx_buf            = send_buffer_wupa;
-    trans_params.tx_len            = send_len_wupa;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
-    trans_params.delay_till_send   = ISO14443_FDT_MIN;
-    trans_params.timeout           = ISO14443_FWT_A_ACT;
-    trans_params.early_limit       = ISO14443_FDT_A_EARLY_LIMIT;
+    trans_params.protocol = PROTOCOL_ISO14443A;
+    trans_params.frametype = FT_SHORT_NO_CRC_NO_EMD;
+    trans_params.tx_buf = send_buffer_wupa;
+    trans_params.tx_len = send_len_wupa;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
+    trans_params.delay_till_send = ISO14443_FDT_MIN;
+    trans_params.timeout = ISO14443_FWT_A_ACT;
+    trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
 
     // WUPA
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // HALTA
-    trans_params.frametype         = FT_STANDARD_CRC_EMD;
-    trans_params.tx_buf            = send_buffer_hlta;
-    trans_params.tx_len            = send_len_hlta;
+    trans_params.frametype = FT_STANDARD_CRC_EMD;
+    trans_params.tx_buf = send_buffer_hlta;
+    trans_params.tx_len = send_len_hlta;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // WUPB
-    trans_params.protocol          = PROTOCOL_ISO14443B;
-    trans_params.frametype         = FT_STANDARD_CRC_EMD;
-    trans_params.tx_buf            = send_buffer_wupb;
-    trans_params.tx_len            = send_len_wupb;
-    trans_params.timeout           = ISO14443_FWT_ATQB;
-    trans_params.early_limit       = ISO14443_FDT_B_PICC_MIN;
+    trans_params.protocol = PROTOCOL_ISO14443B;
+    trans_params.frametype = FT_STANDARD_CRC_EMD;
+    trans_params.tx_buf = send_buffer_wupb;
+    trans_params.tx_len = send_len_wupb;
+    trans_params.timeout = ISO14443_FWT_ATQB;
+    trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // WUPA
-    trans_params.protocol          = PROTOCOL_ISO14443A;
-    trans_params.frametype         = FT_SHORT_NO_CRC_NO_EMD;
-    trans_params.tx_buf            = send_buffer_wupa;
-    trans_params.tx_len            = send_len_wupa;
-    trans_params.timeout           = ISO14443_FWT_A_ACT;
-    trans_params.early_limit       = ISO14443_FDT_A_EARLY_LIMIT;
+    trans_params.protocol = PROTOCOL_ISO14443A;
+    trans_params.frametype = FT_SHORT_NO_CRC_NO_EMD;
+    trans_params.tx_buf = send_buffer_wupa;
+    trans_params.tx_len = send_len_wupa;
+    trans_params.timeout = ISO14443_FWT_A_ACT;
+    trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Anticollision
-    trans_params.frametype         = FT_STANDARD_NO_CRC_NO_EMD;
-    trans_params.tx_buf            = send_buffer_anticol;
-    trans_params.tx_len            = send_len_anticol;
+    trans_params.frametype = FT_STANDARD_NO_CRC_NO_EMD;
+    trans_params.tx_buf = send_buffer_anticol;
+    trans_params.tx_len = send_len_anticol;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Select
-    trans_params.frametype         = FT_STANDARD_CRC_EMD;
-    trans_params.tx_buf            = send_buffer_sel;
-    trans_params.tx_len            = send_len_sel;
+    trans_params.frametype = FT_STANDARD_CRC_EMD;
+    trans_params.tx_buf = send_buffer_sel;
+    trans_params.tx_len = send_len_sel;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // RATS
-    trans_params.tx_buf            = send_buffer_rats;
-    trans_params.tx_len            = send_len_rats;
+    trans_params.tx_buf = send_buffer_rats;
+    trans_params.tx_len = send_len_rats;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Iblock 1
-    trans_params.tx_buf            = send_buffer_iblock1;
-    trans_params.tx_len            = send_len_iblock1;
+    trans_params.tx_buf = send_buffer_iblock1;
+    trans_params.tx_len = send_len_iblock1;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Iblock 2
-    trans_params.tx_buf            = send_buffer_iblock2;
-    trans_params.tx_len            = send_len_iblock2;
+    trans_params.tx_buf = send_buffer_iblock2;
+    trans_params.tx_len = send_len_iblock2;
     mml_nfc_pcd_transceive(trans_params);
 
     return 0;
@@ -3767,18 +3704,21 @@ int32_t singleemvl1transac_a(callback_check_for_loop_termination_t callback)
 
 int32_t singleemvl1transac_b(callback_check_for_loop_termination_t callback)
 {
-    uint8_t send_buffer_wupa[1]= {0x52};
+    uint8_t send_buffer_wupa[1] = { 0x52 };
     int32_t send_len_wupa = 1;
-    uint8_t send_buffer_wupb[3] = {0x05, 0x00, 0x08};
+    uint8_t send_buffer_wupb[3] = { 0x05, 0x00, 0x08 };
     int32_t send_len_wupb = 3;
-    uint8_t send_buffer_attrib[9] = {0x1D, 0x46, 0xB5, 0xC7, 0xA0, 0x00, 0x08, 0x01, 0x00};
+    uint8_t send_buffer_attrib[9] = { 0x1D, 0x46, 0xB5, 0xC7, 0xA0, 0x00, 0x08, 0x01, 0x00 };
     int32_t send_len_attrib = 9;
-    uint8_t send_buffer_iblock1[21] = {0x02, 0x00, 0xA4, 0x04, 0x00, 0x0E, 0x32, 0x50, 0x41, 0x59, 0x2E, 0x53, 0x59, 0x53, 0x2E, 0x44, 0x44, 0x46, 0x30, 0x31, 0x00};
+    uint8_t send_buffer_iblock1[21] = { 0x02, 0x00, 0xA4, 0x04, 0x00, 0x0E, 0x32,
+                                        0x50, 0x41, 0x59, 0x2E, 0x53, 0x59, 0x53,
+                                        0x2E, 0x44, 0x44, 0x46, 0x30, 0x31, 0x00 };
     int32_t send_len_iblock1 = 21;
-    uint8_t send_buffer_iblock2[19] = {0x03, 0x00, 0xA4, 0x04, 0x00, 0x0C, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x00};
+    uint8_t send_buffer_iblock2[19] = { 0x03, 0x00, 0xA4, 0x04, 0x00, 0x0C, 0x01, 0x02, 0x03, 0x04,
+                                        0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x00 };
     int32_t send_len_iblock2 = 19;
 
-    uint8_t *receive_buffer=GetCommonBuffer();
+    uint8_t *receive_buffer = GetCommonBuffer();
     uint32_t receive_len;
 
     // If callback for early termination exists, call it
@@ -3792,65 +3732,67 @@ int32_t singleemvl1transac_b(callback_check_for_loop_termination_t callback)
 
     mml_nfc_pcd_transceive_params_t trans_params;
 
-    trans_params.protocol          = PROTOCOL_ISO14443B;
-    trans_params.frametype         = FT_STANDARD_CRC_EMD;
-    trans_params.tx_buf            = send_buffer_wupb;
-    trans_params.tx_len            = send_len_wupb;
-    trans_params.rx_buf            = receive_buffer;
-    trans_params.rx_len            = &receive_len;
-    trans_params.delay_till_send   = ISO14443_FDT_MIN;
-    trans_params.timeout           = ISO14443_FWT_ATQB;
-    trans_params.early_limit       = ISO14443_FDT_B_PICC_MIN;
+    trans_params.protocol = PROTOCOL_ISO14443B;
+    trans_params.frametype = FT_STANDARD_CRC_EMD;
+    trans_params.tx_buf = send_buffer_wupb;
+    trans_params.tx_len = send_len_wupb;
+    trans_params.rx_buf = receive_buffer;
+    trans_params.rx_len = &receive_len;
+    trans_params.delay_till_send = ISO14443_FDT_MIN;
+    trans_params.timeout = ISO14443_FWT_ATQB;
+    trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
 
     // WUPB
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // WUPA
-    trans_params.protocol          = PROTOCOL_ISO14443A;
-    trans_params.frametype         = FT_SHORT_NO_CRC_NO_EMD;
-    trans_params.tx_buf            = send_buffer_wupa;
-    trans_params.tx_len            = send_len_wupa;
-    trans_params.timeout           = ISO14443_FWT_A_ACT;
-    trans_params.early_limit       = ISO14443_FDT_A_EARLY_LIMIT;
+    trans_params.protocol = PROTOCOL_ISO14443A;
+    trans_params.frametype = FT_SHORT_NO_CRC_NO_EMD;
+    trans_params.tx_buf = send_buffer_wupa;
+    trans_params.tx_len = send_len_wupa;
+    trans_params.timeout = ISO14443_FWT_A_ACT;
+    trans_params.early_limit = ISO14443_FDT_A_EARLY_LIMIT;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // WUPB
-    trans_params.protocol          = PROTOCOL_ISO14443B;
-    trans_params.frametype         = FT_STANDARD_CRC_EMD;
-    trans_params.tx_buf            = send_buffer_wupb;
-    trans_params.tx_len            = send_len_wupb;
-    trans_params.timeout           = ISO14443_FWT_ATQB;
-    trans_params.early_limit       = ISO14443_FDT_B_PICC_MIN;
+    trans_params.protocol = PROTOCOL_ISO14443B;
+    trans_params.frametype = FT_STANDARD_CRC_EMD;
+    trans_params.tx_buf = send_buffer_wupb;
+    trans_params.tx_len = send_len_wupb;
+    trans_params.timeout = ISO14443_FWT_ATQB;
+    trans_params.early_limit = ISO14443_FDT_B_PICC_MIN;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Attrib
-    trans_params.tx_buf            = send_buffer_attrib;
-    trans_params.tx_len            = send_len_attrib;
+    trans_params.tx_buf = send_buffer_attrib;
+    trans_params.tx_len = send_len_attrib;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Iblock 1
-    trans_params.tx_buf            = send_buffer_iblock1;
-    trans_params.tx_len            = send_len_iblock1;
+    trans_params.tx_buf = send_buffer_iblock1;
+    trans_params.tx_len = send_len_iblock1;
     mml_nfc_pcd_transceive(trans_params);
     nfc_block_for_us(TIMEOUT_TRANSAC_US);
 
     // Iblock 2
-    trans_params.tx_buf            = send_buffer_iblock2;
-    trans_params.tx_len            = send_len_iblock2;
+    trans_params.tx_buf = send_buffer_iblock2;
+    trans_params.tx_len = send_len_iblock2;
     mml_nfc_pcd_transceive(trans_params);
 
     return 0;
 }
 
-void dte_do_transac_a(void) {
+void dte_do_transac_a(void)
+{
     int32_t i = 0;
 
     printf("\nAnalog TRANSAC_A Mode\n");
-    printf("\n!Test will continue to send TRANSAC_A sequence until any key is pressed to stop test!\n\n");
+    printf(
+        "\n!Test will continue to send TRANSAC_A sequence until any key is pressed to stop test!\n\n");
 
     while (1) {
         mml_nfc_pcd_task_sleep(PAUSE_TRANSAC_MS);
@@ -3864,11 +3806,13 @@ void dte_do_transac_a(void) {
     get_key_press_no_echo();
 }
 
-void dte_do_transac_b(void) {
+void dte_do_transac_b(void)
+{
     int32_t i = 0;
 
     printf("\nAnalog TRANSAC_B Mode\n");
-    printf("\n!Test will continue to send TRANSAC_B sequence until any key is pressed to stop test!\n\n");
+    printf(
+        "\n!Test will continue to send TRANSAC_B sequence until any key is pressed to stop test!\n\n");
 
     while (1) {
         mml_nfc_pcd_task_sleep(PAUSE_TRANSAC_MS);
@@ -3881,7 +3825,6 @@ void dte_do_transac_b(void) {
     printf("Press any key to continue...\n");
     get_key_press_no_echo();
 }
-
 
 void dte_analogue(void)
 {
@@ -3897,8 +3840,7 @@ void dte_analogue(void)
         printf("Carrier Status: ");
         if (carrier_on) {
             printf("On\n");
-        }
-        else {
+        } else {
             printf("Off\n");
         }
         printf("\nSelect Test to continue:\n");
@@ -3925,8 +3867,7 @@ void dte_analogue(void)
                 poweroff_operatingfield();
                 printf("Carrier OFF\n");
                 carrier_on = 0;
-            }
-            else {
+            } else {
                 poweron_operatingfield();
                 printf("Carrier On\n");
                 carrier_on = 1;
@@ -4065,7 +4006,7 @@ void dte_digital(void)
             printf("\n!Test will loop forever until any key is pressed to stop test!\n\n");
             poweron_operatingfield();
             while (1) {
-                printf("\n\nDig %ld",i++);
+                printf("\n\nDig %ld", i++);
 
                 if (g_logging_level > DBG_LVL_LOG) {
                     uint8_t current_field_level = 0;
@@ -4121,7 +4062,7 @@ void dte_interop(void)
             printf("\n!Test will loop forever until any key is pressed to stop test!\n\n");
             poweron_operatingfield();
             while (1) {
-                printf("\n\nInterop %ld\n",i++);
+                printf("\n\nInterop %ld\n", i++);
 
                 if (singleemvl1interopexchange(key_has_been_pressed)) {
                     break;
@@ -4216,7 +4157,6 @@ void dte(void)
         }
     }
 }
-
 
 void emvl1_main_loop(void)
 {

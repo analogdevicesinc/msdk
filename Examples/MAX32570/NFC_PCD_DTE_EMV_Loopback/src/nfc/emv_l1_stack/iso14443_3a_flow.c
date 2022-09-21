@@ -42,36 +42,34 @@
 #include <mml_nfc_pcd_rf_driver.h>
 #include "logging.h"
 
-#define UID_LEVEL_1     1
-#define UID_LEVEL_2     2
-#define UID_LEVEL_3     3
+#define UID_LEVEL_1 1
+#define UID_LEVEL_2 2
+#define UID_LEVEL_3 3
 
+#define TL_MAX_VALUE (20)
+#define TL_MIN_VALUE (1)
 
-#define TL_MAX_VALUE   (20)
-#define TL_MIN_VALUE   (1)
-
-#define TA_RESERVE_MAKE  (0x08)
+#define TA_RESERVE_MAKE (0x08)
 
 #define TA_DEFAULT_VALUE (0x00)
 
-#define ISO14443_3A_ANTICOLLISION_CT_VALUE          0x88
-#define TYPE_A_SAK_14443_4_SUPPORT                  0x20
+#define ISO14443_3A_ANTICOLLISION_CT_VALUE 0x88
+#define TYPE_A_SAK_14443_4_SUPPORT 0x20
 
 #define ATQA_LEN 2
 
 typedef struct {
-    uint8_t fsci:4;
-    uint8_t has_ta:1;
-    uint8_t has_tb:1;
-    uint8_t has_tc:1;
-    uint8_t reserve:1;
+    uint8_t fsci : 4;
+    uint8_t has_ta : 1;
+    uint8_t has_tb : 1;
+    uint8_t has_tc : 1;
+    uint8_t reserve : 1;
 } T0_t;
 
 typedef struct {
-    uint8_t sfgi:4;
-    uint8_t fwi:4;
+    uint8_t sfgi : 4;
+    uint8_t fwi : 4;
 } TB_t;
-
 
 typedef struct {
     uint8_t TL;
@@ -88,7 +86,6 @@ typedef struct {
  */
 static uint8_t sak;
 
-
 uint8_t get_last_sak()
 {
     return sak;
@@ -100,28 +97,27 @@ uint8_t get_last_sak()
 static int32_t check_atq(uint8_t *atq, uint32_t *uid_level)
 {
     if ((atq[0] & 0xC0) == 0x00) {
-        *uid_level = UID_LEVEL_1;       // single size UID
+        *uid_level = UID_LEVEL_1; // single size UID
     } else if ((atq[0] & 0xC0) == 0x40) {
-        *uid_level = UID_LEVEL_2;       // double size UID
+        *uid_level = UID_LEVEL_2; // double size UID
     } else if ((atq[0] & 0xC0) == 0x80) {
-        *uid_level = UID_LEVEL_3;   // triple size UID
+        *uid_level = UID_LEVEL_3; // triple size UID
     } else {
-        *uid_level = UID_LEVEL_1;       // default to use single size UID
+        *uid_level = UID_LEVEL_1; // default to use single size UID
     }
 
     /*for Bit1~5 RFU*/
-    if((atq[0]&0x1F) != 0x01 &&(atq[0]&0x1F) != 0x02 &&(atq[0]&0x1F) != 0x04 &&(atq[0]&0x1F) != 0x08 &&(atq[0]&0x1F) != 0x10)
-    {
+    if ((atq[0] & 0x1F) != 0x01 && (atq[0] & 0x1F) != 0x02 && (atq[0] & 0x1F) != 0x04 &&
+        (atq[0] & 0x1F) != 0x08 && (atq[0] & 0x1F) != 0x10) {
         *uid_level = UID_LEVEL_1;
     }
 
     /*b5~b8 should be 0.*/
-    if(atq[1]&0xF0)
+    if (atq[1] & 0xF0)
         return ISO14443_3_ERR_PROTOCOL;
 
     return ISO14443_3_ERR_SUCCESS;
 }
-
 
 int32_t iso_14443_3a_polling()
 {
@@ -130,25 +126,22 @@ int32_t iso_14443_3a_polling()
     return iso_14443_3a_polling_response(NULL, &void_len);
 }
 
-
 int32_t iso_14443_3a_polling_response(uint8_t *atqa_resp, int32_t *atqa_resp_len)
 {
     int32_t ret;
-    uint8_t *atq=GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
 
-    ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq ,WAKEUP_NOTRETRY);
+    ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq, WAKEUP_NOTRETRY);
 
     if (ret == ISO14443_3_ERR_ABORTED) {
         return ret;
     }
 
-    if (ret != ISO14443_3_ERR_TIMEOUT)
-    {
-
+    if (ret != ISO14443_3_ERR_TIMEOUT) {
         iso_14443_3a_cmd_halt();
 
         // If atqa_resp exits, then save off the ATQA
-        if ( atqa_resp ) {
+        if (atqa_resp) {
             memcpy(atqa_resp, atq, ATQA_LEN);
             *atqa_resp_len = ATQA_LEN;
         }
@@ -159,7 +152,6 @@ int32_t iso_14443_3a_polling_response(uint8_t *atqa_resp, int32_t *atqa_resp_len
     return ISO14443_3_ERR_TIMEOUT;
 }
 
-
 int32_t iso_14443_3a_collision_detect()
 {
     int32_t void_len = 0;
@@ -167,23 +159,22 @@ int32_t iso_14443_3a_collision_detect()
     return iso_14443_3a_collision_detect_response(NULL, &void_len, NULL, &void_len, NULL);
 }
 
-
 int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa_resp_len,
                                                uint8_t *uid_resp, int32_t *uid_resp_len,
                                                uint8_t *sak_resp)
 {
-    uint8_t *atq=GetCommonBuffer();
-    uint8_t *uid=GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
+    uint8_t *uid = GetCommonBuffer();
     uint32_t uid_level;
     int32_t status = ISO14443_3_ERR_OTHER;
 
-    status = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq ,WAKEUP_DORETRY);
+    status = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq, WAKEUP_DORETRY);
 
-    if(status != ISO14443_3_ERR_SUCCESS)
+    if (status != ISO14443_3_ERR_SUCCESS)
         return status;
 
     // If atqa_resp exits, then save off the ATQA
-    if ( atqa_resp ) {
+    if (atqa_resp) {
         memcpy(atqa_resp, atq, ATQA_LEN);
         *atqa_resp_len = ATQA_LEN;
     }
@@ -193,7 +184,6 @@ int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa
     }
     info("uid_level is = %d, atq = %02x%02x\n", uid_level, atq[0], atq[1]);
 
-
     /*UID CL1*/
     status = iso_14443_3a_cmd_anticoll(ISO_14443_3A_CMD_ANTICOLL_SEL_L1, uid);
 
@@ -201,21 +191,19 @@ int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa
         return status;
     }
 
-    if (status != ISO14443_3_ERR_SUCCESS)
-    {
+    if (status != ISO14443_3_ERR_SUCCESS) {
         error("Failed anticoll l1\n");
         return ISO14443_3_ERR_CMD;
     }
     info("uid = [%02x%02x%02x%02x%02x]\n", uid[0], uid[1], uid[2], uid[3], uid[4]);
 
     /*UID CL1 uid0 should not be CT value when 1-level uid*/
-    if((uid_level == UID_LEVEL_1 ) && uid[0]==ISO14443_3A_ANTICOLLISION_CT_VALUE)
+    if ((uid_level == UID_LEVEL_1) && uid[0] == ISO14443_3A_ANTICOLLISION_CT_VALUE)
         return ISO14443_3_ERR_PROTOCOL;
 
-    if (uid_level >= UID_LEVEL_1)
-    {
+    if (uid_level >= UID_LEVEL_1) {
         // If anticol_resp exists, fill it in
-        if ( uid_resp ) {
+        if (uid_resp) {
             memcpy(uid_resp, uid, UID_EACH_LEN);
             *uid_resp_len = UID_EACH_LEN;
         }
@@ -226,39 +214,35 @@ int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa
             return status;
         }
 
-        if (status != 0)
-        {
+        if (status != 0) {
             error("Failed select l1\n");
             return ISO14443_3_ERR_CMD;
         }
 
         // If sak_resp exists, fill it in
-        if ( sak_resp ) {
+        if (sak_resp) {
             *sak_resp = sak;
         }
     }
 
-    if (uid_level >= UID_LEVEL_2)
-    {
-
+    if (uid_level >= UID_LEVEL_2) {
         status = iso_14443_3a_cmd_anticoll(ISO_14443_3A_CMD_ANTICOLL_SEL_L2, uid + UID_EACH_LEN);
 
         if (status == ISO14443_3_ERR_ABORTED) {
             return status;
         }
 
-        if (status != ISO14443_3_ERR_SUCCESS)
-        {
+        if (status != ISO14443_3_ERR_SUCCESS) {
             error("Failed anticoll l2\n");
             return ISO14443_3_ERR_CMD;
         }
 
         /*UID CL2 uid3 should not be CT value when 2-level uid*/
-        if((uid_level == UID_LEVEL_2 ) && uid[UID_EACH_LEN]==ISO14443_3A_ANTICOLLISION_CT_VALUE)
+        if ((uid_level == UID_LEVEL_2) && uid[UID_EACH_LEN] == ISO14443_3A_ANTICOLLISION_CT_VALUE)
             return ISO14443_3_ERR_PROTOCOL;
 
         // If uid_resp exists, fill it in
-        if ( uid_resp ) {
+        if (uid_resp) {
             memcpy(uid_resp, uid, UID_EACH_LEN * 2);
             *uid_resp_len = UID_EACH_LEN * 2;
         }
@@ -269,64 +253,61 @@ int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa
             return status;
         }
 
-        if (status != ISO14443_3_ERR_SUCCESS)
-        {
+        if (status != ISO14443_3_ERR_SUCCESS) {
             error("Failed select l2\n");
             return ISO14443_3_ERR_CMD;
         }
 
         // If sak_resp exists, fill it in
-        if ( sak_resp ) {
+        if (sak_resp) {
             *sak_resp = sak;
         }
     }
 
     if (uid_level == UID_LEVEL_3) {
-
-        status = iso_14443_3a_cmd_anticoll(ISO_14443_3A_CMD_ANTICOLL_SEL_L3, uid + (2 * UID_EACH_LEN));
+        status =
+            iso_14443_3a_cmd_anticoll(ISO_14443_3A_CMD_ANTICOLL_SEL_L3, uid + (2 * UID_EACH_LEN));
 
         if (status == ISO14443_3_ERR_ABORTED) {
             return status;
         }
 
-        if (status != ISO14443_3_ERR_SUCCESS)
-        {
+        if (status != ISO14443_3_ERR_SUCCESS) {
             error("Failed anticoll l3\n");
             return ISO14443_3_ERR_CMD;
         }
 
         // If uid_resp exists, fill it in
-        if ( uid_resp ) {
+        if (uid_resp) {
             memcpy(uid_resp, uid, UID_EACH_LEN * 3);
             *uid_resp_len = UID_EACH_LEN * 3;
         }
 
-        status = iso_14443_3a_cmd_select(ISO_14443_3A_CMD_SELECT_SEL_L3, uid + (2 * UID_EACH_LEN), &sak);
+        status =
+            iso_14443_3a_cmd_select(ISO_14443_3A_CMD_SELECT_SEL_L3, uid + (2 * UID_EACH_LEN), &sak);
 
         if (status == ISO14443_3_ERR_ABORTED) {
             return status;
         }
 
-        if (status != ISO14443_3_ERR_SUCCESS)
-        {
+        if (status != ISO14443_3_ERR_SUCCESS) {
             error("Failed select l3\n");
             return ISO14443_3_ERR_CMD;
         }
 
         // If sak_resp exists, fill it in
-        if ( sak_resp ) {
+        if (sak_resp) {
             *sak_resp = sak;
         }
     }
 
     // Check to see if this card supports ISO_14443_4
-    if ( (sak & TYPE_A_SAK_14443_4_SUPPORT) != TYPE_A_SAK_14443_4_SUPPORT ) {
+    if ((sak & TYPE_A_SAK_14443_4_SUPPORT) != TYPE_A_SAK_14443_4_SUPPORT) {
         return ISO14443_3_ERR_NON_ISO14443_4_CARD;
     }
 
     return ISO14443_3_ERR_SUCCESS;
 }
-
 
 int32_t iso_14443_3a_active()
 {
@@ -335,17 +316,16 @@ int32_t iso_14443_3a_active()
     return iso_14443_3a_active_response(NULL, &void_len);
 }
 
-
 int32_t iso_14443_3a_active_response(uint8_t *ats_resp, int32_t *ats_resp_len)
 {
     int32_t status = ISO14443_3_ERR_OTHER;
-    uint8_t fsci=FSCI_DEFAULT_VALUE;
-    uint8_t cid=0,nad=0;
-    uint8_t *ats=GetCommonBuffer();
+    uint8_t fsci = FSCI_DEFAULT_VALUE;
+    uint8_t cid = 0, nad = 0;
+    uint8_t *ats = GetCommonBuffer();
     uint32_t ats_len;
-    uint8_t fwi=FWI_DEFAULT_VALUE,sfgi=SFGI_DEFAULT_VALUE;
+    uint8_t fwi = FWI_DEFAULT_VALUE, sfgi = SFGI_DEFAULT_VALUE;
     uint32_t sfgi_fc = 0;
-    ATS_t *pats=(ATS_t *)ats;
+    ATS_t *pats = (ATS_t *)ats;
 
     status = iso_14443_3a_cmd_rats(FSDI_DEFAULT_VALUE, cid, ats, &ats_len);
 
@@ -358,50 +338,49 @@ int32_t iso_14443_3a_active_response(uint8_t *ats_resp, int32_t *ats_resp_len)
     }
 
     // If ats_resp exists, fill it in
-    if ( ats_resp ) {
+    if (ats_resp) {
         memcpy(ats_resp, ats, ats_len);
         *ats_resp_len = ats_len;
     }
 
     //check TL and ats len
-    if(!ats_len || pats->TL != ats_len)
+    if (!ats_len || pats->TL != ats_len)
         return ISO14443_3_ERR_PROTOCOL;
 
-    if(pats->TL>TL_MAX_VALUE)
+    if (pats->TL > TL_MAX_VALUE)
         return ISO14443_3_ERR_CMD;
 
     //for debug ta104.14/15
-    if(pats->TL == 0x13 || pats->TL == 0x14){
+    if (pats->TL == 0x13 || pats->TL == 0x14) {
         info("Case TA102.14/15.\n");
     }
 
-    if(pats->TL > TL_MIN_VALUE){
+    if (pats->TL > TL_MIN_VALUE) {
+        fsci = pats->T0.fsci <= FSCI_MAX_VALUE ? pats->T0.fsci : FSCI_MAX_VALUE;
 
-        fsci=pats->T0.fsci<=FSCI_MAX_VALUE?pats->T0.fsci:FSCI_MAX_VALUE;
-
-        if(pats->T0.has_ta && pats->TA != TA_DEFAULT_VALUE &&  !(pats->TA&TA_RESERVE_MAKE)){
-            warning("warn TA %x\n",pats->TA);
+        if (pats->T0.has_ta && pats->TA != TA_DEFAULT_VALUE && !(pats->TA & TA_RESERVE_MAKE)) {
+            warning("warn TA %x\n", pats->TA);
             //return ISO14443_3_ERR_CMD;
         }
 
-        if(pats->T0.has_tb){
-            fwi=pats->TB.fwi<=FWI_MAX_VALUE?pats->TB.fwi:FWI_DEFAULT_VALUE;
-            sfgi=pats->TB.sfgi<=SFGI_MAX_VALUE?pats->TB.sfgi:SFGI_DEFAULT_VALUE;
+        if (pats->T0.has_tb) {
+            fwi = pats->TB.fwi <= FWI_MAX_VALUE ? pats->TB.fwi : FWI_DEFAULT_VALUE;
+            sfgi = pats->TB.sfgi <= SFGI_MAX_VALUE ? pats->TB.sfgi : SFGI_DEFAULT_VALUE;
         }
 
         //for emv we just ignore the tc value.
 
-    }else if(!pats->TL) {
+    } else if (!pats->TL) {
         return ISO14443_3_ERR_PROTOCOL;
     }
 
-    info("fsci %d\n",fsci);
-    set_ats(PROTOCOL_ISO14443A,fsci,fwi,sfgi,nad,cid);
+    info("fsci %d\n", fsci);
+    set_ats(PROTOCOL_ISO14443A, fsci, fwi, sfgi, nad, cid);
     seqnuminit();
 
     //SFGI delay = 256x16x2^sfgi + 384x2^sfgi   /fc
-    if(sfgi){
-        sfgi_fc = 4480*(1 << sfgi);
+    if (sfgi) {
+        sfgi_fc = 4480 * (1 << sfgi);
 
         nfc_set_delay_till_next_send_fc(sfgi_fc);
 
@@ -411,31 +390,27 @@ int32_t iso_14443_3a_active_response(uint8_t *ats_resp, int32_t *ats_resp_len)
     return ISO14443_3_ERR_SUCCESS;
 }
 
-
 int32_t iso_14443_3a_remove()
 {
     int32_t loop = 0;
     int32_t ret;
-    uint8_t *atq=GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
 
     nfc_reset();
 
-    while(loop < 3)
-    {
-        ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq ,WAKEUP_NOTRETRY);
+    while (loop < 3) {
+        ret = iso_14443_3a_cmd_req_wupa(ISO_14443_3A_CMD_WUPA, atq, WAKEUP_NOTRETRY);
 
         if (ret == ISO14443_3_ERR_ABORTED) {
             return ret;
         }
 
-        if (ret != ISO14443_3_ERR_TIMEOUT)
-        {
+        if (ret != ISO14443_3_ERR_TIMEOUT) {
             iso_14443_3a_cmd_halt();
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             loop = 0;
-        } else
-        {
-            loop ++;
+        } else {
+            loop++;
 
             // EMV 2.6b case TA311, now enforces a minimum retransmission time of 3ms
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
@@ -444,4 +419,3 @@ int32_t iso_14443_3a_remove()
 
     return ISO14443_3_ERR_SUCCESS;
 }
-

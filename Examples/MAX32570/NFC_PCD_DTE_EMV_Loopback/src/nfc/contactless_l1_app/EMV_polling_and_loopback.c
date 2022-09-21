@@ -49,7 +49,7 @@
 #include "mxc_device.h"
 #include "gpio.h"
 
-#define KEYPRESS_RETURN_DELAY_MS    25
+#define KEYPRESS_RETURN_DELAY_MS 25
 
 uint8_t rapdu[261]; /**< Shared RAPDU buffer */
 int32_t rapdulen; /**< Length of current RAPDU in the shared buffer */
@@ -65,24 +65,24 @@ uid_storage_t get_stored_uid(void)
     return uid_store;
 }
 
-#define BEEPER_PORT                 MXC_GPIO3
-#define BEEPER_PIN                  MXC_GPIO_PIN_3
-#define BEEP_PASS_TIME_MS           150
-#define BEEP_FAIL_TIME_MS           150
+#define BEEPER_PORT MXC_GPIO3
+#define BEEPER_PIN MXC_GPIO_PIN_3
+#define BEEP_PASS_TIME_MS 150
+#define BEEP_FAIL_TIME_MS 150
 
 // NOTE: Volume is set as a % of Duty cycle. DTE ships with volume at 10% duty cycle
 // 8470 * .1 = 847.
-#define BEEP_FAIL_TONE              2500//8470
-#define BEEP_FAIL_VOL               2000 //847
-#define BEEP_PASS_TONE              250 //847
-#define BEEP_PASS_VOL               25  //84
+#define BEEP_FAIL_TONE 2500 //8470
+#define BEEP_FAIL_VOL 2000 //847
+#define BEEP_PASS_TONE 250 //847
+#define BEEP_PASS_VOL 25 //84
 
-#define PASS_LED_GPIO_PORT          MXC_GPIO3
-#define PASS_LED_GPIO_PIN           MXC_GPIO_PIN_4
-#define FAIL_LED_GPIO_PORT          MXC_GPIO3
-#define FAIL_LED_GPIO_PIN           MXC_GPIO_PIN_5
+#define PASS_LED_GPIO_PORT MXC_GPIO3
+#define PASS_LED_GPIO_PIN MXC_GPIO_PIN_4
+#define FAIL_LED_GPIO_PORT MXC_GPIO3
+#define FAIL_LED_GPIO_PIN MXC_GPIO_PIN_5
 
-uint32_t indicator_setup            = 0;
+uint32_t indicator_setup = 0;
 
 mxc_gpio_cfg_t pass_led;
 mxc_gpio_cfg_t fail_led;
@@ -101,7 +101,7 @@ static void do_beep(uint32_t tone, uint32_t vol, uint32_t duration_ms)
         return;
     }
 
-    if ( tone < vol ) {
+    if (tone < vol) {
         return;
     }
 
@@ -127,12 +127,11 @@ static void do_beep(uint32_t tone, uint32_t vol, uint32_t duration_ms)
     MXC_GPIO_OutClr(BEEPER_PORT, BEEPER_PIN);
 }
 
-
 static void setup_indicator(void)
 {
     pass_led.port = PASS_LED_GPIO_PORT;
     pass_led.mask = PASS_LED_GPIO_PIN;
-    pass_led.pad  = MXC_GPIO_PAD_NONE;
+    pass_led.pad = MXC_GPIO_PAD_NONE;
     pass_led.func = MXC_GPIO_FUNC_OUT;
 
     MXC_GPIO_Config(&pass_led);
@@ -140,7 +139,7 @@ static void setup_indicator(void)
 
     fail_led.port = FAIL_LED_GPIO_PORT;
     fail_led.mask = FAIL_LED_GPIO_PIN;
-    fail_led.pad  = MXC_GPIO_PAD_NONE;
+    fail_led.pad = MXC_GPIO_PAD_NONE;
     fail_led.func = MXC_GPIO_FUNC_OUT;
 
     MXC_GPIO_Config(&fail_led);
@@ -148,7 +147,7 @@ static void setup_indicator(void)
 
     buzzer_out.port = BEEPER_PORT;
     buzzer_out.mask = BEEPER_PIN;
-    buzzer_out.pad  = MXC_GPIO_PAD_NONE;
+    buzzer_out.pad = MXC_GPIO_PAD_NONE;
     buzzer_out.func = MXC_GPIO_FUNC_OUT;
     // Use 3.3V for louder Buzz
     buzzer_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
@@ -186,34 +185,32 @@ static int32_t emvl1interopapduloop(void)
     int32_t ret;
     // NOTE: need to have a large enough buffer here to handle loopback commands as large as 256 bytes,
     //  plus some header/footer bytes.
-    uint8_t capdu[261]= {0x00,0xA4,0x04,0x00,0x0E,'2','P','A','Y','.','S','Y','S','.','D','D','F','0','1',0x00};
-    int32_t capdulen=20;
+    uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
+    int32_t capdulen = 20;
 
     //do apdu.
     do {
-
         logging("CAPDU ");
         hexdump(DBG_LVL_LOG, capdu, capdulen, 1);
 
-        ret=SendAPDU(capdu,capdulen,rapdu,&rapdulen);
+        ret = SendAPDU(capdu, capdulen, rapdu, &rapdulen);
         rapdu_displayed = 2;
 
         if (ret == ISO14443_3_ERR_ABORTED) {
             return ret;
         }
 
-        if(ret) {
-
+        if (ret) {
             switch (ret) {
             case ISO14443_3_ERR_PROTOCOL:
             case ISO14443_3_ERR_TIMEOUT:
             case ISO14443_3_ERR_TRANSMISSION:
                 return RESETPROCEDURE;
             }
-
         }
 
-        if(rapdulen<=2) {
+        if (rapdulen <= 2) {
             // 2 bytes should be wrong case.
             warning("Short APDU: %ld\n", rapdulen);
             return RESETPROCEDURE;
@@ -225,7 +222,7 @@ static int32_t emvl1interopapduloop(void)
         // loop-back, other times at the end of the exchange loop below.
         rapdu_displayed = 0;
 
-        if(rapdu[1] == REMOVALPROCEDURE) {
+        if (rapdu[1] == REMOVALPROCEDURE) {
             info("Removal procedure\n");
             return REMOVALPROCEDURE;
         }
@@ -237,10 +234,10 @@ static int32_t emvl1interopapduloop(void)
         }
 
         //pre next capdu,no status
-        memcpy(capdu,rapdu,rapdulen-2);
-        capdulen=rapdulen-2;
+        memcpy(capdu, rapdu, rapdulen - 2);
+        capdulen = rapdulen - 2;
 
-    } while(1);
+    } while (1);
 
     return ret;
 }
@@ -259,34 +256,32 @@ static int32_t emvl1apduloop(void)
     int32_t ret;
     // NOTE: need to have a large enough buffer here to handle loopback commands as large as 256 bytes,
     //  plus some header/footer bytes.
-    uint8_t capdu[261]= {0x00,0xA4,0x04,0x00,0x0E,'2','P','A','Y','.','S','Y','S','.','D','D','F','0','1',0x00};
-    int32_t capdulen=20;
+    uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
+    int32_t capdulen = 20;
 
     //do apdu.
     do {
-
         logging("CAPDU ");
         hexdump(DBG_LVL_LOG, capdu, capdulen, 1);
 
-        ret=SendAPDU(capdu,capdulen,rapdu,&rapdulen);
+        ret = SendAPDU(capdu, capdulen, rapdu, &rapdulen);
         rapdu_displayed = 2;
 
         if (ret == ISO14443_3_ERR_ABORTED) {
             return ret;
         }
 
-        if(ret) {
-
+        if (ret) {
             switch (ret) {
             case ISO14443_3_ERR_PROTOCOL:
             case ISO14443_3_ERR_TIMEOUT:
             case ISO14443_3_ERR_TRANSMISSION:
                 return RESETPROCEDURE;
             }
-
         }
 
-        if(rapdulen<=2) {
+        if (rapdulen <= 2) {
             // 2 bytes should be wrong case.
             warning("Short APDU: %ld\n", rapdulen);
             return RESETPROCEDURE;
@@ -298,10 +293,10 @@ static int32_t emvl1apduloop(void)
         // loop-back, other times at the end of the exchange loop below.
         rapdu_displayed = 0;
 
-        if(rapdu[1] == REMOVALPROCEDURE) {
+        if (rapdu[1] == REMOVALPROCEDURE) {
             info("Removal procedure\n");
             return REMOVALPROCEDURE;
-        } else if(rapdu[1] == POWEROFFPROCEDURE) {
+        } else if (rapdu[1] == POWEROFFPROCEDURE) {
             info("Power-Off procedure\n");
             return POWEROFFPROCEDURE;
         }
@@ -313,10 +308,10 @@ static int32_t emvl1apduloop(void)
         }
 
         //pre next capdu,no status
-        memcpy(capdu,rapdu,rapdulen-2);
-        capdulen=rapdulen-2;
+        memcpy(capdu, rapdu, rapdulen - 2);
+        capdulen = rapdulen - 2;
 
-    } while(1);
+    } while (1);
 
     return ret;
 }
@@ -373,9 +368,9 @@ int32_t emvl1_poll_for_card(uint32_t loop_num)
             nfc_reset(); // NOTE: This is not done for EMV loopback
             return NO_CARD_FOUND;
         } else if (type_a == 1) {
-
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-            ret = iso_14443_3a_collision_detect_response(atqa_buff, &atqa_response_len, resp_buff, &resp_buff_len, &sak_response);
+            ret = iso_14443_3a_collision_detect_response(atqa_buff, &atqa_response_len, resp_buff,
+                                                         &resp_buff_len, &sak_response);
 
             if (ret == ISO14443_3_ERR_SUCCESS) {
                 logging("ATQA ");
@@ -416,7 +411,6 @@ int32_t emvl1_poll_for_card(uint32_t loop_num)
                 return COLLISION_DETECTED;
             }
         } else if (type_b == 1) {
-
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             ret = iso_14443_3a_polling();
 
@@ -431,7 +425,6 @@ int32_t emvl1_poll_for_card(uint32_t loop_num)
             ret = iso_14443_3b_collision_detect_response(resp_buff, &resp_buff_len);
 
             if (ret == ISO14443_3_ERR_SUCCESS) {
-
                 logging("ATQB ");
                 hexdump(DBG_LVL_LOG, resp_buff, resp_buff_len, 0);
 
@@ -446,8 +439,7 @@ int32_t emvl1_poll_for_card(uint32_t loop_num)
                     logging("ATTRIB_RESP ");
                     hexdump(DBG_LVL_LOG, resp_buff, resp_buff_len, 0);
                     return TYPE_B_READY;
-                }
-                else {
+                } else {
                     //Active  type B failed
                     warning("B active fail: 0x%x\n", ret);
                     nfc_reset();
@@ -471,113 +463,108 @@ int32_t emvl1_poll_for_card(uint32_t loop_num)
 
 #else
 // Don't log activation responses
-    int32_t emvl1_poll_for_card(uint32_t loop_num)
-    {
-        int32_t ret;
-        uint8_t type_a = 0;
-        uint8_t type_b = 0;
-        uint32_t count = 0;
+int32_t emvl1_poll_for_card(uint32_t loop_num)
+{
+    int32_t ret;
+    uint8_t type_a = 0;
+    uint8_t type_b = 0;
+    uint32_t count = 0;
 
-        for (count = 0; count < loop_num; count++) {
-            type_a = 0;
-            type_b = 0;
+    for (count = 0; count < loop_num; count++) {
+        type_a = 0;
+        type_b = 0;
 
+        ret = iso_14443_3a_polling();
+        if (ret == ISO14443_3_ERR_SUCCESS) {
+            type_a = 1;
+            info("TYPEA\n");
+        }
+
+        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+
+        ret = iso_14443_3b_polling();
+        if (ret == ISO14443_3_ERR_SUCCESS) {
+            type_b = 1;
+            info("TYPEB\n");
+        }
+
+        if (type_a == 1 && type_b == 1) {
+            //Both type a and type b, Collision
+            nfc_reset();
+            return COLLISION_DETECTED;
+        } else if (type_a == 0 && type_b == 0) {
+            //No card
+            nfc_reset(); // NOTE: This is not done for EMV loopback
+            return NO_CARD_FOUND;
+        } else if (type_a == 1) {
+            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+            ret = iso_14443_3a_collision_detect();
+
+            if (ret == ISO14443_3_ERR_SUCCESS) {
+                ret = iso_14443_3a_active();
+                if (ret == ISO14443_3_ERR_SUCCESS) {
+                    // Got a Type A Card ready for APDUs
+                    return TYPE_A_READY;
+                } else {
+                    //Active  type A failed
+                    warning("A active fail: 0x%X\n", ret);
+                    nfc_reset();
+                    return CARD_FOUND_WITH_ERROR;
+                }
+            } else {
+                // Is this a NON 14443-4 card?
+                if (ret == ISO14443_3_ERR_NON_ISO14443_4_CARD) {
+                    return TYPE_A_NON_ISO14443_4_READY;
+                }
+                //Type A collision
+                warning("A coll fail: 0x%X\n", ret);
+                nfc_reset();
+                return COLLISION_DETECTED;
+            }
+        } else if (type_b == 1) {
+            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             ret = iso_14443_3a_polling();
+
             if (ret == ISO14443_3_ERR_SUCCESS) {
                 type_a = 1;
-                info("TYPEA\n");
+                info("TYPEA found after B, Collision\n");
+                nfc_reset();
+                return COLLISION_DETECTED;
             }
 
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-
-            ret = iso_14443_3b_polling();
+            ret = iso_14443_3b_collision_detect();
             if (ret == ISO14443_3_ERR_SUCCESS) {
-                type_b = 1;
-                info("TYPEB\n");
-            }
-
-            if (type_a == 1 && type_b == 1) {
-                //Both type a and type b, Collision
+                ret = iso_14443_3b_active();
+#ifdef IGNORE_HIGH_INF
+                if ((ret == ISO14443_3_ERR_SUCCESS) || (ret == ISO14443_3_ERR_CONTAINS_HIGH_INF)) {
+#else
+                if (ret == ISO14443_3_ERR_SUCCESS) {
+#endif
+                    // Got a Type B Card ready for APDUs
+                    return TYPE_B_READY;
+                } else {
+                    //Active  type B failed
+                    warning("B active fail: 0x%x\n", ret);
+                    nfc_reset();
+                    return CARD_FOUND_WITH_ERROR;
+                }
+            } else {
+                // Is this a NON 14443-4 card?
+                if (ret == ISO14443_3_ERR_NON_ISO14443_4_CARD) {
+                    return TYPE_B_NON_ISO14443_4_READY;
+                }
+                //Type B collision
+                warning("B coll fail: 0x%X\n", ret);
                 nfc_reset();
                 return COLLISION_DETECTED;
-            } else if (type_a == 0 && type_b == 0) {
-                //No card
-                nfc_reset(); // NOTE: This is not done for EMV loopback
-                return NO_CARD_FOUND;
-            } else if (type_a == 1) {
-
-                nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                ret = iso_14443_3a_collision_detect();
-
-                if (ret == ISO14443_3_ERR_SUCCESS) {
-                    ret = iso_14443_3a_active();
-                    if (ret == ISO14443_3_ERR_SUCCESS) {
-                        // Got a Type A Card ready for APDUs
-                        return TYPE_A_READY;
-                    } else {
-                        //Active  type A failed
-                        warning("A active fail: 0x%X\n", ret);
-                        nfc_reset();
-                        return CARD_FOUND_WITH_ERROR;
-                    }
-                } else {
-                    // Is this a NON 14443-4 card?
-                    if (ret == ISO14443_3_ERR_NON_ISO14443_4_CARD) {
-                        return TYPE_A_NON_ISO14443_4_READY;
-                    }
-                    //Type A collision
-                    warning("A coll fail: 0x%X\n", ret);
-                    nfc_reset();
-                    return COLLISION_DETECTED;
-                }
-            } else if (type_b == 1) {
-
-                nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                ret = iso_14443_3a_polling();
-
-                if (ret == ISO14443_3_ERR_SUCCESS) {
-                    type_a = 1;
-                    info("TYPEA found after B, Collision\n");
-                    nfc_reset();
-                    return COLLISION_DETECTED;
-                }
-
-                nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                ret = iso_14443_3b_collision_detect();
-                if (ret == ISO14443_3_ERR_SUCCESS) {
-
-                    ret = iso_14443_3b_active();
-    #ifdef IGNORE_HIGH_INF
-                    if ((ret == ISO14443_3_ERR_SUCCESS) || (ret == ISO14443_3_ERR_CONTAINS_HIGH_INF)) {
-    #else
-                    if (ret == ISO14443_3_ERR_SUCCESS) {
-    #endif
-                        // Got a Type B Card ready for APDUs
-                        return TYPE_B_READY;
-                    }
-                    else {
-                        //Active  type B failed
-                        warning("B active fail: 0x%x\n", ret);
-                        nfc_reset();
-                        return CARD_FOUND_WITH_ERROR;
-                    }
-                } else {
-                    // Is this a NON 14443-4 card?
-                    if (ret == ISO14443_3_ERR_NON_ISO14443_4_CARD) {
-                        return TYPE_B_NON_ISO14443_4_READY;
-                    }
-                    //Type B collision
-                    warning("B coll fail: 0x%X\n", ret);
-                    nfc_reset();
-                    return COLLISION_DETECTED;
-                }
             }
         }
-
-        return 0;
     }
-#endif // LOG_ACTIVATION_RESPONSES
 
+    return 0;
+}
+#endif // LOG_ACTIVATION_RESPONSES
 
 /**
  * @brief Implements EMV card polling for use in Level 1 loop-back testing environment
@@ -600,8 +587,7 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
     uint8_t type_a = 0;
     uint8_t type_b = 0;
 
-
-    while(1) {
+    while (1) {
         type_a = 0;
         type_b = 0;
 
@@ -618,8 +604,7 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
         if (ret == ISO14443_3_ERR_SUCCESS) {
             type_a = 1;
             info("TYPEA\n");
-        }
-        else if (ret == ISO14443_3_ERR_ABORTED) {
+        } else if (ret == ISO14443_3_ERR_ABORTED) {
             logging("Type A polling aborted\n");
             return 1;
         }
@@ -630,8 +615,7 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
         if (ret == ISO14443_3_ERR_SUCCESS) {
             type_b = 1;
             info("TYPEB\n");
-        }
-        else if (ret == ISO14443_3_ERR_ABORTED) {
+        } else if (ret == ISO14443_3_ERR_ABORTED) {
             logging("Type B polling aborted\n");
             return 1;
         }
@@ -645,7 +629,6 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             continue;
         } else if (type_a == 1) {
-
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             ret = iso_14443_3a_collision_detect();
 
@@ -664,15 +647,14 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
 
                 if (ret == ISO14443_3_ERR_SUCCESS) {
                     //APDU
-                    ret=emvl1apduloop();
+                    ret = emvl1apduloop();
 
                     if (ret == ISO14443_3_ERR_ABORTED) {
                         logging("Type A APDU loop aborted\n");
                         return 1;
                     }
 
-                    switch(ret){
-
+                    switch (ret) {
                     case REMOVALPROCEDURE:
                         info("A: Removal\n");
                         iso_14443_3a_remove();
@@ -703,7 +685,6 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
                 break;
             }
         } else if (type_b == 1) {
-
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             ret = iso_14443_3a_polling();
 
@@ -741,15 +722,14 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
                 if (ret == ISO14443_3_ERR_SUCCESS) {
 #endif
                     //APDU
-                    ret=emvl1apduloop();
+                    ret = emvl1apduloop();
 
                     if (ret == ISO14443_3_ERR_ABORTED) {
                         logging("Type B APDU loop aborted\n");
                         return 1;
                     }
 
-                    switch(ret){
-
+                    switch (ret) {
                     case REMOVALPROCEDURE:
                         info("B: Removal\n");
                         iso_14443_3b_remove();
@@ -799,13 +779,13 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
     uint8_t type_a = 0;
     uint8_t type_b = 0;
 
-    if ( !indicator_setup ) {
+    if (!indicator_setup) {
         setup_indicator();
     }
 
     clear_indications();
 
-    while(1) {
+    while (1) {
         type_a = 0;
         type_b = 0;
 
@@ -822,8 +802,7 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
         if (ret == ISO14443_3_ERR_SUCCESS) {
             type_a = 1;
             info("TYPEA\n");
-        }
-        else if (ret == ISO14443_3_ERR_ABORTED) {
+        } else if (ret == ISO14443_3_ERR_ABORTED) {
             logging("Type A polling aborted\n");
             return 1;
         }
@@ -834,8 +813,7 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
         if (ret == ISO14443_3_ERR_SUCCESS) {
             type_b = 1;
             info("TYPEB\n");
-        }
-        else if (ret == ISO14443_3_ERR_ABORTED) {
+        } else if (ret == ISO14443_3_ERR_ABORTED) {
             logging("Type B polling aborted\n");
             return 1;
         }
@@ -849,7 +827,6 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             continue;
         } else if (type_a == 1) {
-
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             ret = iso_14443_3a_collision_detect();
 
@@ -875,8 +852,7 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
                         return 1;
                     }
 
-                    switch(ret){
-
+                    switch (ret) {
                     case REMOVALPROCEDURE:
                         info("A: Removal\n");
                         logging("Success\n");
@@ -906,7 +882,6 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
                 break;
             }
         } else if (type_b == 1) {
-
             nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
             ret = iso_14443_3a_polling();
 
@@ -944,15 +919,14 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
                 if (ret == ISO14443_3_ERR_SUCCESS) {
 #endif
                     //APDU
-                    ret=emvl1apduloop();
+                    ret = emvl1apduloop();
 
                     if (ret == ISO14443_3_ERR_ABORTED) {
                         logging("Type B APDU loop aborted\n");
                         return 1;
                     }
 
-                    switch(ret){
-
+                    switch (ret) {
                     case REMOVALPROCEDURE:
                         info("B: Removal\n");
                         logging("Success\n");
