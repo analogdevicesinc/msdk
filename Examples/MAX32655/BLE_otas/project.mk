@@ -12,6 +12,8 @@ LIB_CORDIO = 1
 
 # Cordio library options
 STANDBY_ENABLED = 0
+INIT_OBSERVER = 0
+INIT_CENTRAL = 0
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
