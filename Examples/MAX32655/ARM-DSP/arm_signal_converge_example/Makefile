@@ -192,7 +192,7 @@ SRCS := $(SRCS)
 
 
 # The default value creates a file named after the target micro.  Ex: MAX78000.elf
-PROJECT ?= $(TARGET_UC)
+PROJECT ?= $(TARGET_LC)
 
 # *******************************************************************************
 # Compiler options
