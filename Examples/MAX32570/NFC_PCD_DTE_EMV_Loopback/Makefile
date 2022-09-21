@@ -63,10 +63,10 @@ endif
 
 # Build Soft FP by default, but allow hardfp by command line etc.
 # Specify the library variant.
-ifeq "$(MFLOAT_FLAGS)" "hardfp"
+ifeq "$(MFLOAT_ABI)" "hardfp"
 LIBRARY_VARIANT=hardfp
 else
-ifeq "$(MFLOAT_FLAGS)" "hard"
+ifeq "$(MFLOAT_ABI)" "hard"
 LIBRARY_VARIANT=hardfp
 else
 LIBRARY_VARIANT=softfp
@@ -75,8 +75,13 @@ endif
 
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
-CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app_win
+CA_SIGN_BUILD=$(SECURE_BOOT_TOOLS_DIR)/bin/sign_app
 BUILD_SESSION=$(SECURE_BOOT_TOOLS_DIR)/bin/build_scp_session
+ifeq ($(OS), Windows_NT)
+CA_SIGN_BUILD := $(CA_SIGN_BUILD).exe
+BUILD_SESSION := $(BUILD_SESSION).exe
+# Must use .exe extension on Windows
+endif
 TEST_KEY=$(SECURE_BOOT_TOOLS_DIR)/devices/$(TARGET_UC)/keys/maximtestcrk.key
 SCP_PACKETS=scp_packets
 
@@ -177,6 +182,7 @@ export LIB_NFC_PCD_RF_DRIVER_DIR
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 all:
+ifneq "$(LINKER)" "$(TARGET_LC)_ram.ld"	
 	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
 	@echo " "
 	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
@@ -184,10 +190,10 @@ all:
 	$(CA_SIGN_BUILD) -c $(TARGET_UC) key_file=$(TEST_KEY) algo=ecdsa header=no ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
 	@echo " "
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
+endif
 
 libclean: 
-	$(MAKE)  -C ${PERIPH_DRIVER_DIR} -f periphdriver.mk clean.periph
-	
+	$(MAKE)  -f ${PERIPH_DRIVER_DIR}/periphdriver.mk clean.periph
 slaclean: 
 	rm -r ${SCP_PACKETS}/
 
@@ -196,3 +202,4 @@ distclean: clean libclean slaclean
 
 sla: all
 	$(BUILD_SESSION) -c $(TARGET_UC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
+	
