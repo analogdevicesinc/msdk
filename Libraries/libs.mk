@@ -47,6 +47,8 @@ BT_VER          ?= 9
 INIT_CENTRAL    ?= 1
 INIT_OBSERVER   ?= 1
 INIT_ENCRYPTED  ?= 1
+INIT_PERIPHERAL ?= 1
+INIT_BROADCASTER?= 1
 
 # Enter standby mode when idle
 STANDBY_ENABLED ?= 0
