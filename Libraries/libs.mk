@@ -57,6 +57,15 @@ STANDBY_ENABLED ?= 0
 BLE_HOST        ?= 1
 BLE_CONTROLLER  ?= 1
 
+ifneq "$(BLE_HOST)" ""
+ifneq "$(BLE_HOST)" "0"
+ifneq "$(BLE_CONTROLLER)" "1"
+RISCV_LOAD = 1
+RISCV_APP ?= ../BLE4_ctr
+endif
+endif
+endif
+
 # Disable these trace messages for the speed testing
 PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
 
