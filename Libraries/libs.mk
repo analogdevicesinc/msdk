@@ -155,3 +155,15 @@ include $(LIB_NFC_PCD_PBM_DIR)/nfc_pcd_pbm.mk
 include $(LIB_NFC_PCD_RF_DRIVER_DIR)/nfc_pcd_rf_driver.mk
 endif
 # ************************
+
+# EMV (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_EMV ?= 0
+ifeq ($(LIB_EMV), 1)
+# NFC lib has two components, pcd_pbm and rf_driver
+EMV_DIR ?= $(LIBS_DIR)/EMV
+
+include $(EMV_DIR)/emv.mk
+endif
+# ************************
