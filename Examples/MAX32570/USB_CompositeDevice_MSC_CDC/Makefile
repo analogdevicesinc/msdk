@@ -192,7 +192,7 @@ SRCS := $(SRCS)
 
 
 # The default value creates a file named after the target micro.  Ex: MAX78000.elf
-PROJECT ?= $(TARGET_UC)
+PROJECT ?= $(TARGET_LC)
 
 # *******************************************************************************
 # Compiler options
@@ -223,7 +223,7 @@ endif
 
 ifeq "$(MAKECMDGOALS)" "release"
 # Default optimization level for "release" builds (make release)
-MXC_OPTIMIZE_CFLAGS := -Og
+MXC_OPTIMIZE_CFLAGS ?= -O2
 endif
 
 # Fallback default to no optimization
