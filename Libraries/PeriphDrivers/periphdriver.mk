@@ -72,14 +72,14 @@ endif
 # Export other variables needed by the peripheral driver makefile
 export TARGET
 export COMPILER
-export TARGET_MAKEFILE
-export PROJ_CFLAGS
-export PROJ_LDFLAGS
-export MXC_OPTIMIZE_CFLAGS
-export DUAL_CORE
-export RISCV_CORE
-export RISCV_LOAD
-export MFLOAT_ABI
+# export TARGET_MAKEFILE
+# export PROJ_CFLAGS
+# export PROJ_LDFLAGS
+# export MXC_OPTIMIZE_CFLAGS
+# export DUAL_CORE
+# export RISCV_CORE
+# export RISCV_LOAD
+# export MFLOAT_ABI
 
 include ${PERIPH_DRIVER_DIR}/$(TARGET_LC)_files.mk
 IPATH += ${PERIPH_DRIVER_INCLUDE_DIR}
