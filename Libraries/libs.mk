@@ -141,3 +141,17 @@ include $(FAT32_DRIVER_DIR)/fat32.mk
 include $(SDHC_DRIVER_DIR)/sdhc.mk
 endif
 # ************************
+
+# NFC (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_NFC ?= 0
+ifeq ($(LIB_NFC), 1)
+# NFC lib has two components, pcd_pbm and rf_driver
+LIB_NFC_PCD_PBM_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_pbm
+LIB_NFC_PCD_RF_DRIVER_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_rf_driver_$(TARGET_UC)
+
+include $(LIB_NFC_PCD_PBM_DIR)/nfc_pcd_pbm.mk
+include $(LIB_NFC_PCD_RF_DRIVER_DIR)/nfc_pcd_rf_driver.mk
+endif
+# ************************
