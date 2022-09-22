@@ -10,5 +10,11 @@
 # Enable CORDIO library
 LIB_CORDIO = 1
 
+# CORDIO library options
+INIT_PERIPHERAL = 1
+INIT_BROADCASTER = 0
+INIT_CENTRAL = 0
+INIT_OBSERVER = 0
+
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os

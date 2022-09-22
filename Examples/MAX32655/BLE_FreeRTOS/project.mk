@@ -15,6 +15,8 @@ LIB_CORDIO = 1
 
 # Set CORDIO library's options
 RTOS = freertos
+INIT_PERIPHERAL = 1
+INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
