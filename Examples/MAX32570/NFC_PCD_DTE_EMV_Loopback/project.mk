@@ -8,7 +8,7 @@
 # **********************************************************
 
 # Override default optimization level
-MXC_OPTIMIZE_CFLAGS=-O3
+MXC_OPTIMIZE_CFLAGS=-O1
 
 # Enable NFC library
 LIB_NFC = 1

@@ -7,6 +7,9 @@
 
 # **********************************************************
 
+# Override default optimization level
+MXC_OPTIMIZE_CFLAGS=-O1
+
 # Enable NFC, EMV, and FreeRTOS libraries
 LIB_NFC = 1
 LIB_EMV = 1
