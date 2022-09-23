@@ -13,6 +13,8 @@ LIB_CORDIO = 1
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 
+# Disable peripheral and broadcaster.  They're
+# not needed for this client app.
 INIT_PERIPHERAL = 0
 INIT_BROADCASTER = 0
 INIT_CENTRAL = 1

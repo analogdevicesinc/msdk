@@ -13,7 +13,7 @@ LIB_FREERTOS = 1
 # Enable CORDIO library
 LIB_CORDIO = 1
 
-# Set CORDIO library's options
+# This application only operates as a peripheral
 RTOS = freertos
 INIT_PERIPHERAL = 1
 INIT_BROADCASTER = 0
