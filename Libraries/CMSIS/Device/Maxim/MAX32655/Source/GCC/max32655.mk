@@ -110,7 +110,7 @@ RISCV_APP ?= $(MAXIM_PATH)/Examples/$(TARGET_UC)/Hello_World
 # "make clean" will catch it automatically.
 # Additionally, set the output directory and filename
 # to what the RISC-V loader script expects.
-RISCV_BUILD_DIR := $(BUILD_DIR)/buildrv
+RISCV_BUILD_DIR := $(CURDIR)/build/buildrv
 
 # Binary name for RISCV code.
 RISCV_APP_BIN = $(RISCV_BUILD_DIR)/riscv.bin
