@@ -7,6 +7,9 @@
 
 # **********************************************************
 
+# Optimize for size
+MXC_OPTIMIZE_CFLAGS=-Os
+
 SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
 DEBUG=0
