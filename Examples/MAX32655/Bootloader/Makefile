@@ -216,18 +216,25 @@ COMPILER := GCC
 endif
 
 # Set default compiler optimization levels
-ifeq ($(DEBUG),1)
-# Default optimization level for debug builds (make DEBUG=1 ...)
-MXC_OPTIMIZE_CFLAGS ?= -Og
-endif
-
 ifeq "$(MAKECMDGOALS)" "release"
 # Default optimization level for "release" builds (make release)
 MXC_OPTIMIZE_CFLAGS ?= -O2
+DEBUG = 0
 endif
 
-# Fallback default to no optimization
-MXC_OPTIMIZE_CFLAGS ?= -O0
+DEBUG ?= 0
+ifeq ($(DEBUG),1)
+# Default optimization level for debug builds (make DEBUG=1 ...)
+# gcc.mk checks for this flag to add some additional debug
+# info to the build, and should be used when you really need to
+# debug.
+MXC_OPTIMIZE_CFLAGS ?= -Og
+endif
+
+# Fallback default optimizes for debugging as recommended
+# by GNU for code-edit-debug cycles
+# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+MXC_OPTIMIZE_CFLAGS ?= -Og
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
