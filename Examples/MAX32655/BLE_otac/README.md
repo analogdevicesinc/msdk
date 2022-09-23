@@ -15,20 +15,20 @@ The green LED indicates CPU activity. When the LED is on, the CPU is active, whe
 is off, the CPU is in sleep mode.
 
 ## Setup
-The Makefile can be edited to select the appropriate application directory for the update
+The project.mk can be edited to select the appropriate application directory for the update
 image. Change FW_UPDATE_DIR to modify which application is used for the update. Whichever
 application is selected must be setup to run from the appropriate memory section, as defined
 by the Bootloader.
 
 ### Board Selection
 
-Before building firmware you must select the correct value for BOARD in Makefile, e.g. "EvKit_V1".
+Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
 
 ### Required Connections
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port
-When TRACE is enabled in the Makefile, the on-board USB-to-UART adapter can
+When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
 be used to view the trace messages and interact with the application. Open a serial port terminal with
 the following settings.
 

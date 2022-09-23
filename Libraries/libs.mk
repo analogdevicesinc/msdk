@@ -47,6 +47,8 @@ BT_VER          ?= 9
 INIT_CENTRAL    ?= 1
 INIT_OBSERVER   ?= 1
 INIT_ENCRYPTED  ?= 1
+INIT_PERIPHERAL ?= 1
+INIT_BROADCASTER?= 1
 
 # Enter standby mode when idle
 STANDBY_ENABLED ?= 0
@@ -54,6 +56,15 @@ STANDBY_ENABLED ?= 0
 # Select either option, or both for combined Host and Controller on single core
 BLE_HOST        ?= 1
 BLE_CONTROLLER  ?= 1
+
+ifneq "$(BLE_HOST)" ""
+ifneq "$(BLE_HOST)" "0"
+ifneq "$(BLE_CONTROLLER)" "1"
+RISCV_LOAD = 1
+RISCV_APP ?= ../BLE4_ctr
+endif
+endif
+endif
 
 # Disable these trace messages for the speed testing
 PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
@@ -84,8 +95,6 @@ RTOS_CONFIG_DIR ?= .
 IPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
 VPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
 SRCS += FreeRTOS_CLI.c
-
-$(info $(RTOS_CONFIG_DIR))
 
 # Include the FreeRTOS library
 include $(LIBS_DIR)/FreeRTOS/freertos.mk
