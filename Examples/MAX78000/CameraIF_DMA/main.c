@@ -110,8 +110,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #define CAMERA_MONO
 
 #ifdef STREAM_ENABLE
-#define IMAGE_XRES  324/2
-#define IMAGE_YRES  244/2
+#define IMAGE_XRES 324 / 2
+#define IMAGE_YRES 244 / 2
 
 #else
 #define IMAGE_XRES 80
@@ -124,8 +124,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #define CAMERA_MONO
 
 #ifdef STREAM_ENABLE
-#define IMAGE_XRES  320
-#define IMAGE_YRES  240
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
 #else
 #define IMAGE_XRES 320
@@ -138,12 +138,12 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #ifdef ENABLE_TFT
 #ifdef STREAM_ENABLE
-#define IMAGE_XRES  320
-#define IMAGE_YRES  240
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
 #else
-#define IMAGE_XRES  176
-#define IMAGE_YRES  144
+#define IMAGE_XRES 176
+#define IMAGE_YRES 144
 #endif
 
 #else
@@ -158,15 +158,16 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#define CON_BAUD 115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define X_START     0
-#define Y_START     0
+#define CON_BAUD \
+    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define X_START 0
+#define Y_START 0
 
 void process_img(void)
 {
-    uint8_t*   raw;
-    uint32_t   imgLen;
-    uint32_t   w, h;
+    uint8_t* raw;
+    uint32_t imgLen;
+    uint32_t w, h;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -231,7 +232,7 @@ void process_img(void)
         LED_On(LED_RED); // Turn on red LED if overflow detected
 
         while (1)
-        	;
+            ;
     }
 
 #endif //#ifndef STREAM_ENABLE
@@ -317,9 +318,11 @@ int main(void)
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
 #ifndef CAMERA_MONO
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // RGB565
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // RGB565
 #else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // Mono
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // Mono
 #endif
 
 #ifdef ENABLE_TFT
@@ -331,14 +334,17 @@ int main(void)
 #else
 #ifndef CAMERA_MONO
 #ifndef FEATHER_FAST_STREAM
-      ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel); // RGB565 stream
 #else
-      MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
-      ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
+    MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
+    ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                           dma_channel); // RGB565 stream
 #endif
 
 #else
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // Mono stream
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel); // Mono stream
 #endif
 #endif //#ifndef STREAM_ENABLE
 
@@ -349,12 +355,11 @@ int main(void)
 
     MXC_Delay(SEC(1));
 
-
     // Start capturing a first camera image frame.
     printf("Starting\n");
 #ifdef BUTTON
-    while(!PB_Get(0))
-    	;
+    while (!PB_Get(0))
+        ;
 #endif
 #ifndef FEATHER_FAST_STREAM
     camera_start_capture_image();
@@ -371,16 +376,16 @@ int main(void)
             // Prepare for another frame capture.
             LED_Toggle(LED_GREEN);
 #ifdef BUTTON
-            while(!PB_Get(0))
-            	;
+            while (!PB_Get(0))
+                ;
 #endif
             camera_start_capture_image();
         }
     }
 #else
     camera_start_capture_image_tft();
-    while(1)
-    	;
+    while (1)
+        ;
 #endif
 
     return ret;
