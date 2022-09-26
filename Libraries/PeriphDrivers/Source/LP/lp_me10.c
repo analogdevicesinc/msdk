@@ -665,10 +665,6 @@ void MXC_LP_EnterDeepSleepMode(void)
     /* Clear background mode enable, enable power failure monitor, Bandgap is always on. */
     lpcn &= ~(MXC_F_PWRSEQ_CTRL_BKGRND | MXC_F_PWRSEQ_CTRL_BGOFF | MXC_F_PWRSEQ_CTRL_PORVCOREMD);
     MXC_PWRSEQ->ctrl = lpcn;
-    /* Enable fast wakeup */
-    lpcn |= 0x400;
-    lpcn |= 1 << 26;
-    MXC_PWRSEQ->ctrl = lpcn;
 
     /* Set SLEEPDEEP bit */
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;

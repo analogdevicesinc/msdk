@@ -85,6 +85,10 @@ void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t *adc);
 
 void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req);
 
+void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req);
+
+int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay);
+
 int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req);
 
 int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, uint32_t slot_num);

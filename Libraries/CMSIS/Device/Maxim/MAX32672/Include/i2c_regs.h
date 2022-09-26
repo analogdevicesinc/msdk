@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the I2C Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _I2C_REGS_H_
 #define _I2C_REGS_H_
@@ -46,11 +45,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -103,15 +102,24 @@ typedef struct {
     __IO uint32_t clkhi;                /**< <tt>\b 0x38:</tt> I2C CLKHI Register */
     __IO uint32_t hsclk;                /**< <tt>\b 0x3C:</tt> I2C HSCLK Register */
     __IO uint32_t timeout;              /**< <tt>\b 0x40:</tt> I2C TIMEOUT Register */
-    __IO uint32_t slave;                /**< <tt>\b 0x44:</tt> I2C SLAVE Register */
+    __R  uint32_t rsv_0x44;
     __IO uint32_t dma;                  /**< <tt>\b 0x48:</tt> I2C DMA Register */
+    union {
+        __IO uint32_t slave_multi[4];   /**< <tt>\b 0x4C:</tt> I2C SLAVE_MULTI Register */
+        struct {
+            __IO uint32_t slave0;       /**< <tt>\b 0x4C:</tt> I2C SLAVE0 Register */
+            __IO uint32_t slave1;       /**< <tt>\b 0x50:</tt> I2C SLAVE1 Register */
+            __IO uint32_t slave2;       /**< <tt>\b 0x54:</tt> I2C SLAVE2 Register */
+            __IO uint32_t slave3;       /**< <tt>\b 0x58:</tt> I2C SLAVE3 Register */
+        };
+    };
 } mxc_i2c_regs_t;
 
 /* Register offsets for module I2C */
 /**
  * @ingroup    i2c_registers
  * @defgroup   I2C_Register_Offsets Register Offsets
- * @brief      I2C Peripheral Register Offsets from the I2C Base Peripheral Address. 
+ * @brief      I2C Peripheral Register Offsets from the I2C Base Peripheral Address.
  * @{
  */
  #define MXC_R_I2C_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from I2C Base Address: <tt> 0x0000</tt> */ 
@@ -131,8 +139,12 @@ typedef struct {
  #define MXC_R_I2C_CLKHI                    ((uint32_t)0x00000038UL) /**< Offset from I2C Base Address: <tt> 0x0038</tt> */ 
  #define MXC_R_I2C_HSCLK                    ((uint32_t)0x0000003CUL) /**< Offset from I2C Base Address: <tt> 0x003C</tt> */ 
  #define MXC_R_I2C_TIMEOUT                  ((uint32_t)0x00000040UL) /**< Offset from I2C Base Address: <tt> 0x0040</tt> */ 
- #define MXC_R_I2C_SLAVE                    ((uint32_t)0x00000044UL) /**< Offset from I2C Base Address: <tt> 0x0044</tt> */ 
  #define MXC_R_I2C_DMA                      ((uint32_t)0x00000048UL) /**< Offset from I2C Base Address: <tt> 0x0048</tt> */ 
+ #define MXC_R_I2C_SLAVE_MULTI              ((uint32_t)0x0000004CUL) /**< Offset from I2C Base Address: <tt> 0x004C</tt> */ 
+ #define MXC_R_I2C_SLAVE0                   ((uint32_t)0x0000004CUL) /**< Offset from I2C Base Address: <tt> 0x004C</tt> */ 
+ #define MXC_R_I2C_SLAVE1                   ((uint32_t)0x00000050UL) /**< Offset from I2C Base Address: <tt> 0x0050</tt> */ 
+ #define MXC_R_I2C_SLAVE2                   ((uint32_t)0x00000054UL) /**< Offset from I2C Base Address: <tt> 0x0054</tt> */ 
+ #define MXC_R_I2C_SLAVE3                   ((uint32_t)0x00000058UL) /**< Offset from I2C Base Address: <tt> 0x0058</tt> */ 
 /**@} end of group i2c_registers */
 
 /**
@@ -546,20 +558,6 @@ typedef struct {
 
 /**
  * @ingroup  i2c_registers
- * @defgroup I2C_SLAVE I2C_SLAVE
- * @brief    Slave Address Register.
- * @{
- */
- #define MXC_F_I2C_SLAVE_ADDR_POS                       0 /**< SLAVE_ADDR Position */
- #define MXC_F_I2C_SLAVE_ADDR                           ((uint32_t)(0x3FFUL << MXC_F_I2C_SLAVE_ADDR_POS)) /**< SLAVE_ADDR Mask */
-
- #define MXC_F_I2C_SLAVE_EXT_ADDR_EN_POS                15 /**< SLAVE_EXT_ADDR_EN Position */
- #define MXC_F_I2C_SLAVE_EXT_ADDR_EN                    ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_EXT_ADDR_EN_POS)) /**< SLAVE_EXT_ADDR_EN Mask */
-
-/**@} end of group I2C_SLAVE_Register */
-
-/**
- * @ingroup  i2c_registers
  * @defgroup I2C_DMA I2C_DMA
  * @brief    DMA Register.
  * @{
@@ -571,6 +569,23 @@ typedef struct {
  #define MXC_F_I2C_DMA_RX_EN                            ((uint32_t)(0x1UL << MXC_F_I2C_DMA_RX_EN_POS)) /**< DMA_RX_EN Mask */
 
 /**@} end of group I2C_DMA_Register */
+
+/**
+ * @ingroup  i2c_registers
+ * @defgroup I2C_SLAVE_MULTI I2C_SLAVE_MULTI
+ * @brief    Slave Address Register.
+ * @{
+ */
+ #define MXC_F_I2C_SLAVE_MULTI_ADDR_POS                 0 /**< SLAVE_MULTI_ADDR Position */
+ #define MXC_F_I2C_SLAVE_MULTI_ADDR                     ((uint32_t)(0x3FFUL << MXC_F_I2C_SLAVE_MULTI_ADDR_POS)) /**< SLAVE_MULTI_ADDR Mask */
+
+ #define MXC_F_I2C_SLAVE_MULTI_DIS_POS                  10 /**< SLAVE_MULTI_DIS Position */
+ #define MXC_F_I2C_SLAVE_MULTI_DIS                      ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_MULTI_DIS_POS)) /**< SLAVE_MULTI_DIS Mask */
+
+ #define MXC_F_I2C_SLAVE_MULTI_EXT_ADDR_EN_POS          15 /**< SLAVE_MULTI_EXT_ADDR_EN Position */
+ #define MXC_F_I2C_SLAVE_MULTI_EXT_ADDR_EN              ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_MULTI_EXT_ADDR_EN_POS)) /**< SLAVE_MULTI_EXT_ADDR_EN Mask */
+
+/**@} end of group I2C_SLAVE_MULTI_Register */
 
 #ifdef __cplusplus
 }
