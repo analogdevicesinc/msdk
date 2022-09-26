@@ -3766,24 +3766,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="DMA">
-       <name>TMR6</name>
-       <description>Timer6 Reset. Setting this bit to 1 resets Timer 6 blocks.</description>
-       <bitOffset>20</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="DMA">
-       <name>TMR7</name>
-       <description>Timer7 Reset. Setting this bit to 1 resets Timer 7 blocks.</description>
-       <bitOffset>21</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="DMA">
-       <name>TFT</name>
-       <description>TFT Reset.</description>
-       <bitOffset>22</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="DMA">
        <name>USB</name>
        <description>USB Reset.</description>
        <bitOffset>23</bitOffset>
@@ -4378,12 +4360,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="GPIO0">
-       <name>TFT</name>
-       <description>TFT Clock Disable.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="GPIO0">
        <name>DMA</name>
        <description>DMA Clock Disable.</description>
        <bitOffset>5</bitOffset>
@@ -4471,18 +4447,6 @@
        <name>ADC</name>
        <description>ADC Clock Disable.</description>
        <bitOffset>23</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="GPIO0">
-       <name>TMR6</name>
-       <description>Timer 6 Clock Disable.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="GPIO0">
-       <name>TMR7</name>
-       <description>Timer 7 Clock Disable.</description>
-       <bitOffset>25</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="GPIO0">
@@ -4818,12 +4782,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
-       <name>SDHC</name>
-       <description>SDHC Reset.</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="I2C1">
        <name>WDT1</name>
        <description>WDT1 Reset.</description>
        <bitOffset>8</bitOffset>
@@ -4887,12 +4845,6 @@
        <name>NFC</name>
        <description>NFC Reset.</description>
        <bitOffset>25</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="I2C1">
-       <name>EMAC</name>
-       <description>EMAC Reset.</description>
-       <bitOffset>26</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
@@ -4969,12 +4921,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>SDHC</name>
-       <description>SDHC Clock Disable.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="UART2">
        <name>ICCXIP</name>
        <description>ICC XIP Clock Disable.</description>
        <bitOffset>12</bitOffset>
@@ -4984,12 +4930,6 @@
        <name>SPI2</name>
        <description>SPI2 Clock Disable.</description>
        <bitOffset>14</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="UART2">
-       <name>I2C2</name>
-       <description>I2C2 Clock Disable.</description>
-       <bitOffset>21</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
@@ -5014,12 +4954,6 @@
        <name>SC1</name>
        <description>SC1 Clock Disable.</description>
        <bitOffset>27</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="UART2">
-       <name>EMAC</name>
-       <description>EMAC Clock Disable.</description>
-       <bitOffset>29</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
