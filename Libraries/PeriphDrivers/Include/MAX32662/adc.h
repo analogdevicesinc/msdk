@@ -415,6 +415,24 @@ void MXC_ADC_Clear_ChannelSelect(void);
 void MXC_ADC_TriggerConfig(mxc_adc_conversion_req_t *req);
 
 /**
+ * @brief   Configures ADC Conversion Mode: Single vs Continuous Conversion.
+ *
+ * @param   pointer to ADC configure data structure.
+ *
+ * @return  None.
+ */
+void MXC_ADC_ConversionModeConfig(mxc_adc_conversion_req_t *req);
+
+/**
+ * @brief   Set Sample Delay before Continuous Mode Conversion Restart.
+ *
+ * @param   number of sample clock periods to delay in between conversions.
+ *
+ * @return  None.
+ */
+void MXC_ADC_SetConversionDelay(int delay);
+
+/**
  * @brief   Configures number of slots for ADC sequence.
  *
  * @param   pointer to ADC configure data structure.

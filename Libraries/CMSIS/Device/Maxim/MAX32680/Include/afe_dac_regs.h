@@ -3,17 +3,15 @@
  * @brief   Registers, Bit Masks and Bit Positions for the AFE_DAC Peripheral Module.
  */
 
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
-* 
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
 *
 * The above copyright notice and this permission notice shall be included
 * in all copies or substantial portions of the Software.
@@ -35,8 +33,8 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************
-*/
+*
+******************************************************************************/
 
 #ifndef _AFE_DAC_REGS_H_
 #define _AFE_DAC_REGS_H_
@@ -47,11 +45,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -82,12 +80,11 @@ extern "C" {
  * @details Analog Front End DAC on Stacked Die via SPI
  */
 
-
 /* Register offsets for module AFE_DAC */
 /**
  * @ingroup    afe_dac_registers
  * @defgroup   AFE_DAC_Register_Offsets Register Offsets
- * @brief      AFE_DAC Peripheral Register Offsets from the AFE_DAC Base Peripheral Address. 
+ * @brief      AFE_DAC Peripheral Register Offsets from the AFE_DAC Base Peripheral Address.
  * @{
  */
  #define MXC_R_AFE_DAC_CTRL                 ((uint32_t)0x01000004UL) /**< Offset from AFE_DAC Base Address: <tt> 0x1000004</tt> */ 
@@ -143,6 +140,12 @@ extern "C" {
  #define MXC_V_AFE_DAC_CTRL_START_MODE_RESERVED         ((uint32_t)0x3UL) /**< CTRL_START_MODE_RESERVED Value */
  #define MXC_S_AFE_DAC_CTRL_START_MODE_RESERVED         (MXC_V_AFE_DAC_CTRL_START_MODE_RESERVED << MXC_F_AFE_DAC_CTRL_START_MODE_POS) /**< CTRL_START_MODE_RESERVED Setting */
 
+ #define MXC_F_AFE_DAC_CTRL_ACTIVE_POS                  18 /**< CTRL_ACTIVE Position */
+ #define MXC_F_AFE_DAC_CTRL_ACTIVE                      ((uint32_t)(0x1UL << MXC_F_AFE_DAC_CTRL_ACTIVE_POS)) /**< CTRL_ACTIVE Mask */
+
+ #define MXC_F_AFE_DAC_CTRL_BIN2GRAY_BYPASS_POS         19 /**< CTRL_BIN2GRAY_BYPASS Position */
+ #define MXC_F_AFE_DAC_CTRL_BIN2GRAY_BYPASS             ((uint32_t)(0x1UL << MXC_F_AFE_DAC_CTRL_BIN2GRAY_BYPASS_POS)) /**< CTRL_BIN2GRAY_BYPASS Mask */
+
  #define MXC_F_AFE_DAC_CTRL_CPU_START_POS               20 /**< CTRL_CPU_START Position */
  #define MXC_F_AFE_DAC_CTRL_CPU_START                   ((uint32_t)(0x1UL << MXC_F_AFE_DAC_CTRL_CPU_START_POS)) /**< CTRL_CPU_START Mask */
 
@@ -176,10 +179,6 @@ extern "C" {
 
  #define MXC_F_AFE_DAC_CTRL_POWER_MODE_2_POS            30 /**< CTRL_POWER_MODE_2 Position */
  #define MXC_F_AFE_DAC_CTRL_POWER_MODE_2                ((uint32_t)(0x1UL << MXC_F_AFE_DAC_CTRL_POWER_MODE_2_POS)) /**< CTRL_POWER_MODE_2 Mask */
- #define MXC_V_AFE_DAC_CTRL_POWER_MODE_2_POWLVL0_1      ((uint32_t)0x0UL) /**< CTRL_POWER_MODE_2_POWLVL0_1 Value */
- #define MXC_S_AFE_DAC_CTRL_POWER_MODE_2_POWLVL0_1      (MXC_V_AFE_DAC_CTRL_POWER_MODE_2_POWLVL0_1 << MXC_F_AFE_DAC_CTRL_POWER_MODE_2_POS) /**< CTRL_POWER_MODE_2_POWLVL0_1 Setting */
- #define MXC_V_AFE_DAC_CTRL_POWER_MODE_2_POWLVL2_3      ((uint32_t)0x1UL) /**< CTRL_POWER_MODE_2_POWLVL2_3 Value */
- #define MXC_S_AFE_DAC_CTRL_POWER_MODE_2_POWLVL2_3      (MXC_V_AFE_DAC_CTRL_POWER_MODE_2_POWLVL2_3 << MXC_F_AFE_DAC_CTRL_POWER_MODE_2_POS) /**< CTRL_POWER_MODE_2_POWLVL2_3 Setting */
 
  #define MXC_F_AFE_DAC_CTRL_RESET_POS                   31 /**< CTRL_RESET Position */
  #define MXC_F_AFE_DAC_CTRL_RESET                       ((uint32_t)(0x1UL << MXC_F_AFE_DAC_CTRL_RESET_POS)) /**< CTRL_RESET Mask */

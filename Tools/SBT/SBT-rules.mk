@@ -7,10 +7,13 @@
 # using the "build_scp_session" tool.
 .PHONY: sla
 sla: all
+	@echo " "
 	arm-none-eabi-objcopy $(BUILD_DIR)/$(PROJECT).elf -R .sig -O binary $(BUILD_DIR)/$(PROJECT).bin
+	@echo " "
 	$(CA_SIGN_BUILD) -c $(TARGET_SEC) key_file=$(TEST_KEY) ca=$(BUILD_DIR)/$(PROJECT).bin sca=$(BUILD_DIR)/$(PROJECT).sbin
 	@echo " "
 	arm-none-eabi-objcopy  $(BUILD_DIR)/$(PROJECT).elf --update-section .sig=$(BUILD_DIR)/$(PROJECT).sig
+	@echo " "
 	$(BUILD_SESSION) -c $(TARGET_SEC) key_file=$(TEST_KEY) ${SCP_PACKETS} $(BUILD_DIR)/$(PROJECT).sbin
 
 # The SCPA target.
@@ -21,7 +24,6 @@ sla: all
 # It depends on an "scp_script.txt" file
 .PHONY:scpa
 scpa: all
-	arm-none-eabi-size --format=berkeley $(BUILD_DIR)/$(PROJECT).elf
 	@echo " "
 	arm-none-eabi-objcopy -O srec -j .text -j .data -j.scpa_header -j.scpa_init -j.scpa_ops --srec-forceS3 --srec-len=128 $(BUILD_DIR)/$(PROJECT).elf  $(BUILD_DIR)/$(PROJECT).srec
 	@echo " "

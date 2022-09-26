@@ -1031,6 +1031,9 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
                                     NULL) != E_NO_ERROR) {
             return E_BAD_PARAM;
         }
+
+        // Save state for UART DMACallback function.
+        states[uart_num].req = req;
     }
 
     //rx
@@ -1039,6 +1042,9 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
             E_NO_ERROR) {
             return E_BAD_PARAM;
         }
+
+        // Save state for UART DMACallback function.
+        states[uart_num].req = req;
     }
 
     return E_NO_ERROR;

@@ -33,7 +33,8 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
 #ifndef _I2C_REGS_H_
 #define _I2C_REGS_H_
@@ -103,13 +104,15 @@ typedef struct {
     __IO uint32_t timeout;              /**< <tt>\b 0x40:</tt> I2C TIMEOUT Register */
     __R  uint32_t rsv_0x44;
     __IO uint32_t dma;                  /**< <tt>\b 0x48:</tt> I2C DMA Register */
-  union{
-    __IO uint32_t slave_multi[4];       /**< <tt>\b 0x4C:</tt> I2C SLAVE_MULTI Register */
-    __IO uint32_t slave0;               /**< <tt>\b 0x4C:</tt> I2C SLAVE0 Register */
-  };
-    __IO uint32_t slave1;               /**< <tt>\b 0x50:</tt> I2C SLAVE1 Register */
-    __IO uint32_t slave2;               /**< <tt>\b 0x54:</tt> I2C SLAVE2 Register */
-    __IO uint32_t slave3;               /**< <tt>\b 0x58:</tt> I2C SLAVE3 Register */
+    union {
+        __IO uint32_t slave_multi[4];   /**< <tt>\b 0x4C:</tt> I2C SLAVE_MULTI Register */
+        struct {
+            __IO uint32_t slave0;       /**< <tt>\b 0x4C:</tt> I2C SLAVE0 Register */
+            __IO uint32_t slave1;       /**< <tt>\b 0x50:</tt> I2C SLAVE1 Register */
+            __IO uint32_t slave2;       /**< <tt>\b 0x54:</tt> I2C SLAVE2 Register */
+            __IO uint32_t slave3;       /**< <tt>\b 0x58:</tt> I2C SLAVE3 Register */
+        };
+    };
 } mxc_i2c_regs_t;
 
 /* Register offsets for module I2C */

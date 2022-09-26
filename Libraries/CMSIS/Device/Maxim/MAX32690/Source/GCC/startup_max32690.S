@@ -252,8 +252,8 @@ __isr_vector:
     .long CAN0_IRQHandler              /* 0x7B  0x01EC  123: CAN0 */    
     .long CAN1_IRQHandler              /* 0x7C  0x01F0  124: CAN1 */
     .long WUT1_IRQHandler              /* 0x7D  0x01F4  125: Wake up timer 1 */ 
-    .long RSV111_IRQHandler            /* 0x7E  0x01F8  126: Reserved */
-    .long RSV112_IRQHandler            /* 0x7F  0x01FC  127: Reserved */ 
+    .long RSV110_IRQHandler            /* 0x7E  0x01F8  126: Reserved */
+    .long RSV111_IRQHandler            /* 0x7F  0x01FC  127: Reserved */ 
     .text   
     .thumb
     .thumb_func
@@ -472,6 +472,6 @@ Reset_Handler:
     def_irq_handler CAN0_IRQHandler              /* 0x7B  0x01EC  123: CAN0 */    
     def_irq_handler CAN1_IRQHandler              /* 0x7C  0x01F0  124: CAN1 */
     def_irq_handler WUT1_IRQHandler              /* 0x7D  0x01F4  125: Wake up timer 1 */ 
-    def_irq_handler RSV111_IRQHandler            /* 0x7E  0x01F8  126: Reserved */
-    def_irq_handler RSV112_IRQHandler            /* 0x7F  0x01FC  127: Reserved */     
+    def_irq_handler RSV110_IRQHandler            /* 0x7E  0x01F8  126: Reserved */
+    def_irq_handler RSV111_IRQHandler            /* 0x7F  0x01FC  127: Reserved */     
     .end
