@@ -65,17 +65,17 @@ static int8_t txPower     = 10;
 char inputBuffer[CMD_LINE_BUF_SIZE]; /* Buffer for input */
 unsigned int bufferIndex;            /* Index into buffer */
 char receivedChar;
-/* CLI */
+/* CLI escape sequences*/
 uint8_t backspace[] = "\x08 \x08";
 enum { UP_ARROW, DOWN_ARROW, RIGHT_ARROW, LEFT_ARROW };
-/* History */
+/* CLI History */
 cmd_history_t cmd_history[HISTORY_MEMORY_LENGTH];
 static uint32_t escCounter         = 0;
 static uint8_t keyBoardSequence[3] = {0};
 queue_t historyQueue;
 uint32_t historyCounter = 0;
 int queuePointer        = -1;
-/* Prompt */
+/* CLI Prompt */
 test_t activeTest = NO_TEST;
 bool clearScreen  = false;
 bool pausePrompt  = false;
@@ -206,8 +206,10 @@ void TMR2_IRQHandler(void)
 /*************************************************************************************************/
 uint8_t processEscSequence(uint8_t* seq)
 {
-    uint8_t arrows[4][3] = {
+    uint8_t retVal = 0;
 
+    uint8_t arrows[4][3] = {
+        /* Order of arrows here alligns with enum uptop */
         {27, 91, 65}, /* up arrow */
 
         {27, 91, 66}, /* down arrow */
@@ -215,25 +217,22 @@ uint8_t processEscSequence(uint8_t* seq)
         {27, 91, 67}, /* right arrow */
 
         {27, 91, 68}, /* left arrow */
-
     };
 
-    uint8_t retVal = 0;
-
     /*arrows*/
-    for (int k = 0; k < 4; k++) {     //cycle through 4 arrow keys
-        for (int i = 0; i < 3; i++) { //cycle thorugh each index of each arrow key
+    for (int arrowKey = 0; arrowKey < 4; arrowKey++) { //cycle through 4 arrow keys
+        for (int i = 0; i < 3; i++) { //cycle thorugh each index of each arrow key sequence
             //compare each index of arrow key to each index of typed sequence buffer
             for (int j = 0; j < 3; j++) {
-                if (seq[j] == arrows[k][i]) {
+                if (seq[j] == arrows[arrowKey][i]) {
                     retVal++;
                     break;
                 }
             }
         }
-
+        /* If 3 motches found */
         if (retVal == 3)
-            return k;
+            return arrowKey;
         else
             retVal = 0;
     }
@@ -283,11 +282,22 @@ void cmdHistoryAdd(queue_t* q, const uint8_t* cmd)
 void printHistory(bool upArrow)
 {
     uint8_t numCharsToDelete = strlen(inputBuffer);
-
+    uint8_t moveForwardCount = 0;
     updateQueuePointer(&historyQueue, upArrow);
+    volatile int x  = 0;
+    uint8_t right[] = "\x1b\x5b\x43";
     /* no history yet */
     if (queuePointer < 0)
         return;
+    /* if cursor is not at the end then move it forward */
+    if (bufferIndex != strlen(inputBuffer)) {
+        moveForwardCount = strlen(inputBuffer) - bufferIndex;
+        for (int i = 0; i < moveForwardCount; i++) {
+            WsfBufIoWrite((const uint8_t*)right, sizeof(right));
+            vTaskDelay(1); //give UART time to print
+            bufferIndex++;
+        }
+    }
     /* send backspace to delete any currently typed text */
     if (numCharsToDelete) {
         for (int i = 0; i < numCharsToDelete; i++)
