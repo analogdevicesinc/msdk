@@ -217,13 +217,13 @@ uint8_t processEscSequence(uint8_t* seq)
         {27, 91, 68}, /* left arrow */
 
     };
-    //uint8_t downArrow[4] = {c '\0'};
+
     uint8_t retVal = 0;
-    int status     = 0;
 
     /*arrows*/
-    for (int k = 0; k < 4; k++) {
-        for (int i = 0; i < 3; i++) {
+    for (int k = 0; k < 4; k++) {     //cycle through 4 arrow keys
+        for (int i = 0; i < 3; i++) { //cycle thorugh each index of each arrow key
+            //compare each index of arrow key to each index of typed sequence buffer
             for (int j = 0; j < 3; j++) {
                 if (seq[j] == arrows[k][i]) {
                     retVal++;
@@ -588,8 +588,9 @@ void vCmdLineTask(void* pvParameters)
 
                 case RIGHT_ARROW:
                     memset(keyBoardSequence, 0, 3);
-                    uint8_t right[] = "\x1b\x5b\x43";
+                    escCounter = 0;
                     if (bufferIndex < strlen(inputBuffer)) {
+                        uint8_t right[] = "\x1b\x5b\x43";
                         WsfBufIoWrite((const uint8_t*)right, sizeof(right));
                         bufferIndex++;
                     }
@@ -598,9 +599,9 @@ void vCmdLineTask(void* pvParameters)
                     break;
                 case LEFT_ARROW:
                     memset(keyBoardSequence, 0, 3);
-                    escCounter     = 0;
-                    uint8_t left[] = "\x1b\x5b\x44";
+                    escCounter = 0;
                     if (bufferIndex > 0) {
+                        uint8_t left[] = "\x1b\x5b\x44";
                         WsfBufIoWrite((const uint8_t*)left, sizeof(left));
                         bufferIndex--;
                     }
@@ -798,8 +799,11 @@ void helpTask(void* pvParameters)
     printf("│         │                                  │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n");
     printf("│         │                                  │ (duaration in ms: 0 65535 )                           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ sweep   │ <start_ch> <end_ch> <ms/per_ch>  │ Sweeps TX tests through a range of channels given     │\r\n");
-    printf("│         │ ex: sweep 0 10 500               │ their order of appearance on the spectrum.            │\r\n");
+    printf("│ sweep   │ <start_ch> <end_ch> <packet len> │ Sweeps TX tests through a range of channels given     │\r\n");
+    printf("│         │ <packet_type> <phy> <ms/per_ch>  │ their order of appearance on the spectrum.            │\r\n");
+    printf("│         │ ex: sweep 0 10 255 FF 2M 500     │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n");
+    printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
+    printf("│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ tx      │ <channel> <packet_len>           │ TX test on given channel.                             │\r\n");
     printf("│         │ <packet_type> <phy> <duartion>   │ Duration of 0 is max duration until stopped           │\r\n");
