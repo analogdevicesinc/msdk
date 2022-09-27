@@ -23,6 +23,13 @@ LIB_NFC = 1
 LIB_EMV = 1
 LIB_FREERTOS = 1
 
+# Enable SBT
+SBT = 1
+
+# Set default goal to sla.  This means that running just 'make'
+# is equivalent to 'make sla'
+override .DEFAULT_GOAL=sla
+
 # Add some compiler flags specific to the NFC and EMV libs
 PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
 PROJ_CFLAGS += -D__$(TARGET_UC)
