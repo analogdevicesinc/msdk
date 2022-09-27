@@ -47,9 +47,6 @@ int MXC_SPIXF_Init(uint32_t cmdval, uint32_t frequency)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIPC); // SPIXFC
-    // MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_IC1);         // XIP ICACHE
-    // TODO: Add pins for SPIX
-    //    MXC_GPIO_Config(&gpio_cfg_spixfc);
 
     return MXC_SPIXF_RevA_Init((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
                                (mxc_spixfm_reva_regs_t *)MXC_SPIXFM, cmdval, frequency);
@@ -60,7 +57,6 @@ void MXC_SPIXF_Shutdown(void)
     MXC_SPIXF_RevA_Shutdown((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIPC); // SPIXFC
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
-    // MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_IC1);        // XIP ICACHE
 }
 
 void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,

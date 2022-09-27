@@ -510,7 +510,6 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t *spixfc,
         }
 
         if (remain) { // setting up int levels and RX interrupt flag...
-
             // Set the RX interrupts
             if (remain > MXC_CFG_SPIXFC_FIFO_DEPTH) { // FIFO Almost FULL level = 16-2 = 14;
                 spixfc->fifo_ctrl =
@@ -588,7 +587,6 @@ static void SPIXFC_TransHandler(mxc_spixfc_reva_regs_t *spixfc,
     remain = req->len - req->write_num;
 
     if (write && states.head_rem) { // from above... the num of bytes...
-
         // Fill the FIFO
         while ((((spixfc->fifo_ctrl & MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT) >>
                  MXC_F_SPIXFC_REVA_FIFO_CTRL_TX_FIFO_CNT_POS) < (MXC_CFG_SPIXFC_FIFO_DEPTH - 2)) &&
