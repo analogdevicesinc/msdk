@@ -190,8 +190,7 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
         freq = MXC_UART_GetFrequency(uart);
     } else {
-
-        freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t*)uart, baud, clock);
+        freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
     }
 
     if (freq > 0) {
@@ -216,7 +215,8 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
             return EXTCLK_FREQ;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
+                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             div = (1 << (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_AON_CLKDIV)) * 8;
             periphClock = SystemCoreClock / div;
         } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
@@ -226,7 +226,7 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
         }
         return (periphClock / uart->clkdiv);
     } else {
-        return MXC_UART_RevB_GetFrequency ((mxc_uart_revb_regs_t*) uart);
+        return MXC_UART_RevB_GetFrequency((mxc_uart_revb_regs_t *)uart);
     }
 }
 

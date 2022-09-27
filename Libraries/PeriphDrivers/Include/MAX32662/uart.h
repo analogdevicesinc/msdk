@@ -49,7 +49,7 @@
 extern "C" {
 #endif
 
-#define UART_EXTCLK_FREQ    HF_EXTCLK_FREQ
+#define UART_EXTCLK_FREQ HF_EXTCLK_FREQ
 
 /**
  * @defgroup uart UART
