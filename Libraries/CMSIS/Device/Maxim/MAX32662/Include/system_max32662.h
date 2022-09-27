@@ -50,12 +50,8 @@ extern "C" {
  *----------------------------------------------------------------------------*/
 
 /* NOTE: EXTCLK needs to be defined by user based on the clock they supply */
-#ifndef HF_EXTCLK_FREQ
-#define HF_EXTCLK_FREQ 12500000
-#endif
-
-#ifndef LP_EXTCLK_FREQ
-#define LP_EXTCLK_FREQ 12500000
+#ifndef EXTCLK_FREQ
+#define EXTCLK_FREQ 75000000
 #endif
 
 /* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
