@@ -3,39 +3,38 @@
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _DMA_REGS_H_
 #define _DMA_REGS_H_
@@ -46,11 +45,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -83,23 +82,19 @@ extern "C" {
 
 /**
  * @ingroup dma_registers
- * Structure type to access the DMA Channel Registers.
- */
-typedef struct {
-    __IO uint32_t cfg;                  /**< <tt>\b 0x100:</tt> DMA CFG Register */
-    __IO uint32_t stat;                 /**< <tt>\b 0x104:</tt> DMA STAT Register */
-    __IO uint32_t src;                  /**< <tt>\b 0x108:</tt> DMA SRC Register */
-    __IO uint32_t dst;                  /**< <tt>\b 0x10C:</tt> DMA DST Register */
-    __IO uint32_t cnt;                  /**< <tt>\b 0x110:</tt> DMA CNT Register */
-    __IO uint32_t src_rld;              /**< <tt>\b 0x114:</tt> DMA SRC_RLD Register */
-    __IO uint32_t dst_rld;              /**< <tt>\b 0x118:</tt> DMA DST_RLD Register */
-    __IO uint32_t cnt_rld;              /**< <tt>\b 0x11C:</tt> DMA CNT_RLD Register */
-} mxc_dma_ch_regs_t;
-
-/**
- * @ingroup dma_registers
  * Structure type to access the DMA Registers.
  */
+typedef struct {
+    __IO uint32_t cfg;                  /**< <tt>\b 0x000:</tt> DMA CFG Register */
+    __IO uint32_t stat;                 /**< <tt>\b 0x004:</tt> DMA STAT Register */
+    __IO uint32_t src;                  /**< <tt>\b 0x008:</tt> DMA SRC Register */
+    __IO uint32_t dst;                  /**< <tt>\b 0x00C:</tt> DMA DST Register */
+    __IO uint32_t cnt;                  /**< <tt>\b 0x010:</tt> DMA CNT Register */
+    __IO uint32_t src_rld;              /**< <tt>\b 0x014:</tt> DMA SRC_RLD Register */
+    __IO uint32_t dst_rld;              /**< <tt>\b 0x018:</tt> DMA DST_RLD Register */
+    __IO uint32_t cnt_rld;              /**< <tt>\b 0x01C:</tt> DMA CNT_RLD Register */
+} mxc_dma_ch_regs_t;
+
 typedef struct {
     __IO uint32_t int_en;               /**< <tt>\b 0x000:</tt> DMA INT_EN Register */
     __I  uint32_t int_fl;               /**< <tt>\b 0x004:</tt> DMA INT_FL Register */
@@ -111,20 +106,20 @@ typedef struct {
 /**
  * @ingroup    dma_registers
  * @defgroup   DMA_Register_Offsets Register Offsets
- * @brief      DMA Peripheral Register Offsets from the DMA Base Peripheral Address. 
+ * @brief      DMA Peripheral Register Offsets from the DMA Base Peripheral Address.
  * @{
  */
- #define MXC_R_DMA_CFG                      ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_DMA_STAT                     ((uint32_t)0x00000104UL) /**< Offset from DMA Base Address: <tt> 0x0104</tt> */ 
- #define MXC_R_DMA_SRC                      ((uint32_t)0x00000108UL) /**< Offset from DMA Base Address: <tt> 0x0108</tt> */ 
- #define MXC_R_DMA_DST                      ((uint32_t)0x0000010CUL) /**< Offset from DMA Base Address: <tt> 0x010C</tt> */ 
- #define MXC_R_DMA_CNT                      ((uint32_t)0x00000110UL) /**< Offset from DMA Base Address: <tt> 0x0110</tt> */ 
- #define MXC_R_DMA_SRC_RLD                  ((uint32_t)0x00000114UL) /**< Offset from DMA Base Address: <tt> 0x0114</tt> */ 
- #define MXC_R_DMA_DST_RLD                  ((uint32_t)0x00000118UL) /**< Offset from DMA Base Address: <tt> 0x0118</tt> */ 
- #define MXC_R_DMA_CNT_RLD                  ((uint32_t)0x0000011CUL) /**< Offset from DMA Base Address: <tt> 0x011C</tt> */ 
- #define MXC_R_DMA_INT_EN                   ((uint32_t)0x00000000UL) /**< Offset from DMA Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_DMA_INT_FL                   ((uint32_t)0x00000004UL) /**< Offset from DMA Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_DMA_CH                       ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */ 
+ #define MXC_R_DMA_CFG                      ((uint32_t)0x00000000UL) /**< Offset from DMA Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_DMA_STAT                     ((uint32_t)0x00000004UL) /**< Offset from DMA Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_DMA_SRC                      ((uint32_t)0x00000008UL) /**< Offset from DMA Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_DMA_DST                      ((uint32_t)0x0000000CUL) /**< Offset from DMA Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_DMA_CNT                      ((uint32_t)0x00000010UL) /**< Offset from DMA Base Address: <tt> 0x0010</tt> */
+ #define MXC_R_DMA_SRC_RLD                  ((uint32_t)0x00000014UL) /**< Offset from DMA Base Address: <tt> 0x0014</tt> */
+ #define MXC_R_DMA_DST_RLD                  ((uint32_t)0x00000018UL) /**< Offset from DMA Base Address: <tt> 0x0018</tt> */
+ #define MXC_R_DMA_CNT_RLD                  ((uint32_t)0x0000001CUL) /**< Offset from DMA Base Address: <tt> 0x001C</tt> */
+ #define MXC_R_DMA_INT_EN                   ((uint32_t)0x00000000UL) /**< Offset from DMA Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_DMA_INT_FL                   ((uint32_t)0x00000004UL) /**< Offset from DMA Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_DMA_CH                       ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */
 /**@} end of group dma_registers */
 
 /**
@@ -144,30 +139,23 @@ typedef struct {
 
 /**
  * @ingroup  dma_registers
- * @defgroup DMA_INT_FL DMA_INT_FL
- * @brief    DMA Interrupt Register.
- * @{
- */
- #define MXC_F_DMA_INT_FL_IPEND_POS                     0 /**< INT_FL_IPEND Position */
- #define MXC_F_DMA_INT_FL_IPEND                         ((uint32_t)(0xFUL << MXC_F_DMA_INT_FL_IPEND_POS)) /**< INT_FL_IPEND Mask */
- #define MXC_V_DMA_INT_FL_IPEND_INACTIVE                ((uint32_t)0x0UL) /**< INT_FL_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INT_FL_IPEND_INACTIVE                (MXC_V_DMA_INT_FL_IPEND_INACTIVE << MXC_F_DMA_INT_FL_IPEND_POS) /**< INT_FL_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INT_FL_IPEND_PENDING                 ((uint32_t)0x1UL) /**< INT_FL_IPEND_PENDING Value */
- #define MXC_S_DMA_INT_FL_IPEND_PENDING                 (MXC_V_DMA_INT_FL_IPEND_PENDING << MXC_F_DMA_INT_FL_IPEND_POS) /**< INT_FL_IPEND_PENDING Setting */
-
-/**@} end of group DMA_INT_FL_Register */
-
-/**
- * @ingroup  dma_registers
  * @defgroup DMA_CFG DMA_CFG
  * @brief    DMA Channel Configuration Register.
  * @{
  */
  #define MXC_F_DMA_CFG_CHEN_POS                         0 /**< CFG_CHEN Position */
  #define MXC_F_DMA_CFG_CHEN                             ((uint32_t)(0x1UL << MXC_F_DMA_CFG_CHEN_POS)) /**< CFG_CHEN Mask */
+ #define MXC_V_DMA_CFG_CHEN_DIS                         ((uint32_t)0x0UL) /**< CFG_CHEN_DIS Value */
+ #define MXC_S_DMA_CFG_CHEN_DIS                         (MXC_V_DMA_CFG_CHEN_DIS << MXC_F_DMA_CFG_CHEN_POS) /**< CFG_CHEN_DIS Setting */
+ #define MXC_V_DMA_CFG_CHEN_EN                          ((uint32_t)0x1UL) /**< CFG_CHEN_EN Value */
+ #define MXC_S_DMA_CFG_CHEN_EN                          (MXC_V_DMA_CFG_CHEN_EN << MXC_F_DMA_CFG_CHEN_POS) /**< CFG_CHEN_EN Setting */
 
  #define MXC_F_DMA_CFG_RLDEN_POS                        1 /**< CFG_RLDEN Position */
  #define MXC_F_DMA_CFG_RLDEN                            ((uint32_t)(0x1UL << MXC_F_DMA_CFG_RLDEN_POS)) /**< CFG_RLDEN Mask */
+ #define MXC_V_DMA_CFG_RLDEN_DIS                        ((uint32_t)0x0UL) /**< CFG_RLDEN_DIS Value */
+ #define MXC_S_DMA_CFG_RLDEN_DIS                        (MXC_V_DMA_CFG_RLDEN_DIS << MXC_F_DMA_CFG_RLDEN_POS) /**< CFG_RLDEN_DIS Setting */
+ #define MXC_V_DMA_CFG_RLDEN_EN                         ((uint32_t)0x1UL) /**< CFG_RLDEN_EN Value */
+ #define MXC_S_DMA_CFG_RLDEN_EN                         (MXC_V_DMA_CFG_RLDEN_EN << MXC_F_DMA_CFG_RLDEN_POS) /**< CFG_RLDEN_EN Setting */
 
  #define MXC_F_DMA_CFG_PRI_POS                          2 /**< CFG_PRI Position */
  #define MXC_F_DMA_CFG_PRI                              ((uint32_t)(0x3UL << MXC_F_DMA_CFG_PRI_POS)) /**< CFG_PRI Mask */
@@ -211,6 +199,10 @@ typedef struct {
 
  #define MXC_F_DMA_CFG_REQWAIT_POS                      10 /**< CFG_REQWAIT Position */
  #define MXC_F_DMA_CFG_REQWAIT                          ((uint32_t)(0x1UL << MXC_F_DMA_CFG_REQWAIT_POS)) /**< CFG_REQWAIT Mask */
+ #define MXC_V_DMA_CFG_REQWAIT_DIS                      ((uint32_t)0x0UL) /**< CFG_REQWAIT_DIS Value */
+ #define MXC_S_DMA_CFG_REQWAIT_DIS                      (MXC_V_DMA_CFG_REQWAIT_DIS << MXC_F_DMA_CFG_REQWAIT_POS) /**< CFG_REQWAIT_DIS Setting */
+ #define MXC_V_DMA_CFG_REQWAIT_EN                       ((uint32_t)0x1UL) /**< CFG_REQWAIT_EN Value */
+ #define MXC_S_DMA_CFG_REQWAIT_EN                       (MXC_V_DMA_CFG_REQWAIT_EN << MXC_F_DMA_CFG_REQWAIT_POS) /**< CFG_REQWAIT_EN Setting */
 
  #define MXC_F_DMA_CFG_TOSEL_POS                        11 /**< CFG_TOSEL Position */
  #define MXC_F_DMA_CFG_TOSEL                            ((uint32_t)(0x7UL << MXC_F_DMA_CFG_TOSEL_POS)) /**< CFG_TOSEL Mask */
@@ -253,6 +245,10 @@ typedef struct {
 
  #define MXC_F_DMA_CFG_SRCINC_POS                       18 /**< CFG_SRCINC Position */
  #define MXC_F_DMA_CFG_SRCINC                           ((uint32_t)(0x1UL << MXC_F_DMA_CFG_SRCINC_POS)) /**< CFG_SRCINC Mask */
+ #define MXC_V_DMA_CFG_SRCINC_DIS                       ((uint32_t)0x0UL) /**< CFG_SRCINC_DIS Value */
+ #define MXC_S_DMA_CFG_SRCINC_DIS                       (MXC_V_DMA_CFG_SRCINC_DIS << MXC_F_DMA_CFG_SRCINC_POS) /**< CFG_SRCINC_DIS Setting */
+ #define MXC_V_DMA_CFG_SRCINC_EN                        ((uint32_t)0x1UL) /**< CFG_SRCINC_EN Value */
+ #define MXC_S_DMA_CFG_SRCINC_EN                        (MXC_V_DMA_CFG_SRCINC_EN << MXC_F_DMA_CFG_SRCINC_POS) /**< CFG_SRCINC_EN Setting */
 
  #define MXC_F_DMA_CFG_DSTWD_POS                        20 /**< CFG_DSTWD Position */
  #define MXC_F_DMA_CFG_DSTWD                            ((uint32_t)(0x3UL << MXC_F_DMA_CFG_DSTWD_POS)) /**< CFG_DSTWD Mask */
@@ -265,17 +261,44 @@ typedef struct {
 
  #define MXC_F_DMA_CFG_DSTINC_POS                       22 /**< CFG_DSTINC Position */
  #define MXC_F_DMA_CFG_DSTINC                           ((uint32_t)(0x1UL << MXC_F_DMA_CFG_DSTINC_POS)) /**< CFG_DSTINC Mask */
+ #define MXC_V_DMA_CFG_DSTINC_DIS                       ((uint32_t)0x0UL) /**< CFG_DSTINC_DIS Value */
+ #define MXC_S_DMA_CFG_DSTINC_DIS                       (MXC_V_DMA_CFG_DSTINC_DIS << MXC_F_DMA_CFG_DSTINC_POS) /**< CFG_DSTINC_DIS Setting */
+ #define MXC_V_DMA_CFG_DSTINC_EN                        ((uint32_t)0x1UL) /**< CFG_DSTINC_EN Value */
+ #define MXC_S_DMA_CFG_DSTINC_EN                        (MXC_V_DMA_CFG_DSTINC_EN << MXC_F_DMA_CFG_DSTINC_POS) /**< CFG_DSTINC_EN Setting */
 
  #define MXC_F_DMA_CFG_BRST_POS                         24 /**< CFG_BRST Position */
  #define MXC_F_DMA_CFG_BRST                             ((uint32_t)(0x1FUL << MXC_F_DMA_CFG_BRST_POS)) /**< CFG_BRST Mask */
 
  #define MXC_F_DMA_CFG_CHDIEN_POS                       30 /**< CFG_CHDIEN Position */
  #define MXC_F_DMA_CFG_CHDIEN                           ((uint32_t)(0x1UL << MXC_F_DMA_CFG_CHDIEN_POS)) /**< CFG_CHDIEN Mask */
+ #define MXC_V_DMA_CFG_CHDIEN_DIS                       ((uint32_t)0x0UL) /**< CFG_CHDIEN_DIS Value */
+ #define MXC_S_DMA_CFG_CHDIEN_DIS                       (MXC_V_DMA_CFG_CHDIEN_DIS << MXC_F_DMA_CFG_CHDIEN_POS) /**< CFG_CHDIEN_DIS Setting */
+ #define MXC_V_DMA_CFG_CHDIEN_EN                        ((uint32_t)0x1UL) /**< CFG_CHDIEN_EN Value */
+ #define MXC_S_DMA_CFG_CHDIEN_EN                        (MXC_V_DMA_CFG_CHDIEN_EN << MXC_F_DMA_CFG_CHDIEN_POS) /**< CFG_CHDIEN_EN Setting */
 
  #define MXC_F_DMA_CFG_CTZIEN_POS                       31 /**< CFG_CTZIEN Position */
  #define MXC_F_DMA_CFG_CTZIEN                           ((uint32_t)(0x1UL << MXC_F_DMA_CFG_CTZIEN_POS)) /**< CFG_CTZIEN Mask */
+ #define MXC_V_DMA_CFG_CTZIEN_DIS                       ((uint32_t)0x0UL) /**< CFG_CTZIEN_DIS Value */
+ #define MXC_S_DMA_CFG_CTZIEN_DIS                       (MXC_V_DMA_CFG_CTZIEN_DIS << MXC_F_DMA_CFG_CTZIEN_POS) /**< CFG_CTZIEN_DIS Setting */
+ #define MXC_V_DMA_CFG_CTZIEN_EN                        ((uint32_t)0x1UL) /**< CFG_CTZIEN_EN Value */
+ #define MXC_S_DMA_CFG_CTZIEN_EN                        (MXC_V_DMA_CFG_CTZIEN_EN << MXC_F_DMA_CFG_CTZIEN_POS) /**< CFG_CTZIEN_EN Setting */
 
 /**@} end of group DMA_CFG_Register */
+
+/**
+ * @ingroup  dma_registers
+ * @defgroup DMA_INT_FL DMA_INT_FL
+ * @brief    DMA Interrupt Register.
+ * @{
+ */
+ #define MXC_F_DMA_INT_FL_IPEND_POS                     0 /**< INT_FL_IPEND Position */
+ #define MXC_F_DMA_INT_FL_IPEND                         ((uint32_t)(0xFUL << MXC_F_DMA_INT_FL_IPEND_POS)) /**< INT_FL_IPEND Mask */
+ #define MXC_V_DMA_INT_FL_IPEND_INACTIVE                ((uint32_t)0x0UL) /**< INT_FL_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INT_FL_IPEND_INACTIVE                (MXC_V_DMA_INT_FL_IPEND_INACTIVE << MXC_F_DMA_INT_FL_IPEND_POS) /**< INT_FL_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INT_FL_IPEND_PENDING                 ((uint32_t)0x1UL) /**< INT_FL_IPEND_PENDING Value */
+ #define MXC_S_DMA_INT_FL_IPEND_PENDING                 (MXC_V_DMA_INT_FL_IPEND_PENDING << MXC_F_DMA_INT_FL_IPEND_POS) /**< INT_FL_IPEND_PENDING Setting */
+
+/**@} end of group DMA_INT_FL_Register */
 
 /**
  * @ingroup  dma_registers
@@ -285,21 +308,53 @@ typedef struct {
  */
  #define MXC_F_DMA_STAT_CH_ST_POS                       0 /**< STAT_CH_ST Position */
  #define MXC_F_DMA_STAT_CH_ST                           ((uint32_t)(0x1UL << MXC_F_DMA_STAT_CH_ST_POS)) /**< STAT_CH_ST Mask */
+ #define MXC_V_DMA_STAT_CH_ST_DIS                       ((uint32_t)0x0UL) /**< STAT_CH_ST_DIS Value */
+ #define MXC_S_DMA_STAT_CH_ST_DIS                       (MXC_V_DMA_STAT_CH_ST_DIS << MXC_F_DMA_STAT_CH_ST_POS) /**< STAT_CH_ST_DIS Setting */
+ #define MXC_V_DMA_STAT_CH_ST_EN                        ((uint32_t)0x1UL) /**< STAT_CH_ST_EN Value */
+ #define MXC_S_DMA_STAT_CH_ST_EN                        (MXC_V_DMA_STAT_CH_ST_EN << MXC_F_DMA_STAT_CH_ST_POS) /**< STAT_CH_ST_EN Setting */
 
  #define MXC_F_DMA_STAT_IPEND_POS                       1 /**< STAT_IPEND Position */
  #define MXC_F_DMA_STAT_IPEND                           ((uint32_t)(0x1UL << MXC_F_DMA_STAT_IPEND_POS)) /**< STAT_IPEND Mask */
+ #define MXC_V_DMA_STAT_IPEND_INACTIVE                  ((uint32_t)0x0UL) /**< STAT_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_STAT_IPEND_INACTIVE                  (MXC_V_DMA_STAT_IPEND_INACTIVE << MXC_F_DMA_STAT_IPEND_POS) /**< STAT_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_STAT_IPEND_PENDING                   ((uint32_t)0x1UL) /**< STAT_IPEND_PENDING Value */
+ #define MXC_S_DMA_STAT_IPEND_PENDING                   (MXC_V_DMA_STAT_IPEND_PENDING << MXC_F_DMA_STAT_IPEND_POS) /**< STAT_IPEND_PENDING Setting */
 
  #define MXC_F_DMA_STAT_CTZ_ST_POS                      2 /**< STAT_CTZ_ST Position */
  #define MXC_F_DMA_STAT_CTZ_ST                          ((uint32_t)(0x1UL << MXC_F_DMA_STAT_CTZ_ST_POS)) /**< STAT_CTZ_ST Mask */
+ #define MXC_V_DMA_STAT_CTZ_ST_NOEVENT                  ((uint32_t)0x0UL) /**< STAT_CTZ_ST_NOEVENT Value */
+ #define MXC_S_DMA_STAT_CTZ_ST_NOEVENT                  (MXC_V_DMA_STAT_CTZ_ST_NOEVENT << MXC_F_DMA_STAT_CTZ_ST_POS) /**< STAT_CTZ_ST_NOEVENT Setting */
+ #define MXC_V_DMA_STAT_CTZ_ST_OCCURRED                 ((uint32_t)0x1UL) /**< STAT_CTZ_ST_OCCURRED Value */
+ #define MXC_S_DMA_STAT_CTZ_ST_OCCURRED                 (MXC_V_DMA_STAT_CTZ_ST_OCCURRED << MXC_F_DMA_STAT_CTZ_ST_POS) /**< STAT_CTZ_ST_OCCURRED Setting */
+ #define MXC_V_DMA_STAT_CTZ_ST_CLEAR                    ((uint32_t)0x1UL) /**< STAT_CTZ_ST_CLEAR Value */
+ #define MXC_S_DMA_STAT_CTZ_ST_CLEAR                    (MXC_V_DMA_STAT_CTZ_ST_CLEAR << MXC_F_DMA_STAT_CTZ_ST_POS) /**< STAT_CTZ_ST_CLEAR Setting */
 
  #define MXC_F_DMA_STAT_RLD_ST_POS                      3 /**< STAT_RLD_ST Position */
  #define MXC_F_DMA_STAT_RLD_ST                          ((uint32_t)(0x1UL << MXC_F_DMA_STAT_RLD_ST_POS)) /**< STAT_RLD_ST Mask */
+ #define MXC_V_DMA_STAT_RLD_ST_NOEVENT                  ((uint32_t)0x0UL) /**< STAT_RLD_ST_NOEVENT Value */
+ #define MXC_S_DMA_STAT_RLD_ST_NOEVENT                  (MXC_V_DMA_STAT_RLD_ST_NOEVENT << MXC_F_DMA_STAT_RLD_ST_POS) /**< STAT_RLD_ST_NOEVENT Setting */
+ #define MXC_V_DMA_STAT_RLD_ST_OCCURRED                 ((uint32_t)0x1UL) /**< STAT_RLD_ST_OCCURRED Value */
+ #define MXC_S_DMA_STAT_RLD_ST_OCCURRED                 (MXC_V_DMA_STAT_RLD_ST_OCCURRED << MXC_F_DMA_STAT_RLD_ST_POS) /**< STAT_RLD_ST_OCCURRED Setting */
+ #define MXC_V_DMA_STAT_RLD_ST_CLEAR                    ((uint32_t)0x1UL) /**< STAT_RLD_ST_CLEAR Value */
+ #define MXC_S_DMA_STAT_RLD_ST_CLEAR                    (MXC_V_DMA_STAT_RLD_ST_CLEAR << MXC_F_DMA_STAT_RLD_ST_POS) /**< STAT_RLD_ST_CLEAR Setting */
 
  #define MXC_F_DMA_STAT_BUS_ERR_POS                     4 /**< STAT_BUS_ERR Position */
  #define MXC_F_DMA_STAT_BUS_ERR                         ((uint32_t)(0x1UL << MXC_F_DMA_STAT_BUS_ERR_POS)) /**< STAT_BUS_ERR Mask */
+ #define MXC_V_DMA_STAT_BUS_ERR_NOEVENT                 ((uint32_t)0x0UL) /**< STAT_BUS_ERR_NOEVENT Value */
+ #define MXC_S_DMA_STAT_BUS_ERR_NOEVENT                 (MXC_V_DMA_STAT_BUS_ERR_NOEVENT << MXC_F_DMA_STAT_BUS_ERR_POS) /**< STAT_BUS_ERR_NOEVENT Setting */
+ #define MXC_V_DMA_STAT_BUS_ERR_OCCURRED                ((uint32_t)0x1UL) /**< STAT_BUS_ERR_OCCURRED Value */
+ #define MXC_S_DMA_STAT_BUS_ERR_OCCURRED                (MXC_V_DMA_STAT_BUS_ERR_OCCURRED << MXC_F_DMA_STAT_BUS_ERR_POS) /**< STAT_BUS_ERR_OCCURRED Setting */
+ #define MXC_V_DMA_STAT_BUS_ERR_CLEAR                   ((uint32_t)0x1UL) /**< STAT_BUS_ERR_CLEAR Value */
+ #define MXC_S_DMA_STAT_BUS_ERR_CLEAR                   (MXC_V_DMA_STAT_BUS_ERR_CLEAR << MXC_F_DMA_STAT_BUS_ERR_POS) /**< STAT_BUS_ERR_CLEAR Setting */
 
  #define MXC_F_DMA_STAT_TO_ST_POS                       6 /**< STAT_TO_ST Position */
  #define MXC_F_DMA_STAT_TO_ST                           ((uint32_t)(0x1UL << MXC_F_DMA_STAT_TO_ST_POS)) /**< STAT_TO_ST Mask */
+ #define MXC_V_DMA_STAT_TO_ST_NOEVENT                   ((uint32_t)0x0UL) /**< STAT_TO_ST_NOEVENT Value */
+ #define MXC_S_DMA_STAT_TO_ST_NOEVENT                   (MXC_V_DMA_STAT_TO_ST_NOEVENT << MXC_F_DMA_STAT_TO_ST_POS) /**< STAT_TO_ST_NOEVENT Setting */
+ #define MXC_V_DMA_STAT_TO_ST_OCCURRED                  ((uint32_t)0x1UL) /**< STAT_TO_ST_OCCURRED Value */
+ #define MXC_S_DMA_STAT_TO_ST_OCCURRED                  (MXC_V_DMA_STAT_TO_ST_OCCURRED << MXC_F_DMA_STAT_TO_ST_POS) /**< STAT_TO_ST_OCCURRED Setting */
+ #define MXC_V_DMA_STAT_TO_ST_CLEAR                     ((uint32_t)0x1UL) /**< STAT_TO_ST_CLEAR Value */
+ #define MXC_S_DMA_STAT_TO_ST_CLEAR                     (MXC_V_DMA_STAT_TO_ST_CLEAR << MXC_F_DMA_STAT_TO_ST_POS) /**< STAT_TO_ST_CLEAR Setting */
 
 /**@} end of group DMA_STAT_Register */
 
@@ -382,6 +437,10 @@ typedef struct {
 
  #define MXC_F_DMA_CNT_RLD_RLDEN_POS                    31 /**< CNT_RLD_RLDEN Position */
  #define MXC_F_DMA_CNT_RLD_RLDEN                        ((uint32_t)(0x1UL << MXC_F_DMA_CNT_RLD_RLDEN_POS)) /**< CNT_RLD_RLDEN Mask */
+ #define MXC_V_DMA_CNT_RLD_RLDEN_DIS                    ((uint32_t)0x0UL) /**< CNT_RLD_RLDEN_DIS Value */
+ #define MXC_S_DMA_CNT_RLD_RLDEN_DIS                    (MXC_V_DMA_CNT_RLD_RLDEN_DIS << MXC_F_DMA_CNT_RLD_RLDEN_POS) /**< CNT_RLD_RLDEN_DIS Setting */
+ #define MXC_V_DMA_CNT_RLD_RLDEN_EN                     ((uint32_t)0x1UL) /**< CNT_RLD_RLDEN_EN Value */
+ #define MXC_S_DMA_CNT_RLD_RLDEN_EN                     (MXC_V_DMA_CNT_RLD_RLDEN_EN << MXC_F_DMA_CNT_RLD_RLDEN_POS) /**< CNT_RLD_RLDEN_EN Setting */
 
 /**@} end of group DMA_CNT_RLD_Register */
 
