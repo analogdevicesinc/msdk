@@ -5403,12 +5403,12 @@
        <bitRange>[9:0]</bitRange>
       </field>
       <field>
-       <name>ADDR_DIS</name>
+       <name>DIS</name>
        <description>Slave Address Disable.</description>
        <bitRange>[10:10]</bitRange>
       </field>
       <field>
-       <name>ADDR_IDX</name>
+       <name>IDX</name>
        <description>Slave Address Index.</description>
        <bitRange>[14:11]</bitRange>
       </field>

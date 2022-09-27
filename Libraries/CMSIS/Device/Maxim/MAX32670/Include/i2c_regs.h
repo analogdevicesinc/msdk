@@ -552,11 +552,11 @@ typedef struct {
  #define MXC_F_I2C_SLAVE_ADDR_POS                       0 /**< SLAVE_ADDR Position */
  #define MXC_F_I2C_SLAVE_ADDR                           ((uint32_t)(0x3FFUL << MXC_F_I2C_SLAVE_ADDR_POS)) /**< SLAVE_ADDR Mask */
 
- #define MXC_F_I2C_SLAVE_ADDR_DIS_POS                   10 /**< SLAVE_ADDR_DIS Position */
- #define MXC_F_I2C_SLAVE_ADDR_DIS                       ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_ADDR_DIS_POS)) /**< SLAVE_ADDR_DIS Mask */
+ #define MXC_F_I2C_SLAVE_DIS_POS                        10 /**< SLAVE_DIS Position */
+ #define MXC_F_I2C_SLAVE_DIS                            ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_DIS_POS)) /**< SLAVE_DIS Mask */
 
- #define MXC_F_I2C_SLAVE_ADDR_IDX_POS                   11 /**< SLAVE_ADDR_IDX Position */
- #define MXC_F_I2C_SLAVE_ADDR_IDX                       ((uint32_t)(0xFUL << MXC_F_I2C_SLAVE_ADDR_IDX_POS)) /**< SLAVE_ADDR_IDX Mask */
+ #define MXC_F_I2C_SLAVE_IDX_POS                        11 /**< SLAVE_IDX Position */
+ #define MXC_F_I2C_SLAVE_IDX                            ((uint32_t)(0xFUL << MXC_F_I2C_SLAVE_IDX_POS)) /**< SLAVE_IDX Mask */
 
  #define MXC_F_I2C_SLAVE_EXT_ADDR_EN_POS                15 /**< SLAVE_EXT_ADDR_EN Position */
  #define MXC_F_I2C_SLAVE_EXT_ADDR_EN                    ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_EXT_ADDR_EN_POS)) /**< SLAVE_EXT_ADDR_EN Mask */
