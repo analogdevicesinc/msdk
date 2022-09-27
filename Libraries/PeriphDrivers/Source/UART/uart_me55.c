@@ -351,35 +351,33 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, un
 int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned int len,
                            mxc_uart_dma_complete_cb_t callback)
 {
-    return E_NOT_SUPPORTED;
-    // TODO: Update DMA reqsel values
-    // mxc_dma_config_t config;
+    mxc_dma_config_t config;
 
-    // int uart_num = MXC_UART_GET_IDX(uart);
+    int uart_num = MXC_UART_GET_IDX(uart);
 
-    // switch (uart_num) {
-    // case 0:
-    //     config.reqsel = MXC_DMA_REQUEST_UART0RX;
-    //     break;
+    switch (uart_num) {
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_UART0RX;
+        break;
 
-    // case 1:
-    //     config.reqsel = MXC_DMA_REQUEST_UART1RX;
-    //     break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_UART1RX;
+        break;
 
-    // case 2:
-    //     config.reqsel = MXC_DMA_REQUEST_UART2RX;
-    //     break;
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_UART2RX;
+        break;
 
-    // case 3:
-    //     config.reqsel = MXC_DMA_REQUEST_UART3TX;
-    //     break;
+    case 3:
+        config.reqsel = MXC_DMA_REQUEST_UART3TX;
+        break;
 
-    // default:
-    //     return E_BAD_PARAM;
-    //     break;
-    // }
+    default:
+        return E_BAD_PARAM;
+        break;
+    }
 
-    // return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t*) uart, bytes, len, callback, config);
+    return MXC_UART_RevB_ReadRXFIFODMA((mxc_uart_revb_regs_t*) uart, bytes, len, callback, config);
 }
 
 unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t *uart)
@@ -396,34 +394,32 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t *uart, const unsigned char *by
 int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, const unsigned char *bytes, unsigned int len,
                             mxc_uart_dma_complete_cb_t callback)
 {
-    return E_NOT_SUPPORTED;
-    // TODO: Update DMA reqsels
-    // mxc_dma_config_t config;
+    mxc_dma_config_t config;
 
-    // int uart_num = MXC_UART_GET_IDX(uart);
-    // switch (uart_num) {
-    // case 0:
-    //     config.reqsel = MXC_DMA_REQUEST_UART0TX;
-    //     break;
+    int uart_num = MXC_UART_GET_IDX(uart);
+    switch (uart_num) {
+    case 0:
+        config.reqsel = MXC_DMA_REQUEST_UART0TX;
+        break;
 
-    // case 1:
-    //     config.reqsel = MXC_DMA_REQUEST_UART1TX;
-    //     break;
+    case 1:
+        config.reqsel = MXC_DMA_REQUEST_UART1TX;
+        break;
 
-    // case 2:
-    //     config.reqsel = MXC_DMA_REQUEST_UART2TX;
-    //     break;
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_UART2TX;
+        break;
 
-    // case 3:
-    //     config.reqsel = MXC_DMA_REQUEST_UART3TX;
-    //     break;
+    case 3:
+        config.reqsel = MXC_DMA_REQUEST_UART3TX;
+        break;
 
-    // default:
-    //     return E_BAD_PARAM;
-    //     break;
-    // }
+    default:
+        return E_BAD_PARAM;
+        break;
+    }
 
-    // return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t*) uart, bytes, len, callback, config);
+    return MXC_UART_RevB_WriteTXFIFODMA((mxc_uart_revb_regs_t*) uart, bytes, len, callback, config);
 }
 
 unsigned int MXC_UART_GetTXFIFOAvailable(mxc_uart_regs_t *uart)

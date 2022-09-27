@@ -352,7 +352,6 @@ unsigned int MXC_UART_ReadRXFIFO(mxc_uart_regs_t *uart, unsigned char *bytes, un
 int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned int len,
                            mxc_uart_dma_complete_cb_t callback)
 {
-    // TODO: Update DMA reqsel values
     mxc_dma_config_t config;
 
     int uart_num = MXC_UART_GET_IDX(uart);
@@ -396,7 +395,6 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t *uart, const unsigned char *by
 int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, const unsigned char *bytes, unsigned int len,
                             mxc_uart_dma_complete_cb_t callback)
 {
-    // TODO: Update DMA reqsels
     mxc_dma_config_t config;
 
     int uart_num = MXC_UART_GET_IDX(uart);
