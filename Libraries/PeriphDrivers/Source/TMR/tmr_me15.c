@@ -51,7 +51,15 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     switch (cfg->clock) {
     case MXC_TMR_EXT_CLK:
         clockSource = MXC_TMR_CLK1;
+        #if TARGET_NUM != 32675
+        if(tmr_id < 4) {
+            MXC_GPIO_Config(&gpio_cfg_hfextclk);
+        } else {
+            MXC_GPIO_Config(&gpio_cfg_lpextclk);
+        }
+        #else 
         MXC_GPIO_Config(&gpio_cfg_extclk);
+        #endif
         break;
 
     case MXC_TMR_32K_CLK:

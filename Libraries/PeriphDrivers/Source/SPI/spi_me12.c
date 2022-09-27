@@ -208,7 +208,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
         case MXC_SYS_CLOCK_ERTCO:
             return ERTCO_FREQ;
         case MXC_SYS_CLOCK_EXTCLK:
-            return EXTCLK_FREQ;
+            return HF_EXTCLK_FREQ;
         default:
             return E_BAD_PARAM;
         }

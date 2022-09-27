@@ -68,8 +68,8 @@ const mxc_gpio_cfg_t gpio_cfg_uart0_flow = { MXC_GPIO0, (MXC_GPIO_PIN_10 | MXC_G
                                              MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable = { MXC_GPIO0, (MXC_GPIO_PIN_10 | MXC_GPIO_PIN_11),
                                                      MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP };
-const mxc_gpio_cfg_t gpio_cfg_uart1 = { MXC_GPIO0, (MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29),
-                                        MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
+const mxc_gpio_cfg_t gpio_cfg_uart1 = { MXC_GPIO0, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3),
+                                        MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_uart1_flow = { MXC_GPIO0, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31),
                                              MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable = { MXC_GPIO0, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31),

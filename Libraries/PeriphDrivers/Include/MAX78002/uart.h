@@ -44,6 +44,8 @@
 #include "uart_regs.h"
 #include "mxc_sys.h"
 
+#define UART_EXTCLK_FREQ    EXTCLK_FREQ
+
 #ifdef __cplusplus
 extern "C" {
 #endif

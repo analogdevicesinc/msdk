@@ -44,6 +44,8 @@
 #include "uart_regs.h"
 #include "mxc_sys.h"
 
+#define UART_EXTCLK_FREQ    EXTCLK_FREQ
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -90,7 +92,6 @@ typedef enum {
 typedef enum {
     /*For UART3 APB clock source is the 8MHz clock*/
     MXC_UART_APB_CLK = 0,
-    MXC_UART_EXT_CLK = 1,
     /*IBRO clock can only be used for UART 0, 1 & 2*/
     MXC_UART_IBRO_CLK = 2,
     /*ERTCO clock can only be used for UART3*/
