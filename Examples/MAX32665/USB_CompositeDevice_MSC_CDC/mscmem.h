@@ -42,16 +42,56 @@
 
 #include <stdint.h>
 
+/* **** Definitions **** */
 #define ERASE_MEMORY_ON_INIT \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
 /* Use 1 to clear or 0 to leave untouched. */
-
+/**
+ * @brief   Perform any initialization necessary to prepare the memory for reading/writing data.
+ * @returns 0 if initialization is successful, non-zero if an error occurred.
+ */
 int mscmem_Init(void);
+
+/**
+ * @brief   Activates the memory.
+ * @returns 0 if activation is successful, non-zero if an error occurred.
+ */
 int mscmem_Start(void);
+
+/**
+ * @brief   Deactivates the memory.
+ * @returns 0 if activation is successful, non-zero if an error occurred.
+ */
 int mscmem_Stop(void);
-int mscmem_Ready();
+
+/**
+ * @brief   Reports the total size of the mass-storage memory.
+ * @returns The number of 512 byte blocks contained in the memory.
+ */
 uint32_t mscmem_Size(void);
+
+/**
+ * @brief   Reads 512 bytes of data from the memory.
+ * @param   lba     The index of the 512 byte block to read.
+ * @param   buffer  A byte array of at least 512 bytes to hold the values read.
+ * @returns 0 if reading is successful, non-zero if an error occurred.
+ * @returns
+ */
 int mscmem_Read(uint32_t lba, uint8_t *buffer);
+
+/**
+ * @brief   Writes 512 bytes of data to the memory.
+ * @param   lba     The index of the 512 byte block to write.
+ * @param   buffer  A byte array of at least 512 bytes holding the values to write.
+ * @returns 0 if writing is successful, non-zero if an error occurred.
+ * @returns
+ */
 int mscmem_Write(uint32_t lba, uint8_t *buffer);
+
+/**
+ * @brief   Checks if the memory is ready to be read/written.
+ * @returns non-zero if the memory is ready, 0 otherwise.
+ */
+int mscmem_Ready(void);
 
 #endif /* __MSC_MEM_H__ */
