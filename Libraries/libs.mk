@@ -151,8 +151,28 @@ ifeq ($(LIB_NFC), 1)
 LIB_NFC_PCD_PBM_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_pbm
 LIB_NFC_PCD_RF_DRIVER_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_rf_driver_$(TARGET_UC)
 
+ifneq ($(DEV_LIB_NFC),1)
+# The libraries are released as pre-compiled library files.
+# Only need to set up include paths and link library
+
+# Add to include directory list
+IPATH += $(LIB_NFC_PCD_PBM_DIR)/include
+PROJ_LDFLAGS += -L$(LIB_NFC_PCD_PBM_DIR)
+PROJ_LIBS += nfc_pcd_pbm_$(LIBRARY_VARIANT)
+
+# Add to include directory list
+IPATH += $(LIB_NFC_PCD_RF_DRIVER_DIR)/include
+IPATH += $(LIB_NFC_PCD_RF_DRIVER_DIR)/include/nfc
+PROJ_LDFLAGS += -L$(LIB_NFC_PCD_RF_DRIVER_DIR)
+PROJ_LIBS += nfc_pcd_rf_driver_MAX32570_$(LIBRARY_VARIANT)
+
+else
+# Development setup (DEV_LIB_NFC=1) for building libraries
+# from source
 include $(LIB_NFC_PCD_PBM_DIR)/nfc_pcd_pbm.mk
 include $(LIB_NFC_PCD_RF_DRIVER_DIR)/nfc_pcd_rf_driver.mk
+endif
+
 endif
 # ************************
 
