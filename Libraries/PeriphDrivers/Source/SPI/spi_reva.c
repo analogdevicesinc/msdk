@@ -277,9 +277,7 @@ int MXC_SPI_RevA_SetDataSize(mxc_spi_reva_regs_t *spi, int dataSize)
         if (dataSize < 16) {
             MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
                          dataSize << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
-        }
-
-        else {
+        } else {
             MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
                          0 << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS); //may not be neccessary
         }
@@ -579,11 +577,11 @@ unsigned int MXC_SPI_RevA_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *by
         // Read from the FIFO
         while (len) {
             if (len > 3) {
-                memcpy(&((uint8_t *)bytes)[cnt], (void *)&spi->fifo32, 4);
+                memcpy((uint8_t *) (&bytes[cnt]), (void *) (&spi->fifo32), 4);
                 len -= 4;
                 cnt += 4;
             } else if (len > 1) {
-                memcpy(&((uint8_t *)bytes)[cnt], (void *)&spi->fifo16[0], 2);
+                memcpy((uint8_t *) (&bytes[cnt]), (void *) (&spi->fifo16[0]), 2);
                 len -= 2;
                 cnt += 2;
 
@@ -632,13 +630,13 @@ unsigned int MXC_SPI_RevA_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
 
     while (len) {
         if (len > 3) {
-            memcpy((void *)&spi->fifo32, &((uint8_t *)bytes)[cnt], 4);
+            memcpy((void *) (&spi->fifo32), (uint8_t *) (&bytes[cnt]), 4);
 
             len -= 4;
             cnt += 4;
 
         } else if (len > 1) {
-            memcpy((void *)&spi->fifo16[0], &((uint8_t *)bytes)[cnt], 2);
+            memcpy((void *) (&spi->fifo16[0]), (uint8_t *) (&bytes[cnt]), 2);
 
             len -= 2;
             cnt += 2;
@@ -1304,9 +1302,7 @@ void MXC_SPI_RevA_DMACallback(int ch, int error)
         if (states[i].req != NULL) {
             if (states[i].channelTx == ch) {
                 states[i].req_done++;
-            }
-
-            else if (states[i].channelRx == ch) {
+            } else if (states[i].channelRx == ch) {
                 states[i].req_done++;
                 //save the request
                 temp_req = states[i].req;
