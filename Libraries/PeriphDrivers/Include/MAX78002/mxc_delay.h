@@ -43,6 +43,8 @@
 #ifndef _DELAY_H_
 #define _DELAY_H_
 
+#include <stdint.h>
+
 /**
  * @ingroup devicelibs
  * @defgroup    MXC_delay Delay Utility Functions

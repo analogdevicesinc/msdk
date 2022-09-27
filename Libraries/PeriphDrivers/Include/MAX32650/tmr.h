@@ -44,6 +44,7 @@
 #define _TMR_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "tmr_regs.h"
 #include "mxc_sys.h"
 #include "mxc_errors.h"

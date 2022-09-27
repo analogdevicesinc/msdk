@@ -41,12 +41,13 @@
 #define _TMR_H_
 
 /* **** Includes **** */
+#include <stdint.h>
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "tmr_regs.h"
 #include "mxc_sys.h"
 #include "gcr_regs.h"
 #include "mcr_regs.h"
-#include "stdbool.h"
 
 #ifdef __cplusplus
 extern "C" {
