@@ -19,3 +19,8 @@ INIT_PERIPHERAL = 0
 INIT_BROADCASTER = 0
 INIT_CENTRAL = 1
 INIT_OBSERVER = 1
+
+# TRACE option
+# Set to 1 to enable serial port trace messages
+# Set to 0 to disable
+TRACE = 1
