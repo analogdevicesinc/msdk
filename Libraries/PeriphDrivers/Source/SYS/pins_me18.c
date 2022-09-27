@@ -130,11 +130,10 @@ const mxc_gpio_cfg_t gpio_cfg_tmr3 = { MXC_GPIO1, (MXC_GPIO_PIN_13 | MXC_GPIO_PI
 const mxc_gpio_cfg_t gpio_cfg_tmr3b = { MXC_GPIO2, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31),
                                         MXC_GPIO_FUNC_ALT3, MXC_GPIO_PAD_NONE,
                                         MXC_GPIO_VSSEL_VDDIO };
-const mxc_gpio_cfg_t gpio_cfg_tmr4 = { MXC_GPIO3, (MXC_GPIO_PIN_4 | MXC_GPIO_PIN_7),
+const mxc_gpio_cfg_t gpio_cfg_tmr4 = { MXC_GPIO3, (MXC_GPIO_PIN_4),
                                        MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
                                        MXC_GPIO_VSSEL_VDDIO };
-// TODO: Fix TMR5 Pins
-const mxc_gpio_cfg_t gpio_cfg_tmr5 = { MXC_GPIO3, (MXC_GPIO_PIN_4 | MXC_GPIO_PIN_7),
+const mxc_gpio_cfg_t gpio_cfg_tmr5 = { MXC_GPIO3, (MXC_GPIO_PIN_7),
                                        MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
                                        MXC_GPIO_VSSEL_VDDIO };
 

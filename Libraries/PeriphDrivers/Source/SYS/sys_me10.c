@@ -449,8 +449,7 @@ int MXC_SYS_SysTick_Config(uint32_t ticks, int clk_src, mxc_tmr_regs_t *tmr)
     /* If SystemClock, call default CMSIS config and return */
     if (clk_src) {
         return SysTick_Config(ticks);
-    } else { /* External clock source requested
-                enable RTC clock in run mode*/
+    } else { /* External clock source requested. Enable RTC clock in run mode*/
         MXC_RTC_Init(0, 0);
         MXC_RTC_Start();
 
@@ -546,7 +545,8 @@ int MXC_SYS_SysTick_Delay(uint32_t ticks)
 
         return E_NO_ERROR;
 
-    } else { /* SysTick is enabled
+    } else {
+        /* SysTick is enabled
            When SysTick is enabled count flag can not be used
            and the reload can not be changed.
            Do not read the CTRL register -> clears count flag */
@@ -564,8 +564,8 @@ int MXC_SYS_SysTick_Delay(uint32_t ticks)
             if (cur_ticks > previous_ticks) {
                 /* subtract count to 0 (previous_ticks) and wrap (reload value - cur_ticks) */
                 num_subtract = (previous_ticks + (reload - cur_ticks));
-            } else { /* standard case (no wrap)
-                        subtract off the number of ticks since last pass */
+            } else {
+                /* standard case (no wrap) - subtract off the number of ticks since last pass */
                 num_subtract = (previous_ticks - cur_ticks);
             }
             /* check to see if we are done. */
