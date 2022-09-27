@@ -222,7 +222,6 @@ MXC_OPTIMIZE_CFLAGS ?= -O2
 DEBUG = 0
 endif
 
-DEBUG ?= 0
 ifeq ($(DEBUG),1)
 # Default optimization level for debug builds (make DEBUG=1 ...)
 # gcc.mk checks for this flag to add some additional debug
