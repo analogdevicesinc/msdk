@@ -108,6 +108,9 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi4_ss0;
 extern const mxc_gpio_cfg_t gpio_cfg_spi4_ss1;
 extern const mxc_gpio_cfg_t gpio_cfg_spi4_ss2;
 
+extern const mxc_gpio_cfg_t gpio_cfg_spixr;
+extern const mxc_gpio_cfg_t gpio_cfg_spixf;
+
 extern const mxc_gpio_cfg_t gpio_cfg_owm;
 
 extern const mxc_gpio_cfg_t gpio_cfg_rtcsqw;
