@@ -75,8 +75,8 @@ int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clo
         break;
 
     case MXC_UART_ERFO_CLK:
-    	MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-    	break;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        break;
 
     default:
         break;
@@ -196,37 +196,37 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
         freq = MXC_UART_GetFrequency(uart);
     } else {
-    	uart->osr = 5;
+        uart->osr = 5;
 
-    	switch(clock) {
-    	case MXC_UART_APB_CLK:
-    		uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK;
-    		clkdiv = PeripheralClock / baud;
-    		mod = PeripheralClock % baud;
-    		break;
+        switch (clock) {
+        case MXC_UART_APB_CLK:
+            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK;
+            clkdiv = PeripheralClock / baud;
+            mod = PeripheralClock % baud;
+            break;
 
-    	case MXC_UART_ERFO_CLK:
-    		uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-			clkdiv = ERFO_FREQ / baud;
-			mod = ERFO_FREQ % baud;
-			break;
+        case MXC_UART_ERFO_CLK:
+            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+            clkdiv = ERFO_FREQ / baud;
+            mod = ERFO_FREQ % baud;
+            break;
 
-    	case MXC_UART_IBRO_CLK:
-    		uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
-			clkdiv = IBRO_FREQ / baud;
-			mod = IBRO_FREQ % baud;
-			break;
+        case MXC_UART_IBRO_CLK:
+            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+            clkdiv = IBRO_FREQ / baud;
+            mod = IBRO_FREQ % baud;
+            break;
 
-    	default:
-    		return E_BAD_PARAM;
-    	}
+        default:
+            return E_BAD_PARAM;
+        }
 
-    	if (!clkdiv || mod > (baud / 2)) {
-			clkdiv++;
-		}
-		uart->clkdiv = clkdiv;
+        if (!clkdiv || mod > (baud / 2)) {
+            clkdiv++;
+        }
+        uart->clkdiv = clkdiv;
 
-		freq = MXC_UART_GetFrequency(uart);
+        freq = MXC_UART_GetFrequency(uart);
     }
 
     if (freq > 0) {
@@ -249,24 +249,26 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
     // check if UARt is LP UART
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-        	periphClock = ERTCO_FREQ * 2;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+            periphClock = ERTCO_FREQ * 2;
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
+                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = IBRO_FREQ;
         } else {
             return E_BAD_PARAM;
         }
         return (periphClock / uart->clkdiv);
     } else {
-    	if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-			periphClock = ERFO_FREQ;
-		} else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
-			periphClock = PeripheralClock;
-		} else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-			periphClock = IBRO_FREQ;
-		} else {
-			return E_BAD_PARAM;
-		}
-		return (periphClock / uart->clkdiv);
+        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+            periphClock = ERFO_FREQ;
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
+                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+            periphClock = PeripheralClock;
+        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
+            periphClock = IBRO_FREQ;
+        } else {
+            return E_BAD_PARAM;
+        }
+        return (periphClock / uart->clkdiv);
     }
 }
 
