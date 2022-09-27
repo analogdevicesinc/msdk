@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SEMA_H_
-#define _SEMA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_SEMA_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_SEMA_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -153,4 +153,4 @@ int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t *data, unsig
 }
 #endif
 
-#endif /* _SEMA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_SEMA_H_

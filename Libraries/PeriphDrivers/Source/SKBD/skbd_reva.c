@@ -165,7 +165,7 @@ extern inline int MXC_SKBD_RevA_InterruptStatus(mxc_skbd_reva_regs_t *skbd, unsi
 
 int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t *skbd, mxc_skbd_reva_keys_t *keys)
 {
-    volatile unsigned short *key;
+    volatile uint16_t *key;
     volatile unsigned int i = 0;
     volatile unsigned int temp;
     volatile unsigned int *key_reg;
@@ -174,7 +174,7 @@ int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t *skbd, mxc_skbd_reva_keys_t *key
         return E_NULL_PTR;
     }
 
-    key = (unsigned short *)&keys->key0_reva;
+    key = (uint16_t *)&keys->key0_reva;
     key_reg = (unsigned int *)&skbd->evt[0];
 
     for (i = 0; i < MXC_SKBD_REVA_TOTAL_KEY_REGS; i++) {

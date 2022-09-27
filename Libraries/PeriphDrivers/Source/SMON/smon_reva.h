@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_H_
+
 #include <stddef.h>
 #include "mxc_assert.h"
 #include "mxc_pins.h"
@@ -180,3 +183,5 @@ void MXC_SMON_RevA_ExtSensorLock(mxc_smon_reva_regs_t *smon);
 void MXC_SMON_RevA_IntSensorLock(mxc_smon_reva_regs_t *smon);
 
 int MXC_SMON_RevA_isBusy(mxc_smon_reva_regs_t *smon, mxc_smon_reva_busy_t reg, uint32_t delay);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SMON_SMON_REVA_H_

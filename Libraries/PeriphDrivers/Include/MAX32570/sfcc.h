@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SFCC_H_
-#define _SFCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SFCC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SFCC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -83,4 +83,4 @@ void MXC_SFCC_Flush(void);
 }
 #endif
 
-#endif /* _SFCC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SFCC_H_
