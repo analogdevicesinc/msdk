@@ -53,16 +53,9 @@ extern "C" {
 #define HIRC_FREQ CRYPTO_FREQ
 #endif
 
-/* NOTE: EXTCLK1 needs to be defined by user based on the clock they supply */
-/* P0.28, Alternate Function 2 */
-#ifndef EXTCLK1_FREQ
-#define EXTCLK1_FREQ 12500000
-#endif
-
-/* NOTE: EXTCLK2 needs to be defined by user based on the clock they supply */
-/* P0.12, Alternate Function 2 */
-#ifndef EXTCLK2_FREQ
-#define EXTCLK2_FREQ 12500000
+/* NOTE: EXTCLK needs to be defined by user based on the clock they supply */
+#ifndef EXTCLK_FREQ
+#define EXTCLK_FREQ 75000000
 #endif
 
 /* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
