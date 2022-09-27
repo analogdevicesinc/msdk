@@ -217,7 +217,7 @@ void MXC_TMR_SetCount(mxc_tmr_regs_t *tmr, uint32_t cnt);
  * @param      tmr   The timer
  * @param[in]  us    microseconds to delay for
  */
-void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, unsigned long us);
+void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, uint32_t us);
 
 /**
  * @brief      Start a timer that will time out after a certain number of microseconds
@@ -225,7 +225,7 @@ void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, unsigned long us);
  * @param      tmr   The timer
  * @param[in]  us    microseconds to time out after
  */
-void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, unsigned long us);
+void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, uint32_t us);
 
 /**
  * @brief      Check on time out timer
