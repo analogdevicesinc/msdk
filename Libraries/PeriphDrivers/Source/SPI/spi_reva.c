@@ -577,11 +577,11 @@ unsigned int MXC_SPI_RevA_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *by
         // Read from the FIFO
         while (len) {
             if (len > 3) {
-                memcpy((uint8_t *) (&bytes[cnt]), (void *) (&spi->fifo32), 4);
+                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo32), 4);
                 len -= 4;
                 cnt += 4;
             } else if (len > 1) {
-                memcpy((uint8_t *) (&bytes[cnt]), (void *) (&spi->fifo16[0]), 2);
+                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo16[0]), 2);
                 len -= 2;
                 cnt += 2;
 
@@ -630,13 +630,13 @@ unsigned int MXC_SPI_RevA_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
 
     while (len) {
         if (len > 3) {
-            memcpy((void *) (&spi->fifo32), (uint8_t *) (&bytes[cnt]), 4);
+            memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[cnt]), 4);
 
             len -= 4;
             cnt += 4;
 
         } else if (len > 1) {
-            memcpy((void *) (&spi->fifo16[0]), (uint8_t *) (&bytes[cnt]), 2);
+            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[cnt]), 2);
 
             len -= 2;
             cnt += 2;
