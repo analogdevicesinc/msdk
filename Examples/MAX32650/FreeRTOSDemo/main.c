@@ -39,7 +39,6 @@
 /* **** Includes **** */
 #include "mxc_errors.h"
 #include "mxc_delay.h"
-#include "board.h"
 
 #include <stdio.h>
 #include <stdint.h>

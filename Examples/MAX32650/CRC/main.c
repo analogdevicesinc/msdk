@@ -43,7 +43,6 @@
 #include "mxc_errors.h"
 #include "board.h"
 #include "tpu.h"
-#include "tpu_regs.h"
 
 /* **** Definitions **** */
 
@@ -134,9 +133,8 @@ int main(void)
     } else {
         printf("CRC Passed!\n");
     }
-    printf("\n");
 
-    printf("Example complete.\n");
+    printf("\nExample complete.\n");
 
-    while (1) {}
+    return 0;
 }

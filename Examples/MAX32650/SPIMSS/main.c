@@ -216,6 +216,5 @@ int main(void)
         LED_On(1);
     }
 
-    while (1) {}
     return 0;
 }
