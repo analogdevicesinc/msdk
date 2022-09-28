@@ -59,6 +59,15 @@ extern "C" {
 /* **** Function Prototypes **** */
 
 /**
+ * @brief   The callback routine used by the MXC_SEMA_ReadBoxAsync() and 
+ *          MXC_SEMA_WriteBoxAsync functions to indicate the operation has completed.
+ *
+ * @param   result      The error code (if any) of the read/write operation.
+ *                      See \ref MXC_Error_Codes for the list of error codes.
+ */
+typedef void (*mxc_sema_complete_cb_t)(int result);
+
+/**
  * @brief     Initialize the semaphore peripheral
  * @return    #E_NO_ERROR if semaphore initialized.
  */
