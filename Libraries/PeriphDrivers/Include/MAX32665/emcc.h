@@ -47,8 +47,8 @@
  * @{
  */
 
-#ifndef _EMCC_H_
-#define _EMCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_EMCC_H_ 
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_EMCC_H_ 
 
 /***** Includes *****/
 #include "emcc_regs.h"
@@ -140,7 +140,7 @@ void EMCC_Invalidate_All(void);
 }
 #endif
 
-#endif /* _EMCC_H_*/
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_EMCC_H_
 /**
  * @} end of emcc
  */

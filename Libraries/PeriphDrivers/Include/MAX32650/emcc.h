@@ -42,8 +42,8 @@
 ********************************************************************************
 */
 
-#ifndef _EMCC_H_
-#define _EMCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_EMCC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_EMCC_H_
 
 /***** Includes *****/
 #include "max32650.h"
@@ -143,4 +143,4 @@ void MXC_EMCC_Invalidate_All(void);
 }
 #endif
 
-#endif /* _EMCC_H_*/
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_EMCC_H_

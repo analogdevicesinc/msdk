@@ -44,8 +44,8 @@
 ********************************************************************************
 */
 
-#ifndef _EMCC_H_
-#define _EMCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_EMCC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_EMCC_H_ 
 
 /***** Includes *****/
 #include "emcc_regs.h"
@@ -132,7 +132,7 @@ uint32_t MXC_EMCC_Ready(void);
 }
 #endif
 
-#endif /* _EMCC_H_*/
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_EMCC_H_
 /**
  * @}
  */
