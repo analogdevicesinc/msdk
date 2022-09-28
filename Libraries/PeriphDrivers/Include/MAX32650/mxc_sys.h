@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_SYS_H_
-#define _MXC_SYS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_SYS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_SYS_H_
 
 /* **** Includes **** */
 #include "max32650.h"
@@ -420,4 +420,4 @@ int MXC_SYS_SysTick_DelayUs(uint32_t us);
 }
 #endif
 
-#endif /* _MXC_SYS_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_SYS_H_

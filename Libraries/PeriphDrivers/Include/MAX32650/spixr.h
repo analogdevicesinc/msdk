@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SPIXR_H_
-#define _SPIXR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_SPIXR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_SPIXR_H_
 
 /* **** Includes **** */
 #include "spixr_regs.h"
@@ -464,4 +464,4 @@ void MXC_SPIXR_SendCommand(uint8_t *cmd, uint32_t length, uint32_t tx_num_char);
 }
 #endif
 
-#endif /* _SPIXR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_SPIXR_H_

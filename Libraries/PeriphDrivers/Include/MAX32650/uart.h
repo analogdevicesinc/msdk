@@ -40,8 +40,8 @@
  *
  *************************************************************************** */
 
-#ifndef _UART_H_
-#define _UART_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_
 
 /***** Includes *****/
 #include <stdint.h>
@@ -659,4 +659,4 @@ uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
 
 /**@} end of group uart */
 
-#endif /* _UART_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_
