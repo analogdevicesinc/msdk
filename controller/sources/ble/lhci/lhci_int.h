@@ -243,6 +243,8 @@ extern "C" {
 
 #define LHCI_OPCODE_VS_REG_WRITE                 HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x300)  /*!< Write register. */
 #define LHCI_OPCODE_VS_REG_READ                  HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x301)  /*!< Read register. */
+#define LHCI_OPCODE_VS_RESET_CONN_STATS          HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x302)  /*!< Reset connection stats. */
+#define LHCI_OPCODE_VS_TX_TEST                   HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x303)  /*!< Vendor specific TX test that takes numPkt param. */
 
 
 /* Vendor specific event masks. */

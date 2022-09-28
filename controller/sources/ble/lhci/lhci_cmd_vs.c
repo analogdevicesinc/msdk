@@ -198,6 +198,14 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       break;
     }
 
+    case LHCI_OPCODE_VS_TX_TEST:
+    {
+      uint16_t numPackets = pBuf[4] | (pBuf[5] << 8);
+
+      status = LlEnhancedTxTest(pBuf[0], pBuf[1], pBuf[2], pBuf[3], numPackets);
+      break;
+    }
+
     /* --- default --- */
     default:
       return FALSE;       /* exit dispatcher routine */
@@ -222,6 +230,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       case LHCI_OPCODE_VS_SET_TX_TEST_ERR_PATT:
       case LHCI_OPCODE_VS_SET_SNIFFER_ENABLE:
       case LHCI_OPCODE_VS_REG_WRITE:
+      case LHCI_OPCODE_VS_TX_TEST:
         /* no action */
         break;
 

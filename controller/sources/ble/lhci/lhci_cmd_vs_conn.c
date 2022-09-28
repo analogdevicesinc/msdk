@@ -181,6 +181,12 @@ bool_t lhciConnVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         break;
       }
 
+      case LHCI_OPCODE_VS_RESET_CONN_STATS:
+      {
+        BbBleResetConnStats();
+        break;
+      }
+
       case LHCI_OPCODE_VS_SET_LOCAL_MIN_USED_CHAN:
         /* no action */
         break;

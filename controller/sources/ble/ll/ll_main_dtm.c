@@ -268,7 +268,6 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
   BbBleData_t * const pBle = pOp->prot.pBle;
   BbBleTestTx_t * const pTx = &pBle->op.testTx;
 
-  llTestCb.rpt.numTx++;
 
   if ((llTestCb.numPkt > 0) && (llTestCb.numPkt <= llTestCb.rpt.numTx))
   {
@@ -276,6 +275,8 @@ static void llTestTxOpEndCback(BbOpDesc_t *pOp)
     LlEndTest(NULL);
   }
 
+  llTestCb.rpt.numTx++;
+  
   if (llTestCb.state == LL_TEST_STATE_TX)
   {
     /* Check for changes in operating parameters. */

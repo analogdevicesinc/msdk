@@ -118,3 +118,13 @@ void BbBleGetConnStats(BbBleDataPktStats_t *pStats)
 {
   *pStats = bbConnStats;
 }
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Reset connection packet statistics.
+ */
+/*************************************************************************************************/
+void BbBleResetConnStats(void)
+{
+  memset(&bbConnStats, 0, sizeof(BbBleDataPktStats_t));
+}

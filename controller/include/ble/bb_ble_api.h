@@ -352,6 +352,13 @@ void BbBleGetConnStats(BbBleDataPktStats_t *pStats);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Reset connection packet statistics.
+ */
+/*************************************************************************************************/
+void BbBleResetConnStats(void);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Get test mode packet statistics.
  *
  *  \param      pStats      Test data statistics.
