@@ -41,8 +41,6 @@
 #include "sema.h"
 #include "sema_reva_regs.h"
 
-typedef void (*mxc_sema_complete_cb_t)(int result);
-
 int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t *sema_regs);
 int MXC_SEMA_RevA_InitBoxes(mxc_sema_reva_regs_t *sema_regs);
 int MXC_SEMA_RevA_GetSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema);
