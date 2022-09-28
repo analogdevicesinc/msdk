@@ -87,7 +87,7 @@ typedef struct {
     uint8_t len; ///< Number or decoded characters. This does not include
                  ///         the sentinels or the LRC.
     uint16_t speed;
-    uint8_t data[MSR_MAX_DEC_LEN]; /**< The decoded data */
+    uint8_t data[MSR_MAX_DEC_LEN]; ///< The decoded data
 } msr_decoded_track_t;
 
 /// MSR sample fields

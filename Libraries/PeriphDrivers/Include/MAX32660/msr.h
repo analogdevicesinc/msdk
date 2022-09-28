@@ -79,16 +79,16 @@
 
 /// Structure to contain result of a track decode
 typedef struct {
-    uint8_t error_code; /**< Error code value */
-    uint8_t parity_errs; /**< Number of characters with parity errors */
-    uint8_t lrc; /**< LRC check value. A value of '0' indicates a
-                             successful LRC check. Any other value should be
-                             considered a failure. */
-    uint8_t direction; /**< Swipe direction determined from decode */
-    uint8_t len; /**< Number or decoded characters. This does not include
-                             the sentinels or the LRC. */
+    uint8_t error_code; ///< Error code value
+    uint8_t parity_errs; ///< Number of characters with parity errors
+    uint8_t lrc; ///< LRC check value. A value of '0' indicates a
+                 ///         successful LRC check. Any other value should be
+                 ///         considered a failure.
+    uint8_t direction; ///< Swipe direction determined from decode
+    uint8_t len; ///< Number or decoded characters. This does not include
+                 ///         the sentinels or the LRC.
     uint16_t speed;
-    uint8_t data[MSR_MAX_DEC_LEN]; /**< The decoded data */
+    uint8_t data[MSR_MAX_DEC_LEN]; ///< The decoded data
 } msr_decoded_track_t;
 
 /// MSR sample fields
