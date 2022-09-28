@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_UART_H_
-#define _MXC_UART_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_UART_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_UART_H_
 
 /***** Definitions *****/
 #include "uart_regs.h"
@@ -678,4 +678,4 @@ uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
 }
 #endif
 
-#endif /* _MXC_UART_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_UART_H_

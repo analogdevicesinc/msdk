@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _DELAY_H_
-#define _DELAY_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_MXC_DELAY_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_MXC_DELAY_H_
 
 #include <stdint.h>
 
@@ -132,4 +132,4 @@ void MXC_DelayHandler(void);
 
 /**@} end of group MXC_delay */
 
-#endif /* _DELAY_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_MXC_DELAY_H_
