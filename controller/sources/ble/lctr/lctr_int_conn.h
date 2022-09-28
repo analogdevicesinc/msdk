@@ -763,6 +763,27 @@ static inline void lctrIncPacketCounterRx(lctrConnCtx_t *pCtx)
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Decrement the Rx/decrypt packet counter.
+ *
+ *  \param  pCtx    Connection context.
+ */
+/*************************************************************************************************/
+static inline void lctrDecPacketCounterRx(lctrConnCtx_t *pCtx)
+{
+  if (lctrSetEncryptPktCountHdlr)
+  {
+    PalCryptoEnc_t * const pEnc = &pCtx->bleData.chan.enc;
+
+    if ((pEnc->enaEncrypt) &&
+        (pEnc->nonceMode == PAL_BB_NONCE_MODE_PKT_CNTR))
+    {
+      pCtx->rxPktCounter--;
+    }
+  }
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  Set the transmit packet counter value in the BB.
  *
  *  \param  pCtx    Connection context.
