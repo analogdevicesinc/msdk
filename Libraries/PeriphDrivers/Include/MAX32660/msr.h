@@ -42,8 +42,8 @@
 *           prototypes.
 */
 
-#ifndef _MSR_H_
-#define _MSR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
 
 /***** Definitions *****/
 
@@ -169,4 +169,4 @@ void msr_set_complete_callback(void (*func)(void));
 */
 unsigned int mcr_get_track_samples(unsigned int track, msr_samples_t *samples);
 
-#endif /* _MSR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
