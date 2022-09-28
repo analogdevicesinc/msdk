@@ -11,18 +11,22 @@
 
 # **********************************************************
 
-# Add your config here!
-
 $(info Note: This project is designed and tested for the OV7692 only.)
 override CAMERA=OV7692
 
-# Place build files specific to EvKit_V1 here.
+# A higher optimization level is used for this example, but it
+# may make debugging unreliable.  Comment out the line below
+# to use the default optimization level, which is optimized
+# for a good debugging experience.
+MXC_OPTIMIZE_CFLAGS = -O2
+
+# Add some additional directories to the build based on the
+# board we're compiling for...
 ifeq "$(BOARD)" "EvKit_V1"
 IPATH += TFT/evkit/
 VPATH += TFT/evkit/
 endif
 
-# Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 IPATH += TFT/fthr
 VPATH += TFT/fthr
