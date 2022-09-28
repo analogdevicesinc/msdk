@@ -203,7 +203,16 @@ int main(void)
     MXC_LP_DisableSRAM1();
     MXC_LP_DisableSRAM6();
 
+    /*
+     *  SRAM can be enabled/disabled
+     */
     MXC_LP_EnableSRAM0(); // Global variables are in RAM0
+    //MXC_LP_EnableSRAM1(); // Global variables are in RAM1
+    //MXC_LP_EnableSRAM2(); // Global variables are in RAM2
+    //MXC_LP_EnableSRAM3(); // Global variables are in RAM3
+    //MXC_LP_EnableSRAM4(); // Global variables are in RAM4
+    //MXC_LP_EnableSRAM5(); // Global variables are in RAM5
+    MXC_LP_EnableSRAM6(); // Global variables are in RAM6
 
     PRINTF("All unused RAMs shutdown.\n");
     setTrigger(1);
