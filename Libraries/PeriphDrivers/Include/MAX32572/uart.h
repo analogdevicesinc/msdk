@@ -48,6 +48,8 @@
 extern "C" {
 #endif
 
+#define UART_EXTCLK_FREQ E_BAD_PARAM
+
 /**
  * @defgroup uart UART
  * @ingroup periphlibs

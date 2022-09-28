@@ -134,6 +134,8 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_revb_regs_t *uart, unsigned int baud,
 
     case MXC_UART_REVB_EXT_CLK:
         uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+        clkDiv = UART_EXTCLK_FREQ / baud;
+        mod = UART_EXTCLK_FREQ % baud;
         break;
 
     //case MXC_UART_IBRO_CLK:
@@ -177,12 +179,12 @@ int MXC_UART_RevB_GetFrequency(mxc_uart_revb_regs_t *uart)
 
     if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
         MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-        return E_NOT_SUPPORTED;
+        periphClock = UART_EXTCLK_FREQ;
     } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) ==
                MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
         periphClock = PeripheralClock;
     } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2) {
-        periphClock = 7372800;
+        periphClock = IBRO_FREQ;
     } else if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3) {
 #if (TARGET_NUM == 78000 || TARGET_NUM == 78002)
         return E_BAD_PARAM;
@@ -640,7 +642,8 @@ int MXC_UART_RevB_Transaction(mxc_uart_revb_req_t *req)
 
         while (req->txCnt < req->txLen) {
             while (!(MXC_UART_GetFlags((mxc_uart_regs_t *)(req->uart)) &
-                     MXC_F_UART_REVB_INT_FL_TX_HE)) {}
+                     MXC_F_UART_REVB_INT_FL_TX_HE) &&
+                   !(req->uart->status & MXC_F_UART_REVB_STATUS_TX_EM)) {}
 
             numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
             numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt :

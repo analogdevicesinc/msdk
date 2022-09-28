@@ -156,16 +156,13 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
         switch (clock) {
         case MXC_UART_APB_CLK:
+        case MXC_UART_IBRO_CLK:
             clkdiv = ((IBRO_FREQ) / baud);
             mod = ((IBRO_FREQ) % baud);
             break;
 
-        case MXC_UART_EXT_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            break;
-
         case MXC_UART_ERTCO_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
             uart->ctrl |= MXC_F_UART_CTRL_FDM;
             clkdiv = ((ERTCO_FREQ * 2) / baud);
             mod = ((ERTCO_FREQ * 2) % baud);
@@ -188,6 +185,10 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
 
         freq = MXC_UART_GetFrequency(uart);
     } else {
+        if (clock == MXC_UART_ERTCO_CLK) {
+            return E_BAD_PARAM;
+        }
+
         freq = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
     }
 
@@ -210,15 +211,11 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
 
     // check if UARt is LP UART
     if (uart == MXC_UART3) {
-        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-            return E_NOT_SUPPORTED;
+        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+            periphClock = IBRO_FREQ;
         } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
-                   MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
-            periphClock = 7372800;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = 32768 * 2;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK3) {
-            periphClock = 80000 * 2;
+                   MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+            periphClock = ERTCO_FREQ * 2;
         } else {
             return E_BAD_PARAM;
         }
