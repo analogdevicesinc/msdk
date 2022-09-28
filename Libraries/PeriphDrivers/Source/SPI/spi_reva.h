@@ -31,8 +31,8 @@
  *
  *************************************************************************** */
 
-#ifndef _SPI_REVA_H_
-#define _SPI_REVA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVA_H_
 
 #include <stdio.h>
 #include <stddef.h>
@@ -132,4 +132,4 @@ void MXC_SPI_RevA_AsyncHandler(mxc_spi_reva_regs_t *spi);
 }
 #endif
 
-#endif /* _SPI_REVA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVA_H_

@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_COMMON_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_COMMON_H_
+
 /* **** Includes **** */
 #include <stddef.h>
 #include "mxc_assert.h"
@@ -46,3 +49,5 @@ unsigned int MXC_TMR_Common_TO_Elapsed(mxc_tmr_regs_t *tmr);
 unsigned int MXC_TMR_Common_TO_Remaining(mxc_tmr_regs_t *tmr);
 void MXC_TMR_Common_SW_Start(mxc_tmr_regs_t *tmr);
 unsigned int MXC_TMR_Common_SW_Stop(mxc_tmr_regs_t *tmr);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_COMMON_H_

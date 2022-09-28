@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVB_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVB_H_
+
 /* **** Includes **** */
 #include <stddef.h>
 #include "mxc_assert.h"
@@ -72,3 +75,5 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
                          mxc_tmr_unit_t *units);
 int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t *tmr, uint32_t time, mxc_tmr_unit_t units,
                           uint32_t *ticks);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVB_H_

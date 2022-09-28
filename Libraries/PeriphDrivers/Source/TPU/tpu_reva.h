@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_TPU_TPU_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_TPU_TPU_REVA_H_
+
 #include "tpu.h"
 #include "tpu_reva_regs.h"
 #include "trng_revc_regs.h"
@@ -158,3 +161,5 @@ int MXC_TPU_RevA_MAA_Init(mxc_tpu_reva_regs_t *tpu, unsigned int size);
 int MXC_TPU_RevA_MAA_Compute(mxc_tpu_reva_regs_t *tpu, mxc_tpu_maa_clcsel_t clc, char *multiplier,
                              char *multiplicand, char *exp, char *mod, int *result,
                              unsigned int len);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_TPU_TPU_REVA_H_
