@@ -48,7 +48,7 @@
 /*************************************************************************************************/
 void LlSetAdvTxPower(int8_t advTxPwr)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlSetAdvTxPower, advTxPwr=%u", advTxPwr);
+  LL_TRACE_INFO1("### LlApi ###  LlSetAdvTxPower, advTxPwr=%d", advTxPwr);
 
   lmgrCb.advTxPwr = advTxPwr;
 }
