@@ -515,6 +515,32 @@ int example()
     return 0;
 }
 
+void waitCardInserted()
+{
+    // On the MAX78000FTHR board, P0.12 will be pulled low when a card is inserted.
+    mxc_gpio_cfg_t cardDetect;
+    cardDetect.port = MXC_GPIO0;
+    cardDetect.mask = MXC_GPIO_PIN_12;
+    cardDetect.func = MXC_GPIO_FUNC_IN;
+    cardDetect.pad = MXC_GPIO_PAD_NONE;
+    cardDetect.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    MXC_GPIO_Config(&cardDetect);
+
+    // Exit function if card is already inserted
+    if(MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_12) == 0) {
+        return;
+    }
+
+    printf("Insert SD card to continue.\n");
+
+    while(MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_12) != 0) {
+        // Spin waiting for card to be inserted.
+    }
+
+    // Card has been detected, exit the function.
+}
+
 /******************************************************************************/
 int main(void)
 {
@@ -543,7 +569,7 @@ int main(void)
 
     printf("\n\n***** " TOSTRING(TARGET) " SDHC FAT Filesystem Example *****\n");
 
-    // TODO - wait inserted
+    waitCardInserted();
 
     printf("Card inserted.\n");
 
