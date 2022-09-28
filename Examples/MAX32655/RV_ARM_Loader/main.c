@@ -45,7 +45,11 @@
 #include "mxc_delay.h"
 #include "mxc_sys.h"
 
+#include "sema_reva.h"
+
 /***** Definitions *****/
+#define NDX_ARM         (0)
+#define NDX_RISCV       (1)
 
 /***** Globals *****/
 
@@ -54,7 +58,20 @@
 // *****************************************************************************
 int main(void)
 {
-    printf("ARM: RV_ARM_Loader\n");
+    printf("\n--------------\nARM   : started.\n");
+
+    MXC_SEMA_Init(); 
+    
+    int ret = MXC_SEMA_CheckSema(NDX_ARM);
+    printf("ARM   : After init, CheckSema(0) returned %s.\n", ret == E_BUSY ? "BUSY" : "NOT BUSY");
+
+    if ((MXC_SEMA_GetSema(0)) == E_NO_ERROR) {
+        printf("ARM   : GetSema(0) returned NOT BUSY with previous semaphores[0] value %d.\n", MXC_SEMA->semaphores[NDX_ARM]);
+    } else {
+        printf("ARM   : GetSema returned --- BUSY --- with previous semaphores[0] value %d.\n", MXC_SEMA->semaphores[NDX_ARM]);
+    }
+
+    printf("ARM   : After 2 secs then start the RISC-V core.\n");
 
     MXC_Delay(MXC_DELAY_SEC(2));
 
@@ -65,5 +82,23 @@ int main(void)
     MXC_SYS_RISCVRun();
 
     /* Enter LPM */
-    while (1) {}
+    int cnt = 0;
+    while (1) {
+        // Wait
+        ret = MXC_SEMA_CheckSema(NDX_ARM);
+        //printf("ARM   : CheckSema(0) returned %s.\n", ret == E_BUSY ? "BUSY" : "NOT BUSY");
+        if (E_BUSY != ret) {  // Register is not busy.
+            ret = MXC_SEMA_GetSema(NDX_ARM);  // Reading the register does an atomic test and set, returns previous value.
+            //printf("ARM   : GetSema(0) returned %s with previous semaphors[0] value %d\n", ret == E_BUSY ? "BUSY" : "NOT BUSY", MXC_SEMA->semaphores[NDX_ARM]);
+
+            // Do the job
+            printf("ARM   : cnt=%d\n", cnt++);
+            MXC_Delay(MXC_DELAY_SEC(1));
+
+            // Signal
+            MXC_SEMA_FreeSema(NDX_RISCV);
+        }
+
+        MXC_Delay(MXC_DELAY_SEC(1));  // Void displaying CheckSema results too soon
+    }
 }

@@ -46,7 +46,11 @@
 #include "board.h"
 #include "mxc_delay.h"
 
+#include "sema_reva.h"
+
 /***** Definitions *****/
+#define NDX_ARM         (0)
+#define NDX_RISCV       (1)
 
 /***** Globals *****/
 
@@ -55,15 +59,35 @@
 // *****************************************************************************
 int main(void)
 {
-    int count = 0;
+    int cnt = 0;
+    int ret;
 
-    printf("Hello World!\n");
+    printf("\nRISC-V: start\n");
+    
+    // Signal SEMA(NDX_ARM)
+    MXC_SEMA_FreeSema(NDX_ARM);
+    printf("Singal SEMA(NDX_ARM) to start the output.\n");
 
     while (1) {
-        LED_On(LED_RED);
-        MXC_Delay(500000);
-        LED_Off(LED_RED);
-        MXC_Delay(500000);
-        printf("count = %d\n", count++);
-    }
+        // Wait
+        ret = MXC_SEMA_CheckSema(NDX_RISCV);
+        //printf("RISCV: CheckSema(1) returned %s.\n", ret == E_BUSY ? "BUSY" : "NOT BUSY");
+        if (E_BUSY != ret) {  // Register is not busy.
+            ret = MXC_SEMA_GetSema(NDX_RISCV);  // Reading the register does an atomic test and set, returns previous value.
+            //printf("RISC-V: GetSema(1) returned %s with previous semaphors[1] value %d\n", ret == E_BUSY ? "BUSY" : "NOT BUSY", MXC_SEMA->semaphores[NDX_RISCV]);
+            
+            // Do the job
+            printf("RISC-V: cnt=%d\n", cnt++);
+
+            LED_On(LED_RED);
+            MXC_Delay(500000);
+            LED_Off(LED_RED);
+            MXC_Delay(500000);
+            
+            // Signal
+            MXC_SEMA_FreeSema(NDX_ARM);
+        }
+
+        MXC_Delay(500000);  // Void displaying CheckSema results too soon
+    }    
 }
