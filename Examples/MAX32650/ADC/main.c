@@ -75,9 +75,14 @@ void ADC_IRQHandler(void)
 
 int main(void)
 {
-    // unsigned int overflow;
-
-    printf("\n***** ADC Example ***** \n");
+    printf("******************** ADC Example ********************\n");
+    printf("Demonstrates the use of the ADC by continuously monitoring ADC input channel 0.\n");
+    printf("Vary the voltage on the AIN0 input (0 to 0.9V) to observe different readings from the ADC.\n");
+    printf("High and low limits are set arbitrarily to demonstrate the detection of overvoltage "
+    		"and undervoltage conditions respectively.\n");
+    printf("If the ADC reading exceeds 0x300, the example will report that the high limit has been reached.\n");
+    printf("If the ADC reading falls below 0x25, the example will report the low limit has been reached.\n");
+    printf("Any reading that exceeds the full-scale value of the ADC will have an '*' appended to the value.\n");
 
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
@@ -135,4 +140,6 @@ int main(void)
         /* Delay for 1/4 second before next reading */
         MXC_Delay(MXC_DELAY_MSEC(1000));
     }
+
+    return 0;
 }

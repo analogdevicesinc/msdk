@@ -4,7 +4,7 @@
  */
 
 /* *****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,13 +34,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-07-17 18:10:38 -0500 (Mon, 17 Jul 2017) $
- * $Revision: 28913 $
  *
  **************************************************************************** */
 
 #include <stdio.h>
-#include "spixf.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -62,10 +59,6 @@ extern "C" {
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON  0 /// Active state of LEDs
 
-#ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD 1000000
-#endif
-
 /**
  * @brief   Initialize the BSP and board interfaces.
  * @return  #E_NO_ERROR if everything is successful
@@ -84,12 +77,6 @@ int Console_Init(void);
  * @return  #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
  */
 int Console_PrepForSleep(void);
-
-/**
- * @brief   Initialize the PMIC to output correct voltages  only needed for rev 1,2, and 3 boards/
- * @return  #E_NO_ERROR if everything is successful
- */
-int MAX77650_Init(void);
 
 #ifdef __cplusplus
 }

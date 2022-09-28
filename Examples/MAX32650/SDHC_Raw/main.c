@@ -47,7 +47,6 @@
 #include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "nvic_table.h"
-#include "sdhc_regs.h"
 #include "led.h"
 #include "tmr.h"
 #include "gpio.h"
@@ -335,4 +334,6 @@ int main(void)
     }
 
     printf(" *** END OF EXAMPLE *** \n");
+
+    return 0;
 }
