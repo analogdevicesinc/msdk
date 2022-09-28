@@ -95,7 +95,7 @@ typedef void (*mxc_emac_cb_func_t)(void);
  * @brief   The microsecond delay function used by the driver
  *
  */
-typedef int (*mxc_emac_delay_func_t)(unsigned long);
+typedef int (*mxc_emac_delay_func_t)(uint32_t);
 
 /**
  * @brief   The table of callback functions for EMAC interrupt events
