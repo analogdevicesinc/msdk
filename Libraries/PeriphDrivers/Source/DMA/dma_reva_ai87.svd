@@ -327,6 +327,16 @@
                   <value>0x0A</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>CSI2RX</name>
+                  <description>CSI2 RX</description>
+                  <value>0x0C</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>PCIFRX</name>
+                  <description>PCIF RX</description>
+                  <value>0x0D</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>UART2RX</name>
                   <description>UART2 RX</description>
                   <value>0x0E</value>
