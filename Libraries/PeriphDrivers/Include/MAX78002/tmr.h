@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _TMR_H_
-#define _TMR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_TMR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_TMR_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -375,4 +375,4 @@ int MXC_TMR_GetTicks(mxc_tmr_regs_t *tmr, uint32_t time, mxc_tmr_unit_t units, u
 }
 #endif
 
-#endif /* _TMR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_TMR_H_

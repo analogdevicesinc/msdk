@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_UART_H_
-#define _MXC_UART_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_UART_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_UART_H_
 
 /***** Definitions *****/
 #include "uart_regs.h"
@@ -658,4 +658,4 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t *uart);
 }
 #endif
 
-#endif /* _MXC_UART_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_UART_H_
