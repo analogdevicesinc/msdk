@@ -127,10 +127,10 @@ void setTrigger(int waitForTrigger)
 
 // *****************************************************************************
 #if USE_BUTTON
-void GPIOWAKE_IRQHandler(void)
+volatile int buttonPressed;
+void buttonHandler(void *pb)
 {
-    // Clear interrupt flag.
-    MXC_PWRSEQ->gpio2_wk_fl = 0xFFFFFFFF;
+    buttonPressed = 1;
 }
 
 // *****************************************************************************
@@ -138,15 +138,14 @@ void setTrigger(int waitForTrigger)
 {
     int tmp;
 
-    if (waitForTrigger) {
-        while (PB_Get(0) == 0) {}
+    buttonPressed = 0;
 
-        // Debounce the button press.
-        for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
+    if (waitForTrigger) {
+        while (!buttonPressed) {}
     }
 
-    // Wait for button to be "up" (unpressed).
-    while (PB_Get(0) == 1) {}
+    // Debounce the button press.
+    for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
 
 // Wait for serial transactions to complete.
 #if USE_CONSOLE
@@ -169,9 +168,8 @@ int main(void)
 #if USE_BUTTON
     PRINTF("This code cycles through the MAX32650 power modes, using a push button (SW2) to exit ");
     PRINTF("from each mode and enter the next.\n\n");
-    NVIC_EnableIRQ(GPIOWAKE_IRQn);
+    PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
-
 
     PRINTF("Running in ACTIVE mode.\n");
 #if !USE_CONSOLE
