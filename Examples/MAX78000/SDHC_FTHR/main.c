@@ -528,13 +528,13 @@ void waitCardInserted()
     MXC_GPIO_Config(&cardDetect);
 
     // Exit function if card is already inserted
-    if(MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_12) == 0) {
+    if (MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_12) == 0) {
         return;
     }
 
     printf("Insert SD card to continue.\n");
 
-    while(MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_12) != 0) {
+    while (MXC_GPIO_InGet(MXC_GPIO0, MXC_GPIO_PIN_12) != 0) {
         // Spin waiting for card to be inserted.
     }
 
