@@ -37,8 +37,8 @@
  *
  *************************************************************************** */
 
-#ifndef _SRCC_H_
-#define _SRCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SRCC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SRCC_H_
 
 /***** Includes *****/
 #include "srcc_regs.h"
@@ -131,7 +131,7 @@ uint32_t MXC_SRCC_Ready(void);
 }
 #endif
 
-#endif /* _SRCC_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SRCC_H_
 /**
  * @} srcc
  */
