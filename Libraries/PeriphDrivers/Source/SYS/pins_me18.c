@@ -45,9 +45,8 @@
 /***** Definitions *****/
 
 /***** Global Variables *****/
-const mxc_gpio_cfg_t gpio_cfg_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_23),
-                                         MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                                         MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_23), MXC_GPIO_FUNC_IN,
+                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_i2c0 = { MXC_GPIO2, (MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8),
                                        MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,

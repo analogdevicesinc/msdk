@@ -400,7 +400,8 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
 
         // Set external clock clock as System Clock
-        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
         break;
 
