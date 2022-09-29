@@ -39,8 +39,8 @@
  *
  *************************************************************************** */
 
-#ifndef _TPU_H_
-#define _TPU_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_TPU_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_TPU_H_
 
 /***** Includes *****/
 #include "tpu_regs.h"
@@ -990,4 +990,4 @@ void MXC_TPU_Cipher_EncryptAsync(mxc_tpu_cipher_req_t *req);
  */
 void MXC_TPU_Cipher_DecryptAsync(mxc_tpu_cipher_req_t *req);
 
-#endif /* _TPU_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_TPU_H_

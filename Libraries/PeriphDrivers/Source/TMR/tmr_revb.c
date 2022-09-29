@@ -357,7 +357,7 @@ void MXC_TMR_RevB_SetCount(mxc_tmr_revb_regs_t *tmr, uint32_t cnt)
     while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
 }
 
-void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, unsigned long us)
+void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, uint32_t us)
 {
     uint64_t ticks;
     int clk_shift = 0;

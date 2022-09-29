@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SPIMSS_H_
-#define _SPIMSS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_SPIMSS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_SPIMSS_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -193,4 +193,4 @@ int MXC_SPIMSS_AbortAsync(mxc_spimss_req_t *req);
 }
 #endif
 
-#endif /* _SPIMSS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_SPIMSS_H_

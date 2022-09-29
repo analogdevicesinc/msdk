@@ -129,13 +129,10 @@ const mxc_gpio_cfg_t gpio_cfg_tmr3 = { MXC_GPIO1, (MXC_GPIO_PIN_13 | MXC_GPIO_PI
 const mxc_gpio_cfg_t gpio_cfg_tmr3b = { MXC_GPIO2, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31),
                                         MXC_GPIO_FUNC_ALT3, MXC_GPIO_PAD_NONE,
                                         MXC_GPIO_VSSEL_VDDIO };
-const mxc_gpio_cfg_t gpio_cfg_tmr4 = { MXC_GPIO3, (MXC_GPIO_PIN_4 | MXC_GPIO_PIN_7),
-                                       MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
-                                       MXC_GPIO_VSSEL_VDDIO };
-// TODO: Fix TMR5 Pins
-const mxc_gpio_cfg_t gpio_cfg_tmr5 = { MXC_GPIO3, (MXC_GPIO_PIN_4 | MXC_GPIO_PIN_7),
-                                       MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
-                                       MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_tmr4 = { MXC_GPIO3, (MXC_GPIO_PIN_4), MXC_GPIO_FUNC_ALT2,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_tmr5 = { MXC_GPIO3, (MXC_GPIO_PIN_7), MXC_GPIO_FUNC_ALT2,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_i2s0 = {
     MXC_GPIO2, (MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27 | MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29),
@@ -196,6 +193,18 @@ const mxc_gpio_cfg_t gpio_cfg_spi4_ss1 = { MXC_GPIO1, (MXC_GPIO_PIN_6), MXC_GPIO
                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi4_ss2 = { MXC_GPIO1, (MXC_GPIO_PIN_11), MXC_GPIO_FUNC_ALT1,
                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+
+const mxc_gpio_cfg_t gpio_cfg_spixr = { MXC_GPIO0,
+                                        (MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 |
+                                         MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6),
+                                        MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                        MXC_GPIO_VSSEL_VDDIO };
+
+const mxc_gpio_cfg_t gpio_cfg_spixf = { MXC_GPIO0,
+                                        (MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 |
+                                         MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6),
+                                        MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
+                                        MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_rtcsqw = { MXC_GPIO4, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_ALT1,
                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };

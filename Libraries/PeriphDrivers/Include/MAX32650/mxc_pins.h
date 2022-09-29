@@ -40,8 +40,8 @@
  **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_PINS_H_
-#define _MXC_PINS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_PINS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_PINS_H_
 
 /* **** Includes **** */
 #include "gpio.h"
@@ -137,4 +137,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_i2s;
 }
 #endif
 
-#endif /* _MXC_PINS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_PINS_H_

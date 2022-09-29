@@ -42,8 +42,8 @@
 *           prototypes.
 */
 
-#ifndef _MSR_H_
-#define _MSR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
 
 /***** Definitions *****/
 
@@ -79,16 +79,16 @@
 
 /// Structure to contain result of a track decode
 typedef struct {
-    uint8_t error_code; /**< Error code value */
-    uint8_t parity_errs; /**< Number of characters with parity errors */
-    uint8_t lrc; /**< LRC check value. A value of '0' indicates a
-                             successful LRC check. Any other value should be
-                             considered a failure. */
-    uint8_t direction; /**< Swipe direction determined from decode */
-    uint8_t len; /**< Number or decoded characters. This does not include
-                             the sentinels or the LRC. */
+    uint8_t error_code; ///< Error code value
+    uint8_t parity_errs; ///< Number of characters with parity errors
+    uint8_t lrc; ///< LRC check value. A value of '0' indicates a
+        ///         successful LRC check. Any other value should be
+        ///         considered a failure.
+    uint8_t direction; ///< Swipe direction determined from decode
+    uint8_t len; ///< Number or decoded characters. This does not include
+        ///         the sentinels or the LRC.
     uint16_t speed;
-    uint8_t data[MSR_MAX_DEC_LEN]; /**< The decoded data */
+    uint8_t data[MSR_MAX_DEC_LEN]; ///< The decoded data
 } msr_decoded_track_t;
 
 /// MSR sample fields
@@ -169,4 +169,4 @@ void msr_set_complete_callback(void (*func)(void));
 */
 unsigned int mcr_get_track_samples(unsigned int track, msr_samples_t *samples);
 
-#endif /* _MSR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
