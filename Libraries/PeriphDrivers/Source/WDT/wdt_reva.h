@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_WDT_WDT_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_WDT_WDT_REVA_H_
+
 /* **** Includes **** */
 #include "mxc_device.h"
 #include "mxc_errors.h"
@@ -57,3 +60,5 @@ int MXC_WDT_RevA_GetResetFlag(mxc_wdt_reva_regs_t *wdt);
 void MXC_WDT_RevA_ClearResetFlag(mxc_wdt_reva_regs_t *wdt);
 int MXC_WDT_RevA_GetIntFlag(mxc_wdt_reva_regs_t *wdt);
 void MXC_WDT_RevA_ClearIntFlag(mxc_wdt_reva_regs_t *wdt);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_WDT_WDT_REVA_H_

@@ -37,8 +37,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _TMR_H_
-#define _TMR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_TMR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_TMR_H_
 
 /* **** Includes **** */
 #include "gcr_regs.h"
@@ -280,7 +280,7 @@ void MXC_TMR_SetCount(mxc_tmr_regs_t *tmr, uint32_t cnt);
  * @param   tmr   The timer
  * @param   us    microseconds to delay for
  */
-void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, unsigned long us);
+void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, uint32_t us);
 
 /**
  * @brief   Start a timer that will time out after a certain number of microseconds
@@ -288,7 +288,7 @@ void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, unsigned long us);
  * @param   tmr   The timer
  * @param   us    microseconds to time out after
  */
-void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, unsigned long us);
+void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, uint32_t us);
 
 /**
  * @brief   Check on time out timer
@@ -377,4 +377,4 @@ int MXC_TMR_GetTicks(mxc_tmr_regs_t *tmr, uint32_t time, mxc_tmr_unit_t units, u
 }
 #endif
 
-#endif /* _TMR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_TMR_H_

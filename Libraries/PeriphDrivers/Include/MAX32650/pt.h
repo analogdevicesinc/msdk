@@ -40,8 +40,8 @@
  ***************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _PT_H_
-#define _PT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_PT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_PT_H_
 
 /* **** Includes **** */
 #include "ptg_regs.h"
@@ -255,4 +255,4 @@ void MXC_PT_Resync(mxc_ptg_regs_t *ptg, uint32_t pts);
 }
 #endif
 
-#endif /* _PT_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_PT_H_

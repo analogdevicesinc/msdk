@@ -36,8 +36,8 @@
  *
  **************************************************************************** */
 
-#ifndef _SMON_H_
-#define _SMON_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SMON_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SMON_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -318,4 +318,4 @@ int MXC_SMON_isBusy(mxc_smon_busy_t reg, uint32_t delay);
 
 /**@} end of group smon  */
 
-#endif /* _SMON_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SMON_H_

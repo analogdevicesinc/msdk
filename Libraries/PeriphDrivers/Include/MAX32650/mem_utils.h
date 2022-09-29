@@ -38,9 +38,11 @@
  *
  ************************************************************************** */
 
-#ifndef _MEM_UTILS_H_
-#define _MEM_UTILS_H_
-#include "mxc_config.h"
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MEM_UTILS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MEM_UTILS_H_
+
+#include "mxc_device.h"
+
 /**
  * @defgroup    mem_utils Memory Utility Functions 
  * @ingroup     devicelibs 
@@ -101,4 +103,4 @@ int memcmp32(uint32_t *dst, uint32_t *src, unsigned int len);
 
 /**@} end of group mem_utils */
 
-#endif /* _MEM_UTILS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MEM_UTILS_H_

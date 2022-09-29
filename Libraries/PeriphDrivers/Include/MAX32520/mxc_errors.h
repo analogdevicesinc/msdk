@@ -36,8 +36,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_ERRORS_H_
-#define _MXC_ERRORS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_MXC_ERRORS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_MXC_ERRORS_H_
 
 /**
  * @ingroup syscfg
@@ -88,4 +88,4 @@
 #define E_NOT_SUPPORTED -17
 /**@} end of MXC_Error_Codes group */
 
-#endif /* _MXC_ERRORS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_MXC_ERRORS_H_

@@ -37,12 +37,14 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_UART_H_
-#define _MXC_UART_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_UART_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_UART_H_
 
 /***** Definitions *****/
 #include "uart_regs.h"
 #include "mxc_sys.h"
+
+#define UART_EXTCLK_FREQ EXTCLK_FREQ
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,7 +92,6 @@ typedef enum {
 typedef enum {
     /*For UART3 APB clock source is the 8MHz clock*/
     MXC_UART_APB_CLK = 0,
-    MXC_UART_EXT_CLK = 1,
     /*IBRO clock can only be used for UART 0, 1 & 2*/
     MXC_UART_IBRO_CLK = 2,
     /*ERTCO clock can only be used for UART3*/
@@ -676,4 +677,4 @@ uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
 }
 #endif
 
-#endif /* _MXC_UART_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_UART_H_

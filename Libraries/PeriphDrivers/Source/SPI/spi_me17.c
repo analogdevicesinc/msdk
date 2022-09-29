@@ -129,9 +129,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         }
 
         gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
-    }
 #ifdef MXC_SPI0
-    else if (spi == MXC_SPI0) {
+    } else if (spi == MXC_SPI0) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
 
@@ -177,9 +176,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         }
 
         gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
-    }
 #endif
-    else {
+    } else {
         return E_NO_DEVICE;
     }
 
@@ -200,14 +198,11 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 
     if (spi == MXC_SPI1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
-    }
 #ifdef MXC_SPI0
-    else if (spi == MXC_SPI0) {
+    } else if (spi == MXC_SPI0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
-    }
 #endif
-
-    else {
+    } else {
         return E_NO_DEVICE;
     }
 
@@ -225,9 +220,8 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 
     if (spi == MXC_SPI1) {
         retval = PeripheralClock;
-    }
 #ifdef MXC_SPI0 // SPI0 is not accessible from the RISC core.
-    else if (spi == MXC_SPI0) {
+    } else if (spi == MXC_SPI0) {
         int sys_clk = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
                       MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
         switch (sys_clk) {
@@ -257,9 +251,8 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
         default:
             return E_BAD_STATE;
         }
-    }
 #endif // MXC_SPI0
-    else {
+    } else {
         return E_BAD_PARAM;
     }
 
