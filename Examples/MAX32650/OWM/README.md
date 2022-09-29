@@ -1,19 +1,22 @@
 ## Description
 
-This example showcases the basic functionality of the 1-Wire Module. 
+This example demonstrate how 1-Wire master can be configured and read slave ROM ID.
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Connect a USB cable between the PC and the board connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect 1-Wire pin to the 1-Wire slave
+-   Connect VCC and GND to the slave
 
 ## Expected Output
 
-The Console UART of the device will output these messages:
-
 ```
- 1-Wire ROM (DS2401) Example
-Buffer: 0xF7,0xF7,0xF7,0xF7,0xF7,0xF7,0xF7,0xF7
-Test Passed
-```
+***** 1-Wire ROM (DS2401) Example *****
+This example reads ROM ID of 1-Wire slave device
+Connect 1-Wire pin, VCC and GND to the target
 
+
+ROM ID: 3B D0 15 00 00 00 00 C8
+Example Succeeded
+```

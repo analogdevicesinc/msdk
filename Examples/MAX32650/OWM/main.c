@@ -134,8 +134,11 @@ int32_t ow_romid_test(uint8_t od)
         return -5;
     }
 
-    printf("Buffer: 0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X\n", buffer[0],
-           buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
+    printf("ROMID: ");
+    for (i = 0; i < 8; i++) {
+    	printf("%02X ", buffer[i]);
+    }
+    printf("\n");
     /* Check for zero family code in ROM ID */
     if (buffer[0] == 0) {
         return -6;
@@ -156,7 +159,10 @@ int32_t ow_romid_test(uint8_t od)
 int main(void)
 {
     int retval = 0;
-    printf("\n\n 1-Wire ROM (DS2401) Example\n");
+    printf("***** 1-Wire ROM (DS2401) Example *****\n");
+    printf("This example reads ROM ID of 1-Wire slave device\n");
+    printf("Connect 1-Wire pin, VCC and GND to the target\n");
+    printf("\n\n");
 
     mxc_owm_cfg_t owm_cfg;
     owm_cfg.int_pu_en = 1;
@@ -167,8 +173,9 @@ int main(void)
     /* Test overdrive */
     if ((retval = ow_romid_test(1))) {
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
+        printf("Example Failed\n");
     } else {
-        printf("Test Passed\n");
+    	printf("Example Succeeded\n");
     }
 
     return 0;
