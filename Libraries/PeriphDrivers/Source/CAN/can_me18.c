@@ -34,7 +34,10 @@
 #include "can.h"
 #include "can_reva.h"
 
-#define MXC_CAN_OBJCAPABILITIES_ERROR { -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+#define MXC_CAN_OBJCAPABILITIES_ERROR      \
+    {                                      \
+        -1, -1, -1, -1, -1, -1, -1, -1, -1 \
+    }
 
 static int8_t last_stat_update = -1;
 

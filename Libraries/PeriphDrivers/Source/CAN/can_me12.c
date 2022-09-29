@@ -37,7 +37,10 @@
 #include "can.h"
 #include "can_reva.h"
 
-#define MXC_CAN_OBJCAPABILITIES_ERROR { -1, -1, -1, -1, -1, -1, -1, -1, -1 }
+#define MXC_CAN_OBJCAPABILITIES_ERROR      \
+    {                                      \
+        -1, -1, -1, -1, -1, -1, -1, -1, -1 \
+    }
 
 /**********************************************************************************************************************************************************************/
 mxc_can_drv_version_t MXC_CAN_GetVersion(void)
