@@ -46,7 +46,7 @@
 extern "C" {
 #endif
 
-#define BOARD_FTHR 1 /// Used in examples to control program flow.
+#define BOARD_FTHR_APPS_A 1 /// Used in examples to control program flow.
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
