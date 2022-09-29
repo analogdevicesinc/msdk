@@ -64,6 +64,8 @@ const mxc_gpio_cfg_t led_pin[] = {
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /* **** Functions **** */
+int MAX11261_Init(void);
+
 /* ************************************************************************** */
 void mxc_assert(const char* expr, const char* file, int line)
 {
@@ -76,6 +78,11 @@ void mxc_assert(const char* expr, const char* file, int line)
 int Board_Init(void)
 {
     int err;
+
+    if ((err = MAX11261_Init()) != E_NO_ERROR) {
+        MXC_ASSERT_FAIL();
+        return err;
+    }
 
     if ((err = Console_Init()) != E_NO_ERROR) {
         return err;
@@ -113,3 +120,22 @@ void NMI_Handler(void)
     __NOP();
 }
 #endif /* __GNUC__ */
+
+/* ************************************************************************** */
+int MAX11261_Init(void)
+{
+    mxc_gpio_cfg_t adc_reset_n;
+
+    adc_reset_n.func = MXC_GPIO_FUNC_OUT;
+    adc_reset_n.pad = MXC_GPIO_PAD_NONE;
+    adc_reset_n.port = MXC_GPIO0;
+    adc_reset_n.mask = MXC_GPIO_PIN_16;
+    MXC_GPIO_Config(&adc_reset_n);
+
+    // Set it to device start to work
+    MXC_GPIO_OutSet(adc_reset_n.port, adc_reset_n.mask);
+  
+    //...
+
+    return E_NO_ERROR;
+}

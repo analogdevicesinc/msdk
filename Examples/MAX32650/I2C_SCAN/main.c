@@ -97,7 +97,7 @@ int main()
             printf("\nFound slave ID %03d; 0x%02X\n", address, address);
             counter++;
         }
-        MXC_Delay(MXC_DELAY_MSEC(200));
+        MXC_Delay(MXC_DELAY_MSEC(50));
     }
 
     printf("\n-->Scan finished. %d devices found\n", counter);
