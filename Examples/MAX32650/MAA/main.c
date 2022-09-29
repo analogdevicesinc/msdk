@@ -110,7 +110,7 @@ int main(void)
 {
     printf("\n***** MAA Example *****\n");
     printf("*The MAA is only enabled for the MAX32651, not the MAX32650.\n");
-    
+
     int result[ARR_SIZE];
     int len = 127;
     int retval, i, j;
