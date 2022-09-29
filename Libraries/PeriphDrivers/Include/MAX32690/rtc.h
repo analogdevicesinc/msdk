@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _RTC_H_
-#define _RTC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_RTC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_RTC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -223,4 +223,4 @@ int MXC_RTC_TrimCrystal(mxc_tmr_regs_t *tmr);
 }
 #endif
 
-#endif /* _RTC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_RTC_H_

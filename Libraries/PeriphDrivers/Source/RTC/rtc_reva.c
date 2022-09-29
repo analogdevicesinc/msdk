@@ -218,7 +218,6 @@ int MXC_RTC_RevA_SquareWave(mxc_rtc_reva_regs_t *rtc, mxc_rtc_reva_sqwave_en_t s
 
             rtc->ctrl |= MXC_F_RTC_REVA_CTRL_SQW_EN; // Enable output on the pin
         } else { // if 1Hz, 512Hz, 4KHz output is selected
-
             rtc->oscctrl &=
                 ~MXC_F_RTC_REVA_OSCCTRL_SQW_32K; // Must make sure that the 32KHz is disabled
 
@@ -235,7 +234,6 @@ int MXC_RTC_RevA_SquareWave(mxc_rtc_reva_regs_t *rtc, mxc_rtc_reva_sqwave_en_t s
 
         rtc->ctrl |= MXC_F_RTC_REVA_CTRL_EN; // Enable Real Time Clock
     } else { // Turn off the square wave output on the pin
-
         rtc->oscctrl &=
             ~MXC_F_RTC_REVA_OSCCTRL_SQW_32K; // Must make sure that the 32KHz is disabled
 

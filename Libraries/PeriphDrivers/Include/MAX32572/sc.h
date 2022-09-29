@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _SC_H_
-#define _SC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SC_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -98,4 +98,4 @@ int mxc_sc_init(mxc_sc_id_t id);
 #endif
 
 /**@} end of group sc */
-#endif /* _SC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SC_H_

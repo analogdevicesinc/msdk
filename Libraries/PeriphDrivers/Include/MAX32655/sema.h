@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SEMA_H_
-#define _SEMA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_SEMA_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_SEMA_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -57,6 +57,15 @@ extern "C" {
  */
 
 /* **** Function Prototypes **** */
+
+/**
+ * @brief   The callback routine used by the MXC_SEMA_ReadBoxAsync() and 
+ *          MXC_SEMA_WriteBoxAsync functions to indicate the operation has completed.
+ *
+ * @param   result      The error code (if any) of the read/write operation.
+ *                      See \ref MXC_Error_Codes for the list of error codes.
+ */
+typedef void (*mxc_sema_complete_cb_t)(int result);
 
 /**
  * @brief     Initialize the semaphore peripheral
@@ -153,4 +162,4 @@ int MXC_SEMA_WriteBoxAsync(mxc_sema_complete_cb_t cb, const uint8_t *data, unsig
 }
 #endif
 
-#endif /* _SEMA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_SEMA_H_

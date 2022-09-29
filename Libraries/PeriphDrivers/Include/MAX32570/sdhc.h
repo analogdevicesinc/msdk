@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SDHC_H_
-#define _SDHC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SDHC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SDHC_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -266,4 +266,4 @@ void MXC_SDHC_Get_Response128(unsigned char *response);
 }
 #endif
 
-#endif /* _SDHC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SDHC_H_
