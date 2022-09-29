@@ -47,19 +47,19 @@
 #include "mxc_sys.h"
 
 /* **** Global Variables **** */
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 extern uint8_t ChipRevision;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO1, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP},
-    {MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP},
+    { MXC_GPIO1, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP },
+    { MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO1, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE},
-    {MXC_GPIO1, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE},
+    { MXC_GPIO1, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE },
+    { MXC_GPIO1, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -67,11 +67,10 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 int MAX11261_Init(void);
 
 /* ************************************************************************** */
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    while (1)
-        ;
+    while (1) {}
 }
 
 /* ************************************************************************** */
@@ -134,7 +133,7 @@ int MAX11261_Init(void)
 
     // Set it to device start to work
     MXC_GPIO_OutSet(adc_reset_n.port, adc_reset_n.mask);
-  
+
     //...
 
     return E_NO_ERROR;

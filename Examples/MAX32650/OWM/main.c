@@ -135,9 +135,7 @@ int32_t ow_romid_test(uint8_t od)
     }
 
     printf("ROMID: ");
-    for (i = 0; i < 8; i++) {
-    	printf("%02X ", buffer[i]);
-    }
+    for (i = 0; i < 8; i++) { printf("%02X ", buffer[i]); }
     printf("\n");
     /* Check for zero family code in ROM ID */
     if (buffer[0] == 0) {
@@ -175,7 +173,7 @@ int main(void)
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
         printf("Example Failed\n");
     } else {
-    	printf("Example Succeeded\n");
+        printf("Example Succeeded\n");
     }
 
     return 0;
