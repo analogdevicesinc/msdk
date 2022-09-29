@@ -30,7 +30,6 @@ SBT = 1
 override .DEFAULT_GOAL=sla
 
 # Add some compiler flags specific to the NFC and EMV libs
-PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
 PROJ_CFLAGS += -D__$(TARGET_UC)
 
 # Set SDMA size

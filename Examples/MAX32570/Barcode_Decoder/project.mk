@@ -16,4 +16,3 @@ PROJ_LIBS += barcode
 
 # Add some additional compiler definitions
 PROJ_CFLAGS += -DBRCD_RDR_IMG_TO_PC
-PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
