@@ -265,11 +265,6 @@ endif
 # This path contains system-level intialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
-# Get .DEFAULT_GOAL working.
-ifeq "$(MAKECMDGOALS)" ""
-MAKECMDGOALS:=$(.DEFAULT_GOAL)
-endif
-
 # *******************************************************************************
 # Libraries
 
@@ -316,18 +311,36 @@ include $(LIBS_DIR)/libs.mk
 #					However, if there are multiple secure part #s for the target
 #					microcontroller this variable may need to be changed.
 
-SBT ?= 0
+SBT ?= 1
 ifeq ($(SBT), 1)
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
 # ^ Must sanitize path for \ on Windows, since this may come from an environment
 # variable.
 
+# Set default SBT goal to sla
+.DEFAULT_GOAL := sla
+
+# Get .DEFAULT_GOAL working.
+ifeq "$(MAKECMDGOALS)" ""
+MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
 export MAXIM_SBT_DIR # SBTs must have this environment variable defined to work
 
 include $(MAXIM_SBT_DIR)/SBT-config.mk
 
+else
+
+# Default goal for standard projects
+.DEFAULT_GOAL := all
+
+# Get .DEFAULT_GOAL working.
+ifeq "$(MAKECMDGOALS)" ""
+MAKECMDGOALS:=$(.DEFAULT_GOAL)
 endif
+
+endif # SBT
 
 # *******************************************************************************
 # Rules
@@ -341,6 +354,13 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).
 ifeq ($(SBT), 1)
 include $(MAXIM_SBT_DIR)/SBT-rules.mk
 endif
+
+
+# Get .DEFAULT_GOAL working.
+ifeq "$(MAKECMDGOALS)" ""
+MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
 
 all:
 # 	Extend the functionality of the "all" recipe here
