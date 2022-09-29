@@ -75,7 +75,7 @@ int MXC_DMA_RevB_Init(void)
         return E_BAD_STATE;
     }
 
-    //TODO: Necessary?
+    //TODO(ADI): Necessary?
     ///* Initialize any system-level DMA settings */
     //SYS_DMA_Init();
 
@@ -176,7 +176,7 @@ int MXC_DMA_RevB_ConfigChannel(mxc_dma_config_t config, mxc_dma_srcdst_t srcdst)
     return MXC_DMA_RevB_SetSrcDst(srcdst);
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_AdvConfigChannel(mxc_dma_adv_config_t advConfig)
 {
     if (CHECK_HANDLE(advConfig.ch) && (advConfig.burst_size > 0)) {
@@ -207,7 +207,7 @@ int MXC_DMA_RevB_SetSrcDst(mxc_dma_srcdst_t srcdst)
     return E_NO_ERROR;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_GetSrcDst(mxc_dma_srcdst_t *srcdst)
 {
     if (CHECK_HANDLE(srcdst.ch)) {
@@ -241,7 +241,7 @@ int MXC_DMA_RevB_SetSrcReload(mxc_dma_srcdst_t srcdst)
     return E_NO_ERROR;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_GetSrcReload(mxc_dma_srcdst_t *srcdst)
 {
     if (CHECK_HANDLE(srcdst.ch)) {
@@ -267,19 +267,19 @@ int MXC_DMA_RevB_SetCallback(int ch, void (*callback)(int, int))
     return E_NO_ERROR;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_SetChannelInterruptEn(int ch, int chdis, int ctz)
 {
     return E_NOT_SUPPORTED;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_GetChannelInterruptEn(int ch)
 {
     return E_NOT_SUPPORTED;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_ChannelEnableInt(int ch, int flags)
 {
     if (CHECK_HANDLE(ch)) {
@@ -291,7 +291,7 @@ int MXC_DMA_RevB_ChannelEnableInt(int ch, int flags)
     return E_NO_ERROR;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_ChannelDisableInt(int ch, int flags)
 {
     if (CHECK_HANDLE(ch)) {
@@ -325,7 +325,7 @@ int MXC_DMA_RevB_DisableInt(int ch)
     return E_NO_ERROR;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_ChannelGetFlags(int ch)
 {
     if (CHECK_HANDLE(ch)) {
@@ -337,7 +337,7 @@ int MXC_DMA_RevB_ChannelGetFlags(int ch)
     return E_NO_ERROR;
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_ChannelClearFlags(int ch, int flags)
 {
     if (CHECK_HANDLE(ch)) {
@@ -418,7 +418,7 @@ void memcpy_callback(int ch, int error)
     MXC_DMA_ReleaseChannel(ch);
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t callback)
 {
     int retval;
@@ -470,7 +470,7 @@ int MXC_DMA_RevB_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t ca
     return MXC_DMA_Start(channel);
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 void transfer_callback(int ch, int error)
 {
     // Unimplemented
@@ -481,7 +481,7 @@ void transfer_callback(int ch, int error)
     while (1) {}
 }
 
-//TODO: Necessary?
+//TODO(ADI): Necessary?
 int MXC_DMA_RevB_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
                             mxc_dma_trans_chain_t callback)
 {

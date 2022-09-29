@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVA_H_
+
 /****** Includes *******/
 #include "dma_reva_regs.h"
 #include <stdbool.h>
@@ -65,3 +68,5 @@ int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t *dma, void *dest, void *src, int len
                         mxc_dma_complete_cb_t callback);
 int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t *dma, mxc_dma_config_t config,
                             mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVA_H_

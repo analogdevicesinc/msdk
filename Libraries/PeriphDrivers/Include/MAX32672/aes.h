@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _AES_H_
-#define _AES_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_AES_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_AES_H_
 
 /***** Includes *****/
 #include "sys_aes_regs.h"
@@ -279,4 +279,4 @@ int MXC_AES_DecryptAsync(mxc_aes_req_t *req);
 #endif
 /**@} end of group aes */
 
-#endif /* _AES_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_AES_H_
