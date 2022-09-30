@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVA_H_
+
 /* **** Includes **** */
 #include "gpio_reva_regs.h"
 
@@ -67,3 +70,6 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVA_H_
+

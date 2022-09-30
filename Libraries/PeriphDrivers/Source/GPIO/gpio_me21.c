@@ -32,12 +32,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "gpio.h"
 #include "gpio_reva.h"
 #include "gpio_common.h"
-#include <stddef.h>
 #include "mxc_sys.h"
 
 /* **** Functions **** */
@@ -204,3 +204,4 @@ int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t ma
 {
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
 }
+

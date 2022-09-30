@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _AFE_GPIO_H_
-#define _AFE_GPIO_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_GPIO_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_GPIO_H_
 
 /* **** Includes **** */
 #include "gpio_regs.h"
@@ -61,4 +61,4 @@ int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg);
 }
 #endif
 
-#endif /* _GPIO_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_GPIO_H_
