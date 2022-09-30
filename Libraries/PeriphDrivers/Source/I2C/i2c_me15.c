@@ -407,3 +407,4 @@ void MXC_I2C_DMACallback(int ch, int error)
 {
     MXC_I2C_RevA_DMACallback(ch, error);
 }
+

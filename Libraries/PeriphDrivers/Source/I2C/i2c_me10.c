@@ -36,13 +36,13 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "i2c.h"
 #include "i2c_revb.h"
-#include <stdio.h>
 #include "mxc_delay.h"
 
 /* **** Definitions **** */

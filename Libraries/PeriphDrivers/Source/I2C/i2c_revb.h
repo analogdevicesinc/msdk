@@ -39,8 +39,8 @@
  *
  *************************************************************************** */
 
-#ifndef _I2C_REVB_H_
-#define _I2C_REVB_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVB_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVB_H_
 
 #include <stdint.h>
 #include "i2c.h"
@@ -170,4 +170,5 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c,
 void MXC_I2C_RevB_AsyncHandler(mxc_i2c_revb_regs_t *i2c, uint32_t interruptCheck);
 void MXC_I2C_RevB_DMACallback(int ch, int error);
 
-#endif /* _I2C_REVB_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVB_H_
+
