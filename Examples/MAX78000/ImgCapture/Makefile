@@ -311,7 +311,7 @@ include $(LIBS_DIR)/libs.mk
 #					However, if there are multiple secure part #s for the target
 #					microcontroller this variable may need to be changed.
 
-SBT ?= 1
+SBT ?= 0
 ifeq ($(SBT), 1)
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
