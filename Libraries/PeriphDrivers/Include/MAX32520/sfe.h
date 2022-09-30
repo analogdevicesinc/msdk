@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _SFE_H_
-#define _SFE_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_SFE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_SFE_H_
 
 /* **** Includes **** */
 #include "sfe_regs.h"
@@ -118,4 +118,4 @@ int MXC_SFE_SetHostAddress(uint32_t RAMAdd, uint32_t FLASHAdd);
 }
 #endif
 
-#endif /* _SFE_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_SFE_H_

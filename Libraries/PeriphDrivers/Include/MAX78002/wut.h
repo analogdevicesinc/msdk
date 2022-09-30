@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _WUT_H_
-#define _WUT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WUT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WUT_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -243,4 +243,4 @@ void MXC_WUT_Delay_MS(uint32_t waitMs);
 }
 #endif
 
-#endif /* _WUT_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_WUT_H_

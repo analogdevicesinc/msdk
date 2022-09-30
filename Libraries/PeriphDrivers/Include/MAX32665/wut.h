@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _WUT_H_
-#define _WUT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_WUT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_WUT_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -286,4 +286,4 @@ int MXC_WUT_Handler(void);
 }
 #endif
 
-#endif /* _WUT_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_WUT_H_

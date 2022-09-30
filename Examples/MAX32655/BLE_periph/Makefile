@@ -113,7 +113,7 @@ ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
 DEPTH := ../../../
 MAXIM_PATH := $(abspath $(DEPTH))
-$(warning Warning:  MAXIM_PATH is not set!  It's recommended to set MAXIM_PATH in your environment or in project.mk)
+$(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
 else
 # Sanitize MAXIM_PATH for backslashes
@@ -227,7 +227,7 @@ ifeq ($(DEBUG),1)
 # gcc.mk checks for this flag to add some additional debug
 # info to the build, and should be used when you really need to
 # debug.
-MXC_OPTIMIZE_CFLAGS ?= -Og
+MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
 # Fallback default optimizes for debugging as recommended

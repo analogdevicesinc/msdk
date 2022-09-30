@@ -303,4 +303,4 @@ uint8_t MXC_SYS_GetRev(void);
 }
 #endif
 
-#endif /* _MXC_MXC_SYS_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_

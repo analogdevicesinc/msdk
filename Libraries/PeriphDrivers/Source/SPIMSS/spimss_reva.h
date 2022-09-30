@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SPIMSS_SPIMSS_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SPIMSS_SPIMSS_REVA_H_
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -100,3 +103,5 @@ int MXC_SPIMSS_RevA_SlaveTrans(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *r
 int MXC_SPIMSS_RevA_MasterTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_SlaveTransAsync(mxc_spimss_reva_regs_t *spi, spimss_reva_req_t *req);
 int MXC_SPIMSS_RevA_AbortAsync(spimss_reva_req_t *req);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPIMSS_SPIMSS_REVA_H_

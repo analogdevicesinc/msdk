@@ -44,12 +44,12 @@ int MXC_GetLock(uint32_t *lock, uint32_t value)
 {
     do {
         // Return if the lock is taken by a different thread
-        if (__LDREXW((volatile unsigned long *)lock) != 0) {
+        if (__LDREXW((volatile uint32_t *)lock) != 0) {
             return E_BUSY;
         }
 
         // Attempt to take the lock
-    } while (__STREXW(value, (volatile unsigned long *)lock) != 0);
+    } while (__STREXW(value, (volatile uint32_t *)lock) != 0);
 
     // Do not start any other memory access until memory barrier is complete
     __DMB();

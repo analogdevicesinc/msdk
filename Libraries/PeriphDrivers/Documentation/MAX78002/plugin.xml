@@ -1,6 +1,0 @@
-<plugin name="com.maximintegrated.MAX78002" id="com.maximintegrated.MAX78002"
-        version="1.0.0" provider-name="Doxygen">
-  <extension point="org.eclipse.help.toc">
-    <toc file="toc.xml" primary="true" />
-  </extension>
-</plugin>

@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SEMA_H_
-#define _SEMA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SEMA_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SEMA_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -105,4 +105,4 @@ int MXC_SEMA_Shutdown(void);
 }
 #endif
 
-#endif /* _SEMA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SEMA_H_

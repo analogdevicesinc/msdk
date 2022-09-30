@@ -120,9 +120,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
             gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT2;
         }
-    }
 #ifdef MXC_SPI0
-    else if (spi == MXC_SPI0) {
+    } else if (spi == MXC_SPI0) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI0);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
 
@@ -147,9 +146,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         }
 
         gpio_cfg_spi.func = MXC_GPIO_FUNC_ALT1;
-    }
 #endif
-    else {
+    } else {
         return E_NO_DEVICE;
     }
 
@@ -170,14 +168,11 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 
     if (spi == MXC_SPI1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
-    }
 #ifdef MXC_SPI0
-    else if (spi == MXC_SPI0) {
+    } else if (spi == MXC_SPI0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI0);
-    }
 #endif
-
-    else {
+    } else {
         return E_NO_DEVICE;
     }
 
@@ -208,7 +203,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
         case MXC_SYS_CLOCK_ERTCO:
             return ERTCO_FREQ;
         case MXC_SYS_CLOCK_EXTCLK:
-            return EXTCLK_FREQ;
+            return HF_EXTCLK_FREQ;
         default:
             return E_BAD_PARAM;
         }

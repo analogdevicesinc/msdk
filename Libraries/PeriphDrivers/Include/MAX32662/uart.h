@@ -37,8 +37,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_UART_H_
-#define _MXC_UART_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_UART_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_UART_H_
 
 /***** Definitions *****/
 #include "uart_regs.h"
@@ -48,6 +48,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define UART_EXTCLK_FREQ HF_EXTCLK_FREQ
 
 /**
  * @defgroup uart UART
@@ -89,14 +91,10 @@ typedef enum {
 /**
  * @brief      Clock settings */
 typedef enum {
-    /*For UART3 APB clock source is the 8MHz clock*/
     MXC_UART_APB_CLK = 0,
     MXC_UART_EXT_CLK = 1,
-    /*IBRO and ERFO clock can only be used for UART 0, 1 & 2*/
     MXC_UART_IBRO_CLK = 2,
     MXC_UART_ERFO_CLK = 3,
-    /*ERTCO clock can only be used for UART3*/
-    MXC_UART_ERTCO_CLK = 4,
 } mxc_uart_clock_t;
 
 /**
@@ -660,4 +658,4 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t *uart);
 }
 #endif
 
-#endif /* _MXC_UART_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_UART_H_

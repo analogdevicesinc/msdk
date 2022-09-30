@@ -39,8 +39,8 @@
  *
  **************************************************************************** */
 
-#ifndef _MXC_PINS_H_
-#define _MXC_PINS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_MXC_PINS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_MXC_PINS_H_
 
 #include "gpio.h"
 
@@ -102,4 +102,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
 
 extern const mxc_gpio_cfg_t gpio_cfg_rv_jtag;
 
-#endif /* _MXC_PINS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_MXC_PINS_H_

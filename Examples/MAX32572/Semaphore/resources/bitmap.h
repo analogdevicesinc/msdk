@@ -34,8 +34,8 @@
 *******************************************************************************
 */
 
-#ifndef _BITMAP_H_
-#define _BITMAP_H_
+#ifndef EXAMPLES_MAX32572_SEMAPHORE_RESOURCES_BITMAP_H_
+#define EXAMPLES_MAX32572_SEMAPHORE_RESOURCES_BITMAP_H_
 
 // bitmaps id
 #define key_1_bg_white_bmp 0
@@ -45,4 +45,4 @@
 // fonts id
 #define urw_gothic_13_grey_bg_white 0
 
-#endif //_BITMAP_H_
+#endif // EXAMPLES_MAX32572_SEMAPHORE_RESOURCES_BITMAP_H_

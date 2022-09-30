@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0
 
       # Runs a set of commands using the runners shell
-      - name: Build all BLE examples
+      - name: BLE examples functionality test
         run: |
           # Remove local modifications
           git scorch

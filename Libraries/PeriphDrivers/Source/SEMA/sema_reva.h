@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SEMA_SEMA_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SEMA_SEMA_REVA_H_
+
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
@@ -56,3 +59,5 @@ int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_complet
                                uint8_t *data, unsigned len);
 
 int MXC_SEMA_RevA_Handler(mxc_sema_reva_regs_t *sema_regs);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SEMA_SEMA_REVA_H_
