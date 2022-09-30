@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_I2S_I2S_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_I2S_I2S_REVA_H_
+
 /* **** Includes **** */
 #include <stdint.h>
 #include "i2s.h"
@@ -94,3 +97,6 @@ void MXC_I2S_RevA_Handler(mxc_i2s_reva_regs_t *i2s);
 void MXC_I2S_RevA_RegisterDMACallback(void (*callback)(int, int));
 
 void MXC_I2S_RevA_RegisterAsyncCallback(void (*callback)(int));
+
+#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_I2S_I2S_REVA_H_
+
