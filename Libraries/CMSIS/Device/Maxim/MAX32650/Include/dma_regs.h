@@ -1,6 +1,7 @@
 /**
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
+ * @generated
  */
 
 /******************************************************************************
@@ -244,6 +245,126 @@ typedef struct {
 
 /**
  * @ingroup  dma_registers
+ * @defgroup DMA_INTR DMA_INTR
+ * @brief    DMA Interrupt Register.
+ * @{
+ */
+ #define MXC_F_DMA_INTR_CH0_IPEND_POS                   0 /**< INTR_CH0_IPEND Position */
+ #define MXC_F_DMA_INTR_CH0_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH0_IPEND_POS)) /**< INTR_CH0_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH0_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH0_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH0_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH0_IPEND_INACTIVE << MXC_F_DMA_INTR_CH0_IPEND_POS) /**< INTR_CH0_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH0_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH0_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH0_IPEND_PENDING               (MXC_V_DMA_INTR_CH0_IPEND_PENDING << MXC_F_DMA_INTR_CH0_IPEND_POS) /**< INTR_CH0_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH1_IPEND_POS                   1 /**< INTR_CH1_IPEND Position */
+ #define MXC_F_DMA_INTR_CH1_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH1_IPEND_POS)) /**< INTR_CH1_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH1_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH1_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH1_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH1_IPEND_INACTIVE << MXC_F_DMA_INTR_CH1_IPEND_POS) /**< INTR_CH1_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH1_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH1_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH1_IPEND_PENDING               (MXC_V_DMA_INTR_CH1_IPEND_PENDING << MXC_F_DMA_INTR_CH1_IPEND_POS) /**< INTR_CH1_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH2_IPEND_POS                   2 /**< INTR_CH2_IPEND Position */
+ #define MXC_F_DMA_INTR_CH2_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH2_IPEND_POS)) /**< INTR_CH2_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH2_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH2_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH2_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH2_IPEND_INACTIVE << MXC_F_DMA_INTR_CH2_IPEND_POS) /**< INTR_CH2_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH2_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH2_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH2_IPEND_PENDING               (MXC_V_DMA_INTR_CH2_IPEND_PENDING << MXC_F_DMA_INTR_CH2_IPEND_POS) /**< INTR_CH2_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH3_IPEND_POS                   3 /**< INTR_CH3_IPEND Position */
+ #define MXC_F_DMA_INTR_CH3_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH3_IPEND_POS)) /**< INTR_CH3_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH3_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH3_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH3_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH3_IPEND_INACTIVE << MXC_F_DMA_INTR_CH3_IPEND_POS) /**< INTR_CH3_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH3_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH3_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH3_IPEND_PENDING               (MXC_V_DMA_INTR_CH3_IPEND_PENDING << MXC_F_DMA_INTR_CH3_IPEND_POS) /**< INTR_CH3_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH4_IPEND_POS                   4 /**< INTR_CH4_IPEND Position */
+ #define MXC_F_DMA_INTR_CH4_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH4_IPEND_POS)) /**< INTR_CH4_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH4_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH4_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH4_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH4_IPEND_INACTIVE << MXC_F_DMA_INTR_CH4_IPEND_POS) /**< INTR_CH4_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH4_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH4_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH4_IPEND_PENDING               (MXC_V_DMA_INTR_CH4_IPEND_PENDING << MXC_F_DMA_INTR_CH4_IPEND_POS) /**< INTR_CH4_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH5_IPEND_POS                   5 /**< INTR_CH5_IPEND Position */
+ #define MXC_F_DMA_INTR_CH5_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH5_IPEND_POS)) /**< INTR_CH5_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH5_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH5_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH5_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH5_IPEND_INACTIVE << MXC_F_DMA_INTR_CH5_IPEND_POS) /**< INTR_CH5_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH5_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH5_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH5_IPEND_PENDING               (MXC_V_DMA_INTR_CH5_IPEND_PENDING << MXC_F_DMA_INTR_CH5_IPEND_POS) /**< INTR_CH5_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH6_IPEND_POS                   6 /**< INTR_CH6_IPEND Position */
+ #define MXC_F_DMA_INTR_CH6_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH6_IPEND_POS)) /**< INTR_CH6_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH6_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH6_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH6_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH6_IPEND_INACTIVE << MXC_F_DMA_INTR_CH6_IPEND_POS) /**< INTR_CH6_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH6_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH6_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH6_IPEND_PENDING               (MXC_V_DMA_INTR_CH6_IPEND_PENDING << MXC_F_DMA_INTR_CH6_IPEND_POS) /**< INTR_CH6_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH7_IPEND_POS                   7 /**< INTR_CH7_IPEND Position */
+ #define MXC_F_DMA_INTR_CH7_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH7_IPEND_POS)) /**< INTR_CH7_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH7_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH7_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH7_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH7_IPEND_INACTIVE << MXC_F_DMA_INTR_CH7_IPEND_POS) /**< INTR_CH7_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH7_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH7_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH7_IPEND_PENDING               (MXC_V_DMA_INTR_CH7_IPEND_PENDING << MXC_F_DMA_INTR_CH7_IPEND_POS) /**< INTR_CH7_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH8_IPEND_POS                   8 /**< INTR_CH8_IPEND Position */
+ #define MXC_F_DMA_INTR_CH8_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH8_IPEND_POS)) /**< INTR_CH8_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH8_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH8_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH8_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH8_IPEND_INACTIVE << MXC_F_DMA_INTR_CH8_IPEND_POS) /**< INTR_CH8_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH8_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH8_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH8_IPEND_PENDING               (MXC_V_DMA_INTR_CH8_IPEND_PENDING << MXC_F_DMA_INTR_CH8_IPEND_POS) /**< INTR_CH8_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH9_IPEND_POS                   9 /**< INTR_CH9_IPEND Position */
+ #define MXC_F_DMA_INTR_CH9_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH9_IPEND_POS)) /**< INTR_CH9_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH9_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH9_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH9_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH9_IPEND_INACTIVE << MXC_F_DMA_INTR_CH9_IPEND_POS) /**< INTR_CH9_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH9_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH9_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH9_IPEND_PENDING               (MXC_V_DMA_INTR_CH9_IPEND_PENDING << MXC_F_DMA_INTR_CH9_IPEND_POS) /**< INTR_CH9_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH10_IPEND_POS                  10 /**< INTR_CH10_IPEND Position */
+ #define MXC_F_DMA_INTR_CH10_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH10_IPEND_POS)) /**< INTR_CH10_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH10_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH10_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH10_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH10_IPEND_INACTIVE << MXC_F_DMA_INTR_CH10_IPEND_POS) /**< INTR_CH10_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH10_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH10_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH10_IPEND_PENDING              (MXC_V_DMA_INTR_CH10_IPEND_PENDING << MXC_F_DMA_INTR_CH10_IPEND_POS) /**< INTR_CH10_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH11_IPEND_POS                  11 /**< INTR_CH11_IPEND Position */
+ #define MXC_F_DMA_INTR_CH11_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH11_IPEND_POS)) /**< INTR_CH11_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH11_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH11_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH11_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH11_IPEND_INACTIVE << MXC_F_DMA_INTR_CH11_IPEND_POS) /**< INTR_CH11_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH11_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH11_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH11_IPEND_PENDING              (MXC_V_DMA_INTR_CH11_IPEND_PENDING << MXC_F_DMA_INTR_CH11_IPEND_POS) /**< INTR_CH11_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH12_IPEND_POS                  12 /**< INTR_CH12_IPEND Position */
+ #define MXC_F_DMA_INTR_CH12_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH12_IPEND_POS)) /**< INTR_CH12_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH12_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH12_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH12_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH12_IPEND_INACTIVE << MXC_F_DMA_INTR_CH12_IPEND_POS) /**< INTR_CH12_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH12_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH12_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH12_IPEND_PENDING              (MXC_V_DMA_INTR_CH12_IPEND_PENDING << MXC_F_DMA_INTR_CH12_IPEND_POS) /**< INTR_CH12_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH13_IPEND_POS                  13 /**< INTR_CH13_IPEND Position */
+ #define MXC_F_DMA_INTR_CH13_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH13_IPEND_POS)) /**< INTR_CH13_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH13_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH13_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH13_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH13_IPEND_INACTIVE << MXC_F_DMA_INTR_CH13_IPEND_POS) /**< INTR_CH13_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH13_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH13_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH13_IPEND_PENDING              (MXC_V_DMA_INTR_CH13_IPEND_PENDING << MXC_F_DMA_INTR_CH13_IPEND_POS) /**< INTR_CH13_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH14_IPEND_POS                  14 /**< INTR_CH14_IPEND Position */
+ #define MXC_F_DMA_INTR_CH14_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH14_IPEND_POS)) /**< INTR_CH14_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH14_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH14_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH14_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH14_IPEND_INACTIVE << MXC_F_DMA_INTR_CH14_IPEND_POS) /**< INTR_CH14_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH14_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH14_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH14_IPEND_PENDING              (MXC_V_DMA_INTR_CH14_IPEND_PENDING << MXC_F_DMA_INTR_CH14_IPEND_POS) /**< INTR_CH14_IPEND_PENDING Setting */
+
+ #define MXC_F_DMA_INTR_CH15_IPEND_POS                  15 /**< INTR_CH15_IPEND Position */
+ #define MXC_F_DMA_INTR_CH15_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH15_IPEND_POS)) /**< INTR_CH15_IPEND Mask */
+ #define MXC_V_DMA_INTR_CH15_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH15_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_CH15_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH15_IPEND_INACTIVE << MXC_F_DMA_INTR_CH15_IPEND_POS) /**< INTR_CH15_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_CH15_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH15_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_CH15_IPEND_PENDING              (MXC_V_DMA_INTR_CH15_IPEND_PENDING << MXC_F_DMA_INTR_CH15_IPEND_POS) /**< INTR_CH15_IPEND_PENDING Setting */
+
+/**@} end of group DMA_INTR_Register */
+
+/**
+ * @ingroup  dma_registers
  * @defgroup DMA_CFG DMA_CFG
  * @brief    DMA Channel Configuration Register.
  * @{
@@ -451,126 +572,6 @@ typedef struct {
  #define MXC_S_DMA_CFG_CTZIEN_EN                        (MXC_V_DMA_CFG_CTZIEN_EN << MXC_F_DMA_CFG_CTZIEN_POS) /**< CFG_CTZIEN_EN Setting */
 
 /**@} end of group DMA_CFG_Register */
-
-/**
- * @ingroup  dma_registers
- * @defgroup DMA_INTR DMA_INTR
- * @brief    DMA Interrupt Register.
- * @{
- */
- #define MXC_F_DMA_INTR_CH0_IPEND_POS                   0 /**< INTR_CH0_IPEND Position */
- #define MXC_F_DMA_INTR_CH0_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH0_IPEND_POS)) /**< INTR_CH0_IPEND Mask */
- #define MXC_V_DMA_INTR_CH0_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH0_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH0_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH0_IPEND_INACTIVE << MXC_F_DMA_INTR_CH0_IPEND_POS) /**< INTR_CH0_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH0_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH0_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH0_IPEND_PENDING               (MXC_V_DMA_INTR_CH0_IPEND_PENDING << MXC_F_DMA_INTR_CH0_IPEND_POS) /**< INTR_CH0_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH1_IPEND_POS                   1 /**< INTR_CH1_IPEND Position */
- #define MXC_F_DMA_INTR_CH1_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH1_IPEND_POS)) /**< INTR_CH1_IPEND Mask */
- #define MXC_V_DMA_INTR_CH1_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH1_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH1_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH1_IPEND_INACTIVE << MXC_F_DMA_INTR_CH1_IPEND_POS) /**< INTR_CH1_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH1_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH1_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH1_IPEND_PENDING               (MXC_V_DMA_INTR_CH1_IPEND_PENDING << MXC_F_DMA_INTR_CH1_IPEND_POS) /**< INTR_CH1_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH2_IPEND_POS                   2 /**< INTR_CH2_IPEND Position */
- #define MXC_F_DMA_INTR_CH2_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH2_IPEND_POS)) /**< INTR_CH2_IPEND Mask */
- #define MXC_V_DMA_INTR_CH2_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH2_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH2_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH2_IPEND_INACTIVE << MXC_F_DMA_INTR_CH2_IPEND_POS) /**< INTR_CH2_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH2_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH2_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH2_IPEND_PENDING               (MXC_V_DMA_INTR_CH2_IPEND_PENDING << MXC_F_DMA_INTR_CH2_IPEND_POS) /**< INTR_CH2_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH3_IPEND_POS                   3 /**< INTR_CH3_IPEND Position */
- #define MXC_F_DMA_INTR_CH3_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH3_IPEND_POS)) /**< INTR_CH3_IPEND Mask */
- #define MXC_V_DMA_INTR_CH3_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH3_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH3_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH3_IPEND_INACTIVE << MXC_F_DMA_INTR_CH3_IPEND_POS) /**< INTR_CH3_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH3_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH3_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH3_IPEND_PENDING               (MXC_V_DMA_INTR_CH3_IPEND_PENDING << MXC_F_DMA_INTR_CH3_IPEND_POS) /**< INTR_CH3_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH4_IPEND_POS                   4 /**< INTR_CH4_IPEND Position */
- #define MXC_F_DMA_INTR_CH4_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH4_IPEND_POS)) /**< INTR_CH4_IPEND Mask */
- #define MXC_V_DMA_INTR_CH4_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH4_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH4_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH4_IPEND_INACTIVE << MXC_F_DMA_INTR_CH4_IPEND_POS) /**< INTR_CH4_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH4_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH4_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH4_IPEND_PENDING               (MXC_V_DMA_INTR_CH4_IPEND_PENDING << MXC_F_DMA_INTR_CH4_IPEND_POS) /**< INTR_CH4_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH5_IPEND_POS                   5 /**< INTR_CH5_IPEND Position */
- #define MXC_F_DMA_INTR_CH5_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH5_IPEND_POS)) /**< INTR_CH5_IPEND Mask */
- #define MXC_V_DMA_INTR_CH5_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH5_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH5_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH5_IPEND_INACTIVE << MXC_F_DMA_INTR_CH5_IPEND_POS) /**< INTR_CH5_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH5_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH5_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH5_IPEND_PENDING               (MXC_V_DMA_INTR_CH5_IPEND_PENDING << MXC_F_DMA_INTR_CH5_IPEND_POS) /**< INTR_CH5_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH6_IPEND_POS                   6 /**< INTR_CH6_IPEND Position */
- #define MXC_F_DMA_INTR_CH6_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH6_IPEND_POS)) /**< INTR_CH6_IPEND Mask */
- #define MXC_V_DMA_INTR_CH6_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH6_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH6_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH6_IPEND_INACTIVE << MXC_F_DMA_INTR_CH6_IPEND_POS) /**< INTR_CH6_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH6_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH6_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH6_IPEND_PENDING               (MXC_V_DMA_INTR_CH6_IPEND_PENDING << MXC_F_DMA_INTR_CH6_IPEND_POS) /**< INTR_CH6_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH7_IPEND_POS                   7 /**< INTR_CH7_IPEND Position */
- #define MXC_F_DMA_INTR_CH7_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH7_IPEND_POS)) /**< INTR_CH7_IPEND Mask */
- #define MXC_V_DMA_INTR_CH7_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH7_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH7_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH7_IPEND_INACTIVE << MXC_F_DMA_INTR_CH7_IPEND_POS) /**< INTR_CH7_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH7_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH7_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH7_IPEND_PENDING               (MXC_V_DMA_INTR_CH7_IPEND_PENDING << MXC_F_DMA_INTR_CH7_IPEND_POS) /**< INTR_CH7_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH8_IPEND_POS                   8 /**< INTR_CH8_IPEND Position */
- #define MXC_F_DMA_INTR_CH8_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH8_IPEND_POS)) /**< INTR_CH8_IPEND Mask */
- #define MXC_V_DMA_INTR_CH8_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH8_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH8_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH8_IPEND_INACTIVE << MXC_F_DMA_INTR_CH8_IPEND_POS) /**< INTR_CH8_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH8_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH8_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH8_IPEND_PENDING               (MXC_V_DMA_INTR_CH8_IPEND_PENDING << MXC_F_DMA_INTR_CH8_IPEND_POS) /**< INTR_CH8_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH9_IPEND_POS                   9 /**< INTR_CH9_IPEND Position */
- #define MXC_F_DMA_INTR_CH9_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH9_IPEND_POS)) /**< INTR_CH9_IPEND Mask */
- #define MXC_V_DMA_INTR_CH9_IPEND_INACTIVE              ((uint32_t)0x0UL) /**< INTR_CH9_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH9_IPEND_INACTIVE              (MXC_V_DMA_INTR_CH9_IPEND_INACTIVE << MXC_F_DMA_INTR_CH9_IPEND_POS) /**< INTR_CH9_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH9_IPEND_PENDING               ((uint32_t)0x1UL) /**< INTR_CH9_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH9_IPEND_PENDING               (MXC_V_DMA_INTR_CH9_IPEND_PENDING << MXC_F_DMA_INTR_CH9_IPEND_POS) /**< INTR_CH9_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH10_IPEND_POS                  10 /**< INTR_CH10_IPEND Position */
- #define MXC_F_DMA_INTR_CH10_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH10_IPEND_POS)) /**< INTR_CH10_IPEND Mask */
- #define MXC_V_DMA_INTR_CH10_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH10_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH10_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH10_IPEND_INACTIVE << MXC_F_DMA_INTR_CH10_IPEND_POS) /**< INTR_CH10_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH10_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH10_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH10_IPEND_PENDING              (MXC_V_DMA_INTR_CH10_IPEND_PENDING << MXC_F_DMA_INTR_CH10_IPEND_POS) /**< INTR_CH10_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH11_IPEND_POS                  11 /**< INTR_CH11_IPEND Position */
- #define MXC_F_DMA_INTR_CH11_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH11_IPEND_POS)) /**< INTR_CH11_IPEND Mask */
- #define MXC_V_DMA_INTR_CH11_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH11_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH11_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH11_IPEND_INACTIVE << MXC_F_DMA_INTR_CH11_IPEND_POS) /**< INTR_CH11_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH11_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH11_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH11_IPEND_PENDING              (MXC_V_DMA_INTR_CH11_IPEND_PENDING << MXC_F_DMA_INTR_CH11_IPEND_POS) /**< INTR_CH11_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH12_IPEND_POS                  12 /**< INTR_CH12_IPEND Position */
- #define MXC_F_DMA_INTR_CH12_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH12_IPEND_POS)) /**< INTR_CH12_IPEND Mask */
- #define MXC_V_DMA_INTR_CH12_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH12_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH12_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH12_IPEND_INACTIVE << MXC_F_DMA_INTR_CH12_IPEND_POS) /**< INTR_CH12_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH12_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH12_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH12_IPEND_PENDING              (MXC_V_DMA_INTR_CH12_IPEND_PENDING << MXC_F_DMA_INTR_CH12_IPEND_POS) /**< INTR_CH12_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH13_IPEND_POS                  13 /**< INTR_CH13_IPEND Position */
- #define MXC_F_DMA_INTR_CH13_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH13_IPEND_POS)) /**< INTR_CH13_IPEND Mask */
- #define MXC_V_DMA_INTR_CH13_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH13_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH13_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH13_IPEND_INACTIVE << MXC_F_DMA_INTR_CH13_IPEND_POS) /**< INTR_CH13_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH13_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH13_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH13_IPEND_PENDING              (MXC_V_DMA_INTR_CH13_IPEND_PENDING << MXC_F_DMA_INTR_CH13_IPEND_POS) /**< INTR_CH13_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH14_IPEND_POS                  14 /**< INTR_CH14_IPEND Position */
- #define MXC_F_DMA_INTR_CH14_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH14_IPEND_POS)) /**< INTR_CH14_IPEND Mask */
- #define MXC_V_DMA_INTR_CH14_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH14_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH14_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH14_IPEND_INACTIVE << MXC_F_DMA_INTR_CH14_IPEND_POS) /**< INTR_CH14_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH14_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH14_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH14_IPEND_PENDING              (MXC_V_DMA_INTR_CH14_IPEND_PENDING << MXC_F_DMA_INTR_CH14_IPEND_POS) /**< INTR_CH14_IPEND_PENDING Setting */
-
- #define MXC_F_DMA_INTR_CH15_IPEND_POS                  15 /**< INTR_CH15_IPEND Position */
- #define MXC_F_DMA_INTR_CH15_IPEND                      ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH15_IPEND_POS)) /**< INTR_CH15_IPEND Mask */
- #define MXC_V_DMA_INTR_CH15_IPEND_INACTIVE             ((uint32_t)0x0UL) /**< INTR_CH15_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_CH15_IPEND_INACTIVE             (MXC_V_DMA_INTR_CH15_IPEND_INACTIVE << MXC_F_DMA_INTR_CH15_IPEND_POS) /**< INTR_CH15_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_CH15_IPEND_PENDING              ((uint32_t)0x1UL) /**< INTR_CH15_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_CH15_IPEND_PENDING              (MXC_V_DMA_INTR_CH15_IPEND_PENDING << MXC_F_DMA_INTR_CH15_IPEND_POS) /**< INTR_CH15_IPEND_PENDING Setting */
-
-/**@} end of group DMA_INTR_Register */
 
 /**
  * @ingroup  dma_registers
