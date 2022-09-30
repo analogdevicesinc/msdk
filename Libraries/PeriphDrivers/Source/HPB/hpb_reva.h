@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _HPB_REVA_H_
-#define _HPB_REVA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_HPB_HPB_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_HPB_HPB_REVA_H_
 
 /* **** Includes **** */
 #include "hpb_reva_regs.h"
@@ -78,4 +78,5 @@ unsigned MXC_HPB_RevA_GetFlag(mxc_hpb_reva_regs_t *hpb);
 }
 #endif
 
-#endif /* _HPB_REVA_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_HPB_HPB_REVA_H_
+

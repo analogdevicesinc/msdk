@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _HPB_H_
-#define _HPB_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_HPB_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_HPB_H_
 
 /* **** Includes **** */
 #include "hpb_regs.h"
@@ -239,4 +239,5 @@ unsigned MXC_HPB_GetFlag(void);
 }
 #endif
 
-#endif /* _HPB_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_HPB_H_
+
