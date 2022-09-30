@@ -1,6 +1,7 @@
 /**
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -139,6 +140,21 @@ typedef struct {
 
 /**
  * @ingroup  dma_registers
+ * @defgroup DMA_INTR DMA_INTR
+ * @brief    DMA Interrupt Register.
+ * @{
+ */
+ #define MXC_F_DMA_INTR_IPEND_POS                       0 /**< INTR_IPEND Position */
+ #define MXC_F_DMA_INTR_IPEND                           ((uint32_t)(0xFUL << MXC_F_DMA_INTR_IPEND_POS)) /**< INTR_IPEND Mask */
+ #define MXC_V_DMA_INTR_IPEND_INACTIVE                  ((uint32_t)0x0UL) /**< INTR_IPEND_INACTIVE Value */
+ #define MXC_S_DMA_INTR_IPEND_INACTIVE                  (MXC_V_DMA_INTR_IPEND_INACTIVE << MXC_F_DMA_INTR_IPEND_POS) /**< INTR_IPEND_INACTIVE Setting */
+ #define MXC_V_DMA_INTR_IPEND_PENDING                   ((uint32_t)0x1UL) /**< INTR_IPEND_PENDING Value */
+ #define MXC_S_DMA_INTR_IPEND_PENDING                   (MXC_V_DMA_INTR_IPEND_PENDING << MXC_F_DMA_INTR_IPEND_POS) /**< INTR_IPEND_PENDING Setting */
+
+/**@} end of group DMA_INTR_Register */
+
+/**
+ * @ingroup  dma_registers
  * @defgroup DMA_CFG DMA_CFG
  * @brief    DMA Channel Configuration Register.
  * @{
@@ -248,21 +264,6 @@ typedef struct {
  #define MXC_F_DMA_CFG_CTZIEN                           ((uint32_t)(0x1UL << MXC_F_DMA_CFG_CTZIEN_POS)) /**< CFG_CTZIEN Mask */
 
 /**@} end of group DMA_CFG_Register */
-
-/**
- * @ingroup  dma_registers
- * @defgroup DMA_INTR DMA_INTR
- * @brief    DMA Interrupt Register.
- * @{
- */
- #define MXC_F_DMA_INTR_IPEND_POS                       0 /**< INTR_IPEND Position */
- #define MXC_F_DMA_INTR_IPEND                           ((uint32_t)(0xFUL << MXC_F_DMA_INTR_IPEND_POS)) /**< INTR_IPEND Mask */
- #define MXC_V_DMA_INTR_IPEND_INACTIVE                  ((uint32_t)0x0UL) /**< INTR_IPEND_INACTIVE Value */
- #define MXC_S_DMA_INTR_IPEND_INACTIVE                  (MXC_V_DMA_INTR_IPEND_INACTIVE << MXC_F_DMA_INTR_IPEND_POS) /**< INTR_IPEND_INACTIVE Setting */
- #define MXC_V_DMA_INTR_IPEND_PENDING                   ((uint32_t)0x1UL) /**< INTR_IPEND_PENDING Value */
- #define MXC_S_DMA_INTR_IPEND_PENDING                   (MXC_V_DMA_INTR_IPEND_PENDING << MXC_F_DMA_INTR_IPEND_POS) /**< INTR_IPEND_PENDING Setting */
-
-/**@} end of group DMA_INTR_Register */
 
 /**
  * @ingroup  dma_registers

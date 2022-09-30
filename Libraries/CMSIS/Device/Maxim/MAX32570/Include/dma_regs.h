@@ -1,6 +1,7 @@
 /**
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -150,6 +151,38 @@ typedef struct {
  #define MXC_F_DMA_CN_CH7_IEN                           ((uint32_t)(0x1UL << MXC_F_DMA_CN_CH7_IEN_POS)) /**< CN_CH7_IEN Mask */
 
 /**@} end of group DMA_CN_Register */
+
+/**
+ * @ingroup  dma_registers
+ * @defgroup DMA_INTR DMA_INTR
+ * @brief    DMA Interrupt Register.
+ * @{
+ */
+ #define MXC_F_DMA_INTR_CH0_IPEND_POS                   0 /**< INTR_CH0_IPEND Position */
+ #define MXC_F_DMA_INTR_CH0_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH0_IPEND_POS)) /**< INTR_CH0_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH1_IPEND_POS                   1 /**< INTR_CH1_IPEND Position */
+ #define MXC_F_DMA_INTR_CH1_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH1_IPEND_POS)) /**< INTR_CH1_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH2_IPEND_POS                   2 /**< INTR_CH2_IPEND Position */
+ #define MXC_F_DMA_INTR_CH2_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH2_IPEND_POS)) /**< INTR_CH2_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH3_IPEND_POS                   3 /**< INTR_CH3_IPEND Position */
+ #define MXC_F_DMA_INTR_CH3_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH3_IPEND_POS)) /**< INTR_CH3_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH4_IPEND_POS                   4 /**< INTR_CH4_IPEND Position */
+ #define MXC_F_DMA_INTR_CH4_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH4_IPEND_POS)) /**< INTR_CH4_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH5_IPEND_POS                   5 /**< INTR_CH5_IPEND Position */
+ #define MXC_F_DMA_INTR_CH5_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH5_IPEND_POS)) /**< INTR_CH5_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH6_IPEND_POS                   6 /**< INTR_CH6_IPEND Position */
+ #define MXC_F_DMA_INTR_CH6_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH6_IPEND_POS)) /**< INTR_CH6_IPEND Mask */
+
+ #define MXC_F_DMA_INTR_CH7_IPEND_POS                   7 /**< INTR_CH7_IPEND Position */
+ #define MXC_F_DMA_INTR_CH7_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH7_IPEND_POS)) /**< INTR_CH7_IPEND Mask */
+
+/**@} end of group DMA_INTR_Register */
 
 /**
  * @ingroup  dma_registers
@@ -328,38 +361,6 @@ typedef struct {
  #define MXC_F_DMA_CFG_CTZIEN                           ((uint32_t)(0x1UL << MXC_F_DMA_CFG_CTZIEN_POS)) /**< CFG_CTZIEN Mask */
 
 /**@} end of group DMA_CFG_Register */
-
-/**
- * @ingroup  dma_registers
- * @defgroup DMA_INTR DMA_INTR
- * @brief    DMA Interrupt Register.
- * @{
- */
- #define MXC_F_DMA_INTR_CH0_IPEND_POS                   0 /**< INTR_CH0_IPEND Position */
- #define MXC_F_DMA_INTR_CH0_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH0_IPEND_POS)) /**< INTR_CH0_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH1_IPEND_POS                   1 /**< INTR_CH1_IPEND Position */
- #define MXC_F_DMA_INTR_CH1_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH1_IPEND_POS)) /**< INTR_CH1_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH2_IPEND_POS                   2 /**< INTR_CH2_IPEND Position */
- #define MXC_F_DMA_INTR_CH2_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH2_IPEND_POS)) /**< INTR_CH2_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH3_IPEND_POS                   3 /**< INTR_CH3_IPEND Position */
- #define MXC_F_DMA_INTR_CH3_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH3_IPEND_POS)) /**< INTR_CH3_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH4_IPEND_POS                   4 /**< INTR_CH4_IPEND Position */
- #define MXC_F_DMA_INTR_CH4_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH4_IPEND_POS)) /**< INTR_CH4_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH5_IPEND_POS                   5 /**< INTR_CH5_IPEND Position */
- #define MXC_F_DMA_INTR_CH5_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH5_IPEND_POS)) /**< INTR_CH5_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH6_IPEND_POS                   6 /**< INTR_CH6_IPEND Position */
- #define MXC_F_DMA_INTR_CH6_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH6_IPEND_POS)) /**< INTR_CH6_IPEND Mask */
-
- #define MXC_F_DMA_INTR_CH7_IPEND_POS                   7 /**< INTR_CH7_IPEND Position */
- #define MXC_F_DMA_INTR_CH7_IPEND                       ((uint32_t)(0x1UL << MXC_F_DMA_INTR_CH7_IPEND_POS)) /**< INTR_CH7_IPEND Mask */
-
-/**@} end of group DMA_INTR_Register */
 
 /**
  * @ingroup  dma_registers

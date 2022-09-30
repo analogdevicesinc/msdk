@@ -1,6 +1,7 @@
 /**
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -141,6 +142,26 @@ typedef struct {
  #define MXC_F_DMA_INTEN_CH3                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH3_POS)) /**< INTEN_CH3 Mask */
 
 /**@} end of group DMA_INTEN_Register */
+
+/**
+ * @ingroup  dma_registers
+ * @defgroup DMA_INTFL DMA_INTFL
+ * @brief    DMA Interrupt Register.
+ * @{
+ */
+ #define MXC_F_DMA_INTFL_CH0_POS                        0 /**< INTFL_CH0 Position */
+ #define MXC_F_DMA_INTFL_CH0                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH0_POS)) /**< INTFL_CH0 Mask */
+
+ #define MXC_F_DMA_INTFL_CH1_POS                        1 /**< INTFL_CH1 Position */
+ #define MXC_F_DMA_INTFL_CH1                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH1_POS)) /**< INTFL_CH1 Mask */
+
+ #define MXC_F_DMA_INTFL_CH2_POS                        2 /**< INTFL_CH2 Position */
+ #define MXC_F_DMA_INTFL_CH2                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH2_POS)) /**< INTFL_CH2 Mask */
+
+ #define MXC_F_DMA_INTFL_CH3_POS                        3 /**< INTFL_CH3 Position */
+ #define MXC_F_DMA_INTFL_CH3                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH3_POS)) /**< INTFL_CH3 Mask */
+
+/**@} end of group DMA_INTFL_Register */
 
 /**
  * @ingroup  dma_registers
@@ -285,26 +306,6 @@ typedef struct {
  #define MXC_F_DMA_CTRL_CTZ_IE                          ((uint32_t)(0x1UL << MXC_F_DMA_CTRL_CTZ_IE_POS)) /**< CTRL_CTZ_IE Mask */
 
 /**@} end of group DMA_CTRL_Register */
-
-/**
- * @ingroup  dma_registers
- * @defgroup DMA_INTFL DMA_INTFL
- * @brief    DMA Interrupt Register.
- * @{
- */
- #define MXC_F_DMA_INTFL_CH0_POS                        0 /**< INTFL_CH0 Position */
- #define MXC_F_DMA_INTFL_CH0                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH0_POS)) /**< INTFL_CH0 Mask */
-
- #define MXC_F_DMA_INTFL_CH1_POS                        1 /**< INTFL_CH1 Position */
- #define MXC_F_DMA_INTFL_CH1                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH1_POS)) /**< INTFL_CH1 Mask */
-
- #define MXC_F_DMA_INTFL_CH2_POS                        2 /**< INTFL_CH2 Position */
- #define MXC_F_DMA_INTFL_CH2                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH2_POS)) /**< INTFL_CH2 Mask */
-
- #define MXC_F_DMA_INTFL_CH3_POS                        3 /**< INTFL_CH3 Position */
- #define MXC_F_DMA_INTFL_CH3                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH3_POS)) /**< INTFL_CH3 Mask */
-
-/**@} end of group DMA_INTFL_Register */
 
 /**
  * @ingroup  dma_registers

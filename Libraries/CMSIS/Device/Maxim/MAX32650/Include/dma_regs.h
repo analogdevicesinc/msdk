@@ -1,7 +1,7 @@
 /**
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
- * @generated
+ * @note    This file is @generated.
  */
 
 /******************************************************************************

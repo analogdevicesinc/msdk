@@ -2,10 +2,10 @@
 <device xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xsi:noNamespaceSchemaLocation="svd_schema.xsd">
  <vendor>Maxim-Integrated</vendor>
  <vendorID>Maxim</vendorID>
- <name>MAX32660</name>
+ <name>MAX78000</name>
  <series>ARMCM4</series>
  <version>1.0</version>
- <description>MAX32660.</description>
+ <description>MAX78000 Machine Learning System-on-Chip.</description>
  <cpu>
   <name>CM4</name>
   <revision>r2p1</revision>
