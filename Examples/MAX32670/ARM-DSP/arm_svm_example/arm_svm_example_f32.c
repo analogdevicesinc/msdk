@@ -115,8 +115,7 @@ int main(void)
                                 -1.661719f, /* Intercept */
                                 dualCoefficients, supportVectors, classes, 3, /* degree */
                                 1.100000f, /* Coef0 */
-                                0.500000f /* Gamma */
-    );
+                                0.500000f /* Gamma */);
 
     /*
     Input data.
