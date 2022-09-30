@@ -92,6 +92,7 @@ typedef struct {
 /**
  * @brief   Initialize and enable OWM module.
  * @param   cfg         Pointer to OWM configuration.
+ * @param   map         MAP_A, MAP_B or MAP_C onewire pins select
  *
  * @return  #E_NO_ERROR if everything is successful
  * @return  #E_NULL_PTR if parameter is a null pointer
@@ -100,7 +101,7 @@ typedef struct {
  * @return  #E_NOT_SUPPORTED if 1MHz CLK cannot be created with given system and owm CLK
  * @return  #E_BAD_PARAM if bad cfg parameter passed in
  */
-int MXC_OWM_Init(const mxc_owm_cfg_t *cfg);
+int MXC_OWM_Init(const mxc_owm_cfg_t *cfg, sys_map_t map);
 
 /**
  * @brief   Shutdown OWM module.

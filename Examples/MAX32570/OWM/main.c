@@ -124,8 +124,9 @@ int32_t ow_romid_test(uint8_t od)
         return -5;
     }
 
-    printf("Buffer: 0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X\n", buffer[0],
-           buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
+    printf("ROMID: ");
+    for (i = 0; i < 8; i++) { printf("%02X ", buffer[i]); }
+    printf("\n");
 
     /* Check for zero family code in ROM ID */
     if (buffer[0] == 0) {
@@ -148,6 +149,10 @@ int main(void)
 {
     int retval = 0;
     printf("***** 1-Wire ROM (DS2401) Example *****\n");
+    printf("This example reads ROM ID of 1-Wire slave device\n");
+    printf("Connect 1-Wire pin (P1.18), VCC and GND to the target\n");
+    printf("For more information please take a look at your board schematic\n");
+    printf("\n\n");
 
     /* Initialize one wire 10us timing */
 
@@ -156,7 +161,7 @@ int main(void)
     owm_cfg.ext_pu_mode = MXC_OWM_EXT_PU_ACT_HIGH;
     owm_cfg.long_line_mode = 0;
     // owm_cfg.overdrive_spec = MXC_OWM_OVERDRIVE_10US;
-    MXC_OWM_Init(&owm_cfg);
+    MXC_OWM_Init(&owm_cfg, MAP_B); // MAP_A:P0.0/1, MAP_B:P1.18/19
 
     /* Test overdrive */
     if ((retval = ow_romid_test(1))) {

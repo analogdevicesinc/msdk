@@ -179,10 +179,10 @@ const mxc_gpio_cfg_t gpio_cfg_pt7 = { MXC_GPIO0, MXC_GPIO_PIN_31, MXC_GPIO_FUNC_
                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_owm = { MXC_GPIO0, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1),
-                                      MXC_GPIO_FUNC_ALT4, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+                                      MXC_GPIO_FUNC_ALT4, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
 const mxc_gpio_cfg_t gpio_cfg_owmb = { MXC_GPIO1, (MXC_GPIO_PIN_18 | MXC_GPIO_PIN_19),
-                                       MXC_GPIO_FUNC_ALT4, MXC_GPIO_PAD_NONE,
-                                       MXC_GPIO_VSSEL_VDDIO };
+                                       MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
+                                       MXC_GPIO_VSSEL_VDDIOH };
 
 // Port 0 Pins 6-14, Port 1 Pins 1-5 and 16-19, Port 2 Pins 10-19
 // Other configurations are available, depending on package, to allow the use of EMAC or SDHC

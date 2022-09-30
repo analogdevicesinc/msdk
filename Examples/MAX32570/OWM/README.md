@@ -15,9 +15,7 @@ This example demonstrate how 1-Wire master can be configured and read slave ROM 
 ```
 ***** 1-Wire ROM (DS2401) Example *****
 This example reads ROM ID of 1-Wire slave device
-Connect 1-Wire pin, VCC and GND to the target
-   - If you have FTHR or FTHR2 board 1-Wire pin: P0.12
-   - If you have EvKit_V1 board      1-Wire pin: P0.24
+Connect 1-Wire pin (P1.18), VCC and GND to the target
 For more information please take a look at your board schematic
 
 
