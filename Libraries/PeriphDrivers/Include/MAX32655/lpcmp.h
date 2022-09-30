@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _LPCMP_H_
-#define _LPCMP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_LPCMP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_LPCMP_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -139,4 +139,5 @@ int MXC_LPCMP_SelectPolarity(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol);
 }
 #endif
 
-#endif /* _LPCMP_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_LPCMP_H_
+

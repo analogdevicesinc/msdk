@@ -37,8 +37,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _LP_H_
-#define _LP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_LP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_LP_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -287,4 +287,5 @@ int MXC_LP_DisableSysRAMLightSleep(int instance);
 }
 #endif
 
-#endif /* _LP_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_LP_H_
+

@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _LP_H_
-#define _LP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_LP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_LP_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -227,4 +227,5 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask);
 }
 #endif
 
-#endif /* _LP_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_LP_H_
+
