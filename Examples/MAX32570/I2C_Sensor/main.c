@@ -5,16 +5,14 @@
  */
 
 /*******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
-* 
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
 *
 * The above copyright notice and this permission notice shall be included
 * in all copies or substantial portions of the Software.
@@ -44,8 +42,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "i2c.h"
 #include "mxc_device.h"
-#include "i2c_sensor.h"
 #include "max31889_driver.h"
 
 /***** Definitions *****/
@@ -68,7 +66,7 @@ int main(void)
 
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
 
-    mxc_i2c_sensor_driver_t MAX31889 = MAX31889_Open();
+    max31889_driver_t MAX31889 = MAX31889_Open();
 
     MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0); // init the sensor
 
@@ -77,7 +75,7 @@ int main(void)
         if (error != E_NO_ERROR) {
             printf("\nSensor read error: %i", error);
         } else {
-            printf("\n-->Temperature: %02f %cC", temperature, 176);
+            printf("\n-->Temperature: %02f %cC", (double)temperature, 176);
         }
         // Wait for 1s
         MXC_Delay(MXC_DELAY_SEC(1));
