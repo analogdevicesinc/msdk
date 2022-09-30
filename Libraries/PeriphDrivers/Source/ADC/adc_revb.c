@@ -234,6 +234,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     MXC_DMA_SetCallback(channel, callback);
 
+    //TODO(ADI): This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64 bytes may need to read.
     MXC_DMA->ch[channel].ctrl |= (num_bytes - 1) << MXC_F_DMA_CTRL_BURST_SIZE_POS;
 
     MXC_DMA_EnableInt(channel);
@@ -399,6 +400,7 @@ int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t 
     return E_NO_ERROR;
 }
 
+//TODO(ADI): Need to find out better way to handle this.
 int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, uint32_t slot_num)
 {
     uint32_t *pointer = (uint32_t *)(MXC_BASE_ADC + MXC_R_ADC_CHSEL0);
