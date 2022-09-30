@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _ICC_H_
-#define _ICC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_ICC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_ICC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -94,4 +94,5 @@ void MXC_ICC_Flush(mxc_icc_regs_t *icc);
 }
 #endif
 
-#endif /* _ICC_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_ICC_H_
+

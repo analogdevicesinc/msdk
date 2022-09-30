@@ -61,3 +61,4 @@ void MXC_ICC_Flush(void)
 {
     MXC_ICC_Com_Flush();
 }
+

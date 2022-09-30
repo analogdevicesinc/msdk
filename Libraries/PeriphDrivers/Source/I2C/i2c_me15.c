@@ -67,14 +67,12 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
     if (i2c == MXC_I2C0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C0);
         MXC_GPIO_Config(&gpio_cfg_i2c0);
-    }
 #if TARGET_NUM != 32675
-    else if (i2c == MXC_I2C1) {
+    } else if (i2c == MXC_I2C1) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C1);
         MXC_GPIO_Config(&gpio_cfg_i2c1);
-    }
 #endif
-    else if (i2c == MXC_I2C2) {
+    } else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2C2);
         MXC_GPIO_Config(&gpio_cfg_i2c2);
     } else {
@@ -407,4 +405,3 @@ void MXC_I2C_DMACallback(int ch, int error)
 {
     MXC_I2C_RevA_DMACallback(ch, error);
 }
-
