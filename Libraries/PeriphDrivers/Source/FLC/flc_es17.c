@@ -1,6 +1,6 @@
 /**
- * @file flc.h
- * @brief      Flash Controler driver.
+ * @file flc_es17.h
+ * @brief      Flash Controller driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 /* ****************************************************************************
@@ -503,3 +503,4 @@ volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
     /* MAX32520 does not support flash page read and write locks */
     return NULL;
 }
+

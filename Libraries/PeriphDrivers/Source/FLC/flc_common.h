@@ -1,6 +1,6 @@
 /**
- * @file       flc.h
- * @brief      Flash Controller driver.
+ * @file       flc_common.h
+ * @brief      Common functions for the flash controller driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 
@@ -40,6 +40,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_COMMON_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_COMMON_H_
+
 /* **** Includes **** */
 #include "mxc_sys.h"
 
@@ -72,3 +75,6 @@ volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num);
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_COMMON_H_
+

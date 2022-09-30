@@ -1,5 +1,5 @@
 /**
- * @file flc.h
+ * @file flc_me14.c
  * @brief      Flash Controler driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
@@ -364,3 +364,4 @@ volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
     /* MAX32665 does not support flash page read and write locks */
     return NULL;
 }
+
