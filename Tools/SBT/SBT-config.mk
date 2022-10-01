@@ -41,7 +41,7 @@ PROJ_CFLAGS += -D__SLA_FWK__
 SRCS += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/sla_header.c
 # ^ Include the SLA C file for the device.
 LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla.ld
-$(warning Overriding LINKERFILE to $(LINKERFILE))
+$(info Overriding LINKERFILE to $(LINKERFILE))
 endif
 
 ifeq ($(MAKECMDGOALS), scpa)
@@ -51,5 +51,5 @@ SCPA_MEM_SIZE ?= 1024
 PROJ_CFLAGS += -D__SCPA_FWK__
 PROJ_CFLAGS += -DSCPA_MEM_BASE_ADDR=$(SCPA_MEM_BASE_ADDR) -DSCPA_MEM_SIZE=$(SCPA_MEM_SIZE)
 LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_scpa.ld
-$(warning Overriding LINKERFILE to $(LINKERFILE))
+$(info Overriding LINKERFILE to $(LINKERFILE))
 endif
