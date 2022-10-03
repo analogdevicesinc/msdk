@@ -83,7 +83,7 @@ static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012
 mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO1, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_OUT,
                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 #else
-#error No board definition found!  Is board.h included?
+#error No board definition found. Is board.h included?
 #endif
 /***** FUNCTIONS *****/
 

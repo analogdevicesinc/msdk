@@ -36,8 +36,8 @@
  * @brief   System level header file.
  */
 
-#ifndef _MXC_MXC_SYS_H_
-#define _MXC_MXC_SYS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_SYS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_SYS_H_
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
@@ -211,4 +211,4 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
 }
 #endif
 
-#endif /* _MXC_MXC_SYS_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_SYS_H_

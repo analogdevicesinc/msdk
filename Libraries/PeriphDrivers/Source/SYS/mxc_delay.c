@@ -42,7 +42,7 @@
 
 #ifdef __riscv
 
-int MXC_Delay(unsigned long us)
+int MXC_Delay(uint32_t us)
 {
     // Check if there is nothing to do
     if (us == 0) {
@@ -63,7 +63,7 @@ int MXC_Delay(unsigned long us)
     return E_NO_ERROR;
 }
 
-int MXC_DelayAsync(unsigned long us, mxc_delay_complete_t callback)
+int MXC_DelayAsync(uint32_t us, mxc_delay_complete_t callback)
 {
     return E_NOT_SUPPORTED;
 }
@@ -83,7 +83,7 @@ static uint32_t endtick;
 static uint32_t ctrl_save;
 static mxc_delay_complete_t cbFunc;
 
-static void MXC_DelayInit(unsigned long us);
+static void MXC_DelayInit(uint32_t us);
 extern void SysTick_Handler(void);
 
 /* ************************************************************************** */
@@ -112,7 +112,7 @@ void MXC_DelayHandler(void)
 }
 
 /* ************************************************************************** */
-static void MXC_DelayInit(unsigned long us)
+static void MXC_DelayInit(uint32_t us)
 {
     uint32_t starttick, reload, ticks, lastticks;
 
@@ -152,7 +152,7 @@ static void MXC_DelayInit(unsigned long us)
 }
 
 /* ************************************************************************** */
-int MXC_DelayAsync(unsigned long us, mxc_delay_complete_t callback)
+int MXC_DelayAsync(uint32_t us, mxc_delay_complete_t callback)
 {
     cbFunc = callback;
 
@@ -218,7 +218,7 @@ void MXC_DelayAbort(void)
 }
 
 /* ************************************************************************** */
-int MXC_Delay(unsigned long us)
+int MXC_Delay(uint32_t us)
 {
     // Check if timeout currently ongoing
     if (overflows > 0) {

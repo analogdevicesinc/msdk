@@ -333,12 +333,12 @@ void MXC_TMR_SetCount(mxc_tmr_regs_t *tmr, uint32_t cnt)
     MXC_TMR_RevB_SetCount((mxc_tmr_revb_regs_t *)tmr, cnt);
 }
 
-void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, unsigned long us)
+void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, uint32_t us)
 {
     MXC_TMR_Common_Delay(tmr, us);
 }
 
-void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, unsigned long us)
+void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, uint32_t us)
 {
     MXC_TMR_RevB_TO_Start((mxc_tmr_revb_regs_t *)tmr, us);
 }

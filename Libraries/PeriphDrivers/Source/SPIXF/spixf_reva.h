@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SPIXF_SPIXF_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SPIXF_SPIXF_REVA_H_
+
 /****** Includes *******/
 #include "mxc_device.h"
 #include "mxc_sys.h"
@@ -275,7 +278,6 @@ int MXC_SPIXF_RevA_SampleOutputEnable(mxc_spixfc_reva_regs_t *spixfc, uint8_t ma
 int MXC_SPIXF_RevA_SampleOutputDisable(mxc_spixfc_reva_regs_t *spixfc, uint8_t mask);
 uint8_t MXC_SPIXF_RevA_SampleOutputIsEnabled(mxc_spixfc_reva_regs_t *spixfc);
 uint8_t MXC_SPIXF_RevA_GetSampleOutputValue(mxc_spixfc_reva_regs_t *spixfc);
-// Insert * here
 void MXC_SPIXF_RevA_SetIoctrlSDIODriveHigh(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSDIODriveLow(mxc_spixfm_reva_regs_t *spixfm);
 uint8_t MXC_SPIXF_RevA_GetIoctrlSDIODrive(mxc_spixfm_reva_regs_t *spixfm);
@@ -287,8 +289,6 @@ void MXC_SPIXF_RevA_SetIoctrlSSDriveLow(mxc_spixfm_reva_regs_t *spixfm);
 uint8_t MXC_SPIXF_RevA_GetIoctrlSSDrive(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_pup_t pupd);
 uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm);
-
-// *
 void MXC_SPIXF_RevA_SetSCKDriveHigh(mxc_spixfc_reva_regs_t *spixfc);
 void MXC_SPIXF_RevA_SetSCKDriveLow(mxc_spixfc_reva_regs_t *spixfc);
 uint8_t MXC_SPIXF_RevA_GetSCKDrive(mxc_spixfc_reva_regs_t *spixfc);
@@ -307,6 +307,7 @@ int MXC_SPIXF_RevA_TXFIFOIsEnabled(mxc_spixfc_reva_regs_t *spixfc);
 int MXC_SPIXF_RevA_Enable(mxc_spixfc_reva_regs_t *spixfc);
 int MXC_SPIXF_RevA_Disable(mxc_spixfc_reva_regs_t *spixfc);
 int MXC_SPIXF_RevA_IsEnabled(mxc_spixfc_reva_regs_t *spixfc);
-
 int MXC_SPIXF_RevA_SetBusIdle(mxc_spixfm_reva_regs_t *spixfm, unsigned int busidle);
 unsigned int MXC_SPIXF_RevA_GetBusIdle(mxc_spixfm_reva_regs_t *spixfm);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPIXF_SPIXF_REVA_H_

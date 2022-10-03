@@ -37,11 +37,11 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _WDT_H_
-#define _WDT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_WDT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_WDT_H_
 
 #ifdef __CC_ARM
-#pragma diag_suppress 66 // enumeration value is out of �int� range
+#pragma diag_suppress 66 // enumeration value is out of int range
 #endif
 
 /* **** Includes **** */
@@ -221,4 +221,4 @@ void MXC_WDT_ClearIntFlag(mxc_wdt_regs_t *wdt);
 }
 #endif
 
-#endif /* _WDT_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_WDT_H_

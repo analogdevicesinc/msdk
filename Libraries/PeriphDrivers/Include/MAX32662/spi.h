@@ -35,8 +35,9 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef _SPI_H_
-#define _SPI_H_
+
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_SPI_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_SPI_H_
 
 /***** includes *******/
 #include <stdbool.h>
@@ -674,4 +675,4 @@ void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi);
 }
 #endif
 
-#endif /* _SPI_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_SPI_H_

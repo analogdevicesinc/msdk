@@ -1,7 +1,0 @@
-C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32660/spimss.h:58: warning: Refusing to add group spimss to itself
-C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32660/gpio.h:276: warning: explicit link request to 'callback_fn' could not be resolved
-C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32660/gpio.h:277: warning: explicit link request to 'callback_fn' could not be resolved
-C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32660/lp.h:215: warning: argument 'system' of command @param is not found in the argument list of MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr)
-C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32660/lp.h:219: warning: The following parameter of MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr) is not documented:
-  parameter 'ovr'
-C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX32660/spimss.h:85: warning: explicit link request to 'spi_req' could not be resolved
