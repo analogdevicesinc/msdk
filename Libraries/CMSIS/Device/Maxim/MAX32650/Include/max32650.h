@@ -78,11 +78,11 @@ typedef enum {
     PendSV_IRQn = -2,
     SysTick_IRQn = -1,
 
-    /* Device-specific interrupt sources (external to ARM core)                 */
-    /*                      table entry number                                  */
-    /*                      ||||                                                */
-    /*                      ||||  table offset address                          */
-    /*                      vvvv  vvvvvv                                        */
+    /* Device-specific interrupt sources (external to ARM core)          */
+    /*               table entry number                                  */
+    /*               ||||                                                */
+    /*               ||||  table offset address                          */
+    /*               vvvv  vvvvvv                                        */
 
     PF_IRQn = 0, /* 0x10  0x0040  16: Power Fail */
     WDT0_IRQn, /* 0x11  0x0044  17: Watchdog 0 */

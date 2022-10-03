@@ -1178,6 +1178,38 @@
      <name>CMP_CTRL</name>
      <description>Comparator Control Register.</description>
      <addressOffset>0x0C</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Comparator Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>POL</name>
+       <description>Polarity Select</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>INT_EN</name>
+       <description>IRQ Enable.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OUT</name>
+       <description>Comparator Output State.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>INT_FL</name>
+       <description>IRQ Flag</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>CTRL</name>
@@ -1381,7 +1413,7 @@
     </register>
     <cluster>
      <dim>4</dim>
-     <dimIncrement>4</dimIncrement>
+     <dimIncrement>0x20</dimIncrement>
      <name>CH[%s]</name>
      <description>DMA Channel registers.</description>
      <headerStructName>dma_ch</headerStructName>
@@ -1390,7 +1422,7 @@
      <register>
       <name>CTRL</name>
       <description>DMA Channel Control Register.</description>
-      <addressOffset>0x100</addressOffset>
+      <addressOffset>0x000</addressOffset>
       <fields>
        <field>
         <name>EN</name>
@@ -1812,7 +1844,7 @@
      <register>
       <name>STATUS</name>
       <description>DMA Channel Status Register.</description>
-      <addressOffset>0x104</addressOffset>
+      <addressOffset>0x004</addressOffset>
       <fields>
        <field>
         <name>STATUS</name>
@@ -1885,7 +1917,7 @@
      <register>
       <name>SRC</name>
       <description>Source Device Address. If SRCINC=1, the counter bits are incremented by 1,2, or 4, depending on the data width of each AHB cycle. For peripheral transfers, some or all of the actual address bits are fixed. If SRCINC=0, this register remains constant. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with the contents of DMA_SRC_RLD.</description>
-      <addressOffset>0x108</addressOffset>
+      <addressOffset>0x008</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1897,7 +1929,7 @@
      <register>
       <name>DST</name>
       <description>Destination Device Address. For peripheral transfers, some or all of the actual address bits are fixed. If DSTINC=1, this register is incremented on every AHB write out of the DMA FIFO. They are incremented by 1, 2, or 4, depending on the data width of each AHB cycle. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with DMA_DST_RLD.</description>
-      <addressOffset>0x10C</addressOffset>
+      <addressOffset>0x00C</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1909,7 +1941,7 @@
      <register>
       <name>CNT</name>
       <description>DMA Counter. The user loads this register with the number of bytes to transfer. This counter decreases on every AHB cycle into the DMA FIFO. The decrement will be 1, 2, or 4 depending on the data width of each AHB cycle. When the counter reaches 0, a count-to-zero condition is triggered.</description>
-      <addressOffset>0x110</addressOffset>
+      <addressOffset>0x010</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -1922,7 +1954,7 @@
      <register>
       <name>SRCRLD</name>
       <description>Source Address Reload Value. The value of this register is loaded into DMA0_SRC upon a count-to-zero condition.</description>
-      <addressOffset>0x114</addressOffset>
+      <addressOffset>0x014</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1935,7 +1967,7 @@
      <register>
       <name>DSTRLD</name>
       <description>Destination Address Reload Value. The value of this register is loaded into DMA0_DST upon a count-to-zero condition.</description>
-      <addressOffset>0x118</addressOffset>
+      <addressOffset>0x018</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1948,7 +1980,7 @@
      <register>
       <name>CNTRLD</name>
       <description>DMA Channel Count Reload Register.</description>
-      <addressOffset>0x11C</addressOffset>
+      <addressOffset>0x01C</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -5897,14 +5929,24 @@
      </fields>
     </register>
     <register>
-     <name>SLAVE</name>
+     <dim>4</dim>
+     <dimIncrement>1</dimIncrement>
+     <name>SLAVE_MULTI[%s]</name>
      <description>Slave Address Register.</description>
+     <alternateRegister>SLAVE0</alternateRegister>
      <addressOffset>0x4C</addressOffset>
+     <size>32</size>
+     <access>read-write</access>
      <fields>
       <field>
        <name>ADDR</name>
        <description>Slave Address.</description>
        <bitRange>[9:0]</bitRange>
+      </field>
+      <field>
+       <name>DIS</name>
+       <description>Slave Disable.</description>
+       <bitRange>[10:10]</bitRange>
       </field>
       <field>
        <name>EXT_ADDR_EN</name>
@@ -5924,6 +5966,26 @@
        </enumeratedValues>
       </field>
      </fields>
+    </register>
+    <register>
+     <name>SLAVE0</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x4C</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE1</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x50</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE2</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x54</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE3</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x58</addressOffset>
     </register>
    </registers>
   </peripheral>
@@ -6391,15 +6453,9 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>ext_pullup_pol</name>
-       <description>External Pullup.</description>
-       <bitRange>[5:5]</bitRange>
-       <access>read-only</access>
-      </field>
-      <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -6667,7 +6723,7 @@
     <register>
      <name>SAFE_EN</name>
      <description>Pulse Train Global Safe Enable.</description>
-     <addressOffset>0x10</addressOffset>
+     <addressOffset>0x0010</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
@@ -6699,7 +6755,7 @@
     <register>
      <name>SAFE_DIS</name>
      <description>Pulse Train Global Safe Disable.</description>
-     <addressOffset>0x14</addressOffset>
+     <addressOffset>0x0014</addressOffset>
      <access>write-only</access>
      <fields>
       <field>
@@ -8518,9 +8574,15 @@
      <access>read-only</access>
      <fields>
       <field>
+       <name>SECBOOT</name>
+       <description>Security Boot.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>TRNG</name>
        <description> TRNG Function.</description>
-       <bitOffset>0</bitOffset>
+       <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -8536,7 +8598,7 @@
       <field>
        <name>AES</name>
        <description>AES Block.</description>
-       <bitOffset>2</bitOffset>
+       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
