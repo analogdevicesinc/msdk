@@ -34,8 +34,8 @@
  ******************************************************************************
  */
 
-#ifndef _WRAPPER_TFT_H_
-#define _WRAPPER_TFT_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_WRAPPER_TFT_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_WRAPPER_TFT_H_
 
 #include "MAX32xxx.h"
 
@@ -49,4 +49,4 @@ void TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area);
 void TFT_ClearArea(area_t *area, int color);
 void TFT_SetPalette(int img_id);
 
-#endif //_WRAPPER_TFT_H_
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_WRAPPER_TFT_H_

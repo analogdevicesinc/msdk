@@ -38,8 +38,8 @@
 *******************************************************************************
 */
 
-#ifndef _LOGGING_H_
-#define _LOGGING_H_
+#ifndef EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_LOGGING_H_
+#define EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_LOGGING_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,11 +71,9 @@ extern "C" {
 #define DBG_LVL_LOG 1 /**< Basic logging, this level is used to comply with DTE requirements */
 #define DBG_LVL_ERR 2 /**< Same as @ref DBG_LVL_LOG plus various errors encountered */
 #define DBG_LVL_WRN 3 /**< Same as @ref DBG_LVL_ERR plus various warning encountered */
-#define DBG_LVL_INF \
-    4 /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the stack
-                              including uid level, uid, sfgi, and other interface details */
-#define DBG_LVL_DBG \
-    5 /**< Same as @ref DBG_LVL_INF plus TX buffer contents, and RF Driver response status */
+#define DBG_LVL_INF 4 /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the stack */
+                      /**< including uid level, uid, sfgi, and other interface details */
+#define DBG_LVL_DBG 5 /**< Same as @ref DBG_LVL_INF plus TX buffer contents, and RF Driver response status */
 #define DBG_LVL_FDB 6 /**< Same as @ref DBG_LVL_DBG plus RX buffer contents */
 
 /** @} */ /* @defgroup NFC_PCD_EMV_LVL1_STACK_LOGGING_LVLS */
@@ -95,9 +93,8 @@ extern "C" {
 #define warning(x...) \
     do_log(DBG_LVL_WRN, x) /**< Same as @ref DBG_LVL_ERR plus various warning encountered */
 #define info(x...)      \
-    do_log(DBG_LVL_INF, \
-           x) /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the stack
-                                                        including uid level, uid, sfgi, and other interface details */
+    do_log(DBG_LVL_INF, x) /**< Same as @ref DBG_LVL_WRN plus useful details about the flow in the */
+                           /**< stack including uid level, uid, sfgi, and other interface details */
 #define debug(x...)  \
     do_log(          \
         DBG_LVL_DBG, \
@@ -131,4 +128,4 @@ void do_log(int32_t req_level, ...);
 }
 #endif
 
-#endif // _LOGGING_H_
+#endif // EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_LOGGING_H_

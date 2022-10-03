@@ -51,8 +51,8 @@
 #include "logging.h"
 #include "pbm_commands.h"
 
-#include <uart.h>
-#include <mml_nfc_pcd_rf_driver.h>
+#include "uart.h"
+#include "mml_nfc_pcd_rf_driver.h"
 
 #define FIELD_LOAD_DELAY_MS 100
 #define KEYPRESS_RETURN_DELAY_MS 25
@@ -163,10 +163,10 @@ int32_t trim_ro_to_rtc(void)
         return ret_val;
     }
 
-    // Bits: [9:8] MU[1:0] 	- How quickly it allowed to tune, provides some hysteresis
-    //	         2 LDTRM	- Allows it to actually use the trim?  unclear
-    //           1 ACRUN	- Runs the autocal
-    //           0 ACEN		- Enabled the autocal block.  Unclear why need this and run
+    // Bits: [9:8] MU[1:0]  - How quickly it allowed to tune, provides some hysteresis
+    //           2 LDTRM    - Allows it to actually use the trim?  unclear
+    //           1 ACRUN    - Runs the autocal
+    //           0 ACEN     - Enabled the autocal block.  Unclear why need this and run
     *nbbfcr1_reg = 0x307;
 
     // At this point it should run until disabled.
@@ -521,7 +521,7 @@ void get_analog_math_value(uint8_t val_array[], char name[])
             for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
             printf("\n");
 
-            sprintf(val_string, "value for index %d", i);
+            snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
             new_val = dte_get_math_val(val_string);
 
@@ -534,7 +534,7 @@ void get_analog_math_value(uint8_t val_array[], char name[])
         for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { print_comb_math(val_array[j]); }
         printf("\n");
 
-        sprintf(val_string, "value for index %d", i);
+        snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
         new_val = dte_get_math_val(val_string);
 
@@ -571,7 +571,7 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
             for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
             printf("\n");
 
-            sprintf(val_string, "value for index %d", i);
+            snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
             do {
                 printf("Enter an new value in HEX with no 0x\n");
@@ -591,7 +591,7 @@ void get_hex_analog_matrix_value(uint32_t val_array[], char name[])
         for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("%08X | ", val_array[j]); }
         printf("\n");
 
-        sprintf(val_string, "value for index %d", i);
+        snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
         do {
             printf("Enter an new value in HEX with no 0x\n");
@@ -633,7 +633,7 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
             for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
             printf("\n");
 
-            sprintf(val_string, "value for index %d", i);
+            snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
             do {
                 new_val = dte_get_int_val(val_string, exp_char_count, min_val, max_val);
@@ -650,7 +650,7 @@ void get_analog_matrix_value(uint8_t val_array[], char name[], int32_t exp_char_
         for (j = 0; j < FD_THRESH_NUM_STEPS; j++) { printf("     %3d | ", val_array[j]); }
         printf("\n");
 
-        sprintf(val_string, "value for index %d", i);
+        snprintf(val_string, sizeof(val_string), "value for index %d", i);
 
         do {
             new_val = dte_get_int_val(val_string, exp_char_count, min_val, max_val);
@@ -1705,8 +1705,7 @@ void type_f_commands(void)
                        receive_buffer[ATQC_ID_COD_BYTE_2_OFFSET]);
                 printf("Request Service Command (Per Service [n]): ");
                 show_response_time(receive_buffer[ATQC_RESPONSE_TIME_OFFSET], 1);
-            } // if (response == MML_NFC_PCD_E_SUCCESS)
-            else {
+            } else {  // (response != MML_NFC_PCD_E_SUCCESS)
                 printf("Invalid Response: ");
 
                 if (response == MML_NFC_PCD_E_TIMEOUT) {
@@ -1993,7 +1992,7 @@ void type_v_commands(void)
             break;
         case 'L':
         case 'l':
-            // TODO: Implement
+            // TODO(ADI): Implement
             //            type_v_loop_test();
             printf("TBD....\n");
             printf("Press any key to continue...\n");

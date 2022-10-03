@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef __ISO_14443_3A_CMD_H__
-#define __ISO_14443_3A_CMD_H__
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_CMD_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_CMD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -164,4 +164,4 @@ int32_t iso_14443_3a_cmd_halt(void);
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_CMD_H_

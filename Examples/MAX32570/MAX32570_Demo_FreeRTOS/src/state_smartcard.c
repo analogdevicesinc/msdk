@@ -43,16 +43,16 @@
 #include "sc_types.h"
 #include "smartcard_api.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define MAX_CHAR_ON_SCREEN 24
 
-/********************************* 	 	TYPE DEF	 *************************/
+/*********************************      TYPE DEF     *************************/
 typedef void (*SmartCard_Test)(void);
 
-/*******************************	Function Prototypes	   ********************/
+/*******************************    Function Prototypes    ********************/
 static void read_atr(void);
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = { 0 };
 
 static text_t text_msg[] = {
@@ -117,9 +117,9 @@ static void read_atr(void)
         }
 
         /*
-		 * Read the ATR and save into the atr buffer
-		 * as output, status will contains the exact ATR length
-		 */
+         * Read the ATR and save into the atr buffer
+         * as output, status will contains the exact ATR length
+         */
         status = sizeof(atr);
         retval = SCAPI_read(SC_SLOT_NUMBER, atr, &status);
         if (retval) {

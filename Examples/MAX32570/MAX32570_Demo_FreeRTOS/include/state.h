@@ -36,7 +36,7 @@
 #ifndef _STATE_H_
 #define _STATE_H_
 
-/********************************* 		INCLUDES	 *************************/
+/*********************************      INCLUDES     *************************/
 #include "MAX32xxx.h"
 
 #include "bitmap.h"
@@ -49,9 +49,9 @@
 #include <queue.h>
 #include <semphr.h>
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 
-/********************************* 		TYPE DEF	 ************************/
+/*********************************      TYPE DEF     ************************/
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(unsigned int key);
 typedef int (*MSR_process)(unsigned char *msg, unsigned int msg_len);

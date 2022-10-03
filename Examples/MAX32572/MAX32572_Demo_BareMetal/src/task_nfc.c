@@ -52,7 +52,7 @@
 #include "logging.h"
 #include "EMV_polling_and_loopback.h"
 
-/******************************   		DEFINES	    **************************/
+/******************************         DEFINES     **************************/
 #define BEEPER_PORT MXC_GPIO3
 #define BEEPER_PIN MXC_GPIO_PIN_3
 #define BEEP_PASS_TIME_MS 150
@@ -61,7 +61,7 @@
 #define BEEP_PASS_TONE 250 //847
 #define BEEP_PASS_VOL 25 //84
 
-/******************************   	TYPE DEFINES	**************************/
+/******************************     TYPE DEFINES    **************************/
 typedef struct {
     uint8_t rapdu[261];
     int32_t rapdu_len;
@@ -71,7 +71,7 @@ typedef struct {
     int32_t application_label_len;
 } ppse_response_t;
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 extern mml_nfc_pcd_analog_params_t current_analog_parameters;
 
 /******************************   STATIC FUNCTIONS  **************************/

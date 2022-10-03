@@ -48,11 +48,11 @@
 
 #include "demo_config.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 
-/********************************* 	 	TYPE DEF	 *************************/
+/*********************************      TYPE DEF     *************************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 mxc_sc_context_t sc_context = { 0 };
 
 static UartId_t g_uartId = SCI_1;
@@ -151,9 +151,9 @@ int sc_read_atr(char *msg, int *msg_len)
         }
 
         /*
-		 * Read the ATR and save into the atr buffer
-		 * as output, status will contains the exact ATR length
-		 */
+         * Read the ATR and save into the atr buffer
+         * as output, status will contains the exact ATR length
+         */
         status = sizeof(atr);
         retval = SCAPI_read(g_card_slot, atr, &status);
         if (retval) {
@@ -218,8 +218,8 @@ int sc_init(void)
     }
 
     /* as the card has been powered off, we must reset
-	 * the initparams, emv mode and working buffer
-	 */
+     * the initparams, emv mode and working buffer
+     */
 
     /* Set the ATR timings  + card voltage */
     retval = SCAPI_ioctl(g_card_slot, IOCTL_SET_INITPARAMS, (void *)&ActivationParams);

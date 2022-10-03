@@ -37,6 +37,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/* FreeRTOS */
+#include <FreeRTOS.h>
+#include <task.h>
+#include <queue.h>
+#include <semphr.h>
+
 #include "MAX32xxx.h"
 #include "task_nfc.h"
 #include "message.h"
@@ -52,13 +58,7 @@
 #include "logging.h"
 #include "EMV_polling_and_loopback.h"
 
-/* FreeRTOS */
-#include <FreeRTOS.h>
-#include <task.h>
-#include <queue.h>
-#include <semphr.h>
-
-/******************************   		DEFINES	    **************************/
+/******************************         DEFINES     **************************/
 #define BEEPER_PORT MXC_GPIO3
 #define BEEPER_PIN MXC_GPIO_PIN_3
 #define BEEP_PASS_TIME_MS 150
@@ -67,7 +67,7 @@
 #define BEEP_PASS_TONE 250 //847
 #define BEEP_PASS_VOL 25 //84
 
-/******************************   	TYPE DEFINES	**************************/
+/******************************     TYPE DEFINES    **************************/
 typedef struct {
     uint8_t rapdu[261];
     int32_t rapdu_len;
@@ -77,7 +77,7 @@ typedef struct {
     int32_t application_label_len;
 } ppse_response_t;
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 extern mml_nfc_pcd_analog_params_t current_analog_parameters;
 
 extern xQueueHandle xQueueMain;
@@ -789,7 +789,6 @@ void vGetNFCTask(void *pvParameter)
                 // Keep Trying
                 continue;
             }
-
         } // End of while (1) keep looking for cards
 
         mml_nfc_pcd_field_off();
