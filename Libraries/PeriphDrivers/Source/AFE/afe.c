@@ -196,7 +196,7 @@ static int afe_spi_setup(void)
 }
 
 // This function block until transceive is completed
-// TODO: Consider checking for timeout
+// TODO(ADI): Consider checking for timeout
 static int afe_spi_transceive(uint8_t *data, int byte_length)
 {
     int i = 0;
@@ -253,7 +253,7 @@ int afe_setup(void)
 
     // Disable CRC for all reads, and Ensure bank is ADC0
     // NOTE: CRC works, but takes extra time which is in short supply at 2Mhz.
-    // TODO: Add optional support for CRC5 of register reads.
+    // TODO(ADI): Add optional support for CRC5 of register reads.
     read_val = MXC_S_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL_ADC0_BANK;
 
     retval = raw_afe_write_register(
@@ -321,7 +321,7 @@ static int raw_afe_read_register(uint8_t reg_address, uint32_t *value, uint8_t r
         *value |= afe_data[i + AFE_SPI_ADDRESS_LEN] & 0x0FF;
     }
 
-    // TODO: If optional CRC5 is added in the future, verify CRC here
+    // TODO(ADI): If optional CRC5 is added in the future, verify CRC here
 
     return retval;
 }
@@ -356,13 +356,13 @@ static int afe_bank_select(uint8_t bank_num)
 
     //
     // NOTE: As a workaround to allow for multiple ADC conversions, one in ADC0 and simultaneous one in ADC1
-    //	The SPI_ABORT_DIS feature in the sys_ctrl register can help.  Note that there is only 1 sys_cntl register
-    //	but it is available from every register bank, ADC0, ADC1, DAC, and HART.
+    //  The SPI_ABORT_DIS feature in the sys_ctrl register can help.  Note that there is only 1 sys_cntl register
+    //  but it is available from every register bank, ADC0, ADC1, DAC, and HART.
     //
     // Reading the sys_ctrl register arms the HW to set this bit automatically, it doesn't need to be set by SW.
-    //	WARNING: It blocks the abort signal. This means, if a conversion is active on the selected ADC, and
-    //	after reading sys_ctrl, a write occurs to ADC bank with conversion in progress, the ADC data will
-    //	be corrupted.
+    //  WARNING: It blocks the abort signal. This means, if a conversion is active on the selected ADC, and
+    //  after reading sys_ctrl, a write occurs to ADC bank with conversion in progress, the ADC data will
+    //  be corrupted.
     //
 
     if ((read_val & MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL) !=

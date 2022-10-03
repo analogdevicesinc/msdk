@@ -69,21 +69,21 @@
 
 /* **** Globals **** */
 
-volatile static uint8_t *rx_data = NULL;
-volatile static uint32_t rx_data_index;
-volatile static uint32_t dphy_rdy;
-volatile static uint32_t frame_end_cnt;
-volatile static uint32_t line_cnt;
-volatile static uint32_t odd_line_byte_num;
-volatile static uint32_t even_line_byte_num;
-volatile static uint32_t line_byte_num;
-volatile static uint32_t frame_byte_num;
+static volatile uint8_t *rx_data = NULL;
+static volatile uint32_t rx_data_index;
+static volatile uint32_t dphy_rdy;
+static volatile uint32_t frame_end_cnt;
+static volatile uint32_t line_cnt;
+static volatile uint32_t odd_line_byte_num;
+static volatile uint32_t even_line_byte_num;
+static volatile uint32_t line_byte_num;
+static volatile uint32_t frame_byte_num;
 
 // Used for Non-DMA CSI2 Cases
-volatile static uint32_t bits_per_pixel;
-volatile static uint32_t fifo_burst_size;
-volatile static mxc_csi2_reva_fifo_trig_t fifo_int_trig;
-volatile static mxc_csi2_ahbwait_t ahbwait_en;
+static volatile uint32_t bits_per_pixel;
+static volatile uint32_t fifo_burst_size;
+static volatile mxc_csi2_reva_fifo_trig_t fifo_int_trig;
+static volatile mxc_csi2_ahbwait_t ahbwait_en;
 
 typedef struct {
     mxc_csi2_req_t *req;

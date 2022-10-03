@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _EMAC_H_
-#define _EMAC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_EMAC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_EMAC_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -95,7 +95,7 @@ typedef void (*mxc_emac_cb_func_t)(void);
  * @brief   The microsecond delay function used by the driver
  *
  */
-typedef int (*mxc_emac_delay_func_t)(unsigned long);
+typedef int (*mxc_emac_delay_func_t)(uint32_t);
 
 /**
  * @brief   The table of callback functions for EMAC interrupt events
@@ -142,7 +142,7 @@ typedef struct {
     unsigned int rx_buffer_dma;
     unsigned int rx_ring_dma;
     unsigned int tx_ring_dma;
-    unsigned short phy_addr;
+    uint16_t phy_addr;
 
     unsigned int first_init;
     unsigned int rx_buffer_size;
@@ -163,7 +163,7 @@ typedef struct {
     unsigned int rx_buff_size;
     unsigned int rx_ring_buff_size;
     unsigned int tx_ring_buff_size;
-    unsigned short phy_addr;
+    uint16_t phy_addr;
     unsigned int interrupt_mode;
     unsigned int interrupt_events;
     mxc_emac_delay_func_t delay_us;
@@ -312,4 +312,4 @@ void MXC_EMAC_IrqHandler(void);
 }
 #endif
 
-#endif /* _EMAC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_EMAC_H_

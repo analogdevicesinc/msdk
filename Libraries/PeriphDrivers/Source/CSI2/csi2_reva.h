@@ -31,6 +31,9 @@
 * 
 ******************************************************************************/
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_CSI2_CSI2_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_CSI2_CSI2_REVA_H_
+
 /****** Includes *******/
 #include <stdint.h>
 #include "csi2.h"
@@ -169,3 +172,5 @@ int MXC_CSI2_RevA_DMA_GetCurrentLineCnt(void);
 int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void);
 
 void MXC_CSI2_RevA_DMA_Callback(mxc_dma_reva_regs_t *dma, int a, int b);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CSI2_CSI2_REVA_H_

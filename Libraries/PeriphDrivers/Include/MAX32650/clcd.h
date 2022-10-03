@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _CLCD_H_
-#define _CLCD_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_
 
 /* **** Includes **** */
 #include "clcd_regs.h"
@@ -136,4 +136,4 @@ int MXC_CLCD_SetFrameAddr(void *addr);
 }
 #endif
 
-#endif /* _CLCD_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_
