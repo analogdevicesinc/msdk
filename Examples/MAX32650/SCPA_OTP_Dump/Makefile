@@ -1,5 +1,5 @@
 # /*******************************************************************************
-# * Copyright (C) 2021 Maxim Integrated Products, Inc., All Rights Reserved.
+# * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
 # *
 # * Permission is hereby granted, free of charge, to any person obtaining a
 # * copy of this software and associated documentation files (the "Software"),
@@ -29,6 +29,7 @@
 # * property whatsoever. Maxim Integrated Products, Inc. retains all
 # * ownership rights.
 # *******************************************************************************
+# */
 
 # ** Readme! **
 # Don't edit this file! This is the core Makefile for a MaximSDK 
@@ -112,7 +113,7 @@ ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
 DEPTH := ../../../
 MAXIM_PATH := $(abspath $(DEPTH))
-$(warning Warning:  MAXIM_PATH is not set!  It's recommended to set MAXIM_PATH in your environment or in project.mk)
+$(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
 else
 # Sanitize MAXIM_PATH for backslashes
@@ -191,7 +192,7 @@ SRCS := $(SRCS)
 
 
 # The default value creates a file named after the target micro.  Ex: MAX78000.elf
-PROJECT ?= $(TARGET_UC)
+PROJECT ?= $(TARGET_LC)
 
 # *******************************************************************************
 # Compiler options
@@ -214,14 +215,25 @@ ifeq "$(COMPILER)" ""
 COMPILER := GCC
 endif
 
-# Set compiler optimization level
+# Set default compiler optimization levels
 ifeq "$(MAKECMDGOALS)" "release"
-# Optimization level for "release" builds
-MXC_OPTIMIZE_CFLAGS := -O2
-else
-# Optimization level for default builds
+# Default optimization level for "release" builds (make release)
+MXC_OPTIMIZE_CFLAGS ?= -O2
+DEBUG = 0
+endif
+
+ifeq ($(DEBUG),1)
+# Default optimization level for debug builds (make DEBUG=1 ...)
+# gcc.mk checks for this flag to add some additional debug
+# info to the build, and should be used when you really need to
+# debug.
 MXC_OPTIMIZE_CFLAGS := -Og
 endif
+
+# Fallback default optimizes for debugging as recommended
+# by GNU for code-edit-debug cycles
+# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+MXC_OPTIMIZE_CFLAGS ?= -Og
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
@@ -292,7 +304,7 @@ include $(LIBS_DIR)/libs.mk
 # Enabling SBT integration will add some special rules, such as "make sla", "make scpa", etc.
 
 # Configuration variables:
-#	SBT : 	Toggle SBT integration.  (Disabled by default).  Set to 1 to enable, or 0
+#	SBT : 	Toggle SBT integration.  Set to 1 to enable, or 0
 # 			to disable
 #	MAXIM_SBT_DIR : Specify the location of the SBT tool binaries.  This defaults to
 #					Tools/SBT in the MaximSDK.  The standalone SBT installer will override
@@ -313,7 +325,7 @@ MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
 
 export MAXIM_SBT_DIR # SBTs must have this environment variable defined to work
 
-include $(MAXIM_PATH)/Tools/SBT/SBT-config.mk
+include $(MAXIM_SBT_DIR)/SBT-config.mk
 
 endif
 
@@ -327,7 +339,7 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).
 # Include the rules that integrate the SBTs.  SBTs are a special case that must be
 # include after the core gcc rules to extend them.
 ifeq ($(SBT), 1)
-include $(MAXIM_PATH)/Tools/SBT/SBT-rules.mk
+include $(MAXIM_SBT_DIR)/SBT-rules.mk
 endif
 
 all:

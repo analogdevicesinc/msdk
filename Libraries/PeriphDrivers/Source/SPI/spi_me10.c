@@ -41,11 +41,11 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <string.h>
 #include "spi.h"
 #include "spi_reva.h"
 #include "mxc_sys.h"
 #include "mxc_errors.h"
-#include <string.h>
 
 /**
  * @ingroup spi

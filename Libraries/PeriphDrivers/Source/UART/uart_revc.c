@@ -726,9 +726,7 @@ void MXC_UART_RevC_DMACallback(int ch, int error)
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
             break;
-        }
-
-        else if (states[i].channelRx == ch) {
+        } else if (states[i].channelRx == ch) {
             //save the request
             temp_req = states[i].req;
             // Callback if not NULL

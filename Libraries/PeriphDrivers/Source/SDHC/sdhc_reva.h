@@ -34,6 +34,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SDHC_SDHC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SDHC_SDHC_REVA_H_
+
 /* **** Includes **** */
 #include <string.h>
 #include "mxc_device.h"
@@ -65,3 +68,5 @@ unsigned int MXC_SDHC_RevA_Get_Host_Cn_1(mxc_sdhc_reva_regs_t *sdhc);
 uint32_t MXC_SDHC_RevA_Get_Response32(mxc_sdhc_reva_regs_t *sdhc);
 uint32_t MXC_SDHC_RevA_Get_Response32_Auto(mxc_sdhc_reva_regs_t *sdhc);
 void MXC_SDHC_RevA_Get_Response128(mxc_sdhc_reva_regs_t *sdhc, unsigned char *response);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SDHC_SDHC_REVA_H_

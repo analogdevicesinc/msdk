@@ -252,9 +252,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -363,12 +361,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         // Enable IPO clock
         if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IPO_EN;
-
-            // Check if IPO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IPO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
         }
 
         // Set IPO clock as System Clock
@@ -381,12 +374,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         // Enable ISO clock
         if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ISO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ISO_EN;
-
-            // Check if ISO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ISO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
         }
 
         // Set ISO clock as System Clock
@@ -399,12 +387,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         // Enable IBRO clock
         if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IBRO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IBRO_EN;
-
-            // Check if IBRO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
         }
 
         // Set IBRO clock as System Clock
@@ -414,18 +397,11 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clkctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
-
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        // Set external clock clock as System Clock
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
         break;
 
@@ -433,12 +409,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         // Enable ERFO clock
         if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
-
-            // Check if ERFO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
         }
 
         // Set ERFO clock as System Clock
@@ -458,12 +429,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
         // Enable ERTCO clock
         if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERTCO_EN)) {
-            MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
-
-            // Check if ERTCO clock is ready
-            if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY) != E_NO_ERROR) {
-                return E_TIME_OUT;
-            }
+            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
         }
 
         // Set ERTCO clock as System Clock

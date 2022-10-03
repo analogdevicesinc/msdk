@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVA_H_
+
 /* **** Includes **** */
 #include <stddef.h>
 #include "mxc_assert.h"
@@ -53,6 +56,8 @@ void MXC_TMR_RevA_ClearFlags(mxc_tmr_reva_regs_t *tmr);
 uint32_t MXC_TMR_RevA_GetFlags(mxc_tmr_reva_regs_t *tmr);
 void MXC_TMR_RevA_SetCompare(mxc_tmr_reva_regs_t *tmr, uint32_t cmp_cnt);
 void MXC_TMR_RevA_SetCount(mxc_tmr_reva_regs_t *tmr, uint32_t cnt);
-void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, unsigned long us);
+void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, uint32_t us);
 int MXC_TMR_RevA_GetTime(mxc_tmr_reva_regs_t *tmr, uint32_t ticks, uint32_t *time,
                          mxc_tmr_unit_t *units);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVA_H_

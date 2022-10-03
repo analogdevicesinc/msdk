@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_TRNG_TRNG_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_TRNG_TRNG_REVA_H_
+
 #include "trng.h"
 #include "trng_reva_regs.h"
 
@@ -48,3 +51,5 @@ int MXC_TRNG_RevA_Random(uint8_t *data, uint32_t len);
 void MXC_TRNG_RevA_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, uint32_t len,
                                mxc_trng_complete_t callback);
 void MXC_TRNG_RevA_GenerateKey(mxc_trng_reva_regs_t *trng);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_TRNG_TRNG_REVA_H_

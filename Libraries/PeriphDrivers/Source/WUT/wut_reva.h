@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_WUT_WUT_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_WUT_WUT_REVA_H_
+
 /* **** Includes **** */
 #include <stdint.h>
 #include "mxc_device.h"
@@ -71,12 +74,6 @@ typedef enum {
     MXC_WUT_REVA_MODE_ONESHOT = MXC_V_WUT_REVA_CTRL_TMODE_ONESHOT, /// Wakeup Timer Mode ONESHOT
     MXC_WUT_REVA_MODE_CONTINUOUS =
         MXC_V_WUT_REVA_CTRL_TMODE_CONTINUOUS, /// Wakeup Timer Mode CONTINUOUS
-    //    MXC_WUT_REVA_MODE_COUNTER          = MXC_V_WUT_REVA_CTRL_TMODE_COUNTER,       /// Wakeup Timer Mode COUNTER
-    //    MXC_WUT_REVA_MODE_PWM              = MXC_V_WUT_REVA_CTRL_TMODE_PWM,           /// Wakeup Timer Mode PWM
-    //    MXC_WUT_REVA_MODE_CAPTURE          = MXC_V_WUT_REVA_CTRL_TMODE_CAPTURE,       /// Wakeup Timer Mode CAPTURE
-    //    MXC_WUT_REVA_MODE_COMPARE          = MXC_V_WUT_REVA_CTRL_TMODE_COMPARE,       /// Wakeup Timer Mode COMPARE
-    //    MXC_WUT_REVA_MODE_GATED            = MXC_V_WUT_REVA_CTRL_TMODE_GATED,         /// Wakeup Timer Mode GATED
-    //    MXC_WUT_REVA_MODE_CAPTURE_COMPARE  = MXC_V_WUT_REVA_CTRL_TMODE_CAPTURECOMPARE /// Wakeup Timer Mode CAPTURECOMPARE
 } mxc_wut_reva_mode_t;
 
 /**
@@ -137,3 +134,5 @@ void MXC_WUT_RevA_RestoreBBClock(mxc_wut_reva_regs_t *wut, uint32_t dbbFreq, uin
 uint32_t MXC_WUT_RevA_GetSleepTicks(mxc_wut_reva_regs_t *wut);
 
 void MXC_WUT_RevA_Delay_MS(mxc_wut_reva_regs_t *wut, uint32_t waitMs, uint32_t timerClock);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_WUT_WUT_REVA_H_

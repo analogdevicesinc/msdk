@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_SIMO_H_
-#define _MXC_SIMO_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_SIMO_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_SIMO_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -92,4 +92,4 @@ uint32_t MXC_SIMO_getOutReadyD(void);
 }
 #endif
 
-#endif /* _SIMO_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_SIMO_H_

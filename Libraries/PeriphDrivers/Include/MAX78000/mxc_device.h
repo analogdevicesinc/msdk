@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#ifndef _MXC_DEVICE_H_
-#define _MXC_DEVICE_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_DEVICE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_DEVICE_H_
 
 #include "max78000.h"
 #include "mxc_errors.h"
@@ -65,4 +65,4 @@
 
 #endif /* if(TARGET_REV == ...) */
 
-#endif /* _MXC_DEVICE_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_DEVICE_H_
