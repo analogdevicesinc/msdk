@@ -30,6 +30,7 @@
  * ownership rights.
  *
  *************************************************************************** */
+#include <stdio.h>
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_reva.h"
@@ -39,7 +40,6 @@
 #include "mxc_sys.h"
 #include "mcr_regs.h"
 #include "mxc_lock.h"
-#include <stdio.h>
 
 int MXC_ADC_Init(void)
 {

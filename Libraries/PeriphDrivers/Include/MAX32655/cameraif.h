@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _CAMERAIF_H_
-#define _CAMERAIF_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_CAMERAIF_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_CAMERAIF_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -59,4 +59,4 @@ extern "C" {
 }
 #endif
 
-#endif /* _CAMERAIF_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_CAMERAIF_H_

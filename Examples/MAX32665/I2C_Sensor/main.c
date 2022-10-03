@@ -42,8 +42,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "i2c.h"
 #include "mxc_device.h"
-#include "i2c_sensor.h"
 #include "max31889_driver.h"
 
 /***** Definitions *****/
@@ -66,7 +66,7 @@ int main(void)
 
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
 
-    mxc_i2c_sensor_driver_t MAX31889 = MAX31889_Open();
+    max31889_driver_t MAX31889 = MAX31889_Open();
 
     MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0); // init the sensor
 
@@ -75,7 +75,7 @@ int main(void)
         if (error != E_NO_ERROR) {
             printf("\nSensor read error: %i", error);
         } else {
-            printf("\n-->Temperature: %02f %cC", temperature, 176);
+            printf("\n-->Temperature: %02f %cC", (double)temperature, 176);
         }
         // Wait for 1s
         MXC_Delay(MXC_DELAY_SEC(1));

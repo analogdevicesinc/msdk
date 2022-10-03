@@ -502,12 +502,12 @@ int hart_uart_setup(uint32_t test_mode)
         // OCD from HART modem is hooked up to CTS, But CD doesn't function like CTS, So this
         // is handled by software as well.
 
-        // TODO: Consider if we want to increase RX threshold from 1
+        // TODO(ADI): Consider if we want to increase RX threshold from 1
         //  NOTE: Doing so will require CD ISR to drain RX FIFO
 
         // Setup ISR to handle receive side of things
-        // TODO: Rework hart_uart_send to use ISR as much as possible
-        //	Requires alternate method of determining when to release RTS
+        // TODO(ADI): Rework hart_uart_send to use ISR as much as possible
+        //  Requires alternate method of determining when to release RTS
 
         // Enable FIFO threshold exceeded so we can drain it into receive buffer
         retval = MXC_UART_EnableInt(HART_UART_INSTANCE, MXC_F_UART_INT_EN_RX_THD);
@@ -561,7 +561,7 @@ int hart_uart_send(uint8_t *data, uint32_t length)
     // NOTE: we are not forcing preamble
     hart_rts_transmit_mode();
 
-    // TODO: remove this slight delay when in real use with preamble etc.
+    // TODO(ADI): remove this slight delay when in real use with preamble etc.
     MXC_Delay(MXC_DELAY_USEC(750));
 
     for (i = 0; i < length; i++) {
@@ -580,7 +580,7 @@ int hart_uart_send(uint8_t *data, uint32_t length)
 
     while (MXC_UART_GetStatus(HART_UART_INSTANCE) & MXC_F_UART_STATUS_TX_BUSY) {}
 
-    // TODO: remove this slight delay when in real use with preamble etc.
+    // TODO(ADI): remove this slight delay when in real use with preamble etc.
     MXC_Delay(MXC_DELAY_USEC(750));
 
     hart_rts_receive_mode();
@@ -601,7 +601,7 @@ void UART2_IRQHandler()
     //
     if (uart_flags & MXC_F_UART_INT_FL_RX_THD) {
         // RX FIFO getting full, drain into buffer
-        // TODO: Consider if DMA support is desirable here.
+        // TODO(ADI): Consider if DMA support is desirable here.
 
         while (1) {
             // Read out any available chars
@@ -638,7 +638,7 @@ void hart_cd_isr(void *cbdata)
         // HART CD is low, NO reception active
         hart_receive_active = 0;
 
-        // TODO: If RX threshold is increased drain rx fifo here
+        // TODO(ADI): If RX threshold is increased drain rx fifo here
         if (hart_uart_reception_len > 0) {
             // Got some chars
             hart_uart_reception_avail = 1;

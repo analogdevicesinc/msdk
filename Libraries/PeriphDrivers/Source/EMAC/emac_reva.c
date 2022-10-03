@@ -44,7 +44,7 @@ static mxc_emac_reva_device_t *emac = &mxc_emac_context;
 /* ************************************************************************* */
 /* Private Functions                                                         */
 /* ************************************************************************* */
-static void emac_mdio_write(unsigned char reg, unsigned short value)
+static void emac_mdio_write(unsigned char reg, uint16_t value)
 {
     unsigned int netctl;
     unsigned int netstat;
@@ -68,7 +68,7 @@ static void emac_mdio_write(unsigned char reg, unsigned short value)
     EMAC_WRITEL(emac, cn, netctl);
 }
 
-static unsigned short emac_mdio_read(unsigned char reg)
+static uint16_t emac_mdio_read(unsigned char reg)
 {
     unsigned int netctl;
     unsigned int netstat;
@@ -122,7 +122,7 @@ static void emac_reclaim_rx_buffers(unsigned int new_tail)
 
 static void emac_phy_reset(void)
 {
-    unsigned short status;
+    uint16_t status;
     int i;
 
     emac_mdio_write(MII_ADVERTISE, (ADVERTISE_CSMA | ADVERTISE_ALL));
@@ -143,7 +143,7 @@ static void emac_phy_reset(void)
 static int emac_phy_find(void)
 {
     int i;
-    unsigned short phy_id;
+    uint16_t phy_id;
 
     for (i = 0; i < 32; i++) {
         emac->phy_addr = i;
@@ -181,10 +181,10 @@ static unsigned int emac_mii_nway_result(unsigned int negotiated)
 static int emac_phy_init(void)
 {
     int result = E_NO_ERROR;
-    unsigned short phy_id;
-    unsigned short status;
-    unsigned short adv;
-    unsigned short lpa;
+    uint16_t phy_id;
+    uint16_t status;
+    uint16_t adv;
+    uint16_t lpa;
     int media;
     int speed;
     int duplex;
@@ -349,7 +349,7 @@ int MXC_EMAC_RevA_SetConfiguration(mxc_emac_reva_config_t *config)
 
 int MXC_EMAC_RevA_SetHwAddr(unsigned char *enetaddr)
 {
-    unsigned short hwaddr_top;
+    uint16_t hwaddr_top;
     unsigned int hwaddr_bottom;
 
     if (!enetaddr) {
@@ -501,7 +501,7 @@ int MXC_EMAC_RevA_Stop(void)
 int MXC_EMAC_RevA_ReadLinkStatus(void)
 {
     int result = E_UNKNOWN;
-    unsigned short status;
+    uint16_t status;
 
     status = emac_mdio_read(MII_BMSR);
 

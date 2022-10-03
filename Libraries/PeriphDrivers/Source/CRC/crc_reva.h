@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_CRC_CRC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_CRC_CRC_REVA_H_
+
 #include "crc.h"
 #include "crc_reva_regs.h"
 
@@ -63,3 +66,5 @@ uint32_t MXC_CRC_RevA_GetPoly(mxc_crc_reva_regs_t *crc);
 uint32_t MXC_CRC_RevA_GetResult(mxc_crc_reva_regs_t *crc);
 int MXC_CRC_RevA_Compute(mxc_crc_reva_regs_t *crc, mxc_crc_reva_req_t *req);
 int MXC_CRC_RevA_ComputeAsync(mxc_crc_reva_regs_t *crc, mxc_crc_reva_req_t *req);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CRC_CRC_REVA_H_

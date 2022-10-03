@@ -31,8 +31,8 @@
  *
  *************************************************************************** */
 
-#ifndef _CTB_REVA_H_
-#define _CTB_REVA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_CTB_CTB_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_CTB_CTB_REVA_H_
 
 #include "ctb_reva_regs.h"
 #include "trng_reva_regs.h"
@@ -297,4 +297,4 @@ int MXC_CTB_RevA_Cipher_Decrypt(mxc_ctb_reva_cipher_req_t *req);
 void MXC_CTB_RevA_Cipher_EncryptAsync(mxc_ctb_reva_cipher_req_t *req);
 void MXC_CTB_RevA_Cipher_DecryptAsync(mxc_ctb_reva_cipher_req_t *req);
 
-#endif
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CTB_CTB_REVA_H_
