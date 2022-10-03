@@ -1,6 +1,7 @@
 /**
  * @file    gcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCR Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -121,28 +122,28 @@ typedef struct {
  * @brief      GCR Peripheral Register Offsets from the GCR Base Peripheral Address.
  * @{
  */
- #define MXC_R_GCR_SYSCTRL                  ((uint32_t)0x00000000UL) /**< Offset from GCR Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_GCR_RST0                     ((uint32_t)0x00000004UL) /**< Offset from GCR Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_GCR_CLKCTRL                  ((uint32_t)0x00000008UL) /**< Offset from GCR Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_GCR_PM                       ((uint32_t)0x0000000CUL) /**< Offset from GCR Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_GCR_PCLKDIV                  ((uint32_t)0x00000018UL) /**< Offset from GCR Base Address: <tt> 0x0018</tt> */ 
- #define MXC_R_GCR_PCLKDIS0                 ((uint32_t)0x00000024UL) /**< Offset from GCR Base Address: <tt> 0x0024</tt> */ 
- #define MXC_R_GCR_MEMCTRL                  ((uint32_t)0x00000028UL) /**< Offset from GCR Base Address: <tt> 0x0028</tt> */ 
- #define MXC_R_GCR_MEMZ                     ((uint32_t)0x0000002CUL) /**< Offset from GCR Base Address: <tt> 0x002C</tt> */ 
- #define MXC_R_GCR_SCCLKCTRL                ((uint32_t)0x00000034UL) /**< Offset from GCR Base Address: <tt> 0x0034</tt> */ 
- #define MXC_R_GCR_SYSST                    ((uint32_t)0x00000040UL) /**< Offset from GCR Base Address: <tt> 0x0040</tt> */ 
- #define MXC_R_GCR_RST1                     ((uint32_t)0x00000044UL) /**< Offset from GCR Base Address: <tt> 0x0044</tt> */ 
- #define MXC_R_GCR_PCLKDIS1                 ((uint32_t)0x00000048UL) /**< Offset from GCR Base Address: <tt> 0x0048</tt> */ 
- #define MXC_R_GCR_EVENTEN                  ((uint32_t)0x0000004CUL) /**< Offset from GCR Base Address: <tt> 0x004C</tt> */ 
- #define MXC_R_GCR_REVISION                 ((uint32_t)0x00000050UL) /**< Offset from GCR Base Address: <tt> 0x0050</tt> */ 
- #define MXC_R_GCR_SYSIE                    ((uint32_t)0x00000054UL) /**< Offset from GCR Base Address: <tt> 0x0054</tt> */ 
- #define MXC_R_GCR_IPOCNT                   ((uint32_t)0x00000058UL) /**< Offset from GCR Base Address: <tt> 0x0058</tt> */ 
- #define MXC_R_GCR_ECCERR                   ((uint32_t)0x00000064UL) /**< Offset from GCR Base Address: <tt> 0x0064</tt> */ 
- #define MXC_R_GCR_ECCCED                   ((uint32_t)0x00000068UL) /**< Offset from GCR Base Address: <tt> 0x0068</tt> */ 
- #define MXC_R_GCR_ECCIE                    ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */ 
- #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */ 
- #define MXC_R_GCR_NFCLDOCTRL               ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */ 
- #define MXC_R_GCR_NFCLDODLY                ((uint32_t)0x00000078UL) /**< Offset from GCR Base Address: <tt> 0x0078</tt> */ 
+ #define MXC_R_GCR_SYSCTRL                  ((uint32_t)0x00000000UL) /**< Offset from GCR Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_GCR_RST0                     ((uint32_t)0x00000004UL) /**< Offset from GCR Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_GCR_CLKCTRL                  ((uint32_t)0x00000008UL) /**< Offset from GCR Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_GCR_PM                       ((uint32_t)0x0000000CUL) /**< Offset from GCR Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_GCR_PCLKDIV                  ((uint32_t)0x00000018UL) /**< Offset from GCR Base Address: <tt> 0x0018</tt> */
+ #define MXC_R_GCR_PCLKDIS0                 ((uint32_t)0x00000024UL) /**< Offset from GCR Base Address: <tt> 0x0024</tt> */
+ #define MXC_R_GCR_MEMCTRL                  ((uint32_t)0x00000028UL) /**< Offset from GCR Base Address: <tt> 0x0028</tt> */
+ #define MXC_R_GCR_MEMZ                     ((uint32_t)0x0000002CUL) /**< Offset from GCR Base Address: <tt> 0x002C</tt> */
+ #define MXC_R_GCR_SCCLKCTRL                ((uint32_t)0x00000034UL) /**< Offset from GCR Base Address: <tt> 0x0034</tt> */
+ #define MXC_R_GCR_SYSST                    ((uint32_t)0x00000040UL) /**< Offset from GCR Base Address: <tt> 0x0040</tt> */
+ #define MXC_R_GCR_RST1                     ((uint32_t)0x00000044UL) /**< Offset from GCR Base Address: <tt> 0x0044</tt> */
+ #define MXC_R_GCR_PCLKDIS1                 ((uint32_t)0x00000048UL) /**< Offset from GCR Base Address: <tt> 0x0048</tt> */
+ #define MXC_R_GCR_EVENTEN                  ((uint32_t)0x0000004CUL) /**< Offset from GCR Base Address: <tt> 0x004C</tt> */
+ #define MXC_R_GCR_REVISION                 ((uint32_t)0x00000050UL) /**< Offset from GCR Base Address: <tt> 0x0050</tt> */
+ #define MXC_R_GCR_SYSIE                    ((uint32_t)0x00000054UL) /**< Offset from GCR Base Address: <tt> 0x0054</tt> */
+ #define MXC_R_GCR_IPOCNT                   ((uint32_t)0x00000058UL) /**< Offset from GCR Base Address: <tt> 0x0058</tt> */
+ #define MXC_R_GCR_ECCERR                   ((uint32_t)0x00000064UL) /**< Offset from GCR Base Address: <tt> 0x0064</tt> */
+ #define MXC_R_GCR_ECCCED                   ((uint32_t)0x00000068UL) /**< Offset from GCR Base Address: <tt> 0x0068</tt> */
+ #define MXC_R_GCR_ECCIE                    ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */
+ #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
+ #define MXC_R_GCR_NFCLDOCTRL               ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */
+ #define MXC_R_GCR_NFCLDODLY                ((uint32_t)0x00000078UL) /**< Offset from GCR Base Address: <tt> 0x0078</tt> */
 /**@} end of group gcr_registers */
 
 /**
@@ -234,9 +235,6 @@ typedef struct {
 
  #define MXC_F_GCR_RST0_I2C0_POS                        16 /**< RST0_I2C0 Position */
  #define MXC_F_GCR_RST0_I2C0                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_I2C0_POS)) /**< RST0_I2C0 Mask */
-
- #define MXC_F_GCR_RST0_RTC_POS                         17 /**< RST0_RTC Position */
- #define MXC_F_GCR_RST0_RTC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_RTC_POS)) /**< RST0_RTC Mask */
 
  #define MXC_F_GCR_RST0_CRYPTO_POS                      18 /**< RST0_CRYPTO Position */
  #define MXC_F_GCR_RST0_CRYPTO                          ((uint32_t)(0x1UL << MXC_F_GCR_RST0_CRYPTO_POS)) /**< RST0_CRYPTO Mask */
@@ -403,9 +401,6 @@ typedef struct {
  #define MXC_F_GCR_PM_IBRO_PD_POS                       17 /**< PM_IBRO_PD Position */
  #define MXC_F_GCR_PM_IBRO_PD                           ((uint32_t)(0x1UL << MXC_F_GCR_PM_IBRO_PD_POS)) /**< PM_IBRO_PD Mask */
 
- #define MXC_F_GCR_PM_NFC_PD_POS                        18 /**< PM_NFC_PD Position */
- #define MXC_F_GCR_PM_NFC_PD                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_NFC_PD_POS)) /**< PM_NFC_PD Mask */
-
  #define MXC_F_GCR_PM_ERFO_BP_POS                       20 /**< PM_ERFO_BP Position */
  #define MXC_F_GCR_PM_ERFO_BP                           ((uint32_t)(0x1UL << MXC_F_GCR_PM_ERFO_BP_POS)) /**< PM_ERFO_BP Mask */
 
@@ -417,30 +412,8 @@ typedef struct {
  * @brief    Peripheral Clock Divider.
  * @{
  */
- #define MXC_F_GCR_PCLKDIV_PCF_POS                      0 /**< PCLKDIV_PCF Position */
- #define MXC_F_GCR_PCLKDIV_PCF                          ((uint32_t)(0x7UL << MXC_F_GCR_PCLKDIV_PCF_POS)) /**< PCLKDIV_PCF Mask */
- #define MXC_V_GCR_PCLKDIV_PCF_96MHZ                    ((uint32_t)0x2UL) /**< PCLKDIV_PCF_96MHZ Value */
- #define MXC_S_GCR_PCLKDIV_PCF_96MHZ                    (MXC_V_GCR_PCLKDIV_PCF_96MHZ << MXC_F_GCR_PCLKDIV_PCF_POS) /**< PCLKDIV_PCF_96MHZ Setting */
- #define MXC_V_GCR_PCLKDIV_PCF_48MHZ                    ((uint32_t)0x3UL) /**< PCLKDIV_PCF_48MHZ Value */
- #define MXC_S_GCR_PCLKDIV_PCF_48MHZ                    (MXC_V_GCR_PCLKDIV_PCF_48MHZ << MXC_F_GCR_PCLKDIV_PCF_POS) /**< PCLKDIV_PCF_48MHZ Setting */
- #define MXC_V_GCR_PCLKDIV_PCF_24MHZ                    ((uint32_t)0x4UL) /**< PCLKDIV_PCF_24MHZ Value */
- #define MXC_S_GCR_PCLKDIV_PCF_24MHZ                    (MXC_V_GCR_PCLKDIV_PCF_24MHZ << MXC_F_GCR_PCLKDIV_PCF_POS) /**< PCLKDIV_PCF_24MHZ Setting */
- #define MXC_V_GCR_PCLKDIV_PCF_12MHZ                    ((uint32_t)0x5UL) /**< PCLKDIV_PCF_12MHZ Value */
- #define MXC_S_GCR_PCLKDIV_PCF_12MHZ                    (MXC_V_GCR_PCLKDIV_PCF_12MHZ << MXC_F_GCR_PCLKDIV_PCF_POS) /**< PCLKDIV_PCF_12MHZ Setting */
- #define MXC_V_GCR_PCLKDIV_PCF_6MHZ                     ((uint32_t)0x6UL) /**< PCLKDIV_PCF_6MHZ Value */
- #define MXC_S_GCR_PCLKDIV_PCF_6MHZ                     (MXC_V_GCR_PCLKDIV_PCF_6MHZ << MXC_F_GCR_PCLKDIV_PCF_POS) /**< PCLKDIV_PCF_6MHZ Setting */
- #define MXC_V_GCR_PCLKDIV_PCF_3MHZ                     ((uint32_t)0x7UL) /**< PCLKDIV_PCF_3MHZ Value */
- #define MXC_S_GCR_PCLKDIV_PCF_3MHZ                     (MXC_V_GCR_PCLKDIV_PCF_3MHZ << MXC_F_GCR_PCLKDIV_PCF_POS) /**< PCLKDIV_PCF_3MHZ Setting */
-
- #define MXC_F_GCR_PCLKDIV_PCFWEN_POS                   3 /**< PCLKDIV_PCFWEN Position */
- #define MXC_F_GCR_PCLKDIV_PCFWEN                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIV_PCFWEN_POS)) /**< PCLKDIV_PCFWEN Mask */
-
- #define MXC_F_GCR_PCLKDIV_SDHCFRQ_POS                  7 /**< PCLKDIV_SDHCFRQ Position */
- #define MXC_F_GCR_PCLKDIV_SDHCFRQ                      ((uint32_t)(0x3UL << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS)) /**< PCLKDIV_SDHCFRQ Mask */
- #define MXC_V_GCR_PCLKDIV_SDHCFRQ_IPO_DIV2             ((uint32_t)0x0UL) /**< PCLKDIV_SDHCFRQ_IPO_DIV2 Value */
- #define MXC_S_GCR_PCLKDIV_SDHCFRQ_IPO_DIV2             (MXC_V_GCR_PCLKDIV_SDHCFRQ_IPO_DIV2 << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS) /**< PCLKDIV_SDHCFRQ_IPO_DIV2 Setting */
- #define MXC_V_GCR_PCLKDIV_SDHCFRQ_IPO_DIV4             ((uint32_t)0x1UL) /**< PCLKDIV_SDHCFRQ_IPO_DIV4 Value */
- #define MXC_S_GCR_PCLKDIV_SDHCFRQ_IPO_DIV4             (MXC_V_GCR_PCLKDIV_SDHCFRQ_IPO_DIV4 << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS) /**< PCLKDIV_SDHCFRQ_IPO_DIV4 Setting */
+ #define MXC_F_GCR_PCLKDIV_SKBDFRQ_POS                  0 /**< PCLKDIV_SKBDFRQ Position */
+ #define MXC_F_GCR_PCLKDIV_SKBDFRQ                      ((uint32_t)(0x7UL << MXC_F_GCR_PCLKDIV_SKBDFRQ_POS)) /**< PCLKDIV_SKBDFRQ Mask */
 
  #define MXC_F_GCR_PCLKDIV_ADCFRQ_POS                   10 /**< PCLKDIV_ADCFRQ Position */
  #define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0xFUL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
@@ -562,6 +535,15 @@ typedef struct {
  #define MXC_F_GCR_MEMCTRL_RAM3LS_EN_POS                19 /**< MEMCTRL_RAM3LS_EN Position */
  #define MXC_F_GCR_MEMCTRL_RAM3LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM3LS_EN_POS)) /**< MEMCTRL_RAM3LS_EN Mask */
 
+ #define MXC_F_GCR_MEMCTRL_RAM4LS_EN_POS                20 /**< MEMCTRL_RAM4LS_EN Position */
+ #define MXC_F_GCR_MEMCTRL_RAM4LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM4LS_EN_POS)) /**< MEMCTRL_RAM4LS_EN Mask */
+
+ #define MXC_F_GCR_MEMCTRL_RAM5LS_EN_POS                21 /**< MEMCTRL_RAM5LS_EN Position */
+ #define MXC_F_GCR_MEMCTRL_RAM5LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM5LS_EN_POS)) /**< MEMCTRL_RAM5LS_EN Mask */
+
+ #define MXC_F_GCR_MEMCTRL_RAM6LS_EN_POS                22 /**< MEMCTRL_RAM6LS_EN Position */
+ #define MXC_F_GCR_MEMCTRL_RAM6LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM6LS_EN_POS)) /**< MEMCTRL_RAM6LS_EN Mask */
+
  #define MXC_F_GCR_MEMCTRL_ICCLS_EN_POS                 24 /**< MEMCTRL_ICCLS_EN Position */
  #define MXC_F_GCR_MEMCTRL_ICCLS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ICCLS_EN_POS)) /**< MEMCTRL_ICCLS_EN Mask */
 
@@ -606,8 +588,11 @@ typedef struct {
  #define MXC_F_GCR_MEMZ_RAM4_POS                        4 /**< MEMZ_RAM4 Position */
  #define MXC_F_GCR_MEMZ_RAM4                            ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_RAM4_POS)) /**< MEMZ_RAM4 Mask */
 
- #define MXC_F_GCR_MEMZ_ICC_POS                         8 /**< MEMZ_ICC Position */
- #define MXC_F_GCR_MEMZ_ICC                             ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_ICC_POS)) /**< MEMZ_ICC Mask */
+ #define MXC_F_GCR_MEMZ_RAM5_POS                        5 /**< MEMZ_RAM5 Position */
+ #define MXC_F_GCR_MEMZ_RAM5                            ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_RAM5_POS)) /**< MEMZ_RAM5 Mask */
+
+ #define MXC_F_GCR_MEMZ_RAM6_POS                        6 /**< MEMZ_RAM6 Position */
+ #define MXC_F_GCR_MEMZ_RAM6                            ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_RAM6_POS)) /**< MEMZ_RAM6 Mask */
 
  #define MXC_F_GCR_MEMZ_ICCXIP_POS                      9 /**< MEMZ_ICCXIP Position */
  #define MXC_F_GCR_MEMZ_ICCXIP                          ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_ICCXIP_POS)) /**< MEMZ_ICCXIP Mask */
@@ -681,9 +666,6 @@ typedef struct {
  #define MXC_F_GCR_RST1_SEMA_POS                        16 /**< RST1_SEMA Position */
  #define MXC_F_GCR_RST1_SEMA                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SEMA_POS)) /**< RST1_SEMA Mask */
 
- #define MXC_F_GCR_RST1_I2C2_POS                        17 /**< RST1_I2C2 Position */
- #define MXC_F_GCR_RST1_I2C2                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_I2C2_POS)) /**< RST1_I2C2 Mask */
-
  #define MXC_F_GCR_RST1_UART3_POS                       18 /**< RST1_UART3 Position */
  #define MXC_F_GCR_RST1_UART3                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_UART3_POS)) /**< RST1_UART3 Mask */
 
@@ -698,9 +680,6 @@ typedef struct {
 
  #define MXC_F_GCR_RST1_SC1_POS                         24 /**< RST1_SC1 Position */
  #define MXC_F_GCR_RST1_SC1                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SC1_POS)) /**< RST1_SC1 Mask */
-
- #define MXC_F_GCR_RST1_NFC_POS                         25 /**< RST1_NFC Position */
- #define MXC_F_GCR_RST1_NFC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_NFC_POS)) /**< RST1_NFC Mask */
 
  #define MXC_F_GCR_RST1_HTMR0_POS                       28 /**< RST1_HTMR0 Position */
  #define MXC_F_GCR_RST1_HTMR0                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_HTMR0_POS)) /**< RST1_HTMR0 Mask */

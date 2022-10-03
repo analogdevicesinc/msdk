@@ -242,12 +242,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA">
-            <name>RTC</name>
-            <description>Real Time Clock Reset.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="DMA">
             <name>CRYPTO</name>
             <description>Crypto Reset.</description>
             <bitOffset>18</bitOffset>
@@ -692,12 +686,6 @@
             <bitOffset>17</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="ISO_PD">
-            <name>NFC_PD</name>
-            <description>NFC power down.</description>
-            <bitOffset>18</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
           <field>
             <name>ERFO_BP</name>
             <description>27MHz Oscillator Bypass.</description>
@@ -713,72 +701,10 @@
         <resetValue>0x00000001</resetValue>
         <fields>
           <field>
-            <name>PCF</name>
-            <description>These bits determine the clock frequency for the UART, I2C and Key Pad peripherals. These peripherals have an adaptive clock generator that dynamically adjusts the peripheral frequency based on the main system bus frequency. These bits are dynamically updated when the PLL0 is selected as the system clock source and are set by hardware. These bits determine the clock frequency for the UART, I2C and Key Pad peripherals. These peripherals have an adaptive clock generator that dynamically adjusts the peripheral frequency based on the main system bus frequency. These bits are dynamically updated when the PLL0 is selected as the system clock source and are set by hardware.</description>
+            <name>SKBDFRQ</name>
+            <description>GCR Frequency Indicator for Secure Keyboard.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>3</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>96MHz</name>
-                <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>48MHz</name>
-                <value>3</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>24MHz</name>
-                <value>4</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>12MHz</name>
-                <value>5</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>6MHz</name>
-                <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>3MHz</name>
-                <value>7</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>PCFWEN</name>
-            <description>PCF Write Enable. This bit allows the PCF Register bits to be updated by Software.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>blocked</name>
-                <description>Writes to PCF are blocked.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>allowed</name>
-                <description>Writes to PCF are allowed</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>SDHCFRQ</name>
-            <description>SDHC clock Frequency. These bits define the clock frequency of the SDHC.</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>2</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>IPO_DIV2</name>
-                <description>48 MHz</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IPO_DIV4</name>
-                <description>24 MHz</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>ADCFRQ</name>
@@ -1029,6 +955,24 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
+            <name>RAM4LS_EN</name>
+            <description>System RAM 4 Light Sleep Mode.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>RAM5LS_EN</name>
+            <description>System RAM 5 Light Sleep Mode.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>RAM6LS_EN</name>
+            <description>System RAM 6 Light Sleep Mode.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
             <name>ICCLS_EN</name>
             <description>ICache RAM Light Sleep Mode.</description>
             <bitOffset>24</bitOffset>
@@ -1120,9 +1064,15 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0">
-            <name>ICC</name>
-            <description>Internal Cache Data and Tag RAM Zeroization.</description>
-            <bitOffset>8</bitOffset>
+            <name>RAM5</name>
+            <description>System RAM Block 5 Zeroization.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0">
+            <name>RAM6</name>
+            <description>System RAM Block 6 Zeroization.</description>
+            <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0">
@@ -1294,12 +1244,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>I2C2</name>
-            <description>I2C2 Reset.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="I2C1">
             <name>UART3</name>
             <description>UART3 Reset.</description>
             <bitOffset>18</bitOffset>
@@ -1327,12 +1271,6 @@
             <name>SC1</name>
             <description>SC1 Reset.</description>
             <bitOffset>24</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="I2C1">
-            <name>NFC</name>
-            <description>NFC Reset.</description>
-            <bitOffset>25</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
