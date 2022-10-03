@@ -1,41 +1,41 @@
 /**
  * @file    sdhc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SDHC Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _SDHC_REGS_H_
 #define _SDHC_REGS_H_
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -134,6 +134,58 @@ typedef struct {
     __I  uint16_t slot_int;             /**< <tt>\b 0x0FC:</tt> SDHC SLOT_INT Register */
     __IO uint16_t host_cn_ver;          /**< <tt>\b 0x0FE:</tt> SDHC HOST_CN_VER Register */
 } mxc_sdhc_regs_t;
+
+/* Register offsets for module SDHC */
+/**
+ * @ingroup    sdhc_registers
+ * @defgroup   SDHC_Register_Offsets Register Offsets
+ * @brief      SDHC Peripheral Register Offsets from the SDHC Base Peripheral Address.
+ * @{
+ */
+ #define MXC_R_SDHC_SDMA                    ((uint32_t)0x00000000UL) /**< Offset from SDHC Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_SDHC_BLK_SIZE                ((uint32_t)0x00000004UL) /**< Offset from SDHC Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_SDHC_BLK_CNT                 ((uint32_t)0x00000006UL) /**< Offset from SDHC Base Address: <tt> 0x0006</tt> */
+ #define MXC_R_SDHC_ARG_1                   ((uint32_t)0x00000008UL) /**< Offset from SDHC Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_SDHC_TRANS                   ((uint32_t)0x0000000CUL) /**< Offset from SDHC Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_SDHC_CMD                     ((uint32_t)0x0000000EUL) /**< Offset from SDHC Base Address: <tt> 0x000E</tt> */
+ #define MXC_R_SDHC_RESP                    ((uint32_t)0x00000010UL) /**< Offset from SDHC Base Address: <tt> 0x0010</tt> */
+ #define MXC_R_SDHC_BUFFER                  ((uint32_t)0x00000020UL) /**< Offset from SDHC Base Address: <tt> 0x0020</tt> */
+ #define MXC_R_SDHC_PRESENT                 ((uint32_t)0x00000024UL) /**< Offset from SDHC Base Address: <tt> 0x0024</tt> */
+ #define MXC_R_SDHC_HOST_CN_1               ((uint32_t)0x00000028UL) /**< Offset from SDHC Base Address: <tt> 0x0028</tt> */
+ #define MXC_R_SDHC_PWR                     ((uint32_t)0x00000029UL) /**< Offset from SDHC Base Address: <tt> 0x0029</tt> */
+ #define MXC_R_SDHC_BLK_GAP                 ((uint32_t)0x0000002AUL) /**< Offset from SDHC Base Address: <tt> 0x002A</tt> */
+ #define MXC_R_SDHC_WAKEUP                  ((uint32_t)0x0000002BUL) /**< Offset from SDHC Base Address: <tt> 0x002B</tt> */
+ #define MXC_R_SDHC_CLK_CN                  ((uint32_t)0x0000002CUL) /**< Offset from SDHC Base Address: <tt> 0x002C</tt> */
+ #define MXC_R_SDHC_TO                      ((uint32_t)0x0000002EUL) /**< Offset from SDHC Base Address: <tt> 0x002E</tt> */
+ #define MXC_R_SDHC_SW_RESET                ((uint32_t)0x0000002FUL) /**< Offset from SDHC Base Address: <tt> 0x002F</tt> */
+ #define MXC_R_SDHC_INT_STAT                ((uint32_t)0x00000030UL) /**< Offset from SDHC Base Address: <tt> 0x0030</tt> */
+ #define MXC_R_SDHC_ER_INT_STAT             ((uint32_t)0x00000032UL) /**< Offset from SDHC Base Address: <tt> 0x0032</tt> */
+ #define MXC_R_SDHC_INT_EN                  ((uint32_t)0x00000034UL) /**< Offset from SDHC Base Address: <tt> 0x0034</tt> */
+ #define MXC_R_SDHC_ER_INT_EN               ((uint32_t)0x00000036UL) /**< Offset from SDHC Base Address: <tt> 0x0036</tt> */
+ #define MXC_R_SDHC_INT_SIGNAL              ((uint32_t)0x00000038UL) /**< Offset from SDHC Base Address: <tt> 0x0038</tt> */
+ #define MXC_R_SDHC_ER_INT_SIGNAL           ((uint32_t)0x0000003AUL) /**< Offset from SDHC Base Address: <tt> 0x003A</tt> */
+ #define MXC_R_SDHC_AUTO_CMD_ER             ((uint32_t)0x0000003CUL) /**< Offset from SDHC Base Address: <tt> 0x003C</tt> */
+ #define MXC_R_SDHC_HOST_CN_2               ((uint32_t)0x0000003EUL) /**< Offset from SDHC Base Address: <tt> 0x003E</tt> */
+ #define MXC_R_SDHC_CFG_0                   ((uint32_t)0x00000040UL) /**< Offset from SDHC Base Address: <tt> 0x0040</tt> */
+ #define MXC_R_SDHC_CFG_1                   ((uint32_t)0x00000044UL) /**< Offset from SDHC Base Address: <tt> 0x0044</tt> */
+ #define MXC_R_SDHC_MAX_CURR_CFG            ((uint32_t)0x00000048UL) /**< Offset from SDHC Base Address: <tt> 0x0048</tt> */
+ #define MXC_R_SDHC_FORCE_CMD               ((uint32_t)0x00000050UL) /**< Offset from SDHC Base Address: <tt> 0x0050</tt> */
+ #define MXC_R_SDHC_FORCE_EVENT_INT_STAT    ((uint32_t)0x00000052UL) /**< Offset from SDHC Base Address: <tt> 0x0052</tt> */
+ #define MXC_R_SDHC_ADMA_ER                 ((uint32_t)0x00000054UL) /**< Offset from SDHC Base Address: <tt> 0x0054</tt> */
+ #define MXC_R_SDHC_ADMA_ADDR_0             ((uint32_t)0x00000058UL) /**< Offset from SDHC Base Address: <tt> 0x0058</tt> */
+ #define MXC_R_SDHC_ADMA_ADDR_1             ((uint32_t)0x0000005CUL) /**< Offset from SDHC Base Address: <tt> 0x005C</tt> */
+ #define MXC_R_SDHC_PRESET_0                ((uint32_t)0x00000060UL) /**< Offset from SDHC Base Address: <tt> 0x0060</tt> */
+ #define MXC_R_SDHC_PRESET_1                ((uint32_t)0x00000062UL) /**< Offset from SDHC Base Address: <tt> 0x0062</tt> */
+ #define MXC_R_SDHC_PRESET_2                ((uint32_t)0x00000064UL) /**< Offset from SDHC Base Address: <tt> 0x0064</tt> */
+ #define MXC_R_SDHC_PRESET_3                ((uint32_t)0x00000066UL) /**< Offset from SDHC Base Address: <tt> 0x0066</tt> */
+ #define MXC_R_SDHC_PRESET_4                ((uint32_t)0x00000068UL) /**< Offset from SDHC Base Address: <tt> 0x0068</tt> */
+ #define MXC_R_SDHC_PRESET_5                ((uint32_t)0x0000006AUL) /**< Offset from SDHC Base Address: <tt> 0x006A</tt> */
+ #define MXC_R_SDHC_PRESET_6                ((uint32_t)0x0000006CUL) /**< Offset from SDHC Base Address: <tt> 0x006C</tt> */
+ #define MXC_R_SDHC_PRESET_7                ((uint32_t)0x0000006EUL) /**< Offset from SDHC Base Address: <tt> 0x006E</tt> */
+ #define MXC_R_SDHC_SHARED_BUS              ((uint32_t)0x000000E0UL) /**< Offset from SDHC Base Address: <tt> 0x00E0</tt> */
+ #define MXC_R_SDHC_SLOT_INT                ((uint32_t)0x000000FCUL) /**< Offset from SDHC Base Address: <tt> 0x00FC</tt> */
+ #define MXC_R_SDHC_HOST_CN_VER             ((uint32_t)0x000000FEUL) /**< Offset from SDHC Base Address: <tt> 0x00FE</tt> */
+/**@} end of group sdhc_registers */
 
 /**
  * @ingroup  sdhc_registers

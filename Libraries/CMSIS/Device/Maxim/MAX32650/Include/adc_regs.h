@@ -1,41 +1,41 @@
 /**
  * @file    adc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the ADC Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _ADC_REGS_H_
 #define _ADC_REGS_H_
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -93,6 +93,20 @@ typedef struct {
     __IO uint32_t limit[4];             /**< <tt>\b 0x0010:</tt> ADC LIMIT Register */
 } mxc_adc_regs_t;
 
+/* Register offsets for module ADC */
+/**
+ * @ingroup    adc_registers
+ * @defgroup   ADC_Register_Offsets Register Offsets
+ * @brief      ADC Peripheral Register Offsets from the ADC Base Peripheral Address.
+ * @{
+ */
+ #define MXC_R_ADC_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from ADC Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_ADC_STATUS                   ((uint32_t)0x00000004UL) /**< Offset from ADC Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_ADC_DATA                     ((uint32_t)0x00000008UL) /**< Offset from ADC Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_ADC_INTR                     ((uint32_t)0x0000000CUL) /**< Offset from ADC Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_ADC_LIMIT                    ((uint32_t)0x00000010UL) /**< Offset from ADC Base Address: <tt> 0x0010</tt> */
+/**@} end of group adc_registers */
+
 /**
  * @ingroup  adc_registers
  * @defgroup ADC_CTRL ADC_CTRL
@@ -105,8 +119,6 @@ typedef struct {
  #define MXC_S_ADC_CTRL_START_INACTIVE                  (MXC_V_ADC_CTRL_START_INACTIVE << MXC_F_ADC_CTRL_START_POS) /**< CTRL_START_INACTIVE Setting */
  #define MXC_V_ADC_CTRL_START_START                     ((uint32_t)0x1UL) /**< CTRL_START_START Value */
  #define MXC_S_ADC_CTRL_START_START                     (MXC_V_ADC_CTRL_START_START << MXC_F_ADC_CTRL_START_POS) /**< CTRL_START_START Setting */
- #define MXC_V_ADC_CTRL_START_ACTIVE                    ((uint32_t)0x1UL) /**< CTRL_START_ACTIVE Value */
- #define MXC_S_ADC_CTRL_START_ACTIVE                    (MXC_V_ADC_CTRL_START_ACTIVE << MXC_F_ADC_CTRL_START_POS) /**< CTRL_START_ACTIVE Setting */
 
  #define MXC_F_ADC_CTRL_PWR_POS                         1 /**< CTRL_PWR Position */
  #define MXC_F_ADC_CTRL_PWR                             ((uint32_t)(0x1UL << MXC_F_ADC_CTRL_PWR_POS)) /**< CTRL_PWR Mask */
@@ -275,8 +287,6 @@ typedef struct {
  #define MXC_S_ADC_INTR_DONE_IF_INACTIVE                (MXC_V_ADC_INTR_DONE_IF_INACTIVE << MXC_F_ADC_INTR_DONE_IF_POS) /**< INTR_DONE_IF_INACTIVE Setting */
  #define MXC_V_ADC_INTR_DONE_IF_ACTIVE                  ((uint32_t)0x1UL) /**< INTR_DONE_IF_ACTIVE Value */
  #define MXC_S_ADC_INTR_DONE_IF_ACTIVE                  (MXC_V_ADC_INTR_DONE_IF_ACTIVE << MXC_F_ADC_INTR_DONE_IF_POS) /**< INTR_DONE_IF_ACTIVE Setting */
- #define MXC_V_ADC_INTR_DONE_IF_CLEAR                   ((uint32_t)0x1UL) /**< INTR_DONE_IF_CLEAR Value */
- #define MXC_S_ADC_INTR_DONE_IF_CLEAR                   (MXC_V_ADC_INTR_DONE_IF_CLEAR << MXC_F_ADC_INTR_DONE_IF_POS) /**< INTR_DONE_IF_CLEAR Setting */
 
  #define MXC_F_ADC_INTR_REF_READY_IF_POS                17 /**< INTR_REF_READY_IF Position */
  #define MXC_F_ADC_INTR_REF_READY_IF                    ((uint32_t)(0x1UL << MXC_F_ADC_INTR_REF_READY_IF_POS)) /**< INTR_REF_READY_IF Mask */
@@ -284,8 +294,6 @@ typedef struct {
  #define MXC_S_ADC_INTR_REF_READY_IF_INACTIVE           (MXC_V_ADC_INTR_REF_READY_IF_INACTIVE << MXC_F_ADC_INTR_REF_READY_IF_POS) /**< INTR_REF_READY_IF_INACTIVE Setting */
  #define MXC_V_ADC_INTR_REF_READY_IF_ACTIVE             ((uint32_t)0x1UL) /**< INTR_REF_READY_IF_ACTIVE Value */
  #define MXC_S_ADC_INTR_REF_READY_IF_ACTIVE             (MXC_V_ADC_INTR_REF_READY_IF_ACTIVE << MXC_F_ADC_INTR_REF_READY_IF_POS) /**< INTR_REF_READY_IF_ACTIVE Setting */
- #define MXC_V_ADC_INTR_REF_READY_IF_CLEAR              ((uint32_t)0x1UL) /**< INTR_REF_READY_IF_CLEAR Value */
- #define MXC_S_ADC_INTR_REF_READY_IF_CLEAR              (MXC_V_ADC_INTR_REF_READY_IF_CLEAR << MXC_F_ADC_INTR_REF_READY_IF_POS) /**< INTR_REF_READY_IF_CLEAR Setting */
 
  #define MXC_F_ADC_INTR_HI_LIMIT_IF_POS                 18 /**< INTR_HI_LIMIT_IF Position */
  #define MXC_F_ADC_INTR_HI_LIMIT_IF                     ((uint32_t)(0x1UL << MXC_F_ADC_INTR_HI_LIMIT_IF_POS)) /**< INTR_HI_LIMIT_IF Mask */
@@ -293,8 +301,6 @@ typedef struct {
  #define MXC_S_ADC_INTR_HI_LIMIT_IF_INACTIVE            (MXC_V_ADC_INTR_HI_LIMIT_IF_INACTIVE << MXC_F_ADC_INTR_HI_LIMIT_IF_POS) /**< INTR_HI_LIMIT_IF_INACTIVE Setting */
  #define MXC_V_ADC_INTR_HI_LIMIT_IF_ACTIVE              ((uint32_t)0x1UL) /**< INTR_HI_LIMIT_IF_ACTIVE Value */
  #define MXC_S_ADC_INTR_HI_LIMIT_IF_ACTIVE              (MXC_V_ADC_INTR_HI_LIMIT_IF_ACTIVE << MXC_F_ADC_INTR_HI_LIMIT_IF_POS) /**< INTR_HI_LIMIT_IF_ACTIVE Setting */
- #define MXC_V_ADC_INTR_HI_LIMIT_IF_CLEAR               ((uint32_t)0x1UL) /**< INTR_HI_LIMIT_IF_CLEAR Value */
- #define MXC_S_ADC_INTR_HI_LIMIT_IF_CLEAR               (MXC_V_ADC_INTR_HI_LIMIT_IF_CLEAR << MXC_F_ADC_INTR_HI_LIMIT_IF_POS) /**< INTR_HI_LIMIT_IF_CLEAR Setting */
 
  #define MXC_F_ADC_INTR_LO_LIMIT_IF_POS                 19 /**< INTR_LO_LIMIT_IF Position */
  #define MXC_F_ADC_INTR_LO_LIMIT_IF                     ((uint32_t)(0x1UL << MXC_F_ADC_INTR_LO_LIMIT_IF_POS)) /**< INTR_LO_LIMIT_IF Mask */
@@ -302,8 +308,6 @@ typedef struct {
  #define MXC_S_ADC_INTR_LO_LIMIT_IF_INACTIVE            (MXC_V_ADC_INTR_LO_LIMIT_IF_INACTIVE << MXC_F_ADC_INTR_LO_LIMIT_IF_POS) /**< INTR_LO_LIMIT_IF_INACTIVE Setting */
  #define MXC_V_ADC_INTR_LO_LIMIT_IF_ACTIVE              ((uint32_t)0x1UL) /**< INTR_LO_LIMIT_IF_ACTIVE Value */
  #define MXC_S_ADC_INTR_LO_LIMIT_IF_ACTIVE              (MXC_V_ADC_INTR_LO_LIMIT_IF_ACTIVE << MXC_F_ADC_INTR_LO_LIMIT_IF_POS) /**< INTR_LO_LIMIT_IF_ACTIVE Setting */
- #define MXC_V_ADC_INTR_LO_LIMIT_IF_CLEAR               ((uint32_t)0x1UL) /**< INTR_LO_LIMIT_IF_CLEAR Value */
- #define MXC_S_ADC_INTR_LO_LIMIT_IF_CLEAR               (MXC_V_ADC_INTR_LO_LIMIT_IF_CLEAR << MXC_F_ADC_INTR_LO_LIMIT_IF_POS) /**< INTR_LO_LIMIT_IF_CLEAR Setting */
 
  #define MXC_F_ADC_INTR_OVERFLOW_IF_POS                 20 /**< INTR_OVERFLOW_IF Position */
  #define MXC_F_ADC_INTR_OVERFLOW_IF                     ((uint32_t)(0x1UL << MXC_F_ADC_INTR_OVERFLOW_IF_POS)) /**< INTR_OVERFLOW_IF Mask */
@@ -311,8 +315,6 @@ typedef struct {
  #define MXC_S_ADC_INTR_OVERFLOW_IF_INACTIVE            (MXC_V_ADC_INTR_OVERFLOW_IF_INACTIVE << MXC_F_ADC_INTR_OVERFLOW_IF_POS) /**< INTR_OVERFLOW_IF_INACTIVE Setting */
  #define MXC_V_ADC_INTR_OVERFLOW_IF_ACTIVE              ((uint32_t)0x1UL) /**< INTR_OVERFLOW_IF_ACTIVE Value */
  #define MXC_S_ADC_INTR_OVERFLOW_IF_ACTIVE              (MXC_V_ADC_INTR_OVERFLOW_IF_ACTIVE << MXC_F_ADC_INTR_OVERFLOW_IF_POS) /**< INTR_OVERFLOW_IF_ACTIVE Setting */
- #define MXC_V_ADC_INTR_OVERFLOW_IF_CLEAR               ((uint32_t)0x1UL) /**< INTR_OVERFLOW_IF_CLEAR Value */
- #define MXC_S_ADC_INTR_OVERFLOW_IF_CLEAR               (MXC_V_ADC_INTR_OVERFLOW_IF_CLEAR << MXC_F_ADC_INTR_OVERFLOW_IF_POS) /**< INTR_OVERFLOW_IF_CLEAR Setting */
 
  #define MXC_F_ADC_INTR_PENDING_POS                     22 /**< INTR_PENDING Position */
  #define MXC_F_ADC_INTR_PENDING                         ((uint32_t)(0x1UL << MXC_F_ADC_INTR_PENDING_POS)) /**< INTR_PENDING Mask */

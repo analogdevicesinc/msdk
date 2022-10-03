@@ -1,6 +1,7 @@
 /**
  * @file    clcd_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CLCD Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -106,15 +107,15 @@ typedef struct {
  * @brief      CLCD Peripheral Register Offsets from the CLCD Base Peripheral Address.
  * @{
  */
- #define MXC_R_CLCD_CLK_CTRL                ((uint32_t)0x00000000UL) /**< Offset from CLCD Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_CLCD_VTIM_0                  ((uint32_t)0x00000004UL) /**< Offset from CLCD Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_CLCD_VTIM_1                  ((uint32_t)0x00000008UL) /**< Offset from CLCD Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_CLCD_HTIM                    ((uint32_t)0x0000000CUL) /**< Offset from CLCD Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_CLCD_CTRL                    ((uint32_t)0x00000010UL) /**< Offset from CLCD Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_CLCD_FRBUF                   ((uint32_t)0x00000018UL) /**< Offset from CLCD Base Address: <tt> 0x0018</tt> */ 
- #define MXC_R_CLCD_INT_EN                  ((uint32_t)0x00000020UL) /**< Offset from CLCD Base Address: <tt> 0x0020</tt> */ 
- #define MXC_R_CLCD_INT_STAT                ((uint32_t)0x00000024UL) /**< Offset from CLCD Base Address: <tt> 0x0024</tt> */ 
- #define MXC_R_CLCD_PALETTE_RAM             ((uint32_t)0x00000400UL) /**< Offset from CLCD Base Address: <tt> 0x0400</tt> */ 
+ #define MXC_R_CLCD_CLK_CTRL                ((uint32_t)0x00000000UL) /**< Offset from CLCD Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_CLCD_VTIM_0                  ((uint32_t)0x00000004UL) /**< Offset from CLCD Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_CLCD_VTIM_1                  ((uint32_t)0x00000008UL) /**< Offset from CLCD Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_CLCD_HTIM                    ((uint32_t)0x0000000CUL) /**< Offset from CLCD Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_CLCD_CTRL                    ((uint32_t)0x00000010UL) /**< Offset from CLCD Base Address: <tt> 0x0010</tt> */
+ #define MXC_R_CLCD_FRBUF                   ((uint32_t)0x00000018UL) /**< Offset from CLCD Base Address: <tt> 0x0018</tt> */
+ #define MXC_R_CLCD_INT_EN                  ((uint32_t)0x00000020UL) /**< Offset from CLCD Base Address: <tt> 0x0020</tt> */
+ #define MXC_R_CLCD_INT_STAT                ((uint32_t)0x00000024UL) /**< Offset from CLCD Base Address: <tt> 0x0024</tt> */
+ #define MXC_R_CLCD_PALETTE_RAM             ((uint32_t)0x00000400UL) /**< Offset from CLCD Base Address: <tt> 0x0400</tt> */
 /**@} end of group clcd_registers */
 
 /**

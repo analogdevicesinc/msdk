@@ -1,41 +1,41 @@
 /**
  * @file    wdt_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the WDT Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _WDT_REGS_H_
 #define _WDT_REGS_H_
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -89,6 +89,17 @@ typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x00:</tt> WDT CTRL Register */
     __O  uint32_t rst;                  /**< <tt>\b 0x04:</tt> WDT RST Register */
 } mxc_wdt_regs_t;
+
+/* Register offsets for module WDT */
+/**
+ * @ingroup    wdt_registers
+ * @defgroup   WDT_Register_Offsets Register Offsets
+ * @brief      WDT Peripheral Register Offsets from the WDT Base Peripheral Address.
+ * @{
+ */
+ #define MXC_R_WDT_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from WDT Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_WDT_RST                      ((uint32_t)0x00000004UL) /**< Offset from WDT Base Address: <tt> 0x0004</tt> */
+/**@} end of group wdt_registers */
 
 /**
  * @ingroup  wdt_registers
@@ -198,8 +209,8 @@ typedef struct {
  #define MXC_F_WDT_CTRL_RST_FLAG                        ((uint32_t)(0x1UL << MXC_F_WDT_CTRL_RST_FLAG_POS)) /**< CTRL_RST_FLAG Mask */
  #define MXC_V_WDT_CTRL_RST_FLAG_NOEVENT                ((uint32_t)0x0UL) /**< CTRL_RST_FLAG_NOEVENT Value */
  #define MXC_S_WDT_CTRL_RST_FLAG_NOEVENT                (MXC_V_WDT_CTRL_RST_FLAG_NOEVENT << MXC_F_WDT_CTRL_RST_FLAG_POS) /**< CTRL_RST_FLAG_NOEVENT Setting */
- #define MXC_V_WDT_CTRL_RST_FLAG_RST_OCCURRED           ((uint32_t)0x1UL) /**< CTRL_RST_FLAG_RST_OCCURRED Value */
- #define MXC_S_WDT_CTRL_RST_FLAG_RST_OCCURRED           (MXC_V_WDT_CTRL_RST_FLAG_RST_OCCURRED << MXC_F_WDT_CTRL_RST_FLAG_POS) /**< CTRL_RST_FLAG_RST_OCCURRED Setting */
+ #define MXC_V_WDT_CTRL_RST_FLAG_OCCURRED               ((uint32_t)0x1UL) /**< CTRL_RST_FLAG_OCCURRED Value */
+ #define MXC_S_WDT_CTRL_RST_FLAG_OCCURRED               (MXC_V_WDT_CTRL_RST_FLAG_OCCURRED << MXC_F_WDT_CTRL_RST_FLAG_POS) /**< CTRL_RST_FLAG_OCCURRED Setting */
 
 /**@} end of group WDT_CTRL_Register */
 

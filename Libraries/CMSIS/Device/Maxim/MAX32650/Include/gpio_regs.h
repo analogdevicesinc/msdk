@@ -1,41 +1,41 @@
 /**
  * @file    gpio_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GPIO Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _GPIO_REGS_H_
 #define _GPIO_REGS_H_
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -122,6 +122,46 @@ typedef struct {
     __R  uint32_t rsv_0xbc;
     __IO uint32_t vssel;                /**< <tt>\b 0xC0:</tt> GPIO VSSEL Register */
 } mxc_gpio_regs_t;
+
+/* Register offsets for module GPIO */
+/**
+ * @ingroup    gpio_registers
+ * @defgroup   GPIO_Register_Offsets Register Offsets
+ * @brief      GPIO Peripheral Register Offsets from the GPIO Base Peripheral Address.
+ * @{
+ */
+ #define MXC_R_GPIO_EN                      ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_GPIO_EN_SET                  ((uint32_t)0x00000004UL) /**< Offset from GPIO Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_GPIO_EN_CLR                  ((uint32_t)0x00000008UL) /**< Offset from GPIO Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_GPIO_OUT_EN                  ((uint32_t)0x0000000CUL) /**< Offset from GPIO Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_GPIO_OUT_EN_SET              ((uint32_t)0x00000010UL) /**< Offset from GPIO Base Address: <tt> 0x0010</tt> */
+ #define MXC_R_GPIO_OUT_EN_CLR              ((uint32_t)0x00000014UL) /**< Offset from GPIO Base Address: <tt> 0x0014</tt> */
+ #define MXC_R_GPIO_OUT                     ((uint32_t)0x00000018UL) /**< Offset from GPIO Base Address: <tt> 0x0018</tt> */
+ #define MXC_R_GPIO_OUT_SET                 ((uint32_t)0x0000001CUL) /**< Offset from GPIO Base Address: <tt> 0x001C</tt> */
+ #define MXC_R_GPIO_OUT_CLR                 ((uint32_t)0x00000020UL) /**< Offset from GPIO Base Address: <tt> 0x0020</tt> */
+ #define MXC_R_GPIO_IN                      ((uint32_t)0x00000024UL) /**< Offset from GPIO Base Address: <tt> 0x0024</tt> */
+ #define MXC_R_GPIO_INT_MODE                ((uint32_t)0x00000028UL) /**< Offset from GPIO Base Address: <tt> 0x0028</tt> */
+ #define MXC_R_GPIO_INT_POL                 ((uint32_t)0x0000002CUL) /**< Offset from GPIO Base Address: <tt> 0x002C</tt> */
+ #define MXC_R_GPIO_IN_EN                   ((uint32_t)0x00000030UL) /**< Offset from GPIO Base Address: <tt> 0x0030</tt> */
+ #define MXC_R_GPIO_INT_EN                  ((uint32_t)0x00000034UL) /**< Offset from GPIO Base Address: <tt> 0x0034</tt> */
+ #define MXC_R_GPIO_INT_EN_SET              ((uint32_t)0x00000038UL) /**< Offset from GPIO Base Address: <tt> 0x0038</tt> */
+ #define MXC_R_GPIO_INT_EN_CLR              ((uint32_t)0x0000003CUL) /**< Offset from GPIO Base Address: <tt> 0x003C</tt> */
+ #define MXC_R_GPIO_INT_STAT                ((uint32_t)0x00000040UL) /**< Offset from GPIO Base Address: <tt> 0x0040</tt> */
+ #define MXC_R_GPIO_INT_CLR                 ((uint32_t)0x00000048UL) /**< Offset from GPIO Base Address: <tt> 0x0048</tt> */
+ #define MXC_R_GPIO_WAKE_EN                 ((uint32_t)0x0000004CUL) /**< Offset from GPIO Base Address: <tt> 0x004C</tt> */
+ #define MXC_R_GPIO_WAKE_EN_SET             ((uint32_t)0x00000050UL) /**< Offset from GPIO Base Address: <tt> 0x0050</tt> */
+ #define MXC_R_GPIO_WAKE_EN_CLR             ((uint32_t)0x00000054UL) /**< Offset from GPIO Base Address: <tt> 0x0054</tt> */
+ #define MXC_R_GPIO_INT_DUAL_EDGE           ((uint32_t)0x0000005CUL) /**< Offset from GPIO Base Address: <tt> 0x005C</tt> */
+ #define MXC_R_GPIO_PDPU_SEL0               ((uint32_t)0x00000060UL) /**< Offset from GPIO Base Address: <tt> 0x0060</tt> */
+ #define MXC_R_GPIO_PDPU_SEL1               ((uint32_t)0x00000064UL) /**< Offset from GPIO Base Address: <tt> 0x0064</tt> */
+ #define MXC_R_GPIO_AF_SEL                  ((uint32_t)0x00000068UL) /**< Offset from GPIO Base Address: <tt> 0x0068</tt> */
+ #define MXC_R_GPIO_AF_SEL_SET              ((uint32_t)0x0000006CUL) /**< Offset from GPIO Base Address: <tt> 0x006C</tt> */
+ #define MXC_R_GPIO_AF_SEL_CLR              ((uint32_t)0x00000070UL) /**< Offset from GPIO Base Address: <tt> 0x0070</tt> */
+ #define MXC_R_GPIO_DS_SEL0                 ((uint32_t)0x000000B0UL) /**< Offset from GPIO Base Address: <tt> 0x00B0</tt> */
+ #define MXC_R_GPIO_DS_SEL1                 ((uint32_t)0x000000B4UL) /**< Offset from GPIO Base Address: <tt> 0x00B4</tt> */
+ #define MXC_R_GPIO_PSSEL                   ((uint32_t)0x000000B8UL) /**< Offset from GPIO Base Address: <tt> 0x00B8</tt> */
+ #define MXC_R_GPIO_VSSEL                   ((uint32_t)0x000000C0UL) /**< Offset from GPIO Base Address: <tt> 0x00C0</tt> */
+/**@} end of group gpio_registers */
 
 /**
  * @ingroup  gpio_registers

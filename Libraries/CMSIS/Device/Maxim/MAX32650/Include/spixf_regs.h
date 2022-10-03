@@ -1,41 +1,41 @@
 /**
  * @file    spixf_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SPIXF Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _SPIXF_REGS_H_
 #define _SPIXF_REGS_H_
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -96,6 +96,23 @@ typedef struct {
     __IO uint32_t sec_ctrl;             /**< <tt>\b 0x20:</tt> SPIXF SEC_CTRL Register */
     __IO uint32_t bus_idle;             /**< <tt>\b 0x24:</tt> SPIXF BUS_IDLE Register */
 } mxc_spixf_regs_t;
+
+/* Register offsets for module SPIXF */
+/**
+ * @ingroup    spixf_registers
+ * @defgroup   SPIXF_Register_Offsets Register Offsets
+ * @brief      SPIXF Peripheral Register Offsets from the SPIXF Base Peripheral Address.
+ * @{
+ */
+ #define MXC_R_SPIXF_CFG                    ((uint32_t)0x00000000UL) /**< Offset from SPIXF Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_SPIXF_FETCH_CTRL             ((uint32_t)0x00000004UL) /**< Offset from SPIXF Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_SPIXF_MODE_CTRL              ((uint32_t)0x00000008UL) /**< Offset from SPIXF Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_SPIXF_MODE_DATA              ((uint32_t)0x0000000CUL) /**< Offset from SPIXF Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_SPIXF_FB_CTRL                ((uint32_t)0x00000010UL) /**< Offset from SPIXF Base Address: <tt> 0x0010</tt> */
+ #define MXC_R_SPIXF_IO_CTRL                ((uint32_t)0x0000001CUL) /**< Offset from SPIXF Base Address: <tt> 0x001C</tt> */
+ #define MXC_R_SPIXF_SEC_CTRL               ((uint32_t)0x00000020UL) /**< Offset from SPIXF Base Address: <tt> 0x0020</tt> */
+ #define MXC_R_SPIXF_BUS_IDLE               ((uint32_t)0x00000024UL) /**< Offset from SPIXF Base Address: <tt> 0x0024</tt> */
+/**@} end of group spixf_registers */
 
 /**
  * @ingroup  spixf_registers

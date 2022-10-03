@@ -1,41 +1,41 @@
 /**
  * @file    spimss_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SPIMSS Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef _SPIMSS_REGS_H_
 #define _SPIMSS_REGS_H_
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -95,6 +95,22 @@ typedef struct {
     __IO uint32_t dma;                  /**< <tt>\b 0x18:</tt> SPIMSS DMA Register */
     __IO uint32_t i2s_ctrl;             /**< <tt>\b 0x1C:</tt> SPIMSS I2S_CTRL Register */
 } mxc_spimss_regs_t;
+
+/* Register offsets for module SPIMSS */
+/**
+ * @ingroup    spimss_registers
+ * @defgroup   SPIMSS_Register_Offsets Register Offsets
+ * @brief      SPIMSS Peripheral Register Offsets from the SPIMSS Base Peripheral Address.
+ * @{
+ */
+ #define MXC_R_SPIMSS_DATA                  ((uint32_t)0x00000000UL) /**< Offset from SPIMSS Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_SPIMSS_CTRL                  ((uint32_t)0x00000004UL) /**< Offset from SPIMSS Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_SPIMSS_INT_FL                ((uint32_t)0x00000008UL) /**< Offset from SPIMSS Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_SPIMSS_MOD                   ((uint32_t)0x0000000CUL) /**< Offset from SPIMSS Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_SPIMSS_BRG                   ((uint32_t)0x00000014UL) /**< Offset from SPIMSS Base Address: <tt> 0x0014</tt> */
+ #define MXC_R_SPIMSS_DMA                   ((uint32_t)0x00000018UL) /**< Offset from SPIMSS Base Address: <tt> 0x0018</tt> */
+ #define MXC_R_SPIMSS_I2S_CTRL              ((uint32_t)0x0000001CUL) /**< Offset from SPIMSS Base Address: <tt> 0x001C</tt> */
+/**@} end of group spimss_registers */
 
 /**
  * @ingroup  spimss_registers
