@@ -36,6 +36,7 @@
 
 /* **** Includes **** */
 #include "gpio_regs.h"
+#include "gpio.h"
 
 #ifdef __cplusplus
 extern "C" {
