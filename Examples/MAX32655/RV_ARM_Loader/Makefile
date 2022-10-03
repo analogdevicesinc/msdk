@@ -80,6 +80,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # Where to find header files for this test
 IPATH = .
+IPATH += $(LIBS_DIR)/Cordio/platform/include
 
 PROJ_CFLAGS = 
 
@@ -88,6 +89,16 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
+
+# Each core has a mailbox in the RISCV core SRAM memory space.
+# Total memory allocated for boxes will be 2*MAILBOX_SIZE
+# Will work with small MAILBOX_SIZE, cores will experience more interrupts
+# and higher communication latency.
+# Minimum value is 16
+MAILBOX_SIZE = 64
+
+PROJ_AFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
+PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
 
 # Specify the target revision to override default
 # "A2" in ASCII
@@ -156,6 +167,10 @@ include $(BOARD_DIR)/board.mk
 PERIPH_DRIVER_DIR=$(LIBS_DIR)/PeriphDrivers
 include $(PERIPH_DRIVER_DIR)/periphdriver.mk
 export PERIPH_DRIVER_DIR
+
+# Include the Cordio Library
+CORDIO_DIR=$(LIBS_DIR)/Cordio
+include $(CORDIO_DIR)/platform/targets/maxim/build/cordio.mk
 
 ################################################################################
 # Include the rules for building for this target. All other makefiles should be

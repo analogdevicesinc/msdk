@@ -81,6 +81,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # Where to find header files for this test
 IPATH = .
+IPATH += $(LIBS_DIR)/Cordio/platform/include
 
 # Unset PROJ_CFLAGS variable
 PROJ_CFLAGS =
@@ -90,6 +91,17 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
+
+# Each core has a mailbox in the RISCV core SRAM memory space.
+# Total memory allocated for boxes will be 2*MAILBOX_SIZE
+# Will work with small MAILBOX_SIZE, cores will experience more interrupts
+# and higher communication latency.
+# Minimum value is 16
+MAILBOX_SIZE = 64
+
+PROJ_AFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
+PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
+#PROJ_CFLAGS += -DHCI_TR_MAIL=1
 
 # Specify the target revision to override default
 # "A2" in ASCII

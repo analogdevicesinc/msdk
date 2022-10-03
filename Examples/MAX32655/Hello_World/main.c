@@ -40,6 +40,7 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include "mxc_device.h"
 #include "led.h"
 #include "pb.h"
@@ -52,42 +53,77 @@
 #define NDX_ARM         (0)
 #define NDX_RISCV       (1)
 
+#define MAILBOX_OVERHEAD (2 * sizeof(uint16_t))
+#define MAILBOX_PAYLOAD_LEN (MAILBOX_SIZE - MAILBOX_OVERHEAD)
+typedef struct {
+    uint16_t readLocation;
+    uint16_t writeLocation;
+#if (MAILBOX_SIZE == 0)
+    uint8_t payload[1];
+#else
+    uint8_t payload[MAILBOX_PAYLOAD_LEN];
+#endif
+
+} mxcSemaBox_t;
+
 /***** Globals *****/
+extern mxcSemaBox_t *mxcSemaBox0;  // ARM writes, RISCV reads,
+extern mxcSemaBox_t *mxcSemaBox1;  // ARM reads,  RISCV writes
 
 /***** Functions *****/
 
 // *****************************************************************************
 int main(void)
 {
-    int cnt = 0;
-    int ret;
+    printf("\nRISC-V: Start.\n");
+    printf("RISC-V:Hello world!\n");
 
-    printf("\nRISC-V: start\n");
-    
-    // Signal SEMA(NDX_ARM)
+    MXC_SEMA_Init(); 
+
+    int ret = MXC_SEMA_CheckSema(NDX_RISCV);
+    printf("RISC-V: After init, CheckSema(%d) returned %s.\n", NDX_RISCV, ret == E_BUSY ? "BUSY" : "NOT BUSY");
+
+    if ((MXC_SEMA_GetSema(NDX_RISCV)) == E_NO_ERROR) {
+        printf("RISC-V: GetSema returned NOT BUSY with previous semaphore value %d.\n", MXC_SEMA->semaphores[NDX_RISCV]);
+    } else {
+        printf("RISC-V: GetSema returned - BUSY - with previous semaphore value %d.\n", MXC_SEMA->semaphores[NDX_RISCV]);
+    }
+
+    /* Init code here. */
+    printf("RISC-V: Do initialization works here.\n");    
+    MXC_SEMA_InitBoxes();
+
+    /* Signal ARM core to run. */
+    printf("RISC-V: Signal ARM.\n");
     MXC_SEMA_FreeSema(NDX_ARM);
-    printf("Singal SEMA(NDX_ARM) to start the output.\n");
 
+    uint32_t cnt;
+    /* Enter LPM */
     while (1) {
-        // Wait
-        ret = MXC_SEMA_CheckSema(NDX_RISCV);
-        //printf("RISCV: CheckSema(1) returned %s.\n", ret == E_BUSY ? "BUSY" : "NOT BUSY");
-        if (E_BUSY != ret) {  // Register is not busy.
-            ret = MXC_SEMA_GetSema(NDX_RISCV);  // Reading the register does an atomic test and set, returns previous value.
-            //printf("RISC-V: GetSema(1) returned %s with previous semaphors[1] value %d\n", ret == E_BUSY ? "BUSY" : "NOT BUSY", MXC_SEMA->semaphores[NDX_RISCV]);
+        /* Wait */
+        int ret = MXC_SEMA_CheckSema(NDX_RISCV);
+        if (E_BUSY != ret) {
+            MXC_SEMA_GetSema(NDX_RISCV);
+
+            /* Do the job */
+            // Retrieve the data from the mailbox0
+            cnt  = mxcSemaBox0->payload[0] << (8 * 0);
+            cnt += mxcSemaBox0->payload[1] << (8 * 1);
+            cnt += mxcSemaBox0->payload[2] << (8 * 2);
+            cnt += mxcSemaBox0->payload[3] << (8 * 3);
             
-            // Do the job
             printf("RISC-V: cnt=%d\n", cnt++);
 
-            LED_On(LED_RED);
-            MXC_Delay(500000);
-            LED_Off(LED_RED);
-            MXC_Delay(500000);
-            
-            // Signal
+            mxcSemaBox1->payload[0] = (cnt >> 8 * 0) & 0xFF;
+            mxcSemaBox1->payload[1] = (cnt >> 8 * 1) & 0xFF;
+            mxcSemaBox1->payload[2] = (cnt >> 8 * 2) & 0xFF;
+            mxcSemaBox1->payload[3] = (cnt >> 8 * 3) & 0xFF;
+
+            /* Do other jobs here */
+            MXC_Delay(MXC_DELAY_SEC(1));
+
+            /* Signal */
             MXC_SEMA_FreeSema(NDX_ARM);
         }
-
-        MXC_Delay(500000);  // Void displaying CheckSema results too soon
-    }    
+    }
 }
