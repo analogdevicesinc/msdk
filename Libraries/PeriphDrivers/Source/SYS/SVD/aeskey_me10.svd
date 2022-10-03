@@ -14,13 +14,13 @@
       <register>
         <name>AES_KEY0</name>
         <description>AES Key 0.</description>
-        <addressOffset>0x00</addressOffset>
+        <addressOffset>0x000</addressOffset>
         <size>32</size>
       </register>
       <register>
         <name>AES_KEY1</name>
         <description>AES Key 1.</description>
-        <addressOffset>0x80</addressOffset>
+        <addressOffset>0x080</addressOffset>
         <size>32</size>
       </register>
       <register>

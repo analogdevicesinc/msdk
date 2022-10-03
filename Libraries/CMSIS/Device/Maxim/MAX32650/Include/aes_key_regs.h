@@ -86,9 +86,9 @@ extern "C" {
  * Structure type to access the AES_KEY Registers.
  */
 typedef struct {
-    __IO uint32_t aes_key0;             /**< <tt>\b 0x00:</tt> AES_KEY AES_KEY0 Register */
+    __IO uint32_t aes_key0;             /**< <tt>\b 0x000:</tt> AES_KEY AES_KEY0 Register */
     __R  uint32_t rsv_0x4_0x7f[31];
-    __IO uint32_t aes_key1;             /**< <tt>\b 0x80:</tt> AES_KEY AES_KEY1 Register */
+    __IO uint32_t aes_key1;             /**< <tt>\b 0x080:</tt> AES_KEY AES_KEY1 Register */
     __R  uint32_t rsv_0x84_0xff[31];
     __IO uint32_t aes_key2;             /**< <tt>\b 0x100:</tt> AES_KEY AES_KEY2 Register */
     __R  uint32_t rsv_0x104_0x17f[31];
