@@ -32,8 +32,8 @@
  **************************************************************************** */
 
 #ifndef __riscv
-#include "mxc_device.h"
 #include <string.h>
+#include "mxc_device.h"
 #include "nvic_table.h"
 
 #if !defined(NVIC_USER_IRQ_OFFSET)

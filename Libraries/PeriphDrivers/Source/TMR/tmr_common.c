@@ -39,7 +39,7 @@
 
 /* **** Functions **** */
 
-void MXC_TMR_Common_Delay(mxc_tmr_regs_t *tmr, unsigned long us)
+void MXC_TMR_Common_Delay(mxc_tmr_regs_t *tmr, uint32_t us)
 {
     // Return immediately if delay is 0
     if (!us) {

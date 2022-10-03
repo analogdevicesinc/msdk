@@ -37,13 +37,10 @@
  * ownership rights.
  *******************************************************************************/
 
-#ifndef __MAX32xxx_H_
-#define __MAX32xxx_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MAX32XXX_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MAX32XXX_H_
 
-//
 #include "mxc_device.h"
-
-//
 #include "mxc_delay.h"
 #include "mxc_assert.h"
 #include "mxc_errors.h"
@@ -51,8 +48,6 @@
 #include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
-
-//
 #include "board.h"
 #include "led.h"
 #include "pb.h"
@@ -89,4 +84,4 @@
 #include "uart.h"
 #include "wdt.h"
 
-#endif /* __MAX32xxx_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MAX32XXX_H_

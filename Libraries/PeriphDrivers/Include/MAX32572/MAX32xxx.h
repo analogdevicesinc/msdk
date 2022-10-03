@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef __MAX32xxx_H_
-#define __MAX32xxx_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_
 
 //
 #include "mxc_device.h"
@@ -79,4 +79,4 @@
 #include "uart.h"
 #include "wdt.h"
 
-#endif /* __MAX32xxx_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MAX32XXX_H_

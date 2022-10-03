@@ -53,7 +53,7 @@ __weak void SystemCoreClockUpdate(void)
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     switch (clk_src) {
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-        base_freq = EXTCLK_FREQ;
+        base_freq = EXTCLK2_FREQ;
         break;
     case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERFO:
         base_freq = ERFO_FREQ;

@@ -160,10 +160,6 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
             mod = ((IBRO_FREQ) % baud);
             break;
 
-        case MXC_UART_EXT_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-            break;
-
         case MXC_UART_ERTCO_CLK:
             uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
             uart->ctrl |= MXC_F_UART_CTRL_FDM;
@@ -186,6 +182,10 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clo
         uart->clkdiv = clkDiv;
         frequency = MXC_UART_GetFrequency(uart);
     } else {
+        if (clock == MXC_UART_ERTCO_CLK) {
+            return E_BAD_PARAM;
+        }
+
         frequency = MXC_UART_RevB_SetFrequency((mxc_uart_revb_regs_t *)uart, baud, clock);
     }
 
@@ -209,14 +209,10 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t *uart)
     // check if UARt is LP UART
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-            periphClock = 32768 * 2;
+            periphClock = ERTCO_FREQ * 2;
         } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) ==
                    MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
-            periphClock = 7372800;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = 32768 * 2;
-        } else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK3) {
-            periphClock = 80000 * 2;
+            periphClock = IBRO_FREQ;
         } else {
             return E_BAD_PARAM;
         }

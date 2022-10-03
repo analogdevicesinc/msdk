@@ -31,6 +31,9 @@
  *
  **************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_RPU_RPU_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_RPU_RPU_REVA_H_
+
 /* **** Includes **** */
 #include "mxc_device.h"
 #include "mxc_assert.h"
@@ -43,3 +46,5 @@ int MXC_RPU_RevA_Allow(mxc_rpu_device_t periph, uint32_t allow_mask);
 int MXC_RPU_RevA_Disallow(mxc_rpu_device_t periph, uint32_t disallow_mask);
 
 int MXC_RPU_RevA_IsAllowed(void);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_RPU_RPU_REVA_H_

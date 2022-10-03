@@ -39,8 +39,8 @@
  *
  ******************************************************************************/
 
-#ifndef _NVIC_TABLE_H
-#define _NVIC_TABLE_H
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_NVIC_TABLE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_NVIC_TABLE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -120,4 +120,4 @@ NVIC_GetVector(IRQn_Type irqn)
 }
 #endif
 
-#endif /* _NVIC_TABLE_H */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_NVIC_TABLE_H_

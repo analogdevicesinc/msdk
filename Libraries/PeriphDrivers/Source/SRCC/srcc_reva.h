@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SRCC_SRCC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SRCC_SRCC_REVA_H_
+
 /***** Includes *****/
 #include "srcc_reva_regs.h"
 #include "mxc_device.h"
@@ -60,3 +63,5 @@ void MXC_SRCC_RevA_WriteAllocateDisable(mxc_srcc_reva_regs_t *srcc);
 void MXC_SRCC_RevA_CriticalWordFirstEnable(mxc_srcc_reva_regs_t *srcc);
 void MXC_SRCC_RevA_CriticalWordFirstDisable(mxc_srcc_reva_regs_t *srcc);
 uint32_t MXC_SRCC_RevA_Ready(mxc_srcc_reva_regs_t *srcc);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SRCC_SRCC_REVA_H_

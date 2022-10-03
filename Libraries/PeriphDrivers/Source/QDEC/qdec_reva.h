@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_QDEC_QDEC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_QDEC_QDEC_REVA_H_
+
 #include <stdio.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
@@ -58,3 +61,5 @@ int MXC_QDEC_RevA_GetCapture(mxc_qdec_reva_regs_t *qdec);
 int MXC_QDEC_RevA_Handler(mxc_qdec_reva_regs_t *qdec);
 int MXC_QDEC_RevA_GetPosition(mxc_qdec_reva_regs_t *qdec);
 int MXC_QDEC_RevA_GetDirection(mxc_qdec_reva_regs_t *qdec);
+
+#endif //  LIBRARIES_PERIPHDRIVERS_SOURCE_QDEC_QDEC_REVA_H_

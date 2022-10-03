@@ -39,8 +39,8 @@
  *
  *************************************************************************** */
 
-#ifndef _TRNG_H_
-#define _TRNG_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_TRNG_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_TRNG_H_
 
 /***** Includes *****/
 #include "trng_regs.h"
@@ -145,4 +145,4 @@ int MXC_TRNG_HealthTest(void);
 #endif
 /**@} end of group trng */
 
-#endif /* _TRNG_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_TRNG_H_

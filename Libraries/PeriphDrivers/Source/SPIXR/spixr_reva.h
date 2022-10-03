@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SPIXR_SPIXR_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SPIXR_SPIXR_REVA_H_
+
 /****** Includes *******/
 #include "mxc_device.h"
 #include "mxc_sys.h"
@@ -133,3 +136,5 @@ void MXC_SPIXR_RevA_DmaRXFIFODisable(mxc_spixr_reva_regs_t *spixr);
 int MXC_SPIXR_RevA_DmaRXFIFOIsEnabled(mxc_spixr_reva_regs_t *spixr);
 void MXC_SPIXR_RevA_TXFIFOClear(mxc_spixr_reva_regs_t *spixr);
 void MXC_SPIXR_RevA_RXFIFOClear(mxc_spixr_reva_regs_t *spixr);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPIXR_SPIXR_REVA_H_

@@ -733,7 +733,7 @@ typedef enum {
 #define MXC_USBHS ((mxc_usbhs_regs_t *)MXC_BASE_USBHS)
 #define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
 #define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
-#define MXC_USBHS_MAX_PACKET 64
+#define MXC_USBHS_MAX_PACKET 512
 
 /******************************************************************************/
 /*                                                       Low-Power Comparator */

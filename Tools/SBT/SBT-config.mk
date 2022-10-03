@@ -8,6 +8,8 @@
 # to the correct variant.
 ifeq "$(TARGET_UC)" "MAX32650"
 TARGET_SEC ?= MAX32651
+else ifeq "$(TARGET_UC)" "MAX32665"
+TARGET_SEC ?= MAX32666
 else
 TARGET_SEC ?= $(TARGET_UC)
 endif
