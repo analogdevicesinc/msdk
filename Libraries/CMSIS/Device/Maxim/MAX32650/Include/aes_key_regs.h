@@ -86,13 +86,13 @@ extern "C" {
  * Structure type to access the AES_KEY Registers.
  */
 typedef struct {
-    __IO uint32_t key0;                 /**< <tt>\b 0x00:</tt> AES_KEY KEY0 Register */
+    __IO uint32_t aes_key0;             /**< <tt>\b 0x00:</tt> AES_KEY AES_KEY0 Register */
     __R  uint32_t rsv_0x4_0x7f[31];
-    __IO uint32_t key1;                 /**< <tt>\b 0x80:</tt> AES_KEY KEY1 Register */
+    __IO uint32_t aes_key1;             /**< <tt>\b 0x80:</tt> AES_KEY AES_KEY1 Register */
     __R  uint32_t rsv_0x84_0xff[31];
-    __IO uint32_t key2;                 /**< <tt>\b 0x100:</tt> AES_KEY KEY2 Register */
+    __IO uint32_t aes_key2;             /**< <tt>\b 0x100:</tt> AES_KEY AES_KEY2 Register */
     __R  uint32_t rsv_0x104_0x17f[31];
-    __IO uint32_t key3;                 /**< <tt>\b 0x180:</tt> AES_KEY KEY3 Register */
+    __IO uint32_t aes_key3;             /**< <tt>\b 0x180:</tt> AES_KEY AES_KEY3 Register */
 } mxc_aes_key_regs_t;
 
 /* Register offsets for module AES_KEY */
@@ -102,10 +102,10 @@ typedef struct {
  * @brief      AES_KEY Peripheral Register Offsets from the AES_KEY Base Peripheral Address.
  * @{
  */
- #define MXC_R_AES_KEY_KEY0                 ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */
- #define MXC_R_AES_KEY_KEY1                 ((uint32_t)0x00000080UL) /**< Offset from AES_KEY Base Address: <tt> 0x0080</tt> */
- #define MXC_R_AES_KEY_KEY2                 ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */
- #define MXC_R_AES_KEY_KEY3                 ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */
+ #define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000080UL) /**< Offset from AES_KEY Base Address: <tt> 0x0080</tt> */
+ #define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */
+ #define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */
 /**@} end of group aes_key_registers */
 
 #ifdef __cplusplus

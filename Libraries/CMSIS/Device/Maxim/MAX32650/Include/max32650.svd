@@ -622,25 +622,25 @@
    </addressBlock>
    <registers>
     <register>
-     <name>KEY0</name>
+     <name>AES_KEY0</name>
      <description>AES Key 0.</description>
      <addressOffset>0x00</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>KEY1</name>
+     <name>AES_KEY1</name>
      <description>AES Key 1.</description>
      <addressOffset>0x80</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>KEY2</name>
+     <name>AES_KEY2</name>
      <description>AES Key 2.</description>
      <addressOffset>0x100</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>KEY3</name>
+     <name>AES_KEY3</name>
      <description>AES Key 3.</description>
      <addressOffset>0x180</addressOffset>
      <size>32</size>
