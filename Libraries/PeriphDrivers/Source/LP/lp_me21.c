@@ -389,4 +389,3 @@ void MXC_LP_SysRam3PowerUp(void)
 {
     MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM3;
 }
-

@@ -71,5 +71,4 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVA_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVA_H_

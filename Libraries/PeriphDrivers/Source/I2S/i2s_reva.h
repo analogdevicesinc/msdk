@@ -98,5 +98,4 @@ void MXC_I2S_RevA_RegisterDMACallback(void (*callback)(int, int));
 
 void MXC_I2S_RevA_RegisterAsyncCallback(void (*callback)(int));
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_I2S_I2S_REVA_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_I2S_I2S_REVA_H_

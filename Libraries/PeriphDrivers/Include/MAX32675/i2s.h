@@ -320,5 +320,4 @@ void MXC_I2S_RegisterAsyncCallback(void (*callback)(int));
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_I2S_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_I2S_H_

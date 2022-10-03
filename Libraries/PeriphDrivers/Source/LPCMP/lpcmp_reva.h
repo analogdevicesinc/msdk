@@ -58,5 +58,4 @@ int MXC_LPCMP_RevA_ClearFlags(mxc_lpcmp_ctrl_reg_t ctrl_reg);
 
 int MXC_LPCMP_RevA_SelectPolarity(mxc_lpcmp_ctrl_reg_t ctrl_reg, mxc_lpcmp_polarity_t pol);
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_LPCMP_LPCMP_REVA_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_LPCMP_LPCMP_REVA_H_

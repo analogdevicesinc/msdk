@@ -102,4 +102,4 @@ int MXC_FLC_RevA_BlockPageRead(uint32_t address, uint32_t bank_base);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_REVA_H_
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_REVA_H_

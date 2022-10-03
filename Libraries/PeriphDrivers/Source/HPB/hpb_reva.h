@@ -78,5 +78,4 @@ unsigned MXC_HPB_RevA_GetFlag(mxc_hpb_reva_regs_t *hpb);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_HPB_HPB_REVA_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_HPB_HPB_REVA_H_

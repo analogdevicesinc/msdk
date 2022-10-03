@@ -139,5 +139,4 @@ int MXC_LPCMP_SelectPolarity(mxc_lpcmp_cmpsel_t cmp, mxc_lpcmp_polarity_t pol);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_LPCMP_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_LPCMP_H_

@@ -178,5 +178,4 @@ int MXC_HTMR_GetLongCount(mxc_htmr_regs_t *htmr);
 #endif
 
 /**@} end of group htmr */
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_HTMR_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_HTMR_H_

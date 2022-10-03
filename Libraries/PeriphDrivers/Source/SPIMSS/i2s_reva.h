@@ -53,4 +53,4 @@ int MXC_I2S_RevA_DMA_ClearFlags(void);
 int MXC_I2S_RevA_DMA_SetAddrCnt(void *src_addr, void *dst_addr, unsigned int count);
 int MXC_I2S_RevA_DMA_SetReload(void *src_addr, void *dst_addr, unsigned int count);
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_SPIMSS_I2S_REVA_H_
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPIMSS_I2S_REVA_H_

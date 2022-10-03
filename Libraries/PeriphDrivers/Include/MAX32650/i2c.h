@@ -855,5 +855,4 @@ void MXC_I2C_DMACallback(int ch, int error);
 
 /**@} end of group i2c */
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2C_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2C_H_

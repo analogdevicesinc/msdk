@@ -71,5 +71,4 @@ int MXC_GPIO_RevB_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVB_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVB_H_

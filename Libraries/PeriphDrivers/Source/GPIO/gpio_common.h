@@ -55,5 +55,4 @@ void MXC_GPIO_Common_Handler(unsigned int port);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_COMMON_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_COMMON_H_

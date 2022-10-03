@@ -287,5 +287,4 @@ int MXC_LP_DisableSysRAMLightSleep(int instance);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_LP_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_LP_H_

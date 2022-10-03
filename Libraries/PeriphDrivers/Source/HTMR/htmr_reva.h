@@ -59,5 +59,4 @@ int MXC_HTMR_RevA_ClearFlags(mxc_htmr_reva_regs_t *htmr, int flags);
 int MXC_HTMR_RevA_EnableInt(mxc_htmr_reva_regs_t *htmr, uint32_t mask);
 int MXC_HTMR_RevA_DisableInt(mxc_htmr_reva_regs_t *htmr, uint32_t mask);
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_HTMR_HTMR_REVA_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_HTMR_HTMR_REVA_H_

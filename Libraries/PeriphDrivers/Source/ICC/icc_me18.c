@@ -62,4 +62,3 @@ void MXC_ICC_Flush(mxc_icc_regs_t *icc)
     MXC_ICC_Disable(icc);
     MXC_ICC_Enable(icc);
 }
-

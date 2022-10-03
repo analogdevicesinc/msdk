@@ -583,5 +583,4 @@ void MXC_LP_ICache1LightSleepEnable(void);
 #endif
 /**@} end of group pwrseq */
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_

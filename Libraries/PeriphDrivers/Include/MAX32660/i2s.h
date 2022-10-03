@@ -186,5 +186,4 @@ int MXC_I2S_DMA_SetReload(void *src_addr, void *dst_addr, unsigned int count);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_I2S_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_I2S_H_

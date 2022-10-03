@@ -227,5 +227,4 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_LP_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_LP_H_

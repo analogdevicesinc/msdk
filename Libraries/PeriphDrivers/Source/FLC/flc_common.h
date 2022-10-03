@@ -76,5 +76,4 @@ volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_COMMON_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_COMMON_H_

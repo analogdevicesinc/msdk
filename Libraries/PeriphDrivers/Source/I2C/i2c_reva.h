@@ -169,5 +169,4 @@ unsigned int MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c,
 void MXC_I2C_RevA_AsyncHandler(mxc_i2c_reva_regs_t *i2c, uint32_t interruptCheck);
 void MXC_I2C_RevA_DMACallback(int ch, int error);
 
-#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVA_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVA_H_

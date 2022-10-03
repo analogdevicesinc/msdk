@@ -94,5 +94,4 @@ void MXC_ICC_Flush(mxc_icc_regs_t *icc);
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_ICC_H_
-
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_ICC_H_

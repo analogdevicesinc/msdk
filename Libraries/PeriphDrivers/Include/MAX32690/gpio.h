@@ -333,4 +333,4 @@ int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t ma
 }
 #endif
 
-#endif  // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_GPIO_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_GPIO_H_

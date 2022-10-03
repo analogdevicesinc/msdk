@@ -194,4 +194,3 @@ void MXC_I2S_RegisterAsyncCallback(void (*callback)(int))
 {
     MXC_I2S_RevA_RegisterAsyncCallback(callback);
 }
-

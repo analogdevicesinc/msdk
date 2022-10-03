@@ -349,4 +349,3 @@ volatile uint32_t *MXC_FLC_GetRLR(uint32_t address, uint32_t page_num)
 
     return NULL;
 }
-
