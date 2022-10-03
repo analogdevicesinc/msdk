@@ -183,7 +183,6 @@ int main(void)
     MXC_LP_CryptoLightSleepEnable();
     MXC_LP_SRCCLightSleepEnable();
     MXC_LP_ICacheXIPLightSleepEnable();
-    MXC_LP_ICache0LightSleepEnable();
     MXC_LP_SysRam5LightSleepEnable();
     MXC_LP_SysRam4LightSleepEnable();
     MXC_LP_SysRam3LightSleepEnable();
@@ -200,7 +199,6 @@ int main(void)
     // MXC_LP_CryptoShutdown();
     MXC_LP_SRCCShutdown();
     MXC_LP_ICacheXIPShutdown();
-    MXC_LP_ICache0Shutdown();
     MXC_LP_SysRam5Shutdown();
     MXC_LP_SysRam4Shutdown();
     MXC_LP_SysRam3Shutdown();
