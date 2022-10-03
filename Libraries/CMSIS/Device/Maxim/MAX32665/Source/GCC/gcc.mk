@@ -48,7 +48,7 @@ OBJS        += $(PROJ_OBJS)
 # Goals
 
 # The default goal, which causes the example to be built.
-.DEFAULT_GOAL ?=
+.DEFAULT_GOAL :=
 .PHONY: all
 all: mkbuildir
 all: ${BUILD_DIR}/${PROJECT}.elf
