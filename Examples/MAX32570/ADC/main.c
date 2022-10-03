@@ -129,7 +129,7 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {};
+        while (!adc_done) {}
 
 #endif
 

@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _KEYPAD_H_
-#define _KEYPAD_H_
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_KEYPAD_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_KEYPAD_H_
 
 /*****************************    DEFINES    *********************************/
 #define KEY_0 '0'
@@ -61,4 +61,4 @@
 int keypad_init(void);
 int keypad_getkey(void);
 
-#endif /* _KEYPAD_H_ */
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_KEYPAD_H_

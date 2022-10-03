@@ -86,9 +86,9 @@
 #endif
 
 #if USE_CONSOLE
-#define PRINTF(...) printf(__VA_ARGS__)
+#define PRINTF(fmt, ...) printf((fmt), __VA_ARGS__)
 #else
-#define PRINTF(...)
+#define PRINTF(fmt, ...)
 #endif
 
 // *****************************************************************************

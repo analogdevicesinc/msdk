@@ -70,7 +70,6 @@
 static int g_slv_addr;
 
 static const uint8_t default_regs[][2] = {
-
     // From Linux Driver.
 
     { BANK_SEL, BANK_SEL_DSP },
@@ -402,6 +401,7 @@ static int dump_registers(void)
     unsigned char *ptr = buf;
     const char *banks[2] = { "DSP", "SENSOR" };
     unsigned char banks_select[2] = { BANK_SEL_DSP, BANK_SEL_SENSOR };
+    unsigned int sz = 64;
 
     for (k = 0; k < 2; k++) {
         printf("SECTION: %s\n", banks[k]);
@@ -412,6 +412,7 @@ static int dump_registers(void)
                 *ptr = '\0';
                 printf("%04X:%s\n", i - 16, buf);
                 ptr = buf;
+                sz = 64;
             }
 
             if (i == 256) {
@@ -421,18 +422,20 @@ static int dump_registers(void)
             ret = cambus_readb(i, &byt);
 
             if (ret == 0) {
-                ret = sprintf((char *)ptr, " %02X", byt);
+                ret = snprintf((char *)ptr, sz, " %02X", byt);
 
                 if (ret < 0) {
                     return ret;
                 }
 
                 ptr += 3; // XX + space
+                sz -= 3;
             } else {
                 //printf("\nREAD FAILED: reg:%X\n", i);
                 *ptr++ = '!';
                 *ptr++ = '!';
                 *ptr++ = ' ';
+                sz -= 3;
             }
         }
     }

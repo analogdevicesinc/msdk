@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef EXAMPLES_MAX32690_FLASH_CLI_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32690_FLASH_CLI_FREERTOSCONFIG_H_
 
 #include <stdint.h>
 #include "max32690.h"
@@ -107,4 +107,4 @@ void vPostSleepProcessing(uint32_t);
 /* FreeRTOS+CLI requires this size to be defined, but we do not use it */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 
-#endif /* FREERTOS_CONFIG_H */
+#endif // EXAMPLES_MAX32690_FLASH_CLI_FREERTOSCONFIG_H_
