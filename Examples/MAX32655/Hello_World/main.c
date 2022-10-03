@@ -50,8 +50,10 @@
 #include "sema_reva.h"
 
 /***** Definitions *****/
-#define NDX_ARM         (0)
-#define NDX_RISCV       (1)
+#define DUAL_CORE_SYNC          (1)
+
+#define NDX_ARM                 (0)
+#define NDX_RISCV               (1)
 
 #define MAILBOX_OVERHEAD (2 * sizeof(uint16_t))
 #define MAILBOX_PAYLOAD_LEN (MAILBOX_SIZE - MAILBOX_OVERHEAD)
@@ -75,9 +77,13 @@ extern mxcSemaBox_t *mxcSemaBox1;  // ARM reads,  RISCV writes
 // *****************************************************************************
 int main(void)
 {
+#if DUAL_CORE_SYNC
     printf("\nRISC-V: Start.\n");
-    printf("RISC-V:Hello world!\n");
+#else
+    printf("Hello World!\n");
+#endif
 
+#if DUAL_CORE_SYNC
     MXC_SEMA_Init(); 
 
     int ret = MXC_SEMA_CheckSema(NDX_RISCV);
@@ -95,11 +101,14 @@ int main(void)
 
     /* Signal ARM core to run. */
     printf("RISC-V: Signal ARM.\n");
-    MXC_SEMA_FreeSema(NDX_ARM);
+    MXC_SEMA_FreeSema(NDX_ARM);    
+#endif
 
-    uint32_t cnt;
+    uint32_t cnt = 0;
+
     /* Enter LPM */
     while (1) {
+#if DUAL_CORE_SYNC
         /* Wait */
         int ret = MXC_SEMA_CheckSema(NDX_RISCV);
         if (E_BUSY != ret) {
@@ -111,19 +120,28 @@ int main(void)
             cnt += mxcSemaBox0->payload[1] << (8 * 1);
             cnt += mxcSemaBox0->payload[2] << (8 * 2);
             cnt += mxcSemaBox0->payload[3] << (8 * 3);
-            
-            printf("RISC-V: cnt=%d\n", cnt++);
 
+            printf("RISC-V: cnt=%d\n", cnt++);
+#else
+            printf("count = %d\n", cnt++);
+#endif
+
+#if DUAL_CORE_SYNC
             mxcSemaBox1->payload[0] = (cnt >> 8 * 0) & 0xFF;
             mxcSemaBox1->payload[1] = (cnt >> 8 * 1) & 0xFF;
             mxcSemaBox1->payload[2] = (cnt >> 8 * 2) & 0xFF;
             mxcSemaBox1->payload[3] = (cnt >> 8 * 3) & 0xFF;
 
             /* Do other jobs here */
-            MXC_Delay(MXC_DELAY_SEC(1));
-
+#endif
+            LED_On(LED_RED);
+            MXC_Delay(500000);
+            LED_Off(LED_RED);
+            MXC_Delay(500000);
+#if DUAL_CORE_SYNC
             /* Signal */
             MXC_SEMA_FreeSema(NDX_ARM);
         }
+#endif
     }
 }

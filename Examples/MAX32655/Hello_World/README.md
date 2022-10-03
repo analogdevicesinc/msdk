@@ -4,6 +4,10 @@ A basic getting started program.
 
 This version of Hello_World prints an incrementing count to the console UART and toggles a LED0 every 500 ms.
 
+If change WITH_DUAL_CORE_SYNC to 1, it will enable the synchronization between the ARM core (CM4) and the RISC-V core (RV32). Please refer to App Note [The MAX32655: Why Two Cores Are Better Than One](https://www.maximintegrated.com/en/design/technical-documents/app-notes/7/7336.html).
+
+README file of project MAX32655/RV_ARM_Loader will present more details on the dual core synchronization.
+
 ## Setup
 
 ##### Board Selection

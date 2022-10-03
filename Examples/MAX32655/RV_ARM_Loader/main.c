@@ -49,8 +49,10 @@
 #include "sema_reva.h"
 
 /***** Definitions *****/
-#define NDX_ARM         (0)
-#define NDX_RISCV       (1)
+#define DUAL_CORE_SYNC          (1)
+
+#define NDX_ARM                 (0)
+#define NDX_RISCV               (1)
 
 #define MAILBOX_OVERHEAD (2 * sizeof(uint16_t))
 #define MAILBOX_PAYLOAD_LEN (MAILBOX_SIZE - MAILBOX_OVERHEAD)
@@ -74,6 +76,7 @@ extern mxcSemaBox_t *mxcSemaBox1;  // ARM reads,  RISCV writes
 // *****************************************************************************
 int main(void)
 {
+#if DUAL_CORE_SYNC
     printf("\n\n\n-----------------------------------\n");
     printf("ARM   : Start.\n");
 
@@ -89,6 +92,7 @@ int main(void)
     }
 
     printf("ARM   : Wait 2 secs then start the RISC-V core.\n");
+#endif
     MXC_Delay(MXC_DELAY_SEC(2));
 
     /* Enable RISCV debugger GPIO */
@@ -97,6 +101,7 @@ int main(void)
     /* Start the RISCV core */
     MXC_SYS_RISCVRun();
     
+#if DUAL_CORE_SYNC    
     /* Wait the RISC-V core to start */
     ret = E_BUSY;
     while (E_BUSY == ret) {
@@ -113,8 +118,10 @@ int main(void)
     MXC_SEMA_FreeSema(NDX_RISCV);
 
     uint32_t cnt;
+#endif
     /* Enter LPM */
     while (1) {
+#if DUAL_CORE_SYNC
         /* Wait */
         ret = MXC_SEMA_CheckSema(NDX_ARM);
         if (E_BUSY != ret) {
@@ -140,5 +147,6 @@ int main(void)
             /* Signal */
             MXC_SEMA_FreeSema(NDX_RISCV);
         }
+#endif
     }
 }
