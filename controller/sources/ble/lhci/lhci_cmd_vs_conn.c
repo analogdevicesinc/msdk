@@ -140,6 +140,12 @@ bool_t lhciConnVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       break;
     }
 
+    case LHCI_OPCODE_VS_RESET_CONN_STATS:
+    {
+      BbBleResetConnStats();
+      break;
+    }
+
     /* --- default --- */
 
     default:
@@ -170,6 +176,7 @@ bool_t lhciConnVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
       case LHCI_OPCODE_VS_SET_CONN_TX_PWR:
       case LHCI_OPCODE_VS_SET_CONN_PHY_TX_PWR:
+      case LHCI_OPCODE_VS_RESET_CONN_STATS:
         /* no action */
         break;
 
@@ -178,12 +185,6 @@ bool_t lhciConnVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         BbBleDataPktStats_t stats;
         BbBleGetConnStats(&stats);
         memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
-        break;
-      }
-
-      case LHCI_OPCODE_VS_RESET_CONN_STATS:
-      {
-        BbBleResetConnStats();
         break;
       }
 
