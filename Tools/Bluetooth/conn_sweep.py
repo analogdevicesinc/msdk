@@ -35,7 +35,9 @@
 
 ## dtm_sweep.py
  #
- # Sweep connection parameters
+ # Sweep connection parameters.
+ #
+ # Ensure that both targets are built with BT_VER := 9
  #
 
 import sys
@@ -63,16 +65,24 @@ parser.add_argument('masterSerial',help='Serial port for master device')
 parser.add_argument('results',help='CSV files to store the results')
 parser.add_argument('-d', '--delay', default=5,help='Number of seconds to wait before ending the test')
 parser.add_argument('-l', '--limit', default=0,help='PER limit for return value')
+parser.add_argument('-p', '--phys', default="1",help='PHYs to test with, comma separated list with 1-4.')
+parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, comma separated list.')
+parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 
 args = parser.parse_args()
+print(args)
 
 packetLengths    = [250]
-phys             = [1]
-txPowers         = [4]
-attens           = list(range(20,90,10))
+phys             = args.phys.strip().split(",")
+txPowers         = args.txpows.strip().split(",")
 
-# Add the max attenuation 
-attens.append(90)
+if(args.attens == None):
+    attens = list(range(20,90,10))
+
+    # Add the max attenuation 
+    attens.append(90)
+else:
+    attens = args.attens.strip().split(",")
 
 print("slaveSerial   :",args.slaveSerial)
 print("masterSerial  :",args.masterSerial)
@@ -81,6 +91,7 @@ print("delay         :",args.delay)
 print("packetLengths :",packetLengths)
 print("phys          :",phys)
 print("attens        :",attens)
+print("txPowers      :",txPowers)
 print("PER limit     :",args.limit)
 
 # Open the results file, write the parameters
