@@ -101,19 +101,19 @@ void TFT_test(void)
     MXC_TFT_ClearScreen();
 
     memset(buff, 32, TFT_BUFF_SIZE);
-    sprintf(buff, "ANALOG DEVICES");
+    snprintf(buff, sizeof(buff), "ANALOG DEVICES");
     TFT_Print(buff, 0, 10, font_1, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 50, font_2, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 100, font_3, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 150, font_4, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 200, font_5, 14);
 
     MXC_Delay(MXC_DELAY_SEC(3));
@@ -147,6 +147,7 @@ void print_time(void)
     int x, y;
     static int last_x = 0;
     static int last_y = 0;
+    int seed = 78002;
 
     sec = MXC_RTC_GetSecond();
     day = sec / SECS_PER_DAY;
@@ -156,8 +157,8 @@ void print_time(void)
     min = sec / SECS_PER_MIN;
     sec -= min * SECS_PER_MIN;
 
-    x = rand() % (DISPLAY_WIDTH - (font_5_width * 8));
-    y = rand() % (DISPLAY_HEIGHT - font_5_height);
+    x = rand_r(&seed) % (DISPLAY_WIDTH - (font_5_width * 8));
+    y = rand_r(&seed) % (DISPLAY_HEIGHT - font_5_height);
 
     TFT_Print("        ", last_x, last_y, font_5, 8);
     TFT_Print(buf, x, y, font_5, snprintf(buf, sizeof(buf), "%02d:%02d:%02d", hr, min, sec));
@@ -181,8 +182,6 @@ int main(void)
     MXC_ICC_Enable(MXC_ICC0);
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
-
-    srand(78002);
 
     printf("TFT Demo Example\n");
     /* Initialize TFT display */
