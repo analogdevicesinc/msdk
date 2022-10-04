@@ -139,12 +139,12 @@ export CMSIS_ROOT
 
 # The following paths are searched by default, where "./" is the project directory.
 # ./
-# ├─ *.h
-# ├─ *.c
-# ├─include (optional)
-#   └─ *.h
-# ├─src (optional)
-#   └─ *.c
+# |- *.h
+# |- *.c
+# |-include (optional)
+#   |- *.h
+# |-src (optional)
+#   |- *.c
 
 # Configuration Variables:
 # - VPATH : Tell this Makefile to search additional locations for source (.c) files.
