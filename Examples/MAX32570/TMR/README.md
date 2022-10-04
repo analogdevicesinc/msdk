@@ -2,9 +2,9 @@
 
 Two timers are used to demonstrate two different modes of the general purpose timers.
 
-1. A continuous mode timer is used to create an interrupt at freq of 1 Hz. LED0 (Port 1.06) will toggle each time the interrupt occurs.
+1. A continuous mode timer is used to create an interrupt at freq of 1 Hz. LED1 will toggle each time the interrupt occurs.
 
-2. Timer 0 is used to output a PWM signal on Port 1.0. The PWM frequency is 200 Hz and the duty cycle is 75%.
+2. Timer 0 is used to output a PWM signal on Port 1.14. The PWM frequency is 200 Hz and the duty cycle is 75%.
 
 ## Required Connections
 
@@ -20,7 +20,7 @@ The Console UART of the device will output these messages:
 ************************** Timer Example **************************
 
 1. A continuous mode timer is used to create an interrupt every 1 sec.
-   LED0 (Port 3.05) will toggle each time the interrupt occurs.
+   LED1 will toggle each time the interrupt occurs.
 
 2. Timer 0 is used to output a PWM signal on Port 1.14.
    The PWM frequency is 200 Hz and the duty cycle is 75%.
