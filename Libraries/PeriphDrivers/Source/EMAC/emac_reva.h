@@ -31,8 +31,8 @@
  *
  *************************************************************************** */
 
-#ifndef _EMAC_REVA_H_
-#define _EMAC_REVA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_EMAC_EMAC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_EMAC_EMAC_REVA_H_
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -181,7 +181,7 @@ typedef struct {
     unsigned int rx_buffer_dma;
     unsigned int rx_ring_dma;
     unsigned int tx_ring_dma;
-    unsigned short phy_addr;
+    uint16_t phy_addr;
 
     unsigned int first_init;
     unsigned int rx_buffer_size;
@@ -202,7 +202,7 @@ typedef struct {
     unsigned int rx_buff_size;
     unsigned int rx_ring_buff_size;
     unsigned int tx_ring_buff_size;
-    unsigned short phy_addr;
+    uint16_t phy_addr;
     unsigned int interrupt_mode;
     unsigned int interrupt_events;
     mxc_emac_delay_func_t delay_us;
@@ -234,4 +234,4 @@ int MXC_EMAC_RevA_SendAsync(const void *packet, unsigned int length);
 int MXC_EMAC_RevA_Recv(void *rx_buff, unsigned int max_len);
 void MXC_EMAC_RevA_IrqHandler(void);
 
-#endif /* _EMAC_REVA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_EMAC_EMAC_REVA_H_

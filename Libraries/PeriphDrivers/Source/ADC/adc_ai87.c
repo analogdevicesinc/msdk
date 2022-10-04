@@ -222,7 +222,6 @@ int MXC_ADC_InputDividerSelect(mxc_adc_chsel_t ch, mxc_adc_divsel_t div,
 {
     uint32_t bitOffset;
 
-    //TODO
     if (ch > MXC_ADC_CH_7 || div > MXC_ADC_DIV2_50K) {
         return E_BAD_PARAM;
     }

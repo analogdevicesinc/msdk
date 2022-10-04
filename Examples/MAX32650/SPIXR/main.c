@@ -146,5 +146,5 @@ int main(void)
     // Disable the SPIXR
     MXC_SPIXR_Disable();
 
-    while (1) {}
+    return 0;
 }

@@ -40,10 +40,8 @@
 /* **** Includes **** */
 #include <stdio.h>
 #include <stdint.h>
-#include "max32650.h"
 #include "led.h"
 #include "mxc_delay.h"
-#include "mxc_assert.h"
 
 /* **** Definitions **** */
 

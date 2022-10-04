@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _AES_H_
-#define _AES_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_AES_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_AES_H_
 
 /***** Includes *****/
 #include "aes_regs.h"
@@ -314,4 +314,4 @@ int MXC_AES_HasPORKey();
 #endif
 /**@} end of group aes */
 
-#endif /* _AES_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_AES_H_

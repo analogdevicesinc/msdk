@@ -44,7 +44,6 @@
 #include <string.h>
 #include "mxc_errors.h"
 #include "tpu.h"
-#include "tpu_regs.h"
 
 /* **** Definitions **** */
 #define MXC_DES_DATA_LEN \

@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _AES_H_
-#define _AES_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_AES_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_AES_H_
 
 /***** Includes *****/
 #include "aes_regs.h"
@@ -283,4 +283,4 @@ void MXC_AES_SetExtKey(const void *key, mxc_aes_keys_t len);
 #endif
 /**@} end of group aes */
 
-#endif /* _AES_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_AES_H_
