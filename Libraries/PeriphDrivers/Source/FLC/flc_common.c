@@ -1,6 +1,6 @@
 /**
- * @file flc.h
- * @brief      Flash Controler driver.
+ * @file flc_common.c
+ * @brief      Common functions for the flash controller drivers.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 /* ****************************************************************************
@@ -45,6 +45,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "flc.h"
+#include "flc_common.h"
 #include "stdlib.h"
 
 //******************************************************************************

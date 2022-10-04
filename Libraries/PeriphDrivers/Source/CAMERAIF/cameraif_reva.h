@@ -31,6 +31,9 @@
 *
 ******************************************************************************/
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_CAMERAIF_CAMERAIF_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_CAMERAIF_CAMERAIF_REVA_H_
+
 /****** Includes *******/
 #include <stdint.h>
 #include "cameraif_reva_regs.h"
@@ -79,3 +82,5 @@ void MXC_PCIF_RevA_DisableInt(mxc_cameraif_reva_regs_t *cameraif, uint32_t flags
 void MXC_PCIF_RevA_Start(mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_readmode_t readmode);
 void MXC_PCIF_RevA_Stop(mxc_cameraif_reva_regs_t *cameraif);
 unsigned int MXC_PCIF_RevA_GetData(mxc_cameraif_reva_regs_t *cameraif);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CAMERAIF_CAMERAIF_REVA_H_

@@ -35,12 +35,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "gpio.h"
 #include "gpio_reva.h"
 #include "gpio_common.h"
-#include <stddef.h>
 #include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "mcr_regs.h"
@@ -97,7 +97,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 
     port = MXC_GPIO_GET_IDX(cfg->port);
 
-    // TODO: Find restricted pins
+    // TODO(jake.carter): Find restricted pins
     // // Don't use inaccessible pins
     // if((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_INACCESSIBLE)) {
     //     return E_NOT_SUPPORTED;

@@ -104,7 +104,7 @@ void MXC_LP_EnterShutDownMode(void)
 
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 {
-    //TODO: not supported yet
+    //TODO(all): not supported yet
 }
 
 void MXC_LP_RetentionRegEnable(void)
@@ -288,7 +288,7 @@ void MXC_LP_DisableComparatorWakeup(mxc_adc_comp_t comp)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_AINCOMP_WE;
 }
 
-// TODO: Add MXC_LP_Enable/DisableUARTWakeup functions for LP UARTs.
+// TODO(all): Add MXC_LP_Enable/DisableUARTWakeup functions for LP UARTs.
 
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {

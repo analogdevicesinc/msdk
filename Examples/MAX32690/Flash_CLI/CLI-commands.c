@@ -180,12 +180,12 @@ static BaseType_t prvEraseCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
         portEXIT_CRITICAL();
         if (retval != E_NO_ERROR) {
             memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-            sprintf(pcWriteBuffer, "Erase failed with error %i\r\n", retval);
+            snprintf(pcWriteBuffer, xWriteBufferLen, "Erase failed with error %i\r\n", retval);
             return pdFALSE;
         }
     }
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sprintf(pcWriteBuffer, "Success\r\n");
+    snprintf(pcWriteBuffer, xWriteBufferLen, "Success\r\n");
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -215,10 +215,10 @@ static BaseType_t prvWriteCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
     vPortFree(data);
     if (retval != E_NO_ERROR) {
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "Write failed with error %i\r\n", retval);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "Write failed with error %i\r\n", retval);
     } else {
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "Success\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "Success\r\n");
     }
 
     return pdFALSE;
@@ -248,12 +248,12 @@ static BaseType_t prvReadCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
     int retval = flash_read(FLASH_STORAGE_START_ADDR + offset * 4, length, data);
     if (retval != E_NO_ERROR) {
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "Read failed with error %i\r\n", retval);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "Read failed with error %i\r\n", retval);
     } else {
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "Success: \r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "Success: \r\n");
         strncat(pcWriteBuffer, (char *)data, length);
-        strcat(pcWriteBuffer, "\r\n");
+        strncat(pcWriteBuffer, "\r\n", 3);
     }
     vPortFree(data);
 
@@ -276,7 +276,7 @@ static BaseType_t prvCRCCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
         calculate_crc((uint32_t *)FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE / sizeof(uint32_t));
     portEXIT_CRITICAL();
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sprintf(pcWriteBuffer, "CRC: 0x%08X\r\n", crc);
+    snprintf(pcWriteBuffer, xWriteBufferLen, "CRC: 0x%08X\r\n", crc);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/

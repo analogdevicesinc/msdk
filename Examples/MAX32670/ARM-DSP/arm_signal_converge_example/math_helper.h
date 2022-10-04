@@ -41,8 +41,8 @@
 
 #include "arm_math.h"
 
-#ifndef MATH_HELPER_H
-#define MATH_HELPER_H
+#ifndef EXAMPLES_MAX32670_ARM_DSP_ARM_SIGNAL_CONVERGE_EXAMPLE_MATH_HELPER_H_
+#define EXAMPLES_MAX32670_ARM_DSP_ARM_SIGNAL_CONVERGE_EXAMPLE_MATH_HELPER_H_
 
 float arm_snr_f32(float *pRef, float *pTest, uint32_t buffSize);
 void arm_float_to_q12_20(float *pIn, q31_t *pOut, uint32_t numSamples);
@@ -57,4 +57,5 @@ void arm_apply_guard_bits(float32_t *pIn, uint32_t numSamples, uint32_t guard_bi
 uint32_t arm_compare_fixed_q15(q15_t *pIn, q15_t *pOut, uint32_t numSamples);
 uint32_t arm_compare_fixed_q31(q31_t *pIn, q31_t *pOut, uint32_t numSamples);
 uint32_t arm_calc_2pow(uint32_t guard_bits);
-#endif
+
+#endif // EXAMPLES_MAX32670_ARM_DSP_ARM_SIGNAL_CONVERGE_EXAMPLE_MATH_HELPER_H_

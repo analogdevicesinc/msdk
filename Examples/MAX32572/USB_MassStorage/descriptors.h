@@ -30,8 +30,8 @@
 * ownership rights.
 ******************************************************************************/
 
-#ifndef _DESCRIPTORS_H_
-#define _DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32572_USB_MASSSTORAGE_DESCRIPTORS_H_
+#define EXAMPLES_MAX32572_USB_MASSSTORAGE_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -129,4 +129,4 @@ uint8_t serial_id_desc[] = { 26, /* bLength */
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '1', 0 };
 
-#endif /* _DESCRIPTORS_H_ */
+#endif // EXAMPLES_MAX32572_USB_MASSSTORAGE_DESCRIPTORS_H_

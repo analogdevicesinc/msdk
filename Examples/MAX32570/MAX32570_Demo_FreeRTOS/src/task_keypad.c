@@ -34,15 +34,16 @@
  ******************************************************************************/
 
 #include <string.h>
-
-#include "MAX32xxx.h"
-#include "keypad.h"
-#include "message.h"
+#include <stdint.hs>
 
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
+
+#include "MAX32xxx.h"
+#include "keypad.h"
+#include "message.h"
 
 static unsigned int is_key_pressed;
 extern xQueueHandle xQueueMain;
@@ -114,7 +115,7 @@ void vGetKEYTask(void *pvParameters)
 {
     (void)pvParameters;
 
-    unsigned short *key;
+    uint16_t *key;
     mxc_skbd_keys_t keys = { 0, 0, 0, 0 };
     volatile unsigned int in;
     volatile unsigned int out;

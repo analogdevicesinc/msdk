@@ -40,11 +40,13 @@
 #include <emv_l1_stack/iso14443_3b_flow.h>
 #include <emv_l1_stack/iso14443_4_transitive.h>
 
+#include <mml_nfc_pcd_rf_driver.h>
+
 #include <string.h>
+
 #include "mml_nfc_pcd_port.h"
 #include "EMV_polling_and_loopback.h"
 
-#include <mml_nfc_pcd_rf_driver.h>
 #include "logging.h"
 #include "mxc_device.h"
 #include "gpio.h"
@@ -236,7 +238,6 @@ static int32_t emvl1interopapduloop(void)
         //pre next capdu,no status
         memcpy(capdu, rapdu, rapdulen - 2);
         capdulen = rapdulen - 2;
-
     } while (1);
 
     return ret;
@@ -310,7 +311,6 @@ static int32_t emvl1apduloop(void)
         //pre next capdu,no status
         memcpy(capdu, rapdu, rapdulen - 2);
         capdulen = rapdulen - 2;
-
     } while (1);
 
     return ret;

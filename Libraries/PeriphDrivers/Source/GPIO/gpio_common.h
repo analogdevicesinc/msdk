@@ -31,8 +31,12 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_COMMON_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_COMMON_H_
+
 /* **** Includes **** */
 #include "gpio_regs.h"
+#include "gpio.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,3 +54,5 @@ void MXC_GPIO_Common_Handler(unsigned int port);
 #ifdef __cplusplus
 }
 #endif
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_COMMON_H_

@@ -27,9 +27,9 @@
  * This file is part of the lwIP TCP/IP stack.
  *
  */
-#ifndef LWIP_TCPECHO_RAW_H
-#define LWIP_TCPECHO_RAW_H
+#ifndef EXAMPLES_MAX32572_LWIP_TCP_TCPECHO_RAW_H_
+#define EXAMPLES_MAX32572_LWIP_TCP_TCPECHO_RAW_H_
 
 void tcpecho_raw_init(void);
 
-#endif /* LWIP_TCPECHO_RAW_H */
+#endif // EXAMPLES_MAX32572_LWIP_TCP_TCPECHO_RAW_H_

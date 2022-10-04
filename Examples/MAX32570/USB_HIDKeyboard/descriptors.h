@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _DESCRIPTORS_H_
-#define _DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32570_USB_HIDKEYBOARD_DESCRIPTORS_H_
+#define EXAMPLES_MAX32570_USB_HIDKEYBOARD_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -154,4 +154,4 @@ __attribute__((aligned(4))) uint8_t serial_id_desc[] = { 0x20, /* bLength */
                                                          '0',  0, '0', 0, '0', 0, '0', 0, '0', 0,
                                                          '0',  0, '0', 0, '0', 0, '1', 0 };
 
-#endif /* _DESCRIPTORS_H_ */
+#endif // EXAMPLES_MAX32570_USB_HIDKEYBOARD_DESCRIPTORS_H_

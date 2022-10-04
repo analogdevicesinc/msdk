@@ -30,8 +30,8 @@
 * ownership rights.
 ******************************************************************************/
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_FREERTOSCONFIG_H_
 
 #include "max32572.h"
 
@@ -48,12 +48,12 @@
  *----------------------------------------------------------*/
 
 /* CMSIS keeps a global updated with current system clock in Hz */
-#define configCPU_CLOCK_HZ ((unsigned long)150000000)
+#define configCPU_CLOCK_HZ ((uint32_t)150000000)
 
 /* Tick-less idle forces a 32768 Hz RTC-derived SysTick source, and a 256 Hz task tick */
 //#define configUSE_TICKLESS_IDLE     1
 #if defined(configUSE_TICKLESS_IDLE) && (configUSE_TICKLESS_IDLE > 0)
-#define configSYSTICK_CLK_HZ ((unsigned long)32768)
+#define configSYSTICK_CLK_HZ ((uint32_t)32768)
 #define configTICK_RATE_HZ ((portTickType)256)
 #else
 #define configTICK_RATE_HZ ((portTickType)1000)
@@ -62,7 +62,7 @@
 
 #define configTOTAL_HEAP_SIZE ((size_t)(26 * 1024))
 
-#define configMINIMAL_STACK_SIZE ((unsigned short)128)
+#define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
 #define configMAX_PRIORITIES 5
 #define configUSE_PREEMPTION 0
@@ -102,8 +102,8 @@ to exclude the API function. */
 #ifdef configUSE_TICKLESS_IDLE
 #define configRTC_TICK_RATE_HZ ((portTickType)4096)
 /* Provide routines for tickless idle pre- and post- processing */
-void vPreSleepProcessing(unsigned long *);
-void vPostSleepProcessing(unsigned long);
+void vPreSleepProcessing(uint32_t *);
+void vPostSleepProcessing(uint32_t);
 #define configPRE_SLEEP_PROCESSING(idletime) vPreSleepProcessing(&idletime);
 #define configPOST_SLEEP_PROCESSING(idletime) vPostSleepProcessing(idletime);
 #endif
@@ -111,4 +111,4 @@ void vPostSleepProcessing(unsigned long);
 /* FreeRTOS+CLI requires this size to be defined, but we do not use it */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 
-#endif /* FREERTOS_CONFIG_H */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_FREERTOSCONFIG_H_

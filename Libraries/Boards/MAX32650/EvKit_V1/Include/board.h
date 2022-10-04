@@ -46,6 +46,8 @@
 extern "C" {
 #endif
 
+#define BOARD_EVKIT_V1 1 /// Used in examples to control program flow.
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
 #endif

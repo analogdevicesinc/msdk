@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_UTILS_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_UTILS_H_
 
 /*****************************     DEFINES    *********************************/
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -53,4 +53,4 @@ void timer_init(TimerCb cb);
 void timer_stop(void);
 void timer_start(unsigned int to);
 
-#endif // _UTILS_H_
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_UTILS_H_

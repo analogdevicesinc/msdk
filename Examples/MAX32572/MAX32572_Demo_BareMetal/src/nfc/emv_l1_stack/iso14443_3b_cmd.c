@@ -72,7 +72,6 @@ int32_t iso_14443_3b_cmd_req_wup(uint8_t *atq, int32_t *atq_len, uint8_t doretry
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_ATQB);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
@@ -129,7 +128,6 @@ int32_t iso_14443_3b_cmd_attrib(uint8_t *pupi, uint8_t para1, uint8_t para2, uin
         if ((retry > 1) && (ret == ISO14443_3_ERR_TIMEOUT || ret == ISO14443_3_ERR_COLLISION)) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + timeout);
         }
-
     } while (--retry && (ret == ISO14443_3_ERR_TIMEOUT || ret == ISO14443_3_ERR_COLLISION));
 
     return ret;

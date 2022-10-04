@@ -36,6 +36,11 @@
 
 #include <string.h>
 
+#include <FreeRTOS.h>
+#include <task.h>
+#include <queue.h>
+#include <semphr.h>
+
 #include "MAX32xxx.h"
 #include "message.h"
 #include "keypad.h"
@@ -47,18 +52,13 @@
 #include "sc_types.h"
 #include "smartcard_api.h"
 
-#include <FreeRTOS.h>
-#include <task.h>
-#include <queue.h>
-#include <semphr.h>
-
 #include "demo_config.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 
-/********************************* 	 	TYPE DEF	 *************************/
+/*********************************      TYPE DEF     *************************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 mxc_sc_context_t sc_context = { 0 };
 
 static UartId_t g_uartId = SCI_1;
@@ -165,8 +165,8 @@ int sc_init(void)
     }
 
     /* as the card has been powered off, we must reset
-	 * the initparams, emv mode and working buffer
-	 */
+     * the initparams, emv mode and working buffer
+     */
 
     /* Set the ATR timings  + card voltage */
     retval = SCAPI_ioctl(g_card_slot, IOCTL_SET_INITPARAMS, (void *)&ActivationParams);

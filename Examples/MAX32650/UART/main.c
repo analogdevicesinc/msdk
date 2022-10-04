@@ -208,15 +208,13 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    printf("\n");
-
     if (fail == 0) {
-        printf("-->EXAMPLE SUCCEEDED\n");
+        printf("\n-->EXAMPLE SUCCEEDED\n");
         LED_On(1);
     } else {
-        printf("-->EXAMPLE FAILED\n");
+        printf("\n-->EXAMPLE FAILED\n");
         LED_On(0);
     }
 
-    while (1) {}
+    return 0;
 }

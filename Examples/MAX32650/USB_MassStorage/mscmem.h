@@ -36,8 +36,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef __MSC_MEM_H__
-#define __MSC_MEM_H__
+#ifndef EXAMPLES_MAX32650_USB_MASSSTORAGE_MSCMEM_H_
+#define EXAMPLES_MAX32650_USB_MASSSTORAGE_MSCMEM_H_
 
 /* **** Include Files **** */
 #include <stdint.h>
@@ -94,4 +94,4 @@ int mscmem_Write(uint32_t lba, uint8_t *buffer);
  */
 int mscmem_Ready(void);
 
-#endif /* __MSC_MEM_H__ */
+#endif // EXAMPLES_MAX32650_USB_MASSSTORAGE_MSCMEM_H_

@@ -36,8 +36,8 @@
  * 
  *************************************************************************** */
 
-#ifndef _CRC_H_
-#define _CRC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_CRC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_CRC_H_
 
 /***** Includes *****/
 #include "crc_regs.h"
@@ -179,4 +179,4 @@ int MXC_CRC_ComputeAsync(mxc_crc_req_t *req);
 #endif
 /**@} end of group crc */
 
-#endif /* _CRC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_CRC_H_

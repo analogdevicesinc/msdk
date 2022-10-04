@@ -129,8 +129,7 @@ void test_function(void)
     // Defining Variable(s) to write & store data to RAM
     uint8_t write_buffer[BUFFER_SIZE], read_buffer[BUFFER_SIZE];
     uint8_t *address = (uint8_t *)A1024_ADDRESS;
-    {
-    }
+
     /* Variable to store address of RAM */
     int temp, i;
 
@@ -179,5 +178,6 @@ int main(void)
     test_function();
 
     printf("Example complete.\n");
-    while (1) {}
+
+    return 0;
 }

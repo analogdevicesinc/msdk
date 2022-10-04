@@ -53,7 +53,6 @@
 static int g_slv_addr;
 
 static const uint8_t default_regs[][2] = {
-
     /*
      * Clock scale: 3 = 15fps
      *              2 = 20fps
@@ -331,12 +330,14 @@ static int dump_registers(void)
     unsigned int i;
     unsigned char buf[64] = { 0 };
     unsigned char *ptr = buf;
+    unsigned int sz = 64;
 
     for (i = 0;; i++) {
         if ((i != 0) && !(i % 16)) {
             *ptr = '\0';
             printf("%04X:%s\n", i - 16, buf);
             ptr = buf;
+            sz = 64;
         }
 
         if (i == 256) {
@@ -346,18 +347,20 @@ static int dump_registers(void)
         ret = cambus_readb(i, &byt);
 
         if (ret == 0) {
-            ret = sprintf((char *)ptr, " %02X", byt);
+            ret = snprintf((char *)ptr, sz, " %02X", byt);
 
             if (ret < 0) {
                 return ret;
             }
 
             ptr += 3; // XX + space
+            sz -= 3;
         } else {
             //printf("\nREAD FAILED: reg:%X\n", i);
             *ptr++ = '!';
             *ptr++ = '!';
             *ptr++ = ' ';
+            sz -= 3;
         }
     }
 

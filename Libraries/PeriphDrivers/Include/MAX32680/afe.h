@@ -38,8 +38,8 @@
 *******************************************************************************
 */
 
-#ifndef _AFE_H_
-#define _AFE_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -117,4 +117,4 @@ void afe_dump_registers(uint32_t reg_bank);
 }
 #endif
 
-#endif /* _AFE_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_H_

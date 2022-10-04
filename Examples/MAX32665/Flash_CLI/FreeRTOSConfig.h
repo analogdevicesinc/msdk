@@ -31,9 +31,10 @@
  *
  ******************************************************************************/
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef EXAMPLES_MAX32665_FLASH_CLI_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32665_FLASH_CLI_FREERTOSCONFIG_H_
 
+#include <stdint.h>
 #include "max32665.h"
 
 /*-----------------------------------------------------------
@@ -49,7 +50,7 @@
  *----------------------------------------------------------*/
 
 /* CMSIS keeps a global updated with current system clock in Hz */
-#define configCPU_CLOCK_HZ ((unsigned long)HIRC96_FREQ)
+#define configCPU_CLOCK_HZ ((uint32_t)HIRC96_FREQ)
 
 // #define configUSE_TICKLESS_IDLE     1
 
@@ -58,7 +59,7 @@
 
 #define configTOTAL_HEAP_SIZE ((size_t)(26 * 1024))
 
-#define configMINIMAL_STACK_SIZE ((unsigned short)128)
+#define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
 #define configMAX_PRIORITIES 5
 #define configUSE_PREEMPTION 1
@@ -97,8 +98,8 @@ to exclude the API function. */
 
 #ifdef configUSE_TICKLESS_IDLE
 /* Provide routines for tickless idle pre- and post- processing */
-void vPreSleepProcessing(unsigned long *);
-void vPostSleepProcessing(unsigned long);
+void vPreSleepProcessing(uint32_t *);
+void vPostSleepProcessing(uint32_t);
 #define configPRE_SLEEP_PROCESSING(idletime) vPreSleepProcessing(&idletime);
 #define configPOST_SLEEP_PROCESSING(idletime) vPostSleepProcessing(idletime);
 #endif
@@ -106,4 +107,4 @@ void vPostSleepProcessing(unsigned long);
 /* FreeRTOS+CLI requires this size to be defined, but we do not use it */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 
-#endif /* FREERTOS_CONFIG_H */
+#endif // EXAMPLES_MAX32665_FLASH_CLI_FREERTOSCONFIG_H_

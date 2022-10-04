@@ -49,12 +49,12 @@
 #include <string.h>
 #include "mxc_device.h"
 #include "mxc_delay.h"
-#include <emvl1_app.h>
-#include <board.h>
+#include "emvl1_app.h"
+#include "board.h"
 
 #include "tft.h"
 #include "bitmap.h"
-#include <mml_nfc_pcd_rf_driver.h>
+#include "mml_nfc_pcd_rf_driver.h"
 
 static int setup_display(void)
 {

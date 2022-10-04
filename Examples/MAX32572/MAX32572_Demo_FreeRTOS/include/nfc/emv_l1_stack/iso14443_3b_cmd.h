@@ -38,8 +38,8 @@
 *******************************************************************************
 */
 
-#ifndef __ISO14443_3B_CMD_H__
-#define __ISO14443_3B_CMD_H__
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_CMD_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_CMD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -147,4 +147,4 @@ int32_t iso_14443_3b_cmd_halt(uint8_t *pupi);
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_CMD_H_

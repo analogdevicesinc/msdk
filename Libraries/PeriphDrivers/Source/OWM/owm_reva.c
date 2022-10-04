@@ -197,7 +197,6 @@ int MXC_OWM_RevA_Write(mxc_owm_reva_regs_t *owm, uint8_t *data, int len)
     owm->cfg &= ~MXC_F_OWM_REVA_CFG_SINGLE_BIT_MODE; // Set to 8 bit mode
 
     while (num < len) { // Loop for number of bytes to write
-
         if (MXC_OWM_WriteByte(data[num]) != E_NO_ERROR) {
             return E_COMM_ERR;
         }
@@ -473,7 +472,6 @@ int MXC_OWM_RevA_SearchROM(mxc_owm_reva_regs_t *owm, int newSearch, uint8_t *ROM
                 rom_byte_number++;
                 rom_nibble_mask = 0x0F;
             }
-
         } // End while(rom_byte_number < 8)
 
         // Clear search ROM accelerator
