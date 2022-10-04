@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_HTMR_HTMR_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_HTMR_HTMR_REVA_H_
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -55,3 +58,5 @@ int MXC_HTMR_RevA_GetFlags(mxc_htmr_reva_regs_t *htmr);
 int MXC_HTMR_RevA_ClearFlags(mxc_htmr_reva_regs_t *htmr, int flags);
 int MXC_HTMR_RevA_EnableInt(mxc_htmr_reva_regs_t *htmr, uint32_t mask);
 int MXC_HTMR_RevA_DisableInt(mxc_htmr_reva_regs_t *htmr, uint32_t mask);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_HTMR_HTMR_REVA_H_

@@ -1,5 +1,5 @@
 /**
- * @file flc.h
+ * @file flc_me18.c
  * @brief      Flash Controler driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */

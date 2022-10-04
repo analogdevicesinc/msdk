@@ -32,10 +32,11 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
+#include "gpio_common.h"
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "gpio.h"
-#include <stddef.h>
 
 /* **** Globals **** */
 static void (*callback[MXC_CFG_GPIO_INSTANCES][MXC_CFG_GPIO_PINS_PORT])(void *);
