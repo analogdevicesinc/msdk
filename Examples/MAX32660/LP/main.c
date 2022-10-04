@@ -162,7 +162,7 @@ int main(void)
 #if USE_ALARM
     PRINT("This code cycles through the MAX32660 power modes, using the RTC alarm to exit from "
           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
+          DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
