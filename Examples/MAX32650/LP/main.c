@@ -51,7 +51,6 @@
  *            8. BACKUP mode
  */
 
-
 #include <stdio.h>
 #include <stdint.h>
 #include "mxc_errors.h"
