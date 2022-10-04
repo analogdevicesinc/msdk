@@ -161,14 +161,14 @@ int main(void)
 
 #if USE_ALARM
     PRINT("This code cycles through the MAX32660 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
+          "each mode.  The modes will change every %d seconds.\n\n",
            DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
     PRINT("This code cycles through the MAX32660 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
+          "from each mode and enter the next.\n\n");
     PB_Init();
     PB_RegisterCallback(0, buttonHandler);
     __enable_irq();

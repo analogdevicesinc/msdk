@@ -105,7 +105,7 @@ int main(void)
     PRINT("****Low Power Mode Example****\n\n");
 
     PRINT("This code cycles through the MAX32520 power modes, "
-           "using a push button (SW2) to exit from each mode and enter the next.\n\n");
+          "using a push button (SW2) to exit from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 
     PRINT("Running in ACTIVE mode.\n");
