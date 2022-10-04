@@ -71,7 +71,6 @@ typedef enum {
     MXC_LP_IPO = MXC_F_GCR_PM_IPO_PD,
     MXC_LP_IBRO = MXC_F_GCR_PM_IBRO_PD,
     MXC_LP_XRFO = MXC_F_GCR_PM_ERFO_PD,
-    MXC_LP_NFC = MXC_F_GCR_PM_NFC_PD
 } mxc_lp_cfg_ds_pd_t;
 
 /**

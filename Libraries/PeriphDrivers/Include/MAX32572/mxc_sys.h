@@ -41,6 +41,7 @@
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
+#include "mcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -80,13 +81,11 @@ typedef enum {
     MXC_SYS_RESET1_WDT1 = (MXC_F_GCR_RST1_WDT1_POS + 32), /**< Reset WDT1 */
     MXC_SYS_RESET1_SPI2 = (MXC_F_GCR_RST1_SPI2_POS + 32), /**< Reset SPI2 */
     MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC */
-    MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset I2C2 */
     MXC_SYS_RESET1_UART3 = (MXC_F_GCR_RST1_UART3_POS + 32), /**< Reset UART3 */
     MXC_SYS_RESET1_SKBD = (MXC_F_GCR_RST1_SKBD_POS + 32), /**< Reset SKBD */
     MXC_SYS_RESET1_MSRADC = (MXC_F_GCR_RST1_MSRADC_POS + 32), /**< Reset MSRADC */
     MXC_SYS_RESET1_SC0 = (MXC_F_GCR_RST1_SC0_POS + 32), /**< Reset SC0 */
     MXC_SYS_RESET1_SC1 = (MXC_F_GCR_RST1_SC1_POS + 32), /**< Reset SC1 */
-    MXC_SYS_RESET1_NFC = (MXC_F_GCR_RST1_NFC_POS + 32), /**< Reset NFC */
     MXC_SYS_RESET1_HTMR0 = (MXC_F_GCR_RST1_HTMR0_POS + 32), /**< Reset HTMR0 */
     MXC_SYS_RESET1_HTMR1 = (MXC_F_GCR_RST1_HTMR1_POS + 32), /**< Reset HTMR1 */
     MXC_SYS_RESET1_CPU1 = (MXC_F_GCR_RST1_CPU1_POS + 32), /**< Reset CPU1 */
