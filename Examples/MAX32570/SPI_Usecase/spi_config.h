@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef SPI_CONFIG_H_
-#define SPI_CONFIG_H_
+#ifndef EXAMPLES_MAX32570_SPI_USECASE_SPI_CONFIG_H_
+#define EXAMPLES_MAX32570_SPI_USECASE_SPI_CONFIG_H_
 
 #include "max32570.h"
 #include "spi_regs.h"
@@ -60,4 +60,4 @@ int spi_slave_init(void);
 int spi_slave_send(unsigned char *src, unsigned int srcLen);
 int spi_slave_rcv(unsigned char *dst, unsigned int maxLen, unsigned int *len);
 
-#endif /* SPI_CONFIG_H_ */
+#endif // EXAMPLES_MAX32570_SPI_USECASE_SPI_CONFIG_H_

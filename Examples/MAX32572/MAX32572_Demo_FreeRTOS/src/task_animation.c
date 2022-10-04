@@ -37,14 +37,14 @@
 
 #include <string.h>
 
-#include "bitmap.h"
-#include "tft.h"
-#include "touchscreen.h"
-
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
+
+#include "bitmap.h"
+#include "tft.h"
+#include "touchscreen.h"
 
 /*********************************      DEFINES      *************************/
 #define NB_SPRITE (32)

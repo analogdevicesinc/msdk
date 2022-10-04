@@ -37,15 +37,15 @@
 /* Global includes */
 #include <string.h>
 
-#include "MAX32xxx.h"
-#include "message.h"
-#include "task_msr.h"
-#include "sdma_regs.h"
-
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
+
+#include "MAX32xxx.h"
+#include "message.h"
+#include "task_msr.h"
+#include "sdma_regs.h"
 
 /*********************************      DEFINES      *************************/
 /* Select SDMA instance to run MSR on {0,1} */

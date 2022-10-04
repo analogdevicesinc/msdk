@@ -100,7 +100,7 @@ int kb_get_key(void)
     volatile unsigned int in;
     volatile unsigned int out;
     volatile unsigned int i;
-    unsigned short *key;
+    uint16_t *key;
 
     int pressed_key = 0;
 
@@ -231,8 +231,8 @@ int kb_select_from_list_xcol(const char *title, const char **items, int nb_items
                 index = i + (k * nb_row);
 
                 if (index < nb_items) {
-                    sprintf(item_data, "%-3d- %-32s ", index + 1, items[index]);
-                    strcat(buf, item_data);
+                    snprintf(item_data, sizeof(item_data), "%-3d- %-32s ", index + 1, items[index]);
+                    strncat(buf, item_data, 64);
                 }
             }
 

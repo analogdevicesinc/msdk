@@ -37,13 +37,13 @@
 
 #include <string.h>
 
-#include "bitmap.h"
-#include "tft_ssd2119.h"
-
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
+
+#include "bitmap.h"
+#include "tft_ssd2119.h"
 
 /*********************************      DEFINES      *************************/
 #define NB_SPRITE (32)
