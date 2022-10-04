@@ -2,7 +2,12 @@
 
 Basic GPIO input, output, and interrupts are demonstrated in this example.
 
-P0.16 is continuously scanned and whatever value is read on that pin is then output to P0.17.  An interrupt is set up on P0.18. P0.19 toggles when that interrupt occurs.
+If your board QN_EvKit or Q_EvKit
+   - PB1(P3.7) is continuously scanned and whatever value is read on that pin is then output to LED1(P3.5).  
+   - An interrupt is set up on PB2(P3.6)  LED2(P3.4) toggles when that interrupt occurs.
+
+If your board MN_EvKit or M_EvKit
+   - PB1(P0.16) is continuously scanned and whatever value is read on that pin is then output to LED1(P2.17).  
 
 ## Required Connections
 
@@ -17,8 +22,8 @@ The Console UART of the device will output these messages:
 ```
 ************************* GPIO Example ***********************
 
-1. This example reads P0.16 and outputs the same state onto P0.17.
-2. An interrupt is set up on P0.18 . P0.19 toggles when that
+1. This example reads PB1(P3.7) and outputs the same state onto LED1(P3.5).
+2. An interrupt is set up on PB2(P3.6)  LED2(P3.4) toggles when that
    interrupt occurs.
 ```
 
