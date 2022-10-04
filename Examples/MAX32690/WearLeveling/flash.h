@@ -36,8 +36,8 @@
  * @brief   Flash read/write/erase functions declaration
  */
 
-#ifndef FLASH_H_
-#define FLASH_H_
+#ifndef EXAMPLES_MAX32690_WEARLEVELING_FLASH_H_
+#define EXAMPLES_MAX32690_WEARLEVELING_FLASH_H_
 
 // Flash operations log
 //#define FLASH_DEBUG
@@ -131,4 +131,4 @@ int check_erased(uint32_t startaddr, uint32_t length);
  */
 int flash_write4(uint32_t startaddr, uint32_t length, uint32_t *data, bool verify);
 
-#endif /* FLASH_H_ */
+#endif // EXAMPLES_MAX32690_WEARLEVELING_FLASH_H_

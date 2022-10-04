@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef _SECURITY_MONITOR_H_
-#define _SECURITY_MONITOR_H_
+#ifndef EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_SECURITY_MONITOR_H_
+#define EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_SECURITY_MONITOR_H_
 
 /* AES */
 #define AES_BASE 0x40005000
@@ -56,6 +56,6 @@ int smon_set_ext_sensors(void);
 int smon_secalm_keywipe(void);
 int smon_create_DRS(void);
 
-#endif // _SECURITY_MONITOR_H_
+#endif // EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_SECURITY_MONITOR_H_
 
 /* EOF */

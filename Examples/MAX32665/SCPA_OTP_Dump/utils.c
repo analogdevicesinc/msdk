@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "utils.h"
 #include "uart.h"
 #include "board.h"
 

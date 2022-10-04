@@ -38,11 +38,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "MAX32xxx.h"
-#include "wrapper_tft.h"
-
 #include <FreeRTOS.h>
 #include <semphr.h>
+
+#include "MAX32xxx.h"
+#include "wrapper_tft.h"
 
 /*************************************** DEFINES *****************************/
 #define TFT_LOCK_WITH_MUTEX 0 // Do not forget to enable mutex in FreeRTOSConfig.h file

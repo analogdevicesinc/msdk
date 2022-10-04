@@ -38,6 +38,7 @@
 
 /* Global includes */
 #include <stdio.h>
+#include <stdint.h>
 /* Local includes */
 #include "keypad.h"
 #include "skbd.h"
@@ -109,7 +110,7 @@ int keypad_getkey(void)
     volatile unsigned int in;
     volatile unsigned int out;
     volatile unsigned int i;
-    unsigned short *key;
+    uint16_t *key;
     mxc_skbd_keys_t keys = { 0, 0, 0, 0 };
     int pressed_key = 0;
 

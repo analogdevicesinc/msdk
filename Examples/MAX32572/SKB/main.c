@@ -40,6 +40,7 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
@@ -75,7 +76,7 @@ void keypadHandler()
 int main(void)
 {
     mxc_skbd_config_t skb_cfg;
-    unsigned short *key;
+    uint16_t *key;
     uint8_t i, in, out;
     int result;
 

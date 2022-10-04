@@ -81,9 +81,9 @@
 #endif
 
 #if USE_CONSOLE
-#define PRINTF(...) printf(__VA_ARGS__)
+#define PRINT(...) fprintf(stdout, __VA_ARGS__)
 #else
-#define PRINTF(...)
+#define PRINT(...)
 #endif
 
 // *****************************************************************************
@@ -157,24 +157,24 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-    PRINTF("****Low Power Mode Example****\n\n");
+    PRINT("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-    PRINTF("This code cycles through the MAX32660 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
+    PRINT("This code cycles through the MAX32660 power modes, using the RTC alarm to exit from "
+          "each mode.  The modes will change every %d seconds.\n\n",
+          DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-    PRINTF("This code cycles through the MAX32660 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
+    PRINT("This code cycles through the MAX32660 power modes, using a push button (SW2) to exit "
+          "from each mode and enter the next.\n\n");
     PB_Init();
     PB_RegisterCallback(0, buttonHandler);
     __enable_irq();
 #endif // USE_BUTTON
 
-    PRINTF("Running in ACTIVE mode.\n");
+    PRINT("Running in ACTIVE mode.\n");
 #if !USE_CONSOLE
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
@@ -186,7 +186,7 @@ int main(void)
     MXC_LP_DisableSysRAM1LightSleep();
     MXC_LP_DisableSysRAM0LightSleep(); // Global variables are in RAM0 and RAM1
 
-    PRINTF("All unused RAMs placed in LIGHT SLEEP mode.\n");
+    PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     //MXC_LP_ShutdownSysRAM2();
@@ -194,7 +194,7 @@ int main(void)
     MXC_LP_DisableSysRAM1LightSleep(); // Bring RAM back to active state
     MXC_LP_DisableSysRAM0LightSleep();
 
-    PRINTF("All unused RAMs shutdown.\n");
+    PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
@@ -206,21 +206,21 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-        PRINTF("Entering SLEEP mode.\n");
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
-        PRINTF("Waking up from SLEEP mode.\n");
+        PRINT("Waking up from SLEEP mode.\n");
 #endif // DO_SLEEP
 
 #if DO_DEEPSLEEP
-        PRINTF("Entering DEEPSLEEP mode.\n");
+        PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
-        PRINTF("Waking up from DEEPSLEEP mode.\n");
+        PRINT("Waking up from DEEPSLEEP mode.\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-        PRINTF("Entering BACKUP mode.\n");
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP

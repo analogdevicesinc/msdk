@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef __EMVL1_APP_H__
-#define __EMVL1_APP_H__
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_CONTACTLESS_L1_APP_EMVL1_APP_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_CONTACTLESS_L1_APP_EMVL1_APP_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,4 +46,4 @@ void emvl1_main_loop(void);
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_CONTACTLESS_L1_APP_EMVL1_APP_H_

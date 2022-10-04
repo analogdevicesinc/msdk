@@ -37,8 +37,8 @@
  *          See the msc_mem_t structure in msc.h for function details.
  */
 
-#ifndef __MSC_MEM_H__
-#define __MSC_MEM_H__
+#ifndef EXAMPLES_MAX32665_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
+#define EXAMPLES_MAX32665_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_
 
 #include <stdint.h>
 
@@ -54,4 +54,4 @@ uint32_t mscmem_Size(void);
 int mscmem_Read(uint32_t lba, uint8_t *buffer);
 int mscmem_Write(uint32_t lba, uint8_t *buffer);
 
-#endif /* __MSC_MEM_H__ */
+#endif // EXAMPLES_MAX32665_USB_COMPOSITEDEVICE_MSC_HID_MSCMEM_H_

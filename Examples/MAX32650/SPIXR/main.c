@@ -115,6 +115,7 @@ int main(void)
 
     /* Variable to store address of RAM */
     int temp, i;
+    unsigned int seed = 0;
 
     printf("\n***** SPIXR Example communicating with RAM in SPI Quad Mode *****\n");
 
@@ -124,9 +125,8 @@ int main(void)
 
     // Initialize & write pseudo-random data to be written to the RAM
     printf("Initializing & Writing pseudo-random data to be written to RAM \n");
-    srand(0);
     for (i = 0; i < BUFFER_SIZE; i++) {
-        temp = rand();
+        temp = rand_r(&seed);
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = temp;

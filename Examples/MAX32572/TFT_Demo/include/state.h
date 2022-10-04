@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _STATE_H_
-#define _STATE_H_
+#ifndef EXAMPLES_MAX32572_TFT_DEMO_INCLUDE_STATE_H_
+#define EXAMPLES_MAX32572_TFT_DEMO_INCLUDE_STATE_H_
 
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(int key);
@@ -57,4 +57,4 @@ State *get_home_state(void);
 State *get_keypad_state(void);
 State *get_info_state(void);
 
-#endif // _STATE_H_
+#endif // EXAMPLES_MAX32572_TFT_DEMO_INCLUDE_STATE_H_
