@@ -134,7 +134,7 @@ int main(void)
     remote_wake_en = 0;
 
     /* Start out in full speed */
-    usb_opts.enable_hs = 1; /* 0:Full Speed		1:High Speed */
+    usb_opts.enable_hs = 1; /* 0:Full Speed     1:High Speed */
     usb_opts.delay_us = delay_us; /* Function which will be used for delays */
     usb_opts.init_callback = usbStartupCallback;
     usb_opts.shutdown_callback = usbShutdownCallback;
@@ -288,7 +288,7 @@ static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     /* Confirm the configuration value */
     if (sud->wValue == composite_config_descriptor.config_descriptor.bConfigurationValue) {
-        //    	on++;
+        //      on++;
         configured = 1;
         MXC_SETBIT(&event_flags, EVENT_ENUM_COMP);
         if (MXC_USB_GetStatus() & MAXUSB_STATUS_HIGH_SPEED) { ///
