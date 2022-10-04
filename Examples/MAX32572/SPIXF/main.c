@@ -33,12 +33,12 @@
 
 /**
  * @file    main.c
- * @brief   SPIX example using the MX25.
- * @details Uses the MX25 on the EvKit to show the SPIX. Erases, writes, and then
- *          verifies the data. MX25_BAUD, MX25_ADDR, and MX25_SPIXFC_WIDTH
+ * @brief   SPIX example using the external flash.
+ * @details Uses the external flash on the EvKit to show the SPIX. Erases, writes, and then
+ *          verifies the data. EXT_FLASH_BAUD, EXT_FLASH_ADDR, and EXT_FLASH_SPIXFC_WIDTH
  *          can be changed to alter the communication between the devices. Refer
  *          to the schematic for the pinout and ensure that there are no switches
- *          blocking the communication to the MX25.
+ *          blocking the communication to the external flash.
  */
 
 /***** Includes *****/
@@ -46,13 +46,14 @@
 #include <string.h>
 
 #include <MAX32xxx.h>
-#include "mx25.h"
+#include "Ext_Flash.h"
 
 /***** Definitions *****/
 
-#define MX25_ADDR 0
-#define MX25_SPIXFC_WIDTH MXC_SPIXF_WIDTH_4
-#define MX25_EXP_ID 0x00C22537
+#define EXT_FLASH_ADDR 0
+#define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
+
+#define BUFF_SIZE   64
 
 int fail = 0;
 
@@ -75,24 +76,24 @@ void spixf_cfg_setup()
 {
     // Disable the SPIXFC before setting the SPIXF
     MXC_SPIXF_Disable();
-    MXC_SPIXF_SetSPIFrequency(MX25_BAUD);
+    MXC_SPIXF_SetSPIFrequency(EXT_FLASH_BAUD);
     MXC_SPIXF_SetMode(MXC_SPIXF_MODE_0);
     MXC_SPIXF_SetSSPolActiveLow();
     MXC_SPIXF_SetSSActiveTime(MXC_SPIXF_SYS_CLOCKS_2);
     MXC_SPIXF_SetSSInactiveTime(MXC_SPIXF_SYS_CLOCKS_3);
 
-    if (MX25_SPIXFC_WIDTH == MXC_SPIXF_WIDTH_1) {
-        MXC_SPIXF_SetCmdValue(MX25_CMD_READ);
+    if (EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Single) {
+        MXC_SPIXF_SetCmdValue(EXT_FLASH_CMD_READ);
         MXC_SPIXF_SetCmdWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetAddrWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetDataWidth(MXC_SPIXF_WIDTH_1);
-        MXC_SPIXF_SetModeClk(MX25_Read_DUMMY);
+        MXC_SPIXF_SetModeClk(EXT_FLASH_Read_DUMMY);
     } else {
-        MXC_SPIXF_SetCmdValue(MX25_CMD_QREAD);
+        MXC_SPIXF_SetCmdValue(EXT_FLASH_CMD_QREAD);
         MXC_SPIXF_SetCmdWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetAddrWidth(MXC_SPIXF_QUAD_SDIO);
         MXC_SPIXF_SetDataWidth(MXC_SPIXF_WIDTH_4);
-        MXC_SPIXF_SetModeClk(MX25_QREAD_DUMMY);
+        MXC_SPIXF_SetModeClk(EXT_FLASH_QREAD_DUMMY);
     }
 
     MXC_SPIXF_Set3ByteAddr();
@@ -105,35 +106,33 @@ int main(void)
 {
     uint32_t id;
     void (*func)(void);
-    uint8_t rx_buf[(uint32_t)(&__load_length_xip)];
-    int rx_len = sizeof(rx_buf);
+    uint8_t rx_buf[BUFF_SIZE];
+    int rx_len = (uint32_t)(&__load_length_xip);
+    int remain = rx_len;
 
     printf("\n\n********************* SPIX Example *********************\n");
-    printf("This example communicates with an MX25 flash on the EvKit\n");
+    printf("This example communicates with an %s flash on the EvKit\n", EXT_FLASH_NAME);
     printf("loads code onto it and then executes that code using the \n");
     printf("SPIX execute-in-place peripheral\n\n");
 
-    printf("SPI Clock: %d Hz\n\n", MX25_BAUD);
+    printf("SPI Clock: %d Hz\n\n", EXT_FLASH_BAUD);
 
     // Initialize the SPIXFC registers and set the appropriate output pins
-    if (MX25_Init() != E_NO_ERROR) {
+    if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-
         while (1) {}
     }
+    printf("External flash Initialized.\n\n");
 
-    printf("MX25 Initialized.\n\n");
+    Ext_Flash_Reset();
 
-    MX25_Reset();
-
-    // Get the ID of the MX25
-    if ((id = MX25_ID()) == MX25_EXP_ID) {
-        printf("MX25 ID verified\n\n");
+    // Get the ID of the external flash
+    if ((id = Ext_Flash_ID()) == EXT_FLASH_EXP_ID) {
+        printf("External flash ID verified\n\n");
     } else {
-        printf("Error verifying MX25 ID: 0x%x\n", id);
+        printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-
         while (1) {}
     }
 
@@ -141,19 +140,19 @@ int main(void)
 
     // Erase Test Sector
     printf("Erasing first 64k sector\n");
-    MX25_Erase(0x00000, MX25_Erase_64K);
+    Ext_Flash_Erase(0x00000, Ext_Flash_Erase_64K);
     printf("Erased\n\n");
 
     // Enable Quad mode if we are using quad
-    if (MX25_SPIXFC_WIDTH == MXC_SPIXF_WIDTH_4) {
-        if (MX25_Quad(1) != E_NO_ERROR) {
+    if (EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Quad) {
+        if (Ext_Flash_Quad(1) != E_NO_ERROR) {
             printf("Error enabling quad mode\n\n");
             fail++;
         } else {
             printf("Quad mode enabled\n\n");
         }
     } else {
-        if (MX25_Quad(0) != E_NO_ERROR) {
+        if (Ext_Flash_Quad(0) != E_NO_ERROR) {
             printf("Error disabling quad mode\n\n");
             fail++;
         } else {
@@ -161,12 +160,12 @@ int main(void)
         }
     }
 
-    // Program the MX25
-    printf("Programming function (%d bytes @ 0x%08x) into external MX25 flash\n",
+    // Program the external flash
+    printf("Programming function (%d bytes @ 0x%08x) into external flash\n",
            (uint32_t)(&__load_length_xip), &__load_start_xip);
-
-    if ((err = MX25_Program_Page(MX25_ADDR, &__load_start_xip, (uint32_t)(&__load_length_xip),
-                                 MX25_SPIXFC_WIDTH)) != E_NO_ERROR) {
+    if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, &__load_start_xip,
+                                      (uint32_t)(&__load_length_xip), EXT_FLASH_SPIXFC_WIDTH)) !=
+        E_NO_ERROR) {
         printf("Error Programming: %d\n", err);
         fail++;
     } else {
@@ -174,17 +173,22 @@ int main(void)
     }
 
     printf("Verifying external flash\n");
-
-    if ((err = MX25_Read(MX25_ADDR, rx_buf, rx_len, MX25_SPIXFC_WIDTH)) != E_NO_ERROR) {
-        printf("Error verifying data %d\n", err);
-        fail++;
-    } else {
-        if (memcmp(rx_buf, &__load_start_xip, rx_len) != E_NO_ERROR) {
+    while(remain) {
+        int chunk = ((remain > BUFF_SIZE) ? BUFF_SIZE : remain);
+        if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, rx_buf, chunk,
+                                  EXT_FLASH_SPIXFC_WIDTH)) !=
+            E_NO_ERROR) {
+            printf("Error verifying data %d\n", err);
+            fail++;
+            break;
+        } else if (memcmp(rx_buf, &__load_start_xip + rx_len - remain, chunk) != E_NO_ERROR) {
             printf("Error invalid data\n");
             fail++;
-        } else {
+            break;
+        } else if (remain == chunk) {
             printf("Verified\n\n");
         }
+        remain -= chunk;
     }
 
     // Setup SPIX
@@ -201,6 +205,5 @@ int main(void)
     } else {
         printf("Example Failed\n\n");
     }
-
     return 0;
 }
