@@ -23,6 +23,13 @@ ifeq ($(OS), Windows_NT)
 # for Linux may live in the same place.
 CA_SIGN_BUILD := $(CA_SIGN_BUILD).exe
 BUILD_SESSION := $(BUILD_SESSION).exe
+else
+UNAME = $(shell uname -s)
+ifneq ($(findstring MSYS_NT,$(UNAME)),)
+# Must also use .exe extension for MSYS2
+CA_SIGN_BUILD := $(CA_SIGN_BUILD).exe
+BUILD_SESSION := $(BUILD_SESSION).exe
+endif
 endif
 
 # Surround the tools with quotes, because the SBT may install to C:/Program Files (x86) on Windows,
