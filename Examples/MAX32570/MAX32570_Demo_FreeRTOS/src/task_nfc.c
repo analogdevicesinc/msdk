@@ -689,7 +689,7 @@ void vGetNFCTask(void *pvParameter)
                         for (k = 0; ((k < card_response.aid_bin_len) && (i < 50)); k++, i += 2) {
                             // Note, using pointer math for offset here
                             snprintf((char *)msgNFC.pcMessage + i, 50 - i, "%02X ",
-                                    card_response.aid_bin[k]);
+                                     card_response.aid_bin[k]);
                         }
 
                         // Insert Carriage return

@@ -322,9 +322,8 @@ extern int zbar_parse_config(const char *config_string, zbar_symbol_type_t *symb
  * (adapted from v4l2 specification)
  * @since 0.11
  */
-#define zbar_fourcc(a, b, c, d)                                                    \
-    ((uint32_t)(a) | ((uint32_t)(b) << 8) | ((uint32_t)(c) << 16) | \
-     ((uint32_t)(d) << 24))
+#define zbar_fourcc(a, b, c, d) \
+    ((uint32_t)(a) | ((uint32_t)(b) << 8) | ((uint32_t)(c) << 16) | ((uint32_t)(d) << 24))
 
 /** parse a fourcc string into its encoded integer value.
  * @since 0.11
@@ -703,8 +702,7 @@ extern void zbar_image_set_crop(zbar_image_t *image, unsigned x, unsigned y, uns
  * (unless NULL)
  * @note application image data will not be modified by the library
  */
-extern void zbar_image_set_data(zbar_image_t *image, const void *data,
-                                uint32_t data_byte_length,
+extern void zbar_image_set_data(zbar_image_t *image, const void *data, uint32_t data_byte_length,
                                 zbar_image_cleanup_handler_t *cleanup_hndlr);
 
 /** built-in cleanup handler.

@@ -1705,7 +1705,7 @@ void type_f_commands(void)
                        receive_buffer[ATQC_ID_COD_BYTE_2_OFFSET]);
                 printf("Request Service Command (Per Service [n]): ");
                 show_response_time(receive_buffer[ATQC_RESPONSE_TIME_OFFSET], 1);
-            } else {  // (response != MML_NFC_PCD_E_SUCCESS)
+            } else { // (response != MML_NFC_PCD_E_SUCCESS)
                 printf("Invalid Response: ");
 
                 if (response == MML_NFC_PCD_E_TIMEOUT) {
