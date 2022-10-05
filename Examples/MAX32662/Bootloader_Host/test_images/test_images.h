@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _TEST_IMAGES_H_
-#define _TEST_IMAGES_H_
+#ifndef EXAMPLES_MAX32662_BOOTLOADER_HOST_TEST_IMAGES_TEST_IMAGES_H_
+#define EXAMPLES_MAX32662_BOOTLOADER_HOST_TEST_IMAGES_TEST_IMAGES_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -50,4 +50,4 @@ extern const char devkey_MAX32670_blinkled_P0_23[];
 
 /******************************* Public Functions ****************************/
 
-#endif // _TEST_IMAGES_H_
+#endif // EXAMPLES_MAX32662_BOOTLOADER_HOST_TEST_IMAGES_TEST_IMAGES_H_
