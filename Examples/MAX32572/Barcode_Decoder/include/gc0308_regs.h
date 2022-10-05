@@ -32,6 +32,9 @@
 ******************************************************************************/
 #include <stdint.h>
 
+#ifndef EXAMPLES_MAX32572_BARCODE_DECODER_INCLUDE_GC0308_REGS_H_
+#define EXAMPLES_MAX32572_BARCODE_DECODER_INCLUDE_GC0308_REGS_H_
+
 #if (ACTIVE_CAMERA == CAM_GC0308)
 
 #define PAGE_SELECT     0xFE
@@ -41,7 +44,6 @@
 
 #define REG_Output_format   0x24
 
+#endif
 
-#endif //__REG_REGS_H__
-
-
+#endif // EXAMPLES_MAX32572_BARCODE_DECODER_INCLUDE_GC0308_REGS_H_

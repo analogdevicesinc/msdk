@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _TASK_NFC_H_
-#define _TASK_NFC_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_TASK_NFC_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_TASK_NFC_H_
 
 /*****************************     DEFINES    *********************************/
 
@@ -42,4 +42,4 @@
 void nfc_enable_polling(void);
 void nfc_disable_polling(void);
 
-#endif /* _TASK_NFC_H_ */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_TASK_NFC_H_

@@ -34,25 +34,25 @@
 *******************************************************************************
 */
 
-#ifndef _STATE_H_
-#define _STATE_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_STATE_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_STATE_H_
 
-/********************************* 		INCLUDES	 *************************/
-#include "MAX32xxx.h"
-
-#include "bitmap.h"
-#include "keypad.h"
-#include "wrapper_tft.h"
-
+/*********************************      INCLUDES     *************************/
 #include <FreeRTOS.h>
 #include <FreeRTOSConfig.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
 
-/********************************* 		DEFINES		 *************************/
+#include "MAX32xxx.h"
 
-/********************************* 		TYPE DEF	 ************************/
+#include "bitmap.h"
+#include "keypad.h"
+#include "wrapper_tft.h"
+
+/*********************************      DEFINES      *************************/
+
+/*********************************      TYPE DEF     ************************/
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(unsigned int key);
 typedef int (*MSR_process)(unsigned char *msg, unsigned int msg_len);
@@ -84,4 +84,4 @@ State *get_slide_state(void);
 State *get_info_state(void);
 State *get_idle_state(void);
 
-#endif // _STATE_H_
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_STATE_H_

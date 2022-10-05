@@ -43,14 +43,14 @@
 
 #include "task_logo_animation.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define NB_SPRITE (32)
 
 #define ANIMATION_PERIOD 30 //as ms
 
-/********************************* 		TYPE DEF	 ************************/
+/*********************************      TYPE DEF     ************************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static const int logo_maxim_data[] = {
     maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp, maxim_logo_only_small_002_bmp,
     maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp, maxim_logo_only_small_005_bmp,

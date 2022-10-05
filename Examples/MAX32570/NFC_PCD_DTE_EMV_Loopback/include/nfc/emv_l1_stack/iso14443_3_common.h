@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef __ISO14443_3_COMMON_H__
-#define __ISO14443_3_COMMON_H__
+#ifndef EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3_COMMON_H_
+#define EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3_COMMON_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -272,8 +272,8 @@ extern "C" {
      1264) /**< FDTmin Type B, defines the deaf time: TR0min (1008fc) + TR1min (1264fc) => 1008+1264 = 2272 */
 #define ISO14443_FWT_ATQB (7680) /**< typeB FWT */
 
-// TODO: Probably need a new include file for vicinity maybe ISO as well
-// TODO: timing values for vicinity need more work as well
+// TODO(ADI): Probably need a new include file for vicinity maybe ISO as well
+// TODO(ADI): timing values for vicinity need more work as well
 #define ISO15693_FDT_VICC_MIN (3320) /**< FDTmin Type V, */
 #define ISO15693_FWT_ACTIVATION (8800) /**< FWTmax Type V, */
 
@@ -474,4 +474,4 @@ int32_t nfc_pcd_transceive(uint8_t protocol, uint8_t frametype, uint8_t *tx_buf,
 }
 #endif
 
-#endif /* __ISO14443_3_COMMON_H__ */
+#endif // EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3_COMMON_H_

@@ -30,7 +30,7 @@
  * ownership rights.
  *
  *************************************************************************** */
-
+#include <stdio.h>
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_revb.h"
@@ -43,7 +43,6 @@
 #include "mxc_lock.h"
 #include "mxc_pins.h"
 #include "pwrseq_regs.h"
-#include <stdio.h>
 
 #define MXC_F_MCR_ADC_CFG2_CH 0x3
 

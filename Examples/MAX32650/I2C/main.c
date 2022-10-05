@@ -51,7 +51,6 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 #include "dma.h"
 
@@ -259,14 +258,14 @@ int main()
         printf("Error writing: %d\n", error);
         return FAILED;
     }
-    while (DMA_FLAG == 0) {};
+    while (DMA_FLAG == 0) {}
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {};
+    while (I2C_FLAG == 1) {}
 #endif
 
     printf("\n-->Result: \n");

@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _CLCD_REVA_H_
-#define _CLCD_REVA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_CLCD_CLCD_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_CLCD_CLCD_REVA_H_
 
 /* **** Includes **** */
 #include "clcd_reva_regs.h"
@@ -66,4 +66,4 @@ int MXC_CLCD_RevA_SetFrameAddr(mxc_clcd_reva_regs_t *clcd, void *addr);
 }
 #endif
 
-#endif /* _CLCD_REVA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CLCD_CLCD_REVA_H_

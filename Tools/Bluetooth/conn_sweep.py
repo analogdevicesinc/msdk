@@ -35,7 +35,9 @@
 
 ## dtm_sweep.py
  #
- # Sweep connection parameters
+ # Sweep connection parameters.
+ #
+ # Ensure that both targets are built with BT_VER := 9
  #
 
 import sys
@@ -61,18 +63,26 @@ parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHe
 parser.add_argument('slaveSerial',help='Serial port for slave device')
 parser.add_argument('masterSerial',help='Serial port for master device')
 parser.add_argument('results',help='CSV files to store the results')
-parser.add_argument('-d', '--delay', default=15,help='Number of seconds to wait before ending the test')
+parser.add_argument('-d', '--delay', default=5,help='Number of seconds to wait before ending the test')
 parser.add_argument('-l', '--limit', default=0,help='PER limit for return value')
+parser.add_argument('-p', '--phys', default="1",help='PHYs to test with, comma separated list with 1-4.')
+parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, comma separated list.')
+parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 
 args = parser.parse_args()
+print(args)
 
 packetLengths    = [250]
-phys             = [1,2,3,4]
-txPowers         = [4]
-attens           = list(range(20,90,10))
+phys             = args.phys.strip().split(",")
+txPowers         = args.txpows.strip().split(",")
 
-# Add the max attenuation 
-attens.append(90)
+if(args.attens == None):
+    attens = list(range(20,90,10))
+
+    # Add the max attenuation 
+    attens.append(90)
+else:
+    attens = args.attens.strip().split(",")
 
 print("slaveSerial   :",args.slaveSerial)
 print("masterSerial  :",args.masterSerial)
@@ -81,6 +91,7 @@ print("delay         :",args.delay)
 print("packetLengths :",packetLengths)
 print("phys          :",phys)
 print("attens        :",attens)
+print("txPowers      :",txPowers)
 print("PER limit     :",args.limit)
 
 # Open the results file, write the parameters
@@ -103,8 +114,7 @@ hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, baud=115200))
 
 perMax = 0
 
-for packetLen,phy,atten,txPower in itertools.product(packetLengths,phys,attens,txPowers):
-    print(packetLen," ",phy," ",atten," ",txPower)
+for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
 
     # Reset the devices
     hciSlave.resetFunc(None)
@@ -122,7 +132,7 @@ for packetLen,phy,atten,txPower in itertools.product(packetLengths,phys,attens,t
     hciMaster.addrFunc(Namespace(addr=rxAddr))
 
     hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
-    hciMaster.initFunc(Namespace(interval="15", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
+    hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
 
     hciSlave.listenFunc(Namespace(time=1, stats="False"))
     hciMaster.listenFunc(Namespace(time=1, stats="False"))
@@ -153,40 +163,39 @@ for packetLen,phy,atten,txPower in itertools.product(packetLengths,phys,attens,t
     hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
     hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
-    # Set the attenuation
-    mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
-    sleep(0.1)
+    for atten in attens:
+        print(packetLen," ",phy," ",atten," ",txPower)
 
-    # Reset the packet stats
-    hciSlave.cmdFunc(Namespace(cmd="0102FF00"))
-    hciMaster.cmdFunc(Namespace(cmd="0102FF00"))
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
+        # Set the attenuation
+        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
+        sleep(0.1)
 
-    # Wait for the TX to complete
-    sleep(int(args.delay))
+        # Reset the packet stats
+        hciSlave.cmdFunc(Namespace(cmd="0102FF00"))
+        hciMaster.cmdFunc(Namespace(cmd="0102FF00"))
+        hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
-    # Read any pending events
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
-    hciMaster.listenFunc(Namespace(time=1, stats="False"))
+        # Wait for the TX to complete
+        sleep(int(args.delay))
 
-    # Collect the results
-    perMaster = hciMaster.connStatsFunc(None)
-    perSlave = hciSlave.connStatsFunc(None)
-    print("perMaster: ",perMaster)
-    print("perSlave : ",perSlave)
+        # Read any pending events
+        hciSlave.listenFunc(Namespace(time=1, stats="False"))
+        hciMaster.listenFunc(Namespace(time=1, stats="False"))
 
-    # Record max per
-    if(perMaster > perMax):
-        perMax = perMaster
-    if(perSlave > perMax):
-        perMax = perSlave
+        # Collect the results
+        perMaster = hciMaster.connStatsFunc(None)
+        perSlave = hciSlave.connStatsFunc(None)
+        print("perMaster: ",perMaster)
+        print("perSlave : ",perSlave)
 
-    hciMaster.disconFunc(None)
-    hciSlave.disconFunc(None)
-    sleep(0.1)
+        # Record max per
+        if(perMaster > perMax):
+            perMax = perMaster
+        if(perSlave > perMax):
+            perMax = perSlave
 
-    # Save the results to file
-    results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
+        # Save the results to file
+        results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
 
 # Reset the devices
 hciSlave.resetFunc(None)

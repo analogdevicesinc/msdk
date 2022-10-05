@@ -176,22 +176,22 @@ void vRegisterCLICommands(void)
 static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                       const char *pcCommandString)
 {
-    const char *const pcHeader = "Task          State  Priority  Stack	"
+    const char *const pcHeader = "Task          State  Priority  Stack  "
                                  "#\r\n************************************************\r\n";
 
     /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
+    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+    write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
 
     /* Generate a table of task stats. */
-    strcpy(pcWriteBuffer, pcHeader);
+    snprintf(pcWriteBuffer, xWriteBufferLen, "%s", pcHeader);
     vTaskList(pcWriteBuffer + strlen(pcHeader));
 
     /* There is no more data to return after this single string, so return
-	pdFALSE. */
+    pdFALSE. */
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -225,46 +225,45 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWrit
     static BaseType_t lParameterNumber = 0;
 
     /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
+    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+    write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
 
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
-		entered just a header string is returned. */
-        sprintf(pcWriteBuffer, "The three parameters were:\r\n");
+        entered just a header string is returned. */
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The three parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
-		back. */
+        back. */
         lParameterNumber = 1L;
 
         /* There is more data to be returned as no parameters have been echoed
-		back yet. */
+        back yet. */
         xReturn = pdPASS;
     } else {
         /* Obtain the parameter string. */
         pcParameter = FreeRTOS_CLIGetParameter(
             pcCommandString, /* The command string itself. */
             lParameterNumber, /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
+            &lParameterStringLength /* Store the parameter string length. */);
 
         /* Sanity check something was returned. */
         configASSERT(pcParameter);
 
         /* Return the parameter string. */
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "%d: ", (int)lParameterNumber);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
         strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
-        strcat(pcWriteBuffer, "\r\n");
+        strncat(pcWriteBuffer, "\r\n", 3);
 
         /* If this is the last of the three parameters then there are no more
-		strings to return after this one. */
+        strings to return after this one. */
         if (lParameterNumber == 3L) {
             /* If this is the last of the three parameters then there are no more
-			strings to return after this one. */
+            strings to return after this one. */
             xReturn = pdFALSE;
             lParameterNumber = 0L;
         } else {
@@ -286,45 +285,44 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBuff
     static BaseType_t lParameterNumber = 0;
 
     /* Remove compile time warnings about unused parameters, and check the
-	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
-	write buffer length is adequate, so does not check for buffer overflows. */
+    write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+    write buffer length is adequate, so does not check for buffer overflows. */
     (void)pcCommandString;
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
 
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
-		entered just a header string is returned. */
-        sprintf(pcWriteBuffer, "The parameters were:\r\n");
+        entered just a header string is returned. */
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
-		back. */
+        back. */
         lParameterNumber = 1L;
 
         /* There is more data to be returned as no parameters have been echoed
-		back yet. */
+        back yet. */
         xReturn = pdPASS;
     } else {
         /* Obtain the parameter string. */
         pcParameter = FreeRTOS_CLIGetParameter(
             pcCommandString, /* The command string itself. */
             lParameterNumber, /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
+            &lParameterStringLength /* Store the parameter string length. */);
 
         if (pcParameter != NULL) {
             /* Return the parameter string. */
             memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-            sprintf(pcWriteBuffer, "%d: ", (int)lParameterNumber);
+            snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
             strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
-            strcat(pcWriteBuffer, "\r\n");
+            strncat(pcWriteBuffer, "\r\n", 3);
 
             /* There might be more parameters to return after this one. */
             xReturn = pdTRUE;
             lParameterNumber++;
         } else {
             /* No more parameters were found.  Make sure the write buffer does
-			not contain a valid string. */
+            not contain a valid string. */
             pcWriteBuffer[0] = 0x00;
 
             /* No more data to return. */

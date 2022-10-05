@@ -33,6 +33,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32570_MSR_MSR_H_
+#define EXAMPLES_MAX32570_MSR_MSR_H_
+
 #include "mxc_sys.h"
 #include "sdma_regs.h"
 
@@ -63,12 +66,12 @@
 typedef struct {
     uint8_t error_code; /**< Error code value */
     uint8_t parity_errs; /**< Number of characters with parity errors */
-    uint8_t lrc; /**< LRC check value. A value of '0' indicates a
-                             successful LRC check. Any other value should be
-                             considered a failure. */
+    uint8_t lrc; /**< LRC check value. A value of '0' indicates a */
+    /**< successful LRC check. Any other value should be */
+    /**< considered a failure. */
     uint8_t direction; /**< Swipe direction determined from decode */
-    uint16_t len; /**< Number or decoded characters. This does not include
-                             the sentinels or the LRC. */
+    uint16_t len; /**< Number or decoded characters. This does not include */
+    /**< the sentinels or the LRC. */
     uint16_t speed; /**< Approximate swipe rate, LSB = 0.1 in/sec */
     uint8_t data[MCR_MAX_DEC_LEN]; /**< The decoded data */
 } mcr_decoded_track_t;
@@ -83,3 +86,5 @@ typedef struct {
 #define GETSWIPE_OK (0x01)
 #define GETSWIPE_ADCERR (0x02)
 #define GETSWIPE_TIMO (0x03)
+
+#endif // EXAMPLES_MAX32570_MSR_MSR_H_

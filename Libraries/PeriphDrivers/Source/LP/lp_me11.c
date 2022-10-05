@@ -42,7 +42,6 @@
 /***** Includes *****/
 #include "lp.h"
 #include "pwrseq_regs.h"
-#include "mxc_errors.h"
 #include "gcr_regs.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"

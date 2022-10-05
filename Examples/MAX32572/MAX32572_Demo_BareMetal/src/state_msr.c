@@ -39,11 +39,11 @@
 #include "utils.h"
 #include "task_msr.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define TICK_TIMEOUT 10
 #define DISPLAY_MSG_TIMEOUT 1000
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static text_t text_msg[] = {
     { (char *)"MAG STRIPE", 10 },
 #ifndef MN_EvKit_V1

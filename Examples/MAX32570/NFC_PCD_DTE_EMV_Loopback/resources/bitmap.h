@@ -34,8 +34,8 @@
 ******************************************************************************* 
 */
 
-#ifndef _BITMAP_H_
-#define _BITMAP_H_
+#ifndef EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_RESOURCES_BITMAP_H_
+#define EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_RESOURCES_BITMAP_H_
 
 // bitmaps id
 #define logo_white_bg_white_bmp 0
@@ -43,4 +43,4 @@
 // fonts id
 #define urw_gothic_13_grey_bg_white 0
 
-#endif //_BITMAP_H_
+#endif // EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_RESOURCES_BITMAP_H_

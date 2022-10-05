@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVB_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVB_H_
+
 /****** Includes *******/
 
 /***** Definitions *****/
@@ -61,3 +64,5 @@ void MXC_DMA_RevB_Handler();
 int MXC_DMA_RevB_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t callback);
 int MXC_DMA_RevB_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
                             mxc_dma_trans_chain_t callback);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVB_H_

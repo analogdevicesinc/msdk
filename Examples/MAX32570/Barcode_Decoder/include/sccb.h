@@ -32,8 +32,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef __SSCB_H__
-#define __SSCB_H__
+#ifndef EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_SCCB_H_
+#define EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_SCCB_H_
 
 #include <stdint.h>
 
@@ -42,4 +42,4 @@ int sccb_scan();
 int sccb_read_byt(uint8_t slv_addr, uint8_t reg, uint8_t *byt);
 int sccb_write_byt(uint8_t slv_addr, uint8_t reg, uint8_t byt);
 
-#endif // __SSCB_H__
+#endif // EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_SCCB_H_

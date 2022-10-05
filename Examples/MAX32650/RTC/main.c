@@ -150,7 +150,7 @@ void printTime()
 
     subsec += sec;
 
-    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n\n", day, hr, min, subsec);
+    printf("Current Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n", day, hr, min, subsec);
 }
 
 // *****************************************************************************

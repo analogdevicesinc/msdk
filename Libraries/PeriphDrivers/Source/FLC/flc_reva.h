@@ -1,6 +1,6 @@
 /**
- * @file flc.h
- * @brief      Flash Controler driver.
+ * @file flc_reva.h
+ * @brief      Flash RevA Controller driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 /* ****************************************************************************
@@ -38,6 +38,9 @@
  * $Revision: 38520 $
  *
  *************************************************************************** */
+
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_REVA_H_
 
 /* **** Includes **** */
 #include <string.h>
@@ -98,3 +101,5 @@ int MXC_FLC_RevA_BlockPageRead(uint32_t address, uint32_t bank_base);
 #ifdef __cplusplus
 }
 #endif
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_FLC_FLC_REVA_H_

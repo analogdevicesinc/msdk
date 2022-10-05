@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _ISO14443_4_TRANSITIVE_H_
-#define _ISO14443_4_TRANSITIVE_H_
+#ifndef EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_4_TRANSITIVE_H_
+#define EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_4_TRANSITIVE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -83,4 +83,4 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_4_TRANSITIVE_H_
