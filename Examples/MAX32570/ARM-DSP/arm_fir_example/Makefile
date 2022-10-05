@@ -331,7 +331,7 @@ endif
 # Include SBT config.  We need to do this here because it needs to know
 # the current MAKECMDGOAL.
 ifeq ($(SBT),1)
-include $(MAXIM_SBT_DIR)/SBT-config.mk
+include $(MAXIM_PATH)/Tools/SBT/SBT-config.mk
 endif
 
 # *******************************************************************************
@@ -370,7 +370,7 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).
 # Include the rules that integrate the SBTs.  SBTs are a special case that must be
 # include after the core gcc rules to extend them.
 ifeq ($(SBT), 1)
-include $(MAXIM_SBT_DIR)/SBT-rules.mk
+include $(MAXIM_PATH)/Tools/SBT/SBT-rules.mk
 endif
 
 
