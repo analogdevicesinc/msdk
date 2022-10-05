@@ -16690,7 +16690,7 @@
 <!--BBFC Battery Backed Function Control Register.-->
   <peripheral>
    <name>NBBFC</name>
-   <description>Non Baterry-Backed Function Control Register.</description>
+   <description>Non Battery-Backed Function Control Register.</description>
    <baseAddress>0x40000800</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
@@ -16978,7 +16978,7 @@
     </register>
    </registers>
   </peripheral>
-<!--NBBFC Non Baterry-Backed Function Control Register.-->
+<!--NBBFC Non Battery-Backed Function Control Register.-->
   <peripheral>
    <name>GCR</name>
    <description>Global Control Registers.</description>

@@ -37,8 +37,8 @@
 *
 ******************************************************************************/
 
-#ifndef _SPIXFC_FIFO_REGS_H_
-#define _SPIXFC_FIFO_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SPIXFC_FIFO_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SPIXFC_FIFO_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     spixfc_fifo
  * @defgroup    spixfc_fifo_registers SPIXFC_FIFO_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the SPIXFC_FIFO Peripheral Module.
- * @details SPI XiP Master Controller FIFO.
+ * @details     SPI XiP Master Controller FIFO.
  */
 
 /**
@@ -105,16 +105,16 @@ typedef struct {
  * @brief      SPIXFC_FIFO Peripheral Register Offsets from the SPIXFC_FIFO Base Peripheral Address.
  * @{
  */
- #define MXC_R_SPIXFC_FIFO_TX_8             ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
- #define MXC_R_SPIXFC_FIFO_TX_16            ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
- #define MXC_R_SPIXFC_FIFO_TX_32            ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
- #define MXC_R_SPIXFC_FIFO_RX_8             ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
- #define MXC_R_SPIXFC_FIFO_RX_16            ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
- #define MXC_R_SPIXFC_FIFO_RX_32            ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SPIXFC_FIFO_TX_8             ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SPIXFC_FIFO_TX_16            ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SPIXFC_FIFO_TX_32            ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SPIXFC_FIFO_RX_8             ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SPIXFC_FIFO_RX_16            ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SPIXFC_FIFO_RX_32            ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
 /**@} end of group spixfc_fifo_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _SPIXFC_FIFO_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SPIXFC_FIFO_REGS_H_

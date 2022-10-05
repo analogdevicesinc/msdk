@@ -2,7 +2,7 @@
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
     <name>NBBFC</name>
-    <description>Non Baterry-Backed Function Control Register.</description>
+    <description>Non Battery-Backed Function Control Register.</description>
     <baseAddress>0x40000800</baseAddress>
     <addressBlock>
       <offset>0x00</offset>

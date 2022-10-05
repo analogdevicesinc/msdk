@@ -37,8 +37,8 @@
 *
 ******************************************************************************/
 
-#ifndef _BBFC_REGS_H_
-#define _BBFC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_BBFC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_BBFC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     bbfc
  * @defgroup    bbfc_registers BBFC_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the BBFC Peripheral Module.
- * @details Battery Backed Function Control Register.
+ * @details     Battery Backed Function Control Register.
  */
 
 /**
@@ -96,7 +96,7 @@ typedef struct {
  * @brief      BBFC Peripheral Register Offsets from the BBFC Base Peripheral Address.
  * @{
  */
- #define MXC_R_BBFC_BBFCR0                  ((uint32_t)0x00000000UL) /**< Offset from BBFC Base Address: <tt> 0x0000</tt> */
+#define MXC_R_BBFC_BBFCR0                  ((uint32_t)0x00000000UL) /**< Offset from BBFC Base Address: <tt> 0x0000</tt> */
 /**@} end of group bbfc_registers */
 
 /**
@@ -105,18 +105,18 @@ typedef struct {
  * @brief    Register 0.
  * @{
  */
- #define MXC_F_BBFC_BBFCR0_CKPDRV_POS                   0 /**< BBFCR0_CKPDRV Position */
- #define MXC_F_BBFC_BBFCR0_CKPDRV                       ((uint32_t)(0xFUL << MXC_F_BBFC_BBFCR0_CKPDRV_POS)) /**< BBFCR0_CKPDRV Mask */
+#define MXC_F_BBFC_BBFCR0_CKPDRV_POS                   0 /**< BBFCR0_CKPDRV Position */
+#define MXC_F_BBFC_BBFCR0_CKPDRV                       ((uint32_t)(0xFUL << MXC_F_BBFC_BBFCR0_CKPDRV_POS)) /**< BBFCR0_CKPDRV Mask */
 
- #define MXC_F_BBFC_BBFCR0_CKNPDRV_POS                  4 /**< BBFCR0_CKNPDRV Position */
- #define MXC_F_BBFC_BBFCR0_CKNPDRV                      ((uint32_t)(0xFUL << MXC_F_BBFC_BBFCR0_CKNPDRV_POS)) /**< BBFCR0_CKNPDRV Mask */
+#define MXC_F_BBFC_BBFCR0_CKNPDRV_POS                  4 /**< BBFCR0_CKNPDRV Position */
+#define MXC_F_BBFC_BBFCR0_CKNPDRV                      ((uint32_t)(0xFUL << MXC_F_BBFC_BBFCR0_CKNPDRV_POS)) /**< BBFCR0_CKNPDRV Mask */
 
- #define MXC_F_BBFC_BBFCR0_RDSDLLEN_POS                 8 /**< BBFCR0_RDSDLLEN Position */
- #define MXC_F_BBFC_BBFCR0_RDSDLLEN                     ((uint32_t)(0x1UL << MXC_F_BBFC_BBFCR0_RDSDLLEN_POS)) /**< BBFCR0_RDSDLLEN Mask */
- #define MXC_V_BBFC_BBFCR0_RDSDLLEN_DIS                 ((uint32_t)0x0UL) /**< BBFCR0_RDSDLLEN_DIS Value */
- #define MXC_S_BBFC_BBFCR0_RDSDLLEN_DIS                 (MXC_V_BBFC_BBFCR0_RDSDLLEN_DIS << MXC_F_BBFC_BBFCR0_RDSDLLEN_POS) /**< BBFCR0_RDSDLLEN_DIS Setting */
- #define MXC_V_BBFC_BBFCR0_RDSDLLEN_EN                  ((uint32_t)0x1UL) /**< BBFCR0_RDSDLLEN_EN Value */
- #define MXC_S_BBFC_BBFCR0_RDSDLLEN_EN                  (MXC_V_BBFC_BBFCR0_RDSDLLEN_EN << MXC_F_BBFC_BBFCR0_RDSDLLEN_POS) /**< BBFCR0_RDSDLLEN_EN Setting */
+#define MXC_F_BBFC_BBFCR0_RDSDLLEN_POS                 8 /**< BBFCR0_RDSDLLEN Position */
+#define MXC_F_BBFC_BBFCR0_RDSDLLEN                     ((uint32_t)(0x1UL << MXC_F_BBFC_BBFCR0_RDSDLLEN_POS)) /**< BBFCR0_RDSDLLEN Mask */
+#define MXC_V_BBFC_BBFCR0_RDSDLLEN_DIS                 ((uint32_t)0x0UL) /**< BBFCR0_RDSDLLEN_DIS Value */
+#define MXC_S_BBFC_BBFCR0_RDSDLLEN_DIS                 (MXC_V_BBFC_BBFCR0_RDSDLLEN_DIS << MXC_F_BBFC_BBFCR0_RDSDLLEN_POS) /**< BBFCR0_RDSDLLEN_DIS Setting */
+#define MXC_V_BBFC_BBFCR0_RDSDLLEN_EN                  ((uint32_t)0x1UL) /**< BBFCR0_RDSDLLEN_EN Value */
+#define MXC_S_BBFC_BBFCR0_RDSDLLEN_EN                  (MXC_V_BBFC_BBFCR0_RDSDLLEN_EN << MXC_F_BBFC_BBFCR0_RDSDLLEN_POS) /**< BBFCR0_RDSDLLEN_EN Setting */
 
 /**@} end of group BBFC_BBFCR0_Register */
 
@@ -124,4 +124,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _BBFC_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_BBFC_REGS_H_

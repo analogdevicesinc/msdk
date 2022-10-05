@@ -37,8 +37,8 @@
 *
 ******************************************************************************/
 
-#ifndef _TRNG_REGS_H_
-#define _TRNG_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_TRNG_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_TRNG_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     trng
  * @defgroup    trng_registers TRNG_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
- * @details Random Number Generator.
+ * @details     Random Number Generator.
  */
 
 /**
@@ -97,8 +97,8 @@ typedef struct {
  * @brief      TRNG Peripheral Register Offsets from the TRNG Base Peripheral Address.
  * @{
  */
- #define MXC_R_TRNG_CTRL                    ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */
- #define MXC_R_TRNG_DATA                    ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */
+#define MXC_R_TRNG_CTRL                    ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRNG_DATA                    ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */
 /**@} end of group trng_registers */
 
 /**
@@ -107,34 +107,34 @@ typedef struct {
  * @brief    TRNG Control Register.
  * @{
  */
- #define MXC_F_TRNG_CTRL_RNG_IE_POS                     2 /**< CTRL_RNG_IE Position */
- #define MXC_F_TRNG_CTRL_RNG_IE                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_IE_POS)) /**< CTRL_RNG_IE Mask */
- #define MXC_V_TRNG_CTRL_RNG_IE_DIS                     ((uint32_t)0x0UL) /**< CTRL_RNG_IE_DIS Value */
- #define MXC_S_TRNG_CTRL_RNG_IE_DIS                     (MXC_V_TRNG_CTRL_RNG_IE_DIS << MXC_F_TRNG_CTRL_RNG_IE_POS) /**< CTRL_RNG_IE_DIS Setting */
- #define MXC_V_TRNG_CTRL_RNG_IE_EN                      ((uint32_t)0x1UL) /**< CTRL_RNG_IE_EN Value */
- #define MXC_S_TRNG_CTRL_RNG_IE_EN                      (MXC_V_TRNG_CTRL_RNG_IE_EN << MXC_F_TRNG_CTRL_RNG_IE_POS) /**< CTRL_RNG_IE_EN Setting */
+#define MXC_F_TRNG_CTRL_RNG_IE_POS                     2 /**< CTRL_RNG_IE Position */
+#define MXC_F_TRNG_CTRL_RNG_IE                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_IE_POS)) /**< CTRL_RNG_IE Mask */
+#define MXC_V_TRNG_CTRL_RNG_IE_DIS                     ((uint32_t)0x0UL) /**< CTRL_RNG_IE_DIS Value */
+#define MXC_S_TRNG_CTRL_RNG_IE_DIS                     (MXC_V_TRNG_CTRL_RNG_IE_DIS << MXC_F_TRNG_CTRL_RNG_IE_POS) /**< CTRL_RNG_IE_DIS Setting */
+#define MXC_V_TRNG_CTRL_RNG_IE_EN                      ((uint32_t)0x1UL) /**< CTRL_RNG_IE_EN Value */
+#define MXC_S_TRNG_CTRL_RNG_IE_EN                      (MXC_V_TRNG_CTRL_RNG_IE_EN << MXC_F_TRNG_CTRL_RNG_IE_POS) /**< CTRL_RNG_IE_EN Setting */
 
- #define MXC_F_TRNG_CTRL_RNG_ISC_POS                    3 /**< CTRL_RNG_ISC Position */
- #define MXC_F_TRNG_CTRL_RNG_ISC                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_ISC_POS)) /**< CTRL_RNG_ISC Mask */
- #define MXC_V_TRNG_CTRL_RNG_ISC_CLEAR                  ((uint32_t)0x1UL) /**< CTRL_RNG_ISC_CLEAR Value */
- #define MXC_S_TRNG_CTRL_RNG_ISC_CLEAR                  (MXC_V_TRNG_CTRL_RNG_ISC_CLEAR << MXC_F_TRNG_CTRL_RNG_ISC_POS) /**< CTRL_RNG_ISC_CLEAR Setting */
+#define MXC_F_TRNG_CTRL_RNG_ISC_POS                    3 /**< CTRL_RNG_ISC Position */
+#define MXC_F_TRNG_CTRL_RNG_ISC                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_ISC_POS)) /**< CTRL_RNG_ISC Mask */
+#define MXC_V_TRNG_CTRL_RNG_ISC_CLEAR                  ((uint32_t)0x1UL) /**< CTRL_RNG_ISC_CLEAR Value */
+#define MXC_S_TRNG_CTRL_RNG_ISC_CLEAR                  (MXC_V_TRNG_CTRL_RNG_ISC_CLEAR << MXC_F_TRNG_CTRL_RNG_ISC_POS) /**< CTRL_RNG_ISC_CLEAR Setting */
 
- #define MXC_F_TRNG_CTRL_RNG_I4S_POS                    4 /**< CTRL_RNG_I4S Position */
- #define MXC_F_TRNG_CTRL_RNG_I4S                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_I4S_POS)) /**< CTRL_RNG_I4S Mask */
- #define MXC_V_TRNG_CTRL_RNG_I4S_NOT_READY              ((uint32_t)0x0UL) /**< CTRL_RNG_I4S_NOT_READY Value */
- #define MXC_S_TRNG_CTRL_RNG_I4S_NOT_READY              (MXC_V_TRNG_CTRL_RNG_I4S_NOT_READY << MXC_F_TRNG_CTRL_RNG_I4S_POS) /**< CTRL_RNG_I4S_NOT_READY Setting */
- #define MXC_V_TRNG_CTRL_RNG_I4S_READY                  ((uint32_t)0x1UL) /**< CTRL_RNG_I4S_READY Value */
- #define MXC_S_TRNG_CTRL_RNG_I4S_READY                  (MXC_V_TRNG_CTRL_RNG_I4S_READY << MXC_F_TRNG_CTRL_RNG_I4S_POS) /**< CTRL_RNG_I4S_READY Setting */
+#define MXC_F_TRNG_CTRL_RNG_I4S_POS                    4 /**< CTRL_RNG_I4S Position */
+#define MXC_F_TRNG_CTRL_RNG_I4S                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_I4S_POS)) /**< CTRL_RNG_I4S Mask */
+#define MXC_V_TRNG_CTRL_RNG_I4S_NOT_READY              ((uint32_t)0x0UL) /**< CTRL_RNG_I4S_NOT_READY Value */
+#define MXC_S_TRNG_CTRL_RNG_I4S_NOT_READY              (MXC_V_TRNG_CTRL_RNG_I4S_NOT_READY << MXC_F_TRNG_CTRL_RNG_I4S_POS) /**< CTRL_RNG_I4S_NOT_READY Setting */
+#define MXC_V_TRNG_CTRL_RNG_I4S_READY                  ((uint32_t)0x1UL) /**< CTRL_RNG_I4S_READY Value */
+#define MXC_S_TRNG_CTRL_RNG_I4S_READY                  (MXC_V_TRNG_CTRL_RNG_I4S_READY << MXC_F_TRNG_CTRL_RNG_I4S_POS) /**< CTRL_RNG_I4S_READY Setting */
 
- #define MXC_F_TRNG_CTRL_RNG_IS_POS                     5 /**< CTRL_RNG_IS Position */
- #define MXC_F_TRNG_CTRL_RNG_IS                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_IS_POS)) /**< CTRL_RNG_IS Mask */
- #define MXC_V_TRNG_CTRL_RNG_IS_NOT_READY               ((uint32_t)0x0UL) /**< CTRL_RNG_IS_NOT_READY Value */
- #define MXC_S_TRNG_CTRL_RNG_IS_NOT_READY               (MXC_V_TRNG_CTRL_RNG_IS_NOT_READY << MXC_F_TRNG_CTRL_RNG_IS_POS) /**< CTRL_RNG_IS_NOT_READY Setting */
- #define MXC_V_TRNG_CTRL_RNG_IS_READY                   ((uint32_t)0x1UL) /**< CTRL_RNG_IS_READY Value */
- #define MXC_S_TRNG_CTRL_RNG_IS_READY                   (MXC_V_TRNG_CTRL_RNG_IS_READY << MXC_F_TRNG_CTRL_RNG_IS_POS) /**< CTRL_RNG_IS_READY Setting */
+#define MXC_F_TRNG_CTRL_RNG_IS_POS                     5 /**< CTRL_RNG_IS Position */
+#define MXC_F_TRNG_CTRL_RNG_IS                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RNG_IS_POS)) /**< CTRL_RNG_IS Mask */
+#define MXC_V_TRNG_CTRL_RNG_IS_NOT_READY               ((uint32_t)0x0UL) /**< CTRL_RNG_IS_NOT_READY Value */
+#define MXC_S_TRNG_CTRL_RNG_IS_NOT_READY               (MXC_V_TRNG_CTRL_RNG_IS_NOT_READY << MXC_F_TRNG_CTRL_RNG_IS_POS) /**< CTRL_RNG_IS_NOT_READY Setting */
+#define MXC_V_TRNG_CTRL_RNG_IS_READY                   ((uint32_t)0x1UL) /**< CTRL_RNG_IS_READY Value */
+#define MXC_S_TRNG_CTRL_RNG_IS_READY                   (MXC_V_TRNG_CTRL_RNG_IS_READY << MXC_F_TRNG_CTRL_RNG_IS_POS) /**< CTRL_RNG_IS_READY Setting */
 
- #define MXC_F_TRNG_CTRL_AESKG_POS                      6 /**< CTRL_AESKG Position */
- #define MXC_F_TRNG_CTRL_AESKG                          ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_POS)) /**< CTRL_AESKG Mask */
+#define MXC_F_TRNG_CTRL_AESKG_POS                      6 /**< CTRL_AESKG Position */
+#define MXC_F_TRNG_CTRL_AESKG                          ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_POS)) /**< CTRL_AESKG Mask */
 
 /**@} end of group TRNG_CTRL_Register */
 
@@ -145,8 +145,8 @@ typedef struct {
  *           disabled, read returns 0x0000 0000.
  * @{
  */
- #define MXC_F_TRNG_DATA_DATA_POS                       0 /**< DATA_DATA Position */
- #define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_DATA_POS)) /**< DATA_DATA Mask */
+#define MXC_F_TRNG_DATA_DATA_POS                       0 /**< DATA_DATA Position */
+#define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_DATA_POS)) /**< DATA_DATA Mask */
 
 /**@} end of group TRNG_DATA_Register */
 
@@ -154,4 +154,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _TRNG_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_TRNG_REGS_H_
