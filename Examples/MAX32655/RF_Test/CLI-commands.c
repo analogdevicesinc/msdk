@@ -26,13 +26,10 @@ extern void dbb_seq_tx_disable(void);
 
 /* helpers */
 static bool isDigit(const char *symbol, uint8_t len);
-static bool paramsValid(const char *commandstring, uint8_t numOfParams);
-static isChannel(const char *commandstring, uint8_t paramIndex);
-static int getPacketType(char *str_type, uint8_t *ptr_packetTypeVal);
-static int getNewPhy(char *str_phy, uint8_t *ptr_newPhy);
+static bool isChannel(const char *commandstring, uint8_t paramIndex);
+static int getPacketType(const char *str_type, uint8_t *ptr_packetTypeVal);
+static int getNewPhy(const char *str_phy, uint8_t *ptr_newPhy);
 /***************************| Command handler protoypes |******************************/
-static BaseType_t cmd_configs(char *pcWriteBuffer, size_t xWriteBufferLen,
-                              const char *pcCommandString);
 static BaseType_t cmd_clearScreen(char *pcWriteBuffer, size_t xWriteBufferLen,
                                   const char *pcCommandString);
 static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
@@ -196,7 +193,6 @@ static BaseType_t cmd_Help(char *pcWriteBuffer, size_t xWriteBufferLen, const ch
 static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen,
                                      const char *pcCommandString)
 {
-    const char *temp;
     BaseType_t lParameterStringLength;
     uint16_t packetLen = 0;
     uint8_t packetTypeVal = 0;
@@ -279,10 +275,7 @@ static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen
 static BaseType_t cmd_StartBleRXTest(char *pcWriteBuffer, size_t xWriteBufferLen,
                                      const char *pcCommandString)
 {
-    const char *temp;
     BaseType_t lParameterStringLength;
-    uint16_t packetLen = 0;
-    uint8_t packetTypeVal = 0;
     uint8_t phyVal = 0;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
@@ -584,7 +577,7 @@ static bool isDigit(const char *symbol, uint8_t len)
     return true;
 }
 /*-----------------------------------------------------------*/
-static isChannel(const char *commandstring, uint8_t paramIndex)
+static bool isChannel(const char *commandstring, uint8_t paramIndex)
 {
     const char *str;
     BaseType_t lParameterStringLength;
@@ -606,30 +599,7 @@ static isChannel(const char *commandstring, uint8_t paramIndex)
     return true;
 }
 /*-----------------------------------------------------------*/
-static bool paramsValid(const char *commandstring, uint8_t numOfParams)
-{
-    const char *str;
-    BaseType_t lParameterStringLength;
-    /*params start at index 1*/
-    for (int i = 1; i <= numOfParams; i++) {
-        str = FreeRTOS_CLIGetParameter(
-            commandstring, /* The command string itself. */
-            i, /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
-        /* if param exist verify it is a digit */
-        if (str != NULL) {
-            if (!isDigit(str, lParameterStringLength)) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    return true;
-}
-static int getPacketType(char *str_type, uint8_t *ptr_packetTypeVal)
+static int getPacketType(const char *str_type, uint8_t *ptr_packetTypeVal)
 {
     int err = E_NO_ERROR;
     (memcmp(str_type, "PRBS9", 5) == 0)  ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS9 :
@@ -643,7 +613,7 @@ static int getPacketType(char *str_type, uint8_t *ptr_packetTypeVal)
                                            err++;
     return err;
 }
-static int getNewPhy(char *str_phy, uint8_t *ptr_newPhy)
+static int getNewPhy(const char *str_phy, uint8_t *ptr_newPhy)
 {
     int err = E_NO_ERROR;
     (memcmp(str_phy, "1M", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_1M :

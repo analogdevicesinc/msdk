@@ -255,8 +255,8 @@ void cmdHistoryAdd(queue_t *q, const uint8_t *cmd)
     /* clear command history slot of any previous data */
     memset(&q->command[q->head].cmd, 0x00, CMD_LINE_BUF_SIZE);
     /* copy new command histroy */
-    memcpy(&q->command[q->head], cmd, strlen(cmd));
-    q->command[q->head].length = strlen(cmd);
+    memcpy(&q->command[q->head], cmd, strlen((const char *)cmd));
+    q->command[q->head].length = strlen((const char *)cmd);
 
     /* update head, and push tail up if we have looped back around */
     q->head = (q->head + 1) % HISTORY_MEMORY_LENGTH;
@@ -266,49 +266,6 @@ void cmdHistoryAdd(queue_t *q, const uint8_t *cmd)
     memset(&q->command[q->head].cmd, 0x00, CMD_LINE_BUF_SIZE);
     /* update pointer */
     q->queuePointer = historyQueue.head;
-}
-/*************************************************************************************************/
-/*!
- *  \fn     printHistory.
- *
- *  \brief  prints previously typed commands
- *
- *  \param  upArrow flag used to upated the queuePoniter delimiting which command to print
- *
- *  \return None.
- */
-/*************************************************************************************************/
-void printHistory(bool upArrow)
-{
-    uint8_t numCharsToDelete = strlen(inputBuffer);
-    uint8_t moveForwardCount = 0;
-    updateQueuePointer(&historyQueue, upArrow);
-    volatile int x = 0;
-    uint8_t right[] = "\x1b\x5b\x43";
-    /* no history yet */
-    if (historyQueue.queuePointer < 0)
-        return;
-    /* if cursor is not at the end then move it forward */
-    if (bufferIndex != strlen(inputBuffer)) {
-        moveForwardCount = strlen(inputBuffer) - bufferIndex;
-        for (int i = 0; i < moveForwardCount; i++) {
-            WsfBufIoWrite((const uint8_t *)right, sizeof(right));
-            vTaskDelay(1); //give UART time to print
-            bufferIndex++;
-        }
-    }
-    /* send backspace to delete any currently typed text */
-    if (numCharsToDelete) {
-        for (int i = 0; i < numCharsToDelete; i++) printf("%s", backspace);
-    }
-    /* copy history into inputBuffer */
-    memset(inputBuffer, 0x00, 100);
-    memcpy(inputBuffer, historyQueue.command[historyQueue.queuePointer].cmd,
-           strlen(historyQueue.command[historyQueue.queuePointer].cmd));
-    printf("%s", inputBuffer);
-    bufferIndex = strlen(inputBuffer);
-
-    fflush(stdout);
 }
 /*************************************************************************************************/
 /*!
@@ -341,6 +298,49 @@ void updateQueuePointer(queue_t *q, bool upArrow)
         q->queuePointer = (q->queuePointer + 1) % HISTORY_MEMORY_LENGTH;
     }
 }
+/*************************************************************************************************/
+/*!
+ *  \fn     printHistory.
+ *
+ *  \brief  prints previously typed commands
+ *
+ *  \param  upArrow flag used to upated the queuePoniter delimiting which command to print
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void printHistory(bool upArrow)
+{
+    uint8_t numCharsToDelete = strlen(inputBuffer);
+    uint8_t moveForwardCount = 0;
+    updateQueuePointer(&historyQueue, upArrow);
+    uint8_t right[] = "\x1b\x5b\x43";
+    /* no history yet */
+    if (historyQueue.queuePointer < 0)
+        return;
+    /* if cursor is not at the end then move it forward */
+    if (bufferIndex != strlen(inputBuffer)) {
+        moveForwardCount = strlen(inputBuffer) - bufferIndex;
+        for (int i = 0; i < moveForwardCount; i++) {
+            WsfBufIoWrite((const uint8_t *)right, sizeof(right));
+            vTaskDelay(1); //give UART time to print
+            bufferIndex++;
+        }
+    }
+    /* send backspace to delete any currently typed text */
+    if (numCharsToDelete) {
+        for (int i = 0; i < numCharsToDelete; i++) printf("%s", backspace);
+    }
+    /* copy history into inputBuffer */
+    memset(inputBuffer, 0x00, 100);
+    memcpy(inputBuffer, historyQueue.command[historyQueue.queuePointer].cmd,
+           strlen((const char *)historyQueue.command[historyQueue.queuePointer].cmd));
+    printf("%s", inputBuffer);
+    bufferIndex = strlen(inputBuffer);
+
+    fflush(stdout);
+}
+
 /*************************************************************************************************/
 /*!
  *  \fn     cls
@@ -400,10 +400,10 @@ void prompt(void)
  *  \return None.
  */
 /*************************************************************************************************/
-void printHint(uint8_t *buff)
+void printHint(char *buff)
 {
     int i = 0;
-    uint8_t bufflen = strlen(buff);
+    uint8_t bufflen = strlen((const char *)buff);
     bool foundMatch = false;
     do {
         if (memcmp(buff, xCommandList[i].pcCommand, bufflen) == 0 && bufflen > 0) {
@@ -437,7 +437,6 @@ void printHint(uint8_t *buff)
 static void processConsoleRX(uint8_t rxByte)
 {
     static uint32_t i = 0;
-    static uint32_t x = 0;
 
     BaseType_t xHigherPriorityTaskWoken;
     // static uint8_t keyBoardSequenceBuff[3] = {0};
@@ -659,7 +658,7 @@ void vCmdLineTask(void *pvParameters)
                         if (strlen(inputBuffer) > 0) {
                             APP_TRACE_INFO0("\r\n");
                             /* save to history */
-                            cmdHistoryAdd(&historyQueue, inputBuffer);
+                            cmdHistoryAdd(&historyQueue, (const uint8_t *)inputBuffer);
                             /* Evaluate */
                             do {
                                 xMore = FreeRTOS_CLIProcessCommand(inputBuffer, output,
@@ -737,11 +736,8 @@ void txTestTask(void *pvParameters)
 /*************************************************************************************************/
 void sweepTestTask(void *pvParameters)
 {
-    int res = 0xff;
-
     uint32_t notifVal = 0;
     sweep_config_t sweepConfig;
-    tx_config_t txCommand;
     /* channles in order of appreance in the spectrum */
     uint8_t ble_channels_spectrum[40] = { 37, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 38, 11,
                                           12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
@@ -762,17 +758,15 @@ void sweepTestTask(void *pvParameters)
         uint8_t start_ch = ble_channels_remap[sweepConfig.start_channel];
         uint8_t end_ch = ble_channels_remap[sweepConfig.end_channel];
         char str[6] = "";
-        /* config txCommand to RF Task */
-        txCommand.duration_ms = sweepConfig.duration_per_ch_ms;
-        txCommand.testType = BLE_TX_TEST;
+
         strcat(str, (const char *)getPhyStr(phy));
         /* sweep channels */
         for (int i = start_ch; i <= end_ch; i++) {
             APP_TRACE_INFO2("\r\n-----------------| channel %d %s |----------------------\r\n",
 
                             ble_channels_spectrum[i], str);
-            txCommand.channel = ble_channels_spectrum[i];
-            res = LlEnhancedTxTest(ble_channels_spectrum[i], packetLen, packetType, phy, 0);
+
+            LlEnhancedTxTest(ble_channels_spectrum[i], packetLen, packetType, phy, 0);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
             LlEndTest(NULL);
             xSemaphoreGive(rfTestMutex);
