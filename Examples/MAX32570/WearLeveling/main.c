@@ -110,6 +110,9 @@ int main(void)
 
     printf("\n\n***** MAX32570 Wear Leveling *****\n");
 
+    // Initialize FLC
+    MXC_FLC_Init();
+
 #if (FULL_WRITE_TEST == 1) || (FULL_READ_TEST == 1)
     // Initializing Test Data
     for (int i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
