@@ -239,7 +239,7 @@ int main(void)
         LED_Off(led);
         DELAY(0x1FFFFF);
     }
-    
+
     /* disable interrupts to prevent these operations from being interrupted */
     __disable_irq();
 
