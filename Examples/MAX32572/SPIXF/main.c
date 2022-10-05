@@ -53,7 +53,7 @@
 #define EXT_FLASH_ADDR 0
 #define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
 
-#define BUFF_SIZE   64
+#define BUFF_SIZE 64
 
 int fail = 0;
 
@@ -176,8 +176,7 @@ int main(void)
     while (remain) {
         int chunk = ((remain > BUFF_SIZE) ? BUFF_SIZE : remain);
         if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, rx_buf, chunk,
-                                  EXT_FLASH_SPIXFC_WIDTH)) !=
-            E_NO_ERROR) {
+                                  EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
             printf("Error verifying data %d\n", err);
             fail++;
             break;
