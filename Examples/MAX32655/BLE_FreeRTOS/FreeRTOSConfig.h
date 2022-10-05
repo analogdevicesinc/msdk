@@ -31,9 +31,10 @@
  *
  ******************************************************************************/
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef EXAMPLES_MAX32655_BLE_FREERTOS_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32655_BLE_FREERTOS_FREERTOSCONFIG_H_
 
+#include <stdint.h>
 #include "max32655.h"
 
 /*-----------------------------------------------------------
@@ -49,7 +50,7 @@
  *----------------------------------------------------------*/
 
 /* CMSIS keeps a global updated with current system clock in Hz */
-#define configCPU_CLOCK_HZ ((unsigned long)IPO_FREQ)
+#define configCPU_CLOCK_HZ ((uint64_t)IPO_FREQ)
 
 #define SLEEP_LED 1
 #define DEEPSLEEP_LED 0
@@ -69,7 +70,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 
 #define configTOTAL_HEAP_SIZE ((size_t)(108 * 1024))
 
-#define configMINIMAL_STACK_SIZE ((unsigned short)128)
+#define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
 #define configUSE_PREEMPTION 1
 #define configUSE_IDLE_HOOK 1
@@ -79,7 +80,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 #define configUSE_MUTEXES 1
 
 /* Define to trap errors during development. */
-void vAssertCalled(const char *const pcFileName, unsigned long ulLine);
+void vAssertCalled(const char *const pcFileName, uint64_t ulLine);
 #define configASSERT(x) \
     if ((x) == 0)       \
     vAssertCalled(__FILE__, __LINE__)
@@ -121,8 +122,8 @@ to exclude the API function. */
 
 #ifdef configUSE_TICKLESS_IDLE
 /* Provide routines for tickless idle pre- and post- processing */
-void vPreSleepProcessing(unsigned long *);
-void vPostSleepProcessing(unsigned long);
+void vPreSleepProcessing(uint64_t *);
+void vPostSleepProcessing(uint64_t);
 #define configPRE_SLEEP_PROCESSING(idletime) vPreSleepProcessing(&idletime);
 #define configPOST_SLEEP_PROCESSING(idletime) vPostSleepProcessing(idletime);
 #endif
@@ -130,4 +131,4 @@ void vPostSleepProcessing(unsigned long);
 /* FreeRTOS+CLI requires this size to be defined, but we do not use it */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 1
 
-#endif /* FREERTOS_CONFIG_H */
+#endif  // EXAMPLES_MAX32655_BLE_FREERTOS_FREERTOSCONFIG_H_
