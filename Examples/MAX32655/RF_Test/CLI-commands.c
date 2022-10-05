@@ -2,9 +2,9 @@
 #include "main.h"
 
 /* Bluetooth DBB registers */
-#define MXC_R_CONST_OUPUT *((volatile uint16_t*)(0x40052040))
-#define MXC_R_PATTERN_GEN *((volatile uint16_t*)(0x4005203C))
-#define MXC_R_TX_CTRL     *((volatile uint16_t*)(0x4005101C))
+#define MXC_R_CONST_OUPUT *((volatile uint16_t *)(0x40052040))
+#define MXC_R_PATTERN_GEN *((volatile uint16_t *)(0x4005203C))
+#define MXC_R_TX_CTRL *((volatile uint16_t *)(0x4005101C))
 
 extern int disable_tickless;
 extern TaskHandle_t tx_task_id;
@@ -25,129 +25,130 @@ extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
 
 /* helpers */
-static bool isDigit(const char* symbol, uint8_t len);
-static bool paramsValid(const char* commandstring, uint8_t numOfParams);
-static isChannel(const char* commandstring, uint8_t paramIndex);
-static int getPacketType(char* str_type, uint8_t* ptr_packetTypeVal);
-static int getNewPhy(char* str_phy, uint8_t* ptr_newPhy);
+static bool isDigit(const char *symbol, uint8_t len);
+static bool paramsValid(const char *commandstring, uint8_t numOfParams);
+static isChannel(const char *commandstring, uint8_t paramIndex);
+static int getPacketType(char *str_type, uint8_t *ptr_packetTypeVal);
+static int getNewPhy(char *str_phy, uint8_t *ptr_newPhy);
 /***************************| Command handler protoypes |******************************/
-static BaseType_t cmd_configs(char* pcWriteBuffer, size_t xWriteBufferLen,
-                              const char* pcCommandString);
-static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString);
-static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                      const char* pcCommandString);
+static BaseType_t cmd_configs(char *pcWriteBuffer, size_t xWriteBufferLen,
+                              const char *pcCommandString);
+static BaseType_t cmd_clearScreen(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char *pcCommandString);
+static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                      const char *pcCommandString);
 
-static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen,
-                           const char* pcCommandString);
+static BaseType_t cmd_Help(char *pcWriteBuffer, size_t xWriteBufferLen,
+                           const char *pcCommandString);
 
-static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                     const char* pcCommandString);
+static BaseType_t cmd_StartBleRXTest(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                     const char *pcCommandString);
 
-static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                     const char* pcCommandString);
+static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                     const char *pcCommandString);
 
-static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                    const char* pcCommandString);
+static BaseType_t cmd_StopBleRFTest(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                    const char *pcCommandString);
 
-static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
-                               const char* pcCommandString);
+static BaseType_t cmd_SetTxdBm(char *pcWriteBuffer, size_t xWriteBufferLen,
+                               const char *pcCommandString);
 
-static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
-                              const char* pcCommandString);
+static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
+                              const char *pcCommandString);
 
-static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                    const char* pcCommandString);
+static BaseType_t cmd_EnableFreqHop(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                    const char *pcCommandString);
 
-static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
-                            const char* pcCommandString);
+static BaseType_t cmd_Sweep(char *pcWriteBuffer, size_t xWriteBufferLen,
+                            const char *pcCommandString);
 
 /***************************| Command structures |******************************/
 /* Structure that defines the "ps" command line command. */
 const CLI_Command_Definition_t xCommandList[] = {
     {
-        .pcCommand                   = "cls", /* The command string to type. */
-        .pcHelpString                = "Clears screen",
-        .pxCommandInterpreter        = cmd_clearScreen, /* The function to run. */
-        .cExpectedNumberOfParameters = 0                /* No parameters are expected. */
+        .pcCommand = "cls", /* The command string to type. */
+        .pcHelpString = "Clears screen",
+        .pxCommandInterpreter = cmd_clearScreen, /* The function to run. */
+        .cExpectedNumberOfParameters = 0 /* No parameters are expected. */
     },
     {
 
-        .pcCommand                   = "constTx", /* The command string to type. */
-        .pcHelpString                = "<channel>",
-        .pxCommandInterpreter        = cmd_ConstTx, /* The function to run. */
+        .pcCommand = "constTx", /* The command string to type. */
+        .pcHelpString = "<channel>",
+        .pxCommandInterpreter = cmd_ConstTx, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
     {
 
-        .pcCommand                   = "e", /* The command string to type. */
-        .pcHelpString                = "Stops any active TX test",
-        .pxCommandInterpreter        = cmd_StopBleRFTest, /* The function to run. */
+        .pcCommand = "e", /* The command string to type. */
+        .pcHelpString = "Stops any active TX test",
+        .pxCommandInterpreter = cmd_StopBleRFTest, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
     },
     {
 
-        .pcCommand                   = "fhop", /* The command string to type. */
-        .pcHelpString                = "Starts frequency hopping",
-        .pxCommandInterpreter        = cmd_EnableFreqHop, /* The function to run. */
+        .pcCommand = "fhop", /* The command string to type. */
+        .pcHelpString = "Starts frequency hopping",
+        .pxCommandInterpreter = cmd_EnableFreqHop, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
     },
     {
-        .pcCommand                   = "ps", /* The command string to type. */
-        .pcHelpString                = "Displays a table showing the state of each FreeRTOS task",
-        .pxCommandInterpreter        = prvTaskStatsCommand, /* The function to run. */
-        .cExpectedNumberOfParameters = 0                    /* No parameters are expected. */
+        .pcCommand = "ps", /* The command string to type. */
+        .pcHelpString = "Displays a table showing the state of each FreeRTOS task",
+        .pxCommandInterpreter = prvTaskStatsCommand, /* The function to run. */
+        .cExpectedNumberOfParameters = 0 /* No parameters are expected. */
     },
     {
 
-        .pcCommand                   = "rx", /* The command string to type. */
-        .pcHelpString                = "<channel> <phy> <duartion>",
-        .pxCommandInterpreter        = cmd_StartBleRXTest, /* The function to run. */
+        .pcCommand = "rx", /* The command string to type. */
+        .pcHelpString = "<channel> <phy> <duartion>",
+        .pxCommandInterpreter = cmd_StartBleRXTest, /* The function to run. */
         .cExpectedNumberOfParameters = 3
 
     },
     {
 
-        .pcCommand    = "sweep", /* The command string to type. */
+        .pcCommand = "sweep", /* The command string to type. */
         .pcHelpString = "<start_ch> <end_ch> <packet_length> <packet_type> <phy> <ms/per_ch>",
-        .pxCommandInterpreter        = cmd_Sweep, /* The function to run. */
+        .pxCommandInterpreter = cmd_Sweep, /* The function to run. */
         .cExpectedNumberOfParameters = 6
 
     },
     {
 
-        .pcCommand                   = "tx", /* The command string to type. */
-        .pcHelpString                = "<channel> <packet_length> <packet_type> <phy> <duration>",
-        .pxCommandInterpreter        = cmd_StartBleTXTest, /* The function to run. */
+        .pcCommand = "tx", /* The command string to type. */
+        .pcHelpString = "<channel> <packet_length> <packet_type> <phy> <duration>",
+        .pxCommandInterpreter = cmd_StartBleTXTest, /* The function to run. */
         .cExpectedNumberOfParameters = 5
 
     },
     {
 
-        .pcCommand                   = "dbm", /* The command string to type. */
-        .pcHelpString                = "<dbm>",
-        .pxCommandInterpreter        = cmd_SetTxdBm, /* The function to run. */
+        .pcCommand = "dbm", /* The command string to type. */
+        .pcHelpString = "<dbm>",
+        .pxCommandInterpreter = cmd_SetTxdBm, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
     {
 
-        .pcCommand                   = "help", /* The command string to type. */
-        .pcHelpString                = "Display help table",
-        .pxCommandInterpreter        = cmd_Help, /* The function to run. */
+        .pcCommand = "help", /* The command string to type. */
+        .pcHelpString = "Display help table",
+        .pxCommandInterpreter = cmd_Help, /* The function to run. */
         .cExpectedNumberOfParameters = 0
 
     },
     {
 
         .pcCommand = NULL /* simply used as delimeter for end of array*/
-    }};
+    }
+};
 /***************************| Command handlers |******************************/
-static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                  const char* pcCommandString)
+static BaseType_t cmd_clearScreen(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                  const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -160,10 +161,10 @@ static BaseType_t cmd_clearScreen(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     return pdFALSE;
 }
-static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                      const char* pcCommandString)
+static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                      const char *pcCommandString)
 {
-    const char* const pcHeader = "Task          State  Priority  Stack	"
+    const char *const pcHeader = "Task          State  Priority  Stack	"
                                  "#\r\n************************************************\r\n";
 
     /* Remove compile time warnings about unused parameters, and check the
@@ -181,7 +182,7 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const char* pcCommandString)
+static BaseType_t cmd_Help(char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString)
 {
     (void)pcCommandString;
     (void)xWriteBufferLen;
@@ -192,19 +193,19 @@ static BaseType_t cmd_Help(char* pcWriteBuffer, size_t xWriteBufferLen, const ch
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                     const char* pcCommandString)
+static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                     const char *pcCommandString)
 {
-    const char* temp;
+    const char *temp;
     BaseType_t lParameterStringLength;
-    uint16_t packetLen    = 0;
+    uint16_t packetLen = 0;
     uint8_t packetTypeVal = 0;
-    uint8_t phyVal        = 0;
+    uint8_t phyVal = 0;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     int err = E_NO_ERROR;
 
-    static tx_config_t rfCommand = {.testType = 0xFF, .duration_ms = 0};
+    static tx_config_t rfCommand = { .testType = 0xFF, .duration_ms = 0 };
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
@@ -216,15 +217,15 @@ static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen
     if (isChannel(pcCommandString, 1) && err == E_NO_ERROR) {
         /* fetch channel parameter */
         rfCommand.channel = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            1,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            1, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
 
         /* fetchc packet length parameter */
-        const char* temp = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            2,                      /* Return the next parameter. */
+        const char *temp = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            2, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
         packetLen = atoi(temp);
@@ -233,16 +234,16 @@ static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen
             err++;
 
         /* fetch packet type parameter */
-        const char* packetType_str = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            3,                      /* Return the next parameter. */
+        const char *packetType_str = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            3, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
         err += getPacketType(packetType_str, &packetTypeVal);
 
-        const char* newPhy = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            4,                      /* Return the next parameter. */
+        const char *newPhy = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            4, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
 
@@ -250,8 +251,8 @@ static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen
 
         /* fetch duration parameter */
         rfCommand.duration_ms = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            5,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            5, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
 
@@ -275,19 +276,19 @@ static BaseType_t cmd_StartBleTXTest(char* pcWriteBuffer, size_t xWriteBufferLen
     }
     return pdFALSE;
 }
-static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                     const char* pcCommandString)
+static BaseType_t cmd_StartBleRXTest(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                     const char *pcCommandString)
 {
-    const char* temp;
+    const char *temp;
     BaseType_t lParameterStringLength;
-    uint16_t packetLen    = 0;
+    uint16_t packetLen = 0;
     uint8_t packetTypeVal = 0;
-    uint8_t phyVal        = 0;
+    uint8_t phyVal = 0;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     int err = E_NO_ERROR;
 
-    static tx_config_t rfCommand = {.testType = 0xFF, .duration_ms = 0};
+    static tx_config_t rfCommand = { .testType = 0xFF, .duration_ms = 0 };
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
@@ -298,14 +299,14 @@ static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen
     /* if parameters given are valid integers fetch them and verify*/
     if (isChannel(pcCommandString, 1) && err == E_NO_ERROR) {
         /* fetch channel parameter */
-        rfCommand.channel  = atoi(FreeRTOS_CLIGetParameter(
-             pcCommandString,        /* The command string itself. */
-             1,                      /* Return the next parameter. */
-             &lParameterStringLength /* Store the parameter string length. */
-             ));
-        const char* newPhy = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            2,                      /* Return the next parameter. */
+        rfCommand.channel = atoi(FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            1, /* Return the next parameter. */
+            &lParameterStringLength /* Store the parameter string length. */
+            ));
+        const char *newPhy = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            2, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
 
@@ -321,8 +322,8 @@ static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen
 
         /* fetch duration parameter which is optional */
         rfCommand.duration_ms = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            3,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            3, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
 
@@ -345,8 +346,8 @@ static BaseType_t cmd_StartBleRXTest(char* pcWriteBuffer, size_t xWriteBufferLen
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                    const char* pcCommandString)
+static BaseType_t cmd_StopBleRFTest(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                    const char *pcCommandString)
 {
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);
@@ -354,7 +355,7 @@ static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     sprintf(pcWriteBuffer, "Ending active tests\r\n");
     if (activeTest == BLE_CONST_TX) {
         /* Disable constant TX */
-        MXC_R_TX_CTRL     = 0x2;
+        MXC_R_TX_CTRL = 0x2;
         MXC_R_PATTERN_GEN = 0x48;
         PalBbDisable();
     } else if (activeTest) {
@@ -363,14 +364,14 @@ static BaseType_t cmd_StopBleRFTest(char* pcWriteBuffer, size_t xWriteBufferLen,
     } else {
         sprintf(pcWriteBuffer, "No active test to disable\n");
     }
-    activeTest  = NO_TEST;
+    activeTest = NO_TEST;
     pausePrompt = false;
     xSemaphoreGive(rfTestMutex);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
-                               const char* pcCommandString)
+static BaseType_t cmd_SetTxdBm(char *pcWriteBuffer, size_t xWriteBufferLen,
+                               const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -382,8 +383,8 @@ static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
     BaseType_t lParameterStringLength;
 
     int8_t newTxdBm = atoi(
-        FreeRTOS_CLIGetParameter(pcCommandString,        /* The command string itself. */
-                                 1,                      /* Return the next parameter. */
+        FreeRTOS_CLIGetParameter(pcCommandString, /* The command string itself. */
+                                 1, /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
                                  ));
     // TODO validate this number, need to know the range
@@ -392,8 +393,8 @@ static BaseType_t cmd_SetTxdBm(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
-                              const char* pcCommandString)
+static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
+                              const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -402,7 +403,7 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    int err                    = E_NO_ERROR;
+    int err = E_NO_ERROR;
     static uint32_t channelNum = 0xFF;
     BaseType_t lParameterStringLength;
 
@@ -414,8 +415,8 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
 
     if (isChannel(pcCommandString, 1)) {
         channelNum = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            1,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            1, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
     } else {
@@ -434,7 +435,7 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
         /* Enable pattern generator, set PRBS-9 */
         MXC_R_CONST_OUPUT = 0x0;
         MXC_R_PATTERN_GEN = 0x4B;
-        activeTest        = BLE_CONST_TX;
+        activeTest = BLE_CONST_TX;
     } else {
         sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
         xSemaphoreGive(rfTestMutex);
@@ -443,8 +444,8 @@ static BaseType_t cmd_ConstTx(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                    const char* pcCommandString)
+static BaseType_t cmd_EnableFreqHop(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                    const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -470,8 +471,8 @@ static BaseType_t cmd_EnableFreqHop(char* pcWriteBuffer, size_t xWriteBufferLen,
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
-                            const char* pcCommandString)
+static BaseType_t cmd_Sweep(char *pcWriteBuffer, size_t xWriteBufferLen,
+                            const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -480,12 +481,12 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     (void)xWriteBufferLen;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    int err               = E_NO_ERROR;
-    uint16_t packetLen    = 0;
+    int err = E_NO_ERROR;
+    uint16_t packetLen = 0;
     uint8_t packetTypeVal = 0;
-    uint8_t phyVal        = 0;
+    uint8_t phyVal = 0;
     BaseType_t lParameterStringLength;
-    static sweep_config_t sweepConfig = {.duration_per_ch_ms = 0};
+    static sweep_config_t sweepConfig = { .duration_per_ch_ms = 0 };
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         sprintf(pcWriteBuffer, "Another test is currently active\r\n");
@@ -496,20 +497,20 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
     /* save new parameters if they are valid*/
     if (isChannel(pcCommandString, 1) && isChannel(pcCommandString, 2) && err == E_NO_ERROR) {
         sweepConfig.start_channel = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            1,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            1, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
 
         sweepConfig.end_channel = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            2,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            2, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
         /* fetchc packet length parameter */
-        const char* temp = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            3,                      /* Return the next parameter. */
+        const char *temp = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            3, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
         packetLen = atoi(temp);
@@ -517,24 +518,24 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
         if (!isDigit(temp, lParameterStringLength) || packetLen > 255 || packetLen < 0)
             err++;
         /* fetch packet type parameter */
-        const char* packetType_str = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            4,                      /* Return the next parameter. */
+        const char *packetType_str = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            4, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
         err += getPacketType(packetType_str, &packetTypeVal);
 
-        const char* newPhy_str = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            5,                      /* Return the next parameter. */
+        const char *newPhy_str = FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            5, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
 
         err += getNewPhy(newPhy_str, &phyVal);
 
         sweepConfig.duration_per_ch_ms = atoi(FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            6,                      /* Return the next parameter. */
+            pcCommandString, /* The command string itself. */
+            6, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
             ));
 
@@ -553,7 +554,7 @@ static BaseType_t cmd_Sweep(char* pcWriteBuffer, size_t xWriteBufferLen,
         setPacketType(packetTypeVal);
         setPhy(phyVal);
         xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
-        activeTest  = BLE_SWEEP_TEST;
+        activeTest = BLE_SWEEP_TEST;
         pausePrompt = true;
     } else {
         sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
@@ -572,7 +573,7 @@ void vRegisterCLICommands(void)
     } while (xCommandList[i].pcCommand != NULL);
 }
 /*-----------------------------------------------------------*/
-static bool isDigit(const char* symbol, uint8_t len)
+static bool isDigit(const char *symbol, uint8_t len)
 {
     for (int i = 0; i < len; i++) {
         if (!(symbol[i] >= 48 && symbol[i] <= 57)) {
@@ -583,14 +584,14 @@ static bool isDigit(const char* symbol, uint8_t len)
     return true;
 }
 /*-----------------------------------------------------------*/
-static isChannel(const char* commandstring, uint8_t paramIndex)
+static isChannel(const char *commandstring, uint8_t paramIndex)
 {
-    const char* str;
+    const char *str;
     BaseType_t lParameterStringLength;
     uint8_t channel;
     /*params start at index 1*/
-    str = FreeRTOS_CLIGetParameter(commandstring,          /* The command string itself. */
-                                   paramIndex,             /* Return the next parameter. */
+    str = FreeRTOS_CLIGetParameter(commandstring, /* The command string itself. */
+                                   paramIndex, /* Return the next parameter. */
                                    &lParameterStringLength /* Store the parameter string length. */
     );
     /* if param exist verify it is a channel */
@@ -605,15 +606,15 @@ static isChannel(const char* commandstring, uint8_t paramIndex)
     return true;
 }
 /*-----------------------------------------------------------*/
-static bool paramsValid(const char* commandstring, uint8_t numOfParams)
+static bool paramsValid(const char *commandstring, uint8_t numOfParams)
 {
-    const char* str;
+    const char *str;
     BaseType_t lParameterStringLength;
     /*params start at index 1*/
     for (int i = 1; i <= numOfParams; i++) {
         str = FreeRTOS_CLIGetParameter(
-            commandstring,          /* The command string itself. */
-            i,                      /* Return the next parameter. */
+            commandstring, /* The command string itself. */
+            i, /* Return the next parameter. */
             &lParameterStringLength /* Store the parameter string length. */
         );
         /* if param exist verify it is a digit */
@@ -628,21 +629,21 @@ static bool paramsValid(const char* commandstring, uint8_t numOfParams)
 
     return true;
 }
-static int getPacketType(char* str_type, uint8_t* ptr_packetTypeVal)
+static int getPacketType(char *str_type, uint8_t *ptr_packetTypeVal)
 {
     int err = E_NO_ERROR;
-    (memcmp(str_type, "PRBS9", 5) == 0)  ? (*ptr_packetTypeVal)  = LL_TEST_PKT_TYPE_PRBS9 :
+    (memcmp(str_type, "PRBS9", 5) == 0)  ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS9 :
     (memcmp(str_type, "PRBS15", 6) == 0) ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS15 :
-    (memcmp(str_type, "0F", 2) == 0)     ? (*ptr_packetTypeVal)     = LL_TEST_PKT_TYPE_0F :
-    (memcmp(str_type, "55", 2) == 0)     ? (*ptr_packetTypeVal)     = LL_TEST_PKT_TYPE_55 :
-    (memcmp(str_type, "FF", 2) == 0)     ? (*ptr_packetTypeVal)     = LL_TEST_PKT_TYPE_FF :
-    (memcmp(str_type, "00", 2) == 0)     ? (*ptr_packetTypeVal)     = LL_TEST_PKT_TYPE_00 :
-    (memcmp(str_type, "F0", 2) == 0)     ? (*ptr_packetTypeVal)     = LL_TEST_PKT_TYPE_F0 :
-    (memcmp(str_type, "AA", 2) == 0)     ? (*ptr_packetTypeVal)     = LL_TEST_PKT_TYPE_AA :
+    (memcmp(str_type, "0F", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_0F :
+    (memcmp(str_type, "55", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_55 :
+    (memcmp(str_type, "FF", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_FF :
+    (memcmp(str_type, "00", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_00 :
+    (memcmp(str_type, "F0", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_F0 :
+    (memcmp(str_type, "AA", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_AA :
                                            err++;
     return err;
 }
-static int getNewPhy(char* str_phy, uint8_t* ptr_newPhy)
+static int getNewPhy(char *str_phy, uint8_t *ptr_newPhy)
 {
     int err = E_NO_ERROR;
     (memcmp(str_phy, "1M", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_1M :
