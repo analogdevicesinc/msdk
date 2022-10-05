@@ -245,11 +245,10 @@ int main(void)
     uint32_t buffer[0x2000];
 
     printf("\n\n***** Flash Control Example *****\n");
-    printf("This example executes entirely from RAM, and\n \
-will mass erase the entire flash contents before\n \
-writing and verifying a test pattern from\n \
-ADDR: 0x%x to ADDR: 0x%x\n",
-           MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_BASE + TESTSIZE);
+    printf("This example executes entirely from RAM, and\n");
+    printf("will mass erase the entire flash contents before\n");
+    printf("writing and verifying a test pattern from\n");
+    printf("ADDR: 0x%x to ADDR: 0x%x\n", MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_BASE + TESTSIZE);
 #ifdef BOARD_FTHR_REVA
     printf("Push SW1 to begin\n");
 #else
