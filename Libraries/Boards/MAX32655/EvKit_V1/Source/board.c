@@ -235,7 +235,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
 {
     mxc_spi_req_t qspi_dummy_req;
     mxc_spi_width_t width;
-    uint8_t* write;
+    uint8_t *write;
     int res;
 
     if (MXC_SPI_GetDataSize(MXC_SPI0) != 8) {

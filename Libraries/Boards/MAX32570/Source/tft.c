@@ -56,15 +56,15 @@
 //
 #define PALETTE_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_palatte + 1 /* nb_palette */ + \
-               (x) * sizeof(uint32_t),                                              \
+           (x) * sizeof(uint32_t),                                                      \
            4)
 #define FONT_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_font + 1 /* nb_font    */ + \
-               (x) * sizeof(uint32_t),                                           \
+           (x) * sizeof(uint32_t),                                                   \
            4)
 #define BITMAP_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_bitmap + 1 /* nb_bitmap  */ + \
-               (x) * sizeof(uint32_t),                                             \
+           (x) * sizeof(uint32_t),                                                     \
            4)
 
 /********************************* TYPE DEFINES ******************************/
