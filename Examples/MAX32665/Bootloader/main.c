@@ -228,7 +228,7 @@ int main(void)
     }
 
     /* Prevent bricks */
-    if(numLeds == 0) {
+    if (numLeds == 0) {
         DELAY(0x3FFFFF);
     }
 
