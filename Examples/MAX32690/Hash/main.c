@@ -45,7 +45,6 @@
 #include "mxc_sys.h"
 #include "ctb.h"
 
-
 volatile int wait;
 volatile int callback_result;
 volatile int counter;
