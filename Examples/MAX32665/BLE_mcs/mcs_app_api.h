@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef MCS_APP_API_H
-#define MCS_APP_API_H
+#ifndef EXAMPLES_MAX32665_BLE_MCS_MCS_APP_API_H_
+#define EXAMPLES_MAX32665_BLE_MCS_MCS_APP_API_H_
 
 #include "wsf_os.h"
 
@@ -82,4 +82,4 @@ void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif /* MCS_APP_API_H */
+#endif  // EXAMPLES_MAX32665_BLE_MCS_MCS_APP_API_H_
