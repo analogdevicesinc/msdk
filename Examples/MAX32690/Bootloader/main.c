@@ -61,6 +61,9 @@ extern uint32_t _flash1;
 #define FLASH_ERASED_WORD 0xFFFFFFFF
 #define CRC32_LEN 4
 
+#define DELAY(loopCount) \
+    for (i = 0; i < loopCount; i++) {}
+
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
