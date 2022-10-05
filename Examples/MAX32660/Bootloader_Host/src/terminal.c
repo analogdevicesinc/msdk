@@ -121,7 +121,8 @@ int terminal_select_from_list(const char *title, const list_t *items, int nb_ite
                 index = i + (k * nb_row);
 
                 if (index < nb_items) {
-                    snprintf(item_data, sizeof(item_data), "%-3d- %-32s ", index + 1, items[index].name);
+                    snprintf(item_data, sizeof(item_data), "%-3d- %-32s ", index + 1,
+                             items[index].name);
                     memcpy(buf, item_data, sizeof(item_data));
                 }
             }

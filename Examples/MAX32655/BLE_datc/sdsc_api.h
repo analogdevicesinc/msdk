@@ -78,4 +78,4 @@ void SecDatSvcDiscover(dmConnId_t connId, uint16_t *pHdlList);
 };
 #endif
 
-#endif  // EXAMPLES_MAX32655_BLE_DATC_SDSC_API_H_
+#endif // EXAMPLES_MAX32655_BLE_DATC_SDSC_API_H_

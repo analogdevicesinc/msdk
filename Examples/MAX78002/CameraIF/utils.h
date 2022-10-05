@@ -48,4 +48,4 @@ int utils_send_img_to_pc(uint8_t *img, uint32_t imgLen, int w, int h, uint8_t *p
 int utils_stream_img_to_pc_init(uint8_t *img, uint32_t imgLen, int w, int h, uint8_t *pixelformat);
 int utils_stream_image_row_to_pc(uint8_t *img, uint32_t imgRowLen);
 
-#endif  // EXAMPLES_MAX78002_CAMERAIF_UTILS_H_
+#endif // EXAMPLES_MAX78002_CAMERAIF_UTILS_H_

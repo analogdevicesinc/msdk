@@ -120,4 +120,4 @@ void SvcMcsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
 };
 #endif
 
-#endif  // EXAMPLES_MAX32665_BLE_MCS_SERVICES_SVC_MCS_H_
+#endif // EXAMPLES_MAX32665_BLE_MCS_SERVICES_SVC_MCS_H_
