@@ -1,12 +1,3 @@
-/**
- * @file        main.c
- * @brief       I2C Loopback Example
- * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
- *              this example you must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SCL). The Master
- *              will use P0.10 and P0.11. The Slave will use P0.16 and P0.17. You must also
- *              connect the pull-up jumpers (JP21 and JP22) to the proper I/O voltage.
- */
-
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -39,6 +30,15 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file        main.c
+ * @brief       I2C Loopback Example
+ * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
+ *              this example you must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SCL). The Master
+ *              will use P0.10 and P0.11. The Slave will use P0.16 and P0.17. You must also
+ *              connect the pull-up jumpers (JP21 and JP22) to the proper I/O voltage.
+ */
 
 /***** Includes *****/
 #include <stdio.h>

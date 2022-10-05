@@ -38,8 +38,8 @@
     (http://elm-chan.org/fsw/ff/00index_e.html).
 *****************************************************************************/
 
-#ifndef SD_H
-#define SD_H
+#ifndef EXAMPLES_MAX78000_IMGCAPTURE_SRC_SD_H_
+#define EXAMPLES_MAX78000_IMGCAPTURE_SRC_SD_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -129,10 +129,10 @@ FRESULT sd_touch(const char *filepath);
 /**
 * @brief Write a string to a file.
 * @param[in] filepath Target file path (must already exist).
-* @param[in] string String to write to the file.  Must be null terminated '\0'
+* @param[in] strng String to write to the file.  Must be null terminated '\0'
 * @return FR_OK if successful, FR_xxx error code if unsucessful.
 ****************************************************************************/
-FRESULT sd_write_string(const char *filepath, const char *string);
+FRESULT sd_write_string(const char *filepath, const char *strng);
 
 /**
 * @brief Write bytes to a file.
@@ -154,4 +154,4 @@ FRESULT sd_cat(const char *filename);
 // streams to the serial console.
 UINT out_stream(const BYTE *p, UINT btf);
 
-#endif
+#endif // EXAMPLES_MAX78000_IMGCAPTURE_SRC_SD_H_

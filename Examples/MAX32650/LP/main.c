@@ -1,23 +1,3 @@
-/*
- * @file
- * @brief   Demonstrates the various low power modes.
- *
- * @details Iterates through the various low power modes, using either the RTC
- *          alarm or a GPIO to wake from each.  #defines determine which wakeup
- *          source to use.  Once the code is running, you can measure the
- *          current used on the VCORE rail.
- *
- *          The power states shown are:
- *            1. Active mode power with all clocks on
- *            2. Active mode power with peripheral clocks disabled
- *            3. Active mode power with unused RAMs in light sleep mode
- *            4. Active mode power with unused RAMS shut down
- *            5. SLEEP mode
- *            6. BACKGROUND mode
- *            7. DEEPSLEEP mode
- *            8. BACKUP mode
- */
-
 /* *****************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -51,6 +31,26 @@
  *
  ******************************************************************************/
 
+/*
+ * @file
+ * @brief   Demonstrates the various low power modes.
+ *
+ * @details Iterates through the various low power modes, using either the RTC
+ *          alarm or a GPIO to wake from each.  #defines determine which wakeup
+ *          source to use.  Once the code is running, you can measure the
+ *          current used on the VCORE rail.
+ *
+ *          The power states shown are:
+ *            1. Active mode power with all clocks on
+ *            2. Active mode power with peripheral clocks disabled
+ *            3. Active mode power with unused RAMs in light sleep mode
+ *            4. Active mode power with unused RAMS shut down
+ *            5. SLEEP mode
+ *            6. BACKGROUND mode
+ *            7. DEEPSLEEP mode
+ *            8. BACKUP mode
+ */
+
 #include <stdio.h>
 #include <stdint.h>
 #include "mxc_errors.h"
@@ -82,9 +82,9 @@
 #endif
 
 #if USE_CONSOLE
-#define PRINTF(...) printf(__VA_ARGS__)
+#define PRINT(...) printf(__VA_ARGS__)
 #else
-#define PRINTF(...)
+#define PRINT(...)
 #endif
 
 // *****************************************************************************
@@ -157,21 +157,21 @@ void setTrigger(int waitForTrigger)
 // *****************************************************************************
 int main(void)
 {
-    PRINTF("****Low Power Mode Example****\n\n");
+    PRINT("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-    PRINTF("This code cycles through the MAX32650 power modes, using the RTC alarm to exit from ");
-    PRINTF("each mode.  The modes will change every %d seconds.\n\n", DELAY_IN_SEC);
+    PRINT("This code cycles through the MAX32650 power modes, using the RTC alarm to exit from ");
+    PRINT("each mode.  The modes will change every %d seconds.\n\n", DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-    PRINTF("This code cycles through the MAX32650 power modes, using a push button (SW2) to exit ");
-    PRINTF("from each mode and enter the next.\n\n");
+    PRINT("This code cycles through the MAX32650 power modes, using a push button (SW2) to exit ");
+    PRINT("from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
-    PRINTF("Running in ACTIVE mode.\n");
+    PRINT("Running in ACTIVE mode.\n");
 #if !USE_CONSOLE
     SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
 #endif // ! USE_CONSOLE
@@ -187,7 +187,7 @@ int main(void)
 
     MXC_LP_DisableSysRAM0LightSleep(); // Global variables are in RAM0
 
-    PRINTF("All unused RAMs placed in LIGHT SLEEP mode.\n");
+    PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     MXC_LP_DisableROM();
@@ -214,7 +214,7 @@ int main(void)
     //MXC_LP_EnableSRAM5(); // Global variables are in RAM5
     MXC_LP_EnableSRAM6(); // Global variables are in RAM6
 
-    PRINTF("All unused RAMs shutdown.\n");
+    PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
@@ -226,25 +226,25 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-        PRINTF("Entering SLEEP mode.\n");
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
 #endif // DO_SLEEP
 
 #if DO_BACKGROUND
-        PRINTF("Entering BACKGROUND mode.\n");
+        PRINT("Entering BACKGROUND mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackgroundMode();
 #endif // DO_BACKGROUND
 
 #if DO_DEEPSLEEP
-        PRINTF("Entering DEEPSLEEP mode.\n");
+        PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-        PRINTF("Entering BACKUP mode.\n");
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP

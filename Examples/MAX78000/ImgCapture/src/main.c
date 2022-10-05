@@ -122,8 +122,7 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
                            pixel_format, // pixel format
                            FIFO_FOUR_BYTE, // FIFO mode (four bytes is suitable for most cases)
                            dma_mode, // DMA (enabling DMA will drastically decrease capture time)
-                           dma_channel // Allocate the DMA channel retrieved in initialization
-    );
+                           dma_channel); // Allocate the DMA channel retrieved in initialization
 
     // Error check the setup function.
     if (ret != STATUS_OK) {
@@ -247,8 +246,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
                            pixel_format, // pixel format
                            FIFO_FOUR_BYTE, // FIFO mode
                            STREAMING_DMA, // Set streaming mode
-                           dma_channel // Allocate the DMA channel retrieved in initialization
-    );
+                           dma_channel); // Allocate the DMA channel retrieved in initialization
 
     // Error check the setup function.
     if (ret != STATUS_OK) {
@@ -367,7 +365,6 @@ void transmit_stream_uart(cnn_img_data_t img_data)
 void save_stream_sd(cnn_img_data_t img_data, char *file)
 {
     if (img_data.raw != NULL) { // Image data will be NULL if something went wrong during streaming
-
         // If file is NULL, find the next available file to save to.
         if (file == NULL) {
             int i = 0;
@@ -375,8 +372,8 @@ void save_stream_sd(cnn_img_data_t img_data, char *file)
             for (;;) {
                 // We'll use the global sd_filename buffer for this and
                 // try to find /raw/imgN while incrementing N.
-                memset(sd_filename, '\0', 256);
-                snprintf(sd_filename, 256, "/raw/img%u", i++);
+                memset(sd_filename, '\0', sizeof(sd_filename));
+                snprintf(sd_filename, sizeof(sd_filename), "/raw/img%u", i++);
                 sd_err = f_stat(sd_filename, &sd_fno);
                 if (sd_err == FR_NO_FILE) {
                     file = sd_filename; // Point 'file' to the available path string
@@ -451,34 +448,24 @@ void service_console()
 
         if (cmd == CMD_UNKNOWN) {
             printf("Uknown command '%s'\n", g_serial_buffer);
-        }
-
-        else if (cmd == CMD_HELP) {
+        } else if (cmd == CMD_HELP) {
             print_help();
-        }
-
-        else if (cmd == CMD_RESET) {
+        } else if (cmd == CMD_RESET) {
             // Issue a soft reset
             MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
-        }
-
-        else if (cmd == CMD_IMGRES) {
+        } else if (cmd == CMD_IMGRES) {
             sscanf(g_serial_buffer, "imgres %u %u", &g_app_settings.imgres_w,
                    &g_app_settings.imgres_h);
             printf("Set image resolution to width %u, height %u\n", g_app_settings.imgres_w,
                    g_app_settings.imgres_h);
-        }
-
-        else if (cmd == CMD_CAPTURE) {
+        } else if (cmd == CMD_CAPTURE) {
             // Perform a blocking image capture with the current camera settings.
             img_data_t img_data = capture_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
                                               g_app_settings.pixel_format, g_app_settings.dma_mode,
                                               g_app_settings.dma_channel);
 
             transmit_capture_uart(img_data);
-        }
-
-        else if (cmd == CMD_STREAM) {
+        } else if (cmd == CMD_STREAM) {
             // Perform a streaming image capture with the current camera settings.
             cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
                                                  g_app_settings.pixel_format,
@@ -488,9 +475,7 @@ void service_console()
 
             // Disable the CNN when unused to preserve power.
             cnn_disable();
-        }
-
-        else if (cmd == CMD_SETREG) {
+        } else if (cmd == CMD_SETREG) {
             // Set a camera register
             unsigned int reg;
             unsigned int val;
@@ -500,9 +485,7 @@ void service_console()
             sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
             printf("Writing 0x%x to camera reg 0x%x\n", val, reg);
             camera_write_reg((uint8_t)reg, (uint8_t)val);
-        }
-
-        else if (cmd == CMD_GETREG) {
+        } else if (cmd == CMD_GETREG) {
             // Read a camera register
             unsigned int reg;
             uint8_t val;
@@ -510,9 +493,8 @@ void service_console()
             camera_read_reg((uint8_t)reg, &val);
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
             send_msg(g_serial_buffer);
-        }
 #ifdef SD
-        else if (cmd == CMD_SD_MOUNT) {
+        } else if (cmd == CMD_SD_MOUNT) {
             // Mount the SD card
             sd_err = sd_mount();
             if (sd_err == FR_OK) {
@@ -521,72 +503,52 @@ void service_console()
                 printf("Disk Size: %u bytes\n", sd_sectors_total / 2);
                 printf("Available: %u bytes\n", sd_sectors_free / 2);
             }
-        }
-
-        else if (cmd == CMD_SD_UNMOUNT) {
+        } else if (cmd == CMD_SD_UNMOUNT) {
             sd_unmount();
-        }
-
-        else if (cmd == CMD_SD_CWD) {
+        } else if (cmd == CMD_SD_CWD) {
             // Get the current working directory
             sd_err = sd_get_cwd();
             if (sd_err == FR_OK) {
                 printf("%s\n", sd_cwd);
             }
-        }
-
-        else if (cmd == CMD_SD_CD) {
+        } else if (cmd == CMD_SD_CD) {
             // Change the current working directory
             char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "cd %s", b); // Parse the target directory
             sd_cd(b);
             free(b);
-        }
-
-        else if (cmd == CMD_SD_LS) {
+        } else if (cmd == CMD_SD_LS) {
             sd_ls();
-        }
-
-        else if (cmd == CMD_SD_MKDIR) {
+        } else if (cmd == CMD_SD_MKDIR) {
             // Make a directory
             char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "mkdir %s", b); // Parse the directory name
             sd_mkdir(b);
             free(b);
-        }
-
-        else if (cmd == CMD_SD_RM) {
+        } else if (cmd == CMD_SD_RM) {
             // Remove an item
             char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "rm %s", b); // Parse the item name
             sd_rm(b);
             free(b);
-        }
-
-        else if (cmd == CMD_SD_TOUCH) {
+        } else if (cmd == CMD_SD_TOUCH) {
             // Create a new empty file
             char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "touch %s", b); // Parse the filepath
             sd_touch(b);
             free(b);
-        }
-
-        else if (cmd == CMD_SD_WRITE) {
+        } else if (cmd == CMD_SD_WRITE) {
             // Write a string to a file
             char *b = (char *)malloc(SERIAL_BUFFER_SIZE);
             sscanf(g_serial_buffer, "write %s \"%[^\"]", sd_filename,
                    b); // \"$[^\"] captures everything between two quotes ""
             sd_write_string(sd_filename, b);
             free(b);
-        }
-
-        else if (cmd == CMD_SD_CAT) {
+        } else if (cmd == CMD_SD_CAT) {
             // Print the contents of a file
             sscanf(g_serial_buffer, "cat %s", (char *)sd_filename); // Parse the target file
             sd_cat(sd_filename);
-        }
-
-        else if (cmd == CMD_SD_SNAP) {
+        } else if (cmd == CMD_SD_SNAP) {
             // Stream and save an image to the SD card
             int args = sscanf(g_serial_buffer, "snap %s", (char *)sd_filename);
 
@@ -601,8 +563,8 @@ void service_console()
             }
 
             cnn_disable();
-        }
 #endif // #ifdef SD
+        }
 
         // Clear the serial buffer for the next command
         clear_serial_buffer();
