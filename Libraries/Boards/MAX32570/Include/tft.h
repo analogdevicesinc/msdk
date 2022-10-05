@@ -103,7 +103,7 @@ void MXC_TFT_ShowImage(int x0, int y0, int id);
  *
  * @param      index_color  Palette index of screen color
  */
-void MXC_TFT_SetBackGroundColor(unsigned int index_color);
+void MXC_TFT_SetBackGroundColor(uint32_t index_color);
 
 /**
  * @brief      Set bounds of printf

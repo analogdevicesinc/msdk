@@ -130,7 +130,7 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, i
  *
  * @param      index_color  Palette index of screen color
  */
-void MXC_TFT_SetBackGroundColor(unsigned int index_color);
+void MXC_TFT_SetBackGroundColor(uint32_t index_color);
 
 /**
  * @brief      Set bounds of printf
