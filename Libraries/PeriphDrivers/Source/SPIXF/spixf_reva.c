@@ -76,9 +76,13 @@ static spixf_req_head_t states;
 /****** Functions ******/
 uint8_t mxc_spixf_busy(void)
 {
-    if (MXC_SPIXF_GetSSDriveOutput() == 1) {
-        return 1;
-    }
+    /* The busy check shall be done in application layer
+     * by status bit checking of target flash
+     * otherwise the blow checking might block the code
+     */
+    //if (MXC_SPIXF_GetSSDriveOutput() == 1) {
+    //    return 1;
+    //}
 
     return 0;
 }
