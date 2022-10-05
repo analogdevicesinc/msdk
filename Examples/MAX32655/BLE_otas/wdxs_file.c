@@ -18,6 +18,7 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdlib.h>
 #include "mxc_device.h"
 #include "wsf_types.h"
 #include "util/wstr.h"
