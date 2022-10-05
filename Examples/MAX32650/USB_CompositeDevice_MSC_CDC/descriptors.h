@@ -254,7 +254,7 @@ composite_config_descriptor_hs = {
     {
         0x09, /*  bLength                          */
         0x02, /*  bDescriptorType = Config         */
-        0x0062, /*  wTotalLength(L/H)			     */
+        0x0062, /*  wTotalLength(L/H)                */
         0x03, /*  bNumInterfaces                   */
         0x01, /*  bConfigurationValue              */
         0x02, /*  iConfiguration                   */

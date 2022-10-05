@@ -374,11 +374,3 @@ void USB_IRQHandler(void)
 {
     MXC_USB_EventHandler();
 }
-
-/******************************************************************************/
-#if 0
-void SysTick_Handler(void)
-{
-	MXC_DelayHandler();
-}
-#endif
