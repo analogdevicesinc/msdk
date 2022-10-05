@@ -77,4 +77,4 @@ void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif  // EXAMPLES_MAX32655_BLE_FIT_FIT_API_H_
+#endif // EXAMPLES_MAX32655_BLE_FIT_FIT_API_H_

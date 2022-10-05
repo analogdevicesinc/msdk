@@ -48,7 +48,7 @@
 #define cambus_writeb(addr, x) sccb_write_byt(g_slv_addr, addr, x)
 #define cambus_readb(addr, x) sccb_read_byt(g_slv_addr, addr, x)
 
-    static int g_slv_addr;
+static int g_slv_addr;
 
 /******************************** Static Functions ***************************/
 static int init(void)

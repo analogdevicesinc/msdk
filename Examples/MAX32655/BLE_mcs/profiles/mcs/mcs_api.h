@@ -113,4 +113,4 @@ void McsButtonCheckStop(dmConnId_t connId);
 };
 #endif
 
-#endif  // EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_
+#endif // EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_

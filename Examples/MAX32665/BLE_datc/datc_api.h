@@ -69,4 +69,4 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif  // EXAMPLES_MAX32665_BLE_DATC_DATC_API_H_
+#endif // EXAMPLES_MAX32665_BLE_DATC_DATC_API_H_
