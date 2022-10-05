@@ -43,7 +43,6 @@
 #include "pb.h"
 #include "spixf.h"
 #include "i2c.h"
-#include "mxc_sys.h"
 #include "Ext_Flash.h"
 
 /* **** Global Variables **** */

@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef _MAX20303_H
-#define _MAX20303_H
+#ifndef LIBRARIES_BOARDS_MAX32680_INCLUDE_MAX20303_H_
+#define LIBRARIES_BOARDS_MAX32680_INCLUDE_MAX20303_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -100,4 +100,4 @@ int max20303_camera_power(int on);
 }
 #endif
 
-#endif
+#endif // LIBRARIES_BOARDS_MAX32680_INCLUDE_MAX20303_H_
