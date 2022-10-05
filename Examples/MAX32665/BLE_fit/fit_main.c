@@ -114,8 +114,9 @@ static const appSecCfg_t fitSecCfg = {
 
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t fitUpdateCfg = {
-    6000, /*! Connection idle period in ms before attempting
-                                              connection parameter update; set to zero to disable */
+    6000,
+    /*! ^ Connection idle period in ms before attempting
+    connection parameter update; set to zero to disable */
     640, /*! Minimum connection interval in 1.25ms units */
     800, /*! Maximum connection interval in 1.25ms units */
     0, /*! Connection latency */
@@ -479,9 +480,7 @@ static void fitBtnCback(uint8_t btn)
         default:
             break;
         }
-    }
-    /* button actions when not connected */
-    else {
+    } else { /* button actions when not connected */
         switch (btn) {
         case APP_UI_BTN_1_SHORT:
             /* start or restart advertising */
@@ -744,9 +743,8 @@ void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+        } else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process DM messages */
             /* process advertising and connection-related messages */
             AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 
