@@ -61,7 +61,6 @@
 #include "uart.h"
 #include "lp.h"
 #include "led.h"
-#include "board.h"
 
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
