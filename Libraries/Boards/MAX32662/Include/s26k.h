@@ -37,8 +37,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _S26K_H_
-#define _S26K_H_
+#ifndef LIBRARIES_BOARDS_MAX32662_INCLUDE_S26K_H_
+#define LIBRARIES_BOARDS_MAX32662_INCLUDE_S26K_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -147,4 +147,4 @@ void S26K_WriteBufferAbortReset(void);
 }
 #endif
 
-#endif /* _S26K_H_ */
+#endif // LIBRARIES_BOARDS_MAX32662_INCLUDE_S26K_H_

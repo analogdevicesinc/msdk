@@ -42,8 +42,8 @@
 #include <stdio.h>
 #include "spixf.h"
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32572_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32572_EVKIT_V1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -129,10 +129,9 @@ int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert,
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 int MX25_Clock(unsigned len, unsigned deassert);
-;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32572_EVKIT_V1_INCLUDE_BOARD_H_

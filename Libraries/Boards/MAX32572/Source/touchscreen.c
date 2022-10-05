@@ -72,7 +72,7 @@ static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
     return 0;
 }
 
-static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *dataout)
+static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, uint16_t *dataout)
 {
     int i;
     uint8_t rx[2] = { 0, 0 };
@@ -104,9 +104,9 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *data
     }
 }
 
-static int tsGetXY(unsigned short *x, unsigned short *y)
+static int tsGetXY(uint16_t *x, uint16_t *y)
 {
-    unsigned short tsX, tsY, tsZ1;
+    uint16_t tsX, tsY, tsZ1;
     int ret;
 
     spi_transmit_tsc2046(TSC_DIFFZ1, &tsZ1);
@@ -134,7 +134,7 @@ static int tsGetXY(unsigned short *x, unsigned short *y)
 
 static void tsHandler(void)
 {
-    unsigned short touch_x, touch_y;
+    uint16_t touch_x, touch_y;
     int i;
 
     MXC_TS_Stop();
