@@ -259,7 +259,7 @@ static int ext_flash_clock(unsigned int len, unsigned int deassert)
         return E_BAD_STATE;
     }
 
-    write = (uint8_t*)malloc(len);
+    write = (uint8_t *)malloc(len);
     memset(write, 0, sizeof(write));
 
     qspi_dummy_req.spi = MXC_SPI0;
