@@ -154,7 +154,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     return WSF_EFS_FAILURE;
 }
 
-/* http://home.thep.lu.se/~bjorn/crc/ */
+// http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
  *  \brief  Create the CRC32 table.

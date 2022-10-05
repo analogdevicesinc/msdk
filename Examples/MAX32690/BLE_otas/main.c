@@ -22,6 +22,7 @@
 */
 /*************************************************************************************************/
 
+#include <string.h>
 #include "wsf_types.h"
 #include "wsf_trace.h"
 #include "wsf_bufio.h"
@@ -44,9 +45,7 @@
 #include "smp_api.h"
 #include "app_api.h"
 #include "hci_core.h"
-#include "sec_api.h"
 #include "app_terminal.h"
-#include "pal_bb.h"
 #include "wut.h"
 #include "rtc.h"
 #include "trimsir_regs.h"
@@ -60,8 +59,6 @@
 
 #include "dats_api.h"
 #include "app_ui.h"
-
-#include <string.h>
 
 /**************************************************************************************************
   Macros
