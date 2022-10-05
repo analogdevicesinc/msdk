@@ -41,7 +41,6 @@
 #include "mxc_pins.h"
 #include "led.h"
 #include "pb.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 
@@ -75,7 +74,7 @@ int Board_Init(void)
 #ifndef __riscv
     int err;
 
-    for (unsigned long delay_count = 0; delay_count < 500000; delay_count++) {}
+    for (uint32_t delay_count = 0; delay_count < 500000; delay_count++) {}
 
     // Set SWDCLK and SWDIO pads to 3.3V
     // MXC_GPIO0->vssel |= (3 << 28);

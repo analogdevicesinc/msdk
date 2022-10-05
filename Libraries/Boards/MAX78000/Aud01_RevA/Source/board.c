@@ -40,7 +40,6 @@
 #include "gpio.h"
 #include "mxc_pins.h"
 #include "led.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 #include "mxc_delay.h"

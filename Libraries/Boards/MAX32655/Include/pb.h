@@ -35,8 +35,8 @@
  *
  ******************************************************************************/
 
-#ifndef _PB_H_
-#define _PB_H_
+#ifndef LIBRARIES_BOARDS_MAX32655_INCLUDE_PB_H_
+#define LIBRARIES_BOARDS_MAX32655_INCLUDE_PB_H_
 
 #include "gpio.h"
 
@@ -148,4 +148,4 @@ int PB_IsPressedAny(void);
 }
 #endif
 
-#endif /* _PB_H_ */
+#endif // LIBRARIES_BOARDS_MAX32655_INCLUDE_PB_H_

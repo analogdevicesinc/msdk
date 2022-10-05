@@ -37,8 +37,8 @@
 ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _LOGO_H_
-#define _LOGO_H_
+#ifndef LIBRARIES_BOARDS_MAX32572_INCLUDE_LOGO_H_
+#define LIBRARIES_BOARDS_MAX32572_INCLUDE_LOGO_H_
 
 /** Color palette for the image */
 uint32_t logo_palette[] = { 0x6F6D69, 0x76746F, 0x2BB5A4, 0x8A8984, 0x9C9B97, 0xCED17A,
@@ -759,4 +759,5 @@ unsigned char logo_image[] = {
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
 };
-#endif /** _LOGO_H_ */
+
+#endif // LIBRARIES_BOARDS_MAX32572_INCLUDE_LOGO_H_

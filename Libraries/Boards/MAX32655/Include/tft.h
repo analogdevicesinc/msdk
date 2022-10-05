@@ -35,8 +35,8 @@
  *
  ******************************************************************************/
 
-#ifndef _TFT_H_
-#define _TFT_H_
+#ifndef LIBRARIES_BOARDS_MAX32655_INCLUDE_TFT_H_
+#define LIBRARIES_BOARDS_MAX32655_INCLUDE_TFT_H_
 
 #include <stdio.h>
 #include <stdint.h>
@@ -210,6 +210,6 @@ void MXC_TFT_SetRotation(tft_rotation_t rotation);
  * @param       command             command or register address
  * @param       data                data for the command or register
  */
-void MXC_TFT_WriteReg(unsigned short command, unsigned short data);
+void MXC_TFT_WriteReg(uint16_t command, uint16_t data);
 
-#endif /* _TFT_H_ */
+#endif // LIBRARIES_BOARDS_MAX32655_INCLUDE_TFT_H_
