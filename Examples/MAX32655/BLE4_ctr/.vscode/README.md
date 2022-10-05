@@ -197,32 +197,34 @@ The following configuration options are available:
 
 ### Basic Config Options
 
-* `"target"`
-  * This sets the target microcontroller for the project.
-  * It sets the `TARGET` [Build Configuration](#build-configuration) variable.
-  * Supported values:
-    * `"MAX32520"`
-    * `"MAX32570"`
-    * `"MAX32650"`
-    * `"MAX32655"`
-    * `"MAX32660"`
-    * `"MAX32662"`
-    * `"MAX32665"` (for MAX32665-MAX32668)
-    * `"MAX32670"`
-    * `"MAX32672"`
-    * `"MAX32675"`
-    * `"MAX32680"`
-    * `"MAX32690"`
-    * `"MAX78000"`
-    * `"MAX78002"`
+#### `"target"`
 
-* `"board"`
-  * This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
-  * Supported values:
-    * ... can be found in the `Libraries/Boards` folder of the MaximSDK
-    * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
+* This sets the target microcontroller for the project.
+* It sets the `TARGET` [Build Configuration](#build-configuration) variable.
+* Supported values:
+  * `"MAX32520"`
+  * `"MAX32570"`
+  * `"MAX32650"`
+  * `"MAX32655"`
+  * `"MAX32660"`
+  * `"MAX32662"`
+  * `"MAX32665"` (for MAX32665-MAX32668)
+  * `"MAX32670"`
+  * `"MAX32672"`
+  * `"MAX32675"`
+  * `"MAX32680"`
+  * `"MAX32690"`
+  * `"MAX78000"`
+  * `"MAX78002"`
 
-    ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
+#### `"board"`
+
+* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+* Supported values:
+  * ... can be found in the `Libraries/Boards` folder of the MaximSDK
+  * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
+
+  ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
 
 ### Advanced Config Options
 
@@ -450,7 +452,7 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ### Configuration Variables Table
 
-The project's `Makefile` can be opened to see a full list of available config options, but they are nested among the implementation details of the Makefile itself.  A full reference table is also available below.
+The following configuration variables are available.
 
 | Variable | Description | Example | Details |
 |--- | --- | --- | ---|
