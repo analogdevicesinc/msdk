@@ -56,7 +56,7 @@
 #include "dma.h"
 
 /***** Definitions *****/
-// #define MASTERDMA		//Comment this line out if standard I2C transaction is required
+// #define MASTERDMA        //Comment this line out if standard I2C transaction is required
 
 #define I2C_MASTER MXC_I2C0
 #define I2C_SLAVE MXC_I2C1

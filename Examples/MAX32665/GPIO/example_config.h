@@ -31,8 +31,8 @@
 *
 ******************************************************************************/
 
-#ifndef __EXAMPLE_CONFIG_H__
-#define __EXAMPLE_CONFIG_H__
+#ifndef EXAMPLES_MAX32665_GPIO_EXAMPLE_CONFIG_H_
+#define EXAMPLES_MAX32665_GPIO_EXAMPLE_CONFIG_H_
 
 #include "mxc_device.h"
 #include "gpio.h"
@@ -77,4 +77,4 @@
 #define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_15
 #endif
 
-#endif // __EXAMPLE_CONFIG_H__
+#endif // EXAMPLES_MAX32665_GPIO_EXAMPLE_CONFIG_H_
