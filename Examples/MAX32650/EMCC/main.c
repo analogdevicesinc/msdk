@@ -60,6 +60,8 @@
 #define A1024_ADDRESS 0x80000000
 #define ITERATIONS 100
 
+unsigned int g_seed = 0;
+
 /* **** Globals **** */
 int s, ss;
 
@@ -137,9 +139,8 @@ void test_function(void)
     setup();
 
     // Initialize & write pseudo-random data to be written to the RAM
-    unsigned int seed = 0;
     for (i = 0; i < BUFFER_SIZE; i++) {
-        temp = rand_r(&seed);
+        temp = rand_r(&g_seed);
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = temp;
