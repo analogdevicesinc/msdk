@@ -51,11 +51,11 @@
 /***** Definitions *****/
 
 #define POLLING // Uncomment to perform ADC conversions using blocking/polling method
-// #define INTERRUPT   	// Uncomment to perform ADC conversions using interrupt driven method
-// #define DMA         	// Uncomment to perform ADC conversions using DMA driven method.
+// #define INTERRUPT    // Uncomment to perform ADC conversions using interrupt driven method
+// #define DMA          // Uncomment to perform ADC conversions using DMA driven method.
 
 #define SOFTWARE // Uncomment to perform ADC conversions using a software trigger
-// #define HARDWARE	 	// Uncomment to perform ADC conversions using a hardware trigger
+// #define HARDWARE     // Uncomment to perform ADC conversions using a hardware trigger
 
 #define CH MXC_ADC_CH_0
 

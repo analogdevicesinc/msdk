@@ -146,20 +146,20 @@ int main(void)
         overflow[3] = (MXC_ADC_GetData(&adc_val[3]) == E_OVERFLOW ? 1 : 0);
 
         /* Display results on OLED display, display asterisk if overflow */
-        snprintf((char *)fmtstr, 40, "0: 0x%04x%s 2: 0x%04x%s", adc_val[0], overflow[0] ? "*" : " ",
+        snprintf((char *)fmtstr, sizeof((char *)fmtstr), "0: 0x%04x%s 2: 0x%04x%s", adc_val[0], overflow[0] ? "*" : " ",
                  adc_val[2], overflow[2] ? "*" : " ");
         printf("%s\n", fmtstr);
 
-        snprintf((char *)fmtstr, 40, "1: 0x%04x%s 3: 0x%04x%s", adc_val[1], overflow[1] ? "*" : " ",
+        snprintf((char *)fmtstr, sizeof((char *)fmtstr), "1: 0x%04x%s 3: 0x%04x%s", adc_val[1], overflow[1] ? "*" : " ",
                  adc_val[3], overflow[3] ? "*" : " ");
         printf("%s\n", fmtstr);
         /* Determine if programmable limits on AIN1 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
-            snprintf((char *)fmtstr, 40, " %s Limit on AIN0 ",
+            snprintf((char *)fmtstr, sizeof((char *)fmtstr), " %s Limit on AIN0 ",
                      (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
         } else {
-            snprintf((char *)fmtstr, 40, "                   ");
+            snprintf((char *)fmtstr, sizeof((char *)fmtstr), "                   ");
         }
         printf("%s\n", fmtstr);
 
