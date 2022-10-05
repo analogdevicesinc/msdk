@@ -106,9 +106,7 @@ static uint32_t table[0x100] = { 0 };
 void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
     if (!*table) {
-        for (size_t i = 0; i < 0x100; ++i) {
-            table[i] = crc32_for_byte(i);
-        }
+        for (size_t i = 0; i < 0x100; ++i) { table[i] = crc32_for_byte(i); }
     }
 
     for (size_t i = 0; i < n_bytes; ++i) {
