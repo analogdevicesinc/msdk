@@ -1,6 +1,6 @@
 /**
- * @file    spixfc_fifo_regs.h
- * @brief   Registers, Bit Masks and Bit Positions for the SPIXFC_FIFO Peripheral Module.
+ * @file    trimsir_regs.h
+ * @brief   Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
  * @note    This file is @generated.
  */
 
@@ -37,8 +37,8 @@
 *
 ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SPIXFC_FIFO_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SPIXFC_FIFO_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_TRIMSIR_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_TRIMSIR_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -75,46 +75,37 @@ extern "C" {
 /* **** Definitions **** */
 
 /**
- * @ingroup     spixfc_fifo
- * @defgroup    spixfc_fifo_registers SPIXFC_FIFO_Registers
- * @brief       Registers, Bit Masks and Bit Positions for the SPIXFC_FIFO Peripheral Module.
- * @details     SPI XiP Master Controller FIFO.
+ * @ingroup     trimsir
+ * @defgroup    trimsir_registers TRIMSIR_Registers
+ * @brief       Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
+ * @details     Trim System Initilazation Registers
  */
 
 /**
- * @ingroup spixfc_fifo_registers
- * Structure type to access the SPIXFC_FIFO Registers.
+ * @ingroup trimsir_registers
+ * Structure type to access the TRIMSIR Registers.
  */
 typedef struct {
-    union {
-        __IO uint8_t  tx_8;             /**< <tt>\b 0x00:</tt> SPIXFC_FIFO TX_8 Register */
-        __IO uint16_t tx_16;            /**< <tt>\b 0x00:</tt> SPIXFC_FIFO TX_16 Register */
-        __IO uint32_t tx_32;            /**< <tt>\b 0x00:</tt> SPIXFC_FIFO TX_32 Register */
-    };
-    union {
-        __IO uint8_t  rx_8;             /**< <tt>\b 0x04:</tt> SPIXFC_FIFO RX_8 Register */
-        __IO uint16_t rx_16;            /**< <tt>\b 0x04:</tt> SPIXFC_FIFO RX_16 Register */
-        __IO uint32_t rx_32;            /**< <tt>\b 0x04:</tt> SPIXFC_FIFO RX_32 Register */
-    };
-} mxc_spixfc_fifo_regs_t;
+    __IO uint32_t rsv0;                 /**< <tt>\b 0x00:</tt> TRIMSIR RSV0 Register */
+    __R  uint32_t rsv_0x4;
+    __I  uint32_t bb_sir2;              /**< <tt>\b 0x08:</tt> TRIMSIR BB_SIR2 Register */
+    __I  uint32_t bb_sir3;              /**< <tt>\b 0x0C:</tt> TRIMSIR BB_SIR3 Register */
+} mxc_trimsir_regs_t;
 
-/* Register offsets for module SPIXFC_FIFO */
+/* Register offsets for module TRIMSIR */
 /**
- * @ingroup    spixfc_fifo_registers
- * @defgroup   SPIXFC_FIFO_Register_Offsets Register Offsets
- * @brief      SPIXFC_FIFO Peripheral Register Offsets from the SPIXFC_FIFO Base Peripheral Address.
+ * @ingroup    trimsir_registers
+ * @defgroup   TRIMSIR_Register_Offsets Register Offsets
+ * @brief      TRIMSIR Peripheral Register Offsets from the TRIMSIR Base Peripheral Address.
  * @{
  */
-#define MXC_R_SPIXFC_FIFO_TX_8             ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
-#define MXC_R_SPIXFC_FIFO_TX_16            ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
-#define MXC_R_SPIXFC_FIFO_TX_32            ((uint32_t)0x00000000UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0000</tt> */
-#define MXC_R_SPIXFC_FIFO_RX_8             ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
-#define MXC_R_SPIXFC_FIFO_RX_16            ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
-#define MXC_R_SPIXFC_FIFO_RX_32            ((uint32_t)0x00000004UL) /**< Offset from SPIXFC_FIFO Base Address: <tt> 0x0004</tt> */
-/**@} end of group spixfc_fifo_registers */
+#define MXC_R_TRIMSIR_RSV0                 ((uint32_t)0x00000000UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRIMSIR_BB_SIR2              ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */
+#define MXC_R_TRIMSIR_BB_SIR3              ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */
+/**@} end of group trimsir_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SPIXFC_FIFO_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_TRIMSIR_REGS_H_

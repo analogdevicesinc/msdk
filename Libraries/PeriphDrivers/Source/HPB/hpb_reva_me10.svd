@@ -204,7 +204,7 @@
       <register>
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
-        <name>MBR</name>
+        <name>MBR[%s]</name>
         <description>HPB Memory Base Address.</description>
         <addressOffset>0x10</addressOffset>
         <resetMask>0x00000000</resetMask>
@@ -220,7 +220,7 @@
       <register>
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
-        <name>MCR</name>
+        <name>MCR[%s]</name>
         <description>HPB Memory Configuration Register.</description>
         <addressOffset>0x20</addressOffset>
         <resetMask>0x00000000</resetMask>
@@ -331,7 +331,7 @@
       <register>
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
-        <name>MTR</name>
+        <name>MTR[%s]</name>
         <description>HPB Memory Timing Register.</description>
         <addressOffset>0x30</addressOffset>
         <resetMask>0x00000000</resetMask>
