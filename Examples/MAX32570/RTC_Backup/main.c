@@ -115,11 +115,10 @@ void printTime()
 // *****************************************************************************
 int configureRTC()
 {
-    int rtcTrim;
-
     printf("\n\n***************** RTC Wake from Backup Example *****************\n\n");
     printf("The time-of-day alarm is set to wake the device every %d seconds.\n", TIME_OF_DAY_SEC);
-    printf("When the alarm goes off it will print the current time to the console.\n\n");
+    printf("When the alarm goes off it will print the current time to the console.\n");
+    printf("Note: You may see longer time in console due to boot up time delay\n\n");
 
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) { // Initialize RTC
         printf("Failed RTC Initialization\n");
@@ -134,12 +133,12 @@ int configureRTC()
     }
 
     printf("RTC started\n");
-
-    rtcTrim = MXC_RTC_TrimCrystal(MXC_TMR0); // Trim RTC
+#if 0
+    int rtcTrim = MXC_RTC_TrimCrystal(MXC_TMR0); // Trim RTC
     if (rtcTrim < 0) {
         printf("Error trimming RTC %d\n", rtcTrim);
     }
-
+#endif
     if (MXC_RTC_SetTimeofdayAlarm(TIME_OF_DAY_SEC) != E_NO_ERROR) { // Arm TOD alarm
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
