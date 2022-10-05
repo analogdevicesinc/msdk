@@ -10,6 +10,6 @@ environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/value=RTC_Backup
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/operation=append
-environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/value=MAX78000
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/value=MAX32690
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/append=true
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/appendContributed=true
