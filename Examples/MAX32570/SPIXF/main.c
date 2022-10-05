@@ -175,7 +175,7 @@ int main(void)
     }
 
     printf("Verifying external flash\n");
-    while(remain) {
+    while (remain) {
         int chunk = ((remain > BUFF_SIZE) ? BUFF_SIZE : remain);
         if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, rx_buf, chunk,
                                   EXT_FLASH_SPIXFC_WIDTH)) !=
