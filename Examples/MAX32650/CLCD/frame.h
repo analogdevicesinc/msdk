@@ -38,8 +38,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _MAXIM_BITMAP_IMAGE_H_
-#define _MAXIM_BITMAP_IMAGE_H_
+#ifndef EXAMPLES_MAX32650_CLCD_FRAME_H_
+#define EXAMPLES_MAX32650_CLCD_FRAME_H_
 
 /** Number of bits per pixel for the logo image */
 #define LOGO_BPP 8
@@ -766,4 +766,4 @@ unsigned char image[] = {
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
 };
-#endif /** _MAXIM_BITMAP_IMAGE_H_ */
+#endif  // EXAMPLES_MAX32650_CLCD_FRAME_H_
