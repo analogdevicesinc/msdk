@@ -215,7 +215,7 @@ int main(void)
     int numLeds;
 
     /* Limit the number of LED blinks */
-    if(num_leds > 2) {
+    if (num_leds > 2) {
         numLeds = 2;
     } else {
         numLeds = num_leds;
