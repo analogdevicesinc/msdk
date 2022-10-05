@@ -60,10 +60,9 @@
 #define A1024_ADDRESS 0x80000000
 #define ITERATIONS 100
 
-unsigned int g_seed = 0;
-
 /* **** Globals **** */
 int s, ss;
+unsigned int g_seed = 0;
 
 mxc_spixr_cfg_t init_cfg = {
     0x08, /* Number of bits per character     */
