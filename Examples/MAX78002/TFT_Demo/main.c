@@ -58,6 +58,7 @@ int font_4 = (int)&SansSerif16x16[0];
 int font_5 = (int)&SansSerif19x19[0];
 const int font_5_width = 19;
 const int font_5_height = 19;
+int seed = 78002;
 
 void TFT_Print(char *str, int x, int y, int font, int length)
 {
@@ -147,7 +148,6 @@ void print_time(void)
     int x, y;
     static int last_x = 0;
     static int last_y = 0;
-    int seed = 78002;
 
     sec = MXC_RTC_GetSecond();
     day = sec / SECS_PER_DAY;
