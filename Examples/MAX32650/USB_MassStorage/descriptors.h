@@ -190,4 +190,4 @@ uint8_t serial_id_desc[] = { 26, /* bLength */
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '1', 0 };
 
-#endif  // EXAMPLES_MAX32650_USB_MASSSTORAGE_DESCRIPTORS_H_
+#endif // EXAMPLES_MAX32650_USB_MASSSTORAGE_DESCRIPTORS_H_
