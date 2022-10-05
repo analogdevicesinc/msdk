@@ -95,4 +95,4 @@ MAKECMDGOALS=lib
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 
 # Build this as a library
-# .DEFAULT_GOAL := lib
+# .DEFAULT_GOAL ?= lib

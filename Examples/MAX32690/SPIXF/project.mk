@@ -8,4 +8,4 @@
 # **********************************************************
 
 LINKERFILE = $(TARGET_LC)_spix.ld
-$(warning This example uses a special linkerfile: $(LINKERFILE))
+$(info This example uses a special linkerfile: $(LINKERFILE))

@@ -34,10 +34,14 @@ PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
 PROJ_CFLAGS += -D__$(TARGET_UC)
 PROJ_CFLAGS += -D$(BOARD)
 
+# Set SDMA size
+PROJ_AFLAGS += -D__MSR_SDMA_SIZE=0xA000
+
 # Add project's include and source paths
 VPATH += src/nfc
 VPATH += src/nfc/contactless_l1_app
 VPATH += src/nfc/emv_l1_stack
+VPATH += src/msr
 VPATH += resources
 IPATH += include/nfc
 IPATH += include/nfc/contactless_l1_app
