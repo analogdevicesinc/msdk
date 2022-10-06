@@ -38,7 +38,7 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
 2. Run cpplint and resolve any errors.
 
-    cpplint checks enforces good code practices, and deals with some common mistakes and higher-level code patterns.  It's a good idea to resolve its errors first before running clang-format, which deals with lower-level code styling and syntax patterns.
+    cpplint enforces good code practices by scanning for common mistakes and ensuring certain higher-level code patterns are followed.  It's a good idea to resolve the errors found by cpplint before before running clang-format, which deals with lower-level code styling and syntax patterns.
 
     To run cpplint on a file, use `cpplint <filepath>`.
 
@@ -183,7 +183,7 @@ IPATH += $(LIBRARY_NAME_DIR)/include
 VPATH += $(LIBRARY_NAME_DIR)/src
 ```
 
-An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code "cherry-picked" and added to the build via [board.mk](Libraries/Boards/MAX78000/EvKit_V1/board.mk) files.
+An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code selectively added to the build via [board.mk](Libraries/Boards/MAX78000/EvKit_V1/board.mk) files.
 
 ### Advanced Libraries
 
