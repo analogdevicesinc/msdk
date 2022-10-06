@@ -61,12 +61,12 @@ endif
 # Specify the build directory if not defined by the project
 ifeq "$(BUILD_DIR)" ""
 ifeq "$(RISCV_CORE)" ""
-PERIPH_DRIVER_BUILD_DIR=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(LIBRARY_VARIANT)
+PERIPH_DRIVER_BUILD_DIR?=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(LIBRARY_VARIANT)
 else
-PERIPH_DRIVER_BUILD_DIR=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(LIBRARY_VARIANT)_riscv
+PERIPH_DRIVER_BUILD_DIR?=${PERIPH_DRIVER_DIR}/bin/$(TARGET_UC)/$(LIBRARY_VARIANT)_riscv
 endif
 else
-PERIPH_DRIVER_BUILD_DIR=$(BUILD_DIR)/PeriphDriver
+PERIPH_DRIVER_BUILD_DIR?=$(BUILD_DIR)/PeriphDriver
 endif
 
 # Export other variables needed by the peripheral driver makefile
