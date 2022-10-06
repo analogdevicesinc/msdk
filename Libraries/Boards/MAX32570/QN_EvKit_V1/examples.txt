@@ -6,12 +6,14 @@ CRC
 DES
 DMA
 Flash
+Flash_CLI
 FreeRTOSDemo
 GPIO
 Hash
 Hello_World
 HTMR
 I2C
+I2C_SCAN
 ICC
 LP
 lwIP_Ping
@@ -23,6 +25,7 @@ OTP_Dump
 OWM
 Pulse_Train
 RTC
+RTC_Backup
 SDHC_FAT
 SDHC_Raw
 SCPA_OTP_Dump
