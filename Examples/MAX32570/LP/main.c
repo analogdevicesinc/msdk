@@ -157,7 +157,7 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-	PRINTF("****Low Power Mode Example****\n\n");
+    PRINTF("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
     PRINTF("This code cycles through the MAX32570 power modes, using the RTC alarm to exit from "
@@ -220,7 +220,7 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-    	PRINTF("Entering SLEEP mode.\n");
+        PRINTF("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
         PRINTF("Wakeup from SLEEP mode.\n\n");

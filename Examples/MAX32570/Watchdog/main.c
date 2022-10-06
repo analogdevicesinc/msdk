@@ -110,7 +110,6 @@ int main(void)
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_Enable(MXC_WDT0);
 
-
     while (1) {
         //Push SW1 to reset watchdog
         if (PB_Get(SW1) == TRUE) {
