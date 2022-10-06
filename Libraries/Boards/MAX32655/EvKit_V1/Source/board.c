@@ -33,6 +33,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
