@@ -18,7 +18,7 @@ If a direct branch on the mainline MSDK repo is made, the following branch namin
     * For Jira tickets, it's recommended to use `fix/ticketnumber` so that the branch gets automatically tracked.  Ex: `fix/MSDK-670`
 * New feature: `feature/branchname`
 * Generic development branch: `dev/branchname`
-* New and/pr modified example branch: `example/branchname`
+* New and/or modified example branch: `example/branchname`
 
 ## Style Guide
 
@@ -141,7 +141,7 @@ TODO
 
 ### Project Settings
 
-Example projects are not just source code.  They must also be "wrapped" in up-to-date support files for the development environments supported by the MSDK.  This include the core Makefiles, Eclipse files, Visual Studio Code files, etc.
+Example projects are not just source code.  They must also be "wrapped" in up-to-date support files for the development environments supported by the MSDK.  This includes the core Makefiles, Eclipse files, Visual Studio Code files, etc.
 
 These support files should be managed with the [MSDKGen](https://github.com/Analog-Devices-MSDK/MSDKGen) utility.
 
@@ -181,6 +181,8 @@ For example:
 ```Makefile
 IPATH += $(LIBRARY_NAME_DIR)/include
 VPATH += $(LIBRARY_NAME_DIR)/src
+SRCS += libfile1.c
+SRCS += libfile2.c
 ```
 
 An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code selectively added to the build via [board.mk](Libraries/Boards/MAX78000/EvKit_V1/board.mk) files.
