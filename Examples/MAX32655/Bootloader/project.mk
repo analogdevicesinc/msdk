@@ -13,6 +13,8 @@ MXC_OPTIMIZE_CFLAGS=-Os
 # Strip debug symbols
 DEBUG=0
 
+PERIPH_DRIVER_BUILD_DIR:=./build/periphdriver
+
 SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
 

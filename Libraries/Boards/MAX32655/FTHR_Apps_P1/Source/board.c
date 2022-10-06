@@ -312,9 +312,11 @@ int Board_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
 
+#ifdef DEBUG
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
+#endif
 
     if ((err = PB_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
