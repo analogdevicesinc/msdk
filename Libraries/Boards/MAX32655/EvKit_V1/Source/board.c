@@ -259,7 +259,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
         return E_BAD_STATE;
     }
 
-    write = (uint8_t*)malloc(len);
+    write = (uint8_t *)malloc(len);
     memset(write, 0, len);
 
     qspi_dummy_req.spi = MXC_SPI0;
@@ -324,7 +324,6 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-
 
 #ifndef __riscv
     /* TFT reset and backlight signal */

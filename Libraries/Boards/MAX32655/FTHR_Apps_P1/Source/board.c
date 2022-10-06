@@ -234,7 +234,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
 {
     mxc_spi_req_t qspi_dummy_req;
     mxc_spi_width_t width;
-    uint8_t* write;
+    uint8_t *write;
     int res;
 
     if (MXC_SPI_GetDataSize(MXC_SPI0) != 8) {
@@ -257,7 +257,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
         return E_BAD_STATE;
     }
 
-    write = (uint8_t*)malloc(len);
+    write = (uint8_t *)malloc(len);
     memset(write, 0, len);
 
     qspi_dummy_req.spi = MXC_SPI0;
