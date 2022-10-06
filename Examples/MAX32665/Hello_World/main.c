@@ -59,8 +59,7 @@ int main(void)
     printf("\n***********Hello World!***********\n");
     printf("\nLED0 toggles every 500 ms\n");
 
-    while(1) 
-    {
+    while (1) {
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
