@@ -133,3 +133,63 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
 4. `git add` and `git commit` any changes to your code.  Now, it's ready for a PR!  The same checks will be automatically run against any PRs that are opened in the MSDK, and they must pass before the code can be approved.
 
+## Examples
+
+### Examples Development Guidelines
+
+TODO
+
+### Project Settings
+
+Example projects are not just source code.  They must also be "wrapped" in up-to-date support files for the development environments supported by the MSDK.  This include the core Makefiles, Eclipse files, Visual Studio Code files, etc.
+
+These support files should be managed with the [MSDKGen](https://github.com/Analog-Devices-MSDK/MSDKGen) utility.
+
+## Board Support Packages
+
+TODO port instructions from https://confluence.maxim-ic.com/display/MSAW/Procedure%3A++Adding+Support+for+Additional+Boards+to+the+SDK (minus installer package creation)
+
+## Libraries
+
+Libraries should be added to the [Libraries](Libraries) sub-folder of the MSDK.
+
+* All libraries should include a `libraryname.mk` file that can be added to [libs.mk](Libraries/libs.mk) via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration).
+
+* If necessary, a library may also include a "core" Makefile or set of Makefiles to build it as a standalone static library file.  The naming convention is `lib<libraryname>.a`.
+
+### Self-Locating Makefile
+
+The first thing that the `libraryname.mk` file should do is locate its own directory and store it in a variable.  The code snippet can be used to achieve this.
+
+```Makefile
+ifeq "$(LIBRARYNAME_DIR)" ""
+# If LIBRARYNAME_DIR is not specified, this Makefile will locate itself.
+LIBRARYNAME_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
+```
+
+All filepaths for the library should then use this `$(LIBRARYNAME_DIR)`-type variable as their "root" for all filepaths.  This is a safe and reliable way to self-reference internal library files.
+
+For an example, see the [periphdriver.mk](Libraries/PeriphDrivers/periphdriver.mk) file.
+
+### Simple Libraries
+
+For simple libraries, it may be sufficient to just add the library's source files to the build using `VPATH` and `IPATH`.
+
+For example:
+
+```Makefile
+IPATH += $(LIBRARY_NAME_DIR)/include
+VPATH += $(LIBRARY_NAME_DIR)/src
+```
+
+An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code "cherry-picked" and added to the build via [board.mk](Libraries/Boards/MAX78000/EvKit_V1/board.mk) files.
+
+### Advanced Libraries
+
+More advanced libraries including those with a large number of source files should include a rule to build as a static library file with a [recursive Make call](https://www.gnu.org/software/make/manual/make.html#Recursion).  
+
+This type of library should also set up the appropriate [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration) to include that static library to the build.
+
+TODO: clean advanced library example
+
