@@ -289,7 +289,6 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
 
     /* Write:  Secured data service changed ccc descriptor */
     { datcCccNtfVal, sizeof(datcCccNtfVal), (SEC_DAT_CCC_HDL_IDX + DATC_DISC_SDS_START) },
-
 };
 
 /* Characteristic configuration list length */
@@ -558,9 +557,8 @@ static void datcScanReport(dmEvt_t *pMsg)
         } else {
             connect = TRUE;
         }
-    }
-    /* if the peer device uses an RPA */
-    else if (DM_RAND_ADDR_RPA(pMsg->scanReport.addr, pMsg->scanReport.addrType)) {
+    } else if (DM_RAND_ADDR_RPA(pMsg->scanReport.addr, pMsg->scanReport.addrType)) {
+        /* if the peer device uses an RPA */
         /* resolve advertiser's RPA to see if we already have a bond with this device */
         AppMasterResolveAddr(pMsg, APP_DB_HDL_NONE, APP_RESOLVE_ADV_RPA);
     }
@@ -840,9 +838,8 @@ static void datcBtnCback(uint8_t btn)
                 /* if scanning cancel scanning */
                 if (datcCb.scanning) {
                     AppScanStop();
-                }
-                /* else auto connect */
-                else if (!datcCb.autoConnect) {
+                } else if (!datcCb.autoConnect) {
+                    /* else auto connect */
                     datcRestartScanning();
                 }
             } else {
@@ -918,17 +915,14 @@ static void datcBtnCback(uint8_t btn)
             APP_TRACE_INFO0(" - No action assigned");
             break;
         }
-    }
-    /* button actions when not connected */
-    else {
+    } else { /* button actions when not connected */
         switch (btn) {
         case APP_UI_BTN_1_SHORT:
             /* if scanning cancel scanning */
             if (datcCb.scanning) {
                 AppScanStop();
-            }
-            /* else auto connect */
-            else if (!datcCb.autoConnect) {
+            } else if (!datcCb.autoConnect) {
+                /* else auto connect */
                 datcRestartScanning();
             }
             break;
@@ -1086,7 +1080,6 @@ static void datcProcMsg(dmEvt_t *pMsg)
             dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
             datcSpeedTestHandler(connId);
         }
-
     } break;
 
     case ATTC_HANDLE_VALUE_NTF:
@@ -1326,16 +1319,13 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
             APP_TRACE_INFO1("Datc got evt %d", pMsg->event);
         }
 
-        /* process ATT messages */
-        if (pMsg->event <= ATT_CBACK_END) {
+        if (pMsg->event <= ATT_CBACK_END) { /* process ATT messages */
             /* process discovery-related ATT messages */
             AppDiscProcAttMsg((attEvt_t *)pMsg);
 
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event <= DM_CBACK_END) {
+        } else if (pMsg->event <= DM_CBACK_END) { /* process DM messages */
             /* process advertising and connection-related messages */
             AppMasterProcDmMsg((dmEvt_t *)pMsg);
 

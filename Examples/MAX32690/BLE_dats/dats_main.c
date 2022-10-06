@@ -137,8 +137,9 @@ static const smpCfg_t datsSmpCfg = {
 
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t datsUpdateCfg = {
-    0, /*! Connection idle period in ms before attempting
-                                              connection parameter update; set to zero to disable */
+    0,
+    /*! Connection idle period in ms before attempting
+    connection parameter update; set to zero to disable */
     (15 * 8 / 1.25), /*! Minimum connection interval in 1.25ms units */
     (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
     0, /*! Connection latency */
@@ -861,9 +862,8 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+        } else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process DM messages */
             /* process advertising and connection-related messages */
             AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 

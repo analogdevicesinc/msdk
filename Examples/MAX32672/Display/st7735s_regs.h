@@ -37,6 +37,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32672_DISPLAY_ST7735S_REGS_H_
+#define EXAMPLES_MAX32672_DISPLAY_ST7735S_REGS_H_
+
 /* Register definitions taken from CrystalFontz 
  * CFAF128128B1-0145T_SPI_Demo_Code.ino by Brent A. Crosby
  */
@@ -62,3 +65,5 @@
 #define ST7735S_VMCTR1   (0xC5)
 #define ST7735S_GAMCTRP1 (0xE0)
 #define ST7735S_GAMCTRN1 (0xE1)
+
+#endif // EXAMPLES_MAX32672_DISPLAY_ST7735S_REGS_H_

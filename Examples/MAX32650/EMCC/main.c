@@ -41,13 +41,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include <inttypes.h>
 #include "mxc_errors.h"
 #include "emcc.h"
 #include "rtc.h"
 #include "tmr.h"
 #include "spixr.h"
-#include <string.h>
 
 /* **** Definitions **** */
 // RAM Vendor Specific Commands
@@ -62,6 +62,7 @@
 
 /* **** Globals **** */
 int s, ss;
+unsigned int g_seed = 0;
 
 mxc_spixr_cfg_t init_cfg = {
     0x08, /* Number of bits per character     */
@@ -137,9 +138,8 @@ void test_function(void)
     setup();
 
     // Initialize & write pseudo-random data to be written to the RAM
-    srand(0);
     for (i = 0; i < BUFFER_SIZE; i++) {
-        temp = rand();
+        temp = rand_r(&g_seed);
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = temp;
