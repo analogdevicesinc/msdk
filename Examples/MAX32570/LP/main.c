@@ -144,7 +144,9 @@ void setTrigger(int waitForTrigger)
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
+    for (tmp = 0; tmp < 0x800000; tmp++) {
+        __NOP();
+    }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
@@ -161,14 +163,14 @@ int main(void)
 
 #if USE_ALARM
     PRINT_F("This code cycles through the MAX32570 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
+            "each mode.  The modes will change every %d seconds.\n\n",
+            DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
     PRINT_F("This code cycles through the MAX32570 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
+            "from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
