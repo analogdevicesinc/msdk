@@ -16,10 +16,6 @@ LIB_NFC = 1
 # Enable SBT
 SBT = 1
 
-# Set default goal to sla.  This means that running just 'make'
-# is equivalent to 'make sla'
-override .DEFAULT_GOAL=sla
-
 # Add project's include and source paths
 VPATH += src/nfc
 VPATH += src/nfc/contactless_l1_app
