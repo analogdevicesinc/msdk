@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef EXAMPLES_MAX32572_MAX32570_DEMO_FREERTOS_INCLUDE_DEMO_CONFIG_H_
-#define EXAMPLES_MAX32572_MAX32570_DEMO_FREERTOS_INCLUDE_DEMO_CONFIG_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_DEMO_CONFIG_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_DEMO_CONFIG_H_
 
 /*****************************     DEFINES    *********************************/
 #define SMARTCARD_EXT_AFE_3V (0)
@@ -50,4 +50,4 @@
 
 /*****************************     FUNCTIONS *********************************/
 
-#endif // EXAMPLES_MAX32572_MAX32570_DEMO_FREERTOS_INCLUDE_DEMO_CONFIG_H_
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_DEMO_CONFIG_H_

@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _MAX9867_H_
-#define _MAX9867_H_
+#ifndef EXAMPLES_MAX32655_I2S_PLAYBACK_MAX9867_H_
+#define EXAMPLES_MAX32655_I2S_PLAYBACK_MAX9867_H_
 
 //-----------------------------------------------------------------------------
 // Includes
@@ -52,4 +52,4 @@ int max9867_init(mxc_i2c_regs_t *i2c_inst, int mclk, int lrclk);
 int max9867_shutdown(void);
 int max9867_status(void);
 
-#endif /* _MAX9867_H_ */
+#endif // EXAMPLES_MAX32655_I2S_PLAYBACK_MAX9867_H_

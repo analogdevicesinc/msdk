@@ -39,10 +39,6 @@
                 <name>start</name>
                 <value>1</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>active</name>
-                <value>1</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -393,10 +389,6 @@
                 <name>active</name>
                 <value>1</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>clear</name>
-                <value>1</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -412,10 +404,6 @@
               </enumeratedValue>
               <enumeratedValue>
                 <name>active</name>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>clear</name>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -435,10 +423,6 @@
                 <name>active</name>
                 <value>1</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>clear</name>
-                <value>1</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -456,10 +440,6 @@
                 <name>active</name>
                 <value>1</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>clear</name>
-                <value>1</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -475,10 +455,6 @@
               </enumeratedValue>
               <enumeratedValue>
                 <name>active</name>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>clear</name>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>

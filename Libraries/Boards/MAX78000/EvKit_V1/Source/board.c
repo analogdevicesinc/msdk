@@ -41,7 +41,6 @@
 #include "mxc_pins.h"
 #include "led.h"
 #include "pb.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 #include "tft_ssd2119.h"

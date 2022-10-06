@@ -45,7 +45,6 @@
 #include "pb.h"
 #include "spixf.h"
 #include "i2c.h"
-#include "mxc_sys.h"
 #include "Ext_Flash.h"
 #include "tft_ssd2119.h"
 #include "tsc2046.h"

@@ -37,8 +37,8 @@
   Analog Devices ADXL343 driver.
 */
 
-#ifndef _ADXL343_H_
-#define _ADXL343_H_
+#ifndef EXAMPLES_MAX78000_I2C_ADXL343_ADXL343_H_
+#define EXAMPLES_MAX78000_I2C_ADXL343_ADXL343_H_
 
 #include <stdint.h>
 #include "mxc.h"
@@ -224,4 +224,4 @@ int adxl343_init(mxc_i2c_regs_t *i2c_inst);
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX78000_I2C_ADXL343_ADXL343_H_

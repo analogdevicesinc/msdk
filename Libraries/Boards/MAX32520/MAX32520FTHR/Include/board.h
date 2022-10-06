@@ -36,10 +36,10 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
+#ifndef LIBRARIES_BOARDS_MAX32520_MAX32520FTHR_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32520_MAX32520FTHR_INCLUDE_BOARD_H_
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -85,4 +85,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32520_MAX32520FTHR_INCLUDE_BOARD_H_

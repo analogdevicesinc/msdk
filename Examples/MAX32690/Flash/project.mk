@@ -8,4 +8,4 @@
 # **********************************************************
 
 LINKERFILE=$(TARGET_LC)_ram.ld
-$(warning This example executes out of RAM using a special linkerfile: $(LINKERFILE))
+$(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))

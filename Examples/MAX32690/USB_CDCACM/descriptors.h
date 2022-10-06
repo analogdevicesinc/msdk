@@ -213,7 +213,7 @@ config_descriptor_hs = {
     {
         0x09, /*  bLength                          */
         0x02, /*  bDescriptorType = Config         */
-        0x0043, /*  wTotalLength(L/H)			     */
+        0x0043, /*  wTotalLength(L/H)                */
         0x02, /*  bNumInterfaces                   */
         0x01, /*  bConfigurationValue              */
         0x02, /*  iConfiguration                   */

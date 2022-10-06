@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _TOUCHSCREEN_H_
-#define _TOUCHSCREEN_H_
+#ifndef LIBRARIES_BOARDS_MAX32572_INCLUDE_TOUCHSCREEN_H_
+#define LIBRARIES_BOARDS_MAX32572_INCLUDE_TOUCHSCREEN_H_
 
 /************************************************************************************/
 #define TS_MAX_BUTTONS 16
@@ -107,4 +107,4 @@ void MXC_TS_RemoveAllButton(void);
  */
 int MXC_TS_GetKey(void);
 
-#endif /* _TOUCHSCREEN_H_ */
+#endif // LIBRARIES_BOARDS_MAX32572_INCLUDE_TOUCHSCREEN_H_

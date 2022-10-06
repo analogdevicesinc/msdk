@@ -106,19 +106,19 @@ void TFT_Feather_test(void)
 
     MXC_TFT_ClearScreen();
     memset(buff, 32, TFT_BUFF_SIZE);
-    sprintf(buff, "MAXIM INTEGRATED");
+    snprintf(buff, sizeof(buff), "ANALOG DEVICES");
     TFT_Print(buff, 0, 10, (int)&Arial12x12[0]);
 
-    sprintf(buff, "Maxim Integrated");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 50, (int)&Arial24x23[0]);
 
-    sprintf(buff, "Maxim Integrated");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 100, (int)&Arial28x28[0]);
 
-    sprintf(buff, "Maxim Integrated");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 150, (int)&SansSerif16x16[0]);
 
-    sprintf(buff, "Maxim Integrated");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 200, (int)&SansSerif19x19[0]);
 
     while (1) {}

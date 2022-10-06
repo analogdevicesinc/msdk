@@ -33,11 +33,11 @@
 *******************************************************************************
 */
 
-#include "mxc_device.h"
-
 #include <emv_l1_stack/iso14443_3_common.h>
 #include <mml_nfc_pcd_port.h>
 #include <logging.h>
+
+#include "mxc_device.h"
 
 /**
  * @page NFC_EMV_CONTACTLESS_RF_DRIVER_PORT NFC EMV Contactless PCD RF Driver Porting Functions

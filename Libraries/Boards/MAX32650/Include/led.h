@@ -35,8 +35,8 @@
  *
  ******************************************************************************/
 
-#ifndef _LED_H_
-#define _LED_H_
+#ifndef LIBRARIES_BOARDS_MAX32650_INCLUDE_LED_H_
+#define LIBRARIES_BOARDS_MAX32650_INCLUDE_LED_H_
 
 #include "mxc_assert.h"
 #include "board.h"
@@ -94,4 +94,5 @@ void LED_Toggle(unsigned int idx);
 }
 #endif
 /**@}*/
-#endif /* _LED_H_ */
+
+#endif // LIBRARIES_BOARDS_MAX32650_INCLUDE_LED_H_
