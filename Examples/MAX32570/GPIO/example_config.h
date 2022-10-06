@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLE_CONFIG_H_
-#define EXAMPLE_CONFIG_H_
+#ifndef EXAMPLES_MAX32570_GPIO_EXAMPLE_CONFIG_H_
+#define EXAMPLES_MAX32570_GPIO_EXAMPLE_CONFIG_H_
 
 #include "mxc_device.h"
 #include "gpio.h"
@@ -59,4 +59,4 @@
 #define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_4
 #endif
 
-#endif /* EXAMPLE_CONFIG_H_ */
+#endif // EXAMPLES_MAX32570_GPIO_EXAMPLE_CONFIG_H_
