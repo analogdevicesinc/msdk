@@ -1,4 +1,4 @@
- /* *************************************************
+/* *************************************************
  *  Copyright 1999-2004 IAR Systems. All rights reserved.
  *
  * This module contains the function `__low_level_init', a function

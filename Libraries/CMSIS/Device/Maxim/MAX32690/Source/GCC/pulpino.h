@@ -23,7 +23,6 @@
  *
  */
 
-
 // Notice: Header guard has been modified from its original value of "PULPINO_H"
 //         to adhere to Analog Devices coding standards.
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_SOURCE_GCC_PULPINO_H_
