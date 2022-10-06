@@ -85,24 +85,24 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         return E_NULL_PTR;
     }
 
-    if (idx != 0) {
-        // Multiple slaves are not supported yet
+    // Zero indexed
+    if (idx > (MXC_I2C_NUM_TARGET_ADDR - 1)) {
         return E_NOT_SUPPORTED;
     }
 
-    if (slaveAddr > MXC_F_I2C_SLAVE_ADDR) {
+    if (slaveAddr > MXC_F_I2C_SLAVE_MULTI_ADDR) {
         // Only support addresses up to 10 bits
         return E_BAD_PARAM;
     }
 
-    i2c->slave = 0;
+    i2c->slave_multi[idx] = 0;
 
     if (slaveAddr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
         // Set for 10bit addressing mode
-        i2c->slave = MXC_F_I2C_SLAVE_EXT_ADDR_EN;
+        i2c->slave_multi[idx] = MXC_F_I2C_SLAVE_MULTI_EXT_ADDR_EN;
     }
 
-    i2c->slave |= slaveAddr;
+    i2c->slave_multi[idx] |= slaveAddr;
 
     return E_NO_ERROR;
 }

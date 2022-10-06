@@ -92,45 +92,6 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     usn[9] = (infoblock[3] & 0x00007F80) >> 7;
     usn[10] = (infoblock[3] & 0x007F8000) >> 15;
 
-#if 0
-    /* TODO: Verify the checksum */
-    // Compute the checksum
-    if(checksum != NULL) {
-        uint8_t info_checksum[2];
-        uint8_t key[MXC_SYS_USN_CHECKSUM_LEN];
-
-        /* Initialize the remainder of the USN and key */
-        memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
-        memset(checksum, 0, MXC_SYS_USN_CHECKSUM_LEN);
-
-        /* Read the checksum from the info block */
-        info_checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
-        info_checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
-
-        /* Setup the encryption parameters */
-        MXC_AES_Init();
-
-        mxc_aes_req_t aesReq;
-        aesReq.length = MXC_SYS_USN_CHECKSUM_LEN/4;
-        aesReq.inputData = (uint32_t*)usn;
-        aesReq.resultData = (uint32_t*)checksum;
-        aesReq.keySize = MXC_AES_128BITS;
-        aesReq.encryption = MXC_AES_ENCRYPT_EXT_KEY;
-
-        MXC_AES_SetExtKey(key, MXC_AES_128BITS);
-        MXC_AES_Encrypt(&aesReq);
-        MXC_AES_Shutdown();
-
-        /* Verify the checksum */
-        if((checksum[1] != info_checksum[0]) ||
-            (checksum[0] != info_checksum[1])) {
-
-            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
-            return E_UNKNOWN;
-        }
-    }
-#endif
-
     /* Add the info block checksum to the USN */
     usn[11] = ((infoblock[3] & 0x7F800000) >> 23);
     usn[12] = ((infoblock[4] & 0x007F8000) >> 15);

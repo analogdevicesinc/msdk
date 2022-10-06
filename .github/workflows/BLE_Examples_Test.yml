@@ -13,21 +13,9 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  lock:
-    # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
-     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Lock Resources
-        if: ${{ always() }}
-        run: |
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
-          
   build:
     # The type of runner that the job will run on
     runs-on: [ self-hosted, btm-ci ]
-    needs: [ lock ] # Only run if the lock was successful
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -37,7 +25,7 @@ jobs:
           fetch-depth: 0
 
       # Runs a set of commands using the runners shell
-      - name: Build all BLE examples
+      - name: BLE examples functionality test
         run: |
           # Remove local modifications
           git scorch
@@ -85,6 +73,10 @@ jobs:
           fi
           
           echo "Running Test"
+          
+          # Lock hardware resources
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
           
           cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
           chmod +x Examples_tests/local_testLauncher.sh

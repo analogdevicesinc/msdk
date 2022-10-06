@@ -33,8 +33,10 @@
  *
  ******************************************************************************/
 
-#if (ACTIVE_CAMERA == CAM_OV7670)
+#ifndef EXAMPLES_MAX32570_CAMERAIF_INCLUDE_OV7670_REGS_H_
+#define EXAMPLES_MAX32570_CAMERAIF_INCLUDE_OV7670_REGS_H_
 
+#if (ACTIVE_CAMERA == CAM_OV7670)
 
 /* OV7670 Registers definition */
 #define REG_GAIN                    0x00 /* AGC - Gain control gain setting  */
@@ -260,7 +262,7 @@
 #define COM3_RGB565_FORMAT            0x00
 #define COM3_RGB_OUTPUT_AVERAGE       0x04
 #define COM3_SINGLE_FRAME             0x01
-#define COM3_SET_MIRROR(r, x)         ((r&0xBF)|((x&1)<<6))
+#define COM3_SET_MIRROR(r, x)         ((r&0xBF)|((x&1) << 6))
 #define COM3_GET_MIRROR(r)            ((r>>6)&1)
 
 /* COM5 Register */
@@ -288,7 +290,7 @@
 #define COM9_GAIN_128x       0x60
 #define COM9_DROP_VSYNC      0x04
 #define COM9_DROP_HREF       0x02
-#define COM9_SET_AGC(r, x)   ((r&0x8F)|((x&0x07)<<4))
+#define COM9_SET_AGC(r, x)   ((r&0x8F)|((x&0x07) << 4))
 
 /* COM10 Register */
 #define RESETb_REMAP_SLHS    0x80
@@ -413,5 +415,6 @@
 #define AWBCTR1             0x6e    /* AWB Control 1 */
 #define AWBCTR0             0x6f    /* AWB Control 0 */
 
+#endif // (ACTIVE_CAMERA == CAM_OV7670)
 
-#endif //__REG_REGS_H__
+#endif // EXAMPLES_MAX32570_CAMERAIF_INCLUDE_OV7670_REGS_H_

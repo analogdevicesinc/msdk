@@ -37,8 +37,8 @@
 ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _CSI2_H_
-#define _CSI2_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_
 
 /* **** Includes **** */
 #include "csi2_regs.h"
@@ -635,4 +635,4 @@ void MXC_CSI2_DMA_Callback(int a, int b);
 }
 #endif
 
-#endif /* _CSI2_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_

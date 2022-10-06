@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _TFT_H_
-#define _TFT_H_
+#ifndef LIBRARIES_BOARDS_MAX32572_INCLUDE_TFT_H_
+#define LIBRARIES_BOARDS_MAX32572_INCLUDE_TFT_H_
 
 #include <stdio.h>
 #include <stdint.h>
@@ -102,7 +102,7 @@ void MXC_TFT_ShowImage(int x0, int y0, int id);
  *
  * @param      index_color  Palette index of screen color
  */
-void MXC_TFT_SetBackGroundColor(unsigned int index_color);
+void MXC_TFT_SetBackGroundColor(uint32_t index_color);
 
 /**
  * @brief      Set bounds of printf
@@ -169,4 +169,4 @@ void MXC_TFT_Print(int x0, int y0, text_t *str, area_t *area);
  */
 void MXC_TFT_ClearArea(area_t *area, int color);
 
-#endif /* _TFT_H_ */
+#endif // LIBRARIES_BOARDS_MAX32572_INCLUDE_TFT_H_

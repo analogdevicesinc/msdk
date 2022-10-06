@@ -69,7 +69,6 @@ int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t *atq, uint8_t doretry)
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
@@ -116,7 +115,6 @@ int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t *uid)
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
@@ -151,7 +149,6 @@ int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t *uid, uint8_t *sak)
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;

@@ -50,7 +50,6 @@
 #include "definitions.h"
 #include "dma.h"
 #include "flc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "icc.h"
 #include "mxc_assert.h"
@@ -375,8 +374,6 @@ int main(void)
         printf("Starting FreeRTOS scheduler.\n");
         vTaskStartScheduler();
     }
-
-    while (1) {}
 
     return 0;
 }

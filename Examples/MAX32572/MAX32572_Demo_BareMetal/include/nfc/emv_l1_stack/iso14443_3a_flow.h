@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef __ISO14443_3A_FLOW_H__
-#define __ISO14443_3A_FLOW_H__
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_FLOW_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_FLOW_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -209,4 +209,4 @@ int32_t iso_14443_3a_remove();
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_FLOW_H_

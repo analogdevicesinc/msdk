@@ -262,7 +262,7 @@ int main()
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {};
+    while (I2C_FLAG == 1) {}
 
     printf("\n-->Result: \n");
 

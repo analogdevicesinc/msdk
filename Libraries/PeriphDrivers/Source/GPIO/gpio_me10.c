@@ -35,13 +35,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "gpio.h"
 #include "gpio_common.h"
 #include "gpio_reva.h"
-#include <stddef.h>
 
 /* **** Definitions **** */
 

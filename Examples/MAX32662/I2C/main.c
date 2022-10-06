@@ -1,15 +1,3 @@
-/**
- * @file        main.c
- * @brief       I2C Loopback Example 
- * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
- *              this example you must connect P0.12 to P0.18 (SCL) and P0.13 to P0.19 (SCL). The Master
- *              will use P0.12 and P0.13. The Slave will use P0.18 and P0.19. You must also
- *              connect the pull-up jumpers (JP23 and JP24) to the proper I/O voltage.
- *              Refer to JP27 to determine the I/O voltage.
- * @note        Other devices on the EvKit will be using the same bus. This example cannot be combined with
- *              a PMIC or bluetooth example because the I2C Slave uses GPIO pins for those devices.
- */
-
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -43,6 +31,18 @@
  *
  ******************************************************************************/
 
+/**
+ * @file        main.c
+ * @brief       I2C Loopback Example 
+ * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
+ *              this example you must connect P0.12 to P0.18 (SCL) and P0.13 to P0.19 (SCL). The Master
+ *              will use P0.12 and P0.13. The Slave will use P0.18 and P0.19. You must also
+ *              connect the pull-up jumpers (JP23 and JP24) to the proper I/O voltage.
+ *              Refer to JP27 to determine the I/O voltage.
+ * @note        Other devices on the EvKit will be using the same bus. This example cannot be combined with
+ *              a PMIC or bluetooth example because the I2C Slave uses GPIO pins for those devices.
+ */
+
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
@@ -56,7 +56,7 @@
 #include "dma.h"
 
 /***** Definitions *****/
-//#define MASTERDMA		//Comment this line out if standard I2C transaction is required
+//#define MASTERDMA     //Comment this line out if standard I2C transaction is required
 
 #define I2C_MASTER MXC_I2C0
 #define I2C_SLAVE MXC_I2C1
@@ -261,14 +261,14 @@ int main()
         printf("Error writing: %d\n", error);
         return FAILED;
     }
-    while (DMA_FLAG == 0) {};
+    while (DMA_FLAG == 0) {}
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {};
+    while (I2C_FLAG == 1) {}
 #endif
 
     printf("\n-->Result: \n");

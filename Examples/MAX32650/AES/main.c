@@ -270,11 +270,11 @@ int main(void)
     fail += AES256_ECB_enc();
     fail += AES256_ECB_dec();
 
-    printf("\n");
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
+        printf("\nExample Failed\n");
     }
-    while (1) {}
+
+    return 0;
 }

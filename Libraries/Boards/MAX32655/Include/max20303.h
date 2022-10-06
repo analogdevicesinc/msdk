@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef _MAX20303_H
-#define _MAX20303_H
+#ifndef LIBRARIES_BOARDS_MAX32655_INCLUDE_MAX20303_H_
+#define LIBRARIES_BOARDS_MAX32655_INCLUDE_MAX20303_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -100,4 +100,4 @@ int max20303_camera_power(int on);
 }
 #endif
 
-#endif
+#endif // LIBRARIES_BOARDS_MAX32655_INCLUDE_MAX20303_H_

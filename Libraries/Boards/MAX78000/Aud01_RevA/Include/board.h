@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36,8 +36,8 @@
  * @brief   Board support package API.
  */
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX78000_AUD01_REVA_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX78000_AUD01_REVA_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -191,4 +191,4 @@ void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssP
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX78000_AUD01_REVA_INCLUDE_BOARD_H_

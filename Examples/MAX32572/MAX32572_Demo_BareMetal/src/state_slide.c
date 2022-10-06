@@ -39,10 +39,10 @@
 #include "state.h"
 #include "task_logo_animation.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define TICK_TIMEOUT 2000
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static int img_number = 0;
 
 static text_t text_msg[] = { { (char *)"SLIDESHOW", 9 }, { (char *)"Press Play to start", 19 } };

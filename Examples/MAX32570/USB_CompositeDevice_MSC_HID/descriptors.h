@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _DESCRIPTORS_H_
-#define _DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32570_USB_COMPOSITEDEVICE_MSC_HID_DESCRIPTORS_H_
+#define EXAMPLES_MAX32570_USB_COMPOSITEDEVICE_MSC_HID_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -227,4 +227,4 @@ __attribute__((aligned(4))) uint8_t msc_func_desc[] = {
     'g',  0,   'e', 0,   ' ', 0,   'D', 0,   'e', 0,   'v', 0,   'i', 0,   'c', 0,   'e', 0,
 };
 
-#endif /* _DESCRIPTORS_H_ */
+#endif // EXAMPLES_MAX32570_USB_COMPOSITEDEVICE_MSC_HID_DESCRIPTORS_H_

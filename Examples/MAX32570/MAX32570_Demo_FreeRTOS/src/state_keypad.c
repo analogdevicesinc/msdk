@@ -37,19 +37,18 @@
 #include "state.h"
 #include "task_logo_animation.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define MAX_CHAR_ON_SCREEN 8
 
 #define BUTTON_SIZE_X 42 + 4 // 6 for free space
 #define BUTTON_SIZE_Y 41 + 6 // 6 for free space
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static unsigned char input_buf[MAX_CHAR_ON_SCREEN + 1] = { 0 };
 
 static text_t text_msg[] = {
     { (char *)"Pressed", 7 },
     { (char *)input_buf, 0 },
-
 };
 
 static text_t *input_text = &text_msg[1];

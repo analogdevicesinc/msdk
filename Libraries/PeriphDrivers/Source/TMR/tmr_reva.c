@@ -213,7 +213,7 @@ void MXC_TMR_RevA_SetCount(mxc_tmr_reva_regs_t *tmr, uint32_t cnt)
     tmr->cnt = cnt;
 }
 
-void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, unsigned long us)
+void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, uint32_t us)
 {
     uint64_t ticks;
     int clk_shift = 0;

@@ -32,13 +32,13 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_errors.h"
 #include "gpio.h"
 #include "gpio_reva.h"
 #include "gpio_common.h"
-#include <stddef.h>
 
 /* **** Functions **** */
 uint32_t MXC_GPIO_RevA_InGet(mxc_gpio_reva_regs_t *port, uint32_t mask)

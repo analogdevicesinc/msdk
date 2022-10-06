@@ -30,7 +30,7 @@
  * ownership rights.
  *
  *************************************************************************** */
-
+#include <stdio.h>
 #include "adc.h"
 #include "dma.h"
 #include "adc_revb.h"
@@ -43,8 +43,6 @@
 #include "mxc_sys.h"
 #include "mcr_regs.h"
 #include "mxc_lock.h"
-#include "mxc_delay.h"
-#include <stdio.h>
 
 // Mask for all Interrupt Enable Fields
 #define ADC_IE_MASK                                                                             \
@@ -236,7 +234,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     MXC_DMA_SetCallback(channel, callback);
 
-    //TODO: This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64 bytes may need to read.
+    //TODO(ADI): This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64 bytes may need to read.
     MXC_DMA->ch[channel].ctrl |= (num_bytes - 1) << MXC_F_DMA_CTRL_BURST_SIZE_POS;
 
     MXC_DMA_EnableInt(channel);
@@ -261,10 +259,15 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t *adc)
 
         if (flags & MXC_F_ADC_REVB_INTEN_SEQ_DONE) {
             MXC_ADC_RevB_ClearFlags(adc, flags);
-            MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
-                                          MXC_F_ADC_REVB_INTFL_CONV_DONE |
-                                          MXC_F_ADC_REVB_INTEN_FIFO_LVL));
-            MXC_FreeLock((uint32_t *)&async_callback);
+
+            // Disable interrupts only when in single conversion mode
+            if (!(adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
+                MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
+                                              MXC_F_ADC_REVB_INTFL_CONV_DONE |
+                                              MXC_F_ADC_REVB_INTEN_FIFO_LVL));
+
+                MXC_FreeLock((uint32_t *)&async_callback);
+            }
         }
 
         if (flags & MXC_F_ADC_REVB_INTEN_CONV_DONE) {
@@ -364,6 +367,27 @@ void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req
     }
 }
 
+void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
+{
+    if (req->mode == MXC_ADC_ATOMIC_CONV) {
+        adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+    } else {
+        adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+    }
+}
+
+int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
+{
+    if (delay > MXC_F_ADC_REVB_RESTART_CNT) {
+        return E_BAD_PARAM;
+    }
+
+    adc->restart &= ~MXC_F_ADC_REVB_RESTART_CNT;
+    adc->restart |= delay << MXC_F_ADC_REVB_RESTART_CNT_POS;
+
+    return E_NO_ERROR;
+}
+
 int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
     if (req->num_slots >= MAX_ADC_SLOT_NUM) {
@@ -376,7 +400,7 @@ int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t 
     return E_NO_ERROR;
 }
 
-//TODO: Need to find out better way to handle this.
+//TODO(ADI): Need to find out better way to handle this.
 int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, uint32_t slot_num)
 {
     uint32_t *pointer = (uint32_t *)(MXC_BASE_ADC + MXC_R_ADC_CHSEL0);

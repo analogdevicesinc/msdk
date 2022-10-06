@@ -37,8 +37,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _ADC_H_
-#define _ADC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_ADC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_ADC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -415,6 +415,24 @@ void MXC_ADC_Clear_ChannelSelect(void);
 void MXC_ADC_TriggerConfig(mxc_adc_conversion_req_t *req);
 
 /**
+ * @brief   Configures ADC Conversion Mode: Single vs Continuous Conversion.
+ *
+ * @param   pointer to ADC configure data structure.
+ *
+ * @return  None.
+ */
+void MXC_ADC_ConversionModeConfig(mxc_adc_conversion_req_t *req);
+
+/**
+ * @brief   Set Sample Delay before Continuous Mode Conversion Restart.
+ *
+ * @param   number of sample clock periods to delay in between conversions.
+ *
+ * @return  None.
+ */
+void MXC_ADC_SetConversionDelay(int delay);
+
+/**
  * @brief   Configures number of slots for ADC sequence.
  *
  * @param   pointer to ADC configure data structure.
@@ -468,4 +486,4 @@ int MXC_ConvertTemperature_ToF(uint16_t tempSensor_Readout, mxc_adc_refsel_t ref
 }
 #endif
 
-#endif /* _ADC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_ADC_H_

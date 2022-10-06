@@ -47,13 +47,13 @@
 #define SDA_PIN MXC_GPIO_PIN_19
 
 //
-#define GPIO_SET(port, mask) (port)->out_set = mask
-#define GPIO_CLR(port, mask) (port)->out_clr = mask
-#define GPIO_GET(port, mask) ((port)->in & mask)
+#define GPIO_SET(port, mask) (port)->out_set = (mask)
+#define GPIO_CLR(port, mask) (port)->out_clr = (mask)
+#define GPIO_GET(port, mask) ((port)->in & (mask))
 
 //
-#define GPIO_IN(port, mask) (port)->out_en_clr = mask
-#define GPIO_OUT(port, mask) (port)->out_en_set = mask
+#define GPIO_IN(port, mask) (port)->out_en_clr = (mask)
+#define GPIO_OUT(port, mask) (port)->out_en_set = (mask)
 
 // SCL
 #define SCL_HIGH() GPIO_SET(SCL_PORT, SCL_PIN)

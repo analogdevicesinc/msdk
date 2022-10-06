@@ -1,6 +1,6 @@
 /**
- * @file flc.h
- * @brief      Flash Controler driver.
+ * @file flc_es17.h
+ * @brief      Flash Controller driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 /* ****************************************************************************

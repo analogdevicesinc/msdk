@@ -1,12 +1,14 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -28,7 +30,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
  *
  ******************************************************************************/
 
@@ -72,7 +73,7 @@ static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
     return 0;
 }
 
-static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *dataout)
+static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, uint16_t *dataout)
 {
     int i;
     uint8_t rx[2] = { 0, 0 };
@@ -104,9 +105,9 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *data
     }
 }
 
-static int tsGetXY(unsigned short *x, unsigned short *y)
+static int tsGetXY(uint16_t *x, uint16_t *y)
 {
-    unsigned short tsX, tsY, tsZ1;
+    uint16_t tsX, tsY, tsZ1;
     int ret;
 
     spi_transmit_tsc2046(TSC_DIFFZ1, &tsZ1);
@@ -134,7 +135,7 @@ static int tsGetXY(unsigned short *x, unsigned short *y)
 
 static void tsHandler(void)
 {
-    unsigned short touch_x, touch_y;
+    uint16_t touch_x, touch_y;
     int i;
 
     MXC_TS_Stop();

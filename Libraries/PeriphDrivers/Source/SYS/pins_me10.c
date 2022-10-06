@@ -215,7 +215,8 @@ const mxc_gpio_cfg_t gpio_cfg_sdhc_1 = { MXC_GPIO1,
                                          MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
 
 const mxc_gpio_cfg_t gpio_cfg_owm = { MXC_GPIO1, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31),
-                                      MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
+                                      MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                      MXC_GPIO_VSSEL_VDDIOH };
 
 const mxc_gpio_cfg_t gpio_cfg_clcd_0 = {
     MXC_GPIO0,

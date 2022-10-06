@@ -9,6 +9,9 @@
  * OV2640 register definitions.
  */
 
+#ifndef EXAMPLES_MAX32572_CAMERAIF_INCLUDE_OV2640_REGS_H_
+#define EXAMPLES_MAX32572_CAMERAIF_INCLUDE_OV2640_REGS_H_
+
 #if (ACTIVE_CAMERA == CAM_OV2640)
 
 /* DSP register bank FF=0x00*/
@@ -187,7 +190,7 @@
 #define COM8_AGC_EN         0x04 /* AGC Auto/Manual control selection */
 #define COM8_AEC_EN         0x01 /* Auto/Manual Exposure control */
 #define COM8_SET(x)         (COM8_DEFAULT|x)
-#define COM8_SET_AEC(r,x)   (((r)&0xFE)|((x)&1))
+#define COM8_SET_AEC(r, x)  (((r)&0xFE)|((x)&1))
 
 #define COM9                0x14 /* AGC gain ceiling */
 #define COM9_DEFAULT        0x08
@@ -198,12 +201,12 @@
 #define COM9_AGC_GAIN_32x   0x04 /* AGC:   32x */
 #define COM9_AGC_GAIN_64x   0x05 /* AGC:   64x */
 #define COM9_AGC_GAIN_128x  0x06 /* AGC:  128x */
-#define COM9_AGC_SET(x)     (COM9_DEFAULT|(x<<5))
+#define COM9_AGC_SET(x)     (COM9_DEFAULT|(x << 5))
 
 #define CTRL1_AWB           0x08 /* Enable AWB */
 
 #define VV                  0x26
-#define VV_AGC_TH_SET(h,l)  ((h<<4)|(l&0x0F))
+#define VV_AGC_TH_SET(h, l) ((h << 4)|(l&0x0F))
 
 #define REG32               0x32
 #define REG32_UXGA          0x36
@@ -242,4 +245,6 @@
 #define ZMHH_OUTH_SET(x)        VAL_SET(x, 0x1, (8+2), 2)
 #define ZMHH_OUTW_SET(x)        VAL_SET(x, 0x3, (8+2), 0)
 
-#endif //__REG_REGS_H__
+#endif // (ACTIVE_CAMERA == CAM_OV2640)
+
+#endif // EXAMPLES_MAX32572_CAMERAIF_INCLUDE_OV2640_REGS_H_

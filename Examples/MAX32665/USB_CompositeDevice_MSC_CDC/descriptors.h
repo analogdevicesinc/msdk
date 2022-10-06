@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _DESCRIPTORS_H_
-#define _DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32665_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
+#define EXAMPLES_MAX32665_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -229,6 +229,164 @@ composite_config_descriptor = {
     },
 };
 
+__attribute__((aligned(4))) struct __attribute__((packed)) {
+    MXC_USB_configuration_descriptor_t config_descriptor;
+    /* Interface #0 Mass Storage Device */
+    MXC_USB_interface_descriptor_t msc_interface_descriptor;
+    MXC_USB_endpoint_descriptor_t endpoint_descriptor_1;
+    MXC_USB_endpoint_descriptor_t endpoint_descriptor_2;
+    /* Interface Association Descriptor */
+    uint8_t interface_association_descriptor[8];
+    /* Interface #1 CDCACM Device */
+    MXC_USB_interface_descriptor_t comm_interface_descriptor;
+    uint8_t header_functional_descriptor[5];
+    uint8_t call_management_descriptor[5];
+    uint8_t acm_functional_descriptor[4];
+    uint8_t union_functional_descriptor[5];
+    MXC_USB_endpoint_descriptor_t endpoint_descriptor_3;
+    /* Interface #2 CDC Data*/
+    MXC_USB_interface_descriptor_t data_interface_descriptor;
+    MXC_USB_endpoint_descriptor_t endpoint_descriptor_4;
+    MXC_USB_endpoint_descriptor_t endpoint_descriptor_5;
+}
+
+composite_config_descriptor_hs = {
+    {
+        0x09, /*  bLength                          */
+        0x02, /*  bDescriptorType = Config         */
+        0x0062, /*  wTotalLength(L/H)                */
+        0x03, /*  bNumInterfaces                   */
+        0x01, /*  bConfigurationValue              */
+        0x02, /*  iConfiguration                   */
+        0xE0, /*  bmAttributes (bus-powered, remote wakeup) */
+        0x32, /*  MaxPower is 100ma (units are 2ma/bit) */
+    },
+    /********** Interface #0 : Mass Storage Device **********/
+    {
+        /*  Second Interface Descriptor For MSC Interface */
+        0x09, /*  bLength = 9                     */
+        0x04, /*  bDescriptorType = Interface (4) */
+        0x00, /*  bInterfaceNumber                */
+        0x00, /*  bAlternateSetting               */
+        0x02, /*  bNumEndpoints (one for IN one for OUT)     */
+        0x08, /*  bInterfaceClass = Mass Storage (8) */
+        0x06, /*  bInterfaceSubClass = SCSI Transparent Command Set */
+        0x50, /*  bInterfaceProtocol = Bulk-Only Transport */
+        0x05, /*  iInterface                      */
+    },
+    {
+        /*  OUT Endpoint 1 (Descriptor #1) */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x01, /*  bEndpointAddress (EP1-OUT)       */
+        0x02, /*  bmAttributes (bulk)              */
+        0x0200, /*  wMaxPacketSize                   */
+        0x01, /*  bInterval (N/A)                  */
+    },
+    {
+        /*  IN Endpoint 2 (Descriptor #2) */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x82, /*  bEndpointAddress (EP2-IN)        */
+        0x02, /*  bmAttributes (bulk)              */
+        0x0200, /*  wMaxPacketSize                   */
+        0x01 /*  bInterval (N/A)                  */
+    },
+    /********** Interface Association Descriptor **********/
+    {
+        0x08, /* bLength                          */
+        0x0B, /* bDescriptorType                  */
+        0x01, /* bFirstInterface                  */
+        0x02, /* bInterfaceCount                  */
+        0x02, /* bFunctionClass                   */
+        0x02, /* bFunctionSubClass                */
+        0x01, /* bFunctionProtocol                */
+        0x00, /* iFunction                        */
+    },
+    /********** Interface #1 : COMM Interface **********/
+    {
+        /*  First Interface Descriptor For Comm Class Interface */
+        0x09, /*  bLength = 9                     */
+        0x04, /*  bDescriptorType = Interface (4) */
+        0x01, /*  bInterfaceNumber                */
+        0x00, /*  bAlternateSetting               */
+        0x01, /*  bNumEndpoints (one for OUT)     */
+        0x02, /*  bInterfaceClass = Communications Interface Class (2) */
+        0x02, /*  bInterfaceSubClass = Abstract Control Model (2) */
+        0x01, /*  bInterfaceProtocol = Common "AT" commands (1), no class specific protocol (0) */
+        0x04, /*  iInterface                      */
+    },
+    {
+        /*  Header Functional Descriptor */
+        0x05, /*  bFunctionalLength = 5           */
+        0x24, /*  bDescriptorType                 */
+        0x00, /*  bDescriptorSubtype              */
+        0x10, 0x01, /*  bcdCDC                          */
+    },
+    {
+        /*  Call Management Descriptor */
+        0x05, /*  bFunctionalLength = 5           */
+        0x24, /*  bDescriptorType                 */
+        0x01, /*  bDescriptorSubtype              */
+        0x03, /*  bmCapabilities = Device handles call management itself (0x01), management over data class (0x02) */
+        0x01, /*  bmDataInterface                 */
+    },
+    {
+        /*  Abstract Control Management Functional Descriptor */
+        0x04, /*  bFunctionalLength = 4           */
+        0x24, /*  bDescriptorType                 */
+        0x02, /*  bDescriptorSubtype              */
+        0x02, /*  bmCapabilities                  */
+    },
+    {
+        /*  Union Functional Descriptor */
+        0x05, /*  bFunctionalLength = 5           */
+        0x24, /*  bDescriptorType                 */
+        0x06, /*  bDescriptorSubtype              */
+        0x00, /*  bmMasterInterface               */
+        0x01, /*  bmSlaveInterface0               */
+    },
+    {
+        /*  IN Endpoint 3 (Descriptor #1) */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x84, /*  bEndpointAddress (EP3-IN)        */
+        0x03, /*  bmAttributes (interrupt)         */
+        0x0200, /*  wMaxPacketSize                   */
+        0xff, /*  bInterval (milliseconds)         */
+    },
+    {
+        /*  Second Interface Descriptor For Data Interface */
+        0x09, /*  bLength                          */
+        0x04, /*  bDescriptorType (Interface)      */
+        0x02, /*  bInterfaceNumber                 */
+        0x00, /*  bAlternateSetting                */
+        0x02, /*  bNumEndpoints                    */
+        0x0a, /*  bInterfaceClass = Data Interface (10) */
+        0x00, /*  bInterfaceSubClass = none (0)    */
+        0x00, /*  bInterfaceProtocol = No class specific protocol (0) */
+        0x04, /*  biInterface = No Text String (0) */
+    },
+    {
+        /*  OUT Endpoint 1 (Descriptor #2) */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x05, /*  bEndpointAddress (EP1-OUT)       */
+        0x02, /*  bmAttributes (bulk)              */
+        0x0200, /*  wMaxPacketSize                   */
+        0x00, /*  bInterval (N/A)                  */
+    },
+    {
+        /*  IN Endpoint 2 (Descriptor #3) */
+        0x07, /*  bLength                          */
+        0x05, /*  bDescriptorType (Endpoint)       */
+        0x83, /*  bEndpointAddress (EP2-IN)        */
+        0x02, /*  bmAttributes (bulk)              */
+        0x0200, /*  wMaxPacketSize                   */
+        0x00, /*  bInterval (N/A)                  */
+    },
+};
+
 __attribute__((aligned(4))) uint8_t report_descriptor[] = {
     0x05, 0x01, /*  Usage Page (generic desktop)      */
     0x09, 0x06, /*  Usage (keyboard)                  */
@@ -295,4 +453,4 @@ __attribute__((aligned(4))) uint8_t msc_func_desc[] = {
     'g',  0,   'e', 0,   ' ', 0,   'D', 0,   'e', 0,   'v', 0,   'i', 0,   'c', 0,   'e', 0,
 };
 
-#endif /* _DESCRIPTORS_H_ */
+#endif // EXAMPLES_MAX32665_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_

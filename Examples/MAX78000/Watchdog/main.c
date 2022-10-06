@@ -196,7 +196,7 @@ int main(void)
     while (1) {
         if (sw1_pressed) {
             if (interrupt_count == 0) {
-                while (interrupt_count == 0) {};
+                while (interrupt_count == 0) {}
 
                 MXC_Delay(MXC_DELAY_MSEC(1500));
             } else {

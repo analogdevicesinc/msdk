@@ -60,6 +60,7 @@ jobs:
           # Exclude some examples
           SUBDIRS=${SUBDIRS//"./MAX32570/MAX32570_Demo_BareMetal"/}
           SUBDIRS=${SUBDIRS//"./MAX32570/MAX32570_Demo_FreeRTOS"/}
+          SUBDIRS=${SUBDIRS//"./MAX32570/NFC_PCD_DTE_EMV_Loopback"/}
           SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}
           SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_FreeRTOS"/}
           SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_BareMetal"/}

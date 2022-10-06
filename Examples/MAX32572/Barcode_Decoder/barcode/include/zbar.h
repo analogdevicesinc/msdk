@@ -20,8 +20,8 @@
  *
  *  http://sourceforge.net/projects/zbar
  *------------------------------------------------------------------------*/
-#ifndef _ZBAR_H_
-#define _ZBAR_H_
+#ifndef EXAMPLES_MAX32572_BARCODE_DECODER_BARCODE_INCLUDE_ZBAR_H_
+#define EXAMPLES_MAX32572_BARCODE_DECODER_BARCODE_INCLUDE_ZBAR_H_
 
 #include <stdint.h>
 
@@ -322,21 +322,20 @@ extern int zbar_parse_config(const char *config_string, zbar_symbol_type_t *symb
  * (adapted from v4l2 specification)
  * @since 0.11
  */
-#define zbar_fourcc(a, b, c, d)                                                    \
-    ((unsigned long)(a) | ((unsigned long)(b) << 8) | ((unsigned long)(c) << 16) | \
-     ((unsigned long)(d) << 24))
+#define zbar_fourcc(a, b, c, d) \
+    ((uint32_t)(a) | ((uint32_t)(b) << 8) | ((uint32_t)(c) << 16) | ((uint32_t)(d) << 24))
 
 /** parse a fourcc string into its encoded integer value.
  * @since 0.11
  */
-static inline unsigned long zbar_fourcc_parse(const char *format)
+static inline uint32_t zbar_fourcc_parse(const char *format)
 {
-    unsigned long fourcc = 0;
+    uint32_t fourcc = 0;
 
     if (format) {
         int i;
 
-        for (i = 0; i < 4 && format[i]; i++) { fourcc |= ((unsigned long)format[i]) << (i * 8); }
+        for (i = 0; i < 4 && format[i]; i++) { fourcc |= ((uint32_t)format[i]) << (i * 8); }
     }
 
     return (fourcc);
@@ -591,7 +590,7 @@ extern void zbar_image_ref(zbar_image_t *image, int refs);
  * @note the converted image size may be rounded (up) due to format
  * constraints
  */
-extern zbar_image_t *zbar_image_convert(const zbar_image_t *image, unsigned long format);
+extern zbar_image_t *zbar_image_convert(const zbar_image_t *image, uint32_t format);
 
 /** image format conversion with crop/pad.
  * if the requested size is larger than the image, the last row/column
@@ -604,13 +603,13 @@ extern zbar_image_t *zbar_image_convert(const zbar_image_t *image, unsigned long
  * @see zbar_image_convert()
  * @since 0.4
  */
-extern zbar_image_t *zbar_image_convert_resize(const zbar_image_t *image, unsigned long format,
+extern zbar_image_t *zbar_image_convert_resize(const zbar_image_t *image, uint32_t format,
                                                unsigned width, unsigned height);
 
 /** retrieve the image format.
  * @returns the fourcc describing the format of the image sample data
  */
-extern unsigned long zbar_image_get_format(const zbar_image_t *image);
+extern uint32_t zbar_image_get_format(const zbar_image_t *image);
 
 /** retrieve a "sequence" (page/frame) number associated with this image.
  * @since 0.6
@@ -649,7 +648,7 @@ extern const void *zbar_image_get_data(const zbar_image_t *image);
 /** return the size of image data.
  * @since 0.6
  */
-extern unsigned long zbar_image_get_data_length(const zbar_image_t *img);
+extern uint32_t zbar_image_get_data_length(const zbar_image_t *img);
 
 /** retrieve the decoded results.
  * @returns the (possibly empty) set of decoded symbols
@@ -677,7 +676,7 @@ extern const zbar_symbol_t *zbar_image_first_symbol(const zbar_image_t *image);
  * @note this does not convert the data!
  * (see zbar_image_convert() for that)
  */
-extern void zbar_image_set_format(zbar_image_t *image, unsigned long format);
+extern void zbar_image_set_format(zbar_image_t *image, uint32_t format);
 
 /** associate a "sequence" (page/frame) number with this image.
  * @since 0.6
@@ -703,8 +702,7 @@ extern void zbar_image_set_crop(zbar_image_t *image, unsigned x, unsigned y, uns
  * (unless NULL)
  * @note application image data will not be modified by the library
  */
-extern void zbar_image_set_data(zbar_image_t *image, const void *data,
-                                unsigned long data_byte_length,
+extern void zbar_image_set_data(zbar_image_t *image, const void *data, uint32_t data_byte_length,
                                 zbar_image_cleanup_handler_t *cleanup_hndlr);
 
 /** built-in cleanup handler.
@@ -815,8 +813,8 @@ extern int zbar_processor_request_iomode(zbar_processor_t *video, int iomode);
 /** force specific input and output formats for debug/testing.
  * @note must be called before zbar_processor_init()
  */
-extern int zbar_processor_force_format(zbar_processor_t *processor, unsigned long input_format,
-                                       unsigned long output_format);
+extern int zbar_processor_force_format(zbar_processor_t *processor, uint32_t input_format,
+                                       uint32_t output_format);
 
 /** setup result handler callback.
  * the specified function will be called by the processor whenever
@@ -1042,7 +1040,7 @@ extern int zbar_video_get_height(const zbar_video_t *video);
  * use zbar_negotiate_format() to automatically select and initialize
  * the best available format
  */
-extern int zbar_video_init(zbar_video_t *video, unsigned long format);
+extern int zbar_video_init(zbar_video_t *video, uint32_t format);
 
 /** start/stop video capture.
  * all buffered images are retired when capture is disabled.
@@ -1128,7 +1126,7 @@ extern void zbar_window_destroy(zbar_window_t *window);
  * ignored
  */
 extern int zbar_window_attach(zbar_window_t *window, void *x11_display_w32_hwnd,
-                              unsigned long x11_drawable);
+                              uint32_t x11_drawable);
 
 /** control content level of the reader overlay.
  * the overlay displays graphical data for informational or debug
@@ -1510,4 +1508,4 @@ extern zbar_color_t zbar_scanner_get_color(const zbar_scanner_t *scanner);
 
 /*@}*/
 
-#endif
+#endif // EXAMPLES_MAX32572_BARCODE_DECODER_BARCODE_INCLUDE_ZBAR_H_

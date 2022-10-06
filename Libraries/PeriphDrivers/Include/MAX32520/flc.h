@@ -37,8 +37,8 @@
  *
  *************************************************************************** */
 
-#ifndef _FLC_H_
-#define _FLC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_FLC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_FLC_H_
 
 /* **** Includes **** */
 #include "flc_regs.h"
@@ -197,4 +197,4 @@ int MXC_FLC_LockInfoBlock(uint32_t address);
 }
 #endif
 
-#endif /* _FLC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_FLC_H_

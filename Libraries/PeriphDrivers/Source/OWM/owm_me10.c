@@ -60,10 +60,8 @@ int MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
     }
 
     // Set system level configurations
-    mxc_gpio_regs_t *gpio = gpio_cfg_owm.port;
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_OWIRE);
     MXC_GPIO_Config(&gpio_cfg_owm);
-    gpio->vssel |= gpio_cfg_owm.mask;
 
     // Configure clk divisor to get 1MHz OWM clk
     mxc_owm_clk = PeripheralClock;

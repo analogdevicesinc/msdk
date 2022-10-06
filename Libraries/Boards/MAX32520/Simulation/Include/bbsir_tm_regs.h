@@ -3,8 +3,8 @@
  * @brief   Registers, Bit Masks and Bit Positions for the BBSIR Peripheral Module.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-11-14 13:11:39 -0600 (Mon, 14 Nov 2016) $
- * $Revision: 25082 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef _BBSIR_TM_REGS_H_
 #define _BBSIR_TM_REGS_H_

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-11-07 18:43:15 -0600 (Thu, 07 Nov 2019) $
- * $Revision: 48537 $
- *
  ******************************************************************************/
 
 #include <stdio.h>
@@ -46,7 +43,6 @@
 #include "pb.h"
 #include "i2c.h"
 #include "spixf.h"
-#include "mxc_sys.h"
 #include "Ext_Flash.h"
 
 /***** Global Variables *****/

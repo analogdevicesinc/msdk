@@ -51,7 +51,15 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     switch (cfg->clock) {
     case MXC_TMR_EXT_CLK:
         clockSource = MXC_TMR_CLK1;
+#if TARGET_NUM != 32675
+        if (tmr_id < 4) {
+            MXC_GPIO_Config(&gpio_cfg_hfextclk);
+        } else {
+            MXC_GPIO_Config(&gpio_cfg_lpextclk);
+        }
+#else
         MXC_GPIO_Config(&gpio_cfg_extclk);
+#endif
         break;
 
     case MXC_TMR_32K_CLK:
@@ -282,7 +290,7 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
             break;
 
         case MXC_TMR_32M_CLK:
-            clockFrequency = 16000000; // Clock Frequency 16 MHz
+            clockFrequency = ERFO_FREQ;
             break;
 
         default:
@@ -338,12 +346,12 @@ void MXC_TMR_SetCount(mxc_tmr_regs_t *tmr, uint32_t cnt)
     MXC_TMR_RevB_SetCount((mxc_tmr_revb_regs_t *)tmr, cnt);
 }
 
-void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, unsigned long us)
+void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, uint32_t us)
 {
     MXC_TMR_Common_Delay(tmr, us);
 }
 
-void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, unsigned long us)
+void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, uint32_t us)
 {
     MXC_TMR_RevB_TO_Start((mxc_tmr_revb_regs_t *)tmr, us);
 }

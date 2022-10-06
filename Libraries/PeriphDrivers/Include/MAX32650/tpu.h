@@ -39,8 +39,8 @@
  *
  *************************************************************************** */
 
-#ifndef _TPU_H_
-#define _TPU_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TPU_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TPU_H_
 
 #include <stdint.h>
 #include "tpu_regs.h"
@@ -464,4 +464,4 @@ int MXC_TPU_MAA_Compute(mxc_tpu_maa_clcsel_t clc, char *multiplier, char *multip
 }
 #endif
 
-#endif /* _TPU_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_TPU_H_

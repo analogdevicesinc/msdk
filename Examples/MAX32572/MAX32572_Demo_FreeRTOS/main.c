@@ -52,7 +52,7 @@
 //
 #define mainQUEUE_SIZE (4)
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 //
 extern void vAnimTask(void *pvParameter);
 extern void vGetATRTask(void *pvParameter);
@@ -182,7 +182,7 @@ static void vMainTask(void *pvParameters)
 /******************************   PUBLIC FUNCTIONS  **************************/
 int main(void)
 {
-    long ret;
+    int32_t ret;
 
     printf("\n************************** MAX32572 Demo Example **************************\n\n");
     printf("This example interact with user\n");
@@ -192,14 +192,14 @@ int main(void)
     printf("Note:\n"
            "\tMSR: VBAT_SEL need to be connected to 3.3V, VDD_MSR need to be connected\n"
            "\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B),\n"
-           "\t		To configure 5V mode:\n"
-           "\t			1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
-           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
-           "\t			3- Rebuild project and load it\n"
-           "\t		To configure 3V mode:\n"
-           "\t			1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
-           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
-           "\t			3- Rebuild project and load it\n");
+           "\t      To configure 5V mode:\n"
+           "\t          1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
+           "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
+           "\t          3- Rebuild project and load it\n"
+           "\t      To configure 3V mode:\n"
+           "\t          1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
+           "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
+           "\t          3- Rebuild project and load it\n");
 
     /* Configure the clocks, UART and GPIO. */
     ret = system_init();

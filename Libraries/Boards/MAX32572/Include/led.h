@@ -38,8 +38,8 @@
  *
  *************************************************************************** */
 
-#ifndef _LED_H_
-#define _LED_H_
+#ifndef LIBRARIES_BOARDS_MAX32572_INCLUDE_LED_H_
+#define LIBRARIES_BOARDS_MAX32572_INCLUDE_LED_H_
 
 #include "mxc_assert.h"
 #include "board.h"
@@ -80,7 +80,6 @@ int LED_Init(void);
  * @param      idx   LED index
  */
 void LED_On(unsigned int idx);
-;
 
 /**
  * @brief      Turn the specified LED off.
@@ -98,4 +97,5 @@ void LED_Toggle(unsigned int idx);
 }
 #endif
 /**@}*/
-#endif /* _LED_H_ */
+
+#endif // LIBRARIES_BOARDS_MAX32572_INCLUDE_LED_H_

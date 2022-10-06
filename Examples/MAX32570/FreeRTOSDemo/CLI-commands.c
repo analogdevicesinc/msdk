@@ -176,7 +176,7 @@ void vRegisterCLICommands(void)
 static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
                                       const char *pcCommandString)
 {
-    const char *const pcHeader = "Task          State  Priority  Stack	"
+    const char *const pcHeader = "Task          State  Priority  Stack  "
                                  "#\r\n************************************************\r\n";
 
     /* Remove compile time warnings about unused parameters, and check the
@@ -187,7 +187,7 @@ static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLe
     configASSERT(pcWriteBuffer);
 
     /* Generate a table of task stats. */
-    strcpy(pcWriteBuffer, pcHeader);
+    snprintf(pcWriteBuffer, xWriteBufferLen, "%s", pcHeader);
     vTaskList(pcWriteBuffer + strlen(pcHeader));
 
     /* There is no more data to return after this single string, so return
@@ -234,7 +234,7 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWrit
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
         entered just a header string is returned. */
-        sprintf(pcWriteBuffer, "The three parameters were:\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The three parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
         back. */
@@ -248,17 +248,16 @@ static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWrit
         pcParameter = FreeRTOS_CLIGetParameter(
             pcCommandString, /* The command string itself. */
             lParameterNumber, /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
+            &lParameterStringLength /* Store the parameter string length. */);
 
         /* Sanity check something was returned. */
         configASSERT(pcParameter);
 
         /* Return the parameter string. */
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "%d: ", (int)lParameterNumber);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
         strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
-        strcat(pcWriteBuffer, "\r\n");
+        strncat(pcWriteBuffer, "\r\n", 3);
 
         /* If this is the last of the three parameters then there are no more
         strings to return after this one. */
@@ -295,7 +294,7 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBuff
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
         entered just a header string is returned. */
-        sprintf(pcWriteBuffer, "The parameters were:\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
         back. */
@@ -309,15 +308,14 @@ static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBuff
         pcParameter = FreeRTOS_CLIGetParameter(
             pcCommandString, /* The command string itself. */
             lParameterNumber, /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
+            &lParameterStringLength /* Store the parameter string length. */);
 
         if (pcParameter != NULL) {
             /* Return the parameter string. */
             memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-            sprintf(pcWriteBuffer, "%d: ", (int)lParameterNumber);
+            snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
             strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
-            strcat(pcWriteBuffer, "\r\n");
+            strncat(pcWriteBuffer, "\r\n", 3);
 
             /* There might be more parameters to return after this one. */
             xReturn = pdTRUE;

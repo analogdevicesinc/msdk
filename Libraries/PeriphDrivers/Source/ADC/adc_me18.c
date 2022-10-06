@@ -30,7 +30,7 @@
  * ownership rights.
  *
  *************************************************************************** */
-
+#include <stdio.h>
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_revb.h"
@@ -43,7 +43,6 @@
 #include "mxc_lock.h"
 #include "mxc_pins.h"
 #include "pwrseq_regs.h"
-#include <stdio.h>
 
 #define MXC_F_MCR_ADC_CFG2_CH 0x3
 
@@ -206,7 +205,6 @@ int MXC_ADC_ReferenceSelect(mxc_adc_refsel_t ref)
     return E_NO_ERROR;
 }
 
-//TODO
 int MXC_ADC_InputDividerSelect(mxc_adc_chsel_t ch)
 {
     return E_NO_ERROR;
@@ -268,6 +266,16 @@ void MXC_ADC_TriggerConfig(mxc_adc_conversion_req_t *req)
     MXC_ADC_RevB_TriggerConfig((mxc_adc_revb_regs_t *)MXC_ADC, req);
 }
 
+void MXC_ADC_ConversionModeConfig(mxc_adc_conversion_req_t *req)
+{
+    MXC_ADC_RevB_ConversionModeConfig((mxc_adc_revb_regs_t *)MXC_ADC, req);
+}
+
+void MXC_ADC_SetConversionDelay(int delay)
+{
+    MXC_ADC_RevB_SetConversionDelay((mxc_adc_revb_regs_t *)MXC_ADC, delay);
+}
+
 int MXC_ADC_SlotsConfig(mxc_adc_conversion_req_t *req)
 {
     return MXC_ADC_RevB_SlotsConfig((mxc_adc_revb_regs_t *)MXC_ADC, req);
@@ -280,6 +288,8 @@ int MXC_ADC_ChSelectConfig(mxc_adc_chsel_t ch, uint32_t slot_num)
 
 int MXC_ADC_Configuration(mxc_adc_conversion_req_t *req)
 {
+    MXC_ADC_ConversionModeConfig(req);
+
     MXC_ADC_TriggerConfig(req);
 
     MXC_ADC_FIFO_Threshold_Config(req->fifo_threshold);
@@ -301,9 +311,9 @@ int MXC_ADC_SlotConfiguration(mxc_adc_slot_req_t *req, uint32_t slot_length)
     for (loop_counter = 0; loop_counter <= slot_length; loop_counter++) {
         initGPIOForChannel(req->channel);
 #if 0
-		 if (req->channel <= MAX_ADC_RES_DIV_CH) {
- 	          MXC_ADC_InputDividerSelect(req->channel, req->div, req->pullup_dyn);
-		 }
+        if (req->channel <= MAX_ADC_RES_DIV_CH) {
+            MXC_ADC_InputDividerSelect(req->channel, req->div, req->pullup_dyn);
+        }
 #endif
         MXC_ADC_ChSelectConfig(req->channel, loop_counter);
         req++;

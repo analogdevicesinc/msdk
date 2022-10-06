@@ -36,8 +36,8 @@
  *
  **************************************************************************** */
 
-#ifndef _SKBD_H_
-#define _SKBD_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SKBD_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SKBD_H_
 
 #include <stddef.h>
 #include "mxc_assert.h"
@@ -45,7 +45,7 @@
 #include "mxc_lock.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
-#include <mxc_errors.h>
+#include "mxc_errors.h"
 #include "skbd_regs.h"
 #include "gcr_regs.h"
 
@@ -153,7 +153,7 @@ typedef void (*irq_handler_t)(void);
  *
  */
 typedef struct {
-    unsigned short ioselect; ///< I/O pin direction selection for the corresponding keypad pins
+    uint16_t ioselect; ///< I/O pin direction selection for the corresponding keypad pins
     unsigned int reg_erase; ///< key register erase flag on key is released
     int outputs; ///< Specifies the keypad pins to be configured as output
     int inputs; ///< Specifies the keypad pins to be configured as input
@@ -183,10 +183,10 @@ typedef struct {
      *      key(x) bits[7-4] : Output scan code
      *      key(x) bit[8]    : Next Key Flag
      */
-    unsigned short key0; ///< Key0 scan code
-    unsigned short key1; ///< Key1 scan code
-    unsigned short key2; ///< Key2 scan code
-    unsigned short key3; ///< Key3 scan code
+    uint16_t key0; ///< Key0 scan code
+    uint16_t key1; ///< Key1 scan code
+    uint16_t key2; ///< Key2 scan code
+    uint16_t key3; ///< Key3 scan code
 } mxc_skbd_keys_t;
 
 /**
@@ -264,5 +264,4 @@ int MXC_SKBD_Close(void);
 }
 #endif
 
-#endif /* _SKBD_H_ */
-/******************************************************************************/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_SKBD_H_

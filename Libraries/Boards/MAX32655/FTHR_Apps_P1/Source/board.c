@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-08-10 11:01:15 -0500 (Thu, 10 Aug 2017) $
- * $Revision: 29282 $
- *
  ******************************************************************************/
 
 #include <stdio.h>
@@ -47,7 +44,6 @@
 #include "led.h"
 #include "max20303.h"
 #include "pb.h"
-#include "mxc_sys.h"
 #include "spi.h"
 #include "Ext_Flash.h"
 /***** Global Variables *****/
@@ -237,6 +233,8 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
 {
     mxc_spi_req_t qspi_dummy_req;
     mxc_spi_width_t width;
+    uint8_t* write;
+    int res;
 
     if (MXC_SPI_GetDataSize(MXC_SPI0) != 8) {
         return E_BAD_STATE;
@@ -258,7 +256,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
         return E_BAD_STATE;
     }
 
-    uint8_t write[len];
+    write = (uint8_t*)malloc(len);
     memset(write, 0, sizeof(write));
 
     qspi_dummy_req.spi = MXC_SPI0;
@@ -272,7 +270,9 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
     qspi_dummy_req.rxCnt = 0;
     qspi_dummy_req.completeCB = NULL;
 
-    return MXC_SPI_MasterTransaction(&qspi_dummy_req);
+    res = MXC_SPI_MasterTransaction(&qspi_dummy_req);
+    free(write);
+    return res;
 }
 #endif /* __riscv */
 /******************************************************************************/

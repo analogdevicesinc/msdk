@@ -36,6 +36,7 @@
 
 /* **** Includes **** */
 #include <string.h>
+#include <stdint.h>
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "hpb_reva.h"
@@ -120,7 +121,7 @@ void MXC_HPB_RevA_RegRead16(mxc_hpb_reva_regs_t *hpb, mxc_hpb_cfg_reg_val_t *cfg
 
     MXC_EMCC_Disable();
     hpb->memctrl[index] |= MXC_F_HPB_REVA_MEMCTRL_CRT;
-    cfg_reg_val->val = *((volatile unsigned short *)(base_addr + cfg_reg_val->addr));
+    cfg_reg_val->val = *((volatile uint16_t *)(base_addr + cfg_reg_val->addr));
     hpb->memctrl[index] &= ~(MXC_F_HPB_REVA_MEMCTRL_CRT);
     MXC_EMCC_Enable();
 }
@@ -135,7 +136,7 @@ void MXC_HPB_RevA_RegWrite16(mxc_hpb_reva_regs_t *hpb, mxc_hpb_cfg_reg_val_t *cf
 
     MXC_EMCC_Disable();
     hpb->memctrl[index] |= MXC_F_HPB_REVA_MEMCTRL_CRT;
-    *((volatile unsigned short *)(base_addr + cfg_reg_val->addr)) = cfg_reg_val->val;
+    *((volatile uint16_t *)(base_addr + cfg_reg_val->addr)) = cfg_reg_val->val;
     hpb->memctrl[index] &= ~(MXC_F_HPB_REVA_MEMCTRL_CRT);
     MXC_EMCC_Enable();
 }

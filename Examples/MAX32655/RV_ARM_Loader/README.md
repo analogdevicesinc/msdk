@@ -9,7 +9,7 @@ The Hello_World example runs on the the RISCV core.
 ## Setup
 
 ##### Linker File Selection
-Before building firmware you must select the correct linker file (line 111) in the "Makefile" to in the Hello_World example. The Hello_World example must be in the same workspace as the the RV_ARM_Loader example.
+Before building firmware you must select the correct linker file (line 111) in the "project.mk" to in the Hello_World example. The Hello_World example must be in the same workspace as the the RV_ARM_Loader example.
 
 ```
 LINKER=$(TARGET_LC)_riscv.ld

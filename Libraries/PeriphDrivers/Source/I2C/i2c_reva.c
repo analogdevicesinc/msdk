@@ -440,9 +440,7 @@ int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, u
 
     if (states[i2cNum].master) {
         MXC_DMA_SetCallback(channel, MXC_I2C_RevA_DMACallback);
-    }
-
-    else {
+    } else {
         MXC_DMA_SetCallback(channel, NULL);
     }
 
@@ -991,9 +989,7 @@ void MXC_I2C_RevA_DMACallback(int ch, int error)
                     temp_req->callback(temp_req, E_NO_ERROR);
                 }
             }
-        }
-
-        else if (states[i].channelRx == ch) {
+        } else if (states[i].channelRx == ch) {
             //save the request
             states[i].readDone = 1;
             temp_req = states[i].req;

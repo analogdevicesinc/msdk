@@ -38,10 +38,10 @@
 #include "task_logo_animation.h"
 #include "utils.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define TICK_TIMEOUT 60
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static const int screensaver_data[] = {
     medium_logo_000_bmp, medium_logo_001_bmp, medium_logo_002_bmp, medium_logo_001_bmp,
     medium_logo_003_bmp, medium_logo_004_bmp, medium_logo_005_bmp, medium_logo_006_bmp,

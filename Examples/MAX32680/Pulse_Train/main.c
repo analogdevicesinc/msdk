@@ -44,7 +44,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "board.h"
-#include <mxc.h>
+#include "mxc.h"
 
 /***** Definitions *****/
 #define ALL_PT 0x0C

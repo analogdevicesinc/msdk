@@ -29,9 +29,6 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date$ 
- # $Revision$
- #
  ###############################################################################
 
 ifeq "$(BOARD_DIR)" ""

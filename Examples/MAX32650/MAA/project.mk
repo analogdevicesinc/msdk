@@ -11,4 +11,7 @@
 
 # **********************************************************
 
-# Add your config here!
+# Enable Secure Boot Tool integration.
+SBT = 1
+
+$(info Note: This project is only designed for the MAX32651)
