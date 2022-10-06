@@ -32,6 +32,7 @@
  ******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
@@ -257,7 +258,7 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
     }
 
     write = (uint8_t*)malloc(len);
-    memset(write, 0, sizeof(write));
+    memset(write, 0, len);
 
     qspi_dummy_req.spi = MXC_SPI0;
     qspi_dummy_req.ssIdx = 1;
@@ -305,15 +306,18 @@ int Board_Init(void)
     if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
         return err;
     }
+#endif // __riscv
 
     // Enable GPIO
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
 
+#ifdef DEBUG
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
+#endif
 
     if ((err = PB_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
@@ -324,7 +328,6 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-#endif // __riscv
 
     return E_NO_ERROR;
 }
