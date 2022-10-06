@@ -22,8 +22,12 @@
  * @date 2/10/2015
  *
  */
-#ifndef PULPINO_H
-#define PULPINO_H
+
+
+// Notice: Header guard has been modified from its original value of "PULPINO_H"
+//         to adhere to Analog Devices coding standards.
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_SOURCE_GCC_PULPINO_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_SOURCE_GCC_PULPINO_H_
 
 #define PULPINO_BASE_ADDR 0x10000000
 
@@ -99,4 +103,4 @@
 
 #define RES_STATUS __PSC__(0x14)
 
-#endif
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_SOURCE_GCC_PULPINO_H_

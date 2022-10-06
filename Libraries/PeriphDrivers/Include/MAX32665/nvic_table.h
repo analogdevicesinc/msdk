@@ -118,4 +118,4 @@ NVIC_GetVector(IRQn_Type irqn)
 }
 #endif
 
-#endif /* _NVIC_TABLE_H */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_NVIC_TABLE_H_

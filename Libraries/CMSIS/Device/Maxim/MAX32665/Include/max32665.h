@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#ifndef _MAX32665_REGS_H_
-#define _MAX32665_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_
 
 #ifndef TARGET_NUM
 #define TARGET_NUM 32665
@@ -479,9 +479,6 @@ typedef enum {
 #define MXC_BASE_FLC1 ((uint32_t)0x40029400UL)
 #define MXC_FLC1 ((mxc_flc_regs_t *)MXC_BASE_FLC1)
 
-// TODO: remove this when creating drivers to accept two instance of these.
-// #define MXC_FLC     MXC_FLC0
-
 #define MXC_FLC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? FLC0_IRQn : (i) == 1 ? FLC1_IRQn : 0)
 
 #define MXC_FLC_GET_BASE(i) ((i) == 0 ? MXC_BASE_FLC0 : (i) == 1 ? MXC_BASE_FLC1 : 0)
@@ -498,7 +495,6 @@ typedef enum {
 #define MXC_BASE_ICC1 ((uint32_t)0x4002A800UL)
 #define MXC_ICC1 ((mxc_icc_regs_t *)MXC_BASE_ICC1)
 
-// TODO: remove this when creating drivers to accept two instance of these.
 #define MXC_ICC MXC_ICC0
 
 #define MXC_ICC_GET_BASE(i) ((i) == 0 ? MXC_BASE_ICC0 : (i) == 1 ? MXC_BASE_ICC1 : 0)
@@ -948,7 +944,7 @@ typedef enum {
 #define MXC_SETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit) = 1)
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
-#define MXC_SETFIELD(reg, mask, setting) (reg = (reg & ~mask) | (setting & mask))
+#define MXC_SETFIELD(reg, mask, setting) (reg = ((reg) & ~(mask)) | ((setting) & (mask)))
 
 /******************************************************************************/
 /*                                                                  SCB CPACR */
@@ -959,4 +955,4 @@ typedef enum {
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
-#endif /* _MAX32665_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_

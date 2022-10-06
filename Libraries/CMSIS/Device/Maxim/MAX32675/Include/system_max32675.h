@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#ifndef _SYSTEM_MAX32675_H_
-#define _SYSTEM_MAX32675_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32675_INCLUDE_SYSTEM_MAX32675_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32675_INCLUDE_SYSTEM_MAX32675_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -114,4 +114,4 @@ void SystemCoreClockUpdate(void);
 }
 #endif
 
-#endif /* _SYSTEM_MAX32675_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32675_INCLUDE_SYSTEM_MAX32675_H_

@@ -139,36 +139,35 @@ typedef struct {
     mxc_hpb_cfg_reg_val_t *cfg_reg_val; /**< Pointer to array of address offset/value pairs >*/
     unsigned int cfg_reg_val_len; /**< number of configuration pairs */
 
-    mxc_hpb_cs_high_t read_cs_high; /**< Before the read access, this setting inserts the 
-                                             CK cycles to the chip select high period. */
+    mxc_hpb_cs_high_t read_cs_high; /**< Before the read access, this setting inserts the */
+                                    /**< CK cycles to the chip select high period. */
 
-    mxc_hpb_cs_high_t write_cs_high; /**< Before the write access, this setting inserts 
-                                             the CK cycles to the chip select high period. */
-
-    mxc_hpb_cs_setup_hold_t
-        read_cs_setup; /**< In the read access, this setting inserts the CK cycles,
-                                             between the falling edge of chip select and the 
-                                             rising edge of first CK. */
+    mxc_hpb_cs_high_t write_cs_high; /**< Before the write access, this setting inserts */
+                                     /**< the CK cycles to the chip select high period. */
 
     mxc_hpb_cs_setup_hold_t
-        write_cs_setup; /**< In the write access, this setting inserts the CK cycles,
-                                             between the falling edge of chip select and the 
-                                             rising edge of first CK. */
-
-    mxc_hpb_cs_setup_hold_t read_cs_hold; /**< In the read access, this setting inserts the CK cycles,
-                                             between the falling edge of last CK and the 
-                                             rising edge of chip select. */
+        read_cs_setup; /**< In the read access, this setting inserts the CK cycles, */
+                       /**< between the falling edge of chip select and the */
+                       /**< rising edge of first CK. */
 
     mxc_hpb_cs_setup_hold_t
-        write_cs_hold; /**< In the write access, this setting inserts the CK cycles,
-                                             between the falling edge of last CK and the
-                                              rising edge of chip select */
+        write_cs_setup; /**< In the write access, this setting inserts the CK cycles, */
+                        /**< between the falling edge of chip select and the */
+                        /**< rising edge of first CK. */
 
-    mxc_hpb_latency_t latency_cycle; /**< Latency Cycle for HyperRAM mode, 
-                                             ignored when the connected device is HyperFlash */
+    mxc_hpb_cs_setup_hold_t read_cs_hold; /**< In the read access, this setting inserts the CK cycles, */
+                                          /**< between the falling edge of last CK and the */
+                                          /**< rising edge of chip select. */
+
+    mxc_hpb_cs_setup_hold_t
+        write_cs_hold; /**< In the write access, this setting inserts the CK cycles, */
+                       /**< between the falling edge of last CK and the */
+                       /**< rising edge of chip select */
+
+    mxc_hpb_latency_t latency_cycle; /**< Latency Cycle for HyperRAM mode, */
+                                     /**< ignored when the connected device is HyperFlash */
 
     unsigned int fixed_latency;
-
 } mxc_hpb_mem_config_t;
 
 /* **** Function Prototypes **** */

@@ -39,8 +39,8 @@
  * @brief   System level header file.
  */
 
-#ifndef _MXC_SYS_H_
-#define _MXC_SYS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
@@ -70,7 +70,7 @@ typedef enum {
     MXC_SYS_RESET_CRYPTO = MXC_F_GCR_RSTR0_CRYPTO_POS, /**< Reset CRYPTO */
     MXC_SYS_RESET_SMPHR = MXC_F_GCR_RSTR0_SMPHR_POS, /**< Reset SMPHR */
     MXC_SYS_RESET_USB = MXC_F_GCR_RSTR0_USB_POS, /**< Reset USB */
-    //	MXC_SYS_RESET_TRNG      = MXC_F_GCR_RSTR0_TRNG_POS,        /**< Reset TRNG */
+    //  MXC_SYS_RESET_TRNG      = MXC_F_GCR_RSTR0_TRNG_POS,        /**< Reset TRNG */
     MXC_SYS_RESET_ADC = MXC_F_GCR_RSTR0_ADC_POS, /**< Reset ADC */
     MXC_SYS_RESET_DMA1 = MXC_F_GCR_RSTR0_DMA1_POS, /**< Reset DMA1 */
     MXC_SYS_RESET_UART2 = MXC_F_GCR_RSTR0_UART2_POS, /**< Reset UART2 */
