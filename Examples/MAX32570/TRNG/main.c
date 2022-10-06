@@ -67,9 +67,7 @@ void print(char *stuff)
     int i, j, size = 4;
 
     for (i = 0; i < 4; ++i) {
-        for (j = 0; j < 4; ++j) {
-            printf("0x%02x ", stuff[i * size + j]);
-        }
+        for (j = 0; j < 4; ++j) { printf("0x%02x ", stuff[i * size + j]); }
 
         printf("\n");
     }

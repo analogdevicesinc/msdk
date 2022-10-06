@@ -174,9 +174,7 @@ int sc_read_atr(char *msg, int *msg_len)
                 utils_hex2char(atr[0], &msg[0]);
                 utils_hex2char(atr[1], &msg[3]);
                 if (status < 6) {
-                    for (i = 2; i < status; i++) {
-                        utils_hex2char(atr[i], &msg[3 * i]);
-                    }
+                    for (i = 2; i < status; i++) { utils_hex2char(atr[i], &msg[3 * i]); }
                     *msg_len = 3 * status - 1;
                 } else {
                     utils_hex2char(atr[2], &msg[6]);

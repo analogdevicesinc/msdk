@@ -125,9 +125,7 @@ void camera_irq_handler(void)
             int i;
             rx_data_index = g_total_img_size / 2;
 
-            for (i = 0; i < rx_data_index; i++) {
-                rx_data[i] = rx_data[i * 2];
-            }
+            for (i = 0; i < rx_data_index; i++) { rx_data[i] = rx_data[i * 2]; }
         } else {
             rx_data_index = g_total_img_size;
         }
