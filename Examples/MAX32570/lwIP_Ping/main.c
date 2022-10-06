@@ -141,6 +141,8 @@ int main(void)
     ip_addr_t ping_target_ip;
 
     printf("*** Ping Example ***\n");
+    printf("Target IP:192.168.100.1\n");
+    printf("It is defined in lwipcfg.h file under Libraries/lwIP/include/Maxim folder\n\n");
 
     result = MXC_RTC_Init(0, 0);
 
