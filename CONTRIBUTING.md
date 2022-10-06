@@ -141,7 +141,7 @@ TODO
 
 ### Project Settings
 
-Example projects are not just source code.  They must also be "wrapped" in up-to-date support files for the development environments supported by the MSDK.  This include the core Makefiles, Eclipse files, Visual Studio Code files, etc.
+Example projects are not just source code.  They must also be "wrapped" in up-to-date support files for the development environments supported by the MSDK.  This includes the core Makefiles, Eclipse files, Visual Studio Code files, etc.
 
 These support files should be managed with the [MSDKGen](https://github.com/Analog-Devices-MSDK/MSDKGen) utility.
 
