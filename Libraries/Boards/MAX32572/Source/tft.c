@@ -54,15 +54,15 @@
 //
 #define PALETTE_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_palatte + 1 /* nb_palette */ + \
-           (x) * sizeof(uint32_t),                                                      \
+               (x) * sizeof(uint32_t),                                                  \
            4)
 #define FONT_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_font + 1 /* nb_font    */ + \
-           (x) * sizeof(uint32_t),                                                   \
+               (x) * sizeof(uint32_t),                                               \
            4)
 #define BITMAP_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_bitmap + 1 /* nb_bitmap  */ + \
-           (x) * sizeof(uint32_t),                                                     \
+               (x) * sizeof(uint32_t),                                                 \
            4)
 
 /********************************* TYPE DEFINES ******************************/
@@ -598,8 +598,8 @@ static void displaySub(int x0, int y0, int width, int height)
     write_command(0x0022); // RAM data write/read
 }
 
-static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const uint8_t *img_data,
-                           int sub_x, int sub_w)
+static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const uint8_t *img_data, int sub_x,
+                           int sub_w)
 {
     __disable_irq();
     int y, x, i;

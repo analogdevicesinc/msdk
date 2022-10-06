@@ -101,9 +101,7 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, uint16_t *dataout)
     MXC_SPI_MasterTransaction(&request);
 
     // Wait to clear TS busy signal
-    for (i = 0; i < 100; i++) {
-        __asm volatile("nop\n");
-    }
+    for (i = 0; i < 100; i++) { __asm volatile("nop\n"); }
 
     request.txLen = 3;
     request.rxLen = 3;
@@ -304,9 +302,7 @@ void MXC_TS_RemoveAllButton(void)
 {
     int i;
 
-    for (i = 0; i < TS_MAX_BUTTONS; i++) {
-        ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
-    }
+    for (i = 0; i < TS_MAX_BUTTONS; i++) { ts_buttons[i].key_code = TS_INVALID_KEY_CODE; }
 }
 
 int MXC_TS_GetKey(void)
