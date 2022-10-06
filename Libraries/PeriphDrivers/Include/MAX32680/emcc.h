@@ -32,7 +32,7 @@
  *
  *
  ********************************************************************************
-*/
+ */
 
 /*
  ******************************************************************************
@@ -42,7 +42,7 @@
  * @brief   This file contains all functions prototypes and data types for the
  *          External Memory Cache Controller (EMCC) driver
  ******************************************************************************
- */ 
+ */
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_EMCC_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_EMCC_H_
