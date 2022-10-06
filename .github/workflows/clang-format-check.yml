@@ -45,8 +45,8 @@ jobs:
             clang-format --verbose --style=file -n -Werror ${change_file}
             if [ $? != 0 ];
             then
-              clang-format --verbose --style=file ${change_file} > ${change_file}.clang
-              diff -u ${change_file} ${change_file}.clang
+              clang-format --style=file ${change_file} > ${change_file}.clang
+              diff -u --color=always ${change_file} ${change_file}.clang
               rm ${change_file}.clang
               CHECK_FAIL=1
             fi
