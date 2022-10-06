@@ -335,9 +335,7 @@ static inline uint32_t zbar_fourcc_parse(const char *format)
     if (format) {
         int i;
 
-        for (i = 0; i < 4 && format[i]; i++) {
-            fourcc |= ((uint32_t)format[i]) << (i * 8);
-        }
+        for (i = 0; i < 4 && format[i]; i++) { fourcc |= ((uint32_t)format[i]) << (i * 8); }
     }
 
     return (fourcc);
