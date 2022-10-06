@@ -181,6 +181,8 @@ For example:
 ```Makefile
 IPATH += $(LIBRARY_NAME_DIR)/include
 VPATH += $(LIBRARY_NAME_DIR)/src
+SRCS += libfile1.c
+SRCS += libfile2.c
 ```
 
 An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code "cherry-picked" and added to the build via [board.mk](Libraries/Boards/MAX78000/EvKit_V1/board.mk) files.
