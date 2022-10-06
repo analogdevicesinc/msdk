@@ -828,20 +828,19 @@ void helpTask(void *pvParameters)
 /*************************************************************************************************/
 void wfsLoop(void *pvParameters)
 {
-    while (1) {
-        WsfOsEnterMainLoop();
-    }
+    while (1) { WsfOsEnterMainLoop(); }
 }
 /*************************************************************************************************/
 void setPhy(uint8_t newPhy)
 {
     phy = newPhy;
     char str[20] = "> Phy now set to ";
-    strcat(str, (phy == LL_TEST_PHY_LE_1M)       ? "1M PHY" :
-                (phy == LL_TEST_PHY_LE_2M)       ? "2M PHY" :
-                (phy == LL_TEST_PHY_LE_CODED_S8) ? "S8 PHY" :
-                (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" :
-                                                   "");
+    strcat(str, (phy == LL_TEST_PHY_LE_1M) ?
+                    "1M PHY" :
+                    (phy == LL_TEST_PHY_LE_2M) ? "2M PHY" :
+                                                 (phy == LL_TEST_PHY_LE_CODED_S8) ?
+                                                 "S8 PHY" :
+                                                 (phy == LL_TEST_PHY_LE_CODED_S2) ? "S2 PHY" : "");
     APP_TRACE_INFO1("%s", str);
 }
 /*************************************************************************************************/
