@@ -44,10 +44,7 @@
 #include "util/calc128.h"
 #include "gatt/gatt_api.h"
 #include "mcs_app_api.h"
-#include "svc_mcs.h"
 #include "mcs_api.h"
-#include "pal_btn.h"
-#include "tmr.h"
 #include "pal_btn.h"
 #include "tmr.h"
 
@@ -124,8 +121,9 @@ static const smpCfg_t mcsAppSmpCfg = {
 
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t mcsAppUpdateCfg = {
-    0, /*! Connection idle period in ms before attempting
-                                              connection parameter update; set to zero to disable */
+    0,
+    /*! ^ Connection idle period in ms before attempting
+    connection parameter update; set to zero to disable */
     640, /*! Minimum connection interval in 1.25ms units */
     800, /*! Maximum connection interval in 1.25ms units */
     3, /*! Connection latency */
@@ -736,9 +734,8 @@ void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+        } else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process DM messages */
             /* process advertising and connection-related messages */
             AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 

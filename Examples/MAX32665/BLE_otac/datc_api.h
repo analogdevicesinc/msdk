@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef DATC_API_H
-#define DATC_API_H
+#ifndef EXAMPLES_MAX32665_BLE_OTAC_DATC_API_H_
+#define EXAMPLES_MAX32665_BLE_OTAC_DATC_API_H_
 
 #include "wsf_os.h"
 
@@ -69,4 +69,4 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif /* DATC_API_H */
+#endif // EXAMPLES_MAX32665_BLE_OTAC_DATC_API_H_
