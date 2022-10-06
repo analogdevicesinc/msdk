@@ -50,7 +50,7 @@
  *----------------------------------------------------------*/
 
 /* CMSIS keeps a global updated with current system clock in Hz */
-#define configCPU_CLOCK_HZ ((uint64_t)HIRC96_FREQ)
+#define configCPU_CLOCK_HZ ((uint32_t)HIRC96_FREQ)
 
 #define SLEEP_LED 1
 #define DEEPSLEEP_LED 0
@@ -80,7 +80,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 #define configUSE_MUTEXES 1
 
 /* Define to trap errors during development. */
-void vAssertCalled(const char *const pcFileName, uint64_t ulLine);
+void vAssertCalled(const char *const pcFileName, uint32_t ulLine);
 #define configASSERT(x) \
     if ((x) == 0)       \
     vAssertCalled(__FILE__, __LINE__)
@@ -122,8 +122,8 @@ to exclude the API function. */
 
 #ifdef configUSE_TICKLESS_IDLE
 /* Provide routines for tickless idle pre- and post- processing */
-void vPreSleepProcessing(uint64_t *);
-void vPostSleepProcessing(uint64_t);
+void vPreSleepProcessing(uint32_t *);
+void vPostSleepProcessing(uint32_t);
 #define configPRE_SLEEP_PROCESSING(idletime) vPreSleepProcessing(&idletime);
 #define configPOST_SLEEP_PROCESSING(idletime) vPostSleepProcessing(idletime);
 #endif

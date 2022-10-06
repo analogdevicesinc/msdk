@@ -68,7 +68,7 @@ extern void bleStartup(void);
  *
  * =======================================================
  */
-void vAssertCalled(const char *const pcFileName, uint64_t ulLine)
+void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
 {
     volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
