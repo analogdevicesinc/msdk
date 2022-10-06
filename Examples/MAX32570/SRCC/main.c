@@ -69,7 +69,7 @@
 
 mxc_spixr_cfg_t init_cfg = {
     0x08, /* Number of bits per character     */
-	SPIXR_WIDTH, /* SPI Data Width */
+    SPIXR_WIDTH, /* SPI Data Width */
     0x04, /* num of system clocks between SS active & first serial clock edge     */
     0x08, /* num of system clocks between last serial clock edge and ss inactive  */
     0x10, /* num of system clocks between transactions (read / write)             */
@@ -96,17 +96,17 @@ void setup(void)
     // Setup communicate mode
     switch (SPIXR_WIDTH) {
     case MXC_SPIXR_SINGLE_SDIO:
-    	mode_cmd = A1024_RSTQIO;
-    	break;
+        mode_cmd = A1024_RSTQIO;
+        break;
     case MXC_SPIXR_DUAL_SDIO:
-    	mode_cmd = A1024_EDIO;
-    	break;
+        mode_cmd = A1024_EDIO;
+        break;
     case MXC_SPIXR_QUAD_SDIO:
-    	mode_cmd = A1024_EQIO;
-    	break;
+        mode_cmd = A1024_EQIO;
+        break;
     default:
-    	mode_cmd = A1024_EQIO;
-    	break;
+        mode_cmd = A1024_EQIO;
+        break;
     }
     MXC_SPIXR_SendCommand(&mode_cmd, 1, 1);
 

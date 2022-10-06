@@ -152,7 +152,6 @@ int main(void)
         fail += 1;
     }
 
-
     if (fail == 0) {
         printf("\nEXAMPLE SUCCEEDED\n");
     } else {
