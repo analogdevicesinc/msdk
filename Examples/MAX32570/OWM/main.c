@@ -125,7 +125,9 @@ int32_t ow_romid_test(uint8_t od)
     }
 
     printf("ROMID: ");
-    for (i = 0; i < 8; i++) { printf("%02X ", buffer[i]); }
+    for (i = 0; i < 8; i++) {
+        printf("%02X ", buffer[i]);
+    }
     printf("\n");
 
     /* Check for zero family code in ROM ID */
@@ -136,7 +138,9 @@ int32_t ow_romid_test(uint8_t od)
     /* Check CRC8 of received ROM ID */
     setcrc8(0);
 
-    for (i = 0; i < 8; i++) { crc8 = docrc8(buffer[i]); }
+    for (i = 0; i < 8; i++) {
+        crc8 = docrc8(buffer[i]);
+    }
 
     if (crc8 != 0x00) {
         return -7;
