@@ -10,10 +10,6 @@
 # Override default optimization level
 MXC_OPTIMIZE_CFLAGS=-O1
 
-ifeq ("$(wildcard $(LIBS_DIR)/NFC)","")
-$(error This demo example requires NFC package. Please install the NFC package to Libraries/NFC.)
-endif
-
 # Enable NFC library
 LIB_NFC = 1
 
