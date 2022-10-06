@@ -41,8 +41,8 @@
 *******************************************************************************
 */
 
-#ifndef _INFOBLOCK_H_
-#define _INFOBLOCK_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -200,4 +200,4 @@ int infoblock_read(uint32_t offset, uint8_t *data, int length);
 }
 #endif
 
-#endif /* _INFOBLOCK_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_

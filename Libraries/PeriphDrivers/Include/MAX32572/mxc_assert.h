@@ -37,7 +37,7 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ASERT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ASSERT_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ASSERT_H_
 
 /* **** Includes **** */
@@ -104,4 +104,4 @@ void mxc_assert(const char *expr, const char *file, int line);
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_DELAY_H_
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ASSERT_H_

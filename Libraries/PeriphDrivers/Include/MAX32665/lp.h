@@ -44,9 +44,9 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "gpio.h"
 #include "pwrseq_regs.h"
-#include <stdint.h>
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 
