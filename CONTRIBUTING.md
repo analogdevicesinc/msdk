@@ -18,7 +18,7 @@ If a direct branch on the mainline MSDK repo is made, the following branch namin
     * For Jira tickets, it's recommended to use `fix/ticketnumber` so that the branch gets automatically tracked.  Ex: `fix/MSDK-670`
 * New feature: `feature/branchname`
 * Generic development branch: `dev/branchname`
-* New and/pr modified example branch: `example/branchname`
+* New and/or modified example branch: `example/branchname`
 
 ## Style Guide
 
