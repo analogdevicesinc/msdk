@@ -790,8 +790,8 @@ void helpTask(void *pvParameters)
     printf("├─────────┼──────────────────────────────────┼───────────────────────────────────────────────────────┤\r\n");
     printf("│ cls     │ N/A                              │ clears the screen                                     │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ constTx │ <channel> : 1 - 39               │ Constant TX on given channel.                         │\r\n");
-    printf("│         │ ex: constTx 0                    │                                                       │\r\n");
+    printf("│ constTx │ <channel> <phy>                  │ Constant TX on given channel.                         │\r\n");
+    printf("│         │ ex: constTx 0 1M                 │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ e       │ N/A                              │ Ends any active RX/TX/Constant/Freq.hop RF test       │\r\n");
     printf("│         │                                  │                                                       │\r\n");
@@ -814,8 +814,8 @@ void helpTask(void *pvParameters)
     printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
     printf("│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ dbm     │ <dbm> :TODO: what is range here? │ Select transmit power                                 │\r\n");
-    printf("│         │ ex: txdbm -10                    │                                                       │\r\n");
+    printf("│ power   │ <power>                          │ Select transmit power. Supported power levels (dBm)   │\r\n");
+    printf("│         │ ex: power -10                    │ -10 , 0 , 4                                           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
     printf("│ help    │ N/A                              │ Displays this help table                              │\r\n");
     printf("└─────────┴──────────────────────────────────┴───────────────────────────────────────────────────────┘\r\n");

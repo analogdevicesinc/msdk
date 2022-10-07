@@ -47,8 +47,8 @@ static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen
 static BaseType_t cmd_StopBleRFTest(char *pcWriteBuffer, size_t xWriteBufferLen,
                                     const char *pcCommandString);
 
-static BaseType_t cmd_SetTxdBm(char *pcWriteBuffer, size_t xWriteBufferLen,
-                               const char *pcCommandString);
+static BaseType_t cmd_SetTxPower(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char *pcCommandString);
 
 static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
                               const char *pcCommandString);
@@ -73,7 +73,7 @@ const CLI_Command_Definition_t xCommandList[] = {
         .pcCommand = "constTx", /* The command string to type. */
         .pcHelpString = "<channel>",
         .pxCommandInterpreter = cmd_ConstTx, /* The function to run. */
-        .cExpectedNumberOfParameters = 1
+        .cExpectedNumberOfParameters = 2
 
     },
     {
@@ -124,9 +124,9 @@ const CLI_Command_Definition_t xCommandList[] = {
     },
     {
 
-        .pcCommand = "dbm", /* The command string to type. */
-        .pcHelpString = "<dbm>",
-        .pxCommandInterpreter = cmd_SetTxdBm, /* The function to run. */
+        .pcCommand = "power", /* The command string to type. */
+        .pcHelpString = "<power>",
+        .pxCommandInterpreter = cmd_SetTxPower, /* The function to run. */
         .cExpectedNumberOfParameters = 1
 
     },
@@ -204,7 +204,7 @@ static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen
     static tx_config_t rfCommand = { .testType = 0xFF, .duration_ms = 0 };
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
-        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        sprintf(pcWriteBuffer, "> Another test is currently active\r\n");
         /* no point in doing anything else */
         return pdFALSE;
     }
@@ -267,7 +267,7 @@ static BaseType_t cmd_StartBleTXTest(char *pcWriteBuffer, size_t xWriteBufferLen
         xTaskNotify(tx_task_id, rfCommand.allData, eSetBits);
         pausePrompt = true;
     } else {
-        sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
+        sprintf(pcWriteBuffer, "> Bad parameter, see help menu for options\r\n");
         xSemaphoreGive(rfTestMutex);
     }
     return pdFALSE;
@@ -284,7 +284,7 @@ static BaseType_t cmd_StartBleRXTest(char *pcWriteBuffer, size_t xWriteBufferLen
     static tx_config_t rfCommand = { .testType = 0xFF, .duration_ms = 0 };
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
-        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        sprintf(pcWriteBuffer, "> Another test is currently active\r\n");
         /* no point in doing anything else */
         return pdFALSE;
     }
@@ -333,7 +333,7 @@ static BaseType_t cmd_StartBleRXTest(char *pcWriteBuffer, size_t xWriteBufferLen
         xTaskNotify(tx_task_id, rfCommand.allData, eSetBits);
         pausePrompt = true;
     } else {
-        sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
+        sprintf(pcWriteBuffer, "> Bad parameter, see help menu for options\r\n");
         xSemaphoreGive(rfTestMutex);
     }
     return pdFALSE;
@@ -345,7 +345,7 @@ static BaseType_t cmd_StopBleRFTest(char *pcWriteBuffer, size_t xWriteBufferLen,
     (void)pcCommandString;
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-    sprintf(pcWriteBuffer, "Ending active tests\r\n");
+    sprintf(pcWriteBuffer, "> Active test ended\r\n");
     if (activeTest == BLE_CONST_TX) {
         /* Disable constant TX */
         MXC_R_TX_CTRL = 0x2;
@@ -355,16 +355,18 @@ static BaseType_t cmd_StopBleRFTest(char *pcWriteBuffer, size_t xWriteBufferLen,
         LlEndTest(NULL);
         MXC_TMR_Stop(MXC_TMR2);
     } else {
-        sprintf(pcWriteBuffer, "No active test to disable\n");
+        sprintf(pcWriteBuffer, "> No active test to disable\n");
     }
     activeTest = NO_TEST;
     pausePrompt = false;
+    //gives time for LL printing to happen before we start printing messages from here
+    vTaskDelay(100);
     xSemaphoreGive(rfTestMutex);
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
-static BaseType_t cmd_SetTxdBm(char *pcWriteBuffer, size_t xWriteBufferLen,
-                               const char *pcCommandString)
+static BaseType_t cmd_SetTxPower(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                 const char *pcCommandString)
 {
     /* Remove compile time warnings about unused parameters, and check the
 	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
@@ -375,13 +377,16 @@ static BaseType_t cmd_SetTxdBm(char *pcWriteBuffer, size_t xWriteBufferLen,
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     BaseType_t lParameterStringLength;
 
-    int8_t newTxdBm = atoi(
+    int8_t newTxPower = atoi(
         FreeRTOS_CLIGetParameter(pcCommandString, /* The command string itself. */
                                  1, /* Return the next parameter. */
                                  &lParameterStringLength /* Store the parameter string length. */
                                  ));
-    // TODO validate this number, need to know the range
-    setTxPower(newTxdBm);
+    if (newTxPower == -10 || newTxPower == 0 || newTxPower == 4) {
+        setTxPower(newTxPower);
+    } else {
+        sprintf(pcWriteBuffer, "> Bad parameter, see help menu for options\r\n");
+    }
 
     return pdFALSE;
 }
@@ -398,10 +403,11 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     int err = E_NO_ERROR;
     static uint32_t channelNum = 0xFF;
+    uint8_t phyVal = 0;
     BaseType_t lParameterStringLength;
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
-        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        sprintf(pcWriteBuffer, "> Another test is currently active\r\n");
         /* no point in doing anything else */
         return pdFALSE;
     }
@@ -415,10 +421,20 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
     } else {
         err++;
     }
+
+    const char *newPhy =
+        FreeRTOS_CLIGetParameter(pcCommandString, /* The command string itself. */
+                                 2, /* Return the next parameter. */
+                                 &lParameterStringLength /* Store the parameter string length. */
+        );
+
+    err += getNewPhy(newPhy, &phyVal);
+
     /* start test */
     if (err == E_NO_ERROR) {
+        setPhy(phyVal);
         dbb_seq_select_rf_channel(channelNum);
-        strcat(pcWriteBuffer, "Starting TX\r\n");
+        strcat(pcWriteBuffer, "> Starting constant TX\r\n");
         PalBbEnable();
         llc_api_tx_ldo_setup();
 
@@ -429,11 +445,12 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
         MXC_R_CONST_OUPUT = 0x0;
         MXC_R_PATTERN_GEN = 0x4B;
         activeTest = BLE_CONST_TX;
+        //gives time for LL printing to happen before we start printing messages from here
+        vTaskDelay(100);
     } else {
-        sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
+        sprintf(pcWriteBuffer, "> Bad parameter, see help menu for options\r\n");
         xSemaphoreGive(rfTestMutex);
     }
-
     return pdFALSE;
 }
 /*-----------------------------------------------------------*/
@@ -449,13 +466,13 @@ static BaseType_t cmd_EnableFreqHop(char *pcWriteBuffer, size_t xWriteBufferLen,
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     int err = E_NO_ERROR;
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
-        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        sprintf(pcWriteBuffer, "> Another test is currently active\r\n");
         /* no point in doing anything else */
         return pdFALSE;
     }
 
     if (err == E_NO_ERROR) {
-        sprintf(pcWriteBuffer, "Starting frequency hopping\n");
+        sprintf(pcWriteBuffer, "> Starting frequency hopping\n");
         activeTest = BLE_FHOP_TEST;
         startFreqHopping();
     } else {
@@ -482,7 +499,7 @@ static BaseType_t cmd_Sweep(char *pcWriteBuffer, size_t xWriteBufferLen,
     static sweep_config_t sweepConfig = { .duration_per_ch_ms = 0 };
 
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
-        sprintf(pcWriteBuffer, "Another test is currently active\r\n");
+        sprintf(pcWriteBuffer, "> Another test is currently active\r\n");
         /* no point in doing anything else */
         return pdFALSE;
     }
@@ -546,11 +563,11 @@ static BaseType_t cmd_Sweep(char *pcWriteBuffer, size_t xWriteBufferLen,
         setPacketLen(packetLen);
         setPacketType(packetTypeVal);
         setPhy(phyVal);
-        xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
         activeTest = BLE_SWEEP_TEST;
         pausePrompt = true;
+        xTaskNotify(sweep_task_id, sweepConfig.allData, eSetBits);
     } else {
-        sprintf(pcWriteBuffer, "Bad parameter, see help menu for options\r\n");
+        sprintf(pcWriteBuffer, "> Bad parameter, see help menu for options\r\n");
         xSemaphoreGive(rfTestMutex);
     }
 
