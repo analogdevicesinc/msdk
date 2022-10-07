@@ -281,22 +281,22 @@ int main(void)
     int err = 0x00000000;
     uint32_t startingAddress = 0x00000000;
     uint32_t crcResult = 0x00000000;
-    int numLeds;
+    int numLedsBlink;
 
     /* Limit the number of LED blinks */
     if (num_leds > 2) {
-        numLeds = 2;
+        numLedsBlink = 2;
     } else {
-        numLeds = num_leds;
+        numLedsBlink = num_leds;
     }
 
     /* Prevent bricks */
-    if (numLeds == 0) {
+    if (numLedsBlink == 0) {
         DELAY(0x3FFFFF);
     }
 
     LED_Init();
-    for (int led = 0; led < numLeds; led++) {
+    for (int led = 0; led < numLedsBlink; led++) {
         LED_On(led);
         DELAY(0x1FFFFF);
         LED_Off(led);
