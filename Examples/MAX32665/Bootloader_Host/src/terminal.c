@@ -34,7 +34,6 @@
 /*******************************      INCLUDES    ****************************/
 #include <string.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdarg.h>
 
 #include "uart.h"
@@ -52,7 +51,7 @@
 
 /******************************* Type Definitions ****************************/
 
-/******************************* 	Variables 	  ****************************/
+/*******************************    Variables   ****************************/
 
 /******************************* Static Functions ****************************/
 
@@ -138,8 +137,9 @@ int terminal_select_from_list(const char *title, const list_t *items, int nb_ite
                 index = i + (k * nb_row);
 
                 if (index < nb_items) {
-                    sprintf(item_data, "%-3d- %-32s ", index + 1, items[index].name);
-                    strcat(buf, item_data);
+                    snprintf(item_data, sizeof(item_data), "%-3d- %-32s ", index + 1,
+                             items[index].name);
+                    strncat(buf, item_data, sizeof(buf));
                 }
             }
             //

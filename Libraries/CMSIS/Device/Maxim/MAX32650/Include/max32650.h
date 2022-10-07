@@ -34,8 +34,8 @@
  *
  **************************************************************************** */
 
-#ifndef _MAX32650_REGS_H_
-#define _MAX32650_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_
 
 #ifndef TARGET_NUM
 #define TARGET_NUM 32650
@@ -406,7 +406,6 @@ typedef enum {
 
 /* ************************************************************************** */
 /*                                                          Instruction Cache */
-#include <icc_regs.h>
 #define MXC_BASE_ICC ((uint32_t)0x4002A000UL)
 #define MXC_ICC ((mxc_icc_regs_t *)MXC_BASE_ICC)
 
@@ -708,7 +707,7 @@ typedef enum {
 #define MXC_SETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit) = 1)
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
-#define MXC_SETFIELD(reg, mask, setting) (reg = (reg & ~mask) | (setting & mask))
+#define MXC_SETFIELD(reg, mask, setting) ((reg) = ((reg) & ~(mask)) | ((setting) & (mask)))
 
 /* ************************************************************************** */
 /*                                                                  SCB CPACR */
@@ -719,4 +718,4 @@ typedef enum {
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
-#endif /* _MAX32650_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_

@@ -116,7 +116,7 @@ __weak void SystemInit(void)
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
     /* IAR & Keil must set vector table after all memory initialization. */
-    SCB->VTOR = (unsigned long)__isr_vector;
+    SCB->VTOR = (uint32_t)__isr_vector;
 
     MXC_WDT0->ctrl &=
         ~MXC_F_WDT_CTRL_WDT_EN; /* Turn off watchdog. Application can re-enable as needed. */

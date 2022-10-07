@@ -56,13 +56,13 @@ typedef struct {
     unsigned char nonce[11];
     unsigned char resv0;
     unsigned char auth[16];
-    unsigned short numPages;
-    unsigned short pageSize;
+    uint16_t numPages;
+    uint16_t pageSize;
     unsigned char crcSize;
     unsigned char resv1[3];
 } MsblHeader_t;
 
-/******************************* 	Variables 	  ****************************/
+/*******************************    Variables   ****************************/
 static bl_conf_struct_t g_plt_funcs;
 
 /******************************* Static Functions ****************************/
@@ -535,15 +535,15 @@ int bl_update_cfg_set_i2c_addr(const char *target_bl_version, unsigned char addr
     int ret = -1; // on default error
 
     if (strcmp(target_bl_version, "v3.4.1") <= 0) {
-        if (addr == 0x58)
+        if (addr == 0x58) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 0);
-        else if (addr == 0x5A)
+        } else if (addr == 0x5A) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 1);
-        else if (addr == 0x5C)
+        } else if (addr == 0x5C) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 2);
-        else if (addr == 0xAA)
+        } else if (addr == 0xAA) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 3);
-        else {
+        } else {
             g_plt_funcs.printf("%s version bootloader does not support 0x%X I2C addr",
                                target_bl_version, addr);
         }
@@ -582,7 +582,7 @@ int bl_update_cfg_set_bl_exit_mode(BLExitMode_t mode)
     return ret;
 }
 
-int b_update_cfg_set_bl_exit_timeout(unsigned short timeout)
+int b_update_cfg_set_bl_exit_timeout(uint16_t timeout)
 {
     int ret = 0;
     unsigned char req[4];
@@ -598,7 +598,6 @@ int b_update_cfg_set_bl_exit_timeout(unsigned short timeout)
     // Log2(timeout) then round
     for (i = 15; i > 0; i--) {
         if (timeout & (1 << i)) { // Does MSB bit set?
-
             // Check Round
             if ((timeout & ~(1 << i)) >= (1 << i) / 2) {
                 req[3] = i + 1; // add plus one

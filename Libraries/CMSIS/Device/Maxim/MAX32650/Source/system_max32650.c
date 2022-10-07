@@ -42,6 +42,7 @@
 #include "mxc_sys.h"
 #include "usbhs_regs.h"
 #include "flc_regs.h"
+#include "icc_regs.h"
 
 extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = 0;
@@ -112,7 +113,7 @@ __weak void SystemInit(void)
     ChipRevision = MXC_SYS_GetRev();
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-    SCB->VTOR = (unsigned long)__isr_vector;
+    SCB->VTOR = (uint32_t)__isr_vector;
 
     /* MAX3265x ROM turns off interrupts, which is not the same as the reset state. */
     __enable_irq();

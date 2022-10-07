@@ -140,7 +140,7 @@ __weak void SystemInit(void)
     /* Configure the interrupt controller to use the application vector 
      * table in flash. Initially, VTOR points to the ROM's table.
      */
-    SCB->VTOR = (unsigned long)&__isr_vector;
+    SCB->VTOR = (uint32_t)&__isr_vector;
 
     /* We'd like to switch to the fast clock, but can only do so if the 
      * core's operating voltage (VregO_B) is high enough to support it

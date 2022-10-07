@@ -232,7 +232,7 @@ static int ext_flash_board_write(const uint8_t *write, unsigned len, unsigned de
 }
 
 /******************************************************************************/
-static int ext_flash_clock(unsigned len, unsigned deassert)
+static int ext_flash_clock(unsigned int len, unsigned int deassert)
 {
     mxc_spi_req_t qspi_dummy_req;
     mxc_spi_width_t width;

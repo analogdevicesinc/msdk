@@ -47,7 +47,6 @@
 #include "smp_api.h"
 #include "app_api.h"
 #include "hci_core.h"
-#include "sec_api.h"
 #include "app_terminal.h"
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
