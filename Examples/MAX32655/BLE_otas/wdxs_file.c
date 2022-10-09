@@ -224,12 +224,15 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
         lastWriteLen = size;
-        return WSF_EFS_SUCCESS;
+    } else {
+        APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
+        /* force a crc error so device does not reboot into bootloader */
+        crcResult = 0;
+        err = WSF_EFS_FAILURE;
     }
-    APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
 
     free(tempBuff);
-    return WSF_EFS_FAILURE;
+    return err;
 }
 
 /*************************************************************************************************/

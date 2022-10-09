@@ -190,23 +190,20 @@ uint32_t findUpperLen(void)
     return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
-static int multiPageErase(uint8_t *address, uint32_t size)
+static int multiPageErase(uint8_t *address, uint32_t pages)
 {
     int err;
     volatile uint32_t address32 = (uint32_t)address;
     address32 &= 0xFFFFF;
 
-    /* Page align the size */
-    size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
-
-    while (size) {
+    while (pages) {
         err = MXC_FLC_PageErase((uint32_t)address);
         if (err != E_NO_ERROR) {
             return err;
         }
 
         address += MXC_FLASH_PAGE_SIZE;
-        size -= MXC_FLASH_PAGE_SIZE;
+        pages --;
     }
 
     return E_NO_ERROR;
@@ -333,6 +330,17 @@ int main(void)
                 err = externFileOperation(COPY_FILE_OP);
                 if (err) {
                     bootError();
+                }
+                /* check what was written to flash */
+                crcResult = 0;
+                crc32(FLASH0_START, fileHeader.fileLen, &crcResult);
+                if(crcResult != fileHeader.fileCRC)
+                {
+                    /* Bad firmware was written to internal flash */
+                    while(1)
+                    {
+                        ledFailPattern();
+                    }
                 }
                 /* As long as first sector is erased so the bootloader does not try to reload its contents */
                 Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);
