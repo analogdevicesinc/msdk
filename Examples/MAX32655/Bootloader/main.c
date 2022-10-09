@@ -203,7 +203,7 @@ static int multiPageErase(uint8_t *address, uint32_t pages)
         }
 
         address += MXC_FLASH_PAGE_SIZE;
-        pages --;
+        pages--;
     }
 
     return E_NO_ERROR;
@@ -334,13 +334,9 @@ int main(void)
                 /* check what was written to flash */
                 crcResult = 0;
                 crc32(FLASH0_START, fileHeader.fileLen, &crcResult);
-                if(crcResult != fileHeader.fileCRC)
-                {
+                if (crcResult != fileHeader.fileCRC) {
                     /* Bad firmware was written to internal flash */
-                    while(1)
-                    {
-                        ledFailPattern();
-                    }
+                    while (1) { ledFailPattern(); }
                 }
                 /* As long as first sector is erased so the bootloader does not try to reload its contents */
                 Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);
