@@ -17171,7 +17171,6 @@
      <name>RTC</name>
      <description>System Init. Configuration Register 2.</description>
      <addressOffset>0x08</addressOffset>
-     <access>read-only</access>
      <fields>
       <field>
        <name>RTCX1</name>

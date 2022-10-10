@@ -87,7 +87,7 @@ extern "C" {
  */
 typedef struct {
     __R  uint32_t rsv_0x0_0x7[2];
-    __I  uint32_t rtc;                  /**< <tt>\b 0x08:</tt> TRIMSIR RTC Register */
+    __IO uint32_t rtc;                  /**< <tt>\b 0x08:</tt> TRIMSIR RTC Register */
     __R  uint32_t rsv_0xc_0x33[10];
     __IO uint32_t sir13;                /**< <tt>\b 0x34:</tt> TRIMSIR SIR13 Register */
     __R  uint32_t rsv_0x38_0x43[3];
