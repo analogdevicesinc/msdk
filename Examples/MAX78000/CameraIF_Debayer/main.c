@@ -62,7 +62,6 @@
 #include "utils.h"
 #include "dma.h"
 
-
 #ifdef ENABLE_TFT
 
 #ifdef BOARD_EVKIT_V1
@@ -75,152 +74,41 @@
 
 #endif
 
-
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
-#define IMAGE_XRES  160
-#define IMAGE_YRES  120
+#define IMAGE_XRES 160
+#define IMAGE_YRES 120
 
+//UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define CON_BAUD 115200 * 8 
 
-#define CON_BAUD    115200*8   //UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define X_START     0
-#define Y_START     0
+#define X_START 0
+#define Y_START 0
 
-//#define GRADPAT
-
-static uint8_t* bayer_data;
-
-// // Receives Raw image, performs bilinear bayer interpolation
-// void bayer_bilinear_demosaicing(uint8_t* srcimg, uint32_t w,  uint32_t h, uint16_t* dstimg ) {
-
-// 	uint8_t *srcLinePrev;
-// 	uint8_t *srcLineCurr;
-// 	uint8_t *srcLineNext;
-
-// 	unsigned short r,g,b;
-// 	unsigned short rgb565;
-
-// 	uint16_t* dstimgO;
-// 	dstimgO=dstimg;
-
-// 	srcLinePrev = srcimg - ( w );
-// 	srcLineCurr = srcimg;
-// 	srcLineNext = srcimg + ( w );
-
-// 	int pixelcount = 0;
-// 	int linecount = 0;
-
-// 	unsigned short lsb, msb;
-
-// 	int y;
-// 	for (y=0; y < IMAGE_YRES; y++) {
-
-// 		if ( (y & 0x01 )  ) {
-// 				// Odd numbered line
-// 		    	//	G R G R G R Line
-// 				pixelcount = 0;
-// 				for (int x = 0; x < IMAGE_XRES >> 1; x++) {
-// 	    				r = ( *(srcLineCurr - 1 ) + *(srcLineCurr + 1) ) >> 1;
-// 	    				g =   *(srcLineCurr);									// we have green
-// 	    				b = ( *(srcLineNext     ) + *(srcLinePrev    ) ) >> 1;
-// 						srcLinePrev++;
-// 						srcLineCurr++;
-// 						srcLineNext++;
-// #ifdef GRADPAT
-// 						r = (y>>1)+(x>>1);
-// 						g = (y>>1)+(x>>1);
-// 						b = (y>>1)+(x>>1);
-// #endif
-// 						*dstimg = ((b&0xf8)<<5) | ( (g&0x1c) << 11) | (r&0xf8) | ( (g&0xe0) >> 5);
-// 			    		dstimg++;
-
-// 						r = ( *(srcLineCurr  )); //// we have red
-// 		    			g = ( *(srcLineCurr-1) + *(srcLineCurr+1) + *(srcLineNext  ) + *(srcLinePrev  ) ) >> 2;
-// 		    			b = ( *(srcLineNext-1) + *(srcLineNext+1) + *(srcLinePrev-1) + *(srcLinePrev+1) ) >> 2;
-// 						srcLinePrev++;
-// 						srcLineCurr++;
-// 						srcLineNext++;
-// #ifdef GRADPAT
-// 						r = (y>>1)+(x>>1);
-// 						g = (y>>1)+(x>>1);
-// 						b = (y>>1)+(x>>1);
-// #endif
-// 						*dstimg = ((b&0xf8)<<5) | ( (g&0x1c) << 11) | (r&0xf8) | ( (g&0xe0) >> 5);
-// 			    		dstimg++;
-// 			    		pixelcount++;
-// 				}
-
-// 			}
-// 			else {
-// 				// Even numbered line
-// 			    // B G B G B G Line
-// 				pixelcount = 0;
-// 				for (int x = 0; x < 80; x++) {
-// 						r = ( *(srcLinePrev-1) + *(srcLinePrev+1) + *(srcLineNext-1) + *(srcLineNext+1)) >> 2;
-// 						g = ( *(srcLineCurr-1) + *(srcLineCurr+1) + *(srcLineNext  ) + *(srcLinePrev  )) >> 2;
-// 						b =   *(srcLineCurr  );		// we have blue
-
-// 						srcLinePrev++;
-// 						srcLineCurr++;
-// 						srcLineNext++;
-// #ifdef GRADPAT
-// 						r = (y>>1)+(x>>1);
-// 						g = (y>>1)+(x>>1);
-// 						b = (y>>1)+(x>>1);
-// #endif
-// 						*dstimg = ((b&0xf8)<<5) | ( (g&0x1c) << 11) | (r&0xf8) | ( (g&0xe0) >> 5);
-// 			    		dstimg++;
-// 			    		pixelcount++;
-
-// 						r = ( *(srcLineNext  ) + *(srcLinePrev  ) ) >> 1;
-// 						g =   *(srcLineCurr  );			// we have green
-// 						b = ( *(srcLineCurr-1) + *(srcLineCurr+1) ) >> 1;
-// 						srcLinePrev++;
-// 						srcLineCurr++;
-// 						srcLineNext++;
-// #ifdef GRADPAT
-// 						r = (y>>1)+(x>>1);
-// 						g = (y>>1)+(x>>1);
-// 						b = (y>>1)+(x>>1);
-// #endif
-// 						*dstimg = ((b&0xf8)<<5) | ( (g&0x1c) << 11) | (r&0xf8) | ( (g&0xe0) >> 5);
-// 			    		dstimg++;
-// 			    		pixelcount++;
-// 				}
-
-// 		}
-// 		 linecount++;
-// 	}
-
-// }
-
-
+static uint8_t *bayer_data;
 
 void process_img(void)
 {
-    uint8_t*   raw;
-    uint32_t  imgLen;
-    uint32_t  w, h;
+    uint8_t *raw;
+    uint32_t imgLen;
+    uint32_t w, h;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
-    if ( bayer_data ) {
-    	// bayer_bilinear_demosaicing(raw, w, h, bayer_data );
-    	bayer_malvarcutler_demosaicing(raw, w, h, (uint16_t *)bayer_data);
+    if (bayer_data) {
+        bayer_malvarcutler_demosaicing(raw, w, h, (uint16_t *)bayer_data);
         MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, bayer_data, h, w);
     }
 
-	// initialize the communication by providing image format and size
-	utils_stream_img_to_pc_init(bayer_data, imgLen*2, w, h, (uint8_t *)"RGB565");
+    // initialize the communication by providing image format and size
+    utils_stream_img_to_pc_init(bayer_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
 
     // Get image line by line
     for (int i = 0; i < h; i++) {
-
-		// Send one line to PC
-		utils_stream_image_row_to_pc(bayer_data + (i*w*2), w*2);
-
-	}
+        // Send one line to PC
+        utils_stream_image_row_to_pc(bayer_data + (i * w * 2), w * 2);
+    }
 }
 
 void UART_Handler(void)
@@ -232,7 +120,7 @@ void UART_Handler(void)
 // *****************************************************************************
 int main(void)
 {
-	int ret = 0;
+    int ret = 0;
     int slaveAddress;
     int id;
     int dma_channel;
@@ -248,7 +136,7 @@ int main(void)
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
 
-    mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 
     if ((ret = MXC_UART_Init(ConsoleUart, CON_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return ret;
@@ -278,7 +166,9 @@ int main(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || defined(CAMERA_OV5642)
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
+    defined(CAMERA_OV5642)
+    // hmirror and vflip must be disabled for demosaicing functions to work properly
     camera_set_hmirror(0);
     camera_set_vflip(0);
 #endif
@@ -289,17 +179,11 @@ int main(void)
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_Init();
 #endif
-#ifdef BOARD_FTHR_REVA
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-#endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
-    // Setup the camera image dimensions, pixel format and data acquiring details.
-//#ifndef STREAM_ENABLE
 
-
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel); // RGB565
-
+    ret =
+        camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
 
 #ifdef ENABLE_TFT
     // Set the screen rotation
@@ -309,23 +193,18 @@ int main(void)
     MXC_TFT_WriteReg(0x0011, 0x6858);
 #endif
 
-
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
     }
 
-    MXC_Delay(SEC(1));
+    bayer_data = (uint8_t *)malloc(2 * IMAGE_XRES * IMAGE_YRES);
 
-#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-    camera_write_reg(0x11, 0x6); // set camera clock prescaller to prevent streaming overflow for QVGA
-#endif
+    MXC_Delay(SEC(1));
 
     // Start capturing a first camera image frame.
     printf("Starting\n");
     camera_start_capture_image();
-
-    bayer_data = (uint8_t*)malloc(2 * 160 * 120);
 
     while (1) {
         // Check if image is acquired.
