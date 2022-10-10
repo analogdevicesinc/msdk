@@ -81,6 +81,8 @@
 
 #include "wut_regs.h"
 
+#define portTICK_PERIOD_US ( ( TickType_t ) 1000000 / configTICK_RATE_HZ )
+
 extern int disable_tickless;
 
 /*
@@ -206,10 +208,10 @@ static BaseType_t prvUptimeCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
 #if configUSE_TICKLESS_IDLE
     pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen,
                               "Uptime is 0x%08x (%u ms)\r\nMXC_WUT->cnt is %u\r\n", ticks,
-                              ticks / portTICK_PERIOD_MS, MXC_WUT->cnt);
+                              ((ticks * portTICK_PERIOD_US)/1000), MXC_WUT->cnt);
 #else
     pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen, "Uptime is 0x%08x (%u ms)\r\n", ticks,
-                              ticks / portTICK_PERIOD_MS);
+                              ((ticks * portTICK_PERIOD_US)/1000));
 #endif
 
     /* No more data to return */

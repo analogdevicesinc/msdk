@@ -65,6 +65,10 @@ TaskHandle_t cmd_task_id;
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
 
+/* Shadow register definitions */
+#define MXC_R_SIR_SHR13 *((uint32_t *)(0x40005434))
+#define MXC_R_SIR_SHR17 *((uint32_t *)(0x40005444))
+
 /* Stringification macros */
 #define STRING(x) STRING_(x)
 #define STRING_(x) #x
@@ -97,6 +101,31 @@ mxc_gpio_cfg_t uart_cts_isr;
 
 /* Defined in freertos_tickless.c */
 extern void wutHitSnooze(void);
+
+/* =| vAssertCalled |==============================
+ *
+ *  Called when an assertion is detected. Use debugger to backtrace and 
+ *  continue.
+ *
+ * =======================================================
+ */
+void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
+{
+    volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
+
+    /* Parameters are not used. */
+    (void)ulLine;
+    (void)pcFileName;
+
+    __asm volatile("cpsid i");
+    {
+        /* You can step out of this function to debug the assertion by using
+        the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
+        value. */
+        while (ulSetToNonZeroInDebuggerToContinue == 0) {}
+    }
+    __asm volatile("cpsie i");
+}
 
 /* =| vTask0 |============================================
  *
@@ -266,7 +295,6 @@ void vCmdLineTask(void *pvParameters)
     /* Enable UARTx interrupt */
     NVIC_ClearPendingIRQ(UARTx_IRQn);
     NVIC_DisableIRQ(UARTx_IRQn);
-    NVIC_SetPriority(UARTx_IRQn, 1);
     NVIC_EnableIRQ(UARTx_IRQn);
 
     /* Async read will be used to wake process */
@@ -340,23 +368,43 @@ void vCmdLineTask(void *pvParameters)
     }
 }
 
-#if configUSE_TICKLESS_IDLE
-/* =| freertos_permit_tickless |==========================
+/* =| vApplicationIdleHook |==============================
  *
- * Determine if any hardware activity should prevent
- *  low-power tickless operation.
+ *  Call the user defined function from within the idle task.  This
+ *  allows the application designer to add background functionality
+ *  without the overhead of a separate task.
+ *  NOTE: vApplicationIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES,
+ *  CALL A FUNCTION THAT MIGHT BLOCK.
  *
  * =======================================================
  */
-int freertos_permit_tickless(void)
+void vApplicationIdleHook(void)
 {
-    if (disable_tickless == 1) {
-        return E_BUSY;
+    LED_Off(SLEEP_LED);
+
+    MXC_LP_EnterSleepMode();
+
+    LED_On(SLEEP_LED);
+}
+
+/* =| turnOffUnused |==========================
+ *
+ * Disable unused hardware to conserve power.
+ *
+ * =======================================================
+ */
+void turnOffUnused(void)
+{
+    /* Prevent SIMO leakage in DS by reducing the SIMO buck clock */
+    if (MXC_GCR->revision == 0xA2) {
+        MXC_R_SIR_SHR13 = 0x0;
+        MXC_R_SIR_SHR17 &= ~(0xC0);
+    } else if (MXC_GCR->revision == 0xA4) {
+        MXC_R_SIR_SHR17 &= ~(0xC0);
     }
 
-    return MXC_UART_GetActive(ConsoleUART);
+    MXC_LP_USBSWLPDisable();
 }
-#endif
 
 /* =| WUT_IRQHandler |==========================
  *
@@ -392,6 +440,8 @@ int main(void)
 
 #if configUSE_TICKLESS_IDLE
 
+    turnOffUnused();
+
     /* Initialize Wakeup timer */
     MXC_WUT_Init(MXC_WUT_PRES_1);
     mxc_wut_cfg_t wut_cfg;
@@ -416,10 +466,21 @@ int main(void)
     NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(uart_cts.port)));
     MXC_LP_EnableGPIOWakeup(&uart_cts);
 
-    /* Initialize CPU Active LED */
-    LED_On(1);
-
 #endif
+
+    /* Setup interrupt priorities */
+    NVIC_SetPriority(TMR0_IRQn, (configMAX_PRIORITIES - 1));
+    NVIC_SetPriority(TMR1_IRQn, (configMAX_PRIORITIES - 1));
+
+    NVIC_SetPriority(WUT_IRQn, configMAX_PRIORITIES - 1);
+
+    NVIC_SetPriority(UART0_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(UART1_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(UART2_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(UART3_IRQn, (configMAX_PRIORITIES - 0));
+
+    NVIC_SetPriority(GPIO0_IRQn, (configMAX_PRIORITIES - 0));
+    NVIC_SetPriority(GPIO1_IRQn, (configMAX_PRIORITIES - 0));
 
     /* Print banner (RTOS scheduler not running) */
     printf("\n-=- %s FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);

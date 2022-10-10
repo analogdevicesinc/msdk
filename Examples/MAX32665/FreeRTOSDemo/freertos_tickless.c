@@ -31,17 +31,15 @@
  *
  ******************************************************************************/
 
-/* MXC */
-#include "mxc_device.h"
-#include "board.h"
-#include "mxc_assert.h"
-
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "task.h"
 
 /* Maxim CMSIS */
+#include "mxc_device.h"
+#include "board.h"
+#include "mxc_assert.h"
 #include "lp.h"
 #include "pwrseq_regs.h"
 #include "wut.h"
@@ -50,6 +48,7 @@
 #include "icc.h"
 #include "pb.h"
 #include "led.h"
+#include "uart.h"
 
 #define WUT_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
 #define MAX_WUT_SNOOZE (5 * configRTC_TICK_RATE_HZ)
@@ -62,6 +61,12 @@ static int wutSnoozeValid = 0;
 extern mxc_gpio_cfg_t uart_cts;
 extern mxc_gpio_cfg_t uart_rts;
 
+/* Enables/disables tick-less mode */
+extern unsigned int disable_tickless;
+
+extern void vApplicationIdleHook(void);
+
+
 /*
  * Sleep-check function
  *
@@ -71,8 +76,105 @@ extern mxc_gpio_cfg_t uart_rts;
  */
 __attribute__((weak)) int freertos_permit_tickless(void)
 {
+    if (disable_tickless == 1) {
+        return E_BUSY;
+    }
+
+    /* Prevent characters from being corrupted if still transmitting,
+      UART will shutdown in deep sleep  */
+    if (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {
+        return E_BUSY;
+    }
+
     return E_NO_ERROR;
 }
+
+/*
+ *  Switch the system clock to the HIRC / 4
+ *
+ *  Enable the HIRC, set the divide ration to /4, and disable the HIRC96 oscillator.
+ */
+void switchToHIRCD4(void)
+{
+    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV4);
+    MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
+    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC);
+    /* Disable unused clocks */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
+    /* Wait for the switch to occur */
+    MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC96M_EN);
+    SystemCoreClockUpdate();
+}
+
+/*
+ *  Switch the system clock to the HIRC96
+ *
+ *  Enable the HIRC96, set the divide ration to /1, and disable the HIRC oscillator.
+ */
+void switchToHIRC(void)
+{
+    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV1);
+    MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC96M_EN;
+    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC96);
+    /* Disable unused clocks */
+    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
+    /* Wait for the switch to occur */
+    MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC_EN);
+    SystemCoreClockUpdate();
+}
+
+/*
+ *  Enter deep sleep mode
+ *
+ *  Adjust system clocks and voltages for deep sleep.
+ */
+static void deepSleep(void)
+{
+    MXC_ICC_Disable();
+    MXC_LP_ICache0Shutdown();
+
+    /* Shutdown unused power domains */
+    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
+
+    MXC_LP_FastWakeupEnable();
+
+    /* Enable VDDCSWEN=1 prior to enter backup/deepsleep mode */
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
+
+    /* Switch the system clock to a lower frequency to conserve power in deep sleep
+       and reduce current inrush on wakeup */
+    switchToHIRCD4();
+
+    /* Reduce VCOREB to 0.81v */
+    MXC_SIMO_SetVregO_B(810);
+
+    MXC_LP_EnterDeepSleepMode();
+
+    /*  If VCOREA not ready and VCOREB ready, switch VCORE=VCOREB 
+    (set VDDCSW=2’b01). Configure VCOREB=1.1V wait for VCOREB ready. */
+
+    /* Check to see if VCOREA is ready on  */
+    if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
+        /* Wait for VCOREB to be ready */
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+
+        /* Move VCORE switch back to VCOREB */
+        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
+                        (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
+
+        /* Raise the VCORE_B voltage */
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        MXC_SIMO_SetVregO_B(1000);
+        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+    }
+
+    MXC_LP_ICache0PowerUp();
+    MXC_ICC_Enable();
+
+    /* Restore the system clock */
+    switchToHIRC();
+}
+
 
 /*
  *  Snooze the wake up timer
@@ -104,6 +206,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
     if (SysTick->VAL < MIN_SYSTICK) {
         /* Avoid sleeping too close to a systick interrupt */
+        vApplicationIdleHook();
         return;
     }
 
@@ -116,15 +219,13 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 
     /* Check to see if we meet the minimum requirements for deep sleep */
     if (wut_ticks < MIN_WUT_TICKS) {
-        /* Finish out the rest of this tick with normal sleep */
-        MXC_LP_EnterSleepMode();
+        vApplicationIdleHook();
         return;
     }
 
     /* Check the WUT snooze */
     if (wutSnoozeValid && (MXC_WUT_GetCount() < wutSnooze)) {
-        /* Finish out the rest of this tick with normal sleep */
-        MXC_LP_EnterSleepMode();
+        vApplicationIdleHook();
         return;
     }
     wutSnoozeValid = 0;
@@ -153,10 +254,12 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     MXC_WUT_SetCompare(pre_capture + wut_ticks);
     MXC_WUT_Edge();
 
-    LED_Off(1);
+    LED_Off(SLEEP_LED);
 
-    MXC_LP_EnterDeepSleepMode();
+    deepSleep();
 
+    LED_On(SLEEP_LED);
+        
     post_capture = MXC_WUT_GetCount();
     actual_ticks = post_capture - pre_capture;
 
