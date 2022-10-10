@@ -10,14 +10,6 @@
 # Override default optimization level
 MXC_OPTIMIZE_CFLAGS=-O1
 
-ifeq ("$(wildcard $(LIBS_DIR)/NFC)","")
-$(error This demo example requires NFC package. Please install the NFC package to Libraries/NFC.)
-endif
-
-ifeq ("$(wildcard $(LIBS_DIR)/EMV)","")
-$(error This demo example requires EMV package. Please install the EMV package to Libraries/EMV.)
-endif
-
 # Enable NFC, EMV, and FreeRTOS libraries
 LIB_NFC = 1
 LIB_EMV = 1
@@ -25,10 +17,6 @@ LIB_FREERTOS = 1
 
 # Enable SBT
 SBT = 1
-
-# Set default goal to sla.  This means that running just 'make'
-# is equivalent to 'make sla'
-override .DEFAULT_GOAL=sla
 
 # Add some compiler flags specific to the NFC and EMV libs
 PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
