@@ -24,9 +24,24 @@ on:
 # Set the Job #
 ###############
 jobs:
+
+  pre_job:
+    # Set the agent to run on
+    runs-on: [ self-hosted, lint ]
+    # Map a step output to a job output
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    # Determine if we can skip the build job
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+
   build:
     # Name the Job
     name: Lint Code Base
+    # Determine if we can skip this job
+    needs: pre_job
+    if: needs.pre_job.outputs.should_skip != 'true'
     # Set the agent to run on
     runs-on: [ self-hosted, lint ]
 
