@@ -26,7 +26,7 @@ The MSDK code-base, for the most-part, follows the [Linux Kernel coding style](h
 
 * Indentations are 4 spaces.
 
-Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) and [cpplint](https://github.com/cpplint/cpplint), which automatically run checks against all PRs.  Before submitting your code to the MSDK and as the final step of development you should format and lint it with these tools.
+Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) and [cpplint](https://github.com/cpplint/cpplint), which automatically run checks against all PRs.  A PR cannot be merged until it passes these checks.
 
 ### Running the Linter & Formatter
 
@@ -34,20 +34,22 @@ Both utilities can be run locally.  cpplint should be run first, then clang-form
 
 clang-format rules are loaded from [.clang-format](.clang-format) and cpplint rules are loaded from [CPPLINT.cfg](CPPLINT.cfg).
 
+#### cpplint
+
+[cpplint](https://github.com/cpplint/cpplint) enforces good code practices by scanning for common mistakes and ensuring certain higher-level code patterns are followed.  It's a good idea to resolve the errors found by cpplint before before running clang-format, which deals with lower-level code styling and syntax patterns.
+
 1. `cd` into the root directory of the MSDK repo.
 
-2. Run cpplint and resolve any errors.
+2. Run cpplint.
 
-    cpplint enforces good code practices by scanning for common mistakes and ensuring certain higher-level code patterns are followed.  It's a good idea to resolve the errors found by cpplint before before running clang-format, which deals with lower-level code styling and syntax patterns.
-
-    To run cpplint on a file, use `cpplint <filepath>`.
+    To run cpplint on a **file**, use `cpplint <filepath>`.
 
     ```shell
     $ cpplint Examples/MAX78000/Hello_World/main.c
     Done processing Examples/MAX78000/Hello_World/main.c
     ```
 
-    To recursively run cpplint on an entire directory, use `cpplint --recursive <filepath>`.
+    To recursively run cpplint on an **entire directory**, use `cpplint --recursive <filepath>`.
 
     ```shell
     $ cpplint --recursive Examples/MAX78000
@@ -61,7 +63,17 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
     ...
     ```
 
-3. Run clang-format.
+3. Resolve any errors.
+
+4. `git add` and `git commit` any changes to your code.
+
+#### clang-format
+
+[clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) is a code formatter and style checker that enforces a common style for the code-base.
+
+1. `cd` into the root directory of the MSDK repo.
+
+2. Run clang-format.
 
     The `--style=file --Werror --verbose` options are shared across all runs.
 
@@ -80,8 +92,6 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
                                            ^
     ```
 
-    This will show where any formatting errors lie.
-
     To _apply_ the formatter to automatically format a file, use the `-i` flag.
 
     `clang-format --style=file --Werror --verbose -i <filename>`
@@ -93,7 +103,7 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
     Formatting [1/1] Examples/MAX78000/CRC/main.c
     ```
 
-    This will apply the formatter and overwrite the file.  It's a good idea to check the formatter's work using `git diff`.
+    This will apply the formatter and overwrite the file.  Check the formatter's work using `git diff`.
 
     ```diff
     diff --git a/Examples/MAX78000/CRC/main.c b/Examples/MAX78000/CRC/main.c
@@ -135,19 +145,55 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
 ## Examples
 
-### Examples Development Guidelines
+### Updating and Adding Examples
 
-TODO
+1. First, ensure that the example project has been linted and formatted to follow the [Style Guide](#style-guide)
 
-### Project Settings
+2. Copy the example project into the [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder of the SDK for the applicable target microcontrollers.
 
-Example projects are not just source code.  They must also be "wrapped" in up-to-date support files for the development environments supported by the MSDK.  This includes the core Makefiles, Eclipse files, Visual Studio Code files, etc.
+3. `git add` and `git commit` the Example project.  Use a commit message such as "Add xxx Example"
 
-These support files should be managed with the [MSDKGen](https://github.com/Analog-Devices-MSDK/MSDKGen) utility.
+4. Run the [MSDKGen](https://github.com/Analog-Devices-MSDK/MSDKGen) utility to ensure the example project's support files are updated to the latest version.
 
-## Board Support Packages
+    If you are coming from the **_legacy_ Makefile system** (no project.mk) it's best to migrate the old Makefile in its own commit...
 
-TODO port instructions from https://confluence.maxim-ic.com/display/MSAW/Procedure%3A++Adding+Support+for+Additional+Boards+to+the+SDK (minus installer package creation)
+    1. Generate the new Makefile first using the `--no-vscode`, `--no-eclipse`, and `--backup` options. Ex:
+
+        ```shell
+        python msdkgen.py update-all --projects yourprojectname --no-vscode --no-eclipse --overwrite --backup
+        ```
+
+    2. A project.mk file will be added, and the old Makefile will be replaced but _backed up_ to a file called `Makefile-backup.mk`.
+
+    3. Migrate any project-specific build settings to project.mk.  Documentation on the project.mk system can be found [here](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop).
+
+    4. `git add` and `git commit` the new Makefile and project.mk files.  Delete the backup file.
+
+    5. Run a full `update-all`, which will then update the VSCode and Eclipse files as well.
+
+    Otherwise, if the project is already running a [project.mk](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration) file then a full `update-all` command can be used.
+
+    Ex:
+
+    ```shell
+    python msdkgen.py update-all --projects yourprojectname --overwrite
+    ```
+
+5. If the updated files break any projects they can be restored to the previously working version using the `git restore` command.
+
+    For example, the command below will restore all files in your current working directory.
+
+    ```shell
+    git restore **
+    ```
+
+    The `git diff` command can also be used to inspect local changes to help identify the root cause. Ex:
+
+    ```shell
+    git diff ./
+    ```
+
+    If MSDKGen breaks a previously working project _that has already been migrated to the project.mk build system_ please report it to the [MSDKGen Issue Tracker](https://github.com/Analog-Devices-MSDK/MSDKGen/issues)
 
 ## Libraries
 
@@ -189,9 +235,6 @@ An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple s
 
 ### Advanced Libraries
 
-More advanced libraries including those with a large number of source files should include a rule to build as a static library file with a [recursive Make call](https://www.gnu.org/software/make/manual/make.html#Recursion).  
+More advanced libraries (including those with a large number of source files) should include a rule to build as a static library file with a [recursive Make call](https://www.gnu.org/software/make/manual/make.html#Recursion).  
 
 This type of library should also set up the appropriate [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration) to include that static library to the build.
-
-TODO: clean advanced library example
-
