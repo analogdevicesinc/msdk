@@ -1,44 +1,44 @@
 /**
  * @file    pwrseq_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
-#ifndef _PWRSEQ_REGS_H_
-#define _PWRSEQ_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_PWRSEQ_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_PWRSEQ_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     pwrseq
  * @defgroup    pwrseq_registers PWRSEQ_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.
- * @details Power Sequencer / Low Power Control Register.
+ * @details     Power Sequencer / Low Power Control Register.
  */
 
 /**
@@ -104,18 +104,18 @@ typedef struct {
 /**
  * @ingroup    pwrseq_registers
  * @defgroup   PWRSEQ_Register_Offsets Register Offsets
- * @brief      PWRSEQ Peripheral Register Offsets from the PWRSEQ Base Peripheral Address. 
+ * @brief      PWRSEQ Peripheral Register Offsets from the PWRSEQ Base Peripheral Address.
  * @{
  */
- #define MXC_R_PWRSEQ_LPCN                  ((uint32_t)0x00000000UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_PWRSEQ_LPWKST0               ((uint32_t)0x00000004UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_PWRSEQ_LPWKEN0               ((uint32_t)0x00000008UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_PWRSEQ_LPWKST1               ((uint32_t)0x0000000CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_PWRSEQ_LPWKEN1               ((uint32_t)0x00000010UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_PWRSEQ_LPPWKST               ((uint32_t)0x00000030UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0030</tt> */ 
- #define MXC_R_PWRSEQ_LPMEMSD               ((uint32_t)0x00000040UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0040</tt> */ 
- #define MXC_R_PWRSEQ_GP0                   ((uint32_t)0x00000048UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0048</tt> */ 
- #define MXC_R_PWRSEQ_GP1                   ((uint32_t)0x0000004CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x004C</tt> */ 
+#define MXC_R_PWRSEQ_LPCN                  ((uint32_t)0x00000000UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0000</tt> */
+#define MXC_R_PWRSEQ_LPWKST0               ((uint32_t)0x00000004UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0004</tt> */
+#define MXC_R_PWRSEQ_LPWKEN0               ((uint32_t)0x00000008UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0008</tt> */
+#define MXC_R_PWRSEQ_LPWKST1               ((uint32_t)0x0000000CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x000C</tt> */
+#define MXC_R_PWRSEQ_LPWKEN1               ((uint32_t)0x00000010UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0010</tt> */
+#define MXC_R_PWRSEQ_LPPWKST               ((uint32_t)0x00000030UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0030</tt> */
+#define MXC_R_PWRSEQ_LPMEMSD               ((uint32_t)0x00000040UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0040</tt> */
+#define MXC_R_PWRSEQ_GP0                   ((uint32_t)0x00000048UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0048</tt> */
+#define MXC_R_PWRSEQ_GP1                   ((uint32_t)0x0000004CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x004C</tt> */
 /**@} end of group pwrseq_registers */
 
 /**
@@ -124,17 +124,17 @@ typedef struct {
  * @brief    Low Power Control Register.
  * @{
  */
- #define MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS                0 /**< LPCN_RAMRET_EN Position */
- #define MXC_F_PWRSEQ_LPCN_RAMRET_EN                    ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS)) /**< LPCN_RAMRET_EN Mask */
+#define MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS                0 /**< LPCN_RAMRET_EN Position */
+#define MXC_F_PWRSEQ_LPCN_RAMRET_EN                    ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS)) /**< LPCN_RAMRET_EN Mask */
 
- #define MXC_F_PWRSEQ_LPCN_LDO_DIS_POS                  16 /**< LPCN_LDO_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_LDO_DIS                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_LDO_DIS_POS)) /**< LPCN_LDO_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_LDO_DIS_POS                  16 /**< LPCN_LDO_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_LDO_DIS                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_LDO_DIS_POS)) /**< LPCN_LDO_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS             20 /**< LPCN_VCOREMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS)) /**< LPCN_VCOREMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS             20 /**< LPCN_VCOREMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS)) /**< LPCN_VCOREMON_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS              22 /**< LPCN_VDDAMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS                  ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS)) /**< LPCN_VDDAMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS              22 /**< LPCN_VDDAMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS                  ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS)) /**< LPCN_VDDAMON_DIS Mask */
 
 /**@} end of group PWRSEQ_LPCN_Register */
 
@@ -145,8 +145,8 @@ typedef struct {
  *           wakeup status for GPIO0.
  * @{
  */
- #define MXC_F_PWRSEQ_LPWKST0_ST_POS                    0 /**< LPWKST0_ST Position */
- #define MXC_F_PWRSEQ_LPWKST0_ST                        ((uint32_t)(0xFFFFUL << MXC_F_PWRSEQ_LPWKST0_ST_POS)) /**< LPWKST0_ST Mask */
+#define MXC_F_PWRSEQ_LPWKST0_ST_POS                    0 /**< LPWKST0_ST Position */
+#define MXC_F_PWRSEQ_LPWKST0_ST                        ((uint32_t)(0xFFFFUL << MXC_F_PWRSEQ_LPWKST0_ST_POS)) /**< LPWKST0_ST Mask */
 
 /**@} end of group PWRSEQ_LPWKST0_Register */
 
@@ -157,8 +157,8 @@ typedef struct {
  *           functionality for GPIO0.
  * @{
  */
- #define MXC_F_PWRSEQ_LPWKEN0_EN_POS                    0 /**< LPWKEN0_EN Position */
- #define MXC_F_PWRSEQ_LPWKEN0_EN                        ((uint32_t)(0xFFFFUL << MXC_F_PWRSEQ_LPWKEN0_EN_POS)) /**< LPWKEN0_EN Mask */
+#define MXC_F_PWRSEQ_LPWKEN0_EN_POS                    0 /**< LPWKEN0_EN Position */
+#define MXC_F_PWRSEQ_LPWKEN0_EN                        ((uint32_t)(0xFFFFUL << MXC_F_PWRSEQ_LPWKEN0_EN_POS)) /**< LPWKEN0_EN Mask */
 
 /**@} end of group PWRSEQ_LPWKEN0_Register */
 
@@ -169,8 +169,8 @@ typedef struct {
  *           wakeup status for GPIO1.
  * @{
  */
- #define MXC_F_PWRSEQ_LPWKST1_ST_POS                    0 /**< LPWKST1_ST Position */
- #define MXC_F_PWRSEQ_LPWKST1_ST                        ((uint32_t)(0x7FFUL << MXC_F_PWRSEQ_LPWKST1_ST_POS)) /**< LPWKST1_ST Mask */
+#define MXC_F_PWRSEQ_LPWKST1_ST_POS                    0 /**< LPWKST1_ST Position */
+#define MXC_F_PWRSEQ_LPWKST1_ST                        ((uint32_t)(0x7FFUL << MXC_F_PWRSEQ_LPWKST1_ST_POS)) /**< LPWKST1_ST Mask */
 
 /**@} end of group PWRSEQ_LPWKST1_Register */
 
@@ -181,8 +181,8 @@ typedef struct {
  *           functionality for GPIO1.
  * @{
  */
- #define MXC_F_PWRSEQ_LPWKEN1_EN_POS                    0 /**< LPWKEN1_EN Position */
- #define MXC_F_PWRSEQ_LPWKEN1_EN                        ((uint32_t)(0x7FFUL << MXC_F_PWRSEQ_LPWKEN1_EN_POS)) /**< LPWKEN1_EN Mask */
+#define MXC_F_PWRSEQ_LPWKEN1_EN_POS                    0 /**< LPWKEN1_EN Position */
+#define MXC_F_PWRSEQ_LPWKEN1_EN                        ((uint32_t)(0x7FFUL << MXC_F_PWRSEQ_LPWKEN1_EN_POS)) /**< LPWKEN1_EN Mask */
 
 /**@} end of group PWRSEQ_LPWKEN1_Register */
 
@@ -192,14 +192,14 @@ typedef struct {
  * @brief    Low Power Peripheral Wakeup Status Register.
  * @{
  */
- #define MXC_F_PWRSEQ_LPPWKST_BBMOD_POS                 16 /**< LPPWKST_BBMOD Position */
- #define MXC_F_PWRSEQ_LPPWKST_BBMOD                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_BBMOD_POS)) /**< LPPWKST_BBMOD Mask */
+#define MXC_F_PWRSEQ_LPPWKST_BBMOD_POS                 16 /**< LPPWKST_BBMOD Position */
+#define MXC_F_PWRSEQ_LPPWKST_BBMOD                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_BBMOD_POS)) /**< LPPWKST_BBMOD Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_RST_POS                   17 /**< LPPWKST_RST Position */
- #define MXC_F_PWRSEQ_LPPWKST_RST                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_RST_POS)) /**< LPPWKST_RST Mask */
+#define MXC_F_PWRSEQ_LPPWKST_RST_POS                   17 /**< LPPWKST_RST Position */
+#define MXC_F_PWRSEQ_LPPWKST_RST                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_RST_POS)) /**< LPPWKST_RST Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_SDMA1_POS                 18 /**< LPPWKST_SDMA1 Position */
- #define MXC_F_PWRSEQ_LPPWKST_SDMA1                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_SDMA1_POS)) /**< LPPWKST_SDMA1 Mask */
+#define MXC_F_PWRSEQ_LPPWKST_SDMA1_POS                 18 /**< LPPWKST_SDMA1 Position */
+#define MXC_F_PWRSEQ_LPPWKST_SDMA1                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_SDMA1_POS)) /**< LPPWKST_SDMA1 Mask */
 
 /**@} end of group PWRSEQ_LPPWKST_Register */
 
@@ -209,29 +209,29 @@ typedef struct {
  * @brief    Low Power Memory Shutdown Control.
  * @{
  */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM0_POS                  0 /**< LPMEMSD_RAM0 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM0                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM0_POS)) /**< LPMEMSD_RAM0 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM0_POS                  0 /**< LPMEMSD_RAM0 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM0                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM0_POS)) /**< LPMEMSD_RAM0 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM1_POS                  1 /**< LPMEMSD_RAM1 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM1_POS)) /**< LPMEMSD_RAM1 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM1_POS                  1 /**< LPMEMSD_RAM1 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM1_POS)) /**< LPMEMSD_RAM1 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM2_POS                  2 /**< LPMEMSD_RAM2 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM2                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM2_POS)) /**< LPMEMSD_RAM2 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM2_POS                  2 /**< LPMEMSD_RAM2 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM2                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM2_POS)) /**< LPMEMSD_RAM2 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM3_POS                  3 /**< LPMEMSD_RAM3 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM3                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM3_POS)) /**< LPMEMSD_RAM3 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM3_POS                  3 /**< LPMEMSD_RAM3 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM3                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM3_POS)) /**< LPMEMSD_RAM3 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM4_POS                  4 /**< LPMEMSD_RAM4 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM4                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM4_POS)) /**< LPMEMSD_RAM4 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4_POS                  4 /**< LPMEMSD_RAM4 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM4_POS)) /**< LPMEMSD_RAM4 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS                7 /**< LPMEMSD_ICACHE Position */
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHE                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS)) /**< LPMEMSD_ICACHE Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS                7 /**< LPMEMSD_ICACHE Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHE                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS)) /**< LPMEMSD_ICACHE Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS             8 /**< LPMEMSD_ICACHEXIP Position */
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS)) /**< LPMEMSD_ICACHEXIP Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS             8 /**< LPMEMSD_ICACHEXIP Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS)) /**< LPMEMSD_ICACHEXIP Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   12 /**< LPMEMSD_ROM Position */
- #define MXC_F_PWRSEQ_LPMEMSD_ROM                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM_POS)) /**< LPMEMSD_ROM Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   12 /**< LPMEMSD_ROM Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM_POS)) /**< LPMEMSD_ROM Mask */
 
 /**@} end of group PWRSEQ_LPMEMSD_Register */
 
@@ -239,4 +239,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _PWRSEQ_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_PWRSEQ_REGS_H_
