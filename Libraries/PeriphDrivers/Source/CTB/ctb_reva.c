@@ -212,7 +212,8 @@ uint32_t MXC_CTB_RevA_Done(mxc_ctb_reva_regs_t *ctb_regs)
         features |= MXC_CTB_REVA_FEATURE_CIPHER;
     }
 
-    features &= configured;
+    // clear unconfigured rised flags
+    features &= ~configured;
 
     return features;
 }
