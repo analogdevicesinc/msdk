@@ -66,7 +66,6 @@ extern unsigned int disable_tickless;
 
 extern void vApplicationIdleHook(void);
 
-
 /*
  * Sleep-check function
  *
@@ -175,7 +174,6 @@ static void deepSleep(void)
     switchToHIRC();
 }
 
-
 /*
  *  Snooze the wake up timer
  *
@@ -259,7 +257,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     deepSleep();
 
     LED_On(SLEEP_LED);
-        
+
     post_capture = MXC_WUT_GetCount();
     actual_ticks = post_capture - pre_capture;
 
