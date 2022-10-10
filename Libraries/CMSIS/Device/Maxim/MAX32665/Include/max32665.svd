@@ -7514,7 +7514,7 @@
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[5:5]</bitRange>
+       <bitRange>[7:7]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -17158,6 +17158,71 @@
   </peripheral>
 <!--TRNG Random Number Generator.-->
   <peripheral>
+   <name>TRIMSIR</name>
+   <description>Trim System Initilazation Registers</description>
+   <baseAddress>0x40005400</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>RTC</name>
+     <description>System Init. Configuration Register 2.</description>
+     <addressOffset>0x08</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RTCX1</name>
+       <description>RTC X1 Trim.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+      <field>
+       <name>RTCX2</name>
+       <description>RTC X2 Trim.</description>
+       <bitOffset>21</bitOffset>
+       <bitWidth>5</bitWidth>
+      </field>
+      <field>
+       <name>LOCK</name>
+       <description>Lock.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SIR13</name>
+     <description>System Init. Configuration Register 13.</description>
+     <addressOffset>0x34</addressOffset>
+     <fields>
+      <field>
+       <name>SIMOCLKDIV</name>
+       <description>SIMO Clock Divide while in LP mode.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SIR17</name>
+     <description>System Init. Configuration Register 17.</description>
+     <addressOffset>0x44</addressOffset>
+     <fields>
+      <field>
+       <name>BUCKCLKSELLP</name>
+       <description>BUCK Clock Select Low Power Mode.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--TRIMSIR Trim System Initilazation Registers-->
+  <peripheral>
    <name>SEMA</name>
    <description>The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
                                      The peripheral contains eight semaphores that can be atomically set and cleared. It is left to the discretion of the software
@@ -17173,10 +17238,10 @@
    <registers>
     <register>
      <dim>8</dim>
-     <dimIncrement>4</dimIncrement>
+     <dimIncrement>0x04</dimIncrement>
      <name>SEMAPHORES[%s]</name>
      <description>Read to test and set, returns prior value. Write 0 to clear semaphore.</description>
-     <addressOffset>0x00</addressOffset>
+     <addressOffset>0x000</addressOffset>
      <size>32</size>
      <fields>
       <field>
