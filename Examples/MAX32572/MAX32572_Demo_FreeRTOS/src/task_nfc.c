@@ -38,6 +38,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/* FreeRTOS */
+#include <FreeRTOS.h>
+#include <task.h>
+#include <queue.h>
+#include <semphr.h>
+
 #include "MAX32xxx.h"
 #include "task_nfc.h"
 #include "message.h"
@@ -53,13 +59,7 @@
 #include "logging.h"
 #include "EMV_polling_and_loopback.h"
 
-/* FreeRTOS */
-#include <FreeRTOS.h>
-#include <task.h>
-#include <queue.h>
-#include <semphr.h>
-
-/******************************   		DEFINES	    **************************/
+/******************************         DEFINES     **************************/
 #define BEEPER_PORT MXC_GPIO3
 #define BEEPER_PIN MXC_GPIO_PIN_3
 #define BEEP_PASS_TIME_MS 150
@@ -68,7 +68,7 @@
 #define BEEP_PASS_TONE 250 //847
 #define BEEP_PASS_VOL 25 //84
 
-/******************************   	TYPE DEFINES	**************************/
+/******************************     TYPE DEFINES    **************************/
 typedef struct {
     uint8_t rapdu[261];
     int32_t rapdu_len;
@@ -78,7 +78,7 @@ typedef struct {
     int32_t application_label_len;
 } ppse_response_t;
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 extern mml_nfc_pcd_analog_params_t current_analog_parameters;
 
 extern xQueueHandle xQueueMain;
@@ -484,7 +484,7 @@ static int32_t parse_ppse_response(ppse_response_t *resp)
         return ISO14443_3_ERR_PROTOCOL;
     }
 
-    // Next is Application Identifier (AID) – card
+    // Next is Application Identifier (AID) - card
     if (resp->rapdu[index++] != APPLICATION_IDENTIFIER) {
         return ISO14443_3_ERR_PROTOCOL;
     }
@@ -558,15 +558,15 @@ static void decode_MIFARE_type(char *response)
         // Bit 4 == 1
         if (sak & 0x10) {
             // Bit 5 == 1
-            sprintf(response, "MIFARE 4K\n");
+            strncpy(response, "MIFARE 4K\n", 11);
         } else {
             // Bit 5 == 0
             if (sak & 0x01) {
                 // Bit 1 == 1
-                sprintf(response, "MIFARE Mini\n");
+                strncpy(response, "MIFARE Mini\n", 13);
             } else {
                 // Bit 1 == 0
-                sprintf(response, "MIFARE 1K\n");
+                strncpy(response, "MIFARE 1K\n", 11);
             }
         }
     } else {
@@ -575,10 +575,10 @@ static void decode_MIFARE_type(char *response)
             // Bit 5 == 1
             if (sak & 0x01) {
                 // Bit 1 == 1
-                sprintf(response, "MIFARE Plus 4K SL2\n");
+                strncpy(response, "MIFARE Plus 4K SL2\n", 20);
             } else {
                 // Bit 1 == 0
-                sprintf(response, "MIFARE Plus 2K SL2\n");
+                strncpy(response, "MIFARE Plus 2K SL2\n", 20);
             }
         } else {
             // Bit 5 == 0
@@ -587,10 +587,10 @@ static void decode_MIFARE_type(char *response)
                 // This version requires RATS etc
                 // Is must therfore be compliant, so we should not be here
                 // Do nothing
-                sprintf(response, "MIFARE ?\n");
+                strncpy(response, "MIFARE ?\n", 10);
             } else {
                 // Bit 6 == 0
-                sprintf(response, "MIFARE UL\n");
+                strncpy(response, "MIFARE UL\n", 11);
             }
         }
     }
@@ -689,8 +689,8 @@ void vGetNFCTask(void *pvParameter)
                         // print in the AID (convert from HEX to ASCII)
                         for (k = 0; ((k < card_response.aid_bin_len) && (i < 50)); k++, i += 2) {
                             // Note, using pointer math for offset here
-                            sprintf((char *)msgNFC.pcMessage + i, "%02X ",
-                                    card_response.aid_bin[k]);
+                            snprintf((char *)msgNFC.pcMessage + i, 50 - i, "%02X ",
+                                     card_response.aid_bin[k]);
                         }
 
                         // Insert Carriage return
@@ -751,7 +751,7 @@ void vGetNFCTask(void *pvParameter)
                 msgNFC.pcType = 'N';
 
                 debug("Possible MIFARE Card %s\n", mifare_strn);
-                sprintf((char *)msgNFC.pcMessage, "%s", mifare_strn);
+                strncpy((char *)msgNFC.pcMessage, mifare_strn, 50);
 
                 // Set len to null termination of string
                 for (i = 0; i < 50; i++) {
@@ -769,7 +769,7 @@ void vGetNFCTask(void *pvParameter)
                 msgNFC.pcType = 'N';
 
                 debug("Type B Non ISO14443 Card found.\n");
-                sprintf((char *)msgNFC.pcMessage, "%s", "Non ISO14443 Type B card found");
+                strncpy((char *)msgNFC.pcMessage, "Non ISO14443 Type B card found", 50);
 
                 // Set len to null termination of string
                 for (i = 0; i < 50; i++) {
@@ -790,7 +790,6 @@ void vGetNFCTask(void *pvParameter)
                 // Keep Trying
                 continue;
             }
-
         } // End of while (1) keep looking for cards
 
         mml_nfc_pcd_field_off();

@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_UTILS_H_
+#define EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_UTILS_H_
 
 /*****************************     DEFINES   *********************************/
 
@@ -55,4 +55,4 @@ void utils_delay_ms(unsigned int ms);
 void utils_hex_dump(const char *title, unsigned char *buf, unsigned int len);
 void utils_seconds_to_date(DateTime_t *dt, unsigned int sec);
 
-#endif // _UTILS_H_
+#endif // EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_UTILS_H_

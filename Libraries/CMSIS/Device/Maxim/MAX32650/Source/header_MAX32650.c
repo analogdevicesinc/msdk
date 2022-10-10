@@ -54,7 +54,7 @@ typedef enum {
  * If set to 0xF, the ROM fetches SP and PC immediately after the header at offset 0x20.
  * If set to 0x4, the ROM uses the PC in the header at offset 0x14.
  */
-    /*	MagicH = 0xF6495357,*/
+    /*  MagicH = 0xF6495357,*/
     MagicL = 0x45444744,
 } enum_magic_t;
 

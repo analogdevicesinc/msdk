@@ -1,44 +1,44 @@
 /**
  * @file    owm_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the OWM Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
-#ifndef _OWM_REGS_H_
-#define _OWM_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_OWM_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_OWM_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     owm
  * @defgroup    owm_registers OWM_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the OWM Peripheral Module.
- * @details 1-Wire Master Interface.
+ * @details     1-Wire Master Interface.
  */
 
 /**
@@ -94,35 +94,50 @@ typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x0014:</tt> OWM INTEN Register */
 } mxc_owm_regs_t;
 
+/* Register offsets for module OWM */
+/**
+ * @ingroup    owm_registers
+ * @defgroup   OWM_Register_Offsets Register Offsets
+ * @brief      OWM Peripheral Register Offsets from the OWM Base Peripheral Address.
+ * @{
+ */
+#define MXC_R_OWM_CFG                      ((uint32_t)0x00000000UL) /**< Offset from OWM Base Address: <tt> 0x0000</tt> */
+#define MXC_R_OWM_CLK_DIV_1US              ((uint32_t)0x00000004UL) /**< Offset from OWM Base Address: <tt> 0x0004</tt> */
+#define MXC_R_OWM_CTRL_STAT                ((uint32_t)0x00000008UL) /**< Offset from OWM Base Address: <tt> 0x0008</tt> */
+#define MXC_R_OWM_DATA                     ((uint32_t)0x0000000CUL) /**< Offset from OWM Base Address: <tt> 0x000C</tt> */
+#define MXC_R_OWM_INTFL                    ((uint32_t)0x00000010UL) /**< Offset from OWM Base Address: <tt> 0x0010</tt> */
+#define MXC_R_OWM_INTEN                    ((uint32_t)0x00000014UL) /**< Offset from OWM Base Address: <tt> 0x0014</tt> */
+/**@} end of group owm_registers */
+
 /**
  * @ingroup  owm_registers
  * @defgroup OWM_CFG OWM_CFG
  * @brief    1-Wire Master Configuration.
  * @{
  */
- #define MXC_F_OWM_CFG_LONG_LINE_MODE_POS               0 /**< CFG_LONG_LINE_MODE Position */
- #define MXC_F_OWM_CFG_LONG_LINE_MODE                   ((uint32_t)(0x1UL << MXC_F_OWM_CFG_LONG_LINE_MODE_POS)) /**< CFG_LONG_LINE_MODE Mask */
+#define MXC_F_OWM_CFG_LONG_LINE_MODE_POS               0 /**< CFG_LONG_LINE_MODE Position */
+#define MXC_F_OWM_CFG_LONG_LINE_MODE                   ((uint32_t)(0x1UL << MXC_F_OWM_CFG_LONG_LINE_MODE_POS)) /**< CFG_LONG_LINE_MODE Mask */
 
- #define MXC_F_OWM_CFG_FORCE_PRES_DET_POS               1 /**< CFG_FORCE_PRES_DET Position */
- #define MXC_F_OWM_CFG_FORCE_PRES_DET                   ((uint32_t)(0x1UL << MXC_F_OWM_CFG_FORCE_PRES_DET_POS)) /**< CFG_FORCE_PRES_DET Mask */
+#define MXC_F_OWM_CFG_FORCE_PRES_DET_POS               1 /**< CFG_FORCE_PRES_DET Position */
+#define MXC_F_OWM_CFG_FORCE_PRES_DET                   ((uint32_t)(0x1UL << MXC_F_OWM_CFG_FORCE_PRES_DET_POS)) /**< CFG_FORCE_PRES_DET Mask */
 
- #define MXC_F_OWM_CFG_BIT_BANG_EN_POS                  2 /**< CFG_BIT_BANG_EN Position */
- #define MXC_F_OWM_CFG_BIT_BANG_EN                      ((uint32_t)(0x1UL << MXC_F_OWM_CFG_BIT_BANG_EN_POS)) /**< CFG_BIT_BANG_EN Mask */
+#define MXC_F_OWM_CFG_BIT_BANG_EN_POS                  2 /**< CFG_BIT_BANG_EN Position */
+#define MXC_F_OWM_CFG_BIT_BANG_EN                      ((uint32_t)(0x1UL << MXC_F_OWM_CFG_BIT_BANG_EN_POS)) /**< CFG_BIT_BANG_EN Mask */
 
- #define MXC_F_OWM_CFG_EXT_PULLUP_MODE_POS              3 /**< CFG_EXT_PULLUP_MODE Position */
- #define MXC_F_OWM_CFG_EXT_PULLUP_MODE                  ((uint32_t)(0x1UL << MXC_F_OWM_CFG_EXT_PULLUP_MODE_POS)) /**< CFG_EXT_PULLUP_MODE Mask */
+#define MXC_F_OWM_CFG_EXT_PULLUP_MODE_POS              3 /**< CFG_EXT_PULLUP_MODE Position */
+#define MXC_F_OWM_CFG_EXT_PULLUP_MODE                  ((uint32_t)(0x1UL << MXC_F_OWM_CFG_EXT_PULLUP_MODE_POS)) /**< CFG_EXT_PULLUP_MODE Mask */
 
- #define MXC_F_OWM_CFG_EXT_PULLUP_ENABLE_POS            4 /**< CFG_EXT_PULLUP_ENABLE Position */
- #define MXC_F_OWM_CFG_EXT_PULLUP_ENABLE                ((uint32_t)(0x1UL << MXC_F_OWM_CFG_EXT_PULLUP_ENABLE_POS)) /**< CFG_EXT_PULLUP_ENABLE Mask */
+#define MXC_F_OWM_CFG_EXT_PULLUP_ENABLE_POS            4 /**< CFG_EXT_PULLUP_ENABLE Position */
+#define MXC_F_OWM_CFG_EXT_PULLUP_ENABLE                ((uint32_t)(0x1UL << MXC_F_OWM_CFG_EXT_PULLUP_ENABLE_POS)) /**< CFG_EXT_PULLUP_ENABLE Mask */
 
- #define MXC_F_OWM_CFG_SINGLE_BIT_MODE_POS              5 /**< CFG_SINGLE_BIT_MODE Position */
- #define MXC_F_OWM_CFG_SINGLE_BIT_MODE                  ((uint32_t)(0x1UL << MXC_F_OWM_CFG_SINGLE_BIT_MODE_POS)) /**< CFG_SINGLE_BIT_MODE Mask */
+#define MXC_F_OWM_CFG_SINGLE_BIT_MODE_POS              5 /**< CFG_SINGLE_BIT_MODE Position */
+#define MXC_F_OWM_CFG_SINGLE_BIT_MODE                  ((uint32_t)(0x1UL << MXC_F_OWM_CFG_SINGLE_BIT_MODE_POS)) /**< CFG_SINGLE_BIT_MODE Mask */
 
- #define MXC_F_OWM_CFG_OVERDRIVE_POS                    6 /**< CFG_OVERDRIVE Position */
- #define MXC_F_OWM_CFG_OVERDRIVE                        ((uint32_t)(0x1UL << MXC_F_OWM_CFG_OVERDRIVE_POS)) /**< CFG_OVERDRIVE Mask */
+#define MXC_F_OWM_CFG_OVERDRIVE_POS                    6 /**< CFG_OVERDRIVE Position */
+#define MXC_F_OWM_CFG_OVERDRIVE                        ((uint32_t)(0x1UL << MXC_F_OWM_CFG_OVERDRIVE_POS)) /**< CFG_OVERDRIVE Mask */
 
- #define MXC_F_OWM_CFG_INT_PULLUP_ENABLE_POS            7 /**< CFG_INT_PULLUP_ENABLE Position */
- #define MXC_F_OWM_CFG_INT_PULLUP_ENABLE                ((uint32_t)(0x1UL << MXC_F_OWM_CFG_INT_PULLUP_ENABLE_POS)) /**< CFG_INT_PULLUP_ENABLE Mask */
+#define MXC_F_OWM_CFG_INT_PULLUP_ENABLE_POS            7 /**< CFG_INT_PULLUP_ENABLE Position */
+#define MXC_F_OWM_CFG_INT_PULLUP_ENABLE                ((uint32_t)(0x1UL << MXC_F_OWM_CFG_INT_PULLUP_ENABLE_POS)) /**< CFG_INT_PULLUP_ENABLE Mask */
 
 /**@} end of group OWM_CFG_Register */
 
@@ -132,8 +147,8 @@ typedef struct {
  * @brief    1-Wire Master Clock Divisor.
  * @{
  */
- #define MXC_F_OWM_CLK_DIV_1US_DIVISOR_POS              0 /**< CLK_DIV_1US_DIVISOR Position */
- #define MXC_F_OWM_CLK_DIV_1US_DIVISOR                  ((uint32_t)(0xFFUL << MXC_F_OWM_CLK_DIV_1US_DIVISOR_POS)) /**< CLK_DIV_1US_DIVISOR Mask */
+#define MXC_F_OWM_CLK_DIV_1US_DIVISOR_POS              0 /**< CLK_DIV_1US_DIVISOR Position */
+#define MXC_F_OWM_CLK_DIV_1US_DIVISOR                  ((uint32_t)(0xFFUL << MXC_F_OWM_CLK_DIV_1US_DIVISOR_POS)) /**< CLK_DIV_1US_DIVISOR Mask */
 
 /**@} end of group OWM_CLK_DIV_1US_Register */
 
@@ -143,23 +158,23 @@ typedef struct {
  * @brief    1-Wire Master Control/Status.
  * @{
  */
- #define MXC_F_OWM_CTRL_STAT_START_OW_RESET_POS         0 /**< CTRL_STAT_START_OW_RESET Position */
- #define MXC_F_OWM_CTRL_STAT_START_OW_RESET             ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_START_OW_RESET_POS)) /**< CTRL_STAT_START_OW_RESET Mask */
+#define MXC_F_OWM_CTRL_STAT_START_OW_RESET_POS         0 /**< CTRL_STAT_START_OW_RESET Position */
+#define MXC_F_OWM_CTRL_STAT_START_OW_RESET             ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_START_OW_RESET_POS)) /**< CTRL_STAT_START_OW_RESET Mask */
 
- #define MXC_F_OWM_CTRL_STAT_SRA_MODE_POS               1 /**< CTRL_STAT_SRA_MODE Position */
- #define MXC_F_OWM_CTRL_STAT_SRA_MODE                   ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_SRA_MODE_POS)) /**< CTRL_STAT_SRA_MODE Mask */
+#define MXC_F_OWM_CTRL_STAT_SRA_MODE_POS               1 /**< CTRL_STAT_SRA_MODE Position */
+#define MXC_F_OWM_CTRL_STAT_SRA_MODE                   ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_SRA_MODE_POS)) /**< CTRL_STAT_SRA_MODE Mask */
 
- #define MXC_F_OWM_CTRL_STAT_BIT_BANG_OE_POS            2 /**< CTRL_STAT_BIT_BANG_OE Position */
- #define MXC_F_OWM_CTRL_STAT_BIT_BANG_OE                ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_BIT_BANG_OE_POS)) /**< CTRL_STAT_BIT_BANG_OE Mask */
+#define MXC_F_OWM_CTRL_STAT_BIT_BANG_OE_POS            2 /**< CTRL_STAT_BIT_BANG_OE Position */
+#define MXC_F_OWM_CTRL_STAT_BIT_BANG_OE                ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_BIT_BANG_OE_POS)) /**< CTRL_STAT_BIT_BANG_OE Mask */
 
- #define MXC_F_OWM_CTRL_STAT_OW_INPUT_POS               3 /**< CTRL_STAT_OW_INPUT Position */
- #define MXC_F_OWM_CTRL_STAT_OW_INPUT                   ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OW_INPUT_POS)) /**< CTRL_STAT_OW_INPUT Mask */
+#define MXC_F_OWM_CTRL_STAT_OW_INPUT_POS               3 /**< CTRL_STAT_OW_INPUT Position */
+#define MXC_F_OWM_CTRL_STAT_OW_INPUT                   ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OW_INPUT_POS)) /**< CTRL_STAT_OW_INPUT Mask */
 
- #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS           4 /**< CTRL_STAT_OD_SPEC_MODE Position */
- #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE               ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS)) /**< CTRL_STAT_OD_SPEC_MODE Mask */
+#define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS           4 /**< CTRL_STAT_OD_SPEC_MODE Position */
+#define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE               ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS)) /**< CTRL_STAT_OD_SPEC_MODE Mask */
 
- #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        7 /**< CTRL_STAT_PRESENCE_DETECT Position */
- #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS)) /**< CTRL_STAT_PRESENCE_DETECT Mask */
+#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        5 /**< CTRL_STAT_PRESENCE_DETECT Position */
+#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS)) /**< CTRL_STAT_PRESENCE_DETECT Mask */
 
 /**@} end of group OWM_CTRL_STAT_Register */
 
@@ -169,8 +184,8 @@ typedef struct {
  * @brief    1-Wire Master Data Buffer.
  * @{
  */
- #define MXC_F_OWM_DATA_TX_RX_POS                       0 /**< DATA_TX_RX Position */
- #define MXC_F_OWM_DATA_TX_RX                           ((uint32_t)(0xFFUL << MXC_F_OWM_DATA_TX_RX_POS)) /**< DATA_TX_RX Mask */
+#define MXC_F_OWM_DATA_TX_RX_POS                       0 /**< DATA_TX_RX Position */
+#define MXC_F_OWM_DATA_TX_RX                           ((uint32_t)(0xFFUL << MXC_F_OWM_DATA_TX_RX_POS)) /**< DATA_TX_RX Mask */
 
 /**@} end of group OWM_DATA_Register */
 
@@ -180,20 +195,20 @@ typedef struct {
  * @brief    1-Wire Master Interrupt Flags.
  * @{
  */
- #define MXC_F_OWM_INTFL_OW_RESET_DONE_POS              0 /**< INTFL_OW_RESET_DONE Position */
- #define MXC_F_OWM_INTFL_OW_RESET_DONE                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_OW_RESET_DONE_POS)) /**< INTFL_OW_RESET_DONE Mask */
+#define MXC_F_OWM_INTFL_OW_RESET_DONE_POS              0 /**< INTFL_OW_RESET_DONE Position */
+#define MXC_F_OWM_INTFL_OW_RESET_DONE                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_OW_RESET_DONE_POS)) /**< INTFL_OW_RESET_DONE Mask */
 
- #define MXC_F_OWM_INTFL_TX_DATA_EMPTY_POS              1 /**< INTFL_TX_DATA_EMPTY Position */
- #define MXC_F_OWM_INTFL_TX_DATA_EMPTY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_TX_DATA_EMPTY_POS)) /**< INTFL_TX_DATA_EMPTY Mask */
+#define MXC_F_OWM_INTFL_TX_DATA_EMPTY_POS              1 /**< INTFL_TX_DATA_EMPTY Position */
+#define MXC_F_OWM_INTFL_TX_DATA_EMPTY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_TX_DATA_EMPTY_POS)) /**< INTFL_TX_DATA_EMPTY Mask */
 
- #define MXC_F_OWM_INTFL_RX_DATA_READY_POS              2 /**< INTFL_RX_DATA_READY Position */
- #define MXC_F_OWM_INTFL_RX_DATA_READY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_RX_DATA_READY_POS)) /**< INTFL_RX_DATA_READY Mask */
+#define MXC_F_OWM_INTFL_RX_DATA_READY_POS              2 /**< INTFL_RX_DATA_READY Position */
+#define MXC_F_OWM_INTFL_RX_DATA_READY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_RX_DATA_READY_POS)) /**< INTFL_RX_DATA_READY Mask */
 
- #define MXC_F_OWM_INTFL_LINE_SHORT_POS                 3 /**< INTFL_LINE_SHORT Position */
- #define MXC_F_OWM_INTFL_LINE_SHORT                     ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_LINE_SHORT_POS)) /**< INTFL_LINE_SHORT Mask */
+#define MXC_F_OWM_INTFL_LINE_SHORT_POS                 3 /**< INTFL_LINE_SHORT Position */
+#define MXC_F_OWM_INTFL_LINE_SHORT                     ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_LINE_SHORT_POS)) /**< INTFL_LINE_SHORT Mask */
 
- #define MXC_F_OWM_INTFL_LINE_LOW_POS                   4 /**< INTFL_LINE_LOW Position */
- #define MXC_F_OWM_INTFL_LINE_LOW                       ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_LINE_LOW_POS)) /**< INTFL_LINE_LOW Mask */
+#define MXC_F_OWM_INTFL_LINE_LOW_POS                   4 /**< INTFL_LINE_LOW Position */
+#define MXC_F_OWM_INTFL_LINE_LOW                       ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_LINE_LOW_POS)) /**< INTFL_LINE_LOW Mask */
 
 /**@} end of group OWM_INTFL_Register */
 
@@ -203,20 +218,20 @@ typedef struct {
  * @brief    1-Wire Master Interrupt Enables.
  * @{
  */
- #define MXC_F_OWM_INTEN_OW_RESET_DONE_POS              0 /**< INTEN_OW_RESET_DONE Position */
- #define MXC_F_OWM_INTEN_OW_RESET_DONE                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_OW_RESET_DONE_POS)) /**< INTEN_OW_RESET_DONE Mask */
+#define MXC_F_OWM_INTEN_OW_RESET_DONE_POS              0 /**< INTEN_OW_RESET_DONE Position */
+#define MXC_F_OWM_INTEN_OW_RESET_DONE                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_OW_RESET_DONE_POS)) /**< INTEN_OW_RESET_DONE Mask */
 
- #define MXC_F_OWM_INTEN_TX_DATA_EMPTY_POS              1 /**< INTEN_TX_DATA_EMPTY Position */
- #define MXC_F_OWM_INTEN_TX_DATA_EMPTY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_TX_DATA_EMPTY_POS)) /**< INTEN_TX_DATA_EMPTY Mask */
+#define MXC_F_OWM_INTEN_TX_DATA_EMPTY_POS              1 /**< INTEN_TX_DATA_EMPTY Position */
+#define MXC_F_OWM_INTEN_TX_DATA_EMPTY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_TX_DATA_EMPTY_POS)) /**< INTEN_TX_DATA_EMPTY Mask */
 
- #define MXC_F_OWM_INTEN_RX_DATA_READY_POS              2 /**< INTEN_RX_DATA_READY Position */
- #define MXC_F_OWM_INTEN_RX_DATA_READY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_RX_DATA_READY_POS)) /**< INTEN_RX_DATA_READY Mask */
+#define MXC_F_OWM_INTEN_RX_DATA_READY_POS              2 /**< INTEN_RX_DATA_READY Position */
+#define MXC_F_OWM_INTEN_RX_DATA_READY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_RX_DATA_READY_POS)) /**< INTEN_RX_DATA_READY Mask */
 
- #define MXC_F_OWM_INTEN_LINE_SHORT_POS                 3 /**< INTEN_LINE_SHORT Position */
- #define MXC_F_OWM_INTEN_LINE_SHORT                     ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_LINE_SHORT_POS)) /**< INTEN_LINE_SHORT Mask */
+#define MXC_F_OWM_INTEN_LINE_SHORT_POS                 3 /**< INTEN_LINE_SHORT Position */
+#define MXC_F_OWM_INTEN_LINE_SHORT                     ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_LINE_SHORT_POS)) /**< INTEN_LINE_SHORT Mask */
 
- #define MXC_F_OWM_INTEN_LINE_LOW_POS                   4 /**< INTEN_LINE_LOW Position */
- #define MXC_F_OWM_INTEN_LINE_LOW                       ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_LINE_LOW_POS)) /**< INTEN_LINE_LOW Mask */
+#define MXC_F_OWM_INTEN_LINE_LOW_POS                   4 /**< INTEN_LINE_LOW Position */
+#define MXC_F_OWM_INTEN_LINE_LOW                       ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_LINE_LOW_POS)) /**< INTEN_LINE_LOW Mask */
 
 /**@} end of group OWM_INTEN_Register */
 
@@ -224,4 +239,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _OWM_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_OWM_REGS_H_

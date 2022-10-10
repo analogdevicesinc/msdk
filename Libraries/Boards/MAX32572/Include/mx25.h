@@ -39,8 +39,8 @@
 **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MX25_H_
-#define _MX25_H_
+#ifndef LIBRARIES_BOARDS_MAX32572_INCLUDE_MX25_H_
+#define LIBRARIES_BOARDS_MAX32572_INCLUDE_MX25_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -208,4 +208,4 @@ int MX25_Write_SR(uint8_t value);
 }
 #endif
 
-#endif /* _MX25_H_ */
+#endif // LIBRARIES_BOARDS_MAX32572_INCLUDE_MX25_H_

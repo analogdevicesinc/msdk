@@ -34,8 +34,8 @@
 ******************************************************************************* 
 */
 
-#ifndef _BITMAP_H_
-#define _BITMAP_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_RESOURCES_BITMAP_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_RESOURCES_BITMAP_H_
 
 // bitmaps id
 #define arrow_left_bmp 0
@@ -148,4 +148,4 @@
 #define urw_gothic_16_bleu_bg_grey 2
 #define urw_gothic_16_white_bg_grey 3
 
-#endif //_BITMAP_H_
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_RESOURCES_BITMAP_H_

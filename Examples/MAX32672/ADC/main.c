@@ -70,8 +70,8 @@ volatile unsigned int dma_done = 0;
 #endif
 
 /* CH0 and CH1 are shared with Console. */
-//#define CH0	    MXC_ADC_CH_0
-//#define CH1	    MXC_ADC_CH_1
+//#define CH0       MXC_ADC_CH_0
+//#define CH1       MXC_ADC_CH_1
 
 #define MXC_ADC_CH_VDDA MXC_ADC_CH_12 ///< Select Channel 12
 #define MXC_ADC_CH_TEMP_SENSOR MXC_ADC_CH_13 ///< Select Channel 13
@@ -415,7 +415,7 @@ int main(void)
 
         MXC_ADC_StartConversionAsync(adc_complete_cb);
 
-        while (!adc_done) {};
+        while (!adc_done) {}
 #endif
 
 #ifdef DMA
@@ -431,7 +431,7 @@ int main(void)
         MXC_DMA_ReleaseChannel(0);
         MXC_ADC_StartConversionDMA(&adc_conv, &adc_val[0], adc_dma_callback);
 
-        while (!dma_done) {};
+        while (!dma_done) {}
 #endif
         ShowAdcResult();
 

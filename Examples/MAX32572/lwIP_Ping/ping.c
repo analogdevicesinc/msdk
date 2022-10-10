@@ -5,6 +5,9 @@
  */
 
 /*
+ * Copyright (c) 2001-2004 Swedish Institute of Computer Science.
+ * All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
@@ -38,6 +41,7 @@
  *
  */
 
+#include <string.h>
 #include "lwip/opt.h"
 
 #if LWIP_RAW /* don't build if not configured for use in lwipopts.h */
@@ -56,7 +60,6 @@
 #if PING_USE_SOCKETS
 #include "lwip/sockets.h"
 #include "lwip/inet.h"
-#include <string.h>
 #endif /* PING_USE_SOCKETS */
 
 /**

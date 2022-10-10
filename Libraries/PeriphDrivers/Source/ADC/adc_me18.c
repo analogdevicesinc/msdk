@@ -30,7 +30,7 @@
  * ownership rights.
  *
  *************************************************************************** */
-
+#include <stdio.h>
 #include "adc.h"
 #include "adc_regs.h"
 #include "adc_revb.h"
@@ -43,7 +43,6 @@
 #include "mxc_lock.h"
 #include "mxc_pins.h"
 #include "pwrseq_regs.h"
-#include <stdio.h>
 
 #define MXC_F_MCR_ADC_CFG2_CH 0x3
 
@@ -206,7 +205,6 @@ int MXC_ADC_ReferenceSelect(mxc_adc_refsel_t ref)
     return E_NO_ERROR;
 }
 
-//TODO
 int MXC_ADC_InputDividerSelect(mxc_adc_chsel_t ch)
 {
     return E_NO_ERROR;
@@ -313,9 +311,9 @@ int MXC_ADC_SlotConfiguration(mxc_adc_slot_req_t *req, uint32_t slot_length)
     for (loop_counter = 0; loop_counter <= slot_length; loop_counter++) {
         initGPIOForChannel(req->channel);
 #if 0
-		 if (req->channel <= MAX_ADC_RES_DIV_CH) {
- 	          MXC_ADC_InputDividerSelect(req->channel, req->div, req->pullup_dyn);
-		 }
+        if (req->channel <= MAX_ADC_RES_DIV_CH) {
+            MXC_ADC_InputDividerSelect(req->channel, req->div, req->pullup_dyn);
+        }
 #endif
         MXC_ADC_ChSelectConfig(req->channel, loop_counter);
         req++;

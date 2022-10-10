@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _KEYPAD_H_
-#define _KEYPAD_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_KEYPAD_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_KEYPAD_H_
 
 /*****************************    DEFINES    *********************************/
 #define KEY_0 '0'
@@ -60,4 +60,4 @@
 /*****************************     FUNCTIONS *********************************/
 int keypad_init(void);
 
-#endif /* _KEYPAD_H_ */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_KEYPAD_H_

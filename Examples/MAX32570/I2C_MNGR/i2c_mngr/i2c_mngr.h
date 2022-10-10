@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef I2C_MNGR_H
-#define I2C_MNGR_H
+#ifndef EXAMPLES_MAX32570_I2C_MNGR_I2C_MNGR_I2C_MNGR_H_
+#define EXAMPLES_MAX32570_I2C_MNGR_I2C_MNGR_I2C_MNGR_H_
 
 #include <stdbool.h>
 
@@ -78,4 +78,4 @@ int I2C_MNGR_Init();
  */
 int I2C_MNGR_Transact(const i2c_mngr_txn_t *transaction);
 
-#endif // I2C_MNGR_H
+#endif // EXAMPLES_MAX32570_I2C_MNGR_I2C_MNGR_I2C_MNGR_H_

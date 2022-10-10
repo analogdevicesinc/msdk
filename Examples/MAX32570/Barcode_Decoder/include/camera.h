@@ -32,8 +32,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef __CAMERA_H__
-#define __CAMERA_H__
+#ifndef EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_CAMERA_H_
+#define EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_CAMERA_H_
 
 // includes
 #include <stdio.h>
@@ -168,4 +168,4 @@ uint8_t *camera_get_pixel_format(void);
 //
 void camera_get_image(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h);
 
-#endif // __CAMERA_H__
+#endif // EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_CAMERA_H_

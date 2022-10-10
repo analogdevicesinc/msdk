@@ -35,8 +35,9 @@
 * @brief Serial console header file
 *****************************************************************************/
 
-#ifndef H_CONSOLE
-#define H_CONSOLE
+#ifndef EXAMPLES_MAX78000_IMGCAPTURE_SRC_CONSOLE_H_
+#define EXAMPLES_MAX78000_IMGCAPTURE_SRC_CONSOLE_H_
+
 #include "uart.h"
 #include "board.h"
 #include "example_config.h"
@@ -93,4 +94,4 @@ void print_help(void);
 UINT out_stream(const BYTE *p, UINT btf);
 #endif
 
-#endif
+#endif // EXAMPLES_MAX78000_IMGCAPTURE_SRC_CONSOLE_H_

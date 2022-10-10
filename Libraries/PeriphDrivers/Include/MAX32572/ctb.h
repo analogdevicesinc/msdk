@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef _CTB_H_
-#define _CTB_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_CTB_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_CTB_H_
 
 /***** Includes *****/
 #include "ctb_regs.h"
@@ -861,4 +861,4 @@ void MXC_CTB_Cipher_DecryptAsync(mxc_ctb_cipher_req_t *req);
 #endif
 /**@} end of group ctb */
 
-#endif /* _CTB_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_CTB_H_

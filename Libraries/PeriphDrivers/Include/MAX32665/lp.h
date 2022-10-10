@@ -40,13 +40,13 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _LP_H_
-#define _LP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "gpio.h"
 #include "pwrseq_regs.h"
-#include <stdint.h>
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 
@@ -582,4 +582,5 @@ void MXC_LP_ICache1LightSleepEnable(void);
 }
 #endif
 /**@} end of group pwrseq */
-#endif /* _LP_H_ */
+
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_

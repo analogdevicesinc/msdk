@@ -38,8 +38,8 @@
 *******************************************************************************
 */
 
-#ifndef _HART_UART_H_
-#define _HART_UART_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -131,4 +131,4 @@ void hart_uart_handler(void);
 }
 #endif
 
-#endif /* _HART_UART_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_HART_UART_H_

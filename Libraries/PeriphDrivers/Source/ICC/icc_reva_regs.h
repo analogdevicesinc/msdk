@@ -37,8 +37,8 @@
  *
  *************************************************************************** */
 
-#ifndef _ICC_REVA_REGS_H_
-#define _ICC_REVA_REGS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_ICC_ICC_REVA_REGS_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_ICC_ICC_REVA_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -101,10 +101,10 @@ typedef struct {
  * @brief      ICC_REVA Peripheral Register Offsets from the ICC_REVA Base Peripheral Address. 
  * @{
  */
- #define MXC_R_ICC_REVA_INFO                ((uint32_t)0x00000000UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_ICC_REVA_SZ                  ((uint32_t)0x00000004UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_ICC_REVA_CTRL                ((uint32_t)0x00000100UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_ICC_REVA_INVALIDATE          ((uint32_t)0x00000700UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0700</tt> */ 
+#define MXC_R_ICC_REVA_INFO                ((uint32_t)0x00000000UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0000</tt> */
+#define MXC_R_ICC_REVA_SZ                  ((uint32_t)0x00000004UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0004</tt> */
+#define MXC_R_ICC_REVA_CTRL                ((uint32_t)0x00000100UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0100</tt> */
+#define MXC_R_ICC_REVA_INVALIDATE          ((uint32_t)0x00000700UL) /**< Offset from ICC_REVA Base Address: <tt> 0x0700</tt> */
 /**@} end of group icc_reva_registers */
 
 /**
@@ -113,14 +113,14 @@ typedef struct {
  * @brief    Cache ID Register.
  * @{
  */
- #define MXC_F_ICC_REVA_INFO_RELNUM_POS                 0 /**< INFO_RELNUM Position */
- #define MXC_F_ICC_REVA_INFO_RELNUM                     ((uint32_t)(0x3FUL << MXC_F_ICC_REVA_INFO_RELNUM_POS)) /**< INFO_RELNUM Mask */
+#define MXC_F_ICC_REVA_INFO_RELNUM_POS                 0 /**< INFO_RELNUM Position */
+#define MXC_F_ICC_REVA_INFO_RELNUM                     ((uint32_t)(0x3FUL << MXC_F_ICC_REVA_INFO_RELNUM_POS)) /**< INFO_RELNUM Mask */
 
- #define MXC_F_ICC_REVA_INFO_PARTNUM_POS                6 /**< INFO_PARTNUM Position */
- #define MXC_F_ICC_REVA_INFO_PARTNUM                    ((uint32_t)(0xFUL << MXC_F_ICC_REVA_INFO_PARTNUM_POS)) /**< INFO_PARTNUM Mask */
+#define MXC_F_ICC_REVA_INFO_PARTNUM_POS                6 /**< INFO_PARTNUM Position */
+#define MXC_F_ICC_REVA_INFO_PARTNUM                    ((uint32_t)(0xFUL << MXC_F_ICC_REVA_INFO_PARTNUM_POS)) /**< INFO_PARTNUM Mask */
 
- #define MXC_F_ICC_REVA_INFO_ID_POS                     10 /**< INFO_ID Position */
- #define MXC_F_ICC_REVA_INFO_ID                         ((uint32_t)(0x3FUL << MXC_F_ICC_REVA_INFO_ID_POS)) /**< INFO_ID Mask */
+#define MXC_F_ICC_REVA_INFO_ID_POS                     10 /**< INFO_ID Position */
+#define MXC_F_ICC_REVA_INFO_ID                         ((uint32_t)(0x3FUL << MXC_F_ICC_REVA_INFO_ID_POS)) /**< INFO_ID Mask */
 
 /**@} end of group ICC_REVA_INFO_Register */
 
@@ -130,11 +130,11 @@ typedef struct {
  * @brief    Memory Configuration Register.
  * @{
  */
- #define MXC_F_ICC_REVA_SZ_CCH_POS                      0 /**< SZ_CCH Position */
- #define MXC_F_ICC_REVA_SZ_CCH                          ((uint32_t)(0xFFFFUL << MXC_F_ICC_REVA_SZ_CCH_POS)) /**< SZ_CCH Mask */
+#define MXC_F_ICC_REVA_SZ_CCH_POS                      0 /**< SZ_CCH Position */
+#define MXC_F_ICC_REVA_SZ_CCH                          ((uint32_t)(0xFFFFUL << MXC_F_ICC_REVA_SZ_CCH_POS)) /**< SZ_CCH Mask */
 
- #define MXC_F_ICC_REVA_SZ_MEM_POS                      16 /**< SZ_MEM Position */
- #define MXC_F_ICC_REVA_SZ_MEM                          ((uint32_t)(0xFFFFUL << MXC_F_ICC_REVA_SZ_MEM_POS)) /**< SZ_MEM Mask */
+#define MXC_F_ICC_REVA_SZ_MEM_POS                      16 /**< SZ_MEM Position */
+#define MXC_F_ICC_REVA_SZ_MEM                          ((uint32_t)(0xFFFFUL << MXC_F_ICC_REVA_SZ_MEM_POS)) /**< SZ_MEM Mask */
 
 /**@} end of group ICC_REVA_SZ_Register */
 
@@ -144,11 +144,11 @@ typedef struct {
  * @brief    Cache Control and Status Register.
  * @{
  */
- #define MXC_F_ICC_REVA_CTRL_EN_POS                     0 /**< CTRL_EN Position */
- #define MXC_F_ICC_REVA_CTRL_EN                         ((uint32_t)(0x1UL << MXC_F_ICC_REVA_CTRL_EN_POS)) /**< CTRL_EN Mask */
+#define MXC_F_ICC_REVA_CTRL_EN_POS                     0 /**< CTRL_EN Position */
+#define MXC_F_ICC_REVA_CTRL_EN                         ((uint32_t)(0x1UL << MXC_F_ICC_REVA_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
- #define MXC_F_ICC_REVA_CTRL_RDY_POS                    16 /**< CTRL_RDY Position */
- #define MXC_F_ICC_REVA_CTRL_RDY                        ((uint32_t)(0x1UL << MXC_F_ICC_REVA_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
+#define MXC_F_ICC_REVA_CTRL_RDY_POS                    16 /**< CTRL_RDY Position */
+#define MXC_F_ICC_REVA_CTRL_RDY                        ((uint32_t)(0x1UL << MXC_F_ICC_REVA_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
 /**@} end of group ICC_REVA_CTRL_Register */
 
@@ -156,4 +156,5 @@ typedef struct {
 }
 #endif
 
-#endif /* _ICC_REVA_REGS_H_ */
+#endif  // LIBRARIES_PERIPHDRIVERS_SOURCE_ICC_ICC_REVA_REGS_H_
+

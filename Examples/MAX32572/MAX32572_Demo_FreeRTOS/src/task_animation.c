@@ -37,21 +37,21 @@
 
 #include <string.h>
 
-#include "bitmap.h"
-#include "tft.h"
-#include "touchscreen.h"
-
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
 
-/********************************* 		DEFINES		 *************************/
+#include "bitmap.h"
+#include "tft.h"
+#include "touchscreen.h"
+
+/*********************************      DEFINES      *************************/
 #define NB_SPRITE (32)
 
-/********************************* 		TYPE DEF	 *************************/
+/*********************************      TYPE DEF     *************************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static const int logo_maxim_data[] = {
     maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp, maxim_logo_only_small_002_bmp,
     maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp, maxim_logo_only_small_005_bmp,

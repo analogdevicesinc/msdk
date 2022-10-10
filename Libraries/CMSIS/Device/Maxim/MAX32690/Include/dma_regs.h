@@ -1,6 +1,7 @@
 /**
  * @file    dma_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DMA Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -33,7 +34,8 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
 #ifndef _DMA_REGS_H_
 #define _DMA_REGS_H_
@@ -84,14 +86,14 @@ extern "C" {
  * Structure type to access the DMA Registers.
  */
 typedef struct {
-    __IO uint32_t ctrl;                 /**< <tt>\b 0x100:</tt> DMA CTRL Register */
-    __IO uint32_t status;               /**< <tt>\b 0x104:</tt> DMA STATUS Register */
-    __IO uint32_t src;                  /**< <tt>\b 0x108:</tt> DMA SRC Register */
-    __IO uint32_t dst;                  /**< <tt>\b 0x10C:</tt> DMA DST Register */
-    __IO uint32_t cnt;                  /**< <tt>\b 0x110:</tt> DMA CNT Register */
-    __IO uint32_t srcrld;               /**< <tt>\b 0x114:</tt> DMA SRCRLD Register */
-    __IO uint32_t dstrld;               /**< <tt>\b 0x118:</tt> DMA DSTRLD Register */
-    __IO uint32_t cntrld;               /**< <tt>\b 0x11C:</tt> DMA CNTRLD Register */
+    __IO uint32_t ctrl;                 /**< <tt>\b 0x000:</tt> DMA CTRL Register */
+    __IO uint32_t status;               /**< <tt>\b 0x004:</tt> DMA STATUS Register */
+    __IO uint32_t src;                  /**< <tt>\b 0x008:</tt> DMA SRC Register */
+    __IO uint32_t dst;                  /**< <tt>\b 0x00C:</tt> DMA DST Register */
+    __IO uint32_t cnt;                  /**< <tt>\b 0x010:</tt> DMA CNT Register */
+    __IO uint32_t srcrld;               /**< <tt>\b 0x014:</tt> DMA SRCRLD Register */
+    __IO uint32_t dstrld;               /**< <tt>\b 0x018:</tt> DMA DSTRLD Register */
+    __IO uint32_t cntrld;               /**< <tt>\b 0x01C:</tt> DMA CNTRLD Register */
 } mxc_dma_ch_regs_t;
 
 typedef struct {
@@ -108,17 +110,17 @@ typedef struct {
  * @brief      DMA Peripheral Register Offsets from the DMA Base Peripheral Address.
  * @{
  */
- #define MXC_R_DMA_CTRL                     ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_DMA_STATUS                   ((uint32_t)0x00000104UL) /**< Offset from DMA Base Address: <tt> 0x0104</tt> */ 
- #define MXC_R_DMA_SRC                      ((uint32_t)0x00000108UL) /**< Offset from DMA Base Address: <tt> 0x0108</tt> */ 
- #define MXC_R_DMA_DST                      ((uint32_t)0x0000010CUL) /**< Offset from DMA Base Address: <tt> 0x010C</tt> */ 
- #define MXC_R_DMA_CNT                      ((uint32_t)0x00000110UL) /**< Offset from DMA Base Address: <tt> 0x0110</tt> */ 
- #define MXC_R_DMA_SRCRLD                   ((uint32_t)0x00000114UL) /**< Offset from DMA Base Address: <tt> 0x0114</tt> */ 
- #define MXC_R_DMA_DSTRLD                   ((uint32_t)0x00000118UL) /**< Offset from DMA Base Address: <tt> 0x0118</tt> */ 
- #define MXC_R_DMA_CNTRLD                   ((uint32_t)0x0000011CUL) /**< Offset from DMA Base Address: <tt> 0x011C</tt> */ 
- #define MXC_R_DMA_INTEN                    ((uint32_t)0x00000000UL) /**< Offset from DMA Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_DMA_INTFL                    ((uint32_t)0x00000004UL) /**< Offset from DMA Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_DMA_CH                       ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */ 
+ #define MXC_R_DMA_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from DMA Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_DMA_STATUS                   ((uint32_t)0x00000004UL) /**< Offset from DMA Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_DMA_SRC                      ((uint32_t)0x00000008UL) /**< Offset from DMA Base Address: <tt> 0x0008</tt> */
+ #define MXC_R_DMA_DST                      ((uint32_t)0x0000000CUL) /**< Offset from DMA Base Address: <tt> 0x000C</tt> */
+ #define MXC_R_DMA_CNT                      ((uint32_t)0x00000010UL) /**< Offset from DMA Base Address: <tt> 0x0010</tt> */
+ #define MXC_R_DMA_SRCRLD                   ((uint32_t)0x00000014UL) /**< Offset from DMA Base Address: <tt> 0x0014</tt> */
+ #define MXC_R_DMA_DSTRLD                   ((uint32_t)0x00000018UL) /**< Offset from DMA Base Address: <tt> 0x0018</tt> */
+ #define MXC_R_DMA_CNTRLD                   ((uint32_t)0x0000001CUL) /**< Offset from DMA Base Address: <tt> 0x001C</tt> */
+ #define MXC_R_DMA_INTEN                    ((uint32_t)0x00000000UL) /**< Offset from DMA Base Address: <tt> 0x0000</tt> */
+ #define MXC_R_DMA_INTFL                    ((uint32_t)0x00000004UL) /**< Offset from DMA Base Address: <tt> 0x0004</tt> */
+ #define MXC_R_DMA_CH                       ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */
 /**@} end of group dma_registers */
 
 /**

@@ -30,11 +30,11 @@
 * ownership rights.
 *
 ******************************************************************************/
-#ifndef __APP_LOOP_H__
-#define __APP_LOOP_H__
+#ifndef EXAMPLES_MAX32572_BARCODE_DECODER_INCLUDE_APP_LOOP_H_
+#define EXAMPLES_MAX32572_BARCODE_DECODER_INCLUDE_APP_LOOP_H_
 
 /*****************************************************************************/
 int app_loop_init(void);
 void app_loop_endless(void);
 
-#endif // __APP_LOOP_H__
+#endif // EXAMPLES_MAX32572_BARCODE_DECODER_INCLUDE_APP_LOOP_H_

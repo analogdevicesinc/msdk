@@ -75,7 +75,7 @@ __weak void SystemInit_Core1(void)
 {
     /* Configure the interrupt controller to use the application vector table in
      * the application space */
-    SCB->VTOR = (unsigned long)&__isr_vector_core1;
+    SCB->VTOR = (uint32_t)&__isr_vector_core1;
 
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11
      * Grant full access, per "Table B3-24 CPACR bit assignments".

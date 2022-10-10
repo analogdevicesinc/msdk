@@ -1,14 +1,3 @@
-/**
- * @file        main.c
- * @brief       I2C Loopback Example
- * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
- *              this example you must connect P0.6 to P0.14 (SDA) and P0.7 to P0.15 (SCL). The Master
- *              will use P0.6 and P0.7. The Slave will use P0.14 and P0.15. You must also
- *              connect the pull-up jumpers (either JP1 or JP2).
- * @note        Other devices on the EvKit will be using the same bus. This example cannot be combined with
- *              a PMIC or bluetooth example because the I2C Slave uses GPIO pins for those devices.
- */
-
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -279,14 +268,14 @@ int main()
         printf("Error writing: %d\n", error);
         return FAILED;
     }
-    while (DMA_FLAG == 0) {};
+    while (DMA_FLAG == 0) {}
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return FAILED;
     }
 
-    while (I2C_FLAG == 1) {};
+    while (I2C_FLAG == 1) {}
 #endif
 
     printf("\n-->Result: \n");

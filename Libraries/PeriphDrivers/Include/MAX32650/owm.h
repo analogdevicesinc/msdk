@@ -40,8 +40,8 @@
  **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _OWM_H_
-#define _OWM_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_OWM_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_OWM_H_
 
 /* **** Includes **** */
 #include "mxc_sys.h"
@@ -342,4 +342,4 @@ int MXC_OWM_BitBang_Disable(void);
 }
 #endif
 
-#endif /* _OWM_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_OWM_H_

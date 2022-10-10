@@ -47,9 +47,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "mxc_device.h"
-#include "tmr.h"
-#include "icc.h"
 #include <ucl/ucl_types.h>
 #include <ucl/ucl_config.h>
 #include <ucl/ucl_defs.h>
@@ -69,6 +66,10 @@
 #ifdef DO_KEYGEN_TEST
 #include <ucl/ucl_ecc_keygen.h>
 #endif // DO_KEYGEN_TEST
+
+#include "mxc_device.h"
+#include "tmr.h"
+#include "icc.h"
 
 /***** Definitions *****/
 

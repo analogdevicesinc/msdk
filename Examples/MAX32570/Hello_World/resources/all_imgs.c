@@ -36,7 +36,6 @@
 
 __attribute__((section(".bin_storage_img"))) __attribute__((__used__))
 const unsigned char imgs_arr[] = {
-
     /*
   Header
  */
@@ -51171,5 +51170,4 @@ const unsigned char imgs_arr[] = {
     0xFF,
     0x00,
     0x00,
-
 };

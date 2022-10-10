@@ -39,8 +39,8 @@
  *
  *************************************************************************** */
 
-#ifndef _DMA_H_
-#define _DMA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_DMA_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_DMA_H_
 
 /* **** Includes **** */
 #include "dma_regs.h"
@@ -493,4 +493,4 @@ int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
 }
 #endif
 
-#endif /* _DMA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_DMA_H_

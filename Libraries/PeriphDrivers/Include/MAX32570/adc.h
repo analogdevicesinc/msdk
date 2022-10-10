@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _ADC_H_
-#define _ADC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_ADC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_ADC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -424,4 +424,4 @@ int MXC_ADC_GetData(uint16_t *outdata);
 }
 #endif
 
-#endif /* _ADC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_ADC_H_

@@ -196,7 +196,7 @@ void process_img(void)
             if (camera_is_image_rcv()) {
                 break;
             }
-        };
+        }
 
 #ifndef ENABLE_TFT
         // Send one line to PC

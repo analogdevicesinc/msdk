@@ -39,8 +39,8 @@
  *
  *************************************************************************** */
 
-#ifndef _I2S_H_
-#define _I2S_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2S_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2S_H_
 
 /* **** Includes **** */
 #include "mxc_sys.h"
@@ -188,4 +188,4 @@ int MXC_I2S_DMA_SetReload(void *src_addr, void *dst_addr, unsigned int count);
 
 /**@} end of group i2s */
 
-#endif /* _I2S_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2S_H_

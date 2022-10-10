@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _DESCRIPTORS_H_
-#define _DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX32650_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
+#define EXAMPLES_MAX32650_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -254,7 +254,7 @@ composite_config_descriptor_hs = {
     {
         0x09, /*  bLength                          */
         0x02, /*  bDescriptorType = Config         */
-        0x0062, /*  wTotalLength(L/H)			     */
+        0x0062, /*  wTotalLength(L/H)                */
         0x03, /*  bNumInterfaces                   */
         0x01, /*  bConfigurationValue              */
         0x02, /*  iConfiguration                   */
@@ -453,4 +453,4 @@ __attribute__((aligned(4))) uint8_t msc_func_desc[] = {
     'g',  0,   'e', 0,   ' ', 0,   'D', 0,   'e', 0,   'v', 0,   'i', 0,   'c', 0,   'e', 0,
 };
 
-#endif /* _DESCRIPTORS_H_ */
+#endif // EXAMPLES_MAX32650_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_

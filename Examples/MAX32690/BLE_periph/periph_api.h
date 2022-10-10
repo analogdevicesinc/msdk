@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef PERIPH_API_H
-#define PERIPH_API_H
+#ifndef EXAMPLES_MAX32690_BLE_PERIPH_PERIPH_API_H_
+#define EXAMPLES_MAX32690_BLE_PERIPH_PERIPH_API_H_
 
 #include "wsf_os.h"
 
@@ -103,4 +103,4 @@ void PeriphHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif /* PERIPH_API_H */
+#endif // EXAMPLES_MAX32690_BLE_PERIPH_PERIPH_API_H_

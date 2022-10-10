@@ -36,13 +36,13 @@
  *
  *************************************************************************** */
 
-#ifndef _DMA_H_
-#define _DMA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_DMA_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_DMA_H_
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "dma_regs.h"
-#include <stdbool.h>
 #include "mxc_errors.h"
 
 #ifdef __cplusplus
@@ -496,4 +496,4 @@ int MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t config, mxc_dma_src
 }
 #endif
 
-#endif /* _DMA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_DMA_H_

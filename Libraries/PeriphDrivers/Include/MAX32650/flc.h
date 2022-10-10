@@ -40,8 +40,8 @@
  *
  *************************************************************************** */
 
-#ifndef _MXC_FLC_H_
-#define _MXC_FLC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_
 
 /* **** Includes **** */
 #include "flc_regs.h"
@@ -63,7 +63,7 @@ extern "C" {
 #define MXC_FLASH_PAGE_MASK ~(MXC_FLASH_PAGE_SIZE - 1)
 
 /// Calculate the address of a page in flash from the page number
-#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((unsigned long)page * MXC_FLASH_PAGE_SIZE))
+#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((uint32_t)page * MXC_FLASH_PAGE_SIZE))
 
 /***** Function Prototypes *****/
 
@@ -182,4 +182,4 @@ int MXC_FLC_LockInfoBlock(uint32_t address);
 }
 #endif
 
-#endif /* _MXC_FLC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_FLC_H_

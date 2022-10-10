@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef LWIP_PING_H
-#define LWIP_PING_H
+#ifndef EXAMPLES_MAX32570_LWIP_PING_PING_H_
+#define EXAMPLES_MAX32570_LWIP_PING_PING_H_
 
 #include "lwip/ip_addr.h"
 
@@ -51,4 +51,4 @@ void ping_init(const ip_addr_t *ping_addr);
 void ping_send_now(void);
 #endif /* !PING_USE_SOCKETS */
 
-#endif /* LWIP_PING_H */
+#endif // EXAMPLES_MAX32570_LWIP_PING_PING_H_

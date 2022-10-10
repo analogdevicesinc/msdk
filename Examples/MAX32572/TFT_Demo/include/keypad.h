@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _KEYPAD_H_
-#define _KEYPAD_H_
+#ifndef EXAMPLES_MAX32572_TFT_DEMO_INCLUDE_KEYPAD_H_
+#define EXAMPLES_MAX32572_TFT_DEMO_INCLUDE_KEYPAD_H_
 
 #define KEY_0 '0'
 #define KEY_1 '1'
@@ -57,7 +57,7 @@
 int keypad_init(void);
 int keypad_getkey(void);
 
-#endif /* _KEYPAD_H_ */
+#endif // EXAMPLES_MAX32572_TFT_DEMO_INCLUDE_KEYPAD_H_
 
 /******************************************************************************/
 /* EOF */

@@ -422,9 +422,10 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                         if (ISEQNUM(readPCB) == gPCDSeqNum) {
                             /* A valid I-Block,break  retry loop */
                             ApduDone = True;
-                        } else
+                        } else {
                             /*error block num*/
                             ret = ISO14443_3_ERR_PROTOCOL;
+                        }
 
                         break;
                     case BLOCK_R:
@@ -446,9 +447,10 @@ int32_t SendAPDU(uint8_t *capdu, int32_t capdu_len, uint8_t *rapdu, int32_t *rap
                         if (RSEQNUM(readPCB) == gPCDSeqNum) {
                             /*10.3.4.5*/
                             ret = ISO14443_3_ERR_PROTOCOL;
-                        } else
+                        } else {
                             /*10.3.4.3  need more test*/
                             ret = ISO14443_3_ERR_PROTOCOL;
+                        }
                         break;
                     case BLOCK_S:
                         if (readPCB != PCBS) {

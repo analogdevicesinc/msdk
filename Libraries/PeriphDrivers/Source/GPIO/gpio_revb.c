@@ -32,12 +32,12 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "gpio.h"
-#include "gpio_reva.h"
+#include "gpio_revb.h"
 #include "gpio_common.h"
-#include <stddef.h>
 
 /* **** Functions **** */
 int MXC_GPIO_RevB_Config(const mxc_gpio_cfg_t *cfg, uint8_t psMask)
@@ -199,19 +199,16 @@ void MXC_GPIO_RevB_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
     port->inten_clr = mask;
 }
 
-//TODO: Unnecessary?
 void MXC_GPIO_RevB_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 {
     port->intfl_clr = flags;
 }
 
-//TODO: Unnecessary?
 uint32_t MXC_GPIO_RevB_GetFlags(mxc_gpio_regs_t *port)
 {
     return port->intfl;
 }
 
-//TODO: Unnecessary?
 int MXC_GPIO_RevB_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
     // Configure the vssel

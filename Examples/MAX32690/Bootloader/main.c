@@ -61,6 +61,9 @@ extern uint32_t _flash1;
 #define FLASH_ERASED_WORD 0xFFFFFFFF
 #define CRC32_LEN 4
 
+#define DELAY(loopCount) \
+    for (i = 0; i < loopCount; i++) {}
+
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
@@ -72,7 +75,7 @@ extern uint32_t _flash1;
 /* Defined in boot_lower.S */
 extern void Boot_Lower(void);
 
-/* http://home.thep.lu.se/~bjorn/crc/ */
+// http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
  *  \brief  Create the CRC32 table.
@@ -102,10 +105,13 @@ uint32_t crc32_for_byte(uint32_t r)
 static uint32_t table[0x100] = { 0 };
 void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
-    if (!*table)
-        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
-    for (size_t i = 0; i < n_bytes; ++i)
+    if (!*table) {
+        for (size_t i = 0; i < 0x100; ++i) { table[i] = crc32_for_byte(i); }
+    }
+
+    for (size_t i = 0; i < n_bytes; ++i) {
         *crc = table[(uint8_t)*crc ^ ((uint8_t *)data)[i]] ^ *crc >> 8;
+    }
 }
 
 void bootError(void)
@@ -211,13 +217,28 @@ static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
 
 int main(void)
 {
-    /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFFF; i++) {}
+    int numLedsBlink;
+
+    /* Limit the number of LED blinks */
+    if (num_leds > 2) {
+        numLedsBlink = 2;
+    } else {
+        numLedsBlink = num_leds;
+    }
+
+    /* Prevent bricks */
+    if (numLedsBlink == 0) {
+        DELAY(0x3FFFFF);
+    }
 
     LED_Init();
-    LED_Off(0);
-    LED_Off(1);
+    for (int led = 0; led < numLedsBlink; led++) {
+        LED_On(led);
+        DELAY(0x1FFFFF);
+        LED_Off(led);
+        DELAY(0x1FFFFF);
+    }
 
     /* disable interrupts to prevent these operations from being interrupted */
     __disable_irq();

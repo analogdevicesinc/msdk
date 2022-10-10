@@ -30,7 +30,10 @@
  * ownership rights.
  *
  *************************************************************************** */
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_ADC_ADC_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_ADC_ADC_REVA_H_
 
+#include <stdio.h>
 #include "adc.h"
 #include "adc_reva_regs.h"
 #include "dma_reva_regs.h"
@@ -41,7 +44,6 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "mxc_lock.h"
-#include <stdio.h>
 
 /***** MACROS *****/
 #define AIN0 0x0
@@ -99,3 +101,5 @@ int MXC_ADC_RevA_ConvertAsync(mxc_adc_reva_regs_t *adc, mxc_adc_conversion_req_t
 void MXC_ADC_RevA_Monitor(mxc_adc_reva_regs_t *adc, mxc_adc_monitor_req_t req);
 void MXC_ADC_RevA_MonitorAsync(mxc_adc_reva_regs_t *adc, mxc_adc_monitor_req_t req);
 int MXC_ADC_RevA_GetData(mxc_adc_reva_regs_t *adc, uint16_t *outdata);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_ADC_ADC_REVA_H_

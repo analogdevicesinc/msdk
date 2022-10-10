@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _BOOTLOADER_H_
-#define _BOOTLOADER_H_
+#ifndef EXAMPLES_MAX32662_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#define EXAMPLES_MAX32662_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
 
 /*******************************      INCLUDES    ****************************/
 #include "bootloader_cmd.h"
@@ -84,7 +84,7 @@ int bl_update_cfg_set_i2c_addr(const char *target_bl_version, unsigned char addr
 int bl_update_cfg_set_crc_check(int enable);
 int bl_update_cfg_lock_swd(int enable);
 int bl_update_cfg_set_bl_exit_mode(BLExitMode_t mode);
-int b_update_cfg_set_bl_exit_timeout(unsigned short timeout);
+int b_update_cfg_set_bl_exit_timeout(uint16_t timeout);
 int bl_flash_bl_cfg(void);
 
-#endif // _BOOTLOADER_H_
+#endif // EXAMPLES_MAX32662_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_

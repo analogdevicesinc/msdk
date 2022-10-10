@@ -1,0 +1,6 @@
+OLIMEX-ARM-USB-OCD-H, interface/ftdi/olimex-arm-usb-ocd-h.cfg
+OLIMEX-ARM-USB-OCD-H SWD, interface/ftdi/olimex-arm-usb-ocd-h.cfg -f interface/ftdi/olimex-arm-jtag-swd.cfg
+OLIMEX-ARM-USB-TINY-H, interface/ftdi/olimex-arm-usb-tiny-h.cfg
+OLIMEX-ARM-USB-TINY-H SWD, interface/ftdi/olimex-arm-usb-tiny-h.cfg -f interface/ftdi/olimex-arm-jtag-swd.cfg
+MAX32625_PICO, interface/cmsis-dap.cfg
+CMSIS-DAP, interface/cmsis-dap.cfg

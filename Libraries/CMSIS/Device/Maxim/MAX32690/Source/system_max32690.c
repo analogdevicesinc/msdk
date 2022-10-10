@@ -125,7 +125,7 @@ __weak void SystemInit(void)
     /* the application space */
 #if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
-    SCB->VTOR = (unsigned long)__isr_vector;
+    SCB->VTOR = (uint32_t)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
 
     MXC_ICC_Enable(MXC_ICC0);

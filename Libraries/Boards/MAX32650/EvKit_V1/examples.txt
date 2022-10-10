@@ -6,11 +6,13 @@ DES
 DMA
 EMCC
 Flash
+Flash_CLI
 FreeRTOSDemo
 GPIO
 HBMC
 Hello_World
 I2C
+I2C_SCAN
 I2S
 ICC
 LP
@@ -18,6 +20,7 @@ MAA
 OWM
 Pulse_Train
 RTC
+RTC_Backup
 SCPA_OTP_Dump
 SDHC_FAT
 SDHC_Raw

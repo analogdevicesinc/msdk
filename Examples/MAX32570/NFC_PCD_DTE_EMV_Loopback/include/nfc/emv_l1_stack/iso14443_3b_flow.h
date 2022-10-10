@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef __ISO14443_3B_FLOW_H__
-#define __ISO14443_3B_FLOW_H__
+#ifndef EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_FLOW_H_
+#define EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_FLOW_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -175,4 +175,4 @@ int32_t iso_14443_3b_remove(void);
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32570_NFC_PCD_DTE_EMV_LOOPBACK_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_FLOW_H_

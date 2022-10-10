@@ -33,6 +33,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "mxc_assert.h"
 #include "mxc_device.h"
 #include "mxc_pins.h"
@@ -231,10 +232,12 @@ static int ext_flash_board_write(const uint8_t *write, unsigned len, unsigned de
 }
 
 /******************************************************************************/
-static int ext_flash_clock(unsigned len, unsigned deassert)
+static int ext_flash_clock(unsigned int len, unsigned int deassert)
 {
     mxc_spi_req_t qspi_dummy_req;
     mxc_spi_width_t width;
+    uint8_t *write;
+    int res;
 
     if (MXC_SPI_GetDataSize(MXC_SPI0) != 8) {
         return E_BAD_STATE;
@@ -256,8 +259,8 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
         return E_BAD_STATE;
     }
 
-    uint8_t write[len];
-    memset(write, 0, sizeof(write));
+    write = (uint8_t *)malloc(len);
+    memset(write, 0, len);
 
     qspi_dummy_req.spi = MXC_SPI0;
     qspi_dummy_req.ssIdx = 0;
@@ -270,7 +273,9 @@ static int ext_flash_clock(unsigned len, unsigned deassert)
     qspi_dummy_req.rxCnt = 0;
     qspi_dummy_req.completeCB = NULL;
 
-    return MXC_SPI_MasterTransaction(&qspi_dummy_req);
+    res = MXC_SPI_MasterTransaction(&qspi_dummy_req);
+    free(write);
+    return res;
 }
 #endif /* __riscv */
 
@@ -304,9 +309,11 @@ int Board_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
 
+#ifdef DEBUG
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
+#endif
 
     if ((err = PB_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();

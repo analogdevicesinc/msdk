@@ -39,8 +39,8 @@
 #include <stdio.h>
 #include "spixf.h"
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32665_WLP_VAR_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32665_WLP_VAR_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -119,4 +119,4 @@ int Console_Shutdown(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32665_WLP_VAR_INCLUDE_BOARD_H_

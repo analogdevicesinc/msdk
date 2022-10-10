@@ -28,6 +28,8 @@ The following features are supported:
 
 ## Installation
 
+The steps below are also available in video form in "Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code" [here](https://www.maximintegrated.com/en/products/microcontrollers/artificial-intelligence.html/tab4/vd_1_2eaktism#.YyDxHaE8U_Y.mailto).
+
 1. Download & install the Maxim Microcontrollers SDK for your OS from the links below.
     * [Windows](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
     * [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
@@ -99,31 +101,37 @@ Once a project is opened 4 available build tasks will become available via `Term
 
 ![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
-* Build
-  * Compiles the code with a `make all` command.
-  * Additional options are passed into Make on the command-line based on the project's settings.json file.
-  * The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
+#### Build
 
-* Clean
-  * Cleans the build output, removing the `./build` directory and all of its contents.
+* Compiles the code with a `make all` command.
+* Additional options are passed into Make on the command-line based on the project's settings.json file.
+* The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
 
-* Clean-Periph
-  * This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.
-  * Use this if you would like to recompile the peripheral drivers from source on the next build.
+#### Clean
 
-* Flash
-  * Launching this task automatically runs the `Build` task first.  Then, it flashes the output binary to the microcontroller.
-  * It uses the GDB `load` and `compare-sections` commands, and handles launching an OpenOCD internally via a pipe connection.
-  * The flashed program will be halted until the microcontroller is reset, power cycled, or a debugger is connected.
-  * A debugger must be connected correctly to use this task.  Refer to the datasheet of your microcontroller's evaluation board for instructions.
+* Cleans the build output, removing the `./build` directory and all of its contents.
+
+#### Clean-Periph
+
+* This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.
+* Use this if you would like to recompile the peripheral drivers from source on the next build.
+
+#### Flash
+
+* Launching this task automatically runs the `Build` task first.  Then, it flashes the output binary to the microcontroller.
+* It uses the GDB `load` and `compare-sections` commands, and handles launching an OpenOCD internally via a pipe connection.
+* The flashed program will be halted until the microcontroller is reset, power cycled, or a debugger is connected.
+* A debugger must be connected correctly to use this task.  Refer to the datasheet of your microcontroller's evaluation board for instructions.
   
-* Flash & Run
-  * This is the same as the `Flash` task, but it also will launch execution of the program once flashing is complete.
+#### Flash & Run
+
+* This is the same as the `Flash` task, but it also will launch execution of the program once flashing is complete.
   
-* Erase Flash
-  * Completely erases all of the application code in the flash memory bank.
-  * Once complete, the target microcontroller will be effectively "blank".
-  * This can be useful for recovering from Low-Power (LP) lockouts, bad firmware, etc.
+#### Erase Flash
+
+* Completely erases all of the application code in the flash memory bank.
+* Once complete, the target microcontroller will be effectively "blank".
+* This can be useful for recovering from Low-Power (LP) lockouts, bad firmware, etc.
 
 ### Debugging
 
@@ -141,13 +149,13 @@ In general, Maxim's microcontrollers have the following debugger limitations at 
 
 * The device can not be debugged while the device is in Sleep, Low Power Mode, Micro Power Mode, Standby, Backup, or Shutdown mode.  These modes shut down the SWD clock.
 
-* These limitations can sometimes make the device difficult or impossible to connect to if firmware has locked out the debugger.  In such cases, the "Erase Flash" task can be used to recover the part.
+* These limitations can sometimes make the device difficult or impossible to connect to if firmware has locked out the debugger.  In such cases, the ["Erase Flash"](#erase-flash) task can be used to recover the part.
 
 #### Launching the Debugger
 
 1. Attach your debugger to the SWD port on the target microcontroller.  (Refer to the datasheet of your evaluation board for instructions on connecting a debugger)
 
-2. Flash the program to the microcontroller with the "Flash" [Build Task](#Build-Tasks).  **Flashing does not happen automatically when launching the debugger.**
+2. Flash the program to the microcontroller with the "Flash" [Build Task](#build-tasks).  **Flashing does not happen automatically when launching the debugger.**
 
 3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.  
 
@@ -189,32 +197,34 @@ The following configuration options are available:
 
 ### Basic Config Options
 
-* `"target"`
-  * This sets the target microcontroller for the project.
-  * It sets the `TARGET` [Build Configuration](#build-configuration) variable.
-  * Supported values:
-    * `"MAX32520"`
-    * `"MAX32570"`
-    * `"MAX32650"`
-    * `"MAX32655"`
-    * `"MAX32660"`
-    * `"MAX32662"`
-    * `"MAX32665"` (for MAX32665-MAX32668)
-    * `"MAX32670"`
-    * `"MAX32672"`
-    * `"MAX32675"`
-    * `"MAX32680"`
-    * `"MAX32690"`
-    * `"MAX78000"`
-    * `"MAX78002"`
+#### `"target"`
 
-* `"board"`
-  * This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
-  * Supported values:
-    * ... can be found in the `Libraries/Boards` folder of the MaximSDK
-    * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
+* This sets the target microcontroller for the project.
+* It sets the `TARGET` [Build Configuration](#build-configuration) variable.
+* Supported values:
+  * `"MAX32520"`
+  * `"MAX32570"`
+  * `"MAX32650"`
+  * `"MAX32655"`
+  * `"MAX32660"`
+  * `"MAX32662"`
+  * `"MAX32665"` (for MAX32665-MAX32668)
+  * `"MAX32670"`
+  * `"MAX32672"`
+  * `"MAX32675"`
+  * `"MAX32680"`
+  * `"MAX32690"`
+  * `"MAX78000"`
+  * `"MAX78002"`
 
-    ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
+#### `"board"`
+
+* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+* Supported values:
+  * ... can be found in the `Libraries/Boards` folder of the MaximSDK
+  * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
+
+  ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
 
 ### Advanced Config Options
 
@@ -345,7 +355,7 @@ A project's build system is managed by two files found in the project's root dir
 When the command...
 
 ```shell
-$ make
+make
 ```
 
 ... is run, the program `make` will load settings from these two files.  Then, it will use them to build the project's source code.  VSCode-Maxim is a "wrapper" around this Makefile system.
@@ -417,7 +427,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 It should also be noted that configuration variables can be set on the **command-line** as well.  For example...
 
 ```shell
-$ make MFLOAT_ABI=hard
+make MFLOAT_ABI=hard
 ```
 
 ... will have the same effect.
@@ -425,7 +435,7 @@ $ make MFLOAT_ABI=hard
 Additionally, **environment variables** can be used.  For example (on linux)...
 
 ```shell
-$ export TARGET=MAX78000
+export TARGET=MAX78000
 ```
 
 ... will set all projects to build for the MAX78000.
@@ -440,9 +450,9 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ...meaning if a value is set on the command-line _and_ project.mk, the command-line value will take precedence.  However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
 
-### Configuration Variables Reference
+### Configuration Variables Table
 
-The project's `Makefile` can be opened to see a full list of available config options, but they are nested among the implementation details of the Makefile itself.  This might be fine for those familiar with reading Makefiles, but a clean reference table is also available below.
+The following configuration variables are available.
 
 | Variable | Description | Example | Details |
 |--- | --- | --- | ---|
@@ -457,7 +467,7 @@ The project's `Makefile` can be opened to see a full list of available config op
 | `IPATH` | Where to search for header (.h) files | `IPATH+=your/include/path` | **Use the `+=` operator with this option**.  This controls where the Makefile will look for **header** files.  _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`.  Individual header files are _not_ ever manually added into the build.  Instead, you only need to specify the _location_ of your header files.
 | `AUTOSEARCH` | Automatically search for source (.c) files | `AUTOSEARCH=0` | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default).  Set to `0` to disable, or `1` to enable.  If autosearch is disabled, source files must be manually added to `SRCS`.
 | `SRCS` | List of source (.c) files to add to the build | `SRCS+=./my/other/source.c` | **Use the `+=` operator with this option**.  All of the files in this list will be added to the build.  If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build.  If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`.  Otherwise, a full path relative to the Makefile must be used.
-| `PROJECT` | Set the output filename | `PROJECT=MyProject` | This controls the output filename of the build.  File extensions should _not_ be set here since the output file format may vary depending on the build recipe.  For VSCode-Maxim, you should use the [project_name](#projectname) advanced config option instead, which sets `PROJECT` on the command-line [Build Tasks](#build-tasks).
+| `PROJECT` | Set the output filename | `PROJECT=MyProject` | This controls the output filename of the build.  File extensions should _not_ be set here since the output file format may vary depending on the build recipe.  For VSCode-Maxim, you should use the [project_name](#project_name) advanced config option instead, which sets `PROJECT` on the command-line [Build Tasks](#build-tasks).
 **Compiler**
 | `MXC_OPTIMIZE_CFLAGS` | Set the optimization level | `MXC_OPTIMIZE_CFLAGS=-O2` | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`.
 | `PROJ_CFLAGS` | Add a compiler flag to the build | `PROJ_CFLAGS+=-Wextra`, `PROJ_CFLAGS+=-DMYDEFINE` | Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options.
@@ -476,7 +486,12 @@ The project's `Makefile` can be opened to see a full list of available config op
 | `LIB_LWIP` | Include the lwIP library | `LIB_LWIP=1` | |
 | `LIB_MAXUSB` | Include the MaxUSB library | `LIB_MAXUSB=1` | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers.  Set to `0` to disable, or `1` to enable.
 | `LIB_SDHC` | Include the SDHC library | `LIB_SDHC=1` | This options toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards.  Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem.
-
+**Secure Boot Tools (SBT)**
+| `SBT` | Toggle SBT integration | `SBT=1` | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7637.html).  These are a suite of applications designed for use with microcontrollers that have secure bootloaders.  When this is enabled, some additional rules become available such as `make sla` and `make scpa`.  Set to `0` to disable or `1` to enable.
+| `MAXIM_SBT_DIR` | Where to find the SBTs | `MAXIM_SBT_DIR=C:/MaximSBT` | This option can be used to manually specify the location of the SBTs.  Usually, this is not necessary.  By default, the `Tools/SBT` directory of the MaximSDK will be searched.  If the [SBT installer](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically.
+| `TARGET_SEC` | Secure part number to use | `TARGET_SEC=MAX32651` | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected, and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk`
+| `SCP_PACKETS` | Where to build the scp_packets folder | | Defaults to `build/scp_packets` |
+| `TEST_KEY` | Which test key to sign applications with | | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development.
 
 ## Project Creation
 

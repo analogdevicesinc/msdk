@@ -1,49 +1,49 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
- <peripheral>
-  <name>SEMA</name>
-  <description>The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
+  <peripheral>
+    <name>SEMA</name>
+    <description>The Semaphore peripheral allows multiple cores in a system to cooperate when accessing shred resources.
                                      The peripheral contains eight semaphores that can be atomically set and cleared. It is left to the discretion of the software
                                      architect to decide how and when the semaphores are used and how they are allocated. Existing hardware does not have to be
                                      
                                      modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.</description>
-  <baseAddress>0x4003E000</baseAddress>
-  <addressBlock>
-   <offset>0x00</offset>
-   <size>0x1000</size>
-   <usage>registers</usage>
-  </addressBlock>
-  <registers>
-   <register>
-    <dim>8</dim>
-    <dimIncrement>4</dimIncrement>
-    <name>SEMAPHORES[%s]</name>
-    <description>Read to test and set, returns prior value. Write 0 to clear semaphore.</description>
-    <addressOffset>0x00</addressOffset>
-    <size>32</size>
-    <fields>
-     <field>
-      <name>sema</name>
-      <bitOffset>0</bitOffset>
-      <bitWidth>1</bitWidth>
-     </field>
-    </fields>
-   </register>
-   <register>
-    <name>status</name>
-    <description>Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.</description>
-    <addressOffset>0x100</addressOffset>
-    <size>32</size>
-    <fields>
-     <field>
-      <name>STATUS</name>
-      <bitOffset>0</bitOffset>
-      <bitWidth>8</bitWidth>
-     </field>
-    </fields>
-   </register>
-  </registers>
- </peripheral>
-<!-- SEMA:
+    <baseAddress>0x4003E000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>0x04</dimIncrement>
+        <name>SEMAPHORES[%s]</name>
+        <description>Read to test and set, returns prior value. Write 0 to clear semaphore.</description>
+        <addressOffset>0x000</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>sema</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>status</name>
+        <description>Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.</description>
+        <addressOffset>0x100</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>STATUS</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- SEMA:
                                          Semaphore                            -->
 </device>

@@ -4410,7 +4410,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
     </register>
     <cluster>
      <dim>16</dim>
-     <dimIncrement>4</dimIncrement>
+     <dimIncrement>0x20</dimIncrement>
      <name>CH[%s]</name>
      <description>DMA Channel registers.</description>
      <headerStructName>dma_ch</headerStructName>
@@ -4419,7 +4419,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>CTRL</name>
       <description>DMA Channel Control Register.</description>
-      <addressOffset>0x100</addressOffset>
+      <addressOffset>0x000</addressOffset>
       <fields>
        <field>
         <name>EN</name>
@@ -4986,7 +4986,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>STATUS</name>
       <description>DMA Channel Status Register.</description>
-      <addressOffset>0x104</addressOffset>
+      <addressOffset>0x004</addressOffset>
       <fields>
        <field>
         <name>STATUS</name>
@@ -5059,7 +5059,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>SRC</name>
       <description>Source Device Address. If SRCINC=1, the counter bits are incremented by 1,2, or 4, depending on the data width of each AHB cycle. For peripheral transfers, some or all of the actual address bits are fixed. If SRCINC=0, this register remains constant. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with the contents of DMA_SRC_RLD.</description>
-      <addressOffset>0x108</addressOffset>
+      <addressOffset>0x008</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -5071,7 +5071,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>DST</name>
       <description>Destination Device Address. For peripheral transfers, some or all of the actual address bits are fixed. If DSTINC=1, this register is incremented on every AHB write out of the DMA FIFO. They are incremented by 1, 2, or 4, depending on the data width of each AHB cycle. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with DMA_DST_RLD.</description>
-      <addressOffset>0x10C</addressOffset>
+      <addressOffset>0x00C</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -5083,7 +5083,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>CNT</name>
       <description>DMA Counter. The user loads this register with the number of bytes to transfer. This counter decreases on every AHB cycle into the DMA FIFO. The decrement will be 1, 2, or 4 depending on the data width of each AHB cycle. When the counter reaches 0, a count-to-zero condition is triggered.</description>
-      <addressOffset>0x110</addressOffset>
+      <addressOffset>0x010</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -5096,7 +5096,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>SRCRLD</name>
       <description>Source Address Reload Value. The value of this register is loaded into DMA0_SRC upon a count-to-zero condition.</description>
-      <addressOffset>0x114</addressOffset>
+      <addressOffset>0x014</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -5109,7 +5109,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>DSTRLD</name>
       <description>Destination Address Reload Value. The value of this register is loaded into DMA0_DST upon a count-to-zero condition.</description>
-      <addressOffset>0x118</addressOffset>
+      <addressOffset>0x018</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -5122,7 +5122,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <register>
       <name>CNTRLD</name>
       <description>DMA Channel Count Reload Register.</description>
-      <addressOffset>0x11C</addressOffset>
+      <addressOffset>0x01C</addressOffset>
       <fields>
        <field>
         <name>CNT</name>

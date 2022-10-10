@@ -1,9 +1,3 @@
-/**
- * @file    disp_cfaf128128b1.h
- * @brief   CrystalFontz CFAF128128B1 controller configuration data
- *          
- */
-
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -37,6 +31,12 @@
  *
  ******************************************************************************/
 
+/**
+ * @file    disp_cfaf128128b1.h
+ * @brief   CrystalFontz CFAF128128B1 controller configuration data
+ *          
+ */
+
 /* Configuration for the CrystalFontz CFAF128128B1 panel
  * 
  * fosc = 333kHz, per CrystalFontz
@@ -45,6 +45,10 @@
  *  register write to last register write. Delays will occur after the cmd/data
  *  is transmitted.
  */
+
+#ifndef EXAMPLES_MAX32672_DISPLAY_DISP_CFAF128128B1_H_
+#define EXAMPLES_MAX32672_DISPLAY_DISP_CFAF128128B1_H_
+
 #include "st7735s_regs.h"
 
 st7735s_regcfg_t cfaf128128b1_regcfg[] = {
@@ -89,3 +93,5 @@ st7735s_regcfg_t cfaf128128b1_regcfg[] = {
 };
 
 unsigned int cfaf128128b1_ncfgs = sizeof(cfaf128128b1_regcfg) / sizeof(st7735s_regcfg_t);
+
+#endif // EXAMPLES_MAX32672_DISPLAY_DISP_CFAF128128B1_H_

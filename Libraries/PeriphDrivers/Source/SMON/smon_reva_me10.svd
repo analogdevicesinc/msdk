@@ -1,0 +1,1253 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>SMON</name>
+    <description>The Security Monitor block used to monitor system threat conditions.</description>
+    <baseAddress>0x40004000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>EXTSCN</name>
+        <description>External Sensor Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetMask>0x3800FFC0</resetMask>
+        <fields>
+          <field>
+            <name>EXTS_EN0</name>
+            <description>External Sensor Enable for input/output pair 0.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTS_EN1</name>
+            <description>External Sensor Enable for input/output pair 1.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTS_EN2</name>
+            <description>External Sensor Enable for input/output pair 2.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTS_EN3</name>
+            <description>External Sensor Enable for input/output pair 3.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTS_EN4</name>
+            <description>External Sensor Enable for input/output pair 4.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTS_EN5</name>
+            <description>External Sensor Enable for input/output pair 5.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTCNT</name>
+            <description>External Sensor Error Counter. These bits set the number of external sensor accepted mismatches that have to occur within a single bit period before an external sensor alarm is triggered.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>EXTFRQ</name>
+            <description>External Sensor Frequency. These bits define the frequency at which the external sensors are clocked to/from the EXTS_IN and EXTS_OUT pair.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>freq2000Hz</name>
+                <description>Div 4 (2000Hz).</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq1000Hz</name>
+                <description>Div 8 (1000Hz).</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq500Hz</name>
+                <description>Div 16 (500Hz).</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq250Hz</name>
+                <description>Div 32 (250Hz).</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq125Hz</name>
+                <description>Div 64 (125Hz).</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq63Hz</name>
+                <description>Div 128 (63Hz).</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>freq31Hz</name>
+                <description>Div 256 (31Hz).</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>RFU</name>
+                <description>Reserved. Do not use.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DIVCLK</name>
+            <description>Clock Divide.  These bits are used to divide the 8KHz input clock. The resulting divided clock is used for all logic within the Security Monitor Block. Note:
+                                                             If the input clock is divided with these bits, the error count threshold table and output frequency will be affected accordingly with the same divide factor.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div1</name>
+                <description>Divide by 1 (8000 Hz).</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div2</name>
+                <description>Divide by 2 (4000 Hz).</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div4</name>
+                <description>Divide by 4 (2000 Hz).</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>Divide by 8 (1000 Hz).</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div16</name>
+                <description>Divide by 16 (500 Hz).</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div32</name>
+                <description>Divide by 32 (250 Hz).</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div64</name>
+                <description>Divide by 64 (125 Hz).</description>
+                <value>6</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BUSY</name>
+            <description>Busy. This bit is set to 1 by hardware after EXTSCN register is written to. This bit is automatically cleared to 0 after this register information has been transferred to the security monitor domain.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>idle</name>
+                <description>Idle.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Update in Progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOCK</name>
+            <description>Lock Register. Once locked, the EXTSCN register can no longer be modified.  Only a battery disconnect will clear this bit. VBAT powers this register.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>unlocked</name>
+                <description>Unlocked.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>locked</name>
+                <description>Locked.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTSCN</name>
+        <description>Internal Sensor Control Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <resetMask>0x7F00FFF7</resetMask>
+        <fields>
+          <field>
+            <name>SHIELD_EN</name>
+            <description>Die Shield Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>TEMP_EN</name>
+            <description>Temperature Sensor Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VBAT_EN</name>
+            <description>Battery Monitor Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOTEMP_SEL</name>
+            <description>Low Temperature Detection Select.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>neg50C</name>
+                <description>-50 degrees C.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>neg30C</name>
+                <description>-30 degrees C.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCORELOEN</name>
+            <description>VCORE Undervoltage Detect Enable.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCOREHIEN</name>
+            <description>VCORE Overvoltage Detect Enable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VDDLOEN</name>
+            <description>VDD Undervoltage Detect Enable.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VDDHIEN</name>
+            <description>VDD Overvoltage Detect Enable.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VGLEN</name>
+            <description>Voltage Glitch Detection Enable.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOCK</name>
+            <description>Lock Register. Once locked, the INTSCN register can no longer be modified.  Only a battery disconnect will clear this bit. VBAT powers this register.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>unlocked</name>
+                <description>Unlocked.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>locked</name>
+                <description>Locked.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SECALM</name>
+        <description>Security Alarm Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetValue>0x00000000</resetValue>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>DRS</name>
+            <description>Destructive Reset Trigger. Setting this bit will generate a DRS. This bit is self-cleared by hardware.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>KEYWIPE</name>
+            <description>Key Wipe Trigger. Set to 1 to initiate a wipe of the AES key register. It does not reset the part, or log a timestamp. AES and DES registers are not affected by this bit. This bit is automatically cleared to 0 after the keys have been wiped.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SHIELDF</name>
+            <description>Die Shield Flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOTEMP</name>
+            <description>Low Temperature Detect.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HITEMP</name>
+            <description>High Temperature Detect.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BATLO</name>
+            <description>Battery Undervoltage Detect.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BATHI</name>
+            <description>Battery Overvoltage Detect.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTF</name>
+            <description>External Sensor Flag.   This bit is set to 1 when any of the EXTSTAT bits are set.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VDDLO</name>
+            <description>VDD Undervoltage Detect Flag.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCORELO</name>
+            <description>VCORE Undervoltage Detect Flag.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCOREHI</name>
+            <description>VCORE Overvoltage Detect Flag.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VDDHI</name>
+            <description>VDD Overvoltage Flag.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VGL</name>
+            <description>Voltage Glitch Detection Flag.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT0</name>
+            <description>External Sensor 0 Detect. The tamper detect is only active when it is enabled. This bits needs to be cleared in software after a tamper event to re-arm the sensor.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT1</name>
+            <description>External Sensor 1 Detect. The tamper detect is only active when it is enabled. This bits needs to be cleared in software after a tamper event to re-arm the sensor.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT2</name>
+            <description>External Sensor 2 Detect. The tamper detect is only active when it is enabled. This bits needs to be cleared in software after a tamper event to re-arm the sensor.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT3</name>
+            <description>External Sensor 3 Detect. The tamper detect is only active when it is enabled. This bits needs to be cleared in software after a tamper event to re-arm the sensor.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT4</name>
+            <description>External Sensor 4 Detect. The tamper detect is only active when it is enabled. This bits needs to be cleared in software after a tamper event to re-arm the sensor.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT5</name>
+            <description>External Sensor 5 Detect. The tamper detect is only active when it is enabled. This bits needs to be cleared in software after a tamper event to re-arm the sensor.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSWARN0</name>
+            <description>External Sensor 0 Warning Ready flag. The tamper detect warning flags are set, regardless of whether the external sensors are enabled.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSWARN1</name>
+            <description>External Sensor 1 Warning Ready flag. The tamper detect warning flags are set, regardless of whether the external sensors are enabled.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSWARN2</name>
+            <description>External Sensor 2 Warning Ready flag. The tamper detect warning flags are set, regardless of whether the external sensors are enabled.</description>
+            <bitOffset>26</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSWARN3</name>
+            <description>External Sensor 3 Warning Ready flag. The tamper detect warning flags are set, regardless of whether the external sensors are enabled.</description>
+            <bitOffset>27</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSWARN4</name>
+            <description>External Sensor 4 Warning Ready flag. The tamper detect warning flags are set, regardless of whether the external sensors are enabled.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSWARN5</name>
+            <description>External Sensor 5 Warning Ready flag. The tamper detect warning flags are set, regardless of whether the external sensors are enabled.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SECDIAG</name>
+        <description>Security Diagnostic Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <access>read-only</access>
+        <resetValue>0x00000001</resetValue>
+        <resetMask>0xFFC0FE02</resetMask>
+        <fields>
+          <field>
+            <name>BORF</name>
+            <description>Battery-On-Reset Flag. This bit is set once the back up battery is conneted.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SHIELDF</name>
+            <description>Die Shield Flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LOTEMP</name>
+            <description>Low Temperature Detect.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HITEMP</name>
+            <description>High Temperature Detect.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BATLO</name>
+            <description>Battery Undervoltage Detect.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BATHI</name>
+            <description>Battery Overvoltage Detect.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DYNF</name>
+            <description>Dynamic Sensor Flag.  This bit is set to 1 when any of the EXTSTAT bits are set.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AESKT</name>
+            <description>AES Key Transfer.  This bit is set to 1 when AES Key has been transferred from the TRNG to the battery backed AES key register. This bit can only be reset by a BOR.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>incomplete</name>
+                <description>Key has not been transferred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>Key has been transferred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT0</name>
+            <description>External Sensor 0 Detect.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT1</name>
+            <description>External Sensor 1 Detect.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT2</name>
+            <description>External Sensor 2 Detect.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT3</name>
+            <description>External Sensor 3 Detect.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT4</name>
+            <description>External Sensor 4 Detect.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EXTSTAT5</name>
+            <description>External Sensor 5 Detect.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>noEvent</name>
+                <description>The event has not occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>occurred</name>
+                <description>The event has occurred.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DLRTC</name>
+        <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occurred.</description>
+        <addressOffset>0x10</addressOffset>
+        <access>read-only</access>
+        <resetMask>0x00000000</resetMask>
+        <fields>
+          <field>
+            <name>DLRTC</name>
+            <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occured.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SECST</name>
+        <description>Security Monitor Status</description>
+        <addressOffset>0x38</addressOffset>
+        <fields>
+          <field>
+            <name>EXTSRS</name>
+            <description>External Sensor Status.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>allowed</name>
+                <description>Allowed.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>notallowed</name>
+                <description>Not allowed.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>INTSRS</name>
+            <description>Internal Sensor Status.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>allowed</name>
+                <description>Allowed.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>notallowed</name>
+                <description>Not allowed.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SECALRS</name>
+            <description>Securit Alarm Status.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>allowed</name>
+                <description>Allowed.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>notallowed</name>
+                <description>Not allowed.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- SMON:
+                                                                 Security Monitor                     -->
+</device>

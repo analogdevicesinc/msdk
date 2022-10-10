@@ -38,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32675_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32675_EVKIT_V1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -85,4 +85,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32675_EVKIT_V1_INCLUDE_BOARD_H_

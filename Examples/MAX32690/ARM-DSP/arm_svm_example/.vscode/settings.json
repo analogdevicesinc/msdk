@@ -23,7 +23,7 @@
     "symbol_file":"${config:program_file}",
 
     "M4_OCD_interface_file":"cmsis-dap.cfg",
-    "M4_OCD_target_file":"${config:target}.cfg",
+    "M4_OCD_target_file":"max32690.cfg",
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
@@ -53,7 +53,8 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/CMSIS/5.9.0/Core/Include",
-        "${config:MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include"
+        "${config:MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include",
+        "${config:MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include/dsp"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",

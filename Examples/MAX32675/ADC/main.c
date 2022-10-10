@@ -190,6 +190,5 @@ int main(void)
         // Reset ADC value averages
         avg_adc_0 = 0;
         avg_adc_1 = 0;
-
     } // END of ADC read loop
 }

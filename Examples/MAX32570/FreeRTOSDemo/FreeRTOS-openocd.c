@@ -1,3 +1,5 @@
+// Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+
 /*
  * Since at least FreeRTOS V7.5.3 uxTopUsedPriority is no longer
  * present in the kernel, so it has to be supplied by other means for

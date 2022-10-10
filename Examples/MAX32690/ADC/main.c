@@ -51,11 +51,11 @@
 /***** Definitions *****/
 
 #define POLLING // Uncomment to perform ADC conversions using blocking/polling method
-// #define INTERRUPT   	// Uncomment to perform ADC conversions using interrupt driven method
-// #define DMA         	// Uncomment to perform ADC conversions using DMA driven method.
+// #define INTERRUPT    // Uncomment to perform ADC conversions using interrupt driven method
+// #define DMA          // Uncomment to perform ADC conversions using DMA driven method.
 
 #define SOFTWARE // Uncomment to perform ADC conversions using a software trigger
-// #define HARDWARE	 	// Uncomment to perform ADC conversions using a hardware trigger
+// #define HARDWARE     // Uncomment to perform ADC conversions using a hardware trigger
 
 #define CH MXC_ADC_CH_0
 
@@ -441,7 +441,7 @@ int main(void)
 
         MXC_ADC_StartConversionAsync(adc_complete_cb);
 
-        while (!adc_done) {};
+        while (!adc_done) {}
 #endif
 
 #ifdef DMA
@@ -457,7 +457,7 @@ int main(void)
         MXC_DMA_ReleaseChannel(0);
         MXC_ADC_StartConversionDMA(&adc_conv, &adc_val[0], adc_dma_callback);
 
-        while (!dma_done) {};
+        while (!dma_done) {}
 #endif
         ShowAdcResult();
 

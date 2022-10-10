@@ -37,8 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef _FONT_H_
-#define _FONT_H_
+#ifndef LIBRARIES_BOARDS_MAX32570_INCLUDE_FONT_H_
+#define LIBRARIES_BOARDS_MAX32570_INCLUDE_FONT_H_
 
 #include "touchscreen.h"
 
@@ -1419,4 +1419,4 @@ unsigned char pixel_data[21620] = {
     0x00, 0x00, 0x00, 0x00
 };
 
-#endif /* _FONT_H_ */
+#endif // LIBRARIES_BOARDS_MAX32570_INCLUDE_FONT_H_

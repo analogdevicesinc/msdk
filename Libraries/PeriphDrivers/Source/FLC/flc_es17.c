@@ -1,6 +1,6 @@
 /**
- * @file flc.h
- * @brief      Flash Controler driver.
+ * @file flc_es17.h
+ * @brief      Flash Controller driver.
  * @details    This driver can be used to operate on the embedded flash memory.
  */
 /* ****************************************************************************
@@ -49,6 +49,8 @@
 #include "flc_common.h"
 #include "ctb.h"
 #include "mcr_regs.h" // For ECCEN registers.
+#include "icc_regs.h"
+
 static void mxc_aes_init(void);
 static int mxc_encrypt_sequence(const uint8_t *pt, uint8_t *ct, uint32_t addr, int len);
 

@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _TASK_LOGO_ANIMATION_H_
-#define _TASK_LOGO_ANIMATION_H_
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_TASK_LOGO_ANIMATION_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_TASK_LOGO_ANIMATION_H_
 
 /*****************************     DEFINES    *********************************/
 
@@ -43,4 +43,4 @@ void logo_animation_start(void);
 void logo_animation_stop(void);
 void logo_animation_tick(void);
 
-#endif /* _TASK_LOGO_ANIMATION_H_ */
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_TASK_LOGO_ANIMATION_H_

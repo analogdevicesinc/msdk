@@ -37,6 +37,9 @@
  *
  ******************************************************************************/
 
+#ifndef EXAMPLES_MAX32672_DISPLAY_ST7735S_DRV_H_
+#define EXAMPLES_MAX32672_DISPLAY_ST7735S_DRV_H_
+
 typedef struct {
     uint8_t cmd; /* Controller command # */
     uint8_t delay; /* Delay in ms after executing this command/data sequence */
@@ -56,3 +59,5 @@ int st7735s_pixel(uint32_t x, uint32_t y, uint32_t z);
 int st7735s_write_pixels(uint8_t *data, unsigned int len);
 int st7735s_xyloc(uint8_t row, uint8_t col);
 int st7735s_init(st7735s_cfg_t *cfg);
+
+#endif // EXAMPLES_MAX32672_DISPLAY_ST7735S_DRV_H_

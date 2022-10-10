@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _SMARTCARD_H_
-#define _SMARTCARD_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_TASK_SMARTCARD_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_TASK_SMARTCARD_H_
 
 #include "smartcard_api.h"
 #include "MAX325xx_afe.h"
@@ -46,4 +46,4 @@
 int sc_init(void);
 void sc_set_afe_intterrupt(unsigned int status);
 
-#endif /* _SMARTCARD_H_ */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_TASK_SMARTCARD_H_
