@@ -52,6 +52,7 @@
 #include "lp.h"
 #include "led.h"
 #include "board.h"
+#include "trimsir_regs.h"
 
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
@@ -64,10 +65,6 @@ TaskHandle_t cmd_task_id;
 
 /* Enables/disables tick-less mode */
 unsigned int disable_tickless = 1;
-
-/* Shadow register definitions */
-#define MXC_R_SIR_SHR13 *((uint32_t *)(0x40005434))
-#define MXC_R_SIR_SHR17 *((uint32_t *)(0x40005444))
 
 /* Stringification macros */
 #define STRING(x) STRING_(x)
@@ -397,10 +394,10 @@ void turnOffUnused(void)
 {
     /* Prevent SIMO leakage in DS by reducing the SIMO buck clock */
     if (MXC_GCR->revision == 0xA2) {
-        MXC_R_SIR_SHR13 = 0x0;
-        MXC_R_SIR_SHR17 &= ~(0xC0);
+        MXC_TRIMSIR->sir13 = 0x0;
+        MXC_TRIMSIR->sir17 &= ~(0xC0);
     } else if (MXC_GCR->revision == 0xA4) {
-        MXC_R_SIR_SHR17 &= ~(0xC0);
+        MXC_TRIMSIR->sir17 &= ~(0xC0);
     }
 
     MXC_LP_USBSWLPDisable();
