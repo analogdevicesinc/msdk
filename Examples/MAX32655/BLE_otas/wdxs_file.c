@@ -344,6 +344,18 @@ uint32_t WdxsFileGetVerifiedLength(void)
     return verifyLen;
 }
 
+/*************************************************************************************************/
+/*!
+ *  \brief  Get the firmware version of the WDXS file.
+ *
+ *  \return Firmware version of WDXS file.
+ */
+/*************************************************************************************************/
+uint8_t WdxsFileGetFirmwareVersion(void)
+{
+    return FW_VERSION;
+}
+
 void initHeader(fileHeader_t *header)
 {
     fileHeader.fileLen = header->fileLen;
