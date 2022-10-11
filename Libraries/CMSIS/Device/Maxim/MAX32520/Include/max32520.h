@@ -1,38 +1,36 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2016-04-27 09:12:38 -0700 (Wed, 27 Apr 2016) $
- * $Revision: 22537 $
- *
- ******************************************************************************/
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
+
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_MAX32520_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_MAX32520_H_
 
@@ -335,6 +333,22 @@ typedef enum {
 #define MXC_I2C_GET_I2C(p) ((p) == 0x0 ? MXC_I2C0 : 0)
 
 /******************************************************************************/
+/*                                               UART / Serial Port Interface */
+#define MXC_UART_INSTANCES (1)
+#define MXC_UART_FIFO_DEPTH (8)
+
+#define MXC_BASE_UART0 ((uint32_t)0x40020000UL)
+#define MXC_UART0 ((mxc_uart_regs_t *)MXC_BASE_UART0)
+
+#define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : 0)
+
+#define MXC_UART_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0 : 0)
+
+#define MXC_UART_GET_UART(i) ((i) == 0 ? MXC_UART0 : 0)
+
+#define MXC_UART_GET_IDX(p) ((p) == MXC_UART0 ? 0 : -1)
+
+/******************************************************************************/
 /*                                                                        DMA */
 #define MXC_DMA_CHANNELS (4)
 #define MXC_DMA_INSTANCES (1)
@@ -368,24 +382,7 @@ typedef enum {
 #define MXC_ICC ((mxc_icc_regs_t *)MXC_BASE_ICC)
 
 /******************************************************************************/
-/*                                               UART / Serial Port Interface */
-#define MXC_UART_INSTANCES (1)
-#define MXC_UART_FIFO_DEPTH (8)
-
-#define MXC_BASE_UART0 ((uint32_t)0x40020000UL)
-#define MXC_UART0 ((mxc_uart_regs_t *)MXC_BASE_UART0)
-
-#define MXC_UART_GET_IRQ(i) (IRQn_Type)((i) == 0 ? UART0_IRQn : 0)
-
-#define MXC_UART_GET_BASE(i) ((i) == 0 ? MXC_BASE_UART0 : 0)
-
-#define MXC_UART_GET_UART(i) ((i) == 0 ? MXC_UART0 : 0)
-
-#define MXC_UART_GET_IDX(p) ((p) == MXC_UART0 ? 0 : -1)
-
-/******************************************************************************/
 /*                                                                        SPI */
-
 #define MXC_SPI_INSTANCES (2)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH (32)
@@ -404,14 +401,14 @@ typedef enum {
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : 0)
 
 /******************************************************************************/
-/*                                                                        SFE */
-#define MXC_BASE_SFE ((uint32_t)0x400A0000UL)
-#define MXC_SFE ((mxc_sfe_regs_t *)MXC_BASE_SFE)
-
-/******************************************************************************/
 /*                                                                       TRNG */
 #define MXC_BASE_TRNG ((uint32_t)0x4004D000UL)
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
+
+/******************************************************************************/
+/*                                                                        SFE */
+#define MXC_BASE_SFE ((uint32_t)0x400A0000UL)
+#define MXC_SFE ((mxc_sfe_regs_t *)MXC_BASE_SFE)
 
 /******************************************************************************/
 /*                                                                      CSPIS */
