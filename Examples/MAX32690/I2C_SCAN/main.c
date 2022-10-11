@@ -46,21 +46,18 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 
 /***** Definitions *****/
 #define I2C_MASTER MXC_I2C0 // SDA P2_7, SCL P2_8
 #define I2C_FREQ 100000 // 100kHZ
 
-typedef enum { FAILED, PASSED } test_t;
-
-/***** Globals *****/
-uint8_t counter = 0;
 
 // *****************************************************************************
 int main()
 {
+	uint8_t counter = 0;
+
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
     printf("\nsame bus as I2C0 (SDA - P2.7, SCL - P2.8). Select the proper voltage for");
@@ -72,8 +69,8 @@ int main()
     //Setup the I2CM
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
-        printf("-->Failed master\n");
-        return FAILED;
+        printf("-->I2C Master Initialization failed, error:%d\n", error);
+        return -1;
     } else {
         printf("\n-->I2C Master Initialization Complete\n");
     }
@@ -91,9 +88,10 @@ int main()
     reqMaster.callback = NULL;
 
     for (uint8_t address = 8; address < 120; address++) {
-        reqMaster.addr = address;
         printf(".");
+        fflush(0);
 
+        reqMaster.addr = address;
         if ((MXC_I2C_MasterTransaction(&reqMaster)) == 0) {
             printf("\nFound slave ID %03d; 0x%02X\n", address, address);
             counter++;
@@ -102,4 +100,6 @@ int main()
     }
 
     printf("\n-->Scan finished. %d devices found\n", counter);
+
+    return 0;
 }
