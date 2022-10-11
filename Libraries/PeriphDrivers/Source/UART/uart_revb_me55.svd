@@ -226,7 +226,7 @@
         </fields>
       </register>
       <register>
-        <name>INT_EN</name>
+        <name>INTEN</name>
         <description>Interrupt Enable control register</description>
         <addressOffset>0x0008</addressOffset>
         <fields>
@@ -281,7 +281,7 @@
         </fields>
       </register>
       <register>
-        <name>INT_FL</name>
+        <name>INTFL</name>
         <description>Interrupt status flags Control register</description>
         <addressOffset>0x000C</addressOffset>
         <fields>

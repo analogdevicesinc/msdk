@@ -1,44 +1,44 @@
 /**
  * @file    trng_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
-#ifndef _TRNG_REGS_H_
-#define _TRNG_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_TRNG_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_TRNG_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     trng
  * @defgroup    trng_registers TRNG_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
- * @details Random Number Generator.
+ * @details     Random Number Generator.
  */
 
 /**
@@ -86,9 +86,21 @@ extern "C" {
  * Structure type to access the TRNG Registers.
  */
 typedef struct {
-    __IO uint32_t cn;                   /**< <tt>\b 0x00:</tt> TRNG CN Register */
-    __I  uint32_t st;                   /**< <tt>\b 0x04:</tt> TRNG ST Register */
+    __IO uint32_t ctrl;                 /**< <tt>\b 0x00:</tt> TRNG CTRL Register */
+    __IO uint32_t status;               /**< <tt>\b 0x04:</tt> TRNG STATUS Register */
     __I  uint32_t data;                 /**< <tt>\b 0x08:</tt> TRNG DATA Register */
+    __IO uint32_t romon_a;              /**< <tt>\b 0x0C:</tt> TRNG ROMON_A Register */
+    __IO uint32_t romon_b;              /**< <tt>\b 0x10:</tt> TRNG ROMON_B Register */
+    __IO uint32_t ee_a;                 /**< <tt>\b 0x14:</tt> TRNG EE_A Register */
+    __IO uint32_t ee_b;                 /**< <tt>\b 0x18:</tt> TRNG EE_B Register */
+    __IO uint32_t ee_c;                 /**< <tt>\b 0x1C:</tt> TRNG EE_C Register */
+    __IO uint32_t ee_d;                 /**< <tt>\b 0x20:</tt> TRNG EE_D Register */
+    __IO uint32_t ee_e;                 /**< <tt>\b 0x24:</tt> TRNG EE_E Register */
+    __IO uint32_t ee_f;                 /**< <tt>\b 0x28:</tt> TRNG EE_F Register */
+    __IO uint32_t ee_g;                 /**< <tt>\b 0x2C:</tt> TRNG EE_G Register */
+    __IO uint32_t ee_h;                 /**< <tt>\b 0x30:</tt> TRNG EE_H Register */
+    __IO uint32_t ee_i;                 /**< <tt>\b 0x34:</tt> TRNG EE_I Register */
+    __IO uint32_t data_nist;            /**< <tt>\b 0x38:</tt> TRNG DATA_NIST Register */
 } mxc_trng_regs_t;
 
 /* Register offsets for module TRNG */
@@ -98,39 +110,148 @@ typedef struct {
  * @brief      TRNG Peripheral Register Offsets from the TRNG Base Peripheral Address.
  * @{
  */
- #define MXC_R_TRNG_CN                      ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_TRNG_ST                      ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) /**< Offset from TRNG Base Address: <tt> 0x0008</tt> */ 
+#define MXC_R_TRNG_CTRL                    ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRNG_STATUS                  ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */
+#define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) /**< Offset from TRNG Base Address: <tt> 0x0008</tt> */
+#define MXC_R_TRNG_ROMON_A                 ((uint32_t)0x0000000CUL) /**< Offset from TRNG Base Address: <tt> 0x000C</tt> */
+#define MXC_R_TRNG_ROMON_B                 ((uint32_t)0x00000010UL) /**< Offset from TRNG Base Address: <tt> 0x0010</tt> */
+#define MXC_R_TRNG_EE_A                    ((uint32_t)0x00000014UL) /**< Offset from TRNG Base Address: <tt> 0x0014</tt> */
+#define MXC_R_TRNG_EE_B                    ((uint32_t)0x00000018UL) /**< Offset from TRNG Base Address: <tt> 0x0018</tt> */
+#define MXC_R_TRNG_EE_C                    ((uint32_t)0x0000001CUL) /**< Offset from TRNG Base Address: <tt> 0x001C</tt> */
+#define MXC_R_TRNG_EE_D                    ((uint32_t)0x00000020UL) /**< Offset from TRNG Base Address: <tt> 0x0020</tt> */
+#define MXC_R_TRNG_EE_E                    ((uint32_t)0x00000024UL) /**< Offset from TRNG Base Address: <tt> 0x0024</tt> */
+#define MXC_R_TRNG_EE_F                    ((uint32_t)0x00000028UL) /**< Offset from TRNG Base Address: <tt> 0x0028</tt> */
+#define MXC_R_TRNG_EE_G                    ((uint32_t)0x0000002CUL) /**< Offset from TRNG Base Address: <tt> 0x002C</tt> */
+#define MXC_R_TRNG_EE_H                    ((uint32_t)0x00000030UL) /**< Offset from TRNG Base Address: <tt> 0x0030</tt> */
+#define MXC_R_TRNG_EE_I                    ((uint32_t)0x00000034UL) /**< Offset from TRNG Base Address: <tt> 0x0034</tt> */
+#define MXC_R_TRNG_DATA_NIST               ((uint32_t)0x00000038UL) /**< Offset from TRNG Base Address: <tt> 0x0038</tt> */
 /**@} end of group trng_registers */
 
 /**
  * @ingroup  trng_registers
- * @defgroup TRNG_CN TRNG_CN
+ * @defgroup TRNG_CTRL TRNG_CTRL
  * @brief    TRNG Control Register.
  * @{
  */
- #define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 /**< CN_RND_IRQ_EN Position */
- #define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL << MXC_F_TRNG_CN_RND_IRQ_EN_POS)) /**< CN_RND_IRQ_EN Mask */
+#define MXC_F_TRNG_CTRL_OD_HEALTH_POS                  0 /**< CTRL_OD_HEALTH Position */
+#define MXC_F_TRNG_CTRL_OD_HEALTH                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_HEALTH_POS)) /**< CTRL_OD_HEALTH Mask */
 
- #define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 /**< CN_AESKG_MEMPROTE Position */
- #define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) /**< CN_AESKG_MEMPROTE Mask */
+#define MXC_F_TRNG_CTRL_RND_IE_POS                     1 /**< CTRL_RND_IE Position */
+#define MXC_F_TRNG_CTRL_RND_IE                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RND_IE_POS)) /**< CTRL_RND_IE Mask */
 
-/**@} end of group TRNG_CN_Register */
+#define MXC_F_TRNG_CTRL_HEALTH_IE_POS                  2 /**< CTRL_HEALTH_IE Position */
+#define MXC_F_TRNG_CTRL_HEALTH_IE                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_IE_POS)) /**< CTRL_HEALTH_IE Mask */
+
+#define MXC_F_TRNG_CTRL_AES_KEYGEN_POS                 4 /**< CTRL_AES_KEYGEN Position */
+#define MXC_F_TRNG_CTRL_AES_KEYGEN                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AES_KEYGEN_POS)) /**< CTRL_AES_KEYGEN Mask */
+
+#define MXC_F_TRNG_CTRL_OD_ROMON_POS                   6 /**< CTRL_OD_ROMON Position */
+#define MXC_F_TRNG_CTRL_OD_ROMON                       ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_ROMON_POS)) /**< CTRL_OD_ROMON Mask */
+
+#define MXC_F_TRNG_CTRL_OD_EE_POS                      7 /**< CTRL_OD_EE Position */
+#define MXC_F_TRNG_CTRL_OD_EE                          ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_OD_EE_POS)) /**< CTRL_OD_EE Mask */
+
+#define MXC_F_TRNG_CTRL_ROMON_EE_FOE_POS               8 /**< CTRL_ROMON_EE_FOE Position */
+#define MXC_F_TRNG_CTRL_ROMON_EE_FOE                   ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_ROMON_EE_FOE_POS)) /**< CTRL_ROMON_EE_FOE Mask */
+
+#define MXC_F_TRNG_CTRL_ROMON_EE_FOD_POS               9 /**< CTRL_ROMON_EE_FOD Position */
+#define MXC_F_TRNG_CTRL_ROMON_EE_FOD                   ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_ROMON_EE_FOD_POS)) /**< CTRL_ROMON_EE_FOD Mask */
+
+#define MXC_F_TRNG_CTRL_EBLS_POS                       10 /**< CTRL_EBLS Position */
+#define MXC_F_TRNG_CTRL_EBLS                           ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_EBLS_POS)) /**< CTRL_EBLS Mask */
+
+#define MXC_F_TRNG_CTRL_KEYWIPE_POS                    15 /**< CTRL_KEYWIPE Position */
+#define MXC_F_TRNG_CTRL_KEYWIPE                        ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_KEYWIPE_POS)) /**< CTRL_KEYWIPE Mask */
+
+#define MXC_F_TRNG_CTRL_GET_TERO_CNT_POS               16 /**< CTRL_GET_TERO_CNT Position */
+#define MXC_F_TRNG_CTRL_GET_TERO_CNT                   ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_GET_TERO_CNT_POS)) /**< CTRL_GET_TERO_CNT Mask */
+
+#define MXC_F_TRNG_CTRL_EE_DONE_IE_POS                 23 /**< CTRL_EE_DONE_IE Position */
+#define MXC_F_TRNG_CTRL_EE_DONE_IE                     ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_EE_DONE_IE_POS)) /**< CTRL_EE_DONE_IE Mask */
+
+#define MXC_F_TRNG_CTRL_ROMON_DIS_POS                  24 /**< CTRL_ROMON_DIS Position */
+#define MXC_F_TRNG_CTRL_ROMON_DIS                      ((uint32_t)(0x7UL << MXC_F_TRNG_CTRL_ROMON_DIS_POS)) /**< CTRL_ROMON_DIS Mask */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_0                 ((uint32_t)0x0UL) /**< CTRL_ROMON_DIS_RO_0 Value */
+#define MXC_S_TRNG_CTRL_ROMON_DIS_RO_0                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_0 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_0 Setting */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_1                 ((uint32_t)0x1UL) /**< CTRL_ROMON_DIS_RO_1 Value */
+#define MXC_S_TRNG_CTRL_ROMON_DIS_RO_1                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_1 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_1 Setting */
+#define MXC_V_TRNG_CTRL_ROMON_DIS_RO_2                 ((uint32_t)0x2UL) /**< CTRL_ROMON_DIS_RO_2 Value */
+#define MXC_S_TRNG_CTRL_ROMON_DIS_RO_2                 (MXC_V_TRNG_CTRL_ROMON_DIS_RO_2 << MXC_F_TRNG_CTRL_ROMON_DIS_POS) /**< CTRL_ROMON_DIS_RO_2 Setting */
+
+/**@} end of group TRNG_CTRL_Register */
 
 /**
  * @ingroup  trng_registers
- * @defgroup TRNG_ST TRNG_ST
+ * @defgroup TRNG_STATUS TRNG_STATUS
  * @brief    Data. The content of this register is valid only when RNG_IS = 1. When TRNG is
  *           disabled, read returns 0x0000 0000.
  * @{
  */
- #define MXC_F_TRNG_ST_RND_RDY_POS                      0 /**< ST_RND_RDY Position */
- #define MXC_F_TRNG_ST_RND_RDY                          ((uint32_t)(0x1UL << MXC_F_TRNG_ST_RND_RDY_POS)) /**< ST_RND_RDY Mask */
+#define MXC_F_TRNG_STATUS_RDY_POS                      0 /**< STATUS_RDY Position */
+#define MXC_F_TRNG_STATUS_RDY                          ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_RDY_POS)) /**< STATUS_RDY Mask */
 
- #define MXC_F_TRNG_ST_AESKGD_MEU_S_POS                 4 /**< ST_AESKGD_MEU_S Position */
- #define MXC_F_TRNG_ST_AESKGD_MEU_S                     ((uint32_t)(0x1UL << MXC_F_TRNG_ST_AESKGD_MEU_S_POS)) /**< ST_AESKGD_MEU_S Mask */
+#define MXC_F_TRNG_STATUS_OD_HEALTH_POS                1 /**< STATUS_OD_HEALTH Position */
+#define MXC_F_TRNG_STATUS_OD_HEALTH                    ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_OD_HEALTH_POS)) /**< STATUS_OD_HEALTH Mask */
 
-/**@} end of group TRNG_ST_Register */
+#define MXC_F_TRNG_STATUS_HEALTH_POS                   2 /**< STATUS_HEALTH Position */
+#define MXC_F_TRNG_STATUS_HEALTH                       ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_HEALTH_POS)) /**< STATUS_HEALTH Mask */
+
+#define MXC_F_TRNG_STATUS_SRCFAIL_POS                  3 /**< STATUS_SRCFAIL Position */
+#define MXC_F_TRNG_STATUS_SRCFAIL                      ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_SRCFAIL_POS)) /**< STATUS_SRCFAIL Mask */
+
+#define MXC_F_TRNG_STATUS_AES_KEYGEN_POS               4 /**< STATUS_AES_KEYGEN Position */
+#define MXC_F_TRNG_STATUS_AES_KEYGEN                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_AES_KEYGEN_POS)) /**< STATUS_AES_KEYGEN Mask */
+
+#define MXC_F_TRNG_STATUS_OD_ROMON_POS                 6 /**< STATUS_OD_ROMON Position */
+#define MXC_F_TRNG_STATUS_OD_ROMON                     ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_OD_ROMON_POS)) /**< STATUS_OD_ROMON Mask */
+
+#define MXC_F_TRNG_STATUS_OD_EE_POS                    7 /**< STATUS_OD_EE Position */
+#define MXC_F_TRNG_STATUS_OD_EE                        ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_OD_EE_POS)) /**< STATUS_OD_EE Mask */
+
+#define MXC_F_TRNG_STATUS_PP_ERR_POS                   8 /**< STATUS_PP_ERR Position */
+#define MXC_F_TRNG_STATUS_PP_ERR                       ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_PP_ERR_POS)) /**< STATUS_PP_ERR Mask */
+
+#define MXC_F_TRNG_STATUS_ROMON_0_ERR_POS              9 /**< STATUS_ROMON_0_ERR Position */
+#define MXC_F_TRNG_STATUS_ROMON_0_ERR                  ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ROMON_0_ERR_POS)) /**< STATUS_ROMON_0_ERR Mask */
+
+#define MXC_F_TRNG_STATUS_ROMON_1_ERR_POS              10 /**< STATUS_ROMON_1_ERR Position */
+#define MXC_F_TRNG_STATUS_ROMON_1_ERR                  ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ROMON_1_ERR_POS)) /**< STATUS_ROMON_1_ERR Mask */
+
+#define MXC_F_TRNG_STATUS_ROMON_2_ERR_POS              11 /**< STATUS_ROMON_2_ERR Position */
+#define MXC_F_TRNG_STATUS_ROMON_2_ERR                  ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ROMON_2_ERR_POS)) /**< STATUS_ROMON_2_ERR Mask */
+
+#define MXC_F_TRNG_STATUS_EE_ERR_THR_POS               12 /**< STATUS_EE_ERR_THR Position */
+#define MXC_F_TRNG_STATUS_EE_ERR_THR                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_EE_ERR_THR_POS)) /**< STATUS_EE_ERR_THR Mask */
+
+#define MXC_F_TRNG_STATUS_EE_ERR_OOB_POS               13 /**< STATUS_EE_ERR_OOB Position */
+#define MXC_F_TRNG_STATUS_EE_ERR_OOB                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_EE_ERR_OOB_POS)) /**< STATUS_EE_ERR_OOB Mask */
+
+#define MXC_F_TRNG_STATUS_EE_ERR_LOCK_POS              14 /**< STATUS_EE_ERR_LOCK Position */
+#define MXC_F_TRNG_STATUS_EE_ERR_LOCK                  ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_EE_ERR_LOCK_POS)) /**< STATUS_EE_ERR_LOCK Mask */
+
+#define MXC_F_TRNG_STATUS_TERO_CNT_RDY_POS             16 /**< STATUS_TERO_CNT_RDY Position */
+#define MXC_F_TRNG_STATUS_TERO_CNT_RDY                 ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_TERO_CNT_RDY_POS)) /**< STATUS_TERO_CNT_RDY Mask */
+
+#define MXC_F_TRNG_STATUS_RC_ERR_POS                   17 /**< STATUS_RC_ERR Position */
+#define MXC_F_TRNG_STATUS_RC_ERR                       ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_RC_ERR_POS)) /**< STATUS_RC_ERR Mask */
+
+#define MXC_F_TRNG_STATUS_AP_ERR_POS                   18 /**< STATUS_AP_ERR Position */
+#define MXC_F_TRNG_STATUS_AP_ERR                       ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_AP_ERR_POS)) /**< STATUS_AP_ERR Mask */
+
+#define MXC_F_TRNG_STATUS_DATA_DONE_POS                19 /**< STATUS_DATA_DONE Position */
+#define MXC_F_TRNG_STATUS_DATA_DONE                    ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_DATA_DONE_POS)) /**< STATUS_DATA_DONE Mask */
+
+#define MXC_F_TRNG_STATUS_DATA_NIST_DONE_POS           20 /**< STATUS_DATA_NIST_DONE Position */
+#define MXC_F_TRNG_STATUS_DATA_NIST_DONE               ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_DATA_NIST_DONE_POS)) /**< STATUS_DATA_NIST_DONE Mask */
+
+#define MXC_F_TRNG_STATUS_HEALTH_DONE_POS              21 /**< STATUS_HEALTH_DONE Position */
+#define MXC_F_TRNG_STATUS_HEALTH_DONE                  ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_HEALTH_DONE_POS)) /**< STATUS_HEALTH_DONE Mask */
+
+#define MXC_F_TRNG_STATUS_ROMON_DONE_POS               22 /**< STATUS_ROMON_DONE Position */
+#define MXC_F_TRNG_STATUS_ROMON_DONE                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ROMON_DONE_POS)) /**< STATUS_ROMON_DONE Mask */
+
+#define MXC_F_TRNG_STATUS_ENTROPY                      ESTIMATOR TEST DONE._POS 23 /**<#define MXC_F_TRNG_STATUS_ENTROPY                      ESTIMATOR TEST DONE. ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ENTROPY ESTIMATOR
+/**@} end of group TRNG_STATUS_Register */
 
 /**
  * @ingroup  trng_registers
@@ -139,13 +260,178 @@ typedef struct {
  *           disabled, read returns 0x0000 0000.
  * @{
  */
- #define MXC_F_TRNG_DATA_DATA_POS                       0 /**< DATA_DATA Position */
- #define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_DATA_POS)) /**< DATA_DATA Mask */
+#define MXC_F_TRNG_DATA_DATA_POS                       0 /**< DATA_DATA Position */
+#define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_DATA_POS)) /**< DATA_DATA Mask */
 
 /**@} end of group TRNG_DATA_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_ROMON_A TRNG_ROMON_A
+ * @brief    Ring Oscillator Monitor A Register.
+ * @{
+ */
+#define MXC_F_TRNG_ROMON_A_ROMON_0_LCNT_POS            0 /**< ROMON_A_ROMON_0_LCNT Position */
+#define MXC_F_TRNG_ROMON_A_ROMON_0_LCNT                ((uint32_t)(0x1FFUL << MXC_F_TRNG_ROMON_A_ROMON_0_LCNT_POS)) /**< ROMON_A_ROMON_0_LCNT Mask */
+
+#define MXC_F_TRNG_ROMON_A_ROMON_1_LCNT_POS            16 /**< ROMON_A_ROMON_1_LCNT Position */
+#define MXC_F_TRNG_ROMON_A_ROMON_1_LCNT                ((uint32_t)(0x1FFUL << MXC_F_TRNG_ROMON_A_ROMON_1_LCNT_POS)) /**< ROMON_A_ROMON_1_LCNT Mask */
+
+/**@} end of group TRNG_ROMON_A_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_ROMON_B TRNG_ROMON_B
+ * @brief    Ring Oscillator Monitor B Register.
+ * @{
+ */
+#define MXC_F_TRNG_ROMON_B_ROMON_2_LCNT_POS            0 /**< ROMON_B_ROMON_2_LCNT Position */
+#define MXC_F_TRNG_ROMON_B_ROMON_2_LCNT                ((uint32_t)(0x1FFUL << MXC_F_TRNG_ROMON_B_ROMON_2_LCNT_POS)) /**< ROMON_B_ROMON_2_LCNT Mask */
+
+/**@} end of group TRNG_ROMON_B_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_A TRNG_EE_A
+ * @brief    Entropy Estimator A Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_A_CURR_RIPL_CNT_POS              0 /**< EE_A_CURR_RIPL_CNT Position */
+#define MXC_F_TRNG_EE_A_CURR_RIPL_CNT                  ((uint32_t)(0x1FFFFUL << MXC_F_TRNG_EE_A_CURR_RIPL_CNT_POS)) /**< EE_A_CURR_RIPL_CNT Mask */
+
+#define MXC_F_TRNG_EE_A_EOP_POS                        17 /**< EE_A_EOP Position */
+#define MXC_F_TRNG_EE_A_EOP                            ((uint32_t)(0x1UL << MXC_F_TRNG_EE_A_EOP_POS)) /**< EE_A_EOP Mask */
+
+#define MXC_F_TRNG_EE_A_ACC_SAMP_CNT_POS               20 /**< EE_A_ACC_SAMP_CNT Position */
+#define MXC_F_TRNG_EE_A_ACC_SAMP_CNT                   ((uint32_t)(0xFFFUL << MXC_F_TRNG_EE_A_ACC_SAMP_CNT_POS)) /**< EE_A_ACC_SAMP_CNT Mask */
+
+/**@} end of group TRNG_EE_A_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_B TRNG_EE_B
+ * @brief    Entropy Estimator B Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_B_LAST_RIPL_CNT_POS              0 /**< EE_B_LAST_RIPL_CNT Position */
+#define MXC_F_TRNG_EE_B_LAST_RIPL_CNT                  ((uint32_t)(0x1FFFFUL << MXC_F_TRNG_EE_B_LAST_RIPL_CNT_POS)) /**< EE_B_LAST_RIPL_CNT Mask */
+
+#define MXC_F_TRNG_EE_B_EOP_POS                        17 /**< EE_B_EOP Position */
+#define MXC_F_TRNG_EE_B_EOP                            ((uint32_t)(0x1UL << MXC_F_TRNG_EE_B_EOP_POS)) /**< EE_B_EOP Mask */
+
+#define MXC_F_TRNG_EE_B_ACC_SAMP_CNT_POS               20 /**< EE_B_ACC_SAMP_CNT Position */
+#define MXC_F_TRNG_EE_B_ACC_SAMP_CNT                   ((uint32_t)(0xFFFUL << MXC_F_TRNG_EE_B_ACC_SAMP_CNT_POS)) /**< EE_B_ACC_SAMP_CNT Mask */
+
+/**@} end of group TRNG_EE_B_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_C TRNG_EE_C
+ * @brief    Entropy Estimator C Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_C_ACC_POS                        0 /**< EE_C_ACC Position */
+#define MXC_F_TRNG_EE_C_ACC                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_EE_C_ACC_POS)) /**< EE_C_ACC Mask */
+
+/**@} end of group TRNG_EE_C_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_D TRNG_EE_D
+ * @brief    Entropy Estimator D Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_D_ACC_POS                        0 /**< EE_D_ACC Position */
+#define MXC_F_TRNG_EE_D_ACC                            ((uint32_t)(0xFFUL << MXC_F_TRNG_EE_D_ACC_POS)) /**< EE_D_ACC Mask */
+
+#define MXC_F_TRNG_EE_D_ACC_SAMP_CNT_POS               16 /**< EE_D_ACC_SAMP_CNT Position */
+#define MXC_F_TRNG_EE_D_ACC_SAMP_CNT                   ((uint32_t)(0x7FFFUL << MXC_F_TRNG_EE_D_ACC_SAMP_CNT_POS)) /**< EE_D_ACC_SAMP_CNT Mask */
+
+#define MXC_F_TRNG_EE_D_EOP_POS                        31 /**< EE_D_EOP Position */
+#define MXC_F_TRNG_EE_D_EOP                            ((uint32_t)(0x1UL << MXC_F_TRNG_EE_D_EOP_POS)) /**< EE_D_EOP Mask */
+
+/**@} end of group TRNG_EE_D_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_E TRNG_EE_E
+ * @brief    Entropy Estimator E Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_E_ACC_SAMP_CNT_POS               0 /**< EE_E_ACC_SAMP_CNT Position */
+#define MXC_F_TRNG_EE_E_ACC_SAMP_CNT                   ((uint32_t)(0x7FFFUL << MXC_F_TRNG_EE_E_ACC_SAMP_CNT_POS)) /**< EE_E_ACC_SAMP_CNT Mask */
+
+/**@} end of group TRNG_EE_E_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_F TRNG_EE_F
+ * @brief    Entropy Estimator F Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_F_REP_CNT_POS                    0 /**< EE_F_REP_CNT Position */
+#define MXC_F_TRNG_EE_F_REP_CNT                        ((uint32_t)(0xFFUL << MXC_F_TRNG_EE_F_REP_CNT_POS)) /**< EE_F_REP_CNT Mask */
+
+/**@} end of group TRNG_EE_F_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_G TRNG_EE_G
+ * @brief    Entropy Estimator G Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_G_CURR_RIPL_CNT_POS              0 /**< EE_G_CURR_RIPL_CNT Position */
+#define MXC_F_TRNG_EE_G_CURR_RIPL_CNT                  ((uint32_t)(0x7FFFUL << MXC_F_TRNG_EE_G_CURR_RIPL_CNT_POS)) /**< EE_G_CURR_RIPL_CNT Mask */
+
+#define MXC_F_TRNG_EE_G_EOP_CURR_POS                   15 /**< EE_G_EOP_CURR Position */
+#define MXC_F_TRNG_EE_G_EOP_CURR                       ((uint32_t)(0x1UL << MXC_F_TRNG_EE_G_EOP_CURR_POS)) /**< EE_G_EOP_CURR Mask */
+
+#define MXC_F_TRNG_EE_G_CURR_RIPL_CNT_POS              16 /**< EE_G_CURR_RIPL_CNT Position */
+#define MXC_F_TRNG_EE_G_CURR_RIPL_CNT                  ((uint32_t)(0x7FFFUL << MXC_F_TRNG_EE_G_CURR_RIPL_CNT_POS)) /**< EE_G_CURR_RIPL_CNT Mask */
+
+#define MXC_F_TRNG_EE_G_EOP_LAST_POS                   31 /**< EE_G_EOP_LAST Position */
+#define MXC_F_TRNG_EE_G_EOP_LAST                       ((uint32_t)(0x1UL << MXC_F_TRNG_EE_G_EOP_LAST_POS)) /**< EE_G_EOP_LAST Mask */
+
+/**@} end of group TRNG_EE_G_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_H TRNG_EE_H
+ * @brief    Entropy Estimator H Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_H_ACC_SAMP_POS                   0 /**< EE_H_ACC_SAMP Position */
+#define MXC_F_TRNG_EE_H_ACC_SAMP                       ((uint32_t)(0x1FFUL << MXC_F_TRNG_EE_H_ACC_SAMP_POS)) /**< EE_H_ACC_SAMP Mask */
+
+/**@} end of group TRNG_EE_H_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_EE_I TRNG_EE_I
+ * @brief    Entropy Estimator I Register.
+ * @{
+ */
+#define MXC_F_TRNG_EE_I_ACC_SAMP_POS                   0 /**< EE_I_ACC_SAMP Position */
+#define MXC_F_TRNG_EE_I_ACC_SAMP                       ((uint32_t)(0xFFUL << MXC_F_TRNG_EE_I_ACC_SAMP_POS)) /**< EE_I_ACC_SAMP Mask */
+
+#define MXC_F_TRNG_EE_I_ACC_SAMP_CNT_POS               16 /**< EE_I_ACC_SAMP_CNT Position */
+#define MXC_F_TRNG_EE_I_ACC_SAMP_CNT                   ((uint32_t)(0x3UL << MXC_F_TRNG_EE_I_ACC_SAMP_CNT_POS)) /**< EE_I_ACC_SAMP_CNT Mask */
+
+/**@} end of group TRNG_EE_I_Register */
+
+/**
+ * @ingroup  trng_registers
+ * @defgroup TRNG_DATA_NIST TRNG_DATA_NIST
+ * @brief    Data NIST Register.
+ * @{
+ */
+#define MXC_F_TRNG_DATA_NIST_DATA_POS                  0 /**< DATA_NIST_DATA Position */
+#define MXC_F_TRNG_DATA_NIST_DATA                      ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_NIST_DATA_POS)) /**< DATA_NIST_DATA Mask */
+
+/**@} end of group TRNG_DATA_NIST_Register */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _TRNG_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_TRNG_REGS_H_
