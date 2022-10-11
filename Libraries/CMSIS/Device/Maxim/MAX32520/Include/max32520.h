@@ -296,12 +296,17 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
-                           (i) == 1 ? TMR1_IRQn : (i) == 2 ? TMR2_IRQn : (i) == 3 ? TMR3_IRQn : 0)
+                (i) == 1 ? TMR1_IRQn : \
+                (i) == 2 ? TMR2_IRQn : \
+                (i) == 3 ? TMR3_IRQn : \
+                           0)
 
-#define MXC_TMR_GET_BASE(i) \
-    ((i) == 0 ?             \
-         MXC_BASE_TMR0 :    \
-         (i) == 1 ? MXC_BASE_TMR1 : (i) == 2 ? MXC_BASE_TMR2 : (i) == 3 ? MXC_BASE_TMR3 : 0)
+#define MXC_TMR_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_TMR0 : \
+     (i) == 1 ? MXC_BASE_TMR1 : \
+     (i) == 2 ? MXC_BASE_TMR2 : \
+     (i) == 3 ? MXC_BASE_TMR3 : \
+                0)
 
 #define MXC_TMR_GET_TMR(i) \
     ((i) == 0 ? MXC_TMR0 : (i) == 1 ? MXC_TMR1 : (i) == 2 ? MXC_TMR2 : (i) == 3 ? MXC_TMR3 : 0)
