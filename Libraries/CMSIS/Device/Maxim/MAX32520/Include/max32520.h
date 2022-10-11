@@ -308,11 +308,9 @@ typedef enum {
      (i) == 3 ? MXC_BASE_TMR3 : \
                 0)
 
-#define MXC_TMR_GET_TMR(i) \
-    ((i) == 0 ? MXC_TMR0 : (i) == 1 ? MXC_TMR1 : (i) == 2 ? MXC_TMR2 : (i) == 3 ? MXC_TMR3 : 0)
+#define MXC_TMR_GET_TMR(i) ((i) == 0 ? MXC_TMR0 : (i) == 1 ? MXC_TMR1 : (i) == 2 ? MXC_TMR2 : (i) == 3 ? MXC_TMR3 : 0)
 
-#define MXC_TMR_GET_IDX(p) \
-    ((p) == MXC_TMR0 ? 0 : (p) == MXC_TMR1 ? 1 : (p) == MXC_TMR2 ? 2 : (p) == MXC_TMR3 ? 3 : -1)
+#define MXC_TMR_GET_IDX(p) ((p) == MXC_TMR0 ? 0 : (p) == MXC_TMR1 ? 1 : (p) == MXC_TMR2 ? 2 : (p) == MXC_TMR3 ? 3 : -1)
 
 /******************************************************************************/
 /*                                                                        I2C */
