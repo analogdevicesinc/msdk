@@ -100,10 +100,16 @@ int MXC_UART_RevA_Busy(mxc_uart_reva_regs_t *uart);
 int MXC_UART_RevA_Transaction(mxc_uart_reva_req_t *req);
 int MXC_UART_RevA_TransactionAsync(mxc_uart_reva_req_t *req);
 int MXC_UART_RevA_TransactionDMA(mxc_uart_reva_req_t *req, mxc_dma_regs_t *dma);
+int MXC_UART_RevA_TxAbortAsync(mxc_uart_reva_regs_t *uart);
+int MXC_UART_RevA_RxAbortAsync(mxc_uart_reva_regs_t *uart);
 int MXC_UART_RevA_AbortAsync(mxc_uart_reva_regs_t *uart);
 int MXC_UART_RevA_AsyncHandler(mxc_uart_reva_regs_t *uart);
+int MXC_UART_RevA_TxAsyncStop(mxc_uart_reva_regs_t *uart);
+int MXC_UART_RevA_RxAsyncStop(mxc_uart_reva_regs_t *uart);
 int MXC_UART_RevA_AsyncStop(mxc_uart_reva_regs_t *uart);
 int MXC_UART_RevA_AsyncCallback(mxc_uart_reva_regs_t *uart, int retVal);
+int MXC_UART_RevA_TxAsyncCallback(mxc_uart_reva_regs_t *uart, int retVal);
+int MXC_UART_RevA_RxAsyncCallback(mxc_uart_reva_regs_t *uart, int retVal);
 void MXC_UART_RevA_DMACallback(int ch, int error);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_UART_UART_REVA_H_
