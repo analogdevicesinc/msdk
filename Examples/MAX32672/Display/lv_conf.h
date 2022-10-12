@@ -556,7 +556,6 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 #endif /*End of "Content enable"*/
 
-/*--EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_--*/
+/*--End of EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_--*/
 
 #endif // EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
-
