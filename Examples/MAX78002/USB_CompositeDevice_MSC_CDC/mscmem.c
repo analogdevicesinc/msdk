@@ -44,8 +44,7 @@
 #include "mscmem.h"
 #include <string.h>
 #include <stdio.h>
-#include "Ext_Flash.h"
-#include "spixf.h"
+//#include "Ext_Flash.h"
 
 /***** Definitions *****/
 
