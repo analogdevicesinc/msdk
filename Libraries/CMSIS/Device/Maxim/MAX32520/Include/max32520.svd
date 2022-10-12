@@ -2,7 +2,7 @@
 <device xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xsi:noNamespaceSchemaLocation="svd_schema.xsd">
  <vendor>Maxim-Integrated</vendor>
  <vendorID>Maxim</vendorID>
- <name>MAX32520</name>
+ <name>max32520</name>
  <series>ARMCM4</series>
  <version>1.0</version>
  <description>MAX32520 32-bit ARM Cortex-M4 microcontroller, 1024KB of flash, 760KB of system RAM, 128KB of Boot ROM.</description>
@@ -2134,7 +2134,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>4</dimIncrement>
-     <name>FLSH_DATA</name>
+     <name>FLSH_DATA[%s]</name>
      <description>Flash Write Data.</description>
      <addressOffset>0x30</addressOffset>
      <fields>
@@ -5313,12 +5313,6 @@
    </registers>
   </peripheral>
 <!--ICC0 Instruction Cache Controller Registers-->
-  <peripheral derivedFrom="ICC0">
-   <name>ICC1</name>
-   <description>Instruction Cache Controller Registers 1</description>
-   <baseAddress>0x4002F000</baseAddress>
-  </peripheral>
-<!--ICC1 Instruction Cache Controller Registers 1-->
   <peripheral>
    <name>MCR</name>
    <description>Misc Control.</description>
@@ -8923,7 +8917,7 @@
   <peripheral>
    <name>UART0</name>
    <description>UART</description>
-   <baseAddress>0x40020000</baseAddress>
+   <baseAddress>0x40042000</baseAddress>
    <addressBlock>
     <offset>0</offset>
     <size>0x1000</size>
