@@ -29,7 +29,6 @@ concurrency:
 # Set the Job #
 ###############
 jobs:
-
   build:
     # Name the Job
     name: Lint Code Base
