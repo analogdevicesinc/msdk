@@ -81,7 +81,8 @@ typedef struct {
 } cnn_img_data_t;
 
 typedef enum {
-    BAYER_FUNCTION_BILINEAR = 0,
+    BAYER_FUNCTION_PASSTHROUGH = 0,
+    BAYER_FUNCTION_BILINEAR,
     BAYER_FUNCTION_MALVARCUTLER
 } bayer_function_t;
 
@@ -473,7 +474,9 @@ void service_console()
             #ifdef CAMERA_BAYER
             uint8_t *bayer_data = (uint8_t *)malloc(img_data.w * img_data.h * 2);
             if (bayer_data != NULL) {
-                if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
+                if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
+                    bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
+                } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
                     bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_MALVARCUTLER) {
                     bayer_malvarcutler_demosaicing(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
