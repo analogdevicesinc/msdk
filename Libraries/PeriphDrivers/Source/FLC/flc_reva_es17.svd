@@ -209,7 +209,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>FLSH_DATA</name>
+        <name>FLSH_DATA[%s]</name>
         <description>Flash Write Data.</description>
         <addressOffset>0x30</addressOffset>
         <fields>
