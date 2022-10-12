@@ -272,12 +272,6 @@
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field>
-            <name>RX_FULL</name>
-            <description>Enable Interrupt when RX FIFO is full.</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
@@ -325,12 +319,6 @@
             <name>TX_HE</name>
             <description>Flag for interrupt when TX FIFO is half empty</description>
             <bitOffset>6</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RX_FULL</name>
-            <description>Flag for interrupt when RX FIFO is full.</description>
-            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

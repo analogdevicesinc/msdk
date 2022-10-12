@@ -3897,11 +3897,6 @@
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>ITO</name>
-         <description>The internal 120 MHz PLL is used for the system clock.</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
          <name>ERFO</name>
          <description>The external 32 MHz input is used for the system clock.</description>
          <value>2</value>
@@ -3925,11 +3920,6 @@
          <name>ERTCO</name>
          <description>External 32 kHz input is used for the system clock.</description>
          <value>6</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>EXTCLK</name>
-         <description>External clock input is used for the system clock.</description>
-         <value>7</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
@@ -14882,215 +14872,6 @@
      </fields>
     </register>
     <register>
-     <name>ROMON_A</name>
-     <description>Ring Oscillator Monitor A Register.</description>
-     <addressOffset>0x0C</addressOffset>
-     <fields>
-      <field>
-       <name>ROMON_0_LCNT</name>
-       <description>RIng Oscillator 0 Monitor Last Ring Oscillator Count.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>9</bitWidth>
-      </field>
-      <field>
-       <name>ROMON_1_LCNT</name>
-       <description>Ring Oscillator 1 Monitor Last Ring Oscillator Count.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>9</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>ROMON_B</name>
-     <description>Ring Oscillator Monitor B Register.</description>
-     <addressOffset>0x10</addressOffset>
-     <fields>
-      <field>
-       <name>ROMON_2_LCNT</name>
-       <description>RIng Oscillator 2 Monitor Last Ring Oscillator Count.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>9</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_A</name>
-     <description>Entropy Estimator A Register.</description>
-     <addressOffset>0x14</addressOffset>
-     <fields>
-      <field>
-       <name>CURR_RIPL_CNT</name>
-       <description>Current Ripple Counter Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>17</bitWidth>
-      </field>
-      <field>
-       <name>EOP</name>
-       <description>End of Pair Indicator.</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ACC_SAMP_CNT</name>
-       <description>Accumulator Sample Counter.</description>
-       <bitOffset>20</bitOffset>
-       <bitWidth>12</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_B</name>
-     <description>Entropy Estimator B Register.</description>
-     <addressOffset>0x18</addressOffset>
-     <fields>
-      <field>
-       <name>LAST_RIPL_CNT</name>
-       <description>Last Ripple Counter Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>17</bitWidth>
-      </field>
-      <field>
-       <name>EOP</name>
-       <description>End of Pair Indicator.</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ACC_SAMP_CNT</name>
-       <description>Accumulator Sample Counter. 0-11.</description>
-       <bitOffset>20</bitOffset>
-       <bitWidth>12</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_C</name>
-     <description>Entropy Estimator C Register.</description>
-     <addressOffset>0x1C</addressOffset>
-     <fields>
-      <field>
-       <name>ACC</name>
-       <description>Entropy Estimator Acumulator Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_D</name>
-     <description>Entropy Estimator D Register.</description>
-     <addressOffset>0x20</addressOffset>
-     <fields>
-      <field>
-       <name>ACC</name>
-       <description>Entropy Estimator Accumulator Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>ACC_SAMP_CNT</name>
-       <description>Accumulator Sampe Counter. 0-11.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>15</bitWidth>
-      </field>
-      <field>
-       <name>EOP</name>
-       <description>End of Pair Indicator.</description>
-       <bitOffset>31</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_E</name>
-     <description>Entropy Estimator E Register.</description>
-     <addressOffset>0x24</addressOffset>
-     <fields>
-      <field>
-       <name>ACC_SAMP_CNT</name>
-       <description>Accumulator Sample Counter.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>15</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_F</name>
-     <description>Entropy Estimator F Register.</description>
-     <addressOffset>0x28</addressOffset>
-     <fields>
-      <field>
-       <name>REP_CNT</name>
-       <description>Entropy Estimator Repetition Count.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_G</name>
-     <description>Entropy Estimator G Register.</description>
-     <addressOffset>0x2C</addressOffset>
-     <fields>
-      <field>
-       <name>CURR_RIPL_CNT</name>
-       <description>Current Ripple Count. 0-14.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>15</bitWidth>
-      </field>
-      <field>
-       <name>EOP_CURR</name>
-       <description>Current End of Pair Indicator.</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>CURR_RIPL_CNT</name>
-       <description>Last Ripple Count. 0-14.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>15</bitWidth>
-      </field>
-      <field>
-       <name>EOP_LAST</name>
-       <description>Last End of Pair Indicator.</description>
-       <bitOffset>31</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_H</name>
-     <description>Entropy Estimator H Register.</description>
-     <addressOffset>0x30</addressOffset>
-     <fields>
-      <field>
-       <name>ACC_SAMP</name>
-       <description>Accumulator Sample. 0-31.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>9</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EE_I</name>
-     <description>Entropy Estimator I Register.</description>
-     <addressOffset>0x34</addressOffset>
-     <fields>
-      <field>
-       <name>ACC_SAMP</name>
-       <description>Accumulator Sample. 32-39.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>ACC_SAMP_CNT</name>
-       <description>This counter increments each time accumulator is updated.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>2</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>DATA_NIST</name>
      <description>Data NIST Register.</description>
      <addressOffset>0x38</addressOffset>
@@ -15378,12 +15159,6 @@
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field>
-       <name>RX_FULL</name>
-       <description>Enable Interrupt when RX FIFO is full.</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
      </fields>
     </register>
     <register>
@@ -15431,12 +15206,6 @@
        <name>TX_HE</name>
        <description>Flag for interrupt when TX FIFO is half empty</description>
        <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>RX_FULL</name>
-       <description>Flag for interrupt when RX FIFO is full.</description>
-       <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -17130,6 +16899,35 @@
      </fields>
     </register>
     <register>
+     <name>DMA_INTR</name>
+     <description>Sets delay between HS resume to UTM normal operating mode.</description>
+     <addressOffset>0x200</addressOffset>
+    </register>
+    <cluster>
+     <dim>8</dim>
+     <dimIncrement>0x10</dimIncrement>
+     <name>dma[%s]</name>
+     <description>USB DMA Registers.</description>
+     <headerStructName>usb_dma</headerStructName>
+     <addressOffset>0x204</addressOffset>
+     <access>read-write</access>
+     <register>
+      <name>CTRL</name>
+      <description>DMA Control Register.</description>
+      <addressOffset>0x000</addressOffset>
+     </register>
+     <register>
+      <name>ADDR</name>
+      <description>DMA Address Register.</description>
+      <addressOffset>0x004</addressOffset>
+     </register>
+     <register>
+      <name>COUNT</name>
+      <description>DMA Count Register.</description>
+      <addressOffset>0x008</addressOffset>
+     </register>
+    </cluster>
+    <register>
      <name>MXM_USB_REG_00</name>
      <description>MXM_USB_REG_00</description>
      <addressOffset>0x400</addressOffset>
@@ -17270,28 +17068,28 @@
      <addressOffset>0x470</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</description>
      <addressOffset>0x474</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_HS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_HS_FINE_TUNE_NUM</description>
      <addressOffset>0x478</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</description>
      <addressOffset>0x47C</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_FS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_FS_FINE_TUNE_NUM</description>
      <addressOffset>0x480</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_LOCK_RANGE_MAX</name>
-     <description>M31_PHY_XCFGI_LOCK_RANGE_MAX</description>
+     <name>M31_PHY_XCFG_LOCK_RANGE_MAX</name>
+     <description>M31_PHY_XCFG_LOCK_RANGE_MAX</description>
      <addressOffset>0x484</addressOffset>
     </register>
     <register>
@@ -17300,13 +17098,13 @@
      <addressOffset>0x488</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_OB_RSEL</name>
-     <description>M31_PHY_XCFGI_OB_RSEL</description>
+     <name>M31_PHY_XCFG_OB_RSEL</name>
+     <description>M31_PHY_XCFG_OB_RSEL</description>
      <addressOffset>0x48C</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_OC_RSEL</name>
-     <description>M31_PHY_XCFGI_OC_RSEL</description>
+     <name>M31_PHY_XCFG_OC_RSEL</name>
+     <description>M31_PHY_XCFG_OC_RSEL</description>
      <addressOffset>0x490</addressOffset>
     </register>
     <register>

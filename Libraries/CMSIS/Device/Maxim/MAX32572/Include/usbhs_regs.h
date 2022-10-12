@@ -86,6 +86,12 @@ extern "C" {
  * Structure type to access the USBHS Registers.
  */
 typedef struct {
+    __IO uint32_t ctrl;                 /**< <tt>\b 0x000:</tt> USBHS CTRL Register */
+    __IO uint32_t addr;                 /**< <tt>\b 0x004:</tt> USBHS ADDR Register */
+    __IO uint32_t count;                /**< <tt>\b 0x008:</tt> USBHS COUNT Register */
+} mxc_usbhs_dma_regs_t;
+
+typedef struct {
     __IO uint8_t  faddr;                /**< <tt>\b 0x00:</tt> USBHS FADDR Register */
     __IO uint8_t  power;                /**< <tt>\b 0x01:</tt> USBHS POWER Register */
     __IO uint16_t intrin;               /**< <tt>\b 0x02:</tt> USBHS INTRIN Register */
@@ -137,7 +143,9 @@ typedef struct {
     __R  uint32_t rsv_0x7c;
     __IO uint16_t ctuch;                /**< <tt>\b 0x80:</tt> USBHS CTUCH Register */
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
-    __R  uint32_t rsv_0x84_0x3ff[223];
+    __R  uint32_t rsv_0x84_0x1ff[95];
+    __IO uint32_t dma_intr;             /**< <tt>\b 0x200:</tt> USBHS DMA_INTR Register */
+    __R  uint32_t rsv_0x204_0x3ff[127];
     __IO uint32_t mxm_usb_reg_00;       /**< <tt>\b 0x400:</tt> USBHS MXM_USB_REG_00 Register */
     __IO uint32_t m31_phy_utmi_reset;   /**< <tt>\b 0x404:</tt> USBHS M31_PHY_UTMI_RESET Register */
     __IO uint32_t m31_phy_utmi_vcontrol; /**< <tt>\b 0x408:</tt> USBHS M31_PHY_UTMI_VCONTROL Register */
@@ -167,19 +175,20 @@ typedef struct {
     __IO uint32_t m31_phy_xcfgi_95_64;  /**< <tt>\b 0x468:</tt> USBHS M31_PHY_XCFGI_95_64 Register */
     __IO uint32_t m31_phy_xcfgi_127_96; /**< <tt>\b 0x46C:</tt> USBHS M31_PHY_XCFGI_127_96 Register */
     __IO uint32_t m31_phy_xcfgi_137_128; /**< <tt>\b 0x470:</tt> USBHS M31_PHY_XCFGI_137_128 Register */
-    __IO uint32_t m31_phy_xcfgi_hs_course_tune_num; /**< <tt>\b 0x474:</tt> USBHS M31_PHY_XCFGI_HS_COURSE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_hs_fine_tune_num; /**< <tt>\b 0x478:</tt> USBHS M31_PHY_XCFGI_HS_FINE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_fs_course_tune_num; /**< <tt>\b 0x47C:</tt> USBHS M31_PHY_XCFGI_FS_COURSE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_fs_fine_tune_num; /**< <tt>\b 0x480:</tt> USBHS M31_PHY_XCFGI_FS_FINE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_lock_range_max; /**< <tt>\b 0x484:</tt> USBHS M31_PHY_XCFGI_LOCK_RANGE_MAX Register */
+    __IO uint32_t m31_phy_xcfg_hs_coarse_tune_num; /**< <tt>\b 0x474:</tt> USBHS M31_PHY_XCFG_HS_COARSE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_hs_fine_tune_num; /**< <tt>\b 0x478:</tt> USBHS M31_PHY_XCFG_HS_FINE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_fs_coarse_tune_num; /**< <tt>\b 0x47C:</tt> USBHS M31_PHY_XCFG_FS_COARSE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_fs_fine_tune_num; /**< <tt>\b 0x480:</tt> USBHS M31_PHY_XCFG_FS_FINE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_lock_range_max; /**< <tt>\b 0x484:</tt> USBHS M31_PHY_XCFG_LOCK_RANGE_MAX Register */
     __IO uint32_t m31_phy_xcfgi_lock_range_min; /**< <tt>\b 0x488:</tt> USBHS M31_PHY_XCFGI_LOCK_RANGE_MIN Register */
-    __IO uint32_t m31_phy_xcfgi_ob_rsel; /**< <tt>\b 0x48C:</tt> USBHS M31_PHY_XCFGI_OB_RSEL Register */
-    __IO uint32_t m31_phy_xcfgi_oc_rsel; /**< <tt>\b 0x490:</tt> USBHS M31_PHY_XCFGI_OC_RSEL Register */
+    __IO uint32_t m31_phy_xcfg_ob_rsel; /**< <tt>\b 0x48C:</tt> USBHS M31_PHY_XCFG_OB_RSEL Register */
+    __IO uint32_t m31_phy_xcfg_oc_rsel; /**< <tt>\b 0x490:</tt> USBHS M31_PHY_XCFG_OC_RSEL Register */
     __IO uint32_t m31_phy_xcfgo;        /**< <tt>\b 0x494:</tt> USBHS M31_PHY_XCFGO Register */
     __IO uint32_t mxm_int;              /**< <tt>\b 0x498:</tt> USBHS MXM_INT Register */
     __IO uint32_t mxm_int_en;           /**< <tt>\b 0x49C:</tt> USBHS MXM_INT_EN Register */
     __IO uint32_t mxm_suspend;          /**< <tt>\b 0x4A0:</tt> USBHS MXM_SUSPEND Register */
     __IO uint32_t mxm_reg_a4;           /**< <tt>\b 0x4A4:</tt> USBHS MXM_REG_A4 Register */
+    __IO mxc_usb_dma_regs_t   dma[8];   /**< <tt>\b 0x204:</tt> USBHS DMA Register */
 } mxc_usbhs_regs_t;
 
 /* Register offsets for module USBHS */
@@ -189,6 +198,9 @@ typedef struct {
  * @brief      USBHS Peripheral Register Offsets from the USBHS Base Peripheral Address.
  * @{
  */
+#define MXC_R_USBHS_CTRL                   ((uint32_t)0x00000000UL) /**< Offset from USBHS Base Address: <tt> 0x0000</tt> */
+#define MXC_R_USBHS_ADDR                   ((uint32_t)0x00000004UL) /**< Offset from USBHS Base Address: <tt> 0x0004</tt> */
+#define MXC_R_USBHS_COUNT                  ((uint32_t)0x00000008UL) /**< Offset from USBHS Base Address: <tt> 0x0008</tt> */
 #define MXC_R_USBHS_FADDR                  ((uint32_t)0x00000000UL) /**< Offset from USBHS Base Address: <tt> 0x0000</tt> */
 #define MXC_R_USBHS_POWER                  ((uint32_t)0x00000001UL) /**< Offset from USBHS Base Address: <tt> 0x0001</tt> */
 #define MXC_R_USBHS_INTRIN                 ((uint32_t)0x00000002UL) /**< Offset from USBHS Base Address: <tt> 0x0002</tt> */
@@ -232,6 +244,7 @@ typedef struct {
 #define MXC_R_USBHS_EARLYDMA               ((uint32_t)0x0000007BUL) /**< Offset from USBHS Base Address: <tt> 0x007B</tt> */
 #define MXC_R_USBHS_CTUCH                  ((uint32_t)0x00000080UL) /**< Offset from USBHS Base Address: <tt> 0x0080</tt> */
 #define MXC_R_USBHS_CTHSRTN                ((uint32_t)0x00000082UL) /**< Offset from USBHS Base Address: <tt> 0x0082</tt> */
+#define MXC_R_USBHS_DMA_INTR               ((uint32_t)0x00000200UL) /**< Offset from USBHS Base Address: <tt> 0x0200</tt> */
 #define MXC_R_USBHS_MXM_USB_REG_00         ((uint32_t)0x00000400UL) /**< Offset from USBHS Base Address: <tt> 0x0400</tt> */
 #define MXC_R_USBHS_M31_PHY_UTMI_RESET     ((uint32_t)0x00000404UL) /**< Offset from USBHS Base Address: <tt> 0x0404</tt> */
 #define MXC_R_USBHS_M31_PHY_UTMI_VCONTROL  ((uint32_t)0x00000408UL) /**< Offset from USBHS Base Address: <tt> 0x0408</tt> */
@@ -260,19 +273,20 @@ typedef struct {
 #define MXC_R_USBHS_M31_PHY_XCFGI_95_64    ((uint32_t)0x00000468UL) /**< Offset from USBHS Base Address: <tt> 0x0468</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGI_127_96   ((uint32_t)0x0000046CUL) /**< Offset from USBHS Base Address: <tt> 0x046C</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGI_137_128  ((uint32_t)0x00000470UL) /**< Offset from USBHS Base Address: <tt> 0x0470</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_HS_COURSE_TUNE_NUM ((uint32_t)0x00000474UL) /**< Offset from USBHS Base Address: <tt> 0x0474</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_HS_FINE_TUNE_NUM ((uint32_t)0x00000478UL) /**< Offset from USBHS Base Address: <tt> 0x0478</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_FS_COURSE_TUNE_NUM ((uint32_t)0x0000047CUL) /**< Offset from USBHS Base Address: <tt> 0x047C</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_FS_FINE_TUNE_NUM ((uint32_t)0x00000480UL) /**< Offset from USBHS Base Address: <tt> 0x0480</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_LOCK_RANGE_MAX ((uint32_t)0x00000484UL) /**< Offset from USBHS Base Address: <tt> 0x0484</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_HS_COARSE_TUNE_NUM ((uint32_t)0x00000474UL) /**< Offset from USBHS Base Address: <tt> 0x0474</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_HS_FINE_TUNE_NUM ((uint32_t)0x00000478UL) /**< Offset from USBHS Base Address: <tt> 0x0478</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_FS_COARSE_TUNE_NUM ((uint32_t)0x0000047CUL) /**< Offset from USBHS Base Address: <tt> 0x047C</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_FS_FINE_TUNE_NUM ((uint32_t)0x00000480UL) /**< Offset from USBHS Base Address: <tt> 0x0480</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_LOCK_RANGE_MAX ((uint32_t)0x00000484UL) /**< Offset from USBHS Base Address: <tt> 0x0484</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGI_LOCK_RANGE_MIN ((uint32_t)0x00000488UL) /**< Offset from USBHS Base Address: <tt> 0x0488</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_OB_RSEL  ((uint32_t)0x0000048CUL) /**< Offset from USBHS Base Address: <tt> 0x048C</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_OC_RSEL  ((uint32_t)0x00000490UL) /**< Offset from USBHS Base Address: <tt> 0x0490</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_OB_RSEL   ((uint32_t)0x0000048CUL) /**< Offset from USBHS Base Address: <tt> 0x048C</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_OC_RSEL   ((uint32_t)0x00000490UL) /**< Offset from USBHS Base Address: <tt> 0x0490</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGO          ((uint32_t)0x00000494UL) /**< Offset from USBHS Base Address: <tt> 0x0494</tt> */
 #define MXC_R_USBHS_MXM_INT                ((uint32_t)0x00000498UL) /**< Offset from USBHS Base Address: <tt> 0x0498</tt> */
 #define MXC_R_USBHS_MXM_INT_EN             ((uint32_t)0x0000049CUL) /**< Offset from USBHS Base Address: <tt> 0x049C</tt> */
 #define MXC_R_USBHS_MXM_SUSPEND            ((uint32_t)0x000004A0UL) /**< Offset from USBHS Base Address: <tt> 0x04A0</tt> */
 #define MXC_R_USBHS_MXM_REG_A4             ((uint32_t)0x000004A4UL) /**< Offset from USBHS Base Address: <tt> 0x04A4</tt> */
+#define MXC_R_USBHS_DMA                    ((uint32_t)0x00000204UL) /**< Offset from USBHS Base Address: <tt> 0x0204</tt> */
 /**@} end of group usbhs_registers */
 
 /**

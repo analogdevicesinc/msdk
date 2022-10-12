@@ -385,11 +385,6 @@
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>ITO</name>
-                <description>The internal 120 MHz PLL is used for the system clock.</description>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
                 <name>ERFO</name>
                 <description>The external 32 MHz input is used for the system clock.</description>
                 <value>2</value>
@@ -413,11 +408,6 @@
                 <name>ERTCO</name>
                 <description>External 32 kHz input is used for the system clock.</description>
                 <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>EXTCLK</name>
-                <description>External clock input is used for the system clock.</description>
-                <value>7</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>

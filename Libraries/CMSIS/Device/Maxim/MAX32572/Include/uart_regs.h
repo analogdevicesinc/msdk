@@ -259,9 +259,6 @@ typedef struct {
 #define MXC_F_UART_INTEN_TX_HE_POS                     6 /**< INTEN_TX_HE Position */
 #define MXC_F_UART_INTEN_TX_HE                         ((uint32_t)(0x1UL << MXC_F_UART_INTEN_TX_HE_POS)) /**< INTEN_TX_HE Mask */
 
-#define MXC_F_UART_INTEN_RX_FULL_POS                   7 /**< INTEN_RX_FULL Position */
-#define MXC_F_UART_INTEN_RX_FULL                       ((uint32_t)(0x1UL << MXC_F_UART_INTEN_RX_FULL_POS)) /**< INTEN_RX_FULL Mask */
-
 /**@} end of group UART_INTEN_Register */
 
 /**
@@ -290,9 +287,6 @@ typedef struct {
 
 #define MXC_F_UART_INTFL_TX_HE_POS                     6 /**< INTFL_TX_HE Position */
 #define MXC_F_UART_INTFL_TX_HE                         ((uint32_t)(0x1UL << MXC_F_UART_INTFL_TX_HE_POS)) /**< INTFL_TX_HE Mask */
-
-#define MXC_F_UART_INTFL_RX_FULL_POS                   7 /**< INTFL_RX_FULL Position */
-#define MXC_F_UART_INTFL_RX_FULL                       ((uint32_t)(0x1UL << MXC_F_UART_INTFL_RX_FULL_POS)) /**< INTFL_RX_FULL Mask */
 
 /**@} end of group UART_INTFL_Register */
 
