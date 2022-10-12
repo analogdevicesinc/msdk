@@ -1,6 +1,7 @@
 /**
  * @file    emcc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the EMCC Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -33,10 +34,11 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
-#ifndef _EMCC_REGS_H_
-#define _EMCC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_EMCC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_EMCC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -76,7 +78,7 @@ extern "C" {
  * @ingroup     emcc
  * @defgroup    emcc_registers EMCC_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the EMCC Peripheral Module.
- * @details External Memory Cache Controller Registers.
+ * @details     External Memory Cache Controller Registers.
  */
 
 /**
@@ -99,10 +101,10 @@ typedef struct {
  * @brief      EMCC Peripheral Register Offsets from the EMCC Base Peripheral Address.
  * @{
  */
- #define MXC_R_EMCC_INFO                    ((uint32_t)0x00000000UL) /**< Offset from EMCC Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_EMCC_SZ                      ((uint32_t)0x00000004UL) /**< Offset from EMCC Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_EMCC_CTRL                    ((uint32_t)0x00000100UL) /**< Offset from EMCC Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_EMCC_INVALIDATE              ((uint32_t)0x00000700UL) /**< Offset from EMCC Base Address: <tt> 0x0700</tt> */ 
+#define MXC_R_EMCC_INFO                    ((uint32_t)0x00000000UL) /**< Offset from EMCC Base Address: <tt> 0x0000</tt> */
+#define MXC_R_EMCC_SZ                      ((uint32_t)0x00000004UL) /**< Offset from EMCC Base Address: <tt> 0x0004</tt> */
+#define MXC_R_EMCC_CTRL                    ((uint32_t)0x00000100UL) /**< Offset from EMCC Base Address: <tt> 0x0100</tt> */
+#define MXC_R_EMCC_INVALIDATE              ((uint32_t)0x00000700UL) /**< Offset from EMCC Base Address: <tt> 0x0700</tt> */
 /**@} end of group emcc_registers */
 
 /**
@@ -111,14 +113,14 @@ typedef struct {
  * @brief    Cache ID Register.
  * @{
  */
- #define MXC_F_EMCC_INFO_RELNUM_POS                     0 /**< INFO_RELNUM Position */
- #define MXC_F_EMCC_INFO_RELNUM                         ((uint32_t)(0x3FUL << MXC_F_EMCC_INFO_RELNUM_POS)) /**< INFO_RELNUM Mask */
+#define MXC_F_EMCC_INFO_RELNUM_POS                     0 /**< INFO_RELNUM Position */
+#define MXC_F_EMCC_INFO_RELNUM                         ((uint32_t)(0x3FUL << MXC_F_EMCC_INFO_RELNUM_POS)) /**< INFO_RELNUM Mask */
 
- #define MXC_F_EMCC_INFO_PARTNUM_POS                    6 /**< INFO_PARTNUM Position */
- #define MXC_F_EMCC_INFO_PARTNUM                        ((uint32_t)(0xFUL << MXC_F_EMCC_INFO_PARTNUM_POS)) /**< INFO_PARTNUM Mask */
+#define MXC_F_EMCC_INFO_PARTNUM_POS                    6 /**< INFO_PARTNUM Position */
+#define MXC_F_EMCC_INFO_PARTNUM                        ((uint32_t)(0xFUL << MXC_F_EMCC_INFO_PARTNUM_POS)) /**< INFO_PARTNUM Mask */
 
- #define MXC_F_EMCC_INFO_ID_POS                         10 /**< INFO_ID Position */
- #define MXC_F_EMCC_INFO_ID                             ((uint32_t)(0x3FUL << MXC_F_EMCC_INFO_ID_POS)) /**< INFO_ID Mask */
+#define MXC_F_EMCC_INFO_ID_POS                         10 /**< INFO_ID Position */
+#define MXC_F_EMCC_INFO_ID                             ((uint32_t)(0x3FUL << MXC_F_EMCC_INFO_ID_POS)) /**< INFO_ID Mask */
 
 /**@} end of group EMCC_INFO_Register */
 
@@ -128,11 +130,11 @@ typedef struct {
  * @brief    Memory Configuration Register.
  * @{
  */
- #define MXC_F_EMCC_SZ_CCH_POS                          0 /**< SZ_CCH Position */
- #define MXC_F_EMCC_SZ_CCH                              ((uint32_t)(0xFFFFUL << MXC_F_EMCC_SZ_CCH_POS)) /**< SZ_CCH Mask */
+#define MXC_F_EMCC_SZ_CCH_POS                          0 /**< SZ_CCH Position */
+#define MXC_F_EMCC_SZ_CCH                              ((uint32_t)(0xFFFFUL << MXC_F_EMCC_SZ_CCH_POS)) /**< SZ_CCH Mask */
 
- #define MXC_F_EMCC_SZ_MEM_POS                          16 /**< SZ_MEM Position */
- #define MXC_F_EMCC_SZ_MEM                              ((uint32_t)(0xFFFFUL << MXC_F_EMCC_SZ_MEM_POS)) /**< SZ_MEM Mask */
+#define MXC_F_EMCC_SZ_MEM_POS                          16 /**< SZ_MEM Position */
+#define MXC_F_EMCC_SZ_MEM                              ((uint32_t)(0xFFFFUL << MXC_F_EMCC_SZ_MEM_POS)) /**< SZ_MEM Mask */
 
 /**@} end of group EMCC_SZ_Register */
 
@@ -142,17 +144,17 @@ typedef struct {
  * @brief    Cache Control and Status Register.
  * @{
  */
- #define MXC_F_EMCC_CTRL_EN_POS                         0 /**< CTRL_EN Position */
- #define MXC_F_EMCC_CTRL_EN                             ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_EN_POS)) /**< CTRL_EN Mask */
+#define MXC_F_EMCC_CTRL_EN_POS                         0 /**< CTRL_EN Position */
+#define MXC_F_EMCC_CTRL_EN                             ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
- #define MXC_F_EMCC_CTRL_WRITE_ALLOC_POS                1 /**< CTRL_WRITE_ALLOC Position */
- #define MXC_F_EMCC_CTRL_WRITE_ALLOC                    ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_WRITE_ALLOC_POS)) /**< CTRL_WRITE_ALLOC Mask */
+#define MXC_F_EMCC_CTRL_WRITE_ALLOC_POS                1 /**< CTRL_WRITE_ALLOC Position */
+#define MXC_F_EMCC_CTRL_WRITE_ALLOC                    ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_WRITE_ALLOC_POS)) /**< CTRL_WRITE_ALLOC Mask */
 
- #define MXC_F_EMCC_CTRL_CWFST_DIS_POS                  2 /**< CTRL_CWFST_DIS Position */
- #define MXC_F_EMCC_CTRL_CWFST_DIS                      ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_CWFST_DIS_POS)) /**< CTRL_CWFST_DIS Mask */
+#define MXC_F_EMCC_CTRL_CWFST_DIS_POS                  2 /**< CTRL_CWFST_DIS Position */
+#define MXC_F_EMCC_CTRL_CWFST_DIS                      ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_CWFST_DIS_POS)) /**< CTRL_CWFST_DIS Mask */
 
- #define MXC_F_EMCC_CTRL_RDY_POS                        16 /**< CTRL_RDY Position */
- #define MXC_F_EMCC_CTRL_RDY                            ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
+#define MXC_F_EMCC_CTRL_RDY_POS                        16 /**< CTRL_RDY Position */
+#define MXC_F_EMCC_CTRL_RDY                            ((uint32_t)(0x1UL << MXC_F_EMCC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
 /**@} end of group EMCC_CTRL_Register */
 
@@ -169,8 +171,8 @@ typedef struct {
  *           always return 0.
  * @{
  */
- #define MXC_F_EMCC_INVALIDATE_IA_POS                   0 /**< INVALIDATE_IA Position */
- #define MXC_F_EMCC_INVALIDATE_IA                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_EMCC_INVALIDATE_IA_POS)) /**< INVALIDATE_IA Mask */
+#define MXC_F_EMCC_INVALIDATE_IA_POS                   0 /**< INVALIDATE_IA Position */
+#define MXC_F_EMCC_INVALIDATE_IA                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_EMCC_INVALIDATE_IA_POS)) /**< INVALIDATE_IA Mask */
 
 /**@} end of group EMCC_INVALIDATE_Register */
 
@@ -178,4 +180,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _EMCC_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_EMCC_REGS_H_

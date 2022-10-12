@@ -90,7 +90,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="GPIO2">
+          <field derivedFrom="GPIO3">
             <name>WDT1</name>
             <description>Low Power Watchdog 1 Clock Disable.</description>
             <bitOffset>1</bitOffset>
