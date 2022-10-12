@@ -42,8 +42,9 @@
 
 #if 1 /*Set it to "1" to enable content*/
 
-#ifndef LV_CONF_H
-#define LV_CONF_H
+#ifndef EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+#define EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+
 /*clang-format off*/
 
 #include <stdint.h>
@@ -216,8 +217,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Add a custom handler when assert happens e.g. to restart the MCU*/
 #define LV_ASSERT_HANDLER_INCLUDE <stdint.h>
 #define LV_ASSERT_HANDLER \
-    while (1)             \
-        ; /*Halt by default*/
+    while (1) {} /*Halt by default*/
 
 /*-------------
  * Others
@@ -402,9 +402,9 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
  *In these languages characters should be replaced with an other form based on their position in the text*/
 #define LV_USE_ARABIC_PERSIAN_CHARS 0
 
-/*==================
- *  WIDGET USAGE
- *================*/
+/*==================*/
+/*  WIDGET USAGE    */
+/*==================*/
 
 /*Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html*/
 
@@ -556,6 +556,6 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 /*--END OF LV_CONF_H--*/
 
-#endif /*LV_CONF_H*/
+#endif // EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
 
 #endif /*End of "Content enable"*/
