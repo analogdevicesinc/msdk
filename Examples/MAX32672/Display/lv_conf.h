@@ -40,10 +40,10 @@
  * COPY THIS FILE AS `lv_conf.h` NEXT TO the `lvgl` FOLDER
  */
 
-#if 1 /*Set it to "1" to enable content*/
-
 #ifndef EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
 #define EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+
+#if 1 /*Set it to "1" to enable content*/
 
 /*clang-format off*/
 
@@ -406,7 +406,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*  WIDGET USAGE    */
 /*==================*/
 
-/*Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html*/
+// Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html
 
 #define LV_USE_ARC 1
 
@@ -554,8 +554,9 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Enable the examples to be built with the library*/
 #define LV_BUILD_EXAMPLES 1
 
-/*--END OF LV_CONF_H--*/
+#endif /*End of "Content enable"*/
+
+/*--EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_--*/
 
 #endif // EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
 
-#endif /*End of "Content enable"*/
