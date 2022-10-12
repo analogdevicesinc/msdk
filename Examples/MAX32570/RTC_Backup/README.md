@@ -3,7 +3,7 @@
 This example demonstrates the use of the Real Time Clock (RTC) and its alarm functionality.
 
 The RTC time-of-day alarm is used to wake the device from backup mode every TIME\_OF\_DAY\_SECONDS seconds (defined at the top of main.c). When the device wakes up, it will print the current time of the RTC to the terminal window and return to backup mode while waiting for the next time-of-day alarm to fire.
-
+Please note that the boot process will add extra delay, the defaul boot time for MAX32570 is about 6sec.
 
 ## Required Connections
 
@@ -19,6 +19,7 @@ The RTC time-of-day alarm is used to wake the device from backup mode every TIME
 
 The time-of-day alarm is set to wake the device every 7 seconds.
 When the alarm goes off it will print the current time to the console.
+Note: You may see longer time in console due to boot up time delay
 
 RTC started
 

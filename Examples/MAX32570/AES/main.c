@@ -36,7 +36,8 @@
 /**
  * @file        main.c
  * @brief       AES Example
- * @details     Encryption and decryption of AES on different modes (ECB and OFB) with different bit sizes (128, 192, and 256)
+ * @details     Encryption and decryption of AES on different modes (ECB and OFB)
+ * 				with different bit sizes (128, 192, and 256)
  */
 
 /***** Includes *****/
@@ -414,15 +415,11 @@ int main(void)
     fail += AES256_ECB_dec(0);
     fail += AES256_ECB_dec(1);
 
-    printf("\n");
-
     if (fail == 0) {
-        printf("Example Succeeded\n");
+        printf("\nExample Succeeded\n");
     } else {
-        printf("Example Failed\n");
+        printf("\nExample Failed\n");
     }
-
-    while (1) {}
 
     return 0;
 }

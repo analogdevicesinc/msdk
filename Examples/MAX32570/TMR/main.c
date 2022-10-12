@@ -36,8 +36,8 @@
 /**
  * @file    main.c
  * @brief   Timer example
- * @details PWM Timer        - Outputs a PWM signal (2Hz, 30% duty cycle) on 3.7
- *          Continuous Timer - Outputs a continuous 1s timer on LED0 (GPIO toggles every 500s)
+ * @details PWM Timer        - Outputs a PWM signal (200Hz, 75% duty cycle) on P1.14
+ *          Continuous Timer - Outputs a continuous 1s timer on LED1 (GPIO toggles every 1s)
  */
 
 /***** Includes *****/
@@ -136,6 +136,7 @@ void ContinuousTimer(void)
     tmr.mode = TMR_MODE_CONTINUOUS;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
     tmr.pol = 0;
+    tmr.pins = NULL;
 
     MXC_TMR_Init(CONT_TIMER, &tmr);
 
@@ -152,7 +153,7 @@ int main(void)
     printf("\n************************** Timer Example **************************\n\n");
     printf("1. A continuous mode timer is used to create an interrupt every %d sec.\n",
            INTERVAL_TIME_CONT);
-    printf("   LED0 (Port 3.05) will toggle each time the interrupt occurs.\n\n");
+    printf("   LED1 will toggle each time the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 1.14.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
 

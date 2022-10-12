@@ -170,7 +170,7 @@ int camera_init(void)
 {
     int ret = 0;
     unsigned int bpp; // bytes per pixel
-    unsigned int framesize;
+    unsigned int framesize = 0;
 
     // initialize XCLK for camera
     MXC_PT_Init(MXC_PT_CLK_DIV1);

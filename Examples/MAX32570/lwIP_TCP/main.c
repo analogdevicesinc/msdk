@@ -140,6 +140,8 @@ int main(void)
     mxc_eth_config_t lwip_config;
 
     printf("*** TCP Echo Server Example ***\n");
+    printf("Server IP:192.168.100.200  Port:7 \n");
+    printf("It is defined in lwipcfg.h file under Libraries/lwIP/include/Maxim folder\n\n");
 
     result = MXC_RTC_Init(0, 0);
 

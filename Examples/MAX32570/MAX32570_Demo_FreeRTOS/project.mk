@@ -19,9 +19,7 @@ LIB_FREERTOS = 1
 SBT = 1
 
 # Add some compiler flags specific to the NFC and EMV libs
-PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
 PROJ_CFLAGS += -D__$(TARGET_UC)
-PROJ_CFLAGS += -D$(BOARD)
 
 # Set SDMA size
 PROJ_AFLAGS += -D__MSR_SDMA_SIZE=0xA000
