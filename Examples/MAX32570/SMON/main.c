@@ -35,9 +35,9 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
+ * @brief   SMON Example
  *
- * @details This example uses the UART to print to a terminal and flashes an LED(P2.17).
+ * @details This example demonstrate use case of security monitor
  */
 
 /***** Includes *****/
@@ -109,7 +109,7 @@ void Test2()
 // *****************************************************************************
 int main(void)
 {
-    printf("\n***********Hello World!***********\n");
+    printf("\n*********** Security Monitor Example ***********\n");
     printf("\nConnect the jumper between output and input\n");
     printf("pins of External Sensor 0 and External Sensor 1.\n");
     printf("To cause sensor error you will have to remove\n");
@@ -126,4 +126,6 @@ int main(void)
     Test2();
 
     printf("\nExample Completed\n\n");
+
+    return 0;
 }

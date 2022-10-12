@@ -49,9 +49,29 @@ int MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal)
     return MXC_UART_RevA_AsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
 }
 
+int MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal)
+{
+    return MXC_UART_RevA_TxAsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
+}
+
+int MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal)
+{
+    return MXC_UART_RevA_RxAsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
+}
+
 int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 {
     return MXC_UART_RevA_AsyncStop((mxc_uart_reva_regs_t *)uart);
+}
+
+int MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevA_TxAsyncStop((mxc_uart_reva_regs_t *)uart);
+}
+
+int MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevA_RxAsyncStop((mxc_uart_reva_regs_t *)uart);
 }
 
 int MXC_UART_Init(mxc_uart_regs_t *uart, unsigned int baud, sys_map_t map)
@@ -364,6 +384,16 @@ int MXC_UART_TransactionDMA(mxc_uart_req_t *req)
 int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)
 {
     return MXC_UART_RevA_AbortAsync((mxc_uart_reva_regs_t *)uart);
+}
+
+int MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevA_TxAbortAsync((mxc_uart_reva_regs_t *)uart);
+}
+
+int MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevA_RxAbortAsync((mxc_uart_reva_regs_t *)uart);
 }
 
 int MXC_UART_AsyncHandler(mxc_uart_regs_t *uart)

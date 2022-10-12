@@ -34,7 +34,7 @@
  ******************************************************************************/
 
 #include <string.h>
-#include <stdint.hs>
+#include <stdint.h>
 
 #include <FreeRTOS.h>
 #include <task.h>

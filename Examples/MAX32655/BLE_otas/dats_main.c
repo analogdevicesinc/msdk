@@ -720,6 +720,9 @@ static void datsBtnCback(uint8_t btn)
         }
 
 #endif /* BT_VER */
+        case APP_UI_BTN_2_MED:
+            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+            break;
 
         default:
             APP_TRACE_INFO0(" - No action assigned");
@@ -753,7 +756,9 @@ static void datsBtnCback(uint8_t btn)
             /* stop advertising */
             AppAdvStop();
             break;
-
+        case APP_UI_BTN_2_MED:
+            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+            break;
         default:
             APP_TRACE_INFO0(" - No action assigned");
             break;

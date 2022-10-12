@@ -12,6 +12,3 @@
 # Add resources folder to the build
 VPATH += resources
 IPATH += resources
-
-# Disable TFT display
-PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY

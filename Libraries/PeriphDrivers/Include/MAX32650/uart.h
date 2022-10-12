@@ -608,6 +608,8 @@ void MXC_UART_DMACallback(int ch, int error);
  * @param[in]  retVal  The ret value
  */
 void MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal);
+void MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
+void MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
 
 /**
  * @brief   stop any async callbacks
@@ -615,6 +617,8 @@ void MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal);
  * @param   uart  The uart
  */
 void MXC_UART_AsyncStop(mxc_uart_regs_t *uart);
+void MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart);
+void MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Abort any asynchronous requests in progress.
@@ -626,6 +630,8 @@ void MXC_UART_AsyncStop(mxc_uart_regs_t *uart);
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  */
 void MXC_UART_AbortAsync(mxc_uart_regs_t *uart);
+void MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart);
+void MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart);
 
 /**
  * @brief      UART interrupt handler.

@@ -158,9 +158,20 @@ endif
 # ************************
 LIB_NFC ?= 0
 ifeq ($(LIB_NFC), 1)
+
 # NFC lib has two components, pcd_pbm and rf_driver
 LIB_NFC_PCD_PBM_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_pbm
 LIB_NFC_PCD_RF_DRIVER_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_rf_driver_$(TARGET_UC)
+
+ifeq ("$(wildcard $(LIB_NFC_PCD_PBM_DIR))","")
+$(warning Warning: Failed to locate $(LIB_NFC_PCD_PBM_DIR))
+$(error NFC libraries not found.  Please install the NFC package to $(LIBS_DIR)/NFC)
+endif
+
+ifeq ("$(wildcard $(LIB_NFC_PCD_RF_DRIVER_DIR))","")
+$(warning Warning: Failed to locate $(LIB_NFC_PCD_RF_DRIVER_DIR))
+$(error NFC libraries not found.  Please install the NFC package to $(LIBS_DIR)/NFC)
+endif
 
 ifneq ($(DEV_LIB_NFC),1)
 # The libraries are released as pre-compiled library files.
@@ -192,8 +203,11 @@ endif
 # ************************
 LIB_EMV ?= 0
 ifeq ($(LIB_EMV), 1)
-# NFC lib has two components, pcd_pbm and rf_driver
 EMV_DIR ?= $(LIBS_DIR)/EMV
+
+ifeq ("$(wildcard $(EMV_DIR))","")
+$(error EMV library not found. Please install the EMV package to $(EMV_DIR))
+endif
 
 include $(EMV_DIR)/emv.mk
 endif

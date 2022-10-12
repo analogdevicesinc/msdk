@@ -44,19 +44,9 @@
 #include <string.h>
 
 #include <MAX32xxx.h>
+#include "example_config.h"
 
 /***** Definitions *****/
-#define MXC_GPIO_PORT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_16
-
-#define MXC_GPIO_PORT_OUT MXC_GPIO0
-#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_17
-
-#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_18
-
-#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_19
 
 /***** Globals *****/
 
@@ -71,13 +61,20 @@ int main(void)
 {
     mxc_gpio_cfg_t gpio_in;
     mxc_gpio_cfg_t gpio_out;
-    mxc_gpio_cfg_t gpio_interrupt;
-    mxc_gpio_cfg_t gpio_interrupt_status;
 
     printf("\n\n************************* GPIO Example ***********************\n\n");
-    printf("1. This example reads P0.16 and outputs the same state onto P0.17.\n");
-    printf("2. An interrupt is set up on P0.18 . P0.19 toggles when that\n");
+
+#if defined(BOARD_M_EVKIT_V1) || defined(BOARD_MN_EVKIT_V1)
+    printf("1. This example reads PB1(P0.16) and outputs the same state onto LED1(P2.17).\n");
+#else
+    printf("1. This example reads PB1(P3.7) and outputs the same state onto LED1(P3.5).\n");
+    printf("2. An interrupt is set up on PB2(P3.6)  LED2(P3.4) toggles when that\n");
     printf("   interrupt occurs.\n\n");
+#endif
+
+#if defined(BOARD_Q_EVKIT_V1) || defined(BOARD_QN_EVKIT_V1)
+    mxc_gpio_cfg_t gpio_interrupt;
+    mxc_gpio_cfg_t gpio_interrupt_status;
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
     gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
@@ -102,6 +99,7 @@ int main(void)
     MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
     MXC_GPIO_EnableInt(gpio_interrupt.port, gpio_interrupt.mask);
     NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_INTERRUPT_IN)));
+#endif
 
     /*
      *   Setup input pin.
@@ -112,7 +110,7 @@ int main(void)
     gpio_in.mask = MXC_GPIO_PIN_IN;
     gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
     gpio_in.func = MXC_GPIO_FUNC_IN;
-    gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_in.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_in);
 
     /* Setup output pin. */
@@ -120,7 +118,7 @@ int main(void)
     gpio_out.mask = MXC_GPIO_PIN_OUT;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
-    gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_out);
 
     while (1) {

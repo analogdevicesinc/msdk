@@ -75,6 +75,12 @@
 #error "You must select either USE_BUTTON or USE_ALARM, not both."
 #endif
 
+#if USE_CONSOLE
+#define PRINT_F(...) printf(__VA_ARGS__)
+#else
+#define PRINT_F(...)
+#endif
+
 // *****************************************************************************
 
 #if USE_ALARM
@@ -151,30 +157,23 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINT_F("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32570 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
-#endif // USE_CONSOLE
+    PRINT_F("This code cycles through the MAX32570 power modes, using the RTC alarm to exit from "
+            "each mode.  The modes will change every %d seconds.\n\n",
+            DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32570 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINT_F("This code cycles through the MAX32570 power modes, using a push button (SW2) to exit "
+            "from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINT_F("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     SYS_ClockDisable(SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
     setTrigger(1);
@@ -184,7 +183,6 @@ int main(void)
     MXC_LP_CryptoLightSleepEnable();
     MXC_LP_SRCCLightSleepEnable();
     MXC_LP_ICacheXIPLightSleepEnable();
-    MXC_LP_ICache0LightSleepEnable();
     MXC_LP_SysRam5LightSleepEnable();
     MXC_LP_SysRam4LightSleepEnable();
     MXC_LP_SysRam3LightSleepEnable();
@@ -193,9 +191,7 @@ int main(void)
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
-#endif // USE_CONSOLE
+    PRINT_F("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     MXC_LP_ROMShutdown();
@@ -203,7 +199,6 @@ int main(void)
     // MXC_LP_CryptoShutdown();
     MXC_LP_SRCCShutdown();
     MXC_LP_ICacheXIPShutdown();
-    MXC_LP_ICache0Shutdown();
     MXC_LP_SysRam5Shutdown();
     MXC_LP_SysRam4Shutdown();
     MXC_LP_SysRam3Shutdown();
@@ -212,38 +207,34 @@ int main(void)
     MXC_LP_SysRam1PowerUp();
     MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-#endif // USE_CONSOLE
+    PRINT_F("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 #endif // USE_BUTTON
+
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
 #endif // USE_ALARM
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT_F("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
+        PRINT_F("Wakeup from SLEEP mode.\n\n");
 #endif // DO_SLEEP
+
 #if DO_DEEPSLEEP
-#if USE_CONSOLE
-        printf("Entering DEEPSLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT_F("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
+        PRINT_F("Wakeup from DEEPSLEEP mode.\n\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINT_F("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP

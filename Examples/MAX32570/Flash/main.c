@@ -49,7 +49,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 
 /***** Definitions *****/
@@ -158,6 +157,8 @@ void FLC1_IRQHandler(void)
 //******************************************************************************
 void flash_init(void)
 {
+    MXC_FLC_Init();
+
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
     MXC_FLC0->clkdiv = 24;
@@ -424,8 +425,6 @@ int main(void)
     } else {
         printf("Example Failed\n");
     }
-
-    while (1) {}
 
     return 0;
 }

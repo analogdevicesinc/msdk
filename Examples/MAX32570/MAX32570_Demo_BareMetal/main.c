@@ -67,7 +67,7 @@ static int system_init(void)
     MXC_RTC_Init(0, 0);
     MXC_RTC_Start();
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
     keypad_init();
 
     nfc_init();
@@ -133,7 +133,7 @@ int main(void)
             timer_start(timeout);
         }
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
         // check keyboard key
         key = keypad_getkey();
         if (key > 0) {

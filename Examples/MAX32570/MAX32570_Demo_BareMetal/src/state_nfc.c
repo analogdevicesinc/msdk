@@ -51,14 +51,14 @@
 /*********************************      VARIABLES    *************************/
 static text_t text_msg[] = {
     { (char *)"NFC", 3 },
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
     { (char *)"Place card near target", 22 },
 #else
     { (char *)"This EvKit does not support NFC", 31 }
 #endif
 };
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
 static area_t area_clean = { 0, 0, 0, 0 };
 static area_t area_clean_1 = { 0, 0, 0, 0 };
 static int g_tick_counter = 0;
@@ -70,7 +70,7 @@ static int init(void)
     MXC_TFT_SetBackGroundColor(0);
 
     MXC_TFT_PrintFont(140, 12, urw_gothic_16_bleu_bg_grey, &text_msg[0], NULL); //"NFC"
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
     MXC_TFT_PrintFont(58, 40, urw_gothic_12_white_bg_grey, &text_msg[1],
                       NULL); //"Place card near target"
 #else
@@ -84,7 +84,7 @@ static int init(void)
     MXC_TS_RemoveAllButton();
     MXC_TS_AddButton(135, 191, (135 + 48), (191 + 39), 'C'); //Home
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
     g_tick_counter = 0;
 #endif
 
@@ -104,7 +104,7 @@ static int key_process(unsigned int key)
     return 0;
 }
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
 static int time_tick(void)
 {
     char msg[64];
@@ -173,9 +173,9 @@ static int time_tick(void)
 
     return 0;
 }
-#endif // for  #if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#endif // for  #if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
 static State g_state = { "nfc", init, key_process, time_tick, 10 };
 #else
 static State g_state = { "nfc", init, key_process, NULL, 0 };
