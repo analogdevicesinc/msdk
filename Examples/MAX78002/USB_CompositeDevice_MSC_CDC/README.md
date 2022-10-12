@@ -1,6 +1,6 @@
 ## Description
 
-This version of USB_Composite Device_MSC_CDC configures USB peripheral as Composite device (Mass Storage and CDC Class).
+The example demonstartes the use of USB composite device with Mass Storage driver class and CDC-ACM driver class. After doing the required connections given below, run the program and two new devices appear in the device manager, a Portable device and COM Port. The portable device can be read and written to. Open a terminal application on the PC at 9600 baud rate, and echo the characters on the terminal.
 
 ## Required Connections
 
@@ -24,3 +24,4 @@ Suspended
 Bus Reset
 Bus Reset Done: High speed
 Enumeration complete...
+```

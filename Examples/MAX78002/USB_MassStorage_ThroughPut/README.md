@@ -1,6 +1,6 @@
 ## Description
 
-This version of USB_MassStorage configures USB peripheral as Mass Storage device.
+The example demonstartes the use of USB Mass Storage driver class. After doing the required connections given below, run the program and a new portable device appears in the device manager. It will appear as a new drive which can be read and written to.
 The device RAM is emulated as 1GB RAM for USB throughput testing purpose.
 
 ## Required Connections
@@ -18,11 +18,11 @@ The device RAM is emulated as 1GB RAM for USB throughput testing purpose.
 The Console UART of the device will output these messages:
 
 ```
-Hello World!
-count : 0
-count : 1
-count : 2
-count : 3
+***** MAX78002 USB Mass Storage Example *****
+Waiting for VBUS...
+VBUS Connect
+Suspended
+Bus Reset
+Bus Reset Done: High speed
+Enumeration complete.
 ```
-
-You will also observe LED1 blinking at a rate of 2Hz.

@@ -1,6 +1,6 @@
 ## Description
 
-This version of USB_MassStorage configures USB peripheral as Mass Storage device.
+The example demonstartes the use of USB Mass Storage driver class. After doing the required connections given below, run the program and a new portable device appears in the device manager. It will appear as a new drive which can be read and written to.
 
 ## Required Connections
 
@@ -23,3 +23,4 @@ Suspended
 Bus Reset
 Bus Reset Done: High speed
 Enumeration complete.
+```
