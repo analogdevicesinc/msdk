@@ -70,8 +70,8 @@ volatile unsigned int dma_done = 0;
 #endif
 
 /* CH0 and CH1 are shared with Console. */
-//#define CH0	    MXC_ADC_CH_0
-//#define CH1	    MXC_ADC_CH_1
+//#define CH0       MXC_ADC_CH_0
+//#define CH1       MXC_ADC_CH_1
 
 #define MXC_ADC_CH_VDDA MXC_ADC_CH_12 ///< Select Channel 12
 #define MXC_ADC_CH_TEMP_SENSOR MXC_ADC_CH_13 ///< Select Channel 13

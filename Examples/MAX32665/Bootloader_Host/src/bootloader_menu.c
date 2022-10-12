@@ -45,7 +45,7 @@
 
 /******************************* Type Definitions ****************************/
 
-/******************************* 	Variables 	  ****************************/
+/*******************************    Variables   ****************************/
 
 /******************************* Static Functions ****************************/
 static int hard_reset_then_enter_bl_mode(const char *parentName)
@@ -123,7 +123,7 @@ static int erase_app(const char *parentName)
 static int set_timeout(const char *parentName)
 {
     int ret = -1;
-    unsigned short timeout = 0;
+    uint16_t timeout = 0;
 
     terminal_printf("\r\nNew Timeout (ms): ");
     timeout = terminal_read_num(0);

@@ -17,8 +17,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef WDXS_FILE_H
-#define WDXS_FILE_H
+#ifndef EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
+#define EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,4 +81,4 @@ void initHeader(fileHeader_t *header);
 }
 #endif
 
-#endif /* WDXS_FILE_H */
+#endif // EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_

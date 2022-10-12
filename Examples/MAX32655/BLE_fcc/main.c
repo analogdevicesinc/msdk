@@ -22,6 +22,7 @@
  */
 /*************************************************************************************************/
 
+#include <string.h>
 #include <stdio.h>
 #include "ll_init_api.h"
 #include "chci_tr.h"
@@ -37,7 +38,6 @@
 #include "pal_bb.h"
 #include "pal_cfg.h"
 #include "tmr.h"
-#include <string.h>
 
 /**************************************************************************************************
   Definitions

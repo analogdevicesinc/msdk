@@ -17,13 +17,12 @@
  */
 /*************************************************************************************************/
 
-#ifndef SVC_TEST_H
-#define SVC_TEST_H
+#ifndef EXAMPLES_MAX32665_BLE_MCS_SERVICES_SVC_MCS_H_
+#define EXAMPLES_MAX32665_BLE_MCS_SERVICES_SVC_MCS_H_
 
 #include "wsf_types.h"
 #include "att_api.h"
 #include "util/bstream.h"
-#include "att_api.h"
 #include "svc_cfg.h"
 
 #ifdef __cplusplus
@@ -121,4 +120,4 @@ void SvcMcsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
 };
 #endif
 
-#endif /* SVC_TEST_H */
+#endif // EXAMPLES_MAX32665_BLE_MCS_SERVICES_SVC_MCS_H_

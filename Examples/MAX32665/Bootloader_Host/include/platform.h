@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _PLATFORM_MAX32665_H_
-#define _PLATFORM_MAX32665_H_
+#ifndef EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
+#define EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -59,4 +59,4 @@ int plt_gpio_get(unsigned int idx);
 // delay
 void plt_delay_ms(unsigned int ms);
 
-#endif // _PLATFORM_MAX32665_H_
+#endif // EXAMPLES_MAX32665_BOOTLOADER_HOST_INCLUDE_PLATFORM_H_

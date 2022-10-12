@@ -10,19 +10,11 @@
 # Override default optimization level
 MXC_OPTIMIZE_CFLAGS=-O1
 
-ifeq ("$(wildcard $(LIBS_DIR)/NFC)","")
-$(error This demo example requires NFC package. Please install the NFC package to Libraries/NFC.)
-endif
-
 # Enable NFC library
 LIB_NFC = 1
 
 # Enable SBT
 SBT = 1
-
-# Set default goal to sla.  This means that running just 'make'
-# is equivalent to 'make sla'
-override .DEFAULT_GOAL=sla
 
 # Add project's include and source paths
 VPATH += src/nfc

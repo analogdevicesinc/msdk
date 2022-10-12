@@ -60,7 +60,7 @@ extern "C" {
 #define MXC_FLASH_PAGE_MASK ~(MXC_FLASH_PAGE_SIZE - 1)
 
 /// Calculate the address of a page in flash from the page number
-#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((unsigned long)page * MXC_FLASH_PAGE_SIZE))
+#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((uint32_t)page * MXC_FLASH_PAGE_SIZE))
 
 /***** Function Prototypes *****/
 

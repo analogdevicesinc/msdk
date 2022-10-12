@@ -33,8 +33,8 @@
  * $Revision: 22537 $
  *
  ******************************************************************************/
-#ifndef _MAX32572_REGS_H_
-#define _MAX32572_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MAX32572_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MAX32572_H_
 
 #ifndef TARGET_NUM
 #define TARGET_NUM 32572
@@ -399,7 +399,7 @@ typedef enum {
 #define MXC_MSRADC ((mxc_msradc_regs_t *)MXC_BASE_MSRADC)
 
 /******************************************************************************/
-#define SEC(s) (((unsigned long)s) * 1000000UL)
+#define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
 /*                                                                      Timer */
@@ -632,7 +632,7 @@ typedef enum {
 /******************************************************************************/
 /*                                                                        SPI */
 #ifndef __riscv
-#define MXC_SPI_INSTANCES (3) // TODO: Update
+#define MXC_SPI_INSTANCES (3) // TODO(ADI): Update
 #else
 #define MXC_SPI_INSTANCES (2)
 #endif // __riscv
@@ -729,7 +729,7 @@ typedef enum {
 #define MXC_SETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit) = 1)
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
-#define MXC_SETFIELD(reg, mask, setting) (reg = (reg & ~mask) | (setting & mask))
+#define MXC_SETFIELD(reg, mask, setting) ((reg) = ((reg) & ~(mask)) | ((setting) & (mask)))
 
 /******************************************************************************/
 /*                                                                  SCB CPACR */
@@ -740,4 +740,4 @@ typedef enum {
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
-#endif /* _MAX32572_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MAX32572_H_
