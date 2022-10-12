@@ -11,7 +11,10 @@
 
 # **********************************************************
 
-# Add your config here!
+# Project options:
+# Set to 1 to enable, 0 to disable
+CONSOLE = 1
+SD = 0
 
 # Set the camera drivers.  Select a line to match the
 # connected camera.  These are some common values.  
@@ -19,7 +22,20 @@
 # see the documentation.
 CAMERA=OV7692
 #CAMERA=OV5642
-#CAMERA=HM0360_MONO
+#CAMERA=HM0360_COLOR
 #CAMERA=HM01B0
 
+ifeq ($(CONSOLE),1)
+# If CONSOLE enabled, add "CONSOLE"
+PROJ_CFLAGS += -DCONSOLE
+VPATH += src/console
+endif
+
+ifeq ($(SD),1)
+# If SD enabled, add "SD" compiler definition,
+# enable SD card library, and add src/sd to the
+# build.
+PROJ_CFLAGS += -DSD
 LIB_SDHC = 1
+VPATH += src/sd
+endif
