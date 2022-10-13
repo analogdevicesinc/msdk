@@ -4,21 +4,22 @@ The example demonstartes the use of USB composite device with Mass Storage drive
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Connect a USB cable between the PC and the CN1 (USB/UART0) connector.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect a USB cable between the PC and the CN2 (USB/PWR/UARTS) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect a USB cable between the PC and the CN1 (USB/PWR) connector. Make sure JP6 (2-3) is connected to UART.
+-   Default EV kit hardware configuration.
 
 ## Expected Output
 
 The Console UART of the device will output these messages:
 
 ```
-****** MAX32665 USB Composite Device (CDC and Mass Storage) Example ******
+****** USB Composite Device (CDCACM and Mass Storage) Example ******
 Waiting for VBUS...
 VBUS Connect
 Suspended
 Bus Reset
-Bus Reset
-Enumeration complete.
+Bus Reset Done: High speed
+Enumeration complete...
 ```
 
