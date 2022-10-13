@@ -46,7 +46,7 @@
 /* **** Definitions **** */
 #define HTMR_CTRL_RESET_DEFAULT (0x8000UL)
 #define BUSY_TIMEOUT (10000) // Timeout counts for the Busy bit
-#define ASYNC_MODE (htmr->ctrl & MXC_F_HTMR_REVA_CTRL_ACRE)
+#define ASYNC_MODE (MXC_F_HTMR_REVA_CTRL_ACRE & htmr->ctrl)
 
 #define MXC_HTMR_ALL_INT_FLAGS \
     (MXC_F_HTMR_REVA_CTRL_RDY | MXC_F_HTMR_REVA_CTRL_ALDF | MXC_F_HTMR_REVA_CTRL_ALSF)
