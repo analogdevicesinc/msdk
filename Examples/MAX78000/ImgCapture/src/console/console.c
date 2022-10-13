@@ -65,6 +65,10 @@ char *help_table[] = {
     "resolutions",
     "<register> <value> : Write a value to a camera register.",
     "<register> : Prints the value in a camera register.",
+#ifdef CAMERA_BAYER
+    "<function> : Set the debayering function ('passthrough','bilinear', or 'malvarcutler')",
+#endif
+#ifdef SD
     ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU "
     "detects it's blank.",
     ": Unmount the SD card.",
@@ -78,6 +82,7 @@ char *help_table[] = {
     "<filename> : Print the contents of a file.",
     "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is "
     "optional.  If none is specified, images will be saved to /raw."
+#endif
 };
 
 int starts_with(char *a, char *b)
