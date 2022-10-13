@@ -474,6 +474,7 @@ void service_console()
             #ifdef CAMERA_BAYER
             uint8_t *bayer_data = (uint8_t *)malloc(img_data.w * img_data.h * 2);
             if (bayer_data != NULL) {
+                MXC_TMR_SW_Start(MXC_TMR0);
                 if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
                     bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
@@ -485,6 +486,8 @@ void service_console()
                 img_data.raw = bayer_data;
                 img_data.imglen *= 2;
                 img_data.pixel_format = (uint8_t *)"RGB565";
+                unsigned int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+                printf("Debayering complete. (Took %u us)\n", elapsed_us);
             } else {
                 printf("Failed to allocate memory for debayering!\n");
                 return;
@@ -524,6 +527,23 @@ void service_console()
             camera_read_reg((uint8_t)reg, &val);
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
             send_msg(g_serial_buffer);
+#ifdef CAMERA_BAYER
+        } else if (cmd == CMD_SETDEBAYER) {
+            char buffer[20] = "\0";
+            sscanf(g_serial_buffer, "%s %s", cmd_table[cmd], buffer);
+            if (!strcmp("passthrough", buffer)) {
+                g_app_settings.bayer_function = BAYER_FUNCTION_PASSTHROUGH;
+                printf("Set %s\n", buffer);
+            } else if (!strcmp("bilinear", buffer)) {
+                g_app_settings.bayer_function = BAYER_FUNCTION_BILINEAR;
+                printf("Set %s\n", buffer);
+            } else if (!strcmp("malvarcutler", buffer)) {
+                g_app_settings.bayer_function = BAYER_FUNCTION_MALVARCUTLER;
+                printf("Set %s\n", buffer);
+            } else {
+                printf("Unknown debayering function '%s'\n", buffer);
+            }
+#endif
 #ifdef SD
         } else if (cmd == CMD_SD_MOUNT) {
             // Mount the SD card
@@ -610,7 +630,7 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
-    g_app_settings.dma_mode = USE_DMA;
+    g_app_settings.dma_mode = NO_DMA;
     g_app_settings.imgres_w = IMAGE_XRES;
     g_app_settings.imgres_h = IMAGE_YRES;
     g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization

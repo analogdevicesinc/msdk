@@ -47,6 +47,9 @@ int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
 char *cmd_table[] = { "help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
+#ifdef CAMERA_BAYER
+"set-debayer",
+#endif
 #ifdef SD
                       "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
                       "touch", "write",   "cat",     "snap"

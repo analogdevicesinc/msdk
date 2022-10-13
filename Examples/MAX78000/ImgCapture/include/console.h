@@ -57,6 +57,9 @@ typedef enum {
     CMD_STREAM,
     CMD_SETREG,
     CMD_GETREG,
+#ifdef CAMERA_BAYER
+    CMD_SETDEBAYER
+#endif
 #ifdef SD
     CMD_SD_MOUNT,
     CMD_SD_UNMOUNT,
