@@ -330,12 +330,10 @@ void MXC_LP_SIMOVregDPowerUp(void)
     MXC_PWRSEQ->lpvddpd &= ~MXC_F_PWRSEQ_LPVDDPD_VREGODPD;
 }
 
-void MXC_LP_FastWakeupEnable(void)
+void __attribute__ ((deprecated("Causes SIMO soft start in wakeup")))MXC_LP_FastWakeupEnable(void)
 {
     // Deprecated due to issues with SIMO in wakeup.
     // MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_FWKM;
-    static const int deprecated = 0;
-    MXC_ASSERT(deprecated);
 }
 
 void MXC_LP_FastWakeupDisable(void)

@@ -360,7 +360,7 @@ void MXC_LP_SIMOVregDPowerUp(void);
  * @brief Enable Fast Wakeup
  * @details Deprecated due to issues with SIMO in wakeup.
  */
-void MXC_LP_FastWakeupEnable(void);
+void __attribute__ ((deprecated("Causes SIMO soft start in wakeup")))MXC_LP_FastWakeupEnable(void);
 
 /**
  * @brief Disable Fast Wakeup
