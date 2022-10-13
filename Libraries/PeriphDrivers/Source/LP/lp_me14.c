@@ -331,7 +331,8 @@ void MXC_LP_SIMOVregDPowerUp(void)
 
 void MXC_LP_FastWakeupEnable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_FWKM;
+    // Deprecated due to issues with SIMO in wakeup.
+    // MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_FWKM;
 }
 
 void MXC_LP_FastWakeupDisable(void)

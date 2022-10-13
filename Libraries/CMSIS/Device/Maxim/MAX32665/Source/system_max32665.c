@@ -188,6 +188,9 @@ __weak void SystemInit(void)
     MXC_GPIO1->pad_cfg1 |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg2 &= ~(0xFFFFFFFF);
 
+    /* Disable fast wakeup due to issues with SIMO in wakeup */
+    MXC_LP_FastWakeupDisable();
+
     Board_Init();
 
     PalSysInit();
