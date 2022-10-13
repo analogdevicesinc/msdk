@@ -1,6 +1,7 @@
 /**
  * @file    sir_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SIR Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -36,8 +37,8 @@
 *
 ******************************************************************************/
 
-#ifndef _SIR_REGS_H_
-#define _SIR_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_SIR_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_SIR_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -77,7 +78,7 @@ extern "C" {
  * @ingroup     sir
  * @defgroup    sir_registers SIR_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the SIR Peripheral Module.
- * @details System Initialization Registers.
+ * @details     System Initialization Registers.
  */
 
 /**
@@ -96,8 +97,8 @@ typedef struct {
  * @brief      SIR Peripheral Register Offsets from the SIR Base Peripheral Address.
  * @{
  */
- #define MXC_R_SIR_SISTAT                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_SIR_SIADDR                   ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */ 
+#define MXC_R_SIR_SISTAT                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SIR_SIADDR                   ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */
 /**@} end of group sir_registers */
 
 /**
@@ -106,14 +107,14 @@ typedef struct {
  * @brief    System Initialization Status Register.
  * @{
  */
- #define MXC_F_SIR_SISTAT_MAGIC_POS                     0 /**< SISTAT_MAGIC Position */
- #define MXC_F_SIR_SISTAT_MAGIC                         ((uint32_t)(0x1UL << MXC_F_SIR_SISTAT_MAGIC_POS)) /**< SISTAT_MAGIC Mask */
+#define MXC_F_SIR_SISTAT_MAGIC_POS                     0 /**< SISTAT_MAGIC Position */
+#define MXC_F_SIR_SISTAT_MAGIC                         ((uint32_t)(0x1UL << MXC_F_SIR_SISTAT_MAGIC_POS)) /**< SISTAT_MAGIC Mask */
 
- #define MXC_F_SIR_SISTAT_CRCERR_POS                    1 /**< SISTAT_CRCERR Position */
- #define MXC_F_SIR_SISTAT_CRCERR                        ((uint32_t)(0x1UL << MXC_F_SIR_SISTAT_CRCERR_POS)) /**< SISTAT_CRCERR Mask */
+#define MXC_F_SIR_SISTAT_CRCERR_POS                    1 /**< SISTAT_CRCERR Position */
+#define MXC_F_SIR_SISTAT_CRCERR                        ((uint32_t)(0x1UL << MXC_F_SIR_SISTAT_CRCERR_POS)) /**< SISTAT_CRCERR Mask */
 
- #define MXC_F_SIR_SISTAT_USER_MAGIC_POS                2 /**< SISTAT_USER_MAGIC Position */
- #define MXC_F_SIR_SISTAT_USER_MAGIC                    ((uint32_t)(0x1UL << MXC_F_SIR_SISTAT_USER_MAGIC_POS)) /**< SISTAT_USER_MAGIC Mask */
+#define MXC_F_SIR_SISTAT_USER_MAGIC_POS                2 /**< SISTAT_USER_MAGIC Position */
+#define MXC_F_SIR_SISTAT_USER_MAGIC                    ((uint32_t)(0x1UL << MXC_F_SIR_SISTAT_USER_MAGIC_POS)) /**< SISTAT_USER_MAGIC Mask */
 
 /**@} end of group SIR_SISTAT_Register */
 
@@ -123,8 +124,8 @@ typedef struct {
  * @brief    System Initialization Address Register.
  * @{
  */
- #define MXC_F_SIR_SIADDR_ERRADDR_POS                   0 /**< SIADDR_ERRADDR Position */
- #define MXC_F_SIR_SIADDR_ERRADDR                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SIR_SIADDR_ERRADDR_POS)) /**< SIADDR_ERRADDR Mask */
+#define MXC_F_SIR_SIADDR_ERRADDR_POS                   0 /**< SIADDR_ERRADDR Position */
+#define MXC_F_SIR_SIADDR_ERRADDR                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SIR_SIADDR_ERRADDR_POS)) /**< SIADDR_ERRADDR Mask */
 
 /**@} end of group SIR_SIADDR_Register */
 
@@ -132,4 +133,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _SIR_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_SIR_REGS_H_

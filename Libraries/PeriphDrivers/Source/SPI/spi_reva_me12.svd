@@ -34,7 +34,6 @@
         <dimIncrement>2</dimIncrement>
         <name>FIFO16[%s]</name>
         <description>Register for reading and writing the FIFO.</description>
-        <alternateRegister>DATA32</alternateRegister>
         <addressOffset>0x00</addressOffset>
         <size>16</size>
         <access>read-write</access>
@@ -52,7 +51,6 @@
         <dimIncrement>1</dimIncrement>
         <name>FIFO8[%s]</name>
         <description>Register for reading and writing the FIFO.</description>
-        <alternateRegister>DATA32</alternateRegister>
         <addressOffset>0x00</addressOffset>
         <size>8</size>
         <access>read-write</access>
