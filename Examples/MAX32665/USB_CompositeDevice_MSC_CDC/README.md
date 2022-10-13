@@ -22,4 +22,3 @@ Bus Reset
 Bus Reset Done: High speed
 Enumeration complete...
 ```
-
