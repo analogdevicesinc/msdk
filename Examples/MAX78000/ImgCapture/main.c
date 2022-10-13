@@ -518,13 +518,13 @@ void service_console()
 
             sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
             printf("Writing 0x%x to camera reg 0x%x\n", val, reg);
-            camera_write_reg((uint8_t)reg, (uint8_t)val);
+            camera_write_reg(reg, val);
         } else if (cmd == CMD_GETREG) {
             // Read a camera register
             unsigned int reg;
             uint8_t val;
             sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
-            camera_read_reg((uint8_t)reg, &val);
+            camera_read_reg(reg, &val);
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
             send_msg(g_serial_buffer);
 #ifdef CAMERA_BAYER
