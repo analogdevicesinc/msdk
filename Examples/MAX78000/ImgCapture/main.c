@@ -630,7 +630,7 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
-    g_app_settings.dma_mode = NO_DMA;
+    g_app_settings.dma_mode = USE_DMA;
     g_app_settings.imgres_w = IMAGE_XRES;
     g_app_settings.imgres_h = IMAGE_YRES;
     g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
