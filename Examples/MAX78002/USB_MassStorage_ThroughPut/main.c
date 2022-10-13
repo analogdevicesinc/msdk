@@ -291,14 +291,12 @@ static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 /******************************************************************************/
 static void usbAppSleep(void)
 {
-    /* TODO: Place low-power code here */
     suspended = 1;
 }
 
 /******************************************************************************/
 static void usbAppWakeup(void)
 {
-    /* TODO: Place low-power code here */
     suspended = 0;
 }
 
