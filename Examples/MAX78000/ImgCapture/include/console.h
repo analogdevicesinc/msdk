@@ -58,7 +58,7 @@ typedef enum {
     CMD_SETREG,
     CMD_GETREG,
 #ifdef CAMERA_BAYER
-    CMD_SETDEBAYER
+    CMD_SETDEBAYER,
 #endif
 #ifdef SD
     CMD_SD_MOUNT,

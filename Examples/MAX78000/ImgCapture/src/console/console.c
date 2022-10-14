@@ -46,13 +46,13 @@ int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char *cmd_table[] = { "help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
+char *cmd_table[] = { "help",        "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
 #ifdef CAMERA_BAYER
-"set-debayer",
+                      "set-debayer",
 #endif
 #ifdef SD
-                      "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
-                      "touch", "write",   "cat",     "snap"
+                      "mount",       "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
+                      "touch",       "write",   "cat",     "snap"
 #endif
 };
 
@@ -234,7 +234,9 @@ void print_help(void)
     int g_num_commands = sizeof(cmd_table) / sizeof(char *);
     printf("Registered %i total commands:\n", g_num_commands);
     printf("-----\n");
-    for (int i = 0; i < g_num_commands; i++) { printf("\t'%s' %s\n", cmd_table[i], help_table[i]); }
+    for (int i = 0; i < g_num_commands; i++) {
+        printf("\t'%s' %s\n", cmd_table[i], help_table[i]);
+    }
     printf("-----\n");
 }
 

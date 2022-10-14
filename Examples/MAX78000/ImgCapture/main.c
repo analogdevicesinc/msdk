@@ -471,16 +471,18 @@ void service_console()
                                               g_app_settings.pixel_format, g_app_settings.dma_mode,
                                               g_app_settings.dma_channel);
 
-            #ifdef CAMERA_BAYER
+#ifdef CAMERA_BAYER
             uint8_t *bayer_data = (uint8_t *)malloc(img_data.w * img_data.h * 2);
             if (bayer_data != NULL) {
                 MXC_TMR_SW_Start(MXC_TMR0);
                 if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
                     bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
-                    bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
+                    bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
+                                               (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_MALVARCUTLER) {
-                    bayer_malvarcutler_demosaicing(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
+                    bayer_malvarcutler_demosaicing(img_data.raw, img_data.w, img_data.h,
+                                                   (uint16_t *)bayer_data);
                 }
 
                 img_data.raw = bayer_data;
@@ -492,13 +494,13 @@ void service_console()
                 printf("Failed to allocate memory for debayering!\n");
                 return;
             }
-            #endif
+#endif
 
             transmit_capture_uart(img_data);
 
-            #ifdef CAMERA_BAYER
+#ifdef CAMERA_BAYER
             free(bayer_data);
-            #endif
+#endif
         } else if (cmd == CMD_STREAM) {
             // Perform a streaming image capture with the current camera settings.
             cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
