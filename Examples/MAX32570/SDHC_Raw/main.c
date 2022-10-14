@@ -338,4 +338,6 @@ int main(void)
     }
 
     printf(" *** END OF EXAMPLE *** \n");
+
+    return 0;
 }

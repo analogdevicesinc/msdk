@@ -44,10 +44,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "flc.h"
-#include "led.h"
+
+#include <MAX32xxx.h>
 
 #include "flash.h"
 #include "lfs.h"
@@ -111,6 +109,9 @@ int main(void)
     int error_status = E_NO_ERROR;
 
     printf("\n\n***** MAX32570 Wear Leveling *****\n");
+
+    // Initialize FLC
+    MXC_FLC_Init();
 
 #if (FULL_WRITE_TEST == 1) || (FULL_READ_TEST == 1)
     // Initializing Test Data
@@ -187,8 +188,6 @@ int main(void)
     } else {
         printf("\nExample Succeeded\n");
     }
-
-    while (1) {}
 
     return 0;
 }

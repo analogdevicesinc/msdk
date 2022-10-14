@@ -45,7 +45,7 @@
 
 /* **** Functions **** */
 
-int MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
+int MXC_OWM_Init(const mxc_owm_cfg_t *cfg, sys_map_t map)
 {
     int err = 0;
     uint32_t mxc_owm_clk, clk_div = 0;
@@ -55,12 +55,22 @@ int MXC_OWM_Init(const mxc_owm_cfg_t *cfg)
     }
 
     // Set system level configurations
-    mxc_gpio_regs_t *gpio = gpio_cfg_owm.port;
-
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_OWIRE);
-    gpio->vssel |= gpio_cfg_owm.mask; // 1-Wire pins need to be at 3.3V.
 
-    if ((err = MXC_GPIO_Config(&gpio_cfg_owm)) != E_NO_ERROR) {
+    const mxc_gpio_cfg_t *gpio;
+    switch (map) {
+    case MAP_A:
+        gpio = &gpio_cfg_owm;
+        break;
+    case MAP_B:
+        gpio = &gpio_cfg_owmb;
+        break;
+    default:
+        gpio = &gpio_cfg_owm;
+        break;
+    }
+
+    if ((err = MXC_GPIO_Config(gpio)) != E_NO_ERROR) {
         return err;
     }
 

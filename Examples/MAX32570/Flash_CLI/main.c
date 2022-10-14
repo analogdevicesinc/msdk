@@ -53,7 +53,6 @@
 #include "definitions.h"
 #include "dma.h"
 #include "flc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "icc.h"
 #include "mxc_assert.h"
@@ -326,6 +325,8 @@ int check_erased(uint32_t startaddr, uint32_t length)
 //******************************************************************************
 void flash_init(void)
 {
+    MXC_FLC_Init();
+
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
     MXC_FLC0->clkdiv = 24;
@@ -378,8 +379,6 @@ int main(void)
         printf("Starting FreeRTOS scheduler.\n");
         vTaskStartScheduler();
     }
-
-    while (1) {}
 
     return 0;
 }

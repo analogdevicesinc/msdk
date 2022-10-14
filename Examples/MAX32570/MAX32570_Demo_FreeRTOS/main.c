@@ -113,7 +113,7 @@ static void vMainTask(void *pvParameters)
         while (1) {}
     }
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
     ret = xTaskCreate(vGetKEYTask, "GetKey", 500, NULL, 4, NULL);
     if (ret != pdPASS) {
         while (1) {}

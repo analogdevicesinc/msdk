@@ -217,16 +217,27 @@ static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
 
 int main(void)
 {
-    /* Delay to prevent bricks */
     volatile int i;
-    DELAY(0x3FFFFF);
+    int numLedsBlink;
+
+    /* Limit the number of LED blinks */
+    if (num_leds > 2) {
+        numLedsBlink = 2;
+    } else {
+        numLedsBlink = num_leds;
+    }
+
+    /* Prevent bricks */
+    if (numLedsBlink == 0) {
+        DELAY(0x3FFFFF);
+    }
 
     LED_Init();
-    for (int led = 0; led < num_leds; led++) {
+    for (int led = 0; led < numLedsBlink; led++) {
         LED_On(led);
-        DELAY(0x3FFFFF);
+        DELAY(0x1FFFFF);
         LED_Off(led);
-        DELAY(0x3FFFFF);
+        DELAY(0x1FFFFF);
     }
 
     /* disable interrupts to prevent these operations from being interrupted */
