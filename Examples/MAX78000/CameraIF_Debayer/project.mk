@@ -7,6 +7,6 @@
 
 # **********************************************************
 
+# Set the camera driver to the HM0360 color drivers
 CAMERA=HM0360_COLOR
-PROJ_CFLAGS+=-DENABLE_TFT
-# PROJ_CFLAGS+=-DGRADPAT
+
