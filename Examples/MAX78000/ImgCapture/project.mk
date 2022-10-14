@@ -5,10 +5,6 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-#BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
-
 # **********************************************************
 
 # Project options:
@@ -21,9 +17,10 @@ SD = 0
 # For a full list of options for the 'CAMERA' variable, 
 # see the documentation.
 CAMERA=OV7692
-#CAMERA=OV5642
-#CAMERA=HM0360_COLOR
-#CAMERA=HM01B0
+# CAMERA=OV5642
+# CAMERA=HM0360_MONO
+# CAMERA=HM0360_COLOR
+# CAMERA=HM01B0
 
 ifeq ($(CONSOLE),1)
 # If CONSOLE enabled, add "CONSOLE"
