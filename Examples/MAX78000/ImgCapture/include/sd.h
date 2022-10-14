@@ -38,8 +38,8 @@
     (http://elm-chan.org/fsw/ff/00index_e.html).
 *****************************************************************************/
 
-#ifndef SD_H
-#define SD_H
+#ifndef EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_SD_H_
+#define EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_SD_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -154,4 +154,4 @@ FRESULT sd_cat(const char *filename);
 // streams to the serial console.
 UINT out_stream(const BYTE *p, UINT btf);
 
-#endif
+#endif // EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_SD_H_
