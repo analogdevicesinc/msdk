@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360 camera sensors as defined in the makefile.
+ * @brief   Parallel camera example for the HM0360-AWA Bayer camera sensors as defined in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
  *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
@@ -62,6 +62,42 @@
 #include "utils.h"
 #include "dma.h"
 
+//------------------------
+// Configuration options
+//------------------------
+
+/*
+* Enables TFT display.  If this is
+* disabled (commented out), then the
+* firmware will send the image data
+* over the serial port for use with
+* pc_utility/grab_image.py
+*/
+#define ENABLE_TFT
+
+#define CAMERA_FREQ (10 * 1000 * 1000)
+
+// Only 160x120 is currently supported.
+#define IMAGE_XRES 160
+#define IMAGE_YRES 120
+
+//UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define CON_BAUD 115200 * 8 
+
+#define X_START 0
+#define Y_START 0
+
+typedef enum {
+    BAYER_FUNCTION_PASSTHROUGH = 0,
+    BAYER_FUNCTION_BILINEAR,
+    BAYER_FUNCTION_MALVARCUTLER
+} bayer_function_t;
+
+// Set the debayering function here
+bayer_function_t g_bayer_function = BAYER_FUNCTION_MALVARCUTLER;
+
+//------------------------
+
 #ifdef ENABLE_TFT
 
 #ifdef BOARD_EVKIT_V1
@@ -73,17 +109,6 @@
 #endif
 
 #endif
-
-#define CAMERA_FREQ (10 * 1000 * 1000)
-
-#define IMAGE_XRES 160
-#define IMAGE_YRES 120
-
-//UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define CON_BAUD 115200 * 8 
-
-#define X_START 0
-#define Y_START 0
 
 static uint8_t *bayer_data;
 
@@ -97,11 +122,27 @@ void process_img(void)
     camera_get_image(&raw, &imgLen, &w, &h);
 
     if (bayer_data) {
-        bayer_malvarcutler_demosaicing(raw, w, h, (uint16_t *)bayer_data);
+        switch(g_bayer_function) {
+            case (BAYER_FUNCTION_PASSTHROUGH):
+            bayer_passthrough(raw, w, h, (uint16_t *)bayer_data);
+            break;
+            case (BAYER_FUNCTION_BILINEAR):
+            bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)bayer_data);
+            break;
+            case (BAYER_FUNCTION_MALVARCUTLER):
+            bayer_malvarcutler_demosaicing(raw, w, h, (uint16_t *)bayer_data);
+            break;
+        }
         MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, bayer_data, h, w);
     }
 
-    // initialize the communication by providing image format and size
+#ifndef ENABLE_TFT
+    /*
+    * Stream image data to PC.
+    * Notice the data characteristics
+    * are modified here since the raw
+    * data has been converted to RGB565.
+    */
     utils_stream_img_to_pc_init(bayer_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
 
     // Get image line by line
@@ -109,6 +150,7 @@ void process_img(void)
         // Send one line to PC
         utils_stream_image_row_to_pc(bayer_data + (i * w * 2), w * 2);
     }
+#endif
 }
 
 void UART_Handler(void)
