@@ -87,10 +87,9 @@
         "ARM_MATH_CM4",
         "__FPU_PRESENT",
         "SEMIHOSTING",
-        "${config:board}"
-    ],
-    "files.associations": {
-        "camera.h": "c"
-    }
+        "${config:board}",
+        "CAMERA_HM0360_COLOR",
+        "CAMERA_BAYER"
+    ]
 }
 

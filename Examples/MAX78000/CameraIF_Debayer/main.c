@@ -82,7 +82,7 @@
 #define IMAGE_YRES 120
 
 //UART baudrate used for sending data to PC, use max 921600 for serial stream
-#define CON_BAUD 115200 * 8 
+#define CON_BAUD 115200 * 8
 
 #define X_START 0
 #define Y_START 0
@@ -122,14 +122,14 @@ void process_img(void)
     camera_get_image(&raw, &imgLen, &w, &h);
 
     if (bayer_data) {
-        switch(g_bayer_function) {
-            case (BAYER_FUNCTION_PASSTHROUGH):
+        switch (g_bayer_function) {
+        case (BAYER_FUNCTION_PASSTHROUGH):
             bayer_passthrough(raw, w, h, (uint16_t *)bayer_data);
             break;
-            case (BAYER_FUNCTION_BILINEAR):
+        case (BAYER_FUNCTION_BILINEAR):
             bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)bayer_data);
             break;
-            case (BAYER_FUNCTION_MALVARCUTLER):
+        case (BAYER_FUNCTION_MALVARCUTLER):
             bayer_malvarcutler_demosaicing(raw, w, h, (uint16_t *)bayer_data);
             break;
         }
