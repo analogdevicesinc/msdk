@@ -32,7 +32,7 @@
  ###############################################################################
 
 ifeq "$(PROJECT)" ""
- PROJECT=max32655
+PROJECT=max32655
 endif
 
 .PHONY: all arm release clean distclean riscv
