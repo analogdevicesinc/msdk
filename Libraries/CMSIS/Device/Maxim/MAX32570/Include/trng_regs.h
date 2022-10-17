@@ -114,6 +114,9 @@ typedef struct {
 #define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 /**< CN_RND_IRQ_EN Position */
 #define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL << MXC_F_TRNG_CN_RND_IRQ_EN_POS)) /**< CN_RND_IRQ_EN Mask */
 
+#define MXC_F_TRNG_CN_AESKG_POS                        3 /**< CN_AESKG Position */
+#define MXC_F_TRNG_CN_AESKG                            ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_POS)) /**< CN_AESKG Mask */
+
 #define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 /**< CN_AESKG_MEMPROTE Position */
 #define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) /**< CN_AESKG_MEMPROTE Mask */
 
