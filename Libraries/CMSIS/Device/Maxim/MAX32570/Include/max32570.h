@@ -1,38 +1,36 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- * $Date: 2016-04-27 09:12:38 -0700 (Wed, 27 Apr 2016) $
- * $Revision: 22537 $
- *
- ******************************************************************************/
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
+
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_MAX32570_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_MAX32570_H_
 
@@ -240,11 +238,6 @@ typedef enum {
 #define MXC_FCR ((mxc_fcr_regs_t *)MXC_BASE_FCR)
 
 /******************************************************************************/
-/*                                        Trim System Initalization Register */
-#define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
-#define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
-
-/******************************************************************************/
 /*                                                      Trust Protection Unit */
 #define MXC_BASE_CTB ((uint32_t)0x40001000UL)
 #define MXC_CTB ((mxc_ctb_regs_t *)MXC_BASE_CTB)
@@ -272,9 +265,14 @@ typedef enum {
 #define MXC_DVS ((mxc_dvs_regs_t *)MXC_BASE_DVS)
 
 /******************************************************************************/
-/*                                                           Security Monitor */
-#define MXC_BASE_SMON ((uint32_t)0x40004000UL)
-#define MXC_SMON ((mxc_smon_regs_t *)MXC_BASE_SMON)
+/*                                        Trim System Initalization Register */
+#define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
+#define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
+
+/******************************************************************************/
+/*                                                                       BBFC */
+#define MXC_BASE_BBFC ((uint32_t)0x40005800UL)
+#define MXC_BBFC ((mxc_bbfc_regs_t *)MXC_BASE_BBFC)
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -324,15 +322,11 @@ typedef enum {
 #define MXC_PCIF ((mxc_cameraif_regs_t *)MXC_BASE_PCIF)
 
 /******************************************************************************/
-/*                                                       Magstripe Reader ADC */
-#define MXC_BASE_ADC9 ((uint32_t)0x40034000UL)
-#define MXC_ADC9 ((mxc_adc9_regs_t *)MXC_BASE_ADC9)
-
-/******************************************************************************/
+/*                                                                      Timer */
 #define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
-/*                                                                      Timer */
+
 #define MXC_CFG_TMR_INSTANCES (6)
 
 #define MXC_BASE_TMR0 ((uint32_t)0x40010000UL)
@@ -426,21 +420,6 @@ typedef enum {
 #define MXC_I2C_FIFO_DEPTH (8)
 
 /******************************************************************************/
-/*                                                                 Smart Card */
-#define MXC_SC_INSTANCES (2)
-
-#define MXC_BASE_SC0 ((uint32_t)0x4002C000UL)
-#define MXC_SC0 ((mxc_scn_regs_t *)MXC_BASE_SC0)
-#define MXC_BASE_SC1 ((uint32_t)0x4002D000UL)
-#define MXC_SC1 ((mxc_scn_regs_t *)MXC_BASE_SC1)
-
-#define MXC_SC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SC0_IRQn : (i) == 1 ? SC1_IRQn : 0)
-
-#define MXC_SC_GET_BASE(i) ((i) == 0 ? MXC_BASE_SC0 : (i) == 1 ? MXC_BASE_SC1 : 0)
-
-#define MXC_SC_GET_IDX(p) ((p) == MXC_SC0 ? 0 : (p) == MXC_SC1 ? 1 : -1)
-
-/******************************************************************************/
 /*                                                      SPI Execute in Place  */
 #define MXC_BASE_SPIXFM ((uint32_t)0x40026000UL)
 #define MXC_SPIXFM ((mxc_spixfm_regs_t *)MXC_BASE_SPIXFM)
@@ -474,7 +453,7 @@ typedef enum {
 #define MXC_BASE_FLC1 ((uint32_t)0x40029400UL)
 #define MXC_FLC1 ((mxc_flc_regs_t *)MXC_BASE_FLC1)
 
-// #define MXC_FLC     MXC_FLC0
+#define MXC_FLC MXC_FLC0
 
 #define MXC_FLC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? FLC0_IRQn : (i) == 1 ? FLC1_IRQn : 0)
 
@@ -490,6 +469,29 @@ typedef enum {
 #define MXC_ICC ((mxc_icc_regs_t *)MXC_BASE_ICC)
 
 /******************************************************************************/
+/*                                                       Magstripe Reader ADC */
+#define MXC_BASE_ADC9 ((uint32_t)0x4002B000UL)
+#define MXC_ADC9 ((mxc_adc9_regs_t *)MXC_BASE_ADC9)
+
+#define MXC_BASE_MSRADC MXC_BASE_ADC9
+#define MXC_MSRADC MXC_ADC9
+
+/******************************************************************************/
+/*                                                                 Smart Card */
+#define MXC_SC_INSTANCES (2)
+
+#define MXC_BASE_SC0 ((uint32_t)0x4002C000UL)
+#define MXC_SC0 ((mxc_scn_regs_t *)MXC_BASE_SC0)
+#define MXC_BASE_SC1 ((uint32_t)0x4002D000UL)
+#define MXC_SC1 ((mxc_scn_regs_t *)MXC_BASE_SC1)
+
+#define MXC_SC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SC0_IRQn : (i) == 1 ? SC1_IRQn : 0)
+
+#define MXC_SC_GET_BASE(i) ((i) == 0 ? MXC_BASE_SC0 : (i) == 1 ? MXC_BASE_SC1 : 0)
+
+#define MXC_SC_GET_IDX(p) ((p) == MXC_SC0 ? 0 : (p) == MXC_SC1 ? 1 : -1)
+
+/******************************************************************************/
 /*                                                      Instruction Cache XIP */
 #define MXC_BASE_SFCC ((uint32_t)0x4002F000UL)
 #define MXC_SFCC ((mxc_icc_regs_t *)MXC_BASE_SFCC)
@@ -498,6 +500,11 @@ typedef enum {
 /*                                                                        CLCD */
 #define MXC_BASE_CLCD ((uint32_t)0x40031000UL)
 #define MXC_CLCD ((mxc_clcd_regs_t *)MXC_BASE_CLCD)
+
+/******************************************************************************/
+/*                                                            Secure Keyboard */
+#define MXC_BASE_SKBD ((uint32_t)0x40032000UL)
+#define MXC_SKBD ((mxc_skbd_regs_t *)MXC_BASE_SKBD)
 
 /******************************************************************************/
 /*                                                            SPIX Data Cache */
@@ -515,24 +522,11 @@ typedef enum {
 #define MXC_BASE_RESERVED ((uint32_t)0x40035000UL)
 
 /******************************************************************************/
-/*                                                                        USB */
-#define MXC_BASE_USBHS ((uint32_t)0x400B1000UL)
-#define MXC_USBHS ((mxc_usbhs_regs_t *)MXC_BASE_USBHS)
-#define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
-#define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
-#define MXC_USBHS_MAX_PACKET 64
-
-/******************************************************************************/
 /*                                                                  Smart DMA */
 #define MXC_BASE_SDMA0 ((uint32_t)0x40036000UL)
 #define MXC_SDMA0 ((mxc_sdma_regs_t *)MXC_BASE_SDMA0)
 #define MXC_BASE_SDMA1 ((uint32_t)0x4004B000UL)
 #define MXC_SDMA1 ((mxc_sdma_regs_t *)MXC_BASE_SDMA1)
-
-/******************************************************************************/
-/*                                                        Magnetic Stripe DSP */
-#define MXC_BASE_MSR ((uint32_t)0x4002B000UL)
-#define MXC_MSR ((mxc_msr_regs_t *)MXC_BASE_MSR)
 
 /******************************************************************************/
 /*                                                               SPI XIP Data */
@@ -617,6 +611,11 @@ typedef enum {
 /*                                                      Pixel Bit Manipulator */
 #define MXC_BASE_PBM ((uint32_t)0x4003F000UL)
 #define MXC_PBM ((mxc_pbm_regs_t *)MXC_BASE_PBM)
+
+/******************************************************************************/
+/*                                                         Contactless RF NFC */
+#define MXC_BASE_NFC ((uint32_t)0x40040000UL)
+#define MXC_NFC ((mxc_nfc_regs_t *)MXC_BASE_NFC)
 
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
@@ -713,29 +712,22 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                       SDHC */
-#define MXC_BASE_SDHC ((uint32_t)0x400B6000UL)
-#define MXC_SDHC ((mxc_sdhc_regs_t *)MXC_BASE_SDHC)
-
-/******************************************************************************/
-/*                                                                       BBFC */
-#define MXC_BASE_BBFC ((uint32_t)0x40005800UL)
-#define MXC_BBFC ((mxc_bbfc_regs_t *)MXC_BASE_BBFC)
-
-/******************************************************************************/
-/*                                                            Secure Keyboard */
-#define MXC_BASE_SKBD ((uint32_t)0x40032000UL)
-#define MXC_SKBD ((mxc_skbd_regs_t *)MXC_BASE_SKBD)
-
-/******************************************************************************/
-/*                                                         Contactless RF NFC */
-#define MXC_BASE_NFC ((uint32_t)0x40040000UL)
-#define MXC_NFC ((mxc_nfc_regs_t *)MXC_BASE_NFC)
-
-/******************************************************************************/
 /*                                                                Ethernet MAC*/
 #define MXC_BASE_EMAC ((uint32_t)0x4004F000UL)
 #define MXC_EMAC ((mxc_emac_regs_t *)MXC_BASE_EMAC)
+
+/******************************************************************************/
+/*                                                                        USB */
+#define MXC_BASE_USBHS ((uint32_t)0x400B1000UL)
+#define MXC_USBHS ((mxc_usbhs_regs_t *)MXC_BASE_USBHS)
+#define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
+#define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
+#define MXC_USBHS_MAX_PACKET 64
+
+/******************************************************************************/
+/*                                                                       SDHC */
+#define MXC_BASE_SDHC ((uint32_t)0x400B6000UL)
+#define MXC_SDHC ((mxc_sdhc_regs_t *)MXC_BASE_SDHC)
 
 /******************************************************************************/
 /*                                                               Bit Shifting */
