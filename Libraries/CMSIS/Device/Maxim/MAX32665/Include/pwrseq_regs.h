@@ -138,6 +138,9 @@ typedef struct {
 #define MXC_V_PWRSEQ_LPCN_RAMRET_EN3                   ((uint32_t)0x3UL) /**< LPCN_RAMRET_EN3 Value */
 #define MXC_S_PWRSEQ_LPCN_RAMRET_EN3                   (MXC_V_PWRSEQ_LPCN_RAMRET_EN3 << MXC_F_PWRSEQ_LPCN_RAMRET_POS) /**< LPCN_RAMRET_EN3 Setting */
 
+#define MXC_F_PWRSEQ_LPCN_BLKDET_POS                   6 /**< LPCN_BLKDET Position */
+#define MXC_F_PWRSEQ_LPCN_BLKDET                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_BLKDET_POS)) /**< LPCN_BLKDET Mask */
+
 #define MXC_F_PWRSEQ_LPCN_BCKGRND_POS                  9 /**< LPCN_BCKGRND Position */
 #define MXC_F_PWRSEQ_LPCN_BCKGRND                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_BCKGRND_POS)) /**< LPCN_BCKGRND Mask */
 

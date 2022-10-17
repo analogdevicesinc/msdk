@@ -44,6 +44,12 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>BLKDET</name>
+            <description>Backlight Detection.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>BCKGRND</name>
             <description>Background Mode ENable. This bit allows low-power background mode operations, while the CPU is in DeepSleep.</description>
             <bitOffset>9</bitOffset>
