@@ -135,7 +135,7 @@ typedef struct {
     __R  uint32_t rsv_0x1e4_0x1ef[3];
     __IO uint32_t i2c2_bus0;            /**< <tt>\b 0x01F0:</tt> RPU I2C2_BUS0 Register */
     __R  uint32_t rsv_0x1f4_0x25f[27];
-    __IO uint32_t spixm;                /**< <tt>\b 0x0260:</tt> RPU SPIXM Register */
+    __IO uint32_t spixfm;               /**< <tt>\b 0x0260:</tt> RPU SPIXFM Register */
     __R  uint32_t rsv_0x264_0x26f[3];
     __IO uint32_t spixfc;               /**< <tt>\b 0x0270:</tt> RPU SPIXFC Register */
     __R  uint32_t rsv_0x274_0x27f[3];
@@ -250,7 +250,7 @@ typedef struct {
 #define MXC_R_RPU_I2C0_BUS0                ((uint32_t)0x000001D0UL) /**< Offset from RPU Base Address: <tt> 0x01D0</tt> */
 #define MXC_R_RPU_I2C1_BUS0                ((uint32_t)0x000001E0UL) /**< Offset from RPU Base Address: <tt> 0x01E0</tt> */
 #define MXC_R_RPU_I2C2_BUS0                ((uint32_t)0x000001F0UL) /**< Offset from RPU Base Address: <tt> 0x01F0</tt> */
-#define MXC_R_RPU_SPIXM                    ((uint32_t)0x00000260UL) /**< Offset from RPU Base Address: <tt> 0x0260</tt> */
+#define MXC_R_RPU_SPIXFM                   ((uint32_t)0x00000260UL) /**< Offset from RPU Base Address: <tt> 0x0260</tt> */
 #define MXC_R_RPU_SPIXFC                   ((uint32_t)0x00000270UL) /**< Offset from RPU Base Address: <tt> 0x0270</tt> */
 #define MXC_R_RPU_DMA0                     ((uint32_t)0x00000280UL) /**< Offset from RPU Base Address: <tt> 0x0280</tt> */
 #define MXC_R_RPU_FLC0                     ((uint32_t)0x00000290UL) /**< Offset from RPU Base Address: <tt> 0x0290</tt> */
@@ -613,14 +613,14 @@ typedef struct {
 
 /**
  * @ingroup  rpu_registers
- * @defgroup RPU_SPIXM RPU_SPIXM
- * @brief    SPIXM RPU Register.
+ * @defgroup RPU_SPIXFM RPU_SPIXFM
+ * @brief    SPIXFM RPU Register.
  * @{
  */
-#define MXC_F_RPU_SPIXM_ACCESS_POS                     0 /**< SPIXM_ACCESS Position */
-#define MXC_F_RPU_SPIXM_ACCESS                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_RPU_SPIXM_ACCESS_POS)) /**< SPIXM_ACCESS Mask */
+#define MXC_F_RPU_SPIXFM_ACCESS_POS                    0 /**< SPIXFM_ACCESS Position */
+#define MXC_F_RPU_SPIXFM_ACCESS                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_RPU_SPIXFM_ACCESS_POS)) /**< SPIXFM_ACCESS Mask */
 
-/**@} end of group RPU_SPIXM_Register */
+/**@} end of group RPU_SPIXFM_Register */
 
 /**
  * @ingroup  rpu_registers

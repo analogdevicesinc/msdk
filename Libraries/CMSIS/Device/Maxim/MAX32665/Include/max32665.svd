@@ -9934,8 +9934,8 @@
      </fields>
     </register>
     <register>
-     <name>SPIXM</name>
-     <description>SPIXM RPU Register.</description>
+     <name>SPIXFM</name>
+     <description>SPIXFM RPU Register.</description>
      <addressOffset>0x0260</addressOffset>
      <fields>
       <field>
