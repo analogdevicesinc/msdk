@@ -193,6 +193,13 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     uint8_t *tempBuff = (uint8_t *)malloc(size);
     /* helps silence compiler warnings over discarded const qualifier */
     uint32_t addressToBuf = (uint32_t)pBuf;
+    /* progressbar vars*/
+    static uint32_t packetCount = 0x00;
+    static uint8_t percentComplete = 0x01;
+    static uint32_t modFileSize = 0;
+    static char progressbar[13] = {
+        '[', '_', '-', '-', '-', '-', '-', '-', '-', '-', '-', ']', '\0'
+    };
     /* write the header in flash device */
     if (!savedHeader) {
         err += Ext_Flash_Program_Page(HEADER_LOCATION, (uint8_t *)&fileHeader, sizeof(fileHeader_t),
@@ -204,6 +211,10 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
             APP_TRACE_INFO0("Error writting header to external flash");
         }
         savedHeader = TRUE;
+        APP_TRACE_INFO2("Receiving file:\r\nLen: %08x\r\nCRC: %08x\r\n", fileHeader.fileLen,
+                        fileHeader.fileCRC);
+        modFileSize = fileHeader.fileLen / 2240;
+        crcResult = 0;
     }
     /* offset by the header thats already written */
     pAddress += HEADER_LEN;
@@ -224,7 +235,23 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
         lastWriteLen = size;
-        APP_TRACE_INFO2("Ext Flash: Wrote %d bytes @ 0x%08x", size, pAddress);
+        packetCount++;
+        /* print transfer progress */
+        if (packetCount % (modFileSize) == 0) {
+            progressbar[percentComplete] = '#';
+            APP_TRACE_INFO2("\033[1A%s%d%% Complete", progressbar, percentComplete * 10);
+            percentComplete++;
+        }
+        /* done receiving*/
+        if (packetCount >= (fileHeader.fileLen / 224) + 1) {
+            percentComplete = 1;
+            for (int i = 1; i < 11; i++) {
+                progressbar[i] = '-';
+            }
+            packetCount = 0;
+            savedHeader = FALSE;
+        }
+
     } else {
         APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
         /* force a crc error so device does not reboot into bootloader */

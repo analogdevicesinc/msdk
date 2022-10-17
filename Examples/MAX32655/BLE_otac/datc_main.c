@@ -99,6 +99,7 @@ typedef struct {
     uint32_t fileCRC;
 } fileHeader_t;
 fileHeader_t fileHeader;
+static bool fileDiscovered = false;
 /*! application control block */
 struct {
     uint16_t hdlList[DM_CONN_MAX][APP_DB_HDL_LIST_LEN]; /*! Cached handle list */
@@ -662,6 +663,8 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
             sendFileHeader(connId);
             /* File discovery complete */
             APP_TRACE_INFO0(">>> File discovery complete <<<\n");
+            fileDiscovered = true;
+
         } else {
             /* Stop timer, calculate time and Bps */
             uint32_t usec = MXC_TMR_SW_Stop(MXC_TMR2);
@@ -768,9 +771,12 @@ static void datcBtnCback(uint8_t btn)
                 /* Start the WDXC data stream */
                 datcCb.blockOffset[connId - 1] = BLOCK_OFFSET_INIT;
 
-                /* Put file request */
-                WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle, BLOCK_OFFSET_INIT,
-                                  FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE, 0);
+                /* Put file request only if file has been discovered*/
+                if (fileDiscovered)
+                    WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle,
+                                      BLOCK_OFFSET_INIT, FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE,
+                                      0);
+                fileDiscovered = false;
             }
             break;
 
