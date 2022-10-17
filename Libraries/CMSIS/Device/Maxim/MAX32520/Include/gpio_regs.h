@@ -1,44 +1,44 @@
 /**
  * @file    gpio_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GPIO Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
-#ifndef _GPIO_REGS_H_
-#define _GPIO_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_GPIO_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_GPIO_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     gpio
  * @defgroup    gpio_registers GPIO_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the GPIO Peripheral Module.
- * @details Individual I/O for each GPIO
+ * @details     Individual I/O for each GPIO
  */
 
 /**
@@ -125,39 +125,39 @@ typedef struct {
 /**
  * @ingroup    gpio_registers
  * @defgroup   GPIO_Register_Offsets Register Offsets
- * @brief      GPIO Peripheral Register Offsets from the GPIO Base Peripheral Address. 
+ * @brief      GPIO Peripheral Register Offsets from the GPIO Base Peripheral Address.
  * @{
  */
- #define MXC_R_GPIO_EN0                     ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_GPIO_EN0_SET                 ((uint32_t)0x00000004UL) /**< Offset from GPIO Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_GPIO_EN0_CLR                 ((uint32_t)0x00000008UL) /**< Offset from GPIO Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_GPIO_OUT_EN                  ((uint32_t)0x0000000CUL) /**< Offset from GPIO Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_GPIO_OUT_EN_SET              ((uint32_t)0x00000010UL) /**< Offset from GPIO Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_GPIO_OUT_EN_CLR              ((uint32_t)0x00000014UL) /**< Offset from GPIO Base Address: <tt> 0x0014</tt> */ 
- #define MXC_R_GPIO_OUT                     ((uint32_t)0x00000018UL) /**< Offset from GPIO Base Address: <tt> 0x0018</tt> */ 
- #define MXC_R_GPIO_OUT_SET                 ((uint32_t)0x0000001CUL) /**< Offset from GPIO Base Address: <tt> 0x001C</tt> */ 
- #define MXC_R_GPIO_OUT_CLR                 ((uint32_t)0x00000020UL) /**< Offset from GPIO Base Address: <tt> 0x0020</tt> */ 
- #define MXC_R_GPIO_IN                      ((uint32_t)0x00000024UL) /**< Offset from GPIO Base Address: <tt> 0x0024</tt> */ 
- #define MXC_R_GPIO_INT_MOD                 ((uint32_t)0x00000028UL) /**< Offset from GPIO Base Address: <tt> 0x0028</tt> */ 
- #define MXC_R_GPIO_INT_POL                 ((uint32_t)0x0000002CUL) /**< Offset from GPIO Base Address: <tt> 0x002C</tt> */ 
- #define MXC_R_GPIO_IN_EN                   ((uint32_t)0x00000030UL) /**< Offset from GPIO Base Address: <tt> 0x0030</tt> */ 
- #define MXC_R_GPIO_INT_EN                  ((uint32_t)0x00000034UL) /**< Offset from GPIO Base Address: <tt> 0x0034</tt> */ 
- #define MXC_R_GPIO_INT_EN_SET              ((uint32_t)0x00000038UL) /**< Offset from GPIO Base Address: <tt> 0x0038</tt> */ 
- #define MXC_R_GPIO_INT_EN_CLR              ((uint32_t)0x0000003CUL) /**< Offset from GPIO Base Address: <tt> 0x003C</tt> */ 
- #define MXC_R_GPIO_INT_STAT                ((uint32_t)0x00000040UL) /**< Offset from GPIO Base Address: <tt> 0x0040</tt> */ 
- #define MXC_R_GPIO_INT_CLR                 ((uint32_t)0x00000048UL) /**< Offset from GPIO Base Address: <tt> 0x0048</tt> */ 
- #define MXC_R_GPIO_WAKE_EN                 ((uint32_t)0x0000004CUL) /**< Offset from GPIO Base Address: <tt> 0x004C</tt> */ 
- #define MXC_R_GPIO_WAKE_EN_SET             ((uint32_t)0x00000050UL) /**< Offset from GPIO Base Address: <tt> 0x0050</tt> */ 
- #define MXC_R_GPIO_WAKE_EN_CLR             ((uint32_t)0x00000054UL) /**< Offset from GPIO Base Address: <tt> 0x0054</tt> */ 
- #define MXC_R_GPIO_INT_DUAL_EDGE           ((uint32_t)0x0000005CUL) /**< Offset from GPIO Base Address: <tt> 0x005C</tt> */ 
- #define MXC_R_GPIO_PDPU_SEL0               ((uint32_t)0x00000060UL) /**< Offset from GPIO Base Address: <tt> 0x0060</tt> */ 
- #define MXC_R_GPIO_PDPU_SEL1               ((uint32_t)0x00000064UL) /**< Offset from GPIO Base Address: <tt> 0x0064</tt> */ 
- #define MXC_R_GPIO_EN1                     ((uint32_t)0x00000068UL) /**< Offset from GPIO Base Address: <tt> 0x0068</tt> */ 
- #define MXC_R_GPIO_EN1_SET                 ((uint32_t)0x0000006CUL) /**< Offset from GPIO Base Address: <tt> 0x006C</tt> */ 
- #define MXC_R_GPIO_EN1_CLR                 ((uint32_t)0x00000070UL) /**< Offset from GPIO Base Address: <tt> 0x0070</tt> */ 
- #define MXC_R_GPIO_DS_SEL0                 ((uint32_t)0x000000B0UL) /**< Offset from GPIO Base Address: <tt> 0x00B0</tt> */ 
- #define MXC_R_GPIO_DS_SEL1                 ((uint32_t)0x000000B4UL) /**< Offset from GPIO Base Address: <tt> 0x00B4</tt> */ 
- #define MXC_R_GPIO_PSSEL                   ((uint32_t)0x000000B8UL) /**< Offset from GPIO Base Address: <tt> 0x00B8</tt> */ 
+#define MXC_R_GPIO_EN0                     ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */
+#define MXC_R_GPIO_EN0_SET                 ((uint32_t)0x00000004UL) /**< Offset from GPIO Base Address: <tt> 0x0004</tt> */
+#define MXC_R_GPIO_EN0_CLR                 ((uint32_t)0x00000008UL) /**< Offset from GPIO Base Address: <tt> 0x0008</tt> */
+#define MXC_R_GPIO_OUT_EN                  ((uint32_t)0x0000000CUL) /**< Offset from GPIO Base Address: <tt> 0x000C</tt> */
+#define MXC_R_GPIO_OUT_EN_SET              ((uint32_t)0x00000010UL) /**< Offset from GPIO Base Address: <tt> 0x0010</tt> */
+#define MXC_R_GPIO_OUT_EN_CLR              ((uint32_t)0x00000014UL) /**< Offset from GPIO Base Address: <tt> 0x0014</tt> */
+#define MXC_R_GPIO_OUT                     ((uint32_t)0x00000018UL) /**< Offset from GPIO Base Address: <tt> 0x0018</tt> */
+#define MXC_R_GPIO_OUT_SET                 ((uint32_t)0x0000001CUL) /**< Offset from GPIO Base Address: <tt> 0x001C</tt> */
+#define MXC_R_GPIO_OUT_CLR                 ((uint32_t)0x00000020UL) /**< Offset from GPIO Base Address: <tt> 0x0020</tt> */
+#define MXC_R_GPIO_IN                      ((uint32_t)0x00000024UL) /**< Offset from GPIO Base Address: <tt> 0x0024</tt> */
+#define MXC_R_GPIO_INT_MOD                 ((uint32_t)0x00000028UL) /**< Offset from GPIO Base Address: <tt> 0x0028</tt> */
+#define MXC_R_GPIO_INT_POL                 ((uint32_t)0x0000002CUL) /**< Offset from GPIO Base Address: <tt> 0x002C</tt> */
+#define MXC_R_GPIO_IN_EN                   ((uint32_t)0x00000030UL) /**< Offset from GPIO Base Address: <tt> 0x0030</tt> */
+#define MXC_R_GPIO_INT_EN                  ((uint32_t)0x00000034UL) /**< Offset from GPIO Base Address: <tt> 0x0034</tt> */
+#define MXC_R_GPIO_INT_EN_SET              ((uint32_t)0x00000038UL) /**< Offset from GPIO Base Address: <tt> 0x0038</tt> */
+#define MXC_R_GPIO_INT_EN_CLR              ((uint32_t)0x0000003CUL) /**< Offset from GPIO Base Address: <tt> 0x003C</tt> */
+#define MXC_R_GPIO_INT_STAT                ((uint32_t)0x00000040UL) /**< Offset from GPIO Base Address: <tt> 0x0040</tt> */
+#define MXC_R_GPIO_INT_CLR                 ((uint32_t)0x00000048UL) /**< Offset from GPIO Base Address: <tt> 0x0048</tt> */
+#define MXC_R_GPIO_WAKE_EN                 ((uint32_t)0x0000004CUL) /**< Offset from GPIO Base Address: <tt> 0x004C</tt> */
+#define MXC_R_GPIO_WAKE_EN_SET             ((uint32_t)0x00000050UL) /**< Offset from GPIO Base Address: <tt> 0x0050</tt> */
+#define MXC_R_GPIO_WAKE_EN_CLR             ((uint32_t)0x00000054UL) /**< Offset from GPIO Base Address: <tt> 0x0054</tt> */
+#define MXC_R_GPIO_INT_DUAL_EDGE           ((uint32_t)0x0000005CUL) /**< Offset from GPIO Base Address: <tt> 0x005C</tt> */
+#define MXC_R_GPIO_PDPU_SEL0               ((uint32_t)0x00000060UL) /**< Offset from GPIO Base Address: <tt> 0x0060</tt> */
+#define MXC_R_GPIO_PDPU_SEL1               ((uint32_t)0x00000064UL) /**< Offset from GPIO Base Address: <tt> 0x0064</tt> */
+#define MXC_R_GPIO_EN1                     ((uint32_t)0x00000068UL) /**< Offset from GPIO Base Address: <tt> 0x0068</tt> */
+#define MXC_R_GPIO_EN1_SET                 ((uint32_t)0x0000006CUL) /**< Offset from GPIO Base Address: <tt> 0x006C</tt> */
+#define MXC_R_GPIO_EN1_CLR                 ((uint32_t)0x00000070UL) /**< Offset from GPIO Base Address: <tt> 0x0070</tt> */
+#define MXC_R_GPIO_DS_SEL0                 ((uint32_t)0x000000B0UL) /**< Offset from GPIO Base Address: <tt> 0x00B0</tt> */
+#define MXC_R_GPIO_DS_SEL1                 ((uint32_t)0x000000B4UL) /**< Offset from GPIO Base Address: <tt> 0x00B4</tt> */
+#define MXC_R_GPIO_PSSEL                   ((uint32_t)0x000000B8UL) /**< Offset from GPIO Base Address: <tt> 0x00B8</tt> */
 /**@} end of group gpio_registers */
 
 /**
@@ -167,12 +167,12 @@ typedef struct {
  *           GPIO pin on the associated port.
  * @{
  */
- #define MXC_F_GPIO_EN0_GPIO_EN0_POS                    0 /**< EN0_GPIO_EN0 Position */
- #define MXC_F_GPIO_EN0_GPIO_EN0                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_GPIO_EN0_POS)) /**< EN0_GPIO_EN0 Mask */
- #define MXC_V_GPIO_EN0_GPIO_EN0_ALTERNATE              ((uint32_t)0x0UL) /**< EN0_GPIO_EN0_ALTERNATE Value */
- #define MXC_S_GPIO_EN0_GPIO_EN0_ALTERNATE              (MXC_V_GPIO_EN0_GPIO_EN0_ALTERNATE << MXC_F_GPIO_EN0_GPIO_EN0_POS) /**< EN0_GPIO_EN0_ALTERNATE Setting */
- #define MXC_V_GPIO_EN0_GPIO_EN0_GPIO                   ((uint32_t)0x1UL) /**< EN0_GPIO_EN0_GPIO Value */
- #define MXC_S_GPIO_EN0_GPIO_EN0_GPIO                   (MXC_V_GPIO_EN0_GPIO_EN0_GPIO << MXC_F_GPIO_EN0_GPIO_EN0_POS) /**< EN0_GPIO_EN0_GPIO Setting */
+#define MXC_F_GPIO_EN0_GPIO_EN0_POS                    0 /**< EN0_GPIO_EN0 Position */
+#define MXC_F_GPIO_EN0_GPIO_EN0                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_GPIO_EN0_POS)) /**< EN0_GPIO_EN0 Mask */
+#define MXC_V_GPIO_EN0_GPIO_EN0_ALTERNATE              ((uint32_t)0x0UL) /**< EN0_GPIO_EN0_ALTERNATE Value */
+#define MXC_S_GPIO_EN0_GPIO_EN0_ALTERNATE              (MXC_V_GPIO_EN0_GPIO_EN0_ALTERNATE << MXC_F_GPIO_EN0_GPIO_EN0_POS) /**< EN0_GPIO_EN0_ALTERNATE Setting */
+#define MXC_V_GPIO_EN0_GPIO_EN0_GPIO                   ((uint32_t)0x1UL) /**< EN0_GPIO_EN0_GPIO Value */
+#define MXC_S_GPIO_EN0_GPIO_EN0_GPIO                   (MXC_V_GPIO_EN0_GPIO_EN0_GPIO << MXC_F_GPIO_EN0_GPIO_EN0_POS) /**< EN0_GPIO_EN0_GPIO Setting */
 
 /**@} end of group GPIO_EN0_Register */
 
@@ -184,8 +184,8 @@ typedef struct {
  *           other bits in that register.
  * @{
  */
- #define MXC_F_GPIO_EN0_SET_GPIO_EN0_SET_POS            0 /**< EN0_SET_GPIO_EN0_SET Position */
- #define MXC_F_GPIO_EN0_SET_GPIO_EN0_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_SET_GPIO_EN0_SET_POS)) /**< EN0_SET_GPIO_EN0_SET Mask */
+#define MXC_F_GPIO_EN0_SET_GPIO_EN0_SET_POS            0 /**< EN0_SET_GPIO_EN0_SET Position */
+#define MXC_F_GPIO_EN0_SET_GPIO_EN0_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_SET_GPIO_EN0_SET_POS)) /**< EN0_SET_GPIO_EN0_SET Mask */
 
 /**@} end of group GPIO_EN0_SET_Register */
 
@@ -197,8 +197,8 @@ typedef struct {
  *           affecting other bits in that register.
  * @{
  */
- #define MXC_F_GPIO_EN0_CLR_GPIO_EN0_CLR_POS            0 /**< EN0_CLR_GPIO_EN0_CLR Position */
- #define MXC_F_GPIO_EN0_CLR_GPIO_EN0_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_CLR_GPIO_EN0_CLR_POS)) /**< EN0_CLR_GPIO_EN0_CLR Mask */
+#define MXC_F_GPIO_EN0_CLR_GPIO_EN0_CLR_POS            0 /**< EN0_CLR_GPIO_EN0_CLR Position */
+#define MXC_F_GPIO_EN0_CLR_GPIO_EN0_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_CLR_GPIO_EN0_CLR_POS)) /**< EN0_CLR_GPIO_EN0_CLR Mask */
 
 /**@} end of group GPIO_EN0_CLR_Register */
 
@@ -209,12 +209,12 @@ typedef struct {
  *           GPIO pin in the associated port.
  * @{
  */
- #define MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS              0 /**< OUT_EN_GPIO_OUT_EN Position */
- #define MXC_F_GPIO_OUT_EN_GPIO_OUT_EN                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS)) /**< OUT_EN_GPIO_OUT_EN Mask */
- #define MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_DIS              ((uint32_t)0x0UL) /**< OUT_EN_GPIO_OUT_EN_DIS Value */
- #define MXC_S_GPIO_OUT_EN_GPIO_OUT_EN_DIS              (MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_DIS << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS) /**< OUT_EN_GPIO_OUT_EN_DIS Setting */
- #define MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_EN               ((uint32_t)0x1UL) /**< OUT_EN_GPIO_OUT_EN_EN Value */
- #define MXC_S_GPIO_OUT_EN_GPIO_OUT_EN_EN               (MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_EN << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS) /**< OUT_EN_GPIO_OUT_EN_EN Setting */
+#define MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS              0 /**< OUT_EN_GPIO_OUT_EN Position */
+#define MXC_F_GPIO_OUT_EN_GPIO_OUT_EN                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS)) /**< OUT_EN_GPIO_OUT_EN Mask */
+#define MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_DIS              ((uint32_t)0x0UL) /**< OUT_EN_GPIO_OUT_EN_DIS Value */
+#define MXC_S_GPIO_OUT_EN_GPIO_OUT_EN_DIS              (MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_DIS << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS) /**< OUT_EN_GPIO_OUT_EN_DIS Setting */
+#define MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_EN               ((uint32_t)0x1UL) /**< OUT_EN_GPIO_OUT_EN_EN Value */
+#define MXC_S_GPIO_OUT_EN_GPIO_OUT_EN_EN               (MXC_V_GPIO_OUT_EN_GPIO_OUT_EN_EN << MXC_F_GPIO_OUT_EN_GPIO_OUT_EN_POS) /**< OUT_EN_GPIO_OUT_EN_EN Setting */
 
 /**@} end of group GPIO_OUT_EN_Register */
 
@@ -226,8 +226,8 @@ typedef struct {
  *           without affecting other bits in that register.
  * @{
  */
- #define MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS      0 /**< OUT_EN_SET_GPIO_OUT_EN_SET Position */
- #define MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS)) /**< OUT_EN_SET_GPIO_OUT_EN_SET Mask */
+#define MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS      0 /**< OUT_EN_SET_GPIO_OUT_EN_SET Position */
+#define MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_SET_GPIO_OUT_EN_SET_POS)) /**< OUT_EN_SET_GPIO_OUT_EN_SET Mask */
 
 /**@} end of group GPIO_OUT_EN_SET_Register */
 
@@ -239,8 +239,8 @@ typedef struct {
  *           without affecting other bits in that register.
  * @{
  */
- #define MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS      0 /**< OUT_EN_CLR_GPIO_OUT_EN_CLR Position */
- #define MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS)) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR Mask */
+#define MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS      0 /**< OUT_EN_CLR_GPIO_OUT_EN_CLR Position */
+#define MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_EN_CLR_GPIO_OUT_EN_CLR_POS)) /**< OUT_EN_CLR_GPIO_OUT_EN_CLR Mask */
 
 /**@} end of group GPIO_OUT_EN_CLR_Register */
 
@@ -252,12 +252,12 @@ typedef struct {
  *           GPIO_OUT_SET and GPIO_OUT_CLR registers.
  * @{
  */
- #define MXC_F_GPIO_OUT_GPIO_OUT_POS                    0 /**< OUT_GPIO_OUT Position */
- #define MXC_F_GPIO_OUT_GPIO_OUT                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_GPIO_OUT_POS)) /**< OUT_GPIO_OUT Mask */
- #define MXC_V_GPIO_OUT_GPIO_OUT_LOW                    ((uint32_t)0x0UL) /**< OUT_GPIO_OUT_LOW Value */
- #define MXC_S_GPIO_OUT_GPIO_OUT_LOW                    (MXC_V_GPIO_OUT_GPIO_OUT_LOW << MXC_F_GPIO_OUT_GPIO_OUT_POS) /**< OUT_GPIO_OUT_LOW Setting */
- #define MXC_V_GPIO_OUT_GPIO_OUT_HIGH                   ((uint32_t)0x1UL) /**< OUT_GPIO_OUT_HIGH Value */
- #define MXC_S_GPIO_OUT_GPIO_OUT_HIGH                   (MXC_V_GPIO_OUT_GPIO_OUT_HIGH << MXC_F_GPIO_OUT_GPIO_OUT_POS) /**< OUT_GPIO_OUT_HIGH Setting */
+#define MXC_F_GPIO_OUT_GPIO_OUT_POS                    0 /**< OUT_GPIO_OUT Position */
+#define MXC_F_GPIO_OUT_GPIO_OUT                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_GPIO_OUT_POS)) /**< OUT_GPIO_OUT Mask */
+#define MXC_V_GPIO_OUT_GPIO_OUT_LOW                    ((uint32_t)0x0UL) /**< OUT_GPIO_OUT_LOW Value */
+#define MXC_S_GPIO_OUT_GPIO_OUT_LOW                    (MXC_V_GPIO_OUT_GPIO_OUT_LOW << MXC_F_GPIO_OUT_GPIO_OUT_POS) /**< OUT_GPIO_OUT_LOW Setting */
+#define MXC_V_GPIO_OUT_GPIO_OUT_HIGH                   ((uint32_t)0x1UL) /**< OUT_GPIO_OUT_HIGH Value */
+#define MXC_S_GPIO_OUT_GPIO_OUT_HIGH                   (MXC_V_GPIO_OUT_GPIO_OUT_HIGH << MXC_F_GPIO_OUT_GPIO_OUT_POS) /**< OUT_GPIO_OUT_HIGH Setting */
 
 /**@} end of group GPIO_OUT_Register */
 
@@ -269,12 +269,12 @@ typedef struct {
  *           register.
  * @{
  */
- #define MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS            0 /**< OUT_SET_GPIO_OUT_SET Position */
- #define MXC_F_GPIO_OUT_SET_GPIO_OUT_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS)) /**< OUT_SET_GPIO_OUT_SET Mask */
- #define MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_NO             ((uint32_t)0x0UL) /**< OUT_SET_GPIO_OUT_SET_NO Value */
- #define MXC_S_GPIO_OUT_SET_GPIO_OUT_SET_NO             (MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_NO << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS) /**< OUT_SET_GPIO_OUT_SET_NO Setting */
- #define MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_SET            ((uint32_t)0x1UL) /**< OUT_SET_GPIO_OUT_SET_SET Value */
- #define MXC_S_GPIO_OUT_SET_GPIO_OUT_SET_SET            (MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_SET << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS) /**< OUT_SET_GPIO_OUT_SET_SET Setting */
+#define MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS            0 /**< OUT_SET_GPIO_OUT_SET Position */
+#define MXC_F_GPIO_OUT_SET_GPIO_OUT_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS)) /**< OUT_SET_GPIO_OUT_SET Mask */
+#define MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_NO             ((uint32_t)0x0UL) /**< OUT_SET_GPIO_OUT_SET_NO Value */
+#define MXC_S_GPIO_OUT_SET_GPIO_OUT_SET_NO             (MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_NO << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS) /**< OUT_SET_GPIO_OUT_SET_NO Setting */
+#define MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_SET            ((uint32_t)0x1UL) /**< OUT_SET_GPIO_OUT_SET_SET Value */
+#define MXC_S_GPIO_OUT_SET_GPIO_OUT_SET_SET            (MXC_V_GPIO_OUT_SET_GPIO_OUT_SET_SET << MXC_F_GPIO_OUT_SET_GPIO_OUT_SET_POS) /**< OUT_SET_GPIO_OUT_SET_SET Setting */
 
 /**@} end of group GPIO_OUT_SET_Register */
 
@@ -286,8 +286,8 @@ typedef struct {
  *           that register.
  * @{
  */
- #define MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS            0 /**< OUT_CLR_GPIO_OUT_CLR Position */
- #define MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS)) /**< OUT_CLR_GPIO_OUT_CLR Mask */
+#define MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS            0 /**< OUT_CLR_GPIO_OUT_CLR Position */
+#define MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_OUT_CLR_GPIO_OUT_CLR_POS)) /**< OUT_CLR_GPIO_OUT_CLR Mask */
 
 /**@} end of group GPIO_OUT_CLR_Register */
 
@@ -298,8 +298,8 @@ typedef struct {
  *           GPIO pins on this port.
  * @{
  */
- #define MXC_F_GPIO_IN_GPIO_IN_POS                      0 /**< IN_GPIO_IN Position */
- #define MXC_F_GPIO_IN_GPIO_IN                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_IN_GPIO_IN_POS)) /**< IN_GPIO_IN Mask */
+#define MXC_F_GPIO_IN_GPIO_IN_POS                      0 /**< IN_GPIO_IN Position */
+#define MXC_F_GPIO_IN_GPIO_IN                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_IN_GPIO_IN_POS)) /**< IN_GPIO_IN Mask */
 
 /**@} end of group GPIO_IN_Register */
 
@@ -310,12 +310,12 @@ typedef struct {
  *           mode setting for the associated GPIO pin on this port.
  * @{
  */
- #define MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS            0 /**< INT_MOD_GPIO_INT_MOD Position */
- #define MXC_F_GPIO_INT_MOD_GPIO_INT_MOD                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS)) /**< INT_MOD_GPIO_INT_MOD Mask */
- #define MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_LEVEL          ((uint32_t)0x0UL) /**< INT_MOD_GPIO_INT_MOD_LEVEL Value */
- #define MXC_S_GPIO_INT_MOD_GPIO_INT_MOD_LEVEL          (MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_LEVEL << MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS) /**< INT_MOD_GPIO_INT_MOD_LEVEL Setting */
- #define MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_EDGE           ((uint32_t)0x1UL) /**< INT_MOD_GPIO_INT_MOD_EDGE Value */
- #define MXC_S_GPIO_INT_MOD_GPIO_INT_MOD_EDGE           (MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_EDGE << MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS) /**< INT_MOD_GPIO_INT_MOD_EDGE Setting */
+#define MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS            0 /**< INT_MOD_GPIO_INT_MOD Position */
+#define MXC_F_GPIO_INT_MOD_GPIO_INT_MOD                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS)) /**< INT_MOD_GPIO_INT_MOD Mask */
+#define MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_LEVEL          ((uint32_t)0x0UL) /**< INT_MOD_GPIO_INT_MOD_LEVEL Value */
+#define MXC_S_GPIO_INT_MOD_GPIO_INT_MOD_LEVEL          (MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_LEVEL << MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS) /**< INT_MOD_GPIO_INT_MOD_LEVEL Setting */
+#define MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_EDGE           ((uint32_t)0x1UL) /**< INT_MOD_GPIO_INT_MOD_EDGE Value */
+#define MXC_S_GPIO_INT_MOD_GPIO_INT_MOD_EDGE           (MXC_V_GPIO_INT_MOD_GPIO_INT_MOD_EDGE << MXC_F_GPIO_INT_MOD_GPIO_INT_MOD_POS) /**< INT_MOD_GPIO_INT_MOD_EDGE Setting */
 
 /**@} end of group GPIO_INT_MOD_Register */
 
@@ -326,12 +326,12 @@ typedef struct {
  *           interrupt polarity setting for one GPIO pin in the associated port.
  * @{
  */
- #define MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS            0 /**< INT_POL_GPIO_INT_POL Position */
- #define MXC_F_GPIO_INT_POL_GPIO_INT_POL                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS)) /**< INT_POL_GPIO_INT_POL Mask */
- #define MXC_V_GPIO_INT_POL_GPIO_INT_POL_FALLING        ((uint32_t)0x0UL) /**< INT_POL_GPIO_INT_POL_FALLING Value */
- #define MXC_S_GPIO_INT_POL_GPIO_INT_POL_FALLING        (MXC_V_GPIO_INT_POL_GPIO_INT_POL_FALLING << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS) /**< INT_POL_GPIO_INT_POL_FALLING Setting */
- #define MXC_V_GPIO_INT_POL_GPIO_INT_POL_RISING         ((uint32_t)0x1UL) /**< INT_POL_GPIO_INT_POL_RISING Value */
- #define MXC_S_GPIO_INT_POL_GPIO_INT_POL_RISING         (MXC_V_GPIO_INT_POL_GPIO_INT_POL_RISING << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS) /**< INT_POL_GPIO_INT_POL_RISING Setting */
+#define MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS            0 /**< INT_POL_GPIO_INT_POL Position */
+#define MXC_F_GPIO_INT_POL_GPIO_INT_POL                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS)) /**< INT_POL_GPIO_INT_POL Mask */
+#define MXC_V_GPIO_INT_POL_GPIO_INT_POL_FALLING        ((uint32_t)0x0UL) /**< INT_POL_GPIO_INT_POL_FALLING Value */
+#define MXC_S_GPIO_INT_POL_GPIO_INT_POL_FALLING        (MXC_V_GPIO_INT_POL_GPIO_INT_POL_FALLING << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS) /**< INT_POL_GPIO_INT_POL_FALLING Setting */
+#define MXC_V_GPIO_INT_POL_GPIO_INT_POL_RISING         ((uint32_t)0x1UL) /**< INT_POL_GPIO_INT_POL_RISING Value */
+#define MXC_S_GPIO_INT_POL_GPIO_INT_POL_RISING         (MXC_V_GPIO_INT_POL_GPIO_INT_POL_RISING << MXC_F_GPIO_INT_POL_GPIO_INT_POL_POS) /**< INT_POL_GPIO_INT_POL_RISING Setting */
 
 /**@} end of group GPIO_INT_POL_Register */
 
@@ -341,12 +341,12 @@ typedef struct {
  * @brief    GPIO Input Enable
  * @{
  */
- #define MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS                0 /**< IN_EN_GPIO_IN_EN Position */
- #define MXC_F_GPIO_IN_EN_GPIO_IN_EN                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS)) /**< IN_EN_GPIO_IN_EN Mask */
- #define MXC_V_GPIO_IN_EN_GPIO_IN_EN_NOT_CONNECTED      ((uint32_t)0x0UL) /**< IN_EN_GPIO_IN_EN_NOT_CONNECTED Value */
- #define MXC_S_GPIO_IN_EN_GPIO_IN_EN_NOT_CONNECTED      (MXC_V_GPIO_IN_EN_GPIO_IN_EN_NOT_CONNECTED << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS) /**< IN_EN_GPIO_IN_EN_NOT_CONNECTED Setting */
- #define MXC_V_GPIO_IN_EN_GPIO_IN_EN_CONNECTED          ((uint32_t)0x1UL) /**< IN_EN_GPIO_IN_EN_CONNECTED Value */
- #define MXC_S_GPIO_IN_EN_GPIO_IN_EN_CONNECTED          (MXC_V_GPIO_IN_EN_GPIO_IN_EN_CONNECTED << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS) /**< IN_EN_GPIO_IN_EN_CONNECTED Setting */
+#define MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS                0 /**< IN_EN_GPIO_IN_EN Position */
+#define MXC_F_GPIO_IN_EN_GPIO_IN_EN                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS)) /**< IN_EN_GPIO_IN_EN Mask */
+#define MXC_V_GPIO_IN_EN_GPIO_IN_EN_NOT_CONNECTED      ((uint32_t)0x0UL) /**< IN_EN_GPIO_IN_EN_NOT_CONNECTED Value */
+#define MXC_S_GPIO_IN_EN_GPIO_IN_EN_NOT_CONNECTED      (MXC_V_GPIO_IN_EN_GPIO_IN_EN_NOT_CONNECTED << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS) /**< IN_EN_GPIO_IN_EN_NOT_CONNECTED Setting */
+#define MXC_V_GPIO_IN_EN_GPIO_IN_EN_CONNECTED          ((uint32_t)0x1UL) /**< IN_EN_GPIO_IN_EN_CONNECTED Value */
+#define MXC_S_GPIO_IN_EN_GPIO_IN_EN_CONNECTED          (MXC_V_GPIO_IN_EN_GPIO_IN_EN_CONNECTED << MXC_F_GPIO_IN_EN_GPIO_IN_EN_POS) /**< IN_EN_GPIO_IN_EN_CONNECTED Setting */
 
 /**@} end of group GPIO_IN_EN_Register */
 
@@ -357,12 +357,12 @@ typedef struct {
  *           interrupt enable for the associated pin on the GPIO port.
  * @{
  */
- #define MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS              0 /**< INT_EN_GPIO_INT_EN Position */
- #define MXC_F_GPIO_INT_EN_GPIO_INT_EN                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS)) /**< INT_EN_GPIO_INT_EN Mask */
- #define MXC_V_GPIO_INT_EN_GPIO_INT_EN_DIS              ((uint32_t)0x0UL) /**< INT_EN_GPIO_INT_EN_DIS Value */
- #define MXC_S_GPIO_INT_EN_GPIO_INT_EN_DIS              (MXC_V_GPIO_INT_EN_GPIO_INT_EN_DIS << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS) /**< INT_EN_GPIO_INT_EN_DIS Setting */
- #define MXC_V_GPIO_INT_EN_GPIO_INT_EN_EN               ((uint32_t)0x1UL) /**< INT_EN_GPIO_INT_EN_EN Value */
- #define MXC_S_GPIO_INT_EN_GPIO_INT_EN_EN               (MXC_V_GPIO_INT_EN_GPIO_INT_EN_EN << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS) /**< INT_EN_GPIO_INT_EN_EN Setting */
+#define MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS              0 /**< INT_EN_GPIO_INT_EN Position */
+#define MXC_F_GPIO_INT_EN_GPIO_INT_EN                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS)) /**< INT_EN_GPIO_INT_EN Mask */
+#define MXC_V_GPIO_INT_EN_GPIO_INT_EN_DIS              ((uint32_t)0x0UL) /**< INT_EN_GPIO_INT_EN_DIS Value */
+#define MXC_S_GPIO_INT_EN_GPIO_INT_EN_DIS              (MXC_V_GPIO_INT_EN_GPIO_INT_EN_DIS << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS) /**< INT_EN_GPIO_INT_EN_DIS Setting */
+#define MXC_V_GPIO_INT_EN_GPIO_INT_EN_EN               ((uint32_t)0x1UL) /**< INT_EN_GPIO_INT_EN_EN Value */
+#define MXC_S_GPIO_INT_EN_GPIO_INT_EN_EN               (MXC_V_GPIO_INT_EN_GPIO_INT_EN_EN << MXC_F_GPIO_INT_EN_GPIO_INT_EN_POS) /**< INT_EN_GPIO_INT_EN_EN Setting */
 
 /**@} end of group GPIO_INT_EN_Register */
 
@@ -374,12 +374,12 @@ typedef struct {
  *           in that register.
  * @{
  */
- #define MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS      0 /**< INT_EN_SET_GPIO_INT_EN_SET Position */
- #define MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS)) /**< INT_EN_SET_GPIO_INT_EN_SET Mask */
- #define MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO       ((uint32_t)0x0UL) /**< INT_EN_SET_GPIO_INT_EN_SET_NO Value */
- #define MXC_S_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO       (MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS) /**< INT_EN_SET_GPIO_INT_EN_SET_NO Setting */
- #define MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET      ((uint32_t)0x1UL) /**< INT_EN_SET_GPIO_INT_EN_SET_SET Value */
- #define MXC_S_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET      (MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS) /**< INT_EN_SET_GPIO_INT_EN_SET_SET Setting */
+#define MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS      0 /**< INT_EN_SET_GPIO_INT_EN_SET Position */
+#define MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS)) /**< INT_EN_SET_GPIO_INT_EN_SET Mask */
+#define MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO       ((uint32_t)0x0UL) /**< INT_EN_SET_GPIO_INT_EN_SET_NO Value */
+#define MXC_S_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO       (MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_NO << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS) /**< INT_EN_SET_GPIO_INT_EN_SET_NO Setting */
+#define MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET      ((uint32_t)0x1UL) /**< INT_EN_SET_GPIO_INT_EN_SET_SET Value */
+#define MXC_S_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET      (MXC_V_GPIO_INT_EN_SET_GPIO_INT_EN_SET_SET << MXC_F_GPIO_INT_EN_SET_GPIO_INT_EN_SET_POS) /**< INT_EN_SET_GPIO_INT_EN_SET_SET Setting */
 
 /**@} end of group GPIO_INT_EN_SET_Register */
 
@@ -391,12 +391,12 @@ typedef struct {
  *           other bits in that register.
  * @{
  */
- #define MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS      0 /**< INT_EN_CLR_GPIO_INT_EN_CLR Position */
- #define MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS)) /**< INT_EN_CLR_GPIO_INT_EN_CLR Mask */
- #define MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO       ((uint32_t)0x0UL) /**< INT_EN_CLR_GPIO_INT_EN_CLR_NO Value */
- #define MXC_S_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO       (MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS) /**< INT_EN_CLR_GPIO_INT_EN_CLR_NO Setting */
- #define MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR    ((uint32_t)0x1UL) /**< INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR Value */
- #define MXC_S_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR    (MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS) /**< INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR Setting */
+#define MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS      0 /**< INT_EN_CLR_GPIO_INT_EN_CLR Position */
+#define MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS)) /**< INT_EN_CLR_GPIO_INT_EN_CLR Mask */
+#define MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO       ((uint32_t)0x0UL) /**< INT_EN_CLR_GPIO_INT_EN_CLR_NO Value */
+#define MXC_S_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO       (MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_NO << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS) /**< INT_EN_CLR_GPIO_INT_EN_CLR_NO Setting */
+#define MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR    ((uint32_t)0x1UL) /**< INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR Value */
+#define MXC_S_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR    (MXC_V_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR << MXC_F_GPIO_INT_EN_CLR_GPIO_INT_EN_CLR_POS) /**< INT_EN_CLR_GPIO_INT_EN_CLR_CLEAR Setting */
 
 /**@} end of group GPIO_INT_EN_CLR_Register */
 
@@ -407,12 +407,12 @@ typedef struct {
  *           interrupt status for the associated GPIO pin in this port.
  * @{
  */
- #define MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS          0 /**< INT_STAT_GPIO_INT_STAT Position */
- #define MXC_F_GPIO_INT_STAT_GPIO_INT_STAT              ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS)) /**< INT_STAT_GPIO_INT_STAT Mask */
- #define MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_NO           ((uint32_t)0x0UL) /**< INT_STAT_GPIO_INT_STAT_NO Value */
- #define MXC_S_GPIO_INT_STAT_GPIO_INT_STAT_NO           (MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_NO << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS) /**< INT_STAT_GPIO_INT_STAT_NO Setting */
- #define MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_PENDING      ((uint32_t)0x1UL) /**< INT_STAT_GPIO_INT_STAT_PENDING Value */
- #define MXC_S_GPIO_INT_STAT_GPIO_INT_STAT_PENDING      (MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_PENDING << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS) /**< INT_STAT_GPIO_INT_STAT_PENDING Setting */
+#define MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS          0 /**< INT_STAT_GPIO_INT_STAT Position */
+#define MXC_F_GPIO_INT_STAT_GPIO_INT_STAT              ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS)) /**< INT_STAT_GPIO_INT_STAT Mask */
+#define MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_NO           ((uint32_t)0x0UL) /**< INT_STAT_GPIO_INT_STAT_NO Value */
+#define MXC_S_GPIO_INT_STAT_GPIO_INT_STAT_NO           (MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_NO << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS) /**< INT_STAT_GPIO_INT_STAT_NO Setting */
+#define MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_PENDING      ((uint32_t)0x1UL) /**< INT_STAT_GPIO_INT_STAT_PENDING Value */
+#define MXC_S_GPIO_INT_STAT_GPIO_INT_STAT_PENDING      (MXC_V_GPIO_INT_STAT_GPIO_INT_STAT_PENDING << MXC_F_GPIO_INT_STAT_GPIO_INT_STAT_POS) /**< INT_STAT_GPIO_INT_STAT_PENDING Setting */
 
 /**@} end of group GPIO_INT_STAT_Register */
 
@@ -424,8 +424,8 @@ typedef struct {
  *           in that register.
  * @{
  */
- #define MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS            0 /**< INT_CLR_GPIO_INT_CLR Position */
- #define MXC_F_GPIO_INT_CLR_GPIO_INT_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS)) /**< INT_CLR_GPIO_INT_CLR Mask */
+#define MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS            0 /**< INT_CLR_GPIO_INT_CLR Position */
+#define MXC_F_GPIO_INT_CLR_GPIO_INT_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_CLR_GPIO_INT_CLR_POS)) /**< INT_CLR_GPIO_INT_CLR Mask */
 
 /**@} end of group GPIO_INT_CLR_Register */
 
@@ -436,12 +436,12 @@ typedef struct {
  *           enable for the associated GPIO pin in this port.
  * @{
  */
- #define MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS            0 /**< WAKE_EN_GPIO_WAKE_EN Position */
- #define MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS)) /**< WAKE_EN_GPIO_WAKE_EN Mask */
- #define MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS            ((uint32_t)0x0UL) /**< WAKE_EN_GPIO_WAKE_EN_DIS Value */
- #define MXC_S_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS            (MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS) /**< WAKE_EN_GPIO_WAKE_EN_DIS Setting */
- #define MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_EN             ((uint32_t)0x1UL) /**< WAKE_EN_GPIO_WAKE_EN_EN Value */
- #define MXC_S_GPIO_WAKE_EN_GPIO_WAKE_EN_EN             (MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_EN << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS) /**< WAKE_EN_GPIO_WAKE_EN_EN Setting */
+#define MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS            0 /**< WAKE_EN_GPIO_WAKE_EN Position */
+#define MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS)) /**< WAKE_EN_GPIO_WAKE_EN Mask */
+#define MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS            ((uint32_t)0x0UL) /**< WAKE_EN_GPIO_WAKE_EN_DIS Value */
+#define MXC_S_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS            (MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_DIS << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS) /**< WAKE_EN_GPIO_WAKE_EN_DIS Setting */
+#define MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_EN             ((uint32_t)0x1UL) /**< WAKE_EN_GPIO_WAKE_EN_EN Value */
+#define MXC_S_GPIO_WAKE_EN_GPIO_WAKE_EN_EN             (MXC_V_GPIO_WAKE_EN_GPIO_WAKE_EN_EN << MXC_F_GPIO_WAKE_EN_GPIO_WAKE_EN_POS) /**< WAKE_EN_GPIO_WAKE_EN_EN Setting */
 
 /**@} end of group GPIO_WAKE_EN_Register */
 
@@ -453,8 +453,8 @@ typedef struct {
  *           that register.
  * @{
  */
- #define MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS    0 /**< WAKE_EN_SET_GPIO_WAKE_EN_SET Position */
- #define MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS)) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET Mask */
+#define MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS    0 /**< WAKE_EN_SET_GPIO_WAKE_EN_SET Position */
+#define MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_SET_GPIO_WAKE_EN_SET_POS)) /**< WAKE_EN_SET_GPIO_WAKE_EN_SET Mask */
 
 /**@} end of group GPIO_WAKE_EN_SET_Register */
 
@@ -466,8 +466,8 @@ typedef struct {
  *           bits in that register.
  * @{
  */
- #define MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS    0 /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR Position */
- #define MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS)) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR Mask */
+#define MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS    0 /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR Position */
+#define MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_WAKE_EN_CLR_GPIO_WAKE_EN_CLR_POS)) /**< WAKE_EN_CLR_GPIO_WAKE_EN_CLR Mask */
 
 /**@} end of group GPIO_WAKE_EN_CLR_Register */
 
@@ -478,12 +478,12 @@ typedef struct {
  *           edge mode for the associated GPIO pin in this port.
  * @{
  */
- #define MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS 0 /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE Position */
- #define MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS)) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE Mask */
- #define MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO ((uint32_t)0x0UL) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO Value */
- #define MXC_S_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO (MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO Setting */
- #define MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN ((uint32_t)0x1UL) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN Value */
- #define MXC_S_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN (MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN Setting */
+#define MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS 0 /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE Position */
+#define MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE    ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS)) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE Mask */
+#define MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO ((uint32_t)0x0UL) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO Value */
+#define MXC_S_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO (MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_NO Setting */
+#define MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN ((uint32_t)0x1UL) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN Value */
+#define MXC_S_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN (MXC_V_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN << MXC_F_GPIO_INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_POS) /**< INT_DUAL_EDGE_GPIO_INT_DUAL_EDGE_EN Setting */
 
 /**@} end of group GPIO_INT_DUAL_EDGE_Register */
 
@@ -494,14 +494,14 @@ typedef struct {
  *           the associated GPIO pin in this port.
  * @{
  */
- #define MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS        0 /**< PDPU_SEL0_GPIO_PDPU_SEL0 Position */
- #define MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0            ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS)) /**< PDPU_SEL0_GPIO_PDPU_SEL0 Mask */
- #define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE  ((uint32_t)0x0UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE Value */
- #define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE  (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE Setting */
- #define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU         ((uint32_t)0x1UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PU Value */
- #define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU         (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PU Setting */
- #define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PD         ((uint32_t)0x2UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PD Value */
- #define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PD         (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PD << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PD Setting */
+#define MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS        0 /**< PDPU_SEL0_GPIO_PDPU_SEL0 Position */
+#define MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0            ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS)) /**< PDPU_SEL0_GPIO_PDPU_SEL0 Mask */
+#define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE  ((uint32_t)0x0UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE Value */
+#define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE  (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_IMPEDANCE Setting */
+#define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU         ((uint32_t)0x1UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PU Value */
+#define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU         (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PU << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PU Setting */
+#define MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PD         ((uint32_t)0x2UL) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PD Value */
+#define MXC_S_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PD         (MXC_V_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_PD << MXC_F_GPIO_PDPU_SEL0_GPIO_PDPU_SEL0_POS) /**< PDPU_SEL0_GPIO_PDPU_SEL0_PD Setting */
 
 /**@} end of group GPIO_PDPU_SEL0_Register */
 
@@ -512,14 +512,14 @@ typedef struct {
  *           the associated GPIO pin in this port.
  * @{
  */
- #define MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS        0 /**< PDPU_SEL1_GPIO_PDPU_SEL1 Position */
- #define MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1            ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS)) /**< PDPU_SEL1_GPIO_PDPU_SEL1 Mask */
- #define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE  ((uint32_t)0x0UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE Value */
- #define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE  (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE Setting */
- #define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PU         ((uint32_t)0x1UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PU Value */
- #define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PU         (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PU << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PU Setting */
- #define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD         ((uint32_t)0x2UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PD Value */
- #define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD         (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PD Setting */
+#define MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS        0 /**< PDPU_SEL1_GPIO_PDPU_SEL1 Position */
+#define MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1            ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS)) /**< PDPU_SEL1_GPIO_PDPU_SEL1 Mask */
+#define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE  ((uint32_t)0x0UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE Value */
+#define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE  (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_IMPEDANCE Setting */
+#define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PU         ((uint32_t)0x1UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PU Value */
+#define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PU         (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PU << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PU Setting */
+#define MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD         ((uint32_t)0x2UL) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PD Value */
+#define MXC_S_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD         (MXC_V_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_PD << MXC_F_GPIO_PDPU_SEL1_GPIO_PDPU_SEL1_POS) /**< PDPU_SEL1_GPIO_PDPU_SEL1_PD Setting */
 
 /**@} end of group GPIO_PDPU_SEL1_Register */
 
@@ -530,12 +530,12 @@ typedef struct {
  *           between primary/secondary functions for the associated GPIO pin in this port.
  * @{
  */
- #define MXC_F_GPIO_EN1_GPIO_EN1_POS                    0 /**< EN1_GPIO_EN1 Position */
- #define MXC_F_GPIO_EN1_GPIO_EN1                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN1_GPIO_EN1_POS)) /**< EN1_GPIO_EN1 Mask */
- #define MXC_V_GPIO_EN1_GPIO_EN1_PRIMARY                ((uint32_t)0x0UL) /**< EN1_GPIO_EN1_PRIMARY Value */
- #define MXC_S_GPIO_EN1_GPIO_EN1_PRIMARY                (MXC_V_GPIO_EN1_GPIO_EN1_PRIMARY << MXC_F_GPIO_EN1_GPIO_EN1_POS) /**< EN1_GPIO_EN1_PRIMARY Setting */
- #define MXC_V_GPIO_EN1_GPIO_EN1_SECONDARY              ((uint32_t)0x1UL) /**< EN1_GPIO_EN1_SECONDARY Value */
- #define MXC_S_GPIO_EN1_GPIO_EN1_SECONDARY              (MXC_V_GPIO_EN1_GPIO_EN1_SECONDARY << MXC_F_GPIO_EN1_GPIO_EN1_POS) /**< EN1_GPIO_EN1_SECONDARY Setting */
+#define MXC_F_GPIO_EN1_GPIO_EN1_POS                    0 /**< EN1_GPIO_EN1 Position */
+#define MXC_F_GPIO_EN1_GPIO_EN1                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN1_GPIO_EN1_POS)) /**< EN1_GPIO_EN1 Mask */
+#define MXC_V_GPIO_EN1_GPIO_EN1_PRIMARY                ((uint32_t)0x0UL) /**< EN1_GPIO_EN1_PRIMARY Value */
+#define MXC_S_GPIO_EN1_GPIO_EN1_PRIMARY                (MXC_V_GPIO_EN1_GPIO_EN1_PRIMARY << MXC_F_GPIO_EN1_GPIO_EN1_POS) /**< EN1_GPIO_EN1_PRIMARY Setting */
+#define MXC_V_GPIO_EN1_GPIO_EN1_SECONDARY              ((uint32_t)0x1UL) /**< EN1_GPIO_EN1_SECONDARY Value */
+#define MXC_S_GPIO_EN1_GPIO_EN1_SECONDARY              (MXC_V_GPIO_EN1_GPIO_EN1_SECONDARY << MXC_F_GPIO_EN1_GPIO_EN1_POS) /**< EN1_GPIO_EN1_SECONDARY Setting */
 
 /**@} end of group GPIO_EN1_Register */
 
@@ -547,8 +547,8 @@ typedef struct {
  *           bits in that register.
  * @{
  */
- #define MXC_F_GPIO_EN1_SET_GPIO_EN1_SET_POS            0 /**< EN1_SET_GPIO_EN1_SET Position */
- #define MXC_F_GPIO_EN1_SET_GPIO_EN1_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN1_SET_GPIO_EN1_SET_POS)) /**< EN1_SET_GPIO_EN1_SET Mask */
+#define MXC_F_GPIO_EN1_SET_GPIO_EN1_SET_POS            0 /**< EN1_SET_GPIO_EN1_SET Position */
+#define MXC_F_GPIO_EN1_SET_GPIO_EN1_SET                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN1_SET_GPIO_EN1_SET_POS)) /**< EN1_SET_GPIO_EN1_SET Mask */
 
 /**@} end of group GPIO_EN1_SET_Register */
 
@@ -560,8 +560,8 @@ typedef struct {
  *           bits in that register.
  * @{
  */
- #define MXC_F_GPIO_EN1_CLR_GPIO_EN1_CLR_POS            0 /**< EN1_CLR_GPIO_EN1_CLR Position */
- #define MXC_F_GPIO_EN1_CLR_GPIO_EN1_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN1_CLR_GPIO_EN1_CLR_POS)) /**< EN1_CLR_GPIO_EN1_CLR Mask */
+#define MXC_F_GPIO_EN1_CLR_GPIO_EN1_CLR_POS            0 /**< EN1_CLR_GPIO_EN1_CLR Position */
+#define MXC_F_GPIO_EN1_CLR_GPIO_EN1_CLR                ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN1_CLR_GPIO_EN1_CLR_POS)) /**< EN1_CLR_GPIO_EN1_CLR Mask */
 
 /**@} end of group GPIO_EN1_CLR_Register */
 
@@ -573,12 +573,12 @@ typedef struct {
  *           sink/source current of GPIO pins in each mode.
  * @{
  */
- #define MXC_F_GPIO_DS_SEL0_DS_SEL0_POS                 0 /**< DS_SEL0_DS_SEL0 Position */
- #define MXC_F_GPIO_DS_SEL0_DS_SEL0                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_DS_SEL0_DS_SEL0_POS)) /**< DS_SEL0_DS_SEL0 Mask */
- #define MXC_V_GPIO_DS_SEL0_DS_SEL0_LD                  ((uint32_t)0x0UL) /**< DS_SEL0_DS_SEL0_LD Value */
- #define MXC_S_GPIO_DS_SEL0_DS_SEL0_LD                  (MXC_V_GPIO_DS_SEL0_DS_SEL0_LD << MXC_F_GPIO_DS_SEL0_DS_SEL0_POS) /**< DS_SEL0_DS_SEL0_LD Setting */
- #define MXC_V_GPIO_DS_SEL0_DS_SEL0_HD                  ((uint32_t)0x1UL) /**< DS_SEL0_DS_SEL0_HD Value */
- #define MXC_S_GPIO_DS_SEL0_DS_SEL0_HD                  (MXC_V_GPIO_DS_SEL0_DS_SEL0_HD << MXC_F_GPIO_DS_SEL0_DS_SEL0_POS) /**< DS_SEL0_DS_SEL0_HD Setting */
+#define MXC_F_GPIO_DS_SEL0_DS_SEL0_POS                 0 /**< DS_SEL0_DS_SEL0 Position */
+#define MXC_F_GPIO_DS_SEL0_DS_SEL0                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_DS_SEL0_DS_SEL0_POS)) /**< DS_SEL0_DS_SEL0 Mask */
+#define MXC_V_GPIO_DS_SEL0_DS_SEL0_LD                  ((uint32_t)0x0UL) /**< DS_SEL0_DS_SEL0_LD Value */
+#define MXC_S_GPIO_DS_SEL0_DS_SEL0_LD                  (MXC_V_GPIO_DS_SEL0_DS_SEL0_LD << MXC_F_GPIO_DS_SEL0_DS_SEL0_POS) /**< DS_SEL0_DS_SEL0_LD Setting */
+#define MXC_V_GPIO_DS_SEL0_DS_SEL0_HD                  ((uint32_t)0x1UL) /**< DS_SEL0_DS_SEL0_HD Value */
+#define MXC_S_GPIO_DS_SEL0_DS_SEL0_HD                  (MXC_V_GPIO_DS_SEL0_DS_SEL0_HD << MXC_F_GPIO_DS_SEL0_DS_SEL0_POS) /**< DS_SEL0_DS_SEL0_HD Setting */
 
 /**@} end of group GPIO_DS_SEL0_Register */
 
@@ -590,8 +590,8 @@ typedef struct {
  *           sink/source current of GPIO pins in each mode.
  * @{
  */
- #define MXC_F_GPIO_DS_SEL1_DS_SEL1_POS                 0 /**< DS_SEL1_DS_SEL1 Position */
- #define MXC_F_GPIO_DS_SEL1_DS_SEL1                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_DS_SEL1_DS_SEL1_POS)) /**< DS_SEL1_DS_SEL1 Mask */
+#define MXC_F_GPIO_DS_SEL1_DS_SEL1_POS                 0 /**< DS_SEL1_DS_SEL1 Position */
+#define MXC_F_GPIO_DS_SEL1_DS_SEL1                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_DS_SEL1_DS_SEL1_POS)) /**< DS_SEL1_DS_SEL1 Mask */
 
 /**@} end of group GPIO_DS_SEL1_Register */
 
@@ -601,8 +601,8 @@ typedef struct {
  * @brief    GPIO Pull Select Mode.
  * @{
  */
- #define MXC_F_GPIO_PSSEL_PSSEL_POS                     0 /**< PSSEL_PSSEL Position */
- #define MXC_F_GPIO_PSSEL_PSSEL                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PSSEL_PSSEL_POS)) /**< PSSEL_PSSEL Mask */
+#define MXC_F_GPIO_PSSEL_PSSEL_POS                     0 /**< PSSEL_PSSEL Position */
+#define MXC_F_GPIO_PSSEL_PSSEL                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_PSSEL_PSSEL_POS)) /**< PSSEL_PSSEL Mask */
 
 /**@} end of group GPIO_PSSEL_Register */
 
@@ -610,4 +610,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _GPIO_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_GPIO_REGS_H_

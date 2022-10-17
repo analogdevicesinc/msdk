@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-07-18 13:53:37 -0500 (Wed, 18 Jul 2018) $
- * $Revision: 36256 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -275,7 +272,7 @@ static int clrfeatureCallback(MXC_USB_SetupPkt *sud, void *cbdata)
 
 static void usbAppSleep(void)
 {
-    /* TODO: Place low-power code here */
+    /* Place low-power code here if application needed */
     suspended = 1;
 }
 
@@ -283,7 +280,7 @@ static void usbAppSleep(void)
 
 static void usbAppWakeup(void)
 {
-    /* TODO: Place low-power code here */
+    /* Place low-power wakeup code here if application needed */
     suspended = 0;
 }
 

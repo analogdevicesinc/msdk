@@ -739,6 +739,34 @@ typedef enum {
 
 #endif // __riscv
 
+/*******************************************************************************/
+/*                                                      Pulse Train Generation */
+#define MXC_CFG_PT_INSTANCES (4)
+
+#define MXC_BASE_PTG ((uint32_t)0x4003C000UL)
+#define MXC_PTG ((mxc_ptg_regs_t *)MXC_BASE_PTG)
+#define MXC_BASE_PT0 ((uint32_t)0x4003C020UL)
+#define MXC_PT0 ((mxc_pt_regs_t *)MXC_BASE_PT0)
+#define MXC_BASE_PT1 ((uint32_t)0x4003C040UL)
+#define MXC_PT1 ((mxc_pt_regs_t *)MXC_BASE_PT1)
+#define MXC_BASE_PT2 ((uint32_t)0x4003C060UL)
+#define MXC_PT2 ((mxc_pt_regs_t *)MXC_BASE_PT2)
+#define MXC_BASE_PT3 ((uint32_t)0x4003C080UL)
+#define MXC_PT3 ((mxc_pt_regs_t *)MXC_BASE_PT3)
+
+#define MXC_PT_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_PT0 : \
+     (i) == 1 ? MXC_BASE_PT1 : \
+     (i) == 2 ? MXC_BASE_PT2 : \
+     (i) == 3 ? MXC_BASE_PT3 : \
+                0)
+
+#define MXC_PT_GET_PT(i) \
+    ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)
+
+#define MXC_PT_GET_IDX(p) \
+    ((p) == MXC_PT0 ? 0 : (p) == MXC_PT1 ? 1 : (p) == MXC_PT2 ? 2 : (p) == MXC_PT3 ? 3 : -1)
+
 /******************************************************************************/
 /*                                                                       TRNG */
 #define MXC_BASE_TRNG ((uint32_t)0x4004D000UL)

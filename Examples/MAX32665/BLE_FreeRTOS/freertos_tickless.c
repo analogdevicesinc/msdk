@@ -139,7 +139,8 @@ static void deepSleep(void)
     /* Shutdown unused power domains */
     MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
 
-    MXC_LP_FastWakeupEnable();
+    /* Prevent SIMO soft start on wakeup */
+    MXC_LP_FastWakeupDisable();
 
     /* Enable VDDCSWEN=1 prior to enter backup/deepsleep mode */
     MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;

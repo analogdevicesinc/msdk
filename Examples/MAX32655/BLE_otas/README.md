@@ -170,6 +170,18 @@ WDXS: FTC Send
 hciCoreTxAclStart len=10
 WDXS: AttHook handle=581 event=18
 WDXS: Task Handler Evt=1
+Ext Flash: Wrote 224 bytes @ 0x00000008                                                 
+Ext Flash: Wrote 224 bytes @ 0x000000E8                                                 
+Ext Flash: Wrote 224 bytes @ 0x000001C8                                                 
+Ext Flash: Wrote 224 bytes @ 0x000002A8                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000388                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000468                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000548                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000628                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000708                                                 
+Ext Flash: Wrote 224 bytes @ 0x000007E8 
+...
+...
 ```
 
 Upon reception of `btn 2 l` command 
