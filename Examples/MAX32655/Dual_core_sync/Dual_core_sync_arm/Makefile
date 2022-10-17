@@ -55,7 +55,7 @@ endif
 
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
-LIBS_DIR=../../../Libraries
+LIBS_DIR=../../../../Libraries
 else
 LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
@@ -129,6 +129,7 @@ RISCV_LOAD=1
 
 # Directory for RISCV code 
 RISCV_APP_DIR=../Dual_core_sync_riscv
+RISCV_APP=../Dual_core_sync_riscv
 
 # Binary name for RISCV code
 RISCV_APP_BIN=buildrv/$(PROJECT).bin
