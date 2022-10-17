@@ -20,8 +20,6 @@ LP
 Pulse_Train
 RTC
 SPI
-SPIXF
-SPIXR
 TMR
 TRNG
 UART
