@@ -135,7 +135,7 @@ void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t *ctb_regs)
     ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_INTR;
 
 // Enable IRQ
-#ifndef __unsupported_riscv
+#ifndef __riscv
     NVIC_EnableIRQ(CRYPTO_IRQn);
 #endif
 }
@@ -143,7 +143,7 @@ void MXC_CTB_RevA_EnableInt(mxc_ctb_reva_regs_t *ctb_regs)
 void MXC_CTB_RevA_DisableInt(mxc_ctb_reva_regs_t *ctb_regs)
 {
 // Disable IRQ
-#ifndef __unsupported_riscv
+#ifndef __riscv
     NVIC_DisableIRQ(CRYPTO_IRQn);
 #endif
 
@@ -477,7 +477,7 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, ui
 
     while (MXC_GetLock((void *)&MXC_CTB_Callbacks[RNG_ID], 1) != E_NO_ERROR) {}
 
-#ifndef __unsupported_riscv
+#ifndef __riscv
     NVIC_DisableIRQ(TRNG_IRQn);
 #endif
 
@@ -489,7 +489,7 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, ui
     // Enable interrupts
     trng->ctrl |= MXC_F_TRNG_REVA_CTRL_RND_IE;
 
-#ifndef __unsupported_riscv
+#ifndef __riscv
     NVIC_EnableIRQ(TRNG_IRQn);
 #endif
 }

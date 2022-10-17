@@ -259,7 +259,6 @@ typedef enum {
 } IRQn_Type;
 
 #define MXC_IRQ_COUNT (MXC_IRQ_EXT_COUNT + 16)
-#define __unsupported_riscv
 
 /* ================================================================================ */
 /* ================      Processor and Core Peripheral Section     ================ */

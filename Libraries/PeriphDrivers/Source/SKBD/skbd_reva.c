@@ -46,7 +46,7 @@
 /* ***** SKBD context info ***** */
 static mxc_skbd_reva_req_t mxc_skbd_req;
 
-#ifndef __unsupported_riscv
+#ifndef __riscv
 static void SKBD_RevA_IRQHandler(void)
 {
     if (mxc_skbd_req.irq_handler) {
@@ -62,7 +62,7 @@ int MXC_SKBD_RevA_PreInit(void)
 {
     mxc_skbd_req.first_init = 0;
 
-#ifndef __unsupported_riscv
+#ifndef __riscv
     NVIC_ClearPendingIRQ(SKB_IRQn);
     /* Attach vector */
     MXC_NVIC_SetVector(SKB_IRQn, SKBD_RevA_IRQHandler);
@@ -213,7 +213,7 @@ int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t *skbd, mxc_skbd_reva_keys_t *key
 
 int MXC_SKBD_RevA_Close(void)
 {
-#ifndef __unsupported_riscv
+#ifndef __riscv
     NVIC_DisableIRQ(SKB_IRQn);
 #endif
 
