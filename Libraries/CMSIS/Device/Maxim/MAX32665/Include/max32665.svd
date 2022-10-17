@@ -23133,12 +23133,44 @@
        <bitWidth>3</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>oneshot</name>
+         <name>oneShot</name>
+         <description>One Shot Mode.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>continuous</name>
+         <description>Continuous Mode.</description>
          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>counter</name>
+         <description>Counter Mode.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>pwm</name>
+         <description>PWM Mode.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>capture</name>
+         <description>Capture Mode.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>compare</name>
+         <description>Compare Mode.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>gated</name>
+         <description>Gated Mode.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>captureCompare</name>
+         <description>Capture/Compare Mode.</description>
+         <value>7</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
@@ -23329,6 +23361,21 @@
        <bitWidth>8</bitWidth>
       </field>
      </fields>
+    </register>
+    <register>
+     <name>PRESET</name>
+     <description>Preset register.</description>
+     <addressOffset>0x18</addressOffset>
+    </register>
+    <register>
+     <name>RELOAD</name>
+     <description>Reload register.</description>
+     <addressOffset>0x1C</addressOffset>
+    </register>
+    <register>
+     <name>SNAPSHOT</name>
+     <description>Snapshot register.</description>
+     <addressOffset>0x20</addressOffset>
     </register>
    </registers>
   </peripheral>
