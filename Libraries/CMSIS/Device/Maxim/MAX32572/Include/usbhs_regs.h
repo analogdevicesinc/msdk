@@ -145,7 +145,7 @@ typedef struct {
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
     __R  uint32_t rsv_0x84_0x1ff[95];
     __IO uint32_t dma_intr;             /**< <tt>\b 0x200:</tt> USBHS DMA_INTR Register */
-    __IO mxc_usb_dma_regs_t   dma[8];   /**< <tt>\b 0x204:</tt> USBHS DMA Register */
+    __IO mxc_usbhs_dma_regs_t dma[8];   /**< <tt>\b 0x204:</tt> USBHS DMA Register */
     __R  uint32_t rsv_0x224_0x3ff[119];
     __IO uint32_t mxm_usb_reg_00;       /**< <tt>\b 0x400:</tt> USBHS MXM_USB_REG_00 Register */
     __IO uint32_t m31_phy_utmi_reset;   /**< <tt>\b 0x404:</tt> USBHS M31_PHY_UTMI_RESET Register */
