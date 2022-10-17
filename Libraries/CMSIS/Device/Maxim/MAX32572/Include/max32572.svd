@@ -2,7 +2,7 @@
 <device xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xsi:noNamespaceSchemaLocation="svd_schema.xsd">
  <vendor>Maxim-Integrated</vendor>
  <vendorID>Maxim</vendorID>
- <name>MAX32572</name>
+ <name>max32572</name>
  <series>ARMCM4</series>
  <version>1.0</version>
  <description>MAX32572 32-bit ARM Cortex-M4 microcontroller, 1024KB of flash, 760KB of system RAM, 128KB of Boot ROM.</description>
@@ -367,7 +367,7 @@
       <field>
        <name>DELAY</name>
        <description>Delay.</description>
-       <bitRange>[0:31]</bitRange>
+       <bitRange>[31:0]</bitRange>
        <access>read-write</access>
       </field>
      </fields>
@@ -753,35 +753,6 @@
    </registers>
   </peripheral>
 <!--MSRADC Magnetic Strip Reader - 9 bit ADC-->
-  <peripheral>
-   <name>AES</name>
-   <description>AES Keys.</description>
-   <baseAddress>0x40005000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x400</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>AES_SRAM_KEY</name>
-     <description>AES SRAM KEY</description>
-     <addressOffset>0x000</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_CODE_KEY</name>
-     <description>AES CODE Key </description>
-     <addressOffset>0x080</addressOffset>
-    </register>
-    <register>
-     <name>AES_DATA_KEY</name>
-     <description>AES DATA KEY</description>
-     <addressOffset>0x100</addressOffset>
-    </register>
-   </registers>
-  </peripheral>
-<!--AES AES Keys.-->
   <peripheral>
    <name>FCR</name>
    <description>Function Control Register.</description>
@@ -4163,18 +4134,6 @@
        <description>60 MHz power down. This bit selects the 60 MHz clock power state in DEEPSLEEP mode.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>active</name>
-         <description>Mode is Active.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>deepsleep</name>
-         <description>Powered down in DEEPSLEEP.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field derivedFrom="ERFO_PD">
        <name>IPO_PD</name>
@@ -4182,7 +4141,7 @@
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="ISO_PD">
+      <field derivedFrom="ERFO_PD">
        <name>IBRO_PD</name>
        <description>7.3725 MHz power down. This bit selects 7.3725 MHz clock power state in DEEPSLEEP mode. </description>
        <bitOffset>17</bitOffset>
@@ -7708,7 +7667,7 @@
    <baseAddress>0x4002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x400</size>
+    <size>0x800</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -8027,7 +7986,7 @@
    <access>read-write</access>
    <addressBlock>
     <offset>0</offset>
-    <size>0x0018</size>
+    <size>0x0020</size>
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
@@ -11192,24 +11151,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>KEY2_ZERO</name>
-       <description>Key2 Cleared.</description>
-       <bitOffset>12</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>incomplete</name>
-         <description>Key has not been transferred.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>complete</name>
-         <description>Key has been transferred.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>DFD_FL</name>
        <description>Digital Fault Detector Flag.</description>
        <bitOffset>15</bitOffset>
@@ -12892,20 +12833,68 @@
      <addressOffset>0x28</addressOffset>
     </register>
     <register>
-     <name>SCK_BYPASS</name>
-     <description>SCK Pin Bypass Register.</description>
+     <name>BYPASS_MODE</name>
+     <description>Bypass Mode Register.</description>
      <addressOffset>0x2C</addressOffset>
      <fields>
       <field>
-       <name>BYPASS_EN</name>
+       <name>EN</name>
        <description>Enable bypass.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>DELAY</name>
-       <description>Delay.</description>
+       <name>FCLK_DELAY</name>
+       <description>FCLK Delay.</description>
        <bitOffset>1</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_NS</name>
+         <description>0ns</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0P5_NS</name>
+         <description>0.5ns</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P0_NS</name>
+         <description>1.0ns</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P5_NS</name>
+         <description>1.5ns</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P0_NS</name>
+         <description>2.0ns</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P5_NS</name>
+         <description>2.5ns</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3P0_NS</name>
+         <description>3.0ns</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3P5_NS</name>
+         <description>3.0ns</description>
+         <value>7</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>SCK_DELAY</name>
+       <description>SCK Delay.</description>
+       <bitOffset>4</bitOffset>
        <bitWidth>3</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -14850,7 +14839,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>Entropy Estimator Test Done.</name>
+       <name>EE_DONE</name>
        <description>Entropy Estimator Test Done.</description>
        <bitOffset>23</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17799,7 +17788,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>4</dimIncrement>
-     <name>EVT</name>
+     <name>EVT[%s]</name>
      <description>Key Register</description>
      <addressOffset>0x14</addressOffset>
      <access>read-only</access>

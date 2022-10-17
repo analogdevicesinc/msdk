@@ -531,20 +531,68 @@
         <addressOffset>0x28</addressOffset>
       </register>
       <register>
-        <name>SCK_BYPASS</name>
-        <description>SCK Pin Bypass Register.</description>
+        <name>BYPASS_MODE</name>
+        <description>Bypass Mode Register.</description>
         <addressOffset>0x2C</addressOffset>
         <fields>
           <field>
-            <name>BYPASS_EN</name>
+            <name>EN</name>
             <description>Enable bypass.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>DELAY</name>
-            <description>Delay.</description>
+            <name>FCLK_DELAY</name>
+            <description>FCLK Delay.</description>
             <bitOffset>1</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0_NS</name>
+                <description>0ns</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>0P5_NS</name>
+                <description>0.5ns</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1P0_NS</name>
+                <description>1.0ns</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1P5_NS</name>
+                <description>1.5ns</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>2P0_NS</name>
+                <description>2.0ns</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>2P5_NS</name>
+                <description>2.5ns</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3P0_NS</name>
+                <description>3.0ns</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3P5_NS</name>
+                <description>3.0ns</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SCK_DELAY</name>
+            <description>SCK Delay.</description>
+            <bitOffset>4</bitOffset>
             <bitWidth>3</bitWidth>
             <enumeratedValues>
               <enumeratedValue>

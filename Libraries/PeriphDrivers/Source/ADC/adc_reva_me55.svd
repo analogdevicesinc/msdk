@@ -351,7 +351,7 @@
           <field>
             <name>DELAY</name>
             <description>Delay.</description>
-            <bitRange>[0:31]</bitRange>
+            <bitRange>[31:0]</bitRange>
             <access>read-write</access>
           </field>
         </fields>

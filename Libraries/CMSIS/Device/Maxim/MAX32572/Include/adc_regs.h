@@ -287,8 +287,8 @@ typedef struct {
  * @brief    ADC Decimation Count.
  * @{
  */
-#define MXC_F_ADC_DECCNT_DELAY_POS                     31 /**< DECCNT_DELAY Position */
-#define MXC_F_ADC_DECCNT_DELAY                         ((uint32_t)(0x0UL << MXC_F_ADC_DECCNT_DELAY_POS)) /**< DECCNT_DELAY Mask */
+#define MXC_F_ADC_DECCNT_DELAY_POS                     0 /**< DECCNT_DELAY Position */
+#define MXC_F_ADC_DECCNT_DELAY                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_ADC_DECCNT_DELAY_POS)) /**< DECCNT_DELAY Mask */
 
 /**@} end of group ADC_DECCNT_Register */
 

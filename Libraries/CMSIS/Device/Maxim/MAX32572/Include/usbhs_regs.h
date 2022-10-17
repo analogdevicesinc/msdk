@@ -145,7 +145,8 @@ typedef struct {
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
     __R  uint32_t rsv_0x84_0x1ff[95];
     __IO uint32_t dma_intr;             /**< <tt>\b 0x200:</tt> USBHS DMA_INTR Register */
-    __R  uint32_t rsv_0x204_0x3ff[127];
+    __IO mxc_usb_dma_regs_t   dma[8];   /**< <tt>\b 0x204:</tt> USBHS DMA Register */
+    __R  uint32_t rsv_0x224_0x3ff[119];
     __IO uint32_t mxm_usb_reg_00;       /**< <tt>\b 0x400:</tt> USBHS MXM_USB_REG_00 Register */
     __IO uint32_t m31_phy_utmi_reset;   /**< <tt>\b 0x404:</tt> USBHS M31_PHY_UTMI_RESET Register */
     __IO uint32_t m31_phy_utmi_vcontrol; /**< <tt>\b 0x408:</tt> USBHS M31_PHY_UTMI_VCONTROL Register */
@@ -188,7 +189,6 @@ typedef struct {
     __IO uint32_t mxm_int_en;           /**< <tt>\b 0x49C:</tt> USBHS MXM_INT_EN Register */
     __IO uint32_t mxm_suspend;          /**< <tt>\b 0x4A0:</tt> USBHS MXM_SUSPEND Register */
     __IO uint32_t mxm_reg_a4;           /**< <tt>\b 0x4A4:</tt> USBHS MXM_REG_A4 Register */
-    __IO mxc_usb_dma_regs_t   dma[8];   /**< <tt>\b 0x204:</tt> USBHS DMA Register */
 } mxc_usbhs_regs_t;
 
 /* Register offsets for module USBHS */
@@ -245,6 +245,7 @@ typedef struct {
 #define MXC_R_USBHS_CTUCH                  ((uint32_t)0x00000080UL) /**< Offset from USBHS Base Address: <tt> 0x0080</tt> */
 #define MXC_R_USBHS_CTHSRTN                ((uint32_t)0x00000082UL) /**< Offset from USBHS Base Address: <tt> 0x0082</tt> */
 #define MXC_R_USBHS_DMA_INTR               ((uint32_t)0x00000200UL) /**< Offset from USBHS Base Address: <tt> 0x0200</tt> */
+#define MXC_R_USBHS_DMA                    ((uint32_t)0x00000204UL) /**< Offset from USBHS Base Address: <tt> 0x0204</tt> */
 #define MXC_R_USBHS_MXM_USB_REG_00         ((uint32_t)0x00000400UL) /**< Offset from USBHS Base Address: <tt> 0x0400</tt> */
 #define MXC_R_USBHS_M31_PHY_UTMI_RESET     ((uint32_t)0x00000404UL) /**< Offset from USBHS Base Address: <tt> 0x0404</tt> */
 #define MXC_R_USBHS_M31_PHY_UTMI_VCONTROL  ((uint32_t)0x00000408UL) /**< Offset from USBHS Base Address: <tt> 0x0408</tt> */
@@ -286,7 +287,6 @@ typedef struct {
 #define MXC_R_USBHS_MXM_INT_EN             ((uint32_t)0x0000049CUL) /**< Offset from USBHS Base Address: <tt> 0x049C</tt> */
 #define MXC_R_USBHS_MXM_SUSPEND            ((uint32_t)0x000004A0UL) /**< Offset from USBHS Base Address: <tt> 0x04A0</tt> */
 #define MXC_R_USBHS_MXM_REG_A4             ((uint32_t)0x000004A4UL) /**< Offset from USBHS Base Address: <tt> 0x04A4</tt> */
-#define MXC_R_USBHS_DMA                    ((uint32_t)0x00000204UL) /**< Offset from USBHS Base Address: <tt> 0x0204</tt> */
 /**@} end of group usbhs_registers */
 
 /**

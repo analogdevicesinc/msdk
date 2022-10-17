@@ -229,7 +229,9 @@ typedef struct {
 #define MXC_F_TRNG_STATUS_ROMON_DONE_POS               22 /**< STATUS_ROMON_DONE Position */
 #define MXC_F_TRNG_STATUS_ROMON_DONE                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ROMON_DONE_POS)) /**< STATUS_ROMON_DONE Mask */
 
-#define MXC_F_TRNG_STATUS_ENTROPY                      ESTIMATOR TEST DONE._POS 23 /**<#define MXC_F_TRNG_STATUS_ENTROPY                      ESTIMATOR TEST DONE. ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ENTROPY ESTIMATOR
+#define MXC_F_TRNG_STATUS_EE_DONE_POS                  23 /**< STATUS_EE_DONE Position */
+#define MXC_F_TRNG_STATUS_EE_DONE                      ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_EE_DONE_POS)) /**< STATUS_EE_DONE Mask */
+
 /**@} end of group TRNG_STATUS_Register */
 
 /**

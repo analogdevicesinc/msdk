@@ -9,7 +9,7 @@
     <access>read-write</access>
     <addressBlock>
       <offset>0</offset>
-      <size>0x0018</size>
+      <size>0x0020</size>
       <usage>registers</usage>
     </addressBlock>
     <interrupt>

@@ -651,18 +651,6 @@
             <description>60 MHz power down. This bit selects the 60 MHz clock power state in DEEPSLEEP mode.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>active</name>
-                <description>Mode is Active.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>deepsleep</name>
-                <description>Powered down in DEEPSLEEP.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field derivedFrom="ERFO_PD">
             <name>IPO_PD</name>
@@ -670,7 +658,7 @@
             <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="ISO_PD">
+          <field derivedFrom="ERFO_PD">
             <name>IBRO_PD</name>
             <description>7.3725 MHz power down. This bit selects 7.3725 MHz clock power state in DEEPSLEEP mode. </description>
             <bitOffset>17</bitOffset>

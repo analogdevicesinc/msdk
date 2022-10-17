@@ -274,7 +274,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>Entropy Estimator Test Done.</name>
+            <name>EE_DONE</name>
             <description>Entropy Estimator Test Done.</description>
             <bitOffset>23</bitOffset>
             <bitWidth>1</bitWidth>

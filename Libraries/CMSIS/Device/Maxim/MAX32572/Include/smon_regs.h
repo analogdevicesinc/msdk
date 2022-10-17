@@ -355,9 +355,6 @@ typedef struct {
 #define MXC_F_SMON_SECDIAG_KEY1_ZERO_POS               11 /**< SECDIAG_KEY1_ZERO Position */
 #define MXC_F_SMON_SECDIAG_KEY1_ZERO                   ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_KEY1_ZERO_POS)) /**< SECDIAG_KEY1_ZERO Mask */
 
-#define MXC_F_SMON_SECDIAG_KEY2_ZERO_POS               12 /**< SECDIAG_KEY2_ZERO Position */
-#define MXC_F_SMON_SECDIAG_KEY2_ZERO                   ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_KEY2_ZERO_POS)) /**< SECDIAG_KEY2_ZERO Mask */
-
 #define MXC_F_SMON_SECDIAG_DFD_FL_POS                  15 /**< SECDIAG_DFD_FL Position */
 #define MXC_F_SMON_SECDIAG_DFD_FL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_DFD_FL_POS)) /**< SECDIAG_DFD_FL Mask */
 

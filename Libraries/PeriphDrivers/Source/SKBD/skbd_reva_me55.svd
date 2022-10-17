@@ -285,7 +285,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>EVT</name>
+        <name>EVT[%s]</name>
         <description>Key Register</description>
         <addressOffset>0x14</addressOffset>
         <access>read-only</access>
