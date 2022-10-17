@@ -11,68 +11,36 @@
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
-      <name>DMA0</name>
+      <name>DMA0_CH0</name>
       <value>28</value>
     </interrupt>
     <interrupt>
-      <name>DMA1</name>
+      <name>DMA0_CH1</name>
       <value>29</value>
     </interrupt>
     <interrupt>
-      <name>DMA2</name>
+      <name>DMA0_CH2</name>
       <value>30</value>
     </interrupt>
     <interrupt>
-      <name>DMA3</name>
+      <name>DMA0_CH3</name>
       <value>31</value>
     </interrupt>
     <interrupt>
-      <name>DMA4</name>
+      <name>DMA0_CH4</name>
       <value>68</value>
     </interrupt>
     <interrupt>
-      <name>DMA5</name>
+      <name>DMA0_CH5</name>
       <value>69</value>
     </interrupt>
     <interrupt>
-      <name>DMA6</name>
+      <name>DMA0_CH6</name>
       <value>70</value>
     </interrupt>
     <interrupt>
-      <name>DMA7</name>
+      <name>DMA0_CH7</name>
       <value>71</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA8</name>
-      <value>72</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA9</name>
-      <value>73</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA10</name>
-      <value>74</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA11</name>
-      <value>75</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA12</name>
-      <value>76</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA13</name>
-      <value>77</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA14</name>
-      <value>78</value>
-    </interrupt>
-    <interrupt>
-      <name>DMA15</name>
-      <value>79</value>
     </interrupt>
     <registers>
       <register>

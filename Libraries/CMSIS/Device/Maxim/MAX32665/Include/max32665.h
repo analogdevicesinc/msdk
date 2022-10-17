@@ -253,6 +253,12 @@ typedef enum {
 #define MXC_TPU ((mxc_tpu_regs_t *)MXC_BASE_TPU)
 
 /******************************************************************************/
+/*                                                                        RPU */
+#define MXC_BASE_RPU ((uint32_t)0x40002000UL)
+#define MXC_RPU ((mxc_rpu_regs_t *)MXC_BASE_RPU)
+#define MXC_RPU_NUM_BUS_MASTERS 9
+
+/******************************************************************************/
 /*                                                                   Watchdog */
 #define MXC_BASE_WDT0 ((uint32_t)0x40003000UL)
 #define MXC_WDT0 ((mxc_wdt_regs_t *)MXC_BASE_WDT0)
@@ -275,11 +281,6 @@ typedef enum {
 /*                                                                         DVS*/
 #define MXC_BASE_DVS ((uint32_t)0x40004800UL)
 #define MXC_DVS ((mxc_dvs_regs_t *)MXC_BASE_DVS)
-
-/******************************************************************************/
-/*                                                           Security Monitor */
-#define MXC_BASE_SMON ((uint32_t)0x40004000UL)
-#define MXC_SMON ((mxc_smon_regs_t *)MXC_BASE_SMON)
 
 /******************************************************************************/
 /*                                         Trim System Initalization Register */
@@ -488,6 +489,7 @@ typedef enum {
 #define MXC_FLC_GET_FLC(i) ((i) == 0 ? MXC_FLC0 : (i) == 1 ? MXC_FLC1 : 0)
 
 #define MXC_FLC_GET_IDX(p) ((p) == MXC_FLC0 ? 0 : (p) == MXC_FLC1 ? 1 : -1)
+
 /******************************************************************************/
 /*                                                          Instruction Cache */
 #define MXC_ICC_INSTANCES (2)
@@ -504,6 +506,7 @@ typedef enum {
 #define MXC_ICC_GET_ICC(i) ((i) == 0 ? MXC_ICC0 : (i) == 1 ? MXC_ICC1 : 0)
 
 #define MXC_ICC_GET_IDX(p) ((p) == MXC_ICC0 ? 0 : (p) == MXC_ICC1 ? 1 : -1)
+
 /******************************************************************************/
 /*                                                      Instruction Cache XIP */
 #define MXC_BASE_SFCC ((uint32_t)0x4002F000UL)
@@ -521,14 +524,6 @@ typedef enum {
 #define MXC_ADC_MAX_CLOCK 8000000 // Maximum ADC clock in Hz
 
 /******************************************************************************/
-/*                                                                        USB */
-#define MXC_BASE_USBHS ((uint32_t)0x400B1000UL)
-#define MXC_USBHS ((mxc_usbhs_regs_t *)MXC_BASE_USBHS)
-#define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
-#define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
-#define MXC_USBHS_MAX_PACKET 512
-
-/******************************************************************************/
 /*                                                                  Smart DMA */
 #define MXC_BASE_SDMA ((uint32_t)0x40036000UL)
 #define MXC_SDMA ((mxc_sdma_regs_t *)MXC_BASE_SDMA)
@@ -540,7 +535,6 @@ typedef enum {
 
 /*******************************************************************************/
 /*                                                      Pulse Train Generation */
-
 #define MXC_CFG_PT_INSTANCES (16)
 
 #define MXC_BASE_PTG_BUS0 ((uint32_t)0x4003C000UL)
@@ -737,7 +731,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
-
 #define MXC_UART_INSTANCES (3)
 #define MXC_UART_FIFO_DEPTH (32)
 
@@ -762,7 +755,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                     SPI */
-
 #define MXC_SPI_INSTANCES (3)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH (32)
@@ -790,17 +782,6 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                       SDHC */
-#define MXC_BASE_SDHC ((uint32_t)0x400B6000UL)
-#define MXC_SDHC ((mxc_sdhc_regs_t *)MXC_BASE_SDHC)
-
-/******************************************************************************/
-/*                                                                        RPU */
-#define MXC_BASE_RPU ((uint32_t)0x40002000UL)
-#define MXC_RPU ((mxc_rpu_regs_t *)MXC_BASE_RPU)
-#define MXC_RPU_NUM_BUS_MASTERS 9
-
-/******************************************************************************/
 /*                                                            Audio Subsystem */
 #define MXC_BASE_AUDIO ((uint32_t)0x4004C000UL)
 #define MXC_AUDIO ((mxc_audio_regs_t *)MXC_BASE_AUDIO)
@@ -821,8 +802,20 @@ typedef enum {
 #define DBB_EXT_RFFE_BASE MXC_BASE_BTLE_DBB_EXT_RFFE
 
 /******************************************************************************/
-/*                                                               Bit Shifting */
+/*                                                                        USB */
+#define MXC_BASE_USBHS ((uint32_t)0x400B1000UL)
+#define MXC_USBHS ((mxc_usbhs_regs_t *)MXC_BASE_USBHS)
+#define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
+#define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
+#define MXC_USBHS_MAX_PACKET 512
 
+/******************************************************************************/
+/*                                                                       SDHC */
+#define MXC_BASE_SDHC ((uint32_t)0x400B6000UL)
+#define MXC_SDHC ((mxc_sdhc_regs_t *)MXC_BASE_SDHC)
+
+/******************************************************************************/
+/*                                                               Bit Shifting */
 #define MXC_F_BIT_0 (1 << 0)
 #define MXC_F_BIT_1 (1 << 1)
 #define MXC_F_BIT_2 (1 << 2)
@@ -858,7 +851,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                               Bit Banding  */
-
 #define BITBAND(reg, bit)                                                               \
     ((0xf0000000 & (uint32_t)(reg)) + 0x2000000 + (((uint32_t)(reg)&0x0fffffff) << 5) + \
      ((bit) << 2))
