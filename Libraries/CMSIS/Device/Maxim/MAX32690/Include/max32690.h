@@ -1,35 +1,35 @@
 /******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_MAX32690_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_MAX32690_H_
@@ -335,14 +335,9 @@ typedef enum {
 #define MXC_FCR ((mxc_fcr_regs_t *)MXC_BASE_FCR)
 
 /******************************************************************************/
-/*                                         Trim System Initalization Register */
-#define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
-#define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
-
-/******************************************************************************/
-/*                                                                       GCFR */
-#define MXC_BASE_GCFR ((uint32_t)0x40005800UL)
-#define MXC_GCFR ((mxc_gcfr_regs_t *)MXC_BASE_GCFR)
+/*                                                                        CTB */
+#define MXC_BASE_CTB ((uint32_t)0x40001000UL)
+#define MXC_CTB ((mxc_ctb_regs_t *)MXC_BASE_CTB)
 
 /******************************************************************************/
 /*                                                    Windowed Watchdog Timer */
@@ -353,6 +348,21 @@ typedef enum {
 #define MXC_WDT MXC_WDT0
 #define MXC_BASE_WDT1 ((uint32_t)0x40080800UL)
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
+
+/******************************************************************************/
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEY ((uint32_t)0x40005000UL)
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+
+/******************************************************************************/
+/*                                         Trim System Initalization Register */
+#define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
+#define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
+
+/******************************************************************************/
+/*                                                                       GCFR */
+#define MXC_BASE_GCFR ((uint32_t)0x40005800UL)
+#define MXC_GCFR ((mxc_gcfr_regs_t *)MXC_BASE_GCFR)
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -380,9 +390,9 @@ typedef enum {
 #define MXC_MCR ((mxc_mcr_regs_t *)MXC_BASE_MCR)
 
 /******************************************************************************/
-/*                                                  Low Power General control */
-#define MXC_BASE_LPGCR ((uint32_t)0x40080000UL)
-#define MXC_LPGCR ((mxc_lpgcr_regs_t *)MXC_BASE_LPGCR)
+/*                                                     PUF Secure Controller  */
+#define MXC_BASE_PUF ((uint32_t)0x40007000UL)
+#define MXC_PUF ((mxc_puf_regs_t *)MXC_BASE_PUF)
 
 /******************************************************************************/
 /*                                                                       GPIO */
@@ -401,28 +411,35 @@ typedef enum {
 #define MXC_BASE_GPIO4 ((uint32_t)0x4000C000UL)
 #define MXC_GPIO4 ((mxc_gpio_regs_t *)MXC_BASE_GPIO4)
 
-#define MXC_GPIO_GET_IDX(p)                \
-    ((p) == MXC_GPIO0 ? 0 :                \
-                        (p) == MXC_GPIO1 ? \
-                        1 :                \
-                        (p) == MXC_GPIO2 ? 2 : (p) == MXC_GPIO3 ? 3 : (p) == MXC_GPIO4 ? 4 : -1)
+#define MXC_GPIO_GET_IDX(p) \
+    ((p) == MXC_GPIO0 ? 0 : \
+     (p) == MXC_GPIO1 ? 1 : \
+     (p) == MXC_GPIO2 ? 2 : \
+     (p) == MXC_GPIO3 ? 3 : \
+     (p) == MXC_GPIO4 ? 4 : \
+                        -1)
 
-#define MXC_GPIO_GET_GPIO(i)           \
-    ((i) == 0 ? MXC_GPIO0 :            \
-                (i) == 1 ? MXC_GPIO1 : \
-                           (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : (i) == 4 ? MXC_GPIO4 : 0)
+#define MXC_GPIO_GET_GPIO(i) \
+    ((i) == 0 ? MXC_GPIO0 :  \
+     (i) == 1 ? MXC_GPIO1 :  \
+     (i) == 2 ? MXC_GPIO2 :  \
+     (i) == 3 ? MXC_GPIO3 :  \
+     (i) == 4 ? MXC_GPIO4 :  \
+                0)
 
 #define MXC_GPIO_GET_IRQ(i)  \
     ((i) == 0 ? GPIO0_IRQn : \
-                (i) == 1 ? GPIO1_IRQn : (i) == 2 ? GPIO2_IRQn : (i) == 3 ? GPIO3_IRQn : 0)
+     (i) == 1 ? GPIO1_IRQn : \
+     (i) == 2 ? GPIO2_IRQn : \
+     (i) == 3 ? GPIO3_IRQn : \
+                0)
 
 /******************************************************************************/
-
+/*                                                                      Timer */
 #define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
 
-/*                                                                      Timer */
 #define MXC_CFG_TMR_INSTANCES (6)
 
 #define MXC_BASE_TMR0 ((uint32_t)0x40010000UL)
@@ -440,34 +457,39 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
-                           (i) == 1 ?  \
-                           TMR1_IRQn : \
-                           (i) == 2 ?  \
-                           TMR2_IRQn : \
-                           (i) == 3 ? TMR3_IRQn : (i) == 4 ? TMR4_IRQn : (i) == 5 ? TMR5_IRQn : 0)
+                (i) == 1 ? TMR1_IRQn : \
+                (i) == 2 ? TMR2_IRQn : \
+                (i) == 3 ? TMR3_IRQn : \
+                (i) == 4 ? TMR4_IRQn : \
+                (i) == 5 ? TMR5_IRQn : \
+                           0)
 
-#define MXC_TMR_GET_BASE(i)                               \
-    ((i) == 0 ?                                           \
-         MXC_BASE_TMR0 :                                  \
-         (i) == 1 ? MXC_BASE_TMR1 :                       \
-                    (i) == 2 ? MXC_BASE_TMR2 :            \
-                               (i) == 3 ? MXC_BASE_TMR3 : \
-                                          (i) == 4 ? MXC_BASE_TMR4 : (i) == 5 ? MXC_BASE_TMR5 : 0)
+#define MXC_TMR_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_TMR0 : \
+     (i) == 1 ? MXC_BASE_TMR1 : \
+     (i) == 2 ? MXC_BASE_TMR2 : \
+     (i) == 3 ? MXC_BASE_TMR3 : \
+     (i) == 4 ? MXC_BASE_TMR4 : \
+     (i) == 5 ? MXC_BASE_TMR5 : \
+                0)
 
-#define MXC_TMR_GET_TMR(i)            \
-    ((i) == 0 ? MXC_TMR0 :            \
-                (i) == 1 ?            \
-                MXC_TMR1 :            \
-                (i) == 2 ? MXC_TMR2 : \
-                           (i) == 3 ? MXC_TMR3 : (i) == 4 ? MXC_TMR4 : (i) == 5 ? MXC_TMR5 : 0)
+#define MXC_TMR_GET_TMR(i) \
+    ((i) == 0 ? MXC_TMR0 : \
+     (i) == 1 ? MXC_TMR1 : \
+     (i) == 2 ? MXC_TMR2 : \
+     (i) == 3 ? MXC_TMR3 : \
+     (i) == 4 ? MXC_TMR4 : \
+     (i) == 5 ? MXC_TMR5 : \
+                0)
 
-#define MXC_TMR_GET_IDX(p)     \
-    ((p) == MXC_TMR0 ?         \
-         0 :                   \
-         (p) == MXC_TMR1 ?     \
-         1 :                   \
-         (p) == MXC_TMR2 ? 2 : \
-                           (p) == MXC_TMR3 ? 3 : (p) == MXC_TMR4 ? 4 : (p) == MXC_TMR5 ? 5 : -1)
+#define MXC_TMR_GET_IDX(p) \
+    ((p) == MXC_TMR0 ? 0 : \
+     (p) == MXC_TMR1 ? 1 : \
+     (p) == MXC_TMR2 ? 2 : \
+     (p) == MXC_TMR3 ? 3 : \
+     (p) == MXC_TMR4 ? 4 : \
+     (p) == MXC_TMR5 ? 5 : \
+                       -1)
 
 /******************************************************************************/
 /*                                                                        I2C */
@@ -492,11 +514,6 @@ typedef enum {
 
 #define MXC_I2C_FIFO_DEPTH (8)
 
-/******************************************************************************/
-/*                                                                   HyperBus */
-#define MXC_BASE_HPB ((uint32_t)0x40039000UL)
-#define MXC_HPB ((mxc_hpb_regs_t *)MXC_BASE_HPB)
-
 /* ************************************************************************** */
 /*                                                SPI Execute in Place Master */
 #define MXC_BASE_SPIXFM ((uint32_t)0x40026000UL)
@@ -510,11 +527,6 @@ typedef enum {
 #define MXC_SPIXFC ((mxc_spixfc_regs_t *)MXC_BASE_SPIXFC)
 #define MXC_BASE_SPIXFC_FIFO ((uint32_t)0x400BC000UL)
 #define MXC_SPIXFC_FIFO ((mxc_spixfc_fifo_regs_t *)MXC_BASE_SPIXFC_FIFO)
-
-/* ************************************************************************** */
-/*                                SPI Execute in Place Data Master Controller */
-#define MXC_BASE_SPIXR ((uint32_t)0x4003A000UL)
-#define MXC_SPIXR ((mxc_spixr_regs_t *)MXC_BASE_SPIXR)
 
 /******************************************************************************/
 /*                                                                        DMA */
@@ -545,12 +557,6 @@ typedef enum {
 #define MXC_FLC_GET_IDX(p) ((p) == MXC_FLC0 ? 0 : (p) == MXC_FLC1 ? 1 : -1)
 
 /******************************************************************************/
-/*                                                                        ADC */
-#define MXC_BASE_ADC ((uint32_t)0x40034000UL)
-#define MXC_ADC ((mxc_adc_regs_t *)MXC_BASE_ADC)
-#define MXC_ADC_MAX_CLOCK 8000000 // Maximum ADC clock in Hz
-
-/******************************************************************************/
 /*                                                  Internal Cache Controller */
 #define MXC_ICC_INSTANCES (2)
 
@@ -564,14 +570,58 @@ typedef enum {
 // ICC1 is the RISC-V cache
 
 /******************************************************************************/
+/*                                              Internal Cache XIP Controller */
+#define MXC_BASE_SFCC ((uint32_t)0x4002F000UL)
+#define MXC_SFCC ((mxc_icc_regs_t *)MXC_BASE_SFCC)
+
+/******************************************************************************/
 /*                                           External Memory Cache Controller */
 #define MXC_BASE_EMCC ((uint32_t)0x40033000UL)
 #define MXC_EMCC ((mxc_emcc_regs_t *)MXC_BASE_EMCC)
 
 /******************************************************************************/
-/*                                              Internal Cache XIP Controller */
-#define MXC_BASE_SFCC ((uint32_t)0x4002F000UL)
-#define MXC_SFCC ((mxc_icc_regs_t *)MXC_BASE_SFCC)
+/*                                                                        ADC */
+#define MXC_BASE_ADC ((uint32_t)0x40034000UL)
+#define MXC_ADC ((mxc_adc_regs_t *)MXC_BASE_ADC)
+#define MXC_ADC_MAX_CLOCK 8000000 // Maximum ADC clock in Hz
+
+/******************************************************************************/
+/*                                                                   HyperBus */
+#define MXC_BASE_HPB ((uint32_t)0x40039000UL)
+#define MXC_HPB ((mxc_hpb_regs_t *)MXC_BASE_HPB)
+
+/* ************************************************************************** */
+/*                                SPI Execute in Place Data Master Controller */
+#define MXC_BASE_SPIXR ((uint32_t)0x4003A000UL)
+#define MXC_SPIXR ((mxc_spixr_regs_t *)MXC_BASE_SPIXR)
+
+/*******************************************************************************/
+/*                                                      Pulse Train Generation */
+#define MXC_CFG_PT_INSTANCES (4)
+
+#define MXC_BASE_PTG ((uint32_t)0x4003C000UL)
+#define MXC_PTG ((mxc_ptg_regs_t *)MXC_BASE_PTG)
+#define MXC_BASE_PT0 ((uint32_t)0x4003C020UL)
+#define MXC_PT0 ((mxc_pt_regs_t *)MXC_BASE_PT0)
+#define MXC_BASE_PT1 ((uint32_t)0x4003C040UL)
+#define MXC_PT1 ((mxc_pt_regs_t *)MXC_BASE_PT1)
+#define MXC_BASE_PT2 ((uint32_t)0x4003C060UL)
+#define MXC_PT2 ((mxc_pt_regs_t *)MXC_BASE_PT2)
+#define MXC_BASE_PT3 ((uint32_t)0x4003C080UL)
+#define MXC_PT3 ((mxc_pt_regs_t *)MXC_BASE_PT3)
+
+#define MXC_PT_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_PT0 : \
+     (i) == 1 ? MXC_BASE_PT1 : \
+     (i) == 2 ? MXC_BASE_PT2 : \
+     (i) == 3 ? MXC_BASE_PT3 : \
+                0)
+
+#define MXC_PT_GET_PT(i) \
+    ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)
+
+#define MXC_PT_GET_IDX(p) \
+    ((p) == MXC_PT0 ? 0 : (p) == MXC_PT1 ? 1 : (p) == MXC_PT2 ? 2 : (p) == MXC_PT3 ? 3 : -1)
 
 /******************************************************************************/
 /*                                                            One Wire Master */
@@ -599,15 +649,19 @@ typedef enum {
 #define MXC_BASE_UART3 ((uint32_t)0x40081400UL)
 #define MXC_UART3 ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
-#define MXC_UART_GET_IRQ(i)      \
-    (IRQn_Type)((i) == 0 ?       \
-                    UART0_IRQn : \
-                    (i) == 1 ? UART1_IRQn : (i) == 2 ? UART2_IRQn : (i) == 3 ? UART3_IRQn : 0)
+#define MXC_UART_GET_IRQ(i)             \
+    (IRQn_Type)((i) == 0 ? UART0_IRQn : \
+                (i) == 1 ? UART1_IRQn : \
+                (i) == 2 ? UART2_IRQn : \
+                (i) == 3 ? UART3_IRQn : \
+                           0)
 
-#define MXC_UART_GET_BASE(i) \
-    ((i) == 0 ?              \
-         MXC_BASE_UART0 :    \
-         (i) == 1 ? MXC_BASE_UART1 : (i) == 2 ? MXC_BASE_UART2 : (i) == 3 ? MXC_BASE_UART3 : 0)
+#define MXC_UART_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_UART0 : \
+     (i) == 1 ? MXC_BASE_UART1 : \
+     (i) == 2 ? MXC_BASE_UART2 : \
+     (i) == 3 ? MXC_BASE_UART3 : \
+                0)
 
 #define MXC_UART_GET_UART(i) \
     ((i) == 0 ? MXC_UART0 : (i) == 1 ? MXC_UART1 : (i) == 2 ? MXC_UART2 : (i) == 3 ? MXC_UART3 : 0)
@@ -638,28 +692,37 @@ typedef enum {
 #define MXC_BASE_SPI4 ((uint32_t)0x400BE400UL)
 #define MXC_SPI4 ((mxc_spi_regs_t *)MXC_BASE_SPI4)
 
-#define MXC_SPI_GET_IDX(p)     \
-    ((p) == MXC_SPI0 ?         \
-         0 :                   \
-         (p) == MXC_SPI1 ? 1 : \
-                           (p) == MXC_SPI2 ? 2 : (p) == MXC_SPI3 ? 3 : (p) == MXC_SPI4 ? 4 : -1)
+#define MXC_SPI_GET_IDX(p) \
+    ((p) == MXC_SPI0 ? 0 : \
+     (p) == MXC_SPI1 ? 1 : \
+     (p) == MXC_SPI2 ? 2 : \
+     (p) == MXC_SPI3 ? 3 : \
+     (p) == MXC_SPI4 ? 4 : \
+                       -1)
 
-#define MXC_SPI_GET_BASE(i)                           \
-    ((i) == 0 ? MXC_BASE_SPI0 :                       \
-                (i) == 1 ? MXC_BASE_SPI1 :            \
-                           (i) == 2 ? MXC_BASE_SPI2 : \
-                                      (i) == 3 ? MXC_BASE_SPI3 : (i) == 4 ? MXC_BASE_SPI4 : 0)
+#define MXC_SPI_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_SPI0 : \
+     (i) == 1 ? MXC_BASE_SPI1 : \
+     (i) == 2 ? MXC_BASE_SPI2 : \
+     (i) == 3 ? MXC_BASE_SPI3 : \
+     (i) == 4 ? MXC_BASE_SPI4 : \
+                0)
 
-#define MXC_SPI_GET_SPI(i)            \
-    ((i) == 0 ? MXC_SPI0 :            \
-                (i) == 1 ? MXC_SPI1 : \
-                           (i) == 2 ? MXC_SPI2 : (i) == 3 ? MXC_SPI3 : (i) == 4 ? MXC_SPI4 : 0)
+#define MXC_SPI_GET_SPI(i) \
+    ((i) == 0 ? MXC_SPI0 : \
+     (i) == 1 ? MXC_SPI1 : \
+     (i) == 2 ? MXC_SPI2 : \
+     (i) == 3 ? MXC_SPI3 : \
+     (i) == 4 ? MXC_SPI4 : \
+                0)
 
 #define MXC_SPI_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? SPI0_IRQn : \
-                           (i) == 1 ?  \
-                           SPI1_IRQn : \
-                           (i) == 2 ? SPI2_IRQn : (i) == 3 ? SPI3_IRQn : (i) == 4 ? SPI4_IRQn : 0)
+                (i) == 1 ? SPI1_IRQn : \
+                (i) == 2 ? SPI2_IRQn : \
+                (i) == 3 ? SPI3_IRQn : \
+                (i) == 4 ? SPI4_IRQn : \
+                           0)
 #else // __riscv
 
 #define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI0 ? 0 : (p) == MXC_SPI1 ? 1 : (p) == MXC_SPI2 ? 2 : -1)
@@ -693,7 +756,10 @@ typedef enum {
 
 #define MXC_PT_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_PT0 : \
-                (i) == 1 ? MXC_BASE_PT1 : (i) == 2 ? MXC_BASE_PT2 : (i) == 3 ? MXC_BASE_PT3 : 0)
+     (i) == 1 ? MXC_BASE_PT1 : \
+     (i) == 2 ? MXC_BASE_PT2 : \
+     (i) == 3 ? MXC_BASE_PT3 : \
+                0)
 
 #define MXC_PT_GET_PT(i) \
     ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)
@@ -707,21 +773,6 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40005000UL)
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
-
-/******************************************************************************/
-/*                                                                        CTB */
-#define MXC_BASE_CTB ((uint32_t)0x40001000UL)
-#define MXC_CTB ((mxc_ctb_regs_t *)MXC_BASE_CTB)
-
-/******************************************************************************/
-/*                                                     PUF Secure Controller  */
-#define MXC_BASE_PUF ((uint32_t)0x40007000UL)
-#define MXC_PUF ((mxc_puf_regs_t *)MXC_BASE_PUF)
-
-/******************************************************************************/
 /*                                                                        I2S */
 #define MXC_BASE_I2S ((uint32_t)0x40060000UL)
 #define MXC_I2S ((mxc_i2s_regs_t *)MXC_BASE_I2S)
@@ -733,6 +784,11 @@ typedef enum {
 #define MXC_USBHS_NUM_EP 12 /* HW must have at least EP 0 CONTROL + 11 IN/OUT */
 #define MXC_USBHS_NUM_DMA 8 /* HW must have at least this many DMA channels */
 #define MXC_USBHS_MAX_PACKET 512
+
+/******************************************************************************/
+/*                                                  Low Power General control */
+#define MXC_BASE_LPGCR ((uint32_t)0x40080000UL)
+#define MXC_LPGCR ((mxc_lpgcr_regs_t *)MXC_BASE_LPGCR)
 
 /******************************************************************************/
 /*                                                       Low-Power Comparator */

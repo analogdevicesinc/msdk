@@ -44,6 +44,7 @@
 #include "pwrseq_regs.h"
 #include "simo_regs.h"
 #include "mcr_regs.h"
+#include "lp.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
@@ -187,6 +188,9 @@ __weak void SystemInit(void)
     MXC_GPIO1->ps |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg1 |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg2 &= ~(0xFFFFFFFF);
+
+    /* Disable fast wakeup due to issues with SIMO in wakeup */
+    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_FWKM;
 
     Board_Init();
 

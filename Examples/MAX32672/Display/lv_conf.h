@@ -1,3 +1,36 @@
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
+
 /**
  * @file lv_conf.h
  * Configuration file for v8.0.2
@@ -7,10 +40,11 @@
  * COPY THIS FILE AS `lv_conf.h` NEXT TO the `lvgl` FOLDER
  */
 
+#ifndef EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+#define EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+
 #if 1 /*Set it to "1" to enable content*/
 
-#ifndef LV_CONF_H
-#define LV_CONF_H
 /*clang-format off*/
 
 #include <stdint.h>
@@ -183,8 +217,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Add a custom handler when assert happens e.g. to restart the MCU*/
 #define LV_ASSERT_HANDLER_INCLUDE <stdint.h>
 #define LV_ASSERT_HANDLER \
-    while (1)             \
-        ; /*Halt by default*/
+    while (1) {} /*Halt by default*/
 
 /*-------------
  * Others
@@ -369,11 +402,11 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
  *In these languages characters should be replaced with an other form based on their position in the text*/
 #define LV_USE_ARABIC_PERSIAN_CHARS 0
 
-/*==================
- *  WIDGET USAGE
- *================*/
+/*==================*/
+/*  WIDGET USAGE    */
+/*==================*/
 
-/*Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html*/
+// Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html
 
 #define LV_USE_ARC 1
 
@@ -521,8 +554,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Enable the examples to be built with the library*/
 #define LV_BUILD_EXAMPLES 1
 
-/*--END OF LV_CONF_H--*/
-
-#endif /*LV_CONF_H*/
-
 #endif /*End of "Content enable"*/
+
+/*--End of EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_--*/
+
+#endif // EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_

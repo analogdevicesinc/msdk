@@ -4,16 +4,17 @@ The example demonstartes the use of USB composite device with Mass Storage drive
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Connect a USB cable between the PC and the CN1 (USB/UART0) connector.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect a USB cable between the PC and the CN1 (USB/UART0) connector. Make sure JP11 (2-3) is connected to UART.
+-   Default EV kit hardware configuration.
 
 ## Expected Output
 
 The Console UART of the device will output these messages:
 
 ```
-***** MAX32665 USB Composite Device (Keyboard and Mass Storage) Example *****
+***** MAX32650 USB Composite Device (Keyboard and Mass Storage) Example *****
 Waiting for VBUS...
 VBUS Connect
 Suspended
