@@ -5720,7 +5720,7 @@
    <baseAddress>0x40029000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x1000</size>
+    <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
@@ -5956,6 +5956,17 @@
    </registers>
   </peripheral>
 <!--FLC Flash Memory Control.-->
+  <peripheral derivedFrom="FLC">
+   <name>FLC1</name>
+   <description>Flash Memory Control. 1</description>
+   <baseAddress>0x40029400</baseAddress>
+   <interrupt>
+    <name>FLC1</name>
+    <description>FLC1 IRQ</description>
+    <value>87</value>
+   </interrupt>
+  </peripheral>
+<!--FLC1 Flash Memory Control. 1-->
   <peripheral>
    <name>GCR</name>
    <description>Global Control Registers.</description>
@@ -21704,6 +21715,12 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+      <field>
+       <name>AESKG</name>
+       <description>AES Key Generate.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>AESKG_MEMPROTE</name>
