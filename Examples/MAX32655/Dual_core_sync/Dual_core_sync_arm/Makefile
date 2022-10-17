@@ -51,12 +51,11 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
-#BOARD=FTHR_Apps_P1
 endif
 
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
-LIBS_DIR=../../../Libraries
+LIBS_DIR=../../../../Libraries
 else
 LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
@@ -83,8 +82,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 IPATH = .
 IPATH += $(LIBS_DIR)/Cordio/platform/include
 
-# Unset PROJ_CFLAGS variable
-PROJ_CFLAGS =
+PROJ_CFLAGS = 
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
@@ -101,7 +99,6 @@ MAILBOX_SIZE = 64
 
 PROJ_AFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
 PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
-#PROJ_CFLAGS += -DHCI_TR_MAIL=1
 
 # Specify the target revision to override default
 # "A2" in ASCII
@@ -109,7 +106,6 @@ PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
 
 # Use this variables to specify and alternate tool path
 #TOOL_DIR=/opt/gcc-arm-none-eabi-4_8-2013q4/bin
-
 
 # Use these variables to add project specific tool options
 #PROJ_CFLAGS+=--specs=nano.specs
@@ -126,6 +122,42 @@ PROJ_CFLAGS += -DMAILBOX_SIZE=$(MAILBOX_SIZE)
 # LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
 
 ################################################################################
+# RISCV build rules
+
+# Load and start the RISCV core
+RISCV_LOAD=1
+
+# Directory for RISCV code 
+RISCV_APP_DIR=../Dual_core_sync_riscv
+RISCV_APP=../Dual_core_sync_riscv
+
+# Binary name for RISCV code
+RISCV_APP_BIN=buildrv/$(PROJECT).bin
+
+# Firmware update files, do not rename
+RISCV_LOCAL_BIN=riscv.bin
+RISCV_LOCAL_OBJ=build/riscv.o
+
+PROJ_OBJS = ${RISCV_LOCAL_OBJ}
+
+
+# Target for creating the fw_update bin file
+${RISCV_LOCAL_BIN}:
+	$(MAKE) -C ${RISCV_APP_DIR} RISCV_CORE=1 RISCV_LOAD=0
+	$(MAKE) -C ${RISCV_APP_DIR} buildrv/$(PROJECT).bin RISCV_CORE=1 RISCV_LOAD=0
+	@cp ${RISCV_APP_DIR}/$(RISCV_APP_BIN) ${RISCV_LOCAL_BIN}
+
+${RISCV_LOCAL_OBJ}: riscv.S ${RISCV_LOCAL_BIN}
+	@mkdir -p build
+	@${CC} ${AFLAGS} -o ${@} -c riscv.S
+
+clean.riscv: 
+	@rm -f ${RISCV_LOCAL_BIN}
+	$(MAKE) -C ${RISCV_APP_DIR} RISCV_CORE=1 clean
+
+clean: clean.riscv
+
+################################################################################
 # Include external library makefiles here
 
 # Include the BSP
@@ -136,6 +168,10 @@ include $(BOARD_DIR)/board.mk
 PERIPH_DRIVER_DIR=$(LIBS_DIR)/PeriphDrivers
 include $(PERIPH_DRIVER_DIR)/periphdriver.mk
 export PERIPH_DRIVER_DIR
+
+# Include the Cordio Library
+CORDIO_DIR=$(LIBS_DIR)/Cordio
+include $(CORDIO_DIR)/platform/targets/maxim/build/cordio.mk
 
 ################################################################################
 # Include the rules for building for this target. All other makefiles should be
