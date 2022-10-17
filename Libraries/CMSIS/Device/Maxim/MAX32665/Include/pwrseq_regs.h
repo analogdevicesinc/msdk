@@ -138,8 +138,8 @@ typedef struct {
 #define MXC_V_PWRSEQ_LPCN_RAMRET_EN3                   ((uint32_t)0x3UL) /**< LPCN_RAMRET_EN3 Value */
 #define MXC_S_PWRSEQ_LPCN_RAMRET_EN3                   (MXC_V_PWRSEQ_LPCN_RAMRET_EN3 << MXC_F_PWRSEQ_LPCN_RAMRET_POS) /**< LPCN_RAMRET_EN3 Setting */
 
-#define MXC_F_PWRSEQ_LPCN_BKGRND_POS                   9 /**< LPCN_BKGRND Position */
-#define MXC_F_PWRSEQ_LPCN_BKGRND                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_BKGRND_POS)) /**< LPCN_BKGRND Mask */
+#define MXC_F_PWRSEQ_LPCN_BCKGRND_POS                  9 /**< LPCN_BCKGRND Position */
+#define MXC_F_PWRSEQ_LPCN_BCKGRND                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_BCKGRND_POS)) /**< LPCN_BCKGRND Mask */
 
 #define MXC_F_PWRSEQ_LPCN_FWKM_POS                     10 /**< LPCN_FWKM Position */
 #define MXC_F_PWRSEQ_LPCN_FWKM                         ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_FWKM_POS)) /**< LPCN_FWKM Mask */
@@ -242,6 +242,9 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPPWST_USBVBUSWKST_POS            2 /**< LPPWST_USBVBUSWKST Position */
 #define MXC_F_PWRSEQ_LPPWST_USBVBUSWKST                ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWST_USBVBUSWKST_POS)) /**< LPPWST_USBVBUSWKST Mask */
 
+#define MXC_F_PWRSEQ_LPPWST_SDMAWKST_POS               3 /**< LPPWST_SDMAWKST Position */
+#define MXC_F_PWRSEQ_LPPWST_SDMAWKST                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWST_SDMAWKST_POS)) /**< LPPWST_SDMAWKST Mask */
+
 #define MXC_F_PWRSEQ_LPPWST_AINCOMP0WKST_POS           4 /**< LPPWST_AINCOMP0WKST Position */
 #define MXC_F_PWRSEQ_LPPWST_AINCOMP0WKST               ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWST_AINCOMP0WKST_POS)) /**< LPPWST_AINCOMP0WKST Mask */
 
@@ -285,6 +288,9 @@ typedef struct {
 
 #define MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN_POS            2 /**< LPPWEN_USBVBUSWKEN Position */
 #define MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN                ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN_POS)) /**< LPPWEN_USBVBUSWKEN Mask */
+
+#define MXC_F_PWRSEQ_LPPWEN_SDMAWKEN_POS               3 /**< LPPWEN_SDMAWKEN Position */
+#define MXC_F_PWRSEQ_LPPWEN_SDMAWKEN                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_SDMAWKEN_POS)) /**< LPPWEN_SDMAWKEN Mask */
 
 #define MXC_F_PWRSEQ_LPPWEN_AINCOMP0WKEN_POS           4 /**< LPPWEN_AINCOMP0WKEN Position */
 #define MXC_F_PWRSEQ_LPPWEN_AINCOMP0WKEN               ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_AINCOMP0WKEN_POS)) /**< LPPWEN_AINCOMP0WKEN Mask */
