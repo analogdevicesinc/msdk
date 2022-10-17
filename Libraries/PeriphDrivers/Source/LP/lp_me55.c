@@ -239,7 +239,8 @@ void MXC_LP_DisableUSBWakeup(void)
 
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {
-    if (!(mask & (MXC_F_GCR_PM_IBRO_PD | MXC_F_GCR_PM_IPO_PD | MXC_F_GCR_PM_ISO_PD | MXC_F_GCR_PM_ERFO_PD))) {
+    if (!(mask & (MXC_F_GCR_PM_IBRO_PD | MXC_F_GCR_PM_IPO_PD | MXC_F_GCR_PM_ISO_PD |
+                  MXC_F_GCR_PM_ERFO_PD))) {
         return E_BAD_PARAM;
     }
 

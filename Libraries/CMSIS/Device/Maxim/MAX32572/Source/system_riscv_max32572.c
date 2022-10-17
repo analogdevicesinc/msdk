@@ -37,8 +37,8 @@
 #include "max32572.h"
 #include "gcr_regs.h"
 
-volatile uint32_t mailbox __attribute__ ((section (".mailbox")));
-uint32_t SystemCoreClock __attribute__ ((section (".shared")));
+volatile uint32_t mailbox __attribute__((section(".mailbox")));
+uint32_t SystemCoreClock __attribute__((section(".shared")));
 
 __weak void SystemCoreClockUpdate(void)
 {
