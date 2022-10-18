@@ -79,10 +79,10 @@ jobs:
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
           echo " >>>> current dir"
           pwd
-          cp -r .github/workflows/CI-tests/Examples_tests .
-          chmod +x Examples_tests/local_testLauncher.sh
-          cd Examples_tests/
-          ./local_testLauncher.sh
+          #cp -r .github/workflows/CI-tests/Examples_tests .
+          #chmod +x Examples_tests/local_testLauncher.sh
+          #cd Examples_tests/
+          #./local_testLauncher.sh
           
       - uses: actions/upload-artifact@v3
         if: failure()
