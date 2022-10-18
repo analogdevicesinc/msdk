@@ -1,4 +1,4 @@
-name: BLE_Examples_Tests
+name: BLE Examples Test
 
 # Controls when the workflow will run
 on:
