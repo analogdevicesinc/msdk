@@ -17,6 +17,12 @@ jobs:
       - software
 
     steps:
+
+    - name: Clean
+      run: |
+        # Remove local modifications
+        git scorch
+
     - uses: actions/github-script@v3
       id: get-pr
       with:

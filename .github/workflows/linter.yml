@@ -39,6 +39,11 @@ jobs:
     # Load all steps #
     ##################
     steps:
+      - name: Clean
+        run: |
+          # Remove local modifications
+          git scorch
+
       ##########################
       # Checkout the code base #
       ##########################

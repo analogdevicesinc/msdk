@@ -19,6 +19,11 @@ jobs:
       - software
 
     steps:
+      - name: Clean
+        run: |
+          # Remove local modifications
+          git scorch
+
       - uses: actions/checkout@v3
         with:
           submodules: false
