@@ -1,4 +1,4 @@
-name: BLE_Examples_Tests
+name: BLE Examples Test
 
 # Controls when the workflow will run
 on:
@@ -77,8 +77,7 @@ jobs:
           # Lock hardware resources
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
-          
-          cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
+          cp -r .github/workflows/ci-tests/Examples_tests .
           chmod +x Examples_tests/local_testLauncher.sh
           cd Examples_tests/
           ./local_testLauncher.sh
