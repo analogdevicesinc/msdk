@@ -4,7 +4,7 @@
     <!--    AFE ADC1: Stacked Die    -->
     <name>AFE_ADC_ONE</name>
     <description>Analog Front End ADC1 on Stacked Die via SPI</description>
-    <baseAddress>0x00000000</baseAddress>
+    <baseAddress>0x4FA00000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x200</size>

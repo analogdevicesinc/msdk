@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,8 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-04-27 09:12:38 -0700 (Wed, 27 Apr 2016) $
- * $Revision: 22537 $
- *
  ******************************************************************************/
+
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32675_INCLUDE_MAX32675_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32675_INCLUDE_MAX32675_H_
 
@@ -243,16 +241,21 @@ typedef enum {
 #define MXC_FCR ((mxc_fcr_regs_t *)MXC_BASE_FCR)
 
 /******************************************************************************/
-/*                                        Trim System Initalization Register */
-#define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
-#define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
-
-/******************************************************************************/
 /*                                                                   Watchdog */
 #define MXC_BASE_WDT0 ((uint32_t)0x40003000UL)
 #define MXC_WDT0 ((mxc_wdt_regs_t *)MXC_BASE_WDT0)
 #define MXC_BASE_WDT1 ((uint32_t)0x40003400UL)
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
+
+/******************************************************************************/
+/*                                                      Error Correcting Code */
+#define MXC_BASE_ECC ((uint32_t)0x40105400UL)
+#define MXC_ECC ((mxc_ecc_regs_t *)MXC_BASE_ECC)
+
+/******************************************************************************/
+/*                                   (ECC) Trim System Initalization Register */
+#define MXC_BASE_TRIMSIR ((uint32_t)0x40105400UL)
+#define MXC_TRIMSIR ((mxc_ecc_regs_t *)MXC_BASE_TRIMSIR)
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -270,9 +273,14 @@ typedef enum {
 #define MXC_MCR ((mxc_mcr_regs_t *)MXC_BASE_MCR)
 
 /******************************************************************************/
-/*                                                      Error Correcting Code */
-#define MXC_BASE_ECC ((uint32_t)0x40105400UL)
-#define MXC_ECC ((mxc_ecc_regs_t *)MXC_BASE_ECC)
+/*                                                                        AES */
+#define MXC_BASE_AES ((uint32_t)0x40007400UL)
+#define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
+
+/******************************************************************************/
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEY ((uint32_t)0x40007800UL)
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/
 /*                                                                       GPIO */
@@ -291,11 +299,16 @@ typedef enum {
 #define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : 0)
 
 /******************************************************************************/
+/*                                                                        CRC */
+#define MXC_BASE_CRC ((uint32_t)0x4000F000UL)
+#define MXC_CRC ((mxc_crc_regs_t *)MXC_BASE_CRC)
 
+/******************************************************************************/
+/*                                                                      Timer */
 #define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
-/*                                                                      Timer */
+
 #define MXC_CFG_TMR_INSTANCES (6)
 
 #define MXC_BASE_TMR0 ((uint32_t)0x40010000UL)
@@ -350,6 +363,7 @@ typedef enum {
 /******************************************************************************/
 /*                                                                        I2C */
 #define MXC_I2C_INSTANCES (3)
+    #define MXC_I2C_FIFO_DEPTH (8)
 
 #define MXC_BASE_I2C0 ((uint32_t)0x4001D000UL)
 #define MXC_I2C0 ((mxc_i2c_regs_t *)MXC_BASE_I2C0)
@@ -367,7 +381,6 @@ typedef enum {
 #define MXC_I2C_GET_I2C(i) ((i) == 0 ? MXC_I2C0 : (i) == 1 ? MXC_I2C1 : (i) == 2 ? MXC_I2C2 : 0)
 
 #define MXC_I2C_GET_IDX(p) ((p) == MXC_I2C0 ? 0 : (p) == MXC_I2C1 ? 1 : (p) == MXC_I2C2 ? 2 : -1)
-#define MXC_I2C_FIFO_DEPTH (8)
 
 /******************************************************************************/
 /*                                                                        DMA */
@@ -393,9 +406,9 @@ typedef enum {
 #define MXC_FLC_GET_FLC(i) ((i) == 0 ? MXC_FLC0 : 0)
 
 #define MXC_FLC_GET_IDX(p) ((p) == MXC_FLC0 ? 0 : -1)
+
 /******************************************************************************/
 /*                                                          Instruction Cache */
-
 #define MXC_BASE_ICC ((uint32_t)0x4002A000UL)
 #define MXC_ICC ((mxc_icc_regs_t *)MXC_BASE_ICC)
 
@@ -415,7 +428,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
-
 #define MXC_UART_INSTANCES (4)
 #define MXC_UART_FIFO_DEPTH (8)
 
@@ -450,7 +462,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        SPI */
-
 #define MXC_SPI_INSTANCES (3)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH (32)
@@ -478,32 +489,11 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                        AES */
-#define MXC_BASE_AES ((uint32_t)0x40007400UL)
-#define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
-
-/******************************************************************************/
-/*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40007800UL)
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
-
-/******************************************************************************/
-/*                                                                        CRC */
-#define MXC_BASE_CRC ((uint32_t)0x4000F000UL)
-#define MXC_CRC ((mxc_crc_regs_t *)MXC_BASE_CRC)
-
-/******************************************************************************/
 #define MXC_BASE_I2S ((uint32_t)0x40060000UL)
 #define MXC_I2S ((mxc_i2s_regs_t *)MXC_BASE_I2S)
 
 /******************************************************************************/
-/*                                                                       BBFC */
-#define MXC_BASE_BBFC ((uint32_t)0x40005800UL)
-#define MXC_BBFC ((mxc_bbfc_regs_t *)MXC_BASE_BBFC)
-
-/******************************************************************************/
 /*                                                               Bit Shifting */
-
 #define MXC_F_BIT_0 (1 << 0)
 #define MXC_F_BIT_1 (1 << 1)
 #define MXC_F_BIT_2 (1 << 2)
@@ -539,7 +529,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                               Bit Banding  */
-
 #define BITBAND(reg, bit)                                                               \
     ((0xf0000000 & (uint32_t)(reg)) + 0x2000000 + (((uint32_t)(reg)&0x0fffffff) << 5) + \
      ((bit) << 2))
