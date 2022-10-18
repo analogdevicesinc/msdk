@@ -22,6 +22,7 @@ jobs:
 
     steps:
       - name: Clean
+        continue-on-error: true
         run: |
           # Remove local modifications
           set -e
