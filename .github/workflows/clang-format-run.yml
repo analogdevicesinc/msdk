@@ -22,7 +22,9 @@ jobs:
       - name: Clean
         run: |
           # Remove local modifications
+          set -e
           git scorch
+          set +e
 
       - uses: actions/checkout@v3
         with:

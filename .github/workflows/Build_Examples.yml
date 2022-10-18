@@ -24,7 +24,9 @@ jobs:
       - name: Clean
         run: |
           # Remove local modifications
+          set -e
           git scorch
+          set +e
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
