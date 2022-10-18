@@ -80,10 +80,10 @@ jobs:
           echo " >>>> current dir"
           pwd
           ls -la
-          #cp -r .github/workflows/CI-tests/Examples_tests .
-          #chmod +x Examples_tests/local_testLauncher.sh
-          #cd Examples_tests/
-          #./local_testLauncher.sh
+          cp -r .github/workflows/CI-tests/Examples_tests .
+          chmod +x Examples_tests/local_testLauncher.sh
+          cd Examples_tests/
+          ./local_testLauncher.sh
           
       - uses: actions/upload-artifact@v3
         if: failure()
