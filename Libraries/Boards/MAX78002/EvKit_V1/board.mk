@@ -35,13 +35,23 @@ ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
+TFT=ADAFRUIT
+#TFT=NEWHAVEN
+
 # Source files for this application (add path to VPATH below)
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
+ifeq "$(TFT)" "ADAFRUIT"
+PROJ_CFLAGS+=-DTFT_ADAFRUIT
 SRCS += adafruit_3315_tft.c
 SRCS += adafruit_3315_touch.c
+endif
+ifeq "$(TFT)" "NEWHAVEN"
+PROJ_CFLAGS+=-DTFT_NEWHAVEN
+SRCS += tft_st7789v.c
+endif
 SRCS += camera.c
 SRCS += mipi_camera.c
 ifeq "$(CAMERA)" "OV5640"

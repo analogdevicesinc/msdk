@@ -542,9 +542,9 @@ int main(void)
 
 #endif
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 30, font, sprintf(buff, "ANALOG DEVICES             "));
-    TFT_Print(buff, 15, 50, font, sprintf(buff, "Portrait Segmentation Demo      "));
-    TFT_Print(buff, 120, 90, font, sprintf(buff, "Ver. 1.0.0                   "));
+    TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
+    TFT_Print(buff, 15, 50, font, snprintf(buff, sizeof(buff), "Portrait Segmentation Demo      "));
+    TFT_Print(buff, 120, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0                   "));
     MXC_Delay(SEC(2));
     MXC_TFT_ClearScreen();
 #ifdef BOARD_EVKIT_V1

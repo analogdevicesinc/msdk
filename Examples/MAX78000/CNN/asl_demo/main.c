@@ -351,11 +351,11 @@ int main(void)
     MXC_TFT_SetBackGroundColor(4);
     MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
-    sprintf(buff, "MAXIM INTEGRATED             ");
+    snprintf(buff, sizeof(buff), "MAXIM INTEGRATED             ");
     TFT_Print(buff, 55, 50, font_2);
-    sprintf(buff, "ASL Demo Ver. 1.0.0      ");
+    snprintf(buff, sizeof(buff), "ASL Demo Ver. 1.0.0      ");
     TFT_Print(buff, 55, 90, font_1);
-    sprintf(buff, "PRESS PB1 TO START!          ");
+    snprintf(buff, sizeof(buff), "PRESS PB1 TO START!          ");
     TFT_Print(buff, 55, 180, font_2);
     printf("********** Press PB1 to capture an image **********\r\n");
     while (!PB_Get(0)) {}
@@ -367,7 +367,7 @@ int main(void)
         //while(!PB_Get(0));
         // MXC_TFT_ClearScreen();
         //  MXC_TFT_ShowImage(1, 1, image_bitmap_2);
-        //  sprintf(buff, "CAPTURING IMAGE....           ");
+        //  snprintf(buff, sizeof(buff), "CAPTURING IMAGE....           ");
         //  TFT_Print(buff, 55, 110, font_1);
 #ifdef USE_SAMPLEDATA
         // Copy the sampledata reference to the camera buffer as a test.
@@ -436,7 +436,7 @@ int main(void)
         if (PB_Get(1)) {
             continuous = 1;
         }
-        //sprintf(buff, "PRESS PB1 TO CAPTURE IMAGE      ");
+        //snprintf(buff, sizeof(buff), "PRESS PB1 TO CAPTURE IMAGE      ");
         //TFT_Print(buff, 10, 190, font_1);
         //while (!PB_Get(0));
         MXC_Delay(500000);
@@ -468,14 +468,14 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             *out_prob = 100.0 * max / 32768.0;
             /// MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
-            sprintf(buff, "%s (%0.1f%%)", classes[max_index], (double)100.0 * max / 32768.0);
+            snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index], (double)100.0 * max / 32768.0);
             TFT_Print(buff, 100, 8, font_1);
-            //sprintf(buff, "__________________________ ");
+            //snprintf(buff, sizeof(buff), "__________________________ ");
             //TFT_Print(buff, 1, 50, urw_gothic_12_white_bg_grey);
-            //sprintf(buff, "Top classes:");
+            //snprintf(buff, sizeof(buff), "Top classes:");
             //TFT_Print(buff, 1, 80, urw_gothic_13_white_bg_grey);
         } else {
-            //sprintf(buff, "%s (%0.1f%%)", classes[max_index],
+            //snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index],
             //         (double) 100.0 * max / 32768.0);
             //TFT_Print(buff, 20, 80 + 20 * top, urw_gothic_12_white_bg_grey);
         }

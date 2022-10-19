@@ -58,7 +58,7 @@ int font_4 = (int)&SansSerif16x16[0];
 int font_5 = (int)&SansSerif19x19[0];
 const int font_5_width = 19;
 const int font_5_height = 19;
-int seed = 78002;
+unsigned int seed = 78002;
 
 void TFT_Print(char *str, int x, int y, int font, int length)
 {
@@ -176,8 +176,10 @@ int32_t rescale(int32_t x, int32_t min, int32_t max, int32_t a, int32_t b)
 
 int main(void)
 {
+#ifdef TFT_ADAFRUIT
     uint16_t x, y;
     int32_t xx, yy;
+#endif
 
     MXC_ICC_Enable(MXC_ICC0);
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
@@ -188,9 +190,11 @@ int main(void)
     MXC_TFT_Init(MXC_SPI0, -1, NULL, NULL);
     TFT_test();
 
+#ifdef TFT_ADAFRUIT
     /* Initialize touch screen */
     if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL))
         printf("Touch screen initialization failed\n");
+#endif
 
     /* Initialize RTC */
     MXC_RTC_Init(TOD_START_TIME, 0);
@@ -205,7 +209,7 @@ int main(void)
             tod_alarm = false;
             print_time();
         }
-
+#ifdef TFT_ADAFRUIT
         if (ts_event) {
             MXC_TS_GetTouch(&x, &y);
             ts_event = false;
@@ -214,5 +218,6 @@ int main(void)
             yy = rescale(y, TS_Y_MIN, TS_Y_MAX, 0, DISPLAY_WIDTH);
             printf("%d,%d\n", xx, yy);
         }
+#endif		
     }
 }

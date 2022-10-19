@@ -506,17 +506,17 @@ int main(void)
     //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
 
-    TFT_Print(buff, 55, 30, font_2, sprintf(buff, "ANALOG DEVICES             "));
+    TFT_Print(buff, 55, 30, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
 
-    TFT_Print(buff, 15, 50, font_2, sprintf(buff, "U-Net Segmentation Demo      "));
+    TFT_Print(buff, 15, 50, font_2, snprintf(buff, sizeof(buff), "U-Net Segmentation Demo      "));
 
-    TFT_Print(buff, 120, 90, font_1, sprintf(buff, "Ver. 1.1.0                   "));
+    TFT_Print(buff, 120, 90, font_1, snprintf(buff, sizeof(buff), "Ver. 1.1.0                   "));
 
-    TFT_Print(buff, 55, 130, font_1, sprintf(buff, "Building(red), Sky(blue)          "));
+    TFT_Print(buff, 55, 130, font_1, snprintf(buff, sizeof(buff), "Building(red), Sky(blue)          "));
 
-    TFT_Print(buff, 5, 170, font_1, sprintf(buff, "Foliage(green), Unknown(black)  "));
+    TFT_Print(buff, 5, 170, font_1, snprintf(buff, sizeof(buff), "Foliage(green), Unknown(black)  "));
 
-    TFT_Print(buff, 30, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO START    "));
+    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START    "));
     while (!PB_Get(0)) {}
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
@@ -531,7 +531,7 @@ int main(void)
 
     MXC_TFT_ClearScreen();
 
-    TFT_Print(buff, 55, 40, font_1, sprintf(buff, "Waiting for SPI data ..."));
+    TFT_Print(buff, 55, 40, font_1, snprintf(buff, sizeof(buff), "Waiting for SPI data ..."));
 #endif
     while (1) {
 #if defined(USE_SPIDATA)
@@ -542,7 +542,7 @@ int main(void)
 
         MXC_TFT_ClearScreen();
 
-        //TFT_Print(buff, 5, 45, font_1, sprintf(buff, " Image        Mask      Overlay"));
+        //TFT_Print(buff, 5, 45, font_1, snprintf(buff, sizeof(buff), " Image        Mask      Overlay"));
 
         // Reload bias after wakeup
         cnn_init(); // Bring state machine into consistent state
@@ -569,11 +569,11 @@ int main(void)
         printf("Time for CNN: %d us\n\n", cnn_time);
 
         TFT_Print(buff, 40, 180, font_1,
-                  sprintf(buff, "Inference Time: %.3f ms     ", (float)cnn_time / 1000));
+                  snprintf(buff, sizeof(buff), "Inference Time: %.3f ms     ", (float)cnn_time / 1000));
 
 #if !defined(USE_SPIDATA)
 
-        TFT_Print(buff, 20, 212, font_1, sprintf(buff, "PRESS PB1(SW1) TO CONTINUE "));
+        TFT_Print(buff, 20, 212, font_1, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE "));
         while (!PB_Get(0)) {}
 #else
         SPI_FLAG = false;

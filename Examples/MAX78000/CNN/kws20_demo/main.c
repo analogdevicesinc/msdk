@@ -751,13 +751,13 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
             TFT_Print(buff, 20, 30, font_2,
-                      sprintf(buff, "%s (%0.1f%%)", keywords[max_index],
+                      snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
                               (double)100.0 * max / 32768.0));
-            TFT_Print(buff, 1, 50, font_1, sprintf(buff, "__________________________ "));
-            TFT_Print(buff, 1, 80, font_1, sprintf(buff, "Top classes:"));
+            TFT_Print(buff, 1, 50, font_1, snprintf(buff, sizeof(buff), "__________________________ "));
+            TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
             TFT_Print(buff, 20, 80 + 20 * top, font_1,
-                      sprintf(buff, "%s (%0.1f%%)", keywords[max_index],
+                      snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
                               (double)100.0 * max / 32768.0));
         }
 
@@ -767,7 +767,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         max_index = -1;
 
         if (top == 4) {
-            TFT_Print(buff, 20, 200, font_1, sprintf(buff, "Sample Min: %d    Max: %d", Min, Max));
+            TFT_Print(buff, 20, 200, font_1, snprintf(buff, sizeof(buff), "Sample Min: %d    Max: %d", Min, Max));
         }
 
 #endif
@@ -1110,26 +1110,26 @@ void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 10, font_2, sprintf(buff, "ANALOG DEVICES"));
-    TFT_Print(buff, 35, 40, font_1, sprintf(buff, "Keyword Spotting Demo"));
-    TFT_Print(buff, 65, 70, font_1, sprintf(buff, "Ver. %s", VERSION));
-    TFT_Print(buff, 5, 110, font_1, sprintf(buff, "Following keywords can be"));
-    TFT_Print(buff, 5, 135, font_1, sprintf(buff, "detected:"));
-    TFT_Print(buff, 35, 160, font_1, sprintf(buff, "0...9, up, down, left, right"));
-    TFT_Print(buff, 35, 185, font_1, sprintf(buff, "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 30, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 55, 10, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
+    TFT_Print(buff, 35, 40, font_1, snprintf(buff, sizeof(buff), "Keyword Spotting Demo"));
+    TFT_Print(buff, 65, 70, font_1, snprintf(buff, sizeof(buff), "Ver. %s", VERSION));
+    TFT_Print(buff, 5, 110, font_1, snprintf(buff, sizeof(buff), "Following keywords can be"));
+    TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "detected:"));
+    TFT_Print(buff, 35, 160, font_1, snprintf(buff, sizeof(buff), "0...9, up, down, left, right"));
+    TFT_Print(buff, 35, 185, font_1, snprintf(buff, sizeof(buff), "stop, go, yes, no, on, off"));
+    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 
     while (!PB_Get(0)) {}
 
     MXC_TFT_ClearScreen();
 #ifdef BOARD_EVKIT_V1
-    TFT_Print(buff, 20, 20, font_1, sprintf(buff, "Wait for RED LED to turn on"));
-    TFT_Print(buff, 20, 50, font_1, sprintf(buff, "and start saying keywords..."));
-    TFT_Print(buff, 20, 110, font_1, sprintf(buff, "If RED LED didn't turn on in"));
-    TFT_Print(buff, 20, 140, font_1, sprintf(buff, "2 sec, disconnect SWD and"));
-    TFT_Print(buff, 20, 170, font_1, sprintf(buff, "power cycle."));
+    TFT_Print(buff, 20, 20, font_1, snprintf(buff, sizeof(buff), "Wait for RED LED to turn on"));
+    TFT_Print(buff, 20, 50, font_1, snprintf(buff, sizeof(buff), "and start saying keywords..."));
+    TFT_Print(buff, 20, 110, font_1, snprintf(buff, sizeof(buff), "If RED LED didn't turn on in"));
+    TFT_Print(buff, 20, 140, font_1, snprintf(buff, sizeof(buff), "2 sec, disconnect SWD and"));
+    TFT_Print(buff, 20, 170, font_1, snprintf(buff, sizeof(buff), "power cycle."));
 #else
-    TFT_Print(buff, 20, 50, font_1, sprintf(buff, "Start saying keywords..."));
+    TFT_Print(buff, 20, 50, font_1, snprintf(buff, sizeof(buff), "Start saying keywords..."));
 #endif
 }
 
@@ -1149,8 +1149,8 @@ void TFT_End(uint16_t words)
     char buff[TFT_BUFF_SIZE];
     memset(buff, 32, TFT_BUFF_SIZE);
     MXC_TFT_ClearScreen();
-    TFT_Print(buff, 70, 30, font_2, sprintf(buff, "Demo Stopped!"));
-    TFT_Print(buff, 10, 60, font_1, sprintf(buff, "Number of words: %d ", words));
-    TFT_Print(buff, 20, 180, font_1, sprintf(buff, "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
+    TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
+    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif

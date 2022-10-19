@@ -334,12 +334,12 @@ int main(void)
     MXC_TFT_SetBackGroundColor(4);
     //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 60, 40, font_2, sprintf(buff, "ANALOG DEVICES"));
-    TFT_Print(buff, 90, 70, font_2, sprintf(buff, "SNAKE GAME"));
-    TFT_Print(buff, 5, 110, font_1, sprintf(buff, "This game uses real-time"));
-    TFT_Print(buff, 5, 135, font_1, sprintf(buff, "speech recognition to move"));
-    TFT_Print(buff, 5, 160, font_1, sprintf(buff, "snake using certain commands"));
-    TFT_Print(buff, 1, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO CONTINUE"));
+    TFT_Print(buff, 60, 40, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
+    TFT_Print(buff, 90, 70, font_2, snprintf(buff, sizeof(buff), "SNAKE GAME"));
+    TFT_Print(buff, 5, 110, font_1, snprintf(buff, sizeof(buff), "This game uses real-time"));
+    TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "speech recognition to move"));
+    TFT_Print(buff, 5, 160, font_1, snprintf(buff, sizeof(buff), "snake using certain commands"));
+    TFT_Print(buff, 1, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CONTINUE"));
 
     while (!PB_Get(0)) {}
 
@@ -386,10 +386,10 @@ int main(void)
             MXC_TFT_SetBackGroundColor(4);
             //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
             memset(buff, 0, TFT_BUFF_SIZE);
-            TFT_Print(buff, 100, 80, font_2, sprintf(buff, "GAME OVER"));
-            TFT_Print(buff, 95, 110, font_2, sprintf(buff, "Your Score: %d  ", score));
+            TFT_Print(buff, 100, 80, font_2, snprintf(buff, sizeof(buff), "GAME OVER"));
+            TFT_Print(buff, 95, 110, font_2, snprintf(buff, sizeof(buff), "Your Score: %d  ", score));
             memset(buff, 32, TFT_BUFF_SIZE);
-            TFT_Print(buff, 10, 210, font_1, sprintf(buff, "SAY 'GO' TO RESTART GAME"));
+            TFT_Print(buff, 10, 210, font_1, snprintf(buff, sizeof(buff), "SAY 'GO' TO RESTART GAME"));
             MXC_Delay(100);
             MXC_I2S_Shutdown();
             LED_Off(LED2);
@@ -931,13 +931,13 @@ void snakeIntro(void)
     MXC_TFT_ClearScreen();
     //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 5, 40, font_1, sprintf(buff, "Following keywords are used in"));
-    TFT_Print(buff, 5, 65, font_1, sprintf(buff, "this game:"));
-    TFT_Print(buff, 10, 90, font_1, sprintf(buff, "1...4, go, up, down, left, right"));
-    TFT_Print(buff, 10, 115, font_1, sprintf(buff, "STOP command exits game"));
+    TFT_Print(buff, 5, 40, font_1, snprintf(buff, sizeof(buff), "Following keywords are used in"));
+    TFT_Print(buff, 5, 65, font_1, snprintf(buff, sizeof(buff), "this game:"));
+    TFT_Print(buff, 10, 90, font_1, snprintf(buff, sizeof(buff), "1...4, go, up, down, left, right"));
+    TFT_Print(buff, 10, 115, font_1, snprintf(buff, sizeof(buff), "STOP command exits game"));
     MXC_Delay(2000000);
-    TFT_Print(buff, 5, 160, font_2, sprintf(buff, "Choose game level now...."));
-    TFT_Print(buff, 5, 190, font_1, sprintf(buff, "Say 1/2/3 or 4 to choose level"));
+    TFT_Print(buff, 5, 160, font_2, snprintf(buff, sizeof(buff), "Choose game level now...."));
+    TFT_Print(buff, 5, 190, font_1, snprintf(buff, sizeof(buff), "Say 1/2/3 or 4 to choose level"));
 }
 
 // ******************************************************************************
@@ -958,7 +958,7 @@ void setup()
     MXC_Delay(100);
 
     memset(buff, 0, TFT_BUFF_SIZE);
-    TFT_Print(buff, 200, 1, font_1, sprintf(buff, "Score: %d   ", score));
+    TFT_Print(buff, 200, 1, font_1, snprintf(buff, sizeof(buff), "Score: %d   ", score));
     // Draw white boundary line
     color = setColor(255, 255, 255);
     MXC_TFT_WritePixel(0, 25, 320, 2, color);
@@ -1085,8 +1085,8 @@ void setSnakeDirection(int top_index)
                 chooseLevel = 1;
                 area_t area = { 0, 160, 320, 80 };
                 MXC_TFT_ClearArea(&area, 4);
-                TFT_Print(buff, 5, 160, font_1, sprintf(buff, "Level Selected: %d ", gameSpeed));
-                TFT_Print(buff, 5, 190, font_1, sprintf(buff, "Say 'GO' to start the game"));
+                TFT_Print(buff, 5, 160, font_1, snprintf(buff, sizeof(buff), "Level Selected: %d ", gameSpeed));
+                TFT_Print(buff, 5, 190, font_1, snprintf(buff, sizeof(buff), "Say 'GO' to start the game"));
             }
         }
     }
@@ -1116,7 +1116,7 @@ boolean fruitIsEaten()
         color = setColor(48, 48, 48); // make color same as background
         MXC_TFT_WritePixel(260, 0, 320, 24, color);
         memset(buff, 0, TFT_BUFF_SIZE);
-        TFT_Print(buff, 260, 1, font_1, sprintf(buff, " %d ", score));
+        TFT_Print(buff, 260, 1, font_1, snprintf(buff, sizeof(buff), " %d ", score));
 
         // Draw the top boundary line
         color = setColor(255, 255, 255);

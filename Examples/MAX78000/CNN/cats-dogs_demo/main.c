@@ -401,9 +401,9 @@ int main(void)
     MXC_TFT_SetBackGroundColor(4);
     //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 50, font_2, sprintf(buff, "ANALOG DEVICES"));
-    TFT_Print(buff, 55, 90, font_1, sprintf(buff, "Cats-vs-Dogs Demo"));
-    TFT_Print(buff, 30, 130, font_2, sprintf(buff, "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 55, 50, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
+    TFT_Print(buff, 55, 90, font_1, snprintf(buff, sizeof(buff), "Cats-vs-Dogs Demo"));
+    TFT_Print(buff, 30, 130, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
     printf("********** Press PB1(SW1) to capture an image **********\r\n");
@@ -469,27 +469,27 @@ int main(void)
         memset(buff, 32, TFT_BUFF_SIZE);
 #endif
         if (result[0] == result[1]) {
-            TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1, sprintf(buff, "Unknown"));
+            TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1, snprintf(buff, sizeof(buff), "Unknown"));
             LED_On(LED1);
             LED_On(LED2);
 
         } else if (ml_data[0] > ml_data[1]) {
             TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
-                      sprintf(buff, "%s (%d%%)", classes[0], result[0]));
+                      snprintf(buff, sizeof(buff), "%s (%d%%)", classes[0], result[0]));
             LED_On(LED1);
             LED_Off(LED2);
         } else {
             TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
-                      sprintf(buff, "%s (%d%%)", classes[1], result[1]));
+                      snprintf(buff, sizeof(buff), "%s (%d%%)", classes[1], result[1]));
             LED_Off(LED1);
             LED_On(LED2);
         }
 
         memset(buff, 32, TFT_BUFF_SIZE);
         TFT_Print(buff, TFT_X_START + 30, TFT_Y_START + IMAGE_SIZE_Y + 10, font_1,
-                  sprintf(buff, "%dms", cnn_time / 1000));
+                  snprintf(buff, sizeof(buff), "%dms", cnn_time / 1000));
         TFT_Print(buff, 20, TFT_Y_START + IMAGE_SIZE_Y + 35, font_2,
-                  sprintf(buff, "PRESS PB1(SW1) TO CAPTURE"));
+                  snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CAPTURE"));
 
 #ifdef ASCII_ART
         asciiart((uint8_t *)input_0);
