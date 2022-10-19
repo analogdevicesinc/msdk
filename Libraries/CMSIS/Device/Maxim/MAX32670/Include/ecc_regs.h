@@ -87,7 +87,7 @@ extern "C" {
  */
 typedef struct {
     __R  uint32_t rsv_0x0_0x7[2];
-    __IO uint32_t ecc;                  /**< <tt>\b 0x08:</tt> ECC ECC Register */
+    __IO uint32_t en;                   /**< <tt>\b 0x08:</tt> ECC EN Register */
 } mxc_ecc_regs_t;
 
 /* Register offsets for module ECC */
@@ -97,25 +97,25 @@ typedef struct {
  * @brief      ECC Peripheral Register Offsets from the ECC Base Peripheral Address.
  * @{
  */
-#define MXC_R_ECC_ECC                      ((uint32_t)0x00000008UL) /**< Offset from ECC Base Address: <tt> 0x0008</tt> */
+#define MXC_R_ECC_EN                       ((uint32_t)0x00000008UL) /**< Offset from ECC Base Address: <tt> 0x0008</tt> */
 /**@} end of group ecc_registers */
 
 /**
  * @ingroup  ecc_registers
- * @defgroup ECC_ECC ECC_ECC
- * @brief    ECC Register.
+ * @defgroup ECC_EN ECC_EN
+ * @brief    ECC Enable Register.
  * @{
  */
-#define MXC_F_ECC_ECC_SRAM_POS                         8 /**< ECC_SRAM Position */
-#define MXC_F_ECC_ECC_SRAM                             ((uint32_t)(0x1UL << MXC_F_ECC_ECC_SRAM_POS)) /**< ECC_SRAM Mask */
+#define MXC_F_ECC_EN_SRAM_POS                          8 /**< EN_SRAM Position */
+#define MXC_F_ECC_EN_SRAM                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_SRAM_POS)) /**< EN_SRAM Mask */
 
-#define MXC_F_ECC_ECC_ICC_POS                          9 /**< ECC_ICC Position */
-#define MXC_F_ECC_ECC_ICC                              ((uint32_t)(0x1UL << MXC_F_ECC_ECC_ICC_POS)) /**< ECC_ICC Mask */
+#define MXC_F_ECC_EN_ICC_POS                           9 /**< EN_ICC Position */
+#define MXC_F_ECC_EN_ICC                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_ICC_POS)) /**< EN_ICC Mask */
 
-#define MXC_F_ECC_ECC_FLASH_POS                        10 /**< ECC_FLASH Position */
-#define MXC_F_ECC_ECC_FLASH                            ((uint32_t)(0x1UL << MXC_F_ECC_ECC_FLASH_POS)) /**< ECC_FLASH Mask */
+#define MXC_F_ECC_EN_FLASH_POS                         10 /**< EN_FLASH Position */
+#define MXC_F_ECC_EN_FLASH                             ((uint32_t)(0x1UL << MXC_F_ECC_EN_FLASH_POS)) /**< EN_FLASH Mask */
 
-/**@} end of group ECC_ECC_Register */
+/**@} end of group ECC_EN_Register */
 
 #ifdef __cplusplus
 }

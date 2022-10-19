@@ -11,8 +11,8 @@
     </addressBlock>
     <registers>
       <register>
-        <name>ECC</name>
-        <description>ECC Register.</description>
+        <name>EN</name>
+        <description>ECC Enable Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
           <field>
