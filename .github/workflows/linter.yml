@@ -46,15 +46,12 @@ jobs:
           set +e
 
           # Attempt to clean the repo
-          pwd
-          ls -la
           git scorch
           retval=$?
 
           # Remove everything if this fails
           if [[ $retval -ne 0 ]]
           then
-            cd ..
             rm -rf *
           fi
 
