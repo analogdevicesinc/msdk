@@ -41,12 +41,13 @@ TEST_KEY="$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key"
 # Generate SCP packets inside of the build directory by default
 SCP_PACKETS?=$(BUILD_DIR)/scp_packets
 
+# Add header file
+SRCS += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/header_$(TARGET_UC).c
+
 # Based on the Make goal the source code may need some specific compiler
 # definitions and files.  Additionally, the linkerfile may need to be changed.
 ifeq ($(MAKECMDGOALS),sla)
 PROJ_CFLAGS += -D__SLA_FWK__
-SRCS += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/sla_header.c
-# ^ Include the SLA C file for the device.
 LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla.ld
 $(info Overriding LINKERFILE to $(LINKERFILE))
 endif
