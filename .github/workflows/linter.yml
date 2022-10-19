@@ -24,7 +24,7 @@ on:
     
 # Prevent duplicate runs
 concurrency: 
-  group: ${{ github.head_ref }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 ###############
