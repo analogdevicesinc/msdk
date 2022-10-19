@@ -19,6 +19,24 @@ jobs:
       - software
 
     steps:
+      - name: Clean
+        continue-on-error: true
+        run: |
+          # Remove local modifications
+          set +e
+
+          # Attempt to clean the repo
+          git scorch
+          retval=$?
+
+          # Remove everything if this fails
+          if [[ $retval -ne 0 ]]
+          then
+            rm -rf *
+          fi
+
+          set -e
+
       - uses: actions/checkout@v3
         with:
           submodules: false
