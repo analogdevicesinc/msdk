@@ -46,7 +46,8 @@ jobs:
           set +e
 
           # Attempt to clean the repo
-          cd msdk
+          pwd
+          ls -la
           git scorch
           retval=$?
 
