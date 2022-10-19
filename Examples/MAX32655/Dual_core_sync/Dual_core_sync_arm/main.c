@@ -108,7 +108,9 @@ int main(void)
 #if DUAL_CORE_SYNC
     /* Wait the RISC-V core to start */
     ret = E_BUSY;
-    while (E_BUSY == ret) { ret = MXC_SEMA_CheckSema(NDX_ARM); }
+    while (E_BUSY == ret) {
+        ret = MXC_SEMA_CheckSema(NDX_ARM);
+    }
     MXC_SEMA_GetSema(NDX_ARM);
 
     /* Init code here. */

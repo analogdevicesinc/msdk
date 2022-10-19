@@ -278,7 +278,9 @@ int write_test(unsigned int start_addr)
     int i = 0, fail = 0;
 
     // Initializing Test Data
-    for (i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
+    for (i = 0; i < TESTSIZE; i++) {
+        testdata[i] = i;
+    }
 
     // Writing TESTSIZE number of words to flash memory
     i = 0;

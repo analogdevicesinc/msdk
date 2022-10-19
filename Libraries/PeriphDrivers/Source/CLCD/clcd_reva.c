@@ -105,7 +105,9 @@ int MXC_CLCD_RevA_ConfigPanel(mxc_clcd_reva_regs_t *clcd, mxc_clcd_cfg_t *cfg)
 
     clcd->ctrl |= cfg->bpp;
 
-    for (i = 0; i < cfg->paletteSize; i++) { clcd->palette[i] = cfg->palette[i]; }
+    for (i = 0; i < cfg->paletteSize; i++) {
+        clcd->palette[i] = cfg->palette[i];
+    }
     return E_NO_ERROR;
 }
 

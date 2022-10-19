@@ -133,7 +133,9 @@ static uint32_t table[0x100] = { 0 };
 void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
     if (!*table) {
-        for (size_t i = 0; i < 0x100; ++i) { table[i] = crc32_for_byte(i); }
+        for (size_t i = 0; i < 0x100; ++i) {
+            table[i] = crc32_for_byte(i);
+        }
     }
 
     for (size_t i = 0; i < n_bytes; ++i) {
@@ -336,7 +338,9 @@ int main(void)
                 crc32(FLASH0_START, fileHeader.fileLen, &crcResult);
                 if (crcResult != fileHeader.fileCRC) {
                     /* Bad firmware was written to internal flash */
-                    while (1) { ledFailPattern(); }
+                    while (1) {
+                        ledFailPattern();
+                    }
                 }
                 /* As long as first sector is erased so the bootloader does not try to reload its contents */
                 Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);

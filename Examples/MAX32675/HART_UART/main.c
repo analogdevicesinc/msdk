@@ -129,11 +129,15 @@ int main(void)
             if (rx_length > 0) {
                 // Got a response
                 printf("HEX received:\n");
-                for (i = 0; i < rx_length; i++) { printf("0x%02X ", hart_rx_buffer[i]); }
+                for (i = 0; i < rx_length; i++) {
+                    printf("0x%02X ", hart_rx_buffer[i]);
+                }
                 printf("\n");
 
                 printf("\nASCII received: ");
-                for (i = 0; i < rx_length; i++) { printf("%c", hart_rx_buffer[i]); }
+                for (i = 0; i < rx_length; i++) {
+                    printf("%c", hart_rx_buffer[i]);
+                }
                 printf("\n");
 
                 //
