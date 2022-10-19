@@ -81,12 +81,10 @@ const flash_app_header_t sb_header = {
             .MagicLow  = SWAP(MagicL),
         },
 
-#ifdef MAX32651_A1
-    .RomVersion = SWAP(ROM_A1_VERSION),
-#elif defined(MAX32651_A4)
+#if defined(MAX32651_A4)
     .RomVersion = SWAP(ROM_A4_VERSION),
 #else
-#error "Please Select a chip ROM revision"
+    .RomVersion = SWAP(ROM_A1_VERSION),
 #endif
     .LoadAddr         = SWAP(0x10000000),
     .SLA_CodeSize     = (unsigned int)&_SLA_Size_SWAP, // Trick to get constant defined at link time
