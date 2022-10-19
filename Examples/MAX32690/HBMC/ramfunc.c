@@ -41,7 +41,7 @@ __attribute__((section(".hpb_cs0_section"))) void hbmc_cs0_function(void)
     int j;
 
     for (j = 0; j < 25; j++) {
-    	MXC_GPIO0->out_set |= led_pin[0].mask;
+        MXC_GPIO0->out_set |= led_pin[0].mask;
         for (i = 0; i < 0xFFFFF; i++) {}
         MXC_GPIO0->out_clr |= led_pin[0].mask;
         for (i = 0; i < 0xFFFFF; i++) {}
@@ -55,7 +55,7 @@ __attribute__((section(".hpb_cs1_section"))) void hbmc_cs1_function(void)
     int j;
 
     for (j = 0; j < 25; j++) {
-    	MXC_GPIO0->out_set |= led_pin[0].mask;
+        MXC_GPIO0->out_set |= led_pin[0].mask;
         for (i = 0; i < 0xFFFFF; i++) {}
         MXC_GPIO0->out_clr |= led_pin[0].mask;
         for (i = 0; i < 0xFFFFF; i++) {}

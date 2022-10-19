@@ -186,14 +186,14 @@ uint32_t MXC_CTB_RevA_Done(mxc_ctb_reva_regs_t *ctb_regs)
     }
 
     if (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_HSH_DONE) {
-    	if (ctb_regs->hash_ctrl) { // set flag if only configured
-    		features |= MXC_CTB_REVA_FEATURE_HASH;
-    	}
+        if (ctb_regs->hash_ctrl) { // set flag if only configured
+            features |= MXC_CTB_REVA_FEATURE_HASH;
+        }
     }
 
     if (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_CPH_DONE) {
         if (ctb_regs->cipher_ctrl) { // set flag if only configured
-        	features |= MXC_CTB_REVA_FEATURE_CIPHER;
+            features |= MXC_CTB_REVA_FEATURE_CIPHER;
         }
     }
 

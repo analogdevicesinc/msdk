@@ -173,18 +173,18 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-	PRINT("****Low Power Mode Example****\n\n");
+    PRINT("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-	PRINT("This code cycles through the MAX32690 power modes, using the RTC alarm \nto exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
+    PRINT("This code cycles through the MAX32690 power modes, using the RTC alarm \nto exit from "
+          "each mode.  The modes will change every %d seconds.\n\n",
+          DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
     PRINT("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
-           "each power mode and enter the next.\n\n");
+          "each power mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
     PB_IntEnable(0);
 #endif // USE_BUTTON
@@ -204,7 +204,7 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-    	PRINT("Entering SLEEP mode.\n");
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
         PRINT("Waking up from SLEEP mode.\n");

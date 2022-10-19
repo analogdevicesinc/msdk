@@ -52,11 +52,10 @@
 #define I2C_MASTER MXC_I2C0 // SDA P2_7, SCL P2_8
 #define I2C_FREQ 100000 // 100kHZ
 
-
 // *****************************************************************************
 int main()
 {
-	uint8_t counter = 0;
+    uint8_t counter = 0;
 
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
