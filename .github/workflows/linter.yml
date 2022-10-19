@@ -46,12 +46,14 @@ jobs:
           set +e
 
           # Attempt to clean the repo
+          cd msdk
           git scorch
           retval=$?
 
           # Remove everything if this fails
           if [[ $retval -ne 0 ]]
           then
+            cd ..
             rm -rf *
           fi
 
