@@ -89,7 +89,7 @@
    <baseAddress>0x40007400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x400</size>
+    <size>0x800</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -1745,7 +1745,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>4</dimIncrement>
-     <name>DATA[%s]</name>
+     <name>DATA</name>
      <description>Flash Write Data.</description>
      <addressOffset>0x30</addressOffset>
      <fields>
@@ -5495,7 +5495,7 @@
    <baseAddress>0x4002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x800</size>
+    <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -8678,8 +8678,8 @@
    </addressBlock>
    <registers>
     <register>
-     <name>ECC</name>
-     <description>ECC Register.</description>
+     <name>EN</name>
+     <description>ECC Enable Register.</description>
      <addressOffset>0x08</addressOffset>
      <fields>
       <field>
