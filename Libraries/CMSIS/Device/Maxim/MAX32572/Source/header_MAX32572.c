@@ -36,7 +36,6 @@
 
 typedef enum {
     ROM_A1_VERSION = 0x01000000,
-    ROM_A2_VERSION = 0x01000000,
 } enum_rom_version_t;
 
 #ifdef __SLA_FWK__
@@ -48,7 +47,7 @@ extern unsigned int _start_SWAP;
 extern unsigned int _SLA_Size_SWAP;
 
 typedef enum {
-    MagicH = 0x48495357,
+    MagicH = 0x44495357,
     MagicL = 0x45444744,
 } enum_magic_t;
 
@@ -75,11 +74,7 @@ const flash_app_header_t sb_header = {
             .MagicLow  = SWAP(MagicL),
         },
 
-#if defined(MAX32672_A2)
-    .RomVersion = SWAP(ROM_A2_VERSION),
-#else
-    .RomVersion = SWAP(ROM_A1_VERSION),
-#endif
+    .RomVersion       = SWAP(ROM_A1_VERSION),
     .LoadAddr         = SWAP(0x10000000),
     .SLA_CodeSize     = (unsigned int)&_SLA_Size_SWAP, // Trick to get constant defined at link time
     .JumpAddr         = &_start_SWAP,
@@ -157,10 +152,8 @@ const scpa_header_t scpa_header = {
             .MagicHigh = MagicH,
             .MagicLow  = MagicL,
         },
-#ifdef MAX32672_A1
+#ifdef MAX32572_A1
     .RomVersion = SWAP(ROM_A1_VERSION),
-#elif defined(MAX32672_A2)
-    .RomVersion = SWAP(ROM_A2_VERSION),
 #else
 #error "Please Select a chip ROM revision"
 #endif

@@ -14,9 +14,6 @@
 # Enable Secure Boot Tool integration
 SBT=1
 
-# Add special SBT header
-SRCS+=header_MAX32520.c
-
 # Define die revision for SBT files
 PROJ_CFLAGS+=-DMAX32520_A2
 
