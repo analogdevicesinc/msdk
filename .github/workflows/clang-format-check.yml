@@ -50,6 +50,7 @@ jobs:
       #   Exclude register header files. Those don't follow clang formatting or it becomes unreadable
       - name: clang-format-check
         run: |
+          CLANG_VERSION=14
           cat .clang-format
 
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h')
@@ -60,10 +61,10 @@ jobs:
           do
             if [ -f ${change_file} ];
             then
-            clang-format --verbose --style=file -n -Werror ${change_file}
+            clang-format-$(CLANG_VERSION) --verbose --style=file -n -Werror ${change_file}
             if [ $? != 0 ];
             then
-              clang-format --style=file ${change_file} > ${change_file}.clang
+              clang-format-$(CLANG_VERSION) --style=file ${change_file} > ${change_file}.clang
               diff -u --color=always ${change_file} ${change_file}.clang
               rm ${change_file}.clang
               CHECK_FAIL=1
