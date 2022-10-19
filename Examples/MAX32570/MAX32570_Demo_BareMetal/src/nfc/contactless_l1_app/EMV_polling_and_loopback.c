@@ -40,19 +40,21 @@
 #include <emv_l1_stack/iso14443_3b_flow.h>
 #include <emv_l1_stack/iso14443_4_transitive.h>
 
+#include <mml_nfc_pcd_rf_driver.h>
+
 #include <string.h>
+
 #include "mml_nfc_pcd_port.h"
 #include "EMV_polling_and_loopback.h"
 
-#include <mml_nfc_pcd_rf_driver.h>
 #include "logging.h"
 #include "mxc_device.h"
 #include "gpio.h"
 
 #define KEYPRESS_RETURN_DELAY_MS 25
 
-uint8_t rapdu[261];      /**< Shared RAPDU buffer */
-int32_t rapdulen;        /**< Length of current RAPDU in the shared buffer */
+uint8_t rapdu[261]; /**< Shared RAPDU buffer */
+int32_t rapdulen; /**< Length of current RAPDU in the shared buffer */
 int32_t rapdu_displayed; /**< Display flag, used to satisfy required EMV DTE logging */
 
 /*
@@ -65,22 +67,22 @@ uid_storage_t get_stored_uid(void)
     return uid_store;
 }
 
-#define BEEPER_PORT       MXC_GPIO3
-#define BEEPER_PIN        MXC_GPIO_PIN_3
+#define BEEPER_PORT MXC_GPIO3
+#define BEEPER_PIN MXC_GPIO_PIN_3
 #define BEEP_PASS_TIME_MS 150
 #define BEEP_FAIL_TIME_MS 150
 
 // NOTE: Volume is set as a % of Duty cycle. DTE ships with volume at 10% duty cycle
 // 8470 * .1 = 847.
 #define BEEP_FAIL_TONE 2500 //8470
-#define BEEP_FAIL_VOL  2000 //847
-#define BEEP_PASS_TONE 250  //847
-#define BEEP_PASS_VOL  25   //84
+#define BEEP_FAIL_VOL 2000 //847
+#define BEEP_PASS_TONE 250 //847
+#define BEEP_PASS_VOL 25 //84
 
 #define PASS_LED_GPIO_PORT MXC_GPIO3
-#define PASS_LED_GPIO_PIN  MXC_GPIO_PIN_4
+#define PASS_LED_GPIO_PIN MXC_GPIO_PIN_4
 #define FAIL_LED_GPIO_PORT MXC_GPIO3
-#define FAIL_LED_GPIO_PIN  MXC_GPIO_PIN_5
+#define FAIL_LED_GPIO_PIN MXC_GPIO_PIN_5
 
 uint32_t indicator_setup = 0;
 
@@ -90,7 +92,7 @@ mxc_gpio_cfg_t buzzer_out;
 
 static void do_beep(uint32_t tone, uint32_t vol, uint32_t duration_ms)
 {
-    uint32_t beep_time     = 0;
+    uint32_t beep_time = 0;
     uint32_t beep_loop_cnt = 0;
 
     if (tone == 0) {
@@ -131,7 +133,7 @@ static void setup_indicator(void)
 {
     pass_led.port = PASS_LED_GPIO_PORT;
     pass_led.mask = PASS_LED_GPIO_PIN;
-    pass_led.pad  = MXC_GPIO_PAD_NONE;
+    pass_led.pad = MXC_GPIO_PAD_NONE;
     pass_led.func = MXC_GPIO_FUNC_OUT;
 
     MXC_GPIO_Config(&pass_led);
@@ -139,7 +141,7 @@ static void setup_indicator(void)
 
     fail_led.port = FAIL_LED_GPIO_PORT;
     fail_led.mask = FAIL_LED_GPIO_PIN;
-    fail_led.pad  = MXC_GPIO_PAD_NONE;
+    fail_led.pad = MXC_GPIO_PAD_NONE;
     fail_led.func = MXC_GPIO_FUNC_OUT;
 
     MXC_GPIO_Config(&fail_led);
@@ -147,7 +149,7 @@ static void setup_indicator(void)
 
     buzzer_out.port = BEEPER_PORT;
     buzzer_out.mask = BEEPER_PIN;
-    buzzer_out.pad  = MXC_GPIO_PAD_NONE;
+    buzzer_out.pad = MXC_GPIO_PAD_NONE;
     buzzer_out.func = MXC_GPIO_FUNC_OUT;
     // Use 3.3V for louder Buzz
     buzzer_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
@@ -185,16 +187,16 @@ static int32_t emvl1interopapduloop(void)
     int32_t ret;
     // NOTE: need to have a large enough buffer here to handle loopback commands as large as 256 bytes,
     //  plus some header/footer bytes.
-    uint8_t capdu[261] = {0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
-                          'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00};
-    int32_t capdulen   = 20;
+    uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
+    int32_t capdulen = 20;
 
     //do apdu.
     do {
         logging("CAPDU ");
         hexdump(DBG_LVL_LOG, capdu, capdulen, 1);
 
-        ret             = SendAPDU(capdu, capdulen, rapdu, &rapdulen);
+        ret = SendAPDU(capdu, capdulen, rapdu, &rapdulen);
         rapdu_displayed = 2;
 
         if (ret == ISO14443_3_ERR_ABORTED) {
@@ -203,10 +205,10 @@ static int32_t emvl1interopapduloop(void)
 
         if (ret) {
             switch (ret) {
-                case ISO14443_3_ERR_PROTOCOL:
-                case ISO14443_3_ERR_TIMEOUT:
-                case ISO14443_3_ERR_TRANSMISSION:
-                    return RESETPROCEDURE;
+            case ISO14443_3_ERR_PROTOCOL:
+            case ISO14443_3_ERR_TIMEOUT:
+            case ISO14443_3_ERR_TRANSMISSION:
+                return RESETPROCEDURE;
             }
         }
 
@@ -236,7 +238,6 @@ static int32_t emvl1interopapduloop(void)
         //pre next capdu,no status
         memcpy(capdu, rapdu, rapdulen - 2);
         capdulen = rapdulen - 2;
-
     } while (1);
 
     return ret;
@@ -256,16 +257,16 @@ static int32_t emvl1apduloop(void)
     int32_t ret;
     // NOTE: need to have a large enough buffer here to handle loopback commands as large as 256 bytes,
     //  plus some header/footer bytes.
-    uint8_t capdu[261] = {0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
-                          'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00};
-    int32_t capdulen   = 20;
+    uint8_t capdu[261] = { 0x00, 0xA4, 0x04, 0x00, 0x0E, '2', 'P', 'A', 'Y', '.',
+                           'S',  'Y',  'S',  '.',  'D',  'D', 'F', '0', '1', 0x00 };
+    int32_t capdulen = 20;
 
     //do apdu.
     do {
         logging("CAPDU ");
         hexdump(DBG_LVL_LOG, capdu, capdulen, 1);
 
-        ret             = SendAPDU(capdu, capdulen, rapdu, &rapdulen);
+        ret = SendAPDU(capdu, capdulen, rapdu, &rapdulen);
         rapdu_displayed = 2;
 
         if (ret == ISO14443_3_ERR_ABORTED) {
@@ -274,10 +275,10 @@ static int32_t emvl1apduloop(void)
 
         if (ret) {
             switch (ret) {
-                case ISO14443_3_ERR_PROTOCOL:
-                case ISO14443_3_ERR_TIMEOUT:
-                case ISO14443_3_ERR_TRANSMISSION:
-                    return RESETPROCEDURE;
+            case ISO14443_3_ERR_PROTOCOL:
+            case ISO14443_3_ERR_TIMEOUT:
+            case ISO14443_3_ERR_TRANSMISSION:
+                return RESETPROCEDURE;
             }
         }
 
@@ -310,7 +311,6 @@ static int32_t emvl1apduloop(void)
         //pre next capdu,no status
         memcpy(capdu, rapdu, rapdulen - 2);
         capdulen = rapdulen - 2;
-
     } while (1);
 
     return ret;
@@ -655,21 +655,21 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
                     }
 
                     switch (ret) {
-                        case REMOVALPROCEDURE:
-                            info("A: Removal\n");
-                            iso_14443_3a_remove();
-                            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                            break;
-                        case RESETPROCEDURE:
-                            info("A: Reset\n");
-                            nfc_reset();
-                            break;
-                        case POWEROFFPROCEDURE:
-                            info("A: Power Off\n");
-                            poweroff_operatingfield();
-                            mml_nfc_pcd_task_sleep(TIMEOUT_POWEROFF_MS);
-                            poweron_operatingfield();
-                            break;
+                    case REMOVALPROCEDURE:
+                        info("A: Removal\n");
+                        iso_14443_3a_remove();
+                        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+                        break;
+                    case RESETPROCEDURE:
+                        info("A: Reset\n");
+                        nfc_reset();
+                        break;
+                    case POWEROFFPROCEDURE:
+                        info("A: Power Off\n");
+                        poweroff_operatingfield();
+                        mml_nfc_pcd_task_sleep(TIMEOUT_POWEROFF_MS);
+                        poweron_operatingfield();
+                        break;
                     }
                     break;
                 } else {
@@ -730,21 +730,21 @@ int32_t singleemvl1exchange(callback_check_for_loop_termination_t callback)
                     }
 
                     switch (ret) {
-                        case REMOVALPROCEDURE:
-                            info("B: Removal\n");
-                            iso_14443_3b_remove();
-                            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                            break;
-                        case RESETPROCEDURE:
-                            info("B: Reset\n");
-                            nfc_reset();
-                            break;
-                        case POWEROFFPROCEDURE:
-                            info("B: Power Off\n");
-                            poweroff_operatingfield();
-                            mml_nfc_pcd_task_sleep(TIMEOUT_POWEROFF_MS);
-                            poweron_operatingfield();
-                            break;
+                    case REMOVALPROCEDURE:
+                        info("B: Removal\n");
+                        iso_14443_3b_remove();
+                        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+                        break;
+                    case RESETPROCEDURE:
+                        info("B: Reset\n");
+                        nfc_reset();
+                        break;
+                    case POWEROFFPROCEDURE:
+                        info("B: Power Off\n");
+                        poweroff_operatingfield();
+                        mml_nfc_pcd_task_sleep(TIMEOUT_POWEROFF_MS);
+                        poweron_operatingfield();
+                        break;
                     }
 
                     break;
@@ -853,20 +853,20 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
                     }
 
                     switch (ret) {
-                        case REMOVALPROCEDURE:
-                            info("A: Removal\n");
-                            logging("Success\n");
-                            indicate_success();
-                            iso_14443_3a_remove();
-                            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                            break;
-                        case RESETPROCEDURE:
-                            info("A: Reset\n");
-                            logging("Failure\n");
-                            indicate_failure();
-                            iso_14443_3a_remove();
-                            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                            break;
+                    case REMOVALPROCEDURE:
+                        info("A: Removal\n");
+                        logging("Success\n");
+                        indicate_success();
+                        iso_14443_3a_remove();
+                        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+                        break;
+                    case RESETPROCEDURE:
+                        info("A: Reset\n");
+                        logging("Failure\n");
+                        indicate_failure();
+                        iso_14443_3a_remove();
+                        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+                        break;
                     }
                     break;
                 } else {
@@ -927,20 +927,20 @@ int32_t singleemvl1interopexchange(callback_check_for_loop_termination_t callbac
                     }
 
                     switch (ret) {
-                        case REMOVALPROCEDURE:
-                            info("B: Removal\n");
-                            logging("Success\n");
-                            indicate_success();
-                            iso_14443_3b_remove();
-                            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                            break;
-                        case RESETPROCEDURE:
-                            info("B: Reset\n");
-                            logging("Failure\n");
-                            indicate_failure();
-                            iso_14443_3b_remove();
-                            nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
-                            break;
+                    case REMOVALPROCEDURE:
+                        info("B: Removal\n");
+                        logging("Success\n");
+                        indicate_success();
+                        iso_14443_3b_remove();
+                        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+                        break;
+                    case RESETPROCEDURE:
+                        info("B: Reset\n");
+                        logging("Failure\n");
+                        indicate_failure();
+                        iso_14443_3b_remove();
+                        nfc_set_delay_till_next_send_fc(TPDELAY_IN_FC);
+                        break;
                     }
 
                     break;

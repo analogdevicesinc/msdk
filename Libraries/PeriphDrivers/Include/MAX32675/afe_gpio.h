@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _AFE_GPIO_H_
-#define _AFE_GPIO_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_AFE_GPIO_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_AFE_GPIO_H_
 
 /* **** Includes **** */
 #include "gpio_regs.h"
@@ -55,10 +55,10 @@ extern "C" {
  * @param      cfg   Pointer to configuration structure describing the pin.
  * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
  */
-int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t* cfg);
+int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _GPIO_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_AFE_GPIO_H_

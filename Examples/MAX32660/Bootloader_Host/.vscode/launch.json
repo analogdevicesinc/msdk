@@ -46,6 +46,7 @@
                 { "text":"symbol-file build/${config:symbol_file}" },
                 { "text":"target remote localhost:3333" },
                 { "text":"monitor reset halt" },
+                { "text":"set $pc=Reset_Handler"},
                 { "text":"b main" }
             ]
         },
@@ -55,21 +56,21 @@
             "request": "launch",
             "program": "${workspaceFolder}/buildrv/${config:program_file}",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-embed-gdb",
                 "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-embed-gdb.exe",
                 "debugServerPath": "${config:OCD_path}/openocd.exe",
             },
             "osx": {
-                "miDebuggerPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-embed-gdb",
                 "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
             "logging": {
@@ -95,6 +96,7 @@
                 { "text":"exec-file build/${config:program_file}", "ignoreFailures": false },
                 { "text":"symbol-file buildrv/${config:symbol_file}", "ignoreFailures": false },
                 { "text":"target remote localhost:3334" },
+                { "text":"b main" },
                 { "text": "set $pc=Reset_Handler","ignoreFailures": false }
             ]
         }

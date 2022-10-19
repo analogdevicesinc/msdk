@@ -49,19 +49,19 @@
 /* ************************************************************************** */
 void MXC_SDHC_Set_Clock_Config(unsigned int clk_div)
 {
-    MXC_SDHC_RevA_Set_Clock_Config((mxc_sdhc_reva_regs_t*)MXC_SDHC, clk_div);
+    MXC_SDHC_RevA_Set_Clock_Config((mxc_sdhc_reva_regs_t *)MXC_SDHC, clk_div);
 }
 
 /* ************************************************************************** */
 unsigned int MXC_SDHC_Get_Clock_Config(void)
 {
-    return MXC_SDHC_RevA_Get_Clock_Config((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Get_Clock_Config((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_Init(const mxc_sdhc_cfg_t* cfg)
+int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
 {
-    mxc_gpio_regs_t* gpio = gpio_cfg_sdhc.port;
+    mxc_gpio_regs_t *gpio = gpio_cfg_sdhc.port;
 
     // Startup the HIRC96M clock if it's not on already
     if (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_IPO_EN)) {
@@ -77,102 +77,102 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t* cfg)
     gpio->ds |= gpio_cfg_sdhc.mask;
 
     MXC_GPIO_Config(&gpio_cfg_sdhc);
-    return MXC_SDHC_RevA_Init((mxc_sdhc_reva_regs_t*)MXC_SDHC, cfg);
+    return MXC_SDHC_RevA_Init((mxc_sdhc_reva_regs_t *)MXC_SDHC, cfg);
 }
 
 /* ************************************************************************** */
 void MXC_SDHC_PowerUp(void)
 {
-    MXC_SDHC_RevA_PowerUp((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    MXC_SDHC_RevA_PowerUp((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 void MXC_SDHC_PowerDown(void)
 {
-    MXC_SDHC_RevA_PowerDown((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    MXC_SDHC_RevA_PowerDown((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 int MXC_SDHC_Shutdown(void)
 {
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SDHC);
-    return MXC_SDHC_RevA_Shutdown((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Shutdown((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_SendCommand(mxc_sdhc_cmd_cfg_t* sd_cmd_cfg)
+int MXC_SDHC_SendCommand(mxc_sdhc_cmd_cfg_t *sd_cmd_cfg)
 {
-    return MXC_SDHC_RevA_SendCommand((mxc_sdhc_reva_regs_t*)MXC_SDHC, sd_cmd_cfg);
+    return MXC_SDHC_RevA_SendCommand((mxc_sdhc_reva_regs_t *)MXC_SDHC, sd_cmd_cfg);
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_SendCommandAsync(mxc_sdhc_cmd_cfg_t* sd_cmd_cfg)
+int MXC_SDHC_SendCommandAsync(mxc_sdhc_cmd_cfg_t *sd_cmd_cfg)
 {
-    return MXC_SDHC_RevA_SendCommandAsync((mxc_sdhc_reva_regs_t*)MXC_SDHC, sd_cmd_cfg);
+    return MXC_SDHC_RevA_SendCommandAsync((mxc_sdhc_reva_regs_t *)MXC_SDHC, sd_cmd_cfg);
 }
 
 /* ************************************************************************** */
 void MXC_SDHC_Handler(void)
 {
-    MXC_SDHC_RevA_Handler((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    MXC_SDHC_RevA_Handler((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 void MXC_SDHC_ClearFlags(uint32_t mask)
 {
-    MXC_SDHC_RevA_ClearFlags((mxc_sdhc_reva_regs_t*)MXC_SDHC, mask);
+    MXC_SDHC_RevA_ClearFlags((mxc_sdhc_reva_regs_t *)MXC_SDHC, mask);
 }
 
 /* ************************************************************************** */
 unsigned MXC_SDHC_GetFlags(void)
 {
-    return MXC_SDHC_RevA_GetFlags((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_GetFlags((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 int MXC_SDHC_Card_Inserted(void)
 {
-    return MXC_SDHC_RevA_Card_Inserted((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Card_Inserted((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 void MXC_SDHC_Reset(void)
 {
-    MXC_SDHC_RevA_Reset((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    MXC_SDHC_RevA_Reset((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 void MXC_SDHC_Reset_CMD_DAT(void)
 {
-    MXC_SDHC_RevA_Reset_CMD_DAT((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    MXC_SDHC_RevA_Reset_CMD_DAT((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 int MXC_SDHC_Card_Busy(void)
 {
-    return MXC_SDHC_RevA_Card_Busy((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Card_Busy((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 unsigned int MXC_SDHC_Get_Host_Cn_1(void)
 {
-    return MXC_SDHC_RevA_Get_Host_Cn_1((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Get_Host_Cn_1((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_SDHC_Get_Response32(void)
 {
-    return MXC_SDHC_RevA_Get_Response32((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Get_Response32((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_SDHC_Get_Response32_Auto(void)
 {
-    return MXC_SDHC_RevA_Get_Response32_Auto((mxc_sdhc_reva_regs_t*)MXC_SDHC);
+    return MXC_SDHC_RevA_Get_Response32_Auto((mxc_sdhc_reva_regs_t *)MXC_SDHC);
 }
 
 /* ************************************************************************** */
-void MXC_SDHC_Get_Response128(unsigned char* response)
+void MXC_SDHC_Get_Response128(unsigned char *response)
 {
-    MXC_SDHC_RevA_Get_Response128((mxc_sdhc_reva_regs_t*)MXC_SDHC, response);
+    MXC_SDHC_RevA_Get_Response128((mxc_sdhc_reva_regs_t *)MXC_SDHC, response);
 }

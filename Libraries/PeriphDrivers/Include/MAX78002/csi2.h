@@ -37,8 +37,8 @@
 ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _CSI2_H_
-#define _CSI2_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_
 
 /* **** Includes **** */
 #include "csi2_regs.h"
@@ -62,16 +62,16 @@ typedef struct _mxc_csi2_req_t mxc_csi2_req_t;
  */
 typedef enum {
     MXC_CSI2_PPI_NO_INVERT, ///< No inversion of PPI input clock
-    MXC_CSI2_PPI_INVERT,    ///< Invert PPI input clock
+    MXC_CSI2_PPI_INVERT, ///< Invert PPI input clock
 } mxc_csi2_ppi_clk_t;
 
 /**
  * @brief   Enumeration type for the CSI-2 Payload 0 data types.
  */
 typedef enum {
-    MXC_CSI2_PL0_DISABLE_ALL = 0xFFFFFFFF,                              ///< Disable payload0 data
-    MXC_CSI2_PL0_NULL        = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_NULL,  ///< NULL payload data
-    MXC_CSI2_PL0_BLANK       = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_BLANK, ///< BLANK payload data
+    MXC_CSI2_PL0_DISABLE_ALL = 0xFFFFFFFF, ///< Disable payload0 data
+    MXC_CSI2_PL0_NULL = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_NULL, ///< NULL payload data
+    MXC_CSI2_PL0_BLANK = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_BLANK, ///< BLANK payload data
     MXC_CSI2_PL0_EMBEDDED = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_EMBEDDED, ///< EMBEDDED payload data
     MXC_CSI2_PL0_YUV420_8BIT = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_YUV420_8BIT, ///< YUV420 8-bit data
     MXC_CSI2_PL0_YUV420_10BIT =
@@ -84,20 +84,20 @@ typedef enum {
         ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_YUV420_10BIT_CSP, ///< YUV422 10-bit CSP data
     MXC_CSI2_PL0_YUV422_8BIT = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_YUV422_8BIT, ///< YUV422 8-bit data
     MXC_CSI2_PL0_YUV422_10BIT =
-        ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_YUV422_10BIT,             ///< YUV422 10-bit data
+        ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_YUV422_10BIT, ///< YUV422 10-bit data
     MXC_CSI2_PL0_RGB444 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RGB444, ///< RGB444 data
     MXC_CSI2_PL0_RGB555 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RGB555, ///< RGB555 data
     MXC_CSI2_PL0_RGB565 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RGB565, ///< RGB565 data
     MXC_CSI2_PL0_RGB666 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RGB666, ///< RGB666 data
     MXC_CSI2_PL0_RGB888 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RGB888, ///< RGB888 data
-    MXC_CSI2_PL0_RAW6   = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW6,   ///< RAW6 data
-    MXC_CSI2_PL0_RAW7   = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW7,   ///< RAW7 data
-    MXC_CSI2_PL0_RAW8   = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW8,   ///< RAW8 data
-    MXC_CSI2_PL0_RAW10  = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW10,  ///< RAW10 data
-    MXC_CSI2_PL0_RAW12  = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW12,  ///< RAW12 data
-    MXC_CSI2_PL0_RAW14  = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW14,  ///< RAW14 data
-    MXC_CSI2_PL0_RAW16  = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW16,  ///< RAW16 data
-    MXC_CSI2_PL0_RAW20  = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW20,  ///< RAW20 data
+    MXC_CSI2_PL0_RAW6 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW6, ///< RAW6 data
+    MXC_CSI2_PL0_RAW7 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW7, ///< RAW7 data
+    MXC_CSI2_PL0_RAW8 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW8, ///< RAW8 data
+    MXC_CSI2_PL0_RAW10 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW10, ///< RAW10 data
+    MXC_CSI2_PL0_RAW12 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW12, ///< RAW12 data
+    MXC_CSI2_PL0_RAW14 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW14, ///< RAW14 data
+    MXC_CSI2_PL0_RAW16 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW16, ///< RAW16 data
+    MXC_CSI2_PL0_RAW20 = ~MXC_F_CSI2_CFG_DISABLE_PAYLOAD_0_RAW20, ///< RAW20 data
 } mxc_csi2_payload0_t;
 
 /**
@@ -138,10 +138,10 @@ typedef enum {
  * @brief   Enumeration type for CSI-2 VFIFO DMA Mode.
  */
 typedef enum {
-    MXC_CSI2_DMA_NO_DMA       = MXC_S_CSI2_VFIFO_CFG0_DMAMODE_NO_DMA,  ///< No DMA Mode
+    MXC_CSI2_DMA_NO_DMA = MXC_S_CSI2_VFIFO_CFG0_DMAMODE_NO_DMA, ///< No DMA Mode
     MXC_CSI2_DMA_SEND_REQUEST = MXC_S_CSI2_VFIFO_CFG0_DMAMODE_DMA_REQ, ///< DMA Request Mode
     MXC_CSI2_DMA_FIFO_ABV_THD =
-        MXC_S_CSI2_VFIFO_CFG0_DMAMODE_FIFO_THD,                       ///< Above FIFO Threshold Mode
+        MXC_S_CSI2_VFIFO_CFG0_DMAMODE_FIFO_THD, ///< Above FIFO Threshold Mode
     MXC_CSI2_DMA_FIFO_FULL = MXC_S_CSI2_VFIFO_CFG0_DMAMODE_FIFO_FULL, ///< FIFO Full Mode
 } mxc_csi2_dma_mode_t;
 
@@ -149,7 +149,7 @@ typedef enum {
  * @brief   Enumeration type for CSI-2 VFIFO Read Mode.
  */
 typedef enum {
-    MXC_CSI2_READ_ONE_BY_ONE,  ///< One by One FIFO Read Mode
+    MXC_CSI2_READ_ONE_BY_ONE, ///< One by One FIFO Read Mode
     MXC_CSI2_READ_DIRECT_ADDR, ///< Direct Addressing FIFO Read Mode
 } mxc_csi2_fiform_t;
 
@@ -158,7 +158,7 @@ typedef enum {
  */
 typedef enum {
     MXC_CSI2_ERR_DETECT_DISABLE, ///< Disable Error Detection
-    MXC_CSI2_ERR_DETECT_ENABLE,  ///< Enable Error Detection
+    MXC_CSI2_ERR_DETECT_ENABLE, ///< Enable Error Detection
 } mxc_csi2_err_det_t;
 
 /**
@@ -166,7 +166,7 @@ typedef enum {
  */
 typedef enum {
     MXC_CSI2_NORMAL_BW, ///< Normal Bandwidth Mode
-    MXC_CSI2_FULL_BW,   ///< Full Bandwidth Mode
+    MXC_CSI2_FULL_BW, ///< Full Bandwidth Mode
 } mxc_csi2_fbwm_t;
 
 /**
@@ -199,7 +199,7 @@ typedef enum {
  */
 typedef enum {
     MXC_CSI2_AUTOFLUSH_DISABLE = 0, ///< Disable FIFO Automatic Flush-Out
-    MXC_CSI2_AUTOFLUSH_ENABLE,      ///< Enable FIFO Automatic Flush-Out
+    MXC_CSI2_AUTOFLUSH_ENABLE, ///< Enable FIFO Automatic Flush-Out
 } mxc_csi2_raw_autoflush_t;
 
 /**
@@ -207,7 +207,7 @@ typedef enum {
  */
 typedef enum {
     MXC_CSI2_AHBWAIT_DISABLE = 0, ///< Disable AHB Wait
-    MXC_CSI2_AHBWAIT_ENABLE,      ///< Enable AHB Wait
+    MXC_CSI2_AHBWAIT_ENABLE, ///< Enable AHB Wait
 } mxc_csi2_ahbwait_t;
 
 /**
@@ -215,7 +215,7 @@ typedef enum {
  */
 typedef enum {
     MXC_CSI2_DMA_WHOLE_FRAME = 0, ///< DMA entire frames at a time
-    MXC_CSI2_DMA_LINE_BY_LINE,    ///< DMA line by line per frame
+    MXC_CSI2_DMA_LINE_BY_LINE, ///< DMA line by line per frame
 } mxc_csi2_dma_frame_t;
 
 /**
@@ -223,7 +223,7 @@ typedef enum {
  * @param   req          The details of the image capture.
  * @param   result       See \ref MXC_Error_Codes for the list of error codes.
  */
-typedef void (*mxc_csi2_complete_cb_t)(mxc_csi2_req_t* req, int result);
+typedef void (*mxc_csi2_complete_cb_t)(mxc_csi2_req_t *req, int result);
 
 /**
  * @brief  Selects control source signals for data and clock lanes.
@@ -241,11 +241,11 @@ typedef struct {
  */
 typedef struct {
     mxc_csi2_ppi_clk_t invert_ppi_clk; ///< Invert the PPI input clock
-    uint32_t num_lanes;                ///< Configure number of lanes
-    uint32_t flush_cnt;                ///< Flush Count
-    mxc_csi2_payload0_t payload0;      ///< Payload 0 data select
-    mxc_csi2_payload1_t payload1;      ///< Payload 1 data select
-    mxc_csi2_lane_src_t lane_src;      ///< Data and Clock lane sources
+    uint32_t num_lanes; ///< Configure number of lanes
+    uint32_t flush_cnt; ///< Flush Count
+    mxc_csi2_payload0_t payload0; ///< Payload 0 data select
+    mxc_csi2_payload1_t payload1; ///< Payload 1 data select
+    mxc_csi2_lane_src_t lane_src; ///< Data and Clock lane sources
 } mxc_csi2_ctrl_cfg_t;
 
 /**
@@ -253,36 +253,36 @@ typedef struct {
  */
 typedef struct {
     uint32_t virtual_channel; ///< Virtual Channel (0-3)
-    uint32_t flow_ctrl;       ///< Flow control selection
-    uint32_t wait_en;         ///< AHB Wait Enable
-    uint32_t wait_cyc;        ///< AHB Maximal Wait Cycles
+    uint32_t flow_ctrl; ///< Flow control selection
+    uint32_t wait_en; ///< AHB Wait Enable
+    uint32_t wait_cyc; ///< AHB Maximal Wait Cycles
 
     mxc_csi2_dma_frame_t dma_whole_frame; ///< DMA whole frame or line by line
-    mxc_csi2_dma_mode_t dma_mode;         ///< DMA Mode
-    mxc_csi2_fiform_t fifo_rd_mode;       ///< FIFO Read Mode
-    mxc_csi2_err_det_t err_det_en;        ///< Error Detection Enable
-    uint32_t rx_thd;                      ///< FIFO Threshold
-    mxc_csi2_fbwm_t bandwidth_mode;       ///< Full Band Width Mode Enable
+    mxc_csi2_dma_mode_t dma_mode; ///< DMA Mode
+    mxc_csi2_fiform_t fifo_rd_mode; ///< FIFO Read Mode
+    mxc_csi2_err_det_t err_det_en; ///< Error Detection Enable
+    uint32_t rx_thd; ///< FIFO Threshold
+    mxc_csi2_fbwm_t bandwidth_mode; ///< Full Band Width Mode Enable
 } mxc_csi2_vfifo_cfg_t;
 
 /**
  * @brief  The information required to capture images.
  */
 struct _mxc_csi2_req_t {
-    uint8_t* img_addr;               ///< Destination Address for Captured Image
-    uint32_t pixels_per_line;        ///< Image Width
-    uint32_t lines_per_frame;        ///< Image Height
-    uint32_t bits_per_pixel_odd;     ///< Bits Per Pixel Odd
-    uint32_t bits_per_pixel_even;    ///< Bits Per Pixel Even
-    uint32_t frame_num;              ///< Number of frames to capture
+    uint8_t *img_addr; ///< Destination Address for Captured Image
+    uint32_t pixels_per_line; ///< Image Width
+    uint32_t lines_per_frame; ///< Image Height
+    uint32_t bits_per_pixel_odd; ///< Bits Per Pixel Odd
+    uint32_t bits_per_pixel_even; ///< Bits Per Pixel Even
+    uint32_t frame_num; ///< Number of frames to capture
     mxc_csi2_complete_cb_t callback; ///< RX Callback for DMA requests
 
-    uint8_t process_raw_to_rgb;         ///< Select if processing RAW data to RGB type
-    mxc_csi2_rgb_type_t rgb_type;       ///< Select final processed RGB type
-    mxc_csi2_raw_format_t raw_format;   ///< Select RAW format
+    uint8_t process_raw_to_rgb; ///< Select if processing RAW data to RGB type
+    mxc_csi2_rgb_type_t rgb_type; ///< Select final processed RGB type
+    mxc_csi2_raw_format_t raw_format; ///< Select RAW format
     mxc_csi2_raw_autoflush_t autoflush; ///< FIFO Automatic Flush-Out enable
-    uint32_t raw_buf0_addr;             ///< RAW Buffer 0 Address (line by line)
-    uint32_t raw_buf1_addr;             ///< RAW Buffer 1 Address (line by line)
+    uint32_t raw_buf0_addr; ///< RAW Buffer 0 Address (line by line)
+    uint32_t raw_buf1_addr; ///< RAW Buffer 1 Address (line by line)
 };
 
 /* **** Function Prototypes **** */
@@ -298,8 +298,8 @@ struct _mxc_csi2_req_t {
  * @param      vfifo_cfg  Configuration details for VFIFO.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_Init(mxc_csi2_req_t* req, mxc_csi2_ctrl_cfg_t* ctrl_cfg,
-                  mxc_csi2_vfifo_cfg_t* vfifo_cfg);
+int MXC_CSI2_Init(mxc_csi2_req_t *req, mxc_csi2_ctrl_cfg_t *ctrl_cfg,
+                  mxc_csi2_vfifo_cfg_t *vfifo_cfg);
 
 /**
  * @brief      Shutdown CSI-2.
@@ -339,14 +339,14 @@ int MXC_CSI2_CaptureFrameDMA(int num_data_lanes);
  * @param      src    The lane control source signal assignments.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_SetLaneCtrlSource(mxc_csi2_lane_src_t* src);
+int MXC_CSI2_SetLaneCtrlSource(mxc_csi2_lane_src_t *src);
 
 /**
  * @brief      Get Lane Control Source for D0-D4 and C0.
  * @param      src    Pointer to hold lane control source signal assignments.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_GetLaneCtrlSource(mxc_csi2_lane_src_t* src);
+int MXC_CSI2_GetLaneCtrlSource(mxc_csi2_lane_src_t *src);
 
 /**
  * @brief      Grab the configured image details.
@@ -355,7 +355,7 @@ int MXC_CSI2_GetLaneCtrlSource(mxc_csi2_lane_src_t* src);
  * @param      w        Pointer to Image Width.
  * @param      h        Pointer to Image Height.
  */
-void MXC_CSI2_GetImageDetails(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h);
+void MXC_CSI2_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h);
 
 /**
  * @brief      Callback function for CSI2.
@@ -363,7 +363,7 @@ void MXC_CSI2_GetImageDetails(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint
  * @param      retVal    Return value for callback function, usually error code.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_Callback(mxc_csi2_req_t* req, int retVal);
+int MXC_CSI2_Callback(mxc_csi2_req_t *req, int retVal);
 
 /**
  * @brief      Interrupt Handler Function.
@@ -380,7 +380,7 @@ int MXC_CSI2_Handler(void);
  * @param      cfg    Struct containing RX Controller config parameters.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_CTRL_Config(mxc_csi2_ctrl_cfg_t* cfg);
+int MXC_CSI2_CTRL_Config(mxc_csi2_ctrl_cfg_t *cfg);
 
 /**
  * @brief      Enable RX Controller Interrupts.
@@ -415,7 +415,7 @@ void MXC_CSI2_CTRL_ClearFlags(uint32_t flags);
  * @param      flags    mask of flags to be cleared.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_VFIFO_Config(mxc_csi2_vfifo_cfg_t* cfg);
+int MXC_CSI2_VFIFO_Config(mxc_csi2_vfifo_cfg_t *cfg);
 
 /**
  * @brief      Set Next FIFO Trigger Mode: FIFO Not Empty, Above Threshold, Full.
@@ -476,7 +476,7 @@ int MXC_CSI2_VFIFO_Disable(void);
  * @param      req    Struct containing parameters for RAW to RGB.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_VFIFO_ProcessRAWtoRGB(mxc_csi2_req_t* req);
+int MXC_CSI2_VFIFO_ProcessRAWtoRGB(mxc_csi2_req_t *req);
 
 /**
  * @brief      Sets the Payload data type.
@@ -495,7 +495,7 @@ int MXC_CSI2_VFIFO_SetPayloadType(mxc_csi2_payload0_t payload0, mxc_csi2_payload
  * @param      payload1    Pointer to save the value DISABLE_PAYLOAD_1 register.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_VFIFO_GetPayloadType(uint32_t* payload0, uint32_t* payload1);
+int MXC_CSI2_VFIFO_GetPayloadType(uint32_t *payload0, uint32_t *payload1);
 
 /**
  * @brief      Sets the DMA Mode for VFIFO.
@@ -598,7 +598,7 @@ int MXC_CSI2_PPI_Stop(void);
  * @param      flags    mask of flags to be cleared.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_DMA_Config(uint8_t* dst_addr, uint32_t byte_cnt, uint32_t burst_size);
+int MXC_CSI2_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size);
 
 /**
  * @brief      Gets the acquired DMA channel used for CSI-2 operations.
@@ -635,4 +635,4 @@ void MXC_CSI2_DMA_Callback(int a, int b);
 }
 #endif
 
-#endif /* _CSI2_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_

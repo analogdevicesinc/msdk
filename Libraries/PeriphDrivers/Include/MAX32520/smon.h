@@ -36,8 +36,8 @@
  *
  **************************************************************************** */
 
-#ifndef _SMON_H_
-#define _SMON_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_SMON_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_SMON_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -68,10 +68,10 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_CLK_DIVIDE_1  = MXC_S_SMON_EXTSCN_DIVCLK_DIV1,
-    SMON_CLK_DIVIDE_2  = MXC_S_SMON_EXTSCN_DIVCLK_DIV2,
-    SMON_CLK_DIVIDE_4  = MXC_S_SMON_EXTSCN_DIVCLK_DIV4,
-    SMON_CLK_DIVIDE_8  = MXC_S_SMON_EXTSCN_DIVCLK_DIV8,
+    SMON_CLK_DIVIDE_1 = MXC_S_SMON_EXTSCN_DIVCLK_DIV1,
+    SMON_CLK_DIVIDE_2 = MXC_S_SMON_EXTSCN_DIVCLK_DIV2,
+    SMON_CLK_DIVIDE_4 = MXC_S_SMON_EXTSCN_DIVCLK_DIV4,
+    SMON_CLK_DIVIDE_8 = MXC_S_SMON_EXTSCN_DIVCLK_DIV8,
     SMON_CLK_DIVIDE_16 = MXC_S_SMON_EXTSCN_DIVCLK_DIV16,
     SMON_CLK_DIVIDE_32 = MXC_S_SMON_EXTSCN_DIVCLK_DIV32,
     SMON_CLK_DIVIDE_64 = MXC_S_SMON_EXTSCN_DIVCLK_DIV64,
@@ -82,11 +82,11 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_FREQ_DIVIDE_4   = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ2000HZ,
-    SMON_FREQ_DIVIDE_8   = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ1000HZ,
-    SMON_FREQ_DIVIDE_16  = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ500HZ,
-    SMON_FREQ_DIVIDE_32  = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ250HZ,
-    SMON_FREQ_DIVIDE_64  = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ125HZ,
+    SMON_FREQ_DIVIDE_4 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ2000HZ,
+    SMON_FREQ_DIVIDE_8 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ1000HZ,
+    SMON_FREQ_DIVIDE_16 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ500HZ,
+    SMON_FREQ_DIVIDE_32 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ250HZ,
+    SMON_FREQ_DIVIDE_64 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ125HZ,
     SMON_FREQ_DIVIDE_128 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ63HZ,
     SMON_FREQ_DIVIDE_256 = MXC_S_SMON_EXTSCN_EXTFRQ_FREQ31HZ,
 } mxc_smon_freq_divide_t;
@@ -124,7 +124,7 @@ typedef enum {
  *
  */
 typedef enum {
-    SMON_DFD_LOWPOWER_ENABLE,  ///< DFD enabled during LowPower mode
+    SMON_DFD_LOWPOWER_ENABLE, ///< DFD enabled during LowPower mode
     SMON_DFD_LOWPOWER_DISABLE, ///< DFD disabled during LowPower mode
 } mxc_smon_lowpower_mode_t;
 
@@ -135,7 +135,7 @@ typedef enum {
 typedef enum {
     SMON_EXTSENSOR = MXC_F_SMON_SECST_EXTSRS,
     SMON_INTSENSOR = MXC_F_SMON_SECST_INTSRS,
-    SMON_SECALARM  = MXC_F_SMON_SECST_SECALRS,
+    SMON_SECALARM = MXC_F_SMON_SECST_SECALRS,
 } mxc_smon_busy_t;
 
 /**
@@ -170,7 +170,7 @@ void MXC_SMON_Shutdown();
  *
  * @return  int         see \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t* cfg, uint32_t delay);
+int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay);
 
 /**
  * @brief   Set frequency for external frequency
@@ -179,7 +179,7 @@ int MXC_SMON_ExtSensorEnable(mxc_smon_ext_cfg_t* cfg, uint32_t delay);
  *
  * @return  int         see \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_SMON_SetSensorFrequency(mxc_smon_ext_cfg_t* cfg);
+int MXC_SMON_SetSensorFrequency(mxc_smon_ext_cfg_t *cfg);
 
 /**
  * @brief   Set number of acceptable errors for external sensor
@@ -245,7 +245,7 @@ int MXC_SMON_ActiveDieShieldEnable(uint32_t delay);
  *
  * @return  int         see \ref MXC_Error_Codes for a list of return codes
  */
-int MXC_SMON_SelfDestructByteEnable(mxc_smon_ext_cfg_t* cfg, uint32_t delay);
+int MXC_SMON_SelfDestructByteEnable(mxc_smon_ext_cfg_t *cfg, uint32_t delay);
 
 /**
  * @brief   Enables PUF Trim Erase on DRS
@@ -313,4 +313,4 @@ int MXC_SMON_isBusy(mxc_smon_busy_t reg, uint32_t delay);
 
 /**@} end of group smon  */
 
-#endif /* _SMON_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_SMON_H_

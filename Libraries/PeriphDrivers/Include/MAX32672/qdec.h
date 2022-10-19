@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _QDEC_H_
-#define _QDEC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_QDEC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_QDEC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -68,7 +68,7 @@ extern "C" {
 typedef enum {
     MXC_QDEC_X1_MODE = 0, ///< Select Channel 0
     MXC_QDEC_X2_MODE = 1, ///< Select Channel 1
-    MXC_QDEC_x4_MODE,     ///< Select Channel 2
+    MXC_QDEC_x4_MODE, ///< Select Channel 2
 } mxc_qdec_counter_mode_t;
 
 /**
@@ -98,7 +98,7 @@ typedef enum {
  */
 typedef enum {
     MXC_QDEC_STICKY_PULSE = 0, ///< QDEC Pulse active for one clock cycle
-    MXC_QDEC_STICKY_MIRROR,    ///< QDEC Mirror state
+    MXC_QDEC_STICKY_MIRROR, ///< QDEC Mirror state
 } mxc_qdec_sticky_t;
 
 /**
@@ -106,13 +106,13 @@ typedef enum {
  */
 typedef enum {
     MXC_QDEC_CLKDIV_1 = 0, ///< QDEC Scale by 1
-    MXC_QDEC_CLKDIV_2,     ///< QDEC Scale by 1/2
-    MXC_QDEC_CLKDIV_4,     ///< QDEC Scale by 1/4
-    MXC_QDEC_CLKDIV_8,     ///< QDEC Scale by 1/8
-    MXC_QDEC_CLKDIV_16,    ///< QDEC Scale by 1/16
-    MXC_QDEC_CLKDIV_32,    ///< QDEC Scale by 1/32
-    MXC_QDEC_CLKDIV_64,    ///< QDEC Scale by 1/64
-    MXC_QDEC_CLKDIV_128,   ///< QDEC Scale by 1/128
+    MXC_QDEC_CLKDIV_2, ///< QDEC Scale by 1/2
+    MXC_QDEC_CLKDIV_4, ///< QDEC Scale by 1/4
+    MXC_QDEC_CLKDIV_8, ///< QDEC Scale by 1/8
+    MXC_QDEC_CLKDIV_16, ///< QDEC Scale by 1/16
+    MXC_QDEC_CLKDIV_32, ///< QDEC Scale by 1/32
+    MXC_QDEC_CLKDIV_64, ///< QDEC Scale by 1/64
+    MXC_QDEC_CLKDIV_128, ///< QDEC Scale by 1/128
 } mxc_qdec_clkdiv_t;
 
 /**
@@ -133,19 +133,19 @@ typedef enum {
 } mxc_qdec_function_t;
 
 ///< Callback used when interrupt occurs
-typedef void (*mxc_qdec_cb_t)(void* req, int error);
+typedef void (*mxc_qdec_cb_t)(void *req, int error);
 
 typedef struct {
     mxc_qdec_counter_mode_t mode; ///< counter mode
-    mxc_qdec_swap_t swap;         ///< phase swap
-    mxc_qdec_filter_t sample;     ///< filter
-    mxc_qdec_clkdiv_t clkdiv;     ///< clock divider
-    mxc_qdec_sticky_t sticky;     ///< sticky condition
-    mxc_qdec_rst_on_t rst;        ///< reset on maxcnt or index
-    mxc_qdec_function_t func;     ///< compare, capture, none
-    uint32_t maxcnt;              ///< Maximum count value
-    uint32_t initial;             ///< Initial count value
-    uint32_t compare;             ///< Compare value
+    mxc_qdec_swap_t swap; ///< phase swap
+    mxc_qdec_filter_t sample; ///< filter
+    mxc_qdec_clkdiv_t clkdiv; ///< clock divider
+    mxc_qdec_sticky_t sticky; ///< sticky condition
+    mxc_qdec_rst_on_t rst; ///< reset on maxcnt or index
+    mxc_qdec_function_t func; ///< compare, capture, none
+    uint32_t maxcnt; ///< Maximum count value
+    uint32_t initial; ///< Initial count value
+    uint32_t compare; ///< Compare value
     mxc_qdec_cb_t callback;
 } mxc_qdec_req_t;
 
@@ -154,7 +154,7 @@ typedef struct {
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_QDEC_Init(mxc_qdec_req_t* req);
+int MXC_QDEC_Init(mxc_qdec_req_t *req);
 
 /**
  * @brief   Shuts down the QDEC
@@ -275,4 +275,4 @@ int MXC_QDEC_GetDirection(void);
 }
 #endif
 
-#endif /* _QDEC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_QDEC_H_

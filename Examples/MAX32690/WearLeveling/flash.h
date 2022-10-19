@@ -36,8 +36,8 @@
  * @brief   Flash read/write/erase functions declaration
  */
 
-#ifndef FLASH_H_
-#define FLASH_H_
+#ifndef EXAMPLES_MAX32690_WEARLEVELING_FLASH_H_
+#define EXAMPLES_MAX32690_WEARLEVELING_FLASH_H_
 
 // Flash operations log
 //#define FLASH_DEBUG
@@ -62,7 +62,7 @@
  * @param size Data size
  * @return Error code
  */
-int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* buffer,
+int flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *buffer,
                lfs_size_t size);
 
 /**
@@ -75,7 +75,7 @@ int flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, voi
  * @param size Data size
  * @return Error code
  */
-int flash_write(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, const void* buffer,
+int flash_write(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, const void *buffer,
                 lfs_size_t size);
 
 /**
@@ -85,7 +85,7 @@ int flash_write(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, co
  * @param block Flash memory block number
  * @return Error code
  */
-int flash_erase(const struct lfs_config* c, lfs_block_t block);
+int flash_erase(const struct lfs_config *c, lfs_block_t block);
 
 /**
  * @brief Performs pending flash operations
@@ -93,7 +93,7 @@ int flash_erase(const struct lfs_config* c, lfs_block_t block);
  * @param c LittleFS config
  * @return Error code
  */
-int flash_sync(const struct lfs_config* c);
+int flash_sync(const struct lfs_config *c);
 
 /**
  * @brief Verifies data in flash
@@ -102,7 +102,7 @@ int flash_sync(const struct lfs_config* c);
  * @param data Data buffer
  * @return Error code
  */
-int flash_verify(uint32_t address, uint32_t length, uint8_t* data);
+int flash_verify(uint32_t address, uint32_t length, uint8_t *data);
 
 /**
  * @brief Compares data in flash with value specified
@@ -129,6 +129,6 @@ int check_erased(uint32_t startaddr, uint32_t length);
  * @param verify Whether to verify written data
  * @return Error code
  */
-int flash_write4(uint32_t startaddr, uint32_t length, uint32_t* data, bool verify);
+int flash_write4(uint32_t startaddr, uint32_t length, uint32_t *data, bool verify);
 
-#endif /* FLASH_H_ */
+#endif // EXAMPLES_MAX32690_WEARLEVELING_FLASH_H_

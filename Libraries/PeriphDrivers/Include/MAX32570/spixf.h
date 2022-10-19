@@ -37,8 +37,8 @@
  **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_SPIXF_H_
-#define _MXC_SPIXF_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SPIXF_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SPIXF_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -63,13 +63,13 @@ extern "C" {
  */
 typedef enum {
     MXC_SPIXF_SSEL0_HIGH = (0x1 << 0),
-    MXC_SPIXF_SSEL0_LOW  = 0,
+    MXC_SPIXF_SSEL0_LOW = 0,
     MXC_SPIXF_SSEL1_HIGH = (0x1 << 1),
-    MXC_SPIXF_SSEL1_LOW  = 0,
+    MXC_SPIXF_SSEL1_LOW = 0,
     MXC_SPIXF_SSEL2_HIGH = (0x1 << 2),
-    MXC_SPIXF_SSEL2_LOW  = 0,
+    MXC_SPIXF_SSEL2_LOW = 0,
     MXC_SPIXF_SSEL3_HIGH = (0x1 << 3),
-    MXC_SPIXF_SSEL3_LOW  = 0
+    MXC_SPIXF_SSEL3_LOW = 0
 } mxc_spixf_ssel_t;
 
 /**
@@ -142,7 +142,7 @@ typedef struct {
     mxc_spixf_mode_t mode; ///< MXC_SPIXF mode to use, 0-3.
     mxc_spixf_sspol_t
         ssel_pol; ///< Mask of active levels for slave select signals, use mxc_spixf_ssel_t.
-    uint32_t hz;  ///< SPI Frequency in Hz.
+    uint32_t hz; ///< SPI Frequency in Hz.
 } mxc_spixf_cfg_t;
 
 /**
@@ -179,8 +179,8 @@ typedef enum {
  * @brief      IO pullup/pulldown Control
  */
 typedef enum {
-    MXC_SPIXF_TRISTATE  = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE,
-    MXC_SPIXF_PULL_UP   = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP,
+    MXC_SPIXF_TRISTATE = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE,
+    MXC_SPIXF_PULL_UP = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP,
     MXC_SPIXF_PULL_DOWN = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN,
 } mxc_spixf_pup_t;
 
@@ -200,17 +200,17 @@ typedef struct mxc_spixf_req mxc_spixf_req_t;
  * @param   mxc_spixf_req_t*  Pointer to the transaction request.
  * @param   int         Error code.
  */
-typedef void (*spixr_complete_cb_t)(mxc_spixf_req_t*, int);
+typedef void (*spixr_complete_cb_t)(mxc_spixf_req_t *, int);
 
 struct mxc_spixf_req {
-    uint8_t deass;                ///< De-assert slave select at the end of the transaction.
-    uint8_t wait_tx;              ///< Wait for the TX FIFO to be empty before returning.
-    const uint8_t* tx_data;       ///< TX buffer.
-    uint8_t* rx_data;             ///< RX buffer.
-    mxc_spixf_width_t width;      ///< Number of data lines to use
-    unsigned len;                 ///< Number of bytes to send.
-    unsigned read_num;            ///< Number of bytes read.
-    unsigned write_num;           ///< Number of bytes written.
+    uint8_t deass; ///< De-assert slave select at the end of the transaction.
+    uint8_t wait_tx; ///< Wait for the TX FIFO to be empty before returning.
+    const uint8_t *tx_data; ///< TX buffer.
+    uint8_t *rx_data; ///< RX buffer.
+    mxc_spixf_width_t width; ///< Number of data lines to use
+    unsigned len; ///< Number of bytes to send.
+    unsigned read_num; ///< Number of bytes read.
+    unsigned write_num; ///< Number of bytes written.
     spixr_complete_cb_t callback; ///< callback function
 };
 
@@ -264,7 +264,7 @@ int MXC_SPIXF_Clocks(uint32_t len, uint8_t deass);
  * @return     Bytes transacted if everything is successful, error if
  *             unsuccessful.
  */
-int MXC_SPIXF_Transaction(mxc_spixf_req_t* req);
+int MXC_SPIXF_Transaction(mxc_spixf_req_t *req);
 
 /**
  * @brief      Asynchronously read/write MXC_SPIXF data.
@@ -274,7 +274,7 @@ int MXC_SPIXF_Transaction(mxc_spixf_req_t* req);
  *
  * @return     See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPIXF_TransactionAsync(mxc_spixf_req_t* req);
+int MXC_SPIXF_TransactionAsync(mxc_spixf_req_t *req);
 
 /**
  * @brief      Abort asynchronous request.
@@ -283,7 +283,7 @@ int MXC_SPIXF_TransactionAsync(mxc_spixf_req_t* req);
  *
  * @return     See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPIXF_AbortAsync(mxc_spixf_req_t* req);
+int MXC_SPIXF_AbortAsync(mxc_spixf_req_t *req);
 
 /**
  * @brief      MXC_SPIXF interrupt handler.
@@ -1017,4 +1017,4 @@ unsigned int MXC_SPIXF_GetBusIdle(void);
 }
 #endif
 
-#endif /* _MXC_SPIXF_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SPIXF_H_

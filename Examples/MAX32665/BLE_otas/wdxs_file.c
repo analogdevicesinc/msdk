@@ -40,14 +40,14 @@
 #endif
 
 static volatile uint32_t verifyLen;
-static volatile uint8_t* lastWriteAddr;
+static volatile uint8_t *lastWriteAddr;
 static volatile uint32_t lastWriteLen;
 
 /* Prototypes for file functions */
 static uint8_t wdxsFileInitMedia(void);
-static uint8_t wdxsFileErase(uint8_t* address, uint32_t size);
-static uint8_t wdxsFileRead(uint8_t* pBuf, uint8_t* pAddress, uint32_t size);
-static uint8_t wdxsFileWrite(const uint8_t* pBuf, uint8_t* pAddress, uint32_t size);
+static uint8_t wdxsFileErase(uint8_t *address, uint32_t size);
+static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
+static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
 extern uint32_t _flash_update;
@@ -62,7 +62,8 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
     /*   wsfMediaEraseFunc_t     *erase;        Media erase callback. */ wdxsFileErase,
     /*   wsfMediaReadFunc_t      *read;         Media read callback. */ wdxsFileRead,
     /*   wsfMediaWriteFunc_t     *write;        Media write callback. */ wdxsFileWrite,
-    /*   wsfMediaHandleCmdFunc_t *handleCmd;    Media command handler callback. */ wsfFileHandle};
+    /*   wsfMediaHandleCmdFunc_t *handleCmd;    Media command handler callback. */ wsfFileHandle
+};
 
 /*************************************************************************************************/
 /*!
@@ -88,7 +89,7 @@ static uint8_t wdxsFileInitMedia(void)
  *  \return Status of the operation.
  */
 /*************************************************************************************************/
-static uint8_t wdxsFileErase(uint8_t* address, uint32_t size)
+static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
 {
     int err;
     volatile uint32_t address32 = (uint32_t)address;
@@ -119,7 +120,7 @@ static uint8_t wdxsFileErase(uint8_t* address, uint32_t size)
  *  \return Status of the operation.
  */
 /*************************************************************************************************/
-static uint8_t wdxsFileRead(uint8_t* pBuf, uint8_t* pAddress, uint32_t size)
+static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 {
     memcpy(pBuf, pAddress, size);
     return WSF_EFS_SUCCESS;
@@ -136,15 +137,15 @@ static uint8_t wdxsFileRead(uint8_t* pBuf, uint8_t* pAddress, uint32_t size)
  *  \return Status of the operation.
  */
 /*************************************************************************************************/
-static uint8_t wdxsFileWrite(const uint8_t* pBuf, uint8_t* pAddress, uint32_t size)
+static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 {
     int err;
     WsfCsEnter();
-    err = MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t*)pBuf);
+    err = MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
     WsfCsExit();
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
-        lastWriteLen  = size;
+        lastWriteLen = size;
         return WSF_EFS_SUCCESS;
     }
 
@@ -153,7 +154,7 @@ static uint8_t wdxsFileWrite(const uint8_t* pBuf, uint8_t* pAddress, uint32_t si
     return WSF_EFS_FAILURE;
 }
 
-/* http://home.thep.lu.se/~bjorn/crc/ */
+// http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
  *  \brief  Create the CRC32 table.
@@ -165,8 +166,7 @@ static uint8_t wdxsFileWrite(const uint8_t* pBuf, uint8_t* pAddress, uint32_t si
 /*************************************************************************************************/
 uint32_t crc32_for_byte(uint32_t r)
 {
-    for (int j = 0; j < 8; ++j)
-        r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
+    for (int j = 0; j < 8; ++j) r = (r & 1 ? 0 : (uint32_t)0xEDB88320L) ^ r >> 1;
     return r ^ (uint32_t)0xFF000000L;
 }
 
@@ -181,15 +181,14 @@ uint32_t crc32_for_byte(uint32_t r)
  *  \return None.
  */
 /*************************************************************************************************/
-static uint32_t table[0x100] = {0};
-void crc32(const void* data, size_t n_bytes, uint32_t* crc)
+static uint32_t table[0x100] = { 0 };
+void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
     if (!*table) {
-        for (size_t i = 0; i < 0x100; ++i)
-            table[i] = crc32_for_byte(i);
+        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
     }
     for (size_t i = 0; i < n_bytes; ++i) {
-        *crc = table[(uint8_t)*crc ^ ((uint8_t*)data)[i]] ^ *crc >> 8;
+        *crc = table[(uint8_t)*crc ^ ((uint8_t *)data)[i]] ^ *crc >> 8;
     }
 }
 
@@ -206,36 +205,34 @@ void crc32(const void* data, size_t n_bytes, uint32_t* crc)
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
 {
     switch (cmd) {
-        case WSF_EFS_WDXS_PUT_COMPLETE_CMD:
-        {
-            /* Currently unimplemented */
-            return WDX_FTC_ST_SUCCESS;
-        } break;
-        case WSF_EFS_VALIDATE_CMD:
-        default:
-        {
-            /* Validate the image with CRC32 */
-            uint32_t crcResult = 0;
-            uint32_t crcFile;
+    case WSF_EFS_WDXS_PUT_COMPLETE_CMD: {
+        /* Currently unimplemented */
+        return WDX_FTC_ST_SUCCESS;
+    } break;
+    case WSF_EFS_VALIDATE_CMD:
+    default: {
+        /* Validate the image with CRC32 */
+        uint32_t crcResult = 0;
+        uint32_t crcFile;
 
-            verifyLen = (uint32_t)lastWriteAddr - WDXS_FileMedia.startAddress;
+        verifyLen = (uint32_t)lastWriteAddr - WDXS_FileMedia.startAddress;
 
-            APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
-                            verifyLen);
+        APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
+                        verifyLen);
 
-            crc32((const void*)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
+        crc32((const void *)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
 
-            memcpy(&crcFile, (const char*)(WDXS_FileMedia.startAddress + verifyLen), 4);
+        memcpy(&crcFile, (const char *)(WDXS_FileMedia.startAddress + verifyLen), 4);
 
-            /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
-            if (crcFile != crcResult) {
-                APP_TRACE_INFO0("Update file verification failure");
-                APP_TRACE_INFO2("File CRC: 0x%08X Calculated CRC: 0x%08X", crcFile, crcResult);
-                return WDX_FTC_ST_VERIFICATION;
-            }
+        /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
+        if (crcFile != crcResult) {
+            APP_TRACE_INFO0("Update file verification failure");
+            APP_TRACE_INFO2("File CRC: 0x%08X Calculated CRC: 0x%08X", crcFile, crcResult);
+            return WDX_FTC_ST_VERIFICATION;
+        }
 
-            return WDX_FTC_ST_SUCCESS;
-        } break;
+        return WDX_FTC_ST_SUCCESS;
+    } break;
     }
     return WDX_FTC_ST_SUCCESS;
 }

@@ -36,21 +36,22 @@
         of memory.
 *****************************************************************************/
 
-#ifndef CNN_H
-#define CNN_h
+#ifndef EXAMPLES_MAX78000_IMGCAPTURE_SRC_CNN_MEMUTILS_H_
+#define EXAMPLES_MAX78000_IMGCAPTURE_SRC_CNN_MEMUTILS_H_
+
 #include <stdint.h>
 #include "mxc.h"
 #include "gcfr_regs.h"
 #include "max78000.h"
 
 #define CNN_QUAD0_DSRAM_START 0x50400000
-#define CNN_QUAD0_DSRAM_END   0x5041FFFC
+#define CNN_QUAD0_DSRAM_END 0x5041FFFC
 #define CNN_QUAD1_DSRAM_START 0x50800000
-#define CNN_QUAD1_DSRAM_END   0x5081FFFC
+#define CNN_QUAD1_DSRAM_END 0x5081FFFC
 #define CNN_QUAD2_DSRAM_START 0x50C00000
-#define CNN_QUAD2_DSRAM_END   0x50C1FFFC
+#define CNN_QUAD2_DSRAM_END 0x50C1FFFC
 #define CNN_QUAD3_DSRAM_START 0x51000000
-#define CNN_QUAD3_DSRAM_END   0x5101FFFC
+#define CNN_QUAD3_DSRAM_END 0x5101FFFC
 
 // Enables all 4 CNN quadrants and their memories.
 int cnn_enable(uint32_t clock_source, uint32_t clock_divider)
@@ -88,19 +89,19 @@ int cnn_disable(void)
 // Initializes all 4 CNN quadrants with max speed SRAM
 int cnn_init(void)
 {
-    *((volatile uint32_t*)0x50001000) = 0x00000000; // AON control
+    *((volatile uint32_t *)0x50001000) = 0x00000000; // AON control
     // Quadrant 0
-    *((volatile uint32_t*)0x50100000) = 0x00100008; // Stop SM
-    *((volatile uint32_t*)0x50100004) = 0x0000040e; // SRAM control
+    *((volatile uint32_t *)0x50100000) = 0x00100008; // Stop SM
+    *((volatile uint32_t *)0x50100004) = 0x0000040e; // SRAM control
     // Quadrant 1
-    *((volatile uint32_t*)0x50500000) = 0x00100008; // Stop SM
-    *((volatile uint32_t*)0x50500004) = 0x0000040e; // SRAM control
+    *((volatile uint32_t *)0x50500000) = 0x00100008; // Stop SM
+    *((volatile uint32_t *)0x50500004) = 0x0000040e; // SRAM control
     // Quadrant 2
-    *((volatile uint32_t*)0x50900000) = 0x00100008; // Stop SM
-    *((volatile uint32_t*)0x50900004) = 0x0000040e; // SRAM control
+    *((volatile uint32_t *)0x50900000) = 0x00100008; // Stop SM
+    *((volatile uint32_t *)0x50900004) = 0x0000040e; // SRAM control
     // Quadrant 3
-    *((volatile uint32_t*)0x50D00000) = 0x00100008; // Stop SM
-    *((volatile uint32_t*)0x50D00004) = 0x0000040e; // SRAM control
+    *((volatile uint32_t *)0x50D00000) = 0x00100008; // Stop SM
+    *((volatile uint32_t *)0x50D00004) = 0x0000040e; // SRAM control
 
     return 1;
 }
@@ -109,20 +110,20 @@ int cnn_init(void)
 // There are 4 quadrants, so when memory addresses are "stitched"
 // together the boundaries must be checked.
 // Returns a new address pointer, or NULL if the address overflowed.
-static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr)
+static inline uint32_t *increment_cnn_sram_ptr(uint32_t *ptr)
 {
     int val = (int)ptr;
     if (val != CNN_QUAD0_DSRAM_END && val != CNN_QUAD1_DSRAM_END && val != CNN_QUAD2_DSRAM_END &&
         val != CNN_QUAD3_DSRAM_END) {
         return ptr + 1;
-    } else if (val == CNN_QUAD0_DSRAM_END) {     // Quadrant 0 end
-        return (uint32_t*)CNN_QUAD1_DSRAM_START; // Quadrant 1 start
-    } else if (val == CNN_QUAD1_DSRAM_END) {     // Quadrant 1 end
-        return (uint32_t*)CNN_QUAD2_DSRAM_START; // Quadrant 2 start
-    } else if (val == CNN_QUAD2_DSRAM_END) {     // Quadrant 2 end
-        return (uint32_t*)CNN_QUAD3_DSRAM_START; // Quadrant 3 start
-    } else if (val >= CNN_QUAD3_DSRAM_END) {     // Quadrant 3 end
-        return NULL;                             // End of CNN SRAM, return NULL
+    } else if (val == CNN_QUAD0_DSRAM_END) { // Quadrant 0 end
+        return (uint32_t *)CNN_QUAD1_DSRAM_START; // Quadrant 1 start
+    } else if (val == CNN_QUAD1_DSRAM_END) { // Quadrant 1 end
+        return (uint32_t *)CNN_QUAD2_DSRAM_START; // Quadrant 2 start
+    } else if (val == CNN_QUAD2_DSRAM_END) { // Quadrant 2 end
+        return (uint32_t *)CNN_QUAD3_DSRAM_START; // Quadrant 3 start
+    } else if (val >= CNN_QUAD3_DSRAM_END) { // Quadrant 3 end
+        return NULL; // End of CNN SRAM, return NULL
     } else {
         return NULL;
     }
@@ -133,19 +134,19 @@ static inline uint32_t* increment_cnn_sram_ptr(uint32_t* ptr)
 // the speed of the conversion in "write_bytes_to_cnn_sram"
 // by almost 50%.
 union bytes_to_word {
-    uint8_t* b;
-    uint32_t* word;
+    uint8_t *b;
+    uint32_t *word;
 };
 
 // Write 'len' bytes from 'bytes' to the CNN data SRAM pointer 'addr'.
 // Returns the next-most empty address in CNN data SRAM.
-static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_t* addr)
+static inline uint32_t *write_bytes_to_cnn_sram(uint8_t *bytes, int len, uint32_t *addr)
 {
     int i = 0;
     union bytes_to_word u;
 
     while (i < len) {
-        u.b   = &bytes[i];
+        u.b = &bytes[i];
         *addr = *u.word;
         // ^ De-reference using the typecast through the union.
         // Bytes do not need to be reversed in this case, but if
@@ -159,22 +160,22 @@ static inline uint32_t* write_bytes_to_cnn_sram(uint8_t* bytes, int len, uint32_
 
 // Read 'len' bytes from the CNN data SRAM pointer 'addr' into the 'out_bytes' array.
 // Returns the next-most CNN data SRAM address after all bytes have been read.
-static inline uint32_t* read_bytes_from_cnn_sram(uint8_t* out_bytes, int len, uint32_t* addr)
+static inline uint32_t *read_bytes_from_cnn_sram(uint8_t *out_bytes, int len, uint32_t *addr)
 {
-    int i         = 0;
+    int i = 0;
     uint32_t word = *addr;
 
     while (i < len) {
-        out_bytes[i]     = word & 0xFF;
+        out_bytes[i] = word & 0xFF;
         out_bytes[i + 1] = (word >> 8) & 0xFF;
         out_bytes[i + 2] = (word >> 16) & 0xFF;
         out_bytes[i + 3] = (word >> 24) & 0xFF;
-        addr             = increment_cnn_sram_ptr(addr);
-        word             = *addr;
+        addr = increment_cnn_sram_ptr(addr);
+        word = *addr;
         i += 4;
     }
 
     return addr;
 }
 
-#endif
+#endif // EXAMPLES_MAX78000_IMGCAPTURE_SRC_CNN_MEMUTILS_H_

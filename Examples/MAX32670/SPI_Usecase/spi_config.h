@@ -31,20 +31,20 @@
  *
  ******************************************************************************/
 
-#ifndef SPI_CONFIG_H_
-#define SPI_CONFIG_H_
+#ifndef EXAMPLES_MAX32670_SPI_USECASE_SPI_CONFIG_H_
+#define EXAMPLES_MAX32670_SPI_USECASE_SPI_CONFIG_H_
 
 #include "max32670.h"
 #include "spi_regs.h"
 #include "spi.h"
 
 /*** SPI Master Configuration ***/
-#define SPIx_MASTER   MXC_SPI0
+#define SPIx_MASTER MXC_SPI0
 #define SPI_BAUD_RATE 1000000
 
 /*** SPI Slave Configuration ***/
-#define SPIx_SLAVE      MXC_SPI1
-#define SPIx_IRQn       SPI1_IRQn
+#define SPIx_SLAVE MXC_SPI1
+#define SPIx_IRQn SPI1_IRQn
 #define SPIx_IRQHandler SPI1_IRQHandler
 
 //
@@ -52,10 +52,10 @@
 
 /*** Functions ***/
 int spi_master_init(void);
-int spi_master_send_rcv(unsigned char* src, unsigned int srcLen, unsigned char* dst);
+int spi_master_send_rcv(unsigned char *src, unsigned int srcLen, unsigned char *dst);
 
 int spi_slave_init(void);
-int spi_slave_send(unsigned char* src, unsigned int srcLen);
-int spi_slave_rcv(unsigned char* dst, unsigned int maxLen, unsigned int* len);
+int spi_slave_send(unsigned char *src, unsigned int srcLen);
+int spi_slave_rcv(unsigned char *dst, unsigned int maxLen, unsigned int *len);
 
-#endif /* SPI_CONFIG_H_ */
+#endif // EXAMPLES_MAX32670_SPI_USECASE_SPI_CONFIG_H_

@@ -35,8 +35,8 @@
  *
  ******************************************************************************/
 
-#ifndef _PB_H_
-#define _PB_H_
+#ifndef LIBRARIES_BOARDS_MAX32662_INCLUDE_PB_H_
+#define LIBRARIES_BOARDS_MAX32662_INCLUDE_PB_H_
 
 #include "gpio.h"
 
@@ -73,7 +73,7 @@ int PB_Init(void);
  * @param      pb    Pointer to the push button index that triggered the
  *                   callback.
  */
-typedef void (*pb_callback)(void* pb);
+typedef void (*pb_callback)(void *pb);
 
 /**
  * @brief      Register or Unregister a callback handler for events on the @p pb push button.
@@ -122,4 +122,4 @@ int PB_Get(unsigned int pb);
 }
 #endif
 
-#endif /* _PB_H_ */
+#endif // LIBRARIES_BOARDS_MAX32662_INCLUDE_PB_H_

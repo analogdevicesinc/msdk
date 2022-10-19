@@ -3,15 +3,17 @@
  * @brief   Cypress s26k driver header file
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,14 +36,11 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-05-15 09:31:32 -0500 (Mon, 15 May 2017) $
- * $Revision: 27976 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _S26K_H_
-#define _S26K_H_
+#ifndef LIBRARIES_BOARDS_MAX32570_INCLUDE_S26K_H_
+#define LIBRARIES_BOARDS_MAX32570_INCLUDE_S26K_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -114,7 +113,7 @@ int S26K_Write16(uint32_t addr, uint16_t data);
  * @param   len     Number of bytes to write.
  * @returns #E_NO_ERROR if erase succeeded. #E_UNKNOWN otherwise.
  */
-int S26K_Write(uint32_t addr, uint16_t* data, unsigned len);
+int S26K_Write(uint32_t addr, uint16_t *data, unsigned len);
 
 /**
  * @brief   Read the s26k ID.
@@ -122,7 +121,7 @@ int S26K_Write(uint32_t addr, uint16_t* data, unsigned len);
  * @param   data    Pointer to store the ID.
  * @param   len     Number of ID bytes to read.
  */
-void S26K_GetID(uint32_t offset, uint16_t* data, unsigned len);
+void S26K_GetID(uint32_t offset, uint16_t *data, unsigned len);
 
 /**
  * @brief   Read the s26k CFI.
@@ -130,7 +129,7 @@ void S26K_GetID(uint32_t offset, uint16_t* data, unsigned len);
  * @param   data    Pointer to store the CFI.
  * @param   len     Number of CFI bytes to read.
  */
-void S26K_GetCFI(uint32_t offset, uint16_t* data, unsigned len);
+void S26K_GetCFI(uint32_t offset, uint16_t *data, unsigned len);
 
 uint16_t S26K_GetSectorProtection(uint32_t addr);
 uint16_t S26K_GetSectorPPB(uint32_t addr);
@@ -150,4 +149,4 @@ void S26K_WriteBufferAbortReset(void);
 }
 #endif
 
-#endif /* _S26K_H_ */
+#endif // LIBRARIES_BOARDS_MAX32570_INCLUDE_S26K_H_

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -44,20 +44,20 @@
 #include "mxc_sys.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO2, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO2, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO2, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_27, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO2, MXC_GPIO_PIN_27, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -82,12 +82,11 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // };
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/
@@ -103,7 +102,7 @@ int Board_Init(void)
 #ifndef __riscv
     int err;
 
-    MXC_GCR->perckcn0 = 0;         // enable all clocks
+    MXC_GCR->perckcn0 = 0; // enable all clocks
     MXC_GCR->perckcn1 = (1 << 31); // except CPU1
 
     MXC_GCR->clkctrl = 0x001F0800; // en all clocks

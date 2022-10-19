@@ -63,24 +63,24 @@ TaskHandle_t cmd_task_id;
 unsigned int disable_tickless = 1;
 
 /* Stringification macros */
-#define STRING(x)  STRING_(x)
+#define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
 /* Console ISR selection */
 #if (CONSOLE_UART == 0)
 #define UARTx_IRQHandler UART0_IRQHandler
-#define UARTx_IRQn       UART0_IRQn
+#define UARTx_IRQn UART0_IRQn
 #elif (CONSOLE_UART == 1)
 #define UARTx_IRQHandler UART1_IRQHandler
-#define UARTx_IRQn       UART1_IRQn
+#define UARTx_IRQn UART1_IRQn
 #else
 #error "Please update ISR macro for UART CONSOLE_UART"
 #endif
-mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 
 /* Array sizes */
 #define CMD_LINE_BUF_SIZE 80
-#define OUTPUT_BUF_SIZE   512
+#define OUTPUT_BUF_SIZE 512
 
 /* UART access */
 #define USE_ASYNC_UART
@@ -94,7 +94,7 @@ mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
  *
  * =======================================================
  */
-void vTask0(void* pvParameters)
+void vTask0(void *pvParameters)
 {
     TickType_t xLastWakeTime;
     unsigned int x = LED_OFF;
@@ -137,7 +137,7 @@ void vTask0(void* pvParameters)
  *
  * =======================================================
  */
-void vTask1(void* pvParameters)
+void vTask1(void *pvParameters)
 {
     TickType_t xLastWakeTime;
     unsigned int x = LED_ON;
@@ -176,7 +176,7 @@ void vTask1(void* pvParameters)
  *
  * =======================================================
  */
-void vTickTockTask(void* pvParameters)
+void vTickTockTask(void *pvParameters)
 {
     TickType_t ticks = 0;
     TickType_t xLastWakeTime;
@@ -212,7 +212,7 @@ void UARTx_IRQHandler(void)
  *
  * ===========================================================
  */
-void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
+void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
 {
     BaseType_t xHigherPriorityTaskWoken;
 
@@ -222,7 +222,7 @@ void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
-static void prvProcessInput(char* pBufCmdLine, unsigned int* pIdxCmdLine, unsigned char cReadChar)
+static void prvProcessInput(char *pBufCmdLine, unsigned int *pIdxCmdLine, unsigned char cReadChar)
 {
     unsigned int uTransLen;
     BaseType_t xMore;
@@ -276,10 +276,9 @@ static void prvProcessInput(char* pBufCmdLine, unsigned int* pIdxCmdLine, unsign
     }
 }
 
-static inline void prvFlushUART(mxc_uart_regs_t* uart)
+static inline void prvFlushUART(mxc_uart_regs_t *uart)
 {
-    while ((uart->status & MXC_F_UART_STATUS_TX_EMPTY) != MXC_F_UART_STATUS_TX_EMPTY)
-        ;
+    while ((uart->status & MXC_F_UART_STATUS_TX_EMPTY) != MXC_F_UART_STATUS_TX_EMPTY) {}
 }
 
 /* =| vCmdLineTask |======================================
@@ -294,7 +293,7 @@ static inline void prvFlushUART(mxc_uart_regs_t* uart)
  *
  * =======================================================
  */
-void vCmdLineTask(void* pvParameters)
+void vCmdLineTask(void *pvParameters)
 {
     unsigned char cReadChar;
     unsigned int idxCmdLine; /* Index into buffer */
@@ -303,8 +302,8 @@ void vCmdLineTask(void* pvParameters)
 #ifdef USE_ASYNC_UART
     mxc_uart_req_t async_read_req;
 #endif /* USE_ASYNC_UART */
-    mxc_gpio_cfg_t uart_rx_pin = {MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                                  MXC_GPIO_VSSEL_VDDIO};
+    mxc_gpio_cfg_t uart_rx_pin = { MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
+                                   MXC_GPIO_VSSEL_VDDIO };
 
     memset(bufCmdLine, 0, CMD_LINE_BUF_SIZE);
     idxCmdLine = 0;
@@ -325,11 +324,11 @@ void vCmdLineTask(void* pvParameters)
     NVIC_EnableIRQ(UARTx_IRQn);
 
     /* Async read will be used to wake process */
-    async_read_req.uart     = ConsoleUART;
-    async_read_req.txData   = NULL;
-    async_read_req.rxData   = &cReadChar;
-    async_read_req.txLen    = 0;
-    async_read_req.rxLen    = 1;
+    async_read_req.uart = ConsoleUART;
+    async_read_req.txData = NULL;
+    async_read_req.rxData = &cReadChar;
+    async_read_req.txLen = 0;
+    async_read_req.rxLen = 1;
     async_read_req.callback = vCmdLineTask_cb;
 
     printf("\nEnter 'help' to view a list of available commands.\n");
@@ -360,18 +359,17 @@ void vCmdLineTask(void* pvParameters)
                 /* If more characters are ready, process them here */
                 uTransLen = 1;
             } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
-                     MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART), (uint8_t*)&cReadChar,
-                                   (int*)&uTransLen));
+                     MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART), (uint8_t *)&cReadChar,
+                                   (int *)&uTransLen));
         }
 
-#else  /* USE_ASYNC_UART */
+#else /* USE_ASYNC_UART */
 
-        while (MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) == 0)
-            ;
+        while (MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) == 0) {}
 
         uTransLen = 1;
-        uTransLen =
-            MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART), (uint8_t*)&cReadChar, (int*)&uTransLen);
+        uTransLen = MXC_UART_Read(MXC_UART_GET_UART(CONSOLE_UART), (uint8_t *)&cReadChar,
+                                  (int *)&uTransLen);
 
         /* Process character */
         prvProcessInput(&bufCmdLine[0], &idxCmdLine, cReadChar);
@@ -443,13 +441,13 @@ int main(void)
         printf("xSemaphoreCreateMutex failed to create a mutex.\n");
     } else {
         /* Configure task */
-        if ((xTaskCreate(vTask0, (const char*)"Task0", configMINIMAL_STACK_SIZE, NULL,
+        if ((xTaskCreate(vTask0, (const char *)"Task0", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(vTask1, (const char*)"Task1", configMINIMAL_STACK_SIZE, NULL,
+            (xTaskCreate(vTask1, (const char *)"Task1", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(vTickTockTask, (const char*)"TickTock", 2 * configMINIMAL_STACK_SIZE, NULL,
-                         tskIDLE_PRIORITY + 2, NULL) != pdPASS) ||
-            (xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
+            (xTaskCreate(vTickTockTask, (const char *)"TickTock", 2 * configMINIMAL_STACK_SIZE,
+                         NULL, tskIDLE_PRIORITY + 2, NULL) != pdPASS) ||
+            (xTaskCreate(vCmdLineTask, (const char *)"CmdLineTask",
                          configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
             printf("xTaskCreate() failed to create a task.\n");
@@ -463,9 +461,7 @@ int main(void)
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
 
-    while (1) {
-        __NOP();
-    }
+    while (1) { __NOP(); }
 
     /* Quiet GCC warnings */
     return -1;

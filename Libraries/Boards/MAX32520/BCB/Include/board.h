@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-07-17 18:10:38 -0500 (Mon, 17 Jul 2017) $
- * $Revision: 28913 $
- *
  ******************************************************************************/
 
 /**
@@ -58,7 +55,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 0 /// Inactive state of LEDs
-#define LED_ON  1 /// Active state of LEDs
+#define LED_ON 1 /// Active state of LEDs
 
 #ifndef MX25_BAUD
 #define MX25_BAUD 3000000
@@ -109,7 +106,7 @@ int MX25_Board_Init(void);
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 
-int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
+int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
 /**
  * \brief   Translation function to implement SPI Write transaction
  * @param   write       Pointer to data master will write.
@@ -119,7 +116,7 @@ int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_wi
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 
-int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert,
+int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert,
                      mxc_spixf_width_t width);
 
 /**

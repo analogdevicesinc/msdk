@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -41,33 +41,31 @@
 #include "mxc_pins.h"
 #include "led.h"
 #include "pb.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/
@@ -76,8 +74,7 @@ int Board_Init(void)
 #ifndef __riscv
     int err;
 
-    for (unsigned long delay_count = 0; delay_count < 500000; delay_count++)
-        ;
+    for (uint32_t delay_count = 0; delay_count < 500000; delay_count++) {}
 
     // Set SWDCLK and SWDIO pads to 3.3V
     // MXC_GPIO0->vssel |= (3 << 28);
@@ -102,7 +99,7 @@ int Board_Init(void)
     }
 
     MXC_SIMO->vrego_c = 0x43; // Set CNN voltage
-#endif                        // __riscv
+#endif // __riscv
 
     return E_NO_ERROR;
 }

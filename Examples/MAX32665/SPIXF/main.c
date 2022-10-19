@@ -54,8 +54,10 @@
 
 /***** Definitions *****/
 
-#define EXT_FLASH_ADDR         0
+#define EXT_FLASH_ADDR 0
 #define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
+
+#define BUFF_SIZE 64
 
 int fail = 0;
 
@@ -70,7 +72,7 @@ extern uint8_t __load_start_xip, __load_length_xip;
 // Note: This demo has not been tested under IAR and should be considered non-functional
 extern int Image$$RW_IRAM2$$Length;
 extern char Image$$RW_IRAM2$$Base[];
-uint8_t* __xip_addr;
+uint8_t *__xip_addr;
 #endif
 
 /******************************************************************************/
@@ -108,8 +110,9 @@ int main(void)
 {
     uint32_t id;
     void (*func)(void);
-    uint8_t rx_buf[(uint32_t)(&__load_length_xip)];
-    int rx_len = sizeof(rx_buf);
+    uint8_t rx_buf[BUFF_SIZE];
+    int rx_len = (uint32_t)(&__load_length_xip);
+    int remain = rx_len;
 
     printf("\n\n********************* SPIX Example *********************\n");
     printf("This example communicates with an %s flash on the EvKit\n", EXT_FLASH_NAME);
@@ -122,8 +125,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
     printf("External flash Initialized.\n\n");
 
@@ -135,8 +137,7 @@ int main(void)
     } else {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     int err;
@@ -176,17 +177,21 @@ int main(void)
     }
 
     printf("Verifying external flash\n");
-    if ((err = Ext_Flash_Read(EXT_FLASH_ADDR, rx_buf, rx_len, EXT_FLASH_SPIXFC_WIDTH)) !=
-        E_NO_ERROR) {
-        printf("Error verifying data %d\n", err);
-        fail++;
-    } else {
-        if (memcmp(rx_buf, &__load_start_xip, rx_len) != E_NO_ERROR) {
+    while (remain) {
+        int chunk = ((remain > BUFF_SIZE) ? BUFF_SIZE : remain);
+        if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, rx_buf, chunk,
+                                  EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
+            printf("Error verifying data %d\n", err);
+            fail++;
+            break;
+        } else if (memcmp(rx_buf, &__load_start_xip + rx_len - remain, chunk) != E_NO_ERROR) {
             printf("Error invalid data\n");
             fail++;
-        } else {
+            break;
+        } else if (remain == chunk) {
             printf("Verified\n\n");
         }
+        remain -= chunk;
     }
 
     // Setup SPIX

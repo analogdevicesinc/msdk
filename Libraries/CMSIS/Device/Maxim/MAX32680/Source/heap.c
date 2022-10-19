@@ -43,12 +43,12 @@
  Increase program data space.
  Malloc and related functions depend on this
  */
-static char* heap_end = 0;
+static char *heap_end = 0;
 extern unsigned int __HeapBase;
 extern unsigned int __HeapLimit;
 caddr_t _sbrk(int incr)
 {
-    char* prev_heap_end;
+    char *prev_heap_end;
 
     if (heap_end == 0) {
         heap_end = (caddr_t)&__HeapBase;

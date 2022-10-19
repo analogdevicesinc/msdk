@@ -50,32 +50,37 @@
 
 /***** Definitions *****/
 // RAM Vendor Specific Commands
-#define A1024_READ  0x03
+#define A1024_READ 0x03
 #define A1024_WRITE 0x02
-#define A1024_EQIO  0x38
+#define A1024_EQIO 0x38 // Enable QUAD I/O access
+#define A1024_EDIO 0x3B // Enable DUAL I/O access
+#define A1024_RSTQIO 0xff // Reset from QUAD and DUAL to SPI I/O access
 
 // RAM Vendor Specific Values
-#define BUFFER_SIZE   512
+#define BUFFER_SIZE 512
 #define A1024_ADDRESS 0x80000000
-#define ITERATIONS    5000
+#define ITERATIONS 5000
+
+// Select IO Mode
+#define SPIXR_WIDTH MXC_SPIXR_SINGLE_SDIO
+//#define SPIXR_WIDTH MXC_SPIXR_QUAD_SDIO
 
 /***** Globals *****/
-int s, ss;
 
 mxc_spixr_cfg_t init_cfg = {
-    0x08,                /* Number of bits per character     */
-    MXC_SPIXR_QUAD_SDIO, /* SPI Data Width                   */
-    0x04,                /* num of system clocks between SS active & first serial clock edge     */
-    0x08,                /* num of system clocks between last serial clock edge and ss inactive  */
-    0x10,                /* num of system clocks between transactions (read / write)             */
-    0x800000,            /* Baud freq                        */
+    0x08, /* Number of bits per character     */
+    SPIXR_WIDTH, /* SPI Data Width */
+    0x04, /* num of system clocks between SS active & first serial clock edge     */
+    0x08, /* num of system clocks between last serial clock edge and ss inactive  */
+    0x10, /* num of system clocks between transactions (read / write)             */
+    0x800000, /* Baud freq                        */
 };
 
 /***** Functions *****/
 
 void setup(void)
 {
-    uint8_t quad_cmd = A1024_EQIO; /* pre-defined command to use quad mode         */
+    uint8_t mode_cmd;
 
     // Initialize the desired configuration
     if (MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
@@ -88,21 +93,35 @@ void setup(void)
     MXC_SPIXR->dma |= MXC_F_SPIXR_DMA_TX_FIFO_EN;
     MXC_SPIXR->ctrl3 &= ~MXC_F_SPIXR_CTRL3_DATA_WIDTH;
 
-    // Setup to communicate in quad mode
-    MXC_SPIXR_SendCommand(&quad_cmd, 1, 1);
+    // Setup communicate mode
+    switch (SPIXR_WIDTH) {
+    case MXC_SPIXR_SINGLE_SDIO:
+        mode_cmd = A1024_RSTQIO;
+        break;
+    case MXC_SPIXR_DUAL_SDIO:
+        mode_cmd = A1024_EDIO;
+        break;
+    case MXC_SPIXR_QUAD_SDIO:
+        mode_cmd = A1024_EQIO;
+        break;
+    default:
+        mode_cmd = A1024_EQIO;
+        break;
+    }
+    MXC_SPIXR_SendCommand(&mode_cmd, 1, 1);
 
     // Wait until quad cmd is sent
-    while (MXC_SPIXR_Busy())
-        ;
+    while (MXC_SPIXR_Busy()) {}
 
-    MXC_SPIXR_SetWidth(MXC_SPIXR_QUAD_SDIO);
+    MXC_SPIXR_SetWidth(SPIXR_WIDTH);
     MXC_SPIXR_ThreeWireModeDisable();
     MXC_SPIXR_DmaTXFIFODisable();
     MXC_SPIXR_DmaRXFIFODisable();
     MXC_SPIXR_TXFIFODisable();
     MXC_SPIXR_RXFIFODisable();
 
-    MXC_SPIXR_ExMemUseDummy(0x01);
+    // if require send dummy byte
+    //MXC_SPIXR_ExMemUseDummy(0x01);
     MXC_SPIXR_ExMemSetReadCommand(A1024_READ);
     MXC_SPIXR_ExMemSetWriteCommand(A1024_WRITE);
     MXC_SPIXR_ExMemEnable();
@@ -128,18 +147,18 @@ void test_function(void)
 {
     // Defining Variable(s) to write & store data to RAM
     uint8_t write_buffer[BUFFER_SIZE], read_buffer[BUFFER_SIZE];
-    uint8_t* address = (uint8_t*)A1024_ADDRESS;
-    ; /* Variable to store address of RAM */
+    uint8_t *address = (uint8_t *)A1024_ADDRESS;
+
+    /* Variable to store address of RAM */
     int temp, i;
+    unsigned int seed;
 
     // Configure the SPIXR
     setup();
 
     // Initialize & write pseudo-random data to be written to the RAM
-    srand(0);
-
     for (i = 0; i < BUFFER_SIZE; i++) {
-        temp            = rand();
+        temp = rand_r(&seed);
         write_buffer[i] = temp;
         // Write the data to the RAM
         *(address + i) = temp;
@@ -149,9 +168,7 @@ void test_function(void)
 
     for (temp = 0; temp < ITERATIONS; temp++) {
         // Read data from RAM
-        for (i = 0; i < BUFFER_SIZE; i++) {
-            read_buffer[i] = *(address + i);
-        }
+        for (i = 0; i < BUFFER_SIZE; i++) { read_buffer[i] = *(address + i); }
 
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
@@ -183,6 +200,5 @@ int main(void)
 
     printf("Example complete.\n");
 
-    while (1) {
-    }
+    return 0;
 }

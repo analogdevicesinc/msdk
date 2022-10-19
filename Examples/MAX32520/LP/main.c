@@ -64,19 +64,19 @@
 
 #define USE_CONSOLE 1
 
-#define DO_SLEEP     1
+#define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
-#define DO_BACKUP    0
+#define DO_BACKUP 0
 
 #if USE_CONSOLE
-#define PRINTF(...) printf(__VA_ARGS__)
+#define PRINT(...) printf(__VA_ARGS__)
 #else
-#define PRINTF(...)
+#define PRINT(...)
 #endif
 
 // *****************************************************************************
 volatile int buttonPressed;
-void buttonHandler(void* pb)
+void buttonHandler(void *pb)
 {
     buttonPressed = 1;
 }
@@ -88,31 +88,27 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed)
-            ;
+        while (!buttonPressed) {}
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x800000; tmp++) {
-        __NOP();
-    }
+    for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 #endif // USE_CONSOLE
 }
 
 int main(void)
 {
-    PRINTF("****Low Power Mode Example****\n\n");
+    PRINT("****Low Power Mode Example****\n\n");
 
-    PRINTF("This code cycles through the MAX32520 power modes, "
-           "using a push button (SW2) to exit from each mode and enter the next.\n\n");
+    PRINT("This code cycles through the MAX32520 power modes, "
+          "using a push button (SW2) to exit from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 
-    PRINTF("Running in ACTIVE mode.\n");
+    PRINT("Running in ACTIVE mode.\n");
 #if !USE_CONSOLE
     SYS_ClockDisable(SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
@@ -127,33 +123,33 @@ int main(void)
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
 
-    PRINTF("All unused RAMs placed in LIGHT SLEEP mode.\n");
+    PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     MXC_LP_ROMShutdown();
     MXC_LP_ICache0Shutdown();
 
-    PRINTF("All unused RAMs shutdown.\n");
+    PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 
     while (1) {
 #if DO_SLEEP
-        PRINTF("Entering SLEEP mode.\n");
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
-        PRINTF("Wakeup from SLEEP mode.\n\n");
+        PRINT("Wakeup from SLEEP mode.\n\n");
 #endif // DO_SLEEP
 #if DO_DEEPSLEEP
-        PRINTF("Entering DEEPSLEEP mode.\n");
+        PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
-        PRINTF("Wakeup from DEEPSLEEP mode.\n\n");
+        PRINT("Wakeup from DEEPSLEEP mode.\n\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-        PRINTF("Entering BACKUP mode.\n");
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP

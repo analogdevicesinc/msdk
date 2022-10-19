@@ -1,3 +1,36 @@
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
+
 /**
  * @file lv_conf.h
  * Configuration file for v8.0.2
@@ -7,10 +40,11 @@
  * COPY THIS FILE AS `lv_conf.h` NEXT TO the `lvgl` FOLDER
  */
 
+#ifndef EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+#define EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_
+
 #if 1 /*Set it to "1" to enable content*/
 
-#ifndef LV_CONF_H
-#define LV_CONF_H
 /*clang-format off*/
 
 #include <stdint.h>
@@ -44,11 +78,11 @@
 #define LV_MEM_SIZE (8U * 1024U) /*[bytes]*/
 
 /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
-#define LV_MEM_ADR 0                     /*0: unused*/
-#else                                    /*LV_MEM_CUSTOM*/
+#define LV_MEM_ADR 0 /*0: unused*/
+#else /*LV_MEM_CUSTOM*/
 #define LV_MEM_CUSTOM_INCLUDE <stdlib.h> /*Header for the dynamic memory function*/
-#define LV_MEM_CUSTOM_ALLOC   malloc
-#define LV_MEM_CUSTOM_FREE    free
+#define LV_MEM_CUSTOM_ALLOC malloc
+#define LV_MEM_CUSTOM_FREE free
 #define LV_MEM_CUSTOM_REALLOC realloc
 #endif /*LV_MEM_CUSTOM*/
 
@@ -72,7 +106,7 @@
 #define LV_TICK_CUSTOM_INCLUDE "Arduino.h" /*Header for the system time function*/
 #define LV_TICK_CUSTOM_SYS_TIME_EXPR \
     (millis()) /*Expression evaluating to current system time in ms*/
-#endif         /*LV_TICK_CUSTOM*/
+#endif /*LV_TICK_CUSTOM*/
 
 /*Default Dot Per Inch. Used to initialize default sizes such as widgets sized, style paddings.
  *(Not so important, you can adjust it to modify default sizes and spaces)*/
@@ -154,14 +188,14 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_LOG_PRINTF 1
 
 /*Enable/disable LV_LOG_TRACE in modules that produces a huge number of logs*/
-#define LV_LOG_TRACE_MEM        1
-#define LV_LOG_TRACE_TIMER      1
-#define LV_LOG_TRACE_INDEV      1
-#define LV_LOG_TRACE_DISP_REFR  1
-#define LV_LOG_TRACE_EVENT      1
+#define LV_LOG_TRACE_MEM 1
+#define LV_LOG_TRACE_TIMER 1
+#define LV_LOG_TRACE_INDEV 1
+#define LV_LOG_TRACE_DISP_REFR 1
+#define LV_LOG_TRACE_EVENT 1
 #define LV_LOG_TRACE_OBJ_CREATE 1
-#define LV_LOG_TRACE_LAYOUT     1
-#define LV_LOG_TRACE_ANIM       1
+#define LV_LOG_TRACE_LAYOUT 1
+#define LV_LOG_TRACE_ANIM 1
 
 #endif /*LV_USE_LOG*/
 
@@ -177,14 +211,13 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_ASSERT_STYLE \
     1 /*Check if the styles are properly initialized. (Very fast, recommended)*/
 #define LV_USE_ASSERT_MEM_INTEGRITY \
-    0                       /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
+    0 /*Check the integrity of `lv_mem` after critical operations. (Slow)*/
 #define LV_USE_ASSERT_OBJ 0 /*Check the object's type and existence (e.g. not deleted). (Slow)*/
 
 /*Add a custom handler when assert happens e.g. to restart the MCU*/
 #define LV_ASSERT_HANDLER_INCLUDE <stdint.h>
 #define LV_ASSERT_HANDLER \
-    while (1)             \
-        ; /*Halt by default*/
+    while (1) {} /*Halt by default*/
 
 /*-------------
  * Others
@@ -204,8 +237,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_SPRINTF_CUSTOM 0
 #if LV_SPRINTF_CUSTOM
 #define LV_SPRINTF_INCLUDE <stdio.h>
-#define lv_snprintf        snprintf
-#define lv_vsnprintf       vsnprintf
+#define lv_snprintf snprintf
+#define lv_vsnprintf vsnprintf
 #else /*LV_SPRINTF_CUSTOM*/
 #define LV_SPRINTF_USE_FLOAT 0
 #endif /*LV_SPRINTF_CUSTOM*/
@@ -217,7 +250,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_ENABLE_GC 0
 #if LV_ENABLE_GC != 0
 #define LV_GC_INCLUDE "gc.h" /*Include Garbage Collector related things*/
-#endif                       /*LV_ENABLE_GC*/
+#endif /*LV_ENABLE_GC*/
 
 /*=====================
  *  COMPILER SETTINGS
@@ -268,7 +301,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 /*Montserrat fonts with ASCII range and some symbols using bpp = 4
  *https://fonts.google.com/specimen/Montserrat*/
-#define LV_FONT_MONTSERRAT_8  0
+#define LV_FONT_MONTSERRAT_8 0
 #define LV_FONT_MONTSERRAT_10 0
 #define LV_FONT_MONTSERRAT_12 0
 #define LV_FONT_MONTSERRAT_14 1
@@ -291,13 +324,13 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_FONT_MONTSERRAT_48 0
 
 /*Demonstrate special features*/
-#define LV_FONT_MONTSERRAT_12_SUBPX      0
+#define LV_FONT_MONTSERRAT_12_SUBPX 0
 #define LV_FONT_MONTSERRAT_28_COMPRESSED 0 /*bpp = 3*/
 #define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0 /*Hebrew, Arabic, Perisan letters and all their forms*/
-#define LV_FONT_SIMSUN_16_CJK            0 /*1000 most common CJK radicals*/
+#define LV_FONT_SIMSUN_16_CJK 0 /*1000 most common CJK radicals*/
 
 /*Pixel perfect monospace fonts*/
-#define LV_FONT_UNSCII_8  1
+#define LV_FONT_UNSCII_8 1
 #define LV_FONT_UNSCII_16 0
 
 /*Optionally declare custom fonts here.
@@ -369,11 +402,11 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
  *In these languages characters should be replaced with an other form based on their position in the text*/
 #define LV_USE_ARABIC_PERSIAN_CHARS 0
 
-/*==================
- *  WIDGET USAGE
- *================*/
+/*==================*/
+/*  WIDGET USAGE    */
+/*==================*/
 
-/*Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html*/
+// Documentation of the widgets: https://docs.lvgl.io/latest/en/html/widgets/index.html
 
 #define LV_USE_ARC 1
 
@@ -445,7 +478,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
         "January", "February", "March", "April", "May", "June", "July", "August", "September", \
             "October", "November", "December"                                                  \
     }
-#define LV_USE_CALENDAR_HEADER_ARROW    1
+#define LV_USE_CALENDAR_HEADER_ARROW 1
 #define LV_USE_CALENDAR_HEADER_DROPDOWN 1
 #endif /*LV_USE_CALENDAR*/
 
@@ -521,8 +554,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Enable the examples to be built with the library*/
 #define LV_BUILD_EXAMPLES 1
 
-/*--END OF LV_CONF_H--*/
-
-#endif /*LV_CONF_H*/
-
 #endif /*End of "Content enable"*/
+
+/*--End of EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_--*/
+
+#endif // EXAMPLES_MAX32672_DISPLAY_LV_CONF_H_

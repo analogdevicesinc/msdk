@@ -1,12 +1,14 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -29,9 +31,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-07-17 18:10:38 -0500 (Mon, 17 Jul 2017) $
- * $Revision: 28913 $
- *
  ******************************************************************************/
 
 /**
@@ -41,12 +40,14 @@
 
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32570_MN_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32570_MN_EVKIT_V1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define BOARD_MN_EVKIT_V1 1
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
@@ -57,7 +58,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 3000000
@@ -92,4 +93,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32570_MN_EVKIT_V1_INCLUDE_BOARD_H_

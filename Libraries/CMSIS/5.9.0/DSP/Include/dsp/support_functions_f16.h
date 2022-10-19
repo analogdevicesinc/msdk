@@ -44,7 +44,7 @@ extern "C" {
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_copy_f16(const float16_t* pSrc, float16_t* pDst, uint32_t blockSize);
+void arm_copy_f16(const float16_t *pSrc, float16_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Fills a constant value into a floating-point vector.
@@ -52,7 +52,7 @@ void arm_copy_f16(const float16_t* pSrc, float16_t* pDst, uint32_t blockSize);
    * @param[out] pDst       output pointer
    * @param[in]  blockSize  number of samples to process
    */
-void arm_fill_f16(float16_t value, float16_t* pDst, uint32_t blockSize);
+void arm_fill_f16(float16_t value, float16_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Converts the elements of the floating-point vector to Q31 vector.
@@ -60,7 +60,7 @@ void arm_fill_f16(float16_t value, float16_t* pDst, uint32_t blockSize);
    * @param[out] pDst       points to the q15 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_f16_to_q15(const float16_t* pSrc, q15_t* pDst, uint32_t blockSize);
+void arm_f16_to_q15(const float16_t *pSrc, q15_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Converts the elements of the floating-point vector to Q31 vector.
@@ -68,7 +68,7 @@ void arm_f16_to_q15(const float16_t* pSrc, q15_t* pDst, uint32_t blockSize);
    * @param[out] pDst       points to the f16 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_q15_to_f16(const q15_t* pSrc, float16_t* pDst, uint32_t blockSize);
+void arm_q15_to_f16(const q15_t *pSrc, float16_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Converts the elements of the floating-point vector to Q31 vector.
@@ -76,7 +76,7 @@ void arm_q15_to_f16(const q15_t* pSrc, float16_t* pDst, uint32_t blockSize);
    * @param[out] pDst       points to the f16 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_float_to_f16(const float32_t* pSrc, float16_t* pDst, uint32_t blockSize);
+void arm_float_to_f16(const float32_t *pSrc, float16_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Converts the elements of the floating-point vector to Q31 vector.
@@ -84,7 +84,7 @@ void arm_float_to_f16(const float32_t* pSrc, float16_t* pDst, uint32_t blockSize
    * @param[out] pDst       points to the f32 output vector
    * @param[in]  blockSize  length of the input vector
    */
-void arm_f16_to_float(const float16_t* pSrc, float32_t* pDst, uint32_t blockSize);
+void arm_f16_to_float(const float16_t *pSrc, float32_t *pDst, uint32_t blockSize);
 
 /**
  * @brief Weighted sum
@@ -96,7 +96,7 @@ void arm_f16_to_float(const float16_t* pSrc, float32_t* pDst, uint32_t blockSize
  * @return Weighted sum
  *
  */
-float16_t arm_weighted_sum_f16(const float16_t* in, const float16_t* weigths, uint32_t blockSize);
+float16_t arm_weighted_sum_f16(const float16_t *in, const float16_t *weigths, uint32_t blockSize);
 
 /**
  * @brief Barycenter
@@ -110,7 +110,7 @@ float16_t arm_weighted_sum_f16(const float16_t* in, const float16_t* weigths, ui
  * @return       None
  *
  */
-void arm_barycenter_f16(const float16_t* in, const float16_t* weights, float16_t* out,
+void arm_barycenter_f16(const float16_t *in, const float16_t *weights, float16_t *out,
                         uint32_t nbVectors, uint32_t vecDim);
 
 /**
@@ -141,7 +141,7 @@ void arm_barycenter_f16(const float16_t* in, const float16_t* weights, float16_t
 __STATIC_INLINE int16_t arm_typecast_s16_f16(float16_t x)
 {
     int16_t res;
-    res = *(int16_t*)memcpy((char*)&res, (char*)&x, sizeof(float16_t));
+    res = *(int16_t *)memcpy((char *)&res, (char *)&x, sizeof(float16_t));
     return (res);
 }
 
@@ -160,7 +160,7 @@ __STATIC_INLINE int16_t arm_typecast_s16_f16(float16_t x)
 __STATIC_INLINE float16_t arm_typecast_f16_s16(int16_t x)
 {
     float16_t res;
-    res = *(float16_t*)memcpy((char*)&res, (char*)&x, sizeof(int16_t));
+    res = *(float16_t *)memcpy((char *)&res, (char *)&x, sizeof(int16_t));
     return (res);
 }
 

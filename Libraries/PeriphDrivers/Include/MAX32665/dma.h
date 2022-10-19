@@ -36,13 +36,13 @@
  *
  *************************************************************************** */
 
-#ifndef _DMA_H_
-#define _DMA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_DMA_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_DMA_H_
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "dma_regs.h"
-#include <stdbool.h>
 #include "mxc_errors.h"
 
 #ifdef __cplusplus
@@ -61,10 +61,10 @@ extern "C" {
  * Enumeration for the DMA Channel's priority level.
  */
 typedef enum {
-    MXC_DMA_PRIO_HIGH    = MXC_S_DMA_CFG_PRI_HIGH,    /**< High Priority */
+    MXC_DMA_PRIO_HIGH = MXC_S_DMA_CFG_PRI_HIGH, /**< High Priority */
     MXC_DMA_PRIO_MEDHIGH = MXC_S_DMA_CFG_PRI_MEDHIGH, /**< Medium High Priority */
-    MXC_DMA_PRIO_MEDLOW  = MXC_S_DMA_CFG_PRI_MEDLOW,  /**< Medium Low Priority */
-    MXC_DMA_PRIO_LOW     = MXC_S_DMA_CFG_PRI_LOW,     /**< Low Priority */
+    MXC_DMA_PRIO_MEDLOW = MXC_S_DMA_CFG_PRI_MEDLOW, /**< Medium Low Priority */
+    MXC_DMA_PRIO_LOW = MXC_S_DMA_CFG_PRI_LOW, /**< Low Priority */
 } mxc_dma_priority_t;
 
 /** @brief DMA request select */
@@ -80,7 +80,7 @@ typedef enum {
         MXC_S_DMA_CFG_REQSEL_UART1RX, /**< UART1 Receive DMA Request Selection */
     MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CFG_REQSEL_I2C0RX, /**< I2C0 Receive DMA Request Selection */
     MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CFG_REQSEL_I2C1RX, /**< I2C1 Receive DMA Request Selection */
-    MXC_DMA_REQUEST_ADC    = MXC_S_DMA_CFG_REQSEL_ADC,    /**< ADC DMA Request Selection */
+    MXC_DMA_REQUEST_ADC = MXC_S_DMA_CFG_REQSEL_ADC, /**< ADC DMA Request Selection */
     MXC_DMA_REQUEST_I2C2RX = MXC_S_DMA_CFG_REQSEL_I2C2RX,
     MXC_DMA_REQUEST_UART2RX =
         MXC_S_DMA_CFG_REQSEL_UART2RX, /**< UART2 Receive DMA Request Selection */
@@ -152,22 +152,22 @@ typedef enum {
 
 /** @brief Enumeration for the DMA prescaler */
 typedef enum {
-    MXC_DMA_PRESCALE_DISABLE = MXC_S_DMA_CFG_PSSEL_DIS,    /**< Prescaler disabled */
-    MXC_DMA_PRESCALE_DIV256  = MXC_S_DMA_CFG_PSSEL_DIV256, /**< Divide by 256 */
-    MXC_DMA_PRESCALE_DIV64K  = MXC_S_DMA_CFG_PSSEL_DIV64K, /**< Divide by 65,536 */
-    MXC_DMA_PRESCALE_DIV16M  = MXC_S_DMA_CFG_PSSEL_DIV16M, /**< Divide by 16,777,216 */
+    MXC_DMA_PRESCALE_DISABLE = MXC_S_DMA_CFG_PSSEL_DIS, /**< Prescaler disabled */
+    MXC_DMA_PRESCALE_DIV256 = MXC_S_DMA_CFG_PSSEL_DIV256, /**< Divide by 256 */
+    MXC_DMA_PRESCALE_DIV64K = MXC_S_DMA_CFG_PSSEL_DIV64K, /**< Divide by 65,536 */
+    MXC_DMA_PRESCALE_DIV16M = MXC_S_DMA_CFG_PSSEL_DIV16M, /**< Divide by 16,777,216 */
 } mxc_dma_prescale_t;
 
 /** @brief Enumeration for the DMA timeout value */
 typedef enum {
-    MXC_DMA_TIMEOUT_4_CLK   = MXC_S_DMA_CFG_TOSEL_TO4,   /**< DMA timeout of 4 clocks */
-    MXC_DMA_TIMEOUT_8_CLK   = MXC_S_DMA_CFG_TOSEL_TO8,   /**< DMA timeout of 8 clocks */
-    MXC_DMA_TIMEOUT_16_CLK  = MXC_S_DMA_CFG_TOSEL_TO16,  /**< DMA timeout of 16 clocks */
-    MXC_DMA_TIMEOUT_32_CLK  = MXC_S_DMA_CFG_TOSEL_TO32,  /**< DMA timeout of 32 clocks */
-    MXC_DMA_TIMEOUT_64_CLK  = MXC_S_DMA_CFG_TOSEL_TO64,  /**< DMA timeout of 64 clocks */
+    MXC_DMA_TIMEOUT_4_CLK = MXC_S_DMA_CFG_TOSEL_TO4, /**< DMA timeout of 4 clocks */
+    MXC_DMA_TIMEOUT_8_CLK = MXC_S_DMA_CFG_TOSEL_TO8, /**< DMA timeout of 8 clocks */
+    MXC_DMA_TIMEOUT_16_CLK = MXC_S_DMA_CFG_TOSEL_TO16, /**< DMA timeout of 16 clocks */
+    MXC_DMA_TIMEOUT_32_CLK = MXC_S_DMA_CFG_TOSEL_TO32, /**< DMA timeout of 32 clocks */
+    MXC_DMA_TIMEOUT_64_CLK = MXC_S_DMA_CFG_TOSEL_TO64, /**< DMA timeout of 64 clocks */
     MXC_DMA_TIMEOUT_128_CLK = MXC_S_DMA_CFG_TOSEL_TO128, /**< DMA timeout of 128 clocks */
     MXC_DMA_TIMEOUT_256_CLK = MXC_S_DMA_CFG_TOSEL_TO256, /**< DMA timeout of 256 clocks */
-    MXC_DMA_TIMEOUT_512_CLK = MXC_S_DMA_CFG_TOSEL_TO512  /**< DMA timeout of 512 clocks */
+    MXC_DMA_TIMEOUT_512_CLK = MXC_S_DMA_CFG_TOSEL_TO512 /**< DMA timeout of 512 clocks */
 } mxc_dma_timeout_t;
 
 /** @brief DMA transfer data width */
@@ -175,9 +175,9 @@ typedef enum {
     /* Using the '_V_' define instead of the '_S_' since these same values will be used to 
        specify the DSTWD also.  The API functions will shift the value the correct amount 
        prior to writing the cfg register. */
-    MXC_DMA_WIDTH_BYTE     = MXC_V_DMA_CFG_SRCWD_BYTE,     /**< DMA transfer in bytes */
+    MXC_DMA_WIDTH_BYTE = MXC_V_DMA_CFG_SRCWD_BYTE, /**< DMA transfer in bytes */
     MXC_DMA_WIDTH_HALFWORD = MXC_V_DMA_CFG_SRCWD_HALFWORD, /**< DMA transfer in 16-bit half-words */
-    MXC_DMA_WIDTH_WORD     = MXC_V_DMA_CFG_SRCWD_WORD      /**< DMA transfer in 32-bit words */
+    MXC_DMA_WIDTH_WORD = MXC_V_DMA_CFG_SRCWD_WORD /**< DMA transfer in 32-bit words */
 } mxc_dma_width_t;
 
 /**
@@ -186,12 +186,12 @@ typedef enum {
  *
  */
 typedef struct {
-    int ch;                  ///< The channel to load the configuration data into
+    int ch; ///< The channel to load the configuration data into
     mxc_dma_reqsel_t reqsel; ///< The request select line to be used (mem2mem, peripheral)
-    mxc_dma_width_t srcwd;   ///< The source width (could be dependent on FIFO width)
-    mxc_dma_width_t dstwd;   ///< The destination width (could be dependent on FIFO width)
-    int srcinc_en;           ///< Whether to increment the source address during the transfer
-    int dstinc_en;           ///< Whether to increment the source address during the transfer
+    mxc_dma_width_t srcwd; ///< The source width (could be dependent on FIFO width)
+    mxc_dma_width_t dstwd; ///< The destination width (could be dependent on FIFO width)
+    int srcinc_en; ///< Whether to increment the source address during the transfer
+    int dstinc_en; ///< Whether to increment the source address during the transfer
 } mxc_dma_config_t;
 
 /**
@@ -199,10 +199,10 @@ typedef struct {
  *
  */
 typedef struct {
-    int ch;       ///< The channel to use for the transfer
-    void* source; ///< Pointer to the source address, if applicable
-    void* dest;   ///< Pointer to the destination address, if applicable
-    int len;      ///< Number of bytes to transfer
+    int ch; ///< The channel to use for the transfer
+    void *source; ///< Pointer to the source address, if applicable
+    void *dest; ///< Pointer to the destination address, if applicable
+    int len; ///< Number of bytes to transfer
 } mxc_dma_srcdst_t;
 
 /**
@@ -212,12 +212,12 @@ typedef struct {
  *
  */
 typedef struct {
-    int ch;                   ///< The channel to use for the transfer
-    mxc_dma_priority_t prio;  ///< The DMA priority for the channel
-    unsigned int reqwait_en;  ///< Delay the timeout timer start until after first transfer
-    mxc_dma_timeout_t tosel;  ///< Number of prescaled clocks seen by the channel before a timeout
+    int ch; ///< The channel to use for the transfer
+    mxc_dma_priority_t prio; ///< The DMA priority for the channel
+    unsigned int reqwait_en; ///< Delay the timeout timer start until after first transfer
+    mxc_dma_timeout_t tosel; ///< Number of prescaled clocks seen by the channel before a timeout
     mxc_dma_prescale_t pssel; ///< Prescaler for the timeout timer
-    unsigned int burst_size;  ///< Number of bytes moved in a single burst
+    unsigned int burst_size; ///< Number of bytes moved in a single burst
 } mxc_dma_adv_config_t;
 
 /**
@@ -225,7 +225,7 @@ typedef struct {
  *
  * @param   dest    Pointer to the destination of the copy
  */
-typedef void (*mxc_dma_complete_cb_t)(void* dest);
+typedef void (*mxc_dma_complete_cb_t)(void *dest);
 
 /**
  * @brief   The callback called on completion of a transfer,
@@ -250,7 +250,7 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
  * @details    This initialization is required before using the DMA driver functions.
  * @return     #E_NO_ERROR if successful
  */
-int MXC_DMA_Init(mxc_dma_regs_t* dma);
+int MXC_DMA_Init(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Request DMA channel
@@ -262,7 +262,7 @@ int MXC_DMA_Init(mxc_dma_regs_t* dma);
  * @return     #E_BAD_STATE     DMA is not initialized, call MXC_DMA_Init() first.
  * @return     #E_BUSY          DMA is currently busy (locked), try again later.
  */
-int MXC_DMA_AcquireChannel(mxc_dma_regs_t* dma);
+int MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Release DMA channel
@@ -313,7 +313,7 @@ int MXC_DMA_SetSrcDst(mxc_dma_srcdst_t srcdst);
  * @return     See \ref MXC_Error_Codes for a list of return values
  */
 
-int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t* srcdst);
+int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t *srcdst);
 
 /**
  * @brief      Set channel reload source, destination, and count for the transfer
@@ -334,7 +334,7 @@ int MXC_DMA_SetSrcReload(mxc_dma_srcdst_t srcdstReload);
  * @return     See \ref MXC_Error_Codes for a list of return values
  */
 
-int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t* srcdstReload);
+int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t *srcdstReload);
 
 /**
  * @brief      Set channel interrupt callback
@@ -443,7 +443,7 @@ int MXC_DMA_Stop(int ch);
  *             function can be used on a channel handle returned by MXC_DMA_AcquireChannel().
  * @return     NULL if an unused or invalid channel handle, or a valid pointer otherwise
  */
-mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch);
+mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch);
 
 /**
  * @brief      Interrupt handler function
@@ -451,7 +451,7 @@ mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch);
  * @details    Call this function as the ISR for each DMA channel under driver control.
  *             Interrupt flags for channel ch will be automatically cleared before return.
  */
-void MXC_DMA_Handler(mxc_dma_regs_t* dma);
+void MXC_DMA_Handler(mxc_dma_regs_t *dma);
 
 /*************************/
 /* High Level Functions  */
@@ -470,7 +470,7 @@ void MXC_DMA_Handler(mxc_dma_regs_t* dma);
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_MemCpy(mxc_dma_regs_t* dma, void* dest, void* src, int len,
+int MXC_DMA_MemCpy(mxc_dma_regs_t *dma, void *dest, void *src, int len,
                    mxc_dma_complete_cb_t callback);
 
 /**
@@ -485,7 +485,7 @@ int MXC_DMA_MemCpy(mxc_dma_regs_t* dma, void* dest, void* src, int len,
  *
  * @return     see \ref MXC_Error_Codes
  */
-int MXC_DMA_DoTransfer(mxc_dma_regs_t* dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
+int MXC_DMA_DoTransfer(mxc_dma_regs_t *dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst,
                        mxc_dma_trans_chain_t callback);
 /**
  * For other functional uses of DMA (UART, SPI, etc) see the appropriate peripheral driver
@@ -496,4 +496,4 @@ int MXC_DMA_DoTransfer(mxc_dma_regs_t* dma, mxc_dma_config_t config, mxc_dma_src
 }
 #endif
 
-#endif /* _DMA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_DMA_H_

@@ -38,8 +38,8 @@
  ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _MAXIM_BITMAP_IMAGE_H_
-#define _MAXIM_BITMAP_IMAGE_H_
+#ifndef EXAMPLES_MAX32650_CLCD_FRAME_H_
+#define EXAMPLES_MAX32650_CLCD_FRAME_H_
 
 /** Number of bits per pixel for the logo image */
 #define LOGO_BPP 8
@@ -51,8 +51,8 @@
 #define LOGO_H 81
 
 /** Color palette for the image. */
-uint32_t palette[] = {0x6F6D69, 0x76746F, 0xA2A700, 0x8A8984, 0x9C9B97, 0xCED17A,
-                      0xC3C3BE, 0xE8E9BF, 0xE2E4E1, 0xFDFFFC, 0xFFFFFF};
+uint32_t palette[] = { 0x6F6D69, 0x76746F, 0xA2A700, 0x8A8984, 0x9C9B97, 0xCED17A,
+                       0xC3C3BE, 0xE8E9BF, 0xE2E4E1, 0xFDFFFC, 0xFFFFFF };
 
 /** The Maxim logo for display on the CLCD */
 unsigned char image[] = {
@@ -764,5 +764,6 @@ unsigned char image[] = {
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9};
-#endif /** _MAXIM_BITMAP_IMAGE_H_ */
+    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
+};
+#endif // EXAMPLES_MAX32650_CLCD_FRAME_H_

@@ -4,48 +4,51 @@
  *          CLCD for the demo.
  */
 
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-******************************************************************************/
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _LOGO_H_
-#define _LOGO_H_
+#ifndef LIBRARIES_BOARDS_MAX32570_INCLUDE_LOGO_H_
+#define LIBRARIES_BOARDS_MAX32570_INCLUDE_LOGO_H_
 
 /** Color palette for the image */
-uint32_t logo_palette[] = {0x6F6D69, 0x76746F, 0x2BB5A4, 0x8A8984, 0x9C9B97, 0xCED17A,
-                           0xC3C3BE, 0xE8E9BF, 0xE2E4E1, 0xFDFFFC, 0xFFFFFF};
+uint32_t logo_palette[] = { 0x6F6D69, 0x76746F, 0x2BB5A4, 0x8A8984, 0x9C9B97, 0xCED17A,
+                            0xC3C3BE, 0xE8E9BF, 0xE2E4E1, 0xFDFFFC, 0xFFFFFF };
 
 /** Bitmap info for the image */
-bitmap_info_t logo_info = {280, 81, (unsigned char*)logo_palette, 8};
+bitmap_info_t logo_info = { 280, 81, (unsigned char *)logo_palette, 8 };
 
 /** The Maxim logo for display on the CLCD */
 unsigned char logo_image[] = {
@@ -757,5 +760,7 @@ unsigned char logo_image[] = {
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9};
-#endif /** _LOGO_H_ */
+    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9
+};
+
+#endif // LIBRARIES_BOARDS_MAX32570_INCLUDE_LOGO_H_

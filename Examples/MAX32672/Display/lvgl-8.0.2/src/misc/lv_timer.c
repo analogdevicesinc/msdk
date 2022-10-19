@@ -241,7 +241,8 @@ void lv_timer_ready(lv_timer_t* timer)
 /**
  * Set the number of times a timer will repeat.
  * @param timer pointer to a lv_timer.
- * @param repeat_count -1 : infinity;  0 : stop ;  n >0: residual times
+ * @param repeat_count -1 : infinity;  0 : stop{}
+ n >0: residual times
  */
 void lv_timer_set_repeat_count(lv_timer_t* timer, int32_t repeat_count)
 {

@@ -36,12 +36,14 @@
  *
  **************************************************************************** */
 
-#ifndef _MXC_PINS_H_
-#define _MXC_PINS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MXC_PINS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MXC_PINS_H_
 
 #include "gpio.h"
 
 /***** Global Variables *****/
+typedef enum { MAP_A, MAP_B } sys_map_t;
+
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
@@ -138,4 +140,4 @@ extern const mxc_gpio_cfg_t gpio_cfg_pcif_vsync;
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_pclk;
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_pwrdwn;
 
-#endif /* _MXC_PINS_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MXC_PINS_H_

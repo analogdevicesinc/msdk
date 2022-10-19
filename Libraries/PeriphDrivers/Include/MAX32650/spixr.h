@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SPIXR_H_
-#define _SPIXR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_SPIXR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_SPIXR_H_
 
 /* **** Includes **** */
 #include "spixr_regs.h"
@@ -103,7 +103,7 @@ typedef struct {
  *
  * @return     #E_NULL_PTR if NULL buffer passed, #E_NO_ERROR otherwise
  */
-int MXC_SPIXR_ReadRXFIFO(uint8_t* buf, int len);
+int MXC_SPIXR_ReadRXFIFO(uint8_t *buf, int len);
 
 /**
  * @brief       Loads bytes into the FIFO
@@ -113,7 +113,7 @@ int MXC_SPIXR_ReadRXFIFO(uint8_t* buf, int len);
  *
  * @return     #E_NULL_PTR if NULL buffer passed, #E_NO_ERROR otherwise
  */
-int MXC_SPIXR_WriteTXFIFO(uint8_t* buf, int len);
+int MXC_SPIXR_WriteTXFIFO(uint8_t *buf, int len);
 
 /**
  * @brief       Select which SS pin is used in SPIXR
@@ -440,7 +440,7 @@ int MXC_SPIXR_Busy(void);
  * @return      #E_NO_ERROR if the SPIXR is initialized successfully,
  *              @ref MXC_Error_Codes "error" if unsuccessful.
  */
-int MXC_SPIXR_Init(mxc_spixr_cfg_t* cfg);
+int MXC_SPIXR_Init(mxc_spixr_cfg_t *cfg);
 
 /**
  * @brief       Shut Down the SPI RAM XIP Data Module
@@ -456,7 +456,7 @@ int MXC_SPIXR_Shutdown(void);
  * @param       length      number of bytes to send
  * @param       tx_num_char number of bytes to send
  */
-void MXC_SPIXR_SendCommand(uint8_t* cmd, uint32_t length, uint32_t tx_num_char);
+void MXC_SPIXR_SendCommand(uint8_t *cmd, uint32_t length, uint32_t tx_num_char);
 
 /**@} end of group spixr */
 
@@ -464,4 +464,4 @@ void MXC_SPIXR_SendCommand(uint8_t* cmd, uint32_t length, uint32_t tx_num_char);
 }
 #endif
 
-#endif /* _SPIXR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_SPIXR_H_

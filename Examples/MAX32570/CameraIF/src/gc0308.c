@@ -48,7 +48,7 @@
 #if (ACTIVE_CAMERA == CAM_GC0308)
 
 #define cambus_writeb(addr, x) sccb_write_byt(g_slv_addr, addr, x)
-#define cambus_readb(addr, x)  sccb_read_byt(g_slv_addr, addr, x)
+#define cambus_readb(addr, x) sccb_read_byt(g_slv_addr, addr, x)
 
 static int g_slv_addr;
 
@@ -73,13 +73,14 @@ static int get_id(void)
 
 static int dump_registers(void)
 {
-    int ret           = 0;
+    int ret = 0;
     unsigned char byt = 0;
     unsigned int i, k;
-    unsigned char buf[64]         = {0};
-    unsigned char* ptr            = buf;
-    const char* banks[2]          = {"PAGE0", "PAGE1"};
-    unsigned char banks_select[2] = {PAGE_0, PAGE_1};
+    unsigned char buf[64] = { 0 };
+    unsigned char *ptr = buf;
+    const char *banks[2] = { "PAGE0", "PAGE1" };
+    unsigned char banks_select[2] = { PAGE_0, PAGE_1 };
+    int sz = 64;
 
     for (k = 0; k < 2; k++) {
         printf("SECTION: %s\n", banks[k]);
@@ -90,6 +91,7 @@ static int dump_registers(void)
                 *ptr = '\0';
                 printf("%04X:%s\n", i - 16, buf);
                 ptr = buf;
+                sz = 64;
             }
 
             if (i == 256) {
@@ -99,18 +101,20 @@ static int dump_registers(void)
             ret = cambus_readb(i, &byt);
 
             if (ret == 0) {
-                ret = sprintf((char*)ptr, " %02X", byt);
+                ret = snprintf((char *)ptr, sz, " %02X", byt);
 
                 if (ret < 0) {
                     return ret;
                 }
 
                 ptr += 3; // XX + space
+                sz -= 3;
             } else {
                 //printf("\nREAD FAILED: reg:%X\n", i);
                 *ptr++ = '!';
                 *ptr++ = '!';
                 *ptr++ = ' ';
+                sz -= 3;
             }
         }
     }
@@ -167,24 +171,24 @@ static int set_pixformat(pixformat_t pixformat)
     reg &= 0x1f; // clear first 5 bits
 
     switch (pixformat) {
-        case PIXFORMAT_RGB565:
-            reg |= 0x06;
-            break;
+    case PIXFORMAT_RGB565:
+        reg |= 0x06;
+        break;
 
-        case PIXFORMAT_YUV422:
-        case PIXFORMAT_GRAYSCALE:
-            reg |= 0x02;
-            break;
+    case PIXFORMAT_YUV422:
+    case PIXFORMAT_GRAYSCALE:
+        reg |= 0x02;
+        break;
 
-            //        case PIXFORMAT_GRAYSCALE:
-            //          reg |= 0x11;
-            //          break;
-        case PIXFORMAT_BAYER:
-            reg |= 0x17;
-            break;
+        //        case PIXFORMAT_GRAYSCALE:
+        //          reg |= 0x11;
+        //          break;
+    case PIXFORMAT_BAYER:
+        reg |= 0x17;
+        break;
 
-        default:
-            return -1;
+    default:
+        return -1;
     }
 
     // Write back register
@@ -195,7 +199,7 @@ extern const int resolution[][2];
 
 static int set_framesize(framesize_t framesize)
 {
-    int ret    = 0;
+    int ret = 0;
     uint16_t w = resolution[framesize][0];
     uint16_t h = resolution[framesize][1];
 
@@ -290,25 +294,25 @@ static int set_vflip(int enable)
 }
 
 /******************************** Public Functions ***************************/
-int sensor_register(camera_t* camera)
+int sensor_register(camera_t *camera)
 {
     // Initialize sensor structure.
-    camera->init            = init;
-    camera->get_id          = get_id;
-    camera->dump_registers  = dump_registers;
-    camera->reset           = reset;
-    camera->sleep           = sleep;
-    camera->read_reg        = read_reg;
-    camera->write_reg       = write_reg;
-    camera->set_pixformat   = set_pixformat;
-    camera->set_framesize   = set_framesize;
-    camera->set_contrast    = set_contrast;
-    camera->set_brightness  = set_brightness;
-    camera->set_saturation  = set_saturation;
+    camera->init = init;
+    camera->get_id = get_id;
+    camera->dump_registers = dump_registers;
+    camera->reset = reset;
+    camera->sleep = sleep;
+    camera->read_reg = read_reg;
+    camera->write_reg = write_reg;
+    camera->set_pixformat = set_pixformat;
+    camera->set_framesize = set_framesize;
+    camera->set_contrast = set_contrast;
+    camera->set_brightness = set_brightness;
+    camera->set_saturation = set_saturation;
     camera->set_gainceiling = set_gainceiling;
-    camera->set_colorbar    = set_colorbar;
-    camera->set_hmirror     = set_hmirror;
-    camera->set_vflip       = set_vflip;
+    camera->set_colorbar = set_colorbar;
+    camera->set_hmirror = set_hmirror;
+    camera->set_vflip = set_vflip;
 
     return 0;
 }

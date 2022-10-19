@@ -2,15 +2,17 @@
  * @file
  * @brief   Touchscreen driver API header file
  */
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -33,31 +35,30 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _TOUCHSCREEN_H_
-#define _TOUCHSCREEN_H_
+#ifndef LIBRARIES_BOARDS_MAX32570_INCLUDE_TOUCHSCREEN_H_
+#define LIBRARIES_BOARDS_MAX32570_INCLUDE_TOUCHSCREEN_H_
 
 /************************************************************************************/
-#define TS_MAX_BUTTONS      16
+#define TS_MAX_BUTTONS 16
 #define TS_INVALID_KEY_CODE -1
 
 typedef enum {
-    TSC_TEMP0  = (0x83 | 0x00 | 0x00),
-    TSC_Y      = (0x83 | 0x10 | 0x04),
-    TSC_VBAT   = (0x83 | 0x20 | 0x00),
-    TSC_Z1     = (0x83 | 0x30 | 0x04),
-    TSC_Z2     = (0x83 | 0x40 | 0x04),
-    TSC_X      = (0x83 | 0x50 | 0x04),
-    TSC_AUX    = (0x83 | 0x60 | 0x00),
-    TSC_TEMP1  = (0x83 | 0x70 | 0x00),
-    TSC_DIFFX  = (0x81 | 0x50 | 0x00),
-    TSC_DIFFY  = (0x81 | 0x10 | 0x00),
+    TSC_TEMP0 = (0x83 | 0x00 | 0x00),
+    TSC_Y = (0x83 | 0x10 | 0x04),
+    TSC_VBAT = (0x83 | 0x20 | 0x00),
+    TSC_Z1 = (0x83 | 0x30 | 0x04),
+    TSC_Z2 = (0x83 | 0x40 | 0x04),
+    TSC_X = (0x83 | 0x50 | 0x04),
+    TSC_AUX = (0x83 | 0x60 | 0x00),
+    TSC_TEMP1 = (0x83 | 0x70 | 0x00),
+    TSC_DIFFX = (0x81 | 0x50 | 0x00),
+    TSC_DIFFY = (0x81 | 0x10 | 0x00),
     TSC_DIFFZ1 = (0x81 | 0x30 | 0x00),
     TSC_DIFFZ2 = (0x81 | 0x40 | 0x00),
-    TSC_START  = (0x82 | 0x00 | 0x00),
-    TSC_STOP   = (0x81 | 0x00 | 0x00)
+    TSC_START = (0x82 | 0x00 | 0x00),
+    TSC_STOP = (0x81 | 0x00 | 0x00)
 } mxc_ts_touch_cmd_t;
 
 /************************************************************************************/
@@ -107,4 +108,4 @@ void MXC_TS_RemoveAllButton(void);
  */
 int MXC_TS_GetKey(void);
 
-#endif /* _TOUCHSCREEN_H_ */
+#endif // LIBRARIES_BOARDS_MAX32570_INCLUDE_TOUCHSCREEN_H_

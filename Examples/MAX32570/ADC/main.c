@@ -62,7 +62,7 @@ static uint16_t adc_val;
 /***** Functions *****/
 
 #ifdef USE_INTERRUPTS
-void adc_complete_cb(void* req, int error)
+void adc_complete_cb(void *req, int error)
 {
     adc_done = 1;
     return;
@@ -92,16 +92,24 @@ void DMA_Callback(int ch, int error)
 
 int main(void)
 {
-    // unsigned int overflow;
-
-    printf("ADC Example\n");
+    printf("******************** ADC Example ********************\n");
+    printf("Demonstrates the use of the ADC by continuously monitoring ADC input channel 0.\n");
+    printf(
+        "Vary the voltage on the AIN0 input (0 to 0.9V) to observe different readings from the ADC.\n");
+    printf("High and low limits are set arbitrarily to demonstrate the detection of overvoltage "
+           "and undervoltage conditions respectively.\n");
+    printf(
+        "If the ADC reading exceeds 0x300, the example will report that the high limit has been reached.\n");
+    printf(
+        "If the ADC reading falls below 0x25, the example will report the low limit has been reached.\n");
+    printf(
+        "Any reading that exceeds the full-scale value of the ADC will have an '*' appended to the value.\n");
 
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
@@ -130,8 +138,7 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) {}
 
 #endif
 
@@ -140,8 +147,7 @@ int main(void)
 
         MXC_ADC_StartConversionDMA(MXC_ADC_CH_0, &adc_val, DMA_Callback);
 
-        while (!dma_done)
-            ;
+        while (!dma_done) {}
 
         printf("0: 0x%04x\n", adc_val);
 #else
@@ -166,4 +172,6 @@ int main(void)
         /* Delay for 1/4 second before next reading */
         MXC_TMR_Delay(MXC_TMR0, MSEC(250));
     }
+
+    return 0;
 }

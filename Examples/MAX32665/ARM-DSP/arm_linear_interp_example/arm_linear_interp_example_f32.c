@@ -56,9 +56,9 @@
  *
  * \par Block Diagram:
  * \par
- * \image html linearInterpExampleMethod1.gif "Method 1: Sine caluclation using fast math"
+ * \image html linearInterpExampleMethod1.gif "Method 1: Sine calculation using fast math"
  * \par
- * \image html linearInterpExampleMethod2.gif "Method 2: Sine caluclation using interpolation function"
+ * \image html linearInterpExampleMethod2.gif "Method 2: Sine calculation using interpolation function"
  *
  * \par Variables Description:
  * \par
@@ -89,9 +89,9 @@
 #include <stdio.h>
 #endif
 
-#define SNR_THRESHOLD       90
+#define SNR_THRESHOLD 90
 #define TEST_LENGTH_SAMPLES 10
-#define XSPACING            (0.005f)
+#define XSPACING (0.005f)
 
 /* ----------------------------------------------------------------------
 * Test input data for F32 SIN function
@@ -99,10 +99,11 @@
 * randn('state', 0)
 * xi = (((1/4.18318581819710)* randn(blockSize, 1) * 2* pi));
 * --------------------------------------------------------------------*/
-float32_t testInputSin_f32[TEST_LENGTH_SAMPLES] = {
-    -0.649716504673081170, -2.501723745497831200, 0.188250329003310100, 0.432092748487532540,
-    -1.722010988459680800, 1.788766476323060600,  1.786136060975809500, -0.056525543169408797,
-    0.491596272728153760,  0.262309671126153390};
+float32_t testInputSin_f32[TEST_LENGTH_SAMPLES] = { -0.649716504673081170, -2.501723745497831200,
+                                                    0.188250329003310100,  0.432092748487532540,
+                                                    -1.722010988459680800, 1.788766476323060600,
+                                                    1.786136060975809500,  -0.056525543169408797,
+                                                    0.491596272728153760,  0.262309671126153390 };
 
 /*------------------------------------------------------------------------------
 *  Reference out of SIN F32 function for Block Size = 10
@@ -111,7 +112,8 @@ float32_t testInputSin_f32[TEST_LENGTH_SAMPLES] = {
 float32_t testRefSinOutput32_f32[TEST_LENGTH_SAMPLES] = {
     -0.604960695383043530, -0.597090287967934840, 0.187140422442966500, 0.418772124875992690,
     -0.988588831792106880, 0.976338412038794010,  0.976903856413481100, -0.056495446835214236,
-    0.472033731854734240,  0.259311907228582830};
+    0.472033731854734240,  0.259311907228582830
+};
 
 /*------------------------------------------------------------------------------
 *  Method 1: Test out Buffer Calculated from Cubic Interpolation
@@ -129,7 +131,7 @@ float32_t testLinIntOutput[TEST_LENGTH_SAMPLES];
 extern const float arm_linear_interep_table[1884];
 
 /* ----------------------------------------------------------------------
-* Global Variables for caluclating SNR's for Method1 & Method 2
+* Global Variables for calculating SNR's for Method1 & Method 2
 * ------------------------------------------------------------------- */
 float32_t snr1;
 float32_t snr2;
@@ -142,15 +144,13 @@ int main(void)
     uint32_t i;
     arm_status status;
 
-    arm_linear_interp_instance_f32 S = {1884, -3.141592653589793238, XSPACING,
-                                        (float*)&arm_linear_interep_table[0]};
+    arm_linear_interp_instance_f32 S = { 1884, -3.141592653589793238, XSPACING,
+                                         (float *)&arm_linear_interep_table[0] };
 
     /*------------------------------------------------------------------------------
   *  Method 1: Test out Calculated from Cubic Interpolation
   *------------------------------------------------------------------------------*/
-    for (i = 0; i < TEST_LENGTH_SAMPLES; i++) {
-        testOutput[i] = arm_sin_f32(testInputSin_f32[i]);
-    }
+    for (i = 0; i < TEST_LENGTH_SAMPLES; i++) { testOutput[i] = arm_sin_f32(testInputSin_f32[i]); }
 
     /*------------------------------------------------------------------------------
   *  Method 2: Test out Calculated from Cubic Interpolation and Linear interpolation
@@ -179,16 +179,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 0;
     }

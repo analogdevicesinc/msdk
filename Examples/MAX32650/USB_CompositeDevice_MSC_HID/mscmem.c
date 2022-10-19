@@ -50,17 +50,17 @@
 /***** Definitions *****/
 
 #define SPIXF_DISK 1
-#define RAM_DISK   0
+#define RAM_DISK 0
 
-#define LBA_SIZE       512 /* Size of "logical blocks" in bytes */
-#define LBA_SIZE_SHIFT 9   /* The shift value used to convert between addresses and block numbers */
+#define LBA_SIZE 512 /* Size of "logical blocks" in bytes */
+#define LBA_SIZE_SHIFT 9 /* The shift value used to convert between addresses and block numbers */
 
 /***** Global Data *****/
 
 /***** File Scope Variables *****/
 
 static int initialized = 0;
-static int running     = 0;
+static int running = 0;
 
 #if SPIXF_DISK
 
@@ -127,7 +127,7 @@ static uint32_t getSector(uint32_t num)
             Ext_Flash_Read(num << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE,
                            MXC_SPIXF_WIDTH);
             sectorDirty = 0;
-            sectorNum   = num;
+            sectorNum = num;
         }
     }
 
@@ -162,7 +162,7 @@ uint32_t mscmem_Size(void)
 }
 
 /******************************************************************************/
-int mscmem_Read(uint32_t lba, uint8_t* buffer)
+int mscmem_Read(uint32_t lba, uint8_t *buffer)
 {
     uint32_t addr;
 
@@ -183,7 +183,7 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer)
 }
 
 /******************************************************************************/
-int mscmem_Write(uint32_t lba, uint8_t* buffer)
+int mscmem_Write(uint32_t lba, uint8_t *buffer)
 {
     uint32_t addr;
 
@@ -266,7 +266,7 @@ uint32_t mscmem_Size(void)
 }
 
 /******************************************************************************/
-int mscmem_Read(uint32_t lba, uint8_t* buffer)
+int mscmem_Read(uint32_t lba, uint8_t *buffer)
 {
     if (lba >= NUM_PAGES) {
         return 1;
@@ -277,7 +277,7 @@ int mscmem_Read(uint32_t lba, uint8_t* buffer)
 }
 
 /******************************************************************************/
-int mscmem_Write(uint32_t lba, uint8_t* buffer)
+int mscmem_Write(uint32_t lba, uint8_t *buffer)
 {
     if (lba >= NUM_PAGES) {
         return 1;

@@ -21,13 +21,13 @@ to properly setup the memory sections to coincide with the Bootloader.
 
 ### Board Selection
 
-Before building firmware you must select the correct value for BOARD in Makefile, e.g. "EvKit_V1".
+Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
 
 ### Required Connections
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port
-When TRACE is enabled in the Makefile, the on-board USB-to-UART adapter can
+When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
 be used to view the trace messages and interact with the application. Open a serial port terminal with
 the following settings.
 
@@ -170,6 +170,18 @@ WDXS: FTC Send
 hciCoreTxAclStart len=10
 WDXS: AttHook handle=581 event=18
 WDXS: Task Handler Evt=1
+Ext Flash: Wrote 224 bytes @ 0x00000008                                                 
+Ext Flash: Wrote 224 bytes @ 0x000000E8                                                 
+Ext Flash: Wrote 224 bytes @ 0x000001C8                                                 
+Ext Flash: Wrote 224 bytes @ 0x000002A8                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000388                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000468                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000548                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000628                                                 
+Ext Flash: Wrote 224 bytes @ 0x00000708                                                 
+Ext Flash: Wrote 224 bytes @ 0x000007E8 
+...
+...
 ```
 
 Upon reception of `btn 2 l` command 

@@ -58,18 +58,17 @@
 #include <MAX32xxx.h>
 
 /***** Definitions *****/
+
 /***** Globals *****/
-//use push buttons defined in board.h
-extern const mxc_gpio_cfg_t pb_pin[];
-extern const mxc_gpio_cfg_t led_pin[];
 
 // refers to array, do not change constants
 #define SW1 0
 #define LED 0
+
 /***** Functions *****/
 
 // *****************************************************************************
-void watchdogHandler()
+void WDT0_IRQHandler(void)
 {
     //get and clear flag
     MXC_WDT_GetIntFlag(MXC_WDT0);
@@ -77,16 +76,14 @@ void watchdogHandler()
     printf("TIMEOUT! \n");
 }
 
-// *****************************************************************************
-void WDT0_IRQHandler(void)
+void blinkled(int led, int num_of_blink, unsigned int delay_ms)
 {
-    watchdogHandler();
-}
-// *****************************************************************************
-void MXC_WDT_Setup()
-{
-    MXC_WDT_Disable(MXC_WDT0);
-    MXC_WDT_Enable(MXC_WDT0);
+    for (int i = 0; i < num_of_blink; i++) {
+        LED_On(led);
+        MXC_Delay(MXC_DELAY_MSEC(delay_ms));
+        LED_Off(led);
+        MXC_Delay(MXC_DELAY_MSEC(delay_ms));
+    }
 }
 
 // *****************************************************************************
@@ -106,26 +103,16 @@ int main(void)
     printf("SW2 (P0.16)= reset program\n");
     printf("SW3 (P0.17)= timeout interrupt\n\n");
 
-    //Blink LED
-    MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-
-    //Blink LED three times at startup
-    int numBlinks = 3;
-
-    while (numBlinks) {
-        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        numBlinks--;
-    }
+    //Blink LED0 three times at startup
+    blinkled(LED, 3, 100);
 
     //Setup watchdog
-    MXC_WDT_Setup();
+    MXC_WDT_Disable(MXC_WDT0);
+    MXC_WDT_Enable(MXC_WDT0);
 
     while (1) {
         //Push SW1 to reset watchdog
-        if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
+        if (PB_Get(SW1) == TRUE) {
             printf("Enabling Timeout Interrupt...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_27);
             MXC_WDT_SetIntPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_26);
@@ -133,17 +120,15 @@ int main(void)
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
 
-            while (1)
-                ;
+            while (1) {}
         }
 
         //blink LED0
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        MXC_GPIO_OutSet(led_pin[0].port, led_pin[0].mask);
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        MXC_GPIO_OutClr(led_pin[0].port, led_pin[0].mask);
+        blinkled(LED, 1, 500);
 
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
+
+    return 0;
 }

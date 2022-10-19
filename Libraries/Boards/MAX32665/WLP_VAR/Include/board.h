@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-10-29 09:21:01 -0500 (Tue, 29 Oct 2019) $
- * $Revision: 48140 $
- *
  ******************************************************************************/
 
 /**
@@ -42,8 +39,8 @@
 #include <stdio.h>
 #include "spixf.h"
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32665_WLP_VAR_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32665_WLP_VAR_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,7 +55,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 #ifndef HCI_UART
 #define HCI_UART 0
@@ -88,14 +85,14 @@ extern "C" {
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
+#define LED1 0
 #define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
+#define LED2 1
 #define LED_GREEN LED2
 
 /**
@@ -122,4 +119,4 @@ int Console_Shutdown(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32665_WLP_VAR_INCLUDE_BOARD_H_

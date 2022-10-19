@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _ICC_H_
-#define _ICC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_ICC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_ICC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -58,9 +58,9 @@ extern "C" {
  * @brief Enumeration type for the Cache ID Register
  */
 typedef enum {
-    ICC_INFO_RELNUM,  ///< Identifies the RTL release version
+    ICC_INFO_RELNUM, ///< Identifies the RTL release version
     ICC_INFO_PARTNUM, ///< Specifies the value of C_ID Port Number
-    ICC_INFO_ID       ///< Specifies the value of Cache ID
+    ICC_INFO_ID ///< Specifies the value of Cache ID
 } mxc_icc_info_t;
 
 /**
@@ -91,4 +91,4 @@ void MXC_ICC_Flush(void);
 }
 #endif
 
-#endif /* _ICC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_ICC_H_

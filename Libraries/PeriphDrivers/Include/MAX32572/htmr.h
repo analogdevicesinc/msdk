@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _HTMR_H_
-#define _HTMR_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_HTMR_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_HTMR_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -62,8 +62,8 @@ extern "C" {
  * @brief   Bitmasks for each of the HTimer's interrupt enables.
  */
 typedef enum {
-    MXC_HTMR_INT_EN_LONG  = MXC_F_HTMR_CTRL_ADE,  ///< Long-interval alarm interrupt enable
-    MXC_HTMR_INT_EN_SHORT = MXC_F_HTMR_CTRL_ASE,  ///< Short-interval alarm interrupt enable
+    MXC_HTMR_INT_EN_LONG = MXC_F_HTMR_CTRL_ADE, ///< Long-interval alarm interrupt enable
+    MXC_HTMR_INT_EN_SHORT = MXC_F_HTMR_CTRL_ASE, ///< Short-interval alarm interrupt enable
     MXC_HTMR_INT_EN_READY = MXC_F_HTMR_CTRL_RDYE, ///< Timer ready interrupt enable
 } mxc_htmr_int_en_t;
 
@@ -71,9 +71,9 @@ typedef enum {
  * @brief   Bitmasks for each of the HTimer's interrupt flags.
  */
 typedef enum {
-    MXC_HTMR_INT_FL_LONG  = MXC_F_HTMR_CTRL_ALDF, ///< Long-interval alarm interrupt flag
+    MXC_HTMR_INT_FL_LONG = MXC_F_HTMR_CTRL_ALDF, ///< Long-interval alarm interrupt flag
     MXC_HTMR_INT_FL_SHORT = MXC_F_HTMR_CTRL_ALSF, ///< Short-interval alarm interrupt flag
-    MXC_HTMR_INT_FL_READY = MXC_F_HTMR_CTRL_RDY,  ///< Timer ready interrupt flag
+    MXC_HTMR_INT_FL_READY = MXC_F_HTMR_CTRL_RDY, ///< Timer ready interrupt flag
 } mxc_htmr_int_fl_t;
 
 /**
@@ -83,7 +83,7 @@ typedef enum {
  *                   See #mxc_htmr_int_en_t for available choices.
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_EnableInt(mxc_htmr_regs_t* htmr, uint32_t mask);
+int MXC_HTMR_EnableInt(mxc_htmr_regs_t *htmr, uint32_t mask);
 
 /**
  * @brief     Disable Interurpts
@@ -92,7 +92,7 @@ int MXC_HTMR_EnableInt(mxc_htmr_regs_t* htmr, uint32_t mask);
  *                   See #mxc_htmr_int_en_t for available choices.
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_DisableInt(mxc_htmr_regs_t* htmr, uint32_t mask);
+int MXC_HTMR_DisableInt(mxc_htmr_regs_t *htmr, uint32_t mask);
 
 /**
  * @brief     Set Long Interval alarm value and enable Interrupt
@@ -100,7 +100,7 @@ int MXC_HTMR_DisableInt(mxc_htmr_regs_t* htmr, uint32_t mask);
  * @param     interval    20-bit value 0-0xFFFFF
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_SetLongAlarm(mxc_htmr_regs_t* htmr, uint32_t interval);
+int MXC_HTMR_SetLongAlarm(mxc_htmr_regs_t *htmr, uint32_t interval);
 
 /**
  * @brief     Set Short Interval alarm value and enable interrupt,
@@ -108,21 +108,21 @@ int MXC_HTMR_SetLongAlarm(mxc_htmr_regs_t* htmr, uint32_t interval);
  * @param     interval   32-bit value 0-0xFFFFFFFF
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_SetShortAlarm(mxc_htmr_regs_t* htmr, uint32_t interval);
+int MXC_HTMR_SetShortAlarm(mxc_htmr_regs_t *htmr, uint32_t interval);
 
 /**
  * @brief     Enable/Start the High Speed Timer
  * @param     htmr    pointer to the htmr register structure
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_Start(mxc_htmr_regs_t* htmr);
+int MXC_HTMR_Start(mxc_htmr_regs_t *htmr);
 
 /**
  * @brief     Disable/Stop the High Speed Timer
  * @param     htmr    pointer to the htmr register structure
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_Stop(mxc_htmr_regs_t* htmr);
+int MXC_HTMR_Stop(mxc_htmr_regs_t *htmr);
 
 /**
  * @brief     Initialize the longInterval and shortInterval registers and enable MXC_HTMR
@@ -131,14 +131,14 @@ int MXC_HTMR_Stop(mxc_htmr_regs_t* htmr);
  * @param     shortInterval   set the MXC_HTMR short counter (8-bit)
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_Init(mxc_htmr_regs_t* htmr, uint32_t longInterval, uint8_t shortInterval);
+int MXC_HTMR_Init(mxc_htmr_regs_t *htmr, uint32_t longInterval, uint8_t shortInterval);
 
 /**
  * @brief     Check if BUSY bit is 0.
  * @param     htmr   pointer to the htmr register structure
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_CheckBusy(mxc_htmr_regs_t* htmr);
+int MXC_HTMR_CheckBusy(mxc_htmr_regs_t *htmr);
 
 /**
  * @brief     Get interrupt flags.
@@ -147,7 +147,7 @@ int MXC_HTMR_CheckBusy(mxc_htmr_regs_t* htmr);
  *            currently set. See #mxc_htmr_int_fl_t for the list
  *            of possible flags.
  */
-int MXC_HTMR_GetFlags(mxc_htmr_regs_t* htmr);
+int MXC_HTMR_GetFlags(mxc_htmr_regs_t *htmr);
 
 /**
  * @brief     Clear interrupt flags.
@@ -156,25 +156,25 @@ int MXC_HTMR_GetFlags(mxc_htmr_regs_t* htmr);
  *            See #mxc_htmr_int_fl_t for the list of possible flags.
  * @retval    returns Success or Fail, see \ref MXC_ERROR_CODES
  */
-int MXC_HTMR_ClearFlags(mxc_htmr_regs_t* htmr, int flags);
+int MXC_HTMR_ClearFlags(mxc_htmr_regs_t *htmr, int flags);
 
 /**
  * @brief     Get value in short interval register
  * @param     htmr   pointer to the htmr register structure
  * @return    Returns short count value
  */
-int MXC_HTMR_GetShortCount(mxc_htmr_regs_t* htmr);
+int MXC_HTMR_GetShortCount(mxc_htmr_regs_t *htmr);
 
 /**
  * @brief     Get value in long interval register
  * @param     htmr   pointer to the htmr register structure
  * @return    returns long count value
  */
-int MXC_HTMR_GetLongCount(mxc_htmr_regs_t* htmr);
+int MXC_HTMR_GetLongCount(mxc_htmr_regs_t *htmr);
 
 #ifdef __cplusplus
 }
 #endif
 
 /**@} end of group htmr */
-#endif /* _HTMR_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_HTMR_H_

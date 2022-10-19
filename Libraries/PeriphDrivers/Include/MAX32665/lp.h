@@ -40,13 +40,13 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _LP_H_
-#define _LP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "gpio.h"
 #include "pwrseq_regs.h"
-#include <stdint.h>
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 
@@ -62,9 +62,9 @@ extern "C" {
 
 typedef enum {
     MXC_RETAIN_NONE = MXC_S_PWRSEQ_LPCN_RAMRET_DIS,
-    MXC_RETAIN_32k  = MXC_S_PWRSEQ_LPCN_RAMRET_EN1,
-    MXC_RETAIN_64k  = MXC_S_PWRSEQ_LPCN_RAMRET_EN2,
-    MXC_RETAIN_ALL  = MXC_S_PWRSEQ_LPCN_RAMRET_EN3
+    MXC_RETAIN_32k = MXC_S_PWRSEQ_LPCN_RAMRET_EN1,
+    MXC_RETAIN_64k = MXC_S_PWRSEQ_LPCN_RAMRET_EN2,
+    MXC_RETAIN_ALL = MXC_S_PWRSEQ_LPCN_RAMRET_EN3
 } mxc_ram_retained_t;
 
 /**
@@ -78,10 +78,10 @@ typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
  *
  */
 typedef enum {
-    MXC_LP_HIRC    = MXC_F_GCR_PM_HIRCPD,
+    MXC_LP_HIRC = MXC_F_GCR_PM_HIRCPD,
     MXC_LP_HIRC96M = MXC_F_GCR_PM_HIRC96MPD,
-    MXC_LP_HIRC8M  = MXC_F_GCR_PM_HIRC8MPD,
-    MXC_LP_XTAL    = MXC_F_GCR_PM_XTALPB,
+    MXC_LP_HIRC8M = MXC_F_GCR_PM_HIRC8MPD,
+    MXC_LP_XTAL = MXC_F_GCR_PM_XTALPB,
 } mxc_lp_cfg_ds_pd_t;
 
 /**
@@ -96,7 +96,7 @@ void MXC_LP_ClearWakeStatus(void);
  * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.  
@@ -104,7 +104,7 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored.
  */
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.  
@@ -358,8 +358,9 @@ void MXC_LP_SIMOVregDPowerUp(void);
 
 /**
  * @brief Enable Fast Wakeup
+ * @details Deprecated due to issues with SIMO in wakeup.
  */
-void MXC_LP_FastWakeupEnable(void);
+void __attribute__((deprecated("Causes SIMO soft start in wakeup"))) MXC_LP_FastWakeupEnable(void);
 
 /**
  * @brief Disable Fast Wakeup
@@ -395,7 +396,7 @@ void MXC_LP_EnterBackgroundMode(void);
  * 			   could have no state information. It will not have a valid stack pointer. 
  * 			   This function also uses MXC_PWRSEQ->gp0 and gp1.
  */
-void MXC_LP_EnterBackupMode(void* func(void));
+void MXC_LP_EnterBackupMode(void *func(void));
 
 /**
  * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so this function never returns.  
@@ -582,4 +583,5 @@ void MXC_LP_ICache1LightSleepEnable(void);
 }
 #endif
 /**@} end of group pwrseq */
-#endif /* _LP_H_ */
+
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_

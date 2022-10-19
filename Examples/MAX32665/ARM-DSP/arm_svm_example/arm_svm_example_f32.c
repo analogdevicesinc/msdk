@@ -80,13 +80,15 @@ arm_svm_polynomial_instance_f32 params;
 
 const float32_t dualCoefficients[NB_SUPPORT_VECTORS] = {
     -0.01628988f, -0.0971605f, -0.02707579f, 0.0249406f,  0.00223095f, 0.04117345f,
-    0.0262687f,   0.00800358f, 0.00581823f,  0.02346904f, 0.00862162f}; /* Dual coefficients */
+    0.0262687f,   0.00800358f, 0.00581823f,  0.02346904f, 0.00862162f
+}; /* Dual coefficients */
 
 const float32_t supportVectors[NB_SUPPORT_VECTORS * VECTOR_DIMENSION] = {
     1.2510991f,   0.47782799f,  -0.32711859f, -1.49880648f, -0.08905047f, 1.31907242f,
     1.14059333f,  2.63443767f,  -2.62561524f, 1.02120701f,  -1.2361353f,  -2.53145187f,
     2.28308122f,  -1.58185875f, 2.73955981f,  0.35759327f,  0.56662986f,  2.79702016f,
-    -2.51380816f, 1.29295364f,  -0.56658669f, -2.81944734f}; /* Support vectors */
+    -2.51380816f, 1.29295364f,  -0.56658669f, -2.81944734f
+}; /* Support vectors */
 
 /*
   Class A is identified with value 0.
@@ -95,7 +97,7 @@ const float32_t supportVectors[NB_SUPPORT_VECTORS * VECTOR_DIMENSION] = {
   This array is used by the SVM functions to do a conversion and ease the comparison
   with the Python code where different values could be used.
  */
-const int32_t classes[2] = {0, 1};
+const int32_t classes[2] = { 0, 1 };
 
 int main(void)
 {
@@ -110,11 +112,10 @@ int main(void)
     Additional parameters (intercept, degree, coef0 and gamma) are also coming from Python.
    */
     arm_svm_polynomial_init_f32(&params, NB_SUPPORT_VECTORS, VECTOR_DIMENSION,
-                                -1.661719f,                                   /* Intercept */
+                                -1.661719f, /* Intercept */
                                 dualCoefficients, supportVectors, classes, 3, /* degree */
-                                1.100000f,                                    /* Coef0 */
-                                0.500000f                                     /* Gamma */
-    );
+                                1.100000f, /* Coef0 */
+                                0.500000f /* Gamma */);
 
     /*
     Input data.
@@ -144,8 +145,8 @@ int main(void)
 #endif
 
 #if !defined(SEMIHOSTING)
-    while (1)
-        ; /* main function does not return */
+    while (1) {}
+/* main function does not return */
 #endif
 
     return 0;

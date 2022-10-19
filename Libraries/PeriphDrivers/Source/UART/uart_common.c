@@ -34,21 +34,19 @@
 #include "uart_common.h"
 #include "uart.h"
 
-int MXC_UART_Common_ReadCharacter(mxc_uart_regs_t* uart)
+int MXC_UART_Common_ReadCharacter(mxc_uart_regs_t *uart)
 {
     // Wait until FIFO has a character ready.
-    while (MXC_UART_GetRXFIFOAvailable(uart) < 1)
-        ;
+    while (MXC_UART_GetRXFIFOAvailable(uart) < 1) {}
 
     // Read the character using the non-blocking function.
     return MXC_UART_ReadCharacterRaw(uart);
 }
 
-int MXC_UART_Common_WriteCharacter(mxc_uart_regs_t* uart, uint8_t character)
+int MXC_UART_Common_WriteCharacter(mxc_uart_regs_t *uart, uint8_t character)
 {
     // Wait until FIFO has space for the character.
-    while (MXC_UART_GetTXFIFOAvailable(uart) < 1)
-        ;
+    while (MXC_UART_GetTXFIFOAvailable(uart) < 1) {}
 
     // Write the character using the non-blocking function.
     return MXC_UART_WriteCharacterRaw(uart, character);

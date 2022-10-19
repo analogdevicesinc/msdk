@@ -7,5 +7,7 @@
 # description of the default behavior and the full list of
 # available options.
 
+# Add your config here!
 
-
+# Use the local linker file
+LINKERFILE=lp.ld

@@ -50,7 +50,7 @@
 #include "state.h"
 #include "utils.h"
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static volatile unsigned int timeout_status = 0;
 
 /******************************   STATIC FUNCTIONS  **************************/
@@ -87,8 +87,8 @@ static int system_init(void)
 /*****************************************************************************/
 int main(void)
 {
-    int ret      = 0;
-    State* state = NULL;
+    int ret = 0;
+    State *state = NULL;
     int key;
     unsigned int timeout = 0;
     // cumulative time in idle condition, no any event.
@@ -104,14 +104,14 @@ int main(void)
     printf("Note:\n"
            "\tMSR: VBAT_SEL need to be connected to 3.3V, VDD_MSR need to be connected\n"
            "\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B),\n"
-           "\t		To configure 5V mode:\n"
-           "\t			1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
-           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
-           "\t			3- Rebuild project and load it\n"
-           "\t		To configure 3V mode:\n"
-           "\t			1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
-           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
-           "\t			3- Rebuild project and load it\n");
+           "\t      To configure 5V mode:\n"
+           "\t          1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
+           "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
+           "\t          3- Rebuild project and load it\n"
+           "\t      To configure 3V mode:\n"
+           "\t          1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
+           "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
+           "\t          3- Rebuild project and load it\n");
 
     system_init();
     state_init();
@@ -149,8 +149,8 @@ int main(void)
         }
 
         /*
-		 *  check state timeout status
-		 */
+         *  check state timeout status
+         */
         if (timeout_status) {
             if (state->tick) {
                 ret = state->tick();
@@ -172,8 +172,8 @@ int main(void)
         }
 
         /*
-		 *  logo animation
-		 */
+         *  logo animation
+         */
         logo_animation_tick();
     }
 

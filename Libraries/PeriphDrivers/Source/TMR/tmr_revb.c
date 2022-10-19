@@ -45,9 +45,9 @@
 #define TIMER_16B_OFFSET 16
 
 /* **** Functions **** */
-int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg, uint8_t clk_src)
+int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -81,65 +81,65 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg, uint8_t clk_
 
     //TIMER_16B only supports compare, oneshot and continuous modes.
     switch (cfg->mode) {
-        case TMR_MODE_ONESHOT:
-            MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t*)tmr, cfg);
-            break;
+    case TMR_MODE_ONESHOT:
+        MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
+        break;
 
-        case TMR_MODE_CONTINUOUS:
-            MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t*)tmr, cfg);
-            break;
+    case TMR_MODE_CONTINUOUS:
+        MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
+        break;
 
-        case TMR_MODE_COUNTER:
-            if (cfg->bitMode == TMR_BIT_MODE_16B) {
-                return E_NOT_SUPPORTED;
-            }
+    case TMR_MODE_COUNTER:
+        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
 
-            MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
-            break;
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
 
-        case TMR_MODE_CAPTURE:
-            if (cfg->bitMode == TMR_BIT_MODE_16B) {
-                return E_NOT_SUPPORTED;
-            }
+    case TMR_MODE_CAPTURE:
+        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
 
-            MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
-            break;
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
 
-        case TMR_MODE_COMPARE:
-            MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t*)tmr, cfg);
-            break;
+    case TMR_MODE_COMPARE:
+        MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
+        break;
 
-        case TMR_MODE_GATED:
-            if (cfg->bitMode == TMR_BIT_MODE_16B) {
-                return E_NOT_SUPPORTED;
-            }
+    case TMR_MODE_GATED:
+        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
 
-            MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
-            break;
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
 
-        case TMR_MODE_CAPTURE_COMPARE:
-            if (cfg->bitMode == TMR_BIT_MODE_16B) {
-                return E_NOT_SUPPORTED;
-            }
+    case TMR_MODE_CAPTURE_COMPARE:
+        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
 
-            MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
-            break;
+        MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
+        break;
 
-        case TMR_MODE_PWM:
-            if (cfg->bitMode == TMR_BIT_MODE_16B) {
-                return E_NOT_SUPPORTED;
-            }
-            MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t*)tmr, cfg);
-            break;
+    case TMR_MODE_PWM:
+        if (cfg->bitMode == TMR_BIT_MODE_16B) {
+            return E_NOT_SUPPORTED;
+        }
+        MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
+        break;
     }
 
     return E_NO_ERROR;
 }
 
-void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
     uint32_t timerOffset;
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -154,15 +154,13 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
     }
 
     tmr->ctrl0 |= (MXC_F_TMR_REVB_CTRL0_CLKEN_A << timerOffset);
-    while (!(tmr->ctrl1 & (MXC_F_TMR_REVB_CTRL1_CLKRDY_A << timerOffset)))
-        ;
+    while (!(tmr->ctrl1 & (MXC_F_TMR_REVB_CTRL1_CLKRDY_A << timerOffset))) {}
 
     tmr->ctrl0 |= (cfg->mode << timerOffset);
     tmr->ctrl0 |= ((cfg->pol << MXC_F_TMR_REVB_CTRL0_POL_A_POS) << timerOffset);
     //enable timer interrupt if needed
     tmr->cnt = (0x1 << timerOffset);
-    while (!(tmr->intfl & (MXC_F_TMR_REVB_INTFL_WRDONE_A << timerOffset)))
-        ;
+    while (!(tmr->intfl & (MXC_F_TMR_REVB_INTFL_WRDONE_A << timerOffset))) {}
 
     tmr->cmp = (cfg->cmp_cnt << timerOffset);
 #if TARGET_NUM == 32655 || TARGET_NUM == 78000 || TARGET_NUM == 32690 || TARGET_NUM == 78002
@@ -176,46 +174,43 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
         tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_IE_B;
 
         tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_B;
-        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B))
-            ;
+        while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_B)) {}
     }
 }
 
-void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t* tmr)
+void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     // Disable timer and clear settings
     tmr->ctrl0 = 0;
-    while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A)
-        ;
+    while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A) {}
 }
 
-void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t* tmr)
+void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->ctrl0 |= MXC_F_TMR_REVB_CTRL0_EN_A;
-    while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A))
-        ;
+    while (!(tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKEN_A)) {}
 }
 
-void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t* tmr)
+void MXC_TMR_RevB_Stop(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->ctrl0 &= ~MXC_F_TMR_REVB_CTRL0_EN_A;
 }
 
-int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t* tmr, uint32_t pwm)
+int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t *tmr, uint32_t pwm)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -223,29 +218,27 @@ int MXC_TMR_RevB_SetPWM(mxc_tmr_revb_regs_t* tmr, uint32_t pwm)
         return E_BAD_PARAM;
     }
 
-    while (tmr->cnt >= pwm)
-        ;
+    while (tmr->cnt >= pwm) {}
 
     tmr->pwm = pwm;
-    while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A))
-        ;
+    while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
 
     return E_NO_ERROR;
 }
 
-uint32_t MXC_TMR_RevB_GetCompare(mxc_tmr_revb_regs_t* tmr)
+uint32_t MXC_TMR_RevB_GetCompare(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     return tmr->cmp;
 }
 
-uint32_t MXC_TMR_RevB_GetCapture(mxc_tmr_revb_regs_t* tmr)
+uint32_t MXC_TMR_RevB_GetCapture(mxc_tmr_revb_regs_t *tmr)
 {
     uint32_t pwm;
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -255,10 +248,10 @@ uint32_t MXC_TMR_RevB_GetCapture(mxc_tmr_revb_regs_t* tmr)
     return pwm;
 }
 
-uint32_t MXC_TMR_RevB_GetCount(mxc_tmr_revb_regs_t* tmr)
+uint32_t MXC_TMR_RevB_GetCount(mxc_tmr_revb_regs_t *tmr)
 {
     uint32_t cnt;
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -268,11 +261,11 @@ uint32_t MXC_TMR_RevB_GetCount(mxc_tmr_revb_regs_t* tmr)
     return cnt;
 }
 
-uint32_t MXC_TMR_RevB_GetPeriod(mxc_tmr_revb_regs_t* tmr, uint32_t clk_frequency,
+uint32_t MXC_TMR_RevB_GetPeriod(mxc_tmr_revb_regs_t *tmr, uint32_t clk_frequency,
                                 uint32_t prescalar, uint32_t frequency)
 {
     uint32_t periodTicks;
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -281,45 +274,45 @@ uint32_t MXC_TMR_RevB_GetPeriod(mxc_tmr_revb_regs_t* tmr, uint32_t clk_frequency
     return periodTicks;
 }
 
-void MXC_TMR_RevB_ClearFlags(mxc_tmr_revb_regs_t* tmr)
+void MXC_TMR_RevB_ClearFlags(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->intfl |= (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B);
 }
 
-uint32_t MXC_TMR_RevB_GetFlags(mxc_tmr_revb_regs_t* tmr)
+uint32_t MXC_TMR_RevB_GetFlags(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     return (tmr->intfl & (MXC_F_TMR_REVB_INTFL_IRQ_A | MXC_F_TMR_REVB_INTFL_IRQ_B));
 }
 
-void MXC_TMR_RevB_EnableInt(mxc_tmr_revb_regs_t* tmr)
+void MXC_TMR_RevB_EnableInt(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_IE_A | MXC_F_TMR_REVB_CTRL1_IE_B;
 }
 
-void MXC_TMR_RevB_DisableInt(mxc_tmr_revb_regs_t* tmr)
+void MXC_TMR_RevB_DisableInt(mxc_tmr_revb_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->ctrl1 &= ~(MXC_F_TMR_REVB_CTRL1_IE_A | MXC_F_TMR_REVB_CTRL1_IE_B);
 }
 
-void MXC_TMR_RevB_EnableWakeup(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+void MXC_TMR_RevB_EnableWakeup(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -331,9 +324,9 @@ void MXC_TMR_RevB_EnableWakeup(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
     }
 }
 
-void MXC_TMR_RevB_DisableWakeup(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+void MXC_TMR_RevB_DisableWakeup(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -345,32 +338,31 @@ void MXC_TMR_RevB_DisableWakeup(mxc_tmr_revb_regs_t* tmr, mxc_tmr_cfg_t* cfg)
     }
 }
 
-void MXC_TMR_RevB_SetCompare(mxc_tmr_revb_regs_t* tmr, uint32_t cmp_cnt)
+void MXC_TMR_RevB_SetCompare(mxc_tmr_revb_regs_t *tmr, uint32_t cmp_cnt)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->cmp = cmp_cnt;
 }
 
-void MXC_TMR_RevB_SetCount(mxc_tmr_revb_regs_t* tmr, uint32_t cnt)
+void MXC_TMR_RevB_SetCount(mxc_tmr_revb_regs_t *tmr, uint32_t cnt)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
     tmr->cnt = cnt;
-    while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A))
-        ;
+    while (!(tmr->intfl & MXC_F_TMR_REVB_INTFL_WRDONE_A)) {}
 }
 
-void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t* tmr, unsigned long us)
+void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, uint32_t us)
 {
     uint64_t ticks;
     int clk_shift = 0;
 
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
@@ -389,40 +381,40 @@ void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t* tmr, unsigned long us)
     mxc_tmr_cfg_t cfg;
 
     // Initialize the timer in one-shot mode
-    cfg.pres    = prescale;
-    cfg.mode    = TMR_MODE_ONESHOT;
+    cfg.pres = prescale;
+    cfg.mode = TMR_MODE_ONESHOT;
     cfg.bitMode = TMR_BIT_MODE_32;
-    cfg.clock   = MXC_TMR_APB_CLK;
+    cfg.clock = MXC_TMR_APB_CLK;
     cfg.cmp_cnt = ticks;
-    cfg.pol     = 0;
+    cfg.pol = 0;
 
-    MXC_TMR_Stop((mxc_tmr_regs_t*)tmr);
+    MXC_TMR_Stop((mxc_tmr_regs_t *)tmr);
 #if TARGET_NUM == 32662
-    MXC_TMR_Init((mxc_tmr_regs_t*)tmr, &cfg, false, MAP_A);
+    MXC_TMR_Init((mxc_tmr_regs_t *)tmr, &cfg, false, MAP_A);
 #else
-    MXC_TMR_Init((mxc_tmr_regs_t*)tmr, &cfg, false);
+    MXC_TMR_Init((mxc_tmr_regs_t *)tmr, &cfg, false);
 #endif
     tmr->ctrl1 |= MXC_F_TMR_REVB_CTRL1_CASCADE;
-    MXC_TMR_ClearFlags((mxc_tmr_regs_t*)tmr);
-    MXC_TMR_Start((mxc_tmr_regs_t*)tmr);
+    MXC_TMR_ClearFlags((mxc_tmr_regs_t *)tmr);
+    MXC_TMR_Start((mxc_tmr_regs_t *)tmr);
 }
 
-int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* time,
-                         mxc_tmr_unit_t* units)
+int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *time,
+                         mxc_tmr_unit_t *units)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t*)tmr);
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
     (void)tmr_id;
     MXC_ASSERT(tmr_id >= 0);
 
-    uint64_t temp_time  = 0;
+    uint64_t temp_time = 0;
     uint32_t timerClock = PeripheralClock;
-    uint32_t prescale =
-        (tmr->ctrl0 & MXC_F_TMR_REVB_CTRL0_CLKDIV_A) >> MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
+    uint32_t prescale = (tmr->ctrl0 & MXC_F_TMR_REVB_CTRL0_CLKDIV_A) >>
+                        MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
 
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_NANOSEC;
         return E_NO_ERROR;
     }
@@ -430,7 +422,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* tim
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000);
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_MICROSEC;
         return E_NO_ERROR;
     }
@@ -438,7 +430,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* tim
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_MILLISEC;
         return E_NO_ERROR;
     }
@@ -446,7 +438,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* tim
     temp_time = (uint64_t)ticks * (1 << (prescale & 0xF)) / timerClock;
 
     if (!(temp_time & 0xffffffff00000000)) {
-        *time  = temp_time;
+        *time = temp_time;
         *units = TMR_UNIT_SEC;
         return E_NO_ERROR;
     }
@@ -454,8 +446,8 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t* tmr, uint32_t ticks, uint32_t* tim
     return E_INVALID;
 }
 
-int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t* tmr, uint32_t time, mxc_tmr_unit_t units,
-                          uint32_t* ticks)
+int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t *tmr, uint32_t time, mxc_tmr_unit_t units,
+                          uint32_t *ticks)
 {
     uint32_t unit_div0, unit_div1;
     uint32_t timerClock;
@@ -467,24 +459,24 @@ int MXC_TMR_RevB_GetTicks(mxc_tmr_revb_regs_t* tmr, uint32_t time, mxc_tmr_unit_
     prescale = ((tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKDIV_A) >> MXC_F_TMR_CTRL0_CLKDIV_A_POS);
 
     switch (units) {
-        case TMR_UNIT_NANOSEC:
-            unit_div0 = 1000000;
-            unit_div1 = 1000;
-            break;
-        case TMR_UNIT_MICROSEC:
-            unit_div0 = 1000;
-            unit_div1 = 1000;
-            break;
-        case TMR_UNIT_MILLISEC:
-            unit_div0 = 1;
-            unit_div1 = 1000;
-            break;
-        case TMR_UNIT_SEC:
-            unit_div0 = 1;
-            unit_div1 = 1;
-            break;
-        default:
-            return E_BAD_PARAM;
+    case TMR_UNIT_NANOSEC:
+        unit_div0 = 1000000;
+        unit_div1 = 1000;
+        break;
+    case TMR_UNIT_MICROSEC:
+        unit_div0 = 1000;
+        unit_div1 = 1000;
+        break;
+    case TMR_UNIT_MILLISEC:
+        unit_div0 = 1;
+        unit_div1 = 1000;
+        break;
+    case TMR_UNIT_SEC:
+        unit_div0 = 1;
+        unit_div1 = 1;
+        break;
+    default:
+        return E_BAD_PARAM;
     }
 
     temp_ticks = (uint64_t)time * (timerClock / unit_div0) / (unit_div1 * (1 << (prescale & 0xF)));

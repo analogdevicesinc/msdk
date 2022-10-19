@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- * $Date: 2017-02-28 16:31:00 -0600 (Tue, 28 Feb 2017) $
- * $Revision: 26756 $
  *
  ******************************************************************************/
 
@@ -62,7 +59,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 
     if (callback) {
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)&pb_pin[pb]);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)&pb_pin[pb]);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_FALLING);
@@ -84,7 +81,7 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
 
     if (callback) {
         // Register callback
-        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void*)&pb_pin[pb]);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)&pb_pin[pb]);
 
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_BOTH);

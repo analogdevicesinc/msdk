@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _ADC_H_
-#define _ADC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_ADC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_ADC_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -59,23 +59,23 @@ extern "C" {
  */
 
 // Macros to select ADC channels
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0   ((uint32_t)(0x00000000UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1   ((uint32_t)(0x00000001UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN2   ((uint32_t)(0x00000002UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN3   ((uint32_t)(0x00000003UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN4   ((uint32_t)(0x00000004UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN5   ((uint32_t)(0x00000005UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN6   ((uint32_t)(0x00000006UL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN7   ((uint32_t)(0x00000007UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0 ((uint32_t)(0x00000000UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1 ((uint32_t)(0x00000001UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN2 ((uint32_t)(0x00000002UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN3 ((uint32_t)(0x00000003UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN4 ((uint32_t)(0x00000004UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN5 ((uint32_t)(0x00000005UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN6 ((uint32_t)(0x00000006UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_AIN7 ((uint32_t)(0x00000007UL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VCOREA ((uint32_t)(0x00000008UL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VCOREB ((uint32_t)(0x00000009UL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VRXOUT ((uint32_t)(0x0000000AUL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VTXOUT ((uint32_t)(0x0000000BUL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDA   ((uint32_t)(0x0000000CUL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDB   ((uint32_t)(0x0000000DUL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDI0  ((uint32_t)(0x0000000EUL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDA ((uint32_t)(0x0000000CUL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDB ((uint32_t)(0x0000000DUL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VDDI0 ((uint32_t)(0x0000000EUL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_VDDI0H ((uint32_t)(0x0000000FUL))
-#define MXC_V_ADC_CTRL_ADC_CHSEL_VREGI  ((uint32_t)(0x00000010UL))
+#define MXC_V_ADC_CTRL_ADC_CHSEL_VREGI ((uint32_t)(0x00000010UL))
 
 /***************************************************************************************************************
                                     DATA STRUCTURES FOR ADC INITIALIZATION
@@ -84,23 +84,23 @@ extern "C" {
   * Enumeration type for the ADC Input Channels
   */
 typedef enum {
-    MXC_ADC_CH_0      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN0,   // Select Channel 0
-    MXC_ADC_CH_1      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN1,   // Select Channel 1
-    MXC_ADC_CH_2      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN2,   // Select Channel 2
-    MXC_ADC_CH_3      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN3,   // Select Channel 3
-    MXC_ADC_CH_4      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN4,   // Channel 0 divided by 5
-    MXC_ADC_CH_5      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN5,   // Channel 1 divided by 5
-    MXC_ADC_CH_6      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN6,   // VDDB divided by 4
-    MXC_ADC_CH_7      = MXC_V_ADC_CTRL_ADC_CHSEL_AIN7,   // VDD18 input select
+    MXC_ADC_CH_0 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN0, // Select Channel 0
+    MXC_ADC_CH_1 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN1, // Select Channel 1
+    MXC_ADC_CH_2 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN2, // Select Channel 2
+    MXC_ADC_CH_3 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN3, // Select Channel 3
+    MXC_ADC_CH_4 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN4, // Channel 0 divided by 5
+    MXC_ADC_CH_5 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN5, // Channel 1 divided by 5
+    MXC_ADC_CH_6 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN6, // VDDB divided by 4
+    MXC_ADC_CH_7 = MXC_V_ADC_CTRL_ADC_CHSEL_AIN7, // VDD18 input select
     MXC_ADC_CH_VCOREA = MXC_V_ADC_CTRL_ADC_CHSEL_VCOREA, // VDD12 input select
     MXC_ADC_CH_VCOREB = MXC_V_ADC_CTRL_ADC_CHSEL_VCOREB,
     MXC_ADC_CH_VRXOUT = MXC_V_ADC_CTRL_ADC_CHSEL_VRXOUT, // VRTC divided by 2
     MXC_ADC_CH_VTXOUT = MXC_V_ADC_CTRL_ADC_CHSEL_VTXOUT, // TMON input select
-    MXC_ADC_CH_VDDA   = MXC_V_ADC_CTRL_ADC_CHSEL_VDDA,
-    MXC_ADC_CH_VDDB   = MXC_V_ADC_CTRL_ADC_CHSEL_VDDB,
-    MXC_ADC_CH_VDDIO  = MXC_V_ADC_CTRL_ADC_CHSEL_VDDI0,
+    MXC_ADC_CH_VDDA = MXC_V_ADC_CTRL_ADC_CHSEL_VDDA,
+    MXC_ADC_CH_VDDB = MXC_V_ADC_CTRL_ADC_CHSEL_VDDB,
+    MXC_ADC_CH_VDDIO = MXC_V_ADC_CTRL_ADC_CHSEL_VDDI0,
     MXC_ADC_CH_VDDIOH = MXC_V_ADC_CTRL_ADC_CHSEL_VDDI0H,
-    MXC_ADC_CH_VREGI  = MXC_V_ADC_CTRL_ADC_CHSEL_VREGI,
+    MXC_ADC_CH_VREGI = MXC_V_ADC_CTRL_ADC_CHSEL_VREGI,
 } mxc_adc_chsel_t;
 
 #if 0
@@ -136,12 +136,12 @@ typedef enum {
  */
 typedef enum {
     MXC_ADC_SCALE_2X, // ADC Scale by 2x (this scales ADC Reference by 1/2)
-    MXC_ADC_SCALE_1,  // ADC Scale by 1x (no scaling)
-    MXC_ADC_SCALE_2,  // ADC Scale by 1/2
-    MXC_ADC_SCALE_3,  // ADC Scale by 1/3
-    MXC_ADC_SCALE_4,  // ADC Scale by 1/4
-    MXC_ADC_SCALE_6,  // ADC Scale by 1/6 (this uses 1/3 and an additional 1/2 scaling)
-    MXC_ADC_SCALE_8,  // ADC Scale by 1/8 (this uses 1/4 and an additional 1/2 scaling)
+    MXC_ADC_SCALE_1, // ADC Scale by 1x (no scaling)
+    MXC_ADC_SCALE_2, // ADC Scale by 1/2
+    MXC_ADC_SCALE_3, // ADC Scale by 1/3
+    MXC_ADC_SCALE_4, // ADC Scale by 1/4
+    MXC_ADC_SCALE_6, // ADC Scale by 1/6 (this uses 1/3 and an additional 1/2 scaling)
+    MXC_ADC_SCALE_8, // ADC Scale by 1/8 (this uses 1/4 and an additional 1/2 scaling)
 } mxc_adc_scale_t;
 
 /**
@@ -153,25 +153,25 @@ typedef enum {
 } mxc_adc_ref_t;
 
 // Callback used when a conversion event is complete
-typedef void (*mxc_adc_complete_cb_t)(void* req, int error);
+typedef void (*mxc_adc_complete_cb_t)(void *req, int error);
 
 // Callback used when a monitor detects that a channel has reached a limit
-typedef void (*mxc_adc_monitor_cb_t)(void* req, int error);
+typedef void (*mxc_adc_monitor_cb_t)(void *req, int error);
 
 // Used to set up a monitor to watch a channel
 typedef struct {
-    mxc_adc_monitor_t monitor;     // Monitor to use
-    mxc_adc_scale_t scale;         // Channel scale to use (if external channel)
-    mxc_adc_chsel_t channel;       // Channel to use
-    int lowThreshold;              // Low Threshold for monitor (RAW ADC counts)
-    int highThreshold;             // High Threshold for monitor (RAW ADC counts)
+    mxc_adc_monitor_t monitor; // Monitor to use
+    mxc_adc_scale_t scale; // Channel scale to use (if external channel)
+    mxc_adc_chsel_t channel; // Channel to use
+    int lowThreshold; // Low Threshold for monitor (RAW ADC counts)
+    int highThreshold; // High Threshold for monitor (RAW ADC counts)
     mxc_adc_monitor_cb_t callback; // Function to call when the channel crosses threshold
 } mxc_adc_monitor_req_t;
 
 typedef struct {
-    mxc_adc_chsel_t channel;        // Channel to use
-    mxc_adc_scale_t scale;          // Channel scale to use (if external channel)
-    int rawADCValue;                // Result of the conversion
+    mxc_adc_chsel_t channel; // Channel to use
+    mxc_adc_scale_t scale; // Channel scale to use (if external channel)
+    int rawADCValue; // Result of the conversion
     mxc_adc_complete_cb_t callback; // Function to call when callback is complete
 } mxc_adc_conversion_req_t;
 
@@ -390,7 +390,7 @@ int MXC_ADC_Handler(void);
  *
  * @return     \ref MXC_Error_Codes for error.
  */
-int MXC_ADC_Convert(mxc_adc_conversion_req_t* req);
+int MXC_ADC_Convert(mxc_adc_conversion_req_t *req);
 
 /**
  * @brief      Perform a conversion on a specific channel
@@ -401,7 +401,7 @@ int MXC_ADC_Convert(mxc_adc_conversion_req_t* req);
  *
  * @return     return E_NO_ERROR OR E_BUSY
  */
-int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t* req);
+int MXC_ADC_ConvertAsync(mxc_adc_conversion_req_t *req);
 
 /**
  * @brief   Monitor a specific channel for an out of range event
@@ -439,11 +439,11 @@ void MXC_ADC_DisableComparators(uint32_t mask);
  * @return     #E_OVERFLOW   ADC overflow error
  * @return     #E_NO_ERROR   Data returned in \p outdata parameter
  */
-int MXC_ADC_GetData(uint16_t* outdata);
+int MXC_ADC_GetData(uint16_t *outdata);
 /**@} end of group adc */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _ADC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_ADC_H_

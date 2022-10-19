@@ -53,7 +53,7 @@ static uint16_t adc_val;
 /***** Functions *****/
 
 #ifdef USE_INTERRUPTS
-void adc_complete_cb(void* req, int error)
+void adc_complete_cb(void *req, int error)
 {
     adc_done = 1;
     return;
@@ -73,13 +73,11 @@ int main(void)
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
-    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_AFE_PWR_UP_ACTIVE))
-        ;
+    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_AFE_PWR_UP_ACTIVE)) {}
     MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_3, ADC_CHANNEL);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_3, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_3, 0x25);
@@ -100,8 +98,7 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(ADC_CHANNEL, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) {}
 #else
         MXC_ADC_StartConversion(ADC_CHANNEL);
 #endif

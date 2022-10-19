@@ -86,12 +86,17 @@ int MXC_TRNG_RandomInt(void)
     return MXC_TRNG_RevB_RandomInt();
 }
 
-int MXC_TRNG_Random(uint8_t* data, uint32_t len)
+int MXC_TRNG_Random(uint8_t *data, uint32_t len)
 {
     return MXC_TRNG_RevB_Random(data, len);
 }
 
-void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callback)
+void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callback)
 {
     MXC_TRNG_RevB_RandomAsync(data, len, callback);
+}
+
+int MXC_TRNG_HealthTest(void)
+{
+    return E_NOT_SUPPORTED;
 }

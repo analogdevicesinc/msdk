@@ -60,7 +60,7 @@ static uint16_t adc_val;
 /***** Functions *****/
 
 #ifdef USE_INTERRUPTS
-void adc_complete_cb(void* req, int error)
+void adc_complete_cb(void *req, int error)
 {
     adc_done = 1;
     return;
@@ -98,8 +98,7 @@ int main(void)
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
@@ -128,8 +127,7 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) {}
 
 #endif
 
@@ -138,8 +136,7 @@ int main(void)
 
         MXC_ADC_StartConversionDMA(MXC_ADC_CH_0, &adc_val, DMA_Callback);
 
-        while (!dma_done)
-            ;
+        while (!dma_done) {}
 
         printf("0: 0x%04x\n", adc_val);
 #else

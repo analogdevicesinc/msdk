@@ -37,12 +37,12 @@
 #include "state.h"
 #include "task_logo_animation.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static text_t text_msg[] = {
-    {(char*)"MAX32570", 8},
-    {(char*)"Select an activity", 18},
+    { (char *)"MAX32570", 8 },
+    { (char *)"Select an activity", 18 },
 };
 
 /********************************* Static Functions **************************/
@@ -79,54 +79,54 @@ static int init(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_0:
-            break;
-        case KEY_1:
-            state_set_current(get_smartcard_state());
-            break;
-        case KEY_2:
-            state_set_current(get_msr_state());
-            break;
-        case KEY_3:
-            state_set_current(get_keypad_state());
-            break;
-        case KEY_4:
-            state_set_current(get_nfc_state());
-            break;
-        case KEY_5:
-            state_set_current(get_slide_state());
-            break;
-        case KEY_6:
-            state_set_current(get_info_state());
-            break;
-        case KEY_7:
-            break;
-        case KEY_8:
-            break;
-        case KEY_9:
-            break;
-        case KEY_A:
-            break;
-        case KEY_B:
-            break;
-        case KEY_C:
-            break;
-        case KEY_D:
-            break;
-        case KEY_E:
-            break;
-        case KEY_F:
-            break;
-        default:
-            break;
+    case KEY_0:
+        break;
+    case KEY_1:
+        state_set_current(get_smartcard_state());
+        break;
+    case KEY_2:
+        state_set_current(get_msr_state());
+        break;
+    case KEY_3:
+        state_set_current(get_keypad_state());
+        break;
+    case KEY_4:
+        state_set_current(get_nfc_state());
+        break;
+    case KEY_5:
+        state_set_current(get_slide_state());
+        break;
+    case KEY_6:
+        state_set_current(get_info_state());
+        break;
+    case KEY_7:
+        break;
+    case KEY_8:
+        break;
+    case KEY_9:
+        break;
+    case KEY_A:
+        break;
+    case KEY_B:
+        break;
+    case KEY_C:
+        break;
+    case KEY_D:
+        break;
+    case KEY_E:
+        break;
+    case KEY_F:
+        break;
+    default:
+        break;
     }
     return 0;
 }
 
-static State g_state = {"home", init, key_process, NULL, 0};
+static State g_state = { "home", init, key_process, NULL, 0 };
 
 /********************************* Public Functions **************************/
-State* get_home_state(void)
+State *get_home_state(void)
 {
     return &g_state;
 }

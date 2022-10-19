@@ -45,7 +45,7 @@ extern "C" {
 /**
    * @brief Function to Calculates 1/in (reciprocal) value of Q31 Data type.
    */
-__STATIC_FORCEINLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, const q31_t* pRecipTable)
+__STATIC_FORCEINLINE uint32_t arm_recip_q31(q31_t in, q31_t *dst, const q31_t *pRecipTable)
 {
     q31_t out;
     uint32_t tempVal;
@@ -88,9 +88,9 @@ __STATIC_FORCEINLINE uint32_t arm_recip_q31(q31_t in, q31_t* dst, const q31_t* p
 /**
    * @brief Function to Calculates 1/in (reciprocal) value of Q15 Data type.
    */
-__STATIC_FORCEINLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, const q15_t* pRecipTable)
+__STATIC_FORCEINLINE uint32_t arm_recip_q15(q15_t in, q15_t *dst, const q15_t *pRecipTable)
 {
-    q15_t out        = 0;
+    q15_t out = 0;
     uint32_t tempVal = 0;
     uint32_t index = 0, i = 0;
     uint32_t signBits = 0;
@@ -134,7 +134,7 @@ __STATIC_FORCEINLINE uint32_t arm_recip_q15(q15_t in, q15_t* dst, const q15_t* p
  * @param[out] normalized   is the 32-bit normalized value
  * @param[out] norm         is norm scale
  */
-__STATIC_INLINE void arm_norm_64_to_32u(uint64_t in, int32_t* normalized, int32_t* norm)
+__STATIC_INLINE void arm_norm_64_to_32u(uint64_t in, int32_t *normalized, int32_t *norm)
 {
     int32_t n1;
     int32_t hi = (int32_t)(in >> 32);
@@ -150,20 +150,20 @@ __STATIC_INLINE void arm_norm_64_to_32u(uint64_t in, int32_t* normalized, int32_
             /*
              * MSB set, need to scale down by 1
              */
-            *norm       = -1;
+            *norm = -1;
             *normalized = (((uint32_t)lo) >> 1);
         } else {
             if (n1 == 32) {
                 /*
                  * input is zero
                  */
-                *norm       = 0;
+                *norm = 0;
                 *normalized = 0;
             } else {
                 /*
                  * 32-bit normalization
                  */
-                *norm       = n1 - 1;
+                *norm = n1 - 1;
                 *normalized = lo << *norm;
             }
         }
@@ -171,7 +171,7 @@ __STATIC_INLINE void arm_norm_64_to_32u(uint64_t in, int32_t* normalized, int32_
         /*
          * input fits in 64-bit
          */
-        n1    = 1 - n1;
+        n1 = 1 - n1;
         *norm = -n1;
         /*
          * 64 bit normalization

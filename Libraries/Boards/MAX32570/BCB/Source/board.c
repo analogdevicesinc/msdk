@@ -1,12 +1,14 @@
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -29,9 +31,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-08-10 11:01:15 -0500 (Thu, 10 Aug 2017) $
- * $Revision: 29282 $
- *
  ******************************************************************************/
 
 #include <stdio.h>
@@ -49,16 +48,16 @@
 #include "mxc_sys.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -83,12 +82,11 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // };
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/

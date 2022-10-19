@@ -48,16 +48,17 @@
 #include "wut.h"
 #include "trimsir_regs.h"
 #include "pal_btn.h"
+#include "pal_uart.h"
 #include "tmr.h"
-
+#include "svc_sds.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
 #if (BT_VER > 8)
 
 /* PHY Test Modes */
-#define DATS_PHY_1M    1
-#define DATS_PHY_2M    2
+#define DATS_PHY_1M 1
+#define DATS_PHY_2M 2
 #define DATS_PHY_CODED 3
 
 #endif /* BT_VER */
@@ -68,8 +69,8 @@
 
 /*! Button press handling constants */
 #define BTN_SHORT_MS 200
-#define BTN_MED_MS   500
-#define BTN_LONG_MS  1000
+#define BTN_MED_MS 500
+#define BTN_LONG_MS 1000
 
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
@@ -77,7 +78,8 @@
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
-    DATS_WP_DAT_CCC_IDX,  /*! Arm Ltd. proprietary service, data transfer characteristic */
+    DATS_WP_DAT_CCC_IDX, /*! Arm Ltd. proprietary service, data transfer characteristic */
+    DATS_SEC_DAT_CCC_IDX,
     DATS_NUM_CCC_IDX
 };
 
@@ -87,8 +89,8 @@ enum {
 
 /*! configurable parameters for advertising */
 static const appAdvCfg_t datsAdvCfg = {
-    {0, 0, 0},     /*! Advertising durations in ms */
-    {300, 1600, 0} /*! Advertising intervals in 0.625 ms units */
+    { 0, 0, 0 }, /*! Advertising durations in ms */
+    { 300, 1600, 0 } /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
@@ -96,29 +98,60 @@ static const appSlaveCfg_t datsSlaveCfg = {
     1, /*! Maximum connections */
 };
 
-/*! configurable parameters for security */
+/*! Configurable security parameters to set
+*   pairing and authentication requirements.
+*
+*   Authentication and bonding flags
+*       -DM_AUTH_BOND_FLAG  : Bonding requested 
+*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested 
+*       -DM_AUTH_KP_FLAG    : Keypress notifications requested 
+*       -DM_AUTH_MITM_FLAG  : MITM (authenticated pairing) requested
+                              pairing method is determined by IO capabilities below
+*
+*   Initiator key distribution flags
+*       -DM_KEY_DIST_LTK   : Distribute LTK used for encryption
+*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy 
+*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
+*/
 static const appSecCfg_t datsSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
-    DM_KEY_DIST_IRK,                     /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,   /*! Responder key distribution flags */
-    FALSE,                               /*! TRUE if Out-of-band pairing data is present */
-    FALSE                                /*! TRUE to initiate security upon connection */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
+    DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    TRUE /*! TRUE to initiate security upon connection */
 };
+
+/* OOB UART parameters */
+#define OOB_BAUD 115200
+#define OOB_FLOW FALSE
 
 /*! TRUE if Out-of-band pairing data is to be sent */
 static const bool_t datsSendOobData = FALSE;
 
-/*! SMP security parameter configuration */
+/* OOB Connection identifier */
+dmConnId_t oobConnId;
+
+/*! SMP security parameter configuration 
+*
+*   I/O Capability Codes to be set for 
+*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
+*   when the MITM flag is set in Configurable security parameters above.
+*       -SMP_IO_DISP_ONLY         : Display only. 
+*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
+*       -SMP_IO_KEY_ONLY          : Keyboard only.
+*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
+*       -SMP_IO_KEY_DISP          : Keyboard display. 
+*/
 static const smpCfg_t datsSmpCfg = {
-    500,                 /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
-    7,                   /*! Minimum encryption key length */
-    16,                  /*! Maximum encryption key length */
-    1,                   /*! Attempts to trigger 'repeated attempts' timeout */
-    0,                   /*! Device authentication requirements */
-    64000,               /*! Maximum repeated attempts timeout in msec */
-    64000,               /*! Time msec before attemptExp decreases */
-    2                    /*! Repeated attempts multiplier exponent */
+    500, /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_KEY_ONLY, /*! I/O Capability */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
 };
 
 /* iOS connection parameter update requirements
@@ -137,26 +170,27 @@ static const smpCfg_t datsSmpCfg = {
 
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t datsUpdateCfg = {
-    0,                /*! Connection idle period in ms before attempting
-                                              connection parameter update; set to zero to disable */
-    (15 * 8 / 1.25),  /*! Minimum connection interval in 1.25ms units */
+    0,
+    /*! ^ Connection idle period in ms before attempting
+    connection parameter update. set to zero to disable */
+    (15 * 8 / 1.25), /*! Minimum connection interval in 1.25ms units */
     (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
-    0,                /*! Connection latency */
-    600,              /*! Supervision timeout in 10ms units */
-    5                 /*! Number of update attempts before giving up */
+    0, /*! Connection latency */
+    600, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
 };
 
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t datsAttCfg = {
-    15,                    /* ATT server service discovery connection idle timeout in seconds */
-    241,                   /* desired ATT MTU */
+    15, /* ATT server service discovery connection idle timeout in seconds */
+    241, /* desired ATT MTU */
     ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
-    4                      /* number of queued prepare writes supported by server */
+    4 /* number of queued prepare writes supported by server */
 };
 
 /*! local IRK */
-static uint8_t localIrk[] = {0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
-                             0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85};
+static uint8_t localIrk[] = { 0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
+                              0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85 };
 
 /**************************************************************************************************
   Advertising Data
@@ -165,26 +199,27 @@ static uint8_t localIrk[] = {0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
 /*! advertising data, discoverable mode */
 static const uint8_t datsAdvDataDisc[] = {
     /*! flags */
-    2,                        /*! length */
-    DM_ADV_TYPE_FLAGS,        /*! AD type */
+    2, /*! length */
+    DM_ADV_TYPE_FLAGS, /*! AD type */
     DM_FLAG_LE_GENERAL_DISC | /*! flags */
         DM_FLAG_LE_BREDR_NOT_SUP,
 
     /*! manufacturer specific data */
-    3,                             /*! length */
-    DM_ADV_TYPE_MANUFACTURER,      /*! AD type */
+    3, /*! length */
+    DM_ADV_TYPE_MANUFACTURER, /*! AD type */
     UINT16_TO_BYTES(HCI_ID_ANALOG) /*! company ID */
 };
 
 /*! scan data, discoverable mode */
 static const uint8_t datsScanDataDisc[] = {
     /*! device name */
-    5,                      /*! length */
+    5, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
     'D',
     'A',
     'T',
-    'S'};
+    'S'
+};
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
@@ -193,8 +228,9 @@ static const uint8_t datsScanDataDisc[] = {
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
 static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
-    {GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE}, /* DATS_GATT_SC_CCC_IDX */
-    {WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE}     /* DATS_WP_DAT_CCC_IDX */
+    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* DATS_GATT_SC_CCC_IDX */
+    { WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* DATS_WP_DAT_CCC_IDX */
+    { SEC_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* DATS_SEC_DAT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -203,18 +239,34 @@ static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] = {
 
 /*! application control block */
 static struct {
-    wsfHandlerId_t handlerId;     /* WSF handler ID */
+    wsfHandlerId_t handlerId; /* WSF handler ID */
     appDbHdl_t resListRestoreHdl; /*! Resolving List last restored handle */
-    bool_t restoringResList;      /*! Restoring resolving list from NVM */
+    bool_t restoringResList; /*! Restoring resolving list from NVM */
 } datsCb;
 
 /* LESC OOB configuration */
-static dmSecLescOobCfg_t* datsOobCfg;
+static dmSecLescOobCfg_t *datsOobCfg;
 
 /* Timer for trimming of the 32 kHz crystal */
 wsfTimer_t trimTimer;
 
 extern void setAdvTxPower(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief  OOB RX callback.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void oobRxCback(void)
+{
+    if (datsOobCfg != NULL) {
+        DmSecSetOob(oobConnId, datsOobCfg);
+    }
+
+    DmSecAuthRsp(oobConnId, 0, NULL);
+}
 
 /*************************************************************************************************/
 /*!
@@ -244,9 +296,9 @@ static void datsSendData(dmConnId_t connId)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsDmCback(dmEvt_t* pDmEvt)
+static void datsDmCback(dmEvt_t *pDmEvt)
 {
-    dmEvt_t* pMsg;
+    dmEvt_t *pMsg;
     uint16_t len;
 
     if (pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND) {
@@ -257,15 +309,31 @@ static void datsDmCback(dmEvt_t* pDmEvt)
             uint8_t oobLocalRandom[SMP_RAND_LEN];
             SecRand(oobLocalRandom, SMP_RAND_LEN);
             DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
+
+            /* Setup HCI UART for OOB */
+            PalUartConfig_t hciUartCfg;
+            hciUartCfg.rdCback = oobRxCback;
+            hciUartCfg.wrCback = NULL;
+            hciUartCfg.baud = OOB_BAUD;
+            hciUartCfg.hwFlow = OOB_FLOW;
+
+            PalUartInit(PAL_UART_ID_CHCI, &hciUartCfg);
         }
     } else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
         if (datsOobCfg == NULL) {
             datsOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
+            memset(datsOobCfg, 0, sizeof(dmSecLescOobCfg_t));
         }
 
         if (datsOobCfg) {
             Calc128Cpy(datsOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
             Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
+
+            /* Start the RX for the peer OOB data */
+            PalUartReadData(PAL_UART_ID_CHCI, datsOobCfg->peerRandom,
+                            (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+        } else {
+            APP_TRACE_ERR0("Error allocating OOB data");
         }
     } else {
         len = DmSizeOfEvt(pDmEvt);
@@ -286,13 +354,13 @@ static void datsDmCback(dmEvt_t* pDmEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsAttCback(attEvt_t* pEvt)
+static void datsAttCback(attEvt_t *pEvt)
 {
-    attEvt_t* pMsg;
+    attEvt_t *pMsg;
 
     if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
         memcpy(pMsg, pEvt, sizeof(attEvt_t));
-        pMsg->pValue = (uint8_t*)(pMsg + 1);
+        pMsg->pValue = (uint8_t *)(pMsg + 1);
         memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
         WsfMsgSend(datsCb.handlerId, pMsg);
     }
@@ -307,7 +375,7 @@ static void datsAttCback(attEvt_t* pEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsCccCback(attsCccEvt_t* pEvt)
+static void datsCccCback(attsCccEvt_t *pEvt)
 {
     appDbHdl_t dbHdl;
 
@@ -352,14 +420,38 @@ static void trimStart(void)
  */
 /*************************************************************************************************/
 uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                         uint16_t len, uint8_t* pValue, attsAttr_t* pAttr)
+                         uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     if (len < 64) {
         /* print received data if not a speed test message */
-        APP_TRACE_INFO0((const char*)pValue);
+        APP_TRACE_INFO0((const char *)pValue);
 
         /* send back some data */
         datsSendData(connId);
+    }
+    return ATT_SUCCESS;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  ATTS write callback for secured data service.
+ *
+ *  \return ATT status.
+ */
+/*************************************************************************************************/
+uint8_t secDatWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                         uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+{
+    uint8_t str[] = "Secure data received!";
+    APP_TRACE_INFO0(">> Received secure data <<");
+    APP_TRACE_INFO0((const char *)pValue);
+
+    /* Write data recevied into characteristic */
+    AttsSetAttr(SEC_DAT_HDL, len, (uint8_t *)pValue);
+    /* if notifications are enabled send one */
+    if (AttsCccEnabled(connId, DATS_SEC_DAT_CCC_IDX)) {
+        /* send notification */
+        AttsHandleValueNtf(connId, SEC_DAT_HDL, sizeof(str), str);
     }
     return ATT_SUCCESS;
 }
@@ -376,7 +468,7 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
 /*************************************************************************************************/
 static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
 {
-    dmSecKey_t* pPeerKey;
+    dmSecKey_t *pPeerKey;
 
     /* if peer IRK present */
     if ((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL) {
@@ -395,11 +487,11 @@ static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
 *  \return None.
 */
 /*************************************************************************************************/
-static void datsPrivRemDevFromResListInd(dmEvt_t* pMsg)
+static void datsPrivRemDevFromResListInd(dmEvt_t *pMsg)
 {
     if (pMsg->hdr.status == HCI_SUCCESS) {
         if (AppDbGetHdl((dmConnId_t)pMsg->hdr.param) != APP_DB_HDL_NONE) {
-            uint8_t addrZeros[BDA_ADDR_LEN] = {0};
+            uint8_t addrZeros[BDA_ADDR_LEN] = { 0 };
 
             /* clear advertising peer address and its type */
             AppSetAdvPeerAddr(HCI_ADDR_TYPE_PUBLIC, addrZeros);
@@ -417,7 +509,7 @@ static void datsPrivRemDevFromResListInd(dmEvt_t* pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-void datsDisplayStackVersion(const char* pVersion)
+void datsDisplayStackVersion(const char *pVersion)
 {
     APP_TRACE_INFO1("Stack Version: %s", pVersion);
 }
@@ -432,18 +524,19 @@ void datsDisplayStackVersion(const char* pVersion)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsSetup(dmEvt_t* pMsg)
+static void datsSetup(dmEvt_t *pMsg)
 {
     /* Initialize control information */
     datsCb.restoringResList = FALSE;
 
     /* set advertising and scan response data for discoverable mode */
-    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t*)datsAdvDataDisc);
-    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc), (uint8_t*)datsScanDataDisc);
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc),
+                  (uint8_t *)datsScanDataDisc);
 
     /* set advertising and scan response data for connectable mode */
-    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(datsAdvDataDisc), (uint8_t*)datsAdvDataDisc);
-    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(datsScanDataDisc), (uint8_t*)datsScanDataDisc);
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(datsScanDataDisc), (uint8_t *)datsScanDataDisc);
 
     /* start advertising; automatically set connectable/discoverable mode and bondable mode */
     AppAdvStart(APP_MODE_AUTO_INIT);
@@ -458,7 +551,7 @@ static void datsSetup(dmEvt_t* pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsRestoreResolvingList(dmEvt_t* pMsg)
+static void datsRestoreResolvingList(dmEvt_t *pMsg)
 {
     /* Restore first device to resolving list in Controller. */
     datsCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
@@ -480,7 +573,7 @@ static void datsRestoreResolvingList(dmEvt_t* pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsPrivAddDevToResListInd(dmEvt_t* pMsg)
+static void datsPrivAddDevToResListInd(dmEvt_t *pMsg)
 {
     /* Check if in the process of restoring the Device List from NV */
     if (datsCb.restoringResList) {
@@ -508,131 +601,132 @@ static void datsPrivAddDevToResListInd(dmEvt_t* pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsProcMsg(dmEvt_t* pMsg)
+static void datsProcMsg(dmEvt_t *pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
 
     switch (pMsg->hdr.event) {
-        case DM_RESET_CMPL_IND:
-            AttsCalculateDbHash();
-            DmSecGenerateEccKeyReq();
-            AppDbNvmReadAll();
-            datsRestoreResolvingList(pMsg);
-            setAdvTxPower();
-            uiEvent = APP_UI_RESET_CMPL;
+    case DM_RESET_CMPL_IND:
+        AttsCalculateDbHash();
+        DmSecGenerateEccKeyReq();
+        AppDbNvmReadAll();
+        datsRestoreResolvingList(pMsg);
+        setAdvTxPower();
+        uiEvent = APP_UI_RESET_CMPL;
+        break;
+
+    case DM_ADV_START_IND:
+        WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
+
+        uiEvent = APP_UI_ADV_START;
+        break;
+
+    case DM_ADV_STOP_IND:
+        WsfTimerStop(&trimTimer);
+        uiEvent = APP_UI_ADV_STOP;
+        break;
+
+    case DM_CONN_OPEN_IND:
+        uiEvent = APP_UI_CONN_OPEN;
+        if (datsSecCfg.initiateSec) {
+            AppSlaveSecurityReq((dmConnId_t)pMsg->hdr.param);
+        }
+        break;
+
+    case DM_CONN_CLOSE_IND:
+        WsfTimerStop(&trimTimer);
+
+        APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status,
+                        pMsg->connClose.reason);
+        switch (pMsg->connClose.reason) {
+        case HCI_ERR_CONN_TIMEOUT:
+            APP_TRACE_INFO0(" TIMEOUT");
             break;
-
-        case DM_ADV_START_IND:
-            WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
-
-            uiEvent = APP_UI_ADV_START;
+        case HCI_ERR_LOCAL_TERMINATED:
+            APP_TRACE_INFO0(" LOCAL TERM");
             break;
-
-        case DM_ADV_STOP_IND:
-            WsfTimerStop(&trimTimer);
-            uiEvent = APP_UI_ADV_STOP;
+        case HCI_ERR_REMOTE_TERMINATED:
+            APP_TRACE_INFO0(" REMOTE TERM");
             break;
-
-        case DM_CONN_OPEN_IND:
-            uiEvent = APP_UI_CONN_OPEN;
+        case HCI_ERR_CONN_FAIL:
+            APP_TRACE_INFO0(" FAIL ESTABLISH");
             break;
-
-        case DM_CONN_CLOSE_IND:
-            WsfTimerStop(&trimTimer);
-
-            APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status,
-                            pMsg->connClose.reason);
-            switch (pMsg->connClose.reason) {
-                case HCI_ERR_CONN_TIMEOUT:
-                    APP_TRACE_INFO0(" TIMEOUT");
-                    break;
-                case HCI_ERR_LOCAL_TERMINATED:
-                    APP_TRACE_INFO0(" LOCAL TERM");
-                    break;
-                case HCI_ERR_REMOTE_TERMINATED:
-                    APP_TRACE_INFO0(" REMOTE TERM");
-                    break;
-                case HCI_ERR_CONN_FAIL:
-                    APP_TRACE_INFO0(" FAIL ESTABLISH");
-                    break;
-                case HCI_ERR_MIC_FAILURE:
-                    APP_TRACE_INFO0(" MIC FAILURE");
-                    break;
-            }
-            uiEvent = APP_UI_CONN_CLOSE;
+        case HCI_ERR_MIC_FAILURE:
+            APP_TRACE_INFO0(" MIC FAILURE");
             break;
+        }
+        uiEvent = APP_UI_CONN_CLOSE;
+        break;
 
-        case DM_SEC_PAIR_CMPL_IND:
-            DmSecGenerateEccKeyReq();
-            AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
-            uiEvent = APP_UI_SEC_PAIR_CMPL;
-            break;
+    case DM_SEC_PAIR_CMPL_IND:
+        DmSecGenerateEccKeyReq();
+        AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
+        uiEvent = APP_UI_SEC_PAIR_CMPL;
+        break;
 
-        case DM_SEC_PAIR_FAIL_IND:
-            DmSecGenerateEccKeyReq();
-            uiEvent = APP_UI_SEC_PAIR_FAIL;
-            break;
+    case DM_SEC_PAIR_FAIL_IND:
+        DmSecGenerateEccKeyReq();
+        uiEvent = APP_UI_SEC_PAIR_FAIL;
+        break;
 
-        case DM_SEC_ENCRYPT_IND:
-            uiEvent = APP_UI_SEC_ENCRYPT;
-            break;
+    case DM_SEC_ENCRYPT_IND:
+        uiEvent = APP_UI_SEC_ENCRYPT;
+        break;
 
-        case DM_SEC_ENCRYPT_FAIL_IND:
-            uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
-            break;
+    case DM_SEC_ENCRYPT_FAIL_IND:
+        uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
+        break;
 
-        case DM_SEC_AUTH_REQ_IND:
+    case DM_SEC_AUTH_REQ_IND:
 
-            if (pMsg->authReq.oob) {
-                dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+        if (pMsg->authReq.oob) {
+            dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-                /* TODO: Perform OOB Exchange with the peer. */
+            APP_TRACE_INFO0("Sending OOB data");
+            oobConnId = connId;
 
-                /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
+            /* Start the TX to send the local OOB data */
+            PalUartWriteData(PAL_UART_ID_CHCI, datsOobCfg->localRandom,
+                             (SMP_RAND_LEN + SMP_CONFIRM_LEN));
 
-                if (datsOobCfg != NULL) {
-                    DmSecSetOob(connId, datsOobCfg);
-                }
+        } else {
+            AppHandlePasskey(&pMsg->authReq);
+        }
+        break;
 
-                DmSecAuthRsp(connId, 0, NULL);
-            } else {
-                AppHandlePasskey(&pMsg->authReq);
-            }
-            break;
+    case DM_SEC_COMPARE_IND:
+        AppHandleNumericComparison(&pMsg->cnfInd);
+        break;
 
-        case DM_SEC_COMPARE_IND:
-            AppHandleNumericComparison(&pMsg->cnfInd);
-            break;
+    case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
+        datsPrivAddDevToResListInd(pMsg);
+        break;
 
-        case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
-            datsPrivAddDevToResListInd(pMsg);
-            break;
+    case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
+        datsPrivRemDevFromResListInd(pMsg);
+        break;
 
-        case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
-            datsPrivRemDevFromResListInd(pMsg);
-            break;
+    case DM_ADV_NEW_ADDR_IND:
+        break;
 
-        case DM_ADV_NEW_ADDR_IND:
-            break;
-
-        case DM_PRIV_CLEAR_RES_LIST_IND:
-            APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-            break;
+    case DM_PRIV_CLEAR_RES_LIST_IND:
+        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+        break;
 
 #if (BT_VER > 8)
-        case DM_PHY_UPDATE_IND:
-            APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy,
-                            pMsg->phyUpdate.txPhy);
-            break;
+    case DM_PHY_UPDATE_IND:
+        APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy,
+                        pMsg->phyUpdate.txPhy);
+        break;
 #endif /* BT_VER */
 
-        case TRIM_TIMER_EVT:
-            trimStart();
-            WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
-            break;
+    case TRIM_TIMER_EVT:
+        trimStart();
+        WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     if (uiEvent != APP_UI_NONE) {
@@ -657,12 +751,12 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
     datsCb.handlerId = handlerId;
 
     /* Set configuration pointers */
-    pAppSlaveCfg  = (appSlaveCfg_t*)&datsSlaveCfg;
-    pAppAdvCfg    = (appAdvCfg_t*)&datsAdvCfg;
-    pAppSecCfg    = (appSecCfg_t*)&datsSecCfg;
-    pAppUpdateCfg = (appUpdateCfg_t*)&datsUpdateCfg;
-    pSmpCfg       = (smpCfg_t*)&datsSmpCfg;
-    pAttCfg       = (attCfg_t*)&datsAttCfg;
+    pAppSlaveCfg = (appSlaveCfg_t *)&datsSlaveCfg;
+    pAppAdvCfg = (appAdvCfg_t *)&datsAdvCfg;
+    pAppSecCfg = (appSecCfg_t *)&datsSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t *)&datsUpdateCfg;
+    pSmpCfg = (smpCfg_t *)&datsSmpCfg;
+    pAttCfg = (attCfg_t *)&datsAttCfg;
 
     /* Initialize application framework */
     AppSlaveInit();
@@ -696,78 +790,76 @@ static void datsBtnCback(uint8_t btn)
     {
         switch (btn) {
 #if (BT_VER > 8)
-            case APP_UI_BTN_2_SHORT:
-            {
-                static uint32_t coded_phy_cnt = 0;
-                /* Toggle PHY Test Mode */
-                coded_phy_cnt++;
-                switch (coded_phy_cnt & 0x3) {
-                    case 0:
-                        /* 1M PHY */
-                        APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT,
-                                 HCI_PHY_LE_1M_BIT, HCI_PHY_OPTIONS_NONE);
-                        break;
-                    case 1:
-                        /* 2M PHY */
-                        APP_TRACE_INFO0("2 MBit TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT,
-                                 HCI_PHY_LE_2M_BIT, HCI_PHY_OPTIONS_NONE);
-                        break;
-                    case 2:
-                        /* Coded S2 PHY */
-                        APP_TRACE_INFO0("LE Coded S2 TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
-                                 HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S2_PREFERRED);
-                        break;
-                    case 3:
-                        /* Coded S8 PHY */
-                        APP_TRACE_INFO0("LE Coded S8 TX and RX PHY Requested");
-                        DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
-                                 HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S8_PREFERRED);
-                        break;
-                }
+        case APP_UI_BTN_2_SHORT: {
+            static uint32_t coded_phy_cnt = 0;
+            /* Toggle PHY Test Mode */
+            coded_phy_cnt++;
+            switch (coded_phy_cnt & 0x3) {
+            case 0:
+                /* 1M PHY */
+                APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT, HCI_PHY_LE_1M_BIT,
+                         HCI_PHY_OPTIONS_NONE);
+                break;
+            case 1:
+                /* 2M PHY */
+                APP_TRACE_INFO0("2 MBit TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT, HCI_PHY_LE_2M_BIT,
+                         HCI_PHY_OPTIONS_NONE);
+                break;
+            case 2:
+                /* Coded S2 PHY */
+                APP_TRACE_INFO0("LE Coded S2 TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
+                         HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S2_PREFERRED);
+                break;
+            case 3:
+                /* Coded S8 PHY */
+                APP_TRACE_INFO0("LE Coded S8 TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
+                         HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_S8_PREFERRED);
                 break;
             }
+            break;
+        }
 #endif /* BT_VER */
 
-            default:
-                APP_TRACE_INFO0(" - No action assigned");
-                break;
+        default:
+            APP_TRACE_INFO0(" - No action assigned");
+            break;
         }
     } else {
         switch (btn) {
-            case APP_UI_BTN_1_SHORT:
-                /* start advertising */
-                AppAdvStart(APP_MODE_AUTO_INIT);
-                break;
+        case APP_UI_BTN_1_SHORT:
+            /* start advertising */
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            break;
 
-            case APP_UI_BTN_1_MED:
-                /* Enter bondable mode */
-                AppSetBondable(TRUE);
-                break;
+        case APP_UI_BTN_1_MED:
+            /* Enter bondable mode */
+            AppSetBondable(TRUE);
+            break;
 
-            case APP_UI_BTN_1_LONG:
-                /* clear all bonding info */
-                AppSlaveClearAllBondingInfo();
-                AppDbNvmDeleteAll();
-                break;
+        case APP_UI_BTN_1_LONG:
+            /* clear all bonding info */
+            AppSlaveClearAllBondingInfo();
+            AppDbNvmDeleteAll();
+            break;
 
-            case APP_UI_BTN_1_EX_LONG:
-            {
-                const char* pVersion;
-                StackGetVersionNumber(&pVersion);
-                datsDisplayStackVersion(pVersion);
-            } break;
+        case APP_UI_BTN_1_EX_LONG: {
+            const char *pVersion;
+            StackGetVersionNumber(&pVersion);
+            datsDisplayStackVersion(pVersion);
+        } break;
 
-            case APP_UI_BTN_2_SHORT:
-                /* stop advertising */
-                AppAdvStop();
-                break;
+        case APP_UI_BTN_2_SHORT:
+            /* stop advertising */
+            AppAdvStop();
+            break;
 
-            default:
-                APP_TRACE_INFO0(" - No action assigned");
-                break;
+        default:
+            APP_TRACE_INFO0(" - No action assigned");
+            break;
         }
     }
 }
@@ -781,7 +873,7 @@ static void datsBtnCback(uint8_t btn)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsWsfBufDiagnostics(WsfBufDiag_t* pInfo)
+static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
 {
     if (pInfo->type == WSF_BUF_ALLOC_FAILED) {
         APP_TRACE_INFO2("Dats got WSF Buffer Allocation Failure - Task: %d Len: %d",
@@ -852,7 +944,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
  *  \return None.
  */
 /*************************************************************************************************/
-void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
+void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     if (pMsg != NULL) {
         APP_TRACE_INFO1("Dats got evt %d", pMsg->event);
@@ -861,18 +953,17 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg)
         if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+        } else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process DM messages */
             /* process advertising and connection-related messages */
-            AppSlaveProcDmMsg((dmEvt_t*)pMsg);
+            AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 
             /* process security-related messages */
-            AppSlaveSecProcDmMsg((dmEvt_t*)pMsg);
+            AppSlaveSecProcDmMsg((dmEvt_t *)pMsg);
         }
 
         /* perform profile and user interface-related operations */
-        datsProcMsg((dmEvt_t*)pMsg);
+        datsProcMsg((dmEvt_t *)pMsg);
     }
 }
 
@@ -890,13 +981,18 @@ void DatsStart(void)
     DmConnRegister(DM_CLIENT_ID_APP, datsDmCback);
     AttRegister(datsAttCback);
     AttConnRegister(AppServerConnCback);
-    AttsCccRegister(DATS_NUM_CCC_IDX, (attsCccSet_t*)datsCccSet, datsCccCback);
+    AttsCccRegister(DATS_NUM_CCC_IDX, (attsCccSet_t *)datsCccSet, datsCccCback);
 
     /* Initialize attribute server database */
     SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
     SvcCoreAddGroup();
     SvcWpCbackRegister(NULL, datsWpWriteCback);
     SvcWpAddGroup();
+
+    /*register secure data write callback */
+    SvcSecDataCbackRegister(NULL, secDatWriteCback);
+    /* Register secure data service */
+    SvcSecDataAddGroup();
 
     /* Set Service Changed CCCD index. */
     GattSetSvcChangedIdx(DATS_GATT_SC_CCC_IDX);

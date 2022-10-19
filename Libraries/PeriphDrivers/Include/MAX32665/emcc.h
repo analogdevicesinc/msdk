@@ -47,8 +47,8 @@
  * @{
  */
 
-#ifndef _EMCC_H_
-#define _EMCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_EMCC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_EMCC_H_
 
 /***** Includes *****/
 #include "emcc_regs.h"
@@ -64,9 +64,9 @@ extern "C" {
  * Enumeration type for the EMCC Cache ID Register
  */
 typedef enum {
-    EMCC_CACHE_ID_RELNUM,  // Release Number
+    EMCC_CACHE_ID_RELNUM, // Release Number
     EMCC_CACHE_ID_PARTNUM, // Part Number
-    EMCC_CACHE_ID_CCHID    // Cache ID
+    EMCC_CACHE_ID_CCHID // Cache ID
 } emcc_cache_id_t;
 
 /***** Function Prototypes *****/
@@ -140,7 +140,7 @@ void EMCC_Invalidate_All(void);
 }
 #endif
 
-#endif /* _EMCC_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_EMCC_H_
 /**
  * @} end of emcc
  */

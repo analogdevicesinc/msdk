@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef __ISO14443_3B_FLOW_H__
-#define __ISO14443_3B_FLOW_H__
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_FLOW_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_FLOW_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -81,7 +81,7 @@ int32_t iso_14443_3b_polling(void);
  * @retval #ISO14443_3_ERR_SUCCESS Card is found
  * @retval #ISO14443_3_ERR_TIMEOUT No card detected
  */
-int32_t iso_14443_3b_polling_response(uint8_t* atqb_resp, int32_t* atqb_resp_len);
+int32_t iso_14443_3b_polling_response(uint8_t *atqb_resp, int32_t *atqb_resp_len);
 
 /**
  * @brief Perform required anticollision checks
@@ -116,7 +116,7 @@ int32_t iso_14443_3b_collision_detect(void);
  * @retval #ISO14443_3_ERR_CMD
  * @retval #ISO14443_3_ERR_PROTOCOL Format error
  */
-int32_t iso_14443_3b_collision_detect_response(uint8_t* atqb_resp, int32_t* atqb_resp_len);
+int32_t iso_14443_3b_collision_detect_response(uint8_t *atqb_resp, int32_t *atqb_resp_len);
 
 /**
  * @brief Activate a Type B PICC (Card)
@@ -156,7 +156,7 @@ int32_t iso_14443_3b_active(void);
  * @retval #ISO14443_3_ERR_OTHER
  * @note Only use this function after a successful call to iso_14443_3b_collision_detect
  */
-int32_t iso_14443_3b_active_response(uint8_t* attrib_resp, int32_t* attrib_resp_len);
+int32_t iso_14443_3b_active_response(uint8_t *attrib_resp, int32_t *attrib_resp_len);
 
 /**
  * @brief Remove a Type B PICC (Card)
@@ -175,4 +175,4 @@ int32_t iso_14443_3b_remove(void);
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3B_FLOW_H_

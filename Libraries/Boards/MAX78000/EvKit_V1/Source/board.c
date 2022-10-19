@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -41,24 +41,23 @@
 #include "mxc_pins.h"
 #include "led.h"
 #include "pb.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 #include "tft_ssd2119.h"
 #include "tsc2046.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 /***** File Scope Variables *****/
@@ -82,12 +81,11 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // };
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/
@@ -125,34 +123,34 @@ int Board_Init(void)
 
     /* TFT reset and backlight signal */
     mxc_tft_spi_config tft_spi_config = {
-        .regs   = MXC_SPI0,
-        .gpio   = {MXC_GPIO0, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11,
-                 MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-        .freq   = 25000000,
+        .regs = MXC_SPI0,
+        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11,
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+        .freq = 25000000,
         .ss_idx = 1,
     };
 
     /* TFT reset signal */
-    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
-                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT,
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
     /* Initialize TFT display */
     MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, NULL);
 
     /* Enable Touchscreen */
     mxc_ts_spi_config ts_spi_config = {
-        .regs   = MXC_SPI0,
-        .gpio   = {MXC_GPIO0, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10,
-                 MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-        .freq   = 1000000,
+        .regs = MXC_SPI0,
+        .gpio = { MXC_GPIO0, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10,
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+        .freq = 1000000,
         .ss_idx = 2,
     };
 
     /* Touch screen controller interrupt signal */
-    mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                              MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t int_pin = { MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
+                               MXC_GPIO_VSSEL_VDDIOH };
     /* Touch screen controller busy signal */
-    mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                               MXC_GPIO_VSSEL_VDDIOH};
+    mxc_gpio_cfg_t busy_pin = { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
+                                MXC_GPIO_VSSEL_VDDIOH };
     /* Initialize Touch Screen controller */
     MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
 

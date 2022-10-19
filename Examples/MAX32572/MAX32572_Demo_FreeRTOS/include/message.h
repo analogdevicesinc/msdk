@@ -34,8 +34,8 @@
  ******************************************************************************
  */
 
-#ifndef _MESSAGE_H_
-#define _MESSAGE_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_MESSAGE_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_MESSAGE_H_
 
 /*****************************    TYPE DEF    *********************************/
 typedef struct _message {
@@ -44,4 +44,4 @@ typedef struct _message {
     unsigned char pcMessage[50];
 } message_t;
 
-#endif /* _MESSAGE_H_ */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_MESSAGE_H_

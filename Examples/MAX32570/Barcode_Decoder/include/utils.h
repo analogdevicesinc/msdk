@@ -32,8 +32,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_UTILS_H_
+#define EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_UTILS_H_
 
 /*****************************     INCLUDES  *********************************/
 #include <stdint.h>
@@ -45,7 +45,7 @@
 /*****************************     FUNCTIONS *********************************/
 void utils_delay_ms(unsigned int ms);
 unsigned int utils_get_time_ms(void);
-void utils_hexDump(const char* title, unsigned char* buf, unsigned int len);
-int utils_send_img_to_pc(uint8_t* img, uint32_t imgLen, int w, int h, uint8_t* pixelformat);
+void utils_hexDump(const char *title, unsigned char *buf, unsigned int len);
+int utils_send_img_to_pc(uint8_t *img, uint32_t imgLen, int w, int h, uint8_t *pixelformat);
 
-#endif // _UTILS_H_
+#endif // EXAMPLES_MAX32570_BARCODE_DECODER_INCLUDE_UTILS_H_

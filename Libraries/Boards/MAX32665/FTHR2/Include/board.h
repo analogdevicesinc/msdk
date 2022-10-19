@@ -1,4 +1,4 @@
-/*******************************************************************************
+/******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -29,7 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
 
 /**
@@ -39,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32665_FTHR2_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32665_FTHR2_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,10 +61,10 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
-#define LED_RED   0
-#define LED_BLUE  1
+#define LED_RED 0
+#define LED_BLUE 1
 #define LED_GREEN 2
 
 #ifndef HCI_UART
@@ -122,4 +121,4 @@ int Console_Shutdown(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32665_FTHR2_INCLUDE_BOARD_H_

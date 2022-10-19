@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47,68 +47,68 @@
 #define HARDWARE_ID 0x02
 
 // Device register addresses
-#define REG_HARDWARE_ID      0x00
-#define REG_FIRMWARE_REV     0x01
-#define REG_INT0             0x03
-#define REG_INT1             0x04
-#define REG_INT2             0x05
-#define REG_STATUS0          0x06
-#define REG_STATUS1          0x07
-#define REG_STATUS2          0x08
-#define REG_STATUS3          0x09
-#define REG_SYSTEM_ERROR     0x0B
-#define REG_INT_MASK0        0x0C
-#define REG_INT_MASK1        0x0D
-#define REG_INT_MASK2        0x0E
-#define REG_AP_DATOUT0       0x0F
-#define REG_AP_DATOUT1       0x10
-#define REG_AP_DATOUT2       0x11
-#define REG_AP_DATOUT3       0x12
-#define REG_AP_DATOUT4       0x13
-#define REG_AP_DATOUT5       0x14
-#define REG_AP_DATOUT6       0x15
-#define REG_AP_CMDOUT        0x17
-#define REG_AP_RESPONSE      0x18
-#define REG_AP_DATAIN0       0x19
-#define REG_AP_DATAIN1       0x1A
-#define REG_AP_DATAIN2       0x1B
-#define REG_AP_DATAIN3       0x1C
-#define REG_AP_DATAIN4       0x1D
-#define REG_AP_DATAIN5       0x1E
-#define REG_LDO_DIRECT       0x20
-#define REG_MPC_DIRECTWRITE  0x21
-#define REG_MPC_DIRECTRED    0x22
-#define REG_HPT_RAM_ADDR     0x28
-#define REG_HPT_RAM_DATA_H   0x29
-#define REG_HPT_RAM_DATA_M   0x2A
-#define REG_HPT_RAM_DATA_L   0x2B
-#define REG_LED_STEP_DIRECT  0x2C
-#define REG_LED0_DIRECT      0x2D
-#define REG_LED1_DIRECT      0x2E
-#define REG_LED2_DIRECT      0x2F
-#define REG_HPT_DIRECT0      0x30
-#define REG_HPT_DIRECT1      0x31
-#define REG_HPT_RTI2C_AMP    0x32
+#define REG_HARDWARE_ID 0x00
+#define REG_FIRMWARE_REV 0x01
+#define REG_INT0 0x03
+#define REG_INT1 0x04
+#define REG_INT2 0x05
+#define REG_STATUS0 0x06
+#define REG_STATUS1 0x07
+#define REG_STATUS2 0x08
+#define REG_STATUS3 0x09
+#define REG_SYSTEM_ERROR 0x0B
+#define REG_INT_MASK0 0x0C
+#define REG_INT_MASK1 0x0D
+#define REG_INT_MASK2 0x0E
+#define REG_AP_DATOUT0 0x0F
+#define REG_AP_DATOUT1 0x10
+#define REG_AP_DATOUT2 0x11
+#define REG_AP_DATOUT3 0x12
+#define REG_AP_DATOUT4 0x13
+#define REG_AP_DATOUT5 0x14
+#define REG_AP_DATOUT6 0x15
+#define REG_AP_CMDOUT 0x17
+#define REG_AP_RESPONSE 0x18
+#define REG_AP_DATAIN0 0x19
+#define REG_AP_DATAIN1 0x1A
+#define REG_AP_DATAIN2 0x1B
+#define REG_AP_DATAIN3 0x1C
+#define REG_AP_DATAIN4 0x1D
+#define REG_AP_DATAIN5 0x1E
+#define REG_LDO_DIRECT 0x20
+#define REG_MPC_DIRECTWRITE 0x21
+#define REG_MPC_DIRECTRED 0x22
+#define REG_HPT_RAM_ADDR 0x28
+#define REG_HPT_RAM_DATA_H 0x29
+#define REG_HPT_RAM_DATA_M 0x2A
+#define REG_HPT_RAM_DATA_L 0x2B
+#define REG_LED_STEP_DIRECT 0x2C
+#define REG_LED0_DIRECT 0x2D
+#define REG_LED1_DIRECT 0x2E
+#define REG_LED2_DIRECT 0x2F
+#define REG_HPT_DIRECT0 0x30
+#define REG_HPT_DIRECT1 0x31
+#define REG_HPT_RTI2C_AMP 0x32
 #define REG_HPT_PAT_RAM_ADDR 0x33
 
 // Device commands
 #define CMD_LDO1_CONFIG_WRITE 0x40
-#define CMD_LDO1_CONFIG_READ  0x41
+#define CMD_LDO1_CONFIG_READ 0x41
 #define CMD_LDO2_CONFIG_WRITE 0x42
-#define CMD_LDO2_CONFIG_READ  0x43
+#define CMD_LDO2_CONFIG_READ 0x43
 
 // LDO configuration fields
-#define LDOn_PASSIVE_DISCHARGE     0x10
-#define LDOn_ACTIVE_DISCHARGE      0x08
-#define LDOn_LDO_MODE              0x00
-#define LDOn_SWITCH_MODE           0x04
-#define LDOn_DISABLED              0x00
-#define LDOn_ENABLED               0x01
-#define LDOn_MPC_CONTROLLED        0x02
+#define LDOn_PASSIVE_DISCHARGE 0x10
+#define LDOn_ACTIVE_DISCHARGE 0x08
+#define LDOn_LDO_MODE 0x00
+#define LDOn_SWITCH_MODE 0x04
+#define LDOn_DISABLED 0x00
+#define LDOn_ENABLED 0x01
+#define LDOn_MPC_CONTROLLED 0x02
 #define LDOn_LDO_DIRECT_CONTROLLED 0x03
 
 #define LDO1_VSET_LIMITED_BY_INPUT 0x3A
-#define LDO2_VSET_2V8              0x13
+#define LDO2_VSET_2V8 0x13
 
 // Interrupt flags that signal an error
 #define MXC_I2C_ERROR                                                                      \
@@ -116,7 +116,7 @@
      MXC_F_I2C_INTFL0_DATA_ERR | MXC_F_I2C_INTFL0_DNR_ERR | MXC_F_I2C_INTFL0_START_ERR |   \
      MXC_F_I2C_INTFL0_STOP_ERR)
 
-static mxc_i2c_regs_t* i2c = NULL;
+static mxc_i2c_regs_t *i2c = NULL;
 
 /* The native driver seems paranoid calling this function often. Follow suit
    until determined otherwise. */
@@ -125,11 +125,9 @@ static inline void i2c_flush(void)
     i2c->intfl0 = i2c->intfl0;
     i2c->intfl1 = i2c->intfl1;
     i2c->txctrl0 |= MXC_F_I2C_TXCTRL0_FLUSH;
-    while (i2c->txctrl0 & MXC_F_I2C_TXCTRL0_FLUSH)
-        ;
+    while (i2c->txctrl0 & MXC_F_I2C_TXCTRL0_FLUSH) {}
     i2c->rxctrl0 |= MXC_F_I2C_RXCTRL0_FLUSH;
-    while (i2c->rxctrl0 & MXC_F_I2C_RXCTRL0_FLUSH)
-        ;
+    while (i2c->rxctrl0 & MXC_F_I2C_RXCTRL0_FLUSH) {}
 }
 
 /* Write val to reg */
@@ -143,15 +141,14 @@ static int reg_write(uint8_t reg, uint8_t val)
     i2c->fifo = val;
     i2c->mstctrl |= MXC_F_I2C_MSTCTRL_STOP;
 
-    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_STOP))
-        ;
+    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_STOP)) {}
     i2c->intfl0 = MXC_F_I2C_INTFL0_STOP;
 
     return (i2c->intfl0 & MXC_I2C_ERROR) ? E_COMM_ERR : E_NO_ERROR;
 }
 
 /* Write len sequential bytes from buf starting at reg */
-static int reg_write_buf(uint8_t reg, uint8_t* buf, int len)
+static int reg_write_buf(uint8_t reg, uint8_t *buf, int len)
 {
     /* Limit write length to one FIFOs worth of data.
        This module in its current state would not benefit from the
@@ -166,42 +163,36 @@ static int reg_write_buf(uint8_t reg, uint8_t* buf, int len)
     i2c->mstctrl |= MXC_F_I2C_MSTCTRL_START;
     i2c->fifo = reg;
 
-    while (len--) {
-        i2c->fifo = *buf++;
-    }
+    while (len--) { i2c->fifo = *buf++; }
 
     i2c->mstctrl |= MXC_F_I2C_MSTCTRL_STOP;
 
-    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_STOP))
-        ;
+    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_STOP)) {}
     i2c->intfl0 = MXC_F_I2C_INTFL0_STOP;
 
     return (i2c->intfl0 & MXC_I2C_ERROR) ? E_COMM_ERR : E_NO_ERROR;
 }
 
 /* Place data read from reg at buf */
-static int reg_read(uint8_t reg, uint8_t* buf)
+static int reg_read(uint8_t reg, uint8_t *buf)
 {
     i2c_flush();
 
-    i2c->fifo    = MAX20303_ADDR;
+    i2c->fifo = MAX20303_ADDR;
     i2c->mstctrl = MXC_F_I2C_MSTCTRL_START;
-    i2c->fifo    = reg;
+    i2c->fifo = reg;
 
     i2c->rxctrl1 = 1;
     i2c->mstctrl = MXC_F_I2C_MSTCTRL_RESTART;
-    while (i2c->mstctrl & MXC_F_I2C_MSTCTRL_RESTART)
-        ;
+    while (i2c->mstctrl & MXC_F_I2C_MSTCTRL_RESTART) {}
     i2c->fifo = MAX20303_ADDR | 0x01;
 
-    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_RX_THD))
-        ;
-    *buf        = i2c->fifo;
+    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_RX_THD)) {}
+    *buf = i2c->fifo;
     i2c->intfl0 = MXC_F_I2C_INTFL0_RX_THD;
 
     i2c->mstctrl = MXC_F_I2C_MSTCTRL_STOP;
-    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_STOP))
-        ;
+    while (!(i2c->intfl0 & MXC_F_I2C_INTFL0_STOP)) {}
     i2c->intfl0 = MXC_F_I2C_INTFL0_STOP;
 
     return (i2c->intfl0 & MXC_I2C_ERROR) ? E_COMM_ERR : E_NO_ERROR;
@@ -214,10 +205,10 @@ int max20303_led(int led, int on)
     }
 
     switch (led) {
-        case 0 ... 2:
-            break;
-        default:
-            return E_NO_DEVICE;
+    case 0 ... 2:
+        break;
+    default:
+        return E_NO_DEVICE;
     }
 
     return reg_write(REG_LED0_DIRECT + led, (on) ? 0x20 : 0x00);
@@ -327,7 +318,7 @@ int max20303_camera_power(int on)
     return E_NO_ERROR;
 }
 
-int max20303_init(mxc_i2c_regs_t* i2c_inst)
+int max20303_init(mxc_i2c_regs_t *i2c_inst)
 {
     int err;
     uint8_t hw_id;

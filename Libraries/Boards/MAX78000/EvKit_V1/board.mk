@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -47,9 +47,11 @@ SRCS += camera.c
 ifeq "$(CAMERA)" "HM01B0"
 SRCS += hm01b0.c
 PROJ_CFLAGS+=-DCAMERA_HM01B0
+PROJ_CFLAGS+=-DCAMERA_MONO
 else ifeq "$(CAMERA)" "HM0360_MONO"
 SRCS += hm0360_mono.c
 PROJ_CFLAGS+=-DCAMERA_HM0360_MONO
+PROJ_CFLAGS+=-DCAMERA_MONO
 else ifeq "$(CAMERA)" "HM0360_COLOR"
 SRCS += hm0360_color.c
 PROJ_CFLAGS+=-DCAMERA_HM0360_COLOR
@@ -62,6 +64,7 @@ PROJ_CFLAGS+=-DCAMERA_OV7692
 else ifeq "$(CAMERA)" "PAG7920"
 SRCS += pag7920.c
 PROJ_CFLAGS+=-DCAMERA_PAG7920
+PROJ_CFLAGS+=-DCAMERA_MONO
 else ifeq "$(CAMERA)" ""
 SRCS += ov7692.c
 PROJ_CFLAGS+=-DCAMERA_OV7692

@@ -64,8 +64,7 @@ void Core1_Stop(void)
 __weak int Core1_Main(void)
 {
     // The user should declare this in application code, so we'll just spin
-    while (1)
-        ;
+    while (1) {}
 }
 __weak void PreInit_Core1(void)
 {
@@ -76,7 +75,7 @@ __weak void SystemInit_Core1(void)
 {
     /* Configure the interrupt controller to use the application vector table in
      * the application space */
-    SCB->VTOR = (unsigned long)&__isr_vector_core1;
+    SCB->VTOR = (uint32_t)&__isr_vector_core1;
 
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11
      * Grant full access, per "Table B3-24 CPACR bit assignments".
@@ -90,11 +89,9 @@ __weak void SystemInit_Core1(void)
 
     // Invalidate cache and wait until ready
     MXC_ICC1->invalidate = 1;
-    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
-        ;
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {}
 
     // Enable Cache
     MXC_ICC1->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY))
-        ;
+    while (!(MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {}
 }

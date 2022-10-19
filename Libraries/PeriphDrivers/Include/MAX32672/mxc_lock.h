@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_LOCK_H_
-#define _MXC_LOCK_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_LOCK_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_LOCK_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -73,14 +73,14 @@ extern "C" {
  *
  * @return     #E_NO_ERROR if everything successful, #E_BUSY if lock is taken.
  */
-int MXC_GetLock(uint32_t* lock, uint32_t value);
+int MXC_GetLock(uint32_t *lock, uint32_t value);
 
 /**
  * @brief         Free the given lock.
  * @param[in,out] lock  Pointer to the variable used for the lock. When the lock
  *                      is free, the value pointed to by @p lock is set to zero.
  */
-void MXC_FreeLock(uint32_t* lock);
+void MXC_FreeLock(uint32_t *lock);
 
 /**@} end of group mxc_lock_utilities */
 
@@ -88,4 +88,4 @@ void MXC_FreeLock(uint32_t* lock);
 }
 #endif
 
-#endif /* _MXC_LOCK_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_LOCK_H_

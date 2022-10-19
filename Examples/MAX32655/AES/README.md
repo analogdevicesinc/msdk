@@ -6,7 +6,7 @@ This application demonstrates both encryption and decryption using AES.  A block
 ## Setup
 
 ##### Board Selection
-Before building firmware you must select the correct value for _BOARD_  in "Makefile", either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
+Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
 
 ##### Required Connections
 If using the standard EV Kit (EvKit\_V1):

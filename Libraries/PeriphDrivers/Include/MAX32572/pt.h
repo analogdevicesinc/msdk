@@ -37,11 +37,12 @@
  ***************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _MXC_PT_H_
-#define _MXC_PT_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_PT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_PT_H_
 
 /* **** Includes **** */
 
+#include <stdio.h>
 #include "gcr_regs.h"
 #include "pt_regs.h"
 #include "ptg_regs.h"
@@ -50,7 +51,6 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "mcr_regs.h"
-#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,10 +69,9 @@ extern "C" {
  */
 typedef struct {
     unsigned channel; ///< PT Channel to use
-    uint32_t bps;     ///< pulse train bit rate
+    uint32_t bps; ///< pulse train bit rate
     uint32_t pattern; ///< Output pattern to shift out, starts at LSB
-    uint8_t
-        ptLength;  ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ...
+    uint8_t ptLength; ///< Number of bits in pulse train, 0 = 32bits, 1 = non valid , 2 = 2 bits, ...
     uint16_t loop; ///< Number of times to repeat the train, 0 = continuous
     uint16_t
         loopDelay; ///< Delay between loops specified in bits Example: loopDelay = 4,  delays time  = time it takes to shift out 4 bits
@@ -124,7 +123,7 @@ void MXC_PT_Shutdown(uint32_t pts);
  * @return     #E_NO_ERROR if everything is successful, \ref MXC_Error_Codes
  *             "error" if unsuccessful.
  */
-int MXC_PT_Config(mxc_pt_cfg_t* cfg);
+int MXC_PT_Config(mxc_pt_cfg_t *cfg);
 
 /**
  * @brief      Configures the pulse train in the square wave mode.
@@ -240,4 +239,4 @@ void MXC_PT_Resync(uint32_t pts);
 }
 #endif
 
-#endif /* _MXC_PT_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_PT_H_

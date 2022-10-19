@@ -34,7 +34,6 @@
 /*******************************      INCLUDES    ****************************/
 #include <string.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdarg.h>
 
 #include "uart.h"
@@ -52,7 +51,7 @@
 
 /******************************* Type Definitions ****************************/
 
-/******************************* 	Variables 	  ****************************/
+/*******************************    Variables   ****************************/
 
 /******************************* Static Functions ****************************/
 
@@ -106,7 +105,7 @@ int terminal_read_num(unsigned int timeout)
     return num;
 }
 
-int terminal_select_from_list(const char* title, const list_t* items, int nb_items, int nb_col)
+int terminal_select_from_list(const char *title, const list_t *items, int nb_items, int nb_col)
 {
     int i, k;
     int key = 0;
@@ -138,8 +137,9 @@ int terminal_select_from_list(const char* title, const list_t* items, int nb_ite
                 index = i + (k * nb_row);
 
                 if (index < nb_items) {
-                    sprintf(item_data, "%-3d- %-32s ", index + 1, items[index].name);
-                    strcat(buf, item_data);
+                    snprintf(item_data, sizeof(item_data), "%-3d- %-32s ", index + 1,
+                             items[index].name);
+                    strncat(buf, item_data, sizeof(buf));
                 }
             }
             //
@@ -172,7 +172,7 @@ int terminal_select_from_list(const char* title, const list_t* items, int nb_ite
     return key;
 }
 
-int terminal_printf(const char* format, ...)
+int terminal_printf(const char *format, ...)
 {
     char buffer[512];
     int len;
@@ -181,14 +181,14 @@ int terminal_printf(const char* format, ...)
     va_start(args, format);
     len = vsnprintf(buffer, sizeof(buffer), format, args);
     if (len > 0) {
-        MXC_UART_Write(PC_COM_PORT, (uint8_t*)buffer, &len);
+        MXC_UART_Write(PC_COM_PORT, (uint8_t *)buffer, &len);
     }
     va_end(args);
 
     return len;
 }
 
-void terminal_hexdump(const char* title, char* buf, unsigned int len)
+void terminal_hexdump(const char *title, char *buf, unsigned int len)
 {
     unsigned int i;
 

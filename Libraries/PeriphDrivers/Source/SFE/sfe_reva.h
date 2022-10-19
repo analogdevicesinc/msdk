@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SFE_SFE_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SFE_SFE_REVA_H_
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -43,8 +46,10 @@
 
 int MXC_SFE_RevA_Init(void);
 int MXC_SFE_RevA_Shutdown(void);
-int MXC_SFE_RevA_ReadEnable(mxc_sfe_reva_regs_t* sfe);
-int MXC_SFE_RevA_WriteEnable(mxc_sfe_reva_regs_t* sfe);
-int MXC_SFE_RevA_SetFlashAddress(mxc_sfe_reva_regs_t* sfe, uint32_t baseAdd, uint32_t topAdd);
-int MXC_SFE_RevA_SetRAMAddress(mxc_sfe_reva_regs_t* sfe, uint32_t baseAdd, uint32_t topAdd);
-int MXC_SFE_RevA_SetHostAddress(mxc_sfe_reva_regs_t* sfe, uint32_t RAMAdd, uint32_t FLASHAdd);
+int MXC_SFE_RevA_ReadEnable(mxc_sfe_reva_regs_t *sfe);
+int MXC_SFE_RevA_WriteEnable(mxc_sfe_reva_regs_t *sfe);
+int MXC_SFE_RevA_SetFlashAddress(mxc_sfe_reva_regs_t *sfe, uint32_t baseAdd, uint32_t topAdd);
+int MXC_SFE_RevA_SetRAMAddress(mxc_sfe_reva_regs_t *sfe, uint32_t baseAdd, uint32_t topAdd);
+int MXC_SFE_RevA_SetHostAddress(mxc_sfe_reva_regs_t *sfe, uint32_t RAMAdd, uint32_t FLASHAdd);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SFE_SFE_REVA_H_

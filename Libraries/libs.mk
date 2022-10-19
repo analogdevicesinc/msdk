@@ -47,6 +47,8 @@ BT_VER          ?= 9
 INIT_CENTRAL    ?= 1
 INIT_OBSERVER   ?= 1
 INIT_ENCRYPTED  ?= 1
+INIT_PERIPHERAL ?= 1
+INIT_BROADCASTER?= 1
 
 # Enter standby mode when idle
 STANDBY_ENABLED ?= 0
@@ -54,6 +56,15 @@ STANDBY_ENABLED ?= 0
 # Select either option, or both for combined Host and Controller on single core
 BLE_HOST        ?= 1
 BLE_CONTROLLER  ?= 1
+
+ifneq "$(BLE_HOST)" ""
+ifneq "$(BLE_HOST)" "0"
+ifneq "$(BLE_CONTROLLER)" "1"
+RISCV_LOAD = 1
+RISCV_APP ?= ../BLE4_ctr
+endif
+endif
+endif
 
 # Disable these trace messages for the speed testing
 PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
@@ -84,8 +95,6 @@ RTOS_CONFIG_DIR ?= .
 IPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
 VPATH += $(LIBS_DIR)/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI
 SRCS += FreeRTOS_CLI.c
-
-$(info $(RTOS_CONFIG_DIR))
 
 # Include the FreeRTOS library
 include $(LIBS_DIR)/FreeRTOS/freertos.mk
@@ -141,5 +150,65 @@ FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/ff13
 # Include the SDHC library
 include $(FAT32_DRIVER_DIR)/fat32.mk
 include $(SDHC_DRIVER_DIR)/sdhc.mk
+endif
+# ************************
+
+# NFC (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_NFC ?= 0
+ifeq ($(LIB_NFC), 1)
+
+# NFC lib has two components, pcd_pbm and rf_driver
+LIB_NFC_PCD_PBM_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_pbm
+LIB_NFC_PCD_RF_DRIVER_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_rf_driver_$(TARGET_UC)
+
+ifeq ("$(wildcard $(LIB_NFC_PCD_PBM_DIR))","")
+$(warning Warning: Failed to locate $(LIB_NFC_PCD_PBM_DIR))
+$(error NFC libraries not found.  Please install the NFC package to $(LIBS_DIR)/NFC)
+endif
+
+ifeq ("$(wildcard $(LIB_NFC_PCD_RF_DRIVER_DIR))","")
+$(warning Warning: Failed to locate $(LIB_NFC_PCD_RF_DRIVER_DIR))
+$(error NFC libraries not found.  Please install the NFC package to $(LIBS_DIR)/NFC)
+endif
+
+ifneq ($(DEV_LIB_NFC),1)
+# The libraries are released as pre-compiled library files.
+# Only need to set up include paths and link library
+
+# Add to include directory list
+IPATH += $(LIB_NFC_PCD_PBM_DIR)/include
+PROJ_LDFLAGS += -L$(LIB_NFC_PCD_PBM_DIR)
+PROJ_LIBS += nfc_pcd_pbm_$(LIBRARY_VARIANT)
+
+# Add to include directory list
+IPATH += $(LIB_NFC_PCD_RF_DRIVER_DIR)/include
+IPATH += $(LIB_NFC_PCD_RF_DRIVER_DIR)/include/nfc
+PROJ_LDFLAGS += -L$(LIB_NFC_PCD_RF_DRIVER_DIR)
+PROJ_LIBS += nfc_pcd_rf_driver_MAX32570_$(LIBRARY_VARIANT)
+
+else
+# Development setup (DEV_LIB_NFC=1) for building libraries
+# from source
+include $(LIB_NFC_PCD_PBM_DIR)/nfc_pcd_pbm.mk
+include $(LIB_NFC_PCD_RF_DRIVER_DIR)/nfc_pcd_rf_driver.mk
+endif
+
+endif
+# ************************
+
+# EMV (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_EMV ?= 0
+ifeq ($(LIB_EMV), 1)
+EMV_DIR ?= $(LIBS_DIR)/EMV
+
+ifeq ("$(wildcard $(EMV_DIR))","")
+$(error EMV library not found. Please install the EMV package to $(EMV_DIR))
+endif
+
+include $(EMV_DIR)/emv.mk
 endif
 # ************************

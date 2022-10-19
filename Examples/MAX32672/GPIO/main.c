@@ -42,26 +42,35 @@
 #include <string.h>
 #include "mxc_device.h"
 #include "nvic_table.h"
-#include "pb.h"
 #include "board.h"
 #include "gpio.h"
 
 /***** Definitions *****/
+#if defined(BOARD_FTHR)
 #define MXC_GPIO_PORT_OUT MXC_GPIO0
-#define MXC_GPIO_PIN_OUT  MXC_GPIO_PIN_22
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_2
 
 #define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_IN  MXC_GPIO_PIN_18
+#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_10
 
 #define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
-#define MXC_GPIO_PIN_INTERRUPT_STATUS  MXC_GPIO_PIN_23
+#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_3
+#else
+#define MXC_GPIO_PORT_OUT MXC_GPIO0
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_22
 
+#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_18
+
+#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_23
+#endif
 /***** Globals *****/
 
 /***** Functions *****/
-void gpio_isr(void* cbdata)
+void gpio_isr(void *cbdata)
 {
-    mxc_gpio_cfg_t* cfg = cbdata;
+    mxc_gpio_cfg_t *cfg = cbdata;
     MXC_GPIO_OutToggle(cfg->port, cfg->mask);
 }
 
@@ -71,18 +80,23 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt;
     mxc_gpio_cfg_t gpio_interrupt_status;
 
-    printf("\n\n************************* GPIO Example ***********************\n\n");
-    printf("This example uses the push button (SW3, P0.18) to demonstrate some of the\n");
-    printf("   functions of the GPIO peripheral. An interrupt is set up to trigger\n");
-    printf("   when the button is pressed. When that interrupt occurs LED1 (D2, P0.23)\n");
-    printf("   will toggle. Additionally, the button state is constantly being polled\n");
-    printf("   whenever the button is pressed and held LED0 (D2, P0.22) will illuminate.\n");
+    printf("\n\n****** GPIO Example ******\n");
+    printf("Demonstrates GPIO get/set and interrupt usage\n");
+#if defined(BOARD_FTHR)
+    printf("1.This example both reads and sets interrupt for P0.10 (SW2) \n");
+    printf("  When state changes, set P0.2 (LED0) accordingly. When interrupt occurs, P0.3 (LED1) "
+           "toggles.\n\n");
+#else
+    printf("1.This example both reads and sets interrupt for P0.18 (SW3) \n");
+    printf("  When state changes, set P0.22 (LED0) accordingly. When interrupt occurs, P0.23 "
+           "(LED1) toggles.\n\n");
+#endif
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
-    gpio_interrupt_status.port  = MXC_GPIO_PORT_INTERRUPT_STATUS;
-    gpio_interrupt_status.mask  = MXC_GPIO_PIN_INTERRUPT_STATUS;
-    gpio_interrupt_status.pad   = MXC_GPIO_PAD_NONE;
-    gpio_interrupt_status.func  = MXC_GPIO_FUNC_OUT;
+    gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
+    gpio_interrupt_status.mask = MXC_GPIO_PIN_INTERRUPT_STATUS;
+    gpio_interrupt_status.pad = MXC_GPIO_PAD_NONE;
+    gpio_interrupt_status.func = MXC_GPIO_FUNC_OUT;
     gpio_interrupt_status.vssel = MXC_GPIO_VSSEL_VDDIOH;
     MXC_GPIO_Config(&gpio_interrupt_status);
 
@@ -91,10 +105,10 @@ int main(void)
      *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
      *     reads high when button is not pressed.
      */
-    gpio_interrupt.port  = MXC_GPIO_PORT_INTERRUPT_IN;
-    gpio_interrupt.mask  = MXC_GPIO_PIN_INTERRUPT_IN;
-    gpio_interrupt.pad   = MXC_GPIO_PAD_PULL_UP;
-    gpio_interrupt.func  = MXC_GPIO_FUNC_IN;
+    gpio_interrupt.port = MXC_GPIO_PORT_INTERRUPT_IN;
+    gpio_interrupt.mask = MXC_GPIO_PIN_INTERRUPT_IN;
+    gpio_interrupt.pad = MXC_GPIO_PAD_PULL_UP;
+    gpio_interrupt.func = MXC_GPIO_FUNC_IN;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIOH;
     MXC_GPIO_Config(&gpio_interrupt);
     MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, &gpio_interrupt_status);
@@ -105,7 +119,7 @@ int main(void)
     /* Setup output pin. */
     gpio_out.port = MXC_GPIO_PORT_OUT;
     gpio_out.mask = MXC_GPIO_PIN_OUT;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
 

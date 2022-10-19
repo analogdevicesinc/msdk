@@ -35,9 +35,9 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
+ * @brief   SMON Example
  *
- * @details This example uses the UART to print to a terminal and flashes an LED(P2.17).
+ * @details This example demonstrate use case of security monitor
  */
 
 /***** Includes *****/
@@ -62,17 +62,15 @@ void Test1()
     mxc_smon_ext_cfg_t cfg;
 
     cfg.sensorNumber = SMON_EXTSENSOR_1;
-    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
-    cfg.errorCount   = 1;
+    cfg.clockDivide = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
+    cfg.errorCount = 1;
 
     MXC_SMON_ExtSensorEnable(&cfg, 5000);
 
     flags = 0x00;
 
-    while (!(flags)) {
-        flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1;
-    }
+    while (!(flags)) { flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN1; }
 
     printf("\nAlarm Flags After Error: 0x%x\n", flags);
 
@@ -90,19 +88,17 @@ void Test2()
     mxc_smon_ext_cfg_t cfg;
 
     cfg.sensorNumber = SMON_EXTSENSOR_0;
-    cfg.clockDivide  = SMON_CLK_DIVIDE_1;
-    cfg.freqDivide   = SMON_FREQ_DIVIDE_4;
-    cfg.data         = 0x51;
-    cfg.errorCount   = 1;
+    cfg.clockDivide = SMON_CLK_DIVIDE_1;
+    cfg.freqDivide = SMON_FREQ_DIVIDE_4;
+    cfg.data = 0x51;
+    cfg.errorCount = 1;
 
     MXC_SMON_SelfDestructByteEnable(&cfg, 5000);
     printf("\nData before Error: 0x%x\n", (MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE));
 
     flags = 0x00;
 
-    while (!(flags)) {
-        flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0;
-    }
+    while (!(flags)) { flags = MXC_SMON_GetFlags() & MXC_F_SMON_SECALM_EXTSWARN0; }
 
     printf("\nAlarm Flags After Error: 0x%x", flags);
     printf("\nData: 0x%x\n", MXC_SMON->sdbe & MXC_F_SMON_SDBE_DBYTE);
@@ -113,7 +109,7 @@ void Test2()
 // *****************************************************************************
 int main(void)
 {
-    printf("\n***********Hello World!***********\n");
+    printf("\n*********** Security Monitor Example ***********\n");
     printf("\nConnect the jumper between output and input\n");
     printf("pins of External Sensor 0 and External Sensor 1.\n");
     printf("To cause sensor error you will have to remove\n");
@@ -130,4 +126,6 @@ int main(void)
     Test2();
 
     printf("\nExample Completed\n\n");
+
+    return 0;
 }

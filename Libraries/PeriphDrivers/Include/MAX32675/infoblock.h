@@ -41,15 +41,15 @@
 *******************************************************************************
 */
 
-#ifndef _INFOBLOCK_H_
-#define _INFOBLOCK_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #if !defined(TRUE) || !defined(FALSE)
-#define TRUE  1
+#define TRUE 1
 #define FALSE 0
 #endif
 /**
@@ -168,7 +168,7 @@ typedef enum {
  * @param[in]   bitlength   length in bits of the data to CRC15
  * @return      crc15val
  */
-uint16_t crc15_highbitinput(uint16_t crc15val, uint8_t* input, int bitlength);
+uint16_t crc15_highbitinput(uint16_t crc15val, uint8_t *input, int bitlength);
 
 /**
  * @brief infoblock_readraw    Read raw data from information block
@@ -177,7 +177,7 @@ uint16_t crc15_highbitinput(uint16_t crc15val, uint8_t* input, int bitlength);
  * @return      error_code    error if unable to access infoblock
  * @retval      E_NO_ERROR    read was successful
  */
-int infoblock_readraw(uint32_t offset, uint8_t* data);
+int infoblock_readraw(uint32_t offset, uint8_t *data);
 
 /**
  * @brief infoblock_read    Read formatted data from information block
@@ -192,7 +192,7 @@ int infoblock_readraw(uint32_t offset, uint8_t* data);
  * @retval      E_NO_ERROR    read was successful
  * @retval      E_BAD_PARAM   if incorrect length or offset is supplied
  */
-int infoblock_read(uint32_t offset, uint8_t* data, int length);
+int infoblock_read(uint32_t offset, uint8_t *data, int length);
 
 /**@} end of group infoblock_access */
 
@@ -200,4 +200,4 @@ int infoblock_read(uint32_t offset, uint8_t* data, int length);
 }
 #endif
 
-#endif /* _INFOBLOCK_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_

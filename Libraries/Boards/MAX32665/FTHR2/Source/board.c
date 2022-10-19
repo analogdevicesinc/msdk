@@ -1,4 +1,4 @@
-/*******************************************************************************
+/******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -29,7 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
 
 #include <stdio.h>
@@ -44,33 +43,31 @@
 #include "pb.h"
 #include "i2c.h"
 #include "spixf.h"
-#include "mxc_sys.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO0, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_31, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
-    {MXC_GPIO0, MXC_GPIO_PIN_30, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO},
+    { MXC_GPIO0, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_31, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_30, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
 #ifdef DEBUG
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 #endif
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/

@@ -53,7 +53,7 @@
 /***** Definitions *****/
 #define LED_ALARM 0
 
-#define TIME_OF_DAY_SEC  2
+#define TIME_OF_DAY_SEC 2
 #define SUBSECOND_MSEC_0 250
 #define SUBSECOND_MSEC_1 500
 
@@ -62,7 +62,7 @@
           1000)) /* Converts a time in milleseconds to the equivalent RSSA register value. */
 
 #define SECS_PER_MIN 60
-#define SECS_PER_HR  (60 * SECS_PER_MIN)
+#define SECS_PER_HR (60 * SECS_PER_MIN)
 #define SECS_PER_DAY (24 * SECS_PER_HR)
 
 /***** Globals *****/
@@ -147,7 +147,7 @@ void printTime()
 
     subsec += sec;
 
-    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n\n", day, hr, min, subsec);
+    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f", day, hr, min, subsec);
 }
 
 // *****************************************************************************
@@ -177,8 +177,7 @@ int main(void)
         printf("Failed RTC Initialization\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     printf("RTC started\n");
@@ -192,8 +191,7 @@ int main(void)
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     if (MXC_RTC_EnableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
@@ -208,8 +206,7 @@ int main(void)
         printf("Failed RTC_SetSubsecondAlarm\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     if (MXC_RTC_EnableInt(MXC_RTC_INT_EN_SHORT) == E_BUSY) {
@@ -228,8 +225,7 @@ int main(void)
         printf("Failed RTC_Start\n");
         printf("Example Failed\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     while (1) {
@@ -242,4 +238,6 @@ int main(void)
             buttonPressed = 0;
         }
     }
+
+    return 0;
 }

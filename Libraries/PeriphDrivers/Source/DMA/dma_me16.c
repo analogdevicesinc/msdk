@@ -138,7 +138,7 @@ int MXC_DMA_Stop(int ch)
     return MXC_DMA_RevA_Stop(ch);
 }
 
-mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch)
+mxc_dma_ch_regs_t *MXC_DMA_GetCHRegs(int ch)
 {
     return MXC_DMA_RevA_GetCHRegs(ch);
 }
@@ -148,7 +148,7 @@ void MXC_DMA_Handler()
     MXC_DMA_RevA_Handler();
 }
 
-int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
+int MXC_DMA_MemCpy(void *dest, void *src, int len, mxc_dma_complete_cb_t callback)
 {
     return MXC_DMA_RevA_MemCpy(dest, src, len, callback);
 }

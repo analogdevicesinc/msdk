@@ -42,10 +42,11 @@
 #include "mxc_sys.h"
 #include "usbhs_regs.h"
 #include "flc_regs.h"
+#include "icc_regs.h"
 
 extern void (*const __isr_vector[])(void);
 uint32_t SystemCoreClock = 0;
-uint8_t ChipRevision     = 0;
+uint8_t ChipRevision = 0;
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -112,7 +113,7 @@ __weak void SystemInit(void)
     ChipRevision = MXC_SYS_GetRev();
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-    SCB->VTOR = (unsigned long)__isr_vector;
+    SCB->VTOR = (uint32_t)__isr_vector;
 
     /* MAX3265x ROM turns off interrupts, which is not the same as the reset state. */
     __enable_irq();
@@ -133,11 +134,9 @@ __weak void SystemInit(void)
 
     // Flush and enable instruction cache
     MXC_ICC->invalidate = 1;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
-        ;
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY)) {}
     MXC_ICC->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_ENABLE;
-    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY))
-        ;
+    while (!(MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_READY)) {}
 
     /* Shutdown all peripheral clocks initially.  They will be re-enabled by each periph's init function. */
     /* GPIO Clocks are left enabled */

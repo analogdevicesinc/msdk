@@ -1075,7 +1075,7 @@ static void set_px_true_color_alpha(lv_disp_drv_t* disp_drv, uint8_t* buf, lv_co
     d.data               = buf;
     d.header.always_zero = 0;
     d.header.h           = 1; /*Doesn't matter*/
-    ;
+{}
     d.header.w  = buf_w;
     d.header.cf = LV_IMG_CF_TRUE_COLOR_ALPHA;
 

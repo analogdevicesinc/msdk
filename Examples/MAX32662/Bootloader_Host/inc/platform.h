@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _PLATFORM_MAX32665_H_
-#define _PLATFORM_MAX32665_H_
+#ifndef EXAMPLES_MAX32662_BOOTLOADER_HOST_INC_PLATFORM_H_
+#define EXAMPLES_MAX32662_BOOTLOADER_HOST_INC_PLATFORM_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -43,13 +43,13 @@
 /******************************* Public Functions ****************************/
 // i2c
 int plt_i2c_init(void);
-int plt_i2c_write(unsigned char* src, unsigned int len);
-int plt_i2c_read(unsigned char* dst, unsigned int len);
+int plt_i2c_write(unsigned char *src, unsigned int len);
+int plt_i2c_read(unsigned char *dst, unsigned int len);
 
 // spi
 int plt_spi_init(void);
-int plt_spi_write(unsigned char* src, unsigned int len);
-int plt_spi_read(unsigned char* dst, unsigned int len);
+int plt_spi_write(unsigned char *src, unsigned int len);
+int plt_spi_read(unsigned char *dst, unsigned int len);
 
 // gpio
 int plt_gpio_init(void);
@@ -59,4 +59,4 @@ int plt_gpio_get(unsigned int idx);
 // delay
 void plt_delay_ms(unsigned int ms);
 
-#endif // _PLATFORM_MAX32665_H_
+#endif // EXAMPLES_MAX32662_BOOTLOADER_HOST_INC_PLATFORM_H_

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef _MAX20303_H
-#define _MAX20303_H
+#ifndef LIBRARIES_BOARDS_MAX32680_INCLUDE_MAX20303_H_
+#define LIBRARIES_BOARDS_MAX32680_INCLUDE_MAX20303_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,7 +45,7 @@ extern "C" {
  * @retval     #E_NO_ERROR   Intialization successful.
  * @retval     "Error Code"  @ref MXC_Error_Codes "Error Code" if unsuccessful.
  */
-int max20303_init(mxc_i2c_regs_t* i2c_inst);
+int max20303_init(mxc_i2c_regs_t *i2c_inst);
 
 /**
  * @brief      Set state of specified LED.
@@ -100,4 +100,4 @@ int max20303_camera_power(int on);
 }
 #endif
 
-#endif
+#endif // LIBRARIES_BOARDS_MAX32680_INCLUDE_MAX20303_H_

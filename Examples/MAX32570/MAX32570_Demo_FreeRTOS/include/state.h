@@ -33,33 +33,33 @@
  *
  ******************************************************************************/
 
-#ifndef _STATE_H_
-#define _STATE_H_
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_FREERTOS_INCLUDE_STATE_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_FREERTOS_INCLUDE_STATE_H_
 
-/********************************* 		INCLUDES	 *************************/
-#include "MAX32xxx.h"
-
-#include "bitmap.h"
-#include "keypad.h"
-#include "wrapper_tft.h"
-
+/*********************************      INCLUDES     *************************/
 #include <FreeRTOS.h>
 #include <FreeRTOSConfig.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
 
-/********************************* 		DEFINES		 *************************/
+#include "MAX32xxx.h"
 
-/********************************* 		TYPE DEF	 ************************/
+#include "bitmap.h"
+#include "keypad.h"
+#include "wrapper_tft.h"
+
+/*********************************      DEFINES      *************************/
+
+/*********************************      TYPE DEF     ************************/
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(unsigned int key);
-typedef int (*MSR_process)(unsigned char* msg, unsigned int msg_len);
-typedef int (*NFC_process)(unsigned char* msg, unsigned int msg_len);
+typedef int (*MSR_process)(unsigned char *msg, unsigned int msg_len);
+typedef int (*NFC_process)(unsigned char *msg, unsigned int msg_len);
 typedef int (*Time_Tick)(void);
 
 typedef struct _State {
-    char* name;
+    char *name;
     Init_func init;
     Keypad_process prcss_key;
     Time_Tick tick;
@@ -70,17 +70,17 @@ typedef struct _State {
 
 /******************************   PUBLIC FUNCTIONS  **************************/
 void state_init(void);
-State* state_get_current(void);
-int state_set_current(State* state);
+State *state_get_current(void);
+int state_set_current(State *state);
 
 // states
-State* get_home_state(void);
-State* get_smartcard_state(void);
-State* get_msr_state(void);
-State* get_keypad_state(void);
-State* get_nfc_state(void);
-State* get_slide_state(void);
-State* get_info_state(void);
-State* get_idle_state(void);
+State *get_home_state(void);
+State *get_smartcard_state(void);
+State *get_msr_state(void);
+State *get_keypad_state(void);
+State *get_nfc_state(void);
+State *get_slide_state(void);
+State *get_info_state(void);
+State *get_idle_state(void);
 
-#endif // _STATE_H_
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_FREERTOS_INCLUDE_STATE_H_

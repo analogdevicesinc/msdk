@@ -43,10 +43,9 @@ extern "C" {
    */
 typedef struct {
     uint16_t numTaps; /**< number of filter coefficients in the filter. */
-    float16_t*
+    float16_t *
         pState; /**< points to the state variable array. The array is of length numTaps+blockSize-1. */
-    const float16_t*
-        pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
+    const float16_t *pCoeffs; /**< points to the coefficient array. The array is of length numTaps. */
 } arm_fir_instance_f16;
 
 /**
@@ -57,8 +56,8 @@ typedef struct {
    * @param[in]     pState     points to the state buffer.
    * @param[in]     blockSize  number of samples that are processed at a time.
    */
-void arm_fir_init_f16(arm_fir_instance_f16* S, uint16_t numTaps, const float16_t* pCoeffs,
-                      float16_t* pState, uint32_t blockSize);
+void arm_fir_init_f16(arm_fir_instance_f16 *S, uint16_t numTaps, const float16_t *pCoeffs,
+                      float16_t *pState, uint32_t blockSize);
 
 /**
    * @brief Processing function for the floating-point FIR filter.
@@ -67,7 +66,7 @@ void arm_fir_init_f16(arm_fir_instance_f16* S, uint16_t numTaps, const float16_t
    * @param[out] pDst       points to the block of output data.
    * @param[in]  blockSize  number of samples to process.
    */
-void arm_fir_f16(const arm_fir_instance_f16* S, const float16_t* pSrc, float16_t* pDst,
+void arm_fir_f16(const arm_fir_instance_f16 *S, const float16_t *pSrc, float16_t *pDst,
                  uint32_t blockSize);
 
 /**
@@ -76,10 +75,10 @@ void arm_fir_f16(const arm_fir_instance_f16* S, const float16_t* pSrc, float16_t
 typedef struct {
     uint32_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    float16_t*
+    float16_t *
         pState; /**< Points to the array of state coefficients.  The array is of length 4*numStages. */
-    const float16_t*
-        pCoeffs; /**< Points to the array of coefficients.  The array is of length 5*numStages. */
+    const float16_t
+        *pCoeffs; /**< Points to the array of coefficients.  The array is of length 5*numStages. */
 } arm_biquad_casd_df1_inst_f16;
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
@@ -100,17 +99,17 @@ typedef struct {
    * @param[out] pDst       points to the block of output data.
    * @param[in]  blockSize  number of samples to process.
    */
-void arm_biquad_cascade_df1_f16(const arm_biquad_casd_df1_inst_f16* S, const float16_t* pSrc,
-                                float16_t* pDst, uint32_t blockSize);
+void arm_biquad_cascade_df1_f16(const arm_biquad_casd_df1_inst_f16 *S, const float16_t *pSrc,
+                                float16_t *pDst, uint32_t blockSize);
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
-void arm_biquad_cascade_df1_mve_init_f16(arm_biquad_casd_df1_inst_f16* S, uint8_t numStages,
-                                         const float16_t* pCoeffs,
-                                         arm_biquad_mod_coef_f16* pCoeffsMod, float16_t* pState);
+void arm_biquad_cascade_df1_mve_init_f16(arm_biquad_casd_df1_inst_f16 *S, uint8_t numStages,
+                                         const float16_t *pCoeffs,
+                                         arm_biquad_mod_coef_f16 *pCoeffsMod, float16_t *pState);
 #endif
 
-void arm_biquad_cascade_df1_init_f16(arm_biquad_casd_df1_inst_f16* S, uint8_t numStages,
-                                     const float16_t* pCoeffs, float16_t* pState);
+void arm_biquad_cascade_df1_init_f16(arm_biquad_casd_df1_inst_f16 *S, uint8_t numStages,
+                                     const float16_t *pCoeffs, float16_t *pState);
 
 /**
    * @brief Instance structure for the floating-point transposed direct form II Biquad cascade filter.
@@ -118,10 +117,10 @@ void arm_biquad_cascade_df1_init_f16(arm_biquad_casd_df1_inst_f16* S, uint8_t nu
 typedef struct {
     uint8_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    float16_t*
+    float16_t *
         pState; /**< points to the array of state coefficients.  The array is of length 2*numStages. */
-    const float16_t*
-        pCoeffs; /**< points to the array of coefficients.  The array is of length 5*numStages. */
+    const float16_t
+        *pCoeffs; /**< points to the array of coefficients.  The array is of length 5*numStages. */
 } arm_biquad_cascade_df2T_instance_f16;
 
 /**
@@ -130,10 +129,10 @@ typedef struct {
 typedef struct {
     uint8_t
         numStages; /**< number of 2nd order stages in the filter.  Overall order is 2*numStages. */
-    float16_t*
+    float16_t *
         pState; /**< points to the array of state coefficients.  The array is of length 4*numStages. */
-    const float16_t*
-        pCoeffs; /**< points to the array of coefficients.  The array is of length 5*numStages. */
+    const float16_t
+        *pCoeffs; /**< points to the array of coefficients.  The array is of length 5*numStages. */
 } arm_biquad_cascade_stereo_df2T_instance_f16;
 
 /**
@@ -143,8 +142,8 @@ typedef struct {
    * @param[out] pDst       points to the block of output data
    * @param[in]  blockSize  number of samples to process.
    */
-void arm_biquad_cascade_df2T_f16(const arm_biquad_cascade_df2T_instance_f16* S,
-                                 const float16_t* pSrc, float16_t* pDst, uint32_t blockSize);
+void arm_biquad_cascade_df2T_f16(const arm_biquad_cascade_df2T_instance_f16 *S,
+                                 const float16_t *pSrc, float16_t *pDst, uint32_t blockSize);
 
 /**
    * @brief Processing function for the floating-point transposed direct form II Biquad cascade filter. 2 channels
@@ -153,8 +152,8 @@ void arm_biquad_cascade_df2T_f16(const arm_biquad_cascade_df2T_instance_f16* S,
    * @param[out] pDst       points to the block of output data
    * @param[in]  blockSize  number of samples to process.
    */
-void arm_biquad_cascade_stereo_df2T_f16(const arm_biquad_cascade_stereo_df2T_instance_f16* S,
-                                        const float16_t* pSrc, float16_t* pDst, uint32_t blockSize);
+void arm_biquad_cascade_stereo_df2T_f16(const arm_biquad_cascade_stereo_df2T_instance_f16 *S,
+                                        const float16_t *pSrc, float16_t *pDst, uint32_t blockSize);
 
 /**
    * @brief  Initialization function for the floating-point transposed direct form II Biquad cascade filter.
@@ -163,8 +162,8 @@ void arm_biquad_cascade_stereo_df2T_f16(const arm_biquad_cascade_stereo_df2T_ins
    * @param[in]     pCoeffs    points to the filter coefficients.
    * @param[in]     pState     points to the state buffer.
    */
-void arm_biquad_cascade_df2T_init_f16(arm_biquad_cascade_df2T_instance_f16* S, uint8_t numStages,
-                                      const float16_t* pCoeffs, float16_t* pState);
+void arm_biquad_cascade_df2T_init_f16(arm_biquad_cascade_df2T_instance_f16 *S, uint8_t numStages,
+                                      const float16_t *pCoeffs, float16_t *pState);
 
 /**
    * @brief  Initialization function for the floating-point transposed direct form II Biquad cascade filter.
@@ -173,9 +172,9 @@ void arm_biquad_cascade_df2T_init_f16(arm_biquad_cascade_df2T_instance_f16* S, u
    * @param[in]     pCoeffs    points to the filter coefficients.
    * @param[in]     pState     points to the state buffer.
    */
-void arm_biquad_cascade_stereo_df2T_init_f16(arm_biquad_cascade_stereo_df2T_instance_f16* S,
-                                             uint8_t numStages, const float16_t* pCoeffs,
-                                             float16_t* pState);
+void arm_biquad_cascade_stereo_df2T_init_f16(arm_biquad_cascade_stereo_df2T_instance_f16 *S,
+                                             uint8_t numStages, const float16_t *pCoeffs,
+                                             float16_t *pState);
 
 /**
    * @brief Correlation of floating-point sequences.
@@ -185,8 +184,8 @@ void arm_biquad_cascade_stereo_df2T_init_f16(arm_biquad_cascade_stereo_df2T_inst
    * @param[in]  srcBLen  length of the second input sequence.
    * @param[out] pDst     points to the block of output data  Length 2 * max(srcALen, srcBLen) - 1.
    */
-void arm_correlate_f16(const float16_t* pSrcA, uint32_t srcALen, const float16_t* pSrcB,
-                       uint32_t srcBLen, float16_t* pDst);
+void arm_correlate_f16(const float16_t *pSrcA, uint32_t srcALen, const float16_t *pSrcB,
+                       uint32_t srcBLen, float16_t *pDst);
 
 /**
   @brief         Levinson Durbin
@@ -196,7 +195,7 @@ void arm_correlate_f16(const float16_t* pSrcA, uint32_t srcALen, const float16_t
   @param[in]     nbCoefs  number of autoregressive coefficients
   @return        none
  */
-void arm_levinson_durbin_f16(const float16_t* phi, float16_t* a, float16_t* err, int nbCoefs);
+void arm_levinson_durbin_f16(const float16_t *phi, float16_t *a, float16_t *err, int nbCoefs);
 
 #endif /*defined(ARM_FLOAT16_SUPPORTED)*/
 #ifdef __cplusplus

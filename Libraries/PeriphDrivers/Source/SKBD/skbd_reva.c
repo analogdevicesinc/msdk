@@ -67,7 +67,7 @@ int MXC_SKBD_RevA_PreInit(void)
     return E_NO_ERROR;
 }
 
-int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
+int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t *skbd, mxc_skbd_config_t config)
 {
     int result = E_NO_ERROR;
 
@@ -87,7 +87,7 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
         /* Configure SKBD input pins */
         skbd->ctrl0 &= ~(config.inputs);
         /* Memset like procedure */
-        memset((unsigned char*)&mxc_skbd_req, 0x00, sizeof(mxc_skbd_req));
+        memset((unsigned char *)&mxc_skbd_req, 0x00, sizeof(mxc_skbd_req));
         /* Count the number of output SKBD lines */
         temp = config.outputs;
 
@@ -103,8 +103,7 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
         temp |= (outputs << MXC_F_SKBD_REVA_CTRL1_OUTNB_POS) & MXC_F_SKBD_REVA_CTRL1_OUTNB;
         skbd->ctrl1 |= temp;
 
-        while (!(skbd->sr & MXC_F_SKBD_REVA_SR_BUSY))
-            ;
+        while (!(skbd->sr & MXC_F_SKBD_REVA_SR_BUSY)) {}
 
         /* Setup IRQ */
         if (config.irq_handler) {
@@ -113,7 +112,7 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
 
         /* To be done once only */
         mxc_skbd_req.first_init = 1;
-        mxc_skbd_req.state      = MXC_SKBD_REVA_STATE_INITIALIZED;
+        mxc_skbd_req.state = MXC_SKBD_REVA_STATE_INITIALIZED;
     } else {
         result = MXC_SKBD_REVA_ERR_ALREAD_INITIALIZED;
     }
@@ -121,7 +120,7 @@ int MXC_SKBD_RevA_Init(mxc_skbd_reva_regs_t* skbd, mxc_skbd_config_t config)
     return result;
 }
 
-int MXC_SKBD_RevA_EnableInterruptEvents(mxc_skbd_reva_regs_t* skbd, unsigned int events)
+int MXC_SKBD_RevA_EnableInterruptEvents(mxc_skbd_reva_regs_t *skbd, unsigned int events)
 {
     int result = E_NO_ERROR;
 
@@ -136,7 +135,7 @@ int MXC_SKBD_RevA_EnableInterruptEvents(mxc_skbd_reva_regs_t* skbd, unsigned int
     return result;
 }
 
-extern inline int MXC_SKBD_RevA_DisableInterruptEvents(mxc_skbd_reva_regs_t* skbd,
+extern inline int MXC_SKBD_RevA_DisableInterruptEvents(mxc_skbd_reva_regs_t *skbd,
                                                        unsigned int events)
 {
     events &=
@@ -145,7 +144,7 @@ extern inline int MXC_SKBD_RevA_DisableInterruptEvents(mxc_skbd_reva_regs_t* skb
     return E_NO_ERROR;
 }
 
-extern inline int MXC_SKBD_RevA_ClearInterruptStatus(mxc_skbd_reva_regs_t* skbd,
+extern inline int MXC_SKBD_RevA_ClearInterruptStatus(mxc_skbd_reva_regs_t *skbd,
                                                      unsigned int status)
 {
     status &= (MXC_SKBD_REVA_INTERRUPT_STATUS_PUSHIS | MXC_SKBD_REVA_INTERRUPT_STATUS_RELEASEIS |
@@ -154,7 +153,7 @@ extern inline int MXC_SKBD_RevA_ClearInterruptStatus(mxc_skbd_reva_regs_t* skbd,
     return E_NO_ERROR;
 }
 
-extern inline int MXC_SKBD_RevA_InterruptStatus(mxc_skbd_reva_regs_t* skbd, unsigned int* status)
+extern inline int MXC_SKBD_RevA_InterruptStatus(mxc_skbd_reva_regs_t *skbd, unsigned int *status)
 {
     if (status == NULL) {
         return E_NULL_PTR;
@@ -164,19 +163,19 @@ extern inline int MXC_SKBD_RevA_InterruptStatus(mxc_skbd_reva_regs_t* skbd, unsi
     return E_NO_ERROR;
 }
 
-int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t* skbd, mxc_skbd_reva_keys_t* keys)
+int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t *skbd, mxc_skbd_reva_keys_t *keys)
 {
-    volatile unsigned short* key;
+    volatile uint16_t *key;
     volatile unsigned int i = 0;
     volatile unsigned int temp;
-    volatile unsigned int* key_reg;
+    volatile unsigned int *key_reg;
 
     if (keys == NULL) {
         return E_NULL_PTR;
     }
 
-    key     = (unsigned short*)&keys->key0_reva;
-    key_reg = (unsigned int*)&skbd->evt[0];
+    key = (uint16_t *)&keys->key0_reva;
+    key_reg = (unsigned int *)&skbd->evt[0];
 
     for (i = 0; i < MXC_SKBD_REVA_TOTAL_KEY_REGS; i++) {
         if (!(skbd->ctrl1 & MXC_F_SKBD_REVA_CTRL1_CLEAR) &&
@@ -211,7 +210,7 @@ int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t* skbd, mxc_skbd_reva_keys_t* key
 int MXC_SKBD_RevA_Close(void)
 {
     NVIC_DisableIRQ(SKB_IRQn);
-    mxc_skbd_req.state      = MXC_SKBD_REVA_STATE_CLOSED;
+    mxc_skbd_req.state = MXC_SKBD_REVA_STATE_CLOSED;
     mxc_skbd_req.first_init = 0;
     return E_NO_ERROR;
 }

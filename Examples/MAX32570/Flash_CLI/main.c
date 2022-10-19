@@ -53,7 +53,6 @@
 #include "definitions.h"
 #include "dma.h"
 #include "flc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "icc.h"
 #include "mxc_assert.h"
@@ -72,26 +71,26 @@ void vRegisterCLICommands(void);
 TaskHandle_t cmd_task_id;
 
 /* Stringification macros */
-#define STRING(x)  STRING_(x)
+#define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
 /* Console ISR selection */
 #if (CONSOLE_UART == 0)
 #define UARTx_IRQHandler UART0_IRQHandler
-#define UARTx_IRQn       UART0_IRQn
+#define UARTx_IRQn UART0_IRQn
 
 #elif (CONSOLE_UART == 1)
 #define UARTx_IRQHandler UART1_IRQHandler
-#define UARTx_IRQn       UART1_IRQn
+#define UARTx_IRQn UART1_IRQn
 #else
 #error "Please update ISR macro for UART CONSOLE_UART"
 #endif
-mxc_uart_regs_t* ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUART = MXC_UART_GET_UART(CONSOLE_UART);
 
 /* Array sizes */
 #define CMD_LINE_BUF_SIZE 80
-#define OUTPUT_BUF_SIZE   512
-#define POLY              0xEDB88320
+#define OUTPUT_BUF_SIZE 512
+#define POLY 0xEDB88320
 
 /***** Functions *****/
 
@@ -115,7 +114,7 @@ void UARTx_IRQHandler(void)
  *
  * ===========================================================
  */
-void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
+void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
 {
     BaseType_t xHigherPriorityTaskWoken;
 
@@ -137,14 +136,14 @@ void vCmdLineTask_cb(mxc_uart_req_t* req, int error)
  *
  * =======================================================
  */
-void vCmdLineTask(void* pvParameters)
+void vCmdLineTask(void *pvParameters)
 {
     unsigned char tmp;
     unsigned int index; /* Index into buffer */
     unsigned int x;
     int uartReadLen;
     char buffer[CMD_LINE_BUF_SIZE]; /* Buffer for input */
-    char output[OUTPUT_BUF_SIZE];   /* Buffer for output */
+    char output[OUTPUT_BUF_SIZE]; /* Buffer for output */
     BaseType_t xMore;
     mxc_uart_req_t async_read_req;
 
@@ -161,11 +160,11 @@ void vCmdLineTask(void* pvParameters)
     NVIC_EnableIRQ(UARTx_IRQn);
 
     /* Async read will be used to wake process */
-    async_read_req.uart     = ConsoleUART;
-    async_read_req.rxData   = &tmp;
-    async_read_req.rxLen    = 1;
-    async_read_req.txData   = NULL;
-    async_read_req.txLen    = 0;
+    async_read_req.uart = ConsoleUART;
+    async_read_req.rxData = &tmp;
+    async_read_req.rxLen = 1;
+    async_read_req.txData = NULL;
+    async_read_req.txLen = 0;
     async_read_req.callback = vCmdLineTask_cb;
 
     printf("\nEnter 'help' to view a list of available commands.\n");
@@ -173,8 +172,7 @@ void vCmdLineTask(void* pvParameters)
     fflush(stdout);
 
     while (1) {
-        while (MXC_UART_ReadyForSleep(ConsoleUART))
-            ;
+        while (MXC_UART_ReadyForSleep(ConsoleUART)) {}
 
         /* Register async read request */
         if (MXC_UART_TransactionAsync(&async_read_req) != E_NO_ERROR) {
@@ -237,17 +235,17 @@ void vCmdLineTask(void* pvParameters)
                     MXC_Delay(200);
                 }
             } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
-                     (MXC_UART_Read(ConsoleUART, (uint8_t*)&tmp, &uartReadLen) == 0));
+                     (MXC_UART_Read(ConsoleUART, (uint8_t *)&tmp, &uartReadLen) == 0));
         }
     }
 }
 
 //******************************************************************************
-int flash_verify(uint32_t address, uint32_t length, uint32_t* data)
+int flash_verify(uint32_t address, uint32_t length, uint32_t *data)
 {
-    volatile uint32_t* ptr;
+    volatile uint32_t *ptr;
 
-    for (ptr = (uint32_t*)address; ptr < (uint32_t*)(address + length); ptr++, data++) {
+    for (ptr = (uint32_t *)address; ptr < (uint32_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
                    (unsigned int)*data);
@@ -259,7 +257,7 @@ int flash_verify(uint32_t address, uint32_t length, uint32_t* data)
 }
 
 //******************************************************************************
-int flash_write(uint32_t startaddr, uint32_t length, uint32_t* data)
+int flash_write(uint32_t startaddr, uint32_t length, uint32_t *data)
 {
     int i = 0;
 
@@ -291,11 +289,11 @@ int flash_write(uint32_t startaddr, uint32_t length, uint32_t* data)
 }
 
 // *****************************************************************************
-int flash_read(uint32_t startaddr, uint32_t length, uint8_t* data)
+int flash_read(uint32_t startaddr, uint32_t length, uint8_t *data)
 {
     for (int i = 0; i < length; i++) {
         uint32_t addr = startaddr + i * 4;
-        data[i]       = *(uint32_t*)addr;
+        data[i] = *(uint32_t *)addr;
         if (data[i] == 0xFF) {
             LOGV("Read addr 0x%08X: %s\r\n", addr, "empty");
         } else {
@@ -308,9 +306,9 @@ int flash_read(uint32_t startaddr, uint32_t length, uint8_t* data)
 // *****************************************************************************
 int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
-    uint32_t* ptr;
+    uint32_t *ptr;
 
-    for (ptr = (uint32_t*)startaddr; ptr < (uint32_t*)(startaddr + length); ptr++) {
+    for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
         }
@@ -327,6 +325,8 @@ int check_erased(uint32_t startaddr, uint32_t length)
 //******************************************************************************
 void flash_init(void)
 {
+    MXC_FLC_Init();
+
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon
     MXC_FLC0->clkdiv = 24;
@@ -335,17 +335,17 @@ void flash_init(void)
 }
 
 //******************************************************************************
-uint32_t calculate_crc(uint32_t* array, uint32_t length)
+uint32_t calculate_crc(uint32_t *array, uint32_t length)
 {
     int err;
 
-    uint8_t* flash_cpy = (uint8_t*)malloc(MXC_FLASH_PAGE_SIZE);
+    uint8_t *flash_cpy = (uint8_t *)malloc(MXC_FLASH_PAGE_SIZE);
     if (flash_cpy == NULL) {
         return E_INVALID;
     }
     memcpy(flash_cpy, array, MXC_FLASH_PAGE_SIZE);
 
-    mxc_ctb_crc_req_t crc_req = {(uint8_t*)flash_cpy, MXC_FLASH_PAGE_SIZE, 0};
+    mxc_ctb_crc_req_t crc_req = { (uint8_t *)flash_cpy, MXC_FLASH_PAGE_SIZE, 0 };
 
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC);
     MXC_CTB_CRC_SetPoly(POLY);
@@ -370,7 +370,7 @@ int main(void)
     flash_init();
 
     /* Configure task */
-    if ((xTaskCreate(vCmdLineTask, (const char*)"CmdLineTask",
+    if ((xTaskCreate(vCmdLineTask, (const char *)"CmdLineTask",
                      configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
                      tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
         printf("xTaskCreate() failed to create a task.\n");
@@ -379,9 +379,6 @@ int main(void)
         printf("Starting FreeRTOS scheduler.\n");
         vTaskStartScheduler();
     }
-
-    while (1)
-        ;
 
     return 0;
 }

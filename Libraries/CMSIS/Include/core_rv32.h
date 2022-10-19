@@ -1,38 +1,38 @@
-/**************************************************************************/ /**
- * @file     core_cm4.h
- * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File
- * @version  V3.20
- * @date     25. February 2013
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- * @note
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
  *
  ******************************************************************************/
-/* Copyright (c) 2009 - 2013 ARM LIMITED
 
-   All rights reserved.
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-   - Redistributions of source code must retain the above copyright
-     notice, this list of conditions and the following disclaimer.
-   - Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in the
-     documentation and/or other materials provided with the distribution.
-   - Neither the name of ARM nor the names of its contributors may be used
-     to endorse or promote products derived from this software without
-     specific prior written permission.
-   *
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-   ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
-   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-   POSSIBILITY OF SUCH DAMAGE.
-   ---------------------------------------------------------------------------*/
+#ifndef LIBRARIES_CMSIS_INCLUDE_CORE_RV32_H_
+#define LIBRARIES_CMSIS_INCLUDE_CORE_RV32_H_
 
 #if defined(__ICCARM__)
 #pragma system_include /* treat file as system include file for MISRA check */
@@ -67,7 +67,7 @@ extern "C" {
 
 /*  CMSIS CM4 definitions */
 #define __CM4_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
-#define __CM4_CMSIS_VERSION_SUB  (0x20) /*!< [15:0]  CMSIS HAL sub version    */
+#define __CM4_CMSIS_VERSION_SUB (0x20) /*!< [15:0]  CMSIS HAL sub version    */
 #define __CM4_CMSIS_VERSION             \
     ((__CM4_CMSIS_VERSION_MAIN << 16) | \
      __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
@@ -216,7 +216,7 @@ extern "C" {
 #else
 #define __I volatile const /*!< Defines 'read only' permissions                 */
 #endif
-#define __O  volatile /*!< Defines 'write only' permissions                */
+#define __O volatile /*!< Defines 'write only' permissions                */
 #define __IO volatile /*!< Defines 'read / write' permissions              */
 
 /*@} end of group Cortex_M4 */
@@ -299,47 +299,47 @@ __attribute__((always_inline)) __STATIC_INLINE void __WFI(void)
  * @brief Structure type to access the GCR Registers.
  */
 typedef struct {
-    __IO uint32_t irq0_enable;        /**< <tt>\b 0x00:<\tt> */
-    __IO uint32_t irq0_pending;       /**< <tt>\b 0x04:<\tt>  */
-    __IO uint32_t irq0_set_pending;   /**< <tt>\b 0x08:<\tt>  */
+    __IO uint32_t irq0_enable; /**< <tt>\b 0x00:<\tt> */
+    __IO uint32_t irq0_pending; /**< <tt>\b 0x04:<\tt>  */
+    __IO uint32_t irq0_set_pending; /**< <tt>\b 0x08:<\tt>  */
     __IO uint32_t irq0_clear_pending; /**< <tt>\b 0x0c:<\tt>  */
-    __IO uint32_t irq1_enable;        /**< <tt>\b 0x10:<\tt> */
-    __IO uint32_t irq1_pending;       /**< <tt>\b 0x14:<\tt>  */
-    __IO uint32_t irq1_set_pending;   /**< <tt>\b 0x18:<\tt>  */
+    __IO uint32_t irq1_enable; /**< <tt>\b 0x10:<\tt> */
+    __IO uint32_t irq1_pending; /**< <tt>\b 0x14:<\tt>  */
+    __IO uint32_t irq1_set_pending; /**< <tt>\b 0x18:<\tt>  */
     __IO uint32_t irq1_clear_pending; /**< <tt>\b 0x1c:<\tt>  */
 } mxc_intr_regs_t;
 
 typedef struct {
-    __IO uint32_t event0_enable;        /**< <tt>\b 0x20:<\tt>*/
-    __IO uint32_t event0_pending;       /**< <tt>\b 0x24:<\tt> */
-    __IO uint32_t event0_set_pending;   /**< <tt>\b 0x28:<\tt> */
+    __IO uint32_t event0_enable; /**< <tt>\b 0x20:<\tt>*/
+    __IO uint32_t event0_pending; /**< <tt>\b 0x24:<\tt> */
+    __IO uint32_t event0_set_pending; /**< <tt>\b 0x28:<\tt> */
     __IO uint32_t event0_clear_pending; /**< <tt>\b 0x2C:<\tt> */
-    __IO uint32_t event1_enable;        /**< <tt>\b 0x30:<\tt>*/
-    __IO uint32_t event1_pending;       /**< <tt>\b 0x34:<\tt> */
-    __IO uint32_t event1_set_pending;   /**< <tt>\b 0x38:<\tt> */
+    __IO uint32_t event1_enable; /**< <tt>\b 0x30:<\tt>*/
+    __IO uint32_t event1_pending; /**< <tt>\b 0x34:<\tt> */
+    __IO uint32_t event1_set_pending; /**< <tt>\b 0x38:<\tt> */
     __IO uint32_t event1_clear_pending; /**< <tt>\b 0x3C:<\tt> */
 } mxc_event_regs_t;
 
 typedef struct {
-    __IO uint32_t sleep_ctrl;   /**< <tt>\b 0x40:<\tt>  */
+    __IO uint32_t sleep_ctrl; /**< <tt>\b 0x40:<\tt>  */
     __IO uint32_t sleep_status; /**< <tt>\b 0x44:<\tt>  */
 } mxc_sleep_regs_t;
 
 /* Software Triggered Interrupt Register Definitions */
-#define NVIC_STIR_INTID_Pos 0                                /*!< STIR: INTLINESNUM Position */
+#define NVIC_STIR_INTID_Pos 0 /*!< STIR: INTLINESNUM Position */
 #define NVIC_STIR_INTID_Msk (0x1FFUL << NVIC_STIR_INTID_Pos) /*!< STIR: INTLINESNUM Mask */
 
 /*@} end of group CMSIS_NVIC */
 
 #define MXC_BASE_INTR ((uint32_t)0xE5070000UL)
 //#define MXC_BASE_INTR                   ((uint32_t)0xE5000000UL)
-#define MXC_INTR       ((mxc_intr_regs_t*)MXC_BASE_INTR)
+#define MXC_INTR ((mxc_intr_regs_t *)MXC_BASE_INTR)
 #define MXC_BASE_EVENT ((uint32_t)0xE5070020UL)
 //#define MXC_BASE_EVENT                  ((uint32_t)0xE5000020UL)
-#define MXC_EVENT      ((mxc_event_regs_t*)MXC_BASE_EVENT)
+#define MXC_EVENT ((mxc_event_regs_t *)MXC_BASE_EVENT)
 #define MXC_BASE_SLEEP ((uint32_t)0xE5070040UL)
 //#define MXC_BASE_SLEEP                  ((uint32_t)0xE5000040UL)
-#define MXC_SLEEP ((mxc_sleep_regs_t*)MXC_BASE_SLEEP)
+#define MXC_SLEEP ((mxc_sleep_regs_t *)MXC_BASE_SLEEP)
 
 /*******************************************************************************
  *                Hardware Abstraction Layer
@@ -514,8 +514,7 @@ __STATIC_INLINE void NVIC_SystemReset(void)
     //               (SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) |
     //                SCB_AIRCR_SYSRESETREQ_Msk);                   /* Keep priority group unchanged */
     //__DSB();                                                     /* Ensure completion of memory access */
-    while (1)
-        ; /* wait until reset */
+    while (1) {} /* wait until reset */
 }
 
 /**
@@ -583,3 +582,5 @@ __STATIC_INLINE void CSR_SetPCCR(uint32_t reg)
 #ifdef __cplusplus
 }
 #endif
+
+#endif // LIBRARIES_CMSIS_INCLUDE_CORE_RV32_H_

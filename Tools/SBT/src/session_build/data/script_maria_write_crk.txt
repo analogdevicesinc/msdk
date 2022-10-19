@@ -1,1 +1,0 @@
-write-crk crk_ecdsa_maria_test.pub.sign

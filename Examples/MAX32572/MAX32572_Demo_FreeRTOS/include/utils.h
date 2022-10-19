@@ -34,8 +34,8 @@
 *******************************************************************************
 */
 
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_UTILS_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_UTILS_H_
 
 /*****************************     DEFINES    *********************************/
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -44,6 +44,6 @@
 unsigned int utils_get_time_ms(void);
 unsigned int utils_get_time_tick(void);
 void utils_delay_ms(unsigned int ms);
-void utils_hex2char(char chr, char* msg);
+void utils_hex2char(char chr, char *msg);
 
-#endif // _UTILS_H_
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_FREERTOS_INCLUDE_UTILS_H_

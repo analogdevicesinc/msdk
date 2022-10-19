@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -43,7 +43,7 @@
 
 /************************************ DEFINES ********************************/
 #define TS_SPI1_PINS MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26
-#define TS_SPI_FREQ  200000 // Hz
+#define TS_SPI_FREQ 200000 // Hz
 #ifndef FLIP_SCREEN
 #define FLIP_SCREEN 0
 #endif
@@ -65,10 +65,10 @@ typedef struct _TS_Buttons_t {
 /*********************************** VARIABLES *******************************/
 static TS_Buttons_t ts_buttons[TS_MAX_BUTTONS];
 static int pressed_key = 0;
-static mxc_spi_regs_t* t_spi;
+static mxc_spi_regs_t *t_spi;
 static int t_ssel;
-static mxc_gpio_cfg_t* int_gpio;
-static mxc_gpio_cfg_t* busy_gpio;
+static mxc_gpio_cfg_t *int_gpio;
+static mxc_gpio_cfg_t *busy_gpio;
 
 /********************************* Static Functions **************************/
 static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
@@ -80,19 +80,19 @@ static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
     return 0;
 }
 
-static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short* dataout)
+static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, uint16_t *dataout)
 {
-    int i         = 0;
-    uint8_t rx[3] = {0, 0, 0};
+    int i = 0;
+    uint8_t rx[3] = { 0, 0, 0 };
     mxc_spi_req_t request;
 
-    request.spi        = t_spi;
-    request.ssIdx      = t_ssel;
+    request.spi = t_spi;
+    request.ssIdx = t_ssel;
     request.ssDeassert = 0;
-    request.txData     = (uint8_t*)(&datain);
-    request.rxData     = (uint8_t*)(rx);
-    request.txLen      = 1;
-    request.rxLen      = 0;
+    request.txData = (uint8_t *)(&datain);
+    request.rxData = (uint8_t *)(rx);
+    request.txLen = 1;
+    request.rxLen = 0;
     request.ssDeassert = 1;
 
     MXC_SPI_SetFrequency(t_spi, TS_SPI_FREQ);
@@ -101,9 +101,7 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short* data
     MXC_SPI_MasterTransaction(&request);
 
     // Wait to clear TS busy signal
-    for (i = 0; i < 100; i++) {
-        __asm volatile("nop\n");
-    }
+    for (i = 0; i < 100; i++) { __asm volatile("nop\n"); }
 
     request.txLen = 3;
     request.rxLen = 3;
@@ -115,9 +113,9 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short* data
     }
 }
 
-static int tsGetXY(unsigned short* x, unsigned short* y)
+static int tsGetXY(uint16_t *x, uint16_t *y)
 {
-    unsigned short tsX, tsY, tsZ1;
+    uint16_t tsX, tsY, tsZ1;
     int ret;
 
     spi_transmit_tsc2046(TSC_DIFFZ1, &tsZ1);
@@ -137,9 +135,9 @@ static int tsGetXY(unsigned short* x, unsigned short* y)
         *x = X_RES_T - *x;
         *y = Y_RES_T - *y;
 #elif (ROTATE_SCREEN == 1)
-        unsigned short swap = *x;
-        *x                  = 240 - *y - 1;
-        *y                  = swap;
+        uint16_t swap = *x;
+        *x = 240 - *y - 1;
+        *y = swap;
 #endif
         ret = 1;
 
@@ -148,8 +146,8 @@ static int tsGetXY(unsigned short* x, unsigned short* y)
         *x = X_RES_T;
         *y = Y_RES_T;
 #elif (ROTATE_SCREEN == 1)
-        *x                  = Y_RES_T;
-        *y                  = X_RES_T;
+        *x = Y_RES_T;
+        *y = X_RES_T;
 #else
         *x = 0;
         *y = 0;
@@ -163,7 +161,7 @@ static int tsGetXY(unsigned short* x, unsigned short* y)
 
 static void tsHandler(void)
 {
-    unsigned short touch_x, touch_y;
+    uint16_t touch_x, touch_y;
     int i;
 
     MXC_TS_Stop();
@@ -201,21 +199,21 @@ static void ts_gpio_init(void)
 
 static void ts_spi_Init(void)
 {
-    int master         = 1;
-    int quadMode       = 0;
-    int numSlaves      = 2;
-    int ssPol          = 0;
+    int master = 1;
+    int quadMode = 0;
+    int numSlaves = 2;
+    int ssPol = 0;
     unsigned int ts_hz = TS_SPI_FREQ;
     mxc_spi_pins_t ts_pins;
 
     ts_pins.clock = true;
-    ts_pins.ss0   = (t_ssel == 0); ///< Slave select pin 0
-    ts_pins.ss1   = (t_ssel == 1); ///< Slave select pin 1
-    ts_pins.ss2   = (t_ssel == 2); ///< Slave select pin 2
-    ts_pins.miso  = true;          ///< miso pin
-    ts_pins.mosi  = true;          ///< mosi pin
-    ts_pins.sdio2 = false;         ///< SDIO2 pin
-    ts_pins.sdio3 = false;         ///< SDIO3 pin
+    ts_pins.ss0 = (t_ssel == 0); ///< Slave select pin 0
+    ts_pins.ss1 = (t_ssel == 1); ///< Slave select pin 1
+    ts_pins.ss2 = (t_ssel == 2); ///< Slave select pin 2
+    ts_pins.miso = true; ///< miso pin
+    ts_pins.mosi = true; ///< mosi pin
+    ts_pins.sdio2 = false; ///< SDIO2 pin
+    ts_pins.sdio3 = false; ///< SDIO3 pin
 
     MXC_SPI_Init(t_spi, master, quadMode, numSlaves, ssPol, ts_hz, ts_pins);
 
@@ -226,14 +224,14 @@ static void ts_spi_Init(void)
 }
 
 /********************************* Public Functions **************************/
-int MXC_TS_Init(mxc_spi_regs_t* ts_spi, int ss_idx, mxc_gpio_cfg_t* int_pin,
-                mxc_gpio_cfg_t* busy_pin)
+int MXC_TS_Init(mxc_spi_regs_t *ts_spi, int ss_idx, mxc_gpio_cfg_t *int_pin,
+                mxc_gpio_cfg_t *busy_pin)
 {
     int result = E_NO_ERROR;
 
-    t_spi     = ts_spi;
-    t_ssel    = ss_idx;
-    int_gpio  = int_pin;
+    t_spi = ts_spi;
+    t_ssel = ss_idx;
+    int_gpio = int_pin;
     busy_gpio = busy_pin;
 
     // Configure GPIO Pins
@@ -273,10 +271,10 @@ int MXC_TS_AddButton(int x0, int y0, int x1, int y1, int on_press_expected_code)
 
     for (index = TS_MAX_BUTTONS - 1; index >= 0; index--) {
         if (ts_buttons[index].key_code == TS_INVALID_KEY_CODE) {
-            ts_buttons[index].x0       = x0;
-            ts_buttons[index].y0       = y0;
-            ts_buttons[index].x1       = x1;
-            ts_buttons[index].y1       = y1;
+            ts_buttons[index].x0 = x0;
+            ts_buttons[index].y0 = y0;
+            ts_buttons[index].x1 = x1;
+            ts_buttons[index].y1 = y1;
             ts_buttons[index].key_code = on_press_expected_code;
             break;
         }
@@ -304,16 +302,14 @@ void MXC_TS_RemoveAllButton(void)
 {
     int i;
 
-    for (i = 0; i < TS_MAX_BUTTONS; i++) {
-        ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
-    }
+    for (i = 0; i < TS_MAX_BUTTONS; i++) { ts_buttons[i].key_code = TS_INVALID_KEY_CODE; }
 }
 
 int MXC_TS_GetKey(void)
 {
     int key;
 
-    key         = pressed_key;
+    key = pressed_key;
     pressed_key = 0;
 
     return key;

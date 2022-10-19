@@ -54,23 +54,23 @@ static int font = (int)&SansSerif16x16[0];
 
 static text_t label_text[] = {
     // info
-    {(char*)"One", 3},  {(char*)"Two", 3},  {(char*)"Three", 5}, {(char*)"Four", 4},
-    {(char*)"Five", 4}, {(char*)"Six", 3},  {(char*)"Seven", 5}, {(char*)"Eight", 5},
-    {(char*)"Nine", 4}, {(char*)"Zero", 4},
+    { (char *)"One", 3 },  { (char *)"Two", 3 },  { (char *)"Three", 5 }, { (char *)"Four", 4 },
+    { (char *)"Five", 4 }, { (char *)"Six", 3 },  { (char *)"Seven", 5 }, { (char *)"Eight", 5 },
+    { (char *)"Nine", 4 }, { (char *)"Zero", 4 },
 };
 #endif
 
-void TFT_Print(char* str, int x, int y, int font, int length)
+void TFT_Print(char *str, int x, int y, int font, int length)
 {
     // fonts id
     text_t text;
     text.data = str;
-    text.len  = length;
+    text.len = length;
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
-void draw_obj_rect(float* xy, int class_idx, uint32_t w, uint32_t h, uint8_t scale)
+void draw_obj_rect(float *xy, int class_idx, uint32_t w, uint32_t h, uint8_t scale)
 {
 #ifdef TFT_ENABLE
     int r = 0, g = 0, b = 0;

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-07-17 18:10:38 -0500 (Mon, 17 Jul 2017) $
- * $Revision: 28913 $
- *
  ******************************************************************************/
 
 /**
@@ -39,10 +36,10 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
+#ifndef LIBRARIES_BOARDS_MAX32520_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32520_EVKIT_V1_INCLUDE_BOARD_H_
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +54,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -88,4 +85,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32520_EVKIT_V1_INCLUDE_BOARD_H_

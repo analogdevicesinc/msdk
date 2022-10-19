@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -36,8 +36,8 @@
  * @brief   Board support package API.
  */
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX78000_AUD01_REVA_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX78000_AUD01_REVA_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,27 +58,27 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
+#define LED1 0
 #define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
+#define LED2 1
 #define LED_GREEN LED2
 
 /**
  *  A reference to LED2 (BLUE LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED3     2
+#define LED3 2
 #define LED_BLUE LED3
 
 /**
@@ -122,7 +122,7 @@ int Debug_Init(void);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 #define POWER_OFF 0
-#define POWER_ON  1
+#define POWER_ON 1
 int Microphone_Power(int on);
 
 /**
@@ -133,7 +133,7 @@ int Microphone_Power(int on);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 #define CLOCK_DISABLE 0
-#define CLOCK_ENABLE  1
+#define CLOCK_ENABLE 1
 int Audio_Codec_Clock_Enable(int enable);
 
 /**
@@ -155,7 +155,7 @@ int Internal_External_I2S_Select(int sel);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 #define CNN_BOOST_DISABLE 0
-#define CNN_BOOST_ENABLE  1
+#define CNN_BOOST_ENABLE 1
 int CNN_Boost_Enable(int enable);
 
 /**
@@ -185,10 +185,10 @@ int SD_Power(int on);
  *
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-void SD_Get_Connections(mxc_spi_regs_t** spi, mxc_gpio_regs_t** ssPort, int* ssPin);
+void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssPin);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX78000_AUD01_REVA_INCLUDE_BOARD_H_

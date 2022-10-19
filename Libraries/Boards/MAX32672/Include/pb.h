@@ -2,8 +2,8 @@
  * @file
  * @brief   Pushbutton driver header file.
  */
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,13 +33,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-02-28 16:31:00 -0600 (Tue, 28 Feb 2017) $
- * $Revision: 26756 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _PB_H_
-#define _PB_H_
+#ifndef LIBRARIES_BOARDS_MAX32672_INCLUDE_PB_H_
+#define LIBRARIES_BOARDS_MAX32672_INCLUDE_PB_H_
 
 #include "gpio.h"
 
@@ -76,7 +73,7 @@ int PB_Init(void);
  * @param      pb    Pointer to the push button index that triggered the
  *                   callback.
  */
-typedef void (*pb_callback)(void* pb);
+typedef void (*pb_callback)(void *pb);
 
 /**
  * @brief      Register or Unregister a callback handler for events on the @p pb push button.
@@ -120,9 +117,18 @@ void PB_IntClear(unsigned int pb);
  * @retval     FALSE  The button is not pressed.
  */
 int PB_Get(unsigned int pb);
+
+/**
+ * @brief      Check all push buttons state.
+ * 
+ * @retval     TRUE   if any button is pressed.
+ * @retval     FALSE  if no any button is not pressed.
+ */
+int PB_IsPressedAny(void);
+
 /**@}*/
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _PB_H_ */
+#endif // LIBRARIES_BOARDS_MAX32672_INCLUDE_PB_H_

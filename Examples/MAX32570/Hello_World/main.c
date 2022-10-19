@@ -73,7 +73,7 @@ int main(void)
     MXC_TFT_SetFont(urw_gothic_13_grey_bg_white);
 
     // Set print area
-    area_t print = {10, 20, 300, 85};
+    area_t print = { 10, 20, 300, 85 };
     MXC_TFT_ConfigPrintf(&print);
 
     while (1) {

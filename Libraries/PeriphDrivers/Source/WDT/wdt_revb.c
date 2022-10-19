@@ -43,7 +43,7 @@
 
 /* **** Functions **** */
 
-int MXC_WDT_RevB_Init(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
+int MXC_WDT_RevB_Init(mxc_wdt_revb_regs_t *wdt, mxc_wdt_revb_cfg_t *cfg)
 {
     if (wdt == NULL || cfg == NULL) {
         return E_NULL_PTR;
@@ -58,7 +58,7 @@ int MXC_WDT_RevB_Init(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
     return E_NO_ERROR;
 }
 
-void MXC_WDT_RevB_SetIntPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
+void MXC_WDT_RevB_SetIntPeriod(mxc_wdt_revb_regs_t *wdt, mxc_wdt_revb_cfg_t *cfg)
 {
     MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_INT_LATE_VAL, cfg->upperIntPeriod);
 
@@ -68,7 +68,7 @@ void MXC_WDT_RevB_SetIntPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg
     }
 }
 
-void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* cfg)
+void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t *wdt, mxc_wdt_revb_cfg_t *cfg)
 {
     MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVB_CTRL_RST_LATE_VAL,
                  (cfg->upperResetPeriod << MXC_F_WDT_REVB_CTRL_RST_LATE_VAL_POS));
@@ -79,21 +79,21 @@ void MXC_WDT_RevB_SetResetPeriod(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_cfg_t* c
     }
 }
 
-void MXC_WDT_RevB_Enable(mxc_wdt_revb_regs_t* wdt)
+void MXC_WDT_RevB_Enable(mxc_wdt_revb_regs_t *wdt)
 {
     wdt->rst = 0xFE; // Feed seuqence chips
     wdt->rst = 0xED;
     wdt->ctrl |= MXC_F_WDT_REVB_CTRL_EN; // Direct write chips
 }
 
-void MXC_WDT_RevB_Disable(mxc_wdt_revb_regs_t* wdt)
+void MXC_WDT_RevB_Disable(mxc_wdt_revb_regs_t *wdt)
 {
     wdt->rst = 0xDE; // Feed sequence chips
     wdt->rst = 0xAD;
     wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_EN); // Direct write chips
 }
 
-void MXC_WDT_RevB_EnableInt(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable)
+void MXC_WDT_RevB_EnableInt(mxc_wdt_revb_regs_t *wdt, mxc_wdt_revb_en_t enable)
 {
     if (enable) {
         wdt->ctrl |= MXC_F_WDT_REVB_CTRL_WDT_INT_EN;
@@ -102,7 +102,7 @@ void MXC_WDT_RevB_EnableInt(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable)
     }
 }
 
-void MXC_WDT_RevB_EnableReset(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable)
+void MXC_WDT_RevB_EnableReset(mxc_wdt_revb_regs_t *wdt, mxc_wdt_revb_en_t enable)
 {
     if (enable) {
         wdt->ctrl |= MXC_F_WDT_REVB_CTRL_WDT_RST_EN;
@@ -111,28 +111,28 @@ void MXC_WDT_RevB_EnableReset(mxc_wdt_revb_regs_t* wdt, mxc_wdt_revb_en_t enable
     }
 }
 
-void MXC_WDT_RevB_ResetTimer(mxc_wdt_revb_regs_t* wdt)
+void MXC_WDT_RevB_ResetTimer(mxc_wdt_revb_regs_t *wdt)
 {
     wdt->rst = 0x00A5;
     wdt->rst = 0x005A;
 }
 
-int MXC_WDT_RevB_GetResetFlag(mxc_wdt_revb_regs_t* wdt)
+int MXC_WDT_RevB_GetResetFlag(mxc_wdt_revb_regs_t *wdt)
 {
     return (wdt->ctrl & (MXC_F_WDT_REVB_CTRL_RST_LATE | MXC_F_WDT_REVB_CTRL_RST_EARLY));
 }
 
-void MXC_WDT_RevB_ClearResetFlag(mxc_wdt_revb_regs_t* wdt)
+void MXC_WDT_RevB_ClearResetFlag(mxc_wdt_revb_regs_t *wdt)
 {
     wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_RST_LATE | MXC_F_WDT_REVB_CTRL_RST_EARLY);
 }
 
-int MXC_WDT_RevB_GetIntFlag(mxc_wdt_revb_regs_t* wdt)
+int MXC_WDT_RevB_GetIntFlag(mxc_wdt_revb_regs_t *wdt)
 {
     return !!(wdt->ctrl & (MXC_F_WDT_REVB_CTRL_INT_LATE | MXC_F_WDT_REVB_CTRL_INT_EARLY));
 }
 
-void MXC_WDT_RevB_ClearIntFlag(mxc_wdt_revb_regs_t* wdt)
+void MXC_WDT_RevB_ClearIntFlag(mxc_wdt_revb_regs_t *wdt)
 {
     wdt->ctrl &= ~(MXC_F_WDT_REVB_CTRL_INT_LATE | MXC_F_WDT_REVB_CTRL_INT_EARLY);
 }

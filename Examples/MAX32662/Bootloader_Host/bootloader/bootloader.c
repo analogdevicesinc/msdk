@@ -56,17 +56,17 @@ typedef struct {
     unsigned char nonce[11];
     unsigned char resv0;
     unsigned char auth[16];
-    unsigned short numPages;
-    unsigned short pageSize;
+    uint16_t numPages;
+    uint16_t pageSize;
     unsigned char crcSize;
     unsigned char resv1[3];
 } MsblHeader_t;
 
-/******************************* 	Variables 	  ****************************/
+/*******************************    Variables   ****************************/
 static bl_conf_struct_t g_plt_funcs;
 
 /******************************* Static Functions ****************************/
-static void hexdump(const char* title, unsigned char* buf, unsigned int len)
+static void hexdump(const char *title, unsigned char *buf, unsigned int len)
 {
     unsigned int i;
 
@@ -85,7 +85,7 @@ static void hexdump(const char* title, unsigned char* buf, unsigned int len)
     g_plt_funcs.printf("\r\n");
 }
 
-static int send_rcv(unsigned char* tx, int txLen, unsigned char* rx, int rxLen, int delay_ms,
+static int send_rcv(unsigned char *tx, int txLen, unsigned char *rx, int rxLen, int delay_ms,
                     int delay_step_ms)
 {
     int ret = 0;
@@ -150,7 +150,7 @@ static int update_bl_cfg(unsigned char item, unsigned char cmd)
 }
 
 /******************************* Public Functions ****************************/
-int bl_init(bl_conf_struct_t* plt_funcs)
+int bl_init(bl_conf_struct_t *plt_funcs)
 {
     int ret = 0;
 
@@ -163,7 +163,7 @@ int bl_update_interface(comm_read_t read_func, comm_write_t write_func)
 {
     int ret = 0;
 
-    g_plt_funcs.read  = read_func;
+    g_plt_funcs.read = read_func;
     g_plt_funcs.write = write_func;
 
     return ret;
@@ -185,8 +185,8 @@ int bl_hard_reset_then_enter_bl_mode(void)
 
 int bl_enter_bl_mode(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x08};
+    int ret = 0;
+    unsigned char req[] = { BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x08 };
     unsigned char rsp[1] = {
         0xFF,
     };
@@ -198,8 +198,8 @@ int bl_enter_bl_mode(void)
 
 int bl_exit_bl_mode(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x00};
+    int ret = 0;
+    unsigned char req[] = { BLCmdDevSetMode_MAIN_CMD, BLCmdDevSetMode_SET_MODE, 0x00 };
     unsigned char rsp[1] = {
         0xFF,
     };
@@ -209,10 +209,10 @@ int bl_exit_bl_mode(void)
     return ret;
 }
 
-int bl_get_partnumber(char* buf, unsigned int maxLen)
+int bl_get_partnumber(char *buf, unsigned int maxLen)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdDeviceInfo_MAIN_CMD, BLCmdDeviceInfo_GET_PLATFORM_TYPE};
+    int ret = 0;
+    unsigned char req[] = { BLCmdDeviceInfo_MAIN_CMD, BLCmdDeviceInfo_GET_PLATFORM_TYPE };
     unsigned char rsp[2] = {
         0xFF,
     };
@@ -221,31 +221,31 @@ int bl_get_partnumber(char* buf, unsigned int maxLen)
 
     if (ret == 0) {
         switch (rsp[1]) {
-            case 1:
-                memcpy(buf, "MAX32662", MIN(strlen("MAX32662") + 1, maxLen));
-                break;
-            case 3:
-                memcpy(buf, "MAX32670", MIN(strlen("MAX32670") + 1, maxLen));
-                break;
-            case 5:
-                memcpy(buf, "MAX78000", MIN(strlen("MAX78000") + 1, maxLen));
-                break;
-            case 6:
-                memcpy(buf, "MAX32655", MIN(strlen("MAX32655") + 1, maxLen));
-                break;
-            default:
-                memcpy(buf, "UNKNOWN", MIN(strlen("UNKNOWN") + 1, maxLen));
-                break;
+        case 1:
+            memcpy(buf, "MAX32662", MIN(strlen("MAX32662") + 1, maxLen));
+            break;
+        case 3:
+            memcpy(buf, "MAX32670", MIN(strlen("MAX32670") + 1, maxLen));
+            break;
+        case 5:
+            memcpy(buf, "MAX78000", MIN(strlen("MAX78000") + 1, maxLen));
+            break;
+        case 6:
+            memcpy(buf, "MAX32655", MIN(strlen("MAX32655") + 1, maxLen));
+            break;
+        default:
+            memcpy(buf, "UNKNOWN", MIN(strlen("UNKNOWN") + 1, maxLen));
+            break;
         }
     }
 
     return ret;
 }
 
-int bl_get_version(char* buf, unsigned int maxLen)
+int bl_get_version(char *buf, unsigned int maxLen)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_VERSION};
+    int ret = 0;
+    unsigned char req[] = { BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_VERSION };
     unsigned char rsp[4] = {
         0xFF,
     };
@@ -259,10 +259,10 @@ int bl_get_version(char* buf, unsigned int maxLen)
     return ret;
 }
 
-int bl_get_usn(char* buf, unsigned int maxLen)
+int bl_get_usn(char *buf, unsigned int maxLen)
 {
-    int ret               = 0;
-    unsigned char req[]   = {BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_USN};
+    int ret = 0;
+    unsigned char req[] = { BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_USN };
     unsigned char rsp[25] = {
         0xFF,
     };
@@ -276,10 +276,10 @@ int bl_get_usn(char* buf, unsigned int maxLen)
     return ret;
 }
 
-int bl_get_page_size(unsigned int* page_size)
+int bl_get_page_size(unsigned int *page_size)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_PAGE_SIZE};
+    int ret = 0;
+    unsigned char req[] = { BLCmdInfo_MAIN_CMD, BLCmdInfo_GET_PAGE_SIZE };
     unsigned char rsp[3] = {
         0xFF,
     };
@@ -295,8 +295,8 @@ int bl_get_page_size(unsigned int* page_size)
 
 int bl_erase_app(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdFlash_MAIN_CMD, BLCmdFlash_ERASE_APP_MEMORY};
+    int ret = 0;
+    unsigned char req[] = { BLCmdFlash_MAIN_CMD, BLCmdFlash_ERASE_APP_MEMORY };
     unsigned char rsp[1] = {
         0xFF,
     };
@@ -324,7 +324,7 @@ int bl_set_num_pages(int page_num)
     return ret;
 }
 
-int bl_set_iv(unsigned char* iv)
+int bl_set_iv(unsigned char *iv)
 {
     int ret = 0;
     unsigned char req[2 + AES_IV_SIZE];
@@ -341,7 +341,7 @@ int bl_set_iv(unsigned char* iv)
     return ret;
 }
 
-int bl_set_auth(unsigned char* auth)
+int bl_set_auth(unsigned char *auth)
 {
     int ret = 0;
     unsigned char req[2 + AES_AUTH_SIZE];
@@ -358,7 +358,7 @@ int bl_set_auth(unsigned char* auth)
     return ret;
 }
 
-int bl_write_page(const char* page, unsigned int page_len)
+int bl_write_page(const char *page, unsigned int page_len)
 {
     int ret = 0;
     static unsigned char req[8 * 1024 + 32]; // use static buffer
@@ -379,7 +379,7 @@ int bl_write_page(const char* page, unsigned int page_len)
     return ret;
 }
 
-int bl_flash_image(const char* image)
+int bl_flash_image(const char *image)
 {
     int ret;
     int i;
@@ -454,7 +454,7 @@ int bl_flash_image(const char* image)
     return ret;
 }
 
-int bl_get_target_configure(const char* target_bl_version, void* bl_cfg_struct)
+int bl_get_target_configure(const char *target_bl_version, void *bl_cfg_struct)
 {
     int ret = 0;
     unsigned char req[3];
@@ -471,24 +471,24 @@ int bl_get_target_configure(const char* target_bl_version, void* bl_cfg_struct)
 
         if (ret == 0) {
             //
-            ((boot_config_t_before_v342*)bl_cfg_struct)->v[0] = rsp[4];
-            ((boot_config_t_before_v342*)bl_cfg_struct)->v[1] = rsp[3];
-            ((boot_config_t_before_v342*)bl_cfg_struct)->v[2] = rsp[2];
-            ((boot_config_t_before_v342*)bl_cfg_struct)->v[3] = rsp[1];
+            ((boot_config_t_before_v342 *)bl_cfg_struct)->v[0] = rsp[4];
+            ((boot_config_t_before_v342 *)bl_cfg_struct)->v[1] = rsp[3];
+            ((boot_config_t_before_v342 *)bl_cfg_struct)->v[2] = rsp[2];
+            ((boot_config_t_before_v342 *)bl_cfg_struct)->v[3] = rsp[1];
         }
     } else {
         ret = send_rcv(req, sizeof(req), rsp, 9, 0, 0);
 
         if (ret == 0) {
             //
-            ((boot_config_t*)bl_cfg_struct)->v[0] = rsp[8];
-            ((boot_config_t*)bl_cfg_struct)->v[1] = rsp[7];
-            ((boot_config_t*)bl_cfg_struct)->v[2] = rsp[6];
-            ((boot_config_t*)bl_cfg_struct)->v[3] = rsp[5];
-            ((boot_config_t*)bl_cfg_struct)->v[4] = rsp[4];
-            ((boot_config_t*)bl_cfg_struct)->v[5] = rsp[3];
-            ((boot_config_t*)bl_cfg_struct)->v[6] = rsp[2];
-            ((boot_config_t*)bl_cfg_struct)->v[7] = rsp[1];
+            ((boot_config_t *)bl_cfg_struct)->v[0] = rsp[8];
+            ((boot_config_t *)bl_cfg_struct)->v[1] = rsp[7];
+            ((boot_config_t *)bl_cfg_struct)->v[2] = rsp[6];
+            ((boot_config_t *)bl_cfg_struct)->v[3] = rsp[5];
+            ((boot_config_t *)bl_cfg_struct)->v[4] = rsp[4];
+            ((boot_config_t *)bl_cfg_struct)->v[5] = rsp[3];
+            ((boot_config_t *)bl_cfg_struct)->v[6] = rsp[2];
+            ((boot_config_t *)bl_cfg_struct)->v[7] = rsp[1];
         }
     }
 
@@ -530,20 +530,20 @@ int bl_update_cfg_enable_spi(int enable)
     return update_bl_cfg(BL_CFG_SPI_ENABLE, enable ? 1 : 0);
 }
 
-int bl_update_cfg_set_i2c_addr(const char* target_bl_version, unsigned char addr)
+int bl_update_cfg_set_i2c_addr(const char *target_bl_version, unsigned char addr)
 {
     int ret = -1; // on default error
 
     if (strcmp(target_bl_version, "v3.4.1") <= 0) {
-        if (addr == 0x58)
+        if (addr == 0x58) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 0);
-        else if (addr == 0x5A)
+        } else if (addr == 0x5A) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 1);
-        else if (addr == 0x5C)
+        } else if (addr == 0x5C) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 2);
-        else if (addr == 0xAA)
+        } else if (addr == 0xAA) {
             ret = update_bl_cfg(BL_CFG_I2C_SLAVE_ADDR, 3);
-        else {
+        } else {
             g_plt_funcs.printf("%s version bootloader does not support 0x%X I2C addr",
                                target_bl_version, addr);
         }
@@ -582,7 +582,7 @@ int bl_update_cfg_set_bl_exit_mode(BLExitMode_t mode)
     return ret;
 }
 
-int b_update_cfg_set_bl_exit_timeout(unsigned short timeout)
+int b_update_cfg_set_bl_exit_timeout(uint16_t timeout)
 {
     int ret = 0;
     unsigned char req[4];
@@ -598,7 +598,6 @@ int b_update_cfg_set_bl_exit_timeout(unsigned short timeout)
     // Log2(timeout) then round
     for (i = 15; i > 0; i--) {
         if (timeout & (1 << i)) { // Does MSB bit set?
-
             // Check Round
             if ((timeout & ~(1 << i)) >= (1 << i) / 2) {
                 req[3] = i + 1; // add plus one
@@ -616,8 +615,8 @@ int b_update_cfg_set_bl_exit_timeout(unsigned short timeout)
 
 int bl_flash_bl_cfg(void)
 {
-    int ret              = 0;
-    unsigned char req[]  = {BLCmdConfigWrite_MAIN_CMD, BLCmdConfigWrite_SAVE_SETTINGS};
+    int ret = 0;
+    unsigned char req[] = { BLCmdConfigWrite_MAIN_CMD, BLCmdConfigWrite_SAVE_SETTINGS };
     unsigned char rsp[1] = {
         0xFF,
     };

@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _SC_H_
-#define _SC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SC_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -59,8 +59,8 @@ extern "C" {
  */
 typedef enum {
     MXC_SC_DEV_MIN = 0,
-    MXC_SC_DEV0    = MXC_SC_DEV_MIN, /**< Smart Card 0 */
-    MXC_SC_DEV1,                     /**< Smart Card 1 */
+    MXC_SC_DEV0 = MXC_SC_DEV_MIN, /**< Smart Card 0 */
+    MXC_SC_DEV1, /**< Smart Card 1 */
     MXC_SC_DEV_MAX = MXC_SC_DEV1,
     MXC_SC_DEV_COUNT /**< Number of Smart Card Devices */
 } mxc_sc_id_t;
@@ -71,7 +71,7 @@ typedef enum {
   *
   */
 typedef struct {
-    mxc_scn_regs_t* reg_sc;
+    mxc_scn_regs_t *reg_sc;
 } mxc_sc_info_t;
 
 /**
@@ -98,4 +98,4 @@ int mxc_sc_init(mxc_sc_id_t id);
 #endif
 
 /**@} end of group sc */
-#endif /* _SC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SC_H_

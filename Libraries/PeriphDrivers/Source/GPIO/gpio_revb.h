@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVB_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVB_H_
+
 /* **** Includes **** */
 #include "gpio_regs.h"
 
@@ -42,28 +45,30 @@ extern "C" {
  * @brief   Enumeration type for the pullup strength on a given pin.
  */
 typedef enum {
-    MXC_GPIO_PS_NONE,        /**< No pull-up or pull-down strength required*/
+    MXC_GPIO_PS_NONE, /**< No pull-up or pull-down strength required*/
     MXC_GPIO_PS_PULL_SELECT, /**< Selct pull-up or pull-down strength*/
 } mxc_gpio_ps_t;
 
 /* **** Function Prototypes **** */
 
-int MXC_GPIO_RevB_Config(const mxc_gpio_cfg_t* cfg, uint8_t psMask);
-uint32_t MXC_GPIO_RevB_InGet(mxc_gpio_regs_t* port, uint32_t mask);
-void MXC_GPIO_RevB_OutSet(mxc_gpio_regs_t* port, uint32_t mask);
-void MXC_GPIO_RevB_OutClr(mxc_gpio_regs_t* port, uint32_t mask);
-uint32_t MXC_GPIO_RevB_OutGet(mxc_gpio_regs_t* port, uint32_t mask);
-void MXC_GPIO_RevB_OutPut(mxc_gpio_regs_t* port, uint32_t mask, uint32_t val);
-void MXC_GPIO_RevB_OutToggle(mxc_gpio_regs_t* port, uint32_t mask);
-int MXC_GPIO_RevB_IntConfig(const mxc_gpio_cfg_t* cfg, mxc_gpio_int_pol_t pol);
-void MXC_GPIO_RevB_EnableInt(mxc_gpio_regs_t* port, uint32_t mask);
-void MXC_GPIO_RevB_DisableInt(mxc_gpio_regs_t* port, uint32_t mask);
-void MXC_GPIO_RevB_ClearFlags(mxc_gpio_regs_t* port, uint32_t flags);
-uint32_t MXC_GPIO_RevB_GetFlags(mxc_gpio_regs_t* port);
-int MXC_GPIO_RevB_SetVSSEL(mxc_gpio_regs_t* port, mxc_gpio_vssel_t vssel, uint32_t mask);
+int MXC_GPIO_RevB_Config(const mxc_gpio_cfg_t *cfg, uint8_t psMask);
+uint32_t MXC_GPIO_RevB_InGet(mxc_gpio_regs_t *port, uint32_t mask);
+void MXC_GPIO_RevB_OutSet(mxc_gpio_regs_t *port, uint32_t mask);
+void MXC_GPIO_RevB_OutClr(mxc_gpio_regs_t *port, uint32_t mask);
+uint32_t MXC_GPIO_RevB_OutGet(mxc_gpio_regs_t *port, uint32_t mask);
+void MXC_GPIO_RevB_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val);
+void MXC_GPIO_RevB_OutToggle(mxc_gpio_regs_t *port, uint32_t mask);
+int MXC_GPIO_RevB_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol);
+void MXC_GPIO_RevB_EnableInt(mxc_gpio_regs_t *port, uint32_t mask);
+void MXC_GPIO_RevB_DisableInt(mxc_gpio_regs_t *port, uint32_t mask);
+void MXC_GPIO_RevB_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags);
+uint32_t MXC_GPIO_RevB_GetFlags(mxc_gpio_regs_t *port);
+int MXC_GPIO_RevB_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask);
 
 /**@} end of group gpio */
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_GPIO_GPIO_REVB_H_

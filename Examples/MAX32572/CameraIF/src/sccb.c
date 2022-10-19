@@ -39,37 +39,37 @@
 
 // serial clock
 #define SCL_PORT MXC_GPIO2
-#define SCL_PIN  MXC_GPIO_PIN_18
+#define SCL_PIN MXC_GPIO_PIN_18
 // serial data
 #define SDA_PORT MXC_GPIO2
-#define SDA_PIN  MXC_GPIO_PIN_19
+#define SDA_PIN MXC_GPIO_PIN_19
 
 //
-#define GPIO_SET(port, mask) (port)->out_set = mask
-#define GPIO_CLR(port, mask) (port)->out_clr = mask
-#define GPIO_GET(port, mask) ((port)->in & mask)
+#define GPIO_SET(port, mask) (port)->out_set = (mask)
+#define GPIO_CLR(port, mask) (port)->out_clr = (mask)
+#define GPIO_GET(port, mask) ((port)->in & (mask))
 
 //
-#define GPIO_IN(port, mask)  (port)->out_en_clr = mask
-#define GPIO_OUT(port, mask) (port)->out_en_set = mask
+#define GPIO_IN(port, mask) (port)->out_en_clr = (mask)
+#define GPIO_OUT(port, mask) (port)->out_en_set = (mask)
 
 // SCL
 #define SCL_HIGH() GPIO_SET(SCL_PORT, SCL_PIN)
-#define SCL_LOW()  GPIO_CLR(SCL_PORT, SCL_PIN)
+#define SCL_LOW() GPIO_CLR(SCL_PORT, SCL_PIN)
 // SDA
 #define SDA_HIGH() GPIO_SET(SDA_PORT, SDA_PIN)
-#define SDA_LOW()  GPIO_CLR(SDA_PORT, SDA_PIN)
-#define SDA_IN()   GPIO_IN(SDA_PORT, SDA_PIN)
-#define SDA_OUT()  GPIO_OUT(SDA_PORT, SDA_PIN)
-#define SDA_GET()  GPIO_GET(SDA_PORT, SDA_PIN)
+#define SDA_LOW() GPIO_CLR(SDA_PORT, SDA_PIN)
+#define SDA_IN() GPIO_IN(SDA_PORT, SDA_PIN)
+#define SDA_OUT() GPIO_OUT(SDA_PORT, SDA_PIN)
+#define SDA_GET() GPIO_GET(SDA_PORT, SDA_PIN)
 
-#define WAIT_US      50
+#define WAIT_US 50
 #define DELAY_US(us) MXC_Delay(us)
 
-static const mxc_gpio_cfg_t gpio_cfg_scl = {SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                            MXC_GPIO_VSSEL_VDDIOH};
-static const mxc_gpio_cfg_t gpio_cfg_sda = {SDA_PORT, SDA_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                            MXC_GPIO_VSSEL_VDDIOH};
+static const mxc_gpio_cfg_t gpio_cfg_scl = { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT,
+                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+static const mxc_gpio_cfg_t gpio_cfg_sda = { SDA_PORT, SDA_PIN, MXC_GPIO_FUNC_OUT,
+                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
 
 /******************************** Static Functions ***************************/
 static void start(void)
@@ -187,7 +187,7 @@ int sccb_init(void)
 
 int sccb_scan(void)
 {
-    int ret      = 0;
+    int ret = 0;
     int slv_addr = 0;
 
     while (slv_addr < 0xFF) {
@@ -205,7 +205,7 @@ int sccb_scan(void)
     return -1; // not found
 }
 
-int sccb_read_byt(uint8_t slv_addr, uint8_t reg, uint8_t* byt)
+int sccb_read_byt(uint8_t slv_addr, uint8_t reg, uint8_t *byt)
 {
     int ret = 0;
 

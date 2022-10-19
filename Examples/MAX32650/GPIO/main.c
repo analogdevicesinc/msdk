@@ -45,24 +45,37 @@
 #include "gpio.h"
 
 /***** Definitions *****/
+#if defined(BOARD_EVKIT_V1)
 #define MXC_GPIO_PORT_IN MXC_GPIO2
-#define MXC_GPIO_PIN_IN  MXC_GPIO_PIN_28
+#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_28
 
 #define MXC_GPIO_PORT_OUT MXC_GPIO2
-#define MXC_GPIO_PIN_OUT  MXC_GPIO_PIN_25
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_25
 
 #define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO2
-#define MXC_GPIO_PIN_INTERRUPT_IN  MXC_GPIO_PIN_30
+#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_30
 
 #define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO2
-#define MXC_GPIO_PIN_INTERRUPT_STATUS  MXC_GPIO_PIN_26
+#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_26
+#else
+#define MXC_GPIO_PORT_IN MXC_GPIO1
+#define MXC_GPIO_PIN_IN MXC_GPIO_PIN_19
 
+#define MXC_GPIO_PORT_OUT MXC_GPIO1
+#define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_14
+
+#define MXC_GPIO_PORT_INTERRUPT_IN MXC_GPIO1
+#define MXC_GPIO_PIN_INTERRUPT_IN MXC_GPIO_PIN_21
+
+#define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO1
+#define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_18
+#endif
 /***** Globals *****/
 
 /***** Functions *****/
-void gpio_isr(void* cbdata)
+void gpio_isr(void *cbdata)
 {
-    mxc_gpio_cfg_t* cfg = cbdata;
+    mxc_gpio_cfg_t *cfg = cbdata;
     MXC_GPIO_OutToggle(cfg->port, cfg->mask);
 }
 
@@ -74,15 +87,20 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt_status;
 
     printf("\n\n****** GPIO Example ******\n\n");
+#if defined(BOARD_EVKIT_V1)
     printf("1. This example reads P2.28 (SW2) and outputs the same state onto P2.25 (LED0).\n");
     printf("2. An interrupt is set up on P2.30 (SW3). P2.26 (LED1) toggles when that\n");
+#else
+    printf("1. This example reads P1.19 (SW2) and outputs the same state onto P1.14 (LED0).\n");
+    printf("2. An interrupt is set up on P1.21 (SW3). P1.18 (LED1) toggles when that\n");
+#endif
     printf("   interrupt occurs.\n\n");
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
-    gpio_interrupt_status.port  = MXC_GPIO_PORT_INTERRUPT_STATUS;
-    gpio_interrupt_status.mask  = MXC_GPIO_PIN_INTERRUPT_STATUS;
-    gpio_interrupt_status.pad   = MXC_GPIO_PAD_NONE;
-    gpio_interrupt_status.func  = MXC_GPIO_FUNC_OUT;
+    gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
+    gpio_interrupt_status.mask = MXC_GPIO_PIN_INTERRUPT_STATUS;
+    gpio_interrupt_status.pad = MXC_GPIO_PAD_NONE;
+    gpio_interrupt_status.func = MXC_GPIO_FUNC_OUT;
     gpio_interrupt_status.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_interrupt_status);
 
@@ -91,10 +109,10 @@ int main(void)
   *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
   *     reads high when button is not pressed.
   */
-    gpio_interrupt.port  = MXC_GPIO_PORT_INTERRUPT_IN;
-    gpio_interrupt.mask  = MXC_GPIO_PIN_INTERRUPT_IN;
-    gpio_interrupt.pad   = MXC_GPIO_PAD_WEAK_PULL_UP;
-    gpio_interrupt.func  = MXC_GPIO_FUNC_IN;
+    gpio_interrupt.port = MXC_GPIO_PORT_INTERRUPT_IN;
+    gpio_interrupt.mask = MXC_GPIO_PIN_INTERRUPT_IN;
+    gpio_interrupt.pad = MXC_GPIO_PAD_WEAK_PULL_UP;
+    gpio_interrupt.func = MXC_GPIO_FUNC_IN;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, &gpio_interrupt_status);
     MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
@@ -108,14 +126,14 @@ int main(void)
   */
     gpio_in.port = MXC_GPIO_PORT_IN;
     gpio_in.mask = MXC_GPIO_PIN_IN;
-    gpio_in.pad  = MXC_GPIO_PAD_WEAK_PULL_UP;
+    gpio_in.pad = MXC_GPIO_PAD_WEAK_PULL_UP;
     gpio_in.func = MXC_GPIO_FUNC_IN;
     MXC_GPIO_Config(&gpio_in);
 
     /* Setup output pin. */
     gpio_out.port = MXC_GPIO_PORT_OUT;
     gpio_out.mask = MXC_GPIO_PIN_OUT;
-    gpio_out.pad  = MXC_GPIO_PAD_NONE;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
     MXC_GPIO_Config(&gpio_out);
 

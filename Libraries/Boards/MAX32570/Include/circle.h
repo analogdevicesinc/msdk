@@ -2,15 +2,17 @@
  * @file
  * @brief   Circle image header file.
  */
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -33,10 +35,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-02-28 16:31:00 -0600 (Tue, 28 Feb 2017) $
- * $Revision: 26756 $
- *
- *************************************************************************** */
+ ******************************************************************************/
+
+#ifndef LIBRARIES_BOARDS_MAX32570_INCLUDE_CIRCLE_H_
+#define LIBRARIES_BOARDS_MAX32570_INCLUDE_CIRCLE_H_
 
 #include "touchscreen.h"
 
@@ -72,9 +74,10 @@ uint32_t circle_palette[256] = {
     0x00E4DEDD, 0x003BB8A2, 0x004A4E50, 0x0042756F, 0x0035897E, 0x00A5A09E, 0x003C3530, 0x005B5D5A,
     0x002C8D81, 0x00ECF6F1, 0x00F8FEFF, 0x00FFFFFF, 0x0,        0x0,        0x0,        0x0,
     0x0,        0x0,        0x0,        0x0,        0x0,        0x0,        0x0,        0x0,
-    0x0,        0x0,        0x0,        0x0,        0x0,        0x0,        0x0,        0x0};
+    0x0,        0x0,        0x0,        0x0,        0x0,        0x0,        0x0,        0x0
+};
 
-bitmap_info_t circle_info = {64, 64, (unsigned char*)circle_palette, 8};
+bitmap_info_t circle_info = { 64, 64, (unsigned char *)circle_palette, 8 };
 
 unsigned char circle_image[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
@@ -204,4 +207,7 @@ unsigned char circle_image[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
+
+#endif // LIBRARIES_BOARDS_MAX32570_INCLUDE_CIRCLE_H_

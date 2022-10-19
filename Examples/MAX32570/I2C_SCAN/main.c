@@ -45,35 +45,30 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "nvic_table.h"
-#include "i2c_regs.h"
-#include "i2c.h"
+
+#include <MAX32xxx.h>
 
 /***** Definitions *****/
 #define I2C_MASTER MXC_I2C1 // SCL P2_18; SDA P2_19
-#define I2C_FREQ   100000   // 100kHZ
-
-typedef enum { FAILED, PASSED } test_t;
+#define I2C_FREQ 100000 // 100kHZ
 
 /***** Globals *****/
-uint8_t counter = 0;
 
 // *****************************************************************************
 int main()
 {
+    int error;
+    uint8_t counter = 0;
+
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
     printf("\nsame bus as I2C1 (SCL - P2.18, SDA - P2.19).");
 
-    int error;
-
     //Setup the I2CM
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
-        printf("-->Failed master\n");
-        return FAILED;
+        printf("-->Failed master, Error:%d\n", error);
+        return error;
     } else {
         printf("\n-->I2C Master Initialization Complete\n");
     }
@@ -81,20 +76,21 @@ int main()
     printf("-->Scanning started\n");
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
     mxc_i2c_req_t reqMaster;
-    reqMaster.i2c      = I2C_MASTER;
-    reqMaster.addr     = 0;
-    reqMaster.tx_buf   = NULL;
-    reqMaster.tx_len   = 0;
-    reqMaster.rx_buf   = NULL;
-    reqMaster.rx_len   = 0;
-    reqMaster.restart  = 0;
+    reqMaster.i2c = I2C_MASTER;
+    reqMaster.addr = 0;
+    reqMaster.tx_buf = NULL;
+    reqMaster.tx_len = 0;
+    reqMaster.rx_buf = NULL;
+    reqMaster.rx_len = 0;
+    reqMaster.restart = 0;
     reqMaster.callback = NULL;
 
     for (uint8_t address = 8; address < 120; address++) {
-        reqMaster.addr = address;
         printf(".");
+        fflush(0);
 
-        if ((MXC_I2C_MasterTransaction(&reqMaster)) == 0) {
+        reqMaster.addr = address;
+        if (E_NO_ERROR == MXC_I2C_MasterTransaction(&reqMaster)) {
             printf("\nFound slave ID %03d; 0x%02X\n", address, address);
             counter++;
         }
@@ -102,4 +98,6 @@ int main()
     }
 
     printf("\n-->Scan finished. %d devices found\n", counter);
+
+    return 0;
 }

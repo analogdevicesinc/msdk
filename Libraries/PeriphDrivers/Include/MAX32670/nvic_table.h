@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef _NVIC_TABLE_H
-#define _NVIC_TABLE_H
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_NVIC_TABLE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_NVIC_TABLE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,7 +67,7 @@ void MXC_NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void));
 // MXC_NVIC_SetVector will work with legacy code.
 inline __attribute__((
     deprecated("Use MXC_NVIC_SetVector instead.  See nvic_table.h for more details."))) void
-    NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void))
+NVIC_SetVector(IRQn_Type irqn, void (*irq_callback)(void))
 {
     MXC_NVIC_SetVector(irqn, irq_callback);
 }
@@ -104,7 +104,7 @@ uint32_t MXC_NVIC_GetVector(IRQn_Type IRQn);
 // MXC_NVIC_GetVector will work with legacy code.
 inline __attribute__((
     deprecated("Use MXC_NVIC_GetVector instead.  See nvic_table.h for more details."))) void
-    NVIC_GetVector(IRQn_Type irqn)
+NVIC_GetVector(IRQn_Type irqn)
 {
     MXC_NVIC_GetVector(irqn);
 }
@@ -115,4 +115,4 @@ inline __attribute__((
 }
 #endif
 
-#endif /* _NVIC_TABLE_H */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_NVIC_TABLE_H_

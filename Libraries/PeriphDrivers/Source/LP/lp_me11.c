@@ -42,7 +42,6 @@
 /***** Includes *****/
 #include "lp.h"
 #include "pwrseq_regs.h"
-#include "mxc_errors.h"
 #include "gcr_regs.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
@@ -57,8 +56,7 @@ void MXC_LP_ClearWakeStatus(void)
     MXC_PWRSEQ->lp_wakefl = 0xFFFFFFFF;
 
     /* These flags are slow to clear, so block until they do */
-    while (MXC_PWRSEQ->lp_wakefl & (MXC_PWRSEQ->lpwk_en))
-        ;
+    while (MXC_PWRSEQ->lp_wakefl & (MXC_PWRSEQ->lpwk_en)) {}
 }
 
 void MXC_LP_EnableSRAM3(void)
@@ -161,7 +159,7 @@ void MXC_LP_DisableRTCAlarmWakeup(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_RTCWK_EN;
 }
 
-void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
+void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins)
 {
     MXC_GCR->pm |= MXC_F_GCR_PM_GPIOWK_EN;
     //switch(wu_pins->port)
@@ -170,7 +168,7 @@ void MXC_LP_EnableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
     //}
 }
 
-void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t* wu_pins)
+void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins)
 {
     //switch(wu_pins->port)
     //{
@@ -206,16 +204,14 @@ void MXC_LP_EnterBackupMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_BACKUP;
-    while (1)
-        ;
+    while (1) {}
 }
 
 void MXC_LP_EnterShutdownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_SHUTDOWN;
-    while (1)
-        ;
+    while (1) {}
 }
 
 int MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr)
@@ -238,8 +234,8 @@ int MXC_LP_SetOperatingVoltage(mxc_lp_ovr_t ovr)
     }
 
     // Set flash wait state for any clock so its not to low after clock changes.
-    MXC_GCR->mem_ctrl =
-        (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) | (0x5UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
+    MXC_GCR->mem_ctrl = (MXC_GCR->mem_ctrl & ~(MXC_F_GCR_MEM_CTRL_FWS)) |
+                        (0x5UL << MXC_F_GCR_MEM_CTRL_FWS_POS);
 
     // Set the OVR bits
     MXC_PWRSEQ->lp_ctrl &= ~(MXC_F_PWRSEQ_LP_CTRL_OVR);

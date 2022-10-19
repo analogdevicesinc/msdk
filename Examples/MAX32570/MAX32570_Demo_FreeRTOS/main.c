@@ -55,26 +55,25 @@
 //
 #define mainQUEUE_SIZE (4)
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 //
-extern void vAnimTask(void* pvParameter);
-extern void vGetATRTask(void* pvParameter);
-extern void vGetMSRTask(void* pvParameter);
-extern void vGetTSTask(void* pvParameter);
-extern void vGetKEYTask(void* pvParameter);
-extern void vGetNFCTask(void* pvParameter);
+extern void vAnimTask(void *pvParameter);
+extern void vGetATRTask(void *pvParameter);
+extern void vGetMSRTask(void *pvParameter);
+extern void vGetTSTask(void *pvParameter);
+extern void vGetKEYTask(void *pvParameter);
+extern void vGetNFCTask(void *pvParameter);
 
 /* The queue used to send strings to the print task for display on the LCD. */
 xQueueHandle xQueueMain;
 
 /******************************   STATIC FUNCTIONS  **************************/
-void vApplicationStackOverflowHook(xTaskHandle xTask, signed char* pcTaskName)
+void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
 {
     (void)xTask;
     (void)pcTaskName;
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 static int system_init(void)
@@ -93,46 +92,41 @@ static int system_init(void)
     return ret;
 }
 
-static void vMainTask(void* pvParameters)
+static void vMainTask(void *pvParameters)
 {
     (void)pvParameters;
 
     message_t mMessage;
-    State* state;
+    State *state;
     int ret;
-    unsigned int wait_time       = 0;
+    unsigned int wait_time = 0;
     unsigned int total_idle_time = 0;
-    unsigned int max_idle_time   = 15000;
+    unsigned int max_idle_time = 15000;
 
     ret = xTaskCreate(vGetTSTask, "GetTS", 500, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     ret = xTaskCreate(vGetATRTask, "GetATR", 1000, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 
-#if !defined(MN_EvKit_V1) && !defined(M_EvKit_V1)
+#if !defined(BOARD_MN_EVKIT_V1) && !defined(BOARD_M_EVKIT_V1)
     ret = xTaskCreate(vGetKEYTask, "GetKey", 500, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     ret = xTaskCreate(vGetNFCTask, "GetNFC", 1000, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     ret = xTaskCreate(vGetMSRTask, "GetMSR", 1000, NULL, 4, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 #endif
 
@@ -148,24 +142,24 @@ static void vMainTask(void* pvParameters)
 
         if (xQueueReceive(xQueueMain, &mMessage, (wait_time * configTICK_RATE_10ms))) {
             switch (mMessage.pcType) {
-                case 'T': // Touch screen
-                    if (state->prcss_key)
-                        state->prcss_key(mMessage.pcMessage[0]); // process touch screen keys
-                    break;
-                case 'K': // Keyboard
-                    if (state->prcss_key)
-                        state->prcss_key(mMessage.pcMessage[0]); // process keypad keys
-                    break;
-                case 'M': // MSR
-                    if (state->prcss_msr)
-                        state->prcss_msr(mMessage.pcMessage, mMessage.len);
-                    break;
-                case 'N': // NFC
-                    if (state->prcss_nfc)
-                        state->prcss_nfc(mMessage.pcMessage, mMessage.len);
-                    break;
-                default:
-                    break;
+            case 'T': // Touch screen
+                if (state->prcss_key)
+                    state->prcss_key(mMessage.pcMessage[0]); // process touch screen keys
+                break;
+            case 'K': // Keyboard
+                if (state->prcss_key)
+                    state->prcss_key(mMessage.pcMessage[0]); // process keypad keys
+                break;
+            case 'M': // MSR
+                if (state->prcss_msr)
+                    state->prcss_msr(mMessage.pcMessage, mMessage.len);
+                break;
+            case 'N': // NFC
+                if (state->prcss_nfc)
+                    state->prcss_nfc(mMessage.pcMessage, mMessage.len);
+                break;
+            default:
+                break;
             }
             // reset total idle time
             total_idle_time = 0;
@@ -191,7 +185,7 @@ static void vMainTask(void* pvParameters)
 /******************************   PUBLIC FUNCTIONS  **************************/
 int main(void)
 {
-    long ret;
+    int32_t ret;
 
     printf("\n************************** MAX32570 Demo Example **************************\n\n");
     printf("This example interact with user\n");
@@ -201,20 +195,19 @@ int main(void)
     printf("Note:\n"
            "\tMSR: VBAT_SEL need to be connected to 3.3V, VDD_MSR need to be connected\n"
            "\tSmartCard can be configured to 5V mode (Class A) or 3V mode (Class B),\n"
-           "\t		To configure 5V mode:\n"
-           "\t			1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
-           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
-           "\t			3- Rebuild project and load it\n"
-           "\t		To configure 3V mode:\n"
-           "\t			1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
-           "\t			2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
-           "\t			3- Rebuild project and load it\n");
+           "\t      To configure 5V mode:\n"
+           "\t          1- On EvKit connect SC_PWR_SEL jumper to 5V\n"
+           "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 5V\n"
+           "\t          3- Rebuild project and load it\n"
+           "\t      To configure 3V mode:\n"
+           "\t          1- On EvKit connect SC_PWR_SEL jumper to 3V\n"
+           "\t          2- In demo_config_h file update SMARTCARD_EXT_AFE_Voltage to 3V\n"
+           "\t          3- Rebuild project and load it\n");
 
     /* Configure the clocks, UART and GPIO. */
     ret = system_init();
     if (ret) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Initialize SKBD port with default configurations */
@@ -223,15 +216,13 @@ int main(void)
     /* Start the tasks defined within the 5000. */
     ret = xTaskCreate(vMainTask, "Main", 1000, NULL, 2, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Start the tasks defined within the file. */
     ret = xTaskCreate(vAnimTask, "Logo_Anim", 500, NULL, 1, NULL);
     if (ret != pdPASS) {
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Start the scheduler. */

@@ -1,6 +1,7 @@
 /**
  * @file    gcfr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCFR Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -33,10 +34,11 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
-#ifndef _GCFR_REGS_H_
-#define _GCFR_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_GCFR_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_GCFR_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -76,7 +78,7 @@ extern "C" {
  * @ingroup     gcfr
  * @defgroup    gcfr_registers GCFR_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the GCFR Peripheral Module.
- * @details Global Control Function Register.
+ * @details     Global Control Function Register.
  */
 
 /**
@@ -94,7 +96,7 @@ typedef struct {
  * @brief      GCFR Peripheral Register Offsets from the GCFR Base Peripheral Address.
  * @{
  */
- #define MXC_R_GCFR_REG0                    ((uint32_t)0x00000000UL) /**< Offset from GCFR Base Address: <tt> 0x0000</tt> */ 
+#define MXC_R_GCFR_REG0                    ((uint32_t)0x00000000UL) /**< Offset from GCFR Base Address: <tt> 0x0000</tt> */
 /**@} end of group gcfr_registers */
 
 /**
@@ -103,14 +105,14 @@ typedef struct {
  * @brief    Register 0.
  * @{
  */
- #define MXC_F_GCFR_REG0_CKPDRV_POS                     0 /**< REG0_CKPDRV Position */
- #define MXC_F_GCFR_REG0_CKPDRV                         ((uint32_t)(0xFUL << MXC_F_GCFR_REG0_CKPDRV_POS)) /**< REG0_CKPDRV Mask */
+#define MXC_F_GCFR_REG0_CKPDRV_POS                     0 /**< REG0_CKPDRV Position */
+#define MXC_F_GCFR_REG0_CKPDRV                         ((uint32_t)(0xFUL << MXC_F_GCFR_REG0_CKPDRV_POS)) /**< REG0_CKPDRV Mask */
 
- #define MXC_F_GCFR_REG0_CKNDRV_POS                     4 /**< REG0_CKNDRV Position */
- #define MXC_F_GCFR_REG0_CKNDRV                         ((uint32_t)(0xFUL << MXC_F_GCFR_REG0_CKNDRV_POS)) /**< REG0_CKNDRV Mask */
+#define MXC_F_GCFR_REG0_CKNDRV_POS                     4 /**< REG0_CKNDRV Position */
+#define MXC_F_GCFR_REG0_CKNDRV                         ((uint32_t)(0xFUL << MXC_F_GCFR_REG0_CKNDRV_POS)) /**< REG0_CKNDRV Mask */
 
- #define MXC_F_GCFR_REG0_RDSDLL_EN_POS                  8 /**< REG0_RDSDLL_EN Position */
- #define MXC_F_GCFR_REG0_RDSDLL_EN                      ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_RDSDLL_EN_POS)) /**< REG0_RDSDLL_EN Mask */
+#define MXC_F_GCFR_REG0_RDSDLL_EN_POS                  8 /**< REG0_RDSDLL_EN Position */
+#define MXC_F_GCFR_REG0_RDSDLL_EN                      ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_RDSDLL_EN_POS)) /**< REG0_RDSDLL_EN Mask */
 
 /**@} end of group GCFR_REG0_Register */
 
@@ -118,4 +120,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _GCFR_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_GCFR_REGS_H_

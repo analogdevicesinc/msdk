@@ -60,20 +60,20 @@
 #define PB2 1
 
 // Parameters for PWM output
-#define OST_CLOCK_SOURCE  MXC_TMR_32K_CLK // \ref mxc_tmr_clock_t
-#define PWM_CLOCK_SOURCE  MXC_TMR_APB_CLK // \ref mxc_tmr_clock_t
-#define CONT_CLOCK_SOURCE MXC_TMR_8M_CLK  // \ref mxc_tmr_clock_t
+#define OST_CLOCK_SOURCE MXC_TMR_32K_CLK // \ref mxc_tmr_clock_t
+#define PWM_CLOCK_SOURCE MXC_TMR_APB_CLK // \ref mxc_tmr_clock_t
+#define CONT_CLOCK_SOURCE MXC_TMR_8M_CLK // \ref mxc_tmr_clock_t
 
 // Parameters for Continuous timer
-#define OST_FREQ  1        // (Hz)
+#define OST_FREQ 1 // (Hz)
 #define OST_TIMER MXC_TMR4 // Can be MXC_TMR0 through MXC_TMR5
 
-#define FREQ       1000     // (Hz)
-#define DUTY_CYCLE 50       // (%)
-#define PWM_TIMER  MXC_TMR3 // must change PWM_PORT and PWM_PIN if changed
+#define FREQ 1000 // (Hz)
+#define DUTY_CYCLE 50 // (%)
+#define PWM_TIMER MXC_TMR3 // must change PWM_PORT and PWM_PIN if changed
 
 // Parameters for Continuous timer
-#define CONT_FREQ  2        // (Hz)
+#define CONT_FREQ 2 // (Hz)
 #define CONT_TIMER MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
 
 // Board Selection
@@ -103,7 +103,7 @@ void PWMTimer()
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, PWM_CLOCK_SOURCE, 16, FREQ);
-    unsigned int dutyTicks   = periodTicks * DUTY_CYCLE / 100;
+    unsigned int dutyTicks = periodTicks * DUTY_CYCLE / 100;
 
     /*
     Steps for configuring a timer for PWM mode:
@@ -116,12 +116,12 @@ void PWMTimer()
 
     MXC_TMR_Shutdown(PWM_TIMER);
 
-    tmr.pres    = TMR_PRES_16;
-    tmr.mode    = TMR_MODE_PWM;
+    tmr.pres = TMR_PRES_16;
+    tmr.mode = TMR_MODE_PWM;
     tmr.bitMode = TMR_BIT_MODE_32;
-    tmr.clock   = PWM_CLOCK_SOURCE;
+    tmr.clock = PWM_CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;
-    tmr.pol     = 1;
+    tmr.pol = 1;
 
     if (MXC_TMR_Init(PWM_TIMER, &tmr, true) != E_NO_ERROR) {
         printf("Failed PWM timer Initialization.\n");
@@ -163,12 +163,12 @@ void ContinuousTimer(void)
 
     MXC_TMR_Shutdown(CONT_TIMER);
 
-    tmr.pres    = TMR_PRES_128;
-    tmr.mode    = TMR_MODE_CONTINUOUS;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_CONTINUOUS;
     tmr.bitMode = TMR_BIT_MODE_16B;
-    tmr.clock   = CONT_CLOCK_SOURCE;
+    tmr.clock = CONT_CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     if (MXC_TMR_Init(CONT_TIMER, &tmr, true) != E_NO_ERROR) {
         printf("Failed Continuous timer Initialization.\n");
@@ -208,12 +208,12 @@ void OneshotTimer(void)
 
     MXC_TMR_Shutdown(OST_TIMER);
 
-    tmr.pres    = TMR_PRES_128;
-    tmr.mode    = TMR_MODE_ONESHOT;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_ONESHOT;
     tmr.bitMode = TMR_BIT_MODE_32;
-    tmr.clock   = OST_CLOCK_SOURCE;
+    tmr.clock = OST_CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     if (MXC_TMR_Init(OST_TIMER, &tmr, true) != E_NO_ERROR) {
         printf("Failed Continuous timer Initialization.\n");
@@ -253,7 +253,8 @@ int main(void)
     printf("   freq of %d Hz. LED 2 (Port 0.%d) will toggle when the interrupt occurs.\n\n",
            OST_FREQ, LED2_Pin);
     printf("2. Timer 3 is used to output a PWM signal on Port 1.6.\n");
-    ;
+    {
+    }
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
     printf("3. Timer 1 is configured as 16-bit timer used in continuous mode\n");
     printf("   which is used to create an interrupt at freq of %d Hz.\n", CONT_FREQ);

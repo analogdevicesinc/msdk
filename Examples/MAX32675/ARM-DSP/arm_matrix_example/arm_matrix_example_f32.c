@@ -102,7 +102,7 @@
 * and tapSize
 * --------------------------------------------------------------------------------- */
 
-const float32_t B_f32[4] = {782.0, 7577.0, 470.0, 4505.0};
+const float32_t B_f32[4] = { 782.0, 7577.0, 470.0, 4505.0 };
 
 /* --------------------------------------------------------------------------------
 * Formula to fit is  C1 + C2 * numTaps + C3 * blockSize + C4 * numTaps * blockSize
@@ -128,7 +128,7 @@ float32_t X_f32[4];
 /* ----------------------------------------------------------------------
 * Reference ouput buffer C1, C2, C3 and C4 taken from MATLAB
 * ------------------------------------------------------------------- */
-const float32_t xRef_f32[4] = {73.0, 8.0, 21.25, 2.875};
+const float32_t xRef_f32[4] = { 73.0, 8.0, 21.25, 2.875 };
 
 float32_t snr;
 
@@ -138,23 +138,23 @@ float32_t snr;
 
 int main(void)
 {
-    arm_matrix_instance_f32 A;     /* Matrix A Instance */
-    arm_matrix_instance_f32 AT;    /* Matrix AT(A transpose) instance */
-    arm_matrix_instance_f32 ATMA;  /* Matrix ATMA( AT multiply with A) instance */
+    arm_matrix_instance_f32 A; /* Matrix A Instance */
+    arm_matrix_instance_f32 AT; /* Matrix AT(A transpose) instance */
+    arm_matrix_instance_f32 ATMA; /* Matrix ATMA( AT multiply with A) instance */
     arm_matrix_instance_f32 ATMAI; /* Matrix ATMAI(Inverse of ATMA) instance */
-    arm_matrix_instance_f32 B;     /* Matrix B instance */
-    arm_matrix_instance_f32 X;     /* Matrix X(Unknown Matrix) instance */
+    arm_matrix_instance_f32 B; /* Matrix B instance */
+    arm_matrix_instance_f32 X; /* Matrix X(Unknown Matrix) instance */
 
     uint32_t srcRows, srcColumns; /* Temporary variables */
     arm_status status;
 
     /* Initialise A Matrix Instance with numRows, numCols and data array(A_f32) */
-    srcRows    = 4;
+    srcRows = 4;
     srcColumns = 4;
-    arm_mat_init_f32(&A, srcRows, srcColumns, (float32_t*)A_f32);
+    arm_mat_init_f32(&A, srcRows, srcColumns, (float32_t *)A_f32);
 
     /* Initialise Matrix Instance AT with numRows, numCols and data array(AT_f32) */
-    srcRows    = 4;
+    srcRows = 4;
     srcColumns = 4;
     arm_mat_init_f32(&AT, srcRows, srcColumns, AT_f32);
 
@@ -162,7 +162,7 @@ int main(void)
     status = arm_mat_trans_f32(&A, &AT);
 
     /* Initialise ATMA Matrix Instance with numRows, numCols and data array(ATMA_f32) */
-    srcRows    = 4;
+    srcRows = 4;
     srcColumns = 4;
     arm_mat_init_f32(&ATMA, srcRows, srcColumns, ATMA_f32);
 
@@ -170,7 +170,7 @@ int main(void)
     status = arm_mat_mult_f32(&AT, &A, &ATMA);
 
     /* Initialise ATMAI Matrix Instance with numRows, numCols and data array(ATMAI_f32) */
-    srcRows    = 4;
+    srcRows = 4;
     srcColumns = 4;
     arm_mat_init_f32(&ATMAI, srcRows, srcColumns, ATMAI_f32);
 
@@ -181,12 +181,12 @@ int main(void)
     status = arm_mat_mult_f32(&ATMAI, &AT, &ATMA);
 
     /* Initialise B Matrix Instance with numRows, numCols and data array(B_f32) */
-    srcRows    = 4;
+    srcRows = 4;
     srcColumns = 1;
-    arm_mat_init_f32(&B, srcRows, srcColumns, (float32_t*)B_f32);
+    arm_mat_init_f32(&B, srcRows, srcColumns, (float32_t *)B_f32);
 
     /* Initialise X Matrix Instance with numRows, numCols and data array(X_f32) */
-    srcRows    = 4;
+    srcRows = 4;
     srcColumns = 1;
     arm_mat_init_f32(&X, srcRows, srcColumns, X_f32);
 
@@ -194,7 +194,7 @@ int main(void)
     status = arm_mat_mult_f32(&ATMA, &B, &X);
 
     /* Comparison of reference with test output */
-    snr = arm_snr_f32((float32_t*)xRef_f32, X_f32, 4);
+    snr = arm_snr_f32((float32_t *)xRef_f32, X_f32, 4);
 
     /*------------------------------------------------------------------------------
   *            Initialise status depending on SNR calculations
@@ -205,16 +205,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 0;
     }

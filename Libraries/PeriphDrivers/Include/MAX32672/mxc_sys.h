@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef _MXC_MXC_SYS_H_
-#define _MXC_MXC_SYS_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_SYS_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_SYS_H_
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
@@ -49,38 +49,38 @@ extern "C" {
 
 /** @brief System reset0 and reset1 enumeration. Used in MXC_SYS_PeriphReset0 function */
 typedef enum {
-    MXC_SYS_RESET0_DMA   = MXC_F_GCR_RST0_DMA_POS,    /**< Reset DMA */
-    MXC_SYS_RESET0_WDT0  = MXC_F_GCR_RST0_WDT0_POS,   /**< Reset WDT */
-    MXC_SYS_RESET0_GPIO0 = MXC_F_GCR_RST0_GPIO0_POS,  /**< Reset GPIO0 */
-    MXC_SYS_RESET0_GPIO1 = MXC_F_GCR_RST0_GPIO1_POS,  /**< Reset GPIO1 */
-    MXC_SYS_RESET0_TMR0  = MXC_F_GCR_RST0_TMR0_POS,   /**< Reset TIMER0 */
-    MXC_SYS_RESET0_TMR1  = MXC_F_GCR_RST0_TMR1_POS,   /**< Reset TIMER1 */
-    MXC_SYS_RESET0_TMR2  = MXC_F_GCR_RST0_TMR2_POS,   /**< Reset TIMER2 */
-    MXC_SYS_RESET0_TMR3  = MXC_F_GCR_RST0_TMR3_POS,   /**< Reset TIMER3 */
-    MXC_SYS_RESET0_UART0 = MXC_F_GCR_RST0_UART0_POS,  /**< Reset UART0 */
-    MXC_SYS_RESET0_UART1 = MXC_F_GCR_RST0_UART1_POS,  /**< Reset UART1 */
-    MXC_SYS_RESET0_SPI0  = MXC_F_GCR_RST0_SPI0_POS,   /**< Reset SPI0 */
-    MXC_SYS_RESET0_SPI1  = MXC_F_GCR_RST0_SPI1_POS,   /**< Reset SPI1 */
-    MXC_SYS_RESET0_SPI2  = MXC_F_GCR_RST0_SPI2_POS,   /**< Reset SPI2 */
-    MXC_SYS_RESET0_I2C0  = MXC_F_GCR_RST0_I2C0_POS,   /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC   = MXC_F_GCR_RST0_RTC_POS,    /**< Reset RTC */
-    MXC_SYS_RESET0_CTB   = MXC_F_GCR_RST0_CTB_POS,    /**< Reset CTB */
-    MXC_SYS_RESET0_TRNG  = MXC_F_GCR_RST0_TRNG_POS,   /**< Reset TRNG */
-    MXC_SYS_RESET0_ADC   = MXC_F_GCR_RST0_ADC_POS,    /**< Reset ADC */
-    MXC_SYS_RESET0_UART2 = MXC_F_GCR_RST0_UART2_POS,  /**< Reset UART2 */
-    MXC_SYS_RESET0_SRST  = MXC_F_GCR_RST0_SOFT_POS,   /**< Soft reset */
-    MXC_SYS_RESET0_PRST  = MXC_F_GCR_RST0_PERIPH_POS, /**< Peripheral reset */
-    MXC_SYS_RESET0_SYS   = MXC_F_GCR_RST0_SYS_POS,    /**< System reset */
+    MXC_SYS_RESET0_DMA = MXC_F_GCR_RST0_DMA_POS, /**< Reset DMA */
+    MXC_SYS_RESET0_WDT0 = MXC_F_GCR_RST0_WDT0_POS, /**< Reset WDT */
+    MXC_SYS_RESET0_GPIO0 = MXC_F_GCR_RST0_GPIO0_POS, /**< Reset GPIO0 */
+    MXC_SYS_RESET0_GPIO1 = MXC_F_GCR_RST0_GPIO1_POS, /**< Reset GPIO1 */
+    MXC_SYS_RESET0_TMR0 = MXC_F_GCR_RST0_TMR0_POS, /**< Reset TIMER0 */
+    MXC_SYS_RESET0_TMR1 = MXC_F_GCR_RST0_TMR1_POS, /**< Reset TIMER1 */
+    MXC_SYS_RESET0_TMR2 = MXC_F_GCR_RST0_TMR2_POS, /**< Reset TIMER2 */
+    MXC_SYS_RESET0_TMR3 = MXC_F_GCR_RST0_TMR3_POS, /**< Reset TIMER3 */
+    MXC_SYS_RESET0_UART0 = MXC_F_GCR_RST0_UART0_POS, /**< Reset UART0 */
+    MXC_SYS_RESET0_UART1 = MXC_F_GCR_RST0_UART1_POS, /**< Reset UART1 */
+    MXC_SYS_RESET0_SPI0 = MXC_F_GCR_RST0_SPI0_POS, /**< Reset SPI0 */
+    MXC_SYS_RESET0_SPI1 = MXC_F_GCR_RST0_SPI1_POS, /**< Reset SPI1 */
+    MXC_SYS_RESET0_SPI2 = MXC_F_GCR_RST0_SPI2_POS, /**< Reset SPI2 */
+    MXC_SYS_RESET0_I2C0 = MXC_F_GCR_RST0_I2C0_POS, /**< Reset I2C0 */
+    MXC_SYS_RESET0_RTC = MXC_F_GCR_RST0_RTC_POS, /**< Reset RTC */
+    MXC_SYS_RESET0_CTB = MXC_F_GCR_RST0_CTB_POS, /**< Reset CTB */
+    MXC_SYS_RESET0_TRNG = MXC_F_GCR_RST0_TRNG_POS, /**< Reset TRNG */
+    MXC_SYS_RESET0_ADC = MXC_F_GCR_RST0_ADC_POS, /**< Reset ADC */
+    MXC_SYS_RESET0_UART2 = MXC_F_GCR_RST0_UART2_POS, /**< Reset UART2 */
+    MXC_SYS_RESET0_SRST = MXC_F_GCR_RST0_SOFT_POS, /**< Soft reset */
+    MXC_SYS_RESET0_PRST = MXC_F_GCR_RST0_PERIPH_POS, /**< Peripheral reset */
+    MXC_SYS_RESET0_SYS = MXC_F_GCR_RST0_SYS_POS, /**< System reset */
     /* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */
     MXC_SYS_RESET1_I2C1 = (MXC_F_GCR_RST1_I2C1_POS + 32), /**< Reset I2C1 */
     MXC_SYS_RESET1_WDT1 = (MXC_F_GCR_RST1_WDT1_POS + 32), /**< Reset WDT1 */
-    MXC_SYS_RESET1_AES  = (MXC_F_GCR_RST1_AES_POS + 32),  /**< Reset AES */
+    MXC_SYS_RESET1_AES = (MXC_F_GCR_RST1_AES_POS + 32), /**< Reset AES */
     MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset I2C2*/
-    MXC_SYS_RESET1_I2S  = (MXC_F_GCR_RST1_I2S_POS + 32),  /**< Reset I2S*/
+    MXC_SYS_RESET1_I2S = (MXC_F_GCR_RST1_I2S_POS + 32), /**< Reset I2S*/
     MXC_SYS_RESET1_QDEC = (MXC_F_GCR_RST1_QDEC_POS + 32), /**< Reset QDEC*/
     /* LPGCR RESET Below this line we add 64 to separate LPGCR and GCR */
-    MXC_SYS_RESET_TMR4  = (MXC_F_MCR_RST_LPTMR0_POS + 64),  /**< Reset TMR4 */
-    MXC_SYS_RESET_TMR5  = (MXC_F_MCR_RST_LPTMR1_POS + 64),  /**< Reset TMR5 */
+    MXC_SYS_RESET_TMR4 = (MXC_F_MCR_RST_LPTMR0_POS + 64), /**< Reset TMR4 */
+    MXC_SYS_RESET_TMR5 = (MXC_F_MCR_RST_LPTMR1_POS + 64), /**< Reset TMR5 */
     MXC_SYS_RESET_UART3 = (MXC_F_MCR_RST_LPUART0_POS + 64), /**< Reset UART3 */
 } mxc_sys_reset_t;
 
@@ -148,11 +148,11 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_IPO    = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
-    MXC_SYS_CLOCK_IBRO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
-    MXC_SYS_CLOCK_ERFO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
-    MXC_SYS_CLOCK_INRO   = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
-    MXC_SYS_CLOCK_ERTCO  = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
+    MXC_SYS_CLOCK_IPO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
+    MXC_SYS_CLOCK_IBRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
+    MXC_SYS_CLOCK_ERFO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
+    MXC_SYS_CLOCK_INRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
+    MXC_SYS_CLOCK_ERTCO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
     MXC_SYS_CLOCK_EXTCLK = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK
 } mxc_sys_system_clock_t;
 
@@ -166,7 +166,7 @@ typedef enum {
  * @param checksum  Optional pointer to store the AES checksum.
  * @returns       E_NO_ERROR if everything is successful.
  */
-int MXC_SYS_GetUSN(uint8_t* usn, uint8_t* checksum);
+int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
 
 /**
  * @brief Determines if the selected peripheral clock is enabled.
@@ -237,4 +237,4 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
 }
 #endif
 
-#endif /* _MXC_MXC_SYS_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_SYS_H_

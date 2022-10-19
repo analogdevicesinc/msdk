@@ -22,6 +22,7 @@
  */
 /*************************************************************************************************/
 
+#include <string.h>
 #include <stdio.h>
 #include "ll_init_api.h"
 #include "chci_tr.h"
@@ -37,7 +38,6 @@
 #include "pal_bb.h"
 #include "pal_cfg.h"
 #include "tmr.h"
-#include <string.h>
 
 /**************************************************************************************************
   Definitions
@@ -84,22 +84,22 @@ extern void dbb_seq_tx_disable(void);
  *  \return Pointer to string describing the PHY.
  */
 /*************************************************************************************************/
-static uint8_t* getPhyStr(uint8_t phy)
+static uint8_t *getPhyStr(uint8_t phy)
 {
     switch (phy) {
-        case LL_TEST_PHY_LE_1M:
-        default:
-            memcpy(phy_str, "1M PHY", 7);
-            break;
-        case LL_TEST_PHY_LE_2M:
-            memcpy(phy_str, "2M PHY", 7);
-            break;
-        case LL_TEST_PHY_LE_CODED_S8:
-            memcpy(phy_str, "S8 PHY", 7);
-            break;
-        case LL_TEST_PHY_LE_CODED_S2:
-            memcpy(phy_str, "S2 PHY", 7);
-            break;
+    case LL_TEST_PHY_LE_1M:
+    default:
+        memcpy(phy_str, "1M PHY", 7);
+        break;
+    case LL_TEST_PHY_LE_2M:
+        memcpy(phy_str, "2M PHY", 7);
+        break;
+    case LL_TEST_PHY_LE_CODED_S8:
+        memcpy(phy_str, "S8 PHY", 7);
+        break;
+    case LL_TEST_PHY_LE_CODED_S2:
+        memcpy(phy_str, "S2 PHY", 7);
+        break;
     }
     return phy_str;
 }
@@ -179,7 +179,7 @@ static void processConsoleRX(uint8_t rxByte)
     int res;
 
     /* Holds the state of the command and the parameter */
-    static uint8_t cmd   = 0;
+    static uint8_t cmd = 0;
     static uint8_t param = 0;
 
     /* Determines if the incoming character is a command or a parameter */
@@ -189,191 +189,191 @@ static void processConsoleRX(uint8_t rxByte)
         param = rxByte;
 
     switch (cmd) {
+    case '0':
+
+        APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
+                        getPhyStr(phy));
+        res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+        cmd = 0;
+        break;
+
+    case '1':
+
+        APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
+                        getPhyStr(phy));
+        res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+        cmd = 0;
+        break;
+
+    case '2':
+
+        APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
+                        getPhyStr(phy));
+        res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
+        APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+        cmd = 0;
+        break;
+
+    case '3':
+
+        APP_TRACE_INFO1("Receive RF channel 39, %s, forever ..", getPhyStr(phy));
+        res = LlEnhancedRxTest(39, phy, 0, 0);
+        APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
+        cmd = 0;
+        break;
+
+    case '4':
+
+        if (param == 0) {
+            APP_TRACE_INFO0("Select transmit power");
+            APP_TRACE_INFO0(" 0: -10 dBm");
+            APP_TRACE_INFO0(" 1:   0 dBm");
+            APP_TRACE_INFO0(" 2: 4.5 dBm");
+            break;
+        }
+
+        switch (param) {
         case '0':
-
-            APP_TRACE_INFO1("Transmit RF channel 0, 255 bytes/pkt, 0xAA, %s, forever ..",
-                            getPhyStr(phy));
-            res = LlEnhancedTxTest(0, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
+            llc_api_set_txpower(-10);
+            LlSetAdvTxPower(-10);
+            APP_TRACE_INFO0("Power set to -10 dBm");
             break;
-
         case '1':
-
-            APP_TRACE_INFO1("Transmit RF channel 19, 255 bytes/pkt, 0xAA, %s, forever ..",
-                            getPhyStr(phy));
-            res = LlEnhancedTxTest(19, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
+            llc_api_set_txpower(0);
+            LlSetAdvTxPower(0);
+            APP_TRACE_INFO0("Power set to 0 dBm");
             break;
-
         case '2':
-
-            APP_TRACE_INFO1("Transmit RF channel 39, 255 bytes/pkt, 0xAA, %s, forever ..",
-                            getPhyStr(phy));
-            res = LlEnhancedTxTest(39, 255, LL_TEST_PKT_TYPE_AA, phy, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
+            llc_api_set_txpower(4);
+            LlSetAdvTxPower(4);
+            APP_TRACE_INFO0("Power set to 4.5 dBm");
             break;
-
-        case '3':
-
-            APP_TRACE_INFO1("Receive RF channel 39, %s, forever ..", getPhyStr(phy));
-            res = LlEnhancedRxTest(39, phy, 0, 0);
-            APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
-            cmd = 0;
-            break;
-
-        case '4':
-
-            if (param == 0) {
-                APP_TRACE_INFO0("Select transmit power");
-                APP_TRACE_INFO0(" 0: -10 dBm");
-                APP_TRACE_INFO0(" 1:   0 dBm");
-                APP_TRACE_INFO0(" 2: 4.5 dBm");
-                break;
-            }
-
-            switch (param) {
-                case '0':
-                    llc_api_set_txpower(-10);
-                    LlSetAdvTxPower(-10);
-                    APP_TRACE_INFO0("Power set to -10 dBm");
-                    break;
-                case '1':
-                    llc_api_set_txpower(0);
-                    LlSetAdvTxPower(0);
-                    APP_TRACE_INFO0("Power set to 0 dBm");
-                    break;
-                case '2':
-                    llc_api_set_txpower(4);
-                    LlSetAdvTxPower(4);
-                    APP_TRACE_INFO0("Power set to 4.5 dBm");
-                    break;
-                default:
-                    APP_TRACE_INFO0("Invalid selection");
-                    break;
-            }
-            cmd   = 0;
-            param = 0;
-            break;
-
-        case '5':
-            if (param == 0) {
-                APP_TRACE_INFO0("Select transmit channel");
-                APP_TRACE_INFO0(" 0: 0");
-                APP_TRACE_INFO0(" 1: 19");
-                APP_TRACE_INFO0(" 2: 39");
-                break;
-            }
-
-            switch (param) {
-                case '0':
-                    dbb_seq_select_rf_channel(0);
-                    APP_TRACE_INFO0("Channel set to 0");
-                    break;
-                case '1':
-                    dbb_seq_select_rf_channel(19);
-                    APP_TRACE_INFO0("Channel set to 19");
-                    break;
-                case '2':
-                    dbb_seq_select_rf_channel(39);
-                    APP_TRACE_INFO0("Channel set to 39");
-                    break;
-                default:
-                    APP_TRACE_INFO0("Invalid selection");
-                    break;
-            }
-
-            APP_TRACE_INFO0("Starting TX");
-
-            PalBbEnable();
-
-            llc_api_tx_ldo_setup();
-
-            /* Enable constant TX */
-            dbb_seq_tx_enable();
-
-            cmd   = 0;
-            param = 0;
-            break;
-
-        case '6':
-            APP_TRACE_INFO0("Disabling TX");
-
-            /* Disable constant TX */
-            dbb_seq_tx_disable();
-
-            PalBbDisable();
-
-            cmd = 0;
-            break;
-
-        case '8':
-            if (param == 0) {
-                /* Set the PHY */
-                APP_TRACE_INFO0("Select PHY");
-                APP_TRACE_INFO0("1: 1M");
-                APP_TRACE_INFO0("2: 2M");
-                APP_TRACE_INFO0("3: S8");
-                APP_TRACE_INFO0("4: S2");
-                break;
-            }
-
-            switch (param) {
-                case '1':
-                    phy = LL_TEST_PHY_LE_1M;
-                    APP_TRACE_INFO0("PHY set to 1M");
-                    break;
-                case '2':
-                    phy = LL_TEST_PHY_LE_2M;
-                    APP_TRACE_INFO0("PHY set to 2M");
-                    break;
-                case '3':
-                    phy = LL_TEST_PHY_LE_CODED_S8;
-                    APP_TRACE_INFO0("PHY set to S8");
-                    break;
-                case '4':
-                    phy = LL_TEST_PHY_LE_CODED_S2;
-                    APP_TRACE_INFO0("PHY set to S2");
-                    break;
-                default:
-                    APP_TRACE_INFO0("Invalid selection");
-                    break;
-            }
-
-            cmd   = 0;
-            param = 0;
-            break;
-        case '9':
-            /* Frequency hopping TX */
-            APP_TRACE_INFO0("Starting frequency hopping");
-            NVIC_EnableIRQ(TMR2_IRQn);
-            MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
-            MXC_TMR_EnableInt(MXC_TMR2);
-            cmd = 0;
-            break;
-
-        case 'E':
-        case 'e':
-
-            APP_TRACE_INFO0("End test");
-            MXC_TMR_Stop(MXC_TMR2);
-            LlEndTest(NULL);
-            cmd = 0;
-            break;
-
-        case 'U':
-        case 'u':
-            printUsage();
-            cmd = 0;
-            break;
-
         default:
             APP_TRACE_INFO0("Invalid selection");
-            cmd   = 0;
-            param = 0;
             break;
+        }
+        cmd = 0;
+        param = 0;
+        break;
+
+    case '5':
+        if (param == 0) {
+            APP_TRACE_INFO0("Select transmit channel");
+            APP_TRACE_INFO0(" 0: 0");
+            APP_TRACE_INFO0(" 1: 19");
+            APP_TRACE_INFO0(" 2: 39");
+            break;
+        }
+
+        switch (param) {
+        case '0':
+            dbb_seq_select_rf_channel(0);
+            APP_TRACE_INFO0("Channel set to 0");
+            break;
+        case '1':
+            dbb_seq_select_rf_channel(19);
+            APP_TRACE_INFO0("Channel set to 19");
+            break;
+        case '2':
+            dbb_seq_select_rf_channel(39);
+            APP_TRACE_INFO0("Channel set to 39");
+            break;
+        default:
+            APP_TRACE_INFO0("Invalid selection");
+            break;
+        }
+
+        APP_TRACE_INFO0("Starting TX");
+
+        PalBbEnable();
+
+        llc_api_tx_ldo_setup();
+
+        /* Enable constant TX */
+        dbb_seq_tx_enable();
+
+        cmd = 0;
+        param = 0;
+        break;
+
+    case '6':
+        APP_TRACE_INFO0("Disabling TX");
+
+        /* Disable constant TX */
+        dbb_seq_tx_disable();
+
+        PalBbDisable();
+
+        cmd = 0;
+        break;
+
+    case '8':
+        if (param == 0) {
+            /* Set the PHY */
+            APP_TRACE_INFO0("Select PHY");
+            APP_TRACE_INFO0("1: 1M");
+            APP_TRACE_INFO0("2: 2M");
+            APP_TRACE_INFO0("3: S8");
+            APP_TRACE_INFO0("4: S2");
+            break;
+        }
+
+        switch (param) {
+        case '1':
+            phy = LL_TEST_PHY_LE_1M;
+            APP_TRACE_INFO0("PHY set to 1M");
+            break;
+        case '2':
+            phy = LL_TEST_PHY_LE_2M;
+            APP_TRACE_INFO0("PHY set to 2M");
+            break;
+        case '3':
+            phy = LL_TEST_PHY_LE_CODED_S8;
+            APP_TRACE_INFO0("PHY set to S8");
+            break;
+        case '4':
+            phy = LL_TEST_PHY_LE_CODED_S2;
+            APP_TRACE_INFO0("PHY set to S2");
+            break;
+        default:
+            APP_TRACE_INFO0("Invalid selection");
+            break;
+        }
+
+        cmd = 0;
+        param = 0;
+        break;
+    case '9':
+        /* Frequency hopping TX */
+        APP_TRACE_INFO0("Starting frequency hopping");
+        NVIC_EnableIRQ(TMR2_IRQn);
+        MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
+        MXC_TMR_EnableInt(MXC_TMR2);
+        cmd = 0;
+        break;
+
+    case 'E':
+    case 'e':
+
+        APP_TRACE_INFO0("End test");
+        MXC_TMR_Stop(MXC_TMR2);
+        LlEndTest(NULL);
+        cmd = 0;
+        break;
+
+    case 'U':
+    case 'u':
+        printUsage();
+        cmd = 0;
+        break;
+
+    default:
+        APP_TRACE_INFO0("Invalid selection");
+        cmd = 0;
+        param = 0;
+        break;
     }
 }
 
@@ -384,7 +384,7 @@ static void processConsoleRX(uint8_t rxByte)
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-    PalBbLoadCfg((PalBbCfg_t*)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
     LlGetDefaultRunTimeCfg(&mainLlRtCfg);
     PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
     PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
@@ -426,12 +426,13 @@ static void mainWsfInit(void)
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
     wsfBufPoolDesc_t poolDesc[] = {
-        {16, 8},
-        {32, 4},
-        {128, mainLlRtCfg.maxAdvReports},
-        {maxRptBufSize, mainLlRtCfg.maxAdvReports}, /* Extended reports. */
-        {dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
-                          mainLlRtCfg.numIsoRxBuf}};
+        { 16, 8 },
+        { 32, 4 },
+        { 128, mainLlRtCfg.maxAdvReports },
+        { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
+        { dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
+                           mainLlRtCfg.numIsoRxBuf }
+    };
 
     const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
@@ -494,13 +495,13 @@ int main(void)
     WsfHeapAlloc(memUsed);
 #endif
 
-    LlInitRtCfg_t llCfg = {.pBbRtCfg     = &mainBbRtCfg,
-                           .wlSizeCfg    = 4,
-                           .rlSizeCfg    = 4,
-                           .plSizeCfg    = 4,
-                           .pLlRtCfg     = &mainLlRtCfg,
-                           .pFreeMem     = WsfHeapGetFreeStartAddress(),
-                           .freeMemAvail = WsfHeapCountAvailable()};
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+                            .wlSizeCfg = 4,
+                            .rlSizeCfg = 4,
+                            .plSizeCfg = 4,
+                            .pLlRtCfg = &mainLlRtCfg,
+                            .pFreeMem = WsfHeapGetFreeStartAddress(),
+                            .freeMemAvail = WsfHeapCountAvailable() };
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
@@ -508,7 +509,7 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     /* Coverity[uninit_use_in_call] */
-    LlSetBdAddr((uint8_t*)&bdAddr);
+    LlSetBdAddr((uint8_t *)&bdAddr);
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
     WsfOsRegisterSleepCheckFunc(ChciTrService);

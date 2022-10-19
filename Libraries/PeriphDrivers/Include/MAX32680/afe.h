@@ -38,8 +38,8 @@
 *******************************************************************************
 */
 
-#ifndef _AFE_H_
-#define _AFE_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,17 +57,17 @@ extern "C" {
 
 /***** Definitions *****/
 #define AFE_REG_ADDR_BANK_POS 23
-#define AFE_REG_ADDR_BANK     ((uint32_t)(0x03 << AFE_REG_ADDR_BANK_POS))
-#define AFE_REG_ADDR_POS      16
-#define AFE_REG_ADDR          ((uint32_t)(0x7F << AFE_REG_ADDR_POS))
-#define AFE_REG_ADDR_LEN_POS  0
-#define AFE_REG_ADDR_LEN      ((uint32_t)(0x07 << AFE_REG_ADDR_LEN_POS))
+#define AFE_REG_ADDR_BANK ((uint32_t)(0x03 << AFE_REG_ADDR_BANK_POS))
+#define AFE_REG_ADDR_POS 16
+#define AFE_REG_ADDR ((uint32_t)(0x7F << AFE_REG_ADDR_POS))
+#define AFE_REG_ADDR_LEN_POS 0
+#define AFE_REG_ADDR_LEN ((uint32_t)(0x07 << AFE_REG_ADDR_LEN_POS))
 #define AFE_REG_ADDR_READ_BIT 0x80
-#define AFE_CRC_LEN           1
+#define AFE_CRC_LEN 1
 
 #define AFE_ADC0_BANK 0
 #define AFE_ADC1_BANK 1
-#define AFE_DAC_BANK  2
+#define AFE_DAC_BANK 2
 #define AFE_HART_BANK 3
 
 /***** Function Prototypes *****/
@@ -94,7 +94,7 @@ int afe_write_register(uint32_t target_reg, uint32_t value);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int afe_read_register(uint32_t target_reg, uint32_t* value);
+int afe_read_register(uint32_t target_reg, uint32_t *value);
 
 /**
  * @brief   Load AFE Trims.
@@ -117,4 +117,4 @@ void afe_dump_registers(uint32_t reg_bank);
 }
 #endif
 
-#endif /* _AFE_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_AFE_H_

@@ -42,8 +42,8 @@
 #include <stdio.h>
 #include "spixf.h"
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32572_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32572_EVKIT_V1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 #ifndef MX25_BAUD
 #define MX25_BAUD 3000000
@@ -109,7 +109,7 @@ int MX25_Board_Init(void);
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 
-int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
+int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
 /**
  * \brief   Translation function to implement SPI Write transaction
  * @param   write       Pointer to data master will write.
@@ -119,7 +119,7 @@ int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, mxc_spixf_wi
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 
-int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert,
+int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert,
                      mxc_spixf_width_t width);
 
 /**
@@ -129,10 +129,9 @@ int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert,
  * \returns #E_NO_ERROR if successful, !=0 otherwise
  */
 int MX25_Clock(unsigned len, unsigned deassert);
-;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32572_EVKIT_V1_INCLUDE_BOARD_H_

@@ -44,6 +44,7 @@
 #include "pwrseq_regs.h"
 #include "simo_regs.h"
 #include "mcr_regs.h"
+#include "lp.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
@@ -60,28 +61,28 @@ __weak void SystemCoreClockUpdate(void)
     // Determine the clock source and frequency
     clk_src = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CLKSEL);
     switch (clk_src) {
-        case MXC_S_GCR_CLKCN_CLKSEL_HIRC:
-            base_freq = HIRC_FREQ;
-            break;
-        case MXC_S_GCR_CLKCN_CLKSEL_XTAL32M:
-            base_freq = XTAL32M_FREQ;
-            break;
-        case MXC_S_GCR_CLKCN_CLKSEL_LIRC8:
-            base_freq = LIRC8_FREQ;
-            break;
-        case MXC_S_GCR_CLKCN_CLKSEL_HIRC96:
-            base_freq = HIRC96_FREQ;
-            break;
-        case MXC_S_GCR_CLKCN_CLKSEL_HIRC8:
-            base_freq = HIRC8_FREQ;
-            break;
-        case MXC_S_GCR_CLKCN_CLKSEL_XTAL32K:
-            base_freq = XTAL32K_FREQ;
-            break;
-        default:
-            // Values 001 and 111 are reserved, and should never be encountered.
-            base_freq = HIRC_FREQ;
-            break;
+    case MXC_S_GCR_CLKCN_CLKSEL_HIRC:
+        base_freq = HIRC_FREQ;
+        break;
+    case MXC_S_GCR_CLKCN_CLKSEL_XTAL32M:
+        base_freq = XTAL32M_FREQ;
+        break;
+    case MXC_S_GCR_CLKCN_CLKSEL_LIRC8:
+        base_freq = LIRC8_FREQ;
+        break;
+    case MXC_S_GCR_CLKCN_CLKSEL_HIRC96:
+        base_freq = HIRC96_FREQ;
+        break;
+    case MXC_S_GCR_CLKCN_CLKSEL_HIRC8:
+        base_freq = HIRC8_FREQ;
+        break;
+    case MXC_S_GCR_CLKCN_CLKSEL_XTAL32K:
+        base_freq = XTAL32K_FREQ;
+        break;
+    default:
+        // Values 001 and 111 are reserved, and should never be encountered.
+        base_freq = HIRC_FREQ;
+        break;
     }
     // Clock divider is retrieved to compute system clock
     div = (MXC_GCR->clkcn & MXC_F_GCR_CLKCN_PSC) >> MXC_F_GCR_CLKCN_PSC_POS;
@@ -107,12 +108,9 @@ __weak int PreInit(void)
     /* Divide down system clock until SIMO is ready */
     MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (MXC_S_GCR_CLKCN_PSC_DIV128);
 
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {
-    }
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {
-    }
-    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-    }
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA)) {}
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
 
     /* Restore system clock divider */
     MXC_GCR->clkcn = (MXC_GCR->clkcn & ~(MXC_F_GCR_CLKCN_PSC)) | (psc);
@@ -130,9 +128,7 @@ __weak int Board_Init(void)
     return 0;
 }
 
-__weak void PalSysInit(void)
-{
-}
+__weak void PalSysInit(void) {}
 
 /* This function is called just before control is transferred to main().
  *
@@ -145,7 +141,7 @@ __weak void SystemInit(void)
     /* Configure the interrupt controller to use the application vector 
      * table in flash. Initially, VTOR points to the ROM's table.
      */
-    SCB->VTOR = (unsigned long)&__isr_vector;
+    SCB->VTOR = (uint32_t)&__isr_vector;
 
     /* We'd like to switch to the fast clock, but can only do so if the 
      * core's operating voltage (VregO_B) is high enough to support it
@@ -169,17 +165,15 @@ __weak void SystemInit(void)
     MXC_PWRSEQ->buretvec = (uint32_t)(Reset_Handler) | 1;
 
     // FIXME Pre-production parts: Enable TME, disable ICache Read Buffer, disable TME
-    *(uint32_t*)0x40000c00 = 1;
-    *(uint32_t*)0x4000040c = (1 << 6);
-    *(uint32_t*)0x40000c00 = 0;
+    *(uint32_t *)0x40000c00 = 1;
+    *(uint32_t *)0x4000040c = (1 << 6);
+    *(uint32_t *)0x40000c00 = 0;
 
     // Flush and enable instruction cache
     MXC_ICC0->invalidate = 1;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
-    }
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {}
     MXC_ICC0->cache_ctrl |= MXC_F_ICC_CACHE_CTRL_EN;
-    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {
-    }
+    while (!(MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_RDY)) {}
 
     SystemCoreClockUpdate();
 
@@ -194,6 +188,9 @@ __weak void SystemInit(void)
     MXC_GPIO1->ps |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg1 |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg2 &= ~(0xFFFFFFFF);
+
+    /* Disable fast wakeup due to issues with SIMO in wakeup */
+    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_FWKM;
 
     Board_Init();
 
@@ -218,7 +215,6 @@ void $Sub$$__main_after_scatterload(void)
 {
     SystemInit();
     $Super$$__main_after_scatterload();
-    while (1)
-        ;
+    while (1) {}
 }
 #endif /* __CC_ARM */

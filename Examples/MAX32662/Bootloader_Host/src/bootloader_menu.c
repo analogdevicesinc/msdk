@@ -45,18 +45,18 @@
 
 /******************************* Type Definitions ****************************/
 
-/******************************* 	Variables 	  ****************************/
+/*******************************    Variables   ****************************/
 
 /******************************* Static Functions ****************************/
-static int hard_reset_then_enter_bl_mode(const char* parentName)
+static int hard_reset_then_enter_bl_mode(const char *parentName)
 {
     return bl_hard_reset_then_enter_bl_mode();
 }
 
-static int get_target_partnumber(const char* parentName)
+static int get_target_partnumber(const char *parentName)
 {
     int ret;
-    char partNumber[16] = {0};
+    char partNumber[16] = { 0 };
 
     ret = bl_get_partnumber(partNumber, sizeof(partNumber) - 1);
     if (ret == 0) {
@@ -66,10 +66,10 @@ static int get_target_partnumber(const char* parentName)
     return ret;
 }
 
-static int get_target_bl_version(const char* parentName)
+static int get_target_bl_version(const char *parentName)
 {
     int ret;
-    char version[16] = {0};
+    char version[16] = { 0 };
 
     ret = bl_get_version(version, sizeof(version) - 1);
     if (ret == 0) {
@@ -79,17 +79,17 @@ static int get_target_bl_version(const char* parentName)
     return ret;
 }
 
-static int enter_bl_mode(const char* parentName)
+static int enter_bl_mode(const char *parentName)
 {
     return bl_enter_bl_mode();
 }
 
-static int exit_bl_mode(const char* parentName)
+static int exit_bl_mode(const char *parentName)
 {
     return bl_exit_bl_mode();
 }
 
-static int get_page_size(const char* parentName)
+static int get_page_size(const char *parentName)
 {
     int ret;
     unsigned int page_size = 0;
@@ -102,7 +102,7 @@ static int get_page_size(const char* parentName)
     return ret;
 }
 
-static int get_usn(const char* parentName)
+static int get_usn(const char *parentName)
 {
     int ret;
     char usn[24];
@@ -115,15 +115,15 @@ static int get_usn(const char* parentName)
     return ret;
 }
 
-static int erase_app(const char* parentName)
+static int erase_app(const char *parentName)
 {
     return bl_erase_app();
 }
 
-static int set_timeout(const char* parentName)
+static int set_timeout(const char *parentName)
 {
-    int ret                = -1;
-    unsigned short timeout = 0;
+    int ret = -1;
+    uint16_t timeout = 0;
 
     terminal_printf("\r\nNew Timeout (ms): ");
     timeout = terminal_read_num(0);
@@ -134,10 +134,10 @@ static int set_timeout(const char* parentName)
     return ret;
 }
 
-static int dump_configurations(const char* parentName)
+static int dump_configurations(const char *parentName)
 {
     int ret;
-    char version[16] = {0};
+    char version[16] = { 0 };
 
     ret = bl_get_version(version, sizeof(version) - 1);
     if (ret == 0) {
@@ -165,18 +165,18 @@ static int dump_configurations(const char* parentName)
             terminal_printf("%-18s: %d\r\n", "lock_swd", cfg_old.lock_swd);
 
             switch (cfg_old.i2c_addr) {
-                case 0:
-                    terminal_printf("%-18s: 0x58\r\n", "i2c_addr");
-                    break;
-                case 1:
-                    terminal_printf("%-18s: 0x5A\r\n", "i2c_addr");
-                    break;
-                case 2:
-                    terminal_printf("%-18s: 0x5C\r\n", "i2c_addr");
-                    break;
-                case 3:
-                    terminal_printf("%-18s: 0xAA\r\n", "i2c_addr");
-                    break;
+            case 0:
+                terminal_printf("%-18s: 0x58\r\n", "i2c_addr");
+                break;
+            case 1:
+                terminal_printf("%-18s: 0x5A\r\n", "i2c_addr");
+                break;
+            case 2:
+                terminal_printf("%-18s: 0x5C\r\n", "i2c_addr");
+                break;
+            case 3:
+                terminal_printf("%-18s: 0xAA\r\n", "i2c_addr");
+                break;
             }
         } else {
             boot_config_t cfg;
@@ -202,27 +202,27 @@ static int dump_configurations(const char* parentName)
     return ret;
 }
 
-static int flash_configurations(const char* parentName)
+static int flash_configurations(const char *parentName)
 {
     return bl_flash_bl_cfg();
 }
 
 /******************************* Public Functions ****************************/
 static list_t list[] = {
-    {"Hard Reset than Send Enter Bootloader Command", hard_reset_then_enter_bl_mode},
-    {"Get Target PartNumber", get_target_partnumber},
-    {"Get Target Bootloader Version", get_target_bl_version},
-    {"Enter Bootloader", enter_bl_mode},
-    {"Exit Bootloader", exit_bl_mode},
-    {"Get Page Size", get_page_size},
-    {"Get USN", get_usn},
-    {"Erase Application", erase_app},
-    {"Set Bootloader Timeout", set_timeout},
-    {"Dump Bootloader Configurations", dump_configurations},
-    {"Flash Bootloader Configurations", flash_configurations},
+    { "Hard Reset than Send Enter Bootloader Command", hard_reset_then_enter_bl_mode },
+    { "Get Target PartNumber", get_target_partnumber },
+    { "Get Target Bootloader Version", get_target_bl_version },
+    { "Enter Bootloader", enter_bl_mode },
+    { "Exit Bootloader", exit_bl_mode },
+    { "Get Page Size", get_page_size },
+    { "Get USN", get_usn },
+    { "Erase Application", erase_app },
+    { "Set Bootloader Timeout", set_timeout },
+    { "Dump Bootloader Configurations", dump_configurations },
+    { "Flash Bootloader Configurations", flash_configurations },
 };
 
-int bootloader_menu(const char* parentName)
+int bootloader_menu(const char *parentName)
 {
     int ret = 0;
 

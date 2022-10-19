@@ -41,8 +41,6 @@
 #include <MAX32xxx.h>
 
 // Local global variables
-int pass;
-int fail;
 uint8_t utilcrc8;
 static uint8_t dscrc_table[] = {
     0,   94,  188, 226, 97,  63,  221, 131, 194, 156, 126, 32,  163, 253, 31,  65,  157, 195, 33,
@@ -58,21 +56,8 @@ static uint8_t dscrc_table[] = {
     45,  115, 202, 148, 118, 40,  171, 245, 23,  73,  8,   86,  180, 234, 105, 55,  213, 139, 87,
     9,   235, 181, 54,  104, 138, 212, 149, 203, 41,  119, 244, 170, 72,  22,  233, 183, 85,  11,
     136, 214, 52,  106, 43,  117, 151, 201, 74,  20,  246, 168, 116, 42,  200, 150, 21,  75,  169,
-    247, 182, 232, 10,  84,  215, 137, 107, 53};
-
-void Pass(void)
-{
-    pass++;
-}
-void Fail(void)
-{
-    fail++;
-}
-void Done(void)
-{
-    while (1)
-        ;
-}
+    247, 182, 232, 10,  84,  215, 137, 107, 53
+};
 
 //--------------------------------------------------------------------------
 // Reset crc8 to the value passed in
@@ -139,8 +124,9 @@ int32_t ow_romid_test(uint8_t od)
         return -5;
     }
 
-    printf("Buffer: 0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X,0x%02X\n", buffer[0],
-           buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], buffer[6], buffer[7]);
+    printf("ROMID: ");
+    for (i = 0; i < 8; i++) { printf("%02X ", buffer[i]); }
+    printf("\n");
 
     /* Check for zero family code in ROM ID */
     if (buffer[0] == 0) {
@@ -150,9 +136,7 @@ int32_t ow_romid_test(uint8_t od)
     /* Check CRC8 of received ROM ID */
     setcrc8(0);
 
-    for (i = 0; i < 8; i++) {
-        crc8 = docrc8(buffer[i]);
-    }
+    for (i = 0; i < 8; i++) { crc8 = docrc8(buffer[i]); }
 
     if (crc8 != 0x00) {
         return -7;
@@ -163,30 +147,29 @@ int32_t ow_romid_test(uint8_t od)
 
 int main(void)
 {
-    pass       = 0;
-    fail       = 0;
     int retval = 0;
     printf("***** 1-Wire ROM (DS2401) Example *****\n");
+    printf("This example reads ROM ID of 1-Wire slave device\n");
+    printf("Connect 1-Wire pin (P1.18), VCC and GND to the target\n");
+    printf("For more information please take a look at your board schematic\n");
+    printf("\n\n");
 
     /* Initialize one wire 10us timing */
 
     mxc_owm_cfg_t owm_cfg;
-    owm_cfg.int_pu_en      = 1;
-    owm_cfg.ext_pu_mode    = MXC_OWM_EXT_PU_ACT_HIGH;
+    owm_cfg.int_pu_en = 1;
+    owm_cfg.ext_pu_mode = MXC_OWM_EXT_PU_ACT_HIGH;
     owm_cfg.long_line_mode = 0;
     // owm_cfg.overdrive_spec = MXC_OWM_OVERDRIVE_10US;
-    MXC_OWM_Init(&owm_cfg);
+    MXC_OWM_Init(&owm_cfg, MAP_B); // MAP_A:P0.0/1, MAP_B:P1.18/19
 
     /* Test overdrive */
     if ((retval = ow_romid_test(1))) {
-        Fail();
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
         printf("Example Failed\n");
     } else {
-        Pass();
         printf("Example Succeeded\n");
     }
 
-    Done();
     return 0;
 }

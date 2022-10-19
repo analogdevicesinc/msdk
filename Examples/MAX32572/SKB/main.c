@@ -40,19 +40,20 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <MAX32xxx.h>
 
 /***** Definitions *****/
 
 /***** Globals *****/
-mxc_skbd_keys_t keys = {0, 0, 0, 0};
+mxc_skbd_keys_t keys = { 0, 0, 0, 0 };
 
 volatile int key_pressed = 0;
 
 /* keys mapping on the keyboard */
-const char keyboard_map[16] = {'F', 'E', 'D', 'C', '3', '6', '9', 'B',
-                               '2', '5', '8', '0', '1', '4', '7', 'A'};
+const char keyboard_map[16] = { 'F', 'E', 'D', 'C', '3', '6', '9', 'B',
+                                '2', '5', '8', '0', '1', '4', '7', 'A' };
 /***** Functions *****/
 
 void keypadHandler()
@@ -75,18 +76,18 @@ void keypadHandler()
 int main(void)
 {
     mxc_skbd_config_t skb_cfg;
-    unsigned short* key;
+    uint16_t *key;
     uint8_t i, in, out;
     int result;
 
     printf("\n********** Secure Keyboard Example **********\n");
 
-    skb_cfg.inputs      = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
-    skb_cfg.outputs     = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
-    skb_cfg.debounce    = MXC_V_SKBD_CTRL1_DBTM_TIME10MS;
-    skb_cfg.ioselect    = 0;
+    skb_cfg.inputs = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
+    skb_cfg.outputs = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
+    skb_cfg.debounce = MXC_V_SKBD_CTRL1_DBTM_TIME10MS;
+    skb_cfg.ioselect = 0;
     skb_cfg.irq_handler = (irq_handler_t)keypadHandler;
-    skb_cfg.reg_erase   = 1;
+    skb_cfg.reg_erase = 1;
 
     MXC_SKBD_PreInit();
 
@@ -105,7 +106,7 @@ int main(void)
             key = &keys.key0;
 
             for (i = 0; i < 4; i++) {
-                in  = 0x0f & *key;
+                in = 0x0f & *key;
                 out = (0xf0 & *key) >> 4;
 
                 if (*key) {

@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef MCS_APP_API_H
-#define MCS_APP_API_H
+#ifndef EXAMPLES_MAX32690_BLE_MCS_MCS_APP_API_H_
+#define EXAMPLES_MAX32690_BLE_MCS_MCS_APP_API_H_
 
 #include "wsf_os.h"
 
@@ -40,7 +40,7 @@ extern "C" {
 /*! WSF message event enumeration */
 enum {
     MCS_BUTTON_TIMER_IND = MCS_MSG_START, /*/< Button state BLE notify timer event */
-    MCS_BUTTON_PRESS_DUR                  /*/< Button press duration timer event */
+    MCS_BUTTON_PRESS_DUR /*/< Button press duration timer event */
 };
 
 /**************************************************************************************************
@@ -76,10 +76,10 @@ void McsAppHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void McsAppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif /* MCS_APP_API_H */
+#endif // EXAMPLES_MAX32690_BLE_MCS_MCS_APP_API_H_

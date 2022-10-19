@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef DATS_API_H
-#define DATS_API_H
+#ifndef EXAMPLES_MAX32665_BLE_OTAS_DATS_API_H_
+#define EXAMPLES_MAX32665_BLE_OTAS_DATS_API_H_
 
 #include "wsf_os.h"
 
@@ -63,10 +63,10 @@ void DatsHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif /* DATS_API_H */
+#endif // EXAMPLES_MAX32665_BLE_OTAS_DATS_API_H_

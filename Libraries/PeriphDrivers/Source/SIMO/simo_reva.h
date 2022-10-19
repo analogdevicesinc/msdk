@@ -30,17 +30,23 @@
  * ownership rights.
  *
  **************************************************************************** */
+
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SIMO_SIMO_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SIMO_SIMO_REVA_H_
+
 #include "mxc_device.h"
 #include "simo.h"
 #include "simo_reva_regs.h"
 
 /* **** Function Prototypes **** */
-void MXC_SIMO_RevA_SetVregO_A(mxc_simo_reva_regs_t* simo, uint32_t voltage);
-void MXC_SIMO_RevA_SetVregO_B(mxc_simo_reva_regs_t* simo, uint32_t voltage);
-void MXC_SIMO_RevA_SetVregO_C(mxc_simo_reva_regs_t* simo, uint32_t voltage);
-void MXC_SIMO_RevA_SetVregO_D(mxc_simo_reva_regs_t* simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_A(mxc_simo_reva_regs_t *simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_B(mxc_simo_reva_regs_t *simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_C(mxc_simo_reva_regs_t *simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_D(mxc_simo_reva_regs_t *simo, uint32_t voltage);
 
-uint32_t MXC_SIMO_RevA_GetOutReadyA(mxc_simo_reva_regs_t* simo);
-uint32_t MXC_SIMO_RevA_GetOutReadyB(mxc_simo_reva_regs_t* simo);
-uint32_t MXC_SIMO_RevA_GetOutReadyC(mxc_simo_reva_regs_t* simo);
-uint32_t MXC_SIMO_RevA_GetOutReadyD(mxc_simo_reva_regs_t* simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyA(mxc_simo_reva_regs_t *simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyB(mxc_simo_reva_regs_t *simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyC(mxc_simo_reva_regs_t *simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyD(mxc_simo_reva_regs_t *simo);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SIMO_SIMO_REVA_H_

@@ -35,23 +35,24 @@
  */
 
 #include <string.h>
-
-#include "MAX32xxx.h"
-#include "keypad.h"
-#include "message.h"
+#include <stdint.h>
 
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
 
+#include "MAX32xxx.h"
+#include "keypad.h"
+#include "message.h"
+
 static unsigned int is_key_pressed;
 extern xQueueHandle xQueueMain;
 static xSemaphoreHandle xKBDLock;
 
 /* keys mapping on the keyboard */
-static unsigned char keyboard_map[16] = {KEY_F, KEY_E, KEY_D, KEY_C, KEY_3, KEY_6, KEY_9, KEY_B,
-                                         KEY_2, KEY_5, KEY_8, KEY_0, KEY_1, KEY_4, KEY_7, KEY_A};
+static unsigned char keyboard_map[16] = { KEY_F, KEY_E, KEY_D, KEY_C, KEY_3, KEY_6, KEY_9, KEY_B,
+                                          KEY_2, KEY_5, KEY_8, KEY_0, KEY_1, KEY_4, KEY_7, KEY_A };
 
 void keypad_stop(void)
 {
@@ -92,12 +93,12 @@ int keypad_init(void)
     int rv = 0;
     mxc_skbd_config_t skb_cfg;
 
-    skb_cfg.inputs      = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
-    skb_cfg.outputs     = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
-    skb_cfg.debounce    = MXC_V_SKBD_CR1_DBTM_TIME10MS;
-    skb_cfg.ioselect    = 0;
+    skb_cfg.inputs = MXC_SKBD_KBDIO4 | MXC_SKBD_KBDIO5 | MXC_SKBD_KBDIO6 | MXC_SKBD_KBDIO7;
+    skb_cfg.outputs = MXC_SKBD_KBDIO0 | MXC_SKBD_KBDIO1 | MXC_SKBD_KBDIO2 | MXC_SKBD_KBDIO3;
+    skb_cfg.debounce = MXC_V_SKBD_CR1_DBTM_TIME10MS;
+    skb_cfg.ioselect = 0;
     skb_cfg.irq_handler = (irq_handler_t)keypad_handler;
-    skb_cfg.reg_erase   = 1;
+    skb_cfg.reg_erase = 1;
 
     MXC_SKBD_PreInit();
 
@@ -111,17 +112,17 @@ int keypad_init(void)
     return 0;
 }
 
-void vGetKEYTask(void* pvParameters)
+void vGetKEYTask(void *pvParameters)
 {
     (void)pvParameters;
 
-    unsigned short* key;
-    mxc_skbd_keys_t keys = {0, 0, 0, 0};
+    uint16_t *key;
+    mxc_skbd_keys_t keys = { 0, 0, 0, 0 };
     volatile unsigned int in;
     volatile unsigned int out;
     volatile unsigned int i;
     char key_press[5];
-    char* key_ptr = key_press;
+    char *key_ptr = key_press;
     message_t msgKBD;
 
     keypad_init();
@@ -132,7 +133,8 @@ void vGetKEYTask(void* pvParameters)
 
     for (;;) {
         while (xSemaphoreTake(xKBDLock, 0xFFFF) != pdTRUE) {
-            ;
+            {
+            }
         }
 
         key_press[0] = '\0';
@@ -141,12 +143,12 @@ void vGetKEYTask(void* pvParameters)
             MXC_SKBD_ReadKeys(&keys);
             key = &keys.key0;
             for (i = 0; i < 4; i++) {
-                in  = 0x0f & *key;
+                in = 0x0f & *key;
                 out = (0xf0 & *key) >> 4;
 
                 if (*key) {
-                    *key_ptr         = keyboard_map[(in - 4) * 4 + out];
-                    key_press[i]     = *key_ptr;
+                    *key_ptr = keyboard_map[(in - 4) * 4 + out];
+                    key_press[i] = *key_ptr;
                     key_press[i + 1] = '\0';
                 }
                 *key = 0;

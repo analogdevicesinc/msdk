@@ -46,14 +46,14 @@ int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char* cmd_table[] = {"help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
+char *cmd_table[] = { "help",  "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
 #ifdef SD
-                     "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
-                     "touch", "write",   "cat",     "snap"
+                      "mount", "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
+                      "touch", "write",   "cat",     "snap"
 #endif
 };
 
-char* help_table[] = {
+char *help_table[] = {
     ": Print this help string",
     ": Issue a soft reset to the host MCU.",
     ": Perform a standard blocking capture of a single image",
@@ -74,13 +74,14 @@ char* help_table[] = {
     "<filename> <string> : Write a string to a file.",
     "<filename> : Print the contents of a file.",
     "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is "
-    "optional.  If none is specified, images will be saved to /raw."};
+    "optional.  If none is specified, images will be saved to /raw."
+};
 
-int starts_with(char* a, char* b)
+int starts_with(char *a, char *b)
 {
     // Utility function for checking whether 'a' starts with 'b'
-    char* ptr_a = a;
-    char* ptr_b = b;
+    char *ptr_a = a;
+    char *ptr_b = b;
 
     while (*ptr_a && *ptr_b) {
         if (*ptr_a != *ptr_b) {
@@ -97,7 +98,7 @@ int starts_with(char* a, char* b)
 // This function will block until the host sends the "*SYNC*" string back in response.
 int console_init(void)
 {
-    g_num_commands = sizeof(cmd_table) / sizeof(char*);
+    g_num_commands = sizeof(cmd_table) / sizeof(char *);
     clear_serial_buffer();
 
     int ret = E_NO_ERROR;
@@ -106,7 +107,7 @@ int console_init(void)
     }
 
     printf("Establishing communication with host...\n");
-    char* sync = "*SYNC*";
+    char *sync = "*SYNC*";
 
     // Wait until the string "*SYNC*" is echoed back over the serial port before starting the example
     while (1) {
@@ -117,8 +118,8 @@ int console_init(void)
 
         int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
         if (available > 0) {
-            char* buffer = (char*)malloc(available);
-            MXC_UART_Read(Con_Uart, (uint8_t*)buffer, &available);
+            char *buffer = (char *)malloc(available);
+            MXC_UART_Read(Con_Uart, (uint8_t *)buffer, &available);
             if (strcmp(buffer, sync) == 0) {
                 // Received sync string back, break the loop.
                 LED_On(LED1);
@@ -135,18 +136,18 @@ int console_init(void)
 }
 
 // Transmit a message over the console's UART with a newline appended.
-int send_msg(const char* msg)
+int send_msg(const char *msg)
 {
     int ret = 0;
     int len = strlen(msg);
 
     // Transmit message string
-    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t*)msg, &len)) != E_NO_ERROR) {
+    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t *)msg, &len)) != E_NO_ERROR) {
         return ret;
     }
     // Transmit newline to complete the message.
     len = 1;
-    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t*)"\n", &len)) != E_NO_ERROR) {
+    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t *)"\n", &len)) != E_NO_ERROR) {
         return ret;
     }
 
@@ -155,7 +156,7 @@ int send_msg(const char* msg)
 
 // Recieve a message into the global serial buffer.  Returns 1 if a full message
 // has been received, otherwise returns 0.
-int recv_msg(char* buffer)
+int recv_msg(char *buffer)
 {
     int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
     while (available > 0) {
@@ -188,7 +189,7 @@ int recv_msg(char* buffer)
 // Writes the received command to the 'out_cmd' pointer and returns
 // 1 if a valid command has been received.  Otherwise, returns 0 and
 // sets 'out_cmd' to CMD_UNKNOWN.
-int recv_cmd(cmd_t* out_cmd)
+int recv_cmd(cmd_t *out_cmd)
 {
     if (recv_msg(g_serial_buffer)) {
         cmd_t cmd = CMD_UNKNOWN;
@@ -200,7 +201,7 @@ int recv_cmd(cmd_t* out_cmd)
                 // will now match the received command and is more
                 // convenient to process from here since we don't
                 // have to do string comparisons anymore.
-                cmd      = (cmd_t)i;
+                cmd = (cmd_t)i;
                 *out_cmd = cmd;
                 return 1;
             }
@@ -222,18 +223,16 @@ void clear_serial_buffer(void)
 // Print out all of the entries in the console's command table.
 void print_help(void)
 {
-    int g_num_commands = sizeof(cmd_table) / sizeof(char*);
+    int g_num_commands = sizeof(cmd_table) / sizeof(char *);
     printf("Registered %i total commands:\n", g_num_commands);
     printf("-----\n");
-    for (int i = 0; i < g_num_commands; i++) {
-        printf("\t'%s' %s\n", cmd_table[i], help_table[i]);
-    }
+    for (int i = 0; i < g_num_commands; i++) { printf("\t'%s' %s\n", cmd_table[i], help_table[i]); }
     printf("-----\n");
 }
 
 #ifdef SD
 // Utility function for streaming data out of a file into the UART TX FIFO
-UINT out_stream(const BYTE* p, UINT btf)
+UINT out_stream(const BYTE *p, UINT btf)
 {
     // If btf > 0, btf is the number of bytes to send.
     // If btf == 0, sense call querying if the stream is available.
@@ -241,7 +240,7 @@ UINT out_stream(const BYTE* p, UINT btf)
     if (btf == 0) { // Sense call, this function should return the stream status.
         return MXC_UART_GetTXFIFOAvailable(Con_Uart);
     } else {
-        return MXC_UART_WriteTXFIFO(Con_Uart, (const unsigned char*)p, (unsigned int)btf);
+        return MXC_UART_WriteTXFIFO(Con_Uart, (const unsigned char *)p, (unsigned int)btf);
     }
 }
 #endif

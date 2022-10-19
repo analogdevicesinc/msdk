@@ -1,6 +1,7 @@
 /**
  * @file    aes_key_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -36,8 +37,8 @@
 *
 ******************************************************************************/
 
-#ifndef _AES_KEY_REGS_H_
-#define _AES_KEY_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_AES_KEY_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_AES_KEY_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -77,7 +78,7 @@ extern "C" {
  * @ingroup     aes_key
  * @defgroup    aes_key_registers AES_KEY_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @details AES Key Registers.
+ * @details     AES Key Registers.
  */
 
 /**
@@ -102,18 +103,18 @@ typedef struct {
  * @brief      AES_KEY Peripheral Register Offsets from the AES_KEY Base Peripheral Address.
  * @{
  */
- #define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000004UL) /**< Offset from AES_KEY Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000008UL) /**< Offset from AES_KEY Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x0000000CUL) /**< Offset from AES_KEY Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY4             ((uint32_t)0x00000010UL) /**< Offset from AES_KEY Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY5             ((uint32_t)0x00000014UL) /**< Offset from AES_KEY Base Address: <tt> 0x0014</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY6             ((uint32_t)0x00000018UL) /**< Offset from AES_KEY Base Address: <tt> 0x0018</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY7             ((uint32_t)0x0000001CUL) /**< Offset from AES_KEY Base Address: <tt> 0x001C</tt> */ 
+#define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000004UL) /**< Offset from AES_KEY Base Address: <tt> 0x0004</tt> */
+#define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000008UL) /**< Offset from AES_KEY Base Address: <tt> 0x0008</tt> */
+#define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x0000000CUL) /**< Offset from AES_KEY Base Address: <tt> 0x000C</tt> */
+#define MXC_R_AES_KEY_AES_KEY4             ((uint32_t)0x00000010UL) /**< Offset from AES_KEY Base Address: <tt> 0x0010</tt> */
+#define MXC_R_AES_KEY_AES_KEY5             ((uint32_t)0x00000014UL) /**< Offset from AES_KEY Base Address: <tt> 0x0014</tt> */
+#define MXC_R_AES_KEY_AES_KEY6             ((uint32_t)0x00000018UL) /**< Offset from AES_KEY Base Address: <tt> 0x0018</tt> */
+#define MXC_R_AES_KEY_AES_KEY7             ((uint32_t)0x0000001CUL) /**< Offset from AES_KEY Base Address: <tt> 0x001C</tt> */
 /**@} end of group aes_key_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _AES_KEY_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_AES_KEY_REGS_H_

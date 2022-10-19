@@ -73,16 +73,16 @@
 #define HART_UART_INSTANCE MXC_UART2
 
 #define HART_RTS_GPIO_PORT MXC_GPIO1
-#define HART_RTS_GPIO_PIN  MXC_GPIO_PIN_8
+#define HART_RTS_GPIO_PIN MXC_GPIO_PIN_8
 
 #define HART_CD_GPIO_PORT MXC_GPIO0
-#define HART_CD_GPIO_PIN  MXC_GPIO_PIN_16
+#define HART_CD_GPIO_PIN MXC_GPIO_PIN_16
 
 #define HART_IN_GPIO_PORT MXC_GPIO0
-#define HART_IN_GPIO_PIN  MXC_GPIO_PIN_15
+#define HART_IN_GPIO_PIN MXC_GPIO_PIN_15
 
 #define HART_CLK_GPIO_PORT MXC_GPIO0
-#define HART_CLK_GPIO_PIN  MXC_GPIO_PIN_10
+#define HART_CLK_GPIO_PIN MXC_GPIO_PIN_10
 
 #define PCLKDIV_DIV_BY_4 2
 
@@ -90,43 +90,43 @@
 #define HART_UART_INSTANCE MXC_UART0
 
 #define HART_RTS_GPIO_PORT MXC_GPIO0
-#define HART_RTS_GPIO_PIN  MXC_GPIO_PIN_3
+#define HART_RTS_GPIO_PIN MXC_GPIO_PIN_3
 
 #define HART_CD_GPIO_PORT MXC_GPIO0
-#define HART_CD_GPIO_PIN  MXC_GPIO_PIN_2
+#define HART_CD_GPIO_PIN MXC_GPIO_PIN_2
 
 #define HART_IN_GPIO_PORT MXC_GPIO0
-#define HART_IN_GPIO_PIN  MXC_GPIO_PIN_1
+#define HART_IN_GPIO_PIN MXC_GPIO_PIN_1
 
 #define HART_OUT_GPIO_PORT MXC_GPIO0
-#define HART_OUT_GPIO_PIN  MXC_GPIO_PIN_0
+#define HART_OUT_GPIO_PIN MXC_GPIO_PIN_0
 
-#define HART_CLK_GPIO_PORT     MXC_GPIO0
-#define HART_CLK_GPIO_PIN      MXC_GPIO_PIN_18
+#define HART_CLK_GPIO_PORT MXC_GPIO0
+#define HART_CLK_GPIO_PIN MXC_GPIO_PIN_18
 #define HART_CLK_GPIO_ALT_FUNC MXC_GPIO_FUNC_ALT1
 
 #endif
 
 // Globals
 volatile uint8_t hart_receive_buf[MAX_HART_UART_PACKET_LEN];
-volatile uint32_t hart_uart_reception_len  = 0;
+volatile uint32_t hart_uart_reception_len = 0;
 volatile int32_t hart_uart_reception_avail = 0;
-volatile uint32_t hart_receive_active      = 0;
+volatile uint32_t hart_receive_active = 0;
 
 #if (TARGET_NUM == 32680)
-mxc_pt_regs_t* pPT0  = MXC_PT0;
-mxc_ptg_regs_t* pPTG = MXC_PTG;
+mxc_pt_regs_t *pPT0 = MXC_PT0;
+mxc_ptg_regs_t *pPTG = MXC_PTG;
 #endif
 
 #ifdef HART_CLK_4MHZ_CHECK
-mxc_pt_regs_t* pPT2 = MXC_PT2;
+mxc_pt_regs_t *pPT2 = MXC_PT2;
 #endif
 
 // Prototypes
-void hart_cd_isr(void* cbdata);
+void hart_cd_isr(void *cbdata);
 
 // Private Functions
-static int hart_uart_init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clock)
+static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int retval;
 
@@ -136,60 +136,60 @@ static int hart_uart_init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
     }
 
     switch (clock) {
-        case MXC_UART_EXT_CLK:
-            MXC_AFE_GPIO_Config(&gpio_cfg_extclk);
-            break;
+    case MXC_UART_EXT_CLK:
+        MXC_AFE_GPIO_Config(&gpio_cfg_extclk);
+        break;
 
-        case MXC_UART_ERTCO_CLK:
-            return E_BAD_PARAM;
-            break;
+    case MXC_UART_ERTCO_CLK:
+        return E_BAD_PARAM;
+        break;
 
-        case MXC_UART_IBRO_CLK:
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-            break;
+    case MXC_UART_IBRO_CLK:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        break;
 
-        case MXC_UART_ERFO_CLK:
-            MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-            break;
+    case MXC_UART_ERFO_CLK:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_AFE_GPIO_Config(&gpio_cfg_uart0);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
-            break;
+    case 0:
+        MXC_AFE_GPIO_Config(&gpio_cfg_uart0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART0);
+        break;
 
-        case 2:
-            MXC_AFE_GPIO_Config(&gpio_cfg_uart2);
-            MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
-            break;
+    case 2:
+        MXC_AFE_GPIO_Config(&gpio_cfg_uart2);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_UART2);
+        break;
 
-        default:
-            return E_NOT_SUPPORTED;
+    default:
+        return E_NOT_SUPPORTED;
     }
 
-    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t*)uart, baud, (mxc_uart_revb_clock_t)clock);
+    return MXC_UART_RevB_Init((mxc_uart_revb_regs_t *)uart, baud, (mxc_uart_revb_clock_t)clock);
 }
 
-int hart_uart_setflowctrl(mxc_uart_regs_t* uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
+int hart_uart_setflowctrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
 {
     switch (MXC_UART_GET_IDX(uart)) {
-        case 0:
-            MXC_AFE_GPIO_Config(&gpio_cfg_uart0_flow);
-            break;
+    case 0:
+        MXC_AFE_GPIO_Config(&gpio_cfg_uart0_flow);
+        break;
 
-        case 2:
-            MXC_AFE_GPIO_Config(&gpio_cfg_uart2_flow);
-            break;
+    case 2:
+        MXC_AFE_GPIO_Config(&gpio_cfg_uart2_flow);
+        break;
 
-        default:
-            return E_NOT_SUPPORTED;
+    default:
+        return E_NOT_SUPPORTED;
     }
 
-    return MXC_UART_RevB_SetFlowCtrl((mxc_uart_revb_regs_t*)uart, flowCtrl, rtsThreshold);
+    return MXC_UART_RevB_SetFlowCtrl((mxc_uart_revb_regs_t *)uart, flowCtrl, rtsThreshold);
 }
 
 // Functions
@@ -198,10 +198,10 @@ static int setup_rts_pin(void)
     int retval = 0;
     mxc_gpio_cfg_t hart_rts;
 
-    hart_rts.port  = HART_RTS_GPIO_PORT;
-    hart_rts.mask  = HART_RTS_GPIO_PIN;
-    hart_rts.pad   = MXC_GPIO_PAD_NONE;
-    hart_rts.func  = MXC_GPIO_FUNC_OUT;
+    hart_rts.port = HART_RTS_GPIO_PORT;
+    hart_rts.mask = HART_RTS_GPIO_PIN;
+    hart_rts.pad = MXC_GPIO_PAD_NONE;
+    hart_rts.func = MXC_GPIO_FUNC_OUT;
     hart_rts.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_rts);
@@ -219,10 +219,10 @@ static int setup_cd_pin(void)
     int retval = 0;
     mxc_gpio_cfg_t hart_cd;
 
-    hart_cd.port  = HART_CD_GPIO_PORT;
-    hart_cd.mask  = HART_CD_GPIO_PIN;
-    hart_cd.pad   = MXC_GPIO_PAD_NONE;
-    hart_cd.func  = MXC_GPIO_FUNC_IN;
+    hart_cd.port = HART_CD_GPIO_PORT;
+    hart_cd.mask = HART_CD_GPIO_PIN;
+    hart_cd.pad = MXC_GPIO_PAD_NONE;
+    hart_cd.func = MXC_GPIO_FUNC_IN;
     hart_cd.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_cd);
@@ -253,10 +253,10 @@ static int setup_hart_in_pin(void)
     int retval = 0;
     mxc_gpio_cfg_t hart_in;
 
-    hart_in.port  = HART_IN_GPIO_PORT;
-    hart_in.mask  = HART_IN_GPIO_PIN;
-    hart_in.pad   = MXC_GPIO_PAD_NONE;
-    hart_in.func  = MXC_GPIO_FUNC_OUT;
+    hart_in.port = HART_IN_GPIO_PORT;
+    hart_in.mask = HART_IN_GPIO_PIN;
+    hart_in.pad = MXC_GPIO_PAD_NONE;
+    hart_in.func = MXC_GPIO_FUNC_OUT;
     hart_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_in);
@@ -295,10 +295,10 @@ static int enable_hart_clock(void)
     }
 
     // Put output pin in correct mode
-    hart_clk_output.port  = HART_CLK_GPIO_PORT;
-    hart_clk_output.mask  = HART_CLK_GPIO_PIN;
-    hart_clk_output.pad   = MXC_GPIO_PAD_NONE;
-    hart_clk_output.func  = MXC_GPIO_FUNC_ALT4;
+    hart_clk_output.port = HART_CLK_GPIO_PORT;
+    hart_clk_output.mask = HART_CLK_GPIO_PIN;
+    hart_clk_output.pad = MXC_GPIO_PAD_NONE;
+    hart_clk_output.func = MXC_GPIO_FUNC_ALT4;
     hart_clk_output.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_clk_output);
@@ -405,8 +405,7 @@ static int enable_hart_clock(void)
     pPTG->enable |= MXC_F_PTG_ENABLE_PT0 | MXC_F_PTG_ENABLE_PT2;
 
     //wait for PT to start
-    while ((pPTG->enable & (MXC_F_PTG_ENABLE_PT0)) != MXC_F_PTG_ENABLE_PT0)
-        ;
+    while ((pPTG->enable & (MXC_F_PTG_ENABLE_PT0)) != MXC_F_PTG_ENABLE_PT0) {}
 
 #endif
 
@@ -415,7 +414,7 @@ static int enable_hart_clock(void)
 
 int hart_uart_enable(void)
 {
-    int retval        = 0;
+    int retval = 0;
     uint32_t read_val = 0;
 
     retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
@@ -432,7 +431,7 @@ int hart_uart_enable(void)
 
 int hart_uart_disable(void)
 {
-    int retval        = 0;
+    int retval = 0;
     uint32_t read_val = 0;
 
     retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
@@ -503,12 +502,12 @@ int hart_uart_setup(uint32_t test_mode)
         // OCD from HART modem is hooked up to CTS, But CD doesn't function like CTS, So this
         // is handled by software as well.
 
-        // TODO: Consider if we want to increase RX threshold from 1
+        // TODO(ADI): Consider if we want to increase RX threshold from 1
         //  NOTE: Doing so will require CD ISR to drain RX FIFO
 
         // Setup ISR to handle receive side of things
-        // TODO: Rework hart_uart_send to use ISR as much as possible
-        //	Requires alternate method of determining when to release RTS
+        // TODO(ADI): Rework hart_uart_send to use ISR as much as possible
+        //  Requires alternate method of determining when to release RTS
 
         // Enable FIFO threshold exceeded so we can drain it into receive buffer
         retval = MXC_UART_EnableInt(HART_UART_INSTANCE, MXC_F_UART_INT_EN_RX_THD);
@@ -549,10 +548,10 @@ void hart_uart_test_transmit_2200(void)
     MXC_GPIO_OutClr(HART_IN_GPIO_PORT, HART_IN_GPIO_PIN);
 }
 
-int hart_uart_send(uint8_t* data, uint32_t length)
+int hart_uart_send(uint8_t *data, uint32_t length)
 {
     int retval = 0;
-    int i      = 0;
+    int i = 0;
 
     // Ensure the line is quiet before beginning transmission
     if (hart_receive_active) {
@@ -562,7 +561,7 @@ int hart_uart_send(uint8_t* data, uint32_t length)
     // NOTE: we are not forcing preamble
     hart_rts_transmit_mode();
 
-    // TODO: remove this slight delay when in real use with preamble etc.
+    // TODO(ADI): remove this slight delay when in real use with preamble etc.
     MXC_Delay(MXC_DELAY_USEC(750));
 
     for (i = 0; i < length; i++) {
@@ -570,8 +569,7 @@ int hart_uart_send(uint8_t* data, uint32_t length)
 
         if (retval == E_OVERFLOW) {
             // Fifo is full, wait for room
-            while (MXC_UART_GetStatus(HART_UART_INSTANCE) & MXC_F_UART_STATUS_TX_FULL)
-                ;
+            while (MXC_UART_GetStatus(HART_UART_INSTANCE) & MXC_F_UART_STATUS_TX_FULL) {}
 
             i--; // Last byte was not written, ensure it is sent
         } else if (retval != E_SUCCESS) {
@@ -580,10 +578,9 @@ int hart_uart_send(uint8_t* data, uint32_t length)
         }
     }
 
-    while (MXC_UART_GetStatus(HART_UART_INSTANCE) & MXC_F_UART_STATUS_TX_BUSY)
-        ;
+    while (MXC_UART_GetStatus(HART_UART_INSTANCE) & MXC_F_UART_STATUS_TX_BUSY) {}
 
-    // TODO: remove this slight delay when in real use with preamble etc.
+    // TODO(ADI): remove this slight delay when in real use with preamble etc.
     MXC_Delay(MXC_DELAY_USEC(750));
 
     hart_rts_receive_mode();
@@ -594,7 +591,7 @@ int hart_uart_send(uint8_t* data, uint32_t length)
 void UART2_IRQHandler()
 {
     unsigned int uart_flags = MXC_UART_GetFlags(HART_UART_INSTANCE);
-    int retval              = 0;
+    int retval = 0;
 
     // Clear any flags
     MXC_UART_ClearFlags(HART_UART_INSTANCE, uart_flags);
@@ -604,7 +601,7 @@ void UART2_IRQHandler()
     //
     if (uart_flags & MXC_F_UART_INT_FL_RX_THD) {
         // RX FIFO getting full, drain into buffer
-        // TODO: Consider if DMA support is desirable here.
+        // TODO(ADI): Consider if DMA support is desirable here.
 
         while (1) {
             // Read out any available chars
@@ -629,7 +626,7 @@ void UART2_IRQHandler()
     }
 }
 
-void hart_cd_isr(void* cbdata)
+void hart_cd_isr(void *cbdata)
 {
     // NOTE: cbdata is setup to be null
 
@@ -641,7 +638,7 @@ void hart_cd_isr(void* cbdata)
         // HART CD is low, NO reception active
         hart_receive_active = 0;
 
-        // TODO: If RX threshold is increased drain rx fifo here
+        // TODO(ADI): If RX threshold is increased drain rx fifo here
         if (hart_uart_reception_len > 0) {
             // Got some chars
             hart_uart_reception_avail = 1;
@@ -660,7 +657,7 @@ int hart_uart_check_for_receive()
     return hart_uart_reception_avail;
 }
 
-int hart_uart_get_received_packet(uint8_t* buffer, uint32_t* packet_length)
+int hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length)
 {
     if (!buffer) {
         return E_NULL_PTR;
@@ -684,12 +681,12 @@ int hart_uart_get_received_packet(uint8_t* buffer, uint32_t* packet_length)
     // Update interrupt variables in critical section
     __disable_irq();
 
-    *packet_length            = hart_uart_reception_len;
+    *packet_length = hart_uart_reception_len;
     hart_uart_reception_avail = 0;
-    hart_uart_reception_len   = 0;
+    hart_uart_reception_len = 0;
 
     // Otherwise, copy received data for return
-    memcpy(buffer, (uint8_t*)hart_receive_buf, *packet_length);
+    memcpy(buffer, (uint8_t *)hart_receive_buf, *packet_length);
 
     __enable_irq();
 

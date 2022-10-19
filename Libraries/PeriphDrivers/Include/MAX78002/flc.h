@@ -40,8 +40,8 @@
  *
  *************************************************************************** */
 
-#ifndef _FLC_H_
-#define _FLC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_FLC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_FLC_H_
 
 /* **** Includes **** */
 #include "flc_regs.h"
@@ -63,7 +63,7 @@ extern "C" {
 #define MXC_FLASH_PAGE_MASK ~(MXC_FLASH_PAGE_SIZE - 1)
 
 /// Calculate the address of a page in flash from the page number
-#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((unsigned long)page * MXC_FLASH_PAGE_SIZE))
+#define MXC_FLASH_PAGE_ADDR(page) (MXC_FLASH_MEM_BASE + ((uint32_t)page * MXC_FLASH_PAGE_SIZE))
 
 /***** Function Prototypes *****/
 
@@ -104,7 +104,7 @@ int MXC_FLC_PageErase(uint32_t address);
  * @param[in]  len      The length of the buffer
  *
  */
-void MXC_FLC_Read(int address, void* buffer, int len);
+void MXC_FLC_Read(int address, void *buffer, int len);
 
 /**
  * @brief      Writes data to flash.
@@ -115,7 +115,7 @@ void MXC_FLC_Read(int address, void* buffer, int len);
  * @return     #E_NO_ERROR If function is successful.
  * @note       make sure to disable ICC with ICC_Disable(); before Running this function
  */
-int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t* buffer);
+int MXC_FLC_Write(uint32_t address, uint32_t length, uint32_t *buffer);
 
 /**
  * @brief      Writes 32 bits of data to flash.
@@ -135,7 +135,7 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data);
  * @return     #E_NO_ERROR If function is successful.
  * @note       make sure to disable ICC with ICC_Disable(); before Running this function
  */
-int MXC_FLC_Write128(uint32_t address, uint32_t* data);
+int MXC_FLC_Write128(uint32_t address, uint32_t *data);
 
 /**
  * @brief      Enable flash interrupts
@@ -208,4 +208,4 @@ int MXC_FLC_BlockPageRead(uint32_t address);
 }
 #endif
 
-#endif /* _FLC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_FLC_H_

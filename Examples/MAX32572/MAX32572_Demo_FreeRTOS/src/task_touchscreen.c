@@ -34,13 +34,13 @@
  ******************************************************************************
  */
 
-#include "MAX32xxx.h"
-#include "message.h"
-
 #include <FreeRTOS.h>
 #include <task.h>
 #include <queue.h>
 #include <semphr.h>
+
+#include "MAX32xxx.h"
+#include "message.h"
 
 /*************************************** DEFINES *****************************/
 
@@ -50,7 +50,7 @@ extern xQueueHandle xQueueMain;
 /********************************** STATIC FUNCTIONS *************************/
 
 /********************************** PUBLIC FUNCTIONS *************************/
-void vGetTSTask(void* pvParameters)
+void vGetTSTask(void *pvParameters)
 {
     (void)pvParameters;
 
@@ -60,7 +60,7 @@ void vGetTSTask(void* pvParameters)
     while (1) {
         key = MXC_TS_GetKey();
         if (key > 0) {
-            msgTS.pcType       = 'T';
+            msgTS.pcType = 'T';
             msgTS.pcMessage[0] = key;
             xQueueSendToFront(xQueueMain, &msgTS, 0);
         }

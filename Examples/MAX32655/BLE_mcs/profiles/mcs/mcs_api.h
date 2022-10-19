@@ -1,5 +1,24 @@
-#ifndef TST_API_H
-#define TST_API_H
+/*************************************************************************************************/
+/*!
+ *  \file
+ *
+ *  \brief  Maxim Custom service server.
+ *
+ *  Copyright (c) 2012-2018 Arm Ltd. All Rights Reserved.
+ *  ARM Ltd. confidential and proprietary.
+ *
+ *  IMPORTANT.  Your use of this file is governed by a Software License Agreement
+ *  ("Agreement") that must be accepted in order to download or otherwise receive a
+ *  copy of this file.  You may not use or copy this file for any purpose other than
+ *  as described in the Agreement.  If you do not agree to all of the terms of the
+ *  Agreement do not use this file and delete all copies in your possession or control;
+ *  if you do not have a copy of the Agreement, you must contact ARM Ltd. prior
+ *  to any use, copying or further distribution of this software.
+ */
+/*************************************************************************************************/
+
+#ifndef EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_
+#define EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_
 
 #include "wsf_types.h"
 #include "att_api.h"
@@ -18,8 +37,8 @@ extern "C" {
 /*! \brief Maxim custom service configurable parameters */
 typedef struct {
     wsfTimerTicks_t period; /*!< \brief Button timer expiration period in seconds */
-    uint16_t count;         /*!< \brief Perform button after this many timer periods */
-    uint8_t threshold;      /*!< \brief Send button notification to peer when below this level. */
+    uint16_t count; /*!< \brief Perform button after this many timer periods */
+    uint8_t threshold; /*!< \brief Send button notification to peer when below this level. */
 } mcsCfg_t;
 
 /*************************************************************************************************/
@@ -39,7 +58,7 @@ typedef struct {
  */
 /*************************************************************************************************/
 uint8_t McsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                      uint16_t len, uint8_t* pValue, attsAttr_t* pAttr);
+                      uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -62,7 +81,7 @@ void McsSetFeatures(uint8_t features);
  *  \return None.
  */
 /*************************************************************************************************/
-void McsInit(wsfHandlerId_t handlerId, mcsCfg_t* pCfg);
+void McsInit(wsfHandlerId_t handlerId, mcsCfg_t *pCfg);
 
 /*************************************************************************************************/
 /*!
@@ -94,4 +113,4 @@ void McsButtonCheckStop(dmConnId_t connId);
 };
 #endif
 
-#endif /* TST_API_H */
+#endif // EXAMPLES_MAX32655_BLE_MCS_PROFILES_MCS_MCS_API_H_

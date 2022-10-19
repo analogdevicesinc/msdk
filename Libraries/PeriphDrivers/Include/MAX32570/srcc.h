@@ -37,8 +37,8 @@
  *
  *************************************************************************** */
 
-#ifndef _SRCC_H_
-#define _SRCC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SRCC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SRCC_H_
 
 /***** Includes *****/
 #include "srcc_regs.h"
@@ -60,9 +60,9 @@ extern "C" {
  * @brief   Enumeration type for the SRCC Cache ID Register
  */
 typedef enum {
-    SRCC_CACHE_ID_RELNUM,  ///< Release Number
+    SRCC_CACHE_ID_RELNUM, ///< Release Number
     SRCC_CACHE_ID_PARTNUM, ///< Part Number
-    SRCC_CACHE_ID_CCHID    ///< Cache ID
+    SRCC_CACHE_ID_CCHID ///< Cache ID
 } mxc_srcc_cache_id_t;
 
 /***** Function Prototypes *****/
@@ -131,7 +131,7 @@ uint32_t MXC_SRCC_Ready(void);
 }
 #endif
 
-#endif /* _SRCC_H_*/
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SRCC_H_
 /**
  * @} srcc
  */

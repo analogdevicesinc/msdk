@@ -94,7 +94,7 @@ void lv_btnmatrix_set_map(lv_obj_t* obj, const char* map[])
         return;
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
 
     /*Analyze the map and create the required number of buttons*/
     allocate_btn_areas_and_controls(obj, map);
@@ -215,7 +215,7 @@ void lv_btnmatrix_set_btn_ctrl(lv_obj_t* obj, uint16_t btn_id, lv_btnmatrix_ctrl
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
 
     if (btn_id >= btnm->btn_cnt)
         return;
@@ -233,7 +233,7 @@ void lv_btnmatrix_clear_btn_ctrl(const lv_obj_t* obj, uint16_t btn_id, lv_btnmat
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
 
     if (btn_id >= btnm->btn_cnt)
         return;
@@ -247,7 +247,7 @@ void lv_btnmatrix_set_btn_ctrl_all(lv_obj_t* obj, lv_btnmatrix_ctrl_t ctrl)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     uint16_t i;
     for (i = 0; i < btnm->btn_cnt; i++) {
         lv_btnmatrix_set_btn_ctrl(obj, i, ctrl);
@@ -259,7 +259,7 @@ void lv_btnmatrix_clear_btn_ctrl_all(lv_obj_t* obj, lv_btnmatrix_ctrl_t ctrl)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     uint16_t i;
     for (i = 0; i < btnm->btn_cnt; i++) {
         lv_btnmatrix_clear_btn_ctrl(obj, i, ctrl);
@@ -271,7 +271,7 @@ void lv_btnmatrix_set_btn_width(lv_obj_t* obj, uint16_t btn_id, uint8_t width)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     if (btn_id >= btnm->btn_cnt)
         return;
     btnm->ctrl_bits[btn_id] &= (~LV_BTNMATRIX_WIDTH_MASK);
@@ -285,7 +285,7 @@ void lv_btnmatrix_set_one_checked(lv_obj_t* obj, bool en)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     btnm->one_check = en;
 
     /*If more than one button is toggled only the first one should be*/
@@ -301,7 +301,7 @@ const char** lv_btnmatrix_get_map(const lv_obj_t* obj)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     return btnm->map_p;
 }
 
@@ -310,7 +310,7 @@ uint16_t lv_btnmatrix_get_selected_btn(const lv_obj_t* obj)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     return btnm->btn_id_sel;
 }
 
@@ -348,7 +348,7 @@ bool lv_btnmatrix_has_btn_ctrl(lv_obj_t* obj, uint16_t btn_id, lv_btnmatrix_ctrl
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     if (btn_id >= btnm->btn_cnt)
         return false;
 
@@ -360,7 +360,7 @@ bool lv_btnmatrix_get_one_checked(const lv_obj_t* obj)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
 
     return btnm->one_check;
 }
@@ -844,7 +844,7 @@ static void allocate_btn_areas_and_controls(const lv_obj_t* obj, const char** ma
     }
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
 
     /*Do not allocate memory for the same amount of buttons*/
     if (btn_cnt == btnm->btn_cnt)
@@ -932,7 +932,7 @@ static uint16_t get_button_from_point(lv_obj_t* obj, lv_point_t* p)
     lv_area_t obj_cords;
     lv_area_t btn_area;
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     uint16_t i;
     lv_obj_get_coords(obj, &obj_cords);
 
@@ -999,7 +999,7 @@ static void invalidate_button_area(const lv_obj_t* obj, uint16_t btn_idx)
     lv_area_t obj_area;
 
     lv_btnmatrix_t* btnm = (lv_btnmatrix_t*)obj;
-    ;
+{}
     lv_area_copy(&btn_area, &btnm->button_areas[btn_idx]);
     lv_obj_get_coords(obj, &obj_area);
 

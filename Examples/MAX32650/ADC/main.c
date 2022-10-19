@@ -62,7 +62,7 @@ static uint16_t adc_val;
 /***** Functions *****/
 
 #ifdef USE_INTERRUPTS
-void adc_complete_cb(void* req, int error)
+void adc_complete_cb(void *req, int error)
 {
     adc_done = 1;
     return;
@@ -75,21 +75,28 @@ void ADC_IRQHandler(void)
 
 int main(void)
 {
-    // unsigned int overflow;
-
-    printf("\n***** ADC Example ***** \n");
+    printf("******************** ADC Example ********************\n");
+    printf("Demonstrates the use of the ADC by continuously monitoring ADC input channel 0.\n");
+    printf(
+        "Vary the voltage on the AIN0 input (0 to 0.9V) to observe different readings from the ADC.\n");
+    printf("High and low limits are set arbitrarily to demonstrate the detection of overvoltage "
+           "and undervoltage conditions respectively.\n");
+    printf(
+        "If the ADC reading exceeds 0x300, the example will report that the high limit has been reached.\n");
+    printf(
+        "If the ADC reading falls below 0x25, the example will report the low limit has been reached.\n");
+    printf(
+        "Any reading that exceeds the full-scale value of the ADC will have an '*' appended to the value.\n");
 
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
         printf("Error Bad Parameter\n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
-    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_PWR_UP_ACTIVE))
-        ;
+    while (MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_PWR_UP_ACTIVE)) {}
     MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_3, ADC_CHANNEL);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_3, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_3, 0x25);
@@ -110,8 +117,7 @@ int main(void)
         adc_done = 0;
         MXC_ADC_StartConversionAsync(ADC_CHANNEL, adc_complete_cb);
 
-        while (!adc_done) {
-        };
+        while (!adc_done) {}
 
 #else
         MXC_ADC_StartConversion(ADC_CHANNEL);
@@ -138,4 +144,6 @@ int main(void)
         /* Delay for 1/4 second before next reading */
         MXC_Delay(MXC_DELAY_MSEC(1000));
     }
+
+    return 0;
 }

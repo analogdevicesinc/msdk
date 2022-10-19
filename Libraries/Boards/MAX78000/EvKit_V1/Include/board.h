@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -38,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX78000_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX78000_EVKIT_V1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,26 +55,26 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define SCCB_SCL_PORT MXC_GPIO0       /// SCCB clock port
-#define SCCB_SCL_PIN  MXC_GPIO_PIN_30 /// SCCB clock pin
-#define SCCB_SDA_PORT MXC_GPIO0       /// SCCB data port
-#define SCCB_SDA_PIN  MXC_GPIO_PIN_31 /// SCCB data pin
+#define SCCB_SCL_PORT MXC_GPIO0 /// SCCB clock port
+#define SCCB_SCL_PIN MXC_GPIO_PIN_30 /// SCCB clock pin
+#define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
+#define SCCB_SDA_PIN MXC_GPIO_PIN_31 /// SCCB data pin
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 /**
  *  A reference to LED1 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1      0
+#define LED1 0
 #define LED_GREEN LED1
 
 /**
  *  A reference to LED2 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2    1
+#define LED2 1
 #define LED_RED LED2
 
 /**
@@ -118,7 +118,7 @@ int Debug_Init(void);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 #define POWER_OFF 0
-#define POWER_ON  1
+#define POWER_ON 1
 int Microphone_Power(int on);
 
 /**
@@ -134,4 +134,4 @@ int Camera_Power(int on);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX78000_EVKIT_V1_INCLUDE_BOARD_H_

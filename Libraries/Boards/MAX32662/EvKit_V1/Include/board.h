@@ -38,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,7 +54,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -85,4 +85,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_

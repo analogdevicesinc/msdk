@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef _KEYPAD_H_
-#define _KEYPAD_H_
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_FREERTOS_INCLUDE_KEYPAD_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_FREERTOS_INCLUDE_KEYPAD_H_
 
 /*****************************    DEFINES    *********************************/
 #define KEY_0 '0'
@@ -55,9 +55,9 @@
 #define KEY_F 'F'
 // Contact EMV keys
 #define KEY_CARD_INSERTED 0xE0
-#define KEY_CARD_REMOVED  0xE1
+#define KEY_CARD_REMOVED 0xE1
 
 /*****************************     FUNCTIONS *********************************/
 int keypad_init(void);
 
-#endif /* _KEYPAD_H_ */
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_FREERTOS_INCLUDE_KEYPAD_H_

@@ -1,3 +1,36 @@
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
+
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
@@ -13,14 +46,14 @@ void SFE_Reset()
     uint8_t cmd = SFE_CMD_RST_EN;
 
     // Initialize spi_reqest struct for Master
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0x0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0x0;
     master_req.ssDeassert = 1;
-    master_req.txData     = &cmd;
-    master_req.rxData     = NULL;
-    master_req.txLen      = 1;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = &cmd;
+    master_req.rxData = NULL;
+    master_req.txLen = 1;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
@@ -36,20 +69,20 @@ void SFE_Reset()
     }
 }
 
-void SFE_ID(uint8_t* id)
+void SFE_ID(uint8_t *id)
 {
     uint32_t cmd = SFE_CMD_ID;
 
     // Initialize spi_reqest struct for Master
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0x0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0x0;
     master_req.ssDeassert = 1;
-    master_req.txData     = (uint8_t*)&cmd;
-    master_req.rxData     = id;
-    master_req.txLen      = 4;
-    master_req.rxLen      = 1;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = (uint8_t *)&cmd;
+    master_req.rxData = id;
+    master_req.txLen = 4;
+    master_req.rxLen = 1;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
@@ -65,40 +98,40 @@ void SFE_ID(uint8_t* id)
     }
 }
 
-void SFE_FlashWrite(uint8_t* txdata, uint32_t length, uint32_t address, uint32_t command,
+void SFE_FlashWrite(uint8_t *txdata, uint32_t length, uint32_t address, uint32_t command,
                     spi_width_t width, spi_address_t addrMode)
 {
-    uint8_t cmd[5]        = {0};
-    uint8_t flashCmd[4]   = {0};
-    uint8_t flashAddr[4]  = {0};
-    uint8_t dataLength[4] = {0};
+    uint8_t cmd[5] = { 0 };
+    uint8_t flashCmd[4] = { 0 };
+    uint8_t flashAddr[4] = { 0 };
+    uint8_t dataLength[4] = { 0 };
 
     switch (width) {
-        case SPI_WIDTH_01:
-            if (addrMode) {
-                cmd[0] = SFE_4BYTE_WRITE;
-            } else {
-                cmd[0] = SFE_WRITE;
-            }
+    case SPI_WIDTH_01:
+        if (addrMode) {
+            cmd[0] = SFE_4BYTE_WRITE;
+        } else {
+            cmd[0] = SFE_WRITE;
+        }
 
-            break;
+        break;
 
-        case SPI_WIDTH_02:
-            cmd[0] = SFE_DUAL_FAST_WRITE;
-            break;
+    case SPI_WIDTH_02:
+        cmd[0] = SFE_DUAL_FAST_WRITE;
+        break;
 
-        case SPI_WIDTH_04:
-            if (addrMode) {
-                cmd[0] = SFE_4BYTE_QUAD_FAST_WRITE;
+    case SPI_WIDTH_04:
+        if (addrMode) {
+            cmd[0] = SFE_4BYTE_QUAD_FAST_WRITE;
 
-            } else {
-                cmd[0] = SFE_QUAD_FAST_WRITE;
-            }
+        } else {
+            cmd[0] = SFE_QUAD_FAST_WRITE;
+        }
 
-            break;
+        break;
 
-        default:
-            printf("Invalid SPI width\r\n");
+    default:
+        printf("Invalid SPI width\r\n");
     }
 
     if (command == FLASH_WRITE) {
@@ -133,13 +166,13 @@ void SFE_FlashWrite(uint8_t* txdata, uint32_t length, uint32_t address, uint32_t
         master_req.txLen = 4;
     }
 
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0;
     master_req.ssDeassert = 0;
-    master_req.txData     = cmd;
-    master_req.rxData     = NULL;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = cmd;
+    master_req.rxData = NULL;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
@@ -154,11 +187,11 @@ void SFE_FlashWrite(uint8_t* txdata, uint32_t length, uint32_t address, uint32_t
         printf("Error transmitting data\r\n");
     }
 
-    flashCmd[0]       = command & 0xFF;
-    flashCmd[1]       = (command >> 8) & 0xFF;
-    flashCmd[2]       = (command >> 16) & 0xFF;
-    flashCmd[3]       = (command >> 24) & 0xFF;
-    master_req.txLen  = 4;
+    flashCmd[0] = command & 0xFF;
+    flashCmd[1] = (command >> 8) & 0xFF;
+    flashCmd[2] = (command >> 16) & 0xFF;
+    flashCmd[3] = (command >> 24) & 0xFF;
+    master_req.txLen = 4;
     master_req.rxData = NULL;
     master_req.txData = flashCmd;
 
@@ -174,23 +207,23 @@ void SFE_FlashWrite(uint8_t* txdata, uint32_t length, uint32_t address, uint32_t
         printf("Error transmitting data\r\n");
     }
 
-    flashAddr[0]      = address & 0xFF;
-    flashAddr[1]      = (address >> 8) & 0xFF;
-    flashAddr[2]      = (address >> 16) & 0xFF;
-    flashAddr[3]      = (address >> 24) & 0xFF;
-    master_req.txLen  = 4;
+    flashAddr[0] = address & 0xFF;
+    flashAddr[1] = (address >> 8) & 0xFF;
+    flashAddr[2] = (address >> 16) & 0xFF;
+    flashAddr[3] = (address >> 24) & 0xFF;
+    master_req.txLen = 4;
     master_req.txData = flashAddr;
-    status            = MXC_SPI_MasterTransaction(&master_req);
+    status = MXC_SPI_MasterTransaction(&master_req);
 
     if (status != E_NO_ERROR) {
         printf("Error transmitting data\r\n");
     }
 
-    dataLength[0]     = length & 0xFF;
-    dataLength[1]     = (length >> 8) & 0xFF;
-    dataLength[2]     = (length >> 16) & 0xFF;
-    dataLength[3]     = (length >> 24) & 0xFF;
-    master_req.txLen  = 4;
+    dataLength[0] = length & 0xFF;
+    dataLength[1] = (length >> 8) & 0xFF;
+    dataLength[2] = (length >> 16) & 0xFF;
+    dataLength[3] = (length >> 24) & 0xFF;
+    master_req.txLen = 4;
     master_req.txData = dataLength;
 
     if (command == FLASH_PAGE_ERASE) {
@@ -206,10 +239,10 @@ void SFE_FlashWrite(uint8_t* txdata, uint32_t length, uint32_t address, uint32_t
     if (command == FLASH_WRITE) {
         // Initialize spi_reqest struct for Master
         master_req.ssDeassert = 1;
-        master_req.txData     = txdata;
-        master_req.rxData     = NULL;
-        master_req.txLen      = length;
-        status                = MXC_SPI_MasterTransaction(&master_req);
+        master_req.txData = txdata;
+        master_req.rxData = NULL;
+        master_req.txLen = length;
+        status = MXC_SPI_MasterTransaction(&master_req);
 
         if (status != E_NO_ERROR) {
             printf("Error Writing to the chip\r\n");
@@ -219,10 +252,10 @@ void SFE_FlashWrite(uint8_t* txdata, uint32_t length, uint32_t address, uint32_t
     }
 }
 
-void SFE_RAMWrite(uint8_t* txdata, uint32_t length, uint32_t address, spi_width_t width,
+void SFE_RAMWrite(uint8_t *txdata, uint32_t length, uint32_t address, spi_width_t width,
                   spi_address_t addrMode)
 {
-    uint8_t cmd[5] = {0};
+    uint8_t cmd[5] = { 0 };
 
     /*if(address_4byte_enable && !addr)    // Invalid settings
         return E_INVALID;*/
@@ -231,48 +264,48 @@ void SFE_RAMWrite(uint8_t* txdata, uint32_t length, uint32_t address, spi_width_
     //     return;
 
     switch (width) {
-        case SPI_WIDTH_01:
-            if (addrMode) {
-                cmd[0] = SFE_4BYTE_WRITE;
-                cmd[1] = (address >> 24) & 0xFF;
-                cmd[2] = (address >> 16) & 0xFF;
-                cmd[3] = (address >> 8) & 0xFF;
-                cmd[4] = address & 0xFF;
-            } else {
-                cmd[0] = SFE_WRITE;
-                cmd[1] = (address >> 16) & 0xFF;
-                cmd[2] = (address >> 8) & 0xFF;
-                cmd[3] = address & 0xFF;
-            }
-
-            break;
-
-        case SPI_WIDTH_02:
-            cmd[0] = SFE_DUAL_FAST_WRITE;
+    case SPI_WIDTH_01:
+        if (addrMode) {
+            cmd[0] = SFE_4BYTE_WRITE;
+            cmd[1] = (address >> 24) & 0xFF;
+            cmd[2] = (address >> 16) & 0xFF;
+            cmd[3] = (address >> 8) & 0xFF;
+            cmd[4] = address & 0xFF;
+        } else {
+            cmd[0] = SFE_WRITE;
             cmd[1] = (address >> 16) & 0xFF;
             cmd[2] = (address >> 8) & 0xFF;
             cmd[3] = address & 0xFF;
-            break;
+        }
 
-        case SPI_WIDTH_04:
-            if (addrMode) {
-                cmd[0] = SFE_4BYTE_QUAD_FAST_WRITE;
-                cmd[1] = (address >> 24) & 0xFF;
-                cmd[2] = (address >> 16) & 0xFF;
-                cmd[3] = (address >> 8) & 0xFF;
-                cmd[4] = address & 0xFF;
-            } else {
-                cmd[0] = SFE_QUAD_FAST_WRITE;
-                cmd[1] = (address >> 16) & 0xFF;
-                cmd[2] = (address >> 8) & 0xFF;
-                cmd[3] = address & 0xFF;
-            }
+        break;
 
-            break;
+    case SPI_WIDTH_02:
+        cmd[0] = SFE_DUAL_FAST_WRITE;
+        cmd[1] = (address >> 16) & 0xFF;
+        cmd[2] = (address >> 8) & 0xFF;
+        cmd[3] = address & 0xFF;
+        break;
 
-        default:
-            printf("Invalid SPI width\r\n");
-            //return -1;
+    case SPI_WIDTH_04:
+        if (addrMode) {
+            cmd[0] = SFE_4BYTE_QUAD_FAST_WRITE;
+            cmd[1] = (address >> 24) & 0xFF;
+            cmd[2] = (address >> 16) & 0xFF;
+            cmd[3] = (address >> 8) & 0xFF;
+            cmd[4] = address & 0xFF;
+        } else {
+            cmd[0] = SFE_QUAD_FAST_WRITE;
+            cmd[1] = (address >> 16) & 0xFF;
+            cmd[2] = (address >> 8) & 0xFF;
+            cmd[3] = address & 0xFF;
+        }
+
+        break;
+
+    default:
+        printf("Invalid SPI width\r\n");
+        //return -1;
     }
 
     printf("\nWrite cmd: 0x%x\n", cmd[0]);
@@ -284,13 +317,13 @@ void SFE_RAMWrite(uint8_t* txdata, uint32_t length, uint32_t address, spi_width_
         master_req.txLen = 4;
     }
 
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0;
     master_req.ssDeassert = 0;
-    master_req.txData     = cmd;
-    master_req.rxData     = NULL;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = cmd;
+    master_req.rxData = NULL;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
@@ -307,9 +340,9 @@ void SFE_RAMWrite(uint8_t* txdata, uint32_t length, uint32_t address, spi_width_
 
     // Initialize spi_reqest struct for Master
     master_req.ssDeassert = 1;
-    master_req.txData     = txdata;
-    master_req.rxData     = NULL;
-    master_req.txLen      = length;
+    master_req.txData = txdata;
+    master_req.rxData = NULL;
+    master_req.txLen = length;
 
     status = MXC_SPI_SetWidth(MASTER_SPI, width);
 
@@ -326,54 +359,54 @@ void SFE_RAMWrite(uint8_t* txdata, uint32_t length, uint32_t address, spi_width_
     }
 }
 
-void SFE_Read(uint8_t* rxdata, uint32_t length, uint32_t address, spi_width_t width,
+void SFE_Read(uint8_t *rxdata, uint32_t length, uint32_t address, spi_width_t width,
               spi_address_t addrMode)
 {
-    uint8_t cmd[5] = {0};
+    uint8_t cmd[5] = { 0 };
 
     switch (width) {
-        case SPI_WIDTH_01:
-            if (addrMode) {
-                cmd[0] = SFE_4BYTE_READ;
-                cmd[1] = (address >> 24) & 0xFF;
-                cmd[2] = (address >> 16) & 0xFF;
-                cmd[3] = (address >> 8) & 0xFF;
-                cmd[4] = address & 0xFF;
-            } else {
-                cmd[0] = SFE_READ;
-                cmd[1] = (address >> 16) & 0xFF;
-                cmd[2] = (address >> 8) & 0xFF;
-                cmd[3] = address & 0xFF;
-            }
-
-            break;
-
-        case SPI_WIDTH_02:
-            cmd[0] = SFE_4BYTE_DUAL_FAST_READ;
+    case SPI_WIDTH_01:
+        if (addrMode) {
+            cmd[0] = SFE_4BYTE_READ;
             cmd[1] = (address >> 24) & 0xFF;
             cmd[2] = (address >> 16) & 0xFF;
             cmd[3] = (address >> 8) & 0xFF;
             cmd[4] = address & 0xFF;
-            break;
+        } else {
+            cmd[0] = SFE_READ;
+            cmd[1] = (address >> 16) & 0xFF;
+            cmd[2] = (address >> 8) & 0xFF;
+            cmd[3] = address & 0xFF;
+        }
 
-        case SPI_WIDTH_04:
-            if (addrMode) {
-                cmd[0] = SFE_4BYTE_QUAD_FAST_READ;
-                cmd[1] = (address >> 24) & 0xFF;
-                cmd[2] = (address >> 16) & 0xFF;
-                cmd[3] = (address >> 8) & 0xFF;
-                cmd[4] = address & 0xFF;
-            } else {
-                cmd[0] = SFE_QUAD_FAST_READ;
-                cmd[1] = (address >> 16) & 0xFF;
-                cmd[2] = (address >> 8) & 0xFF;
-                cmd[3] = address & 0xFF;
-            }
+        break;
 
-            break;
+    case SPI_WIDTH_02:
+        cmd[0] = SFE_4BYTE_DUAL_FAST_READ;
+        cmd[1] = (address >> 24) & 0xFF;
+        cmd[2] = (address >> 16) & 0xFF;
+        cmd[3] = (address >> 8) & 0xFF;
+        cmd[4] = address & 0xFF;
+        break;
 
-        default:
-            printf("Invalid SPI width\r\n");
+    case SPI_WIDTH_04:
+        if (addrMode) {
+            cmd[0] = SFE_4BYTE_QUAD_FAST_READ;
+            cmd[1] = (address >> 24) & 0xFF;
+            cmd[2] = (address >> 16) & 0xFF;
+            cmd[3] = (address >> 8) & 0xFF;
+            cmd[4] = address & 0xFF;
+        } else {
+            cmd[0] = SFE_QUAD_FAST_READ;
+            cmd[1] = (address >> 16) & 0xFF;
+            cmd[2] = (address >> 8) & 0xFF;
+            cmd[3] = address & 0xFF;
+        }
+
+        break;
+
+    default:
+        printf("Invalid SPI width\r\n");
     }
 
     printf("\nRead cmd: 0x%x\n", cmd[0]);
@@ -386,14 +419,14 @@ void SFE_Read(uint8_t* rxdata, uint32_t length, uint32_t address, spi_width_t wi
     }
 
     // Initialize spi_reqest struct for Master
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0;
     master_req.ssDeassert = 0;
-    master_req.txData     = cmd;
-    master_req.rxLen      = 0;
-    master_req.rxData     = NULL;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = cmd;
+    master_req.rxLen = 0;
+    master_req.rxData = NULL;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
@@ -412,17 +445,17 @@ void SFE_Read(uint8_t* rxdata, uint32_t length, uint32_t address, spi_width_t wi
     if (width != SPI_WIDTH_01) {
         if (width == SPI_WIDTH_02) {
             // Send the dummy cycles
-            master_req.spi        = MASTER_SPI;
-            master_req.rxLen      = 2;
-            master_req.txData     = NULL;
-            master_req.rxData     = rxdata;
+            master_req.spi = MASTER_SPI;
+            master_req.rxLen = 2;
+            master_req.txData = NULL;
+            master_req.rxData = rxdata;
             master_req.ssDeassert = 0;
         } else if (width == SPI_WIDTH_04) {
             // Send the dummy cycles
-            master_req.spi        = MASTER_SPI;
-            master_req.rxLen      = 4;
-            master_req.txData     = NULL;
-            master_req.rxData     = rxdata;
+            master_req.spi = MASTER_SPI;
+            master_req.rxLen = 4;
+            master_req.txData = NULL;
+            master_req.rxData = rxdata;
             master_req.ssDeassert = 0;
         }
 
@@ -441,9 +474,9 @@ void SFE_Read(uint8_t* rxdata, uint32_t length, uint32_t address, spi_width_t wi
 
     // Initialize spi_reqest struct for Master
     master_req.ssDeassert = 1;
-    master_req.txData     = NULL;
-    master_req.rxData     = rxdata;
-    master_req.rxLen      = length;
+    master_req.txData = NULL;
+    master_req.rxData = rxdata;
+    master_req.rxLen = length;
 
     status = MXC_SPI_SetWidth(MASTER_SPI, width);
 
@@ -466,14 +499,14 @@ void SFE_4ByteModeEnable()
     uint8_t cmd = SFE_4BYTE_ENTER;
 
     // Initialize spi_reqest struct for Master
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0x0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0x0;
     master_req.ssDeassert = 1;
-    master_req.txData     = &cmd;
-    master_req.rxData     = NULL;
-    master_req.txLen      = 1;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = &cmd;
+    master_req.rxData = NULL;
+    master_req.txLen = 1;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);
@@ -497,14 +530,14 @@ void SFE_4ByteModeDisable()
     uint8_t cmd = SFE_4BYTE_EXIT;
 
     // Initialize spi_reqest struct for Master
-    master_req.spi        = MASTER_SPI;
-    master_req.ssIdx      = 0x0;
+    master_req.spi = MASTER_SPI;
+    master_req.ssIdx = 0x0;
     master_req.ssDeassert = 1;
-    master_req.txData     = &cmd;
-    master_req.rxData     = NULL;
-    master_req.txLen      = 1;
-    master_req.rxCnt      = 0;
-    master_req.txCnt      = 0;
+    master_req.txData = &cmd;
+    master_req.rxData = NULL;
+    master_req.txLen = 1;
+    master_req.rxCnt = 0;
+    master_req.txCnt = 0;
     master_req.completeCB = NULL;
 
     int status = MXC_SPI_SetWidth(MASTER_SPI, SPI_WIDTH_01);

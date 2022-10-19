@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _SIMO_H_
-#define _SIMO_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_SIMO_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_SIMO_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -52,7 +52,7 @@ extern "C" {
 #endif
 
 /* **** Definitions **** */
-#define VREGO_LOW_RANGE_BASE  500
+#define VREGO_LOW_RANGE_BASE 500
 #define VREGO_HIGH_RANGE_BASE 600
 
 /* **** Function Prototypes **** */
@@ -70,4 +70,4 @@ uint32_t MXC_SIMO_GetOutReadyD(void);
 }
 #endif
 
-#endif /* _SIMO_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_SIMO_H_

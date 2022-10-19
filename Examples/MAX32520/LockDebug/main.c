@@ -49,19 +49,19 @@
 /***** Definitions *****/
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 typedef struct {
-    unsigned int locks;   /* # of locks left */
+    unsigned int locks; /* # of locks left */
     unsigned int unlocks; /* # of unlocks left */
-    unsigned int locked;  /* 1 if part is locked, 0 if unlocked */
+    unsigned int locked; /* 1 if part is locked, 0 if unlocked */
 } debug_status_t;
 
 /***** Globals *****/
 volatile unsigned int advance;
 
 /***** Functions *****/
-unsigned int debug_status(debug_status_t* ptr);
+unsigned int debug_status(debug_status_t *ptr);
 
 /*
  * Locks the debug port, and returns E_SUCCESS if successful.
@@ -71,9 +71,9 @@ unsigned int debug_status(debug_status_t* ptr);
  */
 int debug_lock(unsigned int permanent)
 {
-    volatile uint32_t* lock0 = (uint32_t*)0x10800030;
-    volatile uint32_t* lock1 = (uint32_t*)0x10800034;
-    uint32_t word            = 0x0;
+    volatile uint32_t *lock0 = (uint32_t *)0x10800030;
+    volatile uint32_t *lock1 = (uint32_t *)0x10800034;
+    uint32_t word = 0x0;
     debug_status_t st;
     int result = E_UNKNOWN;
 
@@ -91,7 +91,7 @@ int debug_lock(unsigned int permanent)
 
             /* Otherwise, can lock it with one of the words */
             if ((*lock0 & 0x0000ffff) == 0x0000ffff) {
-                word   = 0xffffa5a5;
+                word = 0xffffa5a5;
                 result = MXC_FLC_Write((uint32_t)lock0, 4, &word);
 
                 if (permanent && (result == E_NO_ERROR)) {
@@ -101,32 +101,32 @@ int debug_lock(unsigned int permanent)
                 }
             } else {
                 if ((*lock0 & 0xffff0000) == 0xffff0000) {
-                    word   = 0x5a5affff;
+                    word = 0x5a5affff;
                     result = MXC_FLC_Write((uint32_t)lock0, 4, &word);
 
                     if (permanent && (result == E_NO_ERROR)) {
                         /* Write the 64th bit to a zero */
-                        word   = 0x7fffffff;
+                        word = 0x7fffffff;
                         result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                     }
                 } else {
                     if ((*lock1 & 0x0000ffff) == 0x0000ffff) {
                         if (permanent) {
                             /* Write the 64th bit to a zero */
-                            word   = 0x7fffa5a5;
+                            word = 0x7fffa5a5;
                             result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                         } else {
-                            word   = 0xffffa5a5;
+                            word = 0xffffa5a5;
                             result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                         }
                     } else {
                         if ((*lock1 & 0xffff0000) == 0xffff0000) {
                             if (permanent) {
                                 /* Write the 64th bit to a zero */
-                                word   = 0x5a5affff;
+                                word = 0x5a5affff;
                                 result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                             } else {
-                                word   = 0xda5affff;
+                                word = 0xda5affff;
                                 result = MXC_FLC_Write((uint32_t)lock1, 4, &word);
                             }
                         } else {
@@ -152,8 +152,8 @@ int debug_lock(unsigned int permanent)
  */
 int debug_unlock(unsigned int permanent)
 {
-    volatile uint32_t* lock0 = (uint32_t*)0x10800030;
-    volatile uint32_t* lock1 = (uint32_t*)0x10800034;
+    volatile uint32_t *lock0 = (uint32_t *)0x10800030;
+    volatile uint32_t *lock1 = (uint32_t *)0x10800034;
     uint32_t tmp;
     debug_status_t st;
     int result;
@@ -173,27 +173,27 @@ int debug_unlock(unsigned int permanent)
             result = E_UNKNOWN;
 
             if ((*lock0 & 0x0000ffff) != 0x0000ffff) {
-                tmp    = (*lock0) & 0xffff0000;
+                tmp = (*lock0) & 0xffff0000;
                 result = MXC_FLC_Write((uint32_t)lock0, 4, &tmp);
             }
 
             if ((*lock0 & 0xffff0000) != 0xffff0000) {
-                tmp    = (*lock0) & 0x0000ffff;
+                tmp = (*lock0) & 0x0000ffff;
                 result = MXC_FLC_Write((uint32_t)lock0, 4, &tmp);
             }
 
             if ((*lock1 & 0x0000ffff) != 0x0000ffff) {
-                tmp    = (*lock1) & 0xffff0000;
+                tmp = (*lock1) & 0xffff0000;
                 result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
             }
 
             if ((*lock1 & 0xffff0000) != 0xffff0000) {
-                tmp    = (*lock1) & 0x8000ffff;
+                tmp = (*lock1) & 0x8000ffff;
                 result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
             }
 
             if (permanent) {
-                tmp    = (*lock1) & 0x7fffffff;
+                tmp = (*lock1) & 0x7fffffff;
                 result = MXC_FLC_Write((uint32_t)lock1, 4, &tmp);
             }
 
@@ -205,10 +205,10 @@ int debug_unlock(unsigned int permanent)
 }
 
 /* Returns the current state (locked/unlocked) */
-unsigned int debug_status(debug_status_t* ptr)
+unsigned int debug_status(debug_status_t *ptr)
 {
-    volatile uint32_t* lock0 = (uint32_t*)0x10800030;
-    volatile uint32_t* lock1 = (uint32_t*)0x10800034;
+    volatile uint32_t *lock0 = (uint32_t *)0x10800030;
+    volatile uint32_t *lock1 = (uint32_t *)0x10800034;
     unsigned int locks, unlocks, locked;
 
     locked = locks = unlocks = 0;
@@ -218,60 +218,60 @@ unsigned int debug_status(debug_status_t* ptr)
 
     /* Check lower half-words */
     switch ((*lock0) & 0xffff) {
-        case 0xffff:
-            locks++;
-            break;
+    case 0xffff:
+        locks++;
+        break;
 
-        case 0xa5a5:
-            unlocks++;
-            break;
+    case 0xa5a5:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     switch (((*lock0) >> 16) & 0xffff) {
-        case 0xffff:
-            locks++;
-            break;
+    case 0xffff:
+        locks++;
+        break;
 
-        case 0x5a5a:
-            unlocks++;
-            break;
+    case 0x5a5a:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     /* Check upper half-words */
     switch ((*lock1) & 0xffff) {
-        case 0xffff:
-            locks++;
-            break;
+    case 0xffff:
+        locks++;
+        break;
 
-        case 0xa5a5:
-            unlocks++;
-            break;
+    case 0xa5a5:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     switch (((*lock1) >> 16) & 0x7fff) {
-        case 0x7fff:
-            locks++;
-            break;
+    case 0x7fff:
+        locks++;
+        break;
 
-        case 0x5a5a:
-            unlocks++;
-            break;
+    case 0x5a5a:
+        unlocks++;
+        break;
 
-        default:
-            /* Either used or something else */
-            break;
+    default:
+        /* Either used or something else */
+        break;
     }
 
     if (unlocks) {
@@ -291,15 +291,15 @@ unsigned int debug_status(debug_status_t* ptr)
     MXC_FLC_LockInfoBlock(0x10800000);
 
     if (ptr) {
-        ptr->locks   = locks;
+        ptr->locks = locks;
         ptr->unlocks = unlocks;
-        ptr->locked  = locked;
+        ptr->locked = locked;
     }
 
     return locked;
 }
 
-void pushbutton(void* unused)
+void pushbutton(void *unused)
 {
     /* Trigger main loop to lock/unlock */
     if (!advance) {

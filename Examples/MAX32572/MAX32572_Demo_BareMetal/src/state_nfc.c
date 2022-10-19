@@ -39,30 +39,30 @@
 #include "utils.h"
 #include "task_nfc.h"
 
-/********************************* 		DEFINES		 *************************/
-#define TICK_TIMEOUT        10
+/*********************************      DEFINES      *************************/
+#define TICK_TIMEOUT 10
 #define DISPLAY_MSG_TIMEOUT 1000
 //
 #define MAX_CHAR_ON_SCREEN 24
 
-/********************************* 	 	TYPE DEF	 *************************/
+/*********************************      TYPE DEF     *************************/
 
-/*******************************	Function Prototypes	   ********************/
+/*******************************    Function Prototypes    ********************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static text_t text_msg[] = {
-    {(char*)"NFC", 3},
+    { (char *)"NFC", 3 },
 #ifndef MN_EvKit_V1
-    {(char*)"Place card near target", 22},
+    { (char *)"Place card near target", 22 },
 #else
-    {(char*)"This EvKit does not support NFC", 31}
+    { (char *)"This EvKit does not support NFC", 31 }
 #endif
 };
 
 #ifndef MN_EvKit_V1
-static area_t area_clean   = {0, 0, 0, 0};
-static area_t area_clean_1 = {0, 0, 0, 0};
-static int g_tick_counter  = 0;
+static area_t area_clean = { 0, 0, 0, 0 };
+static area_t area_clean_1 = { 0, 0, 0, 0 };
+static int g_tick_counter = 0;
 #endif
 
 /********************************* Static Functions **************************/
@@ -95,11 +95,11 @@ static int init(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_C: // exit
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+    case KEY_C: // exit
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
 
     return 0;
@@ -131,8 +131,8 @@ static int time_tick(void)
 
         if (k == msg_len) {
             // Single line to show
-            msg_var.data = (char*)msg;
-            msg_var.len  = msg_len;
+            msg_var.data = (char *)msg;
+            msg_var.len = msg_len;
 
             if (msg_var.len > 24) {
                 msg_var.len = 24;
@@ -141,12 +141,12 @@ static int time_tick(void)
 
         } else {
             // Show 2 lines, MAX
-            msg_var.data = (char*)msg;
-            msg_var.len  = k;
+            msg_var.data = (char *)msg;
+            msg_var.len = k;
 
             k++; // skip past \n
-            msg_var_1.data = (char*)(msg + k);
-            msg_var_1.len  = msg_len - k;
+            msg_var_1.data = (char *)(msg + k);
+            msg_var_1.len = msg_len - k;
 
             if (msg_var.len > 24) {
                 msg_var.len = 24;
@@ -177,13 +177,13 @@ static int time_tick(void)
 #endif // for  #ifndef MN_EvKit_V1
 
 #ifndef MN_EvKit_V1
-static State g_state = {"nfc", init, key_process, time_tick, 10};
+static State g_state = { "nfc", init, key_process, time_tick, 10 };
 #else
-static State g_state = {"nfc", init, key_process, NULL, 0};
+static State g_state = { "nfc", init, key_process, NULL, 0 };
 #endif
 
 /********************************* Public Functions **************************/
-State* get_nfc_state(void)
+State *get_nfc_state(void)
 {
     return &g_state;
 }

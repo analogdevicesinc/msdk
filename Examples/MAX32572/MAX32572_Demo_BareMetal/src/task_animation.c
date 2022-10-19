@@ -43,14 +43,14 @@
 
 #include "task_logo_animation.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define NB_SPRITE (32)
 
 #define ANIMATION_PERIOD 30 //as ms
 
-/********************************* 		TYPE DEF	 ************************/
+/*********************************      TYPE DEF     ************************/
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static const int logo_maxim_data[] = {
     maxim_logo_only_small_000_bmp, maxim_logo_only_small_001_bmp, maxim_logo_only_small_002_bmp,
     maxim_logo_only_small_003_bmp, maxim_logo_only_small_004_bmp, maxim_logo_only_small_005_bmp,
@@ -62,9 +62,10 @@ static const int logo_maxim_data[] = {
     maxim_logo_only_small_021_bmp, maxim_logo_only_small_022_bmp, maxim_logo_only_small_023_bmp,
     maxim_logo_only_small_024_bmp, maxim_logo_only_small_025_bmp, maxim_logo_only_small_026_bmp,
     maxim_logo_only_small_027_bmp, maxim_logo_only_small_028_bmp, maxim_logo_only_small_029_bmp,
-    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp};
+    maxim_logo_only_small_030_bmp, maxim_logo_only_small_031_bmp
+};
 
-static int g_index                     = 0;
+static int g_index = 0;
 static volatile int g_animation_status = 0;
 
 /******************************   STATIC FUNCTIONS  **************************/

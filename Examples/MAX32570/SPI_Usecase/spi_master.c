@@ -42,18 +42,18 @@
 
 /******************************* Type Definitions ****************************/
 
-/******************************* 	 Variables    ****************************/
+/*******************************     Variables    ****************************/
 
 /******************************* Static Functions ****************************/
 
 /******************************* Public Functions ****************************/
 int spi_master_init(void)
 {
-    int ret          = 0;
-    int masterMode   = 1;
+    int ret = 0;
+    int masterMode = 1;
     int quadModeUsed = 0;
-    int numSlaves    = 1;
-    int ssPolarity   = 0;
+    int numSlaves = 1;
+    int ssPolarity = 0;
 
     ret = MXC_SPI_Init(SPIx_MASTER, masterMode, quadModeUsed, numSlaves, ssPolarity, SPI_BAUD_RATE);
     if (ret) {
@@ -66,20 +66,20 @@ int spi_master_init(void)
     return ret;
 }
 
-int spi_master_send_rcv(unsigned char* src, unsigned int srcLen, unsigned char* dst)
+int spi_master_send_rcv(unsigned char *src, unsigned int srcLen, unsigned char *dst)
 {
     int ret = 0;
     mxc_spi_req_t req;
 
-    req.spi        = SPIx_MASTER;
-    req.txData     = (uint8_t*)src;
-    req.rxData     = (uint8_t*)dst;
-    req.txLen      = srcLen;
-    req.rxLen      = srcLen;
-    req.ssIdx      = 1; // SS1 is connected
+    req.spi = SPIx_MASTER;
+    req.txData = (uint8_t *)src;
+    req.rxData = (uint8_t *)dst;
+    req.txLen = srcLen;
+    req.rxLen = srcLen;
+    req.ssIdx = 1; // SS1 is connected
     req.ssDeassert = 1;
-    req.txCnt      = 0;
-    req.rxCnt      = 0;
+    req.txCnt = 0;
+    req.rxCnt = 0;
     req.completeCB = NULL;
 
     ret = MXC_SPI_MasterTransaction(&req);

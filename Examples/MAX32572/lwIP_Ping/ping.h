@@ -30,8 +30,8 @@
 * ownership rights.
 ******************************************************************************/
 
-#ifndef LWIP_PING_H
-#define LWIP_PING_H
+#ifndef EXAMPLES_MAX32572_LWIP_PING_PING_H_
+#define EXAMPLES_MAX32572_LWIP_PING_PING_H_
 
 #include "lwip/ip_addr.h"
 
@@ -42,10 +42,10 @@
 #define PING_USE_SOCKETS LWIP_SOCKET
 #endif
 
-void ping_init(const ip_addr_t* ping_addr);
+void ping_init(const ip_addr_t *ping_addr);
 
 #if !PING_USE_SOCKETS
 void ping_send_now(void);
 #endif /* !PING_USE_SOCKETS */
 
-#endif /* LWIP_PING_H */
+#endif // EXAMPLES_MAX32572_LWIP_PING_PING_H_

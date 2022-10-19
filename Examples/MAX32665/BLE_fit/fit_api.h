@@ -21,8 +21,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef FIT_API_H
-#define FIT_API_H
+#ifndef EXAMPLES_MAX32665_BLE_FIT_FIT_API_H_
+#define EXAMPLES_MAX32665_BLE_FIT_FIT_API_H_
 
 #include "wsf_os.h"
 
@@ -71,10 +71,10 @@ void FitHandlerInit(wsfHandlerId_t handlerId);
  *  \return None.
  */
 /*************************************************************************************************/
-void FitHandler(wsfEventMask_t event, wsfMsgHdr_t* pMsg);
+void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif /* FIT_API_H */
+#endif // EXAMPLES_MAX32665_BLE_FIT_FIT_API_H_

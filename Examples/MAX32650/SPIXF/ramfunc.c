@@ -44,10 +44,8 @@ __attribute__((section(".xip_section"))) void xip_function(void)
 
     for (j = 0; j < 5; j++) {
         MXC_GPIO2->out_set |= led_pin[0].mask;
-        for (i = 0; i < 0x1000F; i++)
-            ;
+        for (i = 0; i < 0x1000F; i++) {}
         MXC_GPIO2->out_clr |= led_pin[0].mask;
-        for (i = 0; i < 0x1000F; i++)
-            ;
+        for (i = 0; i < 0x1000F; i++) {}
     }
 }

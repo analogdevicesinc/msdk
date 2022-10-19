@@ -38,8 +38,8 @@
 *******************************************************************************
 */
 
-#ifndef _EMV_POLLING_AND_LOOPBACK_H_
-#define _EMV_POLLING_AND_LOOPBACK_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_CONTACTLESS_L1_APP_EMV_POLLING_AND_LOOPBACK_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_CONTACTLESS_L1_APP_EMV_POLLING_AND_LOOPBACK_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -89,7 +89,7 @@ extern "C" {
  * @{
  */
 #define TIMEOUT_POWEROFF_MS 15 /**< Milliseconds to delay for a power off procedure */
-/** @} */                      /* @defgroup POLLING_DELAYS */
+/** @} */ /* @defgroup POLLING_DELAYS */
 
 /**
  * @defgroup LOOPBACK_RAPDUS EMV Loopback Procedure Requests
@@ -98,10 +98,10 @@ extern "C" {
  *
  * @{
  */
-#define REMOVALPROCEDURE  0x70 /**< RAPDU signaling a request for removal procedure */
+#define REMOVALPROCEDURE 0x70 /**< RAPDU signaling a request for removal procedure */
 #define POWEROFFPROCEDURE 0x72 /**< RAPDU signaling a request for poweroff procedure */
-#define RESETPROCEDURE    0x80 /**< RAPDU signaling a request for reset procedure */
-/** @} */                      /* @defgroup LOOPBACK_RAPDUS */
+#define RESETPROCEDURE 0x80 /**< RAPDU signaling a request for reset procedure */
+/** @} */ /* @defgroup LOOPBACK_RAPDUS */
 
 /**
  * @defgroup POLLING_RESPONSES EMV Polling Return Values
@@ -123,11 +123,11 @@ extern "C" {
 #define POLLING_TERMINATED \
     0x01 /**< Polling terminated by call back function @ref callback_check_for_loop_termination_t */
 #define EXCHANGE_COMPLETE 0x00 /**< EMV L1 Exchange finished, Card found */
-/** @} */                      /* @defgroup POLLING_RESPONSES */
+/** @} */ /* @defgroup POLLING_RESPONSES */
 
 /** uid of last card found during polling */
 typedef struct {
-    uint8_t uid[15];     /**< uid of last card found during polling */
+    uint8_t uid[15]; /**< uid of last card found during polling */
     uint32_t uid_length; /**< Length of last uid found during polling */
 } uid_storage_t;
 
@@ -138,10 +138,10 @@ typedef struct {
  *
  * @{
  */
-extern uint8_t rapdu[261];      /**< Shared RAPDU buffer */
-extern int32_t rapdulen;        /**< Length of current RAPDU in the shared buffer */
+extern uint8_t rapdu[261]; /**< Shared RAPDU buffer */
+extern int32_t rapdulen; /**< Length of current RAPDU in the shared buffer */
 extern int32_t rapdu_displayed; /**< Display flag, used to satisfy required EMV DTE logging */
-/** @} */                       /* @defgroup GLOBAL_RAPDU_VARS */
+/** @} */ /* @defgroup GLOBAL_RAPDU_VARS */
 
 /**
  * Polling termination callback function definition
@@ -213,4 +213,4 @@ uid_storage_t get_stored_uid(void);
 }
 #endif
 
-#endif /* _EMV_POLLING_AND_LOOPBACK_H_ */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_NFC_CONTACTLESS_L1_APP_EMV_POLLING_AND_LOOPBACK_H_

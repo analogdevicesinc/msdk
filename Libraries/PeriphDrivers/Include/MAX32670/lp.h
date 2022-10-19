@@ -37,8 +37,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _LP_H_
-#define _LP_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_LP_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_LP_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -69,7 +69,7 @@ typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
  *
  */
 typedef enum {
-    MXC_LP_IPO  = MXC_F_GCR_PM_IPO_PD,
+    MXC_LP_IPO = MXC_F_GCR_PM_IPO_PD,
     MXC_LP_IBRO = MXC_F_GCR_PM_IBRO_PD,
     MXC_LP_XRFO = MXC_F_GCR_PM_ERFO_PD
 } mxc_lp_cfg_ds_pd_t;
@@ -206,7 +206,7 @@ void MXC_LP_ClearWakeStatus(void);
  * @param      wu_pins      The port and pins to configure as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored. \ref mxc_gpio_cfg_t
  */
-void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Disables the selected GPIO port and its selected pins as a wake up source.
@@ -214,7 +214,7 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
  * @param      wu_pins      The port and pins to disable as wakeup sources.  Only the gpio and mask fields of the
  *                          structure are used.  The func and pad fields are ignored. \ref mxc_gpio_cfg_t
  */
-void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t* wu_pins);
+void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins);
 
 /**
  * @brief      Enables the RTC alarm to wake up the device from any low power mode.
@@ -231,14 +231,14 @@ void MXC_LP_DisableRTCAlarmWakeup(void);
  * 
  * @param      tmr  Pointer to timer module.
  */
-void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr);
+void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t *tmr);
 
 /**
  * @brief      Disables Timer from waking up device.  
  * 
  * @param      tmr  Pointer to timer module.
  */
-void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr);
+void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t *tmr);
 
 /**
  * @brief      Enables LPUART0 to wake up the device from any low power mode.
@@ -544,4 +544,4 @@ void MXC_LP_ROMPowerUp(void);
 }
 #endif
 
-#endif /* _LP_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_LP_H_

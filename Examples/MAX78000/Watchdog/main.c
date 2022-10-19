@@ -57,10 +57,10 @@
 /***** Definitions *****/
 
 #if defined(BOARD_EVKIT_V1)
-#define LATE_SW_NAME  "SW2"
+#define LATE_SW_NAME "SW2"
 #define EARLY_SW_NAME "SW3"
 #elif defined(BOARD_FTHR_REVA)
-#define LATE_SW_NAME  "SW1"
+#define LATE_SW_NAME "SW1"
 #define EARLY_SW_NAME "SW2"
 #else
 #warning "This example has been written to work with the MAX78000 EV Kit and FTHR boards."
@@ -69,8 +69,8 @@
 /***** Globals *****/
 static mxc_wdt_cfg_t cfg;
 
-volatile int sw1_pressed     = 0;
-volatile int sw2_pressed     = 0;
+volatile int sw1_pressed = 0;
+volatile int sw2_pressed = 0;
 volatile int interrupt_count = 0;
 
 // refers to array, do not change constants
@@ -116,9 +116,9 @@ void SW1_Callback()
     printf("\nEnabling Timeout Interrupt...\n");
     MXC_WDT_Disable(MXC_WDT0);
     cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
-    cfg.upperIntPeriod   = MXC_WDT_PERIOD_2_27;
+    cfg.upperIntPeriod = MXC_WDT_PERIOD_2_27;
     cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-    cfg.lowerIntPeriod   = MXC_WDT_PERIOD_2_23;
+    cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_23;
     MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
     MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
     MXC_WDT_ResetTimer(MXC_WDT0);
@@ -196,13 +196,11 @@ int main(void)
     while (1) {
         if (sw1_pressed) {
             if (interrupt_count == 0) {
-                while (interrupt_count == 0) {
-                };
+                while (interrupt_count == 0) {}
 
                 MXC_Delay(MXC_DELAY_MSEC(1500));
             } else {
-                while (1)
-                    ;
+                while (1) {}
             }
         }
 

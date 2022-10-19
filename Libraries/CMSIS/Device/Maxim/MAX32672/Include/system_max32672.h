@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#ifndef _SYSTEM_MAX32670_H_
-#define _SYSTEM_MAX32670_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_SYSTEM_MAX32672_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_SYSTEM_MAX32672_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,9 +53,22 @@ extern "C" {
 #define HIRC_FREQ CRYPTO_FREQ
 #endif
 
-/* NOTE: EXTCLK needs to be defined by user based on the clock they supply */
+/*  This define is included to prevent build errors in existing code.
+    New code should update EXTCLK2_FREQ to match the frequency of the external clock. */
 #ifndef EXTCLK_FREQ
 #define EXTCLK_FREQ 75000000
+#endif
+
+/* NOTE: EXTCLK1 needs to be defined by user based on the clock they supply */
+/* P0.28, Alternate Function 2 */
+#ifndef EXTCLK1_FREQ
+#define EXTCLK1_FREQ 12500000
+#endif
+
+/* NOTE: EXTCLK2 needs to be defined by user based on the clock they supply */
+/* P0.12, Alternate Function 2 */
+#ifndef EXTCLK2_FREQ
+#define EXTCLK2_FREQ EXTCLK_FREQ
 #endif
 
 /* NOTE: This is the nominal value for INRO. The actual value may vary from chip to chip. 
@@ -113,4 +126,4 @@ void SystemCoreClockUpdate(void);
 }
 #endif
 
-#endif /* _SYSTEM_MAX32670_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_SYSTEM_MAX32672_H_

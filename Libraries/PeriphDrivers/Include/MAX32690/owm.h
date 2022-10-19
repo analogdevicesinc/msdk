@@ -38,8 +38,8 @@
 **************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _OWM_H_
-#define _OWM_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_OWM_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_OWM_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -63,27 +63,27 @@ extern "C" {
  */
 typedef enum {
     MXC_OWM_EXT_PU_ACT_HIGH = 0, /**< Pullup pin is active high when enabled.        */
-    MXC_OWM_EXT_PU_ACT_LOW  = 1, /**< Pullup pin is active low when enabled.         */
-    MXC_OWM_EXT_PU_UNUSED   = 2, /**< Pullup pin is not used for an external pullup. */
+    MXC_OWM_EXT_PU_ACT_LOW = 1, /**< Pullup pin is active low when enabled.         */
+    MXC_OWM_EXT_PU_UNUSED = 2, /**< Pullup pin is not used for an external pullup. */
 } mxc_owm_ext_pu_t;
 
 /**
  * @brief   Structure type for 1-Wire Master configuration.
  */
 typedef struct {
-    uint8_t int_pu_en;            /**< 1 = internal pullup on.   */
+    uint8_t int_pu_en; /**< 1 = internal pullup on.   */
     mxc_owm_ext_pu_t ext_pu_mode; /**< See #mxc_owm_ext_pu_t.   */
-    uint8_t long_line_mode;       /**< 1 = long line mode enable.    */
+    uint8_t long_line_mode; /**< 1 = long line mode enable.    */
     // mxc_owm_overdrive_t overdrive_spec; /**< 0 = timeslot is 12us, 1 = timeslot is 10us.   */
 } mxc_owm_cfg_t;
 
-#define READ_ROM_COMMAND     0x33 /**< Read ROM Command */
-#define MATCH_ROM_COMMAND    0x55 /**< Match ROM Command */
-#define SEARCH_ROM_COMMAND   0xF0 /**< Search ROM Command */
-#define SKIP_ROM_COMMAND     0xCC /**< Skip ROM Command */
-#define OD_SKIP_ROM_COMMAND  0x3C /**< Overdrive Skip ROM Command */
+#define READ_ROM_COMMAND 0x33 /**< Read ROM Command */
+#define MATCH_ROM_COMMAND 0x55 /**< Match ROM Command */
+#define SEARCH_ROM_COMMAND 0xF0 /**< Search ROM Command */
+#define SKIP_ROM_COMMAND 0xCC /**< Skip ROM Command */
+#define OD_SKIP_ROM_COMMAND 0x3C /**< Overdrive Skip ROM Command */
 #define OD_MATCH_ROM_COMMAND 0x69 /**< Overdrive Match ROM Command */
-#define RESUME_COMMAND       0xA5 /**< Resume Command */
+#define RESUME_COMMAND 0xA5 /**< Resume Command */
 
 /* **** Globals **** */
 
@@ -100,7 +100,7 @@ typedef struct {
  * @return  #E_NOT_SUPPORTED if 1MHz CLK cannot be created with given system and owm CLK
  * @return  #E_BAD_PARAM if bad cfg parameter passed in
  */
-int MXC_OWM_Init(const mxc_owm_cfg_t* cfg);
+int MXC_OWM_Init(const mxc_owm_cfg_t *cfg);
 
 /**
  * @brief   Shutdown OWM module.
@@ -183,7 +183,7 @@ int MXC_OWM_ReadBit(void);
  * @return  Number of bytes written if successful
  * @return  #E_COMM_ERR if line short detected before transaction
  */
-int MXC_OWM_Write(uint8_t* data, int len);
+int MXC_OWM_Write(uint8_t *data, int len);
 
 /**
  * @brief   Read multiple bytes of data. Will block until transaction is complete.
@@ -194,7 +194,7 @@ int MXC_OWM_Write(uint8_t* data, int len);
  * @return Number of bytes read if successful
  * @return #E_COMM_ERR if line short detected before transaction
  */
-int MXC_OWM_Read(uint8_t* data, int len);
+int MXC_OWM_Read(uint8_t *data, int len);
 
 /**
  * @brief   Starts 1-Wire communication with Read ROM command
@@ -205,7 +205,7 @@ int MXC_OWM_Read(uint8_t* data, int len);
  * @return  #E_NO_ERROR if everything is successful
  * @return  #E_COMM_ERR if reset, read or write fails
  */
-int MXC_OWM_ReadROM(uint8_t* ROMCode);
+int MXC_OWM_ReadROM(uint8_t *ROMCode);
 
 /**
  * @brief   Starts 1-Wire communication with Match ROM command
@@ -215,7 +215,7 @@ int MXC_OWM_ReadROM(uint8_t* ROMCode);
  * @return  #E_NO_ERROR if everything is successful
  * @return  #E_COMM_ERR if reset or write fails
  */
-int MXC_OWM_MatchROM(uint8_t* ROMCode);
+int MXC_OWM_MatchROM(uint8_t *ROMCode);
 
 /**
  * @brief   Starts 1-Wire communication with Overdrive Match ROM command
@@ -227,7 +227,7 @@ int MXC_OWM_MatchROM(uint8_t* ROMCode);
  * @return  #E_NO_ERROR if everything is successful
  * @return  #E_COMM_ERR if reset or write fails
  */
-int MXC_OWM_ODMatchROM(uint8_t* ROMCode);
+int MXC_OWM_ODMatchROM(uint8_t *ROMCode);
 
 /**
  * @brief   Starts 1-Wire communication with Skip ROM command
@@ -263,7 +263,7 @@ int MXC_OWM_Resume(void);
  *
  * @return  (1) = ROM found, (0) = no new ROM found, end of search
  */
-int MXC_OWM_SearchROM(int newSearch, uint8_t* ROMCode);
+int MXC_OWM_SearchROM(int newSearch, uint8_t *ROMCode);
 
 /**
  * @brief   Clear interrupt flags.
@@ -387,4 +387,4 @@ int MXC_OWM_BitBang_Disable(void);
 }
 #endif
 
-#endif /* _OWM_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_OWM_H_

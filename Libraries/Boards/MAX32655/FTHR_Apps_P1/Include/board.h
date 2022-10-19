@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-07-17 18:10:38 -0500 (Mon, 17 Jul 2017) $
- * $Revision: 28913 $
- *
  ******************************************************************************/
 
 /**
@@ -41,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef _BOARD_H
-#define _BOARD_H
+#ifndef LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -80,34 +77,34 @@ extern "C" {
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON  0 /// Active state of LEDs
+#define LED_ON 0 /// Active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED1    0
+#define LED1 0
 #define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2      1
+#define LED2 1
 #define LED_GREEN LED2
 
 /**
  *  A reference to LED2 (BLUE LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED3     2
+#define LED3 2
 #define LED_BLUE LED3
 
 /* References to the pins connected to the two user buttons */
 #define BUTTON1 0
 #define BUTTON2 1
 
-#define BUTTON_PRESSED  1
+#define BUTTON_PRESSED 1
 #define BUTTON_RELEASED 0
 
 /* Reference to the I2C instantiation used to communicate with 
@@ -156,7 +153,7 @@ int Debug_Init(void);
  * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 #define POWER_OFF 0
-#define POWER_ON  1
+#define POWER_ON 1
 int Microphone_Power(int on);
 
 /**
@@ -172,4 +169,4 @@ int Camera_Power(int on);
 }
 #endif
 
-#endif /* _BOARD_H */
+#endif // LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_

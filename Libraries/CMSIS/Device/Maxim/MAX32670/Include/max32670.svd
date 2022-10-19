@@ -694,67 +694,291 @@
 <!--FCR Function Control Register.-->
   <peripheral>
    <name>MCR</name>
-   <description>Misc Control.</description>
+   <description>Miscellaneous Control Registers.</description>
    <baseAddress>0x40106C00</baseAddress>
    <addressBlock>
-    <offset>0x00</offset>
+    <offset>0</offset>
     <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
     <register>
      <name>RST</name>
-     <description>Reset Control Register</description>
+     <description>Reset control register 0.</description>
      <addressOffset>0x04</addressOffset>
+     <resetMask>0</resetMask>
      <fields>
       <field>
-       <name>LPTMR0</name>
-       <description>Low Power Timer0 Reset.</description>
+       <name>lptmr0</name>
+       <description>Setting this bit will reset LPTMR0.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>rst</name>
+         <description>Reset LPTMR0.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
-       <name>LPTMR1</name>
-       <description>Low Power Timer1 Reset.</description>
+       <name>lptmr1</name>
+       <description>Setting this bit will reset LPTMR1.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>rst</name>
+         <description>Reset LPTMR1.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
-       <name>LPUART0</name>
-       <description>Low Power UART0 Reset.</description>
+       <name>lpuart0</name>
+       <description>Setting this bit will reset LPUART0.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>rst</name>
+         <description>Reset LPUART0.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>rtc</name>
+       <description>Setting this bit will reset the Real-Time Clock.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>rst</name>
+         <description>Reset Real-Time Clock.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPPIOCTRL</name>
+     <description>Low-power peripheral IO control.</description>
+     <addressOffset>0x10</addressOffset>
+     <resetMask>0</resetMask>
+     <fields>
+      <field>
+       <name>LPTMR0_I</name>
+       <description>Setting this bit will enable the low-power timer 0 (timer 4) input pin while operating in low-power modes.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPTMR0 input pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPTMR0 input pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPTMR0_O</name>
+       <description>Setting this bit will enable the low-power timer 0 (timer 4) output pin while operating in low-power modes.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPTMR0 output pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPTMR0 output pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPTMR1_I</name>
+       <description>Setting this bit will enable the low-power timer 1 (timer 5) input pin while operating in low-power modes.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPTMR1 input pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPTMR1 input pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPTMR1_O</name>
+       <description>Setting this bit will enable the low-power timer 1 (timer 5) output pin while operating in low-power modes.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPTMR1 output pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPTMR1 output pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPUART0_RX</name>
+       <description>Setting this bit will enable the low-power UART 0 (UART3) RX pin while operating in low-power modes.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPUART0 RX pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPUART0 RX pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPUART0_TX</name>
+       <description>Setting this bit will enable the low-power UART 0 (UART3) TX pin while operating in low-power modes.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPUART0 TX pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPUART0 TX pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPUART0_CTS</name>
+       <description>Setting this bit will enable the low-power UART 0 (UART3) CTS pin while operating in low-power modes.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPUART0 CTS pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPUART0 CTS pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>LPUART0_RTS</name>
+       <description>Setting this bit will enable the low-power UART 0 (UART3) RTS pin while operating in low-power modes.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPUART0 RTS pin.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPUART0 RTS pin.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
     <register>
      <name>CLKDIS</name>
-     <description>Low Power Peripheral Clock Disable.</description>
+     <description>Peripheral clock control register.</description>
      <addressOffset>0x24</addressOffset>
+     <resetMask>0xFFFFFFFF</resetMask>
      <fields>
       <field>
-       <name>LPTMR0</name>
-       <description>Low Power Timer0 Clock Disable.</description>
+       <name>lptmr0</name>
+       <description>Clearing this bit will enable the low-power timer 0 (timer 4) peripheral clock.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPTMR0 clock.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPTMR0 clock.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
-       <name>LPTMR1</name>
-       <description>Low Power Timer1 Clock Disable.</description>
+       <name>lptmr1</name>
+       <description>Clearing this bit will enable the low-power timer 1 (timer 5) peripheral clock.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPTMR1 clock.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPTMR1 clock.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
-       <name>LPUART0</name>
-       <description>Low Power UART0 Clock Disable.</description>
+       <name>lpuart0</name>
+       <description>Clearing this bit will enable the low-power UART 0 (UART3) peripheral clock.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable LPUART0 clock.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable LPUART0 clock.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
    </registers>
   </peripheral>
-<!--MCR Misc Control.-->
+<!--MCR Miscellaneous Control Registers.-->
   <peripheral>
    <name>DMA</name>
    <description>DMA Controller Fully programmable, chaining capable DMA channels.</description>
@@ -960,7 +1184,7 @@
     </register>
     <cluster>
      <dim>8</dim>
-     <dimIncrement>4</dimIncrement>
+     <dimIncrement>0x20</dimIncrement>
      <name>CH[%s]</name>
      <description>DMA Channel registers.</description>
      <headerStructName>dma_ch</headerStructName>
@@ -969,7 +1193,7 @@
      <register>
       <name>CTRL</name>
       <description>DMA Channel Control Register.</description>
-      <addressOffset>0x100</addressOffset>
+      <addressOffset>0x000</addressOffset>
       <fields>
        <field>
         <name>EN</name>
@@ -1406,7 +1630,7 @@
      <register>
       <name>STATUS</name>
       <description>DMA Channel Status Register.</description>
-      <addressOffset>0x104</addressOffset>
+      <addressOffset>0x004</addressOffset>
       <fields>
        <field>
         <name>STATUS</name>
@@ -1479,7 +1703,7 @@
      <register>
       <name>SRC</name>
       <description>Source Device Address. If SRCINC=1, the counter bits are incremented by 1,2, or 4, depending on the data width of each AHB cycle. For peripheral transfers, some or all of the actual address bits are fixed. If SRCINC=0, this register remains constant. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with the contents of DMA_SRC_RLD.</description>
-      <addressOffset>0x108</addressOffset>
+      <addressOffset>0x008</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1491,7 +1715,7 @@
      <register>
       <name>DST</name>
       <description>Destination Device Address. For peripheral transfers, some or all of the actual address bits are fixed. If DSTINC=1, this register is incremented on every AHB write out of the DMA FIFO. They are incremented by 1, 2, or 4, depending on the data width of each AHB cycle. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with DMA_DST_RLD.</description>
-      <addressOffset>0x10C</addressOffset>
+      <addressOffset>0x00C</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1503,7 +1727,7 @@
      <register>
       <name>CNT</name>
       <description>DMA Counter. The user loads this register with the number of bytes to transfer. This counter decreases on every AHB cycle into the DMA FIFO. The decrement will be 1, 2, or 4 depending on the data width of each AHB cycle. When the counter reaches 0, a count-to-zero condition is triggered.</description>
-      <addressOffset>0x110</addressOffset>
+      <addressOffset>0x010</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -1516,7 +1740,7 @@
      <register>
       <name>SRCRLD</name>
       <description>Source Address Reload Value. The value of this register is loaded into DMA0_SRC upon a count-to-zero condition.</description>
-      <addressOffset>0x114</addressOffset>
+      <addressOffset>0x014</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1529,7 +1753,7 @@
      <register>
       <name>DSTRLD</name>
       <description>Destination Address Reload Value. The value of this register is loaded into DMA0_DST upon a count-to-zero condition.</description>
-      <addressOffset>0x118</addressOffset>
+      <addressOffset>0x018</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -1542,7 +1766,7 @@
      <register>
       <name>CNTRLD</name>
       <description>DMA Channel Count Reload Register.</description>
-      <addressOffset>0x11C</addressOffset>
+      <addressOffset>0x01C</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -5179,6 +5403,16 @@
        <bitRange>[9:0]</bitRange>
       </field>
       <field>
+       <name>DIS</name>
+       <description>Slave Address Disable.</description>
+       <bitRange>[10:10]</bitRange>
+      </field>
+      <field>
+       <name>IDX</name>
+       <description>Slave Address Index.</description>
+       <bitRange>[14:11]</bitRange>
+      </field>
+      <field>
        <name>EXT_ADDR_EN</name>
        <description>Extended Address Select.</description>
        <bitRange>[15:15]</bitRange>
@@ -8529,6 +8763,12 @@
      <resetValue>0x00000003</resetValue>
      <fields>
       <field>
+       <name>ODHT</name>
+       <description>Start On-Demand health test.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>RND_IE</name>
        <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
        <bitOffset>1</bitOffset>
@@ -8547,9 +8787,21 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>KEYGEN</name>
+       <name>HEALTH_EN</name>
+       <description>Enable IRQ generation when a health test fails.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKG_USR</name>
        <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
        <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKG_SYS</name>
+       <description>AESKG_SYS.</description>
+       <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -8582,6 +8834,36 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+      <field>
+       <name>ODHT</name>
+       <description>On-Demand health test status.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HT</name>
+       <description>Health test status.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SRCFAIL</name>
+       <description>Entropy source has failed.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKGD</name>
+       <description>AESKGD.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LD_CNT</name>
+       <description>LD_CNT.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>8</bitWidth>
       </field>
      </fields>
     </register>

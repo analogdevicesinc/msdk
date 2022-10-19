@@ -2,7 +2,7 @@
 <device xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xsi:noNamespaceSchemaLocation="svd_schema.xsd">
  <vendor>Maxim-Integrated</vendor>
  <vendorID>Maxim</vendorID>
- <name>max32672</name>
+ <name>MAX32672</name>
  <series>ARMCM4</series>
  <version>1.0</version>
  <description>MAX32670 32-bit ARM Cortex-M4 microcontroller, 1024KB of flash, 760KB of system RAM, 128KB of Boot ROM.</description>
@@ -3246,19 +3246,19 @@
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="RAM0_1ECCEN">
+      <field derivedFrom="RAM0ECCEN">
        <name>ICC0ECCEN</name>
        <description>ICC 0 ECC Enable</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="RAM0_1ECCEN">
+      <field derivedFrom="RAM0ECCEN">
        <name>FL0ECCEN</name>
        <description>Flash 0 ECC Enable</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="RAM0_1ECCEN">
+      <field derivedFrom="RAM0ECCEN">
        <name>FL1ECCEN</name>
        <description>Flash 1 ECC Enable</description>
        <bitOffset>13</bitOffset>
@@ -3490,7 +3490,7 @@
     </register>
     <cluster>
      <dim>12</dim>
-     <dimIncrement>4</dimIncrement>
+     <dimIncrement>0x20</dimIncrement>
      <name>CH[%s]</name>
      <description>DMA Channel registers.</description>
      <headerStructName>dma_ch</headerStructName>
@@ -3499,7 +3499,7 @@
      <register>
       <name>CTRL</name>
       <description>DMA Channel Control Register.</description>
-      <addressOffset>0x100</addressOffset>
+      <addressOffset>0x000</addressOffset>
       <fields>
        <field>
         <name>EN</name>
@@ -3941,7 +3941,7 @@
      <register>
       <name>STATUS</name>
       <description>DMA Channel Status Register.</description>
-      <addressOffset>0x104</addressOffset>
+      <addressOffset>0x004</addressOffset>
       <fields>
        <field>
         <name>STATUS</name>
@@ -4014,7 +4014,7 @@
      <register>
       <name>SRC</name>
       <description>Source Device Address. If SRCINC=1, the counter bits are incremented by 1,2, or 4, depending on the data width of each AHB cycle. For peripheral transfers, some or all of the actual address bits are fixed. If SRCINC=0, this register remains constant. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with the contents of DMA_SRC_RLD.</description>
-      <addressOffset>0x108</addressOffset>
+      <addressOffset>0x008</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -4026,7 +4026,7 @@
      <register>
       <name>DST</name>
       <description>Destination Device Address. For peripheral transfers, some or all of the actual address bits are fixed. If DSTINC=1, this register is incremented on every AHB write out of the DMA FIFO. They are incremented by 1, 2, or 4, depending on the data width of each AHB cycle. In the case where a count-to-zero condition occurs while RLDEN=1, the register is reloaded with DMA_DST_RLD.</description>
-      <addressOffset>0x10C</addressOffset>
+      <addressOffset>0x00C</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -4038,7 +4038,7 @@
      <register>
       <name>CNT</name>
       <description>DMA Counter. The user loads this register with the number of bytes to transfer. This counter decreases on every AHB cycle into the DMA FIFO. The decrement will be 1, 2, or 4 depending on the data width of each AHB cycle. When the counter reaches 0, a count-to-zero condition is triggered.</description>
-      <addressOffset>0x110</addressOffset>
+      <addressOffset>0x010</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -4051,7 +4051,7 @@
      <register>
       <name>SRCRLD</name>
       <description>Source Address Reload Value. The value of this register is loaded into DMA0_SRC upon a count-to-zero condition.</description>
-      <addressOffset>0x114</addressOffset>
+      <addressOffset>0x014</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -4064,7 +4064,7 @@
      <register>
       <name>DSTRLD</name>
       <description>Destination Address Reload Value. The value of this register is loaded into DMA0_DST upon a count-to-zero condition.</description>
-      <addressOffset>0x118</addressOffset>
+      <addressOffset>0x018</addressOffset>
       <fields>
        <field>
         <name>ADDR</name>
@@ -4077,7 +4077,7 @@
      <register>
       <name>CNTRLD</name>
       <description>DMA Channel Count Reload Register.</description>
-      <addressOffset>0x11C</addressOffset>
+      <addressOffset>0x01C</addressOffset>
       <fields>
        <field>
         <name>CNT</name>
@@ -5814,19 +5814,19 @@
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="RAM0_1">
+      <field derivedFrom="RAM0">
        <name>ICC0</name>
        <description>ECC Icache Error interrupt enable.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="RAM0_1">
+      <field derivedFrom="RAM0">
        <name>FLASH0</name>
        <description>ECC Flash0 Error interrupt enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="RAM0_1">
+      <field derivedFrom="RAM0">
        <name>FLASH1</name>
        <description>ECC Flash1 Error interrupt enable.</description>
        <bitOffset>5</bitOffset>
@@ -6839,8 +6839,8 @@
        <description>High speed mode enable</description>
        <bitRange>[15:15]</bitRange>
        <access>read-write</access>
-      </field>IRXM
-    </fields>
+      </field>
+     </fields>
     </register>
     <register>
      <name>STATUS</name>
@@ -7816,7 +7816,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>THD_VAL</name>
+       <name>THD_LVL</name>
        <description>Transmit FIFO Threshold. These bits define the TX_FIFO interrupt threshold.</description>
        <bitRange>[11:8]</bitRange>
       </field>
@@ -7946,35 +7946,6 @@
      </fields>
     </register>
     <register>
-     <name>SLAVE</name>
-     <description>Slave Address Register.</description>
-     <addressOffset>0x44</addressOffset>
-     <fields>
-      <field>
-       <name>ADDR</name>
-       <description>Slave Address.</description>
-       <bitRange>[9:0]</bitRange>
-      </field>
-      <field>
-       <name>EXT_ADDR_EN</name>
-       <description>Extended Address Select.</description>
-       <bitRange>[15:15]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>7_bits_address</name>
-         <description>7-bit address.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>10_bits_address</name>
-         <description>10-bit address.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>DMA</name>
      <description>DMA Register.</description>
      <addressOffset>0x48</addressOffset>
@@ -8014,6 +7985,65 @@
        </enumeratedValues>
       </field>
      </fields>
+    </register>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>1</dimIncrement>
+     <name>SLAVE_MULTI[%s]</name>
+     <description>Slave Address Register.</description>
+     <alternateRegister>SLAVE0</alternateRegister>
+     <addressOffset>0x4C</addressOffset>
+     <size>32</size>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>ADDR</name>
+       <description>Slave Address.</description>
+       <bitRange>[9:0]</bitRange>
+      </field>
+      <field>
+       <name>DIS</name>
+       <description>Slave Disable.</description>
+       <bitRange>[10:10]</bitRange>
+      </field>
+      <field>
+       <name>EXT_ADDR_EN</name>
+       <description>Extended Address Select.</description>
+       <bitRange>[15:15]</bitRange>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>7_bits_address</name>
+         <description>7-bit address.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>10_bits_address</name>
+         <description>10-bit address.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SLAVE0</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x4C</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE1</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x50</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE2</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x54</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE3</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x58</addressOffset>
     </register>
    </registers>
   </peripheral>
@@ -8359,12 +8389,86 @@
   </peripheral>
 <!--I2S Inter-IC Sound Interface.-->
   <peripheral>
+   <name>ECC</name>
+   <description>Error Correction Code</description>
+   <baseAddress>0x40105400</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>EN</name>
+     <description>ECC Enable Register</description>
+     <addressOffset>0x08</addressOffset>
+     <fields>
+      <field>
+       <name>RAM</name>
+       <description>System RAM ECC Enable.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>disabled</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>enabled</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>ICC0</name>
+       <description>Instruction Cache 0 ECC Enable.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>disabled</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>enabled</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>FLASH</name>
+       <description>Flash ECC Enable.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>disabled</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>enabled</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--ECC Error Correction Code-->
+  <peripheral>
    <name>ICC0</name>
    <description>Instruction Cache Controller Registers</description>
    <baseAddress>0x4002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x800</size>
+    <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>

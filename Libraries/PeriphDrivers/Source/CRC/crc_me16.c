@@ -101,12 +101,12 @@ uint32_t MXC_CRC_GetResult(void)
     return MXC_CRC_RevA_GetResult();
 }
 
-int MXC_CRC_Compute(mxc_crc_req_t* req)
+int MXC_CRC_Compute(mxc_crc_req_t *req)
 {
     return MXC_CRC_RevA_Compute(req);
 }
 
-int MXC_CRC_ComputeAsync(mxc_crc_req_t* req)
+int MXC_CRC_ComputeAsync(mxc_crc_req_t *req)
 {
     return MXC_CRC_RevA_ComputeAsync(req);
 }

@@ -38,10 +38,10 @@
 #include "task_logo_animation.h"
 #include "utils.h"
 
-/********************************* 		DEFINES		 *************************/
+/*********************************      DEFINES      *************************/
 #define TICK_TIMEOUT 60
 
-/********************************* 		VARIABLES	 *************************/
+/*********************************      VARIABLES    *************************/
 static const int screensaver_data[] = {
     medium_logo_000_bmp, medium_logo_001_bmp, medium_logo_002_bmp, medium_logo_001_bmp,
     medium_logo_003_bmp, medium_logo_004_bmp, medium_logo_005_bmp, medium_logo_006_bmp,
@@ -52,10 +52,11 @@ static const int screensaver_data[] = {
     medium_logo_022_bmp, medium_logo_021_bmp, medium_logo_023_bmp, medium_logo_024_bmp,
     medium_logo_025_bmp, medium_logo_026_bmp, medium_logo_027_bmp, medium_logo_028_bmp,
     medium_logo_029_bmp, medium_logo_030_bmp, medium_logo_031_bmp, medium_logo_032_bmp,
-    medium_logo_031_bmp, medium_logo_033_bmp, medium_logo_034_bmp, medium_logo_035_bmp};
+    medium_logo_031_bmp, medium_logo_033_bmp, medium_logo_034_bmp, medium_logo_035_bmp
+};
 
 static unsigned int image_index = 0;
-static unsigned int max_loop    = ARRAY_SIZE(screensaver_data);
+static unsigned int max_loop = ARRAY_SIZE(screensaver_data);
 
 /********************************* Static Functions **************************/
 static int init(void)
@@ -85,19 +86,19 @@ static int time_tick(void)
 static int key_process(unsigned int key)
 {
     switch (key) {
-        case KEY_C:
-            state_set_current(get_home_state());
-            break;
-        default:
-            break;
+    case KEY_C:
+        state_set_current(get_home_state());
+        break;
+    default:
+        break;
     }
     return 0;
 }
 
-static State g_state = {"idle", init, key_process, time_tick, TICK_TIMEOUT};
+static State g_state = { "idle", init, key_process, time_tick, TICK_TIMEOUT };
 
 /********************************* Public Functions **************************/
-State* get_idle_state(void)
+State *get_idle_state(void)
 {
     return &g_state;
 }

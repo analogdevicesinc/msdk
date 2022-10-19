@@ -1,37 +1,70 @@
+/*******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated 
+* Products, Inc. shall not be used except as stated in the Maxim Integrated 
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all 
+* ownership rights.
+*
+******************************************************************************/
+
 #include "sd.h"
 
 FATFS fatfs; // Private fatFS object.
 
-FATFS* sd_fs;   //FFat Filesystem Object
-FIL sd_file;    //FFat File Object
+FATFS *sd_fs; //FFat Filesystem Object
+FIL sd_file; //FFat File Object
 FRESULT sd_err; //FFat Result (Struct)
 FILINFO sd_fno; //FFat File Information Object
-DIR sd_dir;     //FFat Directory Object
+DIR sd_dir; //FFat Directory Object
 TCHAR sd_message[MAXLEN], sd_directory[MAXLEN], sd_cwd[MAXLEN], sd_filename[MAXLEN],
     sd_volume_label[24], sd_volume = '0';
 DWORD sd_clusters_free = 0, sd_sectors_free = 0, sd_sectors_total = 0, sd_volume_sn = 0;
 UINT sd_bytes_written = 0, sd_bytes_read = 0, sd_mounted = 0;
 BYTE sd_work[4096];
-TCHAR* FR_ERRORS[20] = {"FR_OK",
-                        "FR_DISK_ERR",
-                        "FR_INT_ERR",
-                        "FR_NOT_READY",
-                        "FR_NO_FILE",
-                        "FR_NO_PATH",
-                        "FR_INVLAID_NAME",
-                        "FR_DENIED",
-                        "FR_EXIST",
-                        "FR_INVALID_OBJECT",
-                        "FR_WRITE_PROTECTED",
-                        "FR_INVALID_DRIVE",
-                        "FR_NOT_ENABLED",
-                        "FR_NO_FILESYSTEM",
-                        "FR_MKFS_ABORTED",
-                        "FR_TIMEOUT",
-                        "FR_LOCKED",
-                        "FR_NOT_ENOUGH_CORE",
-                        "FR_TOO_MANY_OPEN_FILES",
-                        "FR_INVALID_PARAMETER"};
+TCHAR *FR_ERRORS[20] = { "FR_OK",
+                         "FR_DISK_ERR",
+                         "FR_INT_ERR",
+                         "FR_NOT_READY",
+                         "FR_NO_FILE",
+                         "FR_NO_PATH",
+                         "FR_INVLAID_NAME",
+                         "FR_DENIED",
+                         "FR_EXIST",
+                         "FR_INVALID_OBJECT",
+                         "FR_WRITE_PROTECTED",
+                         "FR_INVALID_DRIVE",
+                         "FR_NOT_ENABLED",
+                         "FR_NO_FILESYSTEM",
+                         "FR_MKFS_ABORTED",
+                         "FR_TIMEOUT",
+                         "FR_LOCKED",
+                         "FR_NOT_ENOUGH_CORE",
+                         "FR_TOO_MANY_OPEN_FILES",
+                         "FR_INVALID_PARAMETER" };
 
 FRESULT sd_mount()
 {
@@ -96,7 +129,7 @@ FRESULT sd_get_size()
     }
 
     sd_sectors_total = (sd_fs->n_fatent - 2) * sd_fs->csize; // Calculate total size (in bytes)
-    sd_sectors_free  = sd_clusters_free * sd_fs->csize;      // Calculate free space (in byte)
+    sd_sectors_free = sd_clusters_free * sd_fs->csize; // Calculate free space (in byte)
 
     return sd_err;
 }
@@ -111,9 +144,9 @@ FRESULT sd_get_cwd()
     return sd_err;
 }
 
-FRESULT sd_cd(const char* dir)
+FRESULT sd_cd(const char *dir)
 {
-    sd_err = f_chdir((const TCHAR*)dir);
+    sd_err = f_chdir((const TCHAR *)dir);
     if (sd_err != FR_OK) {
         printf("Error changing directory: %s\n", FR_ERRORS[sd_err]);
     }
@@ -147,28 +180,28 @@ FRESULT sd_ls()
     return sd_err;
 }
 
-FRESULT sd_mkdir(const char* dir)
+FRESULT sd_mkdir(const char *dir)
 {
     // Make a directory
-    sd_err = f_mkdir((const TCHAR*)dir);
+    sd_err = f_mkdir((const TCHAR *)dir);
     if (sd_err != FR_OK) {
         printf("Error creating directory: %i\n", FR_ERRORS[sd_err]);
     }
     return sd_err;
 }
 
-FRESULT sd_rm(const char* item)
+FRESULT sd_rm(const char *item)
 {
-    sd_err = f_unlink((const TCHAR*)item);
+    sd_err = f_unlink((const TCHAR *)item);
     if (sd_err != FR_OK) {
         printf("Error while deleting: %s\n", FR_ERRORS[sd_err]);
     }
     return sd_err;
 }
 
-FRESULT sd_touch(const char* filepath)
+FRESULT sd_touch(const char *filepath)
 {
-    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_CREATE_NEW);
+    sd_err = f_open(&sd_file, (const TCHAR *)filepath, FA_CREATE_NEW);
     if (sd_err != FR_OK) {
         printf("Error creating file: %s\n", FR_ERRORS[sd_err]);
     }
@@ -176,15 +209,15 @@ FRESULT sd_touch(const char* filepath)
     return sd_err;
 }
 
-FRESULT sd_write_string(const char* filepath, const char* string)
+FRESULT sd_write_string(const char *filepath, const char *strng)
 {
-    int len    = strlen(string);
+    int len = strlen(strng);
     UINT wrote = 0;
-    sd_err     = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE);
+    sd_err = f_open(&sd_file, (const TCHAR *)filepath, FA_WRITE);
     if (sd_err != FR_OK) {
         printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
     } else {
-        sd_err = f_write(&sd_file, string, len, &wrote);
+        sd_err = f_write(&sd_file, strng, len, &wrote);
         if (sd_err != FR_OK || wrote != len) {
             printf("Failed to write to file: %s\n", FR_ERRORS[sd_err]);
         }
@@ -193,10 +226,10 @@ FRESULT sd_write_string(const char* filepath, const char* string)
     return sd_err;
 }
 
-FRESULT sd_write(const char* filepath, const uint8_t* data, int len)
+FRESULT sd_write(const char *filepath, const uint8_t *data, int len)
 {
     UINT wrote = 0;
-    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_WRITE | FA_OPEN_APPEND | FA_CREATE_NEW);
+    sd_err = f_open(&sd_file, (const TCHAR *)filepath, FA_WRITE | FA_OPEN_APPEND | FA_CREATE_NEW);
     if (sd_err != FR_OK) {
         printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
     } else {
@@ -209,9 +242,9 @@ FRESULT sd_write(const char* filepath, const uint8_t* data, int len)
     return sd_err;
 }
 
-FRESULT sd_cat(const char* filepath)
+FRESULT sd_cat(const char *filepath)
 {
-    sd_err = f_open(&sd_file, (const TCHAR*)filepath, FA_READ);
+    sd_err = f_open(&sd_file, (const TCHAR *)filepath, FA_READ);
     if (sd_err != FR_OK) {
         printf("Error opening file: %s\n", FR_ERRORS[sd_err]);
     } else {

@@ -54,18 +54,18 @@
 #define MAX_TICKS pow(2, 32)
 
 // Parameters for PWM output
-#define FREQ       1000 // (Hz)
-#define DUTY_CYCLE 50   // (%)
-#define PWM_TIMER  MXC_TMR0
-#define PWM_PORT   MXC_GPIO0
-#define PWM_PIN    MXC_GPIO_PIN_3
+#define FREQ 1000 // (Hz)
+#define DUTY_CYCLE 50 // (%)
+#define PWM_TIMER MXC_TMR0
+#define PWM_PORT MXC_GPIO0
+#define PWM_PIN MXC_GPIO_PIN_3
 
 // Parameters for One Shot timer
-#define OST_FREQ  1 //(Hz)
+#define OST_FREQ 1 //(Hz)
 #define OST_TIMER MXC_TMR1
 
 // Parameters for Continuous timer
-#define CONT_FREQ  2        // (Hz)
+#define CONT_FREQ 2 // (Hz)
 #define CONT_TIMER MXC_TMR2 // Can be MXC_TMR0 through MXC_TMR5
 
 // Check Frequency bounds
@@ -81,7 +81,7 @@
 #endif
 
 /***** Globals *****/
-int maxTicks          = (int)MAX_TICKS;
+int maxTicks = (int)MAX_TICKS;
 volatile int TMR_FLAG = 0;
 
 /***** Functions *****/
@@ -90,14 +90,14 @@ void PWMTimer()
     // Declare variables
     mxc_tmr_cfg_t tmr; // to configure timer
     unsigned int periodTicks = MXC_TMR_GetPeriod(PWM_TIMER, 1, FREQ);
-    unsigned int dutyTicks   = periodTicks / 100 * 50;
+    unsigned int dutyTicks = periodTicks / 100 * 50;
 
     //Configure PWM GPIO Pin
     mxc_gpio_cfg_t pwmOut;
-    pwmOut.port  = PWM_PORT;
-    pwmOut.mask  = PWM_PIN;
-    pwmOut.func  = MXC_GPIO_FUNC_ALT3;
-    pwmOut.pad   = MXC_GPIO_PAD_NONE;
+    pwmOut.port = PWM_PORT;
+    pwmOut.mask = PWM_PIN;
+    pwmOut.func = MXC_GPIO_FUNC_ALT3;
+    pwmOut.pad = MXC_GPIO_PAD_NONE;
     pwmOut.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&pwmOut);
 
@@ -112,10 +112,10 @@ void PWMTimer()
 
     MXC_TMR_Shutdown(PWM_TIMER);
 
-    tmr.pres    = TMR_PRES_1;
-    tmr.mode    = TMR_MODE_PWM;
+    tmr.pres = TMR_PRES_1;
+    tmr.mode = TMR_MODE_PWM;
     tmr.cmp_cnt = periodTicks;
-    tmr.pol     = 1;
+    tmr.pol = 1;
 
     MXC_TMR_Init(PWM_TIMER, &tmr);
 
@@ -153,10 +153,10 @@ void ContinuousTimer()
 
     MXC_TMR_Shutdown(CONT_TIMER);
 
-    tmr.pres    = TMR_PRES_1;
-    tmr.mode    = TMR_MODE_CONTINUOUS;
+    tmr.pres = TMR_PRES_1;
+    tmr.mode = TMR_MODE_CONTINUOUS;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     MXC_TMR_Init(CONT_TIMER, &tmr);
     MXC_TMR_Start(CONT_TIMER);
@@ -188,10 +188,10 @@ void OneshotTimer()
 
     MXC_TMR_Shutdown(OST_TIMER);
 
-    tmr.pres    = TMR_PRES_1;
-    tmr.mode    = TMR_MODE_ONESHOT;
+    tmr.pres = TMR_PRES_1;
+    tmr.mode = TMR_MODE_ONESHOT;
     tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
-    tmr.pol     = 0;
+    tmr.pol = 0;
 
     TMR_FLAG = 0;
     MXC_TMR_Init(OST_TIMER, &tmr);
@@ -199,8 +199,7 @@ void OneshotTimer()
 
     printf("Oneshot timer started.\n");
 
-    while (TMR_FLAG != 1)
-        ;
+    while (TMR_FLAG != 1) {}
 
     printf("Oneshot timer finished.\n\n");
 }
@@ -230,8 +229,7 @@ int main(void)
 
     printf("\nStarted Timer");
 
-    while (1)
-        ;
+    while (1) {}
 
     return 0;
 }

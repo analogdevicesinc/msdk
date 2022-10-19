@@ -2,8 +2,8 @@
  * @file
  * @brief   TFT driver API header file
  */
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,10 +33,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _TFT_H_
-#define _TFT_H_
+#ifndef LIBRARIES_BOARDS_MAX32655_INCLUDE_TFT_H_
+#define LIBRARIES_BOARDS_MAX32655_INCLUDE_TFT_H_
 
 #include <stdio.h>
 #include <stdint.h>
@@ -55,7 +55,7 @@ typedef struct {
 } area_t;
 
 typedef struct {
-    char* data;
+    char *data;
     int len;
 } text_t;
 
@@ -79,8 +79,8 @@ typedef enum {
  *
  * @return     See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl,
-                 mxc_gpio_cfg_t* bl_ctrl);
+int MXC_TFT_Init(mxc_spi_regs_t *tft_spi, int ss_idx, mxc_gpio_cfg_t *reset_ctrl,
+                 mxc_gpio_cfg_t *bl_ctrl);
 
 /**
  * @brief      Turns backlight on or off
@@ -101,7 +101,7 @@ void MXC_TFT_ClearScreen(void);
  * @param      area   Location and size of rectangle
  * @param      color  Palette index of rectangle color
  */
-void MXC_TFT_FillRect(area_t* area, int color);
+void MXC_TFT_FillRect(area_t *area, int color);
 
 /**
  * @brief      Write a Pixel on TFT display
@@ -123,14 +123,14 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
  */
 void MXC_TFT_ShowImage(int x0, int y0, int id);
 
-void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t* image, int iWidth, int iHeight);
+void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
 /**
  * @brief      Fills screen with one color
  *
  * @param      index_color  Palette index of screen color
  */
-void MXC_TFT_SetBackGroundColor(unsigned int index_color);
+void MXC_TFT_SetBackGroundColor(uint32_t index_color);
 
 /**
  * @brief      Set bounds of printf
@@ -144,7 +144,7 @@ int MXC_TFT_SetPalette(int img_id);
  *
  * @param      area   Location of printf outputs
  */
-void MXC_TFT_ConfigPrintf(area_t* area);
+void MXC_TFT_ConfigPrintf(area_t *area);
 
 /**
  * @brief       Change font
@@ -159,7 +159,7 @@ void MXC_TFT_SetFont(int font_id);
  * @param      format  Char array formatted like printf
  *             NOTE: up to 3 additional arguments are supported
  */
-void MXC_TFT_Printf(const char* format, ...);
+void MXC_TFT_Printf(const char *format, ...);
 
 /**
  * @brief      Reset cursor to top left corner of printf bounds
@@ -176,7 +176,7 @@ void MXC_TFT_ResetCursor(void);
  * @param       str             String which will be display
  * @param       area            Location of printf outputs
  */
-void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t* str, area_t* area);
+void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t *str, area_t *area);
 
 /**
  * @brief      Print string with current font
@@ -187,7 +187,7 @@ void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t* str, area_t* area);
  * @param       str             String which will be display
  * @param       area            Location of printf outputs
  */
-void MXC_TFT_Print(int x0, int y0, text_t* str, area_t* area);
+void MXC_TFT_Print(int x0, int y0, text_t *str, area_t *area);
 
 /**
  * @brief       Clear area on display
@@ -195,7 +195,7 @@ void MXC_TFT_Print(int x0, int y0, text_t* str, area_t* area);
  * @param       area            Location on display
  * @param       color           Palette index of rectangle color
  */
-void MXC_TFT_ClearArea(area_t* area, int color);
+void MXC_TFT_ClearArea(area_t *area, int color);
 
 /**
  * @brief       Set TFT screen rotation
@@ -210,6 +210,6 @@ void MXC_TFT_SetRotation(tft_rotation_t rotation);
  * @param       command             command or register address
  * @param       data                data for the command or register
  */
-void MXC_TFT_WriteReg(unsigned short command, unsigned short data);
+void MXC_TFT_WriteReg(uint16_t command, uint16_t data);
 
-#endif /* _TFT_H_ */
+#endif // LIBRARIES_BOARDS_MAX32655_INCLUDE_TFT_H_

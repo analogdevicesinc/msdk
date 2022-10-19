@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-05-13 10:43:03 -0500 (Mon, 13 May 2019) $
- * $Revision: 43328 $
- *
  ******************************************************************************/
 
 /**
@@ -58,7 +55,7 @@ extern "C" {
 #endif
 
 #define LED_OFF 0 /// Inactive state of LEDs
-#define LED_ON  1 /// Active state of LEDs
+#define LED_ON 1 /// Active state of LEDs
 
 /**
  * \brief   Initialize the BSP and board interfaces.

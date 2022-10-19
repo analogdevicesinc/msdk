@@ -36,6 +36,7 @@
 
 /* **** Includes **** */
 #include <string.h>
+#include <stdint.h>
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "hpb_reva.h"
@@ -49,7 +50,7 @@
 /* **** Functions **** */
 
 /* ************************************************************************** */
-static void MXC_HPB_RevA_ConfigMem(mxc_hpb_reva_regs_t* hpb, mxc_hpb_mem_config_t* mem,
+static void MXC_HPB_RevA_ConfigMem(mxc_hpb_reva_regs_t *hpb, mxc_hpb_mem_config_t *mem,
                                    unsigned index)
 {
     int i;
@@ -81,7 +82,7 @@ static void MXC_HPB_RevA_ConfigMem(mxc_hpb_reva_regs_t* hpb, mxc_hpb_mem_config_
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RevA_RegRead8(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg_reg_val,
+void MXC_HPB_RevA_RegRead8(mxc_hpb_reva_regs_t *hpb, mxc_hpb_cfg_reg_val_t *cfg_reg_val,
                            uint32_t base_addr, unsigned int index)
 {
     if (!hpb || !cfg_reg_val || index > 1) {
@@ -90,13 +91,13 @@ void MXC_HPB_RevA_RegRead8(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg_
 
     MXC_EMCC_Disable();
     hpb->memctrl[index] |= MXC_F_HPB_REVA_MEMCTRL_CRT;
-    cfg_reg_val->val = *((volatile unsigned char*)(base_addr + cfg_reg_val->addr));
+    cfg_reg_val->val = *((volatile unsigned char *)(base_addr + cfg_reg_val->addr));
     hpb->memctrl[index] &= ~(MXC_F_HPB_REVA_MEMCTRL_CRT);
     MXC_EMCC_Enable();
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RevA_RegWrite8(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg_reg_val,
+void MXC_HPB_RevA_RegWrite8(mxc_hpb_reva_regs_t *hpb, mxc_hpb_cfg_reg_val_t *cfg_reg_val,
                             uint32_t base_addr, unsigned int index)
 {
     if (!hpb || !cfg_reg_val || index > 1) {
@@ -105,13 +106,13 @@ void MXC_HPB_RevA_RegWrite8(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg
 
     MXC_EMCC_Disable();
     hpb->memctrl[index] |= MXC_F_HPB_REVA_MEMCTRL_CRT;
-    *((volatile unsigned char*)(base_addr + cfg_reg_val->addr)) = cfg_reg_val->val;
+    *((volatile unsigned char *)(base_addr + cfg_reg_val->addr)) = cfg_reg_val->val;
     hpb->memctrl[index] &= ~(MXC_F_HPB_REVA_MEMCTRL_CRT);
     MXC_EMCC_Enable();
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RevA_RegRead16(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg_reg_val,
+void MXC_HPB_RevA_RegRead16(mxc_hpb_reva_regs_t *hpb, mxc_hpb_cfg_reg_val_t *cfg_reg_val,
                             uint32_t base_addr, unsigned int index)
 {
     if (!hpb || !cfg_reg_val || index > 1) {
@@ -120,13 +121,13 @@ void MXC_HPB_RevA_RegRead16(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg
 
     MXC_EMCC_Disable();
     hpb->memctrl[index] |= MXC_F_HPB_REVA_MEMCTRL_CRT;
-    cfg_reg_val->val = *((volatile unsigned short*)(base_addr + cfg_reg_val->addr));
+    cfg_reg_val->val = *((volatile uint16_t *)(base_addr + cfg_reg_val->addr));
     hpb->memctrl[index] &= ~(MXC_F_HPB_REVA_MEMCTRL_CRT);
     MXC_EMCC_Enable();
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RevA_RegWrite16(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cfg_reg_val,
+void MXC_HPB_RevA_RegWrite16(mxc_hpb_reva_regs_t *hpb, mxc_hpb_cfg_reg_val_t *cfg_reg_val,
                              uint32_t base_addr, unsigned int index)
 {
     if (!hpb || !cfg_reg_val || index > 1) {
@@ -135,14 +136,14 @@ void MXC_HPB_RevA_RegWrite16(mxc_hpb_reva_regs_t* hpb, mxc_hpb_cfg_reg_val_t* cf
 
     MXC_EMCC_Disable();
     hpb->memctrl[index] |= MXC_F_HPB_REVA_MEMCTRL_CRT;
-    *((volatile unsigned short*)(base_addr + cfg_reg_val->addr)) = cfg_reg_val->val;
+    *((volatile uint16_t *)(base_addr + cfg_reg_val->addr)) = cfg_reg_val->val;
     hpb->memctrl[index] &= ~(MXC_F_HPB_REVA_MEMCTRL_CRT);
     MXC_EMCC_Enable();
 }
 
 /* ************************************************************************** */
-int MXC_HPB_RevA_Init(mxc_hpb_reva_regs_t* hpb, mxc_hpb_mem_config_t* mem0,
-                      mxc_hpb_mem_config_t* mem1)
+int MXC_HPB_RevA_Init(mxc_hpb_reva_regs_t *hpb, mxc_hpb_mem_config_t *mem0,
+                      mxc_hpb_mem_config_t *mem1)
 {
     if (mem0) {
         MXC_HPB_RevA_ConfigMem(hpb, mem0, 0);
@@ -155,13 +156,13 @@ int MXC_HPB_RevA_Init(mxc_hpb_reva_regs_t* hpb, mxc_hpb_mem_config_t* mem0,
 }
 
 /* ************************************************************************** */
-uint32_t MXC_HPB_RevA_GetStatus(mxc_hpb_reva_regs_t* hpb)
+uint32_t MXC_HPB_RevA_GetStatus(mxc_hpb_reva_regs_t *hpb)
 {
     return hpb->stat;
 }
 
 /* ************************************************************************** */
-void MXC_HPB_RevA_EnableInt(mxc_hpb_reva_regs_t* hpb, unsigned polarity)
+void MXC_HPB_RevA_EnableInt(mxc_hpb_reva_regs_t *hpb, unsigned polarity)
 {
     if (polarity) {
         hpb->inten |= MXC_F_HPB_REVA_INTEN_ERR;
@@ -171,7 +172,7 @@ void MXC_HPB_RevA_EnableInt(mxc_hpb_reva_regs_t* hpb, unsigned polarity)
 }
 
 /* ************************************************************************** */
-unsigned MXC_HPB_RevA_GetFlag(mxc_hpb_reva_regs_t* hpb)
+unsigned MXC_HPB_RevA_GetFlag(mxc_hpb_reva_regs_t *hpb)
 {
     return hpb->intfl;
 }

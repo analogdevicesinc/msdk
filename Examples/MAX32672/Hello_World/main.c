@@ -65,4 +65,6 @@ int main(void)
         MXC_Delay(500000);
         printf("count = %d\n", count++);
     }
+
+    return 0;
 }

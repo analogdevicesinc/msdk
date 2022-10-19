@@ -30,7 +30,7 @@
  * ownership rights.
  *
  *************************************************************************** */
-
+#include <stdio.h>
 #include "adc.h"
 #include "dma.h"
 #include "adc_revb.h"
@@ -43,8 +43,6 @@
 #include "mxc_sys.h"
 #include "mcr_regs.h"
 #include "mxc_lock.h"
-#include "mxc_delay.h"
-#include <stdio.h>
 
 // Mask for all Interrupt Enable Fields
 #define ADC_IE_MASK                                                                             \
@@ -62,10 +60,10 @@
      MXC_F_ADC_REVB_INTFL_FIFO_OFL)
 
 static mxc_adc_complete_cb_t async_callback;
-static mxc_adc_conversion_req_t* async_req;
+static mxc_adc_conversion_req_t *async_req;
 // static volatile uint8_t flag;      //indicates  to irqhandler where to store data
 
-int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req)
+int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t *adc, mxc_adc_req_t *req)
 {
     if (req == NULL) {
         return E_NULL_PTR;
@@ -81,8 +79,8 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req)
     //Power up to Sleep State
     adc->clkctrl |= (req->clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
 
-    adc->clkctrl |=
-        (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS) & MXC_F_ADC_REVB_CLKCTRL_CLKDIV;
+    adc->clkctrl |= (req->clkdiv << MXC_F_ADC_REVB_CLKCTRL_CLKDIV_POS) &
+                    MXC_F_ADC_REVB_CLKCTRL_CLKDIV;
 
     adc->ctrl0 |= MXC_F_ADC_REVB_CTRL0_RESETB;
 
@@ -107,8 +105,7 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req)
     MXC_Delay(30);
 
     //wait for calibration to complete
-    while (!(adc->intfl & MXC_F_ADC_REVB_INTFL_READY))
-        ;
+    while (!(adc->intfl & MXC_F_ADC_REVB_INTFL_READY)) {}
 
     async_callback = NULL;
 
@@ -117,14 +114,14 @@ int MXC_ADC_RevB_Init(mxc_adc_revb_regs_t* adc, mxc_adc_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t* adc)
+int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t *adc)
 {
     if (async_callback != NULL) {
-        MXC_FreeLock((uint32_t*)&async_callback);
+        MXC_FreeLock((uint32_t *)&async_callback);
     }
 
     if (async_req != NULL) {
-        MXC_FreeLock((uint32_t*)&async_req);
+        MXC_FreeLock((uint32_t *)&async_req);
     }
 
     adc->ctrl0 &=
@@ -133,33 +130,33 @@ int MXC_ADC_RevB_Shutdown(mxc_adc_revb_regs_t* adc)
     return E_NO_ERROR;
 }
 
-void MXC_ADC_RevB_EnableInt(mxc_adc_revb_regs_t* adc, uint32_t flags)
+void MXC_ADC_RevB_EnableInt(mxc_adc_revb_regs_t *adc, uint32_t flags)
 {
     adc->inten |= (flags & ADC_IE_MASK);
 }
 
-void MXC_ADC_RevB_DisableInt(mxc_adc_revb_regs_t* adc, uint32_t flags)
+void MXC_ADC_RevB_DisableInt(mxc_adc_revb_regs_t *adc, uint32_t flags)
 {
     adc->inten &= ~(flags & ADC_IE_MASK);
 }
 
-int MXC_ADC_RevB_GetFlags(mxc_adc_revb_regs_t* adc)
+int MXC_ADC_RevB_GetFlags(mxc_adc_revb_regs_t *adc)
 {
     return (adc->intfl & ADC_IF_MASK);
 }
 
-void MXC_ADC_RevB_ClearFlags(mxc_adc_revb_regs_t* adc, uint32_t flags)
+void MXC_ADC_RevB_ClearFlags(mxc_adc_revb_regs_t *adc, uint32_t flags)
 {
     // Write 1 to clear flags
     adc->intfl |= (flags & ADC_IF_MASK);
 }
 
-void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t* adc, mxc_adc_clock_t clock)
+void MXC_ADC_RevB_ClockSelect(mxc_adc_revb_regs_t *adc, mxc_adc_clock_t clock)
 {
     adc->clkctrl |= (clock << MXC_F_ADC_REVB_CLKCTRL_CLKSEL) & MXC_F_ADC_REVB_CLKCTRL_CLKSEL;
 }
 
-int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t* adc)
+int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t *adc)
 {
     adc->fifodmactrl |= MXC_F_ADC_REVB_FIFODMACTRL_FLUSH; //Flush data FIFO
 
@@ -170,7 +167,7 @@ int MXC_ADC_RevB_StartConversion(mxc_adc_revb_regs_t* adc)
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete_cb_t callback)
+int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t *adc, mxc_adc_complete_cb_t callback)
 {
     if (callback == NULL) {
         return E_BAD_PARAM;
@@ -180,8 +177,7 @@ int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete
 
     MXC_ADC_RevB_ClearFlags(adc, ADC_IF_MASK);
 
-    while (MXC_GetLock((uint32_t*)&async_callback, (uint32_t)callback) != E_NO_ERROR)
-        ;
+    while (MXC_GetLock((uint32_t *)&async_callback, (uint32_t)callback) != E_NO_ERROR) {}
 
     MXC_ADC_RevB_EnableInt(adc, (MXC_F_ADC_REVB_INTEN_SEQ_DONE | MXC_F_ADC_REVB_INTEN_FIFO_LVL));
 
@@ -190,8 +186,8 @@ int MXC_ADC_RevB_StartConversionAsync(mxc_adc_revb_regs_t* adc, mxc_adc_complete
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req,
-                                    int* data, void (*callback)(int, int))
+int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req,
+                                    int *data, void (*callback)(int, int))
 {
     if (callback == NULL) {
         return E_BAD_PARAM;
@@ -221,7 +217,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion
     channel = MXC_DMA_AcquireChannel();
 
     config.reqsel = MXC_S_DMA_CTRL_REQUEST_ADC;
-    config.ch     = channel;
+    config.ch = channel;
 
     config.srcwd = MXC_DMA_WIDTH_WORD;
     config.dstwd = MXC_DMA_WIDTH_WORD;
@@ -229,16 +225,16 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion
     config.srcinc_en = 0;
     config.dstinc_en = 1;
 
-    srcdst.ch     = channel;
+    srcdst.ch = channel;
     srcdst.source = NULL;
-    srcdst.dest   = data;
-    srcdst.len    = num_bytes;
+    srcdst.dest = data;
+    srcdst.len = num_bytes;
 
     MXC_DMA_ConfigChannel(config, srcdst);
 
     MXC_DMA_SetCallback(channel, callback);
 
-    //TODO: This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64 bytes may need to read.
+    //TODO(ADI): This supports 32 bytes transfer. In MXC_ADC_DATA_STATUS if all channels are used 64 bytes may need to read.
     MXC_DMA->ch[channel].ctrl |= (num_bytes - 1) << MXC_F_DMA_CTRL_BURST_SIZE_POS;
 
     MXC_DMA_EnableInt(channel);
@@ -252,7 +248,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t* adc, mxc_adc_conversion
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc)
+int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t *adc)
 {
     uint32_t flags;
 
@@ -263,10 +259,15 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc)
 
         if (flags & MXC_F_ADC_REVB_INTEN_SEQ_DONE) {
             MXC_ADC_RevB_ClearFlags(adc, flags);
-            MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
-                                          MXC_F_ADC_REVB_INTFL_CONV_DONE |
-                                          MXC_F_ADC_REVB_INTEN_FIFO_LVL));
-            MXC_FreeLock((uint32_t*)&async_callback);
+
+            // Disable interrupts only when in single conversion mode
+            if (!(adc->ctrl1 & MXC_F_ADC_REVB_CTRL1_CNV_MODE)) {
+                MXC_ADC_RevB_DisableInt(adc, (MXC_F_ADC_REVB_INTFL_SEQ_DONE |
+                                              MXC_F_ADC_REVB_INTFL_CONV_DONE |
+                                              MXC_F_ADC_REVB_INTEN_FIFO_LVL));
+
+                MXC_FreeLock((uint32_t *)&async_callback);
+            }
         }
 
         if (flags & MXC_F_ADC_REVB_INTEN_CONV_DONE) {
@@ -281,7 +282,7 @@ int MXC_ADC_RevB_Handler(mxc_adc_revb_regs_t* adc)
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t* adc, int* outdata)
+int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t *adc, int *outdata)
 {
     uint32_t loop_counter, length;
 
@@ -295,33 +296,33 @@ int MXC_ADC_RevB_GetData(mxc_adc_revb_regs_t* adc, int* outdata)
     return length;
 }
 
-void MXC_ADC_RevB_EnableConversion(mxc_adc_revb_regs_t* adc)
+void MXC_ADC_RevB_EnableConversion(mxc_adc_revb_regs_t *adc)
 {
     adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_START;
 }
 
-void MXC_ADC_RevB_DisableConversion(mxc_adc_revb_regs_t* adc)
+void MXC_ADC_RevB_DisableConversion(mxc_adc_revb_regs_t *adc)
 {
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_START;
 }
 
-void MXC_ADC_RevB_TS_SelectEnable(mxc_adc_revb_regs_t* adc)
+void MXC_ADC_RevB_TS_SelectEnable(mxc_adc_revb_regs_t *adc)
 {
     adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_TS_SEL;
 }
 
-void MXC_ADC_RevB_TS_SelectDisable(mxc_adc_revb_regs_t* adc)
+void MXC_ADC_RevB_TS_SelectDisable(mxc_adc_revb_regs_t *adc)
 {
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_TS_SEL;
 }
 
-uint16_t MXC_ADC_RevB_FIFO_Level(mxc_adc_revb_regs_t* adc)
+uint16_t MXC_ADC_RevB_FIFO_Level(mxc_adc_revb_regs_t *adc)
 {
     return ((adc->status & MXC_F_ADC_REVB_STATUS_FIFO_LEVEL) >>
             MXC_F_ADC_REVB_STATUS_FIFO_LEVEL_POS);
 }
 
-int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t* adc, uint32_t fifo_threshold)
+int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t *adc, uint32_t fifo_threshold)
 {
     if (fifo_threshold > MAX_ADC_FIFO_LEN) {
         return E_BAD_PARAM;
@@ -333,7 +334,7 @@ int MXC_ADC_RevB_FIFO_Threshold_Config(mxc_adc_revb_regs_t* adc, uint32_t fifo_t
     return E_NO_ERROR;
 }
 
-int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t* adc, mxc_adc_avg_t avg_number)
+int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t *adc, mxc_adc_avg_t avg_number)
 {
     //number of samples to average
     adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_AVG;
@@ -342,7 +343,7 @@ int MXC_ADC_RevB_AverageConfig(mxc_adc_revb_regs_t* adc, mxc_adc_avg_t avg_numbe
     return E_NO_ERROR;
 }
 
-void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t* adc)
+void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t *adc)
 {
     //Clear channel select registers
     adc->chsel0 = 0;
@@ -355,7 +356,7 @@ void MXC_ADC_RevB_Clear_ChannelSelect(mxc_adc_revb_regs_t* adc)
 #endif
 }
 
-void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req)
+void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
     if (req->trig == MXC_ADC_TRIG_SOFTWARE) {
         adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_TRIG_MODE;
@@ -366,7 +367,28 @@ void MXC_ADC_RevB_TriggerConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req
     }
 }
 
-int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t* req)
+void MXC_ADC_RevB_ConversionModeConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
+{
+    if (req->mode == MXC_ADC_ATOMIC_CONV) {
+        adc->ctrl1 &= ~MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+    } else {
+        adc->ctrl1 |= MXC_F_ADC_REVB_CTRL1_CNV_MODE;
+    }
+}
+
+int MXC_ADC_RevB_SetConversionDelay(mxc_adc_revb_regs_t *adc, int delay)
+{
+    if (delay > MXC_F_ADC_REVB_RESTART_CNT) {
+        return E_BAD_PARAM;
+    }
+
+    adc->restart &= ~MXC_F_ADC_REVB_RESTART_CNT;
+    adc->restart |= delay << MXC_F_ADC_REVB_RESTART_CNT_POS;
+
+    return E_NO_ERROR;
+}
+
+int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t *adc, mxc_adc_conversion_req_t *req)
 {
     if (req->num_slots >= MAX_ADC_SLOT_NUM) {
         return E_BAD_PARAM;
@@ -378,10 +400,10 @@ int MXC_ADC_RevB_SlotsConfig(mxc_adc_revb_regs_t* adc, mxc_adc_conversion_req_t*
     return E_NO_ERROR;
 }
 
-//TODO: Need to find out better way to handle this.
-int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t* adc, mxc_adc_chsel_t ch, uint32_t slot_num)
+//TODO(ADI): Need to find out better way to handle this.
+int MXC_ADC_RevB_ChSelectConfig(mxc_adc_revb_regs_t *adc, mxc_adc_chsel_t ch, uint32_t slot_num)
 {
-    uint32_t* pointer = (uint32_t*)(MXC_BASE_ADC + MXC_R_ADC_CHSEL0);
+    uint32_t *pointer = (uint32_t *)(MXC_BASE_ADC + MXC_R_ADC_CHSEL0);
     uint32_t offset;
     uint32_t bitposition;
 

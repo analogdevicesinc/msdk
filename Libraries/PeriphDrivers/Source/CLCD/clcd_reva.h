@@ -40,8 +40,8 @@
  *************************************************************************** */
 
 /* Define to prevent redundant inclusion */
-#ifndef _CLCD_REVA_H_
-#define _CLCD_REVA_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_CLCD_CLCD_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_CLCD_CLCD_REVA_H_
 
 /* **** Includes **** */
 #include "clcd_reva_regs.h"
@@ -55,15 +55,15 @@ extern "C" {
 /* **** Definitions **** */
 
 /* **** Function Prototypes **** */
-int MXC_CLCD_RevA_Init(mxc_clcd_reva_regs_t* clcd, mxc_clcd_cfg_t* cfg);
-int MXC_CLCD_RevA_Shutdown(mxc_clcd_reva_regs_t* clcd);
-int MXC_CLCD_RevA_ConfigPanel(mxc_clcd_reva_regs_t* clcd, mxc_clcd_cfg_t* clcd_cfg);
-int MXC_CLCD_RevA_Enable(mxc_clcd_reva_regs_t* clcd);
-int MXC_CLCD_RevA_Disable(mxc_clcd_reva_regs_t* clcd);
-int MXC_CLCD_RevA_SetFrameAddr(mxc_clcd_reva_regs_t* clcd, void* addr);
+int MXC_CLCD_RevA_Init(mxc_clcd_reva_regs_t *clcd, mxc_clcd_cfg_t *cfg);
+int MXC_CLCD_RevA_Shutdown(mxc_clcd_reva_regs_t *clcd);
+int MXC_CLCD_RevA_ConfigPanel(mxc_clcd_reva_regs_t *clcd, mxc_clcd_cfg_t *clcd_cfg);
+int MXC_CLCD_RevA_Enable(mxc_clcd_reva_regs_t *clcd);
+int MXC_CLCD_RevA_Disable(mxc_clcd_reva_regs_t *clcd);
+int MXC_CLCD_RevA_SetFrameAddr(mxc_clcd_reva_regs_t *clcd, void *addr);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _CLCD_REVA_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CLCD_CLCD_REVA_H_

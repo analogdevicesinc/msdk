@@ -87,40 +87,40 @@ extern int disable_tickless;
  * Defines a command that returns a table showing the state of each task at the
  * time the command is called.
  */
-static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                      const char* pcCommandString);
+static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                      const char *pcCommandString);
 
 /*
  * Define a command which reports how long the scheduler has been operating (uptime)
  *
  */
-static BaseType_t prvUptimeCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                   const char* pcCommandString);
+static BaseType_t prvUptimeCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                   const char *pcCommandString);
 
 /*
  * Defines a command that expects exactly three parameters.  Each of the three
  * parameter are echoed back one at a time.
  */
-static BaseType_t prvThreeParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                               const char* pcCommandString);
+static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                               const char *pcCommandString);
 
 /*
  * Defines a command that can take a variable number of parameters.  Each
  * parameter is echoes back one at a time.
  */
-static BaseType_t prvParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                          const char* pcCommandString);
+static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                          const char *pcCommandString);
 
 /* Enable or disable tickless operation */
-static BaseType_t prvTickless(char* pcWriteBuffer, size_t xWriteBufferLen,
-                              const char* pcCommandString);
+static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
+                              const char *pcCommandString);
 
 /* Structure that defines the "ps" command line command. */
 static const CLI_Command_Definition_t xTaskStats = {
     "ps", /* The command string to type. */
     "\r\nps:\r\n Displays a table showing the state of each FreeRTOS task\r\n\r\n",
     prvTaskStatsCommand, /* The function to run. */
-    0                    /* No parameters are expected. */
+    0 /* No parameters are expected. */
 };
 
 /* Structure that defines the "uptime" command line command. */
@@ -128,7 +128,7 @@ static const CLI_Command_Definition_t xUptime = {
     "uptime", /* The command string to type. */
     "\r\nuptime:\r\n Displays the uptime of the FreeRTOS system\r\n\r\n",
     prvUptimeCommand, /* The function to run. */
-    0                 /* No parameters are expected. */
+    0 /* No parameters are expected. */
 };
 
 /* Structure that defines the "tickless" command line command. */
@@ -136,7 +136,7 @@ static const CLI_Command_Definition_t xTickless = {
     "tickless", /* The command string to type. */
     "\r\ntickless <0/1>:\r\n Disable (0) or enable (1) tick-less operation\r\n\r\n",
     prvTickless, /* The function to run. */
-    1            /* One parameter expected */
+    1 /* One parameter expected */
 };
 
 /* Structure that defines the "echo_3_parameters" command line command.  This
@@ -147,7 +147,7 @@ static const CLI_Command_Definition_t xThreeParameterEcho = {
     "\r\necho_3_parameters <param1> <param2> <param3>:\r\n Expects three parameters, echos each in "
     "turn\r\n\r\n",
     prvThreeParameterEchoCommand, /* The function to run. */
-    3                             /* Three parameters are expected, which can take any value. */
+    3 /* Three parameters are expected, which can take any value. */
 };
 
 /* Structure that defines the "echo_parameters" command line command.  This
@@ -157,7 +157,7 @@ static const CLI_Command_Definition_t xParameterEcho = {
     "echo_parameters",
     "\r\necho_parameters <...>:\r\n Take variable number of parameters, echos each in turn\r\n\r\n",
     prvParameterEchoCommand, /* The function to run. */
-    -1                       /* The user can enter any number of commands. */
+    -1 /* The user can enter any number of commands. */
 };
 
 /*-----------------------------------------------------------*/
@@ -173,10 +173,10 @@ void vRegisterCLICommands(void)
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                      const char* pcCommandString)
+static BaseType_t prvTaskStatsCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                      const char *pcCommandString)
 {
-    const char* const pcHeader = "Task          State  Priority  Stack	"
+    const char *const pcHeader = "Task          State  Priority  Stack  "
                                  "#\r\n************************************************\r\n";
 
     /* Remove compile time warnings about unused parameters, and check the
@@ -187,7 +187,7 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
     configASSERT(pcWriteBuffer);
 
     /* Generate a table of task stats. */
-    strcpy(pcWriteBuffer, pcHeader);
+    snprintf(pcWriteBuffer, xWriteBufferLen, "%s", pcHeader);
     vTaskList(pcWriteBuffer + strlen(pcHeader));
 
     /* There is no more data to return after this single string, so return
@@ -196,8 +196,8 @@ static BaseType_t prvTaskStatsCommand(char* pcWriteBuffer, size_t xWriteBufferLe
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvUptimeCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                   const char* pcCommandString)
+static BaseType_t prvUptimeCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                   const char *pcCommandString)
 {
     TickType_t ticks;
 
@@ -217,10 +217,10 @@ static BaseType_t prvUptimeCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvThreeParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                               const char* pcCommandString)
+static BaseType_t prvThreeParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                               const char *pcCommandString)
 {
-    const char* pcParameter;
+    const char *pcParameter;
     BaseType_t lParameterStringLength, xReturn;
     static BaseType_t lParameterNumber = 0;
 
@@ -234,7 +234,7 @@ static BaseType_t prvThreeParameterEchoCommand(char* pcWriteBuffer, size_t xWrit
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
         entered just a header string is returned. */
-        sprintf(pcWriteBuffer, "The three parameters were:\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The three parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
         back. */
@@ -246,26 +246,25 @@ static BaseType_t prvThreeParameterEchoCommand(char* pcWriteBuffer, size_t xWrit
     } else {
         /* Obtain the parameter string. */
         pcParameter = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            lParameterNumber,       /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
+            pcCommandString, /* The command string itself. */
+            lParameterNumber, /* Return the next parameter. */
+            &lParameterStringLength /* Store the parameter string length. */);
 
         /* Sanity check something was returned. */
         configASSERT(pcParameter);
 
         /* Return the parameter string. */
         memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-        sprintf(pcWriteBuffer, "%d: ", (int)lParameterNumber);
+        snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
         strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
-        strcat(pcWriteBuffer, "\r\n");
+        strncat(pcWriteBuffer, "\r\n", 3);
 
         /* If this is the last of the three parameters then there are no more
         strings to return after this one. */
         if (lParameterNumber == 3L) {
             /* If this is the last of the three parameters then there are no more
             strings to return after this one. */
-            xReturn          = pdFALSE;
+            xReturn = pdFALSE;
             lParameterNumber = 0L;
         } else {
             /* There are more parameters to return after this one. */
@@ -278,10 +277,10 @@ static BaseType_t prvThreeParameterEchoCommand(char* pcWriteBuffer, size_t xWrit
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBufferLen,
-                                          const char* pcCommandString)
+static BaseType_t prvParameterEchoCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
+                                          const char *pcCommandString)
 {
-    const char* pcParameter;
+    const char *pcParameter;
     BaseType_t lParameterStringLength, xReturn;
     static BaseType_t lParameterNumber = 0;
 
@@ -295,7 +294,7 @@ static BaseType_t prvParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBuff
     if (lParameterNumber == 0) {
         /* The first time the function is called after the command has been
         entered just a header string is returned. */
-        sprintf(pcWriteBuffer, "The parameters were:\r\n");
+        snprintf(pcWriteBuffer, xWriteBufferLen, "The parameters were:\r\n");
 
         /* Next time the function is called the first parameter will be echoed
         back. */
@@ -307,17 +306,16 @@ static BaseType_t prvParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBuff
     } else {
         /* Obtain the parameter string. */
         pcParameter = FreeRTOS_CLIGetParameter(
-            pcCommandString,        /* The command string itself. */
-            lParameterNumber,       /* Return the next parameter. */
-            &lParameterStringLength /* Store the parameter string length. */
-        );
+            pcCommandString, /* The command string itself. */
+            lParameterNumber, /* Return the next parameter. */
+            &lParameterStringLength /* Store the parameter string length. */);
 
         if (pcParameter != NULL) {
             /* Return the parameter string. */
             memset(pcWriteBuffer, 0x00, xWriteBufferLen);
-            sprintf(pcWriteBuffer, "%d: ", (int)lParameterNumber);
+            snprintf(pcWriteBuffer, xWriteBufferLen, "%d: ", (int)lParameterNumber);
             strncat(pcWriteBuffer, pcParameter, lParameterStringLength);
-            strcat(pcWriteBuffer, "\r\n");
+            strncat(pcWriteBuffer, "\r\n", 3);
 
             /* There might be more parameters to return after this one. */
             xReturn = pdTRUE;
@@ -338,10 +336,10 @@ static BaseType_t prvParameterEchoCommand(char* pcWriteBuffer, size_t xWriteBuff
     return xReturn;
 }
 
-static BaseType_t prvTickless(char* pcWriteBuffer, size_t xWriteBufferLen,
-                              const char* pcCommandString)
+static BaseType_t prvTickless(char *pcWriteBuffer, size_t xWriteBufferLen,
+                              const char *pcCommandString)
 {
-    const char* pcParameter;
+    const char *pcParameter;
     BaseType_t lParameterStringLength;
 
     /* Get parameter */

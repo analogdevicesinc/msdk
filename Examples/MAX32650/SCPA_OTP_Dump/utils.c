@@ -38,22 +38,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "utils.h"
 #include "uart.h"
 #include "board.h"
 
 #define UART_PORT MXC_UART_GET_UART(CONSOLE_UART)
 
-static const char* hex = "0123456789ABCDEF";
+static const char *hex = "0123456789ABCDEF";
 /****************************** Static Functions *****************************/
-char* my_itoa(int value, char* str, int base)
+char *my_itoa(int value, char *str, int base)
 {
-    int i        = 0;
+    int i = 0;
     int tmpValue = value;
 
     // find number chrachter
-    for (i = 0; tmpValue; i++) {
-        tmpValue /= base;
-    }
+    for (i = 0; tmpValue; i++) { tmpValue /= base; }
 
     if (i == 0) {
         i = 1; // 0 case
@@ -83,10 +82,10 @@ char* my_itoa(int value, char* str, int base)
 }
 
 /****************************** Public Functions *****************************/
-void print_str(const char* str)
+void print_str(const char *str)
 {
     int len = strlen(str);
-    MXC_UART_Write(UART_PORT, (unsigned char*)str, &len);
+    MXC_UART_Write(UART_PORT, (unsigned char *)str, &len);
 }
 
 void print_hex(int value)
@@ -103,11 +102,11 @@ void print_decimal(int value)
     print_str(str);
 }
 
-void utils_byteArr2str(unsigned char* dst, unsigned char* arr, int numberOfItem, int itemsize,
-                       const char* prefix, const char* postfix)
+void utils_byteArr2str(unsigned char *dst, unsigned char *arr, int numberOfItem, int itemsize,
+                       const char *prefix, const char *postfix)
 {
     int i, k;
-    int len_prefix  = 0;
+    int len_prefix = 0;
     int len_postfix = 0;
 
     if (prefix) {

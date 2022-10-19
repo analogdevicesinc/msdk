@@ -32,6 +32,9 @@
  * ownership rights.
  *
  ******************************************************************************/
+#ifndef EXAMPLES_MAX32570_CAMERAIF_INCLUDE_GC0308_REGS_H_
+#define EXAMPLES_MAX32570_CAMERAIF_INCLUDE_GC0308_REGS_H_
+
 #include <stdint.h>
 
 #if (ACTIVE_CAMERA == CAM_GC0308)
@@ -40,10 +43,8 @@
 #define PAGE_0          0x00
 #define PAGE_1          0x01
 
-
 #define REG_Output_format   0x24
 
+#endif // (ACTIVE_CAMERA == CAM_GC0308)
 
-#endif //__REG_REGS_H__
-
-
+#endif // EXAMPLES_MAX32570_CAMERAIF_INCLUDE_GC0308_REGS_H_

@@ -36,14 +36,14 @@
  *
  ******************************************************************************/
 
-#ifndef _KEYPAD_H_
-#define _KEYPAD_H_
+#ifndef EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_KEYPAD_H_
+#define EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_KEYPAD_H_
 
 /* Global includes */
 
 int kb_init(void);
 int kb_get_key(void);
 int kb_read_num(unsigned int timeout);
-int kb_select_from_list_xcol(const char* title, const char** items, int nb_items, int nb_col);
+int kb_select_from_list_xcol(const char *title, const char **items, int nb_items, int nb_col);
 
-#endif // _KEYPAD_H_
+#endif // EXAMPLES_MAX32570_SECURITY_MONITOR_INCLUDE_KEYPAD_H_

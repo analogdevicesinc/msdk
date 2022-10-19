@@ -71,9 +71,9 @@ int32_t iso_14443_3b_polling(void)
     return iso_14443_3b_polling_response(NULL, &void_len);
 }
 
-int32_t iso_14443_3b_polling_response(uint8_t* atqb_resp, int32_t* atqb_resp_len)
+int32_t iso_14443_3b_polling_response(uint8_t *atqb_resp, int32_t *atqb_resp_len)
 {
-    uint8_t* atq = GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
     int32_t atq_len;
     int32_t ret;
 
@@ -97,12 +97,12 @@ int32_t iso_14443_3b_polling_response(uint8_t* atqb_resp, int32_t* atqb_resp_len
     return 0;
 }
 
-static void set_atqb(ATQB_t* patqb)
+static void set_atqb(ATQB_t *patqb)
 {
     memcpy(&GAtqb, patqb, sizeof(ATQB_t));
 }
 
-static void get_atqb(ATQB_t* patqb)
+static void get_atqb(ATQB_t *patqb)
 {
     memcpy(patqb, &GAtqb, sizeof(ATQB_t));
 }
@@ -114,17 +114,17 @@ int32_t iso_14443_3b_collision_detect(void)
     return iso_14443_3b_collision_detect_response(NULL, &void_len);
 }
 
-int32_t iso_14443_3b_collision_detect_response(uint8_t* atqb_resp, int32_t* atqb_resp_len)
+int32_t iso_14443_3b_collision_detect_response(uint8_t *atqb_resp, int32_t *atqb_resp_len)
 {
-    uint8_t* atqb = GetCommonBuffer();
+    uint8_t *atqb = GetCommonBuffer();
     int32_t atqb_len;
 
     uint8_t fsci = FSCI_DEFAULT_VALUE;
-    uint8_t fwi  = FWI_DEFAULT_VALUE;
+    uint8_t fwi = FWI_DEFAULT_VALUE;
     uint8_t sfgi = SFGI_DEFAULT_VALUE;
     uint8_t nad = 0, cid = 0; /*we don't support nad&cid in default*/
 
-    ATQB_t* patqb = (ATQB_t*)atqb;
+    ATQB_t *patqb = (ATQB_t *)atqb;
     int32_t ret;
 
     ret = iso_14443_3b_cmd_req_wup(atqb, &atqb_len, WAKEUP_DORETRY);
@@ -139,7 +139,7 @@ int32_t iso_14443_3b_collision_detect_response(uint8_t* atqb_resp, int32_t* atqb
     }
 
     fsci = patqb->proinfo.fsci <= FSCI_MAX_VALUE ? patqb->proinfo.fsci : FSCI_MAX_VALUE;
-    fwi  = patqb->proinfo.fwi <= FWI_MAX_VALUE ? patqb->proinfo.fwi : FWI_DEFAULT_VALUE;
+    fwi = patqb->proinfo.fwi <= FWI_MAX_VALUE ? patqb->proinfo.fwi : FWI_DEFAULT_VALUE;
 
     if (atqb_len == ISO3B_ATQB_MAXLEN)
         sfgi = patqb->proinfo.sfgi <= SFGI_MAX_VALUE ? patqb->proinfo.sfgi : SFGI_DEFAULT_VALUE;
@@ -167,7 +167,7 @@ int32_t iso_14443_3b_active(void)
     return iso_14443_3b_active_response(NULL, &void_len);
 }
 
-int32_t iso_14443_3b_active_response(uint8_t* attrib_resp, int32_t* attrib_resp_len)
+int32_t iso_14443_3b_active_response(uint8_t *attrib_resp, int32_t *attrib_resp_len)
 {
     int32_t ret;
     uint32_t sfgi_fc = 0;
@@ -208,7 +208,7 @@ int32_t iso_14443_3b_remove(void)
 {
     int32_t loop = 0;
     int32_t ret;
-    uint8_t* atq = GetCommonBuffer();
+    uint8_t *atq = GetCommonBuffer();
     int32_t atq_len;
 
     nfc_reset();

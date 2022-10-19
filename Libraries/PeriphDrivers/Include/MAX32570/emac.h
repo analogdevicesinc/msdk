@@ -36,8 +36,8 @@
  *
  *************************************************************************** */
 
-#ifndef _EMAC_H_
-#define _EMAC_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_EMAC_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_EMAC_H_
 
 /* **** Includes **** */
 #include "mxc_device.h"
@@ -95,7 +95,7 @@ typedef void (*mxc_emac_cb_func_t)(void);
  * @brief   The microsecond delay function used by the driver
  *
  */
-typedef int (*mxc_emac_delay_func_t)(unsigned long);
+typedef int (*mxc_emac_delay_func_t)(uint32_t);
 
 /**
  * @brief   The table of callback functions for EMAC interrupt events
@@ -131,18 +131,18 @@ typedef struct {
  *
  */
 typedef struct {
-    mxc_emac_regs_t* regs;
+    mxc_emac_regs_t *regs;
     unsigned int rx_tail;
     unsigned int tx_head;
     unsigned int tx_tail;
-    void* rx_buffer;
-    void* tx_buffer;
-    mxc_emac_dma_desc_t* rx_ring;
-    mxc_emac_dma_desc_t* tx_ring;
+    void *rx_buffer;
+    void *tx_buffer;
+    mxc_emac_dma_desc_t *rx_ring;
+    mxc_emac_dma_desc_t *tx_ring;
     unsigned int rx_buffer_dma;
     unsigned int rx_ring_dma;
     unsigned int tx_ring_dma;
-    unsigned short phy_addr;
+    uint16_t phy_addr;
 
     unsigned int first_init;
     unsigned int rx_buffer_size;
@@ -157,13 +157,13 @@ typedef struct {
  *
  */
 typedef struct {
-    unsigned char* rx_buff;
-    unsigned char* rx_ring_buff;
-    unsigned char* tx_ring_buff;
+    unsigned char *rx_buff;
+    unsigned char *rx_ring_buff;
+    unsigned char *tx_ring_buff;
     unsigned int rx_buff_size;
     unsigned int rx_ring_buff_size;
     unsigned int tx_ring_buff_size;
-    unsigned short phy_addr;
+    uint16_t phy_addr;
     unsigned int interrupt_mode;
     unsigned int interrupt_events;
     mxc_emac_delay_func_t delay_us;
@@ -183,7 +183,7 @@ typedef struct {
  * @return     #E_NULL_PTR        if pointer is null
  * @return     #E_INVALID         if parameter is invalid
  */
-int MXC_EMAC_Init(mxc_emac_config_t* config);
+int MXC_EMAC_Init(mxc_emac_config_t *config);
 
 /**
  * @brief      Set configuration for EMAC device
@@ -195,7 +195,7 @@ int MXC_EMAC_Init(mxc_emac_config_t* config);
  * @return     #E_INVALID         if parameter is invalid
  * @return     #E_UNINITIALIZED   if device is uninitialized
  */
-int MXC_EMAC_SetConfiguration(mxc_emac_config_t* config);
+int MXC_EMAC_SetConfiguration(mxc_emac_config_t *config);
 
 /**
  * @brief      Set EMAC hardware address
@@ -205,7 +205,7 @@ int MXC_EMAC_SetConfiguration(mxc_emac_config_t* config);
  * @return     #E_NO_ERROR        if successful
  * @return     #E_NULL_PTR        if pointer is null
  */
-int MXC_EMAC_SetHwAddr(unsigned char* enetaddr);
+int MXC_EMAC_SetHwAddr(unsigned char *enetaddr);
 
 /**
  * @brief      Enable interrupt events
@@ -271,7 +271,7 @@ int MXC_EMAC_ReadLinkStatus(void);
  * @return     #E_OVERFLOW        if transmission is exhausted
  * @return     #E_TIME_OUT        if transmission timeout occurs
  */
-int MXC_EMAC_SendSync(const void* packet, unsigned int length);
+int MXC_EMAC_SendSync(const void *packet, unsigned int length);
 
 /**
  * @brief      Send Ethernet packet in async mode
@@ -282,7 +282,7 @@ int MXC_EMAC_SendSync(const void* packet, unsigned int length);
  * @return     #E_NO_ERROR        if successful
  * @return     #E_NULL_PTR        if pointer is null
  */
-int MXC_EMAC_SendAsync(const void* packet, unsigned int length);
+int MXC_EMAC_SendAsync(const void *packet, unsigned int length);
 
 /**
  * @brief      Receive Ethernet packet
@@ -295,7 +295,7 @@ int MXC_EMAC_SendAsync(const void* packet, unsigned int length);
  * @return     #E_NULL_PTR        if pointer is null
  * @return     #E_NONE_AVAIL      if received packet does not fit into the receive buffer
  */
-int MXC_EMAC_Recv(void* rx_buff, unsigned int max_len);
+int MXC_EMAC_Recv(void *rx_buff, unsigned int max_len);
 
 /**
  * @brief      Used for interrupt handling
@@ -312,4 +312,4 @@ void MXC_EMAC_IrqHandler(void);
 }
 #endif
 
-#endif /* _EMAC_H_ */
+#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_EMAC_H_

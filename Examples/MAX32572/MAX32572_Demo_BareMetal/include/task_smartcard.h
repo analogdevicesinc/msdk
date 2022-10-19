@@ -33,8 +33,8 @@
 *******************************************************************************
 */
 
-#ifndef _TASK_SMARTCARD_H_
-#define _TASK_SMARTCARD_H_
+#ifndef EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_TASK_SMARTCARD_H_
+#define EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_TASK_SMARTCARD_H_
 
 #include "smartcard_api.h"
 
@@ -42,6 +42,6 @@
 int sc_init(void);
 void sc_set_afe_intterrupt(unsigned int status);
 IccReturn_t sc_get_card_status(void);
-int sc_read_atr(char* msg, int* msg_len);
+int sc_read_atr(char *msg, int *msg_len);
 
-#endif /* _TASK_SMARTCARD_H_ */
+#endif // EXAMPLES_MAX32572_MAX32572_DEMO_BAREMETAL_INCLUDE_TASK_SMARTCARD_H_

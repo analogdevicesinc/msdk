@@ -59,20 +59,26 @@
 #include <MAX32xxx.h>
 
 #define DELAY_IN_SEC 2
-#define USE_CONSOLE  1
+#define USE_CONSOLE 1
 
 #define USE_BUTTON 1
-#define USE_ALARM  0
+#define USE_ALARM 0
 
-#define DO_SLEEP     1
+#define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
-#define DO_BACKUP    0
+#define DO_BACKUP 0
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
 #endif
 #if (USE_BUTTON && USE_ALARM)
 #error "You must select either USE_BUTTON or USE_ALARM, not both."
+#endif
+
+#if USE_CONSOLE
+#define PRINT_F(...) printf(__VA_ARGS__)
+#else
+#define PRINT_F(...)
 #endif
 
 // *****************************************************************************
@@ -82,7 +88,7 @@ volatile int alarmed;
 void alarmHandler(void)
 {
     int flags = MXC_RTC->ctrl;
-    alarmed   = 1;
+    alarmed = 1;
 
     if ((flags & MXC_F_RTC_CTRL_ALSF) >> MXC_F_RTC_CTRL_ALSF_POS) {
         MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALSF);
@@ -97,31 +103,24 @@ void setTrigger(int waitForTrigger)
 {
     alarmed = 0;
 
-    while (MXC_RTC_Init(0, 0) == E_BUSY)
-        ;
+    while (MXC_RTC_Init(0, 0) == E_BUSY) {}
 
-    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY)
-        ;
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
 
-    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY)
-        ;
+    while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY) {}
 
-    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY)
-        ;
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
 
-    while (MXC_RTC_Start() == E_BUSY)
-        ;
+    while (MXC_RTC_Start() == E_BUSY) {}
 
     if (waitForTrigger) {
-        while (!alarmed)
-            ;
+        while (!alarmed) {}
     }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
 #endif // USE_CONSOLE
 }
@@ -129,7 +128,7 @@ void setTrigger(int waitForTrigger)
 
 #if USE_BUTTON
 volatile int buttonPressed;
-void buttonHandler(void* pb)
+void buttonHandler(void *pb)
 {
     buttonPressed = 1;
 }
@@ -141,20 +140,16 @@ void setTrigger(int waitForTrigger)
     buttonPressed = 0;
 
     if (waitForTrigger) {
-        while (!buttonPressed)
-            ;
+        while (!buttonPressed) {}
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x800000; tmp++) {
-        __NOP();
-    }
+    for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
 
-    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR)
-        ;
+    while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
 #endif // USE_CONSOLE
 }
@@ -162,30 +157,23 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINT_F("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32570 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
-#endif // USE_CONSOLE
+    PRINT_F("This code cycles through the MAX32570 power modes, using the RTC alarm to exit from "
+            "each mode.  The modes will change every %d seconds.\n\n",
+            DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32570 power modes, using a push button (SW2) to exit "
-           "from each mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINT_F("This code cycles through the MAX32570 power modes, using a push button (SW2) to exit "
+            "from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINT_F("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     SYS_ClockDisable(SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
     setTrigger(1);
@@ -195,7 +183,6 @@ int main(void)
     MXC_LP_CryptoLightSleepEnable();
     MXC_LP_SRCCLightSleepEnable();
     MXC_LP_ICacheXIPLightSleepEnable();
-    MXC_LP_ICache0LightSleepEnable();
     MXC_LP_SysRam5LightSleepEnable();
     MXC_LP_SysRam4LightSleepEnable();
     MXC_LP_SysRam3LightSleepEnable();
@@ -204,9 +191,7 @@ int main(void)
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
-#endif // USE_CONSOLE
+    PRINT_F("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     MXC_LP_ROMShutdown();
@@ -214,7 +199,6 @@ int main(void)
     // MXC_LP_CryptoShutdown();
     MXC_LP_SRCCShutdown();
     MXC_LP_ICacheXIPShutdown();
-    MXC_LP_ICache0Shutdown();
     MXC_LP_SysRam5Shutdown();
     MXC_LP_SysRam4Shutdown();
     MXC_LP_SysRam3Shutdown();
@@ -223,38 +207,34 @@ int main(void)
     MXC_LP_SysRam1PowerUp();
     MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-#endif // USE_CONSOLE
+    PRINT_F("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*)&pb_pin[0]);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 #endif // USE_BUTTON
+
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
 #endif // USE_ALARM
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT_F("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
+        PRINT_F("Wakeup from SLEEP mode.\n\n");
 #endif // DO_SLEEP
+
 #if DO_DEEPSLEEP
-#if USE_CONSOLE
-        printf("Entering DEEPSLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT_F("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
+        PRINT_F("Wakeup from DEEPSLEEP mode.\n\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINT_F("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP

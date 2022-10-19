@@ -183,7 +183,6 @@ q31_t outputQ31[BLOCKSIZE];
 ** ------------------------------------------------------------------- */
 
 const q31_t coeffTable[950] = {
-
     /* Band 1, -9 dB gain */
     535576962, -1071153923, 535576962, 1073741824, -536870912, 535576962, -1063501998, 527979313,
     1060865294, -524146981,
@@ -310,14 +309,13 @@ const q31_t coeffTable[950] = {
     -720244375, -280896294, 717601336, -1114441339, 458700704, 711459472, -276883515, 717601336,
     1114441339, 458700704, -711459472, -276883515, 744051710, -1164315096, 481197437, 702532174,
     -272930673, 744051710, 1164315096, 481197437, -702532174, -272930673
-
 };
 
 /* ----------------------------------------------------------------------
 ** Desired gains, in dB, per band
 ** ------------------------------------------------------------------- */
 
-int gainDB[5] = {0, -3, 6, 4, -6};
+int gainDB[5] = { 0, -3, 6, 4, -6 };
 
 float32_t snr;
 
@@ -336,29 +334,29 @@ int main(void)
     int i;
     int32_t status;
 
-    inputF32  = &testInput_f32[0];
+    inputF32 = &testInput_f32[0];
     outputF32 = &testOutput[0];
 
     /* Initialize the state and coefficient buffers for all Biquad sections */
 
     arm_biquad_cas_df1_32x64_init_q31(&S1, NUMSTAGES,
-                                      (q31_t*)&coeffTable[190 * 0 + 10 * (gainDB[0] + 9)],
+                                      (q31_t *)&coeffTable[190 * 0 + 10 * (gainDB[0] + 9)],
                                       &biquadStateBand1Q31[0], 2);
 
     arm_biquad_cas_df1_32x64_init_q31(&S2, NUMSTAGES,
-                                      (q31_t*)&coeffTable[190 * 1 + 10 * (gainDB[1] + 9)],
+                                      (q31_t *)&coeffTable[190 * 1 + 10 * (gainDB[1] + 9)],
                                       &biquadStateBand2Q31[0], 2);
 
     arm_biquad_cascade_df1_init_q31(&S3, NUMSTAGES,
-                                    (q31_t*)&coeffTable[190 * 2 + 10 * (gainDB[2] + 9)],
+                                    (q31_t *)&coeffTable[190 * 2 + 10 * (gainDB[2] + 9)],
                                     &biquadStateBand3Q31[0], 2);
 
     arm_biquad_cascade_df1_init_q31(&S4, NUMSTAGES,
-                                    (q31_t*)&coeffTable[190 * 3 + 10 * (gainDB[3] + 9)],
+                                    (q31_t *)&coeffTable[190 * 3 + 10 * (gainDB[3] + 9)],
                                     &biquadStateBand4Q31[0], 2);
 
     arm_biquad_cascade_df1_init_q31(&S5, NUMSTAGES,
-                                    (q31_t*)&coeffTable[190 * 4 + 10 * (gainDB[4] + 9)],
+                                    (q31_t *)&coeffTable[190 * 4 + 10 * (gainDB[4] + 9)],
                                     &biquadStateBand5Q31[0], 2);
 
     /* Call the process functions and needs to change filter coefficients
@@ -404,7 +402,7 @@ int main(void)
     ** ------------------------------------------------------------------- */
 
         arm_scale_f32(outputF32 + (i * BLOCKSIZE), 8.0f, outputF32 + (i * BLOCKSIZE), BLOCKSIZE);
-    };
+    }
 
     snr = arm_snr_f32(testRefOutput_f32, testOutput, TESTLENGTH);
 
@@ -414,16 +412,16 @@ int main(void)
 #if defined(SEMIHOSTING)
         printf("FAILURE\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     } else {
 #if defined(SEMIHOSTING)
         printf("SUCCESS\n");
 #else
-        while (1)
-            ; /* main function does not return */
+        while (1) {}
+/* main function does not return */
 #endif
         return 1;
     }

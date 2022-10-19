@@ -48,45 +48,45 @@
 /* **** Globals **** */
 
 /* ************************************************************************** */
-int MXC_CLCD_RevA_Init(mxc_clcd_reva_regs_t* clcd, mxc_clcd_cfg_t* cfg)
+int MXC_CLCD_RevA_Init(mxc_clcd_reva_regs_t *clcd, mxc_clcd_cfg_t *cfg)
 {
     int error;
 
     // Clear registers
-    clcd->ctrl   = 0;
+    clcd->ctrl = 0;
     clcd->vtim_0 = 0;
     clcd->vtim_1 = 0;
-    clcd->clk    = 0;
-    clcd->htim   = 0;
+    clcd->clk = 0;
+    clcd->htim = 0;
     if ((error = MXC_CLCD_ConfigPanel(cfg)) != E_NO_ERROR) {
         return error;
     }
     // Disable and clear interrupts
     clcd->int_en = 0;
-    clcd->stat   = clcd->stat;
+    clcd->stat = clcd->stat;
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_RevA_Shutdown(mxc_clcd_reva_regs_t* clcd)
+int MXC_CLCD_RevA_Shutdown(mxc_clcd_reva_regs_t *clcd)
 {
     // Disable and clear interrupts
     clcd->int_en = 0;
-    clcd->stat   = clcd->stat;
+    clcd->stat = clcd->stat;
 
     // Clear registers
-    clcd->ctrl   = 0;
+    clcd->ctrl = 0;
     clcd->vtim_0 = 0;
     clcd->vtim_1 = 0;
-    clcd->clk    = 0;
-    clcd->htim   = 0;
+    clcd->clk = 0;
+    clcd->htim = 0;
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_RevA_ConfigPanel(mxc_clcd_reva_regs_t* clcd, mxc_clcd_cfg_t* cfg)
+int MXC_CLCD_RevA_ConfigPanel(mxc_clcd_reva_regs_t *clcd, mxc_clcd_cfg_t *cfg)
 {
     int i;
 
@@ -105,14 +105,12 @@ int MXC_CLCD_RevA_ConfigPanel(mxc_clcd_reva_regs_t* clcd, mxc_clcd_cfg_t* cfg)
 
     clcd->ctrl |= cfg->bpp;
 
-    for (i = 0; i < cfg->paletteSize; i++) {
-        clcd->palette[i] = cfg->palette[i];
-    }
+    for (i = 0; i < cfg->paletteSize; i++) { clcd->palette[i] = cfg->palette[i]; }
     return E_NO_ERROR;
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_RevA_Enable(mxc_clcd_reva_regs_t* clcd)
+int MXC_CLCD_RevA_Enable(mxc_clcd_reva_regs_t *clcd)
 {
     clcd->ctrl |= MXC_S_CLCD_REVA_CTRL_LCDEN_ENABLE | (8 << MXC_F_CLCD_REVA_CTRL_DISPTYPE_POS) |
                   MXC_F_CLCD_REVA_CTRL_PEN;
@@ -121,7 +119,7 @@ int MXC_CLCD_RevA_Enable(mxc_clcd_reva_regs_t* clcd)
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_RevA_Disable(mxc_clcd_reva_regs_t* clcd)
+int MXC_CLCD_RevA_Disable(mxc_clcd_reva_regs_t *clcd)
 {
     clcd->ctrl &= (~MXC_S_CLCD_REVA_CTRL_LCDEN_ENABLE);
 
@@ -129,7 +127,7 @@ int MXC_CLCD_RevA_Disable(mxc_clcd_reva_regs_t* clcd)
 }
 
 /* ************************************************************************* */
-int MXC_CLCD_RevA_SetFrameAddr(mxc_clcd_reva_regs_t* clcd, void* addr)
+int MXC_CLCD_RevA_SetFrameAddr(mxc_clcd_reva_regs_t *clcd, void *addr)
 {
     clcd->ctrl &= (~MXC_S_CLCD_REVA_CTRL_LCDEN_ENABLE);
     clcd->fr = (uint32_t)addr;

@@ -38,30 +38,31 @@
 #include <string.h>
 #include "mxc.h"
 
-#define TOD_START_TIME     (12 * SECS_PER_HR + 34 * SECS_PER_MIN + 56)
+#define TOD_START_TIME (12 * SECS_PER_HR + 34 * SECS_PER_MIN + 56)
 #define TOD_ALARM_INTERVAL 2
-#define SECS_PER_MIN       60
-#define SECS_PER_HR        (60 * SECS_PER_MIN)
-#define SECS_PER_DAY       (24 * SECS_PER_HR)
-#define TS_X_MIN           254
-#define TS_X_MAX           3680
-#define TS_Y_MIN           193
-#define TS_Y_MAX           3661
-#define TFT_BUFF_SIZE      32 // TFT buffer size
+#define SECS_PER_MIN 60
+#define SECS_PER_HR (60 * SECS_PER_MIN)
+#define SECS_PER_DAY (24 * SECS_PER_HR)
+#define TS_X_MIN 254
+#define TS_X_MAX 3680
+#define TS_Y_MIN 193
+#define TS_Y_MAX 3661
+#define TFT_BUFF_SIZE 32 // TFT buffer size
 
 volatile bool tod_alarm = false;
-int image_bitmap        = (int)&img_1_rgb565[0];
-int font_1              = (int)&Arial12x12[0];
-int font_2              = (int)&Arial24x23[0];
-int font_3              = (int)&Arial28x28[0];
-int font_4              = (int)&SansSerif16x16[0];
-int font_5              = (int)&SansSerif19x19[0];
-const int font_5_width  = 19;
+int image_bitmap = (int)&img_1_rgb565[0];
+int font_1 = (int)&Arial12x12[0];
+int font_2 = (int)&Arial24x23[0];
+int font_3 = (int)&Arial28x28[0];
+int font_4 = (int)&SansSerif16x16[0];
+int font_5 = (int)&SansSerif19x19[0];
+const int font_5_width = 19;
 const int font_5_height = 19;
+int seed = 78002;
 
-void TFT_Print(char* str, int x, int y, int font, int length)
+void TFT_Print(char *str, int x, int y, int font, int length)
 {
-    text_t text = {.data = str, .len = length};
+    text_t text = { .data = str, .len = length };
 
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
@@ -69,7 +70,7 @@ void TFT_Print(char* str, int x, int y, int font, int length)
 void TFT_test(void)
 {
     area_t _area;
-    area_t* area;
+    area_t *area;
     char buff[TFT_BUFF_SIZE];
 
     MXC_TFT_SetRotation(ROTATE_270);
@@ -79,7 +80,7 @@ void TFT_test(void)
     MXC_Delay(MXC_DELAY_SEC(3));
     MXC_TFT_SetBackGroundColor(RED);
 
-    area    = &_area;
+    area = &_area;
     area->x = 10;
     area->y = 10;
     area->w = 200;
@@ -101,19 +102,19 @@ void TFT_test(void)
     MXC_TFT_ClearScreen();
 
     memset(buff, 32, TFT_BUFF_SIZE);
-    sprintf(buff, "ANALOG DEVICES");
+    snprintf(buff, sizeof(buff), "ANALOG DEVICES");
     TFT_Print(buff, 0, 10, font_1, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 50, font_2, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 100, font_3, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 150, font_4, 14);
 
-    sprintf(buff, "Analog Devices");
+    snprintf(buff, sizeof(buff), "Analog Devices");
     TFT_Print(buff, 0, 200, font_5, 14);
 
     MXC_Delay(MXC_DELAY_SEC(3));
@@ -130,13 +131,11 @@ void RTC_IRQHandler(void)
 
     /* Check time-of-day alarm flag. */
     if (flags & MXC_F_RTC_CTRL_TOD_ALARM) {
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
         MXC_RTC_SetTimeofdayAlarm(MXC_RTC_GetSecond() + TOD_ALARM_INTERVAL);
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY)
-            ;
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
         tod_alarm = true;
     }
@@ -158,8 +157,8 @@ void print_time(void)
     min = sec / SECS_PER_MIN;
     sec -= min * SECS_PER_MIN;
 
-    x = rand() % (DISPLAY_WIDTH - (font_5_width * 8));
-    y = rand() % (DISPLAY_HEIGHT - font_5_height);
+    x = rand_r(&seed) % (DISPLAY_WIDTH - (font_5_width * 8));
+    y = rand_r(&seed) % (DISPLAY_HEIGHT - font_5_height);
 
     TFT_Print("        ", last_x, last_y, font_5, 8);
     TFT_Print(buf, x, y, font_5, snprintf(buf, sizeof(buf), "%02d:%02d:%02d", hr, min, sec));
@@ -183,8 +182,6 @@ int main(void)
     MXC_ICC_Enable(MXC_ICC0);
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
-
-    srand(78002);
 
     printf("TFT Demo Example\n");
     /* Initialize TFT display */

@@ -38,11 +38,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "MAX32xxx.h"
-#include "wrapper_tft.h"
-
 #include <FreeRTOS.h>
 #include <semphr.h>
+
+#include "MAX32xxx.h"
+#include "wrapper_tft.h"
 
 /*************************************** DEFINES *****************************/
 #define TFT_LOCK_WITH_MUTEX 0 // Do not forget to enable mutex in FreeRTOSConfig.h file
@@ -103,7 +103,7 @@ void TFT_ShowImage(int x0, int y0, int id)
 #endif
 }
 
-void TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
+void TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
 {
 #if TFT_LOCK_WITH_MUTEX
     __disable_irq();
@@ -119,7 +119,7 @@ void TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
 #endif
 }
 
-void TFT_ClearArea(area_t* area, int color)
+void TFT_ClearArea(area_t *area, int color)
 {
 #if TFT_LOCK_WITH_MUTEX
     __disable_irq();

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -40,13 +40,12 @@
 #include "gpio.h"
 #include "mxc_pins.h"
 #include "led.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 #include "mxc_delay.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 /* GPIO Information
@@ -72,31 +71,30 @@ extern uint32_t SystemCoreClock;
  *		1 : Data is available when I2S WS signal is high (right channel)
  */
 
-const mxc_gpio_cfg_t mic_power_ctrl_pin  = {MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
-                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t codec_clk_en_pin    = {MXC_GPIO1, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT,
-                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t i2s_int_ext_sel_pin = {MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_OUT,
-                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t cnn_boost_en_pin    = {MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT,
-                                         MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-const mxc_gpio_cfg_t mic_ws_sel_pin      = {MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT,
-                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+const mxc_gpio_cfg_t mic_power_ctrl_pin = { MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
+                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t codec_clk_en_pin = { MXC_GPIO1, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT,
+                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t i2s_int_ext_sel_pin = { MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_OUT,
+                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t cnn_boost_en_pin = { MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT,
+                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t mic_ws_sel_pin = { MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/
@@ -246,7 +244,7 @@ int CNN_Boost_Enable(int enable)
 }
 
 /******************************************************************************/
-void SD_Get_Connections(mxc_spi_regs_t** spi, mxc_gpio_regs_t** ssPort, int* ssPin)
+void SD_Get_Connections(mxc_spi_regs_t **spi, mxc_gpio_regs_t **ssPort, int *ssPin)
 {
     return;
 }

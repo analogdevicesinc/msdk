@@ -41,17 +41,17 @@
 
 #define SAK_LEN 1
 
-int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t* atq, uint8_t doretry)
+int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t *atq, uint8_t doretry)
 {
     uint8_t tx_buf[2];
     int32_t tx_len;
-    uint8_t* rx_buf;
+    uint8_t *rx_buf;
     uint32_t rx_len;
     int32_t ret;
     uint8_t retry = doretry ? 3 : 1;
 
     tx_buf[0] = req;
-    tx_len    = 1;
+    tx_len = 1;
 
     rx_buf = atq;
 
@@ -69,27 +69,26 @@ int32_t iso_14443_3a_cmd_req_wupa(uint8_t req, uint8_t* atq, uint8_t doretry)
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
 }
 
-int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t* uid)
+int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t *uid)
 {
     uint8_t tx_buf[2];
     int32_t tx_len;
-    uint8_t* rx_buf;
+    uint8_t *rx_buf;
     uint32_t rx_len = UID_EACH_LEN;
     int32_t ret;
 
     int32_t i;
-    uint8_t bcc   = 0;
+    uint8_t bcc = 0;
     uint8_t retry = 3;
 
     tx_buf[0] = sel;
     tx_buf[1] = 0x20;
-    tx_len    = 2;
+    tx_len = 2;
 
     rx_buf = uid;
 
@@ -105,9 +104,7 @@ int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t* uid)
             }
 
             //Check BCC
-            for (i = 0, bcc = 0; i < 4; i++) {
-                bcc ^= uid[i];
-            }
+            for (i = 0, bcc = 0; i < 4; i++) { bcc ^= uid[i]; }
 
             if (bcc != uid[4]) {
                 ret = ISO14443_3_ERR_TRANSMISSION;
@@ -118,17 +115,16 @@ int32_t iso_14443_3a_cmd_anticoll(uint8_t sel, uint8_t* uid)
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
 }
 
-int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t* uid, uint8_t* sak)
+int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t *uid, uint8_t *sak)
 {
     uint8_t tx_buf[10];
     int32_t tx_len;
-    uint8_t* rx_buf;
+    uint8_t *rx_buf;
     uint32_t rx_len = 1; //SAK should be one byte.
     int32_t ret;
     uint8_t retry = 3;
@@ -153,17 +149,16 @@ int32_t iso_14443_3a_cmd_select(uint8_t sel, uint8_t* uid, uint8_t* sak)
         if ((retry > 1) && ret == ISO14443_3_ERR_TIMEOUT) {
             nfc_set_delay_till_next_send_fc(TMIN_RETRANSMISSION_FC + ISO14443_FWT_A_ACT);
         }
-
     } while (--retry && ret == ISO14443_3_ERR_TIMEOUT);
 
     return ret;
 }
 
-int32_t iso_14443_3a_cmd_rats(uint8_t fsdi, uint8_t cid, uint8_t* ats, uint32_t* ats_len)
+int32_t iso_14443_3a_cmd_rats(uint8_t fsdi, uint8_t cid, uint8_t *ats, uint32_t *ats_len)
 {
     uint8_t tx_buf[2];
     int32_t tx_len;
-    uint8_t* rx_buf;
+    uint8_t *rx_buf;
     int32_t ret;
     uint8_t retry = 3;
 
@@ -198,7 +193,7 @@ int32_t iso_14443_3a_cmd_halt(void)
 {
     uint8_t tx_buf[2];
     int32_t tx_len;
-    uint8_t* rx_buf;
+    uint8_t *rx_buf;
     uint32_t rx_len;
     int32_t ret;
 
@@ -206,7 +201,7 @@ int32_t iso_14443_3a_cmd_halt(void)
 
     tx_buf[0] = 0x50;
     tx_buf[1] = 0x00;
-    tx_len    = 2;
+    tx_len = 2;
 
     rx_buf = tmp;
 

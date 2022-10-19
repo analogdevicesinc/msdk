@@ -50,35 +50,35 @@ __weak void SystemCoreClockUpdate(void)
     // Get the clock source and frequency
     clk_src = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL);
     switch (clk_src) {
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
-            base_freq = EXTCLK_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
-            base_freq = INRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
-            base_freq = IPO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPLL:
-            base_freq = IPLL_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EBO:
-            base_freq = EBO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
-            base_freq = IBRO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
-            base_freq = ISO_FREQ;
-            break;
-        case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
-            base_freq = ERTCO_FREQ;
-            break;
-        default:
-            // Codes 001 and 111 are reserved.
-            // This code should never execute, however, initialize to safe value.
-            base_freq = HIRC_FREQ;
-            break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK:
+        base_freq = EXTCLK_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_INRO:
+        base_freq = INRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPO:
+        base_freq = IPO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IPLL:
+        base_freq = IPLL_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EBO:
+        base_freq = EBO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_IBRO:
+        base_freq = IBRO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ISO:
+        base_freq = ISO_FREQ;
+        break;
+    case MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO:
+        base_freq = ERTCO_FREQ;
+        break;
+    default:
+        // Codes 001 and 111 are reserved.
+        // This code should never execute, however, initialize to safe value.
+        base_freq = HIRC_FREQ;
+        break;
     }
 
     div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;
@@ -119,7 +119,7 @@ __weak void SystemInit(void)
     /* the application space */
 #if defined(__CC_ARM) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
-    SCB->VTOR = (unsigned long)__isr_vector;
+    SCB->VTOR = (uint32_t)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
 
     /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 & 11 */

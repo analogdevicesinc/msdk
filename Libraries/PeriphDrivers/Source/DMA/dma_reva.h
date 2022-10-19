@@ -31,6 +31,9 @@
  *
  *************************************************************************** */
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVA_H_
+
 /****** Includes *******/
 #include "dma_reva_regs.h"
 #include <stdbool.h>
@@ -40,28 +43,30 @@
 /******* Globals *******/
 
 /****** Functions ******/
-int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t* dma);
-int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t* dma);
+int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma);
+int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma);
 int MXC_DMA_RevA_ReleaseChannel(int ch);
 int MXC_DMA_RevA_ConfigChannel(mxc_dma_config_t config, mxc_dma_srcdst_t srcdst);
 int MXC_DMA_RevA_AdvConfigChannel(mxc_dma_adv_config_t advConfig);
 int MXC_DMA_RevA_SetSrcDst(mxc_dma_srcdst_t srcdst);
-int MXC_DMA_RevA_GetSrcDst(mxc_dma_srcdst_t* srcdst);
+int MXC_DMA_RevA_GetSrcDst(mxc_dma_srcdst_t *srcdst);
 int MXC_DMA_RevA_SetSrcReload(mxc_dma_srcdst_t srcdst);
-int MXC_DMA_RevA_GetSrcReload(mxc_dma_srcdst_t* srcdst);
+int MXC_DMA_RevA_GetSrcReload(mxc_dma_srcdst_t *srcdst);
 int MXC_DMA_RevA_SetCallback(int ch, void (*callback)(int, int));
 int MXC_DMA_RevA_SetChannelInterruptEn(int ch, bool chdis, bool ctz);
 int MXC_DMA_RevA_ChannelEnableInt(int ch, int flags);
 int MXC_DMA_RevA_ChannelDisableInt(int ch, int flags);
 int MXC_DMA_RevA_ChannelGetFlags(int ch);
 int MXC_DMA_RevA_ChannelClearFlags(int ch, int flags);
-int MXC_DMA_RevA_EnableInt(mxc_dma_reva_regs_t* dma, int ch);
-int MXC_DMA_RevA_DisableInt(mxc_dma_reva_regs_t* dma, int ch);
+int MXC_DMA_RevA_EnableInt(mxc_dma_reva_regs_t *dma, int ch);
+int MXC_DMA_RevA_DisableInt(mxc_dma_reva_regs_t *dma, int ch);
 int MXC_DMA_RevA_Start(int ch);
 int MXC_DMA_RevA_Stop(int ch);
-mxc_dma_ch_regs_t* MXC_DMA_RevA_GetCHRegs(int ch);
-void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t* dma);
-int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t* dma, void* dest, void* src, int len,
+mxc_dma_ch_regs_t *MXC_DMA_RevA_GetCHRegs(int ch);
+void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma);
+int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t *dma, void *dest, void *src, int len,
                         mxc_dma_complete_cb_t callback);
-int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t* dma, mxc_dma_config_t config,
+int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t *dma, mxc_dma_config_t config,
                             mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);
+
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_DMA_DMA_REVA_H_

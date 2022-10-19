@@ -50,11 +50,11 @@
 #include "board.h"
 
 /* Shadow register definitions */
-#define MXC_R_SIR_SHR13 *((uint32_t*)(0x40005434))
-#define MXC_R_SIR_SHR17 *((uint32_t*)(0x40005444))
+#define MXC_R_SIR_SHR13 *((uint32_t *)(0x40005434))
+#define MXC_R_SIR_SHR17 *((uint32_t *)(0x40005444))
 
 /* Stringification macros */
-#define STRING(x)  STRING_(x)
+#define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
 extern void bleStartup(void);
@@ -68,7 +68,7 @@ extern void bleStartup(void);
  *
  * =======================================================
  */
-void vAssertCalled(const char* const pcFileName, unsigned long ulLine)
+void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
 {
     volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
@@ -81,8 +81,7 @@ void vAssertCalled(const char* const pcFileName, unsigned long ulLine)
         /* You can step out of this function to debug the assertion by using
         the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
         value. */
-        while (ulSetToNonZeroInDebuggerToContinue == 0) {
-        }
+        while (ulSetToNonZeroInDebuggerToContinue == 0) {}
     }
     __asm volatile("cpsie i");
 }
@@ -146,8 +145,7 @@ int main(void)
 
     /* Delay to prevent bricks */
     volatile int i;
-    for (i = 0; i < 0x3FFFFF; i++) {
-    }
+    for (i = 0; i < 0x3FFFFF; i++) {}
 
     /* Turn off unused hardware to conserve power */
     turnOffUnused();
@@ -160,9 +158,7 @@ int main(void)
 
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
-    while (1) {
-        __NOP();
-    }
+    while (1) { __NOP(); }
 
     /* Quiet GCC warnings */
     return -1;
@@ -192,9 +188,8 @@ void HardFault_Handler(void)
 /*****************************************************************/
 /* Disable optimizations for this function so "frame" argument */
 /* does not get optimized away */
-__attribute__((optimize("O0"))) void HardFault_Decoder(sContextStateFrame* frame)
+__attribute__((optimize("O0"))) void HardFault_Decoder(sContextStateFrame *frame)
 {
     /* Hang here */
-    while (1) {
-    }
+    while (1) {}
 }

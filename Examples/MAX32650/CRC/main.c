@@ -43,14 +43,13 @@
 #include "mxc_errors.h"
 #include "board.h"
 #include "tpu.h"
-#include "tpu_regs.h"
 
 /* **** Definitions **** */
 
 /* **** Globals **** */
 
 /* **** Functions **** */
-int crc_sw(uint8_t* data, uint8_t len, uint32_t polynomial)
+int crc_sw(uint8_t *data, uint8_t len, uint32_t polynomial)
 {
     int i, j;
     uint32_t temp;
@@ -77,8 +76,8 @@ int main(void)
 {
     printf("\n***** CRC Example *****\n");
 
-    uint8_t data[] = {0x14, 0x78, 0x9C, 0xDE};
-    uint8_t len    = sizeof(data) / sizeof(data[0]);
+    uint8_t data[] = { 0x14, 0x78, 0x9C, 0xDE };
+    uint8_t len = sizeof(data) / sizeof(data[0]);
     uint32_t sw_crc;
     uint32_t hw_crc;
 
@@ -134,10 +133,8 @@ int main(void)
     } else {
         printf("CRC Passed!\n");
     }
-    printf("\n");
 
-    printf("Example complete.\n");
+    printf("\nExample complete.\n");
 
-    while (1) {
-    }
+    return 0;
 }

@@ -59,12 +59,10 @@
 #include "pb.h"
 
 /***** Definitions *****/
-/***** Globals *****/
-//use push buttons defined in board.h
-extern const mxc_gpio_cfg_t pb_pin[];
-
 #define SW1 0
 #define SW2 1
+
+/***** Globals *****/
 
 /***** Functions *****/
 
@@ -89,6 +87,16 @@ void MXC_WDT_Setup()
     MXC_WDT_Enable(MXC_WDT0);
 }
 
+void blinkled(int led, int num_of_blink)
+{
+    for (int i = 0; i < num_of_blink; i++) {
+        LED_On(led);
+        MXC_Delay(MXC_DELAY_MSEC(100));
+        LED_Off(led);
+        MXC_Delay(MXC_DELAY_MSEC(100));
+    }
+}
+
 // *****************************************************************************
 int main(void)
 {
@@ -106,47 +114,34 @@ int main(void)
     printf("SW3 (P2.26) = Reset with interrupt.\n");
 
     //blink LED1 three times at startup
-    int numBlinks = 10;
-
-    while (numBlinks) {
-        LED_On(1);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        LED_Off(1);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        numBlinks--;
-    }
+    blinkled(1, 3);
 
     //setup watchdog
     MXC_WDT_Setup();
 
     while (1) {
         //Push SW1 to reset watchdog
-        if (MXC_GPIO_InGet(pb_pin[SW1].port, pb_pin[SW1].mask) == 0) {
+        if (PB_Get(SW1) == TRUE) {
             printf("\nWaiting for watchdog reset...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_28);
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
-            while (1)
-                ;
+            while (1) {}
         }
 
         //Push SW2 to start longer delay - shows Interrupt before the reset happens
-        if (MXC_GPIO_InGet(pb_pin[SW2].port, pb_pin[SW2].mask) == 0) {
+        if (PB_Get(SW2) == TRUE) {
             printf("\nEnabling Timeout Interrupt...\n");
             MXC_WDT_SetResetPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_28);
             MXC_WDT_SetIntPeriod(MXC_WDT0, MXC_WDT_PERIOD_2_27);
             MXC_WDT_EnableReset(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
             NVIC_EnableIRQ(WDT0_IRQn);
-            while (1)
-                ;
+            while (1) {}
         }
 
         //blink LED0
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        LED_On(0);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        LED_Off(0);
+        blinkled(0, 1);
 
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);

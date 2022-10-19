@@ -55,20 +55,20 @@
 #endif
 
 /* Size of the payload in the mailbox */
-#define MAILBOX_OVERHEAD    (2 * sizeof(uint16_t))
+#define MAILBOX_OVERHEAD (2 * sizeof(uint16_t))
 #define MAILBOX_PAYLOAD_LEN (MAILBOX_SIZE - MAILBOX_OVERHEAD)
 
 #ifdef __riscv
 /* RISCV reads from mailbox 0 and writes to mailbox 1 */
-#define SEMA_READ_BOX   0
-#define SEMA_WRITE_BOX  1
-#define SEMA_READ_SEMA  SEMA_BOX0_SEMA
+#define SEMA_READ_BOX 0
+#define SEMA_WRITE_BOX 1
+#define SEMA_READ_SEMA SEMA_BOX0_SEMA
 #define SEMA_WRITE_SEMA SEMA_BOX1_SEMA
 #else
 /* ARM reads from mailbox 1 and writes to mailbox 0 */
-#define SEMA_READ_BOX   1
-#define SEMA_WRITE_BOX  0
-#define SEMA_READ_SEMA  SEMA_BOX1_SEMA
+#define SEMA_READ_BOX 1
+#define SEMA_WRITE_BOX 0
+#define SEMA_READ_SEMA SEMA_BOX1_SEMA
 #define SEMA_WRITE_SEMA SEMA_BOX0_SEMA
 #endif
 
@@ -94,24 +94,23 @@ typedef struct {
 #else
     uint8_t payload[MAILBOX_SIZE - MAILBOX_OVERHEAD];
 #endif
-
 } mxcSemaBox_t;
-mxcSemaBox_t* mxcSemaBox0 = (mxcSemaBox_t*)&_mailbox_0;
-mxcSemaBox_t* mxcSemaBox1 = (mxcSemaBox_t*)&_mailbox_1;
+mxcSemaBox_t *mxcSemaBox0 = (mxcSemaBox_t *)&_mailbox_0;
+mxcSemaBox_t *mxcSemaBox1 = (mxcSemaBox_t *)&_mailbox_1;
 
 /* Semaphore control block. */
 typedef struct {
-    uint8_t* readBuf;
+    uint8_t *readBuf;
     unsigned readLen;
     mxc_sema_complete_cb_t readCb;
 
-    uint8_t* writeBuf;
+    uint8_t *writeBuf;
     unsigned writeLen;
     mxc_sema_complete_cb_t writeCb;
 } mxcSemaCb_t;
 mxcSemaCb_t mxcSemaCb;
 
-int MXC_SEMA_RevA_GetSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema)
+int MXC_SEMA_RevA_GetSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema)
 {
     uint32_t sema_val;
     MXC_ASSERT(sema < MXC_CFG_SEMA_INSTANCES);
@@ -126,7 +125,7 @@ int MXC_SEMA_RevA_GetSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema)
     }
 }
 
-int MXC_SEMA_RevA_CheckSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema)
+int MXC_SEMA_RevA_CheckSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema)
 {
     MXC_ASSERT(sema < MXC_CFG_SEMA_INSTANCES);
 
@@ -137,27 +136,27 @@ int MXC_SEMA_RevA_CheckSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema)
     }
 }
 
-uint32_t MXC_SEMA_RevA_Status(mxc_sema_reva_regs_t* sema_regs)
+uint32_t MXC_SEMA_RevA_Status(mxc_sema_reva_regs_t *sema_regs)
 {
     return sema_regs->status;
 }
 
-void MXC_SEMA_RevA_FreeSema(mxc_sema_reva_regs_t* sema_regs, unsigned sema)
+void MXC_SEMA_RevA_FreeSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema)
 {
     MXC_ASSERT(sema < MXC_CFG_SEMA_INSTANCES);
 
     sema_regs->semaphores[sema] = 0x0;
 }
 
-int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t* sema_regs)
+int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t *sema_regs)
 {
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     }
 
     /* Reset the async state */
-    mxcSemaCb.readBuf  = NULL;
-    mxcSemaCb.readLen  = 0;
+    mxcSemaCb.readBuf = NULL;
+    mxcSemaCb.readLen = 0;
     mxcSemaCb.writeBuf = NULL;
     mxcSemaCb.writeLen = 0;
 
@@ -171,15 +170,15 @@ int MXC_SEMA_RevA_Init(mxc_sema_reva_regs_t* sema_regs)
     return E_NO_ERROR;
 }
 
-int MXC_SEMA_RevA_InitBoxes(mxc_sema_reva_regs_t* sema_regs)
+int MXC_SEMA_RevA_InitBoxes(mxc_sema_reva_regs_t *sema_regs)
 {
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
     }
 
     /* Reset the boxes */
-    memset((void*)mxcSemaBox0, 0, MAILBOX_SIZE);
-    memset((void*)mxcSemaBox1, 0, MAILBOX_SIZE);
+    memset((void *)mxcSemaBox0, 0, MAILBOX_SIZE);
+    memset((void *)mxcSemaBox1, 0, MAILBOX_SIZE);
 
     return E_NO_ERROR;
 }
@@ -205,7 +204,7 @@ static unsigned semaGetReadBoxAvailLen(void)
     return length;
 }
 
-static void semaReadBox(mxc_sema_reva_regs_t* sema_regs, mxcSemaBox_t* box, uint8_t* data,
+static void semaReadBox(mxc_sema_reva_regs_t *sema_regs, mxcSemaBox_t *box, uint8_t *data,
                         uint16_t len)
 {
     /* Copy data from the box to the buffer */
@@ -216,11 +215,11 @@ static void semaReadBox(mxc_sema_reva_regs_t* sema_regs, mxcSemaBox_t* box, uint
     box->readLocation = box->readLocation % MAILBOX_PAYLOAD_LEN;
 }
 
-int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t* sema_regs, uint8_t* data, unsigned len)
+int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t *sema_regs, uint8_t *data, unsigned len)
 {
     int err;
     unsigned readLen;
-    mxcSemaBox_t* readBox;
+    mxcSemaBox_t *readBox;
 
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
@@ -280,8 +279,8 @@ int MXC_SEMA_RevA_ReadBox(mxc_sema_reva_regs_t* sema_regs, uint8_t* data, unsign
     return E_NO_ERROR;
 }
 
-int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb,
-                               uint8_t* data, unsigned len)
+int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_complete_cb_t cb,
+                               uint8_t *data, unsigned len)
 {
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
@@ -295,7 +294,7 @@ int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complet
     /* Register the read request */
     mxcSemaCb.readBuf = data;
     mxcSemaCb.readLen = len;
-    mxcSemaCb.readCb  = cb;
+    mxcSemaCb.readCb = cb;
 
     /* Pend the local interrupt to process the request */
 #if TARGET_NUM == 32570 || TARGET_NUM == 32650 || TARGET_NUM == 32665
@@ -338,7 +337,7 @@ static unsigned semaGetWriteBoxAvailLen(void)
     return length;
 }
 
-static void semaWriteBox(mxc_sema_reva_regs_t* sema_regs, mxcSemaBox_t* box, const uint8_t* data,
+static void semaWriteBox(mxc_sema_reva_regs_t *sema_regs, mxcSemaBox_t *box, const uint8_t *data,
                          unsigned len)
 {
     /* Copy data from the buffer to the box */
@@ -347,9 +346,9 @@ static void semaWriteBox(mxc_sema_reva_regs_t* sema_regs, mxcSemaBox_t* box, con
     box->writeLocation = box->writeLocation % MAILBOX_PAYLOAD_LEN;
 }
 
-int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t* sema_regs, const uint8_t* data, unsigned len)
+int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t *sema_regs, const uint8_t *data, unsigned len)
 {
-    mxcSemaBox_t* writeBox;
+    mxcSemaBox_t *writeBox;
     unsigned writeLen;
     int err;
 
@@ -404,8 +403,8 @@ int MXC_SEMA_RevA_WriteBox(mxc_sema_reva_regs_t* sema_regs, const uint8_t* data,
     return E_NO_ERROR;
 }
 
-int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_complete_cb_t cb,
-                                const uint8_t* data, unsigned len)
+int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_complete_cb_t cb,
+                                const uint8_t *data, unsigned len)
 {
     if (MAILBOX_SIZE == 0) {
         return E_NONE_AVAIL;
@@ -417,9 +416,9 @@ int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_comple
     }
 
     /* Register the read request */
-    mxcSemaCb.writeBuf = (uint8_t*)data;
+    mxcSemaCb.writeBuf = (uint8_t *)data;
     mxcSemaCb.writeLen = len;
-    mxcSemaCb.writeCb  = cb;
+    mxcSemaCb.writeCb = cb;
 
     /* Pend the local interrupt to process the request */
 #if TARGET_NUM == 32570 || TARGET_NUM == 32650 || TARGET_NUM == 32665
@@ -439,9 +438,9 @@ int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t* sema_regs, mxc_sema_comple
     return E_NO_ERROR;
 }
 
-static int MXC_SEMA_RevA_WriteHandler(mxc_sema_reva_regs_t* sema_regs)
+static int MXC_SEMA_RevA_WriteHandler(mxc_sema_reva_regs_t *sema_regs)
 {
-    mxcSemaBox_t* writeBox;
+    mxcSemaBox_t *writeBox;
     unsigned writeAvailLen, writeLen, writeLenPart;
     int err;
 
@@ -456,9 +455,7 @@ static int MXC_SEMA_RevA_WriteHandler(mxc_sema_reva_regs_t* sema_regs)
 
     /* Get the write semaphore */
     err = E_BUSY;
-    while (err != E_NO_ERROR) {
-        err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_WRITE_SEMA);
-    }
+    while (err != E_NO_ERROR) { err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_WRITE_SEMA); }
 
     /* Assign the writeBox pointer */
     if (SEMA_WRITE_BOX == 1) {
@@ -524,11 +521,11 @@ static int MXC_SEMA_RevA_WriteHandler(mxc_sema_reva_regs_t* sema_regs)
     return E_NO_ERROR;
 }
 
-static int MXC_SEMA_RevA_ReadHandler(mxc_sema_reva_regs_t* sema_regs)
+static int MXC_SEMA_RevA_ReadHandler(mxc_sema_reva_regs_t *sema_regs)
 {
     int err;
     unsigned readAvailLen, readLen, readLenPart;
-    mxcSemaBox_t* readBox;
+    mxcSemaBox_t *readBox;
 
     /* Check to see if we have any pending read requests */
     if (mxcSemaCb.readBuf == NULL) {
@@ -537,9 +534,7 @@ static int MXC_SEMA_RevA_ReadHandler(mxc_sema_reva_regs_t* sema_regs)
 
     /* Get the read semaphore */
     err = E_BUSY;
-    while (err != E_NO_ERROR) {
-        err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_READ_SEMA);
-    }
+    while (err != E_NO_ERROR) { err = MXC_SEMA_RevA_GetSema(sema_regs, SEMA_READ_SEMA); }
 
     /* Assign the read box pointer */
     if (SEMA_READ_BOX == 1) {
@@ -608,7 +603,7 @@ static int MXC_SEMA_RevA_ReadHandler(mxc_sema_reva_regs_t* sema_regs)
     return E_NO_ERROR;
 }
 
-int MXC_SEMA_RevA_Handler(mxc_sema_reva_regs_t* sema_regs)
+int MXC_SEMA_RevA_Handler(mxc_sema_reva_regs_t *sema_regs)
 {
     int err = 0;
 

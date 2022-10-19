@@ -1,10 +1,10 @@
-{    
+{
     "terminal.integrated.env.windows": {
         "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
-
+    
     "terminal.integrated.env.linux": {
         "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
@@ -13,9 +13,9 @@
         "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
-
+    
     "target":"MAX78000",
-    "board":"FTHR_RevA",
+    "board":"EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -23,7 +23,7 @@
     "symbol_file":"${config:program_file}",
 
     "M4_OCD_interface_file":"cmsis-dap.cfg",
-    "M4_OCD_target_file":"${config:target}.cfg",
+    "M4_OCD_target_file":"max78000.cfg",
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
@@ -52,8 +52,13 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/SDHC/Include",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -67,13 +72,16 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
-        "${config:MAXIM_PATH}/Libraries/SDHC/Source",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
         "${config:board}"
-    ],
-    "files.associations": {
-        "ff.h": "c"
-    }
+    ]
 }
+

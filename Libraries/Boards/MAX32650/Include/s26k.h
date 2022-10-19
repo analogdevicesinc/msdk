@@ -3,8 +3,8 @@
  * @brief   Cypress s26k driver header file
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,14 +34,11 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-07-18 14:27:17 -0500 (Wed, 18 Jul 2018) $
- * $Revision: 36259 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
-#ifndef _S26K_H_
-#define _S26K_H_
+#ifndef LIBRARIES_BOARDS_MAX32650_INCLUDE_S26K_H_
+#define LIBRARIES_BOARDS_MAX32650_INCLUDE_S26K_H_
 
 /* **** Includes **** */
 #include "mxc_config.h"
@@ -114,7 +111,7 @@ int S26K_Write16(uint32_t addr, uint16_t data);
  * @param   len     Number of bytes to write.
  * @returns #E_NO_ERROR if erase succeeded. #E_UNKNOWN otherwise.
  */
-int S26K_Write(uint32_t addr, uint16_t* data, unsigned len);
+int S26K_Write(uint32_t addr, uint16_t *data, unsigned len);
 
 /**
  * @brief   Read the s26k ID.
@@ -122,7 +119,7 @@ int S26K_Write(uint32_t addr, uint16_t* data, unsigned len);
  * @param   data    Pointer to store the ID.
  * @param   len     Number of ID bytes to read.
  */
-void S26K_GetID(uint32_t offset, uint16_t* data, unsigned len);
+void S26K_GetID(uint32_t offset, uint16_t *data, unsigned len);
 
 /**
  * @brief   Read the s26k CFI.
@@ -130,7 +127,7 @@ void S26K_GetID(uint32_t offset, uint16_t* data, unsigned len);
  * @param   data    Pointer to store the CFI.
  * @param   len     Number of CFI bytes to read.
  */
-void S26K_GetCFI(uint32_t offset, uint16_t* data, unsigned len);
+void S26K_GetCFI(uint32_t offset, uint16_t *data, unsigned len);
 
 /**
  * @brief Get Sector Protection
@@ -204,4 +201,4 @@ void S26K_WriteBufferAbortReset(void);
 }
 #endif
 
-#endif /* _S26K_H_ */
+#endif // LIBRARIES_BOARDS_MAX32650_INCLUDE_S26K_H_

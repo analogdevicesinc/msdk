@@ -17,8 +17,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef WDXS_FILE_H
-#define WDXS_FILE_H
+#ifndef EXAMPLES_MAX32690_BLE_OTAS_WDXS_FILE_H_
+#define EXAMPLES_MAX32690_BLE_OTAS_WDXS_FILE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,4 +68,4 @@ uint32_t WdxsFileGetVerifiedLength(void);
 }
 #endif
 
-#endif /* WDXS_FILE_H */
+#endif // EXAMPLES_MAX32690_BLE_OTAS_WDXS_FILE_H_

@@ -33,8 +33,8 @@
  *
  ******************************************************************************/
 
-#ifndef __ISO14443_3A_FLOW_H__
-#define __ISO14443_3A_FLOW_H__
+#ifndef EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_FLOW_H_
+#define EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_FLOW_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -93,7 +93,7 @@ int32_t iso_14443_3a_polling();
  * @retval #ISO14443_3_ERR_SUCCESS Card found and HALT sent
  * @retval #ISO14443_3_ERR_TIMEOUT No card found
  */
-int32_t iso_14443_3a_polling_response(uint8_t* atqa_resp, int32_t* atqa_resp_len);
+int32_t iso_14443_3a_polling_response(uint8_t *atqa_resp, int32_t *atqa_resp_len);
 
 /**
  * @brief Perform required anticollision checks
@@ -146,9 +146,9 @@ int32_t iso_14443_3a_collision_detect();
  *
  * @note Do not call this function without first calling iso_14443_3a_polling and getting a #ISO14443_3_ERR_SUCCESS indicating at least one Type A card found
  */
-int32_t iso_14443_3a_collision_detect_response(uint8_t* atqa_resp, int32_t* atqa_resp_len,
-                                               uint8_t* uid_resp, int32_t* uid_resp_len,
-                                               uint8_t* sak_resp);
+int32_t iso_14443_3a_collision_detect_response(uint8_t *atqa_resp, int32_t *atqa_resp_len,
+                                               uint8_t *uid_resp, int32_t *uid_resp_len,
+                                               uint8_t *sak_resp);
 
 /**
  * @brief Activate a Type A PICC (Card)
@@ -189,7 +189,7 @@ int32_t iso_14443_3a_active();
  * @retval #ISO14443_3_ERR_OTHER
  * @note Only use this function after a successful call to iso_14443_3a_collision_detect
  */
-int32_t iso_14443_3a_active_response(uint8_t* ats_resp, int32_t* ats_resp_len);
+int32_t iso_14443_3a_active_response(uint8_t *ats_resp, int32_t *ats_resp_len);
 
 /**
  * @brief Remove a Type A PICC (Card)
@@ -209,4 +209,4 @@ int32_t iso_14443_3a_remove();
 }
 #endif
 
-#endif
+#endif // EXAMPLES_MAX32570_MAX32570_DEMO_BAREMETAL_INCLUDE_NFC_EMV_L1_STACK_ISO14443_3A_FLOW_H_

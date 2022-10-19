@@ -2,8 +2,8 @@
  * @file    led.h
  * @brief   LED driver API.
  */
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,13 +33,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-02-28 16:31:00 -0600 (Tue, 28 Feb 2017) $
- * $Revision: 26756 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _LED_H_
-#define _LED_H_
+#ifndef LIBRARIES_BOARDS_MAX32650_INCLUDE_LED_H_
+#define LIBRARIES_BOARDS_MAX32650_INCLUDE_LED_H_
 
 #include "mxc_assert.h"
 #include "board.h"
@@ -97,4 +94,5 @@ void LED_Toggle(unsigned int idx);
 }
 #endif
 /**@}*/
-#endif /* _LED_H_ */
+
+#endif // LIBRARIES_BOARDS_MAX32650_INCLUDE_LED_H_
