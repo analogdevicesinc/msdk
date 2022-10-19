@@ -19,6 +19,8 @@ on:
     # Remove the line above to run when pushing to master
   pull_request:
     branches: [master, main]
+
+  workflow_dispatch:
     
 # Prevent duplicate runs
 concurrency: 
@@ -72,7 +74,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter/slim@v4
         env:
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: ${{ github.event.name == 'workflow_dispatch' }}
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
